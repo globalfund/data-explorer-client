@@ -1,0 +1,95 @@
+{
+  "name": "zz-frontend-boilerplate",
+  "version": "0.1.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zimmerman-team/zz-frontend-boilerplate.git"
+  },
+  "dependencies": {
+    "@craco/craco": "^6.1.1",
+    "@hot-loader/react-dom": "^17.0.1",
+    "@jackwilsdon/craco-use-babelrc": "^1.0.0",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "craco-plugin-react-hot-reload": "^0.1.0",
+    "dotenv": "^8.2.0",
+    "easy-peasy": "^5.0.3",
+    "i18next": "^20.2.1",
+    "i18next-browser-languagedetector": "^6.1.0",
+    "postcss": "^8.2.10",
+    "postcss-js": "^3.0.3",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.3",
+    "react-use": "^17.2.3",
+    "styled-components": "^5.2.3",
+    "swr": "^0.5.5",
+    "web-vitals": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/i18next-xhr-backend": "^1.4.2",
+    "@types/jest": "^26.0.22",
+    "@types/material-ui": "^0.21.8",
+    "@types/node": "^14.14.41",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.9",
+    "babel-plugin-macros": "^3.0.1",
+    "babel-plugin-react-data-testid": "^0.2.0",
+    "babel-plugin-styled-components": "^1.12.0",
+    "cypress-shadow-dom": "^1.4.1",
+    "depcheck": "^1.4.0",
+    "eslint-config-airbnb-typescript-prettier": "^4.2.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-sonarjs": "^0.6.0",
+    "figmint": "^0.8.1",
+    "happo-cypress": "^1.20.0",
+    "happo.io": "^6.4.0",
+    "husky": "^6.0.0",
+    "paths.macro": "^3.0.1",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "source-map-explorer": "^2.5.2",
+    "stylelint": "^13.12.0",
+    "stylelint-config-recommended": "^4.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-prettier": "^1.2.0",
+    "stylelint-processor-styled-components": "^1.10.0",
+    "typescript": "^4.2.4",
+    "typescript-plugin-styled-components": "^1.5.0",
+    "webpack-plugin-ramdisk": "^0.1.8",
+    "yarn-upgrade-all": "^0.5.4"
+  },
+  "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "depcheck": "depcheck",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "upgrade-all": "yarn-upgrade-all"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  }
+}

@@ -1,0 +1,5 @@
+.circleci/**/*
+build/**/*
+config/**/*
+scripts/**/*
+storybook-static/**/*

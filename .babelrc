@@ -1,0 +1,16 @@
+{
+  "presets": ["react-app"],
+  "plugins": [
+    // "react-hot-loader/babel",
+    [
+      "babel-plugin-styled-components",
+      {
+        "ssr": false,
+        "minify": false,
+        "transpileTemplateLiterals": false,
+        "fileName": false
+      }
+    ],
+    "macros"
+  ]
+}
