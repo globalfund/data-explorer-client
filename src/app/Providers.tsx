@@ -1,22 +1,36 @@
 // cc:application base#;application providers
-import React, { ReactNode } from 'react';
-import { ThemeProvider } from '@material-ui/core/styles';
-import theme from 'app/theme';
-import { BrowserRouter as Router } from 'react-router-dom';
-import CssBaseline from '@material-ui/core/CssBaseline';
+import React, { ReactNode } from "react";
+import theme from "app/theme";
+import { AppBar } from "app/components/AppBar";
+import { ThemeProvider } from "@material-ui/core/styles";
+import { BrowserRouter as Router } from "react-router-dom";
+import { Container, StylesProvider, CssBaseline } from "@material-ui/core";
 
 type ProviderProps = {
-  children?: ReactNode;
+  children: any;
 };
 
 function Providers(props: ProviderProps) {
   return (
-    /* material ui theme provider */
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      {/* react router */}
-      <Router>{props.children}</Router>
-    </ThemeProvider>
+    <StylesProvider injectFirst>
+      {/* material ui theme provider */}
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        {/* react router */}
+        <Router>
+          <AppBar />
+          <Container
+            maxWidth="lg"
+            css={`
+              height: 100%;
+              padding: 0 32px;
+            `}
+          >
+            {props.children}
+          </Container>
+        </Router>
+      </ThemeProvider>
+    </StylesProvider>
   );
 }
 
