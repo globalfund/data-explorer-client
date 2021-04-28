@@ -55,9 +55,10 @@ const styles = {
   container: css`
     left: 0;
     top: 46px;
+    z-index: 1;
     width: 100vw;
     display: flex;
-    position: absolute;
+    position: sticky;
     background: #dfe3e6;
     padding: 6px 0 16px 0;
     flex-direction: column;
@@ -146,7 +147,7 @@ export function PageHeader(props: PageHeaderProps) {
             (breadcrumb: BreadcrumbModel, index: number) => {
               if (breadcrumb.link) {
                 return (
-                  <React.Fragment>
+                  <React.Fragment key={breadcrumb.name}>
                     <Link css={styles.bcitem(true)} to={breadcrumb.link}>
                       {breadcrumb.name}
                     </Link>
@@ -155,7 +156,7 @@ export function PageHeader(props: PageHeaderProps) {
                 );
               }
               return (
-                <React.Fragment>
+                <React.Fragment key={breadcrumb.name}>
                   <div
                     css={styles.bcitem(breadcrumb.menuitems !== undefined)}
                     onClick={breadcrumb.menuitems ? handleClick : undefined}
@@ -186,8 +187,8 @@ export function PageHeader(props: PageHeaderProps) {
         <div css={styles.title}>{props.title}</div>
         {props.drilldowns && props.drilldowns.length > 0 && (
           <div css={styles.drilldowns}>
-            {props.drilldowns.map((item: DrilldownModel, index: number) => (
-              <div css={styles.drilldownitem}>
+            {props.drilldowns.map((item: DrilldownModel) => (
+              <div css={styles.drilldownitem} key={item.name}>
                 {item.name} <ArrowForwardIcon />
               </div>
             ))}

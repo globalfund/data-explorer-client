@@ -1,10 +1,11 @@
 //cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 
+const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
@@ -23,6 +24,14 @@ export function MainRoutes() {
 
         <Route exact path="/datasets">
           <DatasetsModule />
+        </Route>
+
+        <Route exact path="/viz/:vizType/:subType?">
+          <VizModule />
+        </Route>
+
+        <Route exact path="/viz">
+          <Redirect to="/datasets" />
         </Route>
 
         <Route exact path="/notFound">

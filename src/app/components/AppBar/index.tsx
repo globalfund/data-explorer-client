@@ -13,7 +13,7 @@ export function AppBar() {
   }
 
   return (
-    <MUIAppBar position="relative" color="primary">
+    <MUIAppBar position="sticky" color="primary">
       <Container maxWidth="lg">
         <Toolbar
           disableGutters

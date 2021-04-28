@@ -8,10 +8,7 @@ export default function Landing() {
   useTitle(`The Data Explorer - Home`);
 
   React.useEffect(() => {
-    const root = document.getElementById("root");
-    if (root) {
-      root.style.background = "#dfe3e6";
-    }
+    document.body.style.background = "#dfe3e6";
   }, []);
 
   return <LandingLayout />;

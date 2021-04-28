@@ -2,7 +2,7 @@ import { css } from "styled-components/macro";
 
 export const container = css`
   width: 100%;
-  height: 100%;
+  height: 100vh;
   display: flex;
   align-items: center;
   flex-direction: column;

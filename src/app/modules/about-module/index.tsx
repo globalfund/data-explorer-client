@@ -10,10 +10,7 @@ export default function About() {
   useTitle(`The Data Explorer - About`);
 
   React.useEffect(() => {
-    const root = document.getElementById("root");
-    if (root) {
-      root.style.background = "#F5F5F7";
-    }
+    document.body.style.background = "#F5F5F7";
   }, []);
 
   return (
