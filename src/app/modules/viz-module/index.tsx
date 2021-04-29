@@ -6,6 +6,7 @@ import { PageHeader } from "app/components/PageHeader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
+import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 
 export default function VizModule() {
   React.useEffect(() => {
@@ -86,6 +87,9 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/budgets/time-cycle">
           <BudgetsTimeCycleModule />
+        </Route>
+        <Route path="/viz/investments/disbursements">
+          <InvestmentsDisbursedModule />
         </Route>
       </Switch>
     </div>
