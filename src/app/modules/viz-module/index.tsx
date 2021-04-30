@@ -4,10 +4,11 @@ import { Link, Switch, Route } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { InvestmentsTimeCycleModule } from "./sub-modules/investments/time-cycle";
+import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
+import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 
 export default function VizModule() {
   React.useEffect(() => {
@@ -94,6 +95,9 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/investments/time-cycle">
           <InvestmentsTimeCycleModule />
+        </Route>
+        <Route path="/viz/allocations">
+          <AllocationsModule />
         </Route>
       </Switch>
     </div>
