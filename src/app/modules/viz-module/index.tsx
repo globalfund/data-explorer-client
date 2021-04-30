@@ -4,10 +4,11 @@ import { Link, Switch, Route } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { InvestmentsTimeCycleModule } from "./sub-modules/investments/time-cycle";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
+import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 
 export default function VizModule() {
   React.useEffect(() => {
@@ -51,17 +52,26 @@ export default function VizModule() {
                 <ArrowForwardIcon />
                 <b>Datasets</b>
               </Link>,
-              <Link to="/viz/investments">
-                <b>Finance</b>-Investments
+              <Link to="/viz/investments/disbursements">
+                <b>Finance</b>-Investments/Disbursements
+              </Link>,
+              <Link to="/viz/investments/time-cycle">
+                <b>Finance</b>-Investments/Time-Cycle
               </Link>,
               <Link to="/viz/budgets/flow">
-                <b>Finance</b>-Budgets
+                <b>Finance</b>-Budgets Flow
               </Link>,
-              <Link to="/viz/allocation">
-                <b>Finance</b>-Allocation
+              <Link to="/viz/budgets/time-cycle">
+                <b>Finance</b>-Budgets Time Cycle
+              </Link>,
+              <Link to="/viz/allocations">
+                <b>Finance</b>-Allocations
               </Link>,
               <Link to="/viz/eligibility">
                 <b>Finance</b>-Eligibility
+              </Link>,
+              <Link to="/viz/pledges-contributions/time-cycle">
+                <b>Finance</b>-Pledges & Contributions Time Cycle
               </Link>,
               <Link to="/grants">
                 <b>Grants</b>
@@ -94,6 +104,9 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/investments/time-cycle">
           <InvestmentsTimeCycleModule />
+        </Route>
+        <Route path="/viz/pledges-contributions/time-cycle">
+          <PledgesContributionsTimeCycleModule />
         </Route>
       </Switch>
     </div>
