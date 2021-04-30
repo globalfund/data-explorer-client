@@ -4,6 +4,7 @@ import { Link, Switch, Route } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { InvestmentsTimeCycleModule } from "./sub-modules/investments/time-cycle";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
@@ -90,6 +91,9 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/investments/disbursements">
           <InvestmentsDisbursedModule />
+        </Route>
+        <Route path="/viz/investments/time-cycle">
+          <InvestmentsTimeCycleModule />
         </Route>
       </Switch>
     </div>

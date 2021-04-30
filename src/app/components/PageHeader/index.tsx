@@ -171,9 +171,11 @@ export function PageHeader(props: PageHeaderProps) {
                       open={Boolean(anchorEl)}
                       onClose={handleClose}
                     >
-                      {breadcrumb.menuitems.map((item: React.ReactChild) => (
-                        <StyledMenuItem>{item}</StyledMenuItem>
-                      ))}
+                      {breadcrumb.menuitems.map(
+                        (item: React.ReactChild, index: number) => (
+                          <StyledMenuItem key={index}>{item}</StyledMenuItem>
+                        )
+                      )}
                     </StyledMenu>
                   )}
                   {index !== props.breadcrumbs.length - 1 && (

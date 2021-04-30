@@ -57,7 +57,8 @@ export function getVizValueRange(
           key !== "year" &&
           key !== "amount" &&
           key !== "filterStr" &&
-          !key.includes("Color")
+          !key.includes("Color") &&
+          !key.includes("Children")
         ) {
           value += item[key];
         }
