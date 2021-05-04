@@ -3,7 +3,7 @@ import { SearchIcon } from "app/assets/icons/Search";
 import {
   container,
   input,
-} from "app/modules/grants-module/components/Search/styles";
+} from "app/modules/results-module/components/Search/styles";
 
 interface SearchLayoutProps {
   value: string;

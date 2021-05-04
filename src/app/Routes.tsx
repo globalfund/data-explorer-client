@@ -5,9 +5,10 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 
-const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
+const GrantsModule = lazy(() => import("app/modules/grants-module"));
+const ResultsModule = lazy(() => import("app/modules/results-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 
@@ -29,6 +30,10 @@ export function MainRoutes() {
 
         <Route exact path="/grants">
           <GrantsModule />
+        </Route>
+
+        <Route exact path="/results">
+          <ResultsModule />
         </Route>
 
         <Route exact path="/viz/:vizType/:subType?">
