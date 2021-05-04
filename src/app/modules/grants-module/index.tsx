@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
-import { grantsmockitems } from "app/modules/grants/data";
-import { Search } from "app/modules/grants/components/Search";
-import { GrantsList } from "app/modules/grants/components/List";
+import { grantsmockitems } from "app/modules/grants-module/data";
+import { Search } from "app/modules/grants-module/components/Search";
+import { GrantsList } from "app/modules/grants-module/components/List";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 
 export default function GrantsModule() {

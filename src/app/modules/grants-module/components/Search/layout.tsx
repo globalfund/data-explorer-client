@@ -1,8 +1,11 @@
 import React from "react";
 import { SearchIcon } from "app/assets/icons/Search";
-import { container, input } from "app/modules/grants/components/Search/styles";
-import { SearchResults } from "app/modules/grants/components/Search/components/results";
-import { SearchResultModel } from "app/modules/grants/components/Search/components/results/data";
+import {
+  container,
+  input,
+} from "app/modules/grants-module/components/Search/styles";
+import { SearchResults } from "app/modules/grants-module/components/Search/components/results";
+import { SearchResultModel } from "app/modules/grants-module/components/Search/components/results/data";
 
 interface SearchLayoutProps {
   value: string;

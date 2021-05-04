@@ -6,8 +6,8 @@ import {
   result as resultcss,
   results as resultscss,
   noresults,
-} from "app/modules/grants/components/Search/components/results/styles";
-import { SearchResultModel } from "app/modules/grants/components/Search/components/results/data";
+} from "app/modules/grants-module/components/Search/components/results/styles";
+import { SearchResultModel } from "app/modules/grants-module/components/Search/components/results/data";
 
 interface SearchResultsProps {
   results: SearchResultModel[];

@@ -5,7 +5,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 
-const GrantsModule = lazy(() => import("app/modules/grants"));
+const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));

@@ -1,8 +1,14 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { listitem, row } from "app/modules/grants/components/List/styles";
-import { GrantsListProps, GrantListItemModel } from "app/modules/grants/data";
+import {
+  listitem,
+  row,
+} from "app/modules/grants-module/components/List/styles";
+import {
+  GrantsListProps,
+  GrantListItemModel,
+} from "app/modules/grants-module/data";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { LocationIcon } from "app/assets/icons/Location";
 import { RatingIcon } from "app/assets/icons/Rating";
