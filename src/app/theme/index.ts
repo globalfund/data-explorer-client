@@ -179,15 +179,15 @@ export const ProjectTypography: TypographyOptions = {
 export default createMuiTheme({
   overrides: {
     // Name of the component ⚛️
-    MuiCssBaseline: {
-      // Name of the rule
-      "@global": {
-        "*, *::before, *::after": {
-          transition: "none !important",
-          animation: "none !important",
-        },
-      },
-    },
+    // MuiCssBaseline: {
+    //   // Name of the rule
+    //   "@global": {
+    //     "*, *::before, *::after": {
+    //       transition: "none !important",
+    //       animation: "none !important",
+    //     },
+    //   },
+    // },
     MuiTabs: {
       indicator: {
         height: "4px",

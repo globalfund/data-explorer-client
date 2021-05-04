@@ -4,13 +4,19 @@ import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
-import { resultsmockitems } from "app/modules/results-module/data";
+import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { InformationPanel } from "app/components/InformationPanel";
 import { Search } from "app/modules/results-module/components/Search";
 import { ResultsList } from "app/modules/results-module/components/List";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
+import {
+  resultsmockitems,
+  sidePanelInfoData,
+} from "app/modules/results-module/data";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
+  const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -87,6 +93,12 @@ export default function ResultsModule() {
           },
         ]}
       />
+      <InformationPanel
+        open={openInfoPanel}
+        onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
+      >
+        <ResultsInfoContent {...sidePanelInfoData} />
+      </InformationPanel>
       <div css="width: 100%;height: 25px;" />
       <div
         css={`

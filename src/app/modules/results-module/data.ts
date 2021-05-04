@@ -27,3 +27,36 @@ export const resultsmockitems: ResultListItemModel[] = [
     ],
   },
 ];
+
+export interface ResultsInfoContentStatsProps {
+  name: string;
+  value: number;
+  description: string;
+}
+
+export interface ResultsInfoContentProps {
+  description: string;
+  stats: ResultsInfoContentStatsProps[];
+}
+
+export const sidePanelInfoData: ResultsInfoContentProps = {
+  description:
+    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar condimentum aliquet. Cras bibendum, lectus sit amet venenatis efficitur, magna nisl scelerisque ligula, ac laoreet odio est eget nunc. Fusce semlectus, viverra sit amet nulla nec, sollicitudin scelerisque magna. Proin consequat arcu vitae volutpat tincidunt.",
+  stats: [
+    {
+      name: "HIV",
+      value: 20070449,
+      description: "People on antiretroviral therapy for HIV",
+    },
+    {
+      name: "Tuberculosis",
+      value: 5765786,
+      description: "People with TB treated",
+    },
+    {
+      name: "Malaria",
+      value: 160030604,
+      description: "Mosquito nets distributed",
+    },
+  ],
+};
