@@ -1,17 +1,17 @@
 /* third-party */
 import React from "react";
-import { Link, Switch, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { grantsmockitems } from "app/modules/grants/data";
+import { Search } from "app/modules/grants/components/Search";
+import { GrantsList } from "app/modules/grants/components/List";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
-import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
-import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
-import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
-import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 
-export default function VizModule() {
+export default function GrantsModule() {
+  useTitle("The Data Explorer - Grants");
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
   }, []);
@@ -28,7 +28,7 @@ export default function VizModule() {
       `}
     >
       <PageHeader
-        title="Finance"
+        title="Grants"
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -86,33 +86,18 @@ export default function VizModule() {
             ],
           },
         ]}
-        // drilldowns={[
-        //   { name: "Dataset" },
-        //   { name: "Drill down level one" },
-        //   { name: "Drill down level two" },
-        // ]}
       />
       <div css="width: 100%;height: 25px;" />
-      <Switch>
-        <Route path="/viz/budgets/flow">
-          <BudgetsFlowModule />
-        </Route>
-        <Route path="/viz/budgets/time-cycle">
-          <BudgetsTimeCycleModule />
-        </Route>
-        <Route path="/viz/investments/disbursements">
-          <InvestmentsDisbursedModule />
-        </Route>
-        <Route path="/viz/investments/time-cycle">
-          <InvestmentsTimeCycleModule />
-        </Route>
-        <Route path="/viz/pledges-contributions/time-cycle">
-          <PledgesContributionsTimeCycleModule />
-        </Route>
-        <Route path="/viz/eligibility">
-          <EligibilityModule />
-        </Route>
-      </Switch>
+      <div
+        css={`
+          width: 100%;
+        `}
+      >
+        <Search />
+        <div css="width: 100%;height: 25px;" />
+        <GrantsList listitems={grantsmockitems} />
+      </div>
+      <div css="width: 100%;height: 25px;" />
     </div>
   );
 }
