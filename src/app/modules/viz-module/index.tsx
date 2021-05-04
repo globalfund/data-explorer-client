@@ -9,6 +9,7 @@ import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budge
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { EligibilityModule } from "./sub-modules/eligibility";
 
 export default function VizModule() {
   React.useEffect(() => {
@@ -107,6 +108,9 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/pledges-contributions/time-cycle">
           <PledgesContributionsTimeCycleModule />
+        </Route>
+        <Route path="/viz/eligibility">
+          <EligibilityModule />
         </Route>
       </Switch>
     </div>
