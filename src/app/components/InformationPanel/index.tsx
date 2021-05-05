@@ -20,6 +20,10 @@ export function InformationPanel(props: InformationPanelProps) {
           background: #f5f5f7;
           height: calc(100vh - 133px);
           visibility: visible !important;
+
+          @media (max-width: 500px) {
+            width: calc(100vw - 50px);
+          }
         `}
       >
         <div

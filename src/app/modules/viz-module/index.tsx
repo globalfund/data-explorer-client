@@ -1,6 +1,6 @@
 /* third-party */
 import React from "react";
-import { Link, Switch, Route } from "react-router-dom";
+import { Link, Switch, Route, useParams } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
@@ -12,6 +12,8 @@ import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/i
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 
 export default function VizModule() {
+  const params = useParams<{ vizType: string; subType?: string }>();
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
   }, []);
@@ -84,6 +86,19 @@ export default function VizModule() {
                 <b>Documents</b>
               </Link>,
             ],
+          },
+          {
+            name: `${params.vizType
+              .slice(0, 1)
+              .toUpperCase()}${params.vizType.slice(1)}${
+              params.subType ? " · " : ""
+            }${
+              params.subType
+                ? `${params.subType
+                    .slice(0, 1)
+                    .toUpperCase()}${params.subType.slice(1)}`
+                : ""
+            }`,
           },
         ]}
         // drilldowns={[

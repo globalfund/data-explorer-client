@@ -19,6 +19,12 @@ export const LandingLayout = () => {
           display: flex;
           align-items: center;
           flex-direction: column;
+
+          @media (max-width: 600px) {
+            > svg {
+              width: 100%;
+            }
+          }
         `}
       >
         <BigLogo />

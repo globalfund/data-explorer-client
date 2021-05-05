@@ -131,6 +131,7 @@ export function PledgesContributionsTimeCycle(
           >
             {legends.map((legend: any) => (
               <div
+                key={legend.name}
                 onMouseEnter={() => setHoveredLegend(legend.name.toLowerCase())}
                 onMouseLeave={() => setHoveredLegend(null)}
                 css={`

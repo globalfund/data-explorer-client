@@ -91,6 +91,7 @@ export default function ResultsModule() {
               </Link>,
             ],
           },
+          { name: "Results" },
         ]}
       />
       <InformationPanel

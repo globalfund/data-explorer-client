@@ -168,6 +168,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
           >
             {legends.map((legend: any) => (
               <div
+                key={legend.name}
                 onMouseEnter={() => setHoveredLegend(legend.name)}
                 onMouseLeave={() => setHoveredLegend(null)}
                 css={`

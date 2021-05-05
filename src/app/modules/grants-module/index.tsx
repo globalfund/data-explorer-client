@@ -85,6 +85,9 @@ export default function GrantsModule() {
               </Link>,
             ],
           },
+          {
+            name: "Grants",
+          },
         ]}
       />
       <div css="width: 100%;height: 25px;" />

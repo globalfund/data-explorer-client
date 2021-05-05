@@ -49,7 +49,7 @@ const datasets: DatasetItemModel[] = [
   {
     name: "Eligibility",
     link: "/viz/eligibility",
-    group: "Finance",
+    group: "Other",
     preview: <EligibilityDotsPreview />,
   },
   {
@@ -106,6 +106,7 @@ export default function Datasets() {
             <Link to={dataset.link} css="text-decoration: none;">
               <div
                 css={`
+                  width: 100%;
                   padding: 20px;
                   height: 370px;
                   color: #262c34;
@@ -128,7 +129,8 @@ export default function Datasets() {
                 `}
               >
                 <div>
-                  <b>{dataset.group}</b> · {dataset.name}
+                  <b>{dataset.group}</b> {dataset.name.length > 0 ? "·" : ""}{" "}
+                  {dataset.name}
                 </div>
                 {dataset.preview}
               </div>
