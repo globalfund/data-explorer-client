@@ -7,11 +7,15 @@ export const listitem = css`
   background: #f5f5f7;
   border-radius: 20px;
   flex-direction: column;
-  border: 2px solid #f5f5f7;
 
   &:hover {
     cursor: pointer;
-    border-color: #262c34;
+    background-color: #262c34;
+
+    * {
+      fill: #fff;
+      color: #fff;
+    }
   }
 `;
 
