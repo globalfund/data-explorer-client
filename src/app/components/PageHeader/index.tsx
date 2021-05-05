@@ -43,7 +43,8 @@ const StyledMenuItem = withStyles((theme) => ({
     padding: "6px 0",
     borderBottom: "1px solid #DFE3E6",
     "& a": {
-      fontSize: 12,
+      width: "100%",
+      fontSize: "12px",
       color: "#262c34",
       padding: "0 12px",
       textDecoration: "none",

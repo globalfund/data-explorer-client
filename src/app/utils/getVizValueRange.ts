@@ -17,18 +17,18 @@ export function getVizValueRange(
 
   if (chartType === "pledgesContributionsBar") {
     data.forEach((item: any) => {
-      if (item.Pledge >= ranges[0].divider) {
+      if (item.pledge >= ranges[0].divider) {
         rangesCount[0]++;
-      } else if (item.Pledge >= ranges[1].divider) {
+      } else if (item.pledge >= ranges[1].divider) {
         rangesCount[1]++;
-      } else if (item.Pledge >= ranges[2].divider) {
+      } else if (item.pledge >= ranges[2].divider) {
         rangesCount[2]++;
       }
-      if (item.Contribution >= ranges[0].divider) {
+      if (item.contribution >= ranges[0].divider) {
         rangesCount[0]++;
-      } else if (item.Contribution >= ranges[1].divider) {
+      } else if (item.contribution >= ranges[1].divider) {
         rangesCount[1]++;
-      } else if (item.Contribution >= ranges[2].divider) {
+      } else if (item.contribution >= ranges[2].divider) {
         rangesCount[2]++;
       }
     });

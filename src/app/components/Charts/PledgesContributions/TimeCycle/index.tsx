@@ -1,6 +1,5 @@
 import React from "react";
 import uniq from "lodash/uniq";
-import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
@@ -8,56 +7,24 @@ import { InfoIcon } from "app/assets/icons/Info";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { BarComponent } from "app/components/Charts/Investments/TimeCycle/components/bar";
-import { InvestmentsTimeCycleProps } from "app/components/Charts/Investments/TimeCycle/data";
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
+import { BarComponent } from "app/components/Charts/PledgesContributions/TimeCycle/components/bar";
+import { PledgesContributionsProps } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
-function getKeysFromData(data: Record<string, unknown>[]) {
-  if (data.length === 0) {
-    return [];
-  }
-  let keys: string[] = [];
-  data.forEach((item: Record<string, unknown>) => {
-    const itemKeys = Object.keys(item).map((key) => key);
-    keys.push(...itemKeys);
-  });
-  keys = filter(uniq(keys), (k) => {
-    if (k === "year") return false;
-    if (k === "amount") return false;
-    if (k === "filterStr") return false;
-    if (k.indexOf("Color") > -1) return false;
-    if (k.indexOf("Children") > -1) return false;
-    return true;
-  });
-  return keys;
-}
-
-function getLegendItems(data: any) {
-  let allChildren: any[] = [];
-  data.forEach((item: any) => {
-    Object.keys(item).forEach((key) => {
-      if (key.indexOf("Children") > -1) {
-        allChildren = [...allChildren, ...item[key]];
-      }
-    });
-  });
-
-  const uniqChildren = uniqBy(allChildren, "name");
-  return uniqChildren.map((child: any) => ({
-    name: child.name,
-    color: child.color,
-  }));
-}
-
-export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
+export function PledgesContributionsTimeCycle(
+  props: PledgesContributionsProps
+) {
   const matches = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
-  const [keys, setKeys] = React.useState(getKeysFromData(props.data));
-  const moneyAbbrRange = getVizValueRange(props.data, "budgetBarChart");
-  const totalInvestmentValue = props.data[props.data.length - 1]
-    .cumulative as number;
-  const legends = getLegendItems(props.data);
+  const moneyAbbrRange = getVizValueRange(
+    props.data,
+    "pledgesContributionsBar"
+  );
+  const legends = [
+    { name: "Pledge", color: "#868E96" },
+    { name: "Contribution", color: "#495057" },
+  ];
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -95,8 +62,6 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     }, 1000);
   }, []);
 
-  React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
-
   const Bars = (bprops: any) => {
     // console.log(bprops);
     // if (props.vizCompData.length !== bars.length) {
@@ -105,6 +70,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     return bprops.bars.map((bar: any) => (
       <BarComponent
         {...bar}
+        singleItemBar
         showTooltip={bprops.showTooltip}
         hideTooltip={bprops.hideTooltip}
         onMouseEnter={bprops.onMouseEnter}
@@ -151,10 +117,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
               }
             `}
           >
-            Budget <InfoIcon />
-          </div>
-          <div css="font-weight: normal;">
-            {formatFinancialValue(totalInvestmentValue)}
+            Replenishment Periods <InfoIcon />
           </div>
         </Grid>
         <Grid item xs={12} sm={12} md={9}>
@@ -169,7 +132,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             {legends.map((legend: any) => (
               <div
                 key={legend.name}
-                onMouseEnter={() => setHoveredLegend(legend.name)}
+                onMouseEnter={() => setHoveredLegend(legend.name.toLowerCase())}
                 onMouseLeave={() => setHoveredLegend(null)}
                 css={`
                   gap: 6px;
@@ -178,7 +141,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                   cursor: pointer;
                   align-items: center;
                   flex-direction: row;
-                  opacity: ${!hoveredLegend || hoveredLegend === legend.name
+                  opacity: ${!hoveredLegend ||
+                  hoveredLegend === legend.name.toLowerCase()
                     ? 1
                     : 0.3};
                 `}
@@ -208,8 +172,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
         padding={matches ? 0.3 : 0.5}
         innerPadding={6}
         data={props.data}
-        // colors={(value: any) => value.data[`${value.id}Color`]}
-        keys={keys}
+        colors={(value: any) => value.data[`${value.id}Color`]}
+        keys={["pledge", "contribution"]}
         indexBy="year"
         margin={{
           top: 60,

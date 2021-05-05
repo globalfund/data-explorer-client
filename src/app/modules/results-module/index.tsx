@@ -1,19 +1,22 @@
 /* third-party */
 import React from "react";
-import { Link, Switch, Route, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
-import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
-import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
-import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
-import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
-import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { InformationPanel } from "app/components/InformationPanel";
+import { Search } from "app/modules/results-module/components/Search";
+import { ResultsList } from "app/modules/results-module/components/List";
+import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
+import {
+  resultsmockitems,
+  sidePanelInfoData,
+} from "app/modules/results-module/data";
 
-export default function VizModule() {
-  const params = useParams<{ vizType: string; subType?: string }>();
+export default function ResultsModule() {
+  useTitle("The Data Explorer - Results");
+  const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -31,7 +34,7 @@ export default function VizModule() {
       `}
     >
       <PageHeader
-        title="Finance"
+        title="Results"
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -88,50 +91,26 @@ export default function VizModule() {
               </Link>,
             ],
           },
-          {
-            name: `${params.vizType
-              .slice(0, 1)
-              .toUpperCase()}${params.vizType.slice(1)}${
-              params.subType ? " · " : ""
-            }${
-              params.subType
-                ? `${params.subType
-                    .slice(0, 1)
-                    .toUpperCase()}${params.subType.slice(1)}`
-                : ""
-            }`,
-          },
+          { name: "Results" },
         ]}
-        // drilldowns={[
-        //   { name: "Dataset" },
-        //   { name: "Drill down level one" },
-        //   { name: "Drill down level two" },
-        // ]}
       />
+      <InformationPanel
+        open={openInfoPanel}
+        onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
+      >
+        <ResultsInfoContent {...sidePanelInfoData} />
+      </InformationPanel>
       <div css="width: 100%;height: 25px;" />
-      <Switch>
-        <Route path="/viz/budgets/flow">
-          <BudgetsFlowModule />
-        </Route>
-        <Route path="/viz/budgets/time-cycle">
-          <BudgetsTimeCycleModule />
-        </Route>
-        <Route path="/viz/investments/disbursements">
-          <InvestmentsDisbursedModule />
-        </Route>
-        <Route path="/viz/investments/time-cycle">
-          <InvestmentsTimeCycleModule />
-        </Route>
-        <Route path="/viz/allocations">
-          <AllocationsModule />
-        </Route>
-        <Route path="/viz/pledges-contributions/time-cycle">
-          <PledgesContributionsTimeCycleModule />
-        </Route>
-        <Route path="/viz/eligibility">
-          <EligibilityModule />
-        </Route>
-      </Switch>
+      <div
+        css={`
+          width: 100%;
+        `}
+      >
+        <Search />
+        <div css="width: 100%;height: 25px;" />
+        <ResultsList listitems={resultsmockitems} />
+      </div>
+      <div css="width: 100%;height: 25px;" />
     </div>
   );
 }

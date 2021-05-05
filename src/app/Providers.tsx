@@ -23,7 +23,11 @@ function Providers(props: ProviderProps) {
             maxWidth="lg"
             css={`
               height: 100%;
-              padding: 0 32px;
+              padding: 0 24px;
+
+              @media (max-width: 600px) {
+                padding: 0 16px;
+              }
             `}
           >
             {props.children}
