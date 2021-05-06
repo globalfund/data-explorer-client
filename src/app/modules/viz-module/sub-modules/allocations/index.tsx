@@ -14,9 +14,11 @@ import {
 
 export function AllocationsModule() {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const [keysPercentages, setKeysPercentages] = React.useState<number[]>(
-    getKeysPercentages(allocationmockdata.total, allocationmockdata.values)
-  );
+  const [selected, setSelected] = React.useState(null);
+  const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
+    percentages: number[];
+    colors: string[];
+  }>(getKeysPercentages(allocationmockdata.total, allocationmockdata.values));
 
   const options: ApexOptions = {
     plotOptions: {
@@ -32,8 +34,8 @@ export function AllocationsModule() {
         },
         track: {
           show: true,
-          background: "#f2f2f2",
-          strokeWidth: "5px",
+          strokeWidth: "1px",
+          background: "#262C34",
         },
         dataLabels: {
           name: {
@@ -46,7 +48,7 @@ export function AllocationsModule() {
             fontFamily: "GothamNarrow-Book",
             formatter: (value: number) => {
               const fkeyIndex = findIndex(
-                keysPercentages,
+                keysPercentagesColors.percentages,
                 (p: number) => p.toString() === value.toString()
               );
               if (fkeyIndex > -1) {
@@ -64,7 +66,7 @@ export function AllocationsModule() {
         },
       },
     },
-    colors: allocationmockdata.colors,
+    colors: keysPercentagesColors.colors,
     labels: allocationmockdata.keys,
     legend: {
       show: true,
@@ -99,9 +101,88 @@ export function AllocationsModule() {
     ],
   };
 
+  function onClick(this: Window, e: MouseEvent) {
+    // @ts-ignore
+    const key = e.target.parentNode.getAttribute("seriesName");
+    if (key) {
+      // @ts-ignore
+      const keySelected = e.target.getAttribute("selected");
+      if (keySelected === "true") {
+        setSelected(key);
+      } else {
+        setSelected(null);
+      }
+    } else {
+      setSelected(null);
+    }
+  }
+
+  React.useEffect(() => {
+    const items = document.getElementsByClassName("apexcharts-radial-series");
+    if (selected) {
+      [...items].forEach((item: Element) => {
+        const paths = item.getElementsByTagName("path");
+        if (paths.length > 0) {
+          if (item.getAttribute("seriesName") === selected) {
+            paths[0].style.stroke = "url(#diagonalHatch)";
+          } else {
+            paths[0].style.stroke = "";
+          }
+        }
+      });
+    } else {
+      [...items].forEach((item: Element) => {
+        const paths = item.getElementsByTagName("path");
+        if (paths.length > 0) {
+          paths[0].style.stroke = "";
+        }
+      });
+    }
+  }, [selected]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const viz = document.getElementById("allocations-radial-bar");
+      if (viz) {
+        const svgs = viz.getElementsByTagName("svg");
+        if (svgs.length > 1) {
+          const pathElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+          pathElement.setAttribute("stroke", "#FBAC1B");
+          pathElement.setAttribute("strokeWidth", "1");
+
+          const patternElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "pattern"
+          );
+          patternElement.setAttribute("id", "diagonalHatch");
+          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
+          patternElement.setAttribute("width", "4");
+          patternElement.setAttribute("height", "4");
+          patternElement.appendChild(pathElement);
+
+          const defsElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "defs"
+          );
+          defsElement.appendChild(patternElement);
+
+          svgs[1].appendChild(defsElement);
+        }
+      }
+    }, 1000);
+
+    window.addEventListener("click", onClick);
+    return () => window.removeEventListener("click", onClick);
+  }, []);
+
   return (
     <div
       ref={ref}
+      id="allocations-radial-bar"
       css={`
         width: 100%;
       `}
@@ -140,7 +221,7 @@ export function AllocationsModule() {
         height={580}
         type="radialBar"
         options={options}
-        series={keysPercentages}
+        series={keysPercentagesColors.percentages}
       />
       <div
         css={`
