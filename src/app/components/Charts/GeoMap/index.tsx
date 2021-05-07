@@ -1,4 +1,5 @@
 import React from "react";
+import { useHoverDirty } from "react-use";
 import { mapStyle, GeoMapProps } from "app/components/Charts/GeoMap/data";
 import MapGL, {
   LinearInterpolator,
@@ -7,10 +8,13 @@ import MapGL, {
   Layer,
   LayerProps,
 } from "react-map-gl";
+import { GeomapTooltip } from "./components/tooltip";
 // import WebMercatorViewport from "viewport-mercator-project";
 
 export function GeoMap(props: GeoMapProps) {
   const mapRef = React.useRef();
+  const containerRef = React.useRef<HTMLDivElement>();
+  const isHovering = useHoverDirty(containerRef as React.RefObject<Element>);
   const [viewport, setViewport] = React.useState({
     latitude: 0,
     longitude: 0,
@@ -57,12 +61,37 @@ export function GeoMap(props: GeoMapProps) {
       },
     },
   };
+  const [hoverInfo, setHoverInfo] = React.useState<any>(null);
+
+  const onHover = React.useCallback((event: any) => {
+    const {
+      features,
+      srcEvent: { pageX, pageY },
+    } = event;
+    const hoveredFeature = features && features[0];
+
+    setHoverInfo(
+      hoveredFeature &&
+        hoveredFeature.properties &&
+        hoveredFeature.properties.name
+        ? {
+            properties: {
+              ...hoveredFeature.properties,
+              data: JSON.parse(hoveredFeature.properties.data),
+            },
+            x: pageX,
+            y: pageY,
+          }
+        : null
+    );
+  }, []);
 
   return (
     <div
+      ref={containerRef as React.RefObject<HTMLDivElement>}
       css={`
         width: 100%;
-        height: calc(100vh - 158px);
+        height: calc(100vh - 244px);
       `}
     >
       <MapGL
@@ -70,6 +99,7 @@ export function GeoMap(props: GeoMapProps) {
         {...settings}
         width="100%"
         height="100%"
+        onHover={onHover}
         mapStyle={mapStyle}
         ref={(ref: MapRef) => {
           if (ref) mapRef.current = ref.getMap();
@@ -81,6 +111,22 @@ export function GeoMap(props: GeoMapProps) {
           <Layer {...layerStyle} />
         </Source>
       </MapGL>
+      {hoverInfo && isHovering && (
+        <div
+          css={`
+            z-index: 100;
+            width: 350px;
+            padding: 20px;
+            position: absolute;
+            background: #f5f5f7;
+            border-radius: 20px;
+            top: ${hoverInfo.y + 10}px;
+            left: ${hoverInfo.x - 180}px;
+          `}
+        >
+          <GeomapTooltip {...hoverInfo.properties} />
+        </div>
+      )}
     </div>
   );
 }

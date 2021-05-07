@@ -383,7 +383,7 @@ export const mapStyle = {
 export function getRandomCountryData(
   setter: (v: FeatureCollection) => void
 ): void {
-  fetch("/static/geo.json", {
+  fetch("/static/custom.geo.json", {
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
@@ -400,8 +400,34 @@ export function getRandomCountryData(
           properties: {
             ...item.properties,
             value: Math.random() * 13,
+            data: {
+              components: [
+                {
+                  name: "HIV",
+                  activitiesCount: 1,
+                  value: 1000000000,
+                },
+              ],
+              disbursed: 1000000000,
+              committed: 1000000000,
+              signed: 1000000000,
+            },
           },
         })),
       });
     });
+}
+
+export interface GeomapTooltipProps {
+  name: string;
+  data: {
+    components: {
+      name: string;
+      activitiesCount: number;
+      value: number;
+    }[];
+    disbursed: number;
+    committed: number;
+    signed: number;
+  };
 }
