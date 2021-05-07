@@ -7,6 +7,7 @@ import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
+import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
@@ -61,6 +62,9 @@ export default function VizModule() {
               </Link>,
               <Link to="/viz/investments/time-cycle">
                 <b>Finance</b>-Investments/Time-Cycle
+              </Link>,
+              <Link to="/viz/investments/geomap">
+                <b>Finance</b>-Investments/GeoMap
               </Link>,
               <Link to="/viz/budgets/flow">
                 <b>Finance</b>-Budgets Flow
@@ -121,6 +125,9 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/investments/time-cycle">
           <InvestmentsTimeCycleModule />
+        </Route>
+        <Route path="/viz/investments/geomap">
+          <InvestmentsGeoMap />
         </Route>
         <Route path="/viz/allocations">
           <AllocationsModule />
