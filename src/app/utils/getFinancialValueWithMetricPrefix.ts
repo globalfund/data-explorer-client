@@ -1,3 +1,5 @@
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+
 const ranges = [
   { divider: 1e9, suffix: "Bn", abbr: "billion" },
   { divider: 1e6, suffix: "MM", abbr: "million" },
@@ -17,4 +19,15 @@ export function getFinancialValueWithMetricPrefix(
     }
   }
   return n.toString();
+}
+
+export function formatLargeAmountsWithPrefix(n: number | bigint): string {
+  if (!n) return "";
+  if (Math.abs(Number(n)) >= 1.0e9) {
+    return `$${(Math.abs(Number(n)) / 1.0e9).toFixed(2)} bln`;
+  }
+  if (Math.abs(Number(n)) >= 1.0e6) {
+    return `$${(Math.abs(Number(n)) / 1.0e6).toFixed(2)} mln`;
+  }
+  return `$${formatFinancialValue(n).replace(" USD", "")}`;
 }
