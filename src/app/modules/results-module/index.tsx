@@ -13,10 +13,12 @@ import {
   resultsmockitems,
   sidePanelInfoData,
 } from "app/modules/results-module/data";
+import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -100,6 +102,12 @@ export default function ResultsModule() {
       >
         <ResultsInfoContent {...sidePanelInfoData} />
       </InformationPanel>
+      <ToolBoxPanel
+        open={openToolboxPanel}
+        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+      >
+        <div />
+      </ToolBoxPanel>
       <div css="width: 100%;height: 25px;" />
       <div
         css={`

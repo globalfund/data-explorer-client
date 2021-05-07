@@ -3,13 +3,23 @@ import React from "react";
 import Slide from "@material-ui/core/Slide";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
-interface InformationPanelProps {
+interface ToolBoxPanelProps {
   open: boolean;
   onButtonClick: () => void;
   children: React.ReactNode;
 }
 
-export function InformationPanel(props: InformationPanelProps) {
+export function ToolBoxPanel(props: ToolBoxPanelProps) {
+  const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
+    document.body.scrollHeight > document.body.clientHeight
+  );
+
+  React.useLayoutEffect(() => {
+    setVisibleVScrollbar(
+      document.body.scrollHeight > document.body.clientHeight
+    );
+  });
+
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -18,16 +28,16 @@ export function InformationPanel(props: InformationPanelProps) {
         }
       }}
     >
-      <Slide direction="right" in={props.open}>
+      <Slide direction="left" in={props.open}>
         <div
           css={`
-            left: 0;
-            top: 133px;
-            z-index: 2;
+            right: 0;
+            top: 48px;
+            z-index: 20;
             width: 500px;
             position: absolute;
             background: #f5f5f7;
-            height: calc(100vh - 133px);
+            height: calc(100vh - 48px);
             visibility: visible !important;
 
             @media (max-width: 500px) {
@@ -50,7 +60,6 @@ export function InformationPanel(props: InformationPanelProps) {
               css={`
                 top: 45%;
                 color: #fff;
-                right: -94px;
                 font-size: 14px;
                 cursor: pointer;
                 padding: 6px 40px;
@@ -59,11 +68,12 @@ export function InformationPanel(props: InformationPanelProps) {
                 text-align: center;
                 background: #495057;
                 transform: rotate(-90deg);
-                border-radius: 0px 0px 20px 20px;
+                border-radius: 20px 20px 0px 0px;
+                left: -${!visibleVScrollbar || props.open ? 82 : 97}px;
               `}
               onClick={() => props.onButtonClick()}
             >
-              Information
+              Toolbox
             </div>
             {props.children}
           </div>

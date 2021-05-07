@@ -12,9 +12,11 @@ import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budge
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 
 export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -139,6 +141,27 @@ export default function VizModule() {
           <EligibilityModule />
         </Route>
       </Switch>
+      <ToolBoxPanel
+        open={openToolboxPanel}
+        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+      >
+        <div />
+      </ToolBoxPanel>
+      <div
+        css={`
+          left: 0;
+          top: 48px;
+          z-index: 10;
+          width: 100vw;
+          position: absolute;
+          height: calc(100vh - 48px);
+          background: rgba(35, 35, 35, 0.5);
+          opacity: ${openToolboxPanel ? 1 : 0};
+          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
+            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
+        `}
+      />
     </div>
   );
 }
