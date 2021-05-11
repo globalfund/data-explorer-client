@@ -152,9 +152,9 @@ export default function VizModule() {
           left: 0;
           top: 48px;
           z-index: 10;
-          width: 100vw;
-          position: absolute;
-          height: calc(100vh - 48px);
+          width: 100%;
+          height: 100%;
+          position: fixed;
           background: rgba(35, 35, 35, 0.5);
           opacity: ${openToolboxPanel ? 1 : 0};
           visibility: ${openToolboxPanel ? "visible" : "hidden"};

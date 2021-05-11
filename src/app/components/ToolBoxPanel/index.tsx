@@ -35,7 +35,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             top: 48px;
             z-index: 20;
             width: 500px;
-            position: absolute;
+            position: fixed;
             background: #f5f5f7;
             height: calc(100vh - 48px);
             visibility: visible !important;

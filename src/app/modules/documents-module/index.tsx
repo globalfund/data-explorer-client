@@ -4,13 +4,15 @@ import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { Search } from "app/modules/grants-module/components/Search";
 import { ExpandableTable } from "app/components/Table/Expandable";
 import { docsmockdata } from "app/components/Table/Expandable/data";
+import { Search } from "app/modules/grants-module/components/Search";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -88,6 +90,12 @@ export default function DocumentsModule() {
           { name: "Documents" },
         ]}
       />
+      <ToolBoxPanel
+        open={openToolboxPanel}
+        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+      >
+        <div />
+      </ToolBoxPanel>
       <div css="width: 100%;height: 25px;" />
       <div
         css={`
@@ -102,6 +110,21 @@ export default function DocumentsModule() {
         />
       </div>
       <div css="width: 100%;height: 25px;" />
+      <div
+        css={`
+          left: 0;
+          top: 48px;
+          z-index: 10;
+          width: 100%;
+          height: 100%;
+          position: fixed;
+          background: rgba(35, 35, 35, 0.5);
+          opacity: ${openToolboxPanel ? 1 : 0};
+          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
+            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
+        `}
+      />
     </div>
   );
 }

@@ -119,6 +119,21 @@ export default function ResultsModule() {
         <ResultsList listitems={resultsmockitems} />
       </div>
       <div css="width: 100%;height: 25px;" />
+      <div
+        css={`
+          left: 0;
+          top: 48px;
+          z-index: 10;
+          width: 100%;
+          height: 100%;
+          position: fixed;
+          background: rgba(35, 35, 35, 0.5);
+          opacity: ${openToolboxPanel ? 1 : 0};
+          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
+            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
+        `}
+      />
     </div>
   );
 }

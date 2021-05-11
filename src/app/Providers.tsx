@@ -22,8 +22,8 @@ function Providers(props: ProviderProps) {
           <Container
             maxWidth="lg"
             css={`
-              height: 100%;
               padding: 0 24px;
+              min-height: calc(100vh - 48px);
 
               @media (max-width: 600px) {
                 padding: 0 16px;

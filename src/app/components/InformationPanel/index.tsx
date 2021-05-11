@@ -25,9 +25,9 @@ export function InformationPanel(props: InformationPanelProps) {
             top: 133px;
             z-index: 2;
             width: 500px;
-            position: absolute;
+            position: fixed;
             background: #f5f5f7;
-            height: calc(100vh - 133px);
+            height: calc(100% - 133px);
             visibility: visible !important;
 
             @media (max-width: 500px) {
