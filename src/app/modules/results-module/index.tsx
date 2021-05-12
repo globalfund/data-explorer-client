@@ -105,9 +105,7 @@ export default function ResultsModule() {
       <ToolBoxPanel
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
-      >
-        <div />
-      </ToolBoxPanel>
+      />
       <div css="width: 100%;height: 25px;" />
       <div
         css={`

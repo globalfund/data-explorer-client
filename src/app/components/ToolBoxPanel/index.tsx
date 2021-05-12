@@ -1,24 +1,59 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
+import find from "lodash/find";
 import Slide from "@material-ui/core/Slide";
+import { useParams, useHistory } from "react-router-dom";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { ToolBoxPanelTabs } from "app/components/ToolBoxPanel/components/tabs";
+import {
+  getControlItems,
+  ViewModel,
+} from "app/components/ToolBoxPanel/utils/getControlItems";
+import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
+import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
+import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
 
 interface ToolBoxPanelProps {
   open: boolean;
   onButtonClick: () => void;
-  children: React.ReactNode;
 }
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
+  const history = useHistory();
+  const params = useParams<{ vizType: string; subType?: string }>();
+  const [selectedView, setSelectedView] = React.useState("");
+  const [selectedTab, setSelectedTab] = React.useState("Control");
+  const [selectedAggregation, setSelectedAggregation] = React.useState("");
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );
+  const [controlItems, setControlItems] = React.useState<{
+    views: ViewModel[];
+    aggregates: ViewModel[];
+  }>(getControlItems(params.vizType));
+  const [geomapView, setGeomapView] = React.useState("countries");
+
+  function getSelectedView() {
+    const view = find(controlItems.views, { link: history.location.pathname });
+    if (view) {
+      return view.value;
+    }
+    return "";
+  }
 
   React.useLayoutEffect(() => {
     setVisibleVScrollbar(
       document.body.scrollHeight > document.body.clientHeight
     );
   });
+
+  React.useEffect(() => setControlItems(getControlItems(params.vizType)), [
+    params.vizType,
+  ]);
+
+  React.useEffect(() => setSelectedView(getSelectedView()), [
+    controlItems.views,
+  ]);
 
   return (
     <ClickAwayListener
@@ -39,6 +74,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             background: #f5f5f7;
             height: calc(100vh - 48px);
             visibility: visible !important;
+            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
             @media (max-width: 500px) {
               width: calc(100vw - 50px);
@@ -75,7 +111,39 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             >
               Toolbox
             </div>
-            {props.children}
+            <ToolBoxPanelTabs
+              selected={selectedTab}
+              onSelect={setSelectedTab}
+            />
+            {selectedTab === "Control" && (
+              <React.Fragment>
+                <ToolBoxPanelIconButtons />
+                {controlItems.views.length > 0 && (
+                  <ToolBoxPanelControlRow
+                    title="Views"
+                    selected={selectedView}
+                    options={controlItems.views}
+                    setSelected={setSelectedView}
+                  />
+                )}
+                {controlItems.aggregates.length > 0 && (
+                  <ToolBoxPanelControlRow
+                    title="Aggregate by"
+                    selected={selectedAggregation}
+                    options={controlItems.aggregates}
+                    setSelected={setSelectedAggregation}
+                  />
+                )}
+                {params.vizType === "investments" &&
+                  params.subType === "geomap" && (
+                    <ToolBoxPanelGeoMapViews
+                      title="Views"
+                      selected={geomapView}
+                      setSelected={setGeomapView}
+                    />
+                  )}
+              </React.Fragment>
+            )}
           </div>
         </div>
       </Slide>

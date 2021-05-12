@@ -144,9 +144,7 @@ export default function VizModule() {
       <ToolBoxPanel
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
-      >
-        <div />
-      </ToolBoxPanel>
+      />
       <div
         css={`
           left: 0;
