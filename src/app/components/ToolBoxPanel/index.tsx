@@ -12,11 +12,35 @@ import {
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
 import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
 import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
+import { ToolBoxPanelFilters } from "./components/filters";
 
 interface ToolBoxPanelProps {
   open: boolean;
   onButtonClick: () => void;
 }
+
+const filtergroups = [
+  {
+    name: "Period",
+    selectedOptions: [],
+  },
+  {
+    name: "Grant Status",
+    selectedOptions: [],
+  },
+  {
+    name: "Components",
+    selectedOptions: [],
+  },
+  {
+    name: "Partners",
+    selectedOptions: [],
+  },
+  {
+    name: "Locations",
+    selectedOptions: [],
+  },
+];
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
@@ -45,7 +69,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     setVisibleVScrollbar(
       document.body.scrollHeight > document.body.clientHeight
     );
-  });
+  }, []);
+
+  React.useEffect(() => {
+    setVisibleVScrollbar(
+      document.body.scrollHeight > document.body.clientHeight
+    );
+  }, [history.location.pathname]);
 
   React.useEffect(() => setControlItems(getControlItems(params.vizType)), [
     params.vizType,
@@ -53,6 +83,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
 
   React.useEffect(() => setSelectedView(getSelectedView()), [
     controlItems.views,
+    history.location.pathname,
   ]);
 
   return (
@@ -105,11 +136,23 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 background: #495057;
                 transform: rotate(-90deg);
                 border-radius: 20px 20px 0px 0px;
-                left: -${!visibleVScrollbar || props.open ? 82 : 97}px;
+                left: -${!visibleVScrollbar || props.open ? 84 : 88}px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
               onClick={() => props.onButtonClick()}
             >
               Toolbox
+              {/* <div
+                css={`
+                  top: 8px;
+                  width: 6px;
+                  height: 6px;
+                  right: 30px;
+                  background: #fff;
+                  border-radius: 50%;
+                  position: absolute;
+                `}
+              /> */}
             </div>
             <ToolBoxPanelTabs
               selected={selectedTab}
@@ -143,6 +186,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     />
                   )}
               </React.Fragment>
+            )}
+            {selectedTab === "Filters" && (
+              <ToolBoxPanelFilters groups={filtergroups} />
             )}
           </div>
         </div>

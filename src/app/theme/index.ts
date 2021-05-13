@@ -210,6 +210,11 @@ export default createMuiTheme({
         boxShadow: "0 1px 2px 0 rgba(0, 0, 0, 0.1)",
       },
     },
+    MuiFormControlLabel: {
+      label: {
+        fontSize: 12,
+      },
+    },
   },
   breakpoints: {
     keys: ["xs", "sm", "md", "lg", "xl"],
