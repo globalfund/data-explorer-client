@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
-import { ResponsiveTreeMapHtml } from "@nivo/treemap";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { ResponsiveTreeMapHtml, TreeMapNodeDatum } from "@nivo/treemap";
 /* project */
 import { DisbursementsTreemapProps } from "app/components/Charts/Investments/Disbursements/data";
 import { TreemapTooltip } from "app/components/Charts/Investments/Disbursements/components/tooltip";
@@ -36,7 +36,14 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
         innerPadding={2}
         labelSkipSize={12}
         // @ts-ignore
-        nodeComponent={TreeemapNode}
+        nodeComponent={(nodeProps: TreeMapNodeDatum) => (
+          <TreeemapNode
+            {...nodeProps}
+            onNodeClick={props.onNodeClick}
+            selectedNodeId={props.selectedNodeId}
+            isChildTreemap={props.isChildTreemap}
+          />
+        )}
         // @ts-ignore
         tooltip={TreemapTooltip}
         colors={(node: any) => node.data.color}

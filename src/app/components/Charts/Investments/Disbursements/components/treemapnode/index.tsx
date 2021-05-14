@@ -1,10 +1,11 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import useFitText from "use-fit-text";
 import { css } from "styled-components/macro";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { DisbursementsTreemap } from "../..";
 
-const containercss = (hover: boolean) => css`
+const containercss = (hover: boolean, selected: boolean) => css`
   display: flex;
   overflow: hidden;
   position: absolute;
@@ -12,6 +13,16 @@ const containercss = (hover: boolean) => css`
   box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
+
+  ${selected
+    ? `
+  background: repeating-linear-gradient(45deg, #FBAC1B 0 5px, #fff 5px 10px) !important;
+
+  > div {
+    background: rgba(255, 255, 255, 0.8);
+  }
+  `
+    : ""}
 
   ${hover
     ? `&:hover {
@@ -42,7 +53,7 @@ export function TreeemapNode(props: any) {
       aria-label={node.data.name}
       ref={ref}
       style={{
-        fontSize,
+        fontSize: props.selectedNodeId ? 12 : fontSize,
         top: node.y,
         left: node.x,
         color: "#262C34",
@@ -51,11 +62,15 @@ export function TreeemapNode(props: any) {
         background: node.data.color,
         cursor: node.data.orgs ? "pointer" : "default",
       }}
-      css={containercss(!hasChildren)}
+      css={containercss(!hasChildren, props.selectedNodeId === node.id)}
       onMouseMove={!hasChildren ? node.onMouseMove : undefined}
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
       onMouseLeave={!hasChildren ? node.onMouseLeave : undefined}
-      //   onClick={node.onClick}
+      onClick={() => {
+        if (props.isChildTreemap) {
+          props.onNodeClick(node.id, node.x, node.y);
+        }
+      }}
       //   onKeyPress={node.onClick}
       //   onFocus={node.onMouseEnter}
     >
@@ -91,7 +106,12 @@ export function TreeemapNode(props: any) {
             }
           `}
         >
-          <DisbursementsTreemap data={node.data._children} />
+          <DisbursementsTreemap
+            isChildTreemap
+            data={node.data._children}
+            onNodeClick={props.onNodeClick}
+            selectedNodeId={props.selectedNodeId}
+          />
         </div>
       )}
     </div>

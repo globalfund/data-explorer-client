@@ -23,7 +23,10 @@ export interface DisbursementsTreemapDataItem {
 }
 
 export interface DisbursementsTreemapProps {
+  selectedNodeId?: string;
+  isChildTreemap?: boolean;
   data: DisbursementsTreemapDataItem[];
+  onNodeClick: (node: string, x: number, y: number) => void;
 }
 
 export interface TreemapTooltipProps {

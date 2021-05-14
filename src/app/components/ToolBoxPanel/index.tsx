@@ -105,7 +105,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             background: #f5f5f7;
             height: calc(100vh - 48px);
             visibility: visible !important;
-            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
             @media (max-width: 500px) {
               width: calc(100vw - 50px);

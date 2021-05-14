@@ -77,6 +77,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (
           <div
+            key={stat.name}
             css={`
               width: 100%;
               display: flex;
