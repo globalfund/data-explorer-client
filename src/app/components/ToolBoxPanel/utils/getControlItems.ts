@@ -70,11 +70,25 @@ const aggregates = {
 };
 
 export function getControlItems(
-  vizType: string
+  vizType: string,
+  pathname: string,
+  detailPageCode?: string
 ): {
   views: ViewModel[];
   aggregates: ViewModel[];
 } {
+  if (detailPageCode) {
+    const detailPageParam = pathname.split("/")[1];
+    return {
+      views: get(views, vizType, []).map((view: ViewModel) => ({
+        ...view,
+        link: view.link
+          ? view.link.replace("viz", `${detailPageParam}/${detailPageCode}`)
+          : view.link,
+      })),
+      aggregates: get(aggregates, vizType, []),
+    };
+  }
   return {
     views: get(views, vizType, []),
     aggregates: get(aggregates, vizType, []),

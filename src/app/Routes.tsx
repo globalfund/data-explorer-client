@@ -4,6 +4,7 @@ import React, { Suspense, lazy } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
+import { CountryDetail } from "./modules/country-detail-module";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -43,6 +44,10 @@ export function MainRoutes() {
 
         <Route exact path="/viz/:vizType/:subType?">
           <VizModule />
+        </Route>
+
+        <Route exact path="/location/:code/:vizType/:subType?">
+          <CountryDetail />
         </Route>
 
         <Route exact path="/viz">

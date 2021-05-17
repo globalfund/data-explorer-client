@@ -44,7 +44,11 @@ const filtergroups = [
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
-  const params = useParams<{ vizType: string; subType?: string }>();
+  const params = useParams<{
+    code?: string;
+    vizType: string;
+    subType?: string;
+  }>();
   const [selectedView, setSelectedView] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState("Control");
   const [selectedAggregation, setSelectedAggregation] = React.useState("");
@@ -54,11 +58,21 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const [controlItems, setControlItems] = React.useState<{
     views: ViewModel[];
     aggregates: ViewModel[];
-  }>(getControlItems(params.vizType));
+  }>(getControlItems(params.vizType, history.location.pathname, params.code));
   const [geomapView, setGeomapView] = React.useState("countries");
 
   function getSelectedView() {
-    const view = find(controlItems.views, { link: history.location.pathname });
+    let view: ViewModel | undefined;
+    if (params.code) {
+      view = find(
+        controlItems.views,
+        (v: ViewModel) =>
+          v.link?.replace("viz", `location/${params.code}`) ===
+          history.location.pathname
+      );
+    } else {
+      view = find(controlItems.views, { link: history.location.pathname });
+    }
     if (view) {
       return view.value;
     }
@@ -77,9 +91,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     );
   }, [history.location.pathname]);
 
-  React.useEffect(() => setControlItems(getControlItems(params.vizType)), [
-    params.vizType,
-  ]);
+  React.useEffect(
+    () =>
+      setControlItems(
+        getControlItems(params.vizType, history.location.pathname, params.code)
+      ),
+    [params.vizType]
+  );
 
   React.useEffect(() => setSelectedView(getSelectedView()), [
     controlItems.views,

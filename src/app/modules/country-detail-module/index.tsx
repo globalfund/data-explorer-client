@@ -1,21 +1,25 @@
 /* third-party */
 import React from "react";
-import { Link, Switch, Route, useParams } from "react-router-dom";
+import { Link, Switch, Route, useParams, Redirect } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { DocumentsSubModule } from "app/modules/common/documents";
+import { InformationPanel } from "app/components/InformationPanel";
+import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
+import { LocationInfoContent } from "app/modules/country-detail-module/components/InfoContent";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
-import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 
-export default function VizModule() {
-  const params = useParams<{ vizType: string; subType?: string }>();
+export function CountryDetail() {
+  const params = useParams<{ code: string; vizType: string }>();
+  const [openInfoPanel, setOpenInfoPanel] = React.useState(false);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   React.useEffect(() => {
@@ -34,7 +38,7 @@ export default function VizModule() {
       `}
     >
       <PageHeader
-        title="Finance"
+        title={params.code}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -95,52 +99,56 @@ export default function VizModule() {
             ],
           },
           {
-            name: `${params.vizType
-              .slice(0, 1)
-              .toUpperCase()}${params.vizType.slice(1)}${
-              params.subType ? " · " : ""
-            }${
-              params.subType
-                ? `${params.subType
-                    .slice(0, 1)
-                    .toUpperCase()}${params.subType.slice(1)}`
-                : ""
-            }`,
+            name: params.code,
           },
         ]}
-        // drilldowns={[
-        //   { name: "Dataset" },
-        //   { name: "Drill down level one" },
-        //   { name: "Drill down level two" },
-        // ]}
+        tabs={countryDetailTabs}
       />
       <div css="width: 100%;height: 25px;" />
       <Switch>
-        <Route path="/viz/budgets/flow">
+        <Route exact path={`/location/${params.code}/investments`}>
+          <Redirect to={`/location/${params.code}/investments/disbursements`} />
+        </Route>
+        <Route path={`/location/${params.code}/budgets/flow`}>
           <BudgetsFlowModule />
         </Route>
-        <Route path="/viz/budgets/time-cycle">
+        <Route path={`/location/${params.code}/budgets/time-cycle`}>
           <BudgetsTimeCycleModule />
         </Route>
-        <Route path="/viz/investments/disbursements">
+        <Route path={`/location/${params.code}/investments/disbursements`}>
           <InvestmentsDisbursedModule />
         </Route>
-        <Route path="/viz/investments/time-cycle">
+        <Route path={`/location/${params.code}/investments/time-cycle`}>
           <InvestmentsTimeCycleModule />
         </Route>
-        <Route path="/viz/investments/geomap">
+        <Route path={`/location/${params.code}/investments/geomap`}>
           <InvestmentsGeoMap />
         </Route>
-        <Route path="/viz/allocations">
+        <Route path={`/location/${params.code}/allocation`}>
           <AllocationsModule />
         </Route>
-        <Route path="/viz/pledges-contributions/time-cycle">
-          <PledgesContributionsTimeCycleModule />
-        </Route>
-        <Route path="/viz/eligibility">
+        <Route path={`/location/${params.code}/eligibility`}>
           <EligibilityModule />
         </Route>
+        <Route path={`/location/${params.code}/documents`}>
+          <DocumentsSubModule />
+        </Route>
       </Switch>
+      <InformationPanel
+        open={openInfoPanel}
+        onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
+      >
+        <LocationInfoContent
+          title={params.code}
+          code={params.code}
+          investments={{ disbursed: 0, committed: 0, signed: 0 }}
+          multicountries={[{ name: "MC A", code: "MC_A" }]}
+          manager={{
+            name: "Manager A",
+            email: "manager@mca.org",
+          }}
+        />
+      </InformationPanel>
       <ToolBoxPanel
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}

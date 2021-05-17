@@ -7,9 +7,15 @@ import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import {
+  countryDetailTabs,
+  TabProps,
+} from "app/components/PageHeader/components/tabs/data";
+import { PageHeaderTabs } from "./components/tabs";
 
 interface PageHeaderProps {
   title: string;
+  tabs?: TabProps[];
   drilldowns?: DrilldownModel[];
   breadcrumbs: BreadcrumbModel[];
 }
@@ -66,6 +72,7 @@ const styles = {
   `,
   innercontainer: css`
     display: flex;
+    position: relative;
     flex-direction: column;
   `,
   title: css`
@@ -196,6 +203,9 @@ export function PageHeader(props: PageHeaderProps) {
               </div>
             ))}
           </div>
+        )}
+        {props.tabs && props.tabs.length > 0 && (
+          <PageHeaderTabs tabs={countryDetailTabs} />
         )}
       </Container>
     </div>
