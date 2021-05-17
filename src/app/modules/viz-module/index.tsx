@@ -13,6 +13,7 @@ import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/i
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { GrantsViz } from "app/components/Charts/Grants";
 
 export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
@@ -139,6 +140,10 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/eligibility">
           <EligibilityModule />
+        </Route>
+        <Route path="/viz/grants">
+          <div css="width: 100%;height: 100px;" />
+          <GrantsViz />
         </Route>
       </Switch>
       <ToolBoxPanel
