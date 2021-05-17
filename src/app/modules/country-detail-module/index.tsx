@@ -16,6 +16,7 @@ import { LocationInfoContent } from "app/modules/country-detail-module/component
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { ScatterPlot } from "app/components/Charts/Eligibility/Scatterplot";
 
 export function CountryDetail() {
   const params = useParams<{ code: string; vizType: string }>();
@@ -128,7 +129,7 @@ export function CountryDetail() {
           <AllocationsModule />
         </Route>
         <Route path={`/location/${params.code}/eligibility`}>
-          <EligibilityModule />
+          <ScatterPlot />
         </Route>
         <Route path={`/location/${params.code}/documents`}>
           <DocumentsSubModule />
