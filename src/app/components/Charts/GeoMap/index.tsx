@@ -91,7 +91,11 @@ export function GeoMap(props: GeoMapProps) {
   const onClick = React.useCallback((event: any) => {
     const { features } = event;
     const hoveredFeature = features && features[0];
-    if (hoveredFeature) {
+    if (
+      hoveredFeature &&
+      hoveredFeature.properties &&
+      hoveredFeature.properties.iso_a3
+    ) {
       history.push(`/location/${hoveredFeature.properties.iso_a3}/investments`);
     }
   }, []);
