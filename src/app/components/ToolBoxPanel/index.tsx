@@ -13,6 +13,7 @@ import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/
 import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
 import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
 import { ToolBoxPanelFilters } from "./components/filters";
+import { ToolBoxPanelEligibilityAdvanced } from "./components/eligibilityadvanced";
 
 interface ToolBoxPanelProps {
   open: boolean;
@@ -202,6 +203,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                       setSelected={setGeomapView}
                     />
                   )}
+                {params.code && params.vizType === "eligibility" && (
+                  <ToolBoxPanelEligibilityAdvanced />
+                )}
               </React.Fragment>
             )}
             {selectedTab === "Filters" && (

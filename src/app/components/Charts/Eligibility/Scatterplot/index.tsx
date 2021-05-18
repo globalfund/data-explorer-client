@@ -2,6 +2,7 @@ import React from "react";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
+import { useStoreState } from "app/state/store/hooks";
 import { ResponsiveScatterPlot, Value } from "@nivo/scatterplot";
 import {
   mockdata,
@@ -36,6 +37,9 @@ export function ScatterPlot() {
   const [hoveredLegend, setHoveredLegend] = React.useState<
     "Eligible" | "Not Eligible" | "Transition Funding" | null
   >(null);
+  const showExtraData = useStoreState(
+    (state) => state.ToolBoxPanelEligibilityAdvancedCheckboxState.value
+  );
 
   const Nodes = (nProps: any) => {
     return filter(
@@ -50,6 +54,7 @@ export function ScatterPlot() {
           data={node.data}
           hovered={hoveredNode}
           onHover={setHoveredNode}
+          showExtraData={showExtraData}
         />
       );
     });
@@ -180,186 +185,7 @@ export function ScatterPlot() {
               Transition Funding
             </div>
           </div>
-          <div
-            css={`
-              font-size: 14px;
-            `}
-          >
-            <div
-              css={`
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 5px;
-              `}
-            >
-              Disease Burden
-            </div>
-            <div
-              css={`
-                display: flex;
-                position: relative;
-                margin-bottom: 40px;
-                justify-content: center;
-                width: ${backCircleRadius[6]}px;
-                height: ${backCircleRadius[6]}px;
-
-                > span {
-                  bottom: 0;
-                  position: absolute;
-                  border-radius: 50%;
-                  border: 1px solid #262c34;
-
-                  &:nth-of-type(1) {
-                    width: ${backCircleRadius[6]}px;
-                    height: ${backCircleRadius[6]}px;
-
-                    &:after {
-                      right: -70px;
-                      content: "Extreme";
-                      position: absolute;
-                    }
-                    &:before {
-                      top: 12px;
-                      content: "";
-                      width: 35px;
-                      height: 1px;
-                      opacity: 0.2;
-                      right: -15px;
-                      position: absolute;
-                      background: #262c34;
-                    }
-                  }
-                  &:nth-of-type(2) {
-                    width: ${backCircleRadius[5]}px;
-                    height: ${backCircleRadius[5]}px;
-
-                    &:after {
-                      right: -68px;
-                      content: "Severe";
-                      position: absolute;
-                    }
-                    &:before {
-                      top: 12px;
-                      content: "";
-                      width: 37px;
-                      height: 1px;
-                      opacity: 0.2;
-                      right: -22px;
-                      position: absolute;
-                      background: #262c34;
-                    }
-                  }
-                  &:nth-of-type(3) {
-                    width: ${backCircleRadius[4]}px;
-                    height: ${backCircleRadius[4]}px;
-
-                    &:after {
-                      right: -63px;
-                      content: "High";
-                      position: absolute;
-                    }
-                    &:before {
-                      top: 12px;
-                      content: "";
-                      width: 40px;
-                      height: 1px;
-                      opacity: 0.2;
-                      right: -29px;
-                      position: absolute;
-                      background: #262c34;
-                    }
-                  }
-                  &:nth-of-type(4) {
-                    width: ${backCircleRadius[3]}px;
-                    height: ${backCircleRadius[3]}px;
-
-                    &:after {
-                      right: -96px;
-                      content: "Not High";
-                      position: absolute;
-                    }
-                    &:before {
-                      top: 12px;
-                      content: "";
-                      width: 44px;
-                      height: 1px;
-                      opacity: 0.2;
-                      right: -37px;
-                      position: absolute;
-                      background: #262c34;
-                    }
-                  }
-                  &:nth-of-type(5) {
-                    width: ${backCircleRadius[2]}px;
-                    height: ${backCircleRadius[2]}px;
-
-                    &:after {
-                      right: -106px;
-                      content: "Moderate";
-                      position: absolute;
-                    }
-                    &:before {
-                      top: 12px;
-                      content: "";
-                      width: 47px;
-                      height: 1px;
-                      opacity: 0.2;
-                      right: -44px;
-                      position: absolute;
-                      background: #262c34;
-                    }
-                  }
-                  &:nth-of-type(6) {
-                    width: ${backCircleRadius[1]}px;
-                    height: ${backCircleRadius[1]}px;
-
-                    &:after {
-                      right: -81px;
-                      content: "Low";
-                      position: absolute;
-                    }
-                    &:before {
-                      top: 12px;
-                      content: "";
-                      width: 53px;
-                      height: 1px;
-                      opacity: 0.2;
-                      right: -52px;
-                      position: absolute;
-                      background: #262c34;
-                    }
-                  }
-                  &:nth-of-type(7) {
-                    width: ${backCircleRadius[0]}px;
-                    height: ${backCircleRadius[0]}px;
-
-                    &:after {
-                      right: -95px;
-                      content: "None";
-                      position: absolute;
-                    }
-                    &:before {
-                      top: 12px;
-                      content: "";
-                      width: 58px;
-                      height: 1px;
-                      opacity: 0.2;
-                      right: -59px;
-                      position: absolute;
-                      background: #262c34;
-                    }
-                  }
-                }
-              `}
-            >
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-            </div>
+          {showExtraData && (
             <div
               css={`
                 font-size: 14px;
@@ -372,70 +198,161 @@ export function ScatterPlot() {
                   margin-bottom: 5px;
                 `}
               >
-                Income Level
+                Disease Burden
               </div>
               <div
                 css={`
-                  width: 100%;
-                  height: 6px;
                   display: flex;
-                  flex-direction: row;
-                  justify-content: space-between;
+                  position: relative;
+                  margin-bottom: 40px;
+                  justify-content: center;
+                  width: ${backCircleRadius[6]}px;
+                  height: ${backCircleRadius[6]}px;
 
                   > span {
-                    position: relative;
-                    width: calc(100% / 6);
+                    bottom: 0;
+                    position: absolute;
+                    border-radius: 50%;
+                    border: 1px solid #262c34;
 
                     &:nth-of-type(1) {
-                      border: 0.5px solid #262c34;
-                      border-radius: 20px 0 0 20px;
+                      width: ${backCircleRadius[6]}px;
+                      height: ${backCircleRadius[6]}px;
 
                       &:after {
-                        bottom: -45px;
-                        content: "None";
+                        right: -70px;
+                        content: "Extreme";
                         position: absolute;
-                        display: inline-block;
-                        transform: rotate(90deg);
+                      }
+                      &:before {
+                        top: 12px;
+                        content: "";
+                        width: 35px;
+                        height: 1px;
+                        opacity: 0.2;
+                        right: -15px;
+                        position: absolute;
+                        background: #262c34;
                       }
                     }
                     &:nth-of-type(2) {
-                      background: #70777e;
-                      border: 0.5px solid #262c34;
+                      width: ${backCircleRadius[5]}px;
+                      height: ${backCircleRadius[5]}px;
 
                       &:after {
-                        bottom: -45px;
-                        content: "Low";
+                        right: -68px;
+                        content: "Severe";
                         position: absolute;
-                        display: inline-block;
-                        transform: rotate(90deg);
+                      }
+                      &:before {
+                        top: 12px;
+                        content: "";
+                        width: 37px;
+                        height: 1px;
+                        opacity: 0.2;
+                        right: -22px;
+                        position: absolute;
+                        background: #262c34;
                       }
                     }
                     &:nth-of-type(3) {
-                      background: #98a1aa;
-                      border: 0.5px solid #495057;
-                    }
-                    &:nth-of-type(4) {
-                      background: #c7cdd1;
-                      border: 0.5px solid #868e96;
-                    }
-                    &:nth-of-type(5) {
-                      background: #dfe3e6;
-                      border: 0.5px solid #adb5bd;
-                    }
-                    &:nth-of-type(6) {
-                      background: #f5f5f7;
-                      border: 0.5px solid #dfe3e6;
-                    }
-                    &:nth-of-type(7) {
-                      border: 0.5px solid #dfe3e6;
-                      border-radius: 0 20px 20px 0;
+                      width: ${backCircleRadius[4]}px;
+                      height: ${backCircleRadius[4]}px;
 
                       &:after {
-                        bottom: -45px;
+                        right: -63px;
                         content: "High";
                         position: absolute;
-                        display: inline-block;
-                        transform: rotate(90deg);
+                      }
+                      &:before {
+                        top: 12px;
+                        content: "";
+                        width: 40px;
+                        height: 1px;
+                        opacity: 0.2;
+                        right: -29px;
+                        position: absolute;
+                        background: #262c34;
+                      }
+                    }
+                    &:nth-of-type(4) {
+                      width: ${backCircleRadius[3]}px;
+                      height: ${backCircleRadius[3]}px;
+
+                      &:after {
+                        right: -96px;
+                        content: "Not High";
+                        position: absolute;
+                      }
+                      &:before {
+                        top: 12px;
+                        content: "";
+                        width: 44px;
+                        height: 1px;
+                        opacity: 0.2;
+                        right: -37px;
+                        position: absolute;
+                        background: #262c34;
+                      }
+                    }
+                    &:nth-of-type(5) {
+                      width: ${backCircleRadius[2]}px;
+                      height: ${backCircleRadius[2]}px;
+
+                      &:after {
+                        right: -106px;
+                        content: "Moderate";
+                        position: absolute;
+                      }
+                      &:before {
+                        top: 12px;
+                        content: "";
+                        width: 47px;
+                        height: 1px;
+                        opacity: 0.2;
+                        right: -44px;
+                        position: absolute;
+                        background: #262c34;
+                      }
+                    }
+                    &:nth-of-type(6) {
+                      width: ${backCircleRadius[1]}px;
+                      height: ${backCircleRadius[1]}px;
+
+                      &:after {
+                        right: -81px;
+                        content: "Low";
+                        position: absolute;
+                      }
+                      &:before {
+                        top: 12px;
+                        content: "";
+                        width: 53px;
+                        height: 1px;
+                        opacity: 0.2;
+                        right: -52px;
+                        position: absolute;
+                        background: #262c34;
+                      }
+                    }
+                    &:nth-of-type(7) {
+                      width: ${backCircleRadius[0]}px;
+                      height: ${backCircleRadius[0]}px;
+
+                      &:after {
+                        right: -95px;
+                        content: "None";
+                        position: absolute;
+                      }
+                      &:before {
+                        top: 12px;
+                        content: "";
+                        width: 58px;
+                        height: 1px;
+                        opacity: 0.2;
+                        right: -59px;
+                        position: absolute;
+                        background: #262c34;
                       }
                     }
                   }
@@ -449,8 +366,98 @@ export function ScatterPlot() {
                 <span />
                 <span />
               </div>
+              <div
+                css={`
+                  font-size: 14px;
+                `}
+              >
+                <div
+                  css={`
+                    font-size: 14px;
+                    font-weight: bold;
+                    margin-bottom: 5px;
+                  `}
+                >
+                  Income Level
+                </div>
+                <div
+                  css={`
+                    width: 100%;
+                    height: 6px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+                    > span {
+                      position: relative;
+                      width: calc(100% / 6);
+
+                      &:nth-of-type(1) {
+                        border: 0.5px solid #262c34;
+                        border-radius: 20px 0 0 20px;
+
+                        &:after {
+                          bottom: -45px;
+                          content: "None";
+                          position: absolute;
+                          display: inline-block;
+                          transform: rotate(90deg);
+                        }
+                      }
+                      &:nth-of-type(2) {
+                        background: #70777e;
+                        border: 0.5px solid #262c34;
+
+                        &:after {
+                          bottom: -45px;
+                          content: "Low";
+                          position: absolute;
+                          display: inline-block;
+                          transform: rotate(90deg);
+                        }
+                      }
+                      &:nth-of-type(3) {
+                        background: #98a1aa;
+                        border: 0.5px solid #495057;
+                      }
+                      &:nth-of-type(4) {
+                        background: #c7cdd1;
+                        border: 0.5px solid #868e96;
+                      }
+                      &:nth-of-type(5) {
+                        background: #dfe3e6;
+                        border: 0.5px solid #adb5bd;
+                      }
+                      &:nth-of-type(6) {
+                        background: #f5f5f7;
+                        border: 0.5px solid #dfe3e6;
+                      }
+                      &:nth-of-type(7) {
+                        border: 0.5px solid #dfe3e6;
+                        border-radius: 0 20px 20px 0;
+
+                        &:after {
+                          bottom: -45px;
+                          content: "High";
+                          position: absolute;
+                          display: inline-block;
+                          transform: rotate(90deg);
+                        }
+                      }
+                    }
+                  `}
+                >
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
+              </div>
             </div>
-          </div>
+          )}
         </Grid>
         <Grid item xs={12} md={10}>
           <div

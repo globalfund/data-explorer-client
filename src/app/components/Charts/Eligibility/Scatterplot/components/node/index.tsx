@@ -9,6 +9,7 @@ interface ScatterplotNodeProps {
   x: number;
   y: number;
   // id: string;
+  showExtraData: boolean;
   data: EligibilityScatterplotDataItemModel;
   hovered: EligibilityScatterplotHoveredNode | null;
   onHover: (value: EligibilityScatterplotHoveredNode | null) => void;
@@ -42,18 +43,20 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
 
   return (
     <g>
-      <circle
-        cx={props.x}
-        cy={props.y}
-        r={backCircleRadius[props.data.diseaseBurden] / 2}
-        fill={backCircleColor[props.data.incomeLevel] || "#fff"}
-        css={`
-          z-index: 1;
-          stroke-width: 0.5px;
-          mix-blend-mode: multiply;
-          stroke: ${props.data.incomeLevel < 0 ? "#262c34" : "none"};
-        `}
-      />
+      {props.showExtraData && (
+        <circle
+          cx={props.x}
+          cy={props.y}
+          r={backCircleRadius[props.data.diseaseBurden] / 2}
+          fill={backCircleColor[props.data.incomeLevel] || "#fff"}
+          css={`
+            z-index: 1;
+            stroke-width: 0.5px;
+            mix-blend-mode: multiply;
+            stroke: ${props.data.incomeLevel < 0 ? "#262c34" : "none"};
+          `}
+        />
+      )}
       <circle
         r="8"
         cx={props.x}

@@ -5,6 +5,7 @@ import { Link, Switch, Route, useParams } from "react-router-dom";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { mockdata1 } from "app/components/Charts/Investments/Disbursements/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
@@ -123,7 +124,7 @@ export default function VizModule() {
           <BudgetsTimeCycleModule />
         </Route>
         <Route path="/viz/investments/disbursements">
-          <InvestmentsDisbursedModule />
+          <InvestmentsDisbursedModule data={mockdata1} />
         </Route>
         <Route path="/viz/investments/time-cycle">
           <InvestmentsTimeCycleModule />

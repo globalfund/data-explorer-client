@@ -62,13 +62,20 @@ export function TreeemapNode(props: any) {
         background: node.data.color,
         cursor: node.data.orgs ? "pointer" : "default",
       }}
-      css={containercss(!hasChildren, props.selectedNodeId === node.id)}
+      css={containercss(
+        !hasChildren,
+        props.selectedNodeId === `${node.id}-${node.data.tooltip.header}`
+      )}
       onMouseMove={!hasChildren ? node.onMouseMove : undefined}
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
       onMouseLeave={!hasChildren ? node.onMouseLeave : undefined}
       onClick={() => {
         if (props.isChildTreemap) {
-          props.onNodeClick(node.id, node.x, node.y);
+          props.onNodeClick(
+            `${node.id}-${node.data.tooltip.header}`,
+            node.x + props.parentNodeCoords.x,
+            node.y + props.parentNodeCoords.y
+          );
         }
       }}
       //   onKeyPress={node.onClick}
@@ -111,6 +118,7 @@ export function TreeemapNode(props: any) {
             data={node.data._children}
             onNodeClick={props.onNodeClick}
             selectedNodeId={props.selectedNodeId}
+            parentNodeCoords={{ x: node.x, y: node.y }}
           />
         </div>
       )}

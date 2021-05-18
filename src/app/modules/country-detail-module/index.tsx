@@ -7,16 +7,16 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { DocumentsSubModule } from "app/modules/common/documents";
 import { InformationPanel } from "app/components/InformationPanel";
+import { ScatterPlot } from "app/components/Charts/Eligibility/Scatterplot";
+import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
-import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { LocationInfoContent } from "app/modules/country-detail-module/components/InfoContent";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
-import { ScatterPlot } from "app/components/Charts/Eligibility/Scatterplot";
 
 export function CountryDetail() {
   const params = useParams<{ code: string; vizType: string }>();
@@ -117,7 +117,7 @@ export function CountryDetail() {
           <BudgetsTimeCycleModule />
         </Route>
         <Route path={`/location/${params.code}/investments/disbursements`}>
-          <InvestmentsDisbursedModule />
+          <InvestmentsDisbursedModule data={mockdata2} />
         </Route>
         <Route path={`/location/${params.code}/investments/time-cycle`}>
           <InvestmentsTimeCycleModule />

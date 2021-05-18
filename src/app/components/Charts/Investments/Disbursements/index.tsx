@@ -42,6 +42,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
             onNodeClick={props.onNodeClick}
             selectedNodeId={props.selectedNodeId}
             isChildTreemap={props.isChildTreemap}
+            parentNodeCoords={props.parentNodeCoords}
           />
         )}
         // @ts-ignore
@@ -50,6 +51,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
         theme={{
           tooltip: {
             container: {
+              zIndex: 100,
               borderRadius: 20,
               padding: "16px 25px",
               position: "relative",
