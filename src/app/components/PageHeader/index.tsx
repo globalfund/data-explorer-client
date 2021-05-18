@@ -60,7 +60,7 @@ const StyledMenuItem = withStyles((theme) => ({
 const styles = {
   container: css`
     left: 0;
-    top: 46px;
+    top: 48px;
     z-index: 1;
     width: 100vw;
     display: flex;

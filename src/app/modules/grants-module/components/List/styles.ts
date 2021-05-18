@@ -6,6 +6,7 @@ export const listitem = css`
   padding: 12px 20px;
   background: #f5f5f7;
   border-radius: 20px;
+  text-decoration: none;
   flex-direction: column;
 
   &:hover {
