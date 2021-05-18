@@ -34,3 +34,26 @@ export const countryDetailTabs: TabProps[] = [
     url: "/location/<code>/grants",
   },
 ];
+
+export const grantDetailTabs: TabProps[] = [
+  {
+    name: "Investements",
+    url: "/grant/<code>/investments/disbursements",
+  },
+  {
+    name: "Budgets",
+    url: "/grant/<code>/budgets/flow",
+  },
+  {
+    name: "Performance Rating",
+    url: "/grant/<code>/performance-rating",
+  },
+  {
+    name: "Performance Framework",
+    url: "/grant/<code>/performance-framework",
+  },
+  {
+    name: "Documents",
+    url: "/grant/<code>/documents",
+  },
+];

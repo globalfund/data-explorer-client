@@ -1,17 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
+import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
-import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import {
-  countryDetailTabs,
-  TabProps,
-} from "app/components/PageHeader/components/tabs/data";
-import { PageHeaderTabs } from "./components/tabs";
+import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
+import { TabProps } from "app/components/PageHeader/components/tabs/data";
+import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
 
 interface PageHeaderProps {
   title: string;
@@ -66,8 +65,8 @@ const styles = {
     width: 100vw;
     display: flex;
     position: sticky;
+    padding-top: 6px;
     background: #dfe3e6;
-    padding: 6px 0 16px 0;
     flex-direction: column;
   `,
   innercontainer: css`
@@ -76,13 +75,16 @@ const styles = {
     flex-direction: column;
   `,
   title: css`
-    display: flex;
+    width: 100%;
     color: #262c34;
     font-size: 24px;
+    overflow: hidden;
     font-weight: bold;
     line-height: 24px;
     align-items: center;
+    white-space: nowrap;
     letter-spacing: 0.5px;
+    text-overflow: ellipsis;
     font-family: GothamNarrow-Bold;
   `,
   breadcrumbs: css`
@@ -194,19 +196,50 @@ export function PageHeader(props: PageHeaderProps) {
             }
           )}
         </div>
-        <div css={styles.title}>{props.title}</div>
-        {props.drilldowns && props.drilldowns.length > 0 && (
-          <div css={styles.drilldowns}>
-            {props.drilldowns.map((item: DrilldownModel) => (
-              <div css={styles.drilldownitem} key={item.name}>
-                {item.name} <ArrowForwardIcon />
+        <Grid
+          container
+          spacing={2}
+          css={`
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+          `}
+        >
+          <Grid item sm={12} md={4}>
+            <Tooltip title={props.title}>
+              <div css={styles.title}>{props.title}</div>
+            </Tooltip>
+            {props.drilldowns && props.drilldowns.length > 0 && (
+              <div css={styles.drilldowns}>
+                {props.drilldowns.map((item: DrilldownModel) => (
+                  <div css={styles.drilldownitem} key={item.name}>
+                    {item.name} <ArrowForwardIcon />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-        {props.tabs && props.tabs.length > 0 && (
-          <PageHeaderTabs tabs={countryDetailTabs} />
-        )}
+            )}
+            <div
+              css={`
+                width: 100%;
+                height: 16px;
+              `}
+            />
+          </Grid>
+          <Grid
+            item
+            sm={12}
+            md={8}
+            css={`
+              display: flex;
+              align-items: flex-end;
+              justify-content: flex-end;
+            `}
+          >
+            {props.tabs && props.tabs.length > 0 && (
+              <PageHeaderTabs tabs={props.tabs} />
+            )}
+          </Grid>
+        </Grid>
       </Container>
     </div>
   );

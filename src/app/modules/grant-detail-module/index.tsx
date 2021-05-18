@@ -7,18 +7,17 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { DocumentsSubModule } from "app/modules/common/documents";
 import { InformationPanel } from "app/components/InformationPanel";
-import { ScatterPlot } from "app/components/Charts/Eligibility/Scatterplot";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
-import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
+import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
-import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
-import { LocationInfoContent } from "app/modules/country-detail-module/components/InfoContent";
+import { GrantInfoContent } from "app/modules/grant-detail-module/components/InfoContent";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { PerformanceRating } from "app/components/Charts/PerformanceRating";
+import { mockdata } from "app/components/Charts/PerformanceRating/data";
 
-export default function CountryDetail() {
+export default function GrantDetail() {
   const params = useParams<{ code: string; vizType: string }>();
   const [openInfoPanel, setOpenInfoPanel] = React.useState(false);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
@@ -39,7 +38,7 @@ export default function CountryDetail() {
       `}
     >
       <PageHeader
-        title={params.code}
+        title="Program to strengthen the national response to HIV/AIDS in Niger"
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -103,35 +102,29 @@ export default function CountryDetail() {
             name: params.code,
           },
         ]}
-        tabs={countryDetailTabs}
+        tabs={grantDetailTabs}
       />
       <div css="width: 100%;height: 25px;" />
       <Switch>
-        <Route exact path={`/location/${params.code}/investments`}>
-          <Redirect to={`/location/${params.code}/investments/disbursements`} />
+        <Route exact path={`/grant/${params.code}/investments`}>
+          <Redirect to={`/grant/${params.code}/investments/disbursements`} />
         </Route>
-        <Route path={`/location/${params.code}/budgets/flow`}>
+        <Route path={`/grant/${params.code}/budgets/flow`}>
           <BudgetsFlowModule />
         </Route>
-        <Route path={`/location/${params.code}/budgets/time-cycle`}>
+        <Route path={`/grant/${params.code}/budgets/time-cycle`}>
           <BudgetsTimeCycleModule />
         </Route>
-        <Route path={`/location/${params.code}/investments/disbursements`}>
+        <Route path={`/grant/${params.code}/performance-rating`}>
+          <PerformanceRating data={mockdata} />
+        </Route>
+        <Route path={`/grant/${params.code}/investments/disbursements`}>
           <InvestmentsDisbursedModule data={mockdata2} />
         </Route>
-        <Route path={`/location/${params.code}/investments/time-cycle`}>
+        <Route path={`/grant/${params.code}/investments/time-cycle`}>
           <InvestmentsTimeCycleModule />
         </Route>
-        <Route path={`/location/${params.code}/investments/geomap`}>
-          <InvestmentsGeoMap />
-        </Route>
-        <Route path={`/location/${params.code}/allocation`}>
-          <AllocationsModule />
-        </Route>
-        <Route path={`/location/${params.code}/eligibility`}>
-          <ScatterPlot />
-        </Route>
-        <Route path={`/location/${params.code}/documents`}>
+        <Route path={`/grant/${params.code}/documents`}>
           <DocumentsSubModule />
         </Route>
       </Switch>
@@ -139,11 +132,15 @@ export default function CountryDetail() {
         open={openInfoPanel}
         onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
       >
-        <LocationInfoContent
-          title={params.code}
+        <GrantInfoContent
+          title="Program to strengthen the national response to HIV/AIDS in Niger"
           code={params.code}
+          rating="B1"
+          status="Active"
+          location="Niger"
+          component="HIV"
           investments={{ disbursed: 0, committed: 0, signed: 0 }}
-          multicountries={[{ name: "MC A", code: "MC_A" }]}
+          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar condimentum aliquet. Cras bibendum, lectus sit amet venenatis efficitur, magna nisl scelerisque ligula, ac laoreet odio est eget nunc."
           manager={{
             name: "Manager A",
             email: "manager@mca.org",

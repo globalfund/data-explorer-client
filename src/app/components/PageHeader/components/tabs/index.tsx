@@ -8,11 +8,7 @@ import {
 } from "app/components/PageHeader/components/tabs/data";
 
 const styles = {
-  container: css`
-    right: 16px;
-    bottom: -16px;
-    position: absolute;
-  `,
+  container: css``,
   tooltip: css`
     fill: ${ProjectPalette.primary.main};
     :hover {
@@ -29,6 +25,7 @@ const styles = {
   `,
   tabsList: css`
     display: flex;
+    overflow-y: hidden;
     list-style: none;
     margin: 0;
     padding: 0;

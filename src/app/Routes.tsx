@@ -4,7 +4,6 @@ import React, { Suspense, lazy } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
-import { CountryDetail } from "./modules/country-detail-module";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -13,6 +12,10 @@ const ResultsModule = lazy(() => import("app/modules/results-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
+const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
+const CountryDetailModule = lazy(
+  () => import("app/modules/country-detail-module")
+);
 
 export function MainRoutes() {
   return (
@@ -47,7 +50,11 @@ export function MainRoutes() {
         </Route>
 
         <Route exact path="/location/:code/:vizType/:subType?">
-          <CountryDetail />
+          <CountryDetailModule />
+        </Route>
+
+        <Route exact path="/grant/:code/:vizType/:subType?">
+          <GrantDetailModule />
         </Route>
 
         <Route exact path="/viz">

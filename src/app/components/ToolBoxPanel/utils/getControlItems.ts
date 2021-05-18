@@ -1,4 +1,5 @@
 import get from "lodash/get";
+import filter from "lodash/filter";
 
 export interface ViewModel {
   label: string;
@@ -79,13 +80,20 @@ export function getControlItems(
 } {
   if (detailPageCode) {
     const detailPageParam = pathname.split("/")[1];
+    let alteredViews = get(views, vizType, []).map((view: ViewModel) => ({
+      ...view,
+      link: view.link
+        ? view.link.replace("viz", `${detailPageParam}/${detailPageCode}`)
+        : view.link,
+    }));
+    if (detailPageParam === "grant") {
+      alteredViews = filter(
+        alteredViews,
+        (view: ViewModel) => view.label !== "Map"
+      );
+    }
     return {
-      views: get(views, vizType, []).map((view: ViewModel) => ({
-        ...view,
-        link: view.link
-          ? view.link.replace("viz", `${detailPageParam}/${detailPageCode}`)
-          : view.link,
-      })),
+      views: alteredViews,
       aggregates: get(aggregates, vizType, []),
     };
   }
