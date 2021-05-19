@@ -3,6 +3,7 @@ import React from "react";
 import { Link, Switch, Route, useParams, Redirect } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { GrantsViz } from "app/components/Charts/Grants";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { DocumentsSubModule } from "app/modules/common/documents";
@@ -130,6 +131,9 @@ export default function CountryDetail() {
         </Route>
         <Route path={`/location/${params.code}/eligibility`}>
           <ScatterPlot />
+        </Route>
+        <Route path={`/grant/${params.code}/grants`}>
+          <GrantsViz />
         </Route>
         <Route path={`/location/${params.code}/documents`}>
           <DocumentsSubModule />
