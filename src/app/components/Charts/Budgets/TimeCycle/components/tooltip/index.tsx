@@ -62,6 +62,7 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
         </div>
         {valueKeys.map((key: string) => (
           <div
+            key={key}
             css={`
               display: flex;
               flex-direction: row;

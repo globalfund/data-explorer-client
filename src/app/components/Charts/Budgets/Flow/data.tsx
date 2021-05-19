@@ -11,12 +11,9 @@ export interface BudgetsFlowData {
 }
 
 export interface BudgetsFlowProps {
-  selectedNode: any;
-  onZoomOut: Function;
   data: BudgetsFlowData;
-  onNodeClick: Function;
-  vizCompData: Function;
-  setVizCompData: Function;
+  selectedNodeId?: string;
+  onNodeClick: (node: string, x: number, y: number) => void;
 }
 
 export interface BudgetsFlowTooltipProps {

@@ -3,7 +3,9 @@ import React from "react";
 import { Link, Switch, Route, useParams } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { mockdata1 } from "app/components/Charts/Investments/Disbursements/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
@@ -12,8 +14,6 @@ import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budge
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
-import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { GrantsViz } from "app/components/Charts/Grants";
 
 export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
@@ -124,7 +124,7 @@ export default function VizModule() {
           <BudgetsTimeCycleModule />
         </Route>
         <Route path="/viz/investments/disbursements">
-          <InvestmentsDisbursedModule />
+          <InvestmentsDisbursedModule data={mockdata1} />
         </Route>
         <Route path="/viz/investments/time-cycle">
           <InvestmentsTimeCycleModule />
@@ -140,10 +140,6 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/eligibility">
           <EligibilityModule />
-        </Route>
-        <Route path="/viz/grants">
-          <div css="width: 100%;height: 100px;" />
-          <GrantsViz />
         </Route>
       </Switch>
       <ToolBoxPanel

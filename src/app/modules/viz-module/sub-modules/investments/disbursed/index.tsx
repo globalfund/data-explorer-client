@@ -5,15 +5,21 @@ import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { mockdata } from "app/components/Charts/Investments/Disbursements/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { TransitionContainer } from "app/components/TransitionContainer";
 import { SlideInContainer } from "app/components/SlideInPanel";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { TransitionContainer } from "app/components/TransitionContainer";
+import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
+import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 
-export function InvestmentsDisbursedModule() {
+interface InvestmentsDisbursedModuleProps {
+  data: DisbursementsTreemapDataItem[];
+}
+
+export function InvestmentsDisbursedModule(
+  props: InvestmentsDisbursedModuleProps
+) {
   useTitle("The Data Explorer - Investments/Disbursed");
-  const totalBudget = sumBy(mockdata, "value");
+  const totalBudget = sumBy(props.data, "value");
 
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizScale, setVizScale] = React.useState(1);
@@ -59,6 +65,12 @@ export function InvestmentsDisbursedModule() {
       <div
         css={`
           width: 100%;
+
+          ${!vizSelected
+            ? `* {
+            overflow: visible !important;
+          }`
+            : ""}
         `}
       >
         <TransitionContainer
@@ -66,7 +78,7 @@ export function InvestmentsDisbursedModule() {
           vizTranslation={vizTranslation}
         >
           <DisbursementsTreemap
-            data={mockdata}
+            data={props.data}
             selectedNodeId={vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
               setVizLevel(1);

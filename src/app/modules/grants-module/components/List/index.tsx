@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
@@ -18,7 +19,7 @@ export function GrantsList(props: GrantsListProps) {
     <Grid container spacing={2}>
       {props.listitems.map((item: GrantListItemModel) => (
         <Grid item key={item.id} sm={12} md={6}>
-          <div css={listitem}>
+          <Link to={`/grant/${item.id}/investments`} css={listitem}>
             {/* 1st row */}
             <div css={row(12, "normal")}>
               <div>
@@ -73,7 +74,7 @@ export function GrantsList(props: GrantsListProps) {
                 <div>Signed: {formatFinancialValue(item.signed)}</div>
               </div>
             </div>
-          </div>
+          </Link>
         </Grid>
       ))}
     </Grid>

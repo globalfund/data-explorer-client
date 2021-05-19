@@ -12,6 +12,10 @@ const ResultsModule = lazy(() => import("app/modules/results-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
+const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
+const CountryDetailModule = lazy(
+  () => import("app/modules/country-detail-module")
+);
 
 export function MainRoutes() {
   return (
@@ -43,6 +47,14 @@ export function MainRoutes() {
 
         <Route exact path="/viz/:vizType/:subType?">
           <VizModule />
+        </Route>
+
+        <Route exact path="/location/:code/:vizType/:subType?">
+          <CountryDetailModule />
+        </Route>
+
+        <Route exact path="/grant/:code/:vizType/:subType?">
+          <GrantDetailModule />
         </Route>
 
         <Route exact path="/viz">

@@ -7,11 +7,8 @@ import { ResponsiveSankey } from "@nivo/sankey";
 import { InfoIcon } from "app/assets/icons/Info";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { BudgetsFlowProps } from "app/components/Charts/Budgets/Flow/data";
 import { BudgetsFlowTooltip } from "app/components/Charts/Budgets/Flow/components/tooltip";
-import {
-  BudgetsFlowProps,
-  mockdata,
-} from "app/components/Charts/Budgets/Flow/data";
 
 const container = css`
   width: 100%;
@@ -54,11 +51,11 @@ const getNodeLabel = (label: string, matchesSm: boolean): string => {
   return label;
 };
 
-export function BudgetsFlow() {
+export function BudgetsFlow(props: BudgetsFlowProps) {
   const matches = useMediaQuery("(max-width: 767px)");
   //   const [xsTooltipData, setXsTooltipData] = React.useState(null);
   const totalBudget = sumBy(
-    filter(mockdata.links, { source: "Budgets" }),
+    filter(props.data.links, { source: "Budgets" }),
     "value"
   );
 
@@ -75,6 +72,23 @@ export function BudgetsFlow() {
       });
     }
   }, []);
+
+  const Nodes = (nProps: any) => {
+    return nProps.nodes.map((node: any) => (
+      <rect
+        x={node.x}
+        y={node.y}
+        key={node.id}
+        width={node.width}
+        height={node.height}
+        data-cy="bf-sankey-bar-comp"
+        fill={node.id === props.selectedNodeId ? "#FFA726" : "#373D43"}
+        onClick={() => {
+          props.onNodeClick(node.id, node.x - 200, node.y);
+        }}
+      />
+    ));
+  };
 
   return (
     <div css={container} data-cy="budgets-flow" id="sankey">
@@ -107,8 +121,10 @@ export function BudgetsFlow() {
         </Grid>
       </Grid>
       <ResponsiveSankey
-        data={mockdata}
+        data={props.data}
         colors={["#373D43"]}
+        // @ts-ignore
+        layers={["links", Nodes, "labels"]}
         margin={{ top: 40, right: 0, bottom: 50, left: 0 }}
         nodeOpacity={1}
         nodeSpacing={34}
@@ -136,7 +152,6 @@ export function BudgetsFlow() {
         labelFormat={(text: string | number) =>
           getNodeLabel(text as string, matches)
         }
-        //   onClick={(data: any) => setXsTooltipData(data)}
         animate
         motionDamping={13}
         motionStiffness={140}

@@ -1,5 +1,6 @@
 import React from "react";
 import { useHoverDirty } from "react-use";
+import { useHistory } from "react-router-dom";
 import { mapStyle, GeoMapProps } from "app/components/Charts/GeoMap/data";
 import MapGL, {
   LinearInterpolator,
@@ -12,6 +13,7 @@ import { GeomapTooltip } from "./components/tooltip";
 // import WebMercatorViewport from "viewport-mercator-project";
 
 export function GeoMap(props: GeoMapProps) {
+  const history = useHistory();
   const mapRef = React.useRef();
   const containerRef = React.useRef<HTMLDivElement>();
   const isHovering = useHoverDirty(containerRef as React.RefObject<Element>);
@@ -86,6 +88,18 @@ export function GeoMap(props: GeoMapProps) {
     );
   }, []);
 
+  const onClick = React.useCallback((event: any) => {
+    const { features } = event;
+    const hoveredFeature = features && features[0];
+    if (
+      hoveredFeature &&
+      hoveredFeature.properties &&
+      hoveredFeature.properties.iso_a3
+    ) {
+      history.push(`/location/${hoveredFeature.properties.iso_a3}/investments`);
+    }
+  }, []);
+
   return (
     <div
       ref={containerRef as React.RefObject<HTMLDivElement>}
@@ -100,6 +114,7 @@ export function GeoMap(props: GeoMapProps) {
         width="100%"
         height="100%"
         onHover={onHover}
+        onClick={onClick}
         mapStyle={mapStyle}
         ref={(ref: MapRef) => {
           if (ref) mapRef.current = ref.getMap();

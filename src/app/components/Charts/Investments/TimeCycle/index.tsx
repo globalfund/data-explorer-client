@@ -59,49 +59,9 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     .cumulative as number;
   const legends = getLegendItems(props.data);
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      const viz = document.getElementById("investments-time-cycle");
-      if (viz) {
-        const svgs = viz.getElementsByTagName("svg");
-        if (svgs.length > 1) {
-          const pathElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-          );
-          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#FBAC1B");
-          pathElement.setAttribute("strokeWidth", "1");
-
-          const patternElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "pattern"
-          );
-          patternElement.setAttribute("id", "diagonalHatch");
-          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-          patternElement.setAttribute("width", "4");
-          patternElement.setAttribute("height", "4");
-          patternElement.appendChild(pathElement);
-
-          const defsElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "defs"
-          );
-          defsElement.appendChild(patternElement);
-
-          svgs[1].appendChild(defsElement);
-        }
-      }
-    }, 1000);
-  }, []);
-
   React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
 
   const Bars = (bprops: any) => {
-    // console.log(bprops);
-    // if (props.vizCompData.length !== bars.length) {
-    //   props.setVizCompData(bars);
-    // }
     return bprops.bars.map((bar: any) => (
       <BarComponent
         {...bar}
@@ -109,9 +69,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
         hideTooltip={bprops.hideTooltip}
         onMouseEnter={bprops.onMouseEnter}
         onMouseLeave={bprops.onMouseLeave}
-        // onZoomOut={props.onZoomOut}
-        // onClick={props.onNodeClick}
-        // selected={props.selectedNode}
+        onClick={props.onNodeClick}
+        selected={props.selectedNodeId}
         hoveredLegend={hoveredLegend}
         hoveredXIndex={hoveredXIndex}
         setHoveredXIndex={setHoveredXIndex}
@@ -121,7 +80,6 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
 
   return (
     <div
-      id="investments-time-cycle"
       css={`
         width: 100%;
         height: 700px;
