@@ -20,7 +20,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
     if (open !== tmp) {
       setOpen(tmp);
     }
-  }, [props.vizLevel]);
+  }, [props.vizLevel, props.selected]);
 
   return (
     <Slide in={open} mountOnEnter unmountOnExit timeout={500} direction="left">
@@ -58,7 +58,23 @@ export function SlideInContainer(props: SlideInContainerProps) {
         >
           <CloseIcon />
         </IconButton>
-        {open ? props.children : <div css="width: 100%;height: 100%;" />}
+        <div
+          css={`
+            width: 100%;
+            height: 100%;
+            padding: 40px;
+
+            > div {
+              height: 100%;
+            }
+
+            * {
+              overflow: visible !important;
+            }
+          `}
+        >
+          {open && props.children}
+        </div>
       </div>
     </Slide>
   );

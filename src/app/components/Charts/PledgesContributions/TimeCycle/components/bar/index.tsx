@@ -13,6 +13,18 @@ export function BarComponent(props: any) {
     label: props.label,
   };
 
+  let nodecss = "cursor: pointer;";
+  if (props.selected === `${props.data.indexValue}-${props.data.id}`) {
+    nodecss += "z-index: 2;cursor: pointer;fill: url(#diagonalHatch);";
+  } else if (
+    props.hoveredXIndex &&
+    props.hoveredXIndex === `${props.data.indexValue}-${props.data.id}`
+  ) {
+    nodecss += "z-index: 2;cursor: pointer;";
+  } else if (props.selected || props.hoveredXIndex || props.hoveredLegend) {
+    nodecss += "opacity: 0.3;";
+  }
+
   return (
     <g
       {...fprops}
@@ -32,40 +44,24 @@ export function BarComponent(props: any) {
         props.hideTooltip();
         props.setHoveredXIndex(null);
       }}
-      // onClick={() => {
-      //   if (props.data.indexValue !== get(props.selected, "indexValue", "")) {
-      //     props.onClick({
-      //       selection: props.data,
-      //       translation: { x: props.x * -1 + 100, y: 0 },
-      //     });
-      //   } else {
-      //     props.onZoomOut();
-      //   }
-      // }}
+      onClick={() => {
+        if (props.data.indexValue !== props.selected) {
+          props.onClick(
+            `${props.data.indexValue}-${props.data.id}`,
+            props.x - 100,
+            0
+          );
+        }
+      }}
       data-cy="pledges-contributions-time-cycle-bar-component"
     >
       <rect
         x={props.x}
         y={props.y}
+        css={nodecss}
         fill={props.color}
         width={props.width}
         height={props.height}
-        css={
-          // use "fill: url(#diagonalHatch);" for selected
-          (props.selected || { indexValue: "" }).indexValue ===
-            props.data.indexValue ||
-          (props.hoveredXIndex &&
-            props.hoveredXIndex ===
-              `${props.data.indexValue}-${props.data.id}`) ||
-          props.hoveredLegend === props.data.id
-            ? "z-index: 2;cursor: pointer;"
-            : `cursor: pointer;${
-                (props.selected ||
-                  props.hoveredXIndex ||
-                  props.hoveredLegend) &&
-                "opacity: 0.3;"
-              }`
-        }
       />
     </g>
   );

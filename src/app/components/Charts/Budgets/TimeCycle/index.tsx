@@ -41,10 +41,6 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
   React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
 
   const Bars = (bprops: any) => {
-    // console.log(bprops);
-    // if (props.vizCompData.length !== bars.length) {
-    //   props.setVizCompData(bars);
-    // }
     return bprops.bars.map((bar: any) => (
       <BarComponent
         {...bar}
@@ -52,10 +48,9 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         hideTooltip={bprops.hideTooltip}
         onMouseEnter={bprops.onMouseEnter}
         onMouseLeave={bprops.onMouseLeave}
-        // onZoomOut={props.onZoomOut}
-        // onClick={props.onNodeClick}
-        // selected={props.selectedNode}
+        onClick={props.onNodeClick}
         hoveredXIndex={hoveredXIndex}
+        selected={props.selectedNodeId}
         setHoveredXIndex={setHoveredXIndex}
       />
     ));
