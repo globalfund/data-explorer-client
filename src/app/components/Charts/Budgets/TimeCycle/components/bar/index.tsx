@@ -13,6 +13,20 @@ export function BarComponent(props: any) {
     label: props.label,
   };
 
+  let nodecss = "cursor: pointer;";
+  if (props.selected === props.data.indexValue) {
+    nodecss += "z-index: 2;fill: url(#diagonalHatch);";
+  } else if (
+    props.hoveredXIndex &&
+    props.hoveredXIndex === props.data.indexValue
+  ) {
+    nodecss += "z-index: 2;";
+  } else if (props.hoveredLegend && props.hoveredLegend === props.data.id) {
+    nodecss += "z-index: 2;";
+  } else if (props.selected || props.hoveredXIndex || props.hoveredLegend) {
+    nodecss += "opacity: 0.3;";
+  }
+
   return (
     <g
       {...fprops}
@@ -36,9 +50,7 @@ export function BarComponent(props: any) {
         props.selected === props.data.indexValue ||
         (props.hoveredXIndex && props.hoveredXIndex === props.data.indexValue)
           ? "z-index: 2;cursor: pointer;"
-          : `cursor: pointer;${
-              (props.selected || props.hoveredXIndex) && "opacity: 0.3;"
-            }`
+          : ""
       }
       onClick={() => {
         if (props.data.indexValue !== props.selected) {
@@ -47,15 +59,7 @@ export function BarComponent(props: any) {
       }}
       data-cy="budgets-time-cycle-bar-component"
     >
-      <rect
-        {...fprops}
-        fill={props.color}
-        css={
-          props.selected && props.selected === props.data.indexValue
-            ? "fill: url(#diagonalHatch);"
-            : ""
-        }
-      />
+      <rect {...fprops} fill={props.color} css={nodecss} />
     </g>
   );
 }

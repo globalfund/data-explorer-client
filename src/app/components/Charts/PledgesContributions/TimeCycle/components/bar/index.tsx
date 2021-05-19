@@ -15,12 +15,14 @@ export function BarComponent(props: any) {
 
   let nodecss = "cursor: pointer;";
   if (props.selected === `${props.data.indexValue}-${props.data.id}`) {
-    nodecss += "z-index: 2;cursor: pointer;fill: url(#diagonalHatch);";
+    nodecss += "z-index: 2;fill: url(#diagonalHatch);";
   } else if (
     props.hoveredXIndex &&
     props.hoveredXIndex === `${props.data.indexValue}-${props.data.id}`
   ) {
-    nodecss += "z-index: 2;cursor: pointer;";
+    nodecss += "z-index: 2;";
+  } else if (props.hoveredLegend && props.hoveredLegend === props.data.id) {
+    nodecss += "z-index: 2;";
   } else if (props.selected || props.hoveredXIndex || props.hoveredLegend) {
     nodecss += "opacity: 0.3;";
   }

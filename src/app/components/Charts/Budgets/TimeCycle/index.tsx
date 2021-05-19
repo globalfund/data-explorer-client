@@ -1,6 +1,7 @@
 import React from "react";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
+import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
@@ -31,12 +32,30 @@ function getKeysFromData(data: Record<string, unknown>[]) {
   return keys;
 }
 
+function getLegendItems(data: any) {
+  const legends: { name: string; color: string }[] = [];
+  data.forEach((item: Record<string, unknown>) => {
+    Object.keys(item).forEach((key: string) => {
+      if (key !== "year" && key !== "amount" && key.indexOf("Color") === -1) {
+        legends.push({
+          name: key,
+          color: item[`${key}Color`] as string,
+        });
+      }
+    });
+  });
+
+  return uniqBy(legends, "name");
+}
+
 export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
   const matches = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
+  const [hoveredLegend, setHoveredLegend] = React.useState(null);
   const [keys, setKeys] = React.useState(getKeysFromData(props.data));
   const moneyAbbrRange = getVizValueRange(props.data, "budgetBarChart");
   const totalBudget = sumBy(props.data, "amount");
+  const legends = getLegendItems(props.data);
 
   React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
 
@@ -50,6 +69,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         onMouseLeave={bprops.onMouseLeave}
         onClick={props.onNodeClick}
         hoveredXIndex={hoveredXIndex}
+        hoveredLegend={hoveredLegend}
         selected={props.selectedNodeId}
         setHoveredXIndex={setHoveredXIndex}
       />
@@ -93,6 +113,44 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
             {formatFinancialValue(totalBudget)}
           </div>
         </Grid>
+        <Grid item xs={12} sm={12} md={9}>
+          <div
+            css={`
+              gap: 24px;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-end;
+            `}
+          >
+            {legends.map((legend: any) => (
+              <div
+                key={legend.name}
+                onMouseEnter={() => setHoveredLegend(legend.name)}
+                onMouseLeave={() => setHoveredLegend(null)}
+                css={`
+                  gap: 6px;
+                  display: flex;
+                  font-size: 10px;
+                  cursor: pointer;
+                  align-items: center;
+                  flex-direction: row;
+                  opacity: ${!hoveredLegend || hoveredLegend === legend.name
+                    ? 1
+                    : 0.3};
+                `}
+              >
+                <div
+                  css={`
+                    width: 12px;
+                    height: 12px;
+                    background: ${legend.color};
+                  `}
+                />
+                <div>{legend.name}</div>
+              </div>
+            ))}
+          </div>
+        </Grid>
       </Grid>
       <ResponsiveBar
         animate
@@ -103,7 +161,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         motionStiffness={90}
         motionDamping={15}
         borderColor="inherit:darker(1.6)"
-        layers={["grid", "axes", Bars, "markers", "legends"]}
+        layers={["grid", "axes", Bars, "markers"]}
         padding={matches ? 0.3 : 0.5}
         innerPadding={0}
         data={props.data}
