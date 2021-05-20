@@ -61,7 +61,7 @@ const styles = {
   container: css`
     left: 0;
     top: 48px;
-    z-index: 1;
+    z-index: 10;
     width: 100vw;
     display: flex;
     position: sticky;

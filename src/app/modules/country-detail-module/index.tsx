@@ -132,7 +132,7 @@ export default function CountryDetail() {
         <Route path={`/location/${params.code}/eligibility`}>
           <ScatterPlot />
         </Route>
-        <Route path={`/grant/${params.code}/grants`}>
+        <Route path={`/location/${params.code}/grants`}>
           <GrantsViz />
         </Route>
         <Route path={`/location/${params.code}/documents`}>

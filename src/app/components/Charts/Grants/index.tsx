@@ -1,95 +1,45 @@
 import React from "react";
+import get from "lodash/get";
+import max from "lodash/max";
+import uniq from "lodash/uniq";
+import minBy from "lodash/minBy";
+import maxBy from "lodash/maxBy";
+import filter from "lodash/filter";
 import { useMeasure } from "react-use";
-
-const itemock = [
-  {
-    name: "Grant A",
-    years: [2002, 2006],
-    value: 10000000,
-    component: "HIV",
-  },
-  {
-    name: "Grant B",
-    years: [2006, 2012],
-    value: 10000000,
-    component: "Malaria",
-  },
-  {
-    name: "Grant C",
-    years: [2012, 2016],
-    value: 10000000,
-    component: "RSSH",
-  },
-  {
-    name: "Grant D",
-    years: [2016, 2020],
-    value: 10000000,
-    component: "Tuberculosis",
-  },
-];
+import {
+  mockdata,
+  ratingColor,
+  statusBorderStyle,
+} from "app/components/Charts/Grants/data";
 
 export function GrantsViz() {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const datayears = [
-    2002,
-    2003,
-    2004,
-    2005,
-    2006,
-    2007,
-    2008,
-    2009,
-    2010,
-    2011,
-    2012,
-    2013,
-    2014,
-    2015,
-    2016,
-    2017,
-    2018,
-    2019,
-    2020,
-  ].reverse();
-  const components = ["HIV", "Malaria", "RSSH", "Tuberculosis"];
-
+  const lYear = minBy(mockdata, "years[0]")?.years[0] || 2002;
+  const hYear = maxBy(mockdata, "years[1]")?.years[1] || 2020;
+  const datayears: number[] = [];
+  for (let i = hYear; i >= lYear; i--) {
+    datayears.push(i);
+  }
+  const components = uniq(mockdata.map((item: any) => item.component));
   const yearItemWidth = width / 2 / datayears.length;
-
-  function calcRotate(component: string) {
-    const componentRotate = 180 / components.length / 2;
-    const fIndex = components.indexOf(component);
-    let res = 0;
-    if (fIndex > -1) {
-      if (fIndex < components.length / 2) {
-        res = -90 + componentRotate * (fIndex + 1);
-      } else {
-        res = componentRotate * fIndex;
-      }
+  const allValues: number[] = [];
+  mockdata.forEach((item: any) => {
+    if (item.implementationPeriods) {
+      item.implementationPeriods.forEach((period: any) =>
+        allValues.push(period.value)
+      );
+    } else {
+      allValues.push(item.value);
     }
-    return `${res}deg`;
-  }
-
-  function getCSSDirectionProperties(component: string) {
-    const fIndex = components.indexOf(component) + 1;
-    if (fIndex > 0) {
-      if (fIndex === 1) {
-        return "bottom: 0;";
-      }
-      if (fIndex === 2) {
-        return "left: 0;bottom: 0;";
-      }
-      if (fIndex === 3) {
-        return "top: 0;";
-      }
-      return "right: 0;";
-    }
-  }
+  });
+  const maxDisbursementValue = max(allValues);
 
   return (
     <div
       ref={ref}
       css={`
         width: 100%;
+        margin-top: 100px;
         position: relative;
         height: ${width / 2}px;
         border-bottom: 1px solid #c7cdd1;
@@ -138,15 +88,57 @@ export function GrantsViz() {
                 position: relative;
                 display: inline-block;
                 content: "${component}";
+                transform: rotate(245deg);
                 top: ${width / components.length}px;
-                transform: rotate(${360 - rotate}deg);
               }
             `}
           />
         );
       })}
-      {datayears.map((year: number, index: number) => {
-        const itemwidth = width - (width / datayears.length) * index;
+      {components.map((component: string, index: number) => {
+        const items = filter(mockdata, { component });
+
+        return (
+          <ComponentRadarThingie
+            index={index}
+            width={width}
+            items={items}
+            key={component}
+            datayears={datayears}
+            yearItemWidth={yearItemWidth}
+            rotateDeg={180 / components.length}
+            maxDisbursementValue={maxDisbursementValue}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+export function ComponentRadarThingie(props: any) {
+  return (
+    <div
+      css={`
+        width: 100%;
+        position: absolute;
+        transform-origin: bottom;
+        z-index: ${4 - props.index};
+        height: ${props.width / 2}px;
+        border-top-left-radius: ${props.width * 2}px;
+        border-top-right-radius: ${props.width * 2}px;
+        transform: rotate(${props.index * props.rotateDeg}deg);
+        border-bottom: 1px ${props.index === 0 ? "solid" : "none"} #c7cdd1;
+      `}
+    >
+      {props.datayears.map((year: number, index: number) => {
+        const show = props.index === 0;
+        // const show = props.index === 0 && year % 2 === 0;
+        const itemwidth =
+          props.width - (props.width / props.datayears.length) * index;
+        const yearItems = filter(
+          props.items,
+          (item: any) => item.years[0] === year
+        );
 
         return (
           <div
@@ -156,23 +148,24 @@ export function GrantsViz() {
               display: flex;
               font-weight: bold;
               position: absolute;
-              align-items: center;
+              align-items: baseline;
               width: ${itemwidth}px;
               justify-content: center;
               border: 1px solid #c7cdd1;
-              border-bottom-style: none;
               height: ${itemwidth / 2}px;
               border-top-left-radius: ${itemwidth * 2}px;
               border-top-right-radius: ${itemwidth * 2}px;
-              left: ${((width / datayears.length) * index) / 2}px;
+              border-style: ${show ? "solid" : "none"};
+              border-bottom-style: none;
+              left: ${((props.width / props.datayears.length) * index) / 2}px;
 
               &:after {
                 left: -15px;
                 bottom: -25px;
                 color: #262c34;
                 font-size: 10px;
-                content: "${year}";
                 position: absolute;
+                content: ${show ? `"${year}"` : ""};
               }
 
               &:before {
@@ -180,29 +173,40 @@ export function GrantsViz() {
                 bottom: -25px;
                 color: #262c34;
                 font-size: 10px;
-                content: "${year}";
                 position: absolute;
+                content: ${show ? `"${year}"` : ""};
               }
 
-              ${index + 1 === datayears.length
+              ${index + 1 === props.datayears.length
                 ? `
               bottom: -1px;
               background: #fff;
               border-bottom: 1px solid #fff;
+              border-style: ${show ? "solid" : "none"};
               `
                 : ""}
             `}
           >
-            {/* {index + 1 === datayears.length && "Grants"} */}
-            {itemock.map((item: any) => {
-              if (year === item.years[0]) {
+            {yearItems.map((item: any, itemIndex: number) => {
+              let prevItemHeight = 0;
+              const subItems = item.implementationPeriods || [item];
+              return subItems.map((subItem: any, subItemIndex: number) => {
+                const startHeight = prevItemHeight;
+                const itemHeight =
+                  props.yearItemWidth * (subItem.years[1] - subItem.years[0]) +
+                  (subItemIndex > 0 ? prevItemHeight : 0) +
+                  itemIndex * 2;
+                prevItemHeight = itemHeight;
+                let size = (subItem.value * 50) / props.maxDisbursementValue;
+                size = size < 6 ? 6 : size;
                 return (
                   <div
-                    key={item.name}
+                    key={subItem.name}
                     css={`
                       width: 100%;
-                      height: 50px;
+                      height: 100%;
                       position: absolute;
+                      // bottom: ${(props.datayears.length - index - 1) * 10}px;
                     `}
                   >
                     <div
@@ -214,62 +218,68 @@ export function GrantsViz() {
                     >
                       <div
                         css={`
-                          ${getCSSDirectionProperties(item.component)}
+                          bottom: 0;
+                          // left: -3px;
                           position: absolute;
+                          height: ${itemHeight}px;
                           transform-origin: bottom;
-                          transform: rotate(${calcRotate(item.component)});
-                          height: ${yearItemWidth *
-                          (item.years[1] - item.years[0])}px;
+                          transform: rotate(${-80 + itemIndex * 10}deg);
                         `}
                       >
                         <hr
                           css={`
                             margin: 0;
+                            z-index: 1;
+                            left: -1px;
                             height: 100%;
                             border-width: 1px;
                             position: absolute;
                             border-color: #13183f;
-                            border-style: none none none solid;
+                            border-style: none none none
+                              ${get(
+                                statusBorderStyle,
+                                subItem.status,
+                                statusBorderStyle["Administratively Closed"]
+                              )};
                           `}
                         />
                         <div
                           css={`
+                            z-index: 2;
                             height: 100%;
                             position: relative;
+
+                            * {
+                              z-index: 2;
+                            }
                           `}
                         >
                           <div
                             css={`
                               top: 0;
-                              left: -3px;
-                              width: 6px;
-                              height: 6px;
-                              border-radius: 50%;
-                              position: absolute;
-                              background: #495057;
-                            `}
-                          />
-                          <div
-                            css={`
-                              top: 6px;
-                              left: -10px;
-                              width: 20px;
-                              height: 20px;
+                              width: ${size}px;
                               background: #fff;
+                              height: ${size}px;
                               border-radius: 50%;
                               position: absolute;
+                              left: -${size / 2}px;
                               border: 1px solid #495057;
+                              background: ${get(
+                                ratingColor,
+                                subItem.rating,
+                                ratingColor.None
+                              )};
                             `}
                           />
                           <div
                             css={`
-                              bottom: 0;
-                              left: -1px;
+                              left: -2px;
                               width: 4px;
                               height: 4px;
                               border-radius: 50%;
                               position: absolute;
                               background: #495057;
+                              bottom: ${startHeight}px;
                             `}
                           />
                         </div>
@@ -277,7 +287,7 @@ export function GrantsViz() {
                     </div>
                   </div>
                 );
-              }
+              });
             })}
           </div>
         );
