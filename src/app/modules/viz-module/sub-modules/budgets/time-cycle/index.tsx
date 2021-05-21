@@ -12,47 +12,17 @@ import { DisbursementsTreemap } from "app/components/Charts/Investments/Disburse
 export function BudgetsTimeCycleModule() {
   useTitle("The Data Explorer - Budgets Time/Cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizScale, setVizScale] = React.useState(1);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
+  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
+    x: 0,
+    y: 0,
+  });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      const viz = document.getElementById("budgets-time-cycle");
-      if (viz) {
-        const svgs = viz.getElementsByTagName("svg");
-        if (svgs.length > 1) {
-          const pathElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-          );
-          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#FBAC1B");
-          pathElement.setAttribute("strokeWidth", "1");
-
-          const patternElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "pattern"
-          );
-          patternElement.setAttribute("id", "diagonalHatch");
-          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-          patternElement.setAttribute("width", "4");
-          patternElement.setAttribute("height", "4");
-          patternElement.appendChild(pathElement);
-
-          const defsElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "defs"
-          );
-          defsElement.appendChild(patternElement);
-
-          svgs[1].appendChild(defsElement);
-        }
-      }
-    }, 1000);
-  }, []);
+  const [vizPrevSelected, setVizPrevSelected] = React.useState<
+    string | undefined
+  >(undefined);
 
   return (
     <div
@@ -67,29 +37,47 @@ export function BudgetsTimeCycleModule() {
           : ""}
       `}
     >
-      <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
-        <BudgetsTimeCycle
-          data={mockdata}
-          selectedNodeId={vizSelected}
-          onNodeClick={(node: string, x: number, y: number) => {
-            setVizLevel(1);
-            setVizSelected(node);
-            setVizTranslation({ x: x * -1, y: 0 });
-          }}
-        />
+      <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
+        {(vizLevel === 0 || vizLevel === 1) && (
+          <BudgetsTimeCycle
+            data={mockdata}
+            selectedNodeId={vizSelected}
+            onNodeClick={(node: string, x: number, y: number) => {
+              setVizLevel(1);
+              setVizSelected(node);
+              setVizTranslation({ x: x * -1, y: 0 });
+            }}
+          />
+        )}
+        {vizLevel === 2 && (
+          <DisbursementsTreemap
+            data={mockdata2}
+            selectedNodeId={vizSelected}
+            onNodeClick={(node: string, x: number, y: number) => {}}
+          />
+        )}
       </TransitionContainer>
       <SlideInContainer
         vizLevel={vizLevel}
         selected={vizSelected}
         close={() => {
-          setVizLevel(0);
+          setVizLevel(vizLevel - 1);
           setVizSelected(undefined);
-          setVizTranslation({ x: 0, y: 0 });
+          setVizSelected(vizLevel === 1 ? undefined : vizPrevSelected);
+          setVizTranslation(
+            vizLevel === 1 ? { x: 0, y: 0 } : vizPrevTranslation
+          );
         }}
       >
         <DisbursementsTreemap
           data={mockdata2}
-          onNodeClick={(node: string, x: number, y: number) => {}}
+          onNodeClick={(node: string, x: number, y: number) => {
+            setVizLevel(2);
+            setVizPrevSelected(vizSelected);
+            setVizSelected(node);
+            setVizPrevTranslation(vizTranslation);
+            setVizTranslation({ x: x * -1, y: 0 });
+          }}
         />
       </SlideInContainer>
     </div>
