@@ -42,6 +42,25 @@ export function GeoMap(props: GeoMapProps) {
   const layerStyle: LayerProps = {
     type: "fill",
     paint: {
+      "fill-outline-color": {
+        property: "value",
+        default: "#ffffff",
+        stops: [
+          [0, "#C7CDD1"],
+          [1, "#ffffff"],
+          [2, "#ffffff"],
+          [3, "#ffffff"],
+          [4, "#ffffff"],
+          [5, "#ffffff"],
+          [6, "#ffffff"],
+          [7, "#ffffff"],
+          [8, "#ffffff"],
+          [9, "#ffffff"],
+          [10, "#ffffff"],
+          [11, "#ffffff"],
+          [12, "#ffffff"],
+        ],
+      },
       "fill-color": {
         property: "value",
         default: "transparent",
@@ -75,7 +94,8 @@ export function GeoMap(props: GeoMapProps) {
     setHoverInfo(
       hoveredFeature &&
         hoveredFeature.properties &&
-        hoveredFeature.properties.name
+        hoveredFeature.properties.name &&
+        hoveredFeature.properties.value > 0
         ? {
             properties: {
               ...hoveredFeature.properties,
@@ -94,7 +114,8 @@ export function GeoMap(props: GeoMapProps) {
     if (
       hoveredFeature &&
       hoveredFeature.properties &&
-      hoveredFeature.properties.iso_a3
+      hoveredFeature.properties.iso_a3 &&
+      hoveredFeature.properties.value > 0
     ) {
       history.push(`/location/${hoveredFeature.properties.iso_a3}/investments`);
     }
@@ -135,7 +156,7 @@ export function GeoMap(props: GeoMapProps) {
             position: absolute;
             background: #f5f5f7;
             border-radius: 20px;
-            top: ${hoverInfo.y + 10}px;
+            top: ${hoverInfo.y + 50}px;
             left: ${hoverInfo.x - 180}px;
           `}
         >
