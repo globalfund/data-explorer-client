@@ -9,7 +9,10 @@ import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import {
+  mockdata2,
+  DisbursementsTreemapDataItem,
+} from "app/components/Charts/Investments/Disbursements/data";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -20,9 +23,7 @@ export function InvestmentsDisbursedModule(
 ) {
   useTitle("The Data Explorer - Investments/Disbursed");
   const totalBudget = sumBy(props.data, "value");
-
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizScale, setVizScale] = React.useState(1);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
@@ -73,10 +74,7 @@ export function InvestmentsDisbursedModule(
             : ""}
         `}
       >
-        <TransitionContainer
-          vizScale={vizScale}
-          vizTranslation={vizTranslation}
-        >
+        <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
           <DisbursementsTreemap
             data={props.data}
             selectedNodeId={vizSelected}
@@ -96,7 +94,10 @@ export function InvestmentsDisbursedModule(
             setVizTranslation({ x: 0, y: 0 });
           }}
         >
-          <div>hello world</div>
+          <DisbursementsTreemap
+            data={mockdata2}
+            onNodeClick={(node: string, x: number, y: number) => {}}
+          />
         </SlideInContainer>
       </div>
     </React.Fragment>
