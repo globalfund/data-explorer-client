@@ -37,6 +37,27 @@ export function ScatterPlot() {
   const [hoveredLegend, setHoveredLegend] = React.useState<
     "Eligible" | "Not Eligible" | "Transition Funding" | null
   >(null);
+  const [hoveredBurdenLegend, setHoveredBurdenLegend] = React.useState<
+    | "Extreme"
+    | "Severe"
+    | "High"
+    | "Not High"
+    | "Moderate"
+    | "Low"
+    | "None"
+    | null
+  >(null);
+  const [hoveredIncomeLegend, setHoveredIncomeLegend] = React.useState<
+    | "None"
+    | "Low"
+    | "Low income"
+    | "Lower-Lower middle income"
+    | "Lower middle income"
+    | "Upper-Lower middle income"
+    | "Upper middle income"
+    | "High income"
+    | null
+  >(null);
   const showExtraData = useStoreState(
     (state) => state.ToolBoxPanelEligibilityAdvancedCheckboxState.value
   );
@@ -55,6 +76,9 @@ export function ScatterPlot() {
           hovered={hoveredNode}
           onHover={setHoveredNode}
           showExtraData={showExtraData}
+          hoveredEligibilityLegend={hoveredLegend}
+          hoveredBurdenLegend={hoveredBurdenLegend}
+          hoveredIncomeLegend={hoveredIncomeLegend}
         />
       );
     });
@@ -358,13 +382,76 @@ export function ScatterPlot() {
                   }
                 `}
               >
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
-                <span />
+                <span
+                  css={`
+                    opacity: ${!hoveredBurdenLegend ||
+                    hoveredBurdenLegend === diseaseBurdens[6]
+                      ? 1
+                      : 0.3};
+                  `}
+                  onMouseEnter={() => setHoveredBurdenLegend(diseaseBurdens[6])}
+                  onMouseLeave={() => setHoveredBurdenLegend(null)}
+                />
+                <span
+                  css={`
+                    opacity: ${!hoveredBurdenLegend ||
+                    hoveredBurdenLegend === diseaseBurdens[5]
+                      ? 1
+                      : 0.3};
+                  `}
+                  onMouseEnter={() => setHoveredBurdenLegend(diseaseBurdens[5])}
+                  onMouseLeave={() => setHoveredBurdenLegend(null)}
+                />
+                <span
+                  css={`
+                    opacity: ${!hoveredBurdenLegend ||
+                    hoveredBurdenLegend === diseaseBurdens[4]
+                      ? 1
+                      : 0.3};
+                  `}
+                  onMouseEnter={() => setHoveredBurdenLegend(diseaseBurdens[4])}
+                  onMouseLeave={() => setHoveredBurdenLegend(null)}
+                />
+                <span
+                  css={`
+                    opacity: ${!hoveredBurdenLegend ||
+                    hoveredBurdenLegend === diseaseBurdens[3]
+                      ? 1
+                      : 0.3};
+                  `}
+                  onMouseEnter={() => setHoveredBurdenLegend(diseaseBurdens[3])}
+                  onMouseLeave={() => setHoveredBurdenLegend(null)}
+                />
+                <span
+                  css={`
+                    opacity: ${!hoveredBurdenLegend ||
+                    hoveredBurdenLegend === diseaseBurdens[2]
+                      ? 1
+                      : 0.3};
+                  `}
+                  onMouseEnter={() => setHoveredBurdenLegend(diseaseBurdens[2])}
+                  onMouseLeave={() => setHoveredBurdenLegend(null)}
+                />
+                <span
+                  css={`
+                    opacity: ${!hoveredBurdenLegend ||
+                    hoveredBurdenLegend === diseaseBurdens[1]
+                      ? 1
+                      : 0.3};
+                  `}
+                  onMouseEnter={() => setHoveredBurdenLegend(diseaseBurdens[1])}
+                  onMouseLeave={() => setHoveredBurdenLegend(null)}
+                />
+                <span
+                  css={`
+                    opacity: ${!hoveredBurdenLegend ||
+                    hoveredBurdenLegend === diseaseBurdens[0]
+                      ? 1
+                      : 0.3};
+                  `}
+                  onMouseEnter={() => setHoveredBurdenLegend(diseaseBurdens[0])}
+                  onMouseLeave={() => setHoveredBurdenLegend(null)}
+                />
               </div>
               <div
                 css={`
@@ -447,13 +534,76 @@ export function ScatterPlot() {
                     }
                   `}
                 >
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                  <span />
+                  <span
+                    css={`
+                      opacity: ${!hoveredIncomeLegend ||
+                      hoveredIncomeLegend === incomeLevels[0]
+                        ? 1
+                        : 0.3};
+                    `}
+                    onMouseEnter={() => setHoveredIncomeLegend(incomeLevels[0])}
+                    onMouseLeave={() => setHoveredIncomeLegend(null)}
+                  />
+                  <span
+                    css={`
+                      opacity: ${!hoveredIncomeLegend ||
+                      hoveredIncomeLegend === incomeLevels[1]
+                        ? 1
+                        : 0.3};
+                    `}
+                    onMouseEnter={() => setHoveredIncomeLegend(incomeLevels[1])}
+                    onMouseLeave={() => setHoveredIncomeLegend(null)}
+                  />
+                  <span
+                    css={`
+                      opacity: ${!hoveredIncomeLegend ||
+                      hoveredIncomeLegend === incomeLevels[2]
+                        ? 1
+                        : 0.3};
+                    `}
+                    onMouseEnter={() => setHoveredIncomeLegend(incomeLevels[2])}
+                    onMouseLeave={() => setHoveredIncomeLegend(null)}
+                  />
+                  <span
+                    css={`
+                      opacity: ${!hoveredIncomeLegend ||
+                      hoveredIncomeLegend === incomeLevels[3]
+                        ? 1
+                        : 0.3};
+                    `}
+                    onMouseEnter={() => setHoveredIncomeLegend(incomeLevels[3])}
+                    onMouseLeave={() => setHoveredIncomeLegend(null)}
+                  />
+                  <span
+                    css={`
+                      opacity: ${!hoveredIncomeLegend ||
+                      hoveredIncomeLegend === incomeLevels[4]
+                        ? 1
+                        : 0.3};
+                    `}
+                    onMouseEnter={() => setHoveredIncomeLegend(incomeLevels[4])}
+                    onMouseLeave={() => setHoveredIncomeLegend(null)}
+                  />
+                  <span
+                    css={`
+                      opacity: ${!hoveredIncomeLegend ||
+                      hoveredIncomeLegend === incomeLevels[5]
+                        ? 1
+                        : 0.3};
+                    `}
+                    onMouseEnter={() => setHoveredIncomeLegend(incomeLevels[5])}
+                    onMouseLeave={() => setHoveredIncomeLegend(null)}
+                  />
+                  <span
+                    css={`
+                      opacity: ${!hoveredIncomeLegend ||
+                      hoveredIncomeLegend === incomeLevels[6]
+                        ? 1
+                        : 0.3};
+                    `}
+                    onMouseEnter={() => setHoveredIncomeLegend(incomeLevels[6])}
+                    onMouseLeave={() => setHoveredIncomeLegend(null)}
+                  />
                 </div>
               </div>
             </div>
