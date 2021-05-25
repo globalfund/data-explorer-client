@@ -161,7 +161,10 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
               />
               {props.data.disaggregations.map(
                 (disaggregation: PFIndicatorResultDisaggregationGroup) => (
-                  <AggregationRow {...disaggregation} />
+                  <AggregationRow
+                    key={disaggregation.name}
+                    {...disaggregation}
+                  />
                 )
               )}
             </React.Fragment>
@@ -219,7 +222,7 @@ function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
                 <div>
                   <div>Baseline</div>
                   <br />
-                  <div>
+                  <div css="width: fit-content;">
                     {value.baseline.numerator || value.baseline.denominator ? (
                       <React.Fragment>
                         {value.baseline.numerator}
@@ -234,7 +237,7 @@ function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
                 <div>
                   <div>Reported</div>
                   <br />
-                  <div>
+                  <div css="width: fit-content;">
                     {value.reported.numerator || value.reported.denominator ? (
                       <React.Fragment>
                         {value.reported.numerator}

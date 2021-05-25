@@ -5,6 +5,7 @@ import {
   PFIndicatorResult,
 } from "app/components/PerformanceFrameworkExpandedView/data";
 import { IndicatorToolTip } from "app/components/PerformanceFrameworkExpandedView/components/ToolTip";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 
 const styles = {
   table: css`
@@ -55,8 +56,12 @@ export function ResultsTable(props: ResultsTableProps) {
           </tr>
         </thead>
         <tbody css={styles.tablebody}>
-          {props.results.map((result: PFIndicatorResult) => (
-            <ResultsTableRow key={result.period} {...result} />
+          {props.results.map((result: PFIndicatorResult, index: number) => (
+            <ResultsTableRow
+              key={result.period}
+              selected={index === 1}
+              {...result}
+            />
           ))}
         </tbody>
       </table>
@@ -64,7 +69,9 @@ export function ResultsTable(props: ResultsTableProps) {
   );
 }
 
-interface ResultsTableRowProps extends PFIndicatorResult {}
+interface ResultsTableRowProps extends PFIndicatorResult {
+  selected: boolean;
+}
 
 function ResultsTableRow(props: ResultsTableRowProps) {
   const [showTooltip, setShowTooltip] = React.useState(false);
@@ -84,15 +91,30 @@ function ResultsTableRow(props: ResultsTableRowProps) {
             align-items: center;
           `}
         >
-          {props.achievementRate}{" "}
+          {props.achievementRate}
           <div
             css={`
-              width: 12px;
-              height: 12px;
-              border-radius: 50%;
-              background: ${props.color};
+              gap: 10px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+
+              > svg {
+                transform: rotate(90deg);
+                visibility: ${props.selected ? "visible" : "hidden"};
+              }
             `}
-          />
+          >
+            <TriangleXSIcon />
+            <div
+              css={`
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: ${props.color};
+              `}
+            />
+          </div>
         </div>
       </td>
       <td>{props.period}</td>
