@@ -14,6 +14,7 @@ import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/c
 import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
 import { ToolBoxPanelFilters } from "./components/filters";
 import { ToolBoxPanelEligibilityAdvanced } from "./components/eligibilityadvanced";
+import { PerformanceFrameworkReportingPeriods } from "./components/pf-reportingperiods";
 
 interface ToolBoxPanelProps {
   open: boolean;
@@ -206,6 +207,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 {params.code && params.vizType === "eligibility" && (
                   <ToolBoxPanelEligibilityAdvanced />
                 )}
+                {/* {params.code && params.vizType === "performance-framework" && (
+                  <PerformanceFrameworkReportingPeriods />
+                )} */}
               </React.Fragment>
             )}
             {selectedTab === "Filters" && (

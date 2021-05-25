@@ -1896,6 +1896,17 @@
   dependencies:
     lodash "^4.17.11"
 
+"@nivo/network@^0.69.0":
+  version "0.69.0"
+  resolved "https://registry.yarnpkg.com/@nivo/network/-/network-0.69.0.tgz#6793a5529687d4febd3a725e42739fdd8fc621e1"
+  integrity sha512-+q/dm8uDlDXUsEe8Bsa5gqJ9gh/3be3O3IhAYcCh/AwgOQWky/OU92nkumctsSvHR64ym0sh3NUkkGZUYlkkpQ==
+  dependencies:
+    "@nivo/colors" "0.69.0"
+    "@nivo/tooltip" "0.69.0"
+    d3-force "^2.0.1"
+    lodash "^4.17.11"
+    react-motion "^0.5.2"
+
 "@nivo/sankey@^0.68.0":
   version "0.68.0"
   resolved "https://registry.yarnpkg.com/@nivo/sankey/-/sankey-0.68.0.tgz#dc272954735116e294fb25600628e081cd7bcde5"
@@ -5212,6 +5223,20 @@ d3-delaunay@^5.3.0:
   dependencies:
     delaunator "4"
 
+"d3-dispatch@1 - 2":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-dispatch/-/d3-dispatch-2.0.0.tgz#8a18e16f76dd3fcaef42163c97b926aa9b55e7cf"
+  integrity sha512-S/m2VsXI7gAti2pBoLClFFTMOO1HTtT0j99AuXLoGFKO6deHDdnv6ZGTxSTTUTgO1zVcv82fCOtDjYK4EECmWA==
+
+d3-force@^2.0.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/d3-force/-/d3-force-2.1.1.tgz#f20ccbf1e6c9e80add1926f09b51f686a8bc0937"
+  integrity sha512-nAuHEzBqMvpFVMf9OX75d00OxvOXdxY+xECIXjW6Gv8BRrXu6gAWbv/9XKrvfJ5i5DCokDW7RYE50LRoK092ew==
+  dependencies:
+    d3-dispatch "1 - 2"
+    d3-quadtree "1 - 2"
+    d3-timer "1 - 2"
+
 "d3-format@1 - 2":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/d3-format/-/d3-format-2.0.0.tgz#a10bcc0f986c372b729ba447382413aabf5b0767"
@@ -5238,6 +5263,11 @@ d3-path@1:
   version "1.0.9"
   resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.9.tgz#48c050bb1fe8c262493a8caf5524e3e9591701cf"
   integrity sha512-VLaYcn81dtHVTjEHd8B+pbe9yHWpXKZUC87PzoFmsFrJqgFwDe/qxfp5MlfsfM1V5E/iVt0MmEbWQ7FVIXh/bg==
+
+"d3-quadtree@1 - 2":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-quadtree/-/d3-quadtree-2.0.0.tgz#edbad045cef88701f6fee3aee8e93fb332d30f9d"
+  integrity sha512-b0Ed2t1UUalJpc3qXzKi+cPGxeXRr4KU9YSlocN74aTzp6R/Ud43t79yLLqxHRWZfsvWXmbDWPpoENK1K539xw==
 
 d3-sankey@^0.12.1:
   version "0.12.3"
@@ -5298,6 +5328,11 @@ d3-time@1, d3-time@^1.0.11:
   integrity sha512-/eIQe/eR4kCQwq7yxi7z4c6qEXf2IYGcjoWB5OOQy4Tq9Uv39/947qlDcN2TLkiTzQWzvnsuYPB9TrWaNfipKQ==
   dependencies:
     d3-array "2"
+
+"d3-timer@1 - 2":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/d3-timer/-/d3-timer-2.0.0.tgz#055edb1d170cfe31ab2da8968deee940b56623e6"
+  integrity sha512-TO4VLh0/420Y/9dO3+f9abDEFYeCUr2WZRlxJvbp4HPTQcSylXNiL6yZa9FIUvV1yRiFufl1bszTCLDqv9PWNA==
 
 d@1, d@^1.0.1:
   version "1.0.1"
