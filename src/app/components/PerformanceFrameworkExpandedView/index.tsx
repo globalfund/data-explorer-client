@@ -2,7 +2,12 @@ import React from "react";
 import { css } from "styled-components/macro";
 import { ResultsTable } from "app/components/PerformanceFrameworkExpandedView/components/ResultsTable";
 import { ArrowSelector } from "app/components/PerformanceFrameworkExpandedView/components/ArrowSelector";
-import { InterventionsTable } from "./components/InterventionsTable";
+import { InterventionsTable } from "app/components/PerformanceFrameworkExpandedView/components/InterventionsTable";
+import {
+  PerformanceFrameworkExpandedViewProps,
+  PFIndicator,
+  PFIndicatorResultIntervention,
+} from "app/components/PerformanceFrameworkExpandedView/data";
 
 const styles = {
   container: css`
@@ -73,7 +78,9 @@ const styles = {
   `,
 };
 
-export function PerformanceFrameworkExpandedView() {
+export function PerformanceFrameworkExpandedView(
+  props: PerformanceFrameworkExpandedViewProps
+) {
   const [tab, setTab] = React.useState(0);
 
   return (
@@ -98,13 +105,18 @@ export function PerformanceFrameworkExpandedView() {
       </div>
       {tab === 0 && (
         <React.Fragment>
-          <ResultsTable />
-          <ResultsTable />
+          {props.indicators.map((indicator: PFIndicator) => (
+            <ResultsTable key={indicator.name} {...indicator} />
+          ))}
         </React.Fragment>
       )}
       {tab === 1 && (
         <React.Fragment>
-          <InterventionsTable />
+          {props.interventions.map(
+            (intervention: PFIndicatorResultIntervention) => (
+              <InterventionsTable key={intervention.name} {...intervention} />
+            )
+          )}
         </React.Fragment>
       )}
     </div>

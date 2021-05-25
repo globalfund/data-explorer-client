@@ -1,5 +1,10 @@
 import React from "react";
 import { css } from "styled-components/macro";
+import {
+  PFIndicatorResult,
+  PFIndicatorResultIntervention,
+  PFIndicatorResultInterventionValue,
+} from "../../data";
 
 const styles = {
   table: css`
@@ -26,14 +31,14 @@ const styles = {
   `,
 };
 
-export function InterventionsTable() {
+export function InterventionsTable(props: PFIndicatorResultIntervention) {
   return (
     <div
       css={`
         font-size: 12px;
       `}
     >
-      <b>Service delivery infrastructure</b>
+      <b>{props.name}</b>
       <table css={styles.table}>
         <thead css={styles.tablehead}>
           <tr>
@@ -43,17 +48,13 @@ export function InterventionsTable() {
           </tr>
         </thead>
         <tbody css={styles.tablebody}>
-          <tr>
-            <td>
-              Contracts for the work and supervision of the refurbishmentof the
-              national reference laboratory (LNR)
-            </td>
-            <td></td>
-            <td>
-              Tender for works and supervision of the refurbishment of the
-              national reference laboratory (LNR)
-            </td>
-          </tr>
+          {props.values.map((value: PFIndicatorResultInterventionValue) => (
+            <tr key={value.name}>
+              <td>{value.name}</td>
+              <td>{value.achievementRate}</td>
+              <td>{value.valueText}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
     </div>

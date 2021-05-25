@@ -5,6 +5,11 @@ import Tooltip from "@material-ui/core/Tooltip";
 import CloseIcon from "@material-ui/icons/Close";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import {
+  PFIndicatorResult,
+  PFIndicatorResultDisaggregation,
+  PFIndicatorResultDisaggregationGroup,
+} from "app/components/PerformanceFrameworkExpandedView/data";
 
 const styles = {
   container: (showAggrs: boolean) => css`
@@ -107,6 +112,7 @@ const styles = {
 interface IndicatorToolTipProps {
   show: boolean;
   close: () => void;
+  data: PFIndicatorResult;
   children: React.ReactElement;
 }
 
@@ -123,20 +129,20 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
             <React.Fragment>
               <div css={styles.header}>
                 <div>
-                  <b>Reporting period: 01-01-2019 : 01-01-2020</b>
+                  <b>Reporting period: {props.data.period}</b>
                 </div>
                 <IconButton size="small" onClick={() => props.close()}>
                   <CloseIcon />
                 </IconButton>
               </div>
               <div>
-                <b>Is Indicator reversed?</b>: No
+                <b>Is Indicator reversed?</b>: {props.data.isReversed}
               </div>
               <div>
-                <b>Aggregation type</b>: Non cumulative
+                <b>Aggregation type</b>: {props.data.aggregationType}
               </div>
               <div>
-                <b>Coverage</b>: National
+                <b>Coverage</b>: {props.data.coverage}
               </div>
               <div
                 css={`
@@ -153,22 +159,27 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
                   height: 20px;
                 `}
               />
-              <AggregationRow />
-              <AggregationRow />
+              {props.data.disaggregations.map(
+                (disaggregation: PFIndicatorResultDisaggregationGroup) => (
+                  <AggregationRow {...disaggregation} />
+                )
+              )}
             </React.Fragment>
           )}
-          <div
-            css={styles.bottombtn(showAggrs)}
-            onClick={() => setShowAggrs(!showAggrs)}
-          >
-            <TriangleXSIcon />
-            <div>{showAggrs ? "Back" : "See Disaggregations"}</div>
-            {showAggrs && (
-              <IconButton size="small" onClick={() => props.close()}>
-                <CloseIcon />
-              </IconButton>
-            )}
-          </div>
+          {props.data.disaggregations.length > 0 && (
+            <div
+              css={styles.bottombtn(showAggrs)}
+              onClick={() => setShowAggrs(!showAggrs)}
+            >
+              <TriangleXSIcon />
+              <div>{showAggrs ? "Back" : "See Disaggregations"}</div>
+              {showAggrs && (
+                <IconButton size="small" onClick={() => props.close()}>
+                  <CloseIcon />
+                </IconButton>
+              )}
+            </div>
+          )}
         </div>
       }
       open={props.show}
@@ -178,7 +189,7 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
   );
 }
 
-function AggregationRow() {
+function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
   const [showDetails, setShowDetails] = React.useState(false);
 
   return (
@@ -193,34 +204,52 @@ function AggregationRow() {
         >
           <ArrowForwardIcon />
         </IconButton>
-        <div>Aggregation</div>
+        <div>{props.name}</div>
       </div>
       {showDetails && (
         <React.Fragment>
-          <div>
-            <div>
-              <div>Category</div>
-              <br />
-              <div>{"<"}15</div>
-            </div>
-            <div>
-              <div>Baseline</div>
-              <br />
+          {props.values.map((value: PFIndicatorResultDisaggregation) => (
+            <React.Fragment key={value.category}>
               <div>
-                111
-                <hr />0
+                <div>
+                  <div>Category</div>
+                  <br />
+                  <div>{value.category}</div>
+                </div>
+                <div>
+                  <div>Baseline</div>
+                  <br />
+                  <div>
+                    {value.baseline.numerator || value.baseline.denominator ? (
+                      <React.Fragment>
+                        {value.baseline.numerator}
+                        <hr />
+                        {value.baseline.denominator}
+                      </React.Fragment>
+                    ) : (
+                      value.baseline.percentage
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <div>Reported</div>
+                  <br />
+                  <div>
+                    {value.reported.numerator || value.reported.denominator ? (
+                      <React.Fragment>
+                        {value.reported.numerator}
+                        <hr />
+                        {value.reported.denominator}
+                      </React.Fragment>
+                    ) : (
+                      value.reported.percentage
+                    )}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div>
-              <div>Reported</div>
-              <br />
-              <div>
-                111
-                <hr />0
-              </div>
-            </div>
-          </div>
-          <hr />
+              <hr />
+            </React.Fragment>
+          ))}
         </React.Fragment>
       )}
     </div>
