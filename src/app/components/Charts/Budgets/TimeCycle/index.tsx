@@ -170,6 +170,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
                   cursor: pointer;
                   align-items: center;
                   flex-direction: row;
+                  transition: opacity 0.2s ease-in-out;
                   opacity: ${!hoveredLegend || hoveredLegend === legend.name
                     ? 1
                     : 0.3};

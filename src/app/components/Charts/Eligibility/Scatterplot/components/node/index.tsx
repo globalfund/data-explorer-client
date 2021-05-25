@@ -85,6 +85,7 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
     <g
       css={`
         opacity: ${opacity};
+        transition: opacity 0.2s ease-in-out;
       `}
     >
       {props.showExtraData && (
