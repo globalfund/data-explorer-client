@@ -352,56 +352,56 @@ export const mockdata: EligibilityScatterplotDataModel[] = [
       {
         x: 2003,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2004,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2005,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2006,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2007,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2008,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2009,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2010,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
@@ -416,7 +416,7 @@ export const mockdata: EligibilityScatterplotDataModel[] = [
       {
         x: 2012,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
@@ -455,35 +455,35 @@ export const mockdata: EligibilityScatterplotDataModel[] = [
       {
         x: 2017,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2018,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2019,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2020,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
       {
         x: 2021,
         diseaseBurden: 0,
-        incomeLevel: -1,
+        incomeLevel: 0,
         eligibility: "Not Eligible",
         y: "RSSH",
       },
@@ -660,17 +660,26 @@ export const mockdata: EligibilityScatterplotDataModel[] = [
   },
 ];
 
-export const diseaseBurdens = [
-  "None",
-  "Low",
-  "Moderate",
-  "Not High",
-  "High",
-  "Severe",
-  "Extreme",
-];
+export const diseaseBurdens: (
+  | "Extreme"
+  | "Severe"
+  | "High"
+  | "Not High"
+  | "Moderate"
+  | "Low"
+  | "None"
+)[] = ["None", "Low", "Moderate", "Not High", "High", "Severe", "Extreme"];
 
-export const incomeLevels = [
+export const incomeLevels: (
+  | "None"
+  | "Low"
+  | "Low income"
+  | "Lower-Lower middle income"
+  | "Lower middle income"
+  | "Upper-Lower middle income"
+  | "Upper middle income"
+  | "High income"
+)[] = [
   "None",
   "Low income",
   "Lower-Lower middle income",

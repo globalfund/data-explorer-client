@@ -12,11 +12,11 @@ interface SlideInContainerProps {
 
 export function SlideInContainer(props: SlideInContainerProps) {
   const [open, setOpen] = React.useState(
-    props.vizLevel === 1 && props.selected !== undefined
+    props.vizLevel > 0 && props.selected !== undefined
   );
 
   React.useEffect(() => {
-    const tmp = props.vizLevel === 1 && props.selected !== undefined;
+    const tmp = props.vizLevel > 0 && props.selected !== undefined;
     if (open !== tmp) {
       setOpen(tmp);
     }

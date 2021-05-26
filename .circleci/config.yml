@@ -1,0 +1,104 @@
+# orbs:
+#   cypress: cypress-io/cypress@1
+#   happo: happo/happo@2.0.1
+
+version: 2.1
+
+# have a look at https://circleci.com/orbs/registry/orb/germade/rsync
+# executors:
+#   cypress-executor:
+#     docker:
+#       - image: "cypress/included:5.5.0"
+#     resource_class: large
+
+#   cypress-executor-med:
+#     docker:
+#       - image: "cypress/included:5.5.0"
+#     resource_class: medium
+
+jobs:
+  # deploy:
+  #   docker:
+  #     - image: instrumentisto/rsync-ssh
+  #   resource_class: large
+  #   working_directory: ~/project
+  #   steps:
+  #     - attach_workspace:
+  #         at: ~/
+  #     - run: eval ssh-agent -s
+  #     - run: ssh -o StrictHostKeyChecking=no "$SSH_USER"@"$SSH_HOST" exit
+  #     - run:
+  #         name: Transfer build to digital ocean instance
+  #         command: |
+  #           if [ "${CIRCLE_BRANCH}" == "main" ]; then
+  #             rsync -O -ave ssh ~/project/build "$SSH_USER"@"$SSH_HOST":~/staging
+  #           elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
+  #             rsync -O -ave ssh ~/project/build "$SSH_USER"@"$SSH_HOST":~/test
+  #           else
+  #             rsync -O -ave ssh ~/project/build "$SSH_USER"@"$SSH_HOST":~/dev
+  #           fi
+
+  release:
+    docker:
+      - image: circleci/node:12.14.1-stretch-browsers
+    working_directory: ~/project
+    steps:
+      - checkout
+      - run:
+          name: Semantic release
+          no_output_timeout: 30m
+          command: npx semantic-release
+
+workflows:
+  build-and-deploy:
+    jobs:
+      # - happo
+      # - cypress/install:
+      #     executor: cypress-executor
+      #     pre-steps:
+      #       - run:
+      #           name: Set env variables
+      #           command: |
+      #             if [ "${CIRCLE_BRANCH}" == "master" ]; then
+      #               echo 'export REACT_APP_PROJECT_URL="$STAGING_URL"' >> $BASH_ENV
+      #               echo 'export REACT_APP_API="$STAGING_API"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH_API="$STAGING_AUTH_API"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_DOMAIN="$STAGING_AUTH0_DOMAIN"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_CLIENT="$STAGING_AUTH0_CLIENT"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_AUDIENCE="$STAGING_AUTH0_AUDIENCE"' >> $BASH_ENV
+      #               echo 'export REACT_APP_CYPRESS_baseUrl="$STAGING_URL"' >> $BASH_ENV
+      #             elif [ "${CIRCLE_BRANCH}" == "develop" ]; then
+      #               echo 'export REACT_APP_PROJECT_URL="$TEST_URL"' >> $BASH_ENV
+      #               echo 'export REACT_APP_API="$STAGING_API"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH_API="$STAGING_AUTH_API"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_DOMAIN="$STAGING_AUTH0_DOMAIN"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_CLIENT="$STAGING_AUTH0_CLIENT"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_AUDIENCE="$STAGING_AUTH0_AUDIENCE"' >> $BASH_ENV
+      #               echo 'export REACT_APP_CYPRESS_baseUrl="$TEST_URL"' >> $BASH_ENV
+      #             else
+      #               echo 'export REACT_APP_PROJECT_URL="$DEV_URL"' >> $BASH_ENV
+      #               echo 'export REACT_APP_API="$STAGING_API"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH_API="$STAGING_AUTH_API"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_DOMAIN="$STAGING_AUTH0_DOMAIN"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_CLIENT="$STAGING_AUTH0_CLIENT"' >> $BASH_ENV
+      #               echo 'export REACT_APP_AUTH0_AUDIENCE="$STAGING_AUTH0_AUDIENCE"' >> $BASH_ENV
+      #               echo 'export REACT_APP_CYPRESS_baseUrl="$DEV_URL"' >> $BASH_ENV
+      #             fi
+      #             source $BASH_ENV
+      #     post-steps:
+      #       - run:
+      #           name: happo
+      #           command: npm run happo-ci-circleci
+      #     yarn: true
+      #     build: yarn build
+      # - deploy:
+      #     requires:
+      #       - cypress/install
+      - release:
+          # requires:
+          #   - deploy
+          filters:
+            branches:
+              only:
+                - master
+                - develop

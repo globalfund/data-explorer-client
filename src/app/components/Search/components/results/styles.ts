@@ -62,6 +62,7 @@ export const result = css`
   width: 100%;
   display: flex;
   flex-direction: row;
+  text-decoration: none;
   padding: 10px 40px 10px 55px;
   border-top: 1px solid #dfe3e6;
 

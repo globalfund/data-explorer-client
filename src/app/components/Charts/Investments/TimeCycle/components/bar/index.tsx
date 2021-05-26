@@ -20,7 +20,7 @@ export function BarComponent(props: any) {
     const height = (item.value / props.data.value) * props.height;
     const localPrevY = prevY;
     prevY += height;
-    let nodecss = "cursor: pointer;";
+    let nodecss = "cursor: pointer;transition: opacity 0.2s ease-in-out;";
     if (props.selected === props.data.indexValue) {
       nodecss += "z-index: 2;fill: url(#diagonalHatch);";
     } else if (

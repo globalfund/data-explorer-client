@@ -27,6 +27,7 @@ export const buttonrow = (position: "up" | "down") => css`
   padding: 16px 20px;
   flex-direction: row;
   align-items: center;
+  transition: background 0.2s ease-in-out;
   color: ${position === "up" ? "#fff" : "#495057"};
   background: ${position === "up" ? "#495057" : "transparent"};
   border-${position === "up" ? "bottom" : "top"}: 1px solid #c7cdd1;

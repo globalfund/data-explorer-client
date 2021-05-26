@@ -13,6 +13,7 @@ const containercss = (hover: boolean, selected: boolean) => css`
   box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
+  transition: background 0.2s ease-in-out;
 
   ${selected
     ? `

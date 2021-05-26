@@ -1,8 +1,8 @@
 import React from "react";
 import { FeatureCollection } from "geojson";
 import { GeoMap } from "app/components/Charts/GeoMap";
-import { getRandomCountryData } from "app/components/Charts/GeoMap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { getRandomCountryData } from "app/components/Charts/GeoMap/data";
 
 export function InvestmentsGeoMap() {
   const [data, setData] = React.useState<FeatureCollection>({

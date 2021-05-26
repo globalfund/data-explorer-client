@@ -96,6 +96,7 @@ export function DotChart(props: DotChartProps) {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+                transition: opacity 0.2s ease-in-out;
                 opacity: ${!hoveredLegend || hoveredLegend === "Eligible"
                   ? 1
                   : 0.3};
@@ -119,6 +120,7 @@ export function DotChart(props: DotChartProps) {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+                transition: opacity 0.2s ease-in-out;
                 opacity: ${!hoveredLegend || hoveredLegend === "Not Eligible"
                   ? 1
                   : 0.3};
@@ -142,6 +144,7 @@ export function DotChart(props: DotChartProps) {
                 display: flex;
                 flex-direction: row;
                 align-items: center;
+                transition: opacity 0.2s ease-in-out;
                 opacity: ${!hoveredLegend ||
                 hoveredLegend === "Transition Funding"
                   ? 1
@@ -302,10 +305,11 @@ export function DotChart(props: DotChartProps) {
                             height: 8px;
                             border-radius: 50%;
                             ${styles[item.status]}
+                            transition: opacity 0.2s ease-in-out;
                             opacity: ${!hoveredLegend ||
                             hoveredLegend === item.status
                               ? 1
-                              : 0.3}
+                              : 0.3};
                           `}
                           key={item.name + index}
                           onMouseEnter={() => setHoveredNode(item)}
@@ -353,10 +357,11 @@ export function DotChart(props: DotChartProps) {
                             height: 8px;
                             border-radius: 50%;
                             ${styles[item.status]}
+                            transition: opacity 0.2s ease-in-out;
                             opacity: ${!hoveredLegend ||
                             hoveredLegend === item.status
                               ? 1
-                              : 0.3}
+                              : 0.3};
                           `}
                           key={item.name + index}
                           onMouseEnter={() => setHoveredNode(item)}

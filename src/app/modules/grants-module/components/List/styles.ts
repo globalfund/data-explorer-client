@@ -8,6 +8,7 @@ export const listitem = css`
   border-radius: 20px;
   text-decoration: none;
   flex-direction: column;
+  transition: background-color 0.2s ease-in-out;
 
   &:hover {
     cursor: pointer;

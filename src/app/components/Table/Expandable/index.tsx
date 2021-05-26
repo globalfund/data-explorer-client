@@ -43,6 +43,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
         }}
         css={`
           background: #f5f5f7;
+          transition: background 0.2s ease-in-out;
 
           ${row.link || props.row.docCategories || props.row.docs
             ? `
@@ -59,7 +60,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
             }
           }
           `
-            : ""}
+            : ""};
         `}
       >
         <TableCell

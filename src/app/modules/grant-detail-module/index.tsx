@@ -7,6 +7,8 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { DocumentsSubModule } from "app/modules/common/documents";
 import { InformationPanel } from "app/components/InformationPanel";
+import { mockdata } from "app/components/Charts/PerformanceRating/data";
+import { PerformanceRating } from "app/components/Charts/PerformanceRating";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
@@ -14,8 +16,7 @@ import { GrantInfoContent } from "app/modules/grant-detail-module/components/Inf
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
-import { PerformanceRating } from "app/components/Charts/PerformanceRating";
-import { mockdata } from "app/components/Charts/PerformanceRating/data";
+import { PerformanceFrameworkModule } from "app/modules/grant-detail-module/components/sub-modules/performance-framework";
 
 export default function GrantDetail() {
   const params = useParams<{ code: string; vizType: string }>();
@@ -126,6 +127,9 @@ export default function GrantDetail() {
         </Route>
         <Route path={`/grant/${params.code}/documents`}>
           <DocumentsSubModule />
+        </Route>
+        <Route path={`/grant/${params.code}/performance-framework`}>
+          <PerformanceFrameworkModule />
         </Route>
       </Switch>
       <InformationPanel

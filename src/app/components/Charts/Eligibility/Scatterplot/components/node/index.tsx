@@ -1,8 +1,10 @@
 import React from "react";
 import useMousePosition from "app/hooks/useMousePosition";
 import {
+  diseaseBurdens,
   EligibilityScatterplotHoveredNode,
   EligibilityScatterplotDataItemModel,
+  incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 
 interface ScatterplotNodeProps {
@@ -13,6 +15,30 @@ interface ScatterplotNodeProps {
   data: EligibilityScatterplotDataItemModel;
   hovered: EligibilityScatterplotHoveredNode | null;
   onHover: (value: EligibilityScatterplotHoveredNode | null) => void;
+  hoveredEligibilityLegend:
+    | "Eligible"
+    | "Not Eligible"
+    | "Transition Funding"
+    | null;
+  hoveredBurdenLegend:
+    | "Extreme"
+    | "Severe"
+    | "High"
+    | "Not High"
+    | "Moderate"
+    | "Low"
+    | "None"
+    | null;
+  hoveredIncomeLegend:
+    | "None"
+    | "Low"
+    | "Low income"
+    | "Lower-Lower middle income"
+    | "Lower middle income"
+    | "Upper-Lower middle income"
+    | "Upper middle income"
+    | "High income"
+    | null;
 }
 
 const nodeColor = {
@@ -30,6 +56,7 @@ const nodeBorder = {
 export const backCircleRadius = [23, 38, 53, 68, 83, 97, 112];
 
 const backCircleColor = [
+  "transparent",
   "#70777E",
   "#98A1AA",
   "#C7CDD1",
@@ -41,8 +68,26 @@ const backCircleColor = [
 export function ScatterplotNode(props: ScatterplotNodeProps) {
   const { x, y } = useMousePosition();
 
+  let opacity = 0.3;
+
+  if (
+    (!props.hoveredEligibilityLegend ||
+      props.hoveredEligibilityLegend === props.data.eligibility) &&
+    (!props.hoveredBurdenLegend ||
+      props.hoveredBurdenLegend === diseaseBurdens[props.data.diseaseBurden]) &&
+    (!props.hoveredIncomeLegend ||
+      props.hoveredIncomeLegend === incomeLevels[props.data.incomeLevel])
+  ) {
+    opacity = 1;
+  }
+
   return (
-    <g>
+    <g
+      css={`
+        opacity: ${opacity};
+        transition: opacity 0.2s ease-in-out;
+      `}
+    >
       {props.showExtraData && (
         <circle
           cx={props.x}
@@ -53,7 +98,7 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
             z-index: 1;
             stroke-width: 0.5px;
             mix-blend-mode: multiply;
-            stroke: ${props.data.incomeLevel < 0 ? "#262c34" : "none"};
+            stroke: ${props.data.incomeLevel === 0 ? "#262c34" : "none"};
           `}
         />
       )}

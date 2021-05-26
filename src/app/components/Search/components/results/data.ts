@@ -1,4 +1,5 @@
 export interface SearchResultModel {
+  link: string;
   label: string;
   value: string;
   type?: string;

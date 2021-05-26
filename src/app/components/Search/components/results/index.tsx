@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { Link } from "react-router-dom";
 import {
   tab as tabcss,
   tabs,
@@ -39,12 +40,12 @@ export function SearchResults(props: SearchResultsProps) {
       </div>
       <div css={resultscss}>
         {results.map((result: SearchResultModel) => (
-          <div css={resultcss}>
+          <Link to={result.link} css={resultcss}>
             {result.type && result.type.length > 0 && <div>{result.type}</div>}
             <div>
               <b>{result.label}</b>
             </div>
-          </div>
+          </Link>
         ))}
         {results.length === 0 && <div css={noresults}>No results found.</div>}
       </div>

@@ -96,6 +96,7 @@ export function PledgesContributionsTimeCycle(
                   cursor: pointer;
                   align-items: center;
                   flex-direction: row;
+                  transition: opacity 0.2s ease-in-out;
                   opacity: ${!hoveredLegend ||
                   hoveredLegend === legend.name.toLowerCase()
                     ? 1

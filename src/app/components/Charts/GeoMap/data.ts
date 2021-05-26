@@ -395,25 +395,31 @@ export function getRandomCountryData(
     .then((data: FeatureCollection) => {
       setter({
         type: "FeatureCollection",
-        features: data.features.map((item: Feature) => ({
-          ...item,
-          properties: {
-            ...item.properties,
-            value: Math.random() * 13,
-            data: {
-              components: [
-                {
-                  name: "HIV",
-                  activitiesCount: 1,
-                  value: 1000000000,
-                },
-              ],
-              disbursed: 1000000000,
-              committed: 1000000000,
-              signed: 1000000000,
+        features: data.features.map((item: Feature, index: number) => {
+          const value = index % 4 !== 0 ? Math.random() * 13 : 0;
+          return {
+            ...item,
+            properties: {
+              ...item.properties,
+              value,
+              data:
+                value > 0
+                  ? {
+                      components: [
+                        {
+                          name: "HIV",
+                          activitiesCount: 1,
+                          value: 1000000000,
+                        },
+                      ],
+                      disbursed: 1000000000,
+                      committed: 1000000000,
+                      signed: 1000000000,
+                    }
+                  : {},
             },
-          },
-        })),
+          };
+        }),
       });
     });
 }

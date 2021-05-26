@@ -6,10 +6,7 @@ import useTitle from "react-use/lib/useTitle";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { ExpandableTable } from "app/components/Table/Expandable";
-import { docsmockdata } from "app/components/Table/Expandable/data";
-import { Search } from "app/modules/grants-module/components/Search";
-import { DocumentsSubModule } from "../common/documents";
+import { DocumentsSubModule } from "app/modules/common/documents";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
