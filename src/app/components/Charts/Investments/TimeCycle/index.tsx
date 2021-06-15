@@ -1,5 +1,6 @@
 import React from "react";
 import uniq from "lodash/uniq";
+import round from "lodash/round";
 import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
@@ -203,7 +204,6 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
         padding={matches ? 0.3 : 0.5}
         innerPadding={6}
         data={props.data}
-        // colors={(value: any) => value.data[`${value.id}Color`]}
         keys={keys}
         indexBy="year"
         margin={{

@@ -10,269 +10,95 @@ export interface FilterGroupModel {
 }
 
 export const componentsMockFilterOptions: FilterGroupModel = {
-  name: "Components",
+  name: "Partner types",
   options: [
     {
-      label: "HIV",
-      value: "HIV",
+      label: "Community Sector",
+      value: "Community Sector",
       subOptions: [
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Community Based Organization",
+          value: "CBO",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Faith Based Organization",
+          value: "FBO",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "International Faith Based Organization",
+          value: "INTFBO",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "International NGO",
+          value: "INTNGO",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Local Faith Based Organization",
+          value: "LOCFBO",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Local NGO",
+          value: "LOCNGO",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "NGO/CBO/Academic",
+          value: "NGO",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Other Community Sector Entity",
+          value: "OTH",
         },
       ],
     },
     {
-      label: "HIV",
-      value: "HIV",
+      label: "Governmental",
+      value: "Governmental",
       subOptions: [
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Ministry of Finance",
+          value: "MOF",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Ministry of Health",
+          value: "MOH",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Other Governmental",
+          value: "OTH",
         },
       ],
     },
     {
-      label: "HIV",
-      value: "HIV",
+      label: "Multilateral",
+      value: "Multilateral",
       subOptions: [
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Other Multilateral Organization",
+          value: "OTH",
         },
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "UN Agency",
+          value: "UN",
         },
       ],
     },
     {
-      label: "HIV",
-      value: "HIV",
+      label: "Other",
+      value: "Other",
       subOptions: [
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Other Entity",
+          value: "OTH",
         },
+      ],
+    },
+    {
+      label: "Private Sector",
+      value: "Private Sector",
+      subOptions: [
         {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
-        },
-        {
-          label:
-            "Module: Compresive grams for people in prisons and other closed settings",
-          value:
-            "Module: Compresive grams for people in prisons and other closed settings",
+          label: "Private Sector Entity",
+          value: "PS",
         },
       ],
     },

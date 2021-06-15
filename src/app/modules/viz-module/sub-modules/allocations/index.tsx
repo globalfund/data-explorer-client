@@ -112,23 +112,26 @@ export function AllocationsModule() {
 
   function onClick(this: Window, e: MouseEvent) {
     // @ts-ignore
-    const key = e.target.parentNode.getAttribute("seriesName");
-    if (key) {
+    if (e.target && e.target.parentNode) {
       // @ts-ignore
-      const keySelected = e.target.getAttribute("selected");
-      if (keySelected === "true") {
-        setVizLevel(1);
-        setVizScale(0.4);
-        setVizSelected(key);
+      const key = e.target.parentNode.getAttribute("seriesName");
+      if (key) {
+        // @ts-ignore
+        const keySelected = e.target.getAttribute("selected");
+        if (keySelected === "true") {
+          setVizLevel(1);
+          setVizScale(0.4);
+          setVizSelected(key);
+        } else {
+          setVizLevel(0);
+          setVizScale(1);
+          setVizSelected(undefined);
+        }
       } else {
         setVizLevel(0);
         setVizScale(1);
         setVizSelected(undefined);
       }
-    } else {
-      setVizLevel(0);
-      setVizScale(1);
-      setVizSelected(undefined);
     }
   }
 

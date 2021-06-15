@@ -8,10 +8,10 @@ export interface AllocationsProps {
 }
 
 export const allocationmockdata: AllocationsProps = {
-  total: 10000000,
-  values: [7000000, 2000000, 1000000],
-  keys: ["Malaria", "Tuberculosis", "HIV"],
-  colors: ["#868E96", "#ADB5BD", "#DFE3E6"],
+  total: 37633989374.46,
+  values: [19273674061.22, 11694379284.57, 6665936028.67],
+  keys: ["HIV", "Malaria", "Tuberculosis"],
+  colors: ["#DFE3E6", "#868E96", "#ADB5BD"],
 };
 
 export function getKeysPercentages(

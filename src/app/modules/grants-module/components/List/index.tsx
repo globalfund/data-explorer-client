@@ -41,7 +41,7 @@ export function GrantsList(props: GrantsListProps) {
               </div>
             </div>
             {/* 2nd row */}
-            <div css={row(18, "bold")}>{item.title}</div>
+            <div css={row(18, "bold", 24)}>{item.title}</div>
             {/* 3rd row */}
             <div css={row(12, "normal")}>
               <div

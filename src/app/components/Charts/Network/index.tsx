@@ -6,8 +6,8 @@ import { NetworkVizProps } from "app/components/Charts/Network/data";
 export function NetworkViz(props: NetworkVizProps) {
   const Nodes = (nodesData: any) => {
     return nodesData.nodes.map((node: any) => {
-      const tSpans =
-        node.id.split(" ").length > 2 ? node.id.split(" ") : [node.id];
+      const id = node.id.split("|")[0];
+      const tSpans = id.split(" ").length > 2 ? id.split(" ") : [id];
       return (
         <g
           key={node.id}

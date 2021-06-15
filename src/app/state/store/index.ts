@@ -1,8 +1,14 @@
 import { createStore, persist } from "easy-peasy";
 import { StoreModel } from "app/state/api/interfaces";
-import { ToolBoxPanelEligibilityAdvancedCheckboxState } from "app/state/api/action-reducers/sync";
+import {
+  ToolBoxPanelDonorMapTypeState,
+  ToolBoxPanelDonorMapViewState,
+  ToolBoxPanelEligibilityAdvancedCheckboxState,
+} from "app/state/api/action-reducers/sync";
 
 const storeContent: StoreModel = {
+  ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
+  ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),

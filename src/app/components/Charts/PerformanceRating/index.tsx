@@ -33,6 +33,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
       <ResponsiveBar
         animate
         enableGridY
+        maxValue={5}
         indexBy="year"
         innerPadding={6}
         data={props.data}

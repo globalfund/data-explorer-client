@@ -9,7 +9,7 @@ const containercss = (hover: boolean, selected: boolean) => css`
   display: flex;
   overflow: hidden;
   position: absolute;
-  border-style: none;
+  // border-style: none;
   box-sizing: border-box;
   flex-direction: column;
   align-items: flex-start;
@@ -61,7 +61,9 @@ export function TreeemapNode(props: any) {
         width: node.width,
         height: node.height,
         background: node.data.color,
+        border: "2px solid #373D43",
         cursor: node.data.orgs ? "pointer" : "default",
+        borderStyle: props.isChildTreemap ? "none" : "solid",
       }}
       css={containercss(
         !hasChildren,

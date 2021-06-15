@@ -71,11 +71,11 @@ export function BarComponent(props: any) {
       data-cy="budgets-time-cycle-bar-component"
     >
       <text
-        y={props.y - 10}
-        x={props.x + props.width / 4}
         css={`
           font-size: 10px;
           text-transform: capitalize;
+          transform: translate(${props.x + 10}px, ${props.y - 10}px)
+            rotate(-90deg);
         `}
       >
         {props.data.id}

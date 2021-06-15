@@ -12,193 +12,330 @@ export interface NetworkVizProps {
 export const mockdata = {
   nodes: [
     {
-      id: "Jan 2018 - Jun 2018",
+      id: "Jan, 2016 - Jun, 2016",
       radius: 12,
       depth: 0,
       color: "#262C34",
       borderColor: "#ADB5BD",
     },
     {
-      id: "Impact",
+      id: "Coverage / Output indicator",
       radius: 12,
       depth: 1,
       color: "#ADB5BD",
       borderColor: "#262C34",
     },
     {
-      id: "Coverage/Output",
+      id: "Process indicator / WPTM",
       radius: 12,
       depth: 1,
       color: "#ADB5BD",
       borderColor: "#262C34",
     },
     {
-      id: "Outcome",
-      radius: 12,
-      depth: 1,
-      color: "#ADB5BD",
-      borderColor: "#262C34",
-    },
-    {
-      id: "Comprehensive prevention programs for MSM",
+      id: "PMTCT|Coverage / Output indicator",
       radius: 12,
       depth: 2,
       color: "#fff",
       borderColor: "#262C34",
     },
     {
-      id: "Module B",
+      id:
+        "Prevention programs for general population|Coverage / Output indicator",
       radius: 12,
       depth: 2,
       color: "#fff",
       borderColor: "#262C34",
     },
     {
-      id: "Module C",
+      id: "TB/HIV|Coverage / Output indicator",
       radius: 12,
       depth: 2,
       color: "#fff",
       borderColor: "#262C34",
     },
     {
-      id: "Result A-A",
+      id: "Treatment, care and support|Coverage / Output indicator",
       radius: 12,
-      depth: 3,
-      color: "#11AD6B",
+      depth: 2,
+      color: "#fff",
       borderColor: "#262C34",
     },
     {
-      id: "Result A-B",
+      id: "PMTCT|Process indicator / WPTM",
       radius: 12,
-      depth: 3,
-      color: "#FFD646",
+      depth: 2,
+      color: "#fff",
       borderColor: "#262C34",
     },
     {
-      id: "Result A-C",
+      id: "TB/HIV|Process indicator / WPTM",
       radius: 12,
-      depth: 3,
-      color: "#11AD6B",
+      depth: 2,
+      color: "#fff",
       borderColor: "#262C34",
     },
     {
-      id: "Result B-A",
+      id: "Treatment, care and support|Process indicator / WPTM",
       radius: 12,
-      depth: 3,
-      color: "#11AD6B",
+      depth: 2,
+      color: "#fff",
       borderColor: "#262C34",
     },
     {
-      id: "Result B-B",
+      id:
+        "Percentage of HIV-positive pregnant women who received antiretrovirals to reduce the risk of mother-to-child transmission",
       radius: 12,
       depth: 3,
-      color: "#11AD6B",
+      color: "#E2E2E2",
       borderColor: "#262C34",
     },
     {
-      id: "Result B-C",
+      id:
+        "Percentage of infants born to HIV-positive women receiving a virological test for HIV within 2 months of birth",
       radius: 12,
       depth: 3,
-      color: "#FFD646",
+      color: "#E2E2E2",
       borderColor: "#262C34",
     },
     {
-      id: "Result C-A",
+      id: "Percentage of pregnant women who know their HIV status",
       radius: 12,
       depth: 3,
-      color: "#FA7355",
+      color: "#E2E2E2",
       borderColor: "#262C34",
     },
     {
-      id: "Result C-B",
+      id:
+        "Number of women and men aged 15+ who received an HIV test and know their results",
       radius: 12,
       depth: 3,
-      color: "#11AD6B",
+      color: "#E2E2E2",
       borderColor: "#262C34",
     },
     {
-      id: "Result C-C",
+      id:
+        "Percentage of HIV-positive patients who were screened for TB in HIV care or treatment settings",
       radius: 12,
       depth: 3,
-      color: "#FFD646",
+      color: "#E2E2E2",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "Percentage of HIV-positive registered TB patients given anti-retroviral therapy during TB treatment",
+      radius: 12,
+      depth: 3,
+      color: "#E2E2E2",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "Percentage of TB patients who had an HIV test result recorded in the TB register",
+      radius: 12,
+      depth: 3,
+      color: "#E2E2E2",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "Percentage of adults and children that initiated ART, with an undetectable viral load at 12 months (<1000 copies/ml)",
+      radius: 12,
+      depth: 3,
+      color: "#E2E2E2",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "TCS-other 1: Percentage of adults currently receiving ART among all adults living with HIV",
+      radius: 12,
+      depth: 3,
+      color: "#E2E2E2",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "TCS-other 2: Percentage of children currently receiving ART among all children living with HIV",
+      radius: 12,
+      depth: 3,
+      color: "#E2E2E2",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "TCS-other 3: Percentage of adults and children enrolled in care who have received a CD4 count.",
+      radius: 12,
+      depth: 3,
+      color: "#E2E2E2",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "Ensure the supervision of community service providers and primary healthcare centers (CSPS) (50% of sites performing poorly) by the District Team each semester",
+      radius: 12,
+      depth: 3,
+      color: "#fff",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "TB/HIV-4: Percentage of new HIV-positive patients starting IPT during the reporting period",
+      radius: 12,
+      depth: 3,
+      color: "#fff",
+      borderColor: "#262C34",
+    },
+    {
+      id: "Procurement and installation of CD4 testing machines (25)",
+      radius: 12,
+      depth: 3,
+      color: "#fff",
+      borderColor: "#262C34",
+    },
+    {
+      id:
+        "Procurement and installation of complementary equipment for the decentralisation of viral load testing (centrifuge, extractor, hoods, fixtures, freezers, coolers)",
+      radius: 12,
+      depth: 3,
+      color: "#fff",
       borderColor: "#262C34",
     },
   ],
   links: [
     {
-      source: "Jan 2018 - Jun 2018",
-      target: "Impact",
-      distance: 20,
+      source: "Jan, 2016 - Jun, 2016",
+      target: "Coverage / Output indicator",
+      distance: 10,
     },
     {
-      source: "Jan 2018 - Jun 2018",
-      target: "Coverage/Output",
-      distance: 20,
+      source: "Coverage / Output indicator",
+      target: "PMTCT|Coverage / Output indicator",
+      distance: 60,
     },
     {
-      source: "Jan 2018 - Jun 2018",
-      target: "Outcome",
-      distance: 20,
+      source: "PMTCT|Coverage / Output indicator",
+      target:
+        "Percentage of HIV-positive pregnant women who received antiretrovirals to reduce the risk of mother-to-child transmission",
+      distance: 70,
     },
     {
-      source: "Impact",
-      target: "Comprehensive prevention programs for MSM",
-      distance: 50,
+      source: "PMTCT|Coverage / Output indicator",
+      target:
+        "Percentage of infants born to HIV-positive women receiving a virological test for HIV within 2 months of birth",
+      distance: 70,
     },
     {
-      source: "Coverage/Output",
-      target: "Module B",
-      distance: 50,
+      source: "PMTCT|Coverage / Output indicator",
+      target: "Percentage of pregnant women who know their HIV status",
+      distance: 70,
     },
     {
-      source: "Outcome",
-      target: "Module C",
-      distance: 50,
+      source: "Coverage / Output indicator",
+      target:
+        "Prevention programs for general population|Coverage / Output indicator",
+      distance: 60,
     },
     {
-      source: "Comprehensive prevention programs for MSM",
-      target: "Result A-A",
-      distance: 120,
+      source:
+        "Prevention programs for general population|Coverage / Output indicator",
+      target:
+        "Number of women and men aged 15+ who received an HIV test and know their results",
+      distance: 70,
     },
     {
-      source: "Comprehensive prevention programs for MSM",
-      target: "Result A-B",
-      distance: 120,
+      source: "Coverage / Output indicator",
+      target: "TB/HIV|Coverage / Output indicator",
+      distance: 60,
     },
     {
-      source: "Comprehensive prevention programs for MSM",
-      target: "Result A-C",
-      distance: 120,
+      source: "TB/HIV|Coverage / Output indicator",
+      target:
+        "Percentage of HIV-positive patients who were screened for TB in HIV care or treatment settings",
+      distance: 70,
     },
     {
-      source: "Module B",
-      target: "Result B-A",
-      distance: 120,
+      source: "TB/HIV|Coverage / Output indicator",
+      target:
+        "Percentage of HIV-positive registered TB patients given anti-retroviral therapy during TB treatment",
+      distance: 70,
     },
     {
-      source: "Module B",
-      target: "Result B-B",
-      distance: 120,
+      source: "TB/HIV|Coverage / Output indicator",
+      target:
+        "Percentage of TB patients who had an HIV test result recorded in the TB register",
+      distance: 70,
     },
     {
-      source: "Module B",
-      target: "Result B-C",
-      distance: 120,
+      source: "Coverage / Output indicator",
+      target: "Treatment, care and support|Coverage / Output indicator",
+      distance: 60,
     },
     {
-      source: "Module C",
-      target: "Result C-A",
-      distance: 120,
+      source: "Treatment, care and support|Coverage / Output indicator",
+      target:
+        "Percentage of adults and children that initiated ART, with an undetectable viral load at 12 months (<1000 copies/ml)",
+      distance: 70,
     },
     {
-      source: "Module C",
-      target: "Result C-B",
-      distance: 120,
+      source: "Treatment, care and support|Coverage / Output indicator",
+      target:
+        "TCS-other 1: Percentage of adults currently receiving ART among all adults living with HIV",
+      distance: 70,
     },
     {
-      source: "Module C",
-      target: "Result C-C",
-      distance: 120,
+      source: "Treatment, care and support|Coverage / Output indicator",
+      target:
+        "TCS-other 2: Percentage of children currently receiving ART among all children living with HIV",
+      distance: 70,
+    },
+    {
+      source: "Treatment, care and support|Coverage / Output indicator",
+      target:
+        "TCS-other 3: Percentage of adults and children enrolled in care who have received a CD4 count.",
+      distance: 70,
+    },
+    {
+      source: "Jan, 2016 - Jun, 2016",
+      target: "Process indicator / WPTM",
+      distance: 10,
+    },
+    {
+      source: "Process indicator / WPTM",
+      target: "PMTCT|Process indicator / WPTM",
+      distance: 60,
+    },
+    {
+      source: "PMTCT|Process indicator / WPTM",
+      target:
+        "Ensure the supervision of community service providers and primary healthcare centers (CSPS) (50% of sites performing poorly) by the District Team each semester",
+      distance: 70,
+    },
+    {
+      source: "Process indicator / WPTM",
+      target: "TB/HIV|Process indicator / WPTM",
+      distance: 60,
+    },
+    {
+      source: "TB/HIV|Process indicator / WPTM",
+      target:
+        "TB/HIV-4: Percentage of new HIV-positive patients starting IPT during the reporting period",
+      distance: 70,
+    },
+    {
+      source: "Process indicator / WPTM",
+      target: "Treatment, care and support|Process indicator / WPTM",
+      distance: 60,
+    },
+    {
+      source: "Treatment, care and support|Process indicator / WPTM",
+      target: "Procurement and installation of CD4 testing machines (25)",
+      distance: 70,
+    },
+    {
+      source: "Treatment, care and support|Process indicator / WPTM",
+      target:
+        "Procurement and installation of complementary equipment for the decentralisation of viral load testing (centrifuge, extractor, hoods, fixtures, freezers, coolers)",
+      distance: 70,
     },
   ],
 };

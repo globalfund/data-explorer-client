@@ -1,5 +1,9 @@
 import { Action, Thunk } from "easy-peasy";
-import { ToolBoxPanelEligibilityAdvancedCheckboxStateModel } from "../action-reducers/sync";
+import {
+  ToolBoxPanelDonorMapTypeStateModel,
+  ToolBoxPanelDonorMapViewStateModel,
+  ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
+} from "../action-reducers/sync";
 
 export interface RequestValues<T> {
   values?: T;
@@ -54,5 +58,7 @@ export type ApiCallModel = ApiModel<
 >;
 
 export interface StoreModel {
+  ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
+  ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
 }

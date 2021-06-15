@@ -1,6 +1,10 @@
 import React from "react";
+import filter from "lodash/filter";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { GeomapTooltipProps } from "app/components/Charts/GeoMap/data";
+import {
+  GeoMapPinMarker,
+  GeomapTooltipProps,
+} from "app/components/Charts/GeoMap/data";
 
 export function GeomapTooltip(props: GeomapTooltipProps) {
   return (
@@ -171,6 +175,132 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           <div>{formatFinancialValue(props.data.signed)}</div>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function GeomapPinTooltip(props: {
+  pin: GeoMapPinMarker;
+  allPins: GeoMapPinMarker[];
+}) {
+  const allD2HofSameCountryDonor = filter(
+    props.allPins,
+    (pin: GeoMapPinMarker) => {
+      if (
+        pin.d2hCoordinates &&
+        props.pin &&
+        props.pin.d2hCoordinates &&
+        pin.geoName !== props.pin.geoName
+      ) {
+        return (
+          pin.d2hCoordinates[0][0] === props.pin.d2hCoordinates[0][0] &&
+          pin.d2hCoordinates[0][1] === props.pin.d2hCoordinates[0][1]
+        );
+      }
+      return false;
+    }
+  );
+
+  return (
+    <div
+      css={`
+        color: #262c34;
+      `}
+    >
+      <div
+        css={`
+          top: -4px;
+          width: 8px;
+          height: 8px;
+          position: absolute;
+          border-radius: 50%;
+          background: #262c34;
+          left: calc(50% - 4px);
+        `}
+      />
+      <div
+        css={`
+          font-size: 18px;
+          font-weight: bold;
+          line-height: 20px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #dfe3e6;
+        `}
+      >
+        {props.pin.geoName}
+      </div>
+      <div
+        css={`
+          gap: 10px;
+          display: flex;
+          font-size: 12px;
+          padding: 16px 0;
+          flex-direction: column;
+          border-bottom: 1px solid #dfe3e6;
+        `}
+      >
+        {filter(
+          props.pin.amounts,
+          (amount: { label: string; value: number }) => amount.value > 0
+        ).map((amount: { label: string; value: number }) => (
+          <div
+            key={amount.label}
+            css={`
+              width: 100%;
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+            `}
+          >
+            <div>{amount.label}</div>
+            <div>{formatFinancialValue(amount.value)}</div>
+          </div>
+        ))}
+      </div>
+      {allD2HofSameCountryDonor.length > 0 &&
+        allD2HofSameCountryDonor.map((d: GeoMapPinMarker) => (
+          <React.Fragment key={d.code}>
+            <div
+              css={`
+                font-size: 18px;
+                padding: 16px 0;
+                font-weight: bold;
+                line-height: 20px;
+                border-bottom: 1px solid #dfe3e6;
+              `}
+            >
+              {d.geoName}
+            </div>
+            <div
+              css={`
+                gap: 10px;
+                display: flex;
+                font-size: 12px;
+                padding: 16px 0;
+                flex-direction: column;
+                border-bottom: 1px solid #dfe3e6;
+              `}
+            >
+              {filter(
+                d.amounts,
+                (amount: { label: string; value: number }) => amount.value > 0
+              ).map((amount: { label: string; value: number }) => (
+                <div
+                  key={amount.label}
+                  css={`
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                  `}
+                >
+                  <div>{amount.label}</div>
+                  <div>{formatFinancialValue(amount.value)}</div>
+                </div>
+              ))}
+            </div>
+          </React.Fragment>
+        ))}
     </div>
   );
 }

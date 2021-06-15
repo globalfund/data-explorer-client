@@ -1,6 +1,7 @@
 import { css } from "styled-components/macro";
 
 export const listitem = css`
+  height: 100%;
   display: flex;
   color: #262c34;
   padding: 12px 20px;
@@ -8,6 +9,7 @@ export const listitem = css`
   border-radius: 20px;
   text-decoration: none;
   flex-direction: column;
+  justify-content: space-between;
   transition: background-color 0.2s ease-in-out;
 
   &:hover {
@@ -21,13 +23,13 @@ export const listitem = css`
   }
 `;
 
-export const row = (size: number, style: string) => css`
+export const row = (size: number, style: string, lineHeight?: number) => css`
   display: flex;
   margin: 16px 0;
-  line-height: 16px;
   flex-direction: row;
   font-size: ${size}px;
   font-weight: ${style};
   align-items: flex-end;
   justify-content: space-between;
+  line-height: ${lineHeight ?? 16}px;
 `;

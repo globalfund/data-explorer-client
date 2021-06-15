@@ -20,6 +20,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
     >
       <ResponsiveTreeMapHtml
         value="value"
+        tile="binary"
         identity="name"
         data={{
           name: "",
@@ -33,8 +34,8 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
           left: 0,
         }}
         leavesOnly
-        innerPadding={2}
         labelSkipSize={12}
+        innerPadding={props.isChildTreemap ? 2 : 0}
         // @ts-ignore
         nodeComponent={(nodeProps: TreeMapNodeDatum) => (
           <TreeemapNode

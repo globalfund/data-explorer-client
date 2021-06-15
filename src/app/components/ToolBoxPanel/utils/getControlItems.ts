@@ -37,6 +37,18 @@ const views = {
       link: "/viz/budgets/time-cycle",
     },
   ],
+  "pledges-contributions": [
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/pledges-contributions/geomap",
+    },
+    {
+      label: "Replenishment Periods",
+      value: "Replenishment Periods",
+      link: "/viz/pledges-contributions/time-cycle",
+    },
+  ],
 };
 
 const aggregates = {

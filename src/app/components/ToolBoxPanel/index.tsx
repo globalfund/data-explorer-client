@@ -15,6 +15,8 @@ import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
 import { ToolBoxPanelFilters } from "./components/filters";
 import { ToolBoxPanelEligibilityAdvanced } from "./components/eligibilityadvanced";
 import { PerformanceFrameworkReportingPeriods } from "./components/pf-reportingperiods";
+import { ToolBoxPanelDonorMapTypes } from "./components/donormaptypes";
+import { ToolBoxPanelDonorViews } from "./components/donormapviews";
 
 interface ToolBoxPanelProps {
   open: boolean;
@@ -203,6 +205,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                       selected={geomapView}
                       setSelected={setGeomapView}
                     />
+                  )}
+                {params.vizType === "pledges-contributions" &&
+                  params.subType === "geomap" && (
+                    <React.Fragment>
+                      <ToolBoxPanelDonorMapTypes />
+                      <ToolBoxPanelDonorViews />
+                    </React.Fragment>
                   )}
                 {params.code && params.vizType === "eligibility" && (
                   <ToolBoxPanelEligibilityAdvanced />

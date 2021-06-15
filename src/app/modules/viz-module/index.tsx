@@ -13,6 +13,7 @@ import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investment
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 
 export default function VizModule() {
@@ -84,6 +85,9 @@ export default function VizModule() {
               <Link to="/viz/pledges-contributions/time-cycle">
                 <b>Finance</b>-Pledges & Contributions Time Cycle
               </Link>,
+              <Link to="/viz/pledges-contributions/geomap">
+                <b>Finance</b>-Pledges & Contributions GeoMap
+              </Link>,
               <Link to="/grants">
                 <b>Grants</b>
               </Link>,
@@ -137,6 +141,9 @@ export default function VizModule() {
         </Route>
         <Route path="/viz/pledges-contributions/time-cycle">
           <PledgesContributionsTimeCycleModule />
+        </Route>
+        <Route path="/viz/pledges-contributions/geomap">
+          <PledgesContributionsGeoMap />
         </Route>
         <Route path="/viz/eligibility">
           <EligibilityModule />

@@ -1,11 +1,13 @@
 import { css } from "styled-components/macro";
 
 export const listitem = css`
+  height: 100%;
   display: flex;
   color: #262c34;
   background: #f5f5f7;
   border-radius: 20px;
   flex-direction: column;
+  justify-content: space-between;
   border: 2px solid #f5f5f7;
 `;
 
@@ -52,6 +54,8 @@ export const locationlist = css`
   gap: 6px;
   color: #fff;
   display: flex;
+  overflow-y: auto;
+  max-height: 148px;
   padding: 12px 20px;
   background: #495057;
   flex-direction: column;

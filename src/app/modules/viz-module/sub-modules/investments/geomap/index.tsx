@@ -1,10 +1,12 @@
 import React from "react";
 import { FeatureCollection } from "geojson";
 import { GeoMap } from "app/components/Charts/GeoMap";
+// import axios, { AxiosResponse, AxiosError } from "axios";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getRandomCountryData } from "app/components/Charts/GeoMap/data";
 
 export function InvestmentsGeoMap() {
+  const [maxValue, setMaxValue] = React.useState(0);
   const [data, setData] = React.useState<FeatureCollection>({
     type: "FeatureCollection",
     features: [],
@@ -12,6 +14,21 @@ export function InvestmentsGeoMap() {
 
   React.useEffect(() => {
     getRandomCountryData(setData);
+    setMaxValue(1000000000);
+    // axios
+    //   .get("http://localhost:4200/disbursements/geomap")
+    //   .then((response: AxiosResponse) => {
+    //     if (response.status === 200 && response.data.data) {
+    //       setData({
+    //         type: "FeatureCollection",
+    //         features: response.data.data,
+    //       });
+    //       setMaxValue(response.data.maxValue);
+    //     }
+    //   })
+    //   .catch((error: AxiosError) => {
+    //     console.log(error);
+    //   });
   }, []);
 
   return (
@@ -23,7 +40,7 @@ export function InvestmentsGeoMap() {
         flex-direction: column;
       `}
     >
-      <GeoMap data={data} />
+      <GeoMap type="investments" data={data} pins={[]} />
       <div
         css={`
           gap: 12px;
@@ -66,7 +83,7 @@ export function InvestmentsGeoMap() {
             `}
           >
             <div>0 USD</div>
-            <div>{formatFinancialValue(10000000)}</div>
+            <div>{formatFinancialValue(maxValue)}</div>
           </div>
         </div>
         <div

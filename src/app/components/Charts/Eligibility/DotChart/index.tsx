@@ -62,6 +62,7 @@ export function DotChart(props: DotChartProps) {
           md={2}
           css={`
             display: flex;
+            position: relative;
             flex-direction: column;
             justify-content: space-between;
           `}
@@ -78,7 +79,9 @@ export function DotChart(props: DotChartProps) {
           </div>
           <div
             css={`
+              bottom: 25px;
               font-size: 14px;
+              position: sticky;
             `}
           >
             <div
