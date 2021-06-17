@@ -59,6 +59,9 @@ export type ApiCallModel = ApiModel<
 export interface StoreModel {
   // api
   GrantsList: ApiCallModel;
+  DisbursementsGeomap: ApiCallModel;
+  DisbursementsTreemap: ApiCallModel;
+  DisbursementsTimeCycle: ApiCallModel;
   // sync
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;

@@ -5,16 +5,15 @@ import { Link, Switch, Route, useParams } from "react-router-dom";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { mockdata1 } from "app/components/Charts/Investments/Disbursements/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 
 export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
@@ -128,7 +127,7 @@ export default function VizModule() {
           <BudgetsTimeCycleModule />
         </Route>
         <Route path="/viz/investments/disbursements">
-          <InvestmentsDisbursedModule data={mockdata1} />
+          <GenericInvestmentsDisbursedWrapper />
         </Route>
         <Route path="/viz/investments/time-cycle">
           <InvestmentsTimeCycleModule />

@@ -13,14 +13,11 @@ import {
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageLoader } from "app/modules/common/page-loader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import {
-  GrantListItemModel,
-  // grantsmockitems,
-} from "app/modules/grants-module/data";
+import { GrantListItemModel } from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
 import { GrantsList } from "app/modules/grants-module/components/List";
-import { PageLoader } from "app/modules/common/page-loader";
 
 export default function GrantsModule() {
   useTitle("The Data Explorer - Grants");

@@ -1,10 +1,12 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import useTitle from "react-use/lib/useTitle";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { TransitionContainer } from "app/components/TransitionContainer";
-import { mockdata } from "app/components/Charts/Investments/TimeCycle/data";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
@@ -24,6 +26,27 @@ export function InvestmentsTimeCycleModule() {
     string | undefined
   >(undefined);
 
+  // api call & data
+  const fetchData = useStoreActions(
+    (store) => store.DisbursementsTimeCycle.fetch
+  );
+  const data = useStoreState(
+    (state) =>
+      get(state.DisbursementsTimeCycle.data, "data", []) as Record<
+        string,
+        unknown
+      >[]
+  );
+  const isLoading = useStoreState(
+    (state) => state.DisbursementsTimeCycle.loading
+  );
+
+  React.useEffect(() => fetchData({}), []);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
   return (
     <div
       id="investments-time-cycle"
@@ -40,7 +63,7 @@ export function InvestmentsTimeCycleModule() {
       <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
         {(vizLevel === 0 || vizLevel === 1) && (
           <InvestmentsTimeCycle
-            data={mockdata}
+            data={data}
             selectedNodeId={vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
               setVizLevel(1);

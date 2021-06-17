@@ -56,8 +56,10 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
   const [keys, setKeys] = React.useState(getKeysFromData(props.data));
   const moneyAbbrRange = getVizValueRange(props.data, "budgetBarChart");
-  const totalInvestmentValue = props.data[props.data.length - 1]
-    .cumulative as number;
+  const totalInvestmentValue =
+    props.data.length > 0
+      ? (props.data[props.data.length - 1].cumulative as number)
+      : 0;
   const legends = getLegendItems(props.data);
 
   React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);

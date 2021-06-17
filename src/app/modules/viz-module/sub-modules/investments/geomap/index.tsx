@@ -1,35 +1,31 @@
 import React from "react";
+import get from "lodash/get";
 import { FeatureCollection } from "geojson";
 import { GeoMap } from "app/components/Charts/GeoMap";
-// import axios, { AxiosResponse, AxiosError } from "axios";
+import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { getRandomCountryData } from "app/components/Charts/GeoMap/data";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export function InvestmentsGeoMap() {
-  const [maxValue, setMaxValue] = React.useState(0);
-  const [data, setData] = React.useState<FeatureCollection>({
-    type: "FeatureCollection",
-    features: [],
-  });
+  // api call & data
+  const fetchData = useStoreActions((store) => store.DisbursementsGeomap.fetch);
+  const data = useStoreState(
+    (state) =>
+      ({
+        type: "FeatureCollection",
+        features: get(state.DisbursementsGeomap.data, "data", []),
+      } as FeatureCollection)
+  );
+  const maxValue = useStoreState((state) =>
+    get(state.DisbursementsGeomap.data, "maxValue", 0)
+  );
+  const isLoading = useStoreState((state) => state.DisbursementsGeomap.loading);
 
-  React.useEffect(() => {
-    getRandomCountryData(setData);
-    setMaxValue(1000000000);
-    // axios
-    //   .get("http://localhost:4200/disbursements/geomap")
-    //   .then((response: AxiosResponse) => {
-    //     if (response.status === 200 && response.data.data) {
-    //       setData({
-    //         type: "FeatureCollection",
-    //         features: response.data.data,
-    //       });
-    //       setMaxValue(response.data.maxValue);
-    //     }
-    //   })
-    //   .catch((error: AxiosError) => {
-    //     console.log(error);
-    //   });
-  }, []);
+  React.useEffect(() => fetchData({}), []);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <div
