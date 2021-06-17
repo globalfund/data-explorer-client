@@ -12,7 +12,7 @@ export interface NetworkVizProps {
 export const mockdata = {
   nodes: [
     {
-      id: "Jan, 2016 - Jun, 2016",
+      id: "Jan, 2017 - Jun, 2017",
       radius: 12,
       depth: 0,
       color: "#262C34",
@@ -76,18 +76,11 @@ export const mockdata = {
       borderColor: "#262C34",
     },
     {
-      id: "Treatment, care and support|Process indicator / WPTM",
-      radius: 12,
-      depth: 2,
-      color: "#fff",
-      borderColor: "#262C34",
-    },
-    {
       id:
         "Percentage of HIV-positive pregnant women who received antiretrovirals to reduce the risk of mother-to-child transmission",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#97ff46",
       borderColor: "#262C34",
     },
     {
@@ -95,14 +88,14 @@ export const mockdata = {
         "Percentage of infants born to HIV-positive women receiving a virological test for HIV within 2 months of birth",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#ffaa46",
       borderColor: "#262C34",
     },
     {
       id: "Percentage of pregnant women who know their HIV status",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#daff46",
       borderColor: "#262C34",
     },
     {
@@ -110,7 +103,7 @@ export const mockdata = {
         "Number of women and men aged 15+ who received an HIV test and know their results",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#60ff46",
       borderColor: "#262C34",
     },
     {
@@ -118,7 +111,7 @@ export const mockdata = {
         "Percentage of HIV-positive patients who were screened for TB in HIV care or treatment settings",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#97ff46",
       borderColor: "#262C34",
     },
     {
@@ -126,7 +119,7 @@ export const mockdata = {
         "Percentage of HIV-positive registered TB patients given anti-retroviral therapy during TB treatment",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#daff46",
       borderColor: "#262C34",
     },
     {
@@ -134,7 +127,7 @@ export const mockdata = {
         "Percentage of TB patients who had an HIV test result recorded in the TB register",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#daff46",
       borderColor: "#262C34",
     },
     {
@@ -142,7 +135,7 @@ export const mockdata = {
         "Percentage of adults and children that initiated ART, with an undetectable viral load at 12 months (<1000 copies/ml)",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#daff46",
       borderColor: "#262C34",
     },
     {
@@ -150,7 +143,7 @@ export const mockdata = {
         "TCS-other 1: Percentage of adults currently receiving ART among all adults living with HIV",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#daff46",
       borderColor: "#262C34",
     },
     {
@@ -158,7 +151,7 @@ export const mockdata = {
         "TCS-other 2: Percentage of children currently receiving ART among all children living with HIV",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#daff46",
       borderColor: "#262C34",
     },
     {
@@ -166,7 +159,7 @@ export const mockdata = {
         "TCS-other 3: Percentage of adults and children enrolled in care who have received a CD4 count.",
       radius: 12,
       depth: 3,
-      color: "#E2E2E2",
+      color: "#fa9a55",
       borderColor: "#262C34",
     },
     {
@@ -174,7 +167,7 @@ export const mockdata = {
         "Ensure the supervision of community service providers and primary healthcare centers (CSPS) (50% of sites performing poorly) by the District Team each semester",
       radius: 12,
       depth: 3,
-      color: "#fff",
+      color: "#E2E2E2",
       borderColor: "#262C34",
     },
     {
@@ -182,28 +175,13 @@ export const mockdata = {
         "TB/HIV-4: Percentage of new HIV-positive patients starting IPT during the reporting period",
       radius: 12,
       depth: 3,
-      color: "#fff",
-      borderColor: "#262C34",
-    },
-    {
-      id: "Procurement and installation of CD4 testing machines (25)",
-      radius: 12,
-      depth: 3,
-      color: "#fff",
-      borderColor: "#262C34",
-    },
-    {
-      id:
-        "Procurement and installation of complementary equipment for the decentralisation of viral load testing (centrifuge, extractor, hoods, fixtures, freezers, coolers)",
-      radius: 12,
-      depth: 3,
-      color: "#fff",
+      color: "#E2E2E2",
       borderColor: "#262C34",
     },
   ],
   links: [
     {
-      source: "Jan, 2016 - Jun, 2016",
+      source: "Jan, 2017 - Jun, 2017",
       target: "Coverage / Output indicator",
       distance: 10,
     },
@@ -295,7 +273,7 @@ export const mockdata = {
       distance: 70,
     },
     {
-      source: "Jan, 2016 - Jun, 2016",
+      source: "Jan, 2017 - Jun, 2017",
       target: "Process indicator / WPTM",
       distance: 10,
     },
@@ -319,22 +297,6 @@ export const mockdata = {
       source: "TB/HIV|Process indicator / WPTM",
       target:
         "TB/HIV-4: Percentage of new HIV-positive patients starting IPT during the reporting period",
-      distance: 70,
-    },
-    {
-      source: "Process indicator / WPTM",
-      target: "Treatment, care and support|Process indicator / WPTM",
-      distance: 60,
-    },
-    {
-      source: "Treatment, care and support|Process indicator / WPTM",
-      target: "Procurement and installation of CD4 testing machines (25)",
-      distance: 70,
-    },
-    {
-      source: "Treatment, care and support|Process indicator / WPTM",
-      target:
-        "Procurement and installation of complementary equipment for the decentralisation of viral load testing (centrifuge, extractor, hoods, fixtures, freezers, coolers)",
       distance: 70,
     },
   ],

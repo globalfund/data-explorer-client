@@ -70,7 +70,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
             "path"
           );
           pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#FBAC1B");
+          pathElement.setAttribute("stroke", "#2E4DF9");
           pathElement.setAttribute("strokeWidth", "1");
 
           const patternElement = document.createElementNS(

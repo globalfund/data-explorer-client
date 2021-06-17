@@ -91,7 +91,13 @@ function ResultsTableRow(props: ResultsTableRowProps) {
             align-items: center;
           `}
         >
-          {props.achievementRate}
+          <div
+            css={`
+              min-width: 20px;
+            `}
+          >
+            {props.achievementRate}
+          </div>
           <div
             css={`
               gap: 10px;
@@ -111,7 +117,13 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                background: ${props.color};
+                background: ${props.color === "#E2E2E2"
+                  ? `repeating-linear-gradient(
+                  -45deg,
+                  #262c34 0 0.5px,
+                  #fff 1.5px 2px
+                )`
+                  : props.color};
               `}
             />
           </div>

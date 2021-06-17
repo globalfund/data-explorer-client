@@ -82,11 +82,11 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         width={node.width}
         height={node.height}
         data-cy="bf-sankey-bar-comp"
-        fill={node.id === props.selectedNodeId ? "#FFA726" : "#373D43"}
+        fill={node.id === props.selectedNodeId ? "#2E4DF9" : "#373D43"}
         css={`
           cursor: pointer;
           &:hover {
-            fill: #ffa726;
+            fill: #2e4df9;
           }
         `}
         onClick={() => {

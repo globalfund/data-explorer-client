@@ -63,6 +63,8 @@ export function SlideInContainer(props: SlideInContainerProps) {
             width: 100%;
             height: 100%;
             padding: 40px;
+            max-height: 100%;
+            overflow-y: auto;
 
             > div {
               height: 100%;

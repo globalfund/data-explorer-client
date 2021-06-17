@@ -7,7 +7,10 @@ import { mockdata } from "app/components/Charts/Network/data";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
-import { mockdata as expandviewmockdata } from "app/components/PerformanceFrameworkExpandedView/data";
+import {
+  expandindicatorsmockdata,
+  expandinterventionsmockdata,
+} from "app/components/PerformanceFrameworkExpandedView/data";
 
 export function PerformanceFrameworkModule() {
   useTitle("The Data Explorer - Performance Framework");
@@ -50,8 +53,8 @@ export function PerformanceFrameworkModule() {
         }}
       >
         <PerformanceFrameworkExpandedView
-          indicators={expandviewmockdata[0].modules[0].indicators}
-          interventions={expandviewmockdata[0].modules[0].interventions}
+          indicators={expandindicatorsmockdata}
+          interventions={expandinterventionsmockdata}
         />
       </SlideInContainer>
     </div>

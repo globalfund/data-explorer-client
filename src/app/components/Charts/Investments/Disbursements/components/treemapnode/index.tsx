@@ -17,7 +17,7 @@ const containercss = (hover: boolean, selected: boolean) => css`
 
   ${selected
     ? `
-  background: repeating-linear-gradient(45deg, #FBAC1B 0 5px, #fff 5px 10px) !important;
+  background: repeating-linear-gradient(45deg, #2E4DF9 0 5px, #fff 5px 10px) !important;
 
   > div {
     background: rgba(255, 255, 255, 0.8);
@@ -27,7 +27,7 @@ const containercss = (hover: boolean, selected: boolean) => css`
 
   ${hover
     ? `&:hover {
-        background: repeating-linear-gradient(45deg, #FBAC1B 0 5px, #fff 5px 10px) !important;
+        background: repeating-linear-gradient(45deg, #2E4DF9 0 5px, #fff 5px 10px) !important;
 
         > div {
           background: rgba(255, 255, 255, 0.8);

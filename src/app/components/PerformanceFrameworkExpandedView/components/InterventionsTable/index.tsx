@@ -49,7 +49,7 @@ export function InterventionsTable(props: PFIndicatorResultIntervention) {
         </thead>
         <tbody css={styles.tablebody}>
           {props.values.map((value: PFIndicatorResultInterventionValue) => (
-            <tr key={value.name}>
+            <tr key={`${value.name}${value.valueText}`}>
               <td>{value.name}</td>
               <td>{value.achievementRate}</td>
               <td>{value.valueText}</td>
