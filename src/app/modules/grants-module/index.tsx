@@ -1,22 +1,89 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import { Link } from "react-router-dom";
-import useTitle from "react-use/lib/useTitle";
+import Pagination from "@material-ui/lab/Pagination";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import {
+  useTitle,
+  useDebounce,
+  useEffectOnce,
+  useUpdateEffect,
+} from "react-use";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { grantsmockitems } from "app/modules/grants-module/data";
+import {
+  GrantListItemModel,
+  // grantsmockitems,
+} from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
 import { GrantsList } from "app/modules/grants-module/components/List";
+import { PageLoader } from "app/modules/common/page-loader";
 
 export default function GrantsModule() {
   useTitle("The Data Explorer - Grants");
+  const [page, setPage] = React.useState(1);
+  const [pages, setPages] = React.useState(1);
+  const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
-  React.useEffect(() => {
+  // api call & data
+  const fetchData = useStoreActions((store) => store.GrantsList.fetch);
+  const data = useStoreState(
+    (state) => get(state.GrantsList.data, "data", []) as GrantListItemModel[]
+  );
+  const totalDataCount = useStoreState((state) =>
+    get(state.GrantsList.data, "count", 0)
+  );
+  const isLoading = useStoreState((state) => state.GrantsList.loading);
+
+  const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+  };
+
+  const reloadData = (resetPage?: boolean) => {
+    let filterString = `page=${resetPage ? 1 : page}`;
+    if (search.length > 0) {
+      filterString = `${filterString}&q=${search}`;
+    }
+    fetchData({
+      filterString,
+    });
+    if (resetPage) {
+      setPage(1);
+    }
+  };
+
+  useEffectOnce(() => {
+    reloadData();
     document.body.style.background = "#fff";
-  }, []);
+  });
+
+  useUpdateEffect(() => {
+    if (search.length === 0) reloadData(true);
+  }, [search]);
+
+  React.useEffect(() => {
+    setPages(Math.floor(totalDataCount / 10) + 1);
+  }, [totalDataCount]);
+
+  useUpdateEffect(() => {
+    if (!isLoading) {
+      reloadData();
+    }
+  }, [page]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData(true);
+      }
+    },
+    500,
+    [search]
+  );
 
   return (
     <div
@@ -29,6 +96,7 @@ export default function GrantsModule() {
         justify-content: center;
       `}
     >
+      {isLoading && <PageLoader />}
       <PageHeader
         title="Grants"
         breadcrumbs={[
@@ -102,9 +170,21 @@ export default function GrantsModule() {
           width: 100%;
         `}
       >
-        <Search />
+        <Search value={search} setValue={setSearch} />
         <div css="width: 100%;height: 25px;" />
-        <GrantsList listitems={grantsmockitems} />
+        <GrantsList listitems={data} />
+        <div css="width: 100%;height: 25px;" />
+        <Pagination
+          page={page}
+          size="large"
+          count={pages}
+          onChange={handleChange}
+          css={`
+            > ul {
+              justify-content: center;
+            }
+          `}
+        />
       </div>
       <div css="width: 100%;height: 25px;" />
       <div

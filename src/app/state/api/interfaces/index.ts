@@ -3,19 +3,19 @@ import {
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
-} from "../action-reducers/sync";
+} from "app/state/api/action-reducers/sync";
 
 export interface RequestValues<T> {
   values?: T;
   addOnData?: boolean;
   isCMSfetch?: boolean;
+  filterString?: string;
 }
 
 export interface ResponseData<T> {
   data: any[];
   count: number;
   addOnData?: boolean;
-  vizData: any[] | undefined;
 }
 
 export interface Errors {
@@ -49,7 +49,6 @@ export interface ApiCallParams {}
 export interface ApiResponseModel {
   data: any[];
   count: number;
-  vizData: any[];
 }
 
 export type ApiCallModel = ApiModel<
@@ -58,6 +57,9 @@ export type ApiCallModel = ApiModel<
 >;
 
 export interface StoreModel {
+  // api
+  GrantsList: ApiCallModel;
+  // sync
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;

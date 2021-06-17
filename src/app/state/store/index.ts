@@ -5,8 +5,10 @@ import {
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
 } from "app/state/api/action-reducers/sync";
+import GrantsList from "app/state/api/action-reducers/viz/grantsList";
 
 const storeContent: StoreModel = {
+  GrantsList: persist(GrantsList),
   ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
   ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
