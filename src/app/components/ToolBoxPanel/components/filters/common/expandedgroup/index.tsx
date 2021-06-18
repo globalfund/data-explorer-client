@@ -187,7 +187,7 @@ function FilterOption(props: FilterGroupOptionModel) {
             width: 100%;
             display: flex;
             overflow-y: auto;
-            max-height: 300px;
+            max-height: 70vh;
             padding-left: 25px;
             flex-direction: column;
 
@@ -207,7 +207,7 @@ function FilterOption(props: FilterGroupOptionModel) {
           `}
         >
           {props.subOptions.map((option: FilterGroupOptionModel) => (
-            <FilterOption {...option} />
+            <FilterOption {...option} key={option.value} />
           ))}
         </div>
       )}

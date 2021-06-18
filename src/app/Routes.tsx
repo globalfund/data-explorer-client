@@ -4,6 +4,7 @@ import React, { Suspense, lazy } from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
+import { useFilterOptions } from "./hooks/useFilterOptions";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -18,6 +19,8 @@ const CountryDetailModule = lazy(
 );
 
 export function MainRoutes() {
+  useFilterOptions({});
+
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>

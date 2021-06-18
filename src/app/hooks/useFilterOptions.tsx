@@ -1,0 +1,81 @@
+import React from "react";
+import get from "lodash/get";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+
+interface UseFilterOptionsProps {
+  returnFilterOptions?: boolean;
+}
+
+export function useFilterOptions(props: UseFilterOptionsProps) {
+  const getLocations = useStoreActions(
+    (store) => store.LocationFilterOptions.fetch
+  );
+  const locations = useStoreState((state) =>
+    get(state.LocationFilterOptions.data, "options", [])
+  );
+
+  const getComponents = useStoreActions(
+    (store) => store.ComponentFilterOptions.fetch
+  );
+  const components = useStoreState((state) =>
+    get(state.ComponentFilterOptions.data, "options", [])
+  );
+
+  const getPartnerTypes = useStoreActions(
+    (store) => store.PartnerTypeFilterOptions.fetch
+  );
+  const partnerTypes = useStoreState((state) =>
+    get(state.PartnerTypeFilterOptions.data, "options", [])
+  );
+
+  const getStatus = useStoreActions((store) => store.StatusFilterOptions.fetch);
+  const status = useStoreState((state) =>
+    get(state.StatusFilterOptions.data, "options", [])
+  );
+
+  const getReplenishmentPeriods = useStoreActions(
+    (store) => store.ReplenishmentPeriodFilterOptions.fetch
+  );
+  const replenishmentPeriods = useStoreState((state) =>
+    get(state.ReplenishmentPeriodFilterOptions.data, "options", [])
+  );
+
+  const getDonors = useStoreActions((store) => store.DonorFilterOptions.fetch);
+  const donors = useStoreState((state) =>
+    get(state.DonorFilterOptions.data, "options", [])
+  );
+
+  React.useEffect(() => {
+    if (locations.length === 0) {
+      getLocations({});
+    }
+    if (components.length === 0) {
+      getComponents({});
+    }
+    if (partnerTypes.length === 0) {
+      getPartnerTypes({});
+    }
+    if (status.length === 0) {
+      getStatus({});
+    }
+    if (replenishmentPeriods.length === 0) {
+      getReplenishmentPeriods({});
+    }
+    if (donors.length === 0) {
+      getDonors({});
+    }
+  }, []);
+
+  if (props.returnFilterOptions) {
+    return {
+      Locations: locations,
+      Components: components,
+      Partners: partnerTypes,
+      "Grant Status": status,
+      "Replenishment Periods": replenishmentPeriods,
+      Donors: donors,
+    };
+  }
+
+  return null;
+}

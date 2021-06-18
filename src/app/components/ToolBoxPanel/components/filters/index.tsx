@@ -1,18 +1,18 @@
 import React from "react";
+import get from "lodash/get";
 import { ResetIcon } from "app/assets/icons/Reset";
 import IconButton from "@material-ui/core/IconButton";
-import {
-  componentsMockFilterOptions,
-  FilterGroupProps,
-} from "app/components/ToolBoxPanel/components/filters/data";
+import { useFilterOptions } from "app/hooks/useFilterOptions";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
-import { ExpandedFilterGroup } from "./common/expandedgroup";
+import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
 }
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
+  const filterOptions = useFilterOptions({ returnFilterOptions: true });
   const [expandedGroup, setExpandedGroup] = React.useState<string | null>(null);
 
   return (
@@ -68,8 +68,9 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       {expandedGroup && (
         <ExpandedFilterGroup
           selectedOptions={[]}
-          {...componentsMockFilterOptions}
+          name={expandedGroup}
           goBack={() => setExpandedGroup(null)}
+          options={get(filterOptions, expandedGroup, [])}
         />
       )}
     </div>

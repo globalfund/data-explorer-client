@@ -57,12 +57,19 @@ export type ApiCallModel = ApiModel<
 >;
 
 export interface StoreModel {
-  // api
+  // data viz api
   GrantsList: ApiCallModel;
   DisbursementsGeomap: ApiCallModel;
   DisbursementsTreemap: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
-  // sync
+  // filter options api
+  LocationFilterOptions: ApiCallModel;
+  ComponentFilterOptions: ApiCallModel;
+  PartnerTypeFilterOptions: ApiCallModel;
+  StatusFilterOptions: ApiCallModel;
+  ReplenishmentPeriodFilterOptions: ApiCallModel;
+  DonorFilterOptions: ApiCallModel;
+  // sync state variables
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
