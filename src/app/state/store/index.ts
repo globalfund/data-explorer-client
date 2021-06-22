@@ -9,6 +9,7 @@ import {
 } from "app/state/api/action-reducers/sync";
 
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
+import BudgetsFlow from "app/state/api/action-reducers/viz/budgetsFlow";
 import DisbursementsGeomap from "app/state/api/action-reducers/viz/disbursementsGeomap";
 import DisbursementsTreemap from "app/state/api/action-reducers/viz/disbursementsTreemap";
 import DisbursementsTimeCycle from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
@@ -23,6 +24,7 @@ import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
 const storeContent: StoreModel = {
   // data viz api
   GrantsList: persist(GrantsList),
+  BudgetsFlow: persist(BudgetsFlow),
   DisbursementsGeomap: persist(DisbursementsGeomap),
   DisbursementsTreemap: persist(DisbursementsTreemap),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
