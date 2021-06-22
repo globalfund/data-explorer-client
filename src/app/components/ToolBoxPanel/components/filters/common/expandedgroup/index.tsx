@@ -1,15 +1,19 @@
 import React from "react";
+import find from "lodash/find";
+import remove from "lodash/remove";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { container, input } from "app/components/Search/styles";
+import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+// import { container, input } from "app/components/Search/styles";
 import {
   FilterGroupModel,
   FilterGroupOptionModel,
   FilterGroupProps,
+  FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
@@ -19,10 +23,106 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
+  const { appliedFilters, setAppliedFilters } = useAppliedFilters({
+    type: props.name,
+  });
+  const [tmpAppliedFilters, setTmpAppliedFilters] = React.useState([
+    ...appliedFilters,
+  ]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAllSelected(event.target.checked);
-  };
+  React.useEffect(() => {
+    let allOptionsCount = 0;
+    props.options.forEach((option: FilterGroupOptionModel) => {
+      allOptionsCount += 1;
+      allOptionsCount += option.subOptions ? option.subOptions.length : 0;
+      option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+        allOptionsCount += subOption.subOptions
+          ? subOption.subOptions.length
+          : 0;
+        subOption.subOptions?.forEach(
+          (subSubOption: FilterGroupOptionModel) => {
+            allOptionsCount += subSubOption.subOptions
+              ? subSubOption.subOptions.length
+              : 0;
+            subSubOption.subOptions?.forEach(
+              (subSubSubOption: FilterGroupOptionModel) => {
+                allOptionsCount += subSubSubOption.subOptions
+                  ? subSubSubOption.subOptions.length
+                  : 0;
+              }
+            );
+          }
+        );
+      });
+    });
+    setAllSelected(tmpAppliedFilters.length === allOptionsCount);
+  }, [tmpAppliedFilters, props.options]);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const tmp = [...tmpAppliedFilters];
+    if (event.target.checked) {
+      props.options.forEach((option: FilterGroupOptionModel) => {
+        tmp.push(option.value);
+        option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+          tmp.push(subOption.value);
+          subOption.subOptions?.forEach(
+            (subSubOption: FilterGroupOptionModel) => {
+              tmp.push(subSubOption.value);
+              subSubOption.subOptions?.forEach(
+                (subSubSubOption: FilterGroupOptionModel) => {
+                  tmp.push(subSubSubOption.value);
+                }
+              );
+            }
+          );
+        });
+      });
+      setTmpAppliedFilters(tmp);
+    } else {
+      setTmpAppliedFilters([]);
+    }
+  }
+
+  function handleApply() {
+    setAppliedFilters(tmpAppliedFilters);
+    props.goBack();
+  }
+
+  function onOptionChange(checked: boolean, option: FilterGroupOptionModel) {
+    const tmp = [...tmpAppliedFilters];
+    if (checked) {
+      tmp.push(option.value);
+      option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+        tmp.push(subOption.value);
+        subOption.subOptions?.forEach(
+          (subSubOption: FilterGroupOptionModel) => {
+            tmp.push(subSubOption.value);
+            subSubOption.subOptions?.forEach(
+              (subSubSubOption: FilterGroupOptionModel) => {
+                tmp.push(subSubSubOption.value);
+              }
+            );
+          }
+        );
+      });
+    } else {
+      remove(tmp, (o: string) => o === option.value);
+      option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+        remove(tmp, (o: string) => o === subOption.value);
+        subOption.subOptions?.forEach(
+          (subSubOption: FilterGroupOptionModel) => {
+            remove(tmp, (o: string) => o === subSubOption.value);
+            subSubOption.subOptions?.forEach(
+              (subSubSubOption: FilterGroupOptionModel) => {
+                remove(tmp, (o: string) => o === subSubSubOption.value);
+              }
+            );
+          }
+        );
+      });
+    }
+    setTmpAppliedFilters(tmp);
+  }
 
   return (
     <React.Fragment>
@@ -107,7 +207,16 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
         `}
       />
       {props.options.map((option: FilterGroupOptionModel) => (
-        <FilterOption {...option} key={option.value} />
+        <FilterOption
+          {...option}
+          key={option.value}
+          onOptionChange={onOptionChange}
+          selectedOptions={tmpAppliedFilters}
+          selected={
+            find(tmpAppliedFilters, (o: string) => o === option.value) !==
+            undefined
+          }
+        />
       ))}
       <div
         css={`
@@ -117,7 +226,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       />
       <button
         type="button"
-        onClick={props.goBack}
+        onClick={handleApply}
         css={`
           color: #fff;
           font-size: 14px;
@@ -136,7 +245,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   );
 }
 
-function FilterOption(props: FilterGroupOptionModel) {
+function FilterOption(props: FilterOptionProps) {
   const [showSubOptions, setShowSubOptions] = React.useState(false);
 
   return (
@@ -168,8 +277,14 @@ function FilterOption(props: FilterGroupOptionModel) {
           control={
             <Checkbox
               color="primary"
-              // checked={false}
-              // onChange={handleChange}
+              checked={props.selected}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                props.onOptionChange(e.target.checked, {
+                  label: props.label,
+                  value: props.value,
+                  subOptions: props.subOptions,
+                })
+              }
             />
           }
           label={props.label}
@@ -207,7 +322,18 @@ function FilterOption(props: FilterGroupOptionModel) {
           `}
         >
           {props.subOptions.map((option: FilterGroupOptionModel) => (
-            <FilterOption {...option} key={option.value} />
+            <FilterOption
+              {...option}
+              key={option.value}
+              onOptionChange={props.onOptionChange}
+              selectedOptions={props.selectedOptions}
+              selected={
+                find(
+                  props.selectedOptions,
+                  (o: string) => o === option.value
+                ) !== undefined
+              }
+            />
           ))}
         </div>
       )}

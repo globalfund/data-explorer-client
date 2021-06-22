@@ -2,6 +2,7 @@ import React from "react";
 import { CloseIcon } from "app/assets/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface FilterGroupCompProps extends FilterGroupProps {
@@ -9,6 +10,10 @@ interface FilterGroupCompProps extends FilterGroupProps {
 }
 
 export function FilterGroup(props: FilterGroupCompProps) {
+  const { appliedFilters, setAppliedFilters } = useAppliedFilters({
+    type: props.name,
+  });
+
   return (
     <div
       css={`
@@ -39,7 +44,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
           <TriangleXSIcon />
         </IconButton>
       </div>
-      {props.selectedOptions.length > 0 && (
+      {appliedFilters.length > 0 && (
         <div
           css={`
             gap: 6px;
@@ -64,7 +69,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
             }
           `}
         >
-          {props.selectedOptions.map((option: string) => (
+          {appliedFilters.map((option: string) => (
             <div
               key={option}
               css={`

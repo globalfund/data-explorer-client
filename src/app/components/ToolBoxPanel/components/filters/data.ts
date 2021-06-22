@@ -107,5 +107,10 @@ export const componentsMockFilterOptions: FilterGroupModel = {
 
 export interface FilterGroupProps {
   name: string;
+}
+
+export interface FilterOptionProps extends FilterGroupOptionModel {
+  selected: boolean;
   selectedOptions: string[];
+  onOptionChange: (checked: boolean, option: FilterGroupOptionModel) => void;
 }

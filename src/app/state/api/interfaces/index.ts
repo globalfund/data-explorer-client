@@ -4,6 +4,7 @@ import {
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
 } from "app/state/api/action-reducers/sync";
+import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 
 export interface RequestValues<T> {
   values?: T;
@@ -70,6 +71,7 @@ export interface StoreModel {
   ReplenishmentPeriodFilterOptions: ApiCallModel;
   DonorFilterOptions: ApiCallModel;
   // sync state variables
+  AppliedFiltersState: AppliedFiltersStateModel;
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;

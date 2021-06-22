@@ -1,6 +1,7 @@
 import { createStore, persist } from "easy-peasy";
 import { StoreModel } from "app/state/api/interfaces";
 
+import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
 import {
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
@@ -33,6 +34,7 @@ const storeContent: StoreModel = {
   ReplenishmentPeriodFilterOptions: persist(ReplenishmentPeriodFilterOptions),
   DonorFilterOptions: persist(DonorFilterOptions),
   // sync state variables
+  AppliedFiltersState: persist(AppliedFiltersState),
   ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
   ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(

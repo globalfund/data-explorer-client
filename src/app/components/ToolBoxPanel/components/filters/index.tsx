@@ -67,7 +67,6 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       )}
       {expandedGroup && (
         <ExpandedFilterGroup
-          selectedOptions={[]}
           name={expandedGroup}
           goBack={() => setExpandedGroup(null)}
           options={get(filterOptions, expandedGroup, [])}
