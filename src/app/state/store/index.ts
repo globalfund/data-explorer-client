@@ -9,22 +9,26 @@ import {
 } from "app/state/api/action-reducers/sync";
 
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
+import Allocations from "app/state/api/action-reducers/viz/allocations";
 import BudgetsFlow from "app/state/api/action-reducers/viz/budgetsFlow";
+import BudgetsTimeCycle from "app/state/api/action-reducers/viz/budgetsTimeCycle";
 import DisbursementsGeomap from "app/state/api/action-reducers/viz/disbursementsGeomap";
 import DisbursementsTreemap from "app/state/api/action-reducers/viz/disbursementsTreemap";
 import DisbursementsTimeCycle from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
 
+import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
+import StatusFilterOptions from "app/state/api/action-reducers/filters/status";
 import LocationFilterOptions from "app/state/api/action-reducers/filters/locations";
 import ComponentFilterOptions from "app/state/api/action-reducers/filters/components";
 import PartnerTypeFilterOptions from "app/state/api/action-reducers/filters/partnerTypes";
-import StatusFilterOptions from "app/state/api/action-reducers/filters/status";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
-import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
 
 const storeContent: StoreModel = {
   // data viz api
   GrantsList: persist(GrantsList),
   BudgetsFlow: persist(BudgetsFlow),
+  Allocations: persist(Allocations),
+  BudgetsTimeCycle: persist(BudgetsTimeCycle),
   DisbursementsGeomap: persist(DisbursementsGeomap),
   DisbursementsTreemap: persist(DisbursementsTreemap),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),

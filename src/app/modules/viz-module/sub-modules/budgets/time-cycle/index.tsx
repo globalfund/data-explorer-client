@@ -1,7 +1,10 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import useTitle from "react-use/lib/useTitle";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { mockdata } from "app/components/Charts/Budgets/TimeCycle/data";
 import { TransitionContainer } from "app/components/TransitionContainer";
@@ -24,6 +27,20 @@ export function BudgetsTimeCycleModule() {
     string | undefined
   >(undefined);
 
+  // api call & data
+  const fetchData = useStoreActions((store) => store.BudgetsTimeCycle.fetch);
+  const data = useStoreState(
+    (state) =>
+      get(state.BudgetsTimeCycle.data, "data", []) as Record<string, unknown>[]
+  );
+  const isLoading = useStoreState((state) => state.BudgetsTimeCycle.loading);
+
+  React.useEffect(() => fetchData({}), []);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
   return (
     <div
       id="budgets-time-cycle"
@@ -40,7 +57,7 @@ export function BudgetsTimeCycleModule() {
       <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
         {(vizLevel === 0 || vizLevel === 1) && (
           <BudgetsTimeCycle
-            data={mockdata}
+            data={data}
             selectedNodeId={vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
               setVizLevel(1);

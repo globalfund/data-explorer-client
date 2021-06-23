@@ -1,27 +1,43 @@
 import React from "react";
+import get from "lodash/get";
 import { useMeasure } from "react-use";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import Grid from "@material-ui/core/Grid";
 import ReactApexCharts from "react-apexcharts";
 import { InfoIcon } from "app/assets/icons/Info";
+import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
+import { getKeysPercentages } from "app/modules/viz-module/sub-modules/allocations/data";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
-import {
-  allocationmockdata,
-  getKeysPercentages,
-} from "app/modules/viz-module/sub-modules/allocations/data";
 
 export function AllocationsModule() {
+  // api call & data
+  const fetchData = useStoreActions((store) => store.Allocations.fetch);
+  const total = useStoreState(
+    (state) => get(state.Allocations.data, "total", []) as number
+  );
+  const keys = useStoreState(
+    (state) => get(state.Allocations.data, "keys", []) as string[]
+  );
+  const colors = useStoreState(
+    (state) => get(state.Allocations.data, "colors", []) as string[]
+  );
+  const values = useStoreState(
+    (state) => get(state.Allocations.data, "values", []) as number[]
+  );
+  const isLoading = useStoreState((state) => state.Allocations.loading);
+
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
     percentages: number[];
     colors: string[];
-  }>(getKeysPercentages(allocationmockdata.total, allocationmockdata.values));
+  }>(getKeysPercentages(total, values));
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizScale, setVizScale] = React.useState(1);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
@@ -61,22 +77,20 @@ export function AllocationsModule() {
                 (p: number) => p.toString() === value.toString()
               );
               if (fkeyIndex > -1) {
-                return formatFinancialValue(
-                  allocationmockdata.values[fkeyIndex]
-                );
+                return formatFinancialValue(values[fkeyIndex]);
               }
               return "";
             },
           },
           total: {
             show: true,
-            formatter: () => formatFinancialValue(allocationmockdata.total),
+            formatter: () => formatFinancialValue(total),
           },
         },
       },
     },
     colors: keysPercentagesColors.colors,
-    labels: allocationmockdata.keys,
+    labels: keys,
     legend: {
       show: true,
       floating: true,
@@ -91,7 +105,7 @@ export function AllocationsModule() {
       },
       formatter: (seriesName: string, opts: any) => {
         return `${seriesName}: ${formatLargeAmountsWithPrefix(
-          allocationmockdata.values[opts.seriesIndex]
+          values[opts.seriesIndex]
         )}`;
       },
       itemMargin: {
@@ -134,6 +148,12 @@ export function AllocationsModule() {
       }
     }
   }
+
+  React.useEffect(() => fetchData({}), []);
+
+  React.useEffect(() => {
+    setKeysPercentagesColors(getKeysPercentages(total, values));
+  }, [total, values]);
 
   React.useEffect(() => {
     const items = document.getElementsByClassName("apexcharts-radial-series");
@@ -197,6 +217,10 @@ export function AllocationsModule() {
     return () => window.removeEventListener("click", onClick);
   }, []);
 
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
   return (
     <div
       id="allocations-radial-bar"
@@ -244,7 +268,7 @@ export function AllocationsModule() {
                 Allocations <InfoIcon />
               </div>
               <div css="font-weight: normal;">
-                {formatFinancialValue(allocationmockdata.total)}
+                {formatFinancialValue(total)}
               </div>
             </Grid>
           </Grid>
@@ -287,7 +311,7 @@ export function AllocationsModule() {
               `}
             >
               <div>0 USD</div>
-              <div>{formatFinancialValue(allocationmockdata.total)}</div>
+              <div>{formatFinancialValue(total)}</div>
             </div>
           </div>
         </div>

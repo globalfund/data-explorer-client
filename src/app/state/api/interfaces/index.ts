@@ -60,7 +60,9 @@ export type ApiCallModel = ApiModel<
 export interface StoreModel {
   // data viz api
   GrantsList: ApiCallModel;
+  Allocations: ApiCallModel;
   BudgetsFlow: ApiCallModel;
+  BudgetsTimeCycle: ApiCallModel;
   DisbursementsGeomap: ApiCallModel;
   DisbursementsTreemap: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
