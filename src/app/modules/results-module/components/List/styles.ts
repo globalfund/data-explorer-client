@@ -1,6 +1,6 @@
 import { css } from "styled-components/macro";
 
-export const listitem = css`
+export const listitem = (outline: boolean) => css`
   height: 100%;
   display: flex;
   color: #262c34;
@@ -8,7 +8,7 @@ export const listitem = css`
   border-radius: 20px;
   flex-direction: column;
   justify-content: space-between;
-  border: 2px solid #f5f5f7;
+  border: 2px solid ${outline ? "#262c34" : "#f5f5f7"};
 `;
 
 export const row = (size: number, style: string) => css`

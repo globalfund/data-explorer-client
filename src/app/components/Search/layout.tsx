@@ -10,6 +10,7 @@ interface SearchLayoutProps {
   activeTab: number;
   setActiveTab: (value: number) => void;
   results: SearchResultsTabModel[];
+  loading: boolean;
 }
 
 export function SearchLayout(props: SearchLayoutProps) {
@@ -27,6 +28,7 @@ export function SearchLayout(props: SearchLayoutProps) {
       <SearchIcon />
       {props.value.length > 0 && (
         <SearchResults
+          loading={props.loading}
           results={props.results}
           activeTab={props.activeTab}
           setActiveTab={props.setActiveTab}

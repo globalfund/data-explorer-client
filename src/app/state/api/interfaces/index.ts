@@ -70,6 +70,8 @@ export interface StoreModel {
   DisbursementsTimeCycle: ApiCallModel;
   PledgesContributionsGeomap: ApiCallModel;
   PledgesContributionsTimeCycle: ApiCallModel;
+  // global search
+  GlobalSearch: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;
