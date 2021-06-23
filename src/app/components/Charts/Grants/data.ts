@@ -143,30 +143,30 @@ export const mockdata = [
       },
     ],
   },
-  {
-    name: "Strenghtening Health System Initiatives in Afghanistan",
-    years: [2012, 2017],
-    value: 14829933.72,
-    component: "RSSH",
-    status: "Administratively Closed",
-    rating: "None",
-    implementationPeriods: [
-      {
-        name: 1,
-        years: [2012, 2015],
-        value: 11763800.72,
-        status: "Financially Closed",
-        rating: null,
-      },
-      {
-        name: 2,
-        years: [2015, 2017],
-        value: 3066133,
-        status: "Financially Closed",
-        rating: null,
-      },
-    ],
-  },
+  // {
+  //   name: "Strenghtening Health System Initiatives in Afghanistan",
+  //   years: [2012, 2017],
+  //   value: 14829933.72,
+  //   component: "RSSH",
+  //   status: "Administratively Closed",
+  //   rating: "None",
+  //   implementationPeriods: [
+  //     {
+  //       name: 1,
+  //       years: [2012, 2015],
+  //       value: 11763800.72,
+  //       status: "Financially Closed",
+  //       rating: null,
+  //     },
+  //     {
+  //       name: 2,
+  //       years: [2015, 2017],
+  //       value: 3066133,
+  //       status: "Financially Closed",
+  //       rating: null,
+  //     },
+  //   ],
+  // },
   {
     name:
       "Scaling HIV Interventions among Key Affected Populations in Afghanistan",
@@ -289,23 +289,23 @@ export const mockdata = [
       },
     ],
   },
-  {
-    name: "Strengthening Health Systems in Afghanistan",
-    years: [2015, 2017],
-    value: 8454481,
-    component: "RSSH",
-    status: "Administratively Closed",
-    rating: "None",
-    implementationPeriods: [
-      {
-        name: 1,
-        years: [2015, 2017],
-        value: 8454481,
-        status: "Financially Closed",
-        rating: null,
-      },
-    ],
-  },
+  // {
+  //   name: "Strengthening Health Systems in Afghanistan",
+  //   years: [2015, 2017],
+  //   value: 8454481,
+  //   component: "RSSH",
+  //   status: "Administratively Closed",
+  //   rating: "None",
+  //   implementationPeriods: [
+  //     {
+  //       name: 1,
+  //       years: [2015, 2017],
+  //       value: 8454481,
+  //       status: "Financially Closed",
+  //       rating: null,
+  //     },
+  //   ],
+  // },
   {
     name: null,
     years: [2010, 2015],
@@ -364,23 +364,23 @@ export const mockdata = [
       },
     ],
   },
-  {
-    name: null,
-    years: [2004, 2006],
-    value: 3125605,
-    component: "RSSH",
-    status: "Administratively Closed",
-    rating: "None",
-    implementationPeriods: [
-      {
-        name: 1,
-        years: [2004, 2006],
-        value: 3125605,
-        status: "Financially Closed",
-        rating: null,
-      },
-    ],
-  },
+  // {
+  //   name: null,
+  //   years: [2004, 2006],
+  //   value: 3125605,
+  //   component: "RSSH",
+  //   status: "Administratively Closed",
+  //   rating: "None",
+  //   implementationPeriods: [
+  //     {
+  //       name: 1,
+  //       years: [2004, 2006],
+  //       value: 3125605,
+  //       status: "Financially Closed",
+  //       rating: null,
+  //     },
+  //   ],
+  // },
   {
     name: null,
     years: [2010, 2012],
