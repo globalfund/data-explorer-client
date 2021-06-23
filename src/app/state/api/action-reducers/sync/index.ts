@@ -36,3 +36,15 @@ export const ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapTypeStateModel =
     state.value = payload;
   }),
 };
+
+export interface ToolBoxPanelAggregateByStateModel {
+  value: string;
+  setValue: Action<ToolBoxPanelDonorMapViewStateModel, string>;
+}
+
+export const ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel = {
+  value: "",
+  setValue: action((state, payload: string) => {
+    state.value = payload;
+  }),
+};

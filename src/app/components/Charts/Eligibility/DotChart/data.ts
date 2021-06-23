@@ -1,5 +1,6 @@
 export interface DotChartProps {
-  aggregateBy: "component" | "country";
+  data: DotChartModel[];
+  aggregateBy: "componentName" | "geographicAreaName";
 }
 
 export interface DotChartModel {
@@ -1626,2264 +1627,2264 @@ export const mockdata: DotChartModel[] = [
 
 export const mockdata2: DotChartModel[] = [
   {
-      "name": "Afghanistan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Albania",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Algeria",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Angola",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Armenia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Transition Funding"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Azerbaijan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
+    name: "Afghanistan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Albania",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Algeria",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Angola",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Armenia",
+    items: [
+      {
+        name: "HIV",
+        status: "Transition Funding",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Azerbaijan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
   {
-      "name": "Bangladesh",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Belarus",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Belize",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Benin",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Bhutan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Bolivia (Plurinational State)",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Botswana",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Bulgaria",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Burkina Faso",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Burundi",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Cabo Verde",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Cambodia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Cameroon",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Central African Republic",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Chad",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Colombia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Comoros",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Congo",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Congo (Democratic Republic)",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Costa Rica",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Cuba",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Côte d'Ivoire",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Djibouti",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Dominica",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Dominican Republic",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Ecuador",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Egypt",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "El Salvador",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Equatorial Guinea",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Eritrea",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Eswatini",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Ethiopia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Fiji",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Gabon",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Gambia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Georgia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Ghana",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Grenada",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Guatemala",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Transition Funding"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Transition Funding"
-          }
-      ]
-  },
-  {
-      "name": "Guinea",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Guinea-Bissau",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Guyana",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Transition Funding"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Haiti",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Honduras",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "India",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Indonesia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Iran (Islamic Republic)",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Iraq",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Jamaica",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Jordan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Kazakhstan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Kenya",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Kiribati",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Korea (Democratic Peoples Republic)",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Kosovo",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Transition Funding"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Transition Funding"
-          }
-      ]
-  },
-  {
-      "name": "Kyrgyzstan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Lao (Peoples Democratic Republic)",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Lebanon",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Lesotho",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Liberia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Madagascar",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Malawi",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Malaysia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Maldives",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Mali",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Marshall Islands",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Mauritania",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Mauritius",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Micronesia (Federated States)",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Moldova",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Mongolia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Montenegro",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Morocco",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Mozambique",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Myanmar",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Namibia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Nauru",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Nepal",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Nicaragua",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Niger",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Nigeria",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "North Macedonia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Pakistan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Palau",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Palestine",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Panama",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Papua New Guinea",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Paraguay",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Peru",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Philippines",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Romania",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Russian Federation",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Rwanda",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Saint Lucia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Saint Vincent and Grenadines",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Samoa",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Sao Tome and Principe",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Senegal",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Serbia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Sierra Leone",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Solomon Islands",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Somalia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "South Africa",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "South Sudan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Sri Lanka",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Sudan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Suriname",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Syrian Arab Republic",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Tajikistan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Tanzania (United Republic)",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Thailand",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Timor-Leste",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Togo",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Tonga",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Tunisia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Turkmenistan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Tuvalu",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Uganda",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Ukraine",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Uzbekistan",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Vanuatu",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Venezuela",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Not Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Not Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Viet Nam",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Yemen",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Zambia",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Zanzibar",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  },
-  {
-      "name": "Zimbabwe",
-      "items": [
-          {
-              "name": "HIV",
-              "status": "Eligible"
-          },
-          {
-              "name": "Malaria",
-              "status": "Eligible"
-          },
-          {
-              "name": "Tuberculosis",
-              "status": "Eligible"
-          }
-      ]
-  }
+    name: "Bangladesh",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Belarus",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Belize",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Benin",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Bhutan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Bolivia (Plurinational State)",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Botswana",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Bulgaria",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Burkina Faso",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Burundi",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Cabo Verde",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Cambodia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Cameroon",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Central African Republic",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Chad",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Colombia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Comoros",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Congo",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Congo (Democratic Republic)",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Costa Rica",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Cuba",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Côte d'Ivoire",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Djibouti",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Dominica",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Dominican Republic",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Ecuador",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Egypt",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "El Salvador",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Equatorial Guinea",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Eritrea",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Eswatini",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Ethiopia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Fiji",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Gabon",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Gambia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Georgia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Ghana",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Grenada",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Guatemala",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Transition Funding",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Transition Funding",
+      },
+    ],
+  },
+  {
+    name: "Guinea",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Guinea-Bissau",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Guyana",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Transition Funding",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Haiti",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Honduras",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "India",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Indonesia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Iran (Islamic Republic)",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Iraq",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Jamaica",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Jordan",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Kazakhstan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Kenya",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Kiribati",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Korea (Democratic Peoples Republic)",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Kosovo",
+    items: [
+      {
+        name: "HIV",
+        status: "Transition Funding",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Transition Funding",
+      },
+    ],
+  },
+  {
+    name: "Kyrgyzstan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Lao (Peoples Democratic Republic)",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Lebanon",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Lesotho",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Liberia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Madagascar",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Malawi",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Malaysia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Maldives",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Mali",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Marshall Islands",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Mauritania",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Mauritius",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Micronesia (Federated States)",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Moldova",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Mongolia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Montenegro",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Morocco",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Mozambique",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Myanmar",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Namibia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Nauru",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Nepal",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Nicaragua",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Niger",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Nigeria",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "North Macedonia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Pakistan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Palau",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Palestine",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Panama",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Papua New Guinea",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Paraguay",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Peru",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Philippines",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Romania",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Russian Federation",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Rwanda",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Saint Lucia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Saint Vincent and Grenadines",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Samoa",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Sao Tome and Principe",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Senegal",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Serbia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Sierra Leone",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Solomon Islands",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Somalia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "South Africa",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "South Sudan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Sri Lanka",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Sudan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Suriname",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Syrian Arab Republic",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Tajikistan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Tanzania (United Republic)",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Thailand",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Timor-Leste",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Togo",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Tonga",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Tunisia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Turkmenistan",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Tuvalu",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Uganda",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Ukraine",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Uzbekistan",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Not Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Vanuatu",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Venezuela",
+    items: [
+      {
+        name: "HIV",
+        status: "Not Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Not Eligible",
+      },
+    ],
+  },
+  {
+    name: "Viet Nam",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Yemen",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Zambia",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Zanzibar",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
+  {
+    name: "Zimbabwe",
+    items: [
+      {
+        name: "HIV",
+        status: "Eligible",
+      },
+      {
+        name: "Malaria",
+        status: "Eligible",
+      },
+      {
+        name: "Tuberculosis",
+        status: "Eligible",
+      },
+    ],
+  },
 ];

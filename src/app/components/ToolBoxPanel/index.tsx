@@ -4,6 +4,7 @@ import find from "lodash/find";
 import Slide from "@material-ui/core/Slide";
 import { useParams, useHistory } from "react-router-dom";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ToolBoxPanelTabs } from "app/components/ToolBoxPanel/components/tabs";
 import {
   getControlItems,
@@ -55,7 +56,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   }>();
   const [selectedView, setSelectedView] = React.useState("");
   const [selectedTab, setSelectedTab] = React.useState("Control");
-  const [selectedAggregation, setSelectedAggregation] = React.useState("");
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );
@@ -64,6 +64,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     aggregates: ViewModel[];
   }>(getControlItems(params.vizType, history.location.pathname, params.code));
   const [geomapView, setGeomapView] = React.useState("countries");
+
+  // aggregateBy control const
+  const setSelectedAggregation = useStoreActions(
+    (store) => store.ToolBoxPanelAggregateByState.setValue
+  );
+  const selectedAggregation = useStoreState(
+    (state) => state.ToolBoxPanelAggregateByState.value
+  );
 
   function getSelectedView() {
     let view: ViewModel | undefined;
@@ -107,6 +115,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     controlItems.views,
     history.location.pathname,
   ]);
+
+  React.useEffect(() => {
+    setSelectedAggregation(
+      controlItems.aggregates.length > 0 ? controlItems.aggregates[0].value : ""
+    );
+  }, [controlItems.aggregates]);
 
   return (
     <ClickAwayListener

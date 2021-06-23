@@ -80,6 +80,16 @@ const aggregates = {
       value: "Locations",
     },
   ],
+  eligibility: [
+    {
+      label: "Components",
+      value: "componentName",
+    },
+    {
+      label: "Locations",
+      value: "geographicAreaName",
+    },
+  ],
 };
 
 export function getControlItems(

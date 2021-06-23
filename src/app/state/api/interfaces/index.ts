@@ -1,5 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
 import {
+  ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
@@ -61,6 +62,7 @@ export interface StoreModel {
   // data viz api
   GrantsList: ApiCallModel;
   Allocations: ApiCallModel;
+  Eligibility: ApiCallModel;
   BudgetsFlow: ApiCallModel;
   BudgetsTimeCycle: ApiCallModel;
   DisbursementsGeomap: ApiCallModel;
@@ -75,6 +77,7 @@ export interface StoreModel {
   DonorFilterOptions: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
+  ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;

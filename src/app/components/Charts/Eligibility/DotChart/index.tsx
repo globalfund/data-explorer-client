@@ -166,7 +166,7 @@ export function DotChart(props: DotChartProps) {
               />
               Transition Funding
             </div>
-            {props.aggregateBy === "country" && (
+            {props.aggregateBy === "geographicAreaName" && (
               <React.Fragment>
                 <div
                   css={`
@@ -270,111 +270,112 @@ export function DotChart(props: DotChartProps) {
           </div>
         </Grid>
         <Grid item container sm={12} md={10} spacing={4}>
-          {props.aggregateBy === "component"
-            ? mockdata.map((group: DotChartModel) => (
-                <Grid item key={group.name} xs={12} sm={6}>
-                  <div
-                    css={`
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-bottom: 12px;
-                    `}
-                  >
-                    {group.name}
-                  </div>
-                  <div
-                    css={`
-                      gap: 24px;
-                      display: flex;
-                      flex-wrap: wrap;
-                      padding-left: 5px;
-                      border-left: 1px solid #acafbc;
-                    `}
-                  >
-                    {group.items.map(
-                      (
-                        item: {
-                          name: string;
-                          status:
-                            | "Eligible"
-                            | "Not Eligible"
-                            | "Transition Funding";
-                        },
-                        index: number
-                      ) => (
-                        <div
-                          css={`
-                            width: 8px;
-                            height: 8px;
-                            border-radius: 50%;
-                            ${styles[item.status]}
-                            transition: opacity 0.2s ease-in-out;
-                            opacity: ${!hoveredLegend ||
-                            hoveredLegend === item.status
-                              ? 1
-                              : 0.3};
-                          `}
-                          key={item.name + index}
-                          onMouseEnter={() => setHoveredNode(item)}
-                          onMouseLeave={() => setHoveredNode(null)}
-                        />
-                      )
-                    )}
-                  </div>
-                </Grid>
-              ))
-            : mockdata2.map((group: DotChartModel, index: number) => (
-                <Grid item key={`${group.name}${index}`} xs={4} sm={2}>
-                  <div
-                    css={`
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-bottom: 12px;
-                    `}
-                  >
-                    {group.name}
-                  </div>
-                  <div
-                    css={`
-                      gap: 24px;
-                      display: flex;
-                      flex-wrap: wrap;
-                      padding: 5px 0 5px 5px;
-                      border-left: 1px solid #acafbc;
-                    `}
-                  >
-                    {group.items.map(
-                      (
-                        item: {
-                          name: string;
-                          status:
-                            | "Eligible"
-                            | "Not Eligible"
-                            | "Transition Funding";
-                        },
-                        index: number
-                      ) => (
-                        <div
-                          css={`
-                            width: 8px;
-                            height: 8px;
-                            border-radius: 50%;
-                            ${styles[item.status]}
-                            transition: opacity 0.2s ease-in-out;
-                            opacity: ${!hoveredLegend ||
-                            hoveredLegend === item.status
-                              ? 1
-                              : 0.3};
-                          `}
-                          key={item.name + index}
-                          onMouseEnter={() => setHoveredNode(item)}
-                          onMouseLeave={() => setHoveredNode(null)}
-                        />
-                      )
-                    )}
-                  </div>
-                </Grid>
-              ))}
+          {props.aggregateBy === "componentName" &&
+            props.data.map((group: DotChartModel) => (
+              <Grid item key={group.name} xs={12} sm={6}>
+                <div
+                  css={`
+                    font-size: 14px;
+                    font-weight: bold;
+                    margin-bottom: 12px;
+                  `}
+                >
+                  {group.name}
+                </div>
+                <div
+                  css={`
+                    gap: 24px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    padding-left: 5px;
+                    border-left: 1px solid #acafbc;
+                  `}
+                >
+                  {group.items.map(
+                    (
+                      item: {
+                        name: string;
+                        status:
+                          | "Eligible"
+                          | "Not Eligible"
+                          | "Transition Funding";
+                      },
+                      index: number
+                    ) => (
+                      <div
+                        css={`
+                          width: 8px;
+                          height: 8px;
+                          border-radius: 50%;
+                          ${styles[item.status]}
+                          transition: opacity 0.2s ease-in-out;
+                          opacity: ${!hoveredLegend ||
+                          hoveredLegend === item.status
+                            ? 1
+                            : 0.3};
+                        `}
+                        key={item.name + index}
+                        onMouseEnter={() => setHoveredNode(item)}
+                        onMouseLeave={() => setHoveredNode(null)}
+                      />
+                    )
+                  )}
+                </div>
+              </Grid>
+            ))}
+          {props.aggregateBy === "geographicAreaName" &&
+            props.data.map((group: DotChartModel, index: number) => (
+              <Grid item key={`${group.name}${index}`} xs={4} sm={2}>
+                <div
+                  css={`
+                    font-size: 14px;
+                    font-weight: bold;
+                    margin-bottom: 12px;
+                  `}
+                >
+                  {group.name}
+                </div>
+                <div
+                  css={`
+                    gap: 24px;
+                    display: flex;
+                    flex-wrap: wrap;
+                    padding: 5px 0 5px 5px;
+                    border-left: 1px solid #acafbc;
+                  `}
+                >
+                  {group.items.map(
+                    (
+                      item: {
+                        name: string;
+                        status:
+                          | "Eligible"
+                          | "Not Eligible"
+                          | "Transition Funding";
+                      },
+                      index: number
+                    ) => (
+                      <div
+                        css={`
+                          width: 8px;
+                          height: 8px;
+                          border-radius: 50%;
+                          ${styles[item.status]}
+                          transition: opacity 0.2s ease-in-out;
+                          opacity: ${!hoveredLegend ||
+                          hoveredLegend === item.status
+                            ? 1
+                            : 0.3};
+                        `}
+                        key={item.name + index}
+                        onMouseEnter={() => setHoveredNode(item)}
+                        onMouseLeave={() => setHoveredNode(null)}
+                      />
+                    )
+                  )}
+                </div>
+              </Grid>
+            ))}
         </Grid>
       </Grid>
     </React.Fragment>
