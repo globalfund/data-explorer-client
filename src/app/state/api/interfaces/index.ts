@@ -68,6 +68,8 @@ export interface StoreModel {
   DisbursementsGeomap: ApiCallModel;
   DisbursementsTreemap: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
+  PledgesContributionsGeomap: ApiCallModel;
+  PledgesContributionsTimeCycle: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;

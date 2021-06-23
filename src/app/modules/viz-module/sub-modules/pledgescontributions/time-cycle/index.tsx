@@ -1,13 +1,15 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import useTitle from "react-use/lib/useTitle";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
-import { mockdata } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
 export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
@@ -17,6 +19,23 @@ export function PledgesContributionsTimeCycleModule() {
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
+
+  // api call & data
+  const fetchData = useStoreActions(
+    (store) => store.PledgesContributionsTimeCycle.fetch
+  );
+  const data = useStoreState(
+    (state) =>
+      get(state.PledgesContributionsTimeCycle.data, "data", []) as Record<
+        string,
+        unknown
+      >[]
+  );
+  const isLoading = useStoreState(
+    (state) => state.PledgesContributionsTimeCycle.loading
+  );
+
+  React.useEffect(() => fetchData({}), []);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -54,6 +73,10 @@ export function PledgesContributionsTimeCycleModule() {
     }, 1000);
   }, []);
 
+  if (isLoading) {
+    return <PageLoader />;
+  }
+
   return (
     <div
       id="pledges-contributions-time-cycle"
@@ -69,7 +92,7 @@ export function PledgesContributionsTimeCycleModule() {
     >
       <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
         <PledgesContributionsTimeCycle
-          data={mockdata}
+          data={data}
           selectedNodeId={vizSelected}
           onNodeClick={(node: string, x: number, y: number) => {
             setVizLevel(1);

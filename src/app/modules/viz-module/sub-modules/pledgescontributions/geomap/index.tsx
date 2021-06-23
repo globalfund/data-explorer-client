@@ -1,24 +1,18 @@
+/* third-party */
 import React from "react";
+import get from "lodash/get";
 import filter from "lodash/filter";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+/* project */
 import { GeoMap } from "app/components/Charts/GeoMap";
-import axios, { AxiosResponse, AxiosError } from "axios";
 import { PageLoader } from "app/modules/common/page-loader";
 import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export function PledgesContributionsGeoMap() {
   useTitle("The Data Explorer - Pledges & Contributions GeoMap");
-  const [maxValue, setMaxValue] = React.useState(0);
-  const [data, setData] = React.useState<FeatureCollection>({
-    type: "FeatureCollection",
-    features: [],
-  });
-  const [pins, setPins] = React.useState<GeoMapPinMarker[]>([]);
-  const [loading, setLoading] = React.useState(false);
-
   const valueType = useStoreState(
     (state) => state.ToolBoxPanelDonorMapTypeState.value
   );
@@ -26,33 +20,43 @@ export function PledgesContributionsGeoMap() {
     (state) => state.ToolBoxPanelDonorMapViewState.value
   );
 
-  React.useEffect(() => {
-    setLoading(true);
-    axios
-      .get(
-        `https://api.tgf.nyuki.io/pledges-contributions/geomap/?valueType=${valueType}`
-      )
-      .then((response: AxiosResponse) => {
-        if (response.status === 200) {
-          if (response.data.layers) {
-            setData({
-              type: "FeatureCollection",
-              features: response.data.layers,
-            });
-          }
-          if (response.data.maxValue) {
-            setMaxValue(response.data.maxValue);
-          }
-          if (response.data.pins) {
-            setPins(response.data.pins);
-          }
-        }
-        setLoading(false);
-      })
-      .catch((error: AxiosError) => {
-        console.log(error);
-      });
-  }, [valueType]);
+  // api call & data
+  const fetchData = useStoreActions(
+    (store) => store.PledgesContributionsGeomap.fetch
+  );
+  const layers = useStoreState(
+    (state) =>
+      ({
+        type: "FeatureCollection",
+        features: get(state.PledgesContributionsGeomap.data, "layers", []),
+      } as FeatureCollection)
+  );
+  const maxValue = useStoreState((state) =>
+    get(state.PledgesContributionsGeomap.data, "maxValue", 0)
+  );
+  const pins = useStoreState(
+    (state) =>
+      get(
+        state.PledgesContributionsGeomap.data,
+        "pins",
+        []
+      ) as GeoMapPinMarker[]
+  );
+  const isLoading = useStoreState(
+    (state) => state.PledgesContributionsGeomap.loading
+  );
+
+  React.useEffect(
+    () =>
+      fetchData({
+        filterString: `valueType=${valueType}`,
+      }),
+    [valueType]
+  );
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <div
@@ -63,11 +67,10 @@ export function PledgesContributionsGeoMap() {
         flex-direction: column;
       `}
     >
-      {loading && <PageLoader />}
       <GeoMap
         data={
           view === "Public Sector"
-            ? data
+            ? layers
             : {
                 type: "FeatureCollection",
                 features: [],
