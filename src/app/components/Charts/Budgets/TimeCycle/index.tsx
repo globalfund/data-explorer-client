@@ -96,6 +96,9 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
   }, []);
 
   const Bars = (bprops: any) => {
+    if (props.vizCompData.length !== bprops.bars.length) {
+      props.setVizCompData(bprops.bars);
+    }
     return bprops.bars.map((bar: any) => (
       <BarComponent
         {...bar}

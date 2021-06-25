@@ -15,7 +15,9 @@ import BudgetsFlow, {
   BudgetsFlowDrilldownLevel1,
 } from "app/state/api/action-reducers/viz/budgetsFlow";
 import Eligibility from "app/state/api/action-reducers/viz/eligibility";
-import BudgetsTimeCycle from "app/state/api/action-reducers/viz/budgetsTimeCycle";
+import BudgetsTimeCycle, {
+  BudgetsTimeCycleDrilldownLevel1,
+} from "app/state/api/action-reducers/viz/budgetsTimeCycle";
 import DisbursementsGeomap from "app/state/api/action-reducers/viz/disbursementsGeomap";
 import DisbursementsTreemap from "app/state/api/action-reducers/viz/disbursementsTreemap";
 import DisbursementsTimeCycle from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
@@ -39,6 +41,7 @@ const storeContent: StoreModel = {
   Allocations: persist(Allocations),
   Eligibility: persist(Eligibility),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
+  BudgetsTimeCycleDrilldownLevel1: persist(BudgetsTimeCycleDrilldownLevel1),
   DisbursementsGeomap: persist(DisbursementsGeomap),
   DisbursementsTreemap: persist(DisbursementsTreemap),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),

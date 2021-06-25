@@ -1,15 +1,18 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import useTitle from "react-use/lib/useTitle";
+import find from "lodash/find";
+import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
-import { mockdata } from "app/components/Charts/Budgets/TimeCycle/data";
+import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
+import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
+import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
 export function BudgetsTimeCycleModule() {
@@ -26,6 +29,10 @@ export function BudgetsTimeCycleModule() {
   const [vizPrevSelected, setVizPrevSelected] = React.useState<
     string | undefined
   >(undefined);
+  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
+    string | undefined
+  >(undefined);
+  const [vizCompData, setVizCompData] = React.useState([]);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.BudgetsTimeCycle.fetch);
@@ -34,8 +41,47 @@ export function BudgetsTimeCycleModule() {
       get(state.BudgetsTimeCycle.data, "data", []) as Record<string, unknown>[]
   );
   const isLoading = useStoreState((state) => state.BudgetsTimeCycle.loading);
+  const fetchDrilldownLevel1Data = useStoreActions(
+    (store) => store.BudgetsTimeCycleDrilldownLevel1.fetch
+  );
+  const clearDrilldownLevel1Data = useStoreActions(
+    (store) => store.BudgetsTimeCycleDrilldownLevel1.clear
+  );
+  const dataDrilldownLevel1 = useStoreState(
+    (state) =>
+      get(
+        state.BudgetsTimeCycleDrilldownLevel1.data,
+        "data",
+        []
+      ) as BudgetsTreemapDataItem[]
+  );
+  const isDrilldownLoading = useStoreState(
+    (state) => state.BudgetsTimeCycleDrilldownLevel1.loading
+  );
 
-  React.useEffect(() => fetchData({}), []);
+  const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
+    string[]
+  >(data.map((item: any) => item.year));
+
+  React.useEffect(() => {
+    if (data.length === 0) {
+      fetchData({});
+    }
+  }, []);
+
+  useUpdateEffect(() => {
+    if (vizSelected !== undefined) {
+      fetchDrilldownLevel1Data({
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}`,
+      });
+    } else {
+      clearDrilldownLevel1Data();
+    }
+  }, [vizSelected]);
+
+  useUpdateEffect(() => {
+    setDrilldownPanelOptions(data.map((item: any) => item.year.toString()));
+  }, [data]);
 
   if (isLoading) {
     return <PageLoader />;
@@ -58,7 +104,9 @@ export function BudgetsTimeCycleModule() {
         {(vizLevel === 0 || vizLevel === 1) && (
           <BudgetsTimeCycle
             data={data}
+            vizCompData={vizCompData}
             selectedNodeId={vizSelected}
+            setVizCompData={setVizCompData}
             onNodeClick={(node: string, x: number, y: number) => {
               setVizLevel(1);
               setVizSelected(node);
@@ -77,6 +125,7 @@ export function BudgetsTimeCycleModule() {
       <SlideInContainer
         vizLevel={vizLevel}
         selected={vizSelected}
+        loading={isDrilldownLoading}
         close={() => {
           setVizLevel(vizLevel - 1);
           setVizSelected(undefined);
@@ -86,14 +135,41 @@ export function BudgetsTimeCycleModule() {
           );
         }}
       >
-        <DisbursementsTreemap
-          data={mockdata2}
+        <span
+          css={`
+            gap: 40px;
+            width: 100%;
+            display: flex;
+            margin-bottom: 20px;
+            flex-direction: row;
+          `}
+        >
+          <DrillDownArrowSelector
+            options={drilldownPanelOptions}
+            selected={vizSelected as string}
+            onChange={(value: string) => {
+              setVizSelected(value);
+              const fVizNodeComp = find(
+                vizCompData,
+                (item: any) => item.data.indexValue === value
+              ) as any;
+              if (fVizNodeComp) {
+                setVizTranslation({
+                  x: (fVizNodeComp.x - 100) * -1,
+                  y: 0,
+                });
+              }
+            }}
+          />
+        </span>
+        <BudgetsTreemap
+          data={dataDrilldownLevel1}
           onNodeClick={(node: string, x: number, y: number) => {
-            setVizLevel(2);
-            setVizPrevSelected(vizSelected);
-            setVizSelected(node);
-            setVizPrevTranslation(vizTranslation);
-            setVizTranslation({ x: x * -1, y: 0 });
+            // setVizLevel(2);
+            // setVizPrevSelected(vizSelected);
+            // setVizSelected(node);
+            // setVizPrevTranslation(vizTranslation);
+            // setVizTranslation({ x: x * -1, y: 0 });
           }}
         />
       </SlideInContainer>

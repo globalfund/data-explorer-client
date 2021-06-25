@@ -1,5 +1,7 @@
 export interface BudgetsTimeCycleProps {
   selectedNodeId?: string;
+  vizCompData: any;
+  setVizCompData: (vizCompData: any) => void;
   data: Record<string, unknown>[];
   onNodeClick: (node: string, x: number, y: number) => void;
 }
