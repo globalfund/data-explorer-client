@@ -12,10 +12,12 @@ import {
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
 import { nigeriaGrants } from "./NigeriaGrants";
+import { getMockData } from "./countryGrants";
+import { indiaGrants } from "./IndiaGrants";
 
 export function GrantsViz() {
   // const data = mockdata;
-  const data = nigeriaGrants;
+  const data = indiaGrants;
 
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const lYear = minBy(data, "years[0]")?.years[0] || 2002;
