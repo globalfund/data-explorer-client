@@ -85,16 +85,20 @@ export function TreeemapNode(props: any) {
       //   onKeyPress={node.onClick}
       //   onFocus={node.onMouseEnter}
     >
-      {(node.width > 100 || node.height > 100) && (
+      {(node.width > 80 || node.height > 80 || hasChildren) && (
         <div
           onMouseMove={hasChildren ? node.onMouseMove : undefined}
           onMouseEnter={hasChildren ? node.onMouseEnter : undefined}
           onMouseLeave={hasChildren ? node.onMouseLeave : undefined}
         >
           <div
+            ref={(el) => {
+              if (el) {
+                el.style.setProperty("overflow", "hidden", "important");
+              }
+            }}
             css={`
               width: 100%;
-              overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
               font-weight: ${hasChildren || node.data._children
@@ -104,12 +108,21 @@ export function TreeemapNode(props: any) {
           >
             {node.data.name}
           </div>
-          {node.height > 100 && (
-            <React.Fragment>
-              <div css="width: 100%;height: 5px;" />
-              <div>{formatFinancialValue(node.data.value)}</div>
-            </React.Fragment>
-          )}
+          <div css="width: 100%;height: 5px;" />
+          <div
+            ref={(el) => {
+              if (el) {
+                el.style.setProperty("overflow", "hidden", "important");
+              }
+            }}
+            css={`
+              width: 100%;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            `}
+          >
+            {formatFinancialValue(node.data.value)}
+          </div>
         </div>
       )}
       {hasChildren && (

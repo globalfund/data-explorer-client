@@ -57,13 +57,13 @@ export function TreeemapNode(props: any) {
       style={{
         top: node.y,
         left: node.x,
-        color: props.isChildTreemap ? "#fff" : "#262C34",
         width: node.width,
         height: node.height,
         background: node.data.color,
         border: "2px solid #373D43",
         fontSize: bigDevice ? 12 : 8,
         cursor: node.data.orgs ? "pointer" : "default",
+        color: props.isChildTreemap ? "#fff" : "#262C34",
         borderStyle: props.isChildTreemap ? "none" : "solid",
       }}
       css={containercss(
@@ -85,7 +85,7 @@ export function TreeemapNode(props: any) {
       //   onKeyPress={node.onClick}
       //   onFocus={node.onMouseEnter}
     >
-      {(node.width > 100 || node.height > 100) && (
+      {(node.width > 80 || node.height > 80 || hasChildren) && (
         <div
           onMouseMove={hasChildren ? node.onMouseMove : undefined}
           onMouseEnter={hasChildren ? node.onMouseEnter : undefined}
@@ -117,7 +117,7 @@ export function TreeemapNode(props: any) {
           </div>
         </div>
       )}
-      {node.width > 100 && node.height > 100 && hasChildren && (
+      {hasChildren && (
         <div
           css={`
             height: 100%;
