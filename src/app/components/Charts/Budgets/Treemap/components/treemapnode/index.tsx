@@ -4,7 +4,7 @@ import React from "react";
 import { css } from "styled-components/macro";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { DisbursementsTreemap } from "../..";
+import { BudgetsTreemap } from "../..";
 
 const containercss = (hover: boolean, selected: boolean) => css`
   display: flex;
@@ -57,13 +57,13 @@ export function TreeemapNode(props: any) {
       style={{
         top: node.y,
         left: node.x,
+        color: props.isChildTreemap ? "#fff" : "#262C34",
         width: node.width,
         height: node.height,
         background: node.data.color,
         border: "2px solid #373D43",
         fontSize: bigDevice ? 12 : 8,
         cursor: node.data.orgs ? "pointer" : "default",
-        color: props.isChildTreemap ? "#fff" : "#262C34",
         borderStyle: props.isChildTreemap ? "none" : "solid",
       }}
       css={containercss(
@@ -104,15 +104,20 @@ export function TreeemapNode(props: any) {
           >
             {node.data.name}
           </div>
-          {node.height > 100 && (
-            <React.Fragment>
-              <div css="width: 100%;height: 5px;" />
-              <div>{formatFinancialValue(node.data.value)}</div>
-            </React.Fragment>
-          )}
+          <div css="width: 100%;height: 5px;" />
+          <div
+            css={`
+              width: 100%;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            `}
+          >
+            {formatFinancialValue(node.data.value)}
+          </div>
         </div>
       )}
-      {hasChildren && (
+      {node.width > 100 && node.height > 100 && hasChildren && (
         <div
           css={`
             height: 100%;
@@ -126,7 +131,7 @@ export function TreeemapNode(props: any) {
             }
           `}
         >
-          <DisbursementsTreemap
+          <BudgetsTreemap
             isChildTreemap
             data={node.data._children}
             onNodeClick={props.onNodeClick}

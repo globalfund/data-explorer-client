@@ -109,3 +109,10 @@ body::webkit-scrollbar-thumb {
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 }
+
+#ruler {
+  z-index: 0;
+  visibility: hidden;
+  position: absolute;
+  white-space: nowrap;
+}

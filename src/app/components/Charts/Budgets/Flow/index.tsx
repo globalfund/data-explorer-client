@@ -74,6 +74,9 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   }, []);
 
   const Nodes = (nProps: any) => {
+    if (props.vizCompData.length !== nProps.nodes.length) {
+      props.setVizCompData(nProps.nodes);
+    }
     return nProps.nodes.map((node: any) => (
       <rect
         x={node.x}
@@ -90,7 +93,11 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           }
         `}
         onClick={() => {
-          props.onNodeClick(node.id, node.x - 200, node.y);
+          props.onNodeClick(
+            { id: node.id.toString(), filterStr: node.filterStr.toString() },
+            node.x - 200,
+            node.y
+          );
         }}
       />
     ));

@@ -2,11 +2,14 @@ import React from "react";
 import Slide from "@material-ui/core/Slide";
 import { CloseIcon } from "app/assets/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
+import { PageLoader } from "app/modules/common/page-loader";
 
 interface SlideInContainerProps {
+  ref?: any;
   vizLevel: number;
   selected?: string;
   close: () => void;
+  loading?: boolean;
   children: React.ReactNode;
 }
 
@@ -25,6 +28,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
   return (
     <Slide in={open} mountOnEnter unmountOnExit timeout={500} direction="left">
       <div
+        ref={props.ref}
         id="zoom-in-level"
         css={`
           top: 133px;
@@ -62,20 +66,19 @@ export function SlideInContainer(props: SlideInContainerProps) {
           css={`
             width: 100%;
             height: 100%;
-            padding: 40px;
             max-height: 100%;
+            overflow: visible;
             overflow-y: auto;
+            padding: ${props.loading ? "0px" : "20px 50px"};
 
             > div {
-              height: 100%;
-            }
-
-            * {
+              height: calc(100% - 80px);
               overflow: visible !important;
             }
           `}
         >
-          {open && props.children}
+          {props.loading && <PageLoader inLoader />}
+          {!props.loading && open && props.children}
         </div>
       </div>
     </Slide>
