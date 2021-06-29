@@ -1,10 +1,12 @@
+/* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useMeasure } from "react-use";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import Grid from "@material-ui/core/Grid";
 import ReactApexCharts from "react-apexcharts";
+import { useTitle, useMeasure } from "react-use";
+/* project */
 import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
@@ -13,10 +15,16 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { getKeysPercentages } from "app/modules/viz-module/sub-modules/allocations/data";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
+import {
+  getKeysPercentages,
+  AllocationsTreemapDataItem,
+} from "app/modules/viz-module/sub-modules/allocations/data";
+import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
+import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 
 export function AllocationsModule() {
+  useTitle("The Data Explorer - Allocations");
   // api call & data
   const fetchData = useStoreActions((store) => store.Allocations.fetch);
   const total = useStoreState(
@@ -25,13 +33,31 @@ export function AllocationsModule() {
   const keys = useStoreState(
     (state) => get(state.Allocations.data, "keys", []) as string[]
   );
-  const colors = useStoreState(
-    (state) => get(state.Allocations.data, "colors", []) as string[]
-  );
+  // const colors = useStoreState(
+  //   (state) => get(state.Allocations.data, "colors", []) as string[]
+  // );
   const values = useStoreState(
     (state) => get(state.Allocations.data, "values", []) as number[]
   );
   const isLoading = useStoreState((state) => state.Allocations.loading);
+
+  const fetchDrilldownLevelData = useStoreActions(
+    (store) => store.AllocationsDrilldown.fetch
+  );
+  const clearDrilldownLevelData = useStoreActions(
+    (store) => store.AllocationsDrilldown.clear
+  );
+  const dataDrilldownLevel = useStoreState(
+    (state) =>
+      get(
+        state.AllocationsDrilldown.data,
+        "data",
+        []
+      ) as AllocationsTreemapDataItem[]
+  );
+  const isDrilldownLoading = useStoreState(
+    (state) => state.AllocationsDrilldown.loading
+  );
 
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
@@ -126,7 +152,7 @@ export function AllocationsModule() {
 
   function onClick(this: Window, e: MouseEvent) {
     // @ts-ignore
-    if (e.target && e.target.parentNode) {
+    if (e.target && e.target.parentNode && !vizSelected) {
       // @ts-ignore
       const key = e.target.parentNode.getAttribute("seriesName");
       if (key) {
@@ -136,15 +162,7 @@ export function AllocationsModule() {
           setVizLevel(1);
           setVizScale(0.4);
           setVizSelected(key);
-        } else {
-          setVizLevel(0);
-          setVizScale(1);
-          setVizSelected(undefined);
         }
-      } else {
-        setVizLevel(0);
-        setVizScale(1);
-        setVizSelected(undefined);
       }
     }
   }
@@ -168,6 +186,9 @@ export function AllocationsModule() {
           }
         }
       });
+      fetchDrilldownLevelData({
+        filterString: `levelParam=component/componentName eq '${vizSelected}'`,
+      });
     } else {
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
@@ -175,6 +196,7 @@ export function AllocationsModule() {
           paths[0].style.stroke = "";
         }
       });
+      clearDrilldownLevelData();
     }
   }, [vizSelected]);
 
@@ -319,14 +341,32 @@ export function AllocationsModule() {
       <SlideInContainer
         vizLevel={vizLevel}
         selected={vizSelected}
+        loading={isDrilldownLoading}
         close={() => {
           setVizLevel(0);
+          setVizScale(1);
           setVizSelected(undefined);
           setVizTranslation({ x: 0, y: 0 });
         }}
       >
-        <DisbursementsTreemap
-          data={mockdata2}
+        <span
+          css={`
+            gap: 40px;
+            width: 100%;
+            display: flex;
+            margin-bottom: 20px;
+            flex-direction: row;
+          `}
+        >
+          <DrillDownArrowSelector
+            options={keys}
+            selected={vizSelected as string}
+            onChange={(value: string) => setVizSelected(value)}
+          />
+        </span>
+        <BudgetsTreemap
+          data={dataDrilldownLevel}
+          tooltipValueLabel="Allocation"
           onNodeClick={(node: string, x: number, y: number) => {}}
         />
       </SlideInContainer>

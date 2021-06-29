@@ -19,6 +19,7 @@ export interface BudgetsTreemapDataItem {
 export interface BudgetsTreemapProps {
   selectedNodeId?: string;
   isChildTreemap?: boolean;
+  tooltipValueLabel: string;
   data: BudgetsTreemapDataItem[];
   parentNodeCoords?: { x: number; y: number };
   onNodeClick: (node: string, x: number, y: number) => void;

@@ -32,6 +32,7 @@ export interface DisbursementsTreemapProps {
 
 export interface TreemapTooltipProps {
   node: TreeMapNodeDatum;
+  tooltipValueLabel?: string;
 }
 
 export const mockdata1: DisbursementsTreemapDataItem[] = [

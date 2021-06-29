@@ -6,3 +6,7 @@ const Allocations: ApiCallModel = {
 };
 
 export default Allocations;
+
+export const AllocationsDrilldown: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/allocations/drilldown`),
+};

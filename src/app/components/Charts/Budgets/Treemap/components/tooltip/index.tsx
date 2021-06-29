@@ -3,7 +3,7 @@ import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursem
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export function TreemapTooltip(props: TreemapTooltipProps) {
-  const data = props.node.data;
+  const { data } = props.node;
 
   return (
     <div
@@ -67,7 +67,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           `}
         >
           <div>Component</div>
-          <div>Budget</div>
+          <div>{props.tooltipValueLabel}</div>
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (
           <div

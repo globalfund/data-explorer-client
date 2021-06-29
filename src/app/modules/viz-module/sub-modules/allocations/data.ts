@@ -7,6 +7,22 @@ export interface AllocationsProps {
   values: number[];
 }
 
+export interface AllocationsTreemapDataItem {
+  name: string;
+  value: number;
+  formattedValue: string;
+  color: string;
+  _children?: AllocationsTreemapDataItem[];
+  tooltip: {
+    header: string;
+    componentsStats: {
+      name: string;
+      value: number;
+    }[];
+    value: number;
+  };
+}
+
 export const allocationmockdata: AllocationsProps = {
   total: 37633989374.46,
   values: [19273674061.22, 11694379284.57, 6665936028.67],

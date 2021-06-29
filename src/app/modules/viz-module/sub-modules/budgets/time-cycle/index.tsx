@@ -163,6 +163,7 @@ export function BudgetsTimeCycleModule() {
           />
         </span>
         <BudgetsTreemap
+          tooltipValueLabel="Budget"
           data={dataDrilldownLevel1}
           onNodeClick={(node: string, x: number, y: number) => {
             // setVizLevel(2);

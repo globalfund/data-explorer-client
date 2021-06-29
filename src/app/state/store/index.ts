@@ -10,7 +10,9 @@ import {
 } from "app/state/api/action-reducers/sync";
 
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
-import Allocations from "app/state/api/action-reducers/viz/allocations";
+import Allocations, {
+  AllocationsDrilldown,
+} from "app/state/api/action-reducers/viz/allocations";
 import BudgetsFlow, {
   BudgetsFlowDrilldownLevel1,
 } from "app/state/api/action-reducers/viz/budgetsFlow";
@@ -39,6 +41,7 @@ const storeContent: StoreModel = {
   BudgetsFlow: persist(BudgetsFlow),
   BudgetsFlowDrilldownLevel1: persist(BudgetsFlowDrilldownLevel1),
   Allocations: persist(Allocations),
+  AllocationsDrilldown: persist(AllocationsDrilldown),
   Eligibility: persist(Eligibility),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
   BudgetsTimeCycleDrilldownLevel1: persist(BudgetsTimeCycleDrilldownLevel1),

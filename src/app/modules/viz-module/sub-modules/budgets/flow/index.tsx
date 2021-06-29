@@ -244,6 +244,7 @@ export function BudgetsFlowModule() {
           />
         </span>
         <BudgetsTreemap
+          tooltipValueLabel="Budget"
           data={dataDrilldownLevel1}
           onNodeClick={(node: string, x: number, y: number) => {
             // setVizLevel(2);

@@ -62,6 +62,7 @@ export interface StoreModel {
   // data viz api
   GrantsList: ApiCallModel;
   Allocations: ApiCallModel;
+  AllocationsDrilldown: ApiCallModel;
   Eligibility: ApiCallModel;
   BudgetsFlow: ApiCallModel;
   BudgetsFlowDrilldownLevel1: ApiCallModel;

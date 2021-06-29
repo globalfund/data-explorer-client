@@ -44,10 +44,16 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
             selectedNodeId={props.selectedNodeId}
             isChildTreemap={props.isChildTreemap}
             parentNodeCoords={props.parentNodeCoords}
+            tooltipValueLabel={props.tooltipValueLabel}
           />
         )}
         // @ts-ignore
-        tooltip={TreemapTooltip}
+        tooltip={(tProps: any) => (
+          <TreemapTooltip
+            {...tProps}
+            tooltipValueLabel={props.tooltipValueLabel}
+          />
+        )}
         colors={(node: any) => node.data.color}
         theme={{
           tooltip: {

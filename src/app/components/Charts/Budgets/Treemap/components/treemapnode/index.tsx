@@ -136,6 +136,7 @@ export function TreeemapNode(props: any) {
             data={node.data._children}
             onNodeClick={props.onNodeClick}
             selectedNodeId={props.selectedNodeId}
+            tooltipValueLabel={props.tooltipValueLabel}
             parentNodeCoords={{ x: node.x, y: node.y }}
           />
         </div>
