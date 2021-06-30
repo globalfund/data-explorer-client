@@ -8,11 +8,11 @@ import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 interface DocumentsSubModuleProps {
   columns: string[];
   data: ExpandableTableRowProps[];
+  search: string;
+  setSearch: (search: string) => void;
 }
 
 export function DocumentsSubModule(props: DocumentsSubModuleProps) {
-  const [search, setSearch] = React.useState("");
-
   return (
     <React.Fragment>
       <div css="width: 100%;height: 25px;" />
@@ -21,7 +21,7 @@ export function DocumentsSubModule(props: DocumentsSubModuleProps) {
           width: 100%;
         `}
       >
-        <Search value={search} setValue={setSearch} />
+        <Search value={props.search} setValue={props.setSearch} />
         <div css="width: 100%;height: 25px;" />
         <ExpandableTable rows={props.data} columns={props.columns} />
       </div>

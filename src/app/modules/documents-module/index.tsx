@@ -2,7 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { Link } from "react-router-dom";
-import useTitle from "react-use/lib/useTitle";
+import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
@@ -14,6 +14,7 @@ import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
+  const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   // api call & data
@@ -30,6 +31,20 @@ export default function DocumentsModule() {
       fetchData({});
     }
   }, []);
+
+  useUpdateEffect(() => {
+    if (search.length === 0) fetchData({});
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        fetchData({ filterString: `q=${search}` });
+      }
+    },
+    500,
+    [search]
+  );
 
   if (isLoading) {
     return <PageLoader />;
@@ -111,7 +126,12 @@ export default function DocumentsModule() {
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
-      <DocumentsSubModule data={data} columns={["Location", "Documents"]} />
+      <DocumentsSubModule
+        data={data}
+        search={search}
+        setSearch={setSearch}
+        columns={["Location", "Documents"]}
+      />
       <div
         css={`
           left: 0;

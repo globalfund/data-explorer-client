@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import useTitle from "react-use/lib/useTitle";
+import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -16,6 +16,8 @@ export function GrantDetailDocumentsModule(
   props: GrantDetailDocumentsModuleProps
 ) {
   useTitle("The Data Explorer - Grant Documents");
+  const [search, setSearch] = React.useState("");
+
   // api call & data
   const fetchData = useStoreActions(
     (store) => store.GrantDetailDocuments.fetch
@@ -38,9 +40,31 @@ export function GrantDetailDocumentsModule(
     }
   }, [props.code]);
 
+  useUpdateEffect(() => {
+    if (search.length === 0)
+      fetchData({ filterString: `grantId='${props.code}'` });
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        fetchData({ filterString: `q=${search}&grantId='${props.code}'` });
+      }
+    },
+    500,
+    [search]
+  );
+
   if (isLoading) {
     return <PageLoader />;
   }
 
-  return <DocumentsSubModule data={data} columns={["Name", "Documents"]} />;
+  return (
+    <DocumentsSubModule
+      data={data}
+      search={search}
+      setSearch={setSearch}
+      columns={["Name", "Documents"]}
+    />
+  );
 }
