@@ -13,8 +13,6 @@ import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { TransitionContainer } from "app/components/TransitionContainer";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import {
   getKeysPercentages,

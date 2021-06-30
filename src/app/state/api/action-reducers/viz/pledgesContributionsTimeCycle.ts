@@ -6,3 +6,9 @@ const PledgesContributionsTimeCycle: ApiCallModel = {
 };
 
 export default PledgesContributionsTimeCycle;
+
+export const PledgesContributionsTimeCycleDrilldown: ApiCallModel = {
+  ...APIModel(
+    `${process.env.REACT_APP_API}/pledges-contributions/time-cycle/drilldown`
+  ),
+};

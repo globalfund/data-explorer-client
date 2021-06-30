@@ -24,7 +24,9 @@ import DisbursementsGeomap from "app/state/api/action-reducers/viz/disbursements
 import DisbursementsTreemap from "app/state/api/action-reducers/viz/disbursementsTreemap";
 import DisbursementsTimeCycle from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
 import PledgesContributionsGeomap from "app/state/api/action-reducers/viz/pledgesContributionsGeomap";
-import PledgesContributionsTimeCycle from "app/state/api/action-reducers/viz/pledgesContributionsTimeCycle";
+import PledgesContributionsTimeCycle, {
+  PledgesContributionsTimeCycleDrilldown,
+} from "app/state/api/action-reducers/viz/pledgesContributionsTimeCycle";
 
 import GlobalSearch from "app/state/api/action-reducers/search";
 
@@ -50,6 +52,9 @@ const storeContent: StoreModel = {
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
   PledgesContributionsGeomap: persist(PledgesContributionsGeomap),
   PledgesContributionsTimeCycle: persist(PledgesContributionsTimeCycle),
+  PledgesContributionsTimeCycleDrilldown: persist(
+    PledgesContributionsTimeCycleDrilldown
+  ),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // filter options api
