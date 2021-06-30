@@ -4,6 +4,7 @@ import {
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
+  ToolBoxPanelPFPeriodStateModel,
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 
@@ -94,6 +95,7 @@ export interface StoreModel {
   DonorFilterOptions: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
+  ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
   ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;

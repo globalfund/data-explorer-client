@@ -21,7 +21,7 @@ import { GrantDetailDocumentsModule } from "./components/sub-modules/documents";
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
-  const params = useParams<{ code: string; vizType: string }>();
+  const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openInfoPanel, setOpenInfoPanel] = React.useState(false);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
@@ -145,29 +145,45 @@ export default function GrantDetail() {
       />
       <div css="width: 100%;height: 25px;" />
       <Switch>
-        <Route exact path={`/grant/${params.code}/investments`}>
+        <Route
+          exact
+          path={`/grant/${params.code}/${params.period}/investments`}
+        >
           <Redirect to={`/grant/${params.code}/investments/disbursements`} />
         </Route>
-        <Route path={`/grant/${params.code}/budgets/flow`}>
+        <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
           <GrantDetailBudgetsFlowWrapper code={params.code} />
         </Route>
-        <Route path={`/grant/${params.code}/budgets/time-cycle`}>
+        <Route
+          path={`/grant/${params.code}/${params.period}/budgets/time-cycle`}
+        >
           <GrantDetailGenericBudgetsTimeCycleWrapper code={params.code} />
         </Route>
-        <Route path={`/grant/${params.code}/performance-rating`}>
+        <Route
+          path={`/grant/${params.code}/${params.period}/performance-rating`}
+        >
           <PerformanceRatingModule code={params.code} />
         </Route>
-        <Route path={`/grant/${params.code}/investments/disbursements`}>
+        <Route
+          path={`/grant/${params.code}/${params.period}/investments/disbursements`}
+        >
           <GrantDetailInvestmentsDisbursedWrapper code={params.code} />
         </Route>
-        <Route path={`/grant/${params.code}/investments/time-cycle`}>
+        <Route
+          path={`/grant/${params.code}/${params.period}/investments/time-cycle`}
+        >
           <GrantDetailInvestmentsTimeCycleWrapper code={params.code} />
         </Route>
-        <Route path={`/grant/${params.code}/documents`}>
+        <Route path={`/grant/${params.code}/${params.period}/documents`}>
           <GrantDetailDocumentsModule code={params.code} />
         </Route>
-        <Route path={`/grant/${params.code}/performance-framework`}>
-          <PerformanceFrameworkModule code={params.code} />
+        <Route
+          path={`/grant/${params.code}/${params.period}/performance-framework`}
+        >
+          <PerformanceFrameworkModule
+            code={params.code}
+            implementationPeriod={params.period}
+          />
         </Route>
       </Switch>
       <InformationPanel

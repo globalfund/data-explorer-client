@@ -11,13 +11,13 @@ import { TransitionContainer } from "app/components/TransitionContainer";
 import { PerformanceFrameworkData } from "app/components/Charts/Network/data";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
 import {
-  PerformanceFrameworkExpandedViewProps,
   PFIndicator,
   PFIndicatorResultIntervention,
 } from "app/components/PerformanceFrameworkExpandedView/data";
 
 interface Props {
   code: string;
+  implementationPeriod: string;
 }
 
 export function PerformanceFrameworkModule(props: Props) {
@@ -67,12 +67,17 @@ export function PerformanceFrameworkModule(props: Props) {
   const isExpandLoading = useStoreState(
     (state) => state.GrantDetailPerformanceFrameworkExpand.loading
   );
+  const selectedPeriod = useStoreState(
+    (state) => state.ToolBoxPanelPFPeriodState.value
+  );
 
   React.useEffect(() => {
     if (props.code) {
-      fetchData({ filterString: `grantId=${props.code}&IPnumber=2` });
+      fetchData({
+        filterString: `grantId=${props.code}&IPnumber=${props.implementationPeriod}&timeframeIndex=${selectedPeriod}`,
+      });
     }
-  }, [props.code]);
+  }, [props.code, props.implementationPeriod, selectedPeriod]);
 
   useUpdateEffect(() => {
     if (vizSelected) {

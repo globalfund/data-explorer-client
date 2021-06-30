@@ -56,7 +56,7 @@ export function MainRoutes() {
           <CountryDetailModule />
         </Route>
 
-        <Route exact path="/grant/:code/:vizType/:subType?">
+        <Route exact path="/grant/:code/:period/:vizType/:subType?">
           <GrantDetailModule />
         </Route>
 

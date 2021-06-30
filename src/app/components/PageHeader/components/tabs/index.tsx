@@ -86,10 +86,12 @@ const styles = {
 };
 
 function RouteTab(props: TabProps) {
-  const params = useParams<{ code: string; vizType: string }>();
-  const link = `${props.url.replace("<code>", params.code)}`;
+  const params = useParams<{ code: string; period: string; vizType: string }>();
+  const link = `${props.url
+    .replace("<code>", params.code)
+    .replace("<period>", params.period)}`;
   const urlsplits = props.url.split("/");
-  const isActive = urlsplits[3] === params.vizType;
+  const isActive = urlsplits[4] === params.vizType;
 
   return (
     <li css={styles.tabcss(isActive)}>

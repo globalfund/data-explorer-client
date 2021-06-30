@@ -1,5 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import Slide from "@material-ui/core/Slide";
 import { useParams, useHistory } from "react-router-dom";
@@ -51,6 +52,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
   const params = useParams<{
     code?: string;
+    period?: string;
     vizType: string;
     subType?: string;
   }>();
@@ -71,6 +73,11 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   );
   const selectedAggregation = useStoreState(
     (state) => state.ToolBoxPanelAggregateByState.value
+  );
+
+  // performance framework periods data
+  const performanceFrameworkPeriods = useStoreState((state) =>
+    get(state.GrantDetailPerformanceFramework.data, "periods", [])
   );
 
   function getSelectedView() {
@@ -230,9 +237,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 {params.code && params.vizType === "eligibility" && (
                   <ToolBoxPanelEligibilityAdvanced />
                 )}
-                {/* {params.code && params.vizType === "performance-framework" && (
-                  <PerformanceFrameworkReportingPeriods />
-                )} */}
+                {params.code &&
+                  params.period &&
+                  params.vizType === "performance-framework" && (
+                    <PerformanceFrameworkReportingPeriods
+                      periods={performanceFrameworkPeriods}
+                    />
+                  )}
               </React.Fragment>
             )}
             {selectedTab === "Filters" && (

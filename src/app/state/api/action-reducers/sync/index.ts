@@ -48,3 +48,15 @@ export const ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel = {
     state.value = payload;
   }),
 };
+
+export interface ToolBoxPanelPFPeriodStateModel {
+  value: number;
+  setValue: Action<ToolBoxPanelPFPeriodStateModel, number>;
+}
+
+export const ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel = {
+  value: 0,
+  setValue: action((state, payload: number) => {
+    state.value = payload;
+  }),
+};

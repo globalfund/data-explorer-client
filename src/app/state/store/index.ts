@@ -7,6 +7,7 @@ import {
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
+  ToolBoxPanelPFPeriodState,
 } from "app/state/api/action-reducers/sync";
 
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
@@ -86,6 +87,7 @@ const storeContent: StoreModel = {
   DonorFilterOptions: persist(DonorFilterOptions),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
+  ToolBoxPanelPFPeriodState: persist(ToolBoxPanelPFPeriodState),
   ToolBoxPanelAggregateByState: persist(ToolBoxPanelAggregateByState),
   ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
   ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
