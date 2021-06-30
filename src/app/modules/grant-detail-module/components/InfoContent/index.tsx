@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
@@ -8,11 +7,11 @@ import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 interface GrantInfoContentProps {
   title: string;
   code: string;
-  rating: string;
+  rating: string | null;
   status: string;
   location: string;
   component: string;
-  description: string;
+  description: string | null;
   investments: {
     disbursed: number;
     committed: number;
@@ -113,7 +112,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
               align-items: center;
               justify-content: center;
               border: 2px solid #262c34;
-              opacity: ${props.rating === value ? 1 : 0.3};
+              opacity: ${(props.rating || ratingValues[0]) === value ? 1 : 0.3};
             `}
           >
             {value}

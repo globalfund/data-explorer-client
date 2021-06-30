@@ -1,30 +1,68 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
+import { useTitle } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Link, Switch, Route, useParams, Redirect } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { DocumentsSubModule } from "app/modules/common/documents";
 import { InformationPanel } from "app/components/InformationPanel";
-import { mockdata } from "app/components/Charts/PerformanceRating/data";
-import { PerformanceRating } from "app/components/Charts/PerformanceRating";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
-import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { GrantInfoContent } from "app/modules/grant-detail-module/components/InfoContent";
-import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
-import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { PerformanceRatingModule } from "app/modules/grant-detail-module/components/sub-modules/performance-rating";
 import { PerformanceFrameworkModule } from "app/modules/grant-detail-module/components/sub-modules/performance-framework";
+import { GrantDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/grantDetail";
+import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
+import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
+import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
+import { GrantDetailDocumentsModule } from "./components/sub-modules/documents";
 
 export default function GrantDetail() {
+  useTitle("The Data Explorer - Grant");
   const params = useParams<{ code: string; vizType: string }>();
   const [openInfoPanel, setOpenInfoPanel] = React.useState(false);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
+  // api call & data
+  const fetchGrantInfoData = useStoreActions(
+    (store) => store.GrantDetailInfo.fetch
+  );
+  const grantInfoData = useStoreState((state) =>
+    get(state.GrantDetailInfo.data, "data[0]", {
+      title: "",
+      code: "",
+      rating: "",
+      status: "",
+      location: "",
+      component: "",
+      description: "",
+      investments: {
+        disbursed: 0,
+        committed: 0,
+        signed: 0,
+      },
+      manager: {
+        name: "",
+        email: "",
+      },
+    })
+  );
+  // const links = useStoreState(
+  //   (state) =>
+  //     get(state.BudgetsFlow.data, "links", []) as {
+  //       value: number;
+  //       source: string;
+  //       target: string;
+  //     }[]
+  // );
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
+    fetchGrantInfoData({
+      filterString: `grantNumber=${params.code}`,
+    });
   }, []);
 
   return (
@@ -39,7 +77,7 @@ export default function GrantDetail() {
       `}
     >
       <PageHeader
-        title="Program to strengthen the national response to HIV/AIDS in Niger"
+        title={grantInfoData.title}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -111,45 +149,32 @@ export default function GrantDetail() {
           <Redirect to={`/grant/${params.code}/investments/disbursements`} />
         </Route>
         <Route path={`/grant/${params.code}/budgets/flow`}>
-          <BudgetsFlowModule />
+          <GrantDetailBudgetsFlowWrapper code={params.code} />
         </Route>
         <Route path={`/grant/${params.code}/budgets/time-cycle`}>
-          <BudgetsTimeCycleModule />
+          <GrantDetailGenericBudgetsTimeCycleWrapper code={params.code} />
         </Route>
         <Route path={`/grant/${params.code}/performance-rating`}>
-          <PerformanceRating data={mockdata} />
+          <PerformanceRatingModule code={params.code} />
         </Route>
         <Route path={`/grant/${params.code}/investments/disbursements`}>
-          <InvestmentsDisbursedModule data={mockdata2} />
+          <GrantDetailInvestmentsDisbursedWrapper code={params.code} />
         </Route>
         <Route path={`/grant/${params.code}/investments/time-cycle`}>
-          <InvestmentsTimeCycleModule />
+          <GrantDetailInvestmentsTimeCycleWrapper code={params.code} />
         </Route>
         <Route path={`/grant/${params.code}/documents`}>
-          <DocumentsSubModule />
+          <GrantDetailDocumentsModule code={params.code} />
         </Route>
         <Route path={`/grant/${params.code}/performance-framework`}>
-          <PerformanceFrameworkModule />
+          <PerformanceFrameworkModule code={params.code} />
         </Route>
       </Switch>
       <InformationPanel
         open={openInfoPanel}
         onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
       >
-        <GrantInfoContent
-          title="Program to strengthen the national response to HIV/AIDS in Niger"
-          code={params.code}
-          rating="B1"
-          status="Active"
-          location="Niger"
-          component="HIV"
-          investments={{ disbursed: 0, committed: 0, signed: 0 }}
-          description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pulvinar condimentum aliquet. Cras bibendum, lectus sit amet venenatis efficitur, magna nisl scelerisque ligula, ac laoreet odio est eget nunc."
-          manager={{
-            name: "Manager A",
-            email: "manager@mca.org",
-          }}
-        />
+        <GrantInfoContent {...grantInfoData} />
       </InformationPanel>
       <ToolBoxPanel
         open={openToolboxPanel}

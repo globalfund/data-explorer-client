@@ -1,8 +1,5 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
-import useTitle from "react-use/lib/useTitle";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
@@ -11,39 +8,25 @@ import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data"
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
-export function InvestmentsTimeCycleModule() {
-  useTitle("The Data Explorer - Investments/Time cycle");
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
-  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
-  );
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
+interface InvestmentsTimeCycleModuleProps {
+  data: Record<string, unknown>[];
+  isLoading: boolean;
+  vizLevel: number;
+  setVizLevel: (vizLevel: number) => void;
+  vizTranslation: { x: number; y: number };
+  setVizTranslation: (obj: { x: number; y: number }) => void;
+  vizSelected: string | undefined;
+  setVizSelected: (vizSelected: string | undefined) => void;
+  vizPrevSelected: string | undefined;
+  setVizPrevSelected: (vizPrevSelected: string | undefined) => void;
+  vizPrevTranslation: { x: number; y: number };
+  setVizPrevTranslation: (obj: { x: number; y: number }) => void;
+}
 
-  // api call & data
-  const fetchData = useStoreActions(
-    (store) => store.DisbursementsTimeCycle.fetch
-  );
-  const data = useStoreState(
-    (state) =>
-      get(state.DisbursementsTimeCycle.data, "data", []) as Record<
-        string,
-        unknown
-      >[]
-  );
-  const isLoading = useStoreState(
-    (state) => state.DisbursementsTimeCycle.loading
-  );
-
-  React.useEffect(() => fetchData({}), []);
-
-  if (isLoading) {
+export function InvestmentsTimeCycleModule(
+  props: InvestmentsTimeCycleModuleProps
+) {
+  if (props.isLoading) {
     return <PageLoader />;
   }
 
@@ -53,53 +36,55 @@ export function InvestmentsTimeCycleModule() {
       css={`
         width: 100%;
 
-        ${!vizSelected
+        ${!props.vizSelected
           ? `* {
       overflow: visible !important;
     }`
           : ""}
       `}
     >
-      <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
-        {(vizLevel === 0 || vizLevel === 1) && (
+      <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
+        {(props.vizLevel === 0 || props.vizLevel === 1) && (
           <InvestmentsTimeCycle
-            data={data}
-            selectedNodeId={vizSelected}
+            data={props.data}
+            selectedNodeId={props.vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
-              setVizLevel(1);
-              setVizSelected(node);
-              setVizTranslation({ x: x * -1, y: 0 });
+              props.setVizLevel(1);
+              props.setVizSelected(node);
+              props.setVizTranslation({ x: x * -1, y: 0 });
             }}
           />
         )}
-        {vizLevel === 2 && (
+        {props.vizLevel === 2 && (
           <DisbursementsTreemap
             data={mockdata2}
-            selectedNodeId={vizSelected}
+            selectedNodeId={props.vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {}}
           />
         )}
       </TransitionContainer>
       <SlideInContainer
-        vizLevel={vizLevel}
-        selected={vizSelected}
+        vizLevel={props.vizLevel}
+        selected={props.vizSelected}
         close={() => {
-          setVizLevel(vizLevel - 1);
-          setVizTranslation({ x: 0, y: 0 });
-          setVizSelected(vizLevel === 1 ? undefined : vizPrevSelected);
-          setVizTranslation(
-            vizLevel === 1 ? { x: 0, y: 0 } : vizPrevTranslation
+          props.setVizLevel(props.vizLevel - 1);
+          props.setVizTranslation({ x: 0, y: 0 });
+          props.setVizSelected(
+            props.vizLevel === 1 ? undefined : props.vizPrevSelected
+          );
+          props.setVizTranslation(
+            props.vizLevel === 1 ? { x: 0, y: 0 } : props.vizPrevTranslation
           );
         }}
       >
         <DisbursementsTreemap
           data={mockdata2}
           onNodeClick={(node: string, x: number, y: number) => {
-            setVizLevel(2);
-            setVizPrevSelected(vizSelected);
-            setVizSelected(node);
-            setVizPrevTranslation(vizTranslation);
-            setVizTranslation({ x: x * -1, y: 0 });
+            props.setVizLevel(2);
+            props.setVizPrevSelected(props.vizSelected);
+            props.setVizSelected(node);
+            props.setVizPrevTranslation(props.vizTranslation);
+            props.setVizTranslation({ x: x * -1, y: 0 });
           }}
         />
       </SlideInContainer>

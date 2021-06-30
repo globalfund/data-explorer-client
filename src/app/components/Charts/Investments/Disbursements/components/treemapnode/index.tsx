@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
+import get from "lodash/get";
 import { css } from "styled-components/macro";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -68,7 +69,8 @@ export function TreeemapNode(props: any) {
       }}
       css={containercss(
         !hasChildren,
-        props.selectedNodeId === `${node.id}-${node.data.tooltip.header}`
+        props.selectedNodeId ===
+          `${node.id}-${get(node, "data.tooltip.header", "")}`
       )}
       onMouseMove={!hasChildren ? node.onMouseMove : undefined}
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
@@ -121,7 +123,7 @@ export function TreeemapNode(props: any) {
               text-overflow: ellipsis;
             `}
           >
-            {formatFinancialValue(node.data.value)}
+            {formatFinancialValue(get(node, "data.value", 0))}
           </div>
         </div>
       )}

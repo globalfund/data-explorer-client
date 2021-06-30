@@ -1,20 +1,39 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageLoader } from "app/modules/common/page-loader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { DocumentsSubModule } from "app/modules/common/documents";
+import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
+  // api call & data
+  const fetchData = useStoreActions((store) => store.Documents.fetch);
+  const data = useStoreState(
+    (state) =>
+      get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
+  );
+  const isLoading = useStoreState((state) => state.Documents.loading);
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
+    if (data.length === 0) {
+      fetchData({});
+    }
   }, []);
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <div
@@ -92,7 +111,7 @@ export default function DocumentsModule() {
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
-      <DocumentsSubModule />
+      <DocumentsSubModule data={data} columns={["Location", "Documents"]} />
       <div
         css={`
           left: 0;

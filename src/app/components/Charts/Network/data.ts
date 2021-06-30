@@ -1,5 +1,10 @@
 import { InputNode, InputLink } from "@nivo/network";
 
+export interface PerformanceFrameworkData {
+  nodes: InputNode[];
+  links: InputLink[];
+}
+
 export interface NetworkVizProps {
   data: {
     nodes: InputNode[];

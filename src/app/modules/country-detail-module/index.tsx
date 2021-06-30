@@ -111,16 +111,16 @@ export default function CountryDetail() {
           <Redirect to={`/location/${params.code}/investments/disbursements`} />
         </Route>
         <Route path={`/location/${params.code}/budgets/flow`}>
-          <BudgetsFlowModule />
+          {/* <BudgetsFlowModule /> */}
         </Route>
         <Route path={`/location/${params.code}/budgets/time-cycle`}>
-          <BudgetsTimeCycleModule />
+          {/* <BudgetsTimeCycleModule /> */}
         </Route>
         <Route path={`/location/${params.code}/investments/disbursements`}>
           <InvestmentsDisbursedModule data={mockdata2} />
         </Route>
         <Route path={`/location/${params.code}/investments/time-cycle`}>
-          <InvestmentsTimeCycleModule />
+          {/* <InvestmentsTimeCycleModule /> */}
         </Route>
         <Route path={`/location/${params.code}/investments/geomap`}>
           <InvestmentsGeoMap />
@@ -132,7 +132,7 @@ export default function CountryDetail() {
           <ScatterPlot />
         </Route>
         <Route path={`/location/${params.code}/documents`}>
-          <DocumentsSubModule />
+          {/* <DocumentsSubModule /> */}
         </Route>
       </Switch>
       <InformationPanel

@@ -7,13 +7,13 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
-import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
-import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
+import { GenericInvestmentsTimeCycleWrapper } from "./sub-modules/investments/time-cycle/data-wrappers/generic";
+import { GenericBudgetsFlowWrapper } from "./sub-modules/budgets/flow/data-wrappers/generic";
+import { GenericBudgetsTimeCycleWrapper } from "./sub-modules/budgets/time-cycle/data-wrappers/generic";
 
 export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
@@ -121,16 +121,16 @@ export default function VizModule() {
       <div css="width: 100%;height: 25px;" />
       <Switch>
         <Route path="/viz/budgets/flow">
-          <BudgetsFlowModule />
+          <GenericBudgetsFlowWrapper />
         </Route>
         <Route path="/viz/budgets/time-cycle">
-          <BudgetsTimeCycleModule />
+          <GenericBudgetsTimeCycleWrapper />
         </Route>
         <Route path="/viz/investments/disbursements">
           <GenericInvestmentsDisbursedWrapper />
         </Route>
         <Route path="/viz/investments/time-cycle">
-          <InvestmentsTimeCycleModule />
+          <GenericInvestmentsTimeCycleWrapper />
         </Route>
         <Route path="/viz/investments/geomap">
           <InvestmentsGeoMap />

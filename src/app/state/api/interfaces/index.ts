@@ -60,6 +60,7 @@ export type ApiCallModel = ApiModel<
 
 export interface StoreModel {
   // data viz api
+  Documents: ApiCallModel;
   GrantsList: ApiCallModel;
   Allocations: ApiCallModel;
   AllocationsDrilldown: ApiCallModel;
@@ -76,6 +77,14 @@ export interface StoreModel {
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
   // global search
   GlobalSearch: ApiCallModel;
+  // grant detail api
+  GrantDetailInfo: ApiCallModel;
+  GrantDetailDisbursementsTreemap: ApiCallModel;
+  GrantDetailDisbursementsTimeCycle: ApiCallModel;
+  GrantDetailPerformanceRating: ApiCallModel;
+  GrantDetailPerformanceFramework: ApiCallModel;
+  GrantDetailPerformanceFrameworkExpand: ApiCallModel;
+  GrantDetailDocuments: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;

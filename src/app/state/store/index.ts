@@ -36,9 +36,19 @@ import LocationFilterOptions from "app/state/api/action-reducers/filters/locatio
 import ComponentFilterOptions from "app/state/api/action-reducers/filters/components";
 import PartnerTypeFilterOptions from "app/state/api/action-reducers/filters/partnerTypes";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
+import GrantDetailInfo from "../api/action-reducers/grantDetail/infoPanel";
+import GrantDetailDisbursementsTreemap from "../api/action-reducers/grantDetail/disbursementsTreemap";
+import GrantDetailDisbursementsTimeCycle from "../api/action-reducers/grantDetail/disbursementsTimeCycle";
+import GrantDetailPerformanceRating from "../api/action-reducers/grantDetail/performanceRating";
+import GrantDetailPerformanceFramework, {
+  GrantDetailPerformanceFrameworkExpand,
+} from "../api/action-reducers/grantDetail/performanceFramework";
+import Documents from "../api/action-reducers/viz/documents";
+import GrantDetailDocuments from "../api/action-reducers/grantDetail/documents";
 
 const storeContent: StoreModel = {
   // data viz api
+  Documents: persist(Documents),
   GrantsList: persist(GrantsList),
   BudgetsFlow: persist(BudgetsFlow),
   BudgetsFlowDrilldownLevel1: persist(BudgetsFlowDrilldownLevel1),
@@ -57,6 +67,16 @@ const storeContent: StoreModel = {
   ),
   // global search
   GlobalSearch: persist(GlobalSearch),
+  // grant detail api
+  GrantDetailInfo: persist(GrantDetailInfo),
+  GrantDetailDisbursementsTreemap: persist(GrantDetailDisbursementsTreemap),
+  GrantDetailDisbursementsTimeCycle: persist(GrantDetailDisbursementsTimeCycle),
+  GrantDetailPerformanceRating: persist(GrantDetailPerformanceRating),
+  GrantDetailPerformanceFramework: persist(GrantDetailPerformanceFramework),
+  GrantDetailPerformanceFrameworkExpand: persist(
+    GrantDetailPerformanceFrameworkExpand
+  ),
+  GrantDetailDocuments: persist(GrantDetailDocuments),
   // filter options api
   LocationFilterOptions: persist(LocationFilterOptions),
   ComponentFilterOptions: persist(ComponentFilterOptions),

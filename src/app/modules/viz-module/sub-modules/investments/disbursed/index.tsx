@@ -79,9 +79,9 @@ export function InvestmentsDisbursedModule(
             data={props.data}
             selectedNodeId={vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
-              setVizLevel(1);
-              setVizSelected(node);
-              setVizTranslation({ x: x * -1, y: y * -1 });
+              // setVizLevel(1);
+              // setVizSelected(node);
+              // setVizTranslation({ x: x * -1, y: y * -1 });
             }}
           />
         </TransitionContainer>
