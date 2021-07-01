@@ -2,7 +2,8 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import { ResponsiveNetwork } from "@nivo/network";
-import { NetworkVizProps } from "app/components/Charts/Network/data";
+import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
+import { NoDataLabel } from "../common/nodatalabel";
 
 export function NetworkViz(props: NetworkVizProps) {
   React.useEffect(() => {
@@ -330,12 +331,28 @@ export function NetworkViz(props: NetworkVizProps) {
           </div>
         </div>
       </Grid>
-      <Grid item xs={12} sm={12} md={9}>
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={9}
+        css={`
+          position: relative;
+        `}
+      >
         <div
           id="performance-framework-network"
           css={`
             width: 100%;
             height: 700px;
+
+            ${props.data.links.length === 0
+              ? `
+              opacity: 0.3;
+              pointer-events: none;
+              filter: grayscale(1);
+            `
+              : ""}
           `}
         >
           <ResponsiveNetwork
@@ -345,8 +362,12 @@ export function NetworkViz(props: NetworkVizProps) {
             linkColor="#DFE3E6"
             nodeBorderWidth={1}
             motionStiffness={160}
-            nodes={props.data.nodes}
-            links={props.data.links}
+            nodes={
+              props.data.nodes.length > 0 ? props.data.nodes : mockdata.nodes
+            }
+            links={
+              props.data.links.length > 0 ? props.data.links : mockdata.links
+            }
             layers={[Links, Nodes]}
             nodeColor={(e: any) => e.color}
             linkDistance={(e: any) => e.distance}
@@ -354,6 +375,7 @@ export function NetworkViz(props: NetworkVizProps) {
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
           />
         </div>
+        {props.data.links.length === 0 && <NoDataLabel />}
       </Grid>
     </Grid>
   );

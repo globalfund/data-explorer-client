@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { InputNode, InputLink } from "@nivo/network";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -8,7 +9,6 @@ import { NetworkViz } from "app/components/Charts/Network";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { TransitionContainer } from "app/components/TransitionContainer";
-import { PerformanceFrameworkData } from "app/components/Charts/Network/data";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
 import {
   PFIndicator,
@@ -32,12 +32,21 @@ export function PerformanceFrameworkModule(props: Props) {
   const fetchData = useStoreActions(
     (store) => store.GrantDetailPerformanceFramework.fetch
   );
-  const data = useStoreState(
+  const nodes = useStoreState(
     (state) =>
-      get(state.GrantDetailPerformanceFramework.data, "data", {
-        nodes: [],
-        links: [],
-      }) as PerformanceFrameworkData
+      get(
+        state.GrantDetailPerformanceFramework.data,
+        "data.nodes",
+        []
+      ) as InputNode[]
+  );
+  const links = useStoreState(
+    (state) =>
+      get(
+        state.GrantDetailPerformanceFramework.data,
+        "data.links",
+        []
+      ) as InputLink[]
   );
   const isLoading = useStoreState(
     (state) => state.GrantDetailPerformanceFramework.loading
@@ -109,7 +118,7 @@ export function PerformanceFrameworkModule(props: Props) {
     >
       <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
         <NetworkViz
-          data={data}
+          data={{ nodes, links }}
           selectedNodeId={vizSelected}
           onNodeClick={(node: string, x: number, y: number) => {
             setVizLevel(1);

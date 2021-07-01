@@ -37,7 +37,10 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   );
   const data = useStoreState(
     (state) =>
-      get(state.BudgetsTimeCycle.data, "data", []) as Record<string, unknown>[]
+      get(state.GrantDetailBudgetsTimeCycle.data, "data", []) as Record<
+        string,
+        unknown
+      >[]
   );
   const isLoading = useStoreState(
     (state) => state.GrantDetailBudgetsTimeCycle.loading
