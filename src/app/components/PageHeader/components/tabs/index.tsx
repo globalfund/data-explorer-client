@@ -91,7 +91,7 @@ function RouteTab(props: TabProps) {
     .replace("<code>", params.code)
     .replace("<period>", params.period)}`;
   const urlsplits = props.url.split("/");
-  const isActive = urlsplits[4] === params.vizType;
+  const isActive = urlsplits[params.period ? 4 : 3] === params.vizType;
 
   return (
     <li css={styles.tabcss(isActive)}>

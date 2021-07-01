@@ -9,11 +9,10 @@ import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budge
 
 interface Props {
   code: string;
-  implementationPeriod: string;
 }
 
-export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Grant Budgets Time/Cycle");
+export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
+  useTitle("The Data Explorer - Location Budgets Time/Cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
@@ -33,31 +32,34 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
 
   // api call & data
   const fetchData = useStoreActions(
-    (store) => store.GrantDetailBudgetsTimeCycle.fetch
+    (store) => store.LocationDetailBudgetsTimeCycle.fetch
   );
   const data = useStoreState(
     (state) =>
-      get(state.BudgetsTimeCycle.data, "data", []) as Record<string, unknown>[]
+      get(state.LocationDetailBudgetsTimeCycle.data, "data", []) as Record<
+        string,
+        unknown
+      >[]
   );
   const isLoading = useStoreState(
-    (state) => state.GrantDetailBudgetsTimeCycle.loading
+    (state) => state.LocationDetailBudgetsTimeCycle.loading
   );
   const fetchDrilldownLevel1Data = useStoreActions(
-    (store) => store.GrantDetailBudgetsTimeCycleDrilldownLevel1.fetch
+    (store) => store.LocationDetailBudgetsTimeCycleDrilldownLevel1.fetch
   );
   const clearDrilldownLevel1Data = useStoreActions(
-    (store) => store.GrantDetailBudgetsTimeCycleDrilldownLevel1.clear
+    (store) => store.LocationDetailBudgetsTimeCycleDrilldownLevel1.clear
   );
   const dataDrilldownLevel1 = useStoreState(
     (state) =>
       get(
-        state.GrantDetailBudgetsTimeCycleDrilldownLevel1.data,
+        state.LocationDetailBudgetsTimeCycleDrilldownLevel1.data,
         "data",
         []
       ) as BudgetsTreemapDataItem[]
   );
   const isDrilldownLoading = useStoreState(
-    (state) => state.GrantDetailBudgetsTimeCycleDrilldownLevel1.loading
+    (state) => state.LocationDetailBudgetsTimeCycleDrilldownLevel1.loading
   );
 
   const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
@@ -67,15 +69,15 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   React.useEffect(() => {
     if (props.code) {
       fetchData({
-        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `locations=${props.code}`,
       });
     }
-  }, [props.code, props.implementationPeriod]);
+  }, [props.code]);
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined && props.code) {
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&locations=${props.code}`,
       });
     } else {
       clearDrilldownLevel1Data();

@@ -5,10 +5,10 @@ import { css } from "styled-components/macro";
 import { useStoreState } from "app/state/store/hooks";
 import { ResponsiveScatterPlot, Value } from "@nivo/scatterplot";
 import {
-  mockdata,
   incomeLevels,
   diseaseBurdens,
   EligibilityScatterplotHoveredNode,
+  ScatterPlotProps,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 import {
   ScatterplotNode,
@@ -29,7 +29,7 @@ const styles = {
   `,
 };
 
-export function ScatterPlot() {
+export function ScatterPlot(props: ScatterPlotProps) {
   const [
     hoveredNode,
     setHoveredNode,
@@ -635,7 +635,7 @@ export function ScatterPlot() {
               `}
             >
               <ResponsiveScatterPlot
-                data={mockdata}
+                data={props.data}
                 useMesh={false}
                 margin={{ top: 60, right: 100, bottom: 50, left: 50 }}
                 layers={["grid", "axes", Nodes, "markers"]}

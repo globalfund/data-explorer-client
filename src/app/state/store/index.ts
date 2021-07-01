@@ -48,6 +48,21 @@ import Documents from "../api/action-reducers/viz/documents";
 import GrantDetailDocuments from "../api/action-reducers/grantDetail/documents";
 import GrantDetailPeriods from "../api/action-reducers/grantDetail/periods";
 import GrantDetailPeriodInfo from "../api/action-reducers/grantDetail/periodInfo";
+import LocationDetailInfo from "../api/action-reducers/locationDetail/info";
+import EligibilityCountry from "../api/action-reducers/locationDetail/eligibility";
+import LocationDetailDocuments from "../api/action-reducers/locationDetail/documents";
+import GrantDetailBudgetsFlow, {
+  GrantDetailBudgetsFlowDrilldownLevel1,
+} from "../api/action-reducers/grantDetail/budgetsFlow";
+import LocationDetailBudgetsFlow, {
+  LocationDetailBudgetsFlowDrilldownLevel1,
+} from "../api/action-reducers/locationDetail/budgetsFlow";
+import GrantDetailBudgetsTimeCycle, {
+  GrantDetailBudgetsTimeCycleDrilldownLevel1,
+} from "../api/action-reducers/grantDetail/budgetsTimeCycle";
+import LocationDetailBudgetsTimeCycle, {
+  LocationDetailBudgetsTimeCycleDrilldownLevel1,
+} from "../api/action-reducers/locationDetail/budgetsTimeCycle";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -74,6 +89,14 @@ const storeContent: StoreModel = {
   GrantDetailInfo: persist(GrantDetailInfo),
   GrantDetailPeriods: persist(GrantDetailPeriods),
   GrantDetailPeriodInfo: persist(GrantDetailPeriodInfo),
+  GrantDetailBudgetsFlow: persist(GrantDetailBudgetsFlow),
+  GrantDetailBudgetsFlowDrilldownLevel1: persist(
+    GrantDetailBudgetsFlowDrilldownLevel1
+  ),
+  GrantDetailBudgetsTimeCycle: persist(GrantDetailBudgetsTimeCycle),
+  GrantDetailBudgetsTimeCycleDrilldownLevel1: persist(
+    GrantDetailBudgetsTimeCycleDrilldownLevel1
+  ),
   GrantDetailDisbursementsTreemap: persist(GrantDetailDisbursementsTreemap),
   GrantDetailDisbursementsTimeCycle: persist(GrantDetailDisbursementsTimeCycle),
   GrantDetailPerformanceRating: persist(GrantDetailPerformanceRating),
@@ -82,6 +105,18 @@ const storeContent: StoreModel = {
     GrantDetailPerformanceFrameworkExpand
   ),
   GrantDetailDocuments: persist(GrantDetailDocuments),
+  // location detail api
+  LocationDetailInfo: persist(LocationDetailInfo),
+  EligibilityCountry: persist(EligibilityCountry),
+  LocationDetailDocuments: persist(LocationDetailDocuments),
+  LocationDetailBudgetsFlow: persist(LocationDetailBudgetsFlow),
+  LocationDetailBudgetsFlowDrilldownLevel1: persist(
+    LocationDetailBudgetsFlowDrilldownLevel1
+  ),
+  LocationDetailBudgetsTimeCycle: persist(LocationDetailBudgetsTimeCycle),
+  LocationDetailBudgetsTimeCycleDrilldownLevel1: persist(
+    LocationDetailBudgetsTimeCycleDrilldownLevel1
+  ),
   // filter options api
   LocationFilterOptions: persist(LocationFilterOptions),
   ComponentFilterOptions: persist(ComponentFilterOptions),

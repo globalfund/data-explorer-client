@@ -4,17 +4,16 @@ import get from "lodash/get";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
+import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
 
 interface Props {
   code: string;
-  implementationPeriod: string;
 }
 
-export function GrantDetailBudgetsFlowWrapper(props: Props) {
-  useTitle("The Data Explorer - Grant Budgets Flow");
+export function LocationDetailBudgetsFlowWrapper(props: Props) {
+  useTitle("The Data Explorer - Location Budgets Flow");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
@@ -36,42 +35,42 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
 
   // api call & data
   const fetchData = useStoreActions(
-    (store) => store.GrantDetailBudgetsFlow.fetch
+    (store) => store.LocationDetailBudgetsFlow.fetch
   );
   const nodes = useStoreState(
     (state) =>
-      get(state.GrantDetailBudgetsFlow.data, "nodes", []) as {
+      get(state.LocationDetailBudgetsFlow.data, "nodes", []) as {
         id: string;
         filterStr: string;
       }[]
   );
   const links = useStoreState(
     (state) =>
-      get(state.GrantDetailBudgetsFlow.data, "links", []) as {
+      get(state.LocationDetailBudgetsFlow.data, "links", []) as {
         value: number;
         source: string;
         target: string;
       }[]
   );
   const fetchDrilldownLevel1Data = useStoreActions(
-    (store) => store.GrantDetailBudgetsFlowDrilldownLevel1.fetch
+    (store) => store.LocationDetailBudgetsFlowDrilldownLevel1.fetch
   );
   const clearDrilldownLevel1Data = useStoreActions(
-    (store) => store.GrantDetailBudgetsFlowDrilldownLevel1.clear
+    (store) => store.LocationDetailBudgetsFlowDrilldownLevel1.clear
   );
   const dataDrilldownLevel1 = useStoreState(
     (state) =>
       get(
-        state.GrantDetailBudgetsFlowDrilldownLevel1.data,
+        state.LocationDetailBudgetsFlowDrilldownLevel1.data,
         "data",
         []
       ) as BudgetsTreemapDataItem[]
   );
   const isLoading = useStoreState(
-    (state) => state.GrantDetailBudgetsFlow.loading
+    (state) => state.LocationDetailBudgetsFlow.loading
   );
   const isDrilldownLoading = useStoreState(
-    (state) => state.GrantDetailBudgetsFlowDrilldownLevel1.loading
+    (state) => state.LocationDetailBudgetsFlowDrilldownLevel1.loading
   );
 
   const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
@@ -84,15 +83,15 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
   React.useEffect(() => {
     if (props.code) {
       fetchData({
-        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `locations=${props.code}`,
       });
     }
-  }, [props.code, props.implementationPeriod]);
+  }, [props.code]);
 
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined && props.code) {
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=${vizSelected.filterStr}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `levelParam=${vizSelected.filterStr}&locations=${props.code}`,
       });
     } else {
       clearDrilldownLevel1Data();

@@ -1,12 +1,18 @@
 import React from "react";
 import get from "lodash/get";
 import { FeatureCollection } from "geojson";
+import useTitle from "react-use/lib/useTitle";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
-export function InvestmentsGeoMap() {
+interface Props {
+  code?: string;
+}
+
+export function InvestmentsGeoMap(props: Props) {
+  useTitle("The Data Explorer - Investments/Geomap");
   // api call & data
   const fetchData = useStoreActions((store) => store.DisbursementsGeomap.fetch);
   const data = useStoreState(
@@ -21,7 +27,14 @@ export function InvestmentsGeoMap() {
   );
   const isLoading = useStoreState((state) => state.DisbursementsGeomap.loading);
 
-  React.useEffect(() => fetchData({}), []);
+  React.useEffect(() => {
+    const params = props.code
+      ? {
+          filterString: `locations=${props.code}`,
+        }
+      : {};
+    fetchData(params);
+  }, [props.code]);
 
   if (isLoading) {
     return <PageLoader />;

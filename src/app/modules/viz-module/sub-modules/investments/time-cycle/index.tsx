@@ -49,9 +49,9 @@ export function InvestmentsTimeCycleModule(
             data={props.data}
             selectedNodeId={props.vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
-              props.setVizLevel(1);
-              props.setVizSelected(node);
-              props.setVizTranslation({ x: x * -1, y: 0 });
+              // props.setVizLevel(1);
+              // props.setVizSelected(node);
+              // props.setVizTranslation({ x: x * -1, y: 0 });
             }}
           />
         )}

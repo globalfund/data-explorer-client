@@ -1,6 +1,6 @@
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import React from "react";
 import { Link } from "react-router-dom";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 interface LocationInfoContentProps {
   title: string;
@@ -121,8 +121,13 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
       >
         {props.manager.name}
       </div>
-      <a href={`mailto:${props.manager.email}`}>
-        <img alt="" src="/static/fundportfoliomanager.png" />
+      <a
+        href={`mailto:${props.manager.email}`}
+        css={`
+          font-size: 12px;
+        `}
+      >
+        {props.manager.email}
       </a>
     </div>
   );

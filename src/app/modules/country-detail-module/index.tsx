@@ -1,30 +1,53 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
+import { useTitle } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Link, Switch, Route, useParams, Redirect } from "react-router-dom";
 /* project */
+import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { DocumentsSubModule } from "app/modules/common/documents";
 import { InformationPanel } from "app/components/InformationPanel";
-import { ScatterPlot } from "app/components/Charts/Eligibility/Scatterplot";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
-import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { LocationInfoContent } from "app/modules/country-detail-module/components/InfoContent";
-import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
-import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
+import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/data-wrappers/location";
+import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/locationDetail";
+import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
+import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
+import { LocationDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/locationDetail";
 
 export default function CountryDetail() {
+  useTitle("The Data Explorer - Location");
   const params = useParams<{ code: string; vizType: string }>();
   const [openInfoPanel, setOpenInfoPanel] = React.useState(false);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
+  // api call & data
+  const fetchLocationInfoData = useStoreActions(
+    (store) => store.LocationDetailInfo.fetch
+  );
+  const locationInfoData = useStoreState((state) =>
+    get(state.LocationDetailInfo.data, "data[0]", {
+      locationName: "",
+      disbursed: 0,
+      committed: 0,
+      signed: 0,
+      multicountries: [],
+      portfolioManager: "",
+      portfolioManagerEmail: "",
+    })
+  );
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
+    fetchLocationInfoData({
+      filterString: `locations=${params.code}`,
+    });
   }, []);
 
   return (
@@ -39,7 +62,7 @@ export default function CountryDetail() {
       `}
     >
       <PageHeader
-        title={params.code}
+        title={locationInfoData.locationName}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -100,7 +123,7 @@ export default function CountryDetail() {
             ],
           },
           {
-            name: params.code,
+            name: locationInfoData.locationName,
           },
         ]}
         tabs={countryDetailTabs}
@@ -111,28 +134,31 @@ export default function CountryDetail() {
           <Redirect to={`/location/${params.code}/investments/disbursements`} />
         </Route>
         <Route path={`/location/${params.code}/budgets/flow`}>
-          {/* <BudgetsFlowModule /> */}
+          <LocationDetailBudgetsFlowWrapper code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/budgets/time-cycle`}>
-          {/* <BudgetsTimeCycleModule /> */}
+          <LocationDetailGenericBudgetsTimeCycleWrapper code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/investments/disbursements`}>
-          <InvestmentsDisbursedModule data={mockdata2} />
+          <GenericInvestmentsDisbursedWrapper code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/investments/time-cycle`}>
-          {/* <InvestmentsTimeCycleModule /> */}
+          <GenericInvestmentsTimeCycleWrapper code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/investments/geomap`}>
-          <InvestmentsGeoMap />
+          <InvestmentsGeoMap code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/allocation`}>
-          <AllocationsModule />
+          <AllocationsModule code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/eligibility`}>
-          <ScatterPlot />
+          <LocationDetailEligibilityWrapper code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/documents`}>
-          {/* <DocumentsSubModule /> */}
+          <LocationDetailDocumentsModule code={params.code} />
+        </Route>
+        <Route path={`/location/${params.code}/grants`}>
+          <GrantsModule code={params.code} />
         </Route>
       </Switch>
       <InformationPanel
@@ -140,13 +166,17 @@ export default function CountryDetail() {
         onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
       >
         <LocationInfoContent
-          title={params.code}
+          title={locationInfoData.locationName}
           code={params.code}
-          investments={{ disbursed: 0, committed: 0, signed: 0 }}
-          multicountries={[{ name: "MC A", code: "MC_A" }]}
+          investments={{
+            disbursed: locationInfoData.disbursed,
+            committed: locationInfoData.committed,
+            signed: locationInfoData.signed,
+          }}
+          multicountries={locationInfoData.multicountries}
           manager={{
-            name: "Manager A",
-            email: "manager@mca.org",
+            name: locationInfoData.portfolioManager,
+            email: locationInfoData.portfolioManagerEmail,
           }}
         />
       </InformationPanel>

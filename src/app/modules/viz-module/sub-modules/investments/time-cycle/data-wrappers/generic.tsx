@@ -5,7 +5,11 @@ import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 
-export function GenericInvestmentsTimeCycleWrapper() {
+interface Props {
+  code?: string;
+}
+
+export function GenericInvestmentsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Investments/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
@@ -35,7 +39,14 @@ export function GenericInvestmentsTimeCycleWrapper() {
     (state) => state.DisbursementsTimeCycle.loading
   );
 
-  React.useEffect(() => fetchData({}), []);
+  React.useEffect(() => {
+    const params = props.code
+      ? {
+          filterString: `locations=${props.code}`,
+        }
+      : {};
+    fetchData(params);
+  }, [props.code]);
 
   return (
     <InvestmentsTimeCycleModule

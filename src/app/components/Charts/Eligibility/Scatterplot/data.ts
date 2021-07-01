@@ -1,5 +1,9 @@
 import { Serie } from "@nivo/scatterplot";
 
+export interface ScatterPlotProps {
+  data: EligibilityScatterplotDataModel[];
+}
+
 export interface EligibilityScatterplotDataItemModel {
   x: number;
   y: string;

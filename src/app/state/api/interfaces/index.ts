@@ -82,12 +82,24 @@ export interface StoreModel {
   GrantDetailInfo: ApiCallModel;
   GrantDetailPeriods: ApiCallModel;
   GrantDetailPeriodInfo: ApiCallModel;
+  GrantDetailBudgetsFlow: ApiCallModel;
+  GrantDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  GrantDetailBudgetsTimeCycle: ApiCallModel;
+  GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   GrantDetailDisbursementsTreemap: ApiCallModel;
   GrantDetailDisbursementsTimeCycle: ApiCallModel;
   GrantDetailPerformanceRating: ApiCallModel;
   GrantDetailPerformanceFramework: ApiCallModel;
   GrantDetailPerformanceFrameworkExpand: ApiCallModel;
   GrantDetailDocuments: ApiCallModel;
+  // location detail api
+  LocationDetailInfo: ApiCallModel;
+  EligibilityCountry: ApiCallModel;
+  LocationDetailDocuments: ApiCallModel;
+  LocationDetailBudgetsFlow: ApiCallModel;
+  LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  LocationDetailBudgetsTimeCycle: ApiCallModel;
+  LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;

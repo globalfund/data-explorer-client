@@ -21,8 +21,12 @@ import {
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 
-export function AllocationsModule() {
-  useTitle("The Data Explorer - Allocations");
+interface AllocationsModuleProps {
+  code?: string;
+}
+
+export function AllocationsModule(props: AllocationsModuleProps) {
+  useTitle(`The Data Explorer -${props.code ?? " Location"} Allocations`);
   // api call & data
   const fetchData = useStoreActions((store) => store.Allocations.fetch);
   const total = useStoreState(
@@ -165,7 +169,14 @@ export function AllocationsModule() {
     }
   }
 
-  React.useEffect(() => fetchData({}), []);
+  React.useEffect(() => {
+    const params = props.code
+      ? {
+          filterString: `locations=${props.code}`,
+        }
+      : {};
+    fetchData(params);
+  }, [props.code]);
 
   React.useEffect(() => {
     setKeysPercentagesColors(getKeysPercentages(total, values));
@@ -185,7 +196,9 @@ export function AllocationsModule() {
         }
       });
       fetchDrilldownLevelData({
-        filterString: `levelParam=component/componentName eq '${vizSelected}'`,
+        filterString: `levelParam=component/componentName eq '${vizSelected}'${
+          props.code ? `&locations=${props.code}` : ""
+        }`,
       });
     } else {
       [...items].forEach((item: Element) => {
