@@ -22,7 +22,11 @@ export function Dropdown(props: DropdownProps) {
         }
       `}
     >
-      <Select value={props.value} onChange={handleChange}>
+      <Select
+        value={props.value}
+        onChange={handleChange}
+        MenuProps={{ disablePortal: true }}
+      >
         {props.options.map((option: string) => (
           <MenuItem
             key={option}

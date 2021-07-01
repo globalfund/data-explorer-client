@@ -80,6 +80,8 @@ export interface StoreModel {
   GlobalSearch: ApiCallModel;
   // grant detail api
   GrantDetailInfo: ApiCallModel;
+  GrantDetailPeriods: ApiCallModel;
+  GrantDetailPeriodInfo: ApiCallModel;
   GrantDetailDisbursementsTreemap: ApiCallModel;
   GrantDetailDisbursementsTimeCycle: ApiCallModel;
   GrantDetailPerformanceRating: ApiCallModel;

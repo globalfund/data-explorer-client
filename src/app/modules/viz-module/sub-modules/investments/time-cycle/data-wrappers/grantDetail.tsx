@@ -7,6 +7,7 @@ import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code: string;
+  implementationPeriod: string;
 }
 
 export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
@@ -41,9 +42,11 @@ export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
 
   React.useEffect(() => {
     if (props.code) {
-      fetchData({ filterString: `grantId='${props.code}'` });
+      fetchData({
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+      });
     }
-  }, [props.code]);
+  }, [props.code, props.implementationPeriod]);
 
   return (
     <InvestmentsTimeCycleModule

@@ -10,7 +10,11 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { InformationPanel } from "app/components/InformationPanel";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
-import { GrantInfoContent } from "app/modules/grant-detail-module/components/InfoContent";
+import {
+  GrantDetailPeriod,
+  GrantDetailPeriodInformation,
+  GrantInfoContent,
+} from "app/modules/grant-detail-module/components/InfoContent";
 import { PerformanceRatingModule } from "app/modules/grant-detail-module/components/sub-modules/performance-rating";
 import { PerformanceFrameworkModule } from "app/modules/grant-detail-module/components/sub-modules/performance-framework";
 import { GrantDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/grantDetail";
@@ -49,21 +53,41 @@ export default function GrantDetail() {
       },
     })
   );
-  // const links = useStoreState(
-  //   (state) =>
-  //     get(state.BudgetsFlow.data, "links", []) as {
-  //       value: number;
-  //       source: string;
-  //       target: string;
-  //     }[]
-  // );
+  const fetchGrantPeriodsData = useStoreActions(
+    (store) => store.GrantDetailPeriods.fetch
+  );
+  const grantPeriodsData = useStoreState(
+    (state) =>
+      get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
+  );
+  const fetchGrantPeriodInfoData = useStoreActions(
+    (store) => store.GrantDetailPeriodInfo.fetch
+  );
+  const grantPeriodInfoData = useStoreState(
+    (state) =>
+      get(state.GrantDetailPeriodInfo.data, "data[0]", {
+        disbursed: 0,
+        committed: 0,
+        signed: 0,
+        rating: "",
+      }) as GrantDetailPeriodInformation
+  );
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
+    fetchGrantPeriodsData({
+      filterString: `grantNumber=${params.code}`,
+    });
   }, []);
+
+  React.useEffect(() => {
+    fetchGrantPeriodInfoData({
+      filterString: `grantNumber=${params.code}&IPnumber=${params.period}`,
+    });
+  }, [params.period]);
 
   return (
     <div
@@ -152,27 +176,42 @@ export default function GrantDetail() {
           <Redirect to={`/grant/${params.code}/investments/disbursements`} />
         </Route>
         <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
-          <GrantDetailBudgetsFlowWrapper code={params.code} />
+          <GrantDetailBudgetsFlowWrapper
+            code={params.code}
+            implementationPeriod={params.period}
+          />
         </Route>
         <Route
           path={`/grant/${params.code}/${params.period}/budgets/time-cycle`}
         >
-          <GrantDetailGenericBudgetsTimeCycleWrapper code={params.code} />
+          <GrantDetailGenericBudgetsTimeCycleWrapper
+            code={params.code}
+            implementationPeriod={params.period}
+          />
         </Route>
         <Route
           path={`/grant/${params.code}/${params.period}/performance-rating`}
         >
-          <PerformanceRatingModule code={params.code} />
+          <PerformanceRatingModule
+            code={params.code}
+            implementationPeriod={params.period}
+          />
         </Route>
         <Route
           path={`/grant/${params.code}/${params.period}/investments/disbursements`}
         >
-          <GrantDetailInvestmentsDisbursedWrapper code={params.code} />
+          <GrantDetailInvestmentsDisbursedWrapper
+            code={params.code}
+            implementationPeriod={params.period}
+          />
         </Route>
         <Route
           path={`/grant/${params.code}/${params.period}/investments/time-cycle`}
         >
-          <GrantDetailInvestmentsTimeCycleWrapper code={params.code} />
+          <GrantDetailInvestmentsTimeCycleWrapper
+            code={params.code}
+            implementationPeriod={params.period}
+          />
         </Route>
         <Route path={`/grant/${params.code}/${params.period}/documents`}>
           <GrantDetailDocumentsModule code={params.code} />
@@ -190,7 +229,16 @@ export default function GrantDetail() {
         open={openInfoPanel}
         onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
       >
-        <GrantInfoContent {...grantInfoData} />
+        <GrantInfoContent
+          {...grantInfoData}
+          periods={grantPeriodsData}
+          rating={grantPeriodInfoData.rating}
+          investments={{
+            disbursed: grantPeriodInfoData.disbursed,
+            committed: grantPeriodInfoData.committed,
+            signed: grantPeriodInfoData.signed,
+          }}
+        />
       </InformationPanel>
       <ToolBoxPanel
         open={openToolboxPanel}

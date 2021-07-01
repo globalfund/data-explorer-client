@@ -20,6 +20,7 @@ import { BudgetsFlowModule } from "..";
 
 interface Props {
   code: string;
+  implementationPeriod: string;
 }
 
 export function GrantDetailBudgetsFlowWrapper(props: Props) {
@@ -87,15 +88,17 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
   >(getDrilldownPanelOptions(links));
 
   React.useEffect(() => {
-    if ((nodes.length === 0 || links.length === 0) && props.code) {
-      fetchData({ filterString: `grantId='${props.code}'` });
+    if (props.code) {
+      fetchData({
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+      });
     }
-  }, [props.code]);
+  }, [props.code, props.implementationPeriod]);
 
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined && props.code) {
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=${vizSelected.filterStr}&grantId='${props.code}'`,
+        filterString: `levelParam=${vizSelected.filterStr}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
       });
     } else {
       clearDrilldownLevel1Data();

@@ -95,7 +95,8 @@ const aggregates = {
 export function getControlItems(
   vizType: string,
   pathname: string,
-  detailPageCode?: string
+  detailPageCode?: string,
+  grantDetailPeriod?: string
 ): {
   views: ViewModel[];
   aggregates: ViewModel[];
@@ -105,7 +106,12 @@ export function getControlItems(
     let alteredViews = get(views, vizType, []).map((view: ViewModel) => ({
       ...view,
       link: view.link
-        ? view.link.replace("viz", `${detailPageParam}/${detailPageCode}`)
+        ? view.link.replace(
+            "viz",
+            `${detailPageParam}/${detailPageCode}${
+              grantDetailPeriod ? `/${grantDetailPeriod}` : ""
+            }`
+          )
         : view.link,
     }));
     if (detailPageParam === "grant") {

@@ -8,6 +8,7 @@ import { PerformanceRating } from "app/components/Charts/PerformanceRating";
 
 interface PerformanceRatingModuleProps {
   code: string;
+  implementationPeriod: string;
 }
 
 export function PerformanceRatingModule(props: PerformanceRatingModuleProps) {
@@ -28,9 +29,11 @@ export function PerformanceRatingModule(props: PerformanceRatingModuleProps) {
 
   React.useEffect(() => {
     if (props.code) {
-      fetchData({ filterString: `grantId='${props.code}'` });
+      fetchData({
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+      });
     }
-  }, [props.code]);
+  }, [props.code, props.implementationPeriod]);
 
   if (isLoading) {
     return <PageLoader />;

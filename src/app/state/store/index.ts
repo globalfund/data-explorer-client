@@ -46,6 +46,8 @@ import GrantDetailPerformanceFramework, {
 } from "../api/action-reducers/grantDetail/performanceFramework";
 import Documents from "../api/action-reducers/viz/documents";
 import GrantDetailDocuments from "../api/action-reducers/grantDetail/documents";
+import GrantDetailPeriods from "../api/action-reducers/grantDetail/periods";
+import GrantDetailPeriodInfo from "../api/action-reducers/grantDetail/periodInfo";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -70,6 +72,8 @@ const storeContent: StoreModel = {
   GlobalSearch: persist(GlobalSearch),
   // grant detail api
   GrantDetailInfo: persist(GrantDetailInfo),
+  GrantDetailPeriods: persist(GrantDetailPeriods),
+  GrantDetailPeriodInfo: persist(GrantDetailPeriodInfo),
   GrantDetailDisbursementsTreemap: persist(GrantDetailDisbursementsTreemap),
   GrantDetailDisbursementsTimeCycle: persist(GrantDetailDisbursementsTimeCycle),
   GrantDetailPerformanceRating: persist(GrantDetailPerformanceRating),

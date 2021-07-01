@@ -64,7 +64,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const [controlItems, setControlItems] = React.useState<{
     views: ViewModel[];
     aggregates: ViewModel[];
-  }>(getControlItems(params.vizType, history.location.pathname, params.code));
+  }>(
+    getControlItems(
+      params.vizType,
+      history.location.pathname,
+      params.code,
+      params.period
+    )
+  );
   const [geomapView, setGeomapView] = React.useState("countries");
 
   // aggregateBy control const
@@ -113,7 +120,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   React.useEffect(
     () =>
       setControlItems(
-        getControlItems(params.vizType, history.location.pathname, params.code)
+        getControlItems(
+          params.vizType,
+          history.location.pathname,
+          params.code,
+          params.period
+        )
       ),
     [params.vizType]
   );

@@ -9,6 +9,7 @@ import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code: string;
+  implementationPeriod: string;
 }
 
 export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
@@ -30,9 +31,11 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
 
   React.useEffect(() => {
     if (props.code) {
-      fetchData({ filterString: `grantId='${props.code}'` });
+      fetchData({
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+      });
     }
-  }, [props.code]);
+  }, [props.code, props.implementationPeriod]);
 
   if (isLoading) {
     return <PageLoader />;

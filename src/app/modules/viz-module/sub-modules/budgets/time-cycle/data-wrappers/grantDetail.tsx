@@ -9,6 +9,7 @@ import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budge
 
 interface Props {
   code: string;
+  implementationPeriod: string;
 }
 
 export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
@@ -60,15 +61,17 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   >(data.map((item: any) => item.year));
 
   React.useEffect(() => {
-    if (data.length === 0 && props.code) {
-      fetchData({ filterString: `grantId='${props.code}'` });
+    if (props.code) {
+      fetchData({
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+      });
     }
-  }, []);
+  }, [props.code, props.implementationPeriod]);
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined && props.code) {
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&grantId='${props.code}'`,
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
       });
     } else {
       clearDrilldownLevel1Data();
