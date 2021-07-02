@@ -72,7 +72,9 @@ export interface StoreModel {
   BudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   DisbursementsGeomap: ApiCallModel;
   DisbursementsTreemap: ApiCallModel;
+  DisbursementsTreemapDrilldown: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
+  DisbursementsTimeCycleDrilldown: ApiCallModel;
   PledgesContributionsGeomap: ApiCallModel;
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;

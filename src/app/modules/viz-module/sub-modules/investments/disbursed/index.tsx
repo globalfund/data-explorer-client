@@ -5,6 +5,7 @@ import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
+import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TransitionContainer } from "app/components/TransitionContainer";
@@ -16,6 +17,15 @@ import {
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
+  drilldownData: DisbursementsTreemapDataItem[];
+  isLoading: boolean;
+  isDrilldownLoading: boolean;
+  vizLevel: number;
+  setVizLevel: (vizLevel: number) => void;
+  vizTranslation: { x: number; y: number };
+  setVizTranslation: (obj: { x: number; y: number }) => void;
+  vizSelected: string | undefined;
+  setVizSelected: (vizSelected: string | undefined) => void;
 }
 
 export function InvestmentsDisbursedModule(
@@ -23,11 +33,10 @@ export function InvestmentsDisbursedModule(
 ) {
   useTitle("The Data Explorer - Investments/Disbursed");
   const totalBudget = sumBy(props.data, "value");
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
-  );
+
+  if (props.isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <React.Fragment>
@@ -67,35 +76,36 @@ export function InvestmentsDisbursedModule(
         css={`
           width: 100%;
 
-          ${!vizSelected
+          ${!props.vizSelected
             ? `* {
             overflow: visible !important;
           }`
             : ""}
         `}
       >
-        <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
+        <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
           <DisbursementsTreemap
             data={props.data}
-            selectedNodeId={vizSelected}
+            selectedNodeId={props.vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
-              // setVizLevel(1);
-              // setVizSelected(node);
-              // setVizTranslation({ x: x * -1, y: y * -1 });
+              props.setVizLevel(1);
+              props.setVizSelected(node);
+              props.setVizTranslation({ x: x * -1, y: y * -1 });
             }}
           />
         </TransitionContainer>
         <SlideInContainer
-          vizLevel={vizLevel}
-          selected={vizSelected}
+          vizLevel={props.vizLevel}
+          selected={props.vizSelected}
+          loading={props.isDrilldownLoading}
           close={() => {
-            setVizLevel(0);
-            setVizSelected(undefined);
-            setVizTranslation({ x: 0, y: 0 });
+            props.setVizLevel(0);
+            props.setVizSelected(undefined);
+            props.setVizTranslation({ x: 0, y: 0 });
           }}
         >
           <DisbursementsTreemap
-            data={mockdata2}
+            data={props.drilldownData}
             onNodeClick={(node: string, x: number, y: number) => {}}
           />
         </SlideInContainer>

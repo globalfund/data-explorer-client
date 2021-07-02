@@ -78,7 +78,7 @@ export function TreeemapNode(props: any) {
       onClick={() => {
         if (props.isChildTreemap) {
           props.onNodeClick(
-            `${node.id}-${node.data.tooltip.header}`,
+            `${node.data.code || node.id}-${node.data.tooltip.header}`,
             node.x + props.parentNodeCoords.x,
             node.y + props.parentNodeCoords.y
           );

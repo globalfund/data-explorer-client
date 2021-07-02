@@ -6,3 +6,7 @@ const DisbursementsTreemap: ApiCallModel = {
 };
 
 export default DisbursementsTreemap;
+
+export const DisbursementsTreemapDrilldown: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/disbursements/treemap/drilldown`),
+};

@@ -1,8 +1,11 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useUpdateEffect } from "react-use";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+/* project */
+import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 
 interface Props {
@@ -38,6 +41,20 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
   const isLoading = useStoreState(
     (state) => state.DisbursementsTimeCycle.loading
   );
+  const fetchDrilldownData = useStoreActions(
+    (store) => store.DisbursementsTimeCycleDrilldown.fetch
+  );
+  const drilldownData = useStoreState(
+    (state) =>
+      get(
+        state.DisbursementsTimeCycleDrilldown.data,
+        "data",
+        []
+      ) as BudgetsTreemapDataItem[]
+  );
+  const isDrilldownLoading = useStoreState(
+    (state) => state.DisbursementsTimeCycleDrilldown.loading
+  );
 
   React.useEffect(() => {
     const params = props.code
@@ -48,9 +65,27 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
     fetchData(params);
   }, [props.code]);
 
+  useUpdateEffect(() => {
+    if (vizSelected) {
+      const params = props.code
+        ? {
+            filterString: `locations=${props.code}`,
+          }
+        : {};
+      if (params.filterString) {
+        params.filterString += `&barPeriod=${vizSelected}`;
+      } else {
+        params.filterString = `barPeriod=${vizSelected}`;
+      }
+      fetchDrilldownData(params);
+    }
+  }, [vizSelected]);
+
   return (
     <InvestmentsTimeCycleModule
       data={data}
+      isDrilldownLoading={isDrilldownLoading}
+      drilldownData={drilldownData}
       isLoading={isLoading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}

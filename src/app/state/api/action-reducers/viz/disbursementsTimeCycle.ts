@@ -6,3 +6,9 @@ const DisbursementsTimeCycle: ApiCallModel = {
 };
 
 export default DisbursementsTimeCycle;
+
+export const DisbursementsTimeCycleDrilldown: ApiCallModel = {
+  ...APIModel(
+    `${process.env.REACT_APP_API}/disbursements/time-cycle/drilldown`
+  ),
+};

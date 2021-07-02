@@ -3,14 +3,18 @@ import React from "react";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
+import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
+import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
+  drilldownData: BudgetsTreemapDataItem[];
   isLoading: boolean;
+  isDrilldownLoading: boolean;
   vizLevel: number;
   setVizLevel: (vizLevel: number) => void;
   vizTranslation: { x: number; y: number };
@@ -49,9 +53,9 @@ export function InvestmentsTimeCycleModule(
             data={props.data}
             selectedNodeId={props.vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
-              // props.setVizLevel(1);
-              // props.setVizSelected(node);
-              // props.setVizTranslation({ x: x * -1, y: 0 });
+              props.setVizLevel(1);
+              props.setVizSelected(node);
+              props.setVizTranslation({ x: x * -1, y: 0 });
             }}
           />
         )}
@@ -66,6 +70,7 @@ export function InvestmentsTimeCycleModule(
       <SlideInContainer
         vizLevel={props.vizLevel}
         selected={props.vizSelected}
+        loading={props.isDrilldownLoading}
         close={() => {
           props.setVizLevel(props.vizLevel - 1);
           props.setVizTranslation({ x: 0, y: 0 });
@@ -77,14 +82,15 @@ export function InvestmentsTimeCycleModule(
           );
         }}
       >
-        <DisbursementsTreemap
-          data={mockdata2}
+        <BudgetsTreemap
+          data={props.drilldownData}
+          tooltipValueLabel="Disbursements"
           onNodeClick={(node: string, x: number, y: number) => {
-            props.setVizLevel(2);
-            props.setVizPrevSelected(props.vizSelected);
-            props.setVizSelected(node);
-            props.setVizPrevTranslation(props.vizTranslation);
-            props.setVizTranslation({ x: x * -1, y: 0 });
+            // props.setVizLevel(2);
+            // props.setVizPrevSelected(props.vizSelected);
+            // props.setVizSelected(node);
+            // props.setVizPrevTranslation(props.vizTranslation);
+            // props.setVizTranslation({ x: x * -1, y: 0 });
           }}
         />
       </SlideInContainer>

@@ -3,6 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 
 interface Props {
@@ -51,12 +52,14 @@ export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
   return (
     <InvestmentsTimeCycleModule
       data={data}
+      isDrilldownLoading={false}
+      drilldownData={[]}
       isLoading={isLoading}
-      vizLevel={vizLevel}
+      vizLevel={0}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
+      vizSelected={undefined}
+      vizTranslation={{ x: 0, y: 0 }}
       setVizTranslation={setVizTranslation}
-      vizSelected={vizSelected}
       setVizSelected={setVizSelected}
       vizPrevSelected={vizPrevSelected}
       setVizPrevSelected={setVizPrevSelected}

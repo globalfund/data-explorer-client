@@ -22,8 +22,12 @@ import BudgetsTimeCycle, {
   BudgetsTimeCycleDrilldownLevel1,
 } from "app/state/api/action-reducers/viz/budgetsTimeCycle";
 import DisbursementsGeomap from "app/state/api/action-reducers/viz/disbursementsGeomap";
-import DisbursementsTreemap from "app/state/api/action-reducers/viz/disbursementsTreemap";
-import DisbursementsTimeCycle from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
+import DisbursementsTreemap, {
+  DisbursementsTreemapDrilldown,
+} from "app/state/api/action-reducers/viz/disbursementsTreemap";
+import DisbursementsTimeCycle, {
+  DisbursementsTimeCycleDrilldown,
+} from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
 import PledgesContributionsGeomap from "app/state/api/action-reducers/viz/pledgesContributionsGeomap";
 import PledgesContributionsTimeCycle, {
   PledgesContributionsTimeCycleDrilldown,
@@ -77,7 +81,9 @@ const storeContent: StoreModel = {
   BudgetsTimeCycleDrilldownLevel1: persist(BudgetsTimeCycleDrilldownLevel1),
   DisbursementsGeomap: persist(DisbursementsGeomap),
   DisbursementsTreemap: persist(DisbursementsTreemap),
+  DisbursementsTreemapDrilldown: persist(DisbursementsTreemapDrilldown),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
+  DisbursementsTimeCycleDrilldown: persist(DisbursementsTimeCycleDrilldown),
   PledgesContributionsGeomap: persist(PledgesContributionsGeomap),
   PledgesContributionsTimeCycle: persist(PledgesContributionsTimeCycle),
   PledgesContributionsTimeCycleDrilldown: persist(

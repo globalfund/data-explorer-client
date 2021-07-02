@@ -13,6 +13,12 @@ interface Props {
 }
 
 export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
+  const [vizLevel, setVizLevel] = React.useState(0);
+  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
+  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
+    undefined
+  );
+
   // api call & data
   const fetchData = useStoreActions(
     (store) => store.GrantDetailDisbursementsTreemap.fetch
@@ -40,5 +46,18 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
   if (isLoading) {
     return <PageLoader />;
   }
-  return <InvestmentsDisbursedModule data={data} />;
+  return (
+    <InvestmentsDisbursedModule
+      data={data}
+      drilldownData={[]}
+      vizLevel={0}
+      isLoading={isLoading}
+      vizSelected={undefined}
+      setVizLevel={setVizLevel}
+      isDrilldownLoading={false}
+      vizTranslation={{ x: 0, y: 0 }}
+      setVizSelected={setVizSelected}
+      setVizTranslation={setVizTranslation}
+    />
+  );
 }
