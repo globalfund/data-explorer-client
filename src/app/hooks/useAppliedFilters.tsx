@@ -1,11 +1,21 @@
 import React from "react";
+import { ActionCreator } from "easy-peasy";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 interface UseAppliedFiltersProps {
   type: string;
 }
 
-export function useAppliedFilters(props: UseAppliedFiltersProps) {
+export function useAppliedFilters(
+  props: UseAppliedFiltersProps
+): {
+  setAppliedFilters: ActionCreator<string[]>;
+  appliedFilters: string[];
+  setAppliedFiltersChildren?: ActionCreator<string[]>;
+  appliedFiltersChildren?: string[];
+  setAppliedFiltersGrandChildren?: ActionCreator<string[]>;
+  appliedFiltersGrandChildren?: string[];
+} {
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
 
@@ -20,10 +30,14 @@ export function useAppliedFilters(props: UseAppliedFiltersProps) {
         setAppliedFilters: actions.setComponents,
         appliedFilters: data.components,
       };
-    case "Partners":
+    case "Partner Types":
       return {
         setAppliedFilters: actions.setPartnerTypes,
         appliedFilters: data.partnerTypes,
+        setAppliedFiltersChildren: actions.setPartnerSubTypes,
+        appliedFiltersChildren: data.partnerSubTypes,
+        setAppliedFiltersGrandChildren: actions.setPartners,
+        appliedFiltersGrandChildren: data.partners,
       };
     case "Grant Status":
       return {
@@ -42,7 +56,7 @@ export function useAppliedFilters(props: UseAppliedFiltersProps) {
       };
     default:
       return {
-        setAppliedFilters: () => console.log("Incorrect filter type"),
+        setAppliedFilters: actions.actionDefaultNone,
         appliedFilters: [],
       };
   }

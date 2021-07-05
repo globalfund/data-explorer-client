@@ -18,6 +18,7 @@ import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { GrantListItemModel } from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
 import { GrantsList } from "app/modules/grants-module/components/List";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 interface GrantsModuleProps {
   code?: string;
@@ -39,19 +40,17 @@ export default function GrantsModule(props: GrantsModuleProps) {
     get(state.GrantsList.data, "count", 0)
   );
   const isLoading = useStoreState((state) => state.GrantsList.loading);
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
   const reloadData = (resetPage?: boolean) => {
-    let filterString = `page=${resetPage ? 1 : page}`;
-    if (search.length > 0) {
-      filterString = `${filterString}&q=${search}`;
-    }
-    if (props.code) {
-      filterString += `&locations=${props.code}`;
-    }
+    const filterString = getAPIFormattedFilters(appliedFilters, {
+      page: resetPage ? 1 : page,
+      search: search.length > 0 ? search : undefined,
+    });
     fetchData({
       filterString,
     });
@@ -77,7 +76,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
     if (!isLoading) {
       reloadData();
     }
-  }, [page]);
+  }, [page, appliedFilters]);
 
   const [,] = useDebounce(
     () => {

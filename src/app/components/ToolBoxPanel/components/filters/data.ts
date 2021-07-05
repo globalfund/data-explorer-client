@@ -110,7 +110,12 @@ export interface FilterGroupProps {
 }
 
 export interface FilterOptionProps extends FilterGroupOptionModel {
+  level: number;
   selected: boolean;
   selectedOptions: string[];
-  onOptionChange: (checked: boolean, option: FilterGroupOptionModel) => void;
+  onOptionChange: (
+    checked: boolean,
+    option: FilterGroupOptionModel,
+    level: number
+  ) => void;
 }

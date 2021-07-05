@@ -1,10 +1,11 @@
 //cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
+import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
+import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { NoMatchPage } from "app/modules/common/no-match-page";
-import { useFilterOptions } from "./hooks/useFilterOptions";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -20,6 +21,7 @@ const CountryDetailModule = lazy(
 
 export function MainRoutes() {
   useFilterOptions({});
+  useUrlFilters();
 
   return (
     <Suspense fallback={<PageLoader />}>

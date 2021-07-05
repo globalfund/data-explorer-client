@@ -70,7 +70,7 @@ export function useFilterOptions(props: UseFilterOptionsProps) {
     return {
       Locations: locations,
       Components: components,
-      Partners: partnerTypes,
+      "Partner Types": partnerTypes,
       "Grant Status": status,
       "Replenishment Periods": replenishmentPeriods,
       Donors: donors,

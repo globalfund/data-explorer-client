@@ -1,18 +1,68 @@
 import React from "react";
+import find from "lodash/find";
+import filter from "lodash/filter";
 import { CloseIcon } from "app/assets/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { useAppliedFilters } from "app/hooks/useAppliedFilters";
-import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import {
+  FilterGroupModel,
+  FilterGroupOptionModel,
+} from "app/components/ToolBoxPanel/components/filters/data";
 
-interface FilterGroupCompProps extends FilterGroupProps {
+interface FilterGroupCompProps extends FilterGroupModel {
   expandGroup: () => void;
 }
 
 export function FilterGroup(props: FilterGroupCompProps) {
-  const { appliedFilters, setAppliedFilters } = useAppliedFilters({
+  const [flattenOptions, setFlattenOptions] = React.useState<
+    FilterGroupOptionModel[]
+  >([]);
+  const {
+    appliedFilters,
+    setAppliedFilters,
+    appliedFiltersChildren,
+    setAppliedFiltersChildren,
+    appliedFiltersGrandChildren,
+    setAppliedFiltersGrandChildren,
+  } = useAppliedFilters({
     type: props.name,
   });
+
+  function onFilterRemove(option: string) {
+    setAppliedFilters(filter(appliedFilters, (af: string) => af !== option));
+    if (setAppliedFiltersChildren && appliedFiltersChildren) {
+      setAppliedFiltersChildren(
+        filter(appliedFiltersChildren, (af: string) => af !== option)
+      );
+    }
+    if (setAppliedFiltersGrandChildren && appliedFiltersGrandChildren) {
+      setAppliedFiltersGrandChildren(
+        filter(appliedFiltersGrandChildren, (af: string) => af !== option)
+      );
+    }
+  }
+
+  function traverseOptions(
+    options: FilterGroupOptionModel[],
+    arr: FilterGroupOptionModel[]
+  ) {
+    options.forEach((option: FilterGroupOptionModel) => {
+      arr.push({
+        label: option.label,
+        value: option.value,
+      });
+      if (option.subOptions) {
+        traverseOptions(option.subOptions, arr);
+      }
+    });
+  }
+
+  React.useEffect(() => {
+    const opts: FilterGroupOptionModel[] = [];
+    traverseOptions(props.options, opts);
+    setFlattenOptions(opts);
+  }, [props.options]);
 
   return (
     <div
@@ -44,7 +94,11 @@ export function FilterGroup(props: FilterGroupCompProps) {
           <TriangleXSIcon />
         </IconButton>
       </div>
-      {appliedFilters.length > 0 && (
+      {[
+        ...appliedFilters,
+        ...(appliedFiltersChildren || []),
+        ...(appliedFiltersGrandChildren || []),
+      ].length > 0 && (
         <div
           css={`
             gap: 6px;
@@ -69,36 +123,46 @@ export function FilterGroup(props: FilterGroupCompProps) {
             }
           `}
         >
-          {appliedFilters.map((option: string) => (
-            <div
-              key={option}
-              css={`
-                gap: 6px;
-                display: flex;
-                color: #495057;
-                font-size: 10px;
-                background: #fff;
-                padding: 5px 10px;
-                border-radius: 20px;
-                flex-direction: row;
-                justify-content: space-between;
+          {[
+            ...appliedFilters,
+            ...(appliedFiltersChildren || []),
+            ...(appliedFiltersGrandChildren || []),
+          ].map((option: string) => {
+            const fOption = find(flattenOptions, { value: option });
+            return (
+              <div
+                key={option}
+                css={`
+                  gap: 6px;
+                  display: flex;
+                  color: #495057;
+                  font-size: 10px;
+                  background: #fff;
+                  padding: 5px 10px;
+                  border-radius: 20px;
+                  flex-direction: row;
+                  justify-content: space-between;
 
-                > div {
-                  max-width: 100px;
-                  overflow: hidden;
-                  white-space: nowrap;
-                  text-overflow: ellipsis;
-                }
+                  > div {
+                    max-width: 100px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                  }
 
-                > svg:hover {
-                  cursor: pointer;
-                }
-              `}
-            >
-              <div>{option}</div>
-              <CloseIcon />
-            </div>
-          ))}
+                  > svg:hover {
+                    cursor: pointer;
+                  }
+                `}
+              >
+                <div>{fOption ? fOption.label : option}</div>
+                <CloseIcon
+                  role="button"
+                  onClick={() => onFilterRemove(option)}
+                />
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

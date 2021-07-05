@@ -1,8 +1,11 @@
 import React from "react";
 import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 import { ResetIcon } from "app/assets/icons/Reset";
 import IconButton from "@material-ui/core/IconButton";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
 import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
@@ -14,6 +17,15 @@ interface ToolBoxPanelFiltersProps {
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
   const [expandedGroup, setExpandedGroup] = React.useState<string | null>(null);
+
+  const actions = useStoreActions((store) => store.AppliedFiltersState);
+  const data = useStoreState((state) => state.AppliedFiltersState);
+
+  function resetAllFilters() {
+    if (!isEqual(data, defaultAppliedFilters)) {
+      actions.setAll(defaultAppliedFilters);
+    }
+  }
 
   return (
     <div
@@ -52,7 +64,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
             `}
           >
             <b>Filters</b>
-            <IconButton>
+            <IconButton onClick={resetAllFilters}>
               <ResetIcon />
             </IconButton>
           </div>
@@ -60,6 +72,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
             <FilterGroup
               {...group}
               key={group.name}
+              options={get(filterOptions, group.name, [])}
               expandGroup={() => setExpandedGroup(group.name)}
             />
           ))}

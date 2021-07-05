@@ -1,6 +1,7 @@
 import React from "react";
 import find from "lodash/find";
 import remove from "lodash/remove";
+import isEqual from "lodash/isEqual";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
@@ -23,12 +24,27 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
-  const { appliedFilters, setAppliedFilters } = useAppliedFilters({
+  const {
+    appliedFilters,
+    setAppliedFilters,
+    appliedFiltersChildren,
+    setAppliedFiltersChildren,
+    appliedFiltersGrandChildren,
+    setAppliedFiltersGrandChildren,
+  } = useAppliedFilters({
     type: props.name,
   });
   const [tmpAppliedFilters, setTmpAppliedFilters] = React.useState([
     ...appliedFilters,
   ]);
+  const [
+    tmpAppliedFiltersChildren,
+    setTmpAppliedFiltersChildren,
+  ] = React.useState([...(appliedFiltersChildren || [])]);
+  const [
+    tmpAppliedFiltersGrandChildren,
+    setTmpAppliedFiltersGrandChildren,
+  ] = React.useState([...(appliedFiltersGrandChildren || [])]);
 
   React.useEffect(() => {
     let allOptionsCount = 0;
@@ -55,73 +71,152 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
         );
       });
     });
-    setAllSelected(tmpAppliedFilters.length === allOptionsCount);
-  }, [tmpAppliedFilters, props.options]);
+    setAllSelected(
+      tmpAppliedFilters.length +
+        tmpAppliedFiltersChildren.length +
+        tmpAppliedFiltersGrandChildren.length ===
+        allOptionsCount
+    );
+  }, [
+    tmpAppliedFilters,
+    tmpAppliedFiltersChildren,
+    tmpAppliedFiltersGrandChildren,
+    props.options,
+  ]);
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeAll(event: React.ChangeEvent<HTMLInputElement>) {
     const tmp = [...tmpAppliedFilters];
+    const tmpChildren = [...tmpAppliedFiltersChildren];
+    const tmpGrandChildren = [...tmpAppliedFiltersGrandChildren];
     if (event.target.checked) {
       props.options.forEach((option: FilterGroupOptionModel) => {
         tmp.push(option.value);
         option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
-          tmp.push(subOption.value);
+          (!appliedFiltersChildren ? tmp : tmpChildren).push(subOption.value);
           subOption.subOptions?.forEach(
             (subSubOption: FilterGroupOptionModel) => {
-              tmp.push(subSubOption.value);
-              subSubOption.subOptions?.forEach(
-                (subSubSubOption: FilterGroupOptionModel) => {
-                  tmp.push(subSubSubOption.value);
-                }
+              (!appliedFiltersChildren ? tmp : tmpGrandChildren).push(
+                subSubOption.value
               );
             }
           );
         });
       });
       setTmpAppliedFilters(tmp);
+      if (appliedFiltersChildren) {
+        setTmpAppliedFiltersChildren(tmpChildren);
+      }
+      if (appliedFiltersGrandChildren) {
+        setTmpAppliedFiltersGrandChildren(tmpGrandChildren);
+      }
     } else {
       setTmpAppliedFilters([]);
+      if (appliedFiltersChildren) {
+        setTmpAppliedFiltersChildren([]);
+      }
+      if (appliedFiltersGrandChildren) {
+        setTmpAppliedFiltersGrandChildren([]);
+      }
     }
   }
 
   function handleApply() {
-    setAppliedFilters(tmpAppliedFilters);
+    if (!isEqual(appliedFilters, tmpAppliedFilters)) {
+      setAppliedFilters(tmpAppliedFilters);
+    }
+    if (
+      setAppliedFiltersChildren &&
+      appliedFiltersChildren &&
+      !isEqual(appliedFiltersChildren, tmpAppliedFiltersChildren)
+    ) {
+      setAppliedFiltersChildren(tmpAppliedFiltersChildren);
+    }
+    if (
+      setAppliedFiltersGrandChildren &&
+      appliedFiltersGrandChildren &&
+      !isEqual(appliedFiltersGrandChildren, tmpAppliedFiltersGrandChildren)
+    ) {
+      setAppliedFiltersGrandChildren(tmpAppliedFiltersGrandChildren);
+    }
     props.goBack();
   }
 
-  function onOptionChange(checked: boolean, option: FilterGroupOptionModel) {
+  function onOptionChange(
+    checked: boolean,
+    option: FilterGroupOptionModel,
+    level: number
+  ) {
     const tmp = [...tmpAppliedFilters];
+    const tmpChildren = [...tmpAppliedFiltersChildren];
+    const tmpGrandChildren = [...tmpAppliedFiltersGrandChildren];
     if (checked) {
-      tmp.push(option.value);
+      if (!appliedFiltersChildren || level === 1) {
+        tmp.push(option.value);
+      } else if (level === 2 && appliedFiltersChildren) {
+        tmpChildren.push(option.value);
+      } else if (level === 3 && appliedFiltersGrandChildren) {
+        tmpGrandChildren.push(option.value);
+      }
       option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
-        tmp.push(subOption.value);
+        if (!appliedFiltersChildren) {
+          tmp.push(subOption.value);
+        } else if (level + 1 === 2 && appliedFiltersChildren) {
+          tmpChildren.push(subOption.value);
+        } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
+          tmpGrandChildren.push(subOption.value);
+        }
         subOption.subOptions?.forEach(
           (subSubOption: FilterGroupOptionModel) => {
-            tmp.push(subSubOption.value);
-            subSubOption.subOptions?.forEach(
-              (subSubSubOption: FilterGroupOptionModel) => {
-                tmp.push(subSubSubOption.value);
-              }
-            );
+            if (!appliedFiltersChildren) {
+              tmp.push(subSubOption.value);
+            } else if (level + 1 === 2 && appliedFiltersChildren) {
+              tmpChildren.push(subSubOption.value);
+            } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
+              tmpGrandChildren.push(subSubOption.value);
+            }
           }
         );
       });
     } else {
       remove(tmp, (o: string) => o === option.value);
+      remove(tmpChildren, (o: string) => o === option.value);
+      remove(tmpGrandChildren, (o: string) => o === option.value);
       option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
         remove(tmp, (o: string) => o === subOption.value);
+        remove(tmpChildren, (o: string) => o === subOption.value);
+        remove(tmpGrandChildren, (o: string) => o === subOption.value);
         subOption.subOptions?.forEach(
           (subSubOption: FilterGroupOptionModel) => {
             remove(tmp, (o: string) => o === subSubOption.value);
-            subSubOption.subOptions?.forEach(
-              (subSubSubOption: FilterGroupOptionModel) => {
-                remove(tmp, (o: string) => o === subSubSubOption.value);
-              }
-            );
+            remove(tmpChildren, (o: string) => o === subSubOption.value);
+            remove(tmpGrandChildren, (o: string) => o === subSubOption.value);
           }
         );
       });
     }
     setTmpAppliedFilters(tmp);
+    setTmpAppliedFiltersChildren(tmpChildren);
+    setTmpAppliedFiltersGrandChildren(tmpGrandChildren);
+  }
+
+  function resetFilters() {
+    if (appliedFilters.length > 0) {
+      setAppliedFilters([]);
+    }
+    if (
+      appliedFiltersChildren &&
+      setAppliedFiltersChildren &&
+      appliedFiltersChildren.length > 0
+    ) {
+      setAppliedFiltersChildren([]);
+    }
+    if (
+      appliedFiltersGrandChildren &&
+      setAppliedFiltersGrandChildren &&
+      appliedFiltersGrandChildren.length > 0
+    ) {
+      setAppliedFiltersGrandChildren([]);
+    }
   }
 
   return (
@@ -156,12 +251,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               <Checkbox
                 color="primary"
                 checked={allSelected}
-                onChange={handleChange}
+                onChange={handleChangeAll}
               />
             }
             label="Select all"
           />
-          <IconButton>
+          <IconButton onClick={resetFilters}>
             <ResetIcon />
           </IconButton>
         </div>
@@ -206,18 +301,46 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           border-bottom: 1px solid #dfe3e6;
         `}
       />
-      {props.options.map((option: FilterGroupOptionModel) => (
-        <FilterOption
-          {...option}
-          key={option.value}
-          onOptionChange={onOptionChange}
-          selectedOptions={tmpAppliedFilters}
-          selected={
-            find(tmpAppliedFilters, (o: string) => o === option.value) !==
-            undefined
+      <div
+        css={`
+          overflow-y: auto;
+          max-height: calc(100% - 190px);
+
+          &::-webkit-scrollbar {
+            width: 4px;
+            border-radius: 4px;
+            background: #495057;
           }
-        />
-      ))}
+          &::-webkit-scrollbar-track {
+            border-radius: 4px;
+            background: #f5f5f7;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background: #495057;
+          }
+        `}
+      >
+        {props.options.map((option: FilterGroupOptionModel) => (
+          <FilterOption
+            {...option}
+            level={1}
+            key={option.value}
+            onOptionChange={onOptionChange}
+            selectedOptions={[
+              ...tmpAppliedFilters,
+              ...tmpAppliedFiltersChildren,
+              ...tmpAppliedFiltersGrandChildren,
+            ]}
+            selected={
+              find(
+                [...tmpAppliedFilters, ...tmpAppliedFiltersChildren],
+                (o: string) => o === option.value
+              ) !== undefined
+            }
+          />
+        ))}
+      </div>
       <div
         css={`
           width: 100%;
@@ -279,11 +402,15 @@ function FilterOption(props: FilterOptionProps) {
               color="primary"
               checked={props.selected}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                props.onOptionChange(e.target.checked, {
-                  label: props.label,
-                  value: props.value,
-                  subOptions: props.subOptions,
-                })
+                props.onOptionChange(
+                  e.target.checked,
+                  {
+                    label: props.label,
+                    value: props.value,
+                    subOptions: props.subOptions,
+                  },
+                  props.level
+                )
               }
             />
           }
@@ -301,30 +428,15 @@ function FilterOption(props: FilterOptionProps) {
             gap: 6px;
             width: 100%;
             display: flex;
-            overflow-y: auto;
-            max-height: 70vh;
             padding-left: 25px;
             flex-direction: column;
-
-            &::-webkit-scrollbar {
-              width: 4px;
-              border-radius: 4px;
-              background: #495057;
-            }
-            &::-webkit-scrollbar-track {
-              border-radius: 4px;
-              background: #f5f5f7;
-            }
-            &::-webkit-scrollbar-thumb {
-              border-radius: 4px;
-              background: #495057;
-            }
           `}
         >
           {props.subOptions.map((option: FilterGroupOptionModel) => (
             <FilterOption
               {...option}
               key={option.value}
+              level={props.level + 1}
               onOptionChange={props.onOptionChange}
               selectedOptions={props.selectedOptions}
               selected={

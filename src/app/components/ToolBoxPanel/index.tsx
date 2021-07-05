@@ -26,12 +26,12 @@ interface ToolBoxPanelProps {
 }
 
 const filtergroups = [
+  // {
+  //   name: "Period",
+  //   selectedOptions: [],
+  // },
   {
-    name: "Period",
-    selectedOptions: [],
-  },
-  {
-    name: "Grant Status",
+    name: "Locations",
     selectedOptions: [],
   },
   {
@@ -39,11 +39,11 @@ const filtergroups = [
     selectedOptions: [],
   },
   {
-    name: "Partners",
+    name: "Partner Types",
     selectedOptions: [],
   },
   {
-    name: "Locations",
+    name: "Grant Status",
     selectedOptions: [],
   },
 ];
