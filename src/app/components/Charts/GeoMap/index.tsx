@@ -33,7 +33,7 @@ import { MapPin } from "app/components/Charts/GeoMap/components/pins";
 export function GeoMap(props: GeoMapProps) {
   const history = useHistory();
   const mapRef = React.useRef<React.Ref<MapRef>>();
-  const containerRef = React.useRef<HTMLDivElement>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const isHovering = useHoverDirty(containerRef as React.RefObject<Element>);
   const [viewport, setViewport] = React.useState({
     latitude: 37.307990048281795,
@@ -195,15 +195,19 @@ export function GeoMap(props: GeoMapProps) {
   }, []);
 
   const onClick = React.useCallback((event: any) => {
-    const { features } = event;
-    const hoveredFeature = features && features[0];
-    if (
-      hoveredFeature &&
-      hoveredFeature.properties &&
-      hoveredFeature.properties.iso_a3 &&
-      hoveredFeature.properties.value > 0
-    ) {
-      history.push(`/location/${hoveredFeature.properties.iso_a3}/investments`);
+    if (props.allowClickthrough) {
+      const { features } = event;
+      const hoveredFeature = features && features[0];
+      if (
+        hoveredFeature &&
+        hoveredFeature.properties &&
+        hoveredFeature.properties.iso_a3 &&
+        hoveredFeature.properties.value > 0
+      ) {
+        history.push(
+          `/location/${hoveredFeature.properties.iso_a3}/investments`
+        );
+      }
     }
   }, []);
 

@@ -144,11 +144,23 @@ export const filtergroups: FilterGroupProps[] = [
     name: "Grant Status",
     addSubOptionFilters: false,
   },
+  {
+    name: "Donors",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "Replenishment Periods",
+    addSubOptionFilters: false,
+  },
 ];
 
 export const pathnameToFilterGroups = {
   // independent data pages
-  grants: filtergroups,
+  grants: filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
   documents: filter(
     filtergroups,
     (fg: FilterGroupProps) =>
@@ -160,11 +172,31 @@ export const pathnameToFilterGroups = {
       fg.name === "Locations" || fg.name === "Components"
   ),
   // viz data pages
-  "/viz/investments/disbursements": filtergroups,
-  "/viz/investments/time-cycle": filtergroups,
-  "/viz/investments/geomap": filtergroups,
-  "viz/budgets/flow": filtergroups,
-  "viz/budgets/time-cycle": filtergroups,
+  "/viz/investments/disbursements": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/investments/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/investments/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "viz/budgets/flow": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "viz/budgets/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
   "/viz/allocations": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
@@ -175,12 +207,42 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
+  "/viz/pledges-contributions/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Donors" || fg.name === "Replenishment Periods"
+  ),
+  "/viz/pledges-contributions/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Donors" || fg.name === "Replenishment Periods"
+  ),
   // location detail page
-  "/location/<code>/investments/disbursements": filtergroups,
-  "/location/<code>/investments/time-cycle": filtergroups,
-  "/location/<code>/geomap": filtergroups,
-  "/location/<code>/budgets/flow": filtergroups,
-  "/location/<code>/budgets/time-cycle": filtergroups,
+  "/location/<code>/investments/disbursements": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/investments/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/budgets/flow": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/budgets/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
   "/location/<code>/allocation": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
@@ -196,5 +258,9 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
-  "/location/<code>/grants": filtergroups,
+  "/location/<code>/grants": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
 };

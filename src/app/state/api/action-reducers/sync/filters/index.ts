@@ -10,6 +10,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   status: [] as string[],
   replenishmentPeriods: [] as string[],
   donors: [] as string[],
+  donorCategories: [] as string[],
 };
 
 export interface AppliedFiltersModel {
@@ -21,6 +22,7 @@ export interface AppliedFiltersModel {
   status: string[];
   replenishmentPeriods: string[];
   donors: string[];
+  donorCategories: string[];
 }
 
 export interface AppliedFiltersStateModel {
@@ -40,6 +42,8 @@ export interface AppliedFiltersStateModel {
   setReplenishmentPeriods: Action<AppliedFiltersStateModel, string[]>;
   donors: string[];
   setDonors: Action<AppliedFiltersStateModel, string[]>;
+  donorCategories: string[];
+  setDonorCategories: Action<AppliedFiltersStateModel, string[]>;
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
 }
@@ -77,6 +81,10 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
   setDonors: action((state, payload: string[]) => {
     state.donors = payload;
   }),
+  donorCategories: [],
+  setDonorCategories: action((state, payload: string[]) => {
+    state.donorCategories = payload;
+  }),
   setAll: action((state, payload: AppliedFiltersModel) => {
     state.locations = payload.locations;
     state.components = payload.components;
@@ -86,6 +94,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.status = payload.status;
     state.replenishmentPeriods = payload.replenishmentPeriods;
     state.donors = payload.donors;
+    state.donorCategories = payload.donorCategories;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

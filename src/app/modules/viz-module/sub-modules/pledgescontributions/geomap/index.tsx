@@ -10,6 +10,7 @@ import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export function PledgesContributionsGeoMap() {
   useTitle("The Data Explorer - Pledges & Contributions GeoMap");
@@ -46,13 +47,16 @@ export function PledgesContributionsGeoMap() {
     (state) => state.PledgesContributionsGeomap.loading
   );
 
-  React.useEffect(
-    () =>
-      fetchData({
-        filterString: `valueType=${valueType}`,
-      }),
-    [valueType]
-  );
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters(appliedFilters);
+    fetchData({
+      filterString: `valueType=${valueType}${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
+    });
+  }, [valueType, appliedFilters]);
 
   if (isLoading) {
     return <PageLoader />;

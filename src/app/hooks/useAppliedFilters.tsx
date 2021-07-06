@@ -1,5 +1,6 @@
 import React from "react";
 import { ActionCreator } from "easy-peasy";
+import { useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 interface UseAppliedFiltersProps {
@@ -16,6 +17,7 @@ export function useAppliedFilters(
   setAppliedFiltersGrandChildren?: ActionCreator<string[]>;
   appliedFiltersGrandChildren?: string[];
 } {
+  const location = useLocation();
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
 
@@ -50,6 +52,14 @@ export function useAppliedFilters(
         appliedFilters: data.replenishmentPeriods,
       };
     case "Donors":
+      if (location.pathname === "/viz/pledges-contributions/time-cycle") {
+        return {
+          setAppliedFilters: actions.setDonorCategories,
+          appliedFilters: data.donorCategories,
+          setAppliedFiltersChildren: actions.setDonors,
+          appliedFiltersChildren: data.donors,
+        };
+      }
       return {
         setAppliedFilters: actions.setDonors,
         appliedFilters: data.donors,
@@ -64,6 +74,8 @@ export function useAppliedFilters(
           ...data.partnerSubTypes,
           ...data.partners,
           ...data.status,
+          ...data.donors,
+          ...data.replenishmentPeriods,
         ],
       };
     default:

@@ -1,5 +1,7 @@
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import { useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 interface UseFilterOptionsProps {
@@ -7,6 +9,7 @@ interface UseFilterOptionsProps {
 }
 
 export function useFilterOptions(props: UseFilterOptionsProps) {
+  const location = useLocation();
   const getLocations = useStoreActions(
     (store) => store.LocationFilterOptions.fetch
   );
@@ -45,6 +48,10 @@ export function useFilterOptions(props: UseFilterOptionsProps) {
     get(state.DonorFilterOptions.data, "options", [])
   );
 
+  const donorsMapView = useStoreState(
+    (state) => state.ToolBoxPanelDonorMapViewState.value
+  );
+
   React.useEffect(() => {
     if (locations.length === 0) {
       getLocations({});
@@ -73,7 +80,10 @@ export function useFilterOptions(props: UseFilterOptionsProps) {
       "Partner Types": partnerTypes,
       "Grant Status": status,
       "Replenishment Periods": replenishmentPeriods,
-      Donors: donors,
+      Donors:
+        location.pathname === "/viz/pledges-contributions/geomap"
+          ? get(find(donors, { label: donorsMapView }), "subOptions", donors)
+          : donors,
     };
   }
 

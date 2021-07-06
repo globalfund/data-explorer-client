@@ -5,14 +5,15 @@ import find from "lodash/find";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
-import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { Dropdown } from "app/components/Dropdown";
 
 export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
@@ -56,7 +57,12 @@ export function PledgesContributionsTimeCycleModule() {
     (state) => state.PledgesContributionsTimeCycleDrilldown.loading
   );
 
-  React.useEffect(() => fetchData({}), []);
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters(appliedFilters);
+    fetchData({ filterString });
+  }, [appliedFilters]);
 
   React.useEffect(() => {
     setTimeout(() => {
@@ -98,8 +104,11 @@ export function PledgesContributionsTimeCycleModule() {
     if (vizSelected) {
       const splits = vizSelected.split("-");
       const param = `'${splits[0]}-${splits[1]}'-${splits[2]}`;
+      const filterString = getAPIFormattedFilters(appliedFilters);
       fetchDrilldownLevelData({
-        filterString: `levelParam=replenishmentPeriod/replenishmentPeriodName eq ${param}`,
+        filterString: `levelParam=replenishmentPeriod/replenishmentPeriodName eq ${param}${
+          filterString.length > 0 ? `&${filterString}` : ""
+        }`,
       });
     } else {
       clearDrilldownLevelData();

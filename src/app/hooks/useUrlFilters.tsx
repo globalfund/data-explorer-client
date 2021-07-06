@@ -24,6 +24,9 @@ export function useUrlFilters(): null {
       const partnerSubTypes = currentUrlParams.get("partnerSubTypes");
       const partners = currentUrlParams.get("partners");
       const status = currentUrlParams.get("status");
+      const donors = currentUrlParams.get("donors");
+      const donorCategories = currentUrlParams.get("donorCategories");
+      const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
 
       if (locations) {
         updatedAppliedFilters.locations = locations.split(",");
@@ -42,6 +45,17 @@ export function useUrlFilters(): null {
       }
       if (status) {
         updatedAppliedFilters.status = status.split(",");
+      }
+      if (donors) {
+        updatedAppliedFilters.donors = donors.split(",");
+      }
+      if (donorCategories) {
+        updatedAppliedFilters.donorCategories = donorCategories.split(",");
+      }
+      if (replenishmentPeriods) {
+        updatedAppliedFilters.replenishmentPeriods = replenishmentPeriods.split(
+          ","
+        );
       }
 
       actions.setAll(updatedAppliedFilters);
@@ -85,6 +99,24 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("status");
     }
+    if (data.donors.length > 0) {
+      currentUrlParams.set("donors", data.donors.join(","));
+    } else {
+      currentUrlParams.delete("donors");
+    }
+    if (data.donorCategories.length > 0) {
+      currentUrlParams.set("donorCategories", data.donorCategories.join(","));
+    } else {
+      currentUrlParams.delete("donorCategories");
+    }
+    if (data.replenishmentPeriods.length > 0) {
+      currentUrlParams.set(
+        "replenishmentPeriods",
+        data.replenishmentPeriods.join(",")
+      );
+    } else {
+      currentUrlParams.delete("replenishmentPeriods");
+    }
 
     const queryString = decodeURIComponent(currentUrlParams.toString());
     history.push({
@@ -103,6 +135,9 @@ export function useUrlFilters(): null {
     const partnerSubTypes = currentUrlParams.get("partnerSubTypes");
     const partners = currentUrlParams.get("partners");
     const status = currentUrlParams.get("status");
+    const donors = currentUrlParams.get("donors");
+    const donorCategories = currentUrlParams.get("donorCategories");
+    const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
 
     if (locations) {
       updatedAppliedFilters.locations = locations.split(",");
@@ -133,6 +168,23 @@ export function useUrlFilters(): null {
       updatedAppliedFilters.status = status.split(",");
     } else if (updatedAppliedFilters.status.length > 0) {
       updatedAppliedFilters.status = [];
+    }
+    if (donors) {
+      updatedAppliedFilters.donors = donors.split(",");
+    } else if (updatedAppliedFilters.donors.length > 0) {
+      updatedAppliedFilters.donors = [];
+    }
+    if (donorCategories) {
+      updatedAppliedFilters.donorCategories = donorCategories.split(",");
+    } else if (updatedAppliedFilters.donorCategories.length > 0) {
+      updatedAppliedFilters.donorCategories = [];
+    }
+    if (replenishmentPeriods) {
+      updatedAppliedFilters.replenishmentPeriods = replenishmentPeriods.split(
+        ","
+      );
+    } else if (updatedAppliedFilters.replenishmentPeriods.length > 0) {
+      updatedAppliedFilters.replenishmentPeriods = [];
     }
 
     if (!isEqual(data, updatedAppliedFilters)) {

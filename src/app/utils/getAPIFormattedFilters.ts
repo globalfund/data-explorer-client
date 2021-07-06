@@ -38,6 +38,19 @@ export function getAPIFormattedFilters(
   if (appliedFilters.partners.length > 0) {
     filterArray.push(`partners=${appliedFilters.partners.join(",")}`);
   }
+  if (appliedFilters.donors.length > 0) {
+    filterArray.push(`donors=${appliedFilters.donors.join(",")}`);
+  }
+  if (appliedFilters.donorCategories.length > 0) {
+    filterArray.push(
+      `donorCategories=${appliedFilters.donorCategories.join(",")}`
+    );
+  }
+  if (appliedFilters.replenishmentPeriods.length > 0) {
+    filterArray.push(
+      `periods=${appliedFilters.replenishmentPeriods.join(",")}`
+    );
+  }
 
   return filterArray.join("&");
 }
