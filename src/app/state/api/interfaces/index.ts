@@ -79,6 +79,7 @@ export interface StoreModel {
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
   ResultsList: ApiCallModel;
+  ResultsStats: ApiCallModel;
   // global search
   GlobalSearch: ApiCallModel;
   // grant detail api

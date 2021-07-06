@@ -67,7 +67,9 @@ import GrantDetailBudgetsTimeCycle, {
 import LocationDetailBudgetsTimeCycle, {
   LocationDetailBudgetsTimeCycleDrilldownLevel1,
 } from "app/state/api/action-reducers/locationDetail/budgetsTimeCycle";
-import ResultsList from "app/state/api/action-reducers/viz/resultsList";
+import ResultsList, {
+  ResultsStats,
+} from "app/state/api/action-reducers/viz/resultsList";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -91,6 +93,7 @@ const storeContent: StoreModel = {
     PledgesContributionsTimeCycleDrilldown
   ),
   ResultsList: persist(ResultsList),
+  ResultsStats: persist(ResultsStats),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // grant detail api

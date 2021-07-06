@@ -221,46 +221,55 @@ export const pathnameToFilterGroups = {
   "/location/<code>/investments/disbursements": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
-      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
   ),
   "/location/<code>/investments/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
-      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
   ),
   "/location/<code>/geomap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
-      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
   ),
   "/location/<code>/budgets/flow": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
-      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
   ),
   "/location/<code>/budgets/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
-      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
   ),
   "/location/<code>/allocation": filter(
     filtergroups,
-    (fg: FilterGroupProps) =>
-      fg.name === "Locations" || fg.name === "Components"
+    (fg: FilterGroupProps) => fg.name === "Components"
   ),
   "/location/<code>/eligibility": filter(
     filtergroups,
-    (fg: FilterGroupProps) =>
-      fg.name === "Locations" || fg.name === "Components"
+    (fg: FilterGroupProps) => fg.name === "Components"
   ),
   "/location/<code>/documents": filter(
     filtergroups,
-    (fg: FilterGroupProps) =>
-      fg.name === "Locations" || fg.name === "Components"
+    (fg: FilterGroupProps) => fg.name === "Components"
   ),
   "/location/<code>/grants": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
-      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
   ),
 };

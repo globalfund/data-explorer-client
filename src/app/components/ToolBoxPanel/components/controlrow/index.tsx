@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { TickIcon } from "app/assets/icons/Tick";
 import { ViewModel } from "../../utils/getControlItems";
 
@@ -11,6 +11,7 @@ interface ToolBoxPanelControlRowProps {
 }
 
 export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
+  const location = useLocation();
   return (
     <div
       css={`
@@ -35,7 +36,7 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
             <Link
               key={option.value}
               onClick={() => props.setSelected(option.value)}
-              to={option.link}
+              to={`${option.link}${location.search}`}
               css={`
                 gap: 6px;
                 display: flex;
@@ -61,8 +62,8 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
               {option.label}
             </Link>
           ) : (
-            <div
-              role="button"
+            <button
+              type="button"
               key={option.value}
               onClick={() => props.setSelected(option.value)}
               css={`
@@ -87,7 +88,7 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
             >
               {props.selected === option.value && <TickIcon />}
               {option.label}
-            </div>
+            </button>
           )
         )}
       </div>

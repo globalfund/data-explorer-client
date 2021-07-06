@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -16,6 +16,7 @@ import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/f
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
+  const location = useLocation();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
@@ -94,34 +95,42 @@ export default function DocumentsModule() {
                 <ArrowForwardIcon />
                 <b>Datasets</b>
               </Link>,
-              <Link to="/viz/investments/disbursements">
+              <Link to={`/viz/investments/disbursements${location.search}`}>
                 <b>Finance</b>-Investments/Disbursements
               </Link>,
-              <Link to="/viz/investments/time-cycle">
+              <Link to={`/viz/investments/time-cycle${location.search}`}>
                 <b>Finance</b>-Investments/Time-Cycle
               </Link>,
-              <Link to="/viz/budgets/flow">
+              <Link to={`/viz/investments/geomap${location.search}`}>
+                <b>Finance</b>-Investments/GeoMap
+              </Link>,
+              <Link to={`/viz/budgets/flow${location.search}`}>
                 <b>Finance</b>-Budgets Flow
               </Link>,
-              <Link to="/viz/budgets/time-cycle">
+              <Link to={`/viz/budgets/time-cycle${location.search}`}>
                 <b>Finance</b>-Budgets Time Cycle
               </Link>,
-              <Link to="/viz/allocations">
+              <Link to={`/viz/allocations${location.search}`}>
                 <b>Finance</b>-Allocations
               </Link>,
-              <Link to="/viz/eligibility">
+              <Link to={`/viz/eligibility${location.search}`}>
                 <b>Finance</b>-Eligibility
               </Link>,
-              <Link to="/viz/pledges-contributions/time-cycle">
+              <Link
+                to={`/viz/pledges-contributions/time-cycle${location.search}`}
+              >
                 <b>Finance</b>-Pledges & Contributions Time Cycle
               </Link>,
-              <Link to="/grants">
+              <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
+                <b>Finance</b>-Pledges & Contributions GeoMap
+              </Link>,
+              <Link to={`/grants${location.search}`}>
                 <b>Grants</b>
               </Link>,
-              <Link to="/results">
+              <Link to={`/results${location.search}`}>
                 <b>Results</b>
               </Link>,
-              <Link to="/documents">
+              <Link to={`/documents${location.search}`}>
                 <b>Documents</b>
               </Link>,
             ],
