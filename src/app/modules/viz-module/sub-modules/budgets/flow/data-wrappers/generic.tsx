@@ -1,22 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { Dropdown } from "app/components/Dropdown";
-import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
-import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
-import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { TransitionContainer } from "app/components/TransitionContainer";
-import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
-import { BudgetsFlowModule } from "..";
 
 export function GenericBudgetsFlowWrapper() {
   useTitle("The Data Explorer - Budgets Flow");
@@ -82,16 +73,20 @@ export function GenericBudgetsFlowWrapper() {
     }[]
   >(getDrilldownPanelOptions(links));
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   React.useEffect(() => {
-    if (nodes.length === 0 || links.length === 0) {
-      fetchData({});
-    }
-  }, []);
+    const filterString = getAPIFormattedFilters(appliedFilters);
+    fetchData({ filterString });
+  }, [appliedFilters]);
 
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined) {
+      const filterString = getAPIFormattedFilters(appliedFilters);
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=${vizSelected.filterStr}`,
+        filterString: `levelParam=${vizSelected.filterStr}${
+          filterString.length > 0 ? `&${filterString}` : ""
+        }`,
       });
     } else {
       clearDrilldownLevel1Data();

@@ -4,6 +4,7 @@ import get from "lodash/get";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 
@@ -62,22 +63,36 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
     (state) => state.LocationDetailBudgetsTimeCycleDrilldownLevel1.loading
   );
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
     string[]
   >(data.map((item: any) => item.year));
 
   React.useEffect(() => {
-    if (props.code) {
-      fetchData({
-        filterString: `locations=${props.code}`,
-      });
-    }
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined && props.code) {
+      const filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&locations=${props.code}`,
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&${filterString}`,
       });
     } else {
       clearDrilldownLevel1Data();

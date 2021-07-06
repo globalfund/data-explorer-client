@@ -10,7 +10,9 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { DocumentsSubModule } from "app/modules/common/documents";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
+import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
@@ -24,31 +26,36 @@ export default function DocumentsModule() {
       get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
   );
   const isLoading = useStoreState((state) => state.Documents.loading);
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
-    if (data.length === 0) {
-      fetchData({});
-    }
   }, []);
 
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters(appliedFilters, { search });
+    if (search.length === 0) {
+      fetchData({ filterString });
+    }
+  }, [appliedFilters]);
+
   useUpdateEffect(() => {
-    if (search.length === 0) fetchData({});
+    if (search.length === 0) {
+      const filterString = getAPIFormattedFilters(appliedFilters);
+      fetchData({ filterString });
+    }
   }, [search]);
 
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
-        fetchData({ filterString: `q=${search}` });
+        const filterString = getAPIFormattedFilters(appliedFilters, { search });
+        fetchData({ filterString });
       }
     },
     500,
     [search]
   );
-
-  if (isLoading) {
-    return <PageLoader />;
-  }
 
   return (
     <div
@@ -124,8 +131,10 @@ export default function DocumentsModule() {
       />
       <ToolBoxPanel
         open={openToolboxPanel}
+        filterGroups={pathnameToFilterGroups.documents}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
+      {isLoading && <PageLoader />}
       <DocumentsSubModule
         data={data}
         search={search}

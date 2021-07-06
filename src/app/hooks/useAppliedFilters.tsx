@@ -54,6 +54,18 @@ export function useAppliedFilters(
         setAppliedFilters: actions.setDonors,
         appliedFilters: data.donors,
       };
+    case "All":
+      return {
+        setAppliedFilters: actions.setLocations,
+        appliedFilters: [
+          ...data.locations,
+          ...data.components,
+          ...data.partnerTypes,
+          ...data.partnerSubTypes,
+          ...data.partners,
+          ...data.status,
+        ],
+      };
     default:
       return {
         setAppliedFilters: actions.actionDefaultNone,

@@ -4,49 +4,30 @@ import get from "lodash/get";
 import find from "lodash/find";
 import Slide from "@material-ui/core/Slide";
 import { useParams, useHistory } from "react-router-dom";
+import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ToolBoxPanelTabs } from "app/components/ToolBoxPanel/components/tabs";
+import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
+import { ToolBoxPanelGeoMapViews } from "app/components/ToolBoxPanel/components/geomapviews";
+import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
+import { ToolBoxPanelDonorViews } from "app/components/ToolBoxPanel/components/donormapviews";
+import { ToolBoxPanelDonorMapTypes } from "app/components/ToolBoxPanel/components/donormaptypes";
+import { ToolBoxPanelEligibilityAdvanced } from "app/components/ToolBoxPanel/components/eligibilityadvanced";
+import { PerformanceFrameworkReportingPeriods } from "app/components/ToolBoxPanel/components/pf-reportingperiods";
 import {
   getControlItems,
   ViewModel,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
-import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
-import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
-import { ToolBoxPanelFilters } from "./components/filters";
-import { ToolBoxPanelEligibilityAdvanced } from "./components/eligibilityadvanced";
-import { PerformanceFrameworkReportingPeriods } from "./components/pf-reportingperiods";
-import { ToolBoxPanelDonorMapTypes } from "./components/donormaptypes";
-import { ToolBoxPanelDonorViews } from "./components/donormapviews";
 
 interface ToolBoxPanelProps {
   open: boolean;
+  isGrantDetail?: boolean;
   onButtonClick: () => void;
+  filterGroups: FilterGroupProps[];
 }
-
-const filtergroups = [
-  // {
-  //   name: "Period",
-  //   selectedOptions: [],
-  // },
-  {
-    name: "Locations",
-    selectedOptions: [],
-  },
-  {
-    name: "Components",
-    selectedOptions: [],
-  },
-  {
-    name: "Partner Types",
-    selectedOptions: [],
-  },
-  {
-    name: "Grant Status",
-    selectedOptions: [],
-  },
-];
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
@@ -56,8 +37,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     vizType: string;
     subType?: string;
   }>();
+  const { appliedFilters } = useAppliedFilters({
+    type: "All",
+  });
   const [selectedView, setSelectedView] = React.useState("");
-  const [selectedTab, setSelectedTab] = React.useState("Control");
+  const [selectedTab, setSelectedTab] = React.useState(
+    !props.isGrantDetail ? "Filters" : "Controls"
+  );
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );
@@ -196,23 +182,28 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               onClick={() => props.onButtonClick()}
             >
               Toolbox
-              {/* <div
-                css={`
-                  top: 8px;
-                  width: 6px;
-                  height: 6px;
-                  right: 30px;
-                  background: #fff;
-                  border-radius: 50%;
-                  position: absolute;
-                `}
-              /> */}
+              {appliedFilters.length > 0 && (
+                <div
+                  css={`
+                    top: 8px;
+                    width: 6px;
+                    height: 6px;
+                    right: 30px;
+                    background: #fff;
+                    border-radius: 50%;
+                    position: absolute;
+                  `}
+                />
+              )}
             </div>
             <ToolBoxPanelTabs
               selected={selectedTab}
               onSelect={setSelectedTab}
+              options={
+                !props.isGrantDetail ? ["Controls", "Filters"] : ["Controls"]
+              }
             />
-            {selectedTab === "Control" && (
+            {(selectedTab === "Controls" || props.isGrantDetail) && (
               <React.Fragment>
                 <ToolBoxPanelIconButtons />
                 {controlItems.views.length > 0 && (
@@ -259,7 +250,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               </React.Fragment>
             )}
             {selectedTab === "Filters" && (
-              <ToolBoxPanelFilters groups={filtergroups} />
+              <ToolBoxPanelFilters groups={props.filterGroups} />
             )}
           </div>
         </div>

@@ -1,13 +1,14 @@
 import React from "react";
 import isEqual from "lodash/isEqual";
-import { useHistory } from "react-router-dom";
 import { useUnmount, useUpdateEffect } from "react-use";
+import { useHistory, useLocation } from "react-router-dom";
 import { useComponentWillMount } from "app/hooks/useCompWillMount";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 
 export function useUrlFilters(): null {
   const history = useHistory();
+  const location = useLocation();
 
   const data = useStoreState((state) => state.AppliedFiltersState);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
@@ -16,7 +17,7 @@ export function useUrlFilters(): null {
   useComponentWillMount({
     action: () => {
       const updatedAppliedFilters = { ...data };
-      const currentUrlParams = new URLSearchParams(history.location.search);
+      const currentUrlParams = new URLSearchParams(location.search);
       const locations = currentUrlParams.get("locations");
       const components = currentUrlParams.get("components");
       const partnerTypes = currentUrlParams.get("partnerTypes");
@@ -52,7 +53,7 @@ export function useUrlFilters(): null {
 
   // run when stored applied filters change
   useUpdateEffect(() => {
-    const currentUrlParams = new URLSearchParams(history.location.search);
+    const currentUrlParams = new URLSearchParams(location.search);
 
     if (data.locations.length > 0) {
       currentUrlParams.set("locations", data.locations.join(","));
@@ -95,7 +96,7 @@ export function useUrlFilters(): null {
   // run when url search params change
   useUpdateEffect(() => {
     const updatedAppliedFilters = { ...data };
-    const currentUrlParams = new URLSearchParams(history.location.search);
+    const currentUrlParams = new URLSearchParams(location.search);
     const locations = currentUrlParams.get("locations");
     const components = currentUrlParams.get("components");
     const partnerTypes = currentUrlParams.get("partnerTypes");
@@ -137,7 +138,7 @@ export function useUrlFilters(): null {
     if (!isEqual(data, updatedAppliedFilters)) {
       actions.setAll(updatedAppliedFilters);
     }
-  }, [history.location.search]);
+  }, [location.search]);
 
   return null;
 }

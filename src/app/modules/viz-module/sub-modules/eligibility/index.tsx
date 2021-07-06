@@ -6,6 +6,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { DotChart } from "app/components/Charts/Eligibility/DotChart";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 
 export function EligibilityModule() {
@@ -26,13 +27,16 @@ export function EligibilityModule() {
   );
   const isLoading = useStoreState((state) => state.Eligibility.loading);
 
-  React.useEffect(
-    () =>
-      fetchData({
-        filterString: `aggregateBy=${aggregateBy}`,
-      }),
-    [aggregateBy]
-  );
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters(appliedFilters);
+    fetchData({
+      filterString: `aggregateBy=${aggregateBy}${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
+    });
+  }, [aggregateBy, appliedFilters]);
 
   if (isLoading) {
     return <PageLoader />;

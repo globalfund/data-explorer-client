@@ -22,6 +22,7 @@ import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-modul
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailDocumentsModule } from "./components/sub-modules/documents";
+import { filtergroups } from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
@@ -241,7 +242,9 @@ export default function GrantDetail() {
         />
       </InformationPanel>
       <ToolBoxPanel
+        isGrantDetail
         open={openToolboxPanel}
+        filterGroups={filtergroups}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       <div

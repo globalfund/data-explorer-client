@@ -52,34 +52,34 @@ const views = {
 };
 
 const aggregates = {
-  investments: [
-    {
-      label: "Components",
-      value: "Components",
-    },
-    {
-      label: "Partners",
-      value: "Partners",
-    },
-    {
-      label: "Locations",
-      value: "Locations",
-    },
-    {
-      label: "Grants",
-      value: "Grants",
-    },
-  ],
-  budgets: [
-    {
-      label: "Components",
-      value: "Components",
-    },
-    {
-      label: "Locations",
-      value: "Locations",
-    },
-  ],
+  // investments: [
+  //   {
+  //     label: "Components",
+  //     value: "Components",
+  //   },
+  //   {
+  //     label: "Partners",
+  //     value: "Partners",
+  //   },
+  //   {
+  //     label: "Locations",
+  //     value: "Locations",
+  //   },
+  //   {
+  //     label: "Grants",
+  //     value: "Grants",
+  //   },
+  // ],
+  // budgets: [
+  //   {
+  //     label: "Components",
+  //     value: "Components",
+  //   },
+  //   {
+  //     label: "Locations",
+  //     value: "Locations",
+  //   },
+  // ],
   eligibility: [
     {
       label: "Components",

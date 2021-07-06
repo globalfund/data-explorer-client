@@ -1,11 +1,14 @@
+/* third-party */
 import React from "react";
 import get from "lodash/get";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+/* project */
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 interface Props {
   code?: string;
@@ -27,14 +30,19 @@ export function InvestmentsGeoMap(props: Props) {
   );
   const isLoading = useStoreState((state) => state.DisbursementsGeomap.loading);
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   React.useEffect(() => {
-    const params = props.code
-      ? {
-          filterString: `locations=${props.code}`,
-        }
-      : {};
-    fetchData(params);
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   if (isLoading) {
     return <PageLoader />;

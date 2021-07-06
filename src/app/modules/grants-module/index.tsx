@@ -19,6 +19,7 @@ import { GrantListItemModel } from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
 import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface GrantsModuleProps {
   code?: string;
@@ -167,6 +168,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
           />
           <ToolBoxPanel
             open={openToolboxPanel}
+            filterGroups={pathnameToFilterGroups.grants}
             onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
           />
           <div css="width: 100%;height: 25px;" />

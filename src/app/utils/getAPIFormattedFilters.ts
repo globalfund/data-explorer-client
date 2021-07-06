@@ -13,7 +13,7 @@ export function getAPIFormattedFilters(
     if (extraParams.page) {
       filterArray.push(`page=${extraParams.page}`);
     }
-    if (extraParams.search) {
+    if (extraParams.search && extraParams.search.length > 0) {
       filterArray.push(`q=${extraParams.search}`);
     }
   }

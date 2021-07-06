@@ -3,7 +3,14 @@ import React from "react";
 import get from "lodash/get";
 import { useTitle } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { Link, Switch, Route, useParams, Redirect } from "react-router-dom";
+import {
+  Link,
+  Switch,
+  Route,
+  useParams,
+  Redirect,
+  useLocation,
+} from "react-router-dom";
 /* project */
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
@@ -20,9 +27,14 @@ import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-mod
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import { LocationDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/locationDetail";
+import {
+  filtergroups,
+  pathnameToFilterGroups,
+} from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
+  const location = useLocation();
   const params = useParams<{ code: string; vizType: string }>();
   const [openInfoPanel, setOpenInfoPanel] = React.useState(false);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
@@ -182,6 +194,11 @@ export default function CountryDetail() {
       </InformationPanel>
       <ToolBoxPanel
         open={openToolboxPanel}
+        filterGroups={get(
+          pathnameToFilterGroups,
+          location.pathname.replace(params.code, "<code>"),
+          filtergroups
+        )}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       <div

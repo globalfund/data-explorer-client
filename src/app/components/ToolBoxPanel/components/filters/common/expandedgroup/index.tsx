@@ -157,26 +157,28 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       } else if (level === 3 && appliedFiltersGrandChildren) {
         tmpGrandChildren.push(option.value);
       }
-      option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
-        if (!appliedFiltersChildren) {
-          tmp.push(subOption.value);
-        } else if (level + 1 === 2 && appliedFiltersChildren) {
-          tmpChildren.push(subOption.value);
-        } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
-          tmpGrandChildren.push(subOption.value);
-        }
-        subOption.subOptions?.forEach(
-          (subSubOption: FilterGroupOptionModel) => {
-            if (!appliedFiltersChildren) {
-              tmp.push(subSubOption.value);
-            } else if (level + 1 === 2 && appliedFiltersChildren) {
-              tmpChildren.push(subSubOption.value);
-            } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
-              tmpGrandChildren.push(subSubOption.value);
-            }
+      if (props.addSubOptionFilters) {
+        option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+          if (!appliedFiltersChildren) {
+            tmp.push(subOption.value);
+          } else if (level + 1 === 2 && appliedFiltersChildren) {
+            tmpChildren.push(subOption.value);
+          } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
+            tmpGrandChildren.push(subOption.value);
           }
-        );
-      });
+          subOption.subOptions?.forEach(
+            (subSubOption: FilterGroupOptionModel) => {
+              if (!appliedFiltersChildren) {
+                tmp.push(subSubOption.value);
+              } else if (level + 1 === 2 && appliedFiltersChildren) {
+                tmpChildren.push(subSubOption.value);
+              } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
+                tmpGrandChildren.push(subSubOption.value);
+              }
+            }
+          );
+        });
+      }
     } else {
       remove(tmp, (o: string) => o === option.value);
       remove(tmpChildren, (o: string) => o === option.value);

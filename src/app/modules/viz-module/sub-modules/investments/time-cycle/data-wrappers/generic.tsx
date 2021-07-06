@@ -5,6 +5,7 @@ import { useUpdateEffect } from "react-use";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 
@@ -56,28 +57,36 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
     (state) => state.DisbursementsTimeCycleDrilldown.loading
   );
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   React.useEffect(() => {
-    const params = props.code
-      ? {
-          filterString: `locations=${props.code}`,
-        }
-      : {};
-    fetchData(params);
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   useUpdateEffect(() => {
     if (vizSelected) {
-      const params = props.code
-        ? {
-            filterString: `locations=${props.code}`,
-          }
-        : {};
-      if (params.filterString) {
-        params.filterString += `&barPeriod=${vizSelected}`;
+      let filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
+      if (filterString) {
+        filterString += `&barPeriod=${vizSelected}`;
       } else {
-        params.filterString = `barPeriod=${vizSelected}`;
+        filterString = `barPeriod=${vizSelected}`;
       }
-      fetchDrilldownData(params);
+      fetchDrilldownData({ filterString });
     }
   }, [vizSelected]);
 

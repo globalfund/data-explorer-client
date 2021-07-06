@@ -1,3 +1,5 @@
+import { filter } from "lodash";
+
 export interface FilterGroupOptionModel {
   label: string;
   value: string;
@@ -107,6 +109,7 @@ export const componentsMockFilterOptions: FilterGroupModel = {
 
 export interface FilterGroupProps {
   name: string;
+  addSubOptionFilters?: boolean;
 }
 
 export interface FilterOptionProps extends FilterGroupOptionModel {
@@ -119,3 +122,79 @@ export interface FilterOptionProps extends FilterGroupOptionModel {
     level: number
   ) => void;
 }
+
+export const filtergroups: FilterGroupProps[] = [
+  // {
+  //   name: "Period",
+  //   addSubOptionFilters: false,
+  // },
+  {
+    name: "Locations",
+    addSubOptionFilters: true,
+  },
+  {
+    name: "Components",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "Partner Types",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "Grant Status",
+    addSubOptionFilters: false,
+  },
+];
+
+export const pathnameToFilterGroups = {
+  // independent data pages
+  grants: filtergroups,
+  documents: filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  results: filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  // viz data pages
+  "/viz/investments/disbursements": filtergroups,
+  "/viz/investments/time-cycle": filtergroups,
+  "/viz/investments/geomap": filtergroups,
+  "viz/budgets/flow": filtergroups,
+  "viz/budgets/time-cycle": filtergroups,
+  "/viz/allocations": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  "/viz/eligibility": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  // location detail page
+  "/location/<code>/investments/disbursements": filtergroups,
+  "/location/<code>/investments/time-cycle": filtergroups,
+  "/location/<code>/geomap": filtergroups,
+  "/location/<code>/budgets/flow": filtergroups,
+  "/location/<code>/budgets/time-cycle": filtergroups,
+  "/location/<code>/allocation": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  "/location/<code>/eligibility": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  "/location/<code>/documents": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  "/location/<code>/grants": filtergroups,
+};

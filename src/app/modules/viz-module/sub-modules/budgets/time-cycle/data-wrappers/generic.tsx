@@ -4,6 +4,7 @@ import get from "lodash/get";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 
@@ -51,20 +52,24 @@ export function GenericBudgetsTimeCycleWrapper() {
     (state) => state.BudgetsTimeCycleDrilldownLevel1.loading
   );
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
     string[]
   >(data.map((item: any) => item.year));
 
   React.useEffect(() => {
-    if (data.length === 0) {
-      fetchData({});
-    }
-  }, []);
+    const filterString = getAPIFormattedFilters(appliedFilters);
+    fetchData({ filterString });
+  }, [appliedFilters]);
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined) {
+      const filterString = getAPIFormattedFilters(appliedFilters);
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}`,
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}${
+          filterString.length > 0 ? `&${filterString}` : ""
+        }`,
       });
     } else {
       clearDrilldownLevel1Data();

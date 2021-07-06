@@ -4,6 +4,7 @@ import get from "lodash/get";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
@@ -73,6 +74,8 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
     (state) => state.LocationDetailBudgetsFlowDrilldownLevel1.loading
   );
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
     {
       name: string;
@@ -81,17 +84,29 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
   >(getDrilldownPanelOptions(links));
 
   React.useEffect(() => {
-    if (props.code) {
-      fetchData({
-        filterString: `locations=${props.code}`,
-      });
-    }
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined && props.code) {
+      const filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=${vizSelected.filterStr}&locations=${props.code}`,
+        filterString: `levelParam=${vizSelected.filterStr}&${filterString}`,
       });
     } else {
       clearDrilldownLevel1Data();

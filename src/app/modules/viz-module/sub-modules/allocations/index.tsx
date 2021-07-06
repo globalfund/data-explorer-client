@@ -13,6 +13,7 @@ import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { TransitionContainer } from "app/components/TransitionContainer";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import {
   getKeysPercentages,
@@ -60,6 +61,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const isDrilldownLoading = useStoreState(
     (state) => state.AllocationsDrilldown.loading
   );
+
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
@@ -170,13 +173,16 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }
 
   React.useEffect(() => {
-    const params = props.code
-      ? {
-          filterString: `locations=${props.code}`,
-        }
-      : {};
-    fetchData(params);
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   React.useEffect(() => {
     setKeysPercentagesColors(getKeysPercentages(total, values));
@@ -195,9 +201,17 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         }
       });
+      const filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
       fetchDrilldownLevelData({
         filterString: `levelParam=component/componentName eq '${vizSelected}'${
-          props.code ? `&locations=${props.code}` : ""
+          filterString.length > 0 ? `&${filterString}` : ""
         }`,
       });
     } else {

@@ -16,7 +16,10 @@ interface ToolBoxPanelFiltersProps {
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
-  const [expandedGroup, setExpandedGroup] = React.useState<string | null>(null);
+  const [
+    expandedGroup,
+    setExpandedGroup,
+  ] = React.useState<FilterGroupProps | null>(null);
 
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
@@ -73,16 +76,16 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               {...group}
               key={group.name}
               options={get(filterOptions, group.name, [])}
-              expandGroup={() => setExpandedGroup(group.name)}
+              expandGroup={() => setExpandedGroup(group)}
             />
           ))}
         </React.Fragment>
       )}
       {expandedGroup && (
         <ExpandedFilterGroup
-          name={expandedGroup}
+          {...expandedGroup}
           goBack={() => setExpandedGroup(null)}
-          options={get(filterOptions, expandedGroup, [])}
+          options={get(filterOptions, expandedGroup.name, [])}
         />
       )}
     </div>

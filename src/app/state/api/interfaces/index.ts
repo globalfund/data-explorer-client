@@ -78,6 +78,7 @@ export interface StoreModel {
   PledgesContributionsGeomap: ApiCallModel;
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
+  ResultsList: ApiCallModel;
   // global search
   GlobalSearch: ApiCallModel;
   // grant detail api

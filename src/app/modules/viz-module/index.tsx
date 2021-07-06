@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
-import { Link, Switch, Route, useParams } from "react-router-dom";
+import get from "lodash/get";
+import { Link, Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
@@ -9,13 +10,18 @@ import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocation
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
+import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
-import { GenericInvestmentsTimeCycleWrapper } from "./sub-modules/investments/time-cycle/data-wrappers/generic";
-import { GenericBudgetsFlowWrapper } from "./sub-modules/budgets/flow/data-wrappers/generic";
-import { GenericBudgetsTimeCycleWrapper } from "./sub-modules/budgets/time-cycle/data-wrappers/generic";
+import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
+import {
+  filtergroups,
+  pathnameToFilterGroups,
+} from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function VizModule() {
+  const location = useLocation();
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
@@ -151,6 +157,11 @@ export default function VizModule() {
       <ToolBoxPanel
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        filterGroups={get(
+          pathnameToFilterGroups,
+          location.pathname,
+          filtergroups
+        )}
       />
       <div
         css={`

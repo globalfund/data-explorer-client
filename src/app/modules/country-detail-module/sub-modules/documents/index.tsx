@@ -6,6 +6,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { DocumentsSubModule } from "app/modules/common/documents";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 
 interface LocationDetailDocumentsModuleProps {
@@ -34,21 +35,46 @@ export function LocationDetailDocumentsModule(
     (state) => state.LocationDetailDocuments.loading
   );
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   React.useEffect(() => {
-    if (props.code) {
-      fetchData({ filterString: `locations=${props.code}` });
-    }
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   useUpdateEffect(() => {
-    if (search.length === 0)
-      fetchData({ filterString: `locations=${props.code}` });
+    if (search.length === 0) {
+      const filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
+      fetchData({ filterString });
+    }
   }, [search]);
 
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
-        fetchData({ filterString: `q=${search}&locations=${props.code}` });
+        const filterString = getAPIFormattedFilters(
+          props.code
+            ? {
+                ...appliedFilters,
+                locations: [...appliedFilters.locations, props.code],
+              }
+            : appliedFilters
+        );
+        fetchData({ filterString: `q=${search}&${filterString}` });
       }
     },
     500,

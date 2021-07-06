@@ -1,7 +1,10 @@
+/* third-party */
 import React from "react";
 import get from "lodash/get";
 import { useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+/* project */
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 
@@ -46,30 +49,34 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
     (state) => state.DisbursementsTreemapDrilldown.loading
   );
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   React.useEffect(() => {
-    const params = props.code
-      ? {
-          filterString: `locations=${props.code}`,
-        }
-      : {};
-    fetchData(params);
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   useUpdateEffect(() => {
     if (vizSelected) {
       const splits = vizSelected.split("-");
       if (splits.length > 0) {
-        const params = props.code
-          ? {
-              filterString: `locations=${props.code}`,
-            }
-          : {};
-        if (params.filterString) {
-          params.filterString += `,${splits[0]}`;
-        } else {
-          params.filterString = `locations=${splits[0]}`;
+        const locations = [...appliedFilters.locations];
+        if (props.code) {
+          locations.push(props.code);
         }
-        fetchDrilldownData(params);
+        locations.push(splits[0]);
+        const filterString = getAPIFormattedFilters({
+          ...appliedFilters,
+          locations,
+        });
+        fetchDrilldownData({ filterString });
       }
     }
   }, [vizSelected]);

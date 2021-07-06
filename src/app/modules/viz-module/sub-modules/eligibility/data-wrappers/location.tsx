@@ -5,6 +5,7 @@ import { useTitle } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ScatterPlot } from "app/components/Charts/Eligibility/Scatterplot";
 import { EligibilityScatterplotDataModel } from "app/components/Charts/Eligibility/Scatterplot/data";
 
@@ -27,13 +28,19 @@ export function LocationDetailEligibilityWrapper(props: Props) {
   );
   const isLoading = useStoreState((state) => state.EligibilityCountry.loading);
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   React.useEffect(() => {
-    if (props.code) {
-      fetchData({
-        filterString: `locations=${props.code}`,
-      });
-    }
-  }, [props.code]);
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+  }, [props.code, appliedFilters]);
 
   if (isLoading) {
     <PageLoader />;

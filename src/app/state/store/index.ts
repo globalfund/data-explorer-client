@@ -41,32 +41,33 @@ import LocationFilterOptions from "app/state/api/action-reducers/filters/locatio
 import ComponentFilterOptions from "app/state/api/action-reducers/filters/components";
 import PartnerTypeFilterOptions from "app/state/api/action-reducers/filters/partnerTypes";
 import ReplenishmentPeriodFilterOptions from "app/state/api/action-reducers/filters/replenishmentPeriods";
-import GrantDetailInfo from "../api/action-reducers/grantDetail/infoPanel";
-import GrantDetailDisbursementsTreemap from "../api/action-reducers/grantDetail/disbursementsTreemap";
-import GrantDetailDisbursementsTimeCycle from "../api/action-reducers/grantDetail/disbursementsTimeCycle";
-import GrantDetailPerformanceRating from "../api/action-reducers/grantDetail/performanceRating";
+import GrantDetailInfo from "app/state/api/action-reducers/grantDetail/infoPanel";
+import GrantDetailDisbursementsTreemap from "app/state/api/action-reducers/grantDetail/disbursementsTreemap";
+import GrantDetailDisbursementsTimeCycle from "app/state/api/action-reducers/grantDetail/disbursementsTimeCycle";
+import GrantDetailPerformanceRating from "app/state/api/action-reducers/grantDetail/performanceRating";
 import GrantDetailPerformanceFramework, {
   GrantDetailPerformanceFrameworkExpand,
-} from "../api/action-reducers/grantDetail/performanceFramework";
-import Documents from "../api/action-reducers/viz/documents";
-import GrantDetailDocuments from "../api/action-reducers/grantDetail/documents";
-import GrantDetailPeriods from "../api/action-reducers/grantDetail/periods";
-import GrantDetailPeriodInfo from "../api/action-reducers/grantDetail/periodInfo";
-import LocationDetailInfo from "../api/action-reducers/locationDetail/info";
-import EligibilityCountry from "../api/action-reducers/locationDetail/eligibility";
-import LocationDetailDocuments from "../api/action-reducers/locationDetail/documents";
+} from "app/state/api/action-reducers/grantDetail/performanceFramework";
+import Documents from "app/state/api/action-reducers/viz/documents";
+import GrantDetailDocuments from "app/state/api/action-reducers/grantDetail/documents";
+import GrantDetailPeriods from "app/state/api/action-reducers/grantDetail/periods";
+import GrantDetailPeriodInfo from "app/state/api/action-reducers/grantDetail/periodInfo";
+import LocationDetailInfo from "app/state/api/action-reducers/locationDetail/info";
+import EligibilityCountry from "app/state/api/action-reducers/locationDetail/eligibility";
+import LocationDetailDocuments from "app/state/api/action-reducers/locationDetail/documents";
 import GrantDetailBudgetsFlow, {
   GrantDetailBudgetsFlowDrilldownLevel1,
-} from "../api/action-reducers/grantDetail/budgetsFlow";
+} from "app/state/api/action-reducers/grantDetail/budgetsFlow";
 import LocationDetailBudgetsFlow, {
   LocationDetailBudgetsFlowDrilldownLevel1,
-} from "../api/action-reducers/locationDetail/budgetsFlow";
+} from "app/state/api/action-reducers/locationDetail/budgetsFlow";
 import GrantDetailBudgetsTimeCycle, {
   GrantDetailBudgetsTimeCycleDrilldownLevel1,
-} from "../api/action-reducers/grantDetail/budgetsTimeCycle";
+} from "app/state/api/action-reducers/grantDetail/budgetsTimeCycle";
 import LocationDetailBudgetsTimeCycle, {
   LocationDetailBudgetsTimeCycleDrilldownLevel1,
-} from "../api/action-reducers/locationDetail/budgetsTimeCycle";
+} from "app/state/api/action-reducers/locationDetail/budgetsTimeCycle";
+import ResultsList from "app/state/api/action-reducers/viz/resultsList";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -89,6 +90,7 @@ const storeContent: StoreModel = {
   PledgesContributionsTimeCycleDrilldown: persist(
     PledgesContributionsTimeCycleDrilldown
   ),
+  ResultsList: persist(ResultsList),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // grant detail api
