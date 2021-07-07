@@ -2,6 +2,7 @@ import React from "react";
 import find from "lodash/find";
 import remove from "lodash/remove";
 import isEqual from "lodash/isEqual";
+import findIndex from "lodash/findIndex";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
@@ -9,7 +10,6 @@ import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import { container, input } from "app/components/Search/styles";
 import {
   FilterGroupModel,
   FilterGroupOptionModel,
@@ -24,6 +24,7 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
+  const [optionsToShow, setOptionsToShow] = React.useState(props.options);
   const {
     appliedFilters,
     setAppliedFilters,
@@ -83,6 +84,76 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
     tmpAppliedFiltersGrandChildren,
     props.options,
   ]);
+
+  React.useEffect(() => {
+    if (value.length === 0) {
+      setOptionsToShow(props.options);
+    } else {
+      const options: FilterGroupOptionModel[] = [];
+      props.options.forEach((option: FilterGroupOptionModel) => {
+        if (option.label.toLowerCase().indexOf(value.toLowerCase()) > -1) {
+          options.push(option);
+        } else if (option.subOptions) {
+          option.subOptions.forEach((subOption: FilterGroupOptionModel) => {
+            if (
+              subOption.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+            ) {
+              const fParentIndex = findIndex(options, { label: option.label });
+              if (fParentIndex > -1) {
+                options[fParentIndex].subOptions?.push(subOption);
+              } else {
+                options.push({
+                  ...option,
+                  subOptions: [subOption],
+                });
+              }
+            } else if (subOption.subOptions) {
+              subOption.subOptions.forEach(
+                (subSubOption: FilterGroupOptionModel) => {
+                  if (
+                    (subSubOption.label || "").toLowerCase().indexOf(value) > -1
+                  ) {
+                    const fGrandParentIndex = findIndex(options, {
+                      label: option.label,
+                    });
+                    if (fGrandParentIndex > -1) {
+                      const fParentIndex = findIndex(
+                        options[fGrandParentIndex]?.subOptions,
+                        { label: subOption.label }
+                      );
+                      if (fParentIndex > -1) {
+                        // @ts-ignore
+                        options[fGrandParentIndex]?.subOptions[
+                          fParentIndex
+                        ]?.subOptions.push(subSubOption);
+                      } else {
+                        // @ts-ignore
+                        options[fGrandParentIndex]?.subOptions.push({
+                          ...subOption,
+                          subOptions: [subSubOption],
+                        });
+                      }
+                    } else {
+                      options.push({
+                        ...option,
+                        subOptions: [
+                          {
+                            ...subOption,
+                            subOptions: [subSubOption],
+                          },
+                        ],
+                      });
+                    }
+                  }
+                }
+              );
+            }
+          });
+        }
+      });
+      setOptionsToShow(options);
+    }
+  }, [value]);
 
   function handleChangeAll(event: React.ChangeEvent<HTMLInputElement>) {
     const tmp = [...tmpAppliedFilters];
@@ -254,6 +325,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
                 color="primary"
                 checked={allSelected}
                 onChange={handleChangeAll}
+                disabled={value.length > 0}
               />
             }
             label="Select all"
@@ -323,7 +395,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           }
         `}
       >
-        {props.options.map((option: FilterGroupOptionModel) => (
+        {optionsToShow.map((option: FilterGroupOptionModel) => (
           <FilterOption
             {...option}
             level={1}
