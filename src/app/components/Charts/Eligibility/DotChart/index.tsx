@@ -225,7 +225,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Tuberculosis
+                      Malaria
                     </div>
                   </div>
                   <div>
@@ -243,7 +243,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Malaria
+                      Tuberculosis
                     </div>
                   </div>
                   <div>

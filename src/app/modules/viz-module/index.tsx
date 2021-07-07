@@ -127,35 +127,43 @@ export default function VizModule() {
         // ]}
       />
       <div css="width: 100%;height: 25px;" />
-      <Switch>
-        <Route path="/viz/budgets/flow">
-          <GenericBudgetsFlowWrapper />
-        </Route>
-        <Route path="/viz/budgets/time-cycle">
-          <GenericBudgetsTimeCycleWrapper />
-        </Route>
-        <Route path="/viz/investments/disbursements">
-          <GenericInvestmentsDisbursedWrapper />
-        </Route>
-        <Route path="/viz/investments/time-cycle">
-          <GenericInvestmentsTimeCycleWrapper />
-        </Route>
-        <Route path="/viz/investments/geomap">
-          <InvestmentsGeoMap />
-        </Route>
-        <Route path="/viz/allocations">
-          <AllocationsModule />
-        </Route>
-        <Route path="/viz/pledges-contributions/time-cycle">
-          <PledgesContributionsTimeCycleModule />
-        </Route>
-        <Route path="/viz/pledges-contributions/geomap">
-          <PledgesContributionsGeoMap />
-        </Route>
-        <Route path="/viz/eligibility">
-          <EligibilityModule />
-        </Route>
-      </Switch>
+      <div
+        id="export-view-div"
+        css={`
+          width: 100%;
+          height: 100%;
+        `}
+      >
+        <Switch>
+          <Route path="/viz/budgets/flow">
+            <GenericBudgetsFlowWrapper />
+          </Route>
+          <Route path="/viz/budgets/time-cycle">
+            <GenericBudgetsTimeCycleWrapper />
+          </Route>
+          <Route path="/viz/investments/disbursements">
+            <GenericInvestmentsDisbursedWrapper />
+          </Route>
+          <Route path="/viz/investments/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper />
+          </Route>
+          <Route path="/viz/investments/geomap">
+            <InvestmentsGeoMap />
+          </Route>
+          <Route path="/viz/allocations">
+            <AllocationsModule />
+          </Route>
+          <Route path="/viz/pledges-contributions/time-cycle">
+            <PledgesContributionsTimeCycleModule />
+          </Route>
+          <Route path="/viz/pledges-contributions/geomap">
+            <PledgesContributionsGeoMap />
+          </Route>
+          <Route path="/viz/eligibility">
+            <EligibilityModule />
+          </Route>
+        </Switch>
+      </div>
       <ToolBoxPanel
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}

@@ -220,14 +220,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     setSelected={setSelectedAggregation}
                   />
                 )}
-                {params.vizType === "investments" &&
+                {/* {params.vizType === "investments" &&
                   params.subType === "geomap" && (
                     <ToolBoxPanelGeoMapViews
                       title="Views"
                       selected={geomapView}
                       setSelected={setGeomapView}
                     />
-                  )}
+                  )} */}
                 {params.vizType === "pledges-contributions" &&
                   params.subType === "geomap" && (
                     <React.Fragment>

@@ -1,0 +1,338 @@
+/* eslint-disable no-case-declarations */
+/* eslint-disable sonarjs/no-duplicated-branches */
+import get from "lodash/get";
+import find from "lodash/find";
+import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
+import isEmpty from "lodash/isEmpty";
+import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
+
+export function exportCSV(
+  pathname: string,
+  data: any,
+  options: {
+    selectedAggregation: string;
+    donorMapView: string;
+    isDetail: boolean;
+  }
+): CommonPropTypes {
+  const csvData: any[] = [];
+  switch (pathname) {
+    case "/viz/investments/disbursements":
+      data.forEach((item: any) => {
+        if (item._children) {
+          item._children.forEach((child: any) => {
+            csvData.push({
+              component: item.name,
+              location: child.name,
+              disbursement: child.tooltip.totalInvestments.disbursed,
+              committment: child.tooltip.totalInvestments.committed,
+              signed: child.tooltip.totalInvestments.signed,
+            });
+          });
+        } else {
+          csvData.push({
+            component: item.name,
+            location: "",
+            disbursement: item.tooltip.totalInvestments.disbursed,
+            committment: item.tooltip.totalInvestments.committed,
+            signed: item.tooltip.totalInvestments.signed,
+          });
+        }
+      });
+      return {
+        data: csvData,
+        filename: "investments-treemap.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Location", key: "location" },
+          { label: "Disbursement (USD)", key: "disbursement" },
+          { label: "Committment (USD)", key: "committment" },
+          { label: "Signed (USD)", key: "signed" },
+        ],
+      };
+    case "/viz/investments/time-cycle":
+      data.forEach((item: any) => {
+        if (item.disbursedChildren && item.cumulativeChildren) {
+          item.disbursedChildren.forEach((child: any) => {
+            csvData.push({
+              year: item.year,
+              component: child.name,
+              disbursement: child.value,
+              cumulative: get(
+                find(item.cumulativeChildren, { name: child.name }),
+                "value",
+                0
+              ),
+            });
+          });
+        }
+      });
+      return {
+        data: csvData,
+        filename: "investments-bar.csv",
+        headers: [
+          { label: "Year", key: "year" },
+          { label: "Component", key: "component" },
+          { label: "Disbursement (USD)", key: "disbursement" },
+          { label: "Cumulative (USD)", key: "cumulative" },
+        ],
+      };
+    case "/viz/investments/geomap":
+      data.features.forEach((item: any) => {
+        if (item.properties && !isEmpty(item.properties.data)) {
+          csvData.push({
+            location: item.properties.name,
+            component: "-",
+            count: sumBy(item.properties.data.components, "activitiesCount"),
+            disbursement: item.properties.data.disbursed,
+            committment: item.properties.data.committed,
+            signed: item.properties.data.signed,
+          });
+          item.properties.data.components.forEach((component: any) => {
+            csvData.push({
+              location: item.properties.name,
+              component: component.name,
+              count: component.activitiesCount,
+              disbursement: component.value,
+              committment: "-",
+              signed: "-",
+            });
+          });
+        }
+      });
+      return {
+        data: csvData,
+        filename: "investments-geomap.csv",
+        headers: [
+          { label: "Location", key: "location" },
+          { label: "Component", key: "component" },
+          { label: "Grants", key: "count" },
+          { label: "Disbursement (USD)", key: "disbursement" },
+          { label: "Committment (USD)", key: "committment" },
+          { label: "Signed (USD)", key: "signed" },
+        ],
+      };
+    case "/viz/budgets/flow":
+      return {
+        data,
+        filename: "budgets-flow.csv",
+        headers: [
+          { label: "Source", key: "source" },
+          { label: "Target", key: "target" },
+          { label: "Budget (USD)", key: "value" },
+        ],
+      };
+    case "/viz/budgets/time-cycle":
+      data.forEach((item: any) => {
+        const dataKeys = filter(
+          Object.keys(item),
+          (key: string) =>
+            key !== "year" && key !== "amount" && key.indexOf("Color") === -1
+        );
+        dataKeys.forEach((key: string) => {
+          csvData.push({
+            component: key,
+            year: item.year,
+            value: item[key],
+          });
+        });
+      });
+      return {
+        data: csvData,
+        filename: "budgets-time-cycle.csv",
+        headers: [
+          { label: "Year", key: "year" },
+          { label: "Component", key: "component" },
+          { label: "Budget (USD)", key: "value" },
+        ],
+      };
+    case "/viz/allocations":
+      data.keys.forEach((key: string, index: number) => {
+        csvData.push({
+          component: key,
+          value: data.values[index],
+        });
+      });
+      return {
+        data: csvData,
+        filename: "allocations.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Allocation (USD)", key: "value" },
+        ],
+      };
+    case "/viz/allocation":
+      data.keys.forEach((key: string, index: number) => {
+        csvData.push({
+          component: key,
+          value: data.values[index],
+        });
+      });
+      return {
+        data: csvData,
+        filename: "allocations.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Allocation (USD)", key: "value" },
+        ],
+      };
+    case "/viz/eligibility":
+      if (options.isDetail) {
+        filter(data, (comp: any) => comp.id.trim().length > 0).forEach(
+          (comp: any) => {
+            comp.data.forEach((item: any) => {
+              csvData.push({
+                year: item.x,
+                component: item.y,
+                incomeLevel: item.incomeLevel,
+                diseaseBurden: item.diseaseBurden,
+                eligibility: item.eligibility,
+              });
+            });
+          }
+        );
+        return {
+          data: csvData,
+          filename: "location-eligibility.csv",
+          headers: [
+            { label: "Year", key: "year" },
+            { label: "Component", key: "component" },
+            { label: "Income Level", key: "incomeLevel" },
+            { label: "Disease Burden", key: "diseaseBurden" },
+            { label: "Status", key: "eligibility" },
+          ],
+        };
+      }
+      const isComponent = options.selectedAggregation === "componentName";
+      data.forEach((item: any) => {
+        item.items.forEach((subitem: any) => {
+          csvData.push({
+            [isComponent ? "component" : "location"]: item.name,
+            [!isComponent ? "component" : "location"]: subitem.name,
+            status: subitem.status,
+          });
+        });
+      });
+      return {
+        data: csvData,
+        filename: "eligibility.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Location", key: "location" },
+          { label: "Status", key: "status" },
+        ],
+      };
+    case "/viz/pledges-contributions/time-cycle":
+      data.forEach((item: any) => {
+        csvData.push({
+          year: item.year,
+          pledge: item.pledge,
+          contribution: item.contribution,
+        });
+      });
+      return {
+        data: csvData,
+        filename: "pledges-contributions-time-cycle.csv",
+        headers: [
+          { label: "Year", key: "year" },
+          { label: "Pledge (USD)", key: "pledge" },
+          { label: "Contribution (USD)", key: "contribution" },
+        ],
+      };
+    case "/viz/pledges-contributions/geomap":
+      if (options.donorMapView === "Public Sector") {
+        data.layers.features.forEach((item: any) => {
+          if (item.properties && !isEmpty(item.properties.data)) {
+            csvData.push({
+              location: item.properties.name,
+              type: item.properties.data.amounts[0].label,
+              value: item.properties.data.amounts[0].value,
+            });
+          }
+        });
+      } else {
+        data.pins.map((pin: any) => {
+          csvData.push({
+            location: pin.geoName,
+            type: pin.amounts[0].label,
+            value: pin.amounts[0].value,
+          });
+        });
+      }
+      return {
+        data: csvData,
+        filename: `pledges-contributions-${options.donorMapView
+          .toLowerCase()
+          .replace(/ /g, "-")}.csv`,
+        headers: [
+          { label: "Donor", key: "location" },
+          { label: "Type", key: "type" },
+          { label: "Amount (USD)", key: "value" },
+        ],
+      };
+    case "/grants":
+      return {
+        data,
+        filename: "grants.csv",
+        headers: [
+          { label: "Title", key: "title" },
+          { label: "Status", key: "status" },
+          { label: "Component", key: "component" },
+          { label: "Location", key: "geoLocation" },
+          { label: "Rating", key: "rating" },
+          { label: "Disbursement (USD)", key: "disbursed" },
+          { label: "Committment (USD)", key: "committed" },
+          { label: "Signed (USD)", key: "signed" },
+        ],
+      };
+    case "/viz/grants":
+      return {
+        data,
+        filename: "grants.csv",
+        headers: [
+          { label: "Title", key: "title" },
+          { label: "Status", key: "status" },
+          { label: "Component", key: "component" },
+          { label: "Location", key: "geoLocation" },
+          { label: "Rating", key: "rating" },
+          { label: "Disbursement (USD)", key: "disbursed" },
+          { label: "Committment (USD)", key: "committed" },
+          { label: "Signed (USD)", key: "signed" },
+        ],
+      };
+    case "/results":
+      data.forEach((item: any) => {
+        csvData.push({
+          title: item.title,
+          value: item.value,
+          component: item.component,
+          location: "-",
+        });
+        item.geoLocations.forEach((loc: any) => {
+          csvData.push({
+            title: item.title,
+            value: loc.value,
+            component: item.component,
+            location: loc.name,
+          });
+        });
+      });
+      return {
+        data: csvData,
+        filename: "results.csv",
+        headers: [
+          { label: "Title", key: "title" },
+          { label: "Value", key: "value" },
+          { label: "Location", key: "location" },
+          { label: "Component", key: "component" },
+        ],
+      };
+    default:
+      return {
+        data: [],
+        filename: "empty.csv",
+        headers: [],
+      };
+  }
+}
