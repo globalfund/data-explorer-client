@@ -1,7 +1,7 @@
 import { css } from "styled-components/macro";
 
 export const listitem = (outline: boolean) => css`
-  height: 100%;
+  height: 210px;
   display: flex;
   color: #262c34;
   background: #f5f5f7;
@@ -55,7 +55,7 @@ export const locationlist = css`
   color: #fff;
   display: flex;
   overflow-y: auto;
-  max-height: 148px;
+  max-height: 150px;
   padding: 12px 20px;
   background: #495057;
   flex-direction: column;

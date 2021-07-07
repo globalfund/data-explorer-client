@@ -30,9 +30,11 @@ export function SearchResults(props: SearchResultsProps) {
       {props.loading && (
         <LinearProgress
           css={`
-            margin-top: -20px;
-            width: calc(100% - 30px);
+            top: 0;
             margin-left: 15px;
+            position: absolute;
+            border-radius: 20px;
+            width: calc(100% - 30px);
           `}
         />
       )}
