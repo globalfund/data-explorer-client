@@ -88,6 +88,13 @@ export function PledgesContributionsGeoMap() {
                 subType: view,
               })
         }
+        noData={
+          view === "Public Sector"
+            ? maxValue === 0
+            : filter(pins, {
+                subType: view,
+              }).length === 0
+        }
       />
       <div
         css={`

@@ -4,6 +4,7 @@ import React from "react";
 import { ExpandableTable } from "app/components/Table/Expandable";
 import { Search } from "app/modules/grants-module/components/Search";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 interface DocumentsSubModuleProps {
   columns: string[];
@@ -23,7 +24,11 @@ export function DocumentsSubModule(props: DocumentsSubModuleProps) {
       >
         <Search value={props.search} setValue={props.setSearch} />
         <div css="width: 100%;height: 25px;" />
-        <ExpandableTable rows={props.data} columns={props.columns} />
+        {props.data.length === 0 ? (
+          <NoDataLabel />
+        ) : (
+          <ExpandableTable rows={props.data} columns={props.columns} />
+        )}
       </div>
       <div css="width: 100%;height: 25px;" />
     </React.Fragment>

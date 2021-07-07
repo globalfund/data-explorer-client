@@ -20,6 +20,7 @@ import { Search } from "app/modules/grants-module/components/Search";
 import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 interface GrantsModuleProps {
   code?: string;
@@ -200,19 +201,21 @@ export default function GrantsModule(props: GrantsModuleProps) {
       >
         <Search value={search} setValue={setSearch} />
         <div css="width: 100%;height: 25px;" />
-        <GrantsList listitems={data} />
+        {data.length === 0 ? <NoDataLabel /> : <GrantsList listitems={data} />}
         <div css="width: 100%;height: 25px;" />
-        <Pagination
-          page={page}
-          size="large"
-          count={pages}
-          onChange={handleChange}
-          css={`
-            > ul {
-              justify-content: center;
-            }
-          `}
-        />
+        {data.length > 0 && (
+          <Pagination
+            page={page}
+            size="large"
+            count={pages}
+            onChange={handleChange}
+            css={`
+              > ul {
+                justify-content: center;
+              }
+            `}
+          />
+        )}
       </div>
       <div css="width: 100%;height: 25px;" />
       <div

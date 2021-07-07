@@ -7,6 +7,8 @@ import { getVizValueRange } from "app/utils/getVizValueRange";
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { BarComponent } from "app/components/Charts/PledgesContributions/TimeCycle/components/bar";
 import { PledgesContributionsProps } from "app/components/Charts/PledgesContributions/TimeCycle/data";
+import { NoDataBudgetsTimeCycle } from "../../Budgets/TimeCycle/components/nodata";
+import { NoDataLabel } from "../../common/nodatalabel";
 
 export function PledgesContributionsTimeCycle(
   props: PledgesContributionsProps
@@ -49,6 +51,11 @@ export function PledgesContributionsTimeCycle(
       css={`
         width: 100%;
         height: 700px;
+
+        > svg {
+          width: 100%;
+          height: 100%;
+        }
       `}
       data-cy="investments-time-cycle"
     >
@@ -119,82 +126,89 @@ export function PledgesContributionsTimeCycle(
           </div>
         </Grid>
       </Grid>
-      <ResponsiveBar
-        animate
-        enableLabel={false}
-        indexScale={{ type: "band", round: true }}
-        groupMode="grouped"
-        motionStiffness={90}
-        motionDamping={15}
-        borderColor="inherit:darker(1.6)"
-        layers={["grid", "axes", Bars, "markers", "legends"]}
-        padding={matches ? 0.3 : 0.5}
-        innerPadding={6}
-        data={props.data}
-        colors={(value: any) => value.data[`${value.id}Color`]}
-        keys={["pledge", "contribution"]}
-        indexBy="year"
-        margin={{
-          top: 60,
-          right: 30,
-          bottom: props.data.length > 5 ? 120 : 80,
-          left: 70,
-        }}
-        axisLeft={{
-          orient: "left",
-          tickSize: 5,
-          tickPadding: 10,
-          tickRotation: 0,
-          legendOffset: -60,
-          legendPosition: "middle",
-          legend: `USD (${moneyAbbrRange.abbr})`,
-          format: (value: number | string | Date) =>
-            `${getFinancialValueWithMetricPrefix(
-              parseInt(value.toString(), 10),
-              moneyAbbrRange.index
-            )}`,
-        }}
-        axisBottom={{
-          format: (value: number | string | Date) => {
-            return matches && props.data.length > 2
-              ? value.toString().slice(2, 4)
-              : value.toString();
-          },
-          tickRotation: matches && props.data.length > 3 ? 45 : 0,
-        }}
-        theme={{
-          axis: {
-            ticks: {
+      {props.data.length === 0 ? (
+        <React.Fragment>
+          <NoDataBudgetsTimeCycle />
+          <NoDataLabel />
+        </React.Fragment>
+      ) : (
+        <ResponsiveBar
+          animate
+          enableLabel={false}
+          indexScale={{ type: "band", round: true }}
+          groupMode="grouped"
+          motionStiffness={90}
+          motionDamping={15}
+          borderColor="inherit:darker(1.6)"
+          layers={["grid", "axes", Bars, "markers", "legends"]}
+          padding={matches ? 0.3 : 0.5}
+          innerPadding={6}
+          data={props.data}
+          colors={(value: any) => value.data[`${value.id}Color`]}
+          keys={["pledge", "contribution"]}
+          indexBy="year"
+          margin={{
+            top: 60,
+            right: 30,
+            bottom: props.data.length > 5 ? 120 : 80,
+            left: 70,
+          }}
+          axisLeft={{
+            orient: "left",
+            tickSize: 5,
+            tickPadding: 10,
+            tickRotation: 0,
+            legendOffset: -60,
+            legendPosition: "middle",
+            legend: `USD (${moneyAbbrRange.abbr})`,
+            format: (value: number | string | Date) =>
+              `${getFinancialValueWithMetricPrefix(
+                parseInt(value.toString(), 10),
+                moneyAbbrRange.index
+              )}`,
+          }}
+          axisBottom={{
+            format: (value: number | string | Date) => {
+              return matches && props.data.length > 2
+                ? value.toString().slice(2, 4)
+                : value.toString();
+            },
+            tickRotation: matches && props.data.length > 3 ? 45 : 0,
+          }}
+          theme={{
+            axis: {
+              ticks: {
+                line: {
+                  strokeWidth: 1,
+                  stroke: "#868E96",
+                  strokeOpacity: 0.3,
+                },
+                text: {
+                  fill: "#262c34",
+                  fontSize: 12,
+                },
+              },
+              legend: {
+                text: {
+                  fontWeight: "bold",
+                },
+              },
+            },
+            legends: {
+              text: {
+                fontSize: 12,
+              },
+            },
+            grid: {
               line: {
                 strokeWidth: 1,
                 stroke: "#868E96",
                 strokeOpacity: 0.3,
               },
-              text: {
-                fill: "#262c34",
-                fontSize: 12,
-              },
             },
-            legend: {
-              text: {
-                fontWeight: "bold",
-              },
-            },
-          },
-          legends: {
-            text: {
-              fontSize: 12,
-            },
-          },
-          grid: {
-            line: {
-              strokeWidth: 1,
-              stroke: "#868E96",
-              strokeOpacity: 0.3,
-            },
-          },
-        }}
-      />
+          }}
+        />
+      )}
     </div>
   );
 }

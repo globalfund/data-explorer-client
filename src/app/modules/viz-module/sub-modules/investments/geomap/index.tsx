@@ -57,7 +57,13 @@ export function InvestmentsGeoMap(props: Props) {
         flex-direction: column;
       `}
     >
-      <GeoMap allowClickthrough type="investments" data={data} pins={[]} />
+      <GeoMap
+        allowClickthrough
+        type="investments"
+        data={data}
+        pins={[]}
+        noData={maxValue === 0}
+      />
       <div
         css={`
           gap: 12px;

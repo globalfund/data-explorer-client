@@ -29,6 +29,7 @@ import {
   GeomapTooltip,
 } from "app/components/Charts/GeoMap/components/tooltip";
 import { MapPin } from "app/components/Charts/GeoMap/components/pins";
+import { NoDataLabel } from "../common/nodatalabel";
 
 export function GeoMap(props: GeoMapProps) {
   const history = useHistory();
@@ -212,7 +213,7 @@ export function GeoMap(props: GeoMapProps) {
   }, []);
 
   const uMapStyle = mapStyle;
-  if (props.data.features.length === 0) {
+  if (props.data.features.length === 0 || props.noData) {
     uMapStyle.layers[0].paint["background-color"] = "hsl(204, 10%, 80%)";
   }
 
@@ -238,7 +239,17 @@ export function GeoMap(props: GeoMapProps) {
         onViewportChange={setViewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
       >
-        <Source type="geojson" data={props.data}>
+        <Source
+          type="geojson"
+          data={
+            props.noData
+              ? {
+                  type: "FeatureCollection",
+                  features: [],
+                }
+              : props.data
+          }
+        >
           <Layer {...layerStyle} />
         </Source>
         {props.pins.map((pin: GeoMapPinMarker) => {
@@ -320,6 +331,7 @@ export function GeoMap(props: GeoMapProps) {
           />
         </div>
       )}
+      {props.noData && <NoDataLabel />}
     </div>
   );
 }

@@ -19,6 +19,7 @@ import {
   ResultListItemModel,
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -170,7 +171,7 @@ export default function ResultsModule() {
       >
         <Search value={search} setValue={setSearch} />
         <div css="width: 100%;height: 25px;" />
-        <ResultsList listitems={data} />
+        {data.length === 0 ? <NoDataLabel /> : <ResultsList listitems={data} />}
       </div>
       <div css="width: 100%;height: 25px;" />
       <div

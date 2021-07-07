@@ -21,6 +21,8 @@ import {
 } from "app/modules/viz-module/sub-modules/allocations/data";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { NoDataAllocations } from "./components/nodata";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -319,12 +321,19 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               </div>
             </Grid>
           </Grid>
-          <ReactApexCharts
-            height={580}
-            type="radialBar"
-            options={options}
-            series={keysPercentagesColors.percentages}
-          />
+          {total === 0 ? (
+            <div css="display: flex;justify-content: center;">
+              <NoDataLabel />
+              <NoDataAllocations />
+            </div>
+          ) : (
+            <ReactApexCharts
+              height={580}
+              type="radialBar"
+              options={options}
+              series={keysPercentagesColors.percentages}
+            />
+          )}
           <div
             css={`
               gap: 6px;

@@ -27,6 +27,7 @@ export interface GeoMapProps {
   pins: GeoMapPinMarker[];
   type: "investments" | "donors";
   allowClickthrough?: boolean;
+  noData: boolean;
 }
 
 export const mapStyle = {

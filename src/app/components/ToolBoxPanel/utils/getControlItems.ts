@@ -120,6 +120,9 @@ export function getControlItems(
         (view: ViewModel) => view.label !== "Map"
       );
     }
+    if (vizType === "eligibility") {
+      return { views: [], aggregates: [] };
+    }
     return {
       views: alteredViews,
       aggregates: get(aggregates, vizType, []),
