@@ -7,6 +7,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { useGA } from "app/hooks/useGA";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -25,6 +26,27 @@ export function MainRoutes() {
   useUrlFilters();
   useGA();
 
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
+  if (isSmallScreen) {
+    return (
+      <div
+        css={`
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          text-align: center;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+        `}
+      >
+        App is not yet optimised for smaller screens.
+        <br />
+        Please visit the app on a desktop.
+      </div>
+    );
+  }
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
