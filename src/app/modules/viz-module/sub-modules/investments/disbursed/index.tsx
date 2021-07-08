@@ -2,7 +2,8 @@
 import React from "react";
 import sumBy from "lodash/sumBy";
 import Grid from "@material-ui/core/Grid";
-import useTitle from "react-use/lib/useTitle";
+import { useUnmount, useTitle } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -10,10 +11,7 @@ import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import {
-  mockdata2,
-  DisbursementsTreemapDataItem,
-} from "app/components/Charts/Investments/Disbursements/data";
+import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -33,6 +31,27 @@ export function InvestmentsDisbursedModule(
 ) {
   useTitle("The Data Explorer - Investments/Disbursed");
   const totalBudget = sumBy(props.data, "value");
+
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
+
+  React.useEffect(() => {
+    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
+      setVizDrilldowns([]);
+    }
+    if (props.vizLevel > 0 && props.vizSelected) {
+      setVizDrilldowns([
+        { name: "Dataset" },
+        { name: props.vizSelected.split("-")[0] },
+      ]);
+    }
+  }, [props.vizLevel, props.vizSelected]);
+
+  useUnmount(() => setVizDrilldowns([]));
 
   if (props.isLoading) {
     return <PageLoader />;

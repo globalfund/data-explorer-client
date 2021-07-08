@@ -1,5 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
 import {
+  PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
@@ -114,6 +115,7 @@ export interface StoreModel {
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
   ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
+  PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel;
   ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;

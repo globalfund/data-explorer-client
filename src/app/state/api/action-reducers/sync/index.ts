@@ -60,3 +60,15 @@ export const ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel = {
     state.value = payload;
   }),
 };
+
+export interface PageHeaderVizDrilldownsStateModel {
+  value: { name: string }[];
+  setValue: Action<PageHeaderVizDrilldownsStateModel, { name: string }[]>;
+}
+
+export const PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel = {
+  value: [],
+  setValue: action((state, payload: { name: string }[]) => {
+    state.value = payload;
+  }),
+};

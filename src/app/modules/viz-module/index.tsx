@@ -123,11 +123,6 @@ export default function VizModule() {
             }`,
           },
         ]}
-        // drilldowns={[
-        //   { name: "Dataset" },
-        //   { name: "Drill down level one" },
-        //   { name: "Drill down level two" },
-        // ]}
       />
       <div css="width: 100%;height: 25px;" />
       <div

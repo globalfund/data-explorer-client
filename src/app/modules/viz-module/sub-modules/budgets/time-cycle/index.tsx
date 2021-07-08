@@ -1,6 +1,8 @@
 /* third-party */
 import React from "react";
 import find from "lodash/find";
+import { useUnmount } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
@@ -33,6 +35,24 @@ interface BudgetsTimeCycleModuleProps {
 }
 
 export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
+
+  React.useEffect(() => {
+    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
+      setVizDrilldowns([]);
+    }
+    if (props.vizLevel > 0 && props.vizSelected) {
+      setVizDrilldowns([{ name: "Dataset" }, { name: props.vizSelected }]);
+    }
+  }, [props.vizLevel, props.vizSelected]);
+
+  useUnmount(() => setVizDrilldowns([]));
+
   if (props.isLoading) {
     return <PageLoader />;
   }

@@ -2,6 +2,8 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { useUnmount } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -11,8 +13,8 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -51,6 +53,24 @@ interface BudgetsFlowModuleProps {
 }
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
+
+  React.useEffect(() => {
+    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
+      setVizDrilldowns([]);
+    }
+    if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
+      setVizDrilldowns([{ name: "Dataset" }, { name: props.vizSelected.id }]);
+    }
+  }, [props.vizLevel, props.vizSelected]);
+
+  useUnmount(() => setVizDrilldowns([]));
+
   if (props.isLoading) {
     return <PageLoader />;
   }

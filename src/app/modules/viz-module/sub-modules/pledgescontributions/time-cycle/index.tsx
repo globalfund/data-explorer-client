@@ -2,7 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
-import { useTitle, useUpdateEffect } from "react-use";
+import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
@@ -59,6 +59,28 @@ export function PledgesContributionsTimeCycleModule() {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
+
+  React.useEffect(() => {
+    if (vizLevel === 0 && vizDrilldowns.length > 0) {
+      setVizDrilldowns([]);
+    }
+    if (vizLevel > 0 && vizSelected) {
+      const splits = vizSelected.split("-");
+      if (splits.length > 1) {
+        setVizDrilldowns([
+          { name: "Dataset" },
+          { name: `${splits[0]}-${splits[1]}` },
+        ]);
+      }
+    }
+  }, [vizLevel, vizSelected]);
+
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);
     fetchData({ filterString });
@@ -114,6 +136,8 @@ export function PledgesContributionsTimeCycleModule() {
       clearDrilldownLevelData();
     }
   }, [vizSelected]);
+
+  useUnmount(() => setVizDrilldowns([]));
 
   if (isLoading) {
     return <PageLoader />;

@@ -3,6 +3,7 @@ import { StoreModel } from "app/state/api/interfaces";
 
 import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
 import {
+  PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
@@ -138,6 +139,7 @@ const storeContent: StoreModel = {
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
   ToolBoxPanelPFPeriodState: persist(ToolBoxPanelPFPeriodState),
+  PageHeaderVizDrilldownsState: persist(PageHeaderVizDrilldownsState),
   ToolBoxPanelAggregateByState: persist(ToolBoxPanelAggregateByState),
   ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
   ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),

@@ -1,5 +1,7 @@
 /* third-party */
 import React from "react";
+import { useUnmount } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
@@ -30,6 +32,27 @@ interface InvestmentsTimeCycleModuleProps {
 export function InvestmentsTimeCycleModule(
   props: InvestmentsTimeCycleModuleProps
 ) {
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
+
+  React.useEffect(() => {
+    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
+      setVizDrilldowns([]);
+    }
+    if (props.vizLevel > 0 && props.vizSelected) {
+      setVizDrilldowns([
+        { name: "Dataset" },
+        { name: props.vizSelected.split("-")[0] },
+      ]);
+    }
+  }, [props.vizLevel, props.vizSelected]);
+
+  useUnmount(() => setVizDrilldowns([]));
+
   if (props.isLoading) {
     return <PageLoader />;
   }

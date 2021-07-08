@@ -1,6 +1,7 @@
 import React from "react";
 import Slide from "@material-ui/core/Slide";
 import { CloseIcon } from "app/assets/icons/Close";
+import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
 
@@ -18,6 +19,10 @@ export function SlideInContainer(props: SlideInContainerProps) {
     props.vizLevel > 0 && props.selected !== undefined
   );
 
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+
   React.useEffect(() => {
     const tmp = props.vizLevel > 0 && props.selected !== undefined;
     if (open !== tmp) {
@@ -31,14 +36,14 @@ export function SlideInContainer(props: SlideInContainerProps) {
         ref={props.ref}
         id="zoom-in-level"
         css={`
-          top: 133px;
           right: 0;
           width: 60%;
           z-index: 2;
           display: flex;
           position: absolute;
           justify-content: flex-end;
-          height: calc(100% - 133px);
+          top: ${vizDrilldowns.length > 0 ? "168px" : "133px"};
+          height: calc(100% - ${vizDrilldowns.length > 0 ? "168px" : "133px"});
 
           @media (max-width: 768px) {
             width: 100%;
