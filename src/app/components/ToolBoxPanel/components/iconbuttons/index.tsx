@@ -18,6 +18,8 @@ import { StyledMenu, StyledMenuItem } from "app/components/PageHeader";
 const locationsToNotShowImageExport = [
   "/viz/investments/geomap",
   "/location/<code>/investments/geomap",
+  "/viz/investments/table",
+  "/location/<code>/investments/table",
   "/viz/pledges-contributions/geomap",
   "/grants",
   "/viz/grants",

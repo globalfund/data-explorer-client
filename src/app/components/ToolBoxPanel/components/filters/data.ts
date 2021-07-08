@@ -187,6 +187,11 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
+  "/viz/investments/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
   "/viz/budgets/flow": filter(
     filtergroups,
     (fg: FilterGroupProps) =>

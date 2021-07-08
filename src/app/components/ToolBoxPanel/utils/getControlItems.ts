@@ -24,6 +24,11 @@ const views = {
       value: "Map",
       link: "/viz/investments/geomap",
     },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/investments/table",
+    },
   ],
   budgets: [
     {

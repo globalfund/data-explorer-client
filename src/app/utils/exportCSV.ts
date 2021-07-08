@@ -113,6 +113,39 @@ export function exportCSV(
           { label: "Signed (USD)", key: "signed" },
         ],
       };
+    case "/viz/investments/table":
+      data.forEach((item: any) => {
+        if (item._children) {
+          item._children.forEach((child: any) => {
+            csvData.push({
+              component: item.name,
+              location: child.name,
+              disbursement: child.tooltip.totalInvestments.disbursed,
+              committment: child.tooltip.totalInvestments.committed,
+              signed: child.tooltip.totalInvestments.signed,
+            });
+          });
+        } else {
+          csvData.push({
+            component: item.name,
+            location: "",
+            disbursement: item.tooltip.totalInvestments.disbursed,
+            committment: item.tooltip.totalInvestments.committed,
+            signed: item.tooltip.totalInvestments.signed,
+          });
+        }
+      });
+      return {
+        data: csvData,
+        filename: "investments.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Location", key: "location" },
+          { label: "Disbursement (USD)", key: "disbursement" },
+          { label: "Committment (USD)", key: "committment" },
+          { label: "Signed (USD)", key: "signed" },
+        ],
+      };
     case "/viz/budgets/flow":
       return {
         data,

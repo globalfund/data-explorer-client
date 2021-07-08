@@ -22,14 +22,15 @@ import {
   GrantDetailPeriodInformation,
   GrantInfoContent,
 } from "app/modules/grant-detail-module/components/InfoContent";
+import { filtergroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { GrantDetailDocumentsModule } from "app/modules/grant-detail-module/components/sub-modules/documents";
 import { PerformanceRatingModule } from "app/modules/grant-detail-module/components/sub-modules/performance-rating";
 import { PerformanceFrameworkModule } from "app/modules/grant-detail-module/components/sub-modules/performance-framework";
 import { GrantDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/grantDetail";
+import { GrantDetailInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/grantDetail";
 import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
-import { GrantDetailDocumentsModule } from "./components/sub-modules/documents";
-import { filtergroups } from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
@@ -215,6 +216,14 @@ export default function GrantDetail() {
           path={`/grant/${params.code}/${params.period}/investments/disbursements`}
         >
           <GrantDetailInvestmentsDisbursedWrapper
+            code={params.code}
+            implementationPeriod={params.period}
+          />
+        </Route>
+        <Route
+          path={`/grant/${params.code}/${params.period}/investments/table`}
+        >
+          <GrantDetailInvestmentsTableWrapper
             code={params.code}
             implementationPeriod={params.period}
           />

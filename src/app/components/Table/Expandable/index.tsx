@@ -158,7 +158,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
 export function ExpandableTable(props: ExpandableTableProps) {
   return (
     <TableContainer>
-      <Table aria-label="expandable table">
+      <Table aria-label="Expandable table">
         <TableHead>
           <TableRow>
             {props.columns.map((column: string, index: number) => (

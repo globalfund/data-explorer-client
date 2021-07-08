@@ -23,6 +23,7 @@ import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investment
 import { LocationInfoContent } from "app/modules/country-detail-module/components/InfoContent";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
 import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/data-wrappers/location";
+import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/locationDetail";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
@@ -158,6 +159,9 @@ export default function CountryDetail() {
         </Route>
         <Route path={`/location/${params.code}/investments/disbursements`}>
           <GenericInvestmentsDisbursedWrapper code={params.code} />
+        </Route>
+        <Route path={`/location/${params.code}/investments/table`}>
+          <GenericInvestmentsTableWrapper code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/investments/time-cycle`}>
           <GenericInvestmentsTimeCycleWrapper code={params.code} />

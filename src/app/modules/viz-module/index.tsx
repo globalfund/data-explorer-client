@@ -12,6 +12,7 @@ import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investment
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
@@ -143,6 +144,9 @@ export default function VizModule() {
           </Route>
           <Route path="/viz/investments/disbursements">
             <GenericInvestmentsDisbursedWrapper />
+          </Route>
+          <Route path="/viz/investments/table">
+            <GenericInvestmentsTableWrapper />
           </Route>
           <Route path="/viz/investments/time-cycle">
             <GenericInvestmentsTimeCycleWrapper />
