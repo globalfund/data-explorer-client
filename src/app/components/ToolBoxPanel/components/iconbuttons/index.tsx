@@ -2,14 +2,16 @@
 import React from "react";
 import get from "lodash/get";
 import { CSVLink } from "react-csv";
-import { useLocation, useParams } from "react-router-dom";
+import Snackbar from "@material-ui/core/Snackbar";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
+import { useLocation, useParams } from "react-router-dom";
 import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 /* project */
 import { exportCSV } from "app/utils/exportCSV";
 import { LinkIcon } from "app/assets/icons/Link";
 import { exportView } from "app/utils/exportView";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import { StyledMenu, StyledMenuItem } from "app/components/PageHeader";
 
@@ -32,6 +34,7 @@ export function ToolBoxPanelIconButtons() {
   const location = useLocation();
   const params = useParams<{ code?: string }>();
   const vizData = useGetAllVizData();
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const selectedAggregation = useStoreState(
@@ -41,13 +44,21 @@ export function ToolBoxPanelIconButtons() {
     (state) => state.ToolBoxPanelDonorMapViewState.value
   );
 
-  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
-  };
+  }
 
-  const handleClose = () => {
+  function handleClose() {
     setAnchorEl(null);
-  };
+  }
+
+  function handleCopy(text: string, result: boolean) {
+    setOpenSnackbar(result);
+  }
+
+  function handleCloseSnackbar() {
+    setOpenSnackbar(false);
+  }
 
   const menuitems = [
     <StyledMenuItem key="export-csv-menuitem">
@@ -115,9 +126,21 @@ export function ToolBoxPanelIconButtons() {
         border-bottom: 1px solid #dfe3e6;
       `}
     >
-      <IconButton>
-        <LinkIcon />
-      </IconButton>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        message="Link copied to clipboard"
+      />
+      <CopyToClipboard text={window.location.href} onCopy={handleCopy}>
+        <IconButton>
+          <LinkIcon />
+        </IconButton>
+      </CopyToClipboard>
       {locationsToNotShowExport.indexOf(
         location.pathname.replace(`/${params.code}`, "/<code>")
       ) === -1 && (
