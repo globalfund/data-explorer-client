@@ -9,8 +9,10 @@ import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
+import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
+import { GenericEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
@@ -160,8 +162,14 @@ export default function VizModule() {
           <Route path="/viz/pledges-contributions/time-cycle">
             <PledgesContributionsTimeCycleModule />
           </Route>
+          <Route path="/viz/pledges-contributions/table">
+            <PledgesContributionsTable />
+          </Route>
           <Route path="/viz/pledges-contributions/geomap">
             <PledgesContributionsGeoMap />
+          </Route>
+          <Route path="/viz/eligibility/table">
+            <GenericEligibilityWrapper />
           </Route>
           <Route path="/viz/eligibility">
             <EligibilityModule />

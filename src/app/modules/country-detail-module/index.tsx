@@ -24,6 +24,7 @@ import { LocationInfoContent } from "app/modules/country-detail-module/component
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
 import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/data-wrappers/location";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
+import { LocationEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/location";
 import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/locationDetail";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
@@ -171,6 +172,9 @@ export default function CountryDetail() {
         </Route>
         <Route path={`/location/${params.code}/allocation`}>
           <AllocationsModule code={params.code} />
+        </Route>
+        <Route path={`/location/${params.code}/eligibility/table`}>
+          <LocationEligibilityTableWrapper code={params.code} />
         </Route>
         <Route path={`/location/${params.code}/eligibility`}>
           <LocationDetailEligibilityWrapper code={params.code} />

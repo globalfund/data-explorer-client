@@ -142,23 +142,26 @@ function Row(props: {
 
 export function SimpleTable(props: SimpleTableProps) {
   return (
-    <TableContainer>
-      <Table aria-label="Simple table">
-        <TableHead>
-          <TableRow>
-            {props.columns.map((column: SimpleTableColumn) => (
-              <TableCell key={column.key} css={tablecell}>
-                {column.name}
-              </TableCell>
+    <React.Fragment>
+      <TableContainer>
+        <Table aria-label="Simple table">
+          <TableHead>
+            <TableRow>
+              {props.columns.map((column: SimpleTableColumn) => (
+                <TableCell key={column.key} css={tablecell}>
+                  {column.name}
+                </TableCell>
+              ))}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.rows.map((row: SimpleTableRow) => (
+              <Row key={row.name} row={row} columns={props.columns} />
             ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.rows.map((row: SimpleTableRow) => (
-            <Row key={row.name} row={row} columns={props.columns} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <div css="width: 100%;height: 25px;" />
+    </React.Fragment>
   );
 }

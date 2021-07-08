@@ -1,11 +1,16 @@
 /* eslint-disable no-case-declarations */
 /* eslint-disable sonarjs/no-duplicated-branches */
+/* eslint-disable @typescript-eslint/no-redeclare */
 import get from "lodash/get";
 import find from "lodash/find";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import isEmpty from "lodash/isEmpty";
 import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
+import {
+  diseaseBurdens,
+  incomeLevels,
+} from "app/components/Charts/Eligibility/Scatterplot/data";
 
 export function exportCSV(
   pathname: string,
@@ -17,6 +22,7 @@ export function exportCSV(
   }
 ): CommonPropTypes {
   const csvData: any[] = [];
+  const isComponent = options.selectedAggregation === "componentName";
   switch (pathname) {
     case "/viz/investments/disbursements":
       data.forEach((item: any) => {
@@ -218,8 +224,16 @@ export function exportCSV(
               csvData.push({
                 year: item.x,
                 component: item.y,
-                incomeLevel: item.incomeLevel,
-                diseaseBurden: item.diseaseBurden,
+                incomeLevel: get(
+                  incomeLevels,
+                  `[${item.incomeLevel}]`,
+                  item.incomeLevel
+                ),
+                diseaseBurden: get(
+                  diseaseBurdens,
+                  `[${item.diseaseBurden}]`,
+                  item.diseaseBurden
+                ),
                 eligibility: item.eligibility,
               });
             });
@@ -237,7 +251,59 @@ export function exportCSV(
           ],
         };
       }
-      const isComponent = options.selectedAggregation === "componentName";
+      data.forEach((item: any) => {
+        item.items.forEach((subitem: any) => {
+          csvData.push({
+            [isComponent ? "component" : "location"]: item.name,
+            [!isComponent ? "component" : "location"]: subitem.name,
+            status: subitem.status,
+          });
+        });
+      });
+      return {
+        data: csvData,
+        filename: "eligibility.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Location", key: "location" },
+          { label: "Status", key: "status" },
+        ],
+      };
+    case "/viz/eligibility/table":
+      if (options.isDetail) {
+        filter(data, (comp: any) => comp.id.trim().length > 0).forEach(
+          (comp: any) => {
+            comp.data.forEach((item: any) => {
+              csvData.push({
+                year: item.x,
+                component: item.y,
+                incomeLevel: get(
+                  incomeLevels,
+                  `[${item.incomeLevel}]`,
+                  item.incomeLevel
+                ),
+                diseaseBurden: get(
+                  diseaseBurdens,
+                  `[${item.diseaseBurden}]`,
+                  item.diseaseBurden
+                ),
+                eligibility: item.eligibility,
+              });
+            });
+          }
+        );
+        return {
+          data: csvData,
+          filename: "location-eligibility.csv",
+          headers: [
+            { label: "Year", key: "year" },
+            { label: "Component", key: "component" },
+            { label: "Income Level", key: "incomeLevel" },
+            { label: "Disease Burden", key: "diseaseBurden" },
+            { label: "Status", key: "eligibility" },
+          ],
+        };
+      }
       data.forEach((item: any) => {
         item.items.forEach((subitem: any) => {
           csvData.push({
@@ -274,6 +340,37 @@ export function exportCSV(
         ],
       };
     case "/viz/pledges-contributions/geomap":
+      if (options.donorMapView === "Public Sector") {
+        data.layers.features.forEach((item: any) => {
+          if (item.properties && !isEmpty(item.properties.data)) {
+            csvData.push({
+              location: item.properties.name,
+              type: item.properties.data.amounts[0].label,
+              value: item.properties.data.amounts[0].value,
+            });
+          }
+        });
+      } else {
+        data.pins.map((pin: any) => {
+          csvData.push({
+            location: pin.geoName,
+            type: pin.amounts[0].label,
+            value: pin.amounts[0].value,
+          });
+        });
+      }
+      return {
+        data: csvData,
+        filename: `pledges-contributions-${options.donorMapView
+          .toLowerCase()
+          .replace(/ /g, "-")}.csv`,
+        headers: [
+          { label: "Donor", key: "location" },
+          { label: "Type", key: "type" },
+          { label: "Amount (USD)", key: "value" },
+        ],
+      };
+    case "/viz/pledges-contributions/table":
       if (options.donorMapView === "Public Sector") {
         data.layers.features.forEach((item: any) => {
           if (item.properties && !isEmpty(item.properties.data)) {

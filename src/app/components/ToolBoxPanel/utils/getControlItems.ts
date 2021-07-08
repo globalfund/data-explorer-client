@@ -42,6 +42,18 @@ const views = {
       link: "/viz/budgets/time-cycle",
     },
   ],
+  eligibility: [
+    {
+      label: "Chart",
+      value: "Chart",
+      link: "/viz/eligibility",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/eligibility/table",
+    },
+  ],
   "pledges-contributions": [
     {
       label: "Map",
@@ -52,6 +64,11 @@ const views = {
       label: "Replenishment Periods",
       value: "Replenishment Periods",
       link: "/viz/pledges-contributions/time-cycle",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/pledges-contributions/table",
     },
   ],
 };
@@ -126,7 +143,7 @@ export function getControlItems(
       );
     }
     if (vizType === "eligibility") {
-      return { views: [], aggregates: [] };
+      return { views: alteredViews, aggregates: [] };
     }
     return {
       views: alteredViews,
