@@ -56,7 +56,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
       params.period
     )
   );
-  const [geomapView, setGeomapView] = React.useState("countries");
 
   // aggregateBy control const
   const setSelectedAggregation = useStoreActions(
@@ -64,6 +63,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   );
   const selectedAggregation = useStoreState(
     (state) => state.ToolBoxPanelAggregateByState.value
+  );
+
+  // geomanpView control const
+  const setGeomapView = useStoreActions(
+    (store) => store.ToolBoxPanelInvestmentsMapViewState.setValue
+  );
+  const geomapView = useStoreState(
+    (state) => state.ToolBoxPanelInvestmentsMapViewState.value
   );
 
   // performance framework periods data
@@ -220,14 +227,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     setSelected={setSelectedAggregation}
                   />
                 )}
-                {/* {params.vizType === "investments" &&
+                {params.vizType === "investments" &&
                   params.subType === "geomap" && (
                     <ToolBoxPanelGeoMapViews
                       title="Views"
                       selected={geomapView}
                       setSelected={setGeomapView}
                     />
-                  )} */}
+                  )}
                 {params.vizType === "pledges-contributions" &&
                   (params.subType === "geomap" ||
                     params.subType === "table") && (

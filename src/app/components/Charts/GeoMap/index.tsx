@@ -23,6 +23,7 @@ import {
   GeoMapProps,
   GeoMapPinMarker,
   getMapPinIcons,
+  InvestmentsGeoMapPinMarker,
 } from "app/components/Charts/GeoMap/data";
 import {
   GeomapPinTooltip,
@@ -106,6 +107,10 @@ export function GeoMap(props: GeoMapProps) {
     pinMarkerHoverInfo,
     setPinMarkerHoverInfo,
   ] = React.useState<GeoMapPinMarker | null>(null);
+  const [
+    investmentsPinMarkerHoverInfo,
+    setInvestmentsPinMarkerHoverInfo,
+  ] = React.useState<InvestmentsGeoMapPinMarker | null>(null);
   const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -222,7 +227,12 @@ export function GeoMap(props: GeoMapProps) {
       ref={containerRef as React.RefObject<HTMLDivElement>}
       css={`
         width: 100%;
-        height: calc(100vh - 244px);
+        height: calc(
+          100vh -
+            ${props.investmentsPins.length > 0 || props.pins.length > 0
+              ? "183px"
+              : "244px"}
+        );
       `}
     >
       <MapGL
@@ -252,6 +262,57 @@ export function GeoMap(props: GeoMapProps) {
         >
           <Layer {...layerStyle} />
         </Source>
+        {props.investmentsPins.map((pin: InvestmentsGeoMapPinMarker) => {
+          const icons = getMapPinIcons("Multicountry");
+          return (
+            <MapPin
+              key={pin.id}
+              marker={pin}
+              setMarkerInfo={setInvestmentsPinMarkerHoverInfo}
+              onClick={() => console.log("onClick")}
+              {...icons}
+            />
+          );
+        })}
+        {investmentsPinMarkerHoverInfo && (
+          <Popup
+            tipSize={0}
+            dynamicPosition
+            offsetLeft={20}
+            closeButton={false}
+            latitude={investmentsPinMarkerHoverInfo.latitude}
+            longitude={investmentsPinMarkerHoverInfo.longitude}
+            css={`
+              z-index: 100;
+
+              .mapboxgl-popup-content {
+                width: 0px !important;
+                height: 0px !important;
+                padding: 0px !important;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 350px;
+                padding: 20px;
+                position: absolute;
+                background: #f5f5f7;
+                border-radius: 20px;
+              `}
+            >
+              <GeomapTooltip
+                name={investmentsPinMarkerHoverInfo.geoName}
+                data={{
+                  components: investmentsPinMarkerHoverInfo.components,
+                  disbursed: investmentsPinMarkerHoverInfo.disbursed,
+                  committed: investmentsPinMarkerHoverInfo.committed,
+                  signed: investmentsPinMarkerHoverInfo.signed,
+                }}
+              />
+            </div>
+          </Popup>
+        )}
         {props.pins.map((pin: GeoMapPinMarker) => {
           const icons = getMapPinIcons(pin.subType);
           return (

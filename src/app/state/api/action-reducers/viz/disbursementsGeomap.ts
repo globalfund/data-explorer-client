@@ -6,3 +6,9 @@ const DisbursementsGeomap: ApiCallModel = {
 };
 
 export default DisbursementsGeomap;
+
+export const DisbursementsGeomapMulticountries: ApiCallModel = {
+  ...APIModel(
+    `${process.env.REACT_APP_API}/disbursements/geomap/multicountries`
+  ),
+};

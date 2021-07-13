@@ -6,6 +6,8 @@ import AMFMACCENT from "app/assets/geo-map-pins/amfm_accent.png";
 import AMFMWHITE from "app/assets/geo-map-pins/amfm.png";
 import PRIVATEACCENT from "app/assets/geo-map-pins/private_accent.png";
 import PRIVATEWHITE from "app/assets/geo-map-pins/private.png";
+import MCACCENT from "app/assets/geo-map-pins/multicountry_accent.png";
+import MCWHITE from "app/assets/geo-map-pins/multicountry.png";
 
 export interface GeoMapPinMarker {
   id: string;
@@ -22,9 +24,26 @@ export interface GeoMapPinMarker {
   intId: number;
 }
 
+export interface InvestmentsGeoMapPinMarker {
+  id: string;
+  code: string;
+  geoName: string;
+  latitude: number;
+  longitude: number;
+  components: {
+    name: string;
+    activitiesCount: number;
+    value: number;
+  }[];
+  disbursed: number;
+  committed: number;
+  signed: number;
+}
+
 export interface GeoMapProps {
   data: FeatureCollection;
   pins: GeoMapPinMarker[];
+  investmentsPins: InvestmentsGeoMapPinMarker[];
   type: "investments" | "donors";
   allowClickthrough?: boolean;
   noData: boolean;
@@ -480,6 +499,11 @@ export function getMapPinIcons(type: string) {
       return {
         activeImgSrc: PRIVATEACCENT,
         inactiveImgSrc: PRIVATEWHITE,
+      };
+    case "Multicountry":
+      return {
+        activeImgSrc: MCACCENT,
+        inactiveImgSrc: MCWHITE,
       };
     default:
       return {

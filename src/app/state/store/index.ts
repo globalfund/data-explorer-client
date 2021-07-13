@@ -8,6 +8,7 @@ import {
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
+  ToolBoxPanelInvestmentsMapViewState,
   ToolBoxPanelPFPeriodState,
 } from "app/state/api/action-reducers/sync";
 
@@ -22,7 +23,9 @@ import Eligibility from "app/state/api/action-reducers/viz/eligibility";
 import BudgetsTimeCycle, {
   BudgetsTimeCycleDrilldownLevel1,
 } from "app/state/api/action-reducers/viz/budgetsTimeCycle";
-import DisbursementsGeomap from "app/state/api/action-reducers/viz/disbursementsGeomap";
+import DisbursementsGeomap, {
+  DisbursementsGeomapMulticountries,
+} from "app/state/api/action-reducers/viz/disbursementsGeomap";
 import DisbursementsTreemap, {
   DisbursementsTreemapDrilldown,
 } from "app/state/api/action-reducers/viz/disbursementsTreemap";
@@ -84,6 +87,7 @@ const storeContent: StoreModel = {
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
   BudgetsTimeCycleDrilldownLevel1: persist(BudgetsTimeCycleDrilldownLevel1),
   DisbursementsGeomap: persist(DisbursementsGeomap),
+  DisbursementsGeomapMulticountries: persist(DisbursementsGeomapMulticountries),
   DisbursementsTreemap: persist(DisbursementsTreemap),
   DisbursementsTreemapDrilldown: persist(DisbursementsTreemapDrilldown),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
@@ -143,6 +147,9 @@ const storeContent: StoreModel = {
   ToolBoxPanelAggregateByState: persist(ToolBoxPanelAggregateByState),
   ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
   ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
+  ToolBoxPanelInvestmentsMapViewState: persist(
+    ToolBoxPanelInvestmentsMapViewState
+  ),
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),

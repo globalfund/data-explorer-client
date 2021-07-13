@@ -72,3 +72,15 @@ export const PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel = {
     state.value = payload;
   }),
 };
+
+export interface ToolBoxPanelInvestmentsMapViewStateModel {
+  value: string;
+  setValue: Action<ToolBoxPanelInvestmentsMapViewStateModel, string>;
+}
+
+export const ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel = {
+  value: "countries",
+  setValue: action((state, payload: string) => {
+    state.value = payload;
+  }),
+};

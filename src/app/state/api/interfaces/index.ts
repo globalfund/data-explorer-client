@@ -5,6 +5,7 @@ import {
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
+  ToolBoxPanelInvestmentsMapViewStateModel,
   ToolBoxPanelPFPeriodStateModel,
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
@@ -72,6 +73,7 @@ export interface StoreModel {
   BudgetsTimeCycle: ApiCallModel;
   BudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   DisbursementsGeomap: ApiCallModel;
+  DisbursementsGeomapMulticountries: ApiCallModel;
   DisbursementsTreemap: ApiCallModel;
   DisbursementsTreemapDrilldown: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
@@ -119,5 +121,6 @@ export interface StoreModel {
   ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
+  ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
 }
