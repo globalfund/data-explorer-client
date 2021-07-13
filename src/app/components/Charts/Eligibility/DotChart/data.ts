@@ -1,5 +1,8 @@
 export interface DotChartProps {
+  yearOptions: string[];
   data: DotChartModel[];
+  selectedYear: string;
+  setSelectedYear: (year: string) => void;
   aggregateBy: "componentName" | "geographicAreaName";
 }
 

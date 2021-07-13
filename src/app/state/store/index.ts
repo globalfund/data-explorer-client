@@ -19,7 +19,9 @@ import Allocations, {
 import BudgetsFlow, {
   BudgetsFlowDrilldownLevel1,
 } from "app/state/api/action-reducers/viz/budgetsFlow";
-import Eligibility from "app/state/api/action-reducers/viz/eligibility";
+import Eligibility, {
+  EligibilityYears,
+} from "app/state/api/action-reducers/viz/eligibility";
 import BudgetsTimeCycle, {
   BudgetsTimeCycleDrilldownLevel1,
 } from "app/state/api/action-reducers/viz/budgetsTimeCycle";
@@ -84,6 +86,7 @@ const storeContent: StoreModel = {
   Allocations: persist(Allocations),
   AllocationsDrilldown: persist(AllocationsDrilldown),
   Eligibility: persist(Eligibility),
+  EligibilityYears: persist(EligibilityYears),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
   BudgetsTimeCycleDrilldownLevel1: persist(BudgetsTimeCycleDrilldownLevel1),
   DisbursementsGeomap: persist(DisbursementsGeomap),

@@ -1,15 +1,15 @@
 import React from "react";
+import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { InfoIcon } from "app/assets/icons/Info";
+import { Dropdown } from "app/components/Dropdown";
 import useMousePosition from "app/hooks/useMousePosition";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import {
   DotChartProps,
   DotChartModel,
-  mockdata,
-  mockdata2,
 } from "app/components/Charts/Eligibility/DotChart/data";
-import { NoDataLabel } from "../../common/nodatalabel";
 
 const styles = {
   Eligible: css`
@@ -76,7 +76,26 @@ export function DotChart(props: DotChartProps) {
               align-items: center;
             `}
           >
-            Year 2020 <InfoIcon />
+            <div
+              css={`
+                margin-right: 10px;
+              `}
+            >
+              Year
+            </div>
+            <Dropdown
+              value={props.selectedYear}
+              options={props.yearOptions}
+              handleChange={props.setSelectedYear}
+            />
+            <div
+              css={`
+                display: flex;
+                margin-left: 10px;
+              `}
+            >
+              <InfoIcon />
+            </div>
           </div>
           <div
             css={`
@@ -332,7 +351,17 @@ export function DotChart(props: DotChartProps) {
                 ))}
               {props.aggregateBy === "geographicAreaName" &&
                 props.data.map((group: DotChartModel, index: number) => (
-                  <Grid item key={`${group.name}${index}`} xs={4} sm={2}>
+                  <Grid
+                    item
+                    key={`${group.name}${index}`}
+                    xs={4}
+                    sm={2}
+                    css={`
+                      display: flex;
+                      flex-direction: column;
+                      justify-content: space-between;
+                    `}
+                  >
                     <div
                       css={`
                         font-size: 14px;

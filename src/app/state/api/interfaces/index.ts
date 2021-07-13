@@ -68,6 +68,7 @@ export interface StoreModel {
   Allocations: ApiCallModel;
   AllocationsDrilldown: ApiCallModel;
   Eligibility: ApiCallModel;
+  EligibilityYears: ApiCallModel;
   BudgetsFlow: ApiCallModel;
   BudgetsFlowDrilldownLevel1: ApiCallModel;
   BudgetsTimeCycle: ApiCallModel;
