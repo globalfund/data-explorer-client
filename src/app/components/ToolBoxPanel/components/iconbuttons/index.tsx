@@ -48,6 +48,9 @@ export function ToolBoxPanelIconButtons() {
   const donorMapView = useStoreState(
     (state) => state.ToolBoxPanelDonorMapViewState.value
   );
+  const investmentsMapView = useStoreState(
+    (state) => state.ToolBoxPanelInvestmentsMapViewState.value
+  );
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
@@ -83,6 +86,7 @@ export function ToolBoxPanelIconButtons() {
           {
             selectedAggregation,
             donorMapView,
+            investmentsMapView,
             isDetail: params.code !== undefined,
           }
         )}

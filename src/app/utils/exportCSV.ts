@@ -17,6 +17,7 @@ export function exportCSV(
   data: any,
   options: {
     selectedAggregation: string;
+    investmentsMapView: string;
     donorMapView: string;
     isDetail: boolean;
   }
@@ -85,19 +86,42 @@ export function exportCSV(
         ],
       };
     case "/viz/investments/geomap":
-      data.features.forEach((item: any) => {
-        if (item.properties && !isEmpty(item.properties.data)) {
-          csvData.push({
-            location: item.properties.name,
-            component: "-",
-            count: sumBy(item.properties.data.components, "activitiesCount"),
-            disbursement: item.properties.data.disbursed,
-            committment: item.properties.data.committed,
-            signed: item.properties.data.signed,
-          });
-          item.properties.data.components.forEach((component: any) => {
+      if (options.investmentsMapView === "countries") {
+        data.countries.features.forEach((item: any) => {
+          if (item.properties && !isEmpty(item.properties.data)) {
             csvData.push({
               location: item.properties.name,
+              component: "-",
+              count: sumBy(item.properties.data.components, "activitiesCount"),
+              disbursement: item.properties.data.disbursed,
+              committment: item.properties.data.committed,
+              signed: item.properties.data.signed,
+            });
+            item.properties.data.components.forEach((component: any) => {
+              csvData.push({
+                location: item.properties.name,
+                component: component.name,
+                count: component.activitiesCount,
+                disbursement: component.value,
+                committment: "-",
+                signed: "-",
+              });
+            });
+          }
+        });
+      } else if (options.investmentsMapView === "multicountries") {
+        data.multicountries.forEach((item: any) => {
+          csvData.push({
+            location: item.geoName,
+            component: "-",
+            count: sumBy(item.components, "activitiesCount"),
+            disbursement: item.disbursed,
+            committment: item.committed,
+            signed: item.signed,
+          });
+          item.components.forEach((component: any) => {
+            csvData.push({
+              location: item.geoName,
               component: component.name,
               count: component.activitiesCount,
               disbursement: component.value,
@@ -105,11 +129,11 @@ export function exportCSV(
               signed: "-",
             });
           });
-        }
-      });
+        });
+      }
       return {
         data: csvData,
-        filename: "investments-geomap.csv",
+        filename: `investments-${options.investmentsMapView}.csv`,
         headers: [
           { label: "Location", key: "location" },
           { label: "Component", key: "component" },

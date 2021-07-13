@@ -3,7 +3,10 @@ import get from "lodash/get";
 import { FeatureCollection } from "geojson";
 import { useStoreState } from "app/state/store/hooks";
 import { GrantListItemModel } from "app/modules/grants-module/data";
-import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
+import {
+  GeoMapPinMarker,
+  InvestmentsGeoMapPinMarker,
+} from "app/components/Charts/GeoMap/data";
 import { ResultListItemModel } from "app/modules/results-module/data";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityScatterplotDataModel } from "app/components/Charts/Eligibility/Scatterplot/data";
@@ -32,6 +35,14 @@ export function useGetAllVizData() {
         type: "FeatureCollection",
         features: get(state.DisbursementsGeomap.data, "data", []),
       } as FeatureCollection)
+  );
+  const disbursementsMCGeomap = useStoreState(
+    (state) =>
+      get(
+        state.DisbursementsGeomapMulticountries,
+        "data.pins",
+        []
+      ) as InvestmentsGeoMapPinMarker[]
   );
   const disbursementsTimeCycle = useStoreState(
     (state) =>
@@ -128,7 +139,10 @@ export function useGetAllVizData() {
     "/viz/allocations": allocations,
     "/viz/budgets/flow": budgetsFlow,
     "/viz/budgets/time-cycle": budgetsTimeCycle,
-    "/viz/investments/geomap": disbursementsGeomap,
+    "/viz/investments/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
     "/viz/investments/time-cycle": disbursementsTimeCycle,
     "/viz/investments/disbursements": disbursementsTreemap,
     "/viz/investments/table": disbursementsTreemap,
@@ -149,7 +163,10 @@ export function useGetAllVizData() {
     "/location/<code>/eligibility/table": eligibilityCountry,
     "/location/<code>/investments/disbursements": disbursementsTreemap,
     "/location/<code>/investments/table": disbursementsTreemap,
-    "/location/<code>/investments/geomap": disbursementsGeomap,
+    "/location/<code>/investments/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
     "/location/<code>/investments/time-cycle": disbursementsTimeCycle,
     "/location/<code>/budgets/flow": locationDetailBudgetsFlow,
     "/location/<code>/budgets/time-cycle": locationDetailBudgetsTimeCycle,

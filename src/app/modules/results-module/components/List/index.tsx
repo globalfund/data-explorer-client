@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
@@ -70,7 +72,7 @@ function ResultsListItem(props: ResultListItemModel) {
             <div css={locationlist}>
               {props.geoLocations.map(
                 (location: { name: string; value: number }) => (
-                  <div>
+                  <div key={location.name}>
                     <div>{location.name}</div>
                     <div>{location.value.toLocaleString()}</div>
                   </div>
