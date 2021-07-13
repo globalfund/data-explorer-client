@@ -47,22 +47,26 @@ export default function CountryDetail() {
   );
   const locationInfoData = useStoreState((state) =>
     get(state.LocationDetailInfo.data, "data[0]", {
+      id: "",
       locationName: "",
       disbursed: 0,
       committed: 0,
       signed: 0,
+      countries: [],
       multicountries: [],
       portfolioManager: "",
       portfolioManagerEmail: "",
     })
   );
 
+  const paramCode = params.code.replace(/\|/g, "/");
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
     fetchLocationInfoData({
-      filterString: `locations=${params.code}`,
+      filterString: `locations=${paramCode}`,
     });
-  }, []);
+  }, [paramCode]);
 
   return (
     <div
@@ -153,37 +157,41 @@ export default function CountryDetail() {
           <Redirect to={`/location/${params.code}/investments/disbursements`} />
         </Route>
         <Route path={`/location/${params.code}/budgets/flow`}>
-          <LocationDetailBudgetsFlowWrapper code={params.code} />
+          <LocationDetailBudgetsFlowWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/budgets/time-cycle`}>
-          <LocationDetailGenericBudgetsTimeCycleWrapper code={params.code} />
+          <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/investments/disbursements`}>
-          <GenericInvestmentsDisbursedWrapper code={params.code} />
+          <GenericInvestmentsDisbursedWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/investments/table`}>
-          <GenericInvestmentsTableWrapper code={params.code} />
+          <GenericInvestmentsTableWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/investments/time-cycle`}>
-          <GenericInvestmentsTimeCycleWrapper code={params.code} />
+          <GenericInvestmentsTimeCycleWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/investments/geomap`}>
-          <InvestmentsGeoMap code={params.code} />
+          <InvestmentsGeoMap code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/allocation`}>
-          <AllocationsModule code={params.code} />
+          <AllocationsModule code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/eligibility/table`}>
-          <LocationEligibilityTableWrapper code={params.code} />
+          <LocationEligibilityTableWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/eligibility`}>
-          <LocationDetailEligibilityWrapper code={params.code} />
+          <LocationDetailEligibilityWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/documents`}>
-          <LocationDetailDocumentsModule code={params.code} />
+          <LocationDetailDocumentsModule
+            mcName={params.code}
+            isMultiCountry={params.code.length > 3}
+            code={params.code.length > 3 ? locationInfoData.id : params.code}
+          />
         </Route>
         <Route path={`/location/${params.code}/grants`}>
-          <GrantsModule code={params.code} />
+          <GrantsModule code={paramCode} />
         </Route>
       </Switch>
       <InformationPanel
@@ -192,12 +200,13 @@ export default function CountryDetail() {
       >
         <LocationInfoContent
           title={locationInfoData.locationName}
-          code={params.code}
+          code={paramCode}
           investments={{
             disbursed: locationInfoData.disbursed,
             committed: locationInfoData.committed,
             signed: locationInfoData.signed,
           }}
+          countries={locationInfoData.countries}
           multicountries={locationInfoData.multicountries}
           manager={{
             name: locationInfoData.portfolioManager,

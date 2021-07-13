@@ -56,6 +56,7 @@ export const locationlist = css`
   display: flex;
   overflow-y: auto;
   max-height: 150px;
+  min-height: 150px;
   padding: 12px 20px;
   background: #495057;
   flex-direction: column;

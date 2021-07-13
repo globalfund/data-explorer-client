@@ -269,7 +269,7 @@ export function GeoMap(props: GeoMapProps) {
               key={pin.id}
               marker={pin}
               setMarkerInfo={setInvestmentsPinMarkerHoverInfo}
-              onClick={() => console.log("onClick")}
+              onClick={() => history.push(`/location/${pin.code}/investments`)}
               {...icons}
             />
           );

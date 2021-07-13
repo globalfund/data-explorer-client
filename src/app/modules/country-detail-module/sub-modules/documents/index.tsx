@@ -11,12 +11,14 @@ import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 
 interface LocationDetailDocumentsModuleProps {
   code: string;
+  mcName: string;
+  isMultiCountry: boolean;
 }
 
 export function LocationDetailDocumentsModule(
   props: LocationDetailDocumentsModuleProps
 ) {
-  useTitle("The Data Explorer - Grant Documents");
+  useTitle("The Data Explorer - Location Documents");
   const [search, setSearch] = React.useState("");
 
   // api call & data
@@ -38,14 +40,22 @@ export function LocationDetailDocumentsModule(
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
-      props.code
-        ? {
-            ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
-          }
-        : appliedFilters
-    );
+    let filterString = "";
+    if (props.isMultiCountry) {
+      filterString = getAPIFormattedFilters(appliedFilters);
+      filterString = `${filterString}${
+        filterString.length > 0 ? "&" : ""
+      }multicountries=${props.code}`;
+    } else {
+      filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
+    }
     fetchData({ filterString });
   }, [props.code, appliedFilters]);
 
@@ -87,7 +97,16 @@ export function LocationDetailDocumentsModule(
 
   return (
     <DocumentsSubModule
-      data={data}
+      data={
+        props.isMultiCountry
+          ? [
+              {
+                ...get(data, "[0]", {}),
+                name: props.mcName,
+              },
+            ]
+          : data
+      }
       search={search}
       setSearch={setSearch}
       columns={["Location", "Documents"]}
