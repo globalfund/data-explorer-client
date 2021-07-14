@@ -30,7 +30,7 @@ import {
   GeomapTooltip,
 } from "app/components/Charts/GeoMap/components/tooltip";
 import { MapPin } from "app/components/Charts/GeoMap/components/pins";
-import { NoDataLabel } from "../common/nodatalabel";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 export function GeoMap(props: GeoMapProps) {
   const history = useHistory();
@@ -100,9 +100,16 @@ export function GeoMap(props: GeoMapProps) {
           [12, "#343A40"],
         ],
       },
+      "fill-opacity": [
+        "case",
+        ["boolean", ["feature-state", "hover"], false],
+        0.5,
+        1,
+      ],
     },
   };
   const [hoverInfo, setHoverInfo] = React.useState<any>(null);
+  const [prevHoverInfo, setPrevHoverInfo] = React.useState<any>(null);
   const [
     pinMarkerHoverInfo,
     setPinMarkerHoverInfo,
@@ -176,19 +183,49 @@ export function GeoMap(props: GeoMapProps) {
     }
   }, [pinMarkerHoverInfo]);
 
-  const onHover = React.useCallback((event: any) => {
+  const onHover = (event: any) => {
     const {
       features,
       srcEvent: { pageX, pageY },
     } = event;
     const hoveredFeature = features && features[0];
-
-    setHoverInfo(
+    const tileWithData =
       hoveredFeature &&
-        hoveredFeature.properties &&
-        hoveredFeature.properties.name &&
-        hoveredFeature.properties.value > 0
+      hoveredFeature.properties &&
+      hoveredFeature.properties.name &&
+      hoveredFeature.properties.value > 0;
+
+    if (mapRef.current) {
+      if (tileWithData) {
+        // @ts-ignore
+        mapRef.current.setFeatureState(
+          {
+            source: "geojson-data-source",
+            id: hoveredFeature.id,
+          },
+          { hover: true }
+        );
+      }
+      if (
+        prevHoverInfo &&
+        prevHoverInfo.id !== (hoveredFeature ? hoveredFeature.id : -1)
+      ) {
+        // @ts-ignore
+        mapRef.current.setFeatureState(
+          {
+            source: "geojson-data-source",
+            id: prevHoverInfo.id,
+          },
+          { hover: false }
+        );
+      }
+    }
+
+    setPrevHoverInfo(hoverInfo);
+    setHoverInfo(
+      tileWithData
         ? {
+            id: hoveredFeature.id,
             properties: {
               ...hoveredFeature.properties,
               data: JSON.parse(hoveredFeature.properties.data),
@@ -198,7 +235,7 @@ export function GeoMap(props: GeoMapProps) {
           }
         : null
     );
-  }, []);
+  };
 
   const onClick = React.useCallback((event: any) => {
     if (props.allowClickthrough) {
@@ -250,6 +287,8 @@ export function GeoMap(props: GeoMapProps) {
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
       >
         <Source
+          generateId
+          id="geojson-data-source"
           type="geojson"
           data={
             props.noData
