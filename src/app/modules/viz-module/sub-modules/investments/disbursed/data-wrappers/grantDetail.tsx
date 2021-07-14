@@ -49,9 +49,10 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
   return (
     <InvestmentsDisbursedModule
       data={data}
-      drilldownData={[]}
       vizLevel={0}
+      drilldownData={[]}
       isLoading={isLoading}
+      allowDrilldown={false}
       vizSelected={undefined}
       setVizLevel={setVizLevel}
       isDrilldownLoading={false}

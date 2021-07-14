@@ -39,6 +39,7 @@ export const StyledMenu = withStyles({
       vertical: "top",
       horizontal: "center",
     }}
+    autoFocus={false}
     {...props}
   />
 ));
@@ -191,15 +192,17 @@ export function PageHeader(props: PageHeaderProps) {
                   </div>
                   {breadcrumb.menuitems && (
                     <StyledMenu
-                      id="customized-menu"
-                      anchorEl={anchorEl}
                       keepMounted
-                      open={Boolean(anchorEl)}
+                      anchorEl={anchorEl}
+                      id="breadcrumb-menu"
                       onClose={handleClose}
+                      open={Boolean(anchorEl)}
                     >
                       {breadcrumb.menuitems.map(
-                        (item: React.ReactChild, index: number) => (
-                          <StyledMenuItem key={index}>{item}</StyledMenuItem>
+                        (item: React.ReactChild, itemIndex: number) => (
+                          <StyledMenuItem key={itemIndex}>
+                            {item}
+                          </StyledMenuItem>
                         )
                       )}
                     </StyledMenu>

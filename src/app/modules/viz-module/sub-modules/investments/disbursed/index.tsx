@@ -24,6 +24,7 @@ interface InvestmentsDisbursedModuleProps {
   setVizTranslation: (obj: { x: number; y: number }) => void;
   vizSelected: string | undefined;
   setVizSelected: (vizSelected: string | undefined) => void;
+  allowDrilldown: boolean;
 }
 
 export function InvestmentsDisbursedModule(
@@ -107,9 +108,11 @@ export function InvestmentsDisbursedModule(
             data={props.data}
             selectedNodeId={props.vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
-              props.setVizLevel(1);
-              props.setVizSelected(node);
-              props.setVizTranslation({ x: x * -1, y: y * -1 });
+              if (props.allowDrilldown) {
+                props.setVizLevel(1);
+                props.setVizSelected(node);
+                props.setVizTranslation({ x: x * -1, y: y * -1 });
+              }
             }}
           />
         </TransitionContainer>

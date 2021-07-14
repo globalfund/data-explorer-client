@@ -84,6 +84,7 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
   return (
     <InvestmentsDisbursedModule
       data={data}
+      allowDrilldown
       vizLevel={vizLevel}
       isLoading={isLoading}
       setVizLevel={setVizLevel}

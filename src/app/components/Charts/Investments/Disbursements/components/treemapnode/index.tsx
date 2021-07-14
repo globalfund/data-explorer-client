@@ -70,7 +70,7 @@ export function TreeemapNode(props: any) {
       css={containercss(
         !hasChildren,
         props.selectedNodeId ===
-          `${node.id}-${get(node, "data.tooltip.header", "")}`
+          `${node.data.code || node.id}-${node.data.tooltip.header}`
       )}
       onMouseMove={!hasChildren ? node.onMouseMove : undefined}
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
