@@ -34,7 +34,7 @@ const griditem = (content: React.ReactElement, link: string) => (
         }
 
         &:hover {
-          border-color: #262c34;
+          border-color: #2e4df9;
         }
       `}
     >

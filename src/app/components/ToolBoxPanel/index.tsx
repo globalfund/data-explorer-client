@@ -181,8 +181,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 background: #495057;
                 transform: rotate(-90deg);
                 border-radius: 20px 20px 0px 0px;
+                transition: background 0.2s ease-in-out;
                 left: -${!visibleVScrollbar || props.open ? 84 : 88}px;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+                &:hover {
+                  background: #2e4df9;
+                }
               `}
               onClick={() => props.onButtonClick()}
             >

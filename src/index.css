@@ -116,3 +116,11 @@ body::webkit-scrollbar-thumb {
   position: absolute;
   white-space: nowrap;
 }
+
+.MuiListItem-button.Mui-selected {
+  color: #fff;
+}
+
+.MuiPaginationItem-page.Mui-selected {
+  color: #fff;
+}

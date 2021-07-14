@@ -54,7 +54,9 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 &:hover {
                   color: #fff;
                   cursor: pointer;
-                  background: #495057;
+                  background: ${props.selected === option.value
+                    ? "#495057"
+                    : "#2e4df9"};
                 }
               `}
             >
@@ -70,6 +72,8 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 gap: 6px;
                 display: flex;
                 font-size: 12px;
+                border-width: 0;
+                line-height: 24px;
                 padding: 8px 12px;
                 flex-direction: row;
                 border-radius: 20px;
@@ -82,7 +86,9 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 &:hover {
                   color: #fff;
                   cursor: pointer;
-                  background: #495057;
+                  background: ${props.selected === option.value
+                    ? "#495057"
+                    : "#2e4df9"};
                 }
               `}
             >

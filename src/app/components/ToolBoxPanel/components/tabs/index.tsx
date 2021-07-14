@@ -27,7 +27,7 @@ export function ToolBoxPanelTabs(props: ToolBoxPanelTabsProps) {
 
           &:hover {
             cursor: pointer;
-            background: #495057;
+            background: #2e4df9;
           }
         }
       `}
