@@ -85,7 +85,7 @@ export function TreeemapNode(props: any) {
       //   onKeyPress={node.onClick}
       //   onFocus={node.onMouseEnter}
     >
-      {(node.width > 80 || node.height > 80 || hasChildren) && (
+      {((node.width > 60 && node.height > 60) || hasChildren) && (
         <div
           onMouseMove={hasChildren ? node.onMouseMove : undefined}
           onMouseEnter={hasChildren ? node.onMouseEnter : undefined}

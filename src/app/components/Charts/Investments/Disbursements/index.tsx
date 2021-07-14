@@ -17,6 +17,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
       css={`
         width: 100%;
         height: 600px;
+        overflow: hidden;
       `}
       data-cy="investments-disbursements-treemap"
     >

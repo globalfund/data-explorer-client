@@ -15,6 +15,7 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
       css={`
         width: 100%;
         height: 600px;
+        overflow: hidden;
       `}
       data-cy="budgets-drilldown-treemap"
     >
