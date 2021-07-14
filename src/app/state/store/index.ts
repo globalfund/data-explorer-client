@@ -75,6 +75,7 @@ import LocationDetailBudgetsTimeCycle, {
 } from "app/state/api/action-reducers/locationDetail/budgetsTimeCycle";
 import ResultsList, {
   ResultsStats,
+  ResultsYears,
 } from "app/state/api/action-reducers/viz/resultsList";
 
 const storeContent: StoreModel = {
@@ -102,6 +103,7 @@ const storeContent: StoreModel = {
   ),
   ResultsList: persist(ResultsList),
   ResultsStats: persist(ResultsStats),
+  ResultsYears: persist(ResultsYears),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // grant detail api

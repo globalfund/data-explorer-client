@@ -20,6 +20,7 @@ import {
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { Dropdown } from "app/components/Dropdown";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -27,6 +28,14 @@ export default function ResultsModule() {
   const [search, setSearch] = React.useState("");
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+
+  const dataYearOptions = useStoreState(
+    (state) => get(state.ResultsYears.data, "data", []) as string[]
+  );
+
+  const [selectedYear, setSelectedYear] = React.useState<string>(
+    get(dataYearOptions, "[0]", "2019")
+  );
 
   // api call & data
   const fetchData = useStoreActions((store) => store.ResultsList.fetch);
@@ -38,33 +47,57 @@ export default function ResultsModule() {
     (state) =>
       get(state.ResultsStats.data, "data", []) as ResultsInfoContentStatsProps[]
   );
+  const fetchYearOptionsData = useStoreActions(
+    (store) => store.ResultsYears.fetch
+  );
   const isLoading = useStoreState((state) => state.ResultsList.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
+    fetchYearOptionsData({});
   }, []);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters, { search });
     if (search.length === 0) {
-      fetchData({ filterString });
+      fetchData({
+        filterString: `${filterString}${
+          filterString.length > 0 ? "&" : ""
+        }periods=${selectedYear}`,
+      });
     }
-    fetchInfoData({ filterString });
-  }, [appliedFilters]);
+    fetchInfoData({
+      filterString: `${filterString}${
+        filterString.length > 0 ? "&" : ""
+      }periods=${selectedYear}`,
+    });
+  }, [appliedFilters, selectedYear]);
 
   useUpdateEffect(() => {
     if (search.length === 0) {
       const filterString = getAPIFormattedFilters(appliedFilters);
-      fetchData({ filterString });
+      fetchData({
+        filterString: `${filterString}${
+          filterString.length > 0 ? "&" : ""
+        }periods=${selectedYear}`,
+      });
     }
   }, [search]);
+
+  useUpdateEffect(() => setSelectedYear(get(dataYearOptions, "[0]", "2020")), [
+    dataYearOptions,
+  ]);
 
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
         const filterString = getAPIFormattedFilters(appliedFilters, { search });
-        fetchData({ filterString });
+        fetchData({
+          filterString: `${filterString}${
+            filterString.length > 0 ? "&" : ""
+          }periods=${selectedYear}`,
+        });
       }
     },
     500,
@@ -170,6 +203,28 @@ export default function ResultsModule() {
         `}
       >
         <Search value={search} setValue={setSearch} />
+        <div css="width: 100%;height: 25px;" />
+        <div
+          css={`
+            gap: 6px;
+            display: flex;
+            font-weight: bold;
+            align-items: center;
+          `}
+        >
+          <div
+            css={`
+              margin-right: 10px;
+            `}
+          >
+            Year
+          </div>
+          <Dropdown
+            value={selectedYear}
+            options={dataYearOptions}
+            handleChange={setSelectedYear}
+          />
+        </div>
         <div css="width: 100%;height: 25px;" />
         {data.length === 0 ? <NoDataLabel /> : <ResultsList listitems={data} />}
       </div>
