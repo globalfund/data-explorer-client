@@ -1,9 +1,14 @@
 import React from "react";
+import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import { ResponsiveSankey } from "@nivo/sankey";
+import {
+  ResponsiveSankey,
+  SankeyLinkDatum,
+  SankeyNodeDatum,
+} from "@nivo/sankey";
 import { InfoIcon } from "app/assets/icons/Info";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -87,12 +92,12 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
     }
     return nProps.nodes.map((node: any) => (
       <rect
-        x={node.x}
+        x={node.id === "Budgets" ? node.x - 20 : node.x}
         y={node.y}
         key={node.id}
-        width={node.width}
         height={node.height}
         data-cy="bf-sankey-bar-comp"
+        width={node.id === "Budgets" ? 25 : node.width}
         fill={node.id === props.selectedNodeId ? "#2E4DF9" : "#373D43"}
         css={`
           cursor: pointer;
@@ -159,9 +164,25 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             nodeThickness={15}
             nodeInnerPadding={5}
             linkOpacity={1}
+            onClick={(
+              data: SankeyNodeDatum | SankeyLinkDatum,
+              event: React.MouseEvent
+            ) => {
+              const linkTarget = get(data, "target", null);
+              if (linkTarget) {
+                props.onNodeClick(
+                  {
+                    id: linkTarget.id.toString(),
+                    filterStr: linkTarget.filterStr.toString(),
+                  },
+                  linkTarget.x - 200,
+                  linkTarget.y
+                );
+              }
+            }}
             enableLinkGradient
             linkBlendMode="normal"
-            linkHoverOthersOpacity={0.1}
+            linkHoverOthersOpacity={0.15}
             linkTooltip={(tProps: any) =>
               !matches && (
                 <BudgetsFlowTooltip
