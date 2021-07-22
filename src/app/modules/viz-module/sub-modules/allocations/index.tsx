@@ -278,7 +278,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
 
         ${!vizSelected
           ? `* {
-      overflow: visible !important;
+      // overflow: visible !important;
     }`
           : ""}
       `}
