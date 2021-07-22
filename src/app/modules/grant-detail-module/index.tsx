@@ -250,6 +250,7 @@ export default function GrantDetail() {
       </Switch>
       <InformationPanel
         open={openInfoPanel}
+        buttonLabel="Overview"
         onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
       >
         <GrantInfoContent

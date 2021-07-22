@@ -196,6 +196,7 @@ export default function CountryDetail() {
       </Switch>
       <InformationPanel
         open={openInfoPanel}
+        buttonLabel="Overview"
         onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
       >
         <LocationInfoContent
