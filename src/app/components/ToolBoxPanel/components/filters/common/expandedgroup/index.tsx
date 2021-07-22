@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import find from "lodash/find";
 import remove from "lodash/remove";
@@ -460,17 +462,24 @@ function FilterOption(props: FilterOptionProps) {
           width: 100%;
           padding: 5px;
           display: flex;
+          position: relative;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
 
           > button {
+            z-index: 3;
             margin-right: 6px;
             transform: rotate(${showSubOptions ? 0 : 180}deg);
           }
         `}
       >
         <FormControlLabel
+          css={`
+            && {
+              z-index: 3;
+            }
+          `}
           control={
             <Checkbox
               color="primary"
@@ -491,9 +500,23 @@ function FilterOption(props: FilterOptionProps) {
           label={props.label}
         />
         {props.subOptions && (
-          <IconButton onClick={() => setShowSubOptions(!showSubOptions)}>
-            <TriangleXSIcon />
-          </IconButton>
+          <React.Fragment>
+            <div
+              css={`
+                top: 0;
+                left: 0;
+                z-index: 2;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                position: absolute;
+              `}
+              onClick={() => setShowSubOptions(!showSubOptions)}
+            />
+            <IconButton onClick={() => setShowSubOptions(!showSubOptions)}>
+              <TriangleXSIcon />
+            </IconButton>
+          </React.Fragment>
         )}
       </div>
       {props.subOptions && showSubOptions && (
