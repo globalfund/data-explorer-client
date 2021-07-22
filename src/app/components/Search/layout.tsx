@@ -21,6 +21,7 @@ export function SearchLayout(props: SearchLayoutProps) {
         css={input}
         tabIndex={0}
         value={props.value}
+        placeholder="e.g. Kenya"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           props.setValue(e.target.value)
         }
