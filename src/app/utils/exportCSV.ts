@@ -24,6 +24,7 @@ export function exportCSV(
 ): CommonPropTypes {
   const csvData: any[] = [];
   const isComponent = options.selectedAggregation === "componentName";
+  const yearDropdownNode = document.getElementById("generic-dropdown-input");
   switch (pathname) {
     case "/viz/investments/disbursements":
       data.forEach((item: any) => {
@@ -286,7 +287,9 @@ export function exportCSV(
       });
       return {
         data: csvData,
-        filename: "eligibility.csv",
+        filename: `eligibility-by-${
+          isComponent ? "component" : "location"
+        }-${yearDropdownNode?.getAttribute("value")}.csv`,
         headers: [
           { label: "Component", key: "component" },
           { label: "Location", key: "location" },
@@ -339,7 +342,9 @@ export function exportCSV(
       });
       return {
         data: csvData,
-        filename: "eligibility.csv",
+        filename: `eligibility-by-${
+          isComponent ? "component" : "location"
+        }-${yearDropdownNode?.getAttribute("value")}.csv`,
         headers: [
           { label: "Component", key: "component" },
           { label: "Location", key: "location" },

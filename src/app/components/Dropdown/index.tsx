@@ -23,6 +23,9 @@ export function Dropdown(props: DropdownProps) {
       `}
     >
       <Select
+        inputProps={{
+          id: "generic-dropdown-input",
+        }}
         value={props.value}
         onChange={handleChange}
         MenuProps={{ disablePortal: true }}

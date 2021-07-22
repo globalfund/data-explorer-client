@@ -2,19 +2,74 @@
 // @ts-ignore
 import domtoimage from "dom-to-image";
 
+function getFileName(
+  pathname: string,
+  options: {
+    selectedAggregation: string;
+    investmentsMapView: string;
+    donorMapView: string;
+    isDetail: boolean;
+  }
+): string {
+  const isComponent = options.selectedAggregation === "componentName";
+  switch (pathname) {
+    case "/viz/investments/disbursements":
+      return "investments-treemap";
+    case "/viz/investments/time-cycle":
+      return "investments-bar";
+    case "/viz/investments/geomap":
+      return `investments-${options.investmentsMapView}`;
+    case "/viz/budgets/flow":
+      return "budgets-flow";
+    case "/viz/budgets/time-cycle":
+      return "budgets-time-cycle";
+    case "/viz/allocations":
+      return "allocations";
+    case "/viz/allocation":
+      return "allocations";
+    case "/viz/eligibility":
+      if (options.isDetail) {
+        return "location-eligibility";
+      }
+      return `eligibility-by-${isComponent ? "component" : "location"}`;
+    case "/viz/pledges-contributions/time-cycle":
+      return "pledges-contributions-time-cycle";
+    case "/viz/pledges-contributions/geomap":
+      return `pledges-contributions-${options.donorMapView
+        .toLowerCase()
+        .replace(/ /g, "-")}`;
+    case "/grants":
+      return "grants";
+    case "/viz/grants":
+      return "grants";
+    case "/results":
+      return "results";
+    default:
+      return "";
+  }
+}
+
 export function exportView(
   id: string,
-  type: "jpg" | "png" | "svg" | "map"
+  type: "jpg" | "png" | "svg" | "map",
+  pathname: string,
+  options: {
+    selectedAggregation: string;
+    investmentsMapView: string;
+    donorMapView: string;
+    isDetail: boolean;
+  }
 ): void {
   const node = document.getElementById(id);
   if (node) {
+    const filename = getFileName(pathname, options);
     switch (type) {
       case "jpg":
         domtoimage
           .toJpeg(node)
           .then((dataUrl: any) => {
             const link = document.createElement("a");
-            link.download = "download.jpg";
+            link.download = `${filename}.jpg`;
             link.href = dataUrl;
             link.click();
           })
@@ -27,7 +82,7 @@ export function exportView(
           .toPng(node)
           .then((dataUrl: any) => {
             const link = document.createElement("a");
-            link.download = "download.png";
+            link.download = `${filename}.png`;
             link.href = dataUrl;
             link.click();
           })
@@ -40,7 +95,7 @@ export function exportView(
           .toSvg(node)
           .then((dataUrl: any) => {
             const link = document.createElement("a");
-            link.download = "download.svg";
+            link.download = `${filename}.svg`;
             link.href = dataUrl;
             link.click();
           })
@@ -53,7 +108,7 @@ export function exportView(
         if (mapCanvas) {
           const dataUrl = (mapCanvas as HTMLCanvasElement).toDataURL();
           const link = document.createElement("a");
-          link.download = "download.png";
+          link.download = `${filename}.png`;
           link.href = dataUrl;
           link.click();
         }

@@ -105,7 +105,20 @@ export function ToolBoxPanelIconButtons() {
       <StyledMenuItem
         key="export-png-menuitem"
         onClick={() => {
-          exportView("export-view-div", "png");
+          exportView(
+            "export-view-div",
+            "png",
+            location.pathname
+              .replace("/location/", "/viz/")
+              .replace("/grant/", "/viz/")
+              .replace(`/${params.code}`, ""),
+            {
+              selectedAggregation,
+              donorMapView,
+              investmentsMapView,
+              isDetail: params.code !== undefined,
+            }
+          );
           handleClose();
         }}
       >
@@ -116,7 +129,20 @@ export function ToolBoxPanelIconButtons() {
       <StyledMenuItem
         key="export-svg-menuitem"
         onClick={() => {
-          exportView("export-view-div", "svg");
+          exportView(
+            "export-view-div",
+            "svg",
+            location.pathname
+              .replace("/location/", "/viz/")
+              .replace("/grant/", "/viz/")
+              .replace(`/${params.code}`, ""),
+            {
+              selectedAggregation,
+              donorMapView,
+              investmentsMapView,
+              isDetail: params.code !== undefined,
+            }
+          );
           handleClose();
         }}
       >
