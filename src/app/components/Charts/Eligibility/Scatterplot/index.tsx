@@ -86,6 +86,18 @@ export function ScatterPlot(props: ScatterPlotProps) {
     });
   };
 
+  React.useEffect(() => {
+    setTimeout(() => {
+      const scrollableDiv = document.getElementById("scatterplot-scroll-div");
+      if (scrollableDiv) {
+        scrollableDiv.scroll({
+          left: scrollableDiv.scrollWidth,
+          behavior: "smooth",
+        });
+      }
+    }, 500);
+  }, []);
+
   const noData =
     filter(
       props.data,
@@ -620,6 +632,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
         </Grid>
         <Grid item xs={12} md={10}>
           <div
+            id="scatterplot-scroll-div"
             css={`
               width: 100%;
               overflow-x: auto;
