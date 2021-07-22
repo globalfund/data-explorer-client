@@ -38,7 +38,7 @@ export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
   const location = useLocation();
   const params = useParams<{ code: string; vizType: string }>();
-  const [openInfoPanel, setOpenInfoPanel] = React.useState(false);
+  const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   // api call & data
