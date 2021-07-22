@@ -28,7 +28,7 @@ export interface DisbursementsTreemapProps {
   isChildTreemap?: boolean;
   data: DisbursementsTreemapDataItem[];
   parentNodeCoords?: { x: number; y: number };
-  onNodeClick: (node: string, x: number, y: number) => void;
+  onNodeClick: (node: string, x: number, y: number, code?: string) => void;
 }
 
 export interface TreemapTooltipProps {

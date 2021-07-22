@@ -77,6 +77,7 @@ import ResultsList, {
   ResultsStats,
   ResultsYears,
 } from "app/state/api/action-reducers/viz/resultsList";
+import LocationDetailDisbursementsTreemap from "../api/action-reducers/locationDetail/disbursementsTreemap";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -129,6 +130,9 @@ const storeContent: StoreModel = {
   // location detail api
   LocationDetailInfo: persist(LocationDetailInfo),
   EligibilityCountry: persist(EligibilityCountry),
+  LocationDetailDisbursementsTreemap: persist(
+    LocationDetailDisbursementsTreemap
+  ),
   LocationDetailDocuments: persist(LocationDetailDocuments),
   LocationDetailBudgetsFlow: persist(LocationDetailBudgetsFlow),
   LocationDetailBudgetsFlowDrilldownLevel1: persist(

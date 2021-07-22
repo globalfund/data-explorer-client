@@ -80,7 +80,8 @@ export function TreeemapNode(props: any) {
           props.onNodeClick(
             `${node.data.code || node.id}-${node.data.tooltip.header}`,
             node.x + props.parentNodeCoords.x,
-            node.y + props.parentNodeCoords.y
+            node.y + props.parentNodeCoords.y,
+            node.data.code
           );
         }
       }}

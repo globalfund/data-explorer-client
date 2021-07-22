@@ -33,6 +33,7 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { LocationDetailInvestmentsDisbursedWrapper } from "../viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -168,7 +169,7 @@ export default function CountryDetail() {
           <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/investments/disbursements`}>
-          <GenericInvestmentsDisbursedWrapper code={paramCode} />
+          <LocationDetailInvestmentsDisbursedWrapper code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/investments/table`}>
           <GenericInvestmentsTableWrapper code={paramCode} />

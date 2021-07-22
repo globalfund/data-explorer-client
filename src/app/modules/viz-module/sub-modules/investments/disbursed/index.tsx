@@ -25,6 +25,7 @@ interface InvestmentsDisbursedModuleProps {
   vizSelected: string | undefined;
   setVizSelected: (vizSelected: string | undefined) => void;
   allowDrilldown: boolean;
+  onNodeClick?: (code: string) => void;
 }
 
 export function InvestmentsDisbursedModule(
@@ -107,11 +108,18 @@ export function InvestmentsDisbursedModule(
           <DisbursementsTreemap
             data={props.data}
             selectedNodeId={props.vizSelected}
-            onNodeClick={(node: string, x: number, y: number) => {
+            onNodeClick={(
+              node: string,
+              x: number,
+              y: number,
+              code?: string
+            ) => {
               if (props.allowDrilldown) {
                 props.setVizLevel(1);
                 props.setVizSelected(node);
                 props.setVizTranslation({ x: x * -1, y: y * -1 });
+              } else if (props.onNodeClick && code) {
+                props.onNodeClick(code);
               }
             }}
           />

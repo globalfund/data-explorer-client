@@ -104,6 +104,7 @@ export interface StoreModel {
   // location detail api
   LocationDetailInfo: ApiCallModel;
   EligibilityCountry: ApiCallModel;
+  LocationDetailDisbursementsTreemap: ApiCallModel;
   LocationDetailDocuments: ApiCallModel;
   LocationDetailBudgetsFlow: ApiCallModel;
   LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
