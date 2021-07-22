@@ -58,6 +58,9 @@ export default function CountryDetail() {
       portfolioManagerEmail: "",
     })
   );
+  const clearEligibilityData = useStoreActions(
+    (store) => store.EligibilityCountry.clear
+  );
 
   const paramCode = params.code.replace(/\|/g, "/");
 
@@ -66,6 +69,8 @@ export default function CountryDetail() {
     fetchLocationInfoData({
       filterString: `locations=${paramCode}`,
     });
+
+    return () => clearEligibilityData();
   }, [paramCode]);
 
   return (
