@@ -7,6 +7,7 @@ interface DropdownProps {
   value: string;
   options: string[];
   handleChange: (value: string) => void;
+  enablePortal?: boolean;
 }
 
 export function Dropdown(props: DropdownProps) {
@@ -28,7 +29,7 @@ export function Dropdown(props: DropdownProps) {
         }}
         value={props.value}
         onChange={handleChange}
-        MenuProps={{ disablePortal: true }}
+        MenuProps={{ disablePortal: !props.enablePortal }}
       >
         {props.options.map((option: string) => (
           <MenuItem

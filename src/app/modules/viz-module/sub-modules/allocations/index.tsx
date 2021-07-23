@@ -23,6 +23,7 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { NoDataAllocations } from "./components/nodata";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { Dropdown } from "app/components/Dropdown";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -30,6 +31,15 @@ interface AllocationsModuleProps {
 
 export function AllocationsModule(props: AllocationsModuleProps) {
   useTitle(`The Data Explorer -${props.code ?? " Location"} Allocations`);
+
+  const dataPeriodOptions = useStoreState(
+    (state) => get(state.AllocationsPeriods.data, "data", []) as string[]
+  );
+
+  const [selectedPeriod, setSelectedPeriod] = React.useState<string>(
+    get(dataPeriodOptions, "[0]", "2014 - 2016")
+  );
+
   // api call & data
   const fetchData = useStoreActions((store) => store.Allocations.fetch);
   const total = useStoreState(
@@ -62,6 +72,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   );
   const isDrilldownLoading = useStoreState(
     (state) => state.AllocationsDrilldown.loading
+  );
+  const fetchPeriodOptionsData = useStoreActions(
+    (store) => store.AllocationsPeriods.fetch
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
@@ -183,8 +196,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         : appliedFilters
     );
-    fetchData({ filterString });
-  }, [props.code, appliedFilters]);
+    fetchData({
+      filterString: `periods=${selectedPeriod}${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
+    });
+  }, [props.code, appliedFilters, selectedPeriod]);
 
   React.useEffect(() => {
     setKeysPercentagesColors(getKeysPercentages(total, values));
@@ -212,7 +229,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           : appliedFilters
       );
       fetchDrilldownLevelData({
-        filterString: `levelParam=component/componentName eq '${vizSelected}'${
+        filterString: `levelParam=component/componentName eq '${vizSelected}'&periods=${selectedPeriod}${
           filterString.length > 0 ? `&${filterString}` : ""
         }`,
       });
@@ -225,9 +242,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       });
       clearDrilldownLevelData();
     }
-  }, [vizSelected]);
+  }, [vizSelected, selectedPeriod]);
 
   React.useEffect(() => {
+    fetchPeriodOptionsData({});
+
     setTimeout(() => {
       const viz = document.getElementById("allocations-radial-bar");
       if (viz) {
@@ -266,6 +285,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     return () => window.removeEventListener("click", onClick);
   }, []);
 
+  React.useEffect(
+    () => setSelectedPeriod(get(dataPeriodOptions, "[0]", "2014 - 2016")),
+    [dataPeriodOptions]
+  );
+
   if (isLoading) {
     return <PageLoader />;
   }
@@ -291,36 +315,48 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             width: 100%;
           `}
         >
-          <Grid
-            container
-            alignItems="center"
-            spacing={4}
+          <div
             css={`
-              > div {
-                color: #262c34;
-                font-size: 14px;
-                font-weight: bold;
+              display: flex;
+              color: #262c34;
+              font-size: 14px;
+              font-weight: bold;
+              align-items: center;
+
+              > svg {
+                margin-left: 10px;
               }
             `}
           >
-            <Grid item xs={3}>
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-
-                  > svg {
-                    margin-left: 10px;
-                  }
-                `}
-              >
-                Allocations <InfoIcon />
-              </div>
-              <div css="font-weight: normal;">
-                {formatFinancialValue(total)}
-              </div>
-            </Grid>
-          </Grid>
+            Allocations <InfoIcon />
+          </div>
+          <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
+          <div
+            css={`
+              gap: 6px;
+              display: flex;
+              margin-top: 15px;
+              align-items: center;
+              flex-direction: row;
+            `}
+          >
+            <div
+              css={`
+                color: #262c34;
+                font-size: 14px;
+                font-weight: bold;
+                margin-right: 10px;
+              `}
+            >
+              Period
+            </div>
+            <Dropdown
+              enablePortal
+              value={selectedPeriod}
+              options={dataPeriodOptions}
+              handleChange={setSelectedPeriod}
+            />
+          </div>
           {total === 0 ? (
             <div css="display: flex;justify-content: center;">
               <NoDataLabel />

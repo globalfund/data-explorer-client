@@ -66,6 +66,7 @@ export interface StoreModel {
   Documents: ApiCallModel;
   GrantsList: ApiCallModel;
   Allocations: ApiCallModel;
+  AllocationsPeriods: ApiCallModel;
   AllocationsDrilldown: ApiCallModel;
   Eligibility: ApiCallModel;
   EligibilityYears: ApiCallModel;
