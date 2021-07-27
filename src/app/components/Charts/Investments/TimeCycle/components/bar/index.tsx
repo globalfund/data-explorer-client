@@ -71,6 +71,8 @@ export function BarComponent(props: any) {
       data-cy="budgets-time-cycle-bar-component"
     >
       <text
+        display="none"
+        className="investments-time-cycle-bar-label"
         css={`
           font-size: 10px;
           text-transform: capitalize;

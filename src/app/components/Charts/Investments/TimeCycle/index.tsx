@@ -1,19 +1,20 @@
 import React from "react";
 import uniq from "lodash/uniq";
-import round from "lodash/round";
 import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
 import { InfoIcon } from "app/assets/icons/Info";
+import Checkbox from "@material-ui/core/Checkbox";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { BarComponent } from "app/components/Charts/Investments/TimeCycle/components/bar";
 import { InvestmentsTimeCycleProps } from "app/components/Charts/Investments/TimeCycle/data";
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
-import { NoDataBudgetsTimeCycle } from "../../Budgets/TimeCycle/components/nodata";
-import { NoDataLabel } from "../../common/nodatalabel";
+import { NoDataBudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle/components/nodata";
 
 function getKeysFromData(data: Record<string, unknown>[]) {
   if (data.length === 0) {
@@ -56,6 +57,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
   const matches = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
+  const [showCumulative, setShowCumulative] = React.useState(false);
   const [keys, setKeys] = React.useState(getKeysFromData(props.data));
   const moneyAbbrRange = getVizValueRange(props.data, "budgetBarChart");
   const totalInvestmentValue =
@@ -63,6 +65,24 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
       ? (props.data[props.data.length - 1].cumulative as number)
       : 0;
   const legends = getLegendItems(props.data);
+
+  function showHideBarLabels(show: boolean) {
+    const labels = [
+      ...document.getElementsByClassName("investments-time-cycle-bar-label"),
+    ];
+    labels.forEach((label: Element) => {
+      label.setAttribute("display", show ? "inherit" : "none");
+    });
+  }
+
+  function handleChangeCumulative(event: React.ChangeEvent<HTMLInputElement>) {
+    setShowCumulative(event.target.checked);
+    if (event.target.checked) {
+      setTimeout(() => showHideBarLabels(event.target.checked), 100);
+    } else {
+      showHideBarLabels(event.target.checked);
+    }
+  }
 
   React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
 
@@ -155,7 +175,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
               }
             `}
           >
-            Budget <InfoIcon />
+            Disbursements <InfoIcon />
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalInvestmentValue)}
@@ -198,6 +218,17 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 <div>{legend.name}</div>
               </div>
             ))}
+            <FormControlLabel
+              control={
+                <Checkbox
+                  color="primary"
+                  defaultChecked={false}
+                  onChange={handleChangeCumulative}
+                  disabled={props.data.length === 0}
+                />
+              }
+              label="Show Cumulative"
+            />
           </div>
         </Grid>
       </Grid>
@@ -219,7 +250,11 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
           padding={matches ? 0.3 : 0.5}
           innerPadding={6}
           data={props.data}
-          keys={keys}
+          keys={
+            showCumulative
+              ? keys
+              : filter(keys, (key: string) => key !== "cumulative")
+          }
           indexBy="year"
           margin={{
             top: 60,
