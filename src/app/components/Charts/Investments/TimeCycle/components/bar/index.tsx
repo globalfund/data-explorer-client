@@ -47,18 +47,21 @@ export function BarComponent(props: any) {
     );
   });
 
+  function onMouseMoveOrEnter(e: React.MouseEvent<SVGGElement>) {
+    if (
+      (props.selected || { indexValue: "" }).indexValue !==
+      props.data.indexValue
+    ) {
+      props.showTooltip(<InvestmentsTimeCycleTooltip {...props.data} />, e);
+      props.setHoveredXIndex(`${props.data.indexValue}-${props.data.id}`);
+    }
+  }
+
   return (
     <g
       {...fprops}
-      onMouseEnter={(e: React.MouseEvent<SVGGElement>) => {
-        if (
-          (props.selected || { indexValue: "" }).indexValue !==
-          props.data.indexValue
-        ) {
-          props.showTooltip(<InvestmentsTimeCycleTooltip {...props.data} />, e);
-          props.setHoveredXIndex(`${props.data.indexValue}-${props.data.id}`);
-        }
-      }}
+      onMouseMove={onMouseMoveOrEnter}
+      onMouseEnter={onMouseMoveOrEnter}
       onMouseLeave={() => {
         props.hideTooltip();
         props.setHoveredXIndex(null);

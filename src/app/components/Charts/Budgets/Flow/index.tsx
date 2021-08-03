@@ -37,6 +37,10 @@ const container = css`
     user-select: none;
   }
 
+  path {
+    cursor: pointer;
+  }
+
   > svg {
     width: 100%;
     height: 600px;
