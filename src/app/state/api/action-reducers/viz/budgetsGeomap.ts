@@ -6,3 +6,7 @@ const BudgetsGeomap: ApiCallModel = {
 };
 
 export default BudgetsGeomap;
+
+export const BudgetsMCGeomap: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/budgets/geomap/multicountries`),
+};

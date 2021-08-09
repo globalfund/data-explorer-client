@@ -93,8 +93,9 @@ export function InvestmentsGeoMap(props: Props) {
               }
         }
         pins={[]}
-        investmentsPins={geomapView === "multicountries" ? dataMC : []}
+        allocationsPins={[]}
         noData={maxValue === 0}
+        investmentsPins={geomapView === "multicountries" ? dataMC : []}
       />
       {geomapView === "countries" && (
         <div

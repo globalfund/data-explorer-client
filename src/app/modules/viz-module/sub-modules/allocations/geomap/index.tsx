@@ -5,12 +5,12 @@ import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { Dropdown } from "app/components/Dropdown";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { InvestmentsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
-import { Dropdown } from "app/components/Dropdown";
+import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -33,15 +33,15 @@ export function AllocationsGeoMap(props: Props) {
     get(state.AllocationsGeomap.data, "maxValue", 0)
   );
   const fetchMCData = useStoreActions(
-    (store) => store.DisbursementsGeomapMulticountries.fetch
+    (store) => store.AllocationsMCGeomap.fetch
   );
   const dataMC = useStoreState(
     (state) =>
       get(
-        state.DisbursementsGeomapMulticountries,
+        state.AllocationsMCGeomap,
         "data.pins",
         []
-      ) as InvestmentsGeoMapPinMarker[]
+      ) as AllocationsGeoMapPinMarker[]
   );
   const geomapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
@@ -49,8 +49,7 @@ export function AllocationsGeoMap(props: Props) {
 
   const isLoading = useStoreState(
     (state) =>
-      state.AllocationsGeomap.loading ||
-      state.DisbursementsGeomapMulticountries.loading
+      state.AllocationsGeomap.loading || state.AllocationsMCGeomap.loading
   );
 
   const fetchPeriodOptionsData = useStoreActions(
@@ -144,8 +143,9 @@ export function AllocationsGeoMap(props: Props) {
               }
         }
         pins={[]}
-        investmentsPins={geomapView === "multicountries" ? dataMC : []}
+        investmentsPins={[]}
         noData={maxValue === 0}
+        allocationsPins={geomapView === "multicountries" ? dataMC : []}
       />
       {geomapView === "countries" && (
         <div

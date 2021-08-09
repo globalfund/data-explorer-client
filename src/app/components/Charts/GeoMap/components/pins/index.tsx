@@ -3,12 +3,16 @@ import { Marker } from "react-map-gl";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { CountryPin } from "app/components/Charts/GeoMap/components/pins/styles";
 import {
+  AllocationsGeoMapPinMarker,
   GeoMapPinMarker,
   InvestmentsGeoMapPinMarker,
 } from "app/components/Charts/GeoMap/data";
 
 interface MapPinProps {
-  marker: GeoMapPinMarker | InvestmentsGeoMapPinMarker;
+  marker:
+    | GeoMapPinMarker
+    | InvestmentsGeoMapPinMarker
+    | AllocationsGeoMapPinMarker;
   onClick: () => void;
   setMarkerInfo: (info: any) => void;
   activeImgSrc: string;

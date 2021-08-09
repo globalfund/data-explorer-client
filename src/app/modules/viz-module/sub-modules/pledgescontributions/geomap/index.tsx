@@ -96,6 +96,7 @@ export function PledgesContributionsGeoMap() {
               }).length === 0
         }
         investmentsPins={[]}
+        allocationsPins={[]}
       />
       <div
         css={`

@@ -18,3 +18,7 @@ export const AllocationsPeriods: ApiCallModel = {
 export const AllocationsGeomap: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/allocations/geomap`),
 };
+
+export const AllocationsMCGeomap: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/allocations/geomap/multicountries`),
+};

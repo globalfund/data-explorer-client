@@ -40,10 +40,24 @@ export interface InvestmentsGeoMapPinMarker {
   signed: number;
 }
 
+export interface AllocationsGeoMapPinMarker {
+  id: string;
+  code: string;
+  geoName: string;
+  latitude: number;
+  longitude: number;
+  components: {
+    name: string;
+    value: number;
+  }[];
+  value: number;
+}
+
 export interface GeoMapProps {
   data: FeatureCollection;
   pins: GeoMapPinMarker[];
   investmentsPins: InvestmentsGeoMapPinMarker[];
+  allocationsPins: AllocationsGeoMapPinMarker[];
   type: "investments" | "donors" | "allocations" | "budgets";
   allowClickthrough?: boolean;
   noData: boolean;

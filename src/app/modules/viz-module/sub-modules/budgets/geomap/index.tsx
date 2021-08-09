@@ -9,7 +9,10 @@ import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { InvestmentsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
+import {
+  AllocationsGeoMapPinMarker,
+  InvestmentsGeoMapPinMarker,
+} from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -29,25 +32,21 @@ export function BudgetsGeoMap(props: Props) {
   const maxValue = useStoreState((state) =>
     get(state.BudgetsGeomap.data, "maxValue", 0)
   );
-  const fetchMCData = useStoreActions(
-    (store) => store.DisbursementsGeomapMulticountries.fetch
-  );
+  const fetchMCData = useStoreActions((store) => store.BudgetsMCGeomap.fetch);
   const dataMC = useStoreState(
     (state) =>
       get(
-        state.DisbursementsGeomapMulticountries,
+        state.BudgetsMCGeomap,
         "data.pins",
         []
-      ) as InvestmentsGeoMapPinMarker[]
+      ) as AllocationsGeoMapPinMarker[]
   );
   const geomapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
   );
 
   const isLoading = useStoreState(
-    (state) =>
-      state.BudgetsGeomap.loading ||
-      state.DisbursementsGeomapMulticountries.loading
+    (state) => state.BudgetsGeomap.loading || state.BudgetsMCGeomap.loading
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
@@ -93,8 +92,9 @@ export function BudgetsGeoMap(props: Props) {
               }
         }
         pins={[]}
-        investmentsPins={geomapView === "multicountries" ? dataMC : []}
+        investmentsPins={[]}
         noData={maxValue === 0}
+        allocationsPins={geomapView === "multicountries" ? dataMC : []}
       />
       {geomapView === "countries" && (
         <div

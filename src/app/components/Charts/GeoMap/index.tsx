@@ -24,6 +24,7 @@ import {
   GeoMapPinMarker,
   getMapPinIcons,
   InvestmentsGeoMapPinMarker,
+  AllocationsGeoMapPinMarker,
 } from "app/components/Charts/GeoMap/data";
 import {
   GeomapAllocationsTooltip,
@@ -119,6 +120,10 @@ export function GeoMap(props: GeoMapProps) {
     investmentsPinMarkerHoverInfo,
     setInvestmentsPinMarkerHoverInfo,
   ] = React.useState<InvestmentsGeoMapPinMarker | null>(null);
+  const [
+    allocationsPinMarkerHoverInfo,
+    setAllocationsPinMarkerHoverInfo,
+  ] = React.useState<AllocationsGeoMapPinMarker | null>(null);
   const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -353,6 +358,56 @@ export function GeoMap(props: GeoMapProps) {
                   committed: investmentsPinMarkerHoverInfo.committed,
                   signed: investmentsPinMarkerHoverInfo.signed,
                 }}
+              />
+            </div>
+          </Popup>
+        )}
+        {props.allocationsPins.map((pin: AllocationsGeoMapPinMarker) => {
+          const icons = getMapPinIcons("Multicountry");
+          return (
+            <MapPin
+              key={pin.id}
+              marker={pin}
+              setMarkerInfo={setAllocationsPinMarkerHoverInfo}
+              onClick={() => history.push(`/location/${pin.code}/investments`)}
+              {...icons}
+            />
+          );
+        })}
+        {allocationsPinMarkerHoverInfo && (
+          <Popup
+            tipSize={0}
+            dynamicPosition
+            offsetLeft={20}
+            closeButton={false}
+            latitude={allocationsPinMarkerHoverInfo.latitude}
+            longitude={allocationsPinMarkerHoverInfo.longitude}
+            css={`
+              z-index: 100;
+
+              .mapboxgl-popup-content {
+                width: 0px !important;
+                height: 0px !important;
+                padding: 0px !important;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 350px;
+                padding: 20px;
+                position: absolute;
+                background: #f5f5f7;
+                border-radius: 20px;
+              `}
+            >
+              <GeomapAllocationsTooltip
+                name={allocationsPinMarkerHoverInfo.geoName}
+                data={{
+                  components: allocationsPinMarkerHoverInfo.components,
+                  value: allocationsPinMarkerHoverInfo.value,
+                }}
+                valueLabel={props.type}
               />
             </div>
           </Popup>
