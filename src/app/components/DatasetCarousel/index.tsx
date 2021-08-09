@@ -140,7 +140,7 @@ export function DatasetCarousel() {
               </div>
               <AllocationsRadialPreview />
             </>,
-            "/viz/allocations"
+            "/viz/allocations/radial"
           )}
         </Carousel.Item>
         <Carousel.Item>

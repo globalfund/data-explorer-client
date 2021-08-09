@@ -15,6 +15,7 @@ import {
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
 import Allocations, {
   AllocationsDrilldown,
+  AllocationsGeomap,
   AllocationsPeriods,
 } from "app/state/api/action-reducers/viz/allocations";
 import BudgetsFlow, {
@@ -90,6 +91,7 @@ const storeContent: StoreModel = {
   Allocations: persist(Allocations),
   AllocationsPeriods: persist(AllocationsPeriods),
   AllocationsDrilldown: persist(AllocationsDrilldown),
+  AllocationsGeomap: persist(AllocationsGeomap),
   Eligibility: persist(Eligibility),
   EligibilityYears: persist(EligibilityYears),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),

@@ -54,6 +54,18 @@ const views = {
       link: "/viz/eligibility/table",
     },
   ],
+  allocations: [
+    {
+      label: "Chart",
+      value: "Chart",
+      link: "/viz/allocations",
+    },
+    {
+      label: "Geomap",
+      value: "Geomap",
+      link: "/viz/allocations/geomap",
+    },
+  ],
   "pledges-contributions": [
     {
       label: "Map",

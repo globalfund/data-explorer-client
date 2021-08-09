@@ -44,7 +44,7 @@ export interface GeoMapProps {
   data: FeatureCollection;
   pins: GeoMapPinMarker[];
   investmentsPins: InvestmentsGeoMapPinMarker[];
-  type: "investments" | "donors";
+  type: "investments" | "donors" | "allocations";
   allowClickthrough?: boolean;
   noData: boolean;
 }
@@ -480,6 +480,17 @@ export interface GeomapTooltipProps {
     disbursed: number;
     committed: number;
     signed: number;
+  };
+}
+
+export interface GeomapAllocationsTooltipProps {
+  name: string;
+  data: {
+    components: {
+      name: string;
+      value: number;
+    }[];
+    value: number;
   };
 }
 

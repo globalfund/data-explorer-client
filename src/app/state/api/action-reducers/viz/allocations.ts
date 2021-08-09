@@ -14,3 +14,7 @@ export const AllocationsDrilldown: ApiCallModel = {
 export const AllocationsPeriods: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/allocations/periods`),
 };
+
+export const AllocationsGeomap: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/allocations/geomap`),
+};

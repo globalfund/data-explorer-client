@@ -9,6 +9,7 @@ import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
+import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
 import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
@@ -154,6 +155,9 @@ export default function VizModule() {
           </Route>
           <Route path="/viz/investments/geomap">
             <InvestmentsGeoMap />
+          </Route>
+          <Route path="/viz/allocations/geomap">
+            <AllocationsGeoMap />
           </Route>
           <Route path="/viz/allocations">
             <AllocationsModule />

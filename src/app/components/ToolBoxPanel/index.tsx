@@ -232,14 +232,16 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     setSelected={setSelectedAggregation}
                   />
                 )}
-                {params.vizType === "investments" &&
-                  params.subType === "geomap" && (
-                    <ToolBoxPanelGeoMapViews
-                      title="Views"
-                      selected={geomapView}
-                      setSelected={setGeomapView}
-                    />
-                  )}
+                {((params.vizType === "investments" &&
+                  params.subType === "geomap") ||
+                  (params.vizType === "allocations" &&
+                    params.subType === "geomap")) && (
+                  <ToolBoxPanelGeoMapViews
+                    title="Views"
+                    selected={geomapView}
+                    setSelected={setGeomapView}
+                  />
+                )}
                 {params.vizType === "pledges-contributions" &&
                   (params.subType === "geomap" ||
                     params.subType === "table" ||

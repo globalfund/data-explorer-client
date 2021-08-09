@@ -2,6 +2,7 @@ import React from "react";
 import filter from "lodash/filter";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
+  GeomapAllocationsTooltipProps,
   GeoMapPinMarker,
   GeomapTooltipProps,
 } from "app/components/Charts/GeoMap/data";
@@ -301,6 +302,124 @@ export function GeomapPinTooltip(props: {
             </div>
           </React.Fragment>
         ))}
+    </div>
+  );
+}
+
+export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
+  return (
+    <div
+      css={`
+        color: #262c34;
+      `}
+    >
+      <div
+        css={`
+          top: -4px;
+          width: 8px;
+          height: 8px;
+          position: absolute;
+          border-radius: 50%;
+          background: #262c34;
+          left: calc(50% - 4px);
+        `}
+      />
+      <div
+        css={`
+          font-size: 18px;
+          font-weight: bold;
+          line-height: 20px;
+          padding-bottom: 16px;
+          border-bottom: 1px solid #dfe3e6;
+        `}
+      >
+        {props.name}
+      </div>
+      <div
+        css={`
+          gap: 10px;
+          display: flex;
+          font-size: 12px;
+          padding: 16px 0;
+          flex-direction: column;
+          border-bottom: 1px solid #dfe3e6;
+        `}
+      >
+        <div
+          css={`
+            width: 100%;
+            display: flex;
+            font-weight: bold;
+            flex-direction: row;
+            justify-content: space-between;
+
+            > div {
+              &:nth-of-type(1) {
+                width: 50%;
+                text-align: start;
+              }
+
+              &:nth-of-type(2) {
+                width: 50%;
+                text-align: right;
+              }
+            }
+          `}
+        >
+          <div>Component</div>
+          <div>Allocation</div>
+        </div>
+        {props.data.components.map((stat: any) => (
+          <div
+            key={stat.name}
+            css={`
+              width: 100%;
+              display: flex;
+              font-size: 12px;
+              flex-direction: row;
+              justify-content: space-between;
+
+              > div {
+                &:nth-of-type(1) {
+                  width: 50%;
+                  text-align: start;
+                }
+
+                &:nth-of-type(2) {
+                  width: 50%;
+                  text-align: right;
+                }
+              }
+            `}
+          >
+            <div>{stat.name}</div>
+            <div>{formatFinancialValue(stat.value)}</div>
+          </div>
+        ))}
+      </div>
+      <div
+        css={`
+          gap: 10px;
+          display: flex;
+          font-size: 12px;
+          padding-top: 16px;
+          flex-direction: column;
+        `}
+      >
+        <div
+          css={`
+            width: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+          `}
+        >
+          <div>
+            <b>Total</b>
+          </div>
+          <div>{formatFinancialValue(props.data.value)}</div>
+        </div>
+      </div>
     </div>
   );
 }

@@ -26,6 +26,7 @@ import {
   InvestmentsGeoMapPinMarker,
 } from "app/components/Charts/GeoMap/data";
 import {
+  GeomapAllocationsTooltip,
   GeomapPinTooltip,
   GeomapTooltip,
 } from "app/components/Charts/GeoMap/components/tooltip";
@@ -259,17 +260,21 @@ export function GeoMap(props: GeoMapProps) {
     uMapStyle.layers[0].paint["background-color"] = "hsl(204, 10%, 80%)";
   }
 
+  let heightDef =
+    props.investmentsPins.length > 0 || props.pins.length > 0
+      ? "183px"
+      : "244px";
+
+  if (props.type === "allocations") {
+    heightDef = "274px";
+  }
+
   return (
     <div
       ref={containerRef as React.RefObject<HTMLDivElement>}
       css={`
         width: 100%;
-        height: calc(
-          100vh -
-            ${props.investmentsPins.length > 0 || props.pins.length > 0
-              ? "183px"
-              : "244px"}
-        );
+        height: calc(100vh - ${heightDef});
       `}
     >
       <MapGL
@@ -410,6 +415,22 @@ export function GeoMap(props: GeoMapProps) {
           `}
         >
           <GeomapTooltip {...hoverInfo.properties} />
+        </div>
+      )}
+      {hoverInfo && isHovering && props.type === "allocations" && (
+        <div
+          css={`
+            z-index: 100;
+            width: 350px;
+            padding: 20px;
+            position: absolute;
+            background: #f5f5f7;
+            border-radius: 20px;
+            top: ${hoverInfo.y + 50}px;
+            left: ${hoverInfo.x - 180}px;
+          `}
+        >
+          <GeomapAllocationsTooltip {...hoverInfo.properties} />
         </div>
       )}
       {hoverInfo && isHovering && props.type === "donors" && (
