@@ -202,6 +202,11 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
+  "/viz/budgets/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
   "/viz/allocations": filter(
     filtergroups,
     (fg: FilterGroupProps) =>

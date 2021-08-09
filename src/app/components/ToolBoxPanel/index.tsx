@@ -235,6 +235,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 {((params.vizType === "investments" &&
                   params.subType === "geomap") ||
                   (params.vizType === "allocations" &&
+                    params.subType === "geomap") ||
+                  (params.vizType === "budgets" &&
                     params.subType === "geomap")) && (
                   <ToolBoxPanelGeoMapViews
                     title="Views"

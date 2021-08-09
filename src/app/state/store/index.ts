@@ -81,6 +81,7 @@ import ResultsList, {
 } from "app/state/api/action-reducers/viz/resultsList";
 import LocationDetailDisbursementsTreemap from "../api/action-reducers/locationDetail/disbursementsTreemap";
 import PledgesContributionsTreemap from "../api/action-reducers/viz/pledgesContributionsTreemap";
+import BudgetsGeomap from "../api/action-reducers/viz/budgetsGeomap";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -94,6 +95,7 @@ const storeContent: StoreModel = {
   AllocationsGeomap: persist(AllocationsGeomap),
   Eligibility: persist(Eligibility),
   EligibilityYears: persist(EligibilityYears),
+  BudgetsGeomap: persist(BudgetsGeomap),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
   BudgetsTimeCycleDrilldownLevel1: persist(BudgetsTimeCycleDrilldownLevel1),
   DisbursementsGeomap: persist(DisbursementsGeomap),

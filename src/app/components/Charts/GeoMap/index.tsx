@@ -417,22 +417,27 @@ export function GeoMap(props: GeoMapProps) {
           <GeomapTooltip {...hoverInfo.properties} />
         </div>
       )}
-      {hoverInfo && isHovering && props.type === "allocations" && (
-        <div
-          css={`
-            z-index: 100;
-            width: 350px;
-            padding: 20px;
-            position: absolute;
-            background: #f5f5f7;
-            border-radius: 20px;
-            top: ${hoverInfo.y + 50}px;
-            left: ${hoverInfo.x - 180}px;
-          `}
-        >
-          <GeomapAllocationsTooltip {...hoverInfo.properties} />
-        </div>
-      )}
+      {hoverInfo &&
+        isHovering &&
+        (props.type === "allocations" || props.type === "budgets") && (
+          <div
+            css={`
+              z-index: 100;
+              width: 350px;
+              padding: 20px;
+              position: absolute;
+              background: #f5f5f7;
+              border-radius: 20px;
+              top: ${hoverInfo.y + 50}px;
+              left: ${hoverInfo.x - 180}px;
+            `}
+          >
+            <GeomapAllocationsTooltip
+              valueLabel={props.type}
+              {...hoverInfo.properties}
+            />
+          </div>
+        )}
       {hoverInfo && isHovering && props.type === "donors" && (
         <div
           css={`

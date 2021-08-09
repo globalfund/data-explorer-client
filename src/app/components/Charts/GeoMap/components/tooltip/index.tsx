@@ -367,7 +367,13 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           `}
         >
           <div>Component</div>
-          <div>Allocation</div>
+          <div
+            css={`
+              text-transform: capitalize;
+            `}
+          >
+            {props.valueLabel}
+          </div>
         </div>
         {props.data.components.map((stat: any) => (
           <div

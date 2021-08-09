@@ -41,6 +41,11 @@ const views = {
       value: "Time/Cycle",
       link: "/viz/budgets/time-cycle",
     },
+    {
+      label: "Geomap",
+      value: "Geomap",
+      link: "/viz/budgets/geomap",
+    },
   ],
   eligibility: [
     {

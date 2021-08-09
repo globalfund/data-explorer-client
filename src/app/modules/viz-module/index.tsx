@@ -6,6 +6,7 @@ import { Link, Switch, Route, useParams, useLocation } from "react-router-dom";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
@@ -143,6 +144,9 @@ export default function VizModule() {
           </Route>
           <Route path="/viz/budgets/time-cycle">
             <GenericBudgetsTimeCycleWrapper />
+          </Route>
+          <Route path="/viz/budgets/geomap">
+            <BudgetsGeoMap />
           </Route>
           <Route path="/viz/investments/disbursements">
             <GenericInvestmentsDisbursedWrapper />
