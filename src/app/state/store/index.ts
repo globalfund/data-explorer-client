@@ -79,6 +79,7 @@ import ResultsList, {
   ResultsYears,
 } from "app/state/api/action-reducers/viz/resultsList";
 import LocationDetailDisbursementsTreemap from "../api/action-reducers/locationDetail/disbursementsTreemap";
+import PledgesContributionsTreemap from "../api/action-reducers/viz/pledgesContributionsTreemap";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -104,6 +105,7 @@ const storeContent: StoreModel = {
   PledgesContributionsTimeCycleDrilldown: persist(
     PledgesContributionsTimeCycleDrilldown
   ),
+  PledgesContributionsTreemap: persist(PledgesContributionsTreemap),
   ResultsList: persist(ResultsList),
   ResultsStats: persist(ResultsStats),
   ResultsYears: persist(ResultsYears),

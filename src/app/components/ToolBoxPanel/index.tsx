@@ -242,9 +242,16 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   )}
                 {params.vizType === "pledges-contributions" &&
                   (params.subType === "geomap" ||
-                    params.subType === "table") && (
+                    params.subType === "table" ||
+                    params.subType === "treemap") && (
                     <React.Fragment>
                       <ToolBoxPanelDonorMapTypes />
+                    </React.Fragment>
+                  )}
+                {params.vizType === "pledges-contributions" &&
+                  (params.subType === "geomap" ||
+                    params.subType === "table") && (
+                    <React.Fragment>
                       <ToolBoxPanelDonorViews />
                     </React.Fragment>
                   )}

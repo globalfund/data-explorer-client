@@ -61,7 +61,7 @@ export function TreeemapNode(props: any) {
         width: node.width,
         height: node.height,
         background: node.data.color,
-        border: "2px solid #373D43",
+        border: "1px solid #373D43",
         fontSize: bigDevice ? 12 : 8,
         cursor: node.data.orgs ? "pointer" : "default",
         color: props.isChildTreemap ? "#fff" : "#262C34",

@@ -11,6 +11,7 @@ import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibilit
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
+import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
 import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
 import { GenericEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
@@ -98,6 +99,9 @@ export default function VizModule() {
               <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
                 <b>Finance</b>-Pledges & Contributions GeoMap
               </Link>,
+              <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
+                <b>Finance</b>-Pledges & Contributions TreeMap
+              </Link>,
               <Link to={`/grants${location.search}`}>
                 <b>Grants</b>
               </Link>,
@@ -162,6 +166,9 @@ export default function VizModule() {
           </Route>
           <Route path="/viz/pledges-contributions/geomap">
             <PledgesContributionsGeoMap />
+          </Route>
+          <Route path="/viz/pledges-contributions/treemap">
+            <PledgesContributionsTreemap />
           </Route>
           <Route path="/viz/eligibility/table">
             <GenericEligibilityWrapper />
