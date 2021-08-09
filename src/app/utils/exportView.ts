@@ -23,8 +23,12 @@ function getFileName(
       return "budgets-flow";
     case "/viz/budgets/time-cycle":
       return "budgets-time-cycle";
+    case "/viz/budgets/geomap":
+      return `budgets-${options.investmentsMapView}`;
     case "/viz/allocations":
       return "allocations";
+    case "/viz/allocations/geomap":
+      return `allocations-${options.investmentsMapView}`;
     case "/viz/allocation":
       return "allocations";
     case "/viz/eligibility":

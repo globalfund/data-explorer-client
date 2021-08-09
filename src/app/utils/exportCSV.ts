@@ -211,6 +211,49 @@ export function exportCSV(
           { label: "Budget (USD)", key: "value" },
         ],
       };
+    case "/viz/budgets/geomap":
+      if (options.investmentsMapView === "countries") {
+        data.countries.features.forEach((item: any) => {
+          if (item.properties && !isEmpty(item.properties.data)) {
+            csvData.push({
+              location: item.properties.name,
+              component: "-",
+              budget: item.properties.data.value,
+            });
+            item.properties.data.components.forEach((component: any) => {
+              csvData.push({
+                location: item.properties.name,
+                component: component.name,
+                budget: component.value,
+              });
+            });
+          }
+        });
+      } else if (options.investmentsMapView === "multicountries") {
+        data.multicountries.forEach((item: any) => {
+          csvData.push({
+            location: item.geoName,
+            component: "-",
+            budget: item.value,
+          });
+          item.components.forEach((component: any) => {
+            csvData.push({
+              location: item.geoName,
+              component: component.name,
+              budget: component.value,
+            });
+          });
+        });
+      }
+      return {
+        data: csvData,
+        filename: `budgets-${options.investmentsMapView}.csv`,
+        headers: [
+          { label: "Location", key: "location" },
+          { label: "Component", key: "component" },
+          { label: "Budget (USD)", key: "budget" },
+        ],
+      };
     case "/viz/allocations":
       data.keys.forEach((key: string, index: number) => {
         csvData.push({
@@ -224,6 +267,49 @@ export function exportCSV(
         headers: [
           { label: "Component", key: "component" },
           { label: "Allocation (USD)", key: "value" },
+        ],
+      };
+    case "/viz/allocations/geomap":
+      if (options.investmentsMapView === "countries") {
+        data.countries.features.forEach((item: any) => {
+          if (item.properties && !isEmpty(item.properties.data)) {
+            csvData.push({
+              location: item.properties.name,
+              component: "-",
+              budget: item.properties.data.value,
+            });
+            item.properties.data.components.forEach((component: any) => {
+              csvData.push({
+                location: item.properties.name,
+                component: component.name,
+                budget: component.value,
+              });
+            });
+          }
+        });
+      } else if (options.investmentsMapView === "multicountries") {
+        data.multicountries.forEach((item: any) => {
+          csvData.push({
+            location: item.geoName,
+            component: "-",
+            budget: item.value,
+          });
+          item.components.forEach((component: any) => {
+            csvData.push({
+              location: item.geoName,
+              component: component.name,
+              budget: component.value,
+            });
+          });
+        });
+      }
+      return {
+        data: csvData,
+        filename: `allocations-${options.investmentsMapView}.csv`,
+        headers: [
+          { label: "Location", key: "location" },
+          { label: "Component", key: "component" },
+          { label: "Budget (USD)", key: "budget" },
         ],
       };
     case "/viz/allocation":

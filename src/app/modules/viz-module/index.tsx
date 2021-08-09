@@ -73,13 +73,13 @@ export default function VizModule() {
                 <b>Datasets</b>
               </Link>,
               <Link to={`/viz/investments/disbursements${location.search}`}>
-                <b>Finance</b>-Investments/Disbursements
+                <b>Finance</b>-Investments Disbursements
               </Link>,
               <Link to={`/viz/investments/time-cycle${location.search}`}>
-                <b>Finance</b>-Investments/Time-Cycle
+                <b>Finance</b>-Investments Time-Cycle
               </Link>,
               <Link to={`/viz/investments/geomap${location.search}`}>
-                <b>Finance</b>-Investments/GeoMap
+                <b>Finance</b>-Investments Geomap
               </Link>,
               <Link to={`/viz/budgets/flow${location.search}`}>
                 <b>Finance</b>-Budgets Flow
@@ -87,8 +87,14 @@ export default function VizModule() {
               <Link to={`/viz/budgets/time-cycle${location.search}`}>
                 <b>Finance</b>-Budgets Time Cycle
               </Link>,
+              <Link to={`/viz/budgets/geomap${location.search}`}>
+                <b>Finance</b>-Budgets Geomap
+              </Link>,
               <Link to={`/viz/allocations${location.search}`}>
                 <b>Finance</b>-Allocations
+              </Link>,
+              <Link to={`/viz/allocations/geomap${location.search}`}>
+                <b>Finance</b>-Allocations Geomap
               </Link>,
               <Link to={`/viz/eligibility${location.search}`}>
                 <b>Finance</b>-Eligibility
@@ -99,10 +105,10 @@ export default function VizModule() {
                 <b>Finance</b>-Pledges & Contributions Time Cycle
               </Link>,
               <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
-                <b>Finance</b>-Pledges & Contributions GeoMap
+                <b>Finance</b>-Pledges & Contributions Geomap
               </Link>,
               <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
-                <b>Finance</b>-Pledges & Contributions TreeMap
+                <b>Finance</b>-Pledges & Contributions Treemap
               </Link>,
               <Link to={`/grants${location.search}`}>
                 <b>Grants</b>

@@ -6,13 +6,13 @@ import Snackbar from "@material-ui/core/Snackbar";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
-import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 /* project */
 import { exportCSV } from "app/utils/exportCSV";
 import { LinkIcon } from "app/assets/icons/Link";
 import { exportView } from "app/utils/exportView";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
+import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 import { StyledMenu, StyledMenuItem } from "app/components/PageHeader";
 
 const locationsToNotShowImageExport = [
@@ -24,6 +24,8 @@ const locationsToNotShowImageExport = [
   "/location/<code>/eligibility/table",
   "/viz/pledges-contributions/geomap",
   "/viz/pledges-contributions/table",
+  "/viz/budgets/geomap",
+  "/viz/allocations/geomap",
   "/grants",
   "/viz/grants",
   "/location/<code>/grants",

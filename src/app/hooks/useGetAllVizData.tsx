@@ -4,6 +4,7 @@ import { FeatureCollection } from "geojson";
 import { useStoreState } from "app/state/store/hooks";
 import { GrantListItemModel } from "app/modules/grants-module/data";
 import {
+  AllocationsGeoMapPinMarker,
   GeoMapPinMarker,
   InvestmentsGeoMapPinMarker,
 } from "app/components/Charts/GeoMap/data";
@@ -17,6 +18,21 @@ export function useGetAllVizData() {
     keys: get(state.Allocations.data, "keys", []),
     values: get(state.Allocations.data, "values", []),
   }));
+  const allocationsGeomap = useStoreState(
+    (state) =>
+      ({
+        type: "FeatureCollection",
+        features: get(state.AllocationsGeomap.data, "data", []),
+      } as FeatureCollection)
+  );
+  const allocationsMCGeomap = useStoreState(
+    (state) =>
+      get(
+        state.AllocationsMCGeomap,
+        "data.pins",
+        []
+      ) as AllocationsGeoMapPinMarker[]
+  );
   const budgetsFlow = useStoreState(
     (state) =>
       get(state.BudgetsFlow.data, "links", []) as {
@@ -28,6 +44,21 @@ export function useGetAllVizData() {
   const budgetsTimeCycle = useStoreState(
     (state) =>
       get(state.BudgetsTimeCycle.data, "data", []) as Record<string, unknown>[]
+  );
+  const budgetsGeomap = useStoreState(
+    (state) =>
+      ({
+        type: "FeatureCollection",
+        features: get(state.BudgetsGeomap.data, "data", []),
+      } as FeatureCollection)
+  );
+  const budgetsMCGeomap = useStoreState(
+    (state) =>
+      get(
+        state.BudgetsMCGeomap,
+        "data.pins",
+        []
+      ) as AllocationsGeoMapPinMarker[]
   );
   const disbursementsGeomap = useStoreState(
     (state) =>
@@ -137,8 +168,16 @@ export function useGetAllVizData() {
 
   return {
     "/viz/allocations": allocations,
+    "/viz/allocations/geomap": {
+      countries: allocationsGeomap,
+      multicountries: allocationsMCGeomap,
+    },
     "/viz/budgets/flow": budgetsFlow,
     "/viz/budgets/time-cycle": budgetsTimeCycle,
+    "/viz/budgets/geomap": {
+      countries: budgetsGeomap,
+      multicountries: budgetsMCGeomap,
+    },
     "/viz/investments/geomap": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
