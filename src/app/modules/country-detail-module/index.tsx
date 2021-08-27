@@ -3,7 +3,7 @@ import React from "react";
 import { Link, Switch, Route, useParams, Redirect } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
-import { GrantsViz } from "app/components/Charts/Grants";
+import { GrantsViz, RadialChartLegend } from "app/components/Charts/Grants";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { DocumentsSubModule } from "app/modules/common/documents";
@@ -18,6 +18,7 @@ import { LocationInfoContent } from "app/modules/country-detail-module/component
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { Grid } from "@material-ui/core";
 
 export default function CountryDetail() {
   const params = useParams<{ code: string; vizType: string }>();
@@ -133,7 +134,15 @@ export default function CountryDetail() {
           <ScatterPlot />
         </Route>
         <Route path={`/location/${params.code}/grants`}>
-          <GrantsViz />
+          <Grid container>
+            <Grid item xs={3}>
+              <RadialChartLegend />
+            </Grid>
+
+            <Grid item xs={9}>
+              <GrantsViz />
+            </Grid>
+          </Grid>
         </Route>
         <Route path={`/location/${params.code}/documents`}>
           <DocumentsSubModule />

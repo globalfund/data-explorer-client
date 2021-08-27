@@ -7,18 +7,17 @@ import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
 import { useMeasure } from "react-use";
 import {
-  mockdata,
   ratingColor,
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
-import { nigeriaGrants } from "./NigeriaGrants";
-import { getMockData } from "./countryGrants";
 import { indiaGrants } from "./IndiaGrants";
+import { css } from "styled-components/macro";
 
+//TODO: clean up component
+//TODO: discuss with Dafei what should happen when only 1 component is in the data.
+//TODO: the labels are a bit iffy when there are 5 components. -> create an algorithm that calculates the middle of the pie.
 export function GrantsViz() {
-  // const data = mockdata;
   const data = indiaGrants;
-
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const lYear = minBy(data, "years[0]")?.years[0] || 2002;
   const hYear = maxBy(data, "years[1]")?.years[1] || 2020;
@@ -27,7 +26,7 @@ export function GrantsViz() {
     datayears.push(i);
   }
   const components = uniq(data.map((item: any) => item.component));
-  const yearItemWidth = width / 2 / datayears.length;
+  const yearItemWidth = (width - 120) / 2 / datayears.length;
   const allValues: number[] = [];
   data.forEach((item: any) => {
     if (item.implementationPeriods) {
@@ -46,10 +45,10 @@ export function GrantsViz() {
       ref={ref}
       css={`
         width: 100%;
+        height: ${width / 2}px;
         margin-top: 100px;
         position: relative;
-        height: ${width / 2}px;
-        border-bottom: 1px solid #c7cdd1;
+        //border-bottom: 1px solid #c7cdd1;
         border-top-left-radius: ${width * 2}px;
         border-top-right-radius: ${width * 2}px;
       `}
@@ -57,13 +56,16 @@ export function GrantsViz() {
       <div
         id={"rc-outline"}
         css={`
-          top: -60px;
-          left: -60px;
+          //top: -60px;
+          //left: -60px;
           position: absolute;
-          width: ${width + 120}px;
+          width: ${width}px;
+          //width: ${width + 120}px;
           border: 1px solid #60647e;
           border-bottom-style: none;
-          height: ${(width + 120) / 2}px;
+          border-bottom: none;
+          // height: ${(width + 120) / 2}px;
+          height: ${width / 2}px;
           border-top-left-radius: ${width * 2}px;
           border-top-right-radius: ${width * 2}px;
         `}
@@ -71,72 +73,30 @@ export function GrantsViz() {
 
       <ComponentDividers width={width} components={components} />
 
-      {components.map((component: string, index: number) => {
-        const items = filter(data, { component });
-        return (
-          <ComponentRadarThingie
-            index={index}
-            width={width}
-            items={items}
-            name={component}
-            key={component}
-            datayears={datayears}
-            yearItemWidth={yearItemWidth}
-            rotateDeg={180 / components.length}
-            maxDisbursementValue={maxDisbursementValue}
-            components={components}
-          />
-        );
-      })}
+      <div id={"rc-components"}>
+        {components.map((component: string, index: number) => {
+          const items = filter(data, { component });
+          return (
+            <ComponentRadarThingies
+              index={index}
+              width={width}
+              items={items}
+              name={component}
+              key={component}
+              datayears={datayears}
+              yearItemWidth={yearItemWidth}
+              rotateDeg={180 / components.length}
+              maxDisbursementValue={maxDisbursementValue}
+              components={components}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 }
 
-export function ComponentDividers(props: any) {
-  const { components, width } = props;
-  return (
-    <>
-      {components.map((component: string, index: number) => {
-        const rotate = (180 / components.length) * (index + 1);
-
-        return (
-          <hr
-            id={`rc-divider-${component}`}
-            key={component}
-            css={`
-              margin: 0;
-              left: -70px;
-              bottom: -25px;
-              border-width: 1px;
-              overflow: inherit;
-              position: absolute;
-              width: ${width / 2 + 70}px;
-              transform-origin: top right;
-              transform: rotate(${rotate}deg);
-              border-style: solid none none none;
-              border-color: ${index + 1 === components.length
-                ? "transparent"
-                : "#c7cdd1"};
-
-              &:after {
-                left: 0;
-                font-size: 13px;
-                font-weight: bold;
-                position: relative;
-                display: inline-block;
-                content: "${component}";
-                transform: rotate(245deg);
-                top: ${width / components.length}px;
-              }
-            `}
-          />
-        );
-      })}
-    </>
-  );
-}
-
-export function ComponentRadarThingie(props: any) {
+export function ComponentRadarThingies(props: any) {
   let nOfImplementationPeriodsInComponent = 0;
   for (let i = 0; i < props.items.length; i++) {
     nOfImplementationPeriodsInComponent +=
@@ -145,9 +105,9 @@ export function ComponentRadarThingie(props: any) {
 
   /*
      These are the degrees we take into consideration with upcoming calculations.
-     Only the 180 to 270 range matters to us since we're dealing with the top half of the circle,
+     Only the 180 to 270 range matters to us since we're dealing with the top left quarter of the circle,
      this half is also divided by a minumum of 2 (only one component for this chart wouldn't make sense,
-     we might have to wright some code for this edge case.)
+     we might have to write some code for this edge case.)
 
                         270 deg
                    , - ~ ~ ~ - ,
@@ -189,11 +149,13 @@ export function ComponentRadarThingie(props: any) {
     <div
       id={`rc-${props.name}`}
       css={`
-        width: 100%;
+        width: calc(100% - 120px);
+        left: 60px;
+        bottom: 0;
         position: absolute;
         transform-origin: bottom;
         z-index: ${4 - props.index};
-        height: ${props.width / 2}px;
+        height: ${(props.width - 120) / 2}px;
         border-top-left-radius: ${props.width * 2}px;
         border-top-right-radius: ${props.width * 2}px;
         transform: rotate(${props.index * props.rotateDeg}deg);
@@ -201,10 +163,13 @@ export function ComponentRadarThingie(props: any) {
       `}
     >
       {props.datayears.map((year: number, index: number) => {
-        const show = props.index === 0;
-        // const show = props.index === 0 && year % 2 === 0;
+        const showGrid = props.index === 0;
+        const showLabel = props.index === 0 && year % 2 === 0;
+
         const itemwidth =
-          props.width - (props.width / props.datayears.length) * index;
+          props.width -
+          120 -
+          ((props.width - 120) / props.datayears.length) * index;
         const yearItems = filter(
           props.items,
           (item: any) => item.years[0] === year
@@ -226,28 +191,29 @@ export function ComponentRadarThingie(props: any) {
               height: ${itemwidth / 2}px;
               border-top-left-radius: ${itemwidth * 2}px;
               border-top-right-radius: ${itemwidth * 2}px;
-              border-style: ${show ? "solid" : "none"};
+              border-style: ${showGrid ? "solid" : "none"};
               border-bottom-style: none;
-              left: ${((props.width / props.datayears.length) * index) / 2}px;
+              left: ${(((props.width - 120) / props.datayears.length) * index) /
+              2}px;
 
               // Left axis label
               &:before {
-                right: -15px;
+                right: -12px;
                 bottom: -25px;
                 color: #262c34;
                 font-size: 10px;
                 position: absolute;
-                content: ${show ? `"${year}"` : ""};
+                content: ${showLabel ? `"${year}"` : ""};
               }
 
               // Right axis label
               &:after {
-                left: -15px;
+                left: -12px;
                 bottom: -25px;
                 color: #262c34;
                 font-size: 10px;
                 position: absolute;
-                content: ${show ? `"${year}"` : ""};
+                content: ${showLabel ? `"${year}"` : ""};
               }
 
               ${index + 1 === props.datayears.length
@@ -255,7 +221,7 @@ export function ComponentRadarThingie(props: any) {
               // bottom: -1px;
               background: #fff;
               border-bottom: 1px solid #fff;
-              border-style: ${show ? "solid" : "none"};
+              border-style: ${showGrid ? "solid" : "none"};
               `
                 : ""}
             `}
@@ -395,3 +361,237 @@ export function ComponentRadarThingie(props: any) {
     </div>
   );
 }
+
+export function ComponentDividers(props: any) {
+  const { components, width } = props;
+  return (
+    <div
+      id={"rc-divider-container"}
+      css={`
+        position: absolute;
+        bottom: 0px;
+      `}
+    >
+      {components.map((component: string, index: number) => {
+        const rotate = (180 / components.length) * (index + 1);
+
+        return (
+          <hr
+            id={`rc-divider-${component}`}
+            key={component}
+            css={`
+              margin: 0;
+              left: 60px;
+              bottom: -25px;
+              border-width: 1px;
+              overflow: inherit;
+              position: absolute;
+              // width: ${(width - 120) / 2 + 70}px;
+              width: ${(width - 120) / 2}px;
+              transform-origin: top right;
+              transform: rotate(${rotate}deg);
+              border-style: solid none none none;
+              border-color: ${index + 1 === components.length
+                ? "transparent"
+                : "#c7cdd1"};
+
+              &:after {
+                //left: ${width / 2}px;
+                font-size: 13px;
+                font-weight: bold;
+                position: relative;
+                display: inline-block;
+                content: "${component}";
+                right: 70px;
+                transform: rotate(-115deg);
+                top: ${(width - 240) / components.length}px;
+              }
+            `}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+export const RadialChartLegend = () => {
+  const header = css`
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  `;
+
+  const body = css`
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.5px;
+    margin-bottom: 16px;
+  `;
+
+  const note = css`
+    font-size: 12px;
+    line-height: 15px;
+    letter-spacing: 0.5px;
+    margin-bottom: 19px;
+  `;
+
+  const implementationPeriodContainer = css`
+    margin-top: 7px;
+    margin-bottom: 9px;
+    height: 155px;
+    display: flex;
+  `;
+
+  const implementationPeriod = css`
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    height: 100%;
+    align-items: center;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-right: 17px;
+    padding-left: 5px;
+  `;
+
+  const content = css`
+    padding-left: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  `;
+
+  const end = css`
+    height: 38px;
+    width: 38px;
+    background-color: white;
+    border-radius: 50%;
+    border: 1px solid black;
+
+    ::after {
+      content: " ";
+      display: block;
+      height: 0.5px;
+      border-top: 0.5px solid #262c34;
+      transform: translate(17px, -1px);
+      opacity: 0.2;
+    }
+
+    ::before {
+      content: " ";
+      display: block;
+      height: 0.5px;
+      border-top: 0.5px solid #262c34;
+      transform: translate(-5px, 17px);
+      width: 59px;
+      opacity: 0.3;
+    }
+  `;
+
+  const line = css`
+    border: 1px solid #262c34;
+    margin: 0;
+    height: calc(100% - 38px);
+  `;
+
+  const start = css`
+    height: 3px;
+    width: 3px;
+    background-color: white;
+    border-radius: 50%;
+    border: 3px solid black;
+
+    ::after {
+      content: " ";
+      display: block;
+      height: 0.5px;
+      width: 35px;
+      border-top: 0.5px solid #262c34;
+      opacity: 0.2;
+    }
+  `;
+
+  const solid = css`
+    max-width: 83px;
+    margin: 0;
+    border: 1px solid #262c34;
+    margin-bottom: 7px;
+  `;
+
+  const dashed = css`
+    max-width: 83px;
+    margin: 0;
+    border: 1px dashed #262c34;
+    margin-bottom: 7px;
+  `;
+
+  const dotted = css`
+    max-width: 83px;
+    margin: 0;
+    border: 1px dotted #262c34;
+    margin-bottom: 7px;
+  `;
+
+  return (
+    <div
+      id={"rc-legend"}
+      css={`
+        width: 100%;
+        height: 100%;
+        padding-right: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      `}
+    >
+      <div css={header}>Implementation Period</div>
+      <div css={implementationPeriodContainer}>
+        <div css={implementationPeriod}>
+          <div css={end} />
+          <hr css={line} />
+          <div css={start} />
+        </div>
+        <div css={content}>
+          <div>
+            <div
+              css={`
+                transform: translateY(-8px);
+              `}
+            >
+              Implementation End
+            </div>
+
+            <div
+              css={`
+                transform: translateY(-11px);
+                white-space: pre-line;
+                line-height: normal;
+              `}
+            >
+              Size of the circle: {`\n`} Disbursements (Max value 45.092.823)
+            </div>
+          </div>
+          <div
+            css={`
+              transform: translateY(6px);
+            `}
+          >
+            Implementation Start
+          </div>
+        </div>
+      </div>
+      <div css={note}>
+        *One grant could contains Multiple Implementation Periods
+      </div>
+      <div css={header}>Grant Status</div>
+      <hr css={solid} />
+      <div css={body}>Active</div>
+      <hr css={dashed} />
+      <div css={body}>In closure</div>
+      <hr css={dotted} />
+      <div css={body}>Administratly Closed</div>
+    </div>
+  );
+};
