@@ -1,13 +1,65 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import Tooltip from "@material-ui/core/Tooltip";
 import { ResponsiveNetwork } from "@nivo/network";
-import { NetworkVizProps } from "app/components/Charts/Network/data";
+import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
+import { NoDataLabel } from "../common/nodatalabel";
 
 export function NetworkViz(props: NetworkVizProps) {
+  React.useEffect(() => {
+    setTimeout(() => {
+      const viz = document.getElementById("performance-framework-network");
+      if (viz) {
+        const svgs = viz.getElementsByTagName("svg");
+        if (svgs.length > 0) {
+          const pathElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+          pathElement.setAttribute("stroke", "#262c34");
+          pathElement.setAttribute("strokeWidth", "0.5");
+
+          const patternElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "pattern"
+          );
+          patternElement.setAttribute("id", "diagonalHatch");
+          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
+          patternElement.setAttribute("width", "4");
+          patternElement.setAttribute("height", "4");
+          patternElement.appendChild(pathElement);
+
+          const defsElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "defs"
+          );
+          defsElement.appendChild(patternElement);
+
+          svgs[0].appendChild(defsElement);
+        }
+      }
+    }, 100);
+  }, []);
+
   const Nodes = (nodesData: any) => {
     return nodesData.nodes.map((node: any) => {
-      const tSpans =
-        node.id.split(" ").length > 2 ? node.id.split(" ") : [node.id];
+      const id = node.id.split("|")[0];
+      const tSpans = id.split(" ").length > 2 ? id.split(" ") : [id];
+      const circlecomp = (
+        <circle
+          r={node.radius}
+          strokeWidth="1"
+          // fill={node.color}
+          stroke={node.borderColor}
+          transform={`translate(${node.x}, ${node.y}) scale(1)`}
+          css={
+            node.color === "#E2E2E2"
+              ? `fill: url(#diagonalHatch);`
+              : `fill: ${node.color};`
+          }
+        />
+      );
       return (
         <g
           key={node.id}
@@ -76,13 +128,13 @@ export function NetworkViz(props: NetworkVizProps) {
               ))}
             </text>
           )}
-          <circle
-            r={node.radius}
-            strokeWidth="1"
-            fill={node.color}
-            stroke={node.borderColor}
-            transform={`translate(${node.x}, ${node.y}) scale(1)`}
-          />
+          {node.depth === 3 ? (
+            <Tooltip placement="left" title={id}>
+              {circlecomp}
+            </Tooltip>
+          ) : (
+            circlecomp
+          )}
         </g>
       );
     });
@@ -279,11 +331,28 @@ export function NetworkViz(props: NetworkVizProps) {
           </div>
         </div>
       </Grid>
-      <Grid item xs={12} sm={12} md={9}>
+      <Grid
+        item
+        xs={12}
+        sm={12}
+        md={9}
+        css={`
+          position: relative;
+        `}
+      >
         <div
+          id="performance-framework-network"
           css={`
             width: 100%;
             height: 700px;
+
+            ${props.data.links.length === 0
+              ? `
+              opacity: 0.3;
+              pointer-events: none;
+              filter: grayscale(1);
+            `
+              : ""}
           `}
         >
           <ResponsiveNetwork
@@ -293,8 +362,12 @@ export function NetworkViz(props: NetworkVizProps) {
             linkColor="#DFE3E6"
             nodeBorderWidth={1}
             motionStiffness={160}
-            nodes={props.data.nodes}
-            links={props.data.links}
+            nodes={
+              props.data.nodes.length > 0 ? props.data.nodes : mockdata.nodes
+            }
+            links={
+              props.data.links.length > 0 ? props.data.links : mockdata.links
+            }
             layers={[Links, Nodes]}
             nodeColor={(e: any) => e.color}
             linkDistance={(e: any) => e.distance}
@@ -302,6 +375,7 @@ export function NetworkViz(props: NetworkVizProps) {
             margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
           />
         </div>
+        {props.data.links.length === 0 && <NoDataLabel />}
       </Grid>
     </Grid>
   );

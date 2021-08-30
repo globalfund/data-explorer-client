@@ -1,9 +1,8 @@
 import React from "react";
-import Logo from "app/components/AppBar/Logo";
-import { NavLink, useLocation } from "react-router-dom";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
+import { NavLink, useLocation } from "react-router-dom";
 
 export function AppBar() {
   const location = useLocation();
@@ -26,7 +25,12 @@ export function AppBar() {
           `}
         >
           <NavLink to="/" css="display: flex;">
-            <Logo />
+            <img
+              src="/gflogo.png"
+              width={295}
+              height={24}
+              alt="TGF Data Explorer logo"
+            />
           </NavLink>
           <NavLink
             to="/about"

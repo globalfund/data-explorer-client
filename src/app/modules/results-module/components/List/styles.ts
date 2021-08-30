@@ -1,12 +1,14 @@
 import { css } from "styled-components/macro";
 
-export const listitem = css`
+export const listitem = (outline: boolean) => css`
+  height: 210px;
   display: flex;
   color: #262c34;
   background: #f5f5f7;
   border-radius: 20px;
   flex-direction: column;
-  border: 2px solid #f5f5f7;
+  justify-content: space-between;
+  border: 2px solid ${outline ? "#2E4DF9" : "#f5f5f7"};
 `;
 
 export const row = (size: number, style: string) => css`
@@ -40,7 +42,7 @@ export const buttonrow = (position: "up" | "down") => css`
   &:hover {
     cursor: pointer;
     color: ${position === "down" ? "#fff" : "#495057"};
-    background: ${position === "down" ? "#495057" : "transparent"};
+    background: ${position === "down" ? "#2E4DF9" : "transparent"};
 
     path {
       fill: ${position === "down" ? "#fff" : "#495057"};
@@ -52,6 +54,9 @@ export const locationlist = css`
   gap: 6px;
   color: #fff;
   display: flex;
+  overflow-y: auto;
+  max-height: 150px;
+  min-height: 150px;
   padding: 12px 20px;
   background: #495057;
   flex-direction: column;

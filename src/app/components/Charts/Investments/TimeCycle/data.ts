@@ -6,285 +6,1193 @@ export interface InvestmentsTimeCycleProps {
 
 export const mockdata: Record<string, unknown>[] = [
   {
-    year: "2017",
-    disbursed: 2000000,
-    cumulative: 2000000,
+    year: "2002",
+    disbursed: 897869,
+    cumulative: 897869,
     disbursedChildren: [
       {
         name: "HIV",
         color: "#70777E",
-        value: 1000000,
+        value: 429599,
       },
       {
         name: "Tuberculosis",
         color: "#252C34",
-        value: 500000,
-      },
-      {
-        name: "Other",
-        color: "#868E96",
-        value: 100000,
-      },
-      {
-        name: "RSSH",
-        color: "#ADB5BD",
-        value: 400000,
+        value: 468270,
       },
     ],
     cumulativeChildren: [
       {
         name: "HIV",
         color: "#70777E",
-        value: 1000000,
+        value: 429599,
       },
       {
         name: "Tuberculosis",
         color: "#252C34",
-        value: 500000,
+        value: 468270,
+      },
+    ],
+  },
+  {
+    year: "2003",
+    disbursed: 231200246,
+    cumulative: 232098115,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 121075744,
       },
       {
-        name: "Other",
-        color: "#868E96",
-        value: 100000,
+        name: "Malaria",
+        color: "#495057",
+        value: 49499456,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 19945715,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 40679331,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 121505343,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 49499456,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 19945715,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 41147601,
+      },
+    ],
+  },
+  {
+    year: "2004",
+    disbursed: 627505820,
+    cumulative: 859603935,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 360849559,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 135534537,
       },
       {
         name: "RSSH",
         color: "#ADB5BD",
-        value: 400000,
+        value: 1687514,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 22243780,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 107190430,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 482354902,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 185033993,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 1687514,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 42189495,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 148338031,
+      },
+    ],
+  },
+  {
+    year: "2005",
+    disbursed: 1053520591,
+    cumulative: 1913124526,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 579339937,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 308168894,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 8663218,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 30120009,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 127228533,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1061694839,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 493202887,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 10350732,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 72309504,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 275566564,
+      },
+    ],
+  },
+  {
+    year: "2006",
+    disbursed: 1325873198,
+    cumulative: 3238997724,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 695754234,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 407778996,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 7446356,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 18427720,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 196465892,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1757449073,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 900981883,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 17797088,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 90737224,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 472032456,
+      },
+    ],
+  },
+  {
+    year: "2007",
+    disbursed: 1725151295,
+    cumulative: 4964149019,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1073208983,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 350932605,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 3690337,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 21865222,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 275454148,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 2830658056,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 1251914488,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 21487425,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 112602446,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 747486604,
+      },
+    ],
+  },
+  {
+    year: "2008",
+    disbursed: 2246870479,
+    cumulative: 7211019498,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1332447275,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 518707176,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 28524156,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 52026664,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 315165208,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 4163105331,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 1770621664,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 50011581,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 164629110,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 1062651812,
+      },
+    ],
+  },
+  {
+    year: "2009",
+    disbursed: 2749053423,
+    cumulative: 9960072921,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1292024100,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 1014012166,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 37271117,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 18505090,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 387240950,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 5455129431,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 2784633830,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 87282698,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 183134200,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 1449892762,
+      },
+    ],
+  },
+  {
+    year: "2010",
+    disbursed: 3070865139,
+    cumulative: 13030938060,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1582140741,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 927976947,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 33379909,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 11949675,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 515417867,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 7037270172,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 3712610777,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 120662607,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 195083875,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 1965310629,
+      },
+    ],
+  },
+  {
+    year: "2011",
+    disbursed: 2631916590,
+    cumulative: 15662854650,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1468501089,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 620913962,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 109669412,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: -1450758,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 434282885,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 8505771261,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 4333524739,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 230332019,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 193633117,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 2399593514,
+      },
+    ],
+  },
+  {
+    year: "2012",
+    disbursed: 3331939274,
+    cumulative: 18994793924,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1759918012,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 962553004,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 115228322,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: -4250,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 494244186,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 10265689273,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 5296077743,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 345560341,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 193628867,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 2893837700,
+      },
+    ],
+  },
+  {
+    year: "2013",
+    disbursed: 3968752783,
+    cumulative: 22769917840,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 2101675199,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 1043369627,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 93107174,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 730600783,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 12367364472,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 6339447370,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 438667515,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 3624438483,
+      },
+    ],
+  },
+  {
+    year: "2014",
+    disbursed: 2878907411,
+    cumulative: 25648825251,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1540131665,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 825130452,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 59164211,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 1064213,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 453416870,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 13907496137,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 7164577822,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 497831726,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 1064213,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 4077855353,
+      },
+    ],
+  },
+  {
+    year: "2015",
+    disbursed: 3181728142,
+    cumulative: 28830553393,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1604054733,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 910560104,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 48025164,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 113876530,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 505211611,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 15511550870,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 8075137926,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 545856890,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 114940743,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 4583066964,
+      },
+    ],
+  },
+  {
+    year: "2016",
+    disbursed: 3546149191,
+    cumulative: 32376702584,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1493871016,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 1054855326,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 9808263,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 65621908,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 327853205,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 594139473,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 17005421886,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 9129993252,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 9808263,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 611478798,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 442793948,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 5177206437,
+      },
+    ],
+  },
+  {
+    year: "2017",
+    disbursed: 4230214270,
+    cumulative: 36606916854,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1524372905,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 1335906418,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 34286748,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 78971342,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 524764737,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 731912120,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 18529794791,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 10465899670,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 44095011,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 690450140,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 967558685,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 5909118557,
       },
     ],
   },
   {
     year: "2018",
-    disbursed: 4000000,
-    cumulative: 4000000,
+    disbursed: 3177524823,
+    cumulative: 39784441677,
     disbursedChildren: [
       {
         name: "HIV",
         color: "#70777E",
-        value: 2000000,
+        value: 1049601115,
       },
       {
-        name: "Tuberculosis",
-        color: "#252C34",
-        value: 1500000,
+        name: "Malaria",
+        color: "#495057",
+        value: 957773885,
       },
       {
-        name: "Other",
-        color: "#868E96",
-        value: 100000,
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 56907824,
       },
       {
         name: "RSSH",
         color: "#ADB5BD",
-        value: 400000,
+        value: 17892997,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 603176575,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 492172427,
       },
     ],
     cumulativeChildren: [
       {
         name: "HIV",
         color: "#70777E",
-        value: 2000000,
+        value: 19579395906,
       },
       {
-        name: "Tuberculosis",
-        color: "#252C34",
-        value: 1500000,
+        name: "Malaria",
+        color: "#495057",
+        value: 11423673555,
       },
       {
-        name: "Other",
-        color: "#868E96",
-        value: 100000,
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 101002835,
       },
       {
         name: "RSSH",
         color: "#ADB5BD",
-        value: 400000,
+        value: 708343137,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 1570735260,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 6401290984,
       },
     ],
   },
   {
     year: "2019",
-    disbursed: 2000000,
-    cumulative: 2000000,
+    disbursed: 3492046192,
+    cumulative: 43276487869,
     disbursedChildren: [
       {
         name: "HIV",
         color: "#70777E",
-        value: 1000000,
+        value: 1058823267,
       },
       {
-        name: "Tuberculosis",
-        color: "#252C34",
-        value: 500000,
+        name: "Malaria",
+        color: "#495057",
+        value: 1178274992,
       },
       {
-        name: "Other",
-        color: "#868E96",
-        value: 100000,
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 36979459,
       },
       {
         name: "RSSH",
         color: "#ADB5BD",
-        value: 400000,
+        value: 17173383,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 699173179,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 501621912,
       },
     ],
     cumulativeChildren: [
       {
         name: "HIV",
         color: "#70777E",
-        value: 1000000,
+        value: 20638219173,
       },
       {
-        name: "Tuberculosis",
-        color: "#252C34",
-        value: 500000,
+        name: "Malaria",
+        color: "#495057",
+        value: 12601948547,
       },
       {
-        name: "Other",
-        color: "#868E96",
-        value: 100000,
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 137982294,
       },
       {
         name: "RSSH",
         color: "#ADB5BD",
-        value: 400000,
+        value: 725516520,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 2269908439,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 6902912896,
+      },
+    ],
+  },
+  {
+    year: "2020",
+    disbursed: 4198792109,
+    cumulative: 47475279978,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 1360234653,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 1369764711,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 78756522,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 41843592,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 740717633,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 607474998,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 21998453826,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 13971713258,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 216738816,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 767360112,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 3010626072,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 7510387894,
+      },
+    ],
+  },
+  {
+    year: "2021",
+    disbursed: 1608318355,
+    cumulative: 49083598333,
+    disbursedChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 440049241,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 521289190,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 38486137,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 11608953,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 421429559,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 175455275,
+      },
+    ],
+    cumulativeChildren: [
+      {
+        name: "HIV",
+        color: "#70777E",
+        value: 22438503067,
+      },
+      {
+        name: "Malaria",
+        color: "#495057",
+        value: 14493002448,
+      },
+      {
+        name: "Multicomponent",
+        color: "#373D43",
+        value: 255224953,
+      },
+      {
+        name: "RSSH",
+        color: "#ADB5BD",
+        value: 778969065,
+      },
+      {
+        name: "TB/HIV",
+        color: "",
+        value: 3432055631,
+      },
+      {
+        name: "Tuberculosis",
+        color: "#252C34",
+        value: 7685843169,
       },
     ],
   },
 ];
-
-// export const mockdata: Record<string, unknown>[] = [
-//   {
-//     year: "2017",
-//     HIV: 1258028,
-//     HIVColor: "#70777E",
-//     Tuberculosis: 77,
-//     TuberculosisColor: "#252C34",
-//     Other: 720239,
-//     OtherColor: "#868E96",
-//     RSSH: 7876,
-//     RSSHColor: "#ADB5BD",
-//     amount: 1986220,
-//   },
-//   {
-//     year: "2018",
-//     Malaria: 546984602,
-//     MalariaColor: "#495057",
-//     Other: 342699700,
-//     OtherColor: "#868E96",
-//     HIV: 810464506,
-//     HIVColor: "#70777E",
-//     RSSH: 226120888,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 347103179,
-//     TuberculosisColor: "#252C34",
-//     Multicomponent: 7519915,
-//     MulticomponentColor: "#373D43",
-//     amount: 2280892790,
-//   },
-//   {
-//     year: "2019",
-//     Tuberculosis: 518291851,
-//     TuberculosisColor: "#252C34",
-//     RSSH: 378894659,
-//     RSSHColor: "#ADB5BD",
-//     Malaria: 931416148,
-//     MalariaColor: "#495057",
-//     HIV: 1277123100,
-//     HIVColor: "#70777E",
-//     Other: 468969148,
-//     OtherColor: "#868E96",
-//     Multicomponent: 5095709,
-//     MulticomponentColor: "#373D43",
-//     amount: 3579790615,
-//   },
-//   {
-//     year: "2020",
-//     Tuberculosis: 720800148,
-//     TuberculosisColor: "#252C34",
-//     HIV: 1577163657,
-//     HIVColor: "#70777E",
-//     Other: 599672112,
-//     OtherColor: "#868E96",
-//     RSSH: 518261340,
-//     RSSHColor: "#ADB5BD",
-//     "Emergency Response": 589650769,
-//     "Emergency ResponseColor": "#98A1AA",
-//     Malaria: 1209153486,
-//     MalariaColor: "#495057",
-//     Multicomponent: 7339735,
-//     MulticomponentColor: "#373D43",
-//     amount: 5222041247,
-//   },
-//   {
-//     year: "2021",
-//     RSSH: 547392185,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 643389463,
-//     TuberculosisColor: "#252C34",
-//     HIV: 1278534234,
-//     HIVColor: "#70777E",
-//     Other: 539011479,
-//     OtherColor: "#868E96",
-//     Malaria: 897371987,
-//     MalariaColor: "#495057",
-//     "Emergency Response": 170832632,
-//     "Emergency ResponseColor": "#98A1AA",
-//     Multicomponent: 22767257,
-//     MulticomponentColor: "#373D43",
-//     amount: 4099299237,
-//   },
-//   {
-//     year: "2022",
-//     Other: 436370294,
-//     OtherColor: "#868E96",
-//     HIV: 1467440558,
-//     HIVColor: "#70777E",
-//     Tuberculosis: 535424740,
-//     TuberculosisColor: "#252C34",
-//     Malaria: 946984777,
-//     MalariaColor: "#495057",
-//     RSSH: 419823038,
-//     RSSHColor: "#ADB5BD",
-//     Multicomponent: 99672054,
-//     MulticomponentColor: "#373D43",
-//     "Emergency Response": 767227,
-//     "Emergency ResponseColor": "#98A1AA",
-//     amount: 3906482688,
-//   },
-//   {
-//     year: "2023",
-//     Malaria: 751104009,
-//     MalariaColor: "#495057",
-//     Other: 401303584,
-//     OtherColor: "#868E96",
-//     HIV: 1290571466,
-//     HIVColor: "#70777E",
-//     RSSH: 274374667,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 439418027,
-//     TuberculosisColor: "#252C34",
-//     "Emergency Response": 1503433,
-//     "Emergency ResponseColor": "#98A1AA",
-//     Multicomponent: 108106672,
-//     MulticomponentColor: "#373D43",
-//     amount: 3266381858,
-//   },
-//   {
-//     year: "2024",
-//     Other: 6722521,
-//     OtherColor: "#868E96",
-//     HIV: 7417376,
-//     HIVColor: "#70777E",
-//     RSSH: 6002564,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 5216882,
-//     TuberculosisColor: "#252C34",
-//     Malaria: 10320444,
-//     MalariaColor: "#495057",
-//     Multicomponent: 104695859,
-//     MulticomponentColor: "#373D43",
-//     amount: 140375646,
-//   },
-// ];

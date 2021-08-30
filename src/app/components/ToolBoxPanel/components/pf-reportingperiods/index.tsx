@@ -1,4 +1,7 @@
 import React from "react";
+import useMeasure from "react-use/lib/useMeasure";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 
 export interface PerformanceFrameworkReportingPeriodsProps {
   periods: string[][];
@@ -7,6 +10,22 @@ export interface PerformanceFrameworkReportingPeriodsProps {
 export function PerformanceFrameworkReportingPeriods(
   props: PerformanceFrameworkReportingPeriodsProps
 ) {
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
+
+  const setSelected = useStoreActions(
+    (store) => store.ToolBoxPanelPFPeriodState.setValue
+  );
+  const selected = useStoreState(
+    (state) => state.ToolBoxPanelPFPeriodState.value
+  );
+
+  function onDraggableStop(e: DraggableEvent, data: DraggableData) {
+    const newSelectedIndex =
+      props.periods.length -
+      (width - data.lastX) / (width / props.periods.length);
+    setSelected(newSelectedIndex);
+  }
+
   return (
     <div
       css={`
@@ -24,23 +43,92 @@ export function PerformanceFrameworkReportingPeriods(
     >
       <b>Reporting Period</b>
       <div
+        ref={ref}
         css={`
           width: 100%;
           height: 6px;
           display: flex;
+          margin-top: 50px;
+          position: relative;
           flex-direction: row;
           background: #495057;
           border-radius: 20px;
 
-          > span {
+          > div:not(:first-child) {
             height: 100%;
+            position: relative;
             width: calc(100% / ${props.periods.length});
 
-            &::before {
+            &:nth-of-type(2) {
+              &::before {
+                top: -8px;
+                width: 2px;
+                height: 4px;
+                content: "";
+                position: absolute;
+                background: #c7cdd1;
+              }
+            }
+
+            &::after {
+              right: 0;
+              top: -8px;
+              width: 2px;
+              height: 4px;
+              content: "";
+              position: absolute;
+              background: #c7cdd1;
+            }
+
+            > div {
+              top: -50px;
+              width: 100%;
+              position: absolute;
+              text-align: center;
+
+              > span {
+                display: block;
+                font-size: 10px;
+                line-height: 16px;
+              }
             }
           }
         `}
-      ></div>
+      >
+        <Draggable
+          axis="x"
+          allowAnyClick
+          bounds="parent"
+          onStop={onDraggableStop}
+          position={{
+            x: selected * (width / props.periods.length),
+            y: 0,
+          }}
+          grid={[width / props.periods.length, 0]}
+        >
+          <div
+            css={`
+              top: -2px;
+              z-index: 10;
+              background: #fff;
+              cursor: ew-resize;
+              border-radius: 4px;
+              position: absolute;
+              height: calc(100% + 4px);
+              width: calc(100% / ${props.periods.length});
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+            `}
+          />
+        </Draggable>
+        {props.periods.map((period: string[]) => (
+          <div key={`${period[0]}-${period[1]}`}>
+            <div>
+              <span>{period[0]}</span>
+              <span>{period[1]}</span>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

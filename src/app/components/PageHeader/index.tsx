@@ -5,6 +5,7 @@ import { css } from "styled-components/macro";
 import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
+import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
@@ -15,11 +16,10 @@ import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
-  drilldowns?: DrilldownModel[];
   breadcrumbs: BreadcrumbModel[];
 }
 
-const StyledMenu = withStyles({
+export const StyledMenu = withStyles({
   paper: {
     borderRadius: 10,
     border: "1px solid #d3d4d5",
@@ -39,15 +39,23 @@ const StyledMenu = withStyles({
       vertical: "top",
       horizontal: "center",
     }}
+    autoFocus={false}
     {...props}
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
+export const StyledMenuItem = withStyles((theme) => ({
   root: {
     padding: "6px 0",
     borderBottom: "1px solid #DFE3E6",
     "& a": {
+      width: "100%",
+      fontSize: "12px",
+      color: "#262c34",
+      padding: "0 12px",
+      textDecoration: "none",
+    },
+    "& div": {
       width: "100%",
       fontSize: "12px",
       color: "#262c34",
@@ -104,7 +112,7 @@ const styles = {
   `,
   drilldowns: css`
     display: flex;
-    margin-top: 25px;
+    margin-top: 16px;
     width: fit-content;
     flex-direction: row;
     background: #373d43;
@@ -136,10 +144,19 @@ const styles = {
       }
     }
   `,
+  drilldowntext: css`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  `,
 };
 
 export function PageHeader(props: PageHeaderProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -175,15 +192,17 @@ export function PageHeader(props: PageHeaderProps) {
                   </div>
                   {breadcrumb.menuitems && (
                     <StyledMenu
-                      id="customized-menu"
-                      anchorEl={anchorEl}
                       keepMounted
-                      open={Boolean(anchorEl)}
+                      anchorEl={anchorEl}
+                      id="breadcrumb-menu"
                       onClose={handleClose}
+                      open={Boolean(anchorEl)}
                     >
                       {breadcrumb.menuitems.map(
-                        (item: React.ReactChild, index: number) => (
-                          <StyledMenuItem key={index}>{item}</StyledMenuItem>
+                        (item: React.ReactChild, itemIndex: number) => (
+                          <StyledMenuItem key={itemIndex}>
+                            {item}
+                          </StyledMenuItem>
                         )
                       )}
                     </StyledMenu>
@@ -209,11 +228,12 @@ export function PageHeader(props: PageHeaderProps) {
             <Tooltip title={props.title}>
               <div css={styles.title}>{props.title}</div>
             </Tooltip>
-            {props.drilldowns && props.drilldowns.length > 0 && (
+            {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
-                {props.drilldowns.map((item: DrilldownModel) => (
+                {vizDrilldowns.map((item: DrilldownModel) => (
                   <div css={styles.drilldownitem} key={item.name}>
-                    {item.name} <ArrowForwardIcon />
+                    <div css={styles.drilldowntext}>{item.name}</div>{" "}
+                    <ArrowForwardIcon />
                   </div>
                 ))}
               </div>

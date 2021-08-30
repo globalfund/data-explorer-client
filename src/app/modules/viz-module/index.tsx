@@ -1,21 +1,33 @@
 /* third-party */
 import React from "react";
-import { Link, Switch, Route, useParams } from "react-router-dom";
+import get from "lodash/get";
+import { Link, Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { mockdata1 } from "app/components/Charts/Investments/Disbursements/data";
+import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
-import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
-import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
-import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
+import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
+import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
+import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
+import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
+import { GenericEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
+import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
+import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
+import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
+import {
+  filtergroups,
+  pathnameToFilterGroups,
+} from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function VizModule() {
+  const location = useLocation();
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
@@ -60,37 +72,51 @@ export default function VizModule() {
                 <ArrowForwardIcon />
                 <b>Datasets</b>
               </Link>,
-              <Link to="/viz/investments/disbursements">
-                <b>Finance</b>-Investments/Disbursements
+              <Link to={`/viz/investments/disbursements${location.search}`}>
+                <b>Finance</b>-Investments Disbursements
               </Link>,
-              <Link to="/viz/investments/time-cycle">
-                <b>Finance</b>-Investments/Time-Cycle
+              <Link to={`/viz/investments/time-cycle${location.search}`}>
+                <b>Finance</b>-Investments Time-Cycle
               </Link>,
-              <Link to="/viz/investments/geomap">
-                <b>Finance</b>-Investments/GeoMap
+              <Link to={`/viz/investments/geomap${location.search}`}>
+                <b>Finance</b>-Investments Geomap
               </Link>,
-              <Link to="/viz/budgets/flow">
+              <Link to={`/viz/budgets/flow${location.search}`}>
                 <b>Finance</b>-Budgets Flow
               </Link>,
-              <Link to="/viz/budgets/time-cycle">
+              <Link to={`/viz/budgets/time-cycle${location.search}`}>
                 <b>Finance</b>-Budgets Time Cycle
               </Link>,
-              <Link to="/viz/allocations">
+              <Link to={`/viz/budgets/geomap${location.search}`}>
+                <b>Finance</b>-Budgets Geomap
+              </Link>,
+              <Link to={`/viz/allocations${location.search}`}>
                 <b>Finance</b>-Allocations
               </Link>,
-              <Link to="/viz/eligibility">
+              <Link to={`/viz/allocations/geomap${location.search}`}>
+                <b>Finance</b>-Allocations Geomap
+              </Link>,
+              <Link to={`/viz/eligibility${location.search}`}>
                 <b>Finance</b>-Eligibility
               </Link>,
-              <Link to="/viz/pledges-contributions/time-cycle">
+              <Link
+                to={`/viz/pledges-contributions/time-cycle${location.search}`}
+              >
                 <b>Finance</b>-Pledges & Contributions Time Cycle
               </Link>,
-              <Link to="/grants">
+              <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
+                <b>Finance</b>-Pledges & Contributions Geomap
+              </Link>,
+              <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
+                <b>Finance</b>-Pledges & Contributions Treemap
+              </Link>,
+              <Link to={`/grants${location.search}`}>
                 <b>Grants</b>
               </Link>,
-              <Link to="/results">
+              <Link to={`/results${location.search}`}>
                 <b>Results</b>
               </Link>,
-              <Link to="/documents">
+              <Link to={`/documents${location.search}`}>
                 <b>Documents</b>
               </Link>,
             ],
@@ -109,42 +135,71 @@ export default function VizModule() {
             }`,
           },
         ]}
-        // drilldowns={[
-        //   { name: "Dataset" },
-        //   { name: "Drill down level one" },
-        //   { name: "Drill down level two" },
-        // ]}
       />
       <div css="width: 100%;height: 25px;" />
-      <Switch>
-        <Route path="/viz/budgets/flow">
-          <BudgetsFlowModule />
-        </Route>
-        <Route path="/viz/budgets/time-cycle">
-          <BudgetsTimeCycleModule />
-        </Route>
-        <Route path="/viz/investments/disbursements">
-          <InvestmentsDisbursedModule data={mockdata1} />
-        </Route>
-        <Route path="/viz/investments/time-cycle">
-          <InvestmentsTimeCycleModule />
-        </Route>
-        <Route path="/viz/investments/geomap">
-          <InvestmentsGeoMap />
-        </Route>
-        <Route path="/viz/allocations">
-          <AllocationsModule />
-        </Route>
-        <Route path="/viz/pledges-contributions/time-cycle">
-          <PledgesContributionsTimeCycleModule />
-        </Route>
-        <Route path="/viz/eligibility">
-          <EligibilityModule />
-        </Route>
-      </Switch>
+      <div
+        id="export-view-div"
+        css={`
+          width: 100%;
+          height: 100%;
+        `}
+      >
+        <Switch>
+          <Route path="/viz/budgets/flow">
+            <GenericBudgetsFlowWrapper />
+          </Route>
+          <Route path="/viz/budgets/time-cycle">
+            <GenericBudgetsTimeCycleWrapper />
+          </Route>
+          <Route path="/viz/budgets/geomap">
+            <BudgetsGeoMap />
+          </Route>
+          <Route path="/viz/investments/disbursements">
+            <GenericInvestmentsDisbursedWrapper />
+          </Route>
+          <Route path="/viz/investments/table">
+            <GenericInvestmentsTableWrapper />
+          </Route>
+          <Route path="/viz/investments/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper />
+          </Route>
+          <Route path="/viz/investments/geomap">
+            <InvestmentsGeoMap />
+          </Route>
+          <Route path="/viz/allocations/geomap">
+            <AllocationsGeoMap />
+          </Route>
+          <Route path="/viz/allocations">
+            <AllocationsModule />
+          </Route>
+          <Route path="/viz/pledges-contributions/time-cycle">
+            <PledgesContributionsTimeCycleModule />
+          </Route>
+          <Route path="/viz/pledges-contributions/table">
+            <PledgesContributionsTable />
+          </Route>
+          <Route path="/viz/pledges-contributions/geomap">
+            <PledgesContributionsGeoMap />
+          </Route>
+          <Route path="/viz/pledges-contributions/treemap">
+            <PledgesContributionsTreemap />
+          </Route>
+          <Route path="/viz/eligibility/table">
+            <GenericEligibilityWrapper />
+          </Route>
+          <Route path="/viz/eligibility">
+            <EligibilityModule />
+          </Route>
+        </Switch>
+      </div>
       <ToolBoxPanel
         open={openToolboxPanel}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        filterGroups={get(
+          pathnameToFilterGroups,
+          location.pathname,
+          filtergroups
+        )}
       />
       <div
         css={`

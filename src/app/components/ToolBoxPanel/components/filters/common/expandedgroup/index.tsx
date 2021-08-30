@@ -1,15 +1,22 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import find from "lodash/find";
+import remove from "lodash/remove";
+import isEqual from "lodash/isEqual";
+import findIndex from "lodash/findIndex";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { container, input } from "app/components/Search/styles";
+import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
   FilterGroupModel,
   FilterGroupOptionModel,
   FilterGroupProps,
+  FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
@@ -19,10 +26,273 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
+  const [optionsToShow, setOptionsToShow] = React.useState(props.options);
+  const {
+    appliedFilters,
+    setAppliedFilters,
+    appliedFiltersChildren,
+    setAppliedFiltersChildren,
+    appliedFiltersGrandChildren,
+    setAppliedFiltersGrandChildren,
+  } = useAppliedFilters({
+    type: props.name,
+  });
+  const [tmpAppliedFilters, setTmpAppliedFilters] = React.useState([
+    ...appliedFilters,
+  ]);
+  const [
+    tmpAppliedFiltersChildren,
+    setTmpAppliedFiltersChildren,
+  ] = React.useState([...(appliedFiltersChildren || [])]);
+  const [
+    tmpAppliedFiltersGrandChildren,
+    setTmpAppliedFiltersGrandChildren,
+  ] = React.useState([...(appliedFiltersGrandChildren || [])]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setAllSelected(event.target.checked);
-  };
+  React.useEffect(() => {
+    let allOptionsCount = 0;
+    props.options.forEach((option: FilterGroupOptionModel) => {
+      allOptionsCount += 1;
+      allOptionsCount += option.subOptions ? option.subOptions.length : 0;
+      option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+        allOptionsCount += subOption.subOptions
+          ? subOption.subOptions.length
+          : 0;
+        subOption.subOptions?.forEach(
+          (subSubOption: FilterGroupOptionModel) => {
+            allOptionsCount += subSubOption.subOptions
+              ? subSubOption.subOptions.length
+              : 0;
+            subSubOption.subOptions?.forEach(
+              (subSubSubOption: FilterGroupOptionModel) => {
+                allOptionsCount += subSubSubOption.subOptions
+                  ? subSubSubOption.subOptions.length
+                  : 0;
+              }
+            );
+          }
+        );
+      });
+    });
+    setAllSelected(
+      tmpAppliedFilters.length +
+        tmpAppliedFiltersChildren.length +
+        tmpAppliedFiltersGrandChildren.length ===
+        allOptionsCount
+    );
+  }, [
+    tmpAppliedFilters,
+    tmpAppliedFiltersChildren,
+    tmpAppliedFiltersGrandChildren,
+    props.options,
+  ]);
+
+  React.useEffect(() => {
+    if (value.length === 0) {
+      setOptionsToShow(props.options);
+    } else {
+      const options: FilterGroupOptionModel[] = [];
+      props.options.forEach((option: FilterGroupOptionModel) => {
+        if (option.label.toLowerCase().indexOf(value.toLowerCase()) > -1) {
+          options.push(option);
+        } else if (option.subOptions) {
+          option.subOptions.forEach((subOption: FilterGroupOptionModel) => {
+            if (
+              subOption.label.toLowerCase().indexOf(value.toLowerCase()) > -1
+            ) {
+              const fParentIndex = findIndex(options, { label: option.label });
+              if (fParentIndex > -1) {
+                options[fParentIndex].subOptions?.push(subOption);
+              } else {
+                options.push({
+                  ...option,
+                  subOptions: [subOption],
+                });
+              }
+            } else if (subOption.subOptions) {
+              subOption.subOptions.forEach(
+                (subSubOption: FilterGroupOptionModel) => {
+                  if (
+                    (subSubOption.label || "").toLowerCase().indexOf(value) > -1
+                  ) {
+                    const fGrandParentIndex = findIndex(options, {
+                      label: option.label,
+                    });
+                    if (fGrandParentIndex > -1) {
+                      const fParentIndex = findIndex(
+                        options[fGrandParentIndex]?.subOptions,
+                        { label: subOption.label }
+                      );
+                      if (fParentIndex > -1) {
+                        // @ts-ignore
+                        options[fGrandParentIndex]?.subOptions[
+                          fParentIndex
+                        ]?.subOptions.push(subSubOption);
+                      } else {
+                        // @ts-ignore
+                        options[fGrandParentIndex]?.subOptions.push({
+                          ...subOption,
+                          subOptions: [subSubOption],
+                        });
+                      }
+                    } else {
+                      options.push({
+                        ...option,
+                        subOptions: [
+                          {
+                            ...subOption,
+                            subOptions: [subSubOption],
+                          },
+                        ],
+                      });
+                    }
+                  }
+                }
+              );
+            }
+          });
+        }
+      });
+      setOptionsToShow(options);
+    }
+  }, [value]);
+
+  function handleChangeAll(event: React.ChangeEvent<HTMLInputElement>) {
+    const tmp = [...tmpAppliedFilters];
+    const tmpChildren = [...tmpAppliedFiltersChildren];
+    const tmpGrandChildren = [...tmpAppliedFiltersGrandChildren];
+    if (event.target.checked) {
+      props.options.forEach((option: FilterGroupOptionModel) => {
+        tmp.push(option.value);
+        option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+          (!appliedFiltersChildren ? tmp : tmpChildren).push(subOption.value);
+          subOption.subOptions?.forEach(
+            (subSubOption: FilterGroupOptionModel) => {
+              (!appliedFiltersChildren ? tmp : tmpGrandChildren).push(
+                subSubOption.value
+              );
+            }
+          );
+        });
+      });
+      setTmpAppliedFilters(tmp);
+      if (appliedFiltersChildren) {
+        setTmpAppliedFiltersChildren(tmpChildren);
+      }
+      if (appliedFiltersGrandChildren) {
+        setTmpAppliedFiltersGrandChildren(tmpGrandChildren);
+      }
+    } else {
+      setTmpAppliedFilters([]);
+      if (appliedFiltersChildren) {
+        setTmpAppliedFiltersChildren([]);
+      }
+      if (appliedFiltersGrandChildren) {
+        setTmpAppliedFiltersGrandChildren([]);
+      }
+    }
+  }
+
+  function handleApply() {
+    if (!isEqual(appliedFilters, tmpAppliedFilters)) {
+      setAppliedFilters(tmpAppliedFilters);
+    }
+    if (
+      setAppliedFiltersChildren &&
+      appliedFiltersChildren &&
+      !isEqual(appliedFiltersChildren, tmpAppliedFiltersChildren)
+    ) {
+      setAppliedFiltersChildren(tmpAppliedFiltersChildren);
+    }
+    if (
+      setAppliedFiltersGrandChildren &&
+      appliedFiltersGrandChildren &&
+      !isEqual(appliedFiltersGrandChildren, tmpAppliedFiltersGrandChildren)
+    ) {
+      setAppliedFiltersGrandChildren(tmpAppliedFiltersGrandChildren);
+    }
+    props.goBack();
+  }
+
+  function onOptionChange(
+    checked: boolean,
+    option: FilterGroupOptionModel,
+    level: number
+  ) {
+    const tmp = [...tmpAppliedFilters];
+    const tmpChildren = [...tmpAppliedFiltersChildren];
+    const tmpGrandChildren = [...tmpAppliedFiltersGrandChildren];
+    if (checked) {
+      if (!appliedFiltersChildren || level === 1) {
+        tmp.push(option.value);
+      } else if (level === 2 && appliedFiltersChildren) {
+        tmpChildren.push(option.value);
+      } else if (level === 3 && appliedFiltersGrandChildren) {
+        tmpGrandChildren.push(option.value);
+      }
+      if (props.addSubOptionFilters) {
+        option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+          if (!appliedFiltersChildren) {
+            tmp.push(subOption.value);
+          } else if (level + 1 === 2 && appliedFiltersChildren) {
+            tmpChildren.push(subOption.value);
+          } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
+            tmpGrandChildren.push(subOption.value);
+          }
+          subOption.subOptions?.forEach(
+            (subSubOption: FilterGroupOptionModel) => {
+              if (!appliedFiltersChildren) {
+                tmp.push(subSubOption.value);
+              } else if (level + 1 === 2 && appliedFiltersChildren) {
+                tmpChildren.push(subSubOption.value);
+              } else if (level + 1 === 3 && appliedFiltersGrandChildren) {
+                tmpGrandChildren.push(subSubOption.value);
+              }
+            }
+          );
+        });
+      }
+    } else {
+      remove(tmp, (o: string) => o === option.value);
+      remove(tmpChildren, (o: string) => o === option.value);
+      remove(tmpGrandChildren, (o: string) => o === option.value);
+      option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+        remove(tmp, (o: string) => o === subOption.value);
+        remove(tmpChildren, (o: string) => o === subOption.value);
+        remove(tmpGrandChildren, (o: string) => o === subOption.value);
+        subOption.subOptions?.forEach(
+          (subSubOption: FilterGroupOptionModel) => {
+            remove(tmp, (o: string) => o === subSubOption.value);
+            remove(tmpChildren, (o: string) => o === subSubOption.value);
+            remove(tmpGrandChildren, (o: string) => o === subSubOption.value);
+          }
+        );
+      });
+    }
+    setTmpAppliedFilters(tmp);
+    setTmpAppliedFiltersChildren(tmpChildren);
+    setTmpAppliedFiltersGrandChildren(tmpGrandChildren);
+  }
+
+  function resetFilters() {
+    if (appliedFilters.length > 0) {
+      setAppliedFilters([]);
+    }
+    if (
+      appliedFiltersChildren &&
+      setAppliedFiltersChildren &&
+      appliedFiltersChildren.length > 0
+    ) {
+      setAppliedFiltersChildren([]);
+    }
+    if (
+      appliedFiltersGrandChildren &&
+      setAppliedFiltersGrandChildren &&
+      appliedFiltersGrandChildren.length > 0
+    ) {
+      setAppliedFiltersGrandChildren([]);
+    }
+  }
 
   return (
     <React.Fragment>
@@ -56,12 +326,13 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               <Checkbox
                 color="primary"
                 checked={allSelected}
-                onChange={handleChange}
+                onChange={handleChangeAll}
+                disabled={value.length > 0}
               />
             }
             label="Select all"
           />
-          <IconButton>
+          <IconButton onClick={resetFilters}>
             <ResetIcon />
           </IconButton>
         </div>
@@ -106,9 +377,46 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           border-bottom: 1px solid #dfe3e6;
         `}
       />
-      {props.options.map((option: FilterGroupOptionModel) => (
-        <FilterOption {...option} key={option.value} />
-      ))}
+      <div
+        css={`
+          overflow-y: auto;
+          max-height: calc(100% - 190px);
+
+          &::-webkit-scrollbar {
+            width: 4px;
+            border-radius: 4px;
+            background: #495057;
+          }
+          &::-webkit-scrollbar-track {
+            border-radius: 4px;
+            background: #f5f5f7;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 4px;
+            background: #495057;
+          }
+        `}
+      >
+        {optionsToShow.map((option: FilterGroupOptionModel) => (
+          <FilterOption
+            {...option}
+            level={1}
+            key={option.value}
+            onOptionChange={onOptionChange}
+            selectedOptions={[
+              ...tmpAppliedFilters,
+              ...tmpAppliedFiltersChildren,
+              ...tmpAppliedFiltersGrandChildren,
+            ]}
+            selected={
+              find(
+                [...tmpAppliedFilters, ...tmpAppliedFiltersChildren],
+                (o: string) => o === option.value
+              ) !== undefined
+            }
+          />
+        ))}
+      </div>
       <div
         css={`
           width: 100%;
@@ -117,7 +425,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       />
       <button
         type="button"
-        onClick={props.goBack}
+        onClick={handleApply}
         css={`
           color: #fff;
           font-size: 14px;
@@ -136,7 +444,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   );
 }
 
-function FilterOption(props: FilterGroupOptionModel) {
+function FilterOption(props: FilterOptionProps) {
   const [showSubOptions, setShowSubOptions] = React.useState(false);
 
   return (
@@ -154,30 +462,61 @@ function FilterOption(props: FilterGroupOptionModel) {
           width: 100%;
           padding: 5px;
           display: flex;
+          position: relative;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
 
           > button {
+            z-index: 3;
             margin-right: 6px;
             transform: rotate(${showSubOptions ? 0 : 180}deg);
           }
         `}
       >
         <FormControlLabel
+          css={`
+            && {
+              z-index: 3;
+            }
+          `}
           control={
             <Checkbox
               color="primary"
-              // checked={false}
-              // onChange={handleChange}
+              checked={props.selected}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                props.onOptionChange(
+                  e.target.checked,
+                  {
+                    label: props.label,
+                    value: props.value,
+                    subOptions: props.subOptions,
+                  },
+                  props.level
+                )
+              }
             />
           }
           label={props.label}
         />
         {props.subOptions && (
-          <IconButton onClick={() => setShowSubOptions(!showSubOptions)}>
-            <TriangleXSIcon />
-          </IconButton>
+          <React.Fragment>
+            <div
+              css={`
+                top: 0;
+                left: 0;
+                z-index: 2;
+                width: 100%;
+                height: 100%;
+                cursor: pointer;
+                position: absolute;
+              `}
+              onClick={() => setShowSubOptions(!showSubOptions)}
+            />
+            <IconButton onClick={() => setShowSubOptions(!showSubOptions)}>
+              <TriangleXSIcon />
+            </IconButton>
+          </React.Fragment>
         )}
       </div>
       {props.subOptions && showSubOptions && (
@@ -186,28 +525,24 @@ function FilterOption(props: FilterGroupOptionModel) {
             gap: 6px;
             width: 100%;
             display: flex;
-            overflow-y: auto;
-            max-height: 300px;
             padding-left: 25px;
             flex-direction: column;
-
-            &::-webkit-scrollbar {
-              width: 4px;
-              border-radius: 4px;
-              background: #495057;
-            }
-            &::-webkit-scrollbar-track {
-              border-radius: 4px;
-              background: #f5f5f7;
-            }
-            &::-webkit-scrollbar-thumb {
-              border-radius: 4px;
-              background: #495057;
-            }
           `}
         >
           {props.subOptions.map((option: FilterGroupOptionModel) => (
-            <FilterOption {...option} />
+            <FilterOption
+              {...option}
+              key={option.value}
+              level={props.level + 1}
+              onOptionChange={props.onOptionChange}
+              selectedOptions={props.selectedOptions}
+              selected={
+                find(
+                  props.selectedOptions,
+                  (o: string) => o === option.value
+                ) !== undefined
+              }
+            />
           ))}
         </div>
       )}

@@ -1,81 +1,230 @@
 /* third-party */
 import React from "react";
-import useTitle from "react-use/lib/useTitle";
+import get from "lodash/get";
+import find from "lodash/find";
+import { useUnmount } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { Dropdown } from "app/components/Dropdown";
+import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
-import { mockdata } from "app/components/Charts/Budgets/Flow/data";
+import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
+import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
+import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
-export function BudgetsFlowModule() {
-  useTitle("The Data Explorer - Budgets Flow");
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
-  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
+interface BudgetsFlowModuleProps {
+  nodes: {
+    id: string;
+    filterStr: string;
+  }[];
+  links: {
+    value: number;
+    source: string;
+    target: string;
+  }[];
+  isLoading: boolean;
+  isDrilldownLoading: boolean;
+  vizLevel: number;
+  setVizLevel: (vizLevel: number) => void;
+  vizTranslation: { x: number; y: number };
+  setVizTranslation: (obj: { x: number; y: number }) => void;
+  vizSelected: { id: string | undefined; filterStr: string | undefined };
+  setVizSelected: (vizSelected: {
+    id: string | undefined;
+    filterStr: string | undefined;
+  }) => void;
+  vizCompData: any;
+  setVizCompData: (comps: any) => void;
+  vizPrevTranslation: { x: number; y: number };
+  // setVizPrevTranslation: (obj: { x: number; y: number }) => void;
+  dataDrilldownLevel1: BudgetsTreemapDataItem[];
+  setDrilldownVizSelected: (obj: {
+    id: string | undefined;
+    filterStr: string | undefined;
+  }) => void;
+  drilldownPanelOptions: {
+    name: string;
+    items: string[];
+  }[];
+}
+
+export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
   );
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
+
+  React.useEffect(() => {
+    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
+      setVizDrilldowns([]);
+    }
+    if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
+      setVizDrilldowns([{ name: "Dataset" }, { name: props.vizSelected.id }]);
+    }
+  }, [props.vizLevel, props.vizSelected]);
+
+  useUnmount(() => setVizDrilldowns([]));
+
+  if (props.isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <div
       css={`
         width: 100%;
 
-        ${!vizSelected
+        ${!props.vizSelected
           ? `* {
         overflow: visible !important;
       }`
           : ""}
       `}
     >
-      <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
-        {(vizLevel === 0 || vizLevel === 1) && (
+      <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
+        {(props.vizLevel === 0 || props.vizLevel === 1) && (
           <BudgetsFlow
-            data={mockdata}
-            selectedNodeId={vizSelected}
-            onNodeClick={(node: string, x: number, y: number) => {
-              setVizLevel(1);
-              setVizSelected(node);
-              setVizTranslation({ x: x * -1, y: 0 });
+            data={{
+              nodes: props.nodes,
+              links: props.links,
             }}
+            selectedNodeId={props.vizSelected.id}
+            onNodeClick={(
+              node: { id: string; filterStr: string },
+              x: number,
+              y: number
+            ) => {
+              props.setVizLevel(1);
+              props.setVizSelected(node);
+              props.setVizTranslation({ x: x * -1, y: 0 });
+            }}
+            vizCompData={props.vizCompData}
+            setVizCompData={props.setVizCompData}
           />
         )}
-        {vizLevel === 2 && (
+        {props.vizLevel === 2 && (
           <DisbursementsTreemap
             data={mockdata2}
-            selectedNodeId={vizSelected}
+            selectedNodeId={props.vizSelected.id}
             onNodeClick={(node: string, x: number, y: number) => {}}
           />
         )}
       </TransitionContainer>
       <SlideInContainer
-        vizLevel={vizLevel}
-        selected={vizSelected}
+        vizLevel={props.vizLevel}
+        selected={props.vizSelected.id}
+        loading={props.isDrilldownLoading}
         close={() => {
-          setVizLevel(vizLevel - 1);
-          setVizTranslation({ x: 0, y: 0 });
-          setVizSelected(vizLevel === 1 ? undefined : vizPrevSelected);
-          setVizTranslation(
-            vizLevel === 1 ? { x: 0, y: 0 } : vizPrevTranslation
+          props.setVizLevel(props.vizLevel - 1);
+          props.setVizTranslation({ x: 0, y: 0 });
+          if (props.vizLevel - 1 === 0) {
+            props.setVizSelected({ id: undefined, filterStr: undefined });
+          }
+          if (props.vizLevel - 1 === 0) {
+            props.setDrilldownVizSelected({
+              id: undefined,
+              filterStr: undefined,
+            });
+          }
+          props.setVizTranslation(
+            props.vizLevel === 1 ? { x: 0, y: 0 } : props.vizPrevTranslation
           );
         }}
       >
-        <DisbursementsTreemap
-          data={mockdata2}
+        <span
+          css={`
+            gap: 40px;
+            width: 100%;
+            display: flex;
+            margin-bottom: 20px;
+            flex-direction: row;
+          `}
+        >
+          <DrillDownArrowSelector
+            options={props.drilldownPanelOptions.map(
+              (option: { name: string; items: string[] }) => option.name
+            )}
+            selected={get(
+              find(
+                props.drilldownPanelOptions,
+                (option: { name: string; items: string[] }) =>
+                  option.items.indexOf(props.vizSelected.id as string) > -1
+              ),
+              "name",
+              ""
+            )}
+            onChange={(value: string) => {
+              const firstOfLevel = get(
+                find(props.drilldownPanelOptions, { name: value }),
+                "items[0]",
+                null
+              );
+              if (firstOfLevel) {
+                const fNode = find(props.nodes, { id: firstOfLevel }) as {
+                  id: string;
+                  filterStr: string;
+                };
+                if (fNode) {
+                  props.setVizSelected(fNode);
+                  const fVizNodeComp = find(props.vizCompData, {
+                    id: firstOfLevel,
+                  }) as any;
+                  if (fVizNodeComp) {
+                    props.setVizTranslation({
+                      x: (fVizNodeComp.x - 200) * -1,
+                      y: 0,
+                    });
+                  }
+                }
+              }
+            }}
+          />
+          <Dropdown
+            options={get(
+              find(
+                props.drilldownPanelOptions,
+                (option: { name: string; items: string[] }) =>
+                  option.items.indexOf(props.vizSelected.id as string) > -1
+              ),
+              "items",
+              []
+            )}
+            value={props.vizSelected.id as string}
+            handleChange={(value: string) => {
+              const fNode = find(props.nodes, { id: value }) as {
+                id: string;
+                filterStr: string;
+              };
+              if (fNode) {
+                props.setVizSelected(fNode);
+                const fVizNodeComp = find(props.vizCompData, {
+                  id: value,
+                }) as any;
+                if (fVizNodeComp) {
+                  props.setVizTranslation({
+                    x: (fVizNodeComp.x - 200) * -1,
+                    y: 0,
+                  });
+                }
+              }
+            }}
+          />
+        </span>
+        <BudgetsTreemap
+          tooltipValueLabel="Budget"
+          data={props.dataDrilldownLevel1}
           onNodeClick={(node: string, x: number, y: number) => {
-            setVizLevel(2);
-            setVizPrevSelected(vizSelected);
-            setVizSelected(node);
-            setVizPrevTranslation(vizTranslation);
-            setVizTranslation({ x: x * -1, y: 0 });
+            // setVizLevel(2);
+            // setVizPrevSelected(vizSelected.id);
+            // setDrilldownVizSelected({ id: node, filterStr: undefined });
+            // setVizPrevTranslation(vizTranslation);
+            // setVizTranslation({ x: x * -1, y: 0 });
           }}
         />
       </SlideInContainer>

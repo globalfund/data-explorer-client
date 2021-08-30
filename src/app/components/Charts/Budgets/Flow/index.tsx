@@ -1,18 +1,26 @@
 import React from "react";
+import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import { ResponsiveSankey } from "@nivo/sankey";
+import {
+  ResponsiveSankey,
+  SankeyLinkDatum,
+  SankeyNodeDatum,
+} from "@nivo/sankey";
 import { InfoIcon } from "app/assets/icons/Info";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsFlowProps } from "app/components/Charts/Budgets/Flow/data";
 import { BudgetsFlowTooltip } from "app/components/Charts/Budgets/Flow/components/tooltip";
+import { NoDataBudgetsFlow } from "./components/nodata";
+import { NoDataLabel } from "../../common/nodatalabel";
 
 const container = css`
   width: 100%;
   height: 900px;
+  position: relative;
 
   linearGradient {
     stop {
@@ -27,6 +35,15 @@ const container = css`
 
   text {
     user-select: none;
+  }
+
+  path {
+    cursor: pointer;
+  }
+
+  > svg {
+    width: 100%;
+    height: 600px;
   }
 `;
 
@@ -74,17 +91,30 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   }, []);
 
   const Nodes = (nProps: any) => {
+    if (props.vizCompData.length !== nProps.nodes.length) {
+      props.setVizCompData(nProps.nodes);
+    }
     return nProps.nodes.map((node: any) => (
       <rect
-        x={node.x}
+        x={node.id === "Budgets" ? node.x - 20 : node.x}
         y={node.y}
         key={node.id}
-        width={node.width}
         height={node.height}
         data-cy="bf-sankey-bar-comp"
-        fill={node.id === props.selectedNodeId ? "#FFA726" : "#373D43"}
+        width={node.id === "Budgets" ? 25 : node.width}
+        fill={node.id === props.selectedNodeId ? "#2E4DF9" : "#373D43"}
+        css={`
+          cursor: pointer;
+          &:hover {
+            fill: #2e4df9;
+          }
+        `}
         onClick={() => {
-          props.onNodeClick(node.id, node.x - 200, node.y);
+          props.onNodeClick(
+            { id: node.id.toString(), filterStr: node.filterStr.toString() },
+            node.x - 200,
+            node.y
+          );
         }}
       />
     ));
@@ -120,55 +150,78 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           Cost category
         </Grid>
       </Grid>
-      <ResponsiveSankey
-        data={props.data}
-        colors={["#373D43"]}
-        // @ts-ignore
-        layers={["links", Nodes, "labels"]}
-        margin={{ top: 40, right: 0, bottom: 50, left: 0 }}
-        nodeOpacity={1}
-        nodeSpacing={34}
-        nodeThickness={15}
-        nodeInnerPadding={5}
-        linkOpacity={1}
-        enableLinkGradient
-        linkBlendMode="normal"
-        linkHoverOthersOpacity={0.1}
-        linkTooltip={(tProps: any) =>
-          !matches && (
-            <BudgetsFlowTooltip
-              value={tProps.value}
-              source={tProps.source.id}
-              target={tProps.target.id}
-            />
-          )
-        }
-        //   labelTextColor={(l: any) => {
-        //     if (selectedNode) {
-        //       return selectedNode.id === l.id ? "#fff" : "#757575";
-        //     }
-        //     return "#fff";
-        //   }}
-        labelFormat={(text: string | number) =>
-          getNodeLabel(text as string, matches)
-        }
-        animate
-        motionDamping={13}
-        motionStiffness={140}
-        nodeTooltip={(tProps: any) => tProps.id}
-        theme={{
-          tooltip: {
-            container: {
-              borderRadius: 20,
-              padding: "16px 25px",
-              position: "relative",
-              backgroundColor: "#f5f5f7",
-              display: matches ? "none" : "inherit",
-            },
-          },
-        }}
-      />
-      {/* {matchesSm && xsTooltipData && !props.selectedNode && (
+      {props.data.links.length === 0 ? (
+        <React.Fragment>
+          <NoDataBudgetsFlow />
+          <NoDataLabel height="600px" />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <ResponsiveSankey
+            data={props.data}
+            colors={["#373D43"]}
+            // @ts-ignore
+            layers={["links", Nodes, "labels"]}
+            margin={{ top: 40, right: 0, bottom: 50, left: 0 }}
+            nodeOpacity={1}
+            nodeSpacing={34}
+            nodeThickness={15}
+            nodeInnerPadding={5}
+            linkOpacity={1}
+            onClick={(
+              data: SankeyNodeDatum | SankeyLinkDatum,
+              event: React.MouseEvent
+            ) => {
+              const linkTarget = get(data, "target", null);
+              if (linkTarget) {
+                props.onNodeClick(
+                  {
+                    id: linkTarget.id.toString(),
+                    filterStr: linkTarget.filterStr.toString(),
+                  },
+                  linkTarget.x - 200,
+                  linkTarget.y
+                );
+              }
+            }}
+            enableLinkGradient
+            linkBlendMode="normal"
+            linkHoverOthersOpacity={0.15}
+            linkTooltip={(tProps: any) =>
+              !matches && (
+                <BudgetsFlowTooltip
+                  value={tProps.value}
+                  source={tProps.source.id}
+                  target={tProps.target.id}
+                />
+              )
+            }
+            //   labelTextColor={(l: any) => {
+            //     if (selectedNode) {
+            //       return selectedNode.id === l.id ? "#fff" : "#757575";
+            //     }
+            //     return "#fff";
+            //   }}
+            labelFormat={(text: string | number) =>
+              getNodeLabel(text as string, matches)
+            }
+            animate
+            motionDamping={13}
+            motionStiffness={140}
+            nodeTooltip={(tProps: any) => tProps.id}
+            theme={{
+              tooltip: {
+                container: {
+                  borderRadius: 20,
+                  padding: "16px 25px",
+                  position: "relative",
+                  backgroundColor: "#f5f5f7",
+                  display: matches ? "none" : "inherit",
+                },
+              },
+            }}
+          />
+          {/* {matchesSm && xsTooltipData && !props.selectedNode && (
           <XsContainer>
             <ClickAwayListener onClickAway={() => setXsTooltipData(null)}>
               <Tooltip minWidth="150px" dataCy="sankey-popup">
@@ -182,6 +235,8 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             </ClickAwayListener>
           </XsContainer>
         )} */}
+        </React.Fragment>
+      )}
     </div>
   );
 }

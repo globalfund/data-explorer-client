@@ -10,6 +10,7 @@ interface SearchLayoutProps {
   activeTab: number;
   setActiveTab: (value: number) => void;
   results: SearchResultsTabModel[];
+  loading: boolean;
 }
 
 export function SearchLayout(props: SearchLayoutProps) {
@@ -20,6 +21,7 @@ export function SearchLayout(props: SearchLayoutProps) {
         css={input}
         tabIndex={0}
         value={props.value}
+        placeholder="e.g. Kenya"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           props.setValue(e.target.value)
         }
@@ -27,6 +29,7 @@ export function SearchLayout(props: SearchLayoutProps) {
       <SearchIcon />
       {props.value.length > 0 && (
         <SearchResults
+          loading={props.loading}
           results={props.results}
           activeTab={props.activeTab}
           setActiveTab={props.setActiveTab}

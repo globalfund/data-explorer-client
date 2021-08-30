@@ -47,18 +47,21 @@ export function BarComponent(props: any) {
     );
   });
 
+  function onMouseMoveOrEnter(e: React.MouseEvent<SVGGElement>) {
+    if (
+      (props.selected || { indexValue: "" }).indexValue !==
+      props.data.indexValue
+    ) {
+      props.showTooltip(<InvestmentsTimeCycleTooltip {...props.data} />, e);
+      props.setHoveredXIndex(`${props.data.indexValue}-${props.data.id}`);
+    }
+  }
+
   return (
     <g
       {...fprops}
-      onMouseEnter={(e: React.MouseEvent<SVGGElement>) => {
-        if (
-          (props.selected || { indexValue: "" }).indexValue !==
-          props.data.indexValue
-        ) {
-          props.showTooltip(<InvestmentsTimeCycleTooltip {...props.data} />, e);
-          props.setHoveredXIndex(`${props.data.indexValue}-${props.data.id}`);
-        }
-      }}
+      onMouseMove={onMouseMoveOrEnter}
+      onMouseEnter={onMouseMoveOrEnter}
       onMouseLeave={() => {
         props.hideTooltip();
         props.setHoveredXIndex(null);
@@ -71,11 +74,13 @@ export function BarComponent(props: any) {
       data-cy="budgets-time-cycle-bar-component"
     >
       <text
-        y={props.y - 10}
-        x={props.x + props.width / 4}
+        display="none"
+        className="investments-time-cycle-bar-label"
         css={`
           font-size: 10px;
           text-transform: capitalize;
+          transform: translate(${props.x + 10}px, ${props.y - 10}px)
+            rotate(-90deg);
         `}
       >
         {props.data.id}

@@ -1,5 +1,6 @@
 import React from "react";
 import { css } from "styled-components/macro";
+import { useStoreState } from "app/state/store/hooks";
 import {
   PFIndicator,
   PFIndicatorResult,
@@ -36,6 +37,10 @@ const styles = {
 interface ResultsTableProps extends PFIndicator {}
 
 export function ResultsTable(props: ResultsTableProps) {
+  const selected = useStoreState(
+    (state) => state.ToolBoxPanelPFPeriodState.value
+  );
+
   return (
     <div
       css={`
@@ -59,7 +64,7 @@ export function ResultsTable(props: ResultsTableProps) {
           {props.results.map((result: PFIndicatorResult, index: number) => (
             <ResultsTableRow
               key={result.period}
-              selected={index === 1}
+              selected={index === selected}
               {...result}
             />
           ))}
@@ -91,7 +96,13 @@ function ResultsTableRow(props: ResultsTableRowProps) {
             align-items: center;
           `}
         >
-          {props.achievementRate}
+          <div
+            css={`
+              min-width: 20px;
+            `}
+          >
+            {props.achievementRate}
+          </div>
           <div
             css={`
               gap: 10px;
@@ -111,7 +122,13 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                background: ${props.color};
+                background: ${props.color === "#E2E2E2"
+                  ? `repeating-linear-gradient(
+                  -45deg,
+                  #262c34 0 0.5px,
+                  #fff 1.5px 2px
+                )`
+                  : props.color};
               `}
             />
           </div>

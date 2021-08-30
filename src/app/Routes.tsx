@@ -1,9 +1,13 @@
 //cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
+import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
+import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { NoMatchPage } from "app/modules/common/no-match-page";
+import { useGA } from "app/hooks/useGA";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -18,6 +22,31 @@ const CountryDetailModule = lazy(
 );
 
 export function MainRoutes() {
+  useFilterOptions({});
+  useUrlFilters();
+  useGA();
+
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
+  if (isSmallScreen) {
+    return (
+      <div
+        css={`
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          text-align: center;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+        `}
+      >
+        App is not yet optimised for smaller screens.
+        <br />
+        Please visit the app on a desktop.
+      </div>
+    );
+  }
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
@@ -53,7 +82,7 @@ export function MainRoutes() {
           <CountryDetailModule />
         </Route>
 
-        <Route exact path="/grant/:code/:vizType/:subType?">
+        <Route exact path="/grant/:code/:period/:vizType/:subType?">
           <GrantDetailModule />
         </Route>
 

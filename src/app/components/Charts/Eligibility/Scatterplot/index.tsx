@@ -5,15 +5,17 @@ import { css } from "styled-components/macro";
 import { useStoreState } from "app/state/store/hooks";
 import { ResponsiveScatterPlot, Value } from "@nivo/scatterplot";
 import {
-  mockdata,
   incomeLevels,
   diseaseBurdens,
   EligibilityScatterplotHoveredNode,
+  ScatterPlotProps,
+  EligibilityScatterplotDataModel,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 import {
   ScatterplotNode,
   backCircleRadius,
 } from "app/components/Charts/Eligibility/Scatterplot/components/node";
+import { NoDataLabel } from "../../common/nodatalabel";
 
 const styles = {
   Eligible: css`
@@ -29,7 +31,7 @@ const styles = {
   `,
 };
 
-export function ScatterPlot() {
+export function ScatterPlot(props: ScatterPlotProps) {
   const [
     hoveredNode,
     setHoveredNode,
@@ -83,6 +85,25 @@ export function ScatterPlot() {
       );
     });
   };
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const scrollableDiv = document.getElementById("scatterplot-scroll-div");
+      if (scrollableDiv) {
+        scrollableDiv.scroll({
+          left: scrollableDiv.scrollWidth,
+          behavior: "smooth",
+        });
+      }
+    }, 500);
+  }, []);
+
+  const noData =
+    filter(
+      props.data,
+      (item: EligibilityScatterplotDataModel) =>
+        item.id.toString().trim().length > 0
+    ).length === 0;
 
   return (
     <React.Fragment>
@@ -611,6 +632,7 @@ export function ScatterPlot() {
         </Grid>
         <Grid item xs={12} md={10}>
           <div
+            id="scatterplot-scroll-div"
             css={`
               width: 100%;
               overflow-x: auto;
@@ -630,48 +652,52 @@ export function ScatterPlot() {
           >
             <div
               css={`
-                width: 200vw;
                 height: 620px;
+                width: ${noData ? "100%" : "200vw"};
               `}
             >
-              <ResponsiveScatterPlot
-                data={mockdata}
-                useMesh={false}
-                margin={{ top: 60, right: 100, bottom: 50, left: 50 }}
-                layers={["grid", "axes", Nodes, "markers"]}
-                xScale={{ type: "point" }}
-                xFormat={(e: Value) => e.toString()}
-                yScale={{ type: "point" }}
-                yFormat={(e: Value) => e.toString()}
-                blendMode="multiply"
-                axisBottom={{
-                  tickSize: 0,
-                  tickPadding: 15,
-                  tickRotation: 0,
-                  format: (e: Value) => (e !== 2002 ? e.toString() : ""),
-                }}
-                axisLeft={{
-                  tickSize: 0,
-                  tickPadding: 15,
-                  tickRotation: -90,
-                }}
-                theme={{
-                  axis: {
-                    ticks: {
-                      text: {
-                        fontSize: 12,
-                        fill: "#262C34",
-                        fontWeight: "bold",
+              {noData ? (
+                <NoDataLabel />
+              ) : (
+                <ResponsiveScatterPlot
+                  data={props.data}
+                  useMesh={false}
+                  margin={{ top: 60, right: 100, bottom: 50, left: 50 }}
+                  layers={["grid", "axes", Nodes, "markers"]}
+                  xScale={{ type: "point" }}
+                  xFormat={(e: Value) => e.toString()}
+                  yScale={{ type: "point" }}
+                  yFormat={(e: Value) => e.toString()}
+                  blendMode="multiply"
+                  axisBottom={{
+                    tickSize: 0,
+                    tickPadding: 15,
+                    tickRotation: 0,
+                    format: (e: Value) => (e !== 2002 ? e.toString() : ""),
+                  }}
+                  axisLeft={{
+                    tickSize: 0,
+                    tickPadding: 15,
+                    tickRotation: -90,
+                  }}
+                  theme={{
+                    axis: {
+                      ticks: {
+                        text: {
+                          fontSize: 12,
+                          fill: "#262C34",
+                          fontWeight: "bold",
+                        },
                       },
                     },
-                  },
-                  grid: {
-                    line: {
-                      fill: "#ADB5BD",
+                    grid: {
+                      line: {
+                        fill: "#ADB5BD",
+                      },
                     },
-                  },
-                }}
-              />
+                  }}
+                />
+              )}
             </div>
           </div>
         </Grid>

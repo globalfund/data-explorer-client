@@ -1,8 +1,8 @@
 /* core */
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 /* third-party */
-import CircularProgress from '@material-ui/core/CircularProgress';
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const Background = styled.div`
   width: 55px;
@@ -27,16 +27,19 @@ const Container = styled.div`
 export const LoadingComp = styled.div`
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: ${(props: { inLoader?: boolean }) =>
+    props.inLoader ? "100%" : "100vw"};
+  height: ${(props: { inLoader?: boolean }) =>
+    props.inLoader ? "100%" : "100vw"};
   z-index: 100000;
-  position: fixed;
+  position: ${(props: { inLoader?: boolean }) =>
+    props.inLoader ? "static" : "fixed"};
   background: rgba(0, 0, 0, 0.2);
 `;
 
-export const PageLoader = () => {
+export const PageLoader = (props: { inLoader?: boolean }) => {
   return (
-    <LoadingComp>
+    <LoadingComp inLoader={props.inLoader}>
       <Container data-cy="general-loader">
         <Background>
           <CircularProgress disableShrink />

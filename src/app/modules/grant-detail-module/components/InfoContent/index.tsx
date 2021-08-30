@@ -1,18 +1,20 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import find from "lodash/find";
+import { Dropdown } from "app/components/Dropdown";
+import { useParams, useHistory } from "react-router-dom";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 
 interface GrantInfoContentProps {
   title: string;
   code: string;
-  rating: string;
+  rating: string | null;
   status: string;
   location: string;
   component: string;
-  description: string;
+  description: string | null;
   investments: {
     disbursed: number;
     committed: number;
@@ -22,9 +24,46 @@ interface GrantInfoContentProps {
     name: string;
     email: string;
   };
+  periods: GrantDetailPeriod[];
+}
+
+export interface GrantDetailPeriod {
+  number: number;
+  startDate: string;
+  endDate: string;
+}
+
+export interface GrantDetailPeriodInformation {
+  disbursed: number;
+  committed: number;
+  signed: number;
+  rating: string;
 }
 
 export function GrantInfoContent(props: GrantInfoContentProps) {
+  const history = useHistory();
+  const params = useParams<{ code: string; period: string; vizType: string }>();
+
+  const selectedPeriod = find(
+    props.periods,
+    (p: GrantDetailPeriod) => p.number.toString() === params.period
+  ) || { startDate: "", endDate: "" };
+
+  function onSelectedPeriodChange(period: string) {
+    const fPeriod = find(
+      props.periods,
+      (p: GrantDetailPeriod) => `${p.startDate} - ${p.endDate}` === period
+    );
+    if (fPeriod) {
+      history.push(
+        history.location.pathname.replace(
+          `/${params.period}/`,
+          `/${fPeriod.number.toString()}/`
+        )
+      );
+    }
+  }
+
   return (
     <div
       css={`
@@ -90,6 +129,32 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           margin-bottom: 5px;
         `}
       >
+        Implementation period
+      </div>
+      <div
+        css={`
+          gap: 12px;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          margin-bottom: 20px;
+        `}
+      >
+        <Dropdown
+          value={`${selectedPeriod.startDate} - ${selectedPeriod.endDate}`}
+          handleChange={onSelectedPeriodChange}
+          options={props.periods.map(
+            (p: GrantDetailPeriod) => `${p.startDate} - ${p.endDate}`
+          )}
+        />
+      </div>
+      <div
+        css={`
+          font-size: 14px;
+          font-weight: bold;
+          margin-bottom: 5px;
+        `}
+      >
         Rating
       </div>
       <div
@@ -113,7 +178,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
               align-items: center;
               justify-content: center;
               border: 2px solid #262c34;
-              opacity: ${props.rating === value ? 1 : 0.3};
+              opacity: ${(props.rating || ratingValues[0]) === value ? 1 : 0.3};
             `}
           >
             {value}

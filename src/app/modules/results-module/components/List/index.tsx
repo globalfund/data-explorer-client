@@ -1,5 +1,8 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import { useHistory } from "react-router-dom";
 import {
   row,
   listitem,
@@ -25,10 +28,11 @@ export function ResultsList(props: ResultsListProps) {
 
 function ResultsListItem(props: ResultListItemModel) {
   const [expand, setExpand] = React.useState(false);
+  const history = useHistory();
 
   return (
-    <Grid item key={props.id} xs={12} sm={6} md={4}>
-      <div css={listitem}>
+    <Grid item key={props.id} xs={12} sm={6} md={4} id={props.id}>
+      <div css={listitem(history.location.hash === `#${props.id}` && !expand)}>
         {!expand && (
           <React.Fragment>
             <div css="width: 100%;height: 12px;" />
@@ -68,7 +72,7 @@ function ResultsListItem(props: ResultListItemModel) {
             <div css={locationlist}>
               {props.geoLocations.map(
                 (location: { name: string; value: number }) => (
-                  <div>
+                  <div key={location.name}>
                     <div>{location.name}</div>
                     <div>{location.value.toLocaleString()}</div>
                   </div>

@@ -1,25 +1,47 @@
+/* base */
 import React from "react";
 import { useHoverDirty } from "react-use";
 import { useHistory } from "react-router-dom";
-import { mapStyle, GeoMapProps } from "app/components/Charts/GeoMap/data";
+// import WebMercatorViewport from "viewport-mercator-project";
 import MapGL, {
   LinearInterpolator,
   MapRef,
   Source,
   Layer,
   LayerProps,
+  Popup,
 } from "react-map-gl";
-import { GeomapTooltip } from "./components/tooltip";
-// import WebMercatorViewport from "viewport-mercator-project";
+
+/* utils */
+import filter from "lodash/filter";
+import { lineString } from "@turf/helpers";
+import bezierSpline from "@turf/bezier-spline";
+
+/* components */
+import {
+  mapStyle,
+  GeoMapProps,
+  GeoMapPinMarker,
+  getMapPinIcons,
+  InvestmentsGeoMapPinMarker,
+  AllocationsGeoMapPinMarker,
+} from "app/components/Charts/GeoMap/data";
+import {
+  GeomapAllocationsTooltip,
+  GeomapPinTooltip,
+  GeomapTooltip,
+} from "app/components/Charts/GeoMap/components/tooltip";
+import { MapPin } from "app/components/Charts/GeoMap/components/pins";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 export function GeoMap(props: GeoMapProps) {
   const history = useHistory();
-  const mapRef = React.useRef();
-  const containerRef = React.useRef<HTMLDivElement>();
+  const mapRef = React.useRef<React.Ref<MapRef>>();
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const isHovering = useHoverDirty(containerRef as React.RefObject<Element>);
   const [viewport, setViewport] = React.useState({
-    latitude: 0,
-    longitude: 0,
+    latitude: 37.307990048281795,
+    longitude: 4.5689197295041035,
     zoom: 1.3,
     bearing: 0,
     pitch: 0,
@@ -80,23 +102,136 @@ export function GeoMap(props: GeoMapProps) {
           [12, "#343A40"],
         ],
       },
+      "fill-opacity": [
+        "case",
+        ["boolean", ["feature-state", "hover"], false],
+        0.5,
+        1,
+      ],
     },
   };
   const [hoverInfo, setHoverInfo] = React.useState<any>(null);
+  const [prevHoverInfo, setPrevHoverInfo] = React.useState<any>(null);
+  const [
+    pinMarkerHoverInfo,
+    setPinMarkerHoverInfo,
+  ] = React.useState<GeoMapPinMarker | null>(null);
+  const [
+    investmentsPinMarkerHoverInfo,
+    setInvestmentsPinMarkerHoverInfo,
+  ] = React.useState<InvestmentsGeoMapPinMarker | null>(null);
+  const [
+    allocationsPinMarkerHoverInfo,
+    setAllocationsPinMarkerHoverInfo,
+  ] = React.useState<AllocationsGeoMapPinMarker | null>(null);
+  const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
 
-  const onHover = React.useCallback((event: any) => {
+  React.useEffect(() => {
+    if (
+      pinMarkerHoverInfo &&
+      pinMarkerHoverInfo.d2hCoordinates &&
+      pinMarkerHoverInfo.d2hCoordinates.length > 0
+    ) {
+      const allD2HofSameCountryDonor = filter(
+        props.pins,
+        (pin: GeoMapPinMarker) => {
+          if (
+            pin.d2hCoordinates &&
+            pinMarkerHoverInfo &&
+            pinMarkerHoverInfo.d2hCoordinates
+          ) {
+            return (
+              pin.d2hCoordinates[0][0] ===
+                pinMarkerHoverInfo.d2hCoordinates[0][0] &&
+              pin.d2hCoordinates[0][1] ===
+                pinMarkerHoverInfo.d2hCoordinates[0][1]
+            );
+          }
+          return false;
+        }
+      );
+      const lineIds: string[] = [];
+      allD2HofSameCountryDonor.forEach((item: GeoMapPinMarker) => {
+        const positions = item.d2hCoordinates
+          ? item.d2hCoordinates.map((c: number[]) => [c[1], c[0]])
+          : [];
+        const line = bezierSpline(lineString(positions), { sharpness: 0 });
+        lineIds.push(item.intId.toString());
+        if (mapRef.current) {
+          // @ts-ignore
+          mapRef.current.addLayer({
+            id: item.intId.toString(),
+            type: "line",
+            metadata: item,
+            source: {
+              type: "geojson",
+              data: line,
+            },
+            paint: {
+              "line-width": 2,
+              "line-color": "#2E4DF9",
+              "line-dasharray": [3, 3],
+            },
+          });
+        }
+      });
+      setRenderedLines(lineIds);
+    } else if (renderedLines.length > 0) {
+      renderedLines.forEach((line: string) => {
+        // @ts-ignore
+        if (mapRef.current && mapRef.current.getSource(line)) {
+          // @ts-ignore
+          mapRef.current.removeLayer(line);
+          // @ts-ignore
+          mapRef.current.removeSource(line);
+        }
+      });
+    }
+  }, [pinMarkerHoverInfo]);
+
+  const onHover = (event: any) => {
     const {
       features,
       srcEvent: { pageX, pageY },
     } = event;
     const hoveredFeature = features && features[0];
-
-    setHoverInfo(
+    const tileWithData =
       hoveredFeature &&
-        hoveredFeature.properties &&
-        hoveredFeature.properties.name &&
-        hoveredFeature.properties.value > 0
+      hoveredFeature.properties &&
+      hoveredFeature.properties.name &&
+      hoveredFeature.properties.value > 0;
+
+    if (mapRef.current) {
+      if (tileWithData) {
+        // @ts-ignore
+        mapRef.current.setFeatureState(
+          {
+            source: "geojson-data-source",
+            id: hoveredFeature.id,
+          },
+          { hover: true }
+        );
+      }
+      if (
+        prevHoverInfo &&
+        prevHoverInfo.id !== (hoveredFeature ? hoveredFeature.id : -1)
+      ) {
+        // @ts-ignore
+        mapRef.current.setFeatureState(
+          {
+            source: "geojson-data-source",
+            id: prevHoverInfo.id,
+          },
+          { hover: false }
+        );
+      }
+    }
+
+    setPrevHoverInfo(hoverInfo);
+    setHoverInfo(
+      tileWithData
         ? {
+            id: hoveredFeature.id,
             properties: {
               ...hoveredFeature.properties,
               data: JSON.parse(hoveredFeature.properties.data),
@@ -106,27 +241,45 @@ export function GeoMap(props: GeoMapProps) {
           }
         : null
     );
-  }, []);
+  };
 
   const onClick = React.useCallback((event: any) => {
-    const { features } = event;
-    const hoveredFeature = features && features[0];
-    if (
-      hoveredFeature &&
-      hoveredFeature.properties &&
-      hoveredFeature.properties.iso_a3 &&
-      hoveredFeature.properties.value > 0
-    ) {
-      history.push(`/location/${hoveredFeature.properties.iso_a3}/investments`);
+    if (props.allowClickthrough) {
+      const { features } = event;
+      const hoveredFeature = features && features[0];
+      if (
+        hoveredFeature &&
+        hoveredFeature.properties &&
+        hoveredFeature.properties.iso_a3 &&
+        hoveredFeature.properties.value > 0
+      ) {
+        history.push(
+          `/location/${hoveredFeature.properties.iso_a3}/investments`
+        );
+      }
     }
   }, []);
+
+  const uMapStyle = mapStyle;
+  if (props.data.features.length === 0 || props.noData) {
+    uMapStyle.layers[0].paint["background-color"] = "hsl(204, 10%, 80%)";
+  }
+
+  let heightDef =
+    props.investmentsPins.length > 0 || props.pins.length > 0
+      ? "183px"
+      : "244px";
+
+  if (props.type === "allocations") {
+    heightDef = "274px";
+  }
 
   return (
     <div
       ref={containerRef as React.RefObject<HTMLDivElement>}
       css={`
         width: 100%;
-        height: calc(100vh - 244px);
+        height: calc(100vh - ${heightDef});
       `}
     >
       <MapGL
@@ -136,18 +289,174 @@ export function GeoMap(props: GeoMapProps) {
         height="100%"
         onHover={onHover}
         onClick={onClick}
-        mapStyle={mapStyle}
+        mapStyle={uMapStyle}
         ref={(ref: MapRef) => {
           if (ref) mapRef.current = ref.getMap();
         }}
         onViewportChange={setViewport}
         mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_TOKEN}
       >
-        <Source type="geojson" data={props.data}>
+        <Source
+          generateId
+          id="geojson-data-source"
+          type="geojson"
+          data={
+            props.noData
+              ? {
+                  type: "FeatureCollection",
+                  features: [],
+                }
+              : props.data
+          }
+        >
           <Layer {...layerStyle} />
         </Source>
+        {props.investmentsPins.map((pin: InvestmentsGeoMapPinMarker) => {
+          const icons = getMapPinIcons("Multicountry");
+          return (
+            <MapPin
+              key={pin.id}
+              marker={pin}
+              setMarkerInfo={setInvestmentsPinMarkerHoverInfo}
+              onClick={() => history.push(`/location/${pin.code}/investments`)}
+              {...icons}
+            />
+          );
+        })}
+        {investmentsPinMarkerHoverInfo && (
+          <Popup
+            tipSize={0}
+            dynamicPosition
+            offsetLeft={20}
+            closeButton={false}
+            latitude={investmentsPinMarkerHoverInfo.latitude}
+            longitude={investmentsPinMarkerHoverInfo.longitude}
+            css={`
+              z-index: 100;
+
+              .mapboxgl-popup-content {
+                width: 0px !important;
+                height: 0px !important;
+                padding: 0px !important;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 350px;
+                padding: 20px;
+                position: absolute;
+                background: #f5f5f7;
+                border-radius: 20px;
+              `}
+            >
+              <GeomapTooltip
+                name={investmentsPinMarkerHoverInfo.geoName}
+                data={{
+                  components: investmentsPinMarkerHoverInfo.components,
+                  disbursed: investmentsPinMarkerHoverInfo.disbursed,
+                  committed: investmentsPinMarkerHoverInfo.committed,
+                  signed: investmentsPinMarkerHoverInfo.signed,
+                }}
+              />
+            </div>
+          </Popup>
+        )}
+        {props.allocationsPins.map((pin: AllocationsGeoMapPinMarker) => {
+          const icons = getMapPinIcons("Multicountry");
+          return (
+            <MapPin
+              key={pin.id}
+              marker={pin}
+              setMarkerInfo={setAllocationsPinMarkerHoverInfo}
+              onClick={() => history.push(`/location/${pin.code}/investments`)}
+              {...icons}
+            />
+          );
+        })}
+        {allocationsPinMarkerHoverInfo && (
+          <Popup
+            tipSize={0}
+            dynamicPosition
+            offsetLeft={20}
+            closeButton={false}
+            latitude={allocationsPinMarkerHoverInfo.latitude}
+            longitude={allocationsPinMarkerHoverInfo.longitude}
+            css={`
+              z-index: 100;
+
+              .mapboxgl-popup-content {
+                width: 0px !important;
+                height: 0px !important;
+                padding: 0px !important;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 350px;
+                padding: 20px;
+                position: absolute;
+                background: #f5f5f7;
+                border-radius: 20px;
+              `}
+            >
+              <GeomapAllocationsTooltip
+                name={allocationsPinMarkerHoverInfo.geoName}
+                data={{
+                  components: allocationsPinMarkerHoverInfo.components,
+                  value: allocationsPinMarkerHoverInfo.value,
+                }}
+                valueLabel={props.type}
+              />
+            </div>
+          </Popup>
+        )}
+        {props.pins.map((pin: GeoMapPinMarker) => {
+          const icons = getMapPinIcons(pin.subType);
+          return (
+            <MapPin
+              key={pin.id}
+              marker={pin}
+              setMarkerInfo={setPinMarkerHoverInfo}
+              onClick={() => console.log("onClick")}
+              {...icons}
+            />
+          );
+        })}
+        {pinMarkerHoverInfo && (
+          <Popup
+            tipSize={0}
+            dynamicPosition
+            offsetLeft={20}
+            closeButton={false}
+            latitude={pinMarkerHoverInfo.latitude}
+            longitude={pinMarkerHoverInfo.longitude}
+            css={`
+              z-index: 100;
+
+              .mapboxgl-popup-content {
+                width: 0px !important;
+                height: 0px !important;
+                padding: 0px !important;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 350px;
+                padding: 20px;
+                position: absolute;
+                background: #f5f5f7;
+                border-radius: 20px;
+              `}
+            >
+              <GeomapPinTooltip pin={pinMarkerHoverInfo} allPins={props.pins} />
+            </div>
+          </Popup>
+        )}
       </MapGL>
-      {hoverInfo && isHovering && (
+      {hoverInfo && isHovering && props.type === "investments" && (
         <div
           css={`
             z-index: 100;
@@ -163,6 +472,47 @@ export function GeoMap(props: GeoMapProps) {
           <GeomapTooltip {...hoverInfo.properties} />
         </div>
       )}
+      {hoverInfo &&
+        isHovering &&
+        (props.type === "allocations" || props.type === "budgets") && (
+          <div
+            css={`
+              z-index: 100;
+              width: 350px;
+              padding: 20px;
+              position: absolute;
+              background: #f5f5f7;
+              border-radius: 20px;
+              top: ${hoverInfo.y + 50}px;
+              left: ${hoverInfo.x - 180}px;
+            `}
+          >
+            <GeomapAllocationsTooltip
+              valueLabel={props.type}
+              {...hoverInfo.properties}
+            />
+          </div>
+        )}
+      {hoverInfo && isHovering && props.type === "donors" && (
+        <div
+          css={`
+            z-index: 100;
+            width: 350px;
+            padding: 20px;
+            position: absolute;
+            background: #f5f5f7;
+            border-radius: 20px;
+            top: ${hoverInfo.y + 50}px;
+            left: ${hoverInfo.x - 180}px;
+          `}
+        >
+          <GeomapPinTooltip
+            allPins={props.pins}
+            pin={hoverInfo.properties.data}
+          />
+        </div>
+      )}
+      {props.noData && <NoDataLabel />}
     </div>
   );
 }

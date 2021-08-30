@@ -1,13 +1,14 @@
 import React from "react";
+import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { InfoIcon } from "app/assets/icons/Info";
+import { Dropdown } from "app/components/Dropdown";
 import useMousePosition from "app/hooks/useMousePosition";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import {
   DotChartProps,
   DotChartModel,
-  mockdata,
-  mockdata2,
 } from "app/components/Charts/Eligibility/DotChart/data";
 
 const styles = {
@@ -62,6 +63,7 @@ export function DotChart(props: DotChartProps) {
           md={2}
           css={`
             display: flex;
+            position: relative;
             flex-direction: column;
             justify-content: space-between;
           `}
@@ -74,11 +76,32 @@ export function DotChart(props: DotChartProps) {
               align-items: center;
             `}
           >
-            Year 2020 <InfoIcon />
+            <div
+              css={`
+                margin-right: 10px;
+              `}
+            >
+              Year
+            </div>
+            <Dropdown
+              value={props.selectedYear}
+              options={props.yearOptions}
+              handleChange={props.setSelectedYear}
+            />
+            <div
+              css={`
+                display: flex;
+                margin-left: 10px;
+              `}
+            >
+              <InfoIcon />
+            </div>
           </div>
           <div
             css={`
+              bottom: 25px;
               font-size: 14px;
+              position: sticky;
             `}
           >
             <div
@@ -163,7 +186,7 @@ export function DotChart(props: DotChartProps) {
               />
               Transition Funding
             </div>
-            {props.aggregateBy === "country" && (
+            {props.aggregateBy === "geographicAreaName" && (
               <React.Fragment>
                 <div
                   css={`
@@ -221,7 +244,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Tuberculosis
+                      Malaria
                     </div>
                   </div>
                   <div>
@@ -239,7 +262,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Malaria
+                      Tuberculosis
                     </div>
                   </div>
                   <div>
@@ -267,111 +290,130 @@ export function DotChart(props: DotChartProps) {
           </div>
         </Grid>
         <Grid item container sm={12} md={10} spacing={4}>
-          {props.aggregateBy === "component"
-            ? mockdata.map((group: DotChartModel) => (
-                <Grid item key={group.name} xs={12} sm={6}>
-                  <div
+          {props.data.length === 0 ? (
+            <React.Fragment>
+              <NoDataLabel />
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              {props.aggregateBy === "componentName" &&
+                props.data.map((group: DotChartModel) => (
+                  <Grid item key={group.name} xs={12} sm={6}>
+                    <div
+                      css={`
+                        font-size: 14px;
+                        font-weight: bold;
+                        margin-bottom: 12px;
+                      `}
+                    >
+                      {group.name}
+                    </div>
+                    <div
+                      css={`
+                        gap: 24px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        padding-left: 5px;
+                        border-left: 1px solid #acafbc;
+                      `}
+                    >
+                      {group.items.map(
+                        (
+                          item: {
+                            name: string;
+                            status:
+                              | "Eligible"
+                              | "Not Eligible"
+                              | "Transition Funding";
+                          },
+                          index: number
+                        ) => (
+                          <div
+                            css={`
+                              width: 8px;
+                              height: 8px;
+                              border-radius: 50%;
+                              ${styles[item.status]}
+                              transition: opacity 0.2s ease-in-out;
+                              opacity: ${!hoveredLegend ||
+                              hoveredLegend === item.status
+                                ? 1
+                                : 0.3};
+                            `}
+                            key={item.name + index}
+                            onMouseEnter={() => setHoveredNode(item)}
+                            onMouseLeave={() => setHoveredNode(null)}
+                          />
+                        )
+                      )}
+                    </div>
+                  </Grid>
+                ))}
+              {props.aggregateBy === "geographicAreaName" &&
+                props.data.map((group: DotChartModel, index: number) => (
+                  <Grid
+                    item
+                    key={`${group.name}${index}`}
+                    xs={4}
+                    sm={2}
                     css={`
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-bottom: 12px;
-                    `}
-                  >
-                    {group.name}
-                  </div>
-                  <div
-                    css={`
-                      gap: 24px;
                       display: flex;
-                      flex-wrap: wrap;
-                      padding-left: 5px;
-                      border-left: 1px solid #acafbc;
+                      flex-direction: column;
+                      justify-content: space-between;
                     `}
                   >
-                    {group.items.map(
-                      (
-                        item: {
-                          name: string;
-                          status:
-                            | "Eligible"
-                            | "Not Eligible"
-                            | "Transition Funding";
-                        },
-                        index: number
-                      ) => (
-                        <div
-                          css={`
-                            width: 8px;
-                            height: 8px;
-                            border-radius: 50%;
-                            ${styles[item.status]}
-                            transition: opacity 0.2s ease-in-out;
-                            opacity: ${!hoveredLegend ||
-                            hoveredLegend === item.status
-                              ? 1
-                              : 0.3};
-                          `}
-                          key={item.name + index}
-                          onMouseEnter={() => setHoveredNode(item)}
-                          onMouseLeave={() => setHoveredNode(null)}
-                        />
-                      )
-                    )}
-                  </div>
-                </Grid>
-              ))
-            : mockdata2.map((group: DotChartModel, index: number) => (
-                <Grid item key={`${group.name}${index}`} xs={4} sm={2}>
-                  <div
-                    css={`
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-bottom: 12px;
-                    `}
-                  >
-                    {group.name}
-                  </div>
-                  <div
-                    css={`
-                      gap: 24px;
-                      display: flex;
-                      flex-wrap: wrap;
-                      padding: 5px 0 5px 5px;
-                      border-left: 1px solid #acafbc;
-                    `}
-                  >
-                    {group.items.map(
-                      (
-                        item: {
-                          name: string;
-                          status:
-                            | "Eligible"
-                            | "Not Eligible"
-                            | "Transition Funding";
-                        },
-                        index: number
-                      ) => (
-                        <div
-                          css={`
-                            width: 8px;
-                            height: 8px;
-                            border-radius: 50%;
-                            ${styles[item.status]}
-                            transition: opacity 0.2s ease-in-out;
-                            opacity: ${!hoveredLegend ||
-                            hoveredLegend === item.status
-                              ? 1
-                              : 0.3};
-                          `}
-                          key={item.name + index}
-                          onMouseEnter={() => setHoveredNode(item)}
-                          onMouseLeave={() => setHoveredNode(null)}
-                        />
-                      )
-                    )}
-                  </div>
-                </Grid>
-              ))}
+                    <div
+                      css={`
+                        font-size: 14px;
+                        font-weight: bold;
+                        margin-bottom: 12px;
+                      `}
+                    >
+                      {group.name}
+                    </div>
+                    <div
+                      css={`
+                        gap: 24px;
+                        display: flex;
+                        flex-wrap: wrap;
+                        padding: 5px 0 5px 5px;
+                        border-left: 1px solid #acafbc;
+                      `}
+                    >
+                      {group.items.map(
+                        (
+                          item: {
+                            name: string;
+                            status:
+                              | "Eligible"
+                              | "Not Eligible"
+                              | "Transition Funding";
+                          },
+                          index: number
+                        ) => (
+                          <div
+                            css={`
+                              width: 8px;
+                              height: 8px;
+                              border-radius: 50%;
+                              ${styles[item.status]}
+                              transition: opacity 0.2s ease-in-out;
+                              opacity: ${!hoveredLegend ||
+                              hoveredLegend === item.status
+                                ? 1
+                                : 0.3};
+                            `}
+                            key={item.name + index}
+                            onMouseEnter={() => setHoveredNode(item)}
+                            onMouseLeave={() => setHoveredNode(null)}
+                          />
+                        )
+                      )}
+                    </div>
+                  </Grid>
+                ))}
+            </React.Fragment>
+          )}
         </Grid>
       </Grid>
     </React.Fragment>

@@ -49,7 +49,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
             ? `
           :hover {
             cursor: pointer;
-            background: #495057;
+            background: #2e4df9;
 
             > td {
               color: #fff;
@@ -158,7 +158,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
 export function ExpandableTable(props: ExpandableTableProps) {
   return (
     <TableContainer>
-      <Table aria-label="expandable table">
+      <Table aria-label="Expandable table">
         <TableHead>
           <TableRow>
             {props.columns.map((column: string, index: number) => (

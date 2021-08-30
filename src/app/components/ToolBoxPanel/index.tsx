@@ -1,67 +1,82 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import Slide from "@material-ui/core/Slide";
 import { useParams, useHistory } from "react-router-dom";
+import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ToolBoxPanelTabs } from "app/components/ToolBoxPanel/components/tabs";
+import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
+import { ToolBoxPanelGeoMapViews } from "app/components/ToolBoxPanel/components/geomapviews";
+import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
+import { ToolBoxPanelDonorViews } from "app/components/ToolBoxPanel/components/donormapviews";
+import { ToolBoxPanelDonorMapTypes } from "app/components/ToolBoxPanel/components/donormaptypes";
+import { ToolBoxPanelEligibilityAdvanced } from "app/components/ToolBoxPanel/components/eligibilityadvanced";
+import { PerformanceFrameworkReportingPeriods } from "app/components/ToolBoxPanel/components/pf-reportingperiods";
 import {
   getControlItems,
   ViewModel,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
-import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
-import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
-import { ToolBoxPanelFilters } from "./components/filters";
-import { ToolBoxPanelEligibilityAdvanced } from "./components/eligibilityadvanced";
-import { PerformanceFrameworkReportingPeriods } from "./components/pf-reportingperiods";
 
 interface ToolBoxPanelProps {
   open: boolean;
+  isGrantDetail?: boolean;
   onButtonClick: () => void;
+  filterGroups: FilterGroupProps[];
 }
-
-const filtergroups = [
-  {
-    name: "Period",
-    selectedOptions: [],
-  },
-  {
-    name: "Grant Status",
-    selectedOptions: [],
-  },
-  {
-    name: "Components",
-    selectedOptions: [],
-  },
-  {
-    name: "Partners",
-    selectedOptions: [],
-  },
-  {
-    name: "Locations",
-    selectedOptions: [],
-  },
-];
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
   const params = useParams<{
     code?: string;
+    period?: string;
     vizType: string;
     subType?: string;
   }>();
+  const { appliedFilters } = useAppliedFilters({
+    type: "All",
+  });
   const [selectedView, setSelectedView] = React.useState("");
-  const [selectedTab, setSelectedTab] = React.useState("Control");
-  const [selectedAggregation, setSelectedAggregation] = React.useState("");
+  const [selectedTab, setSelectedTab] = React.useState("Controls");
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );
   const [controlItems, setControlItems] = React.useState<{
     views: ViewModel[];
     aggregates: ViewModel[];
-  }>(getControlItems(params.vizType, history.location.pathname, params.code));
-  const [geomapView, setGeomapView] = React.useState("countries");
+  }>(
+    getControlItems(
+      params.vizType,
+      history.location.pathname,
+      params.code,
+      params.period
+    )
+  );
+
+  // aggregateBy control const
+  const setSelectedAggregation = useStoreActions(
+    (store) => store.ToolBoxPanelAggregateByState.setValue
+  );
+  const selectedAggregation = useStoreState(
+    (state) => state.ToolBoxPanelAggregateByState.value
+  );
+
+  // geomanpView control const
+  const setGeomapView = useStoreActions(
+    (store) => store.ToolBoxPanelInvestmentsMapViewState.setValue
+  );
+  const geomapView = useStoreState(
+    (state) => state.ToolBoxPanelInvestmentsMapViewState.value
+  );
+
+  // performance framework periods data
+  const performanceFrameworkPeriods = useStoreState((state) =>
+    get(state.GrantDetailPerformanceFramework.data, "periods", [])
+  );
 
   function getSelectedView() {
     let view: ViewModel | undefined;
@@ -96,7 +111,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   React.useEffect(
     () =>
       setControlItems(
-        getControlItems(params.vizType, history.location.pathname, params.code)
+        getControlItems(
+          params.vizType,
+          history.location.pathname,
+          params.code,
+          params.period
+        )
       ),
     [params.vizType]
   );
@@ -105,6 +125,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     controlItems.views,
     history.location.pathname,
   ]);
+
+  React.useEffect(() => {
+    setSelectedAggregation(
+      controlItems.aggregates.length > 0 ? controlItems.aggregates[0].value : ""
+    );
+  }, [controlItems.aggregates]);
 
   return (
     <ClickAwayListener
@@ -155,29 +181,39 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 background: #495057;
                 transform: rotate(-90deg);
                 border-radius: 20px 20px 0px 0px;
+                transition: background 0.2s ease-in-out;
                 left: -${!visibleVScrollbar || props.open ? 84 : 88}px;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+                &:hover {
+                  background: #2e4df9;
+                }
               `}
               onClick={() => props.onButtonClick()}
             >
               Toolbox
-              {/* <div
-                css={`
-                  top: 8px;
-                  width: 6px;
-                  height: 6px;
-                  right: 30px;
-                  background: #fff;
-                  border-radius: 50%;
-                  position: absolute;
-                `}
-              /> */}
+              {appliedFilters.length > 0 && (
+                <div
+                  css={`
+                    top: 8px;
+                    width: 6px;
+                    height: 6px;
+                    right: 30px;
+                    background: #fff;
+                    border-radius: 50%;
+                    position: absolute;
+                  `}
+                />
+              )}
             </div>
             <ToolBoxPanelTabs
               selected={selectedTab}
               onSelect={setSelectedTab}
+              options={
+                !props.isGrantDetail ? ["Controls", "Filters"] : ["Controls"]
+              }
             />
-            {selectedTab === "Control" && (
+            {(selectedTab === "Controls" || props.isGrantDetail) && (
               <React.Fragment>
                 <ToolBoxPanelIconButtons />
                 {controlItems.views.length > 0 && (
@@ -196,24 +232,47 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     setSelected={setSelectedAggregation}
                   />
                 )}
-                {params.vizType === "investments" &&
-                  params.subType === "geomap" && (
-                    <ToolBoxPanelGeoMapViews
-                      title="Views"
-                      selected={geomapView}
-                      setSelected={setGeomapView}
-                    />
+                {((params.vizType === "investments" &&
+                  params.subType === "geomap") ||
+                  (params.vizType === "allocations" &&
+                    params.subType === "geomap") ||
+                  (params.vizType === "budgets" &&
+                    params.subType === "geomap")) && (
+                  <ToolBoxPanelGeoMapViews
+                    title="Views"
+                    selected={geomapView}
+                    setSelected={setGeomapView}
+                  />
+                )}
+                {params.vizType === "pledges-contributions" &&
+                  (params.subType === "geomap" ||
+                    params.subType === "table" ||
+                    params.subType === "treemap") && (
+                    <React.Fragment>
+                      <ToolBoxPanelDonorMapTypes />
+                    </React.Fragment>
+                  )}
+                {params.vizType === "pledges-contributions" &&
+                  (params.subType === "geomap" ||
+                    params.subType === "table") && (
+                    <React.Fragment>
+                      <ToolBoxPanelDonorViews />
+                    </React.Fragment>
                   )}
                 {params.code && params.vizType === "eligibility" && (
                   <ToolBoxPanelEligibilityAdvanced />
                 )}
-                {/* {params.code && params.vizType === "performance-framework" && (
-                  <PerformanceFrameworkReportingPeriods />
-                )} */}
+                {params.code &&
+                  params.period &&
+                  params.vizType === "performance-framework" && (
+                    <PerformanceFrameworkReportingPeriods
+                      periods={performanceFrameworkPeriods}
+                    />
+                  )}
               </React.Fragment>
             )}
             {selectedTab === "Filters" && (
-              <ToolBoxPanelFilters groups={filtergroups} />
+              <ToolBoxPanelFilters groups={props.filterGroups} />
             )}
           </div>
         </div>

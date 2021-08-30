@@ -27,21 +27,24 @@ export function BarComponent(props: any) {
     nodecss += "opacity: 0.3;";
   }
 
+  function onMouseMoveOrEnter(e: React.MouseEvent<SVGGElement>) {
+    if (
+      (props.selected || { indexValue: "" }).indexValue !==
+      props.data.indexValue
+    ) {
+      props.showTooltip(
+        <PledgesContributionsTimeCycleTooltip {...props.data} />,
+        e
+      );
+      props.setHoveredXIndex(`${props.data.indexValue}-${props.data.id}`);
+    }
+  }
+
   return (
     <g
       {...fprops}
-      onMouseEnter={(e: React.MouseEvent<SVGGElement>) => {
-        if (
-          (props.selected || { indexValue: "" }).indexValue !==
-          props.data.indexValue
-        ) {
-          props.showTooltip(
-            <PledgesContributionsTimeCycleTooltip {...props.data} />,
-            e
-          );
-          props.setHoveredXIndex(`${props.data.indexValue}-${props.data.id}`);
-        }
-      }}
+      onMouseMove={onMouseMoveOrEnter}
+      onMouseEnter={onMouseMoveOrEnter}
       onMouseLeave={() => {
         props.hideTooltip();
         props.setHoveredXIndex(null);

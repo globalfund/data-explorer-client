@@ -25,6 +25,20 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>The Data Explorer</title>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_ANALYTICS_ID%"></script>
+    <script>
+      if (window.location.hostname === 'data.v2.theglobalfund.org') {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){
+          dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+
+        gtag('config', '%REACT_APP_GOOGLE_ANALYTICS_ID%', {
+          send_page_view: false
+        });
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

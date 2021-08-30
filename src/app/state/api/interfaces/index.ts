@@ -1,17 +1,26 @@
 import { Action, Thunk } from "easy-peasy";
-import { ToolBoxPanelEligibilityAdvancedCheckboxStateModel } from "../action-reducers/sync";
+import {
+  PageHeaderVizDrilldownsStateModel,
+  ToolBoxPanelAggregateByStateModel,
+  ToolBoxPanelDonorMapTypeStateModel,
+  ToolBoxPanelDonorMapViewStateModel,
+  ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
+  ToolBoxPanelInvestmentsMapViewStateModel,
+  ToolBoxPanelPFPeriodStateModel,
+} from "app/state/api/action-reducers/sync";
+import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 
 export interface RequestValues<T> {
   values?: T;
   addOnData?: boolean;
   isCMSfetch?: boolean;
+  filterString?: string;
 }
 
 export interface ResponseData<T> {
   data: any[];
   count: number;
   addOnData?: boolean;
-  vizData: any[] | undefined;
 }
 
 export interface Errors {
@@ -45,7 +54,6 @@ export interface ApiCallParams {}
 export interface ApiResponseModel {
   data: any[];
   count: number;
-  vizData: any[];
 }
 
 export type ApiCallModel = ApiModel<
@@ -54,5 +62,74 @@ export type ApiCallModel = ApiModel<
 >;
 
 export interface StoreModel {
+  // data viz api
+  Documents: ApiCallModel;
+  GrantsList: ApiCallModel;
+  Allocations: ApiCallModel;
+  AllocationsPeriods: ApiCallModel;
+  AllocationsDrilldown: ApiCallModel;
+  AllocationsGeomap: ApiCallModel;
+  AllocationsMCGeomap: ApiCallModel;
+  Eligibility: ApiCallModel;
+  EligibilityYears: ApiCallModel;
+  BudgetsFlow: ApiCallModel;
+  BudgetsFlowDrilldownLevel1: ApiCallModel;
+  BudgetsGeomap: ApiCallModel;
+  BudgetsMCGeomap: ApiCallModel;
+  BudgetsTimeCycle: ApiCallModel;
+  BudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  DisbursementsGeomap: ApiCallModel;
+  DisbursementsGeomapMulticountries: ApiCallModel;
+  DisbursementsTreemap: ApiCallModel;
+  DisbursementsTreemapDrilldown: ApiCallModel;
+  DisbursementsTimeCycle: ApiCallModel;
+  DisbursementsTimeCycleDrilldown: ApiCallModel;
+  PledgesContributionsGeomap: ApiCallModel;
+  PledgesContributionsTimeCycle: ApiCallModel;
+  PledgesContributionsTimeCycleDrilldown: ApiCallModel;
+  PledgesContributionsTreemap: ApiCallModel;
+  ResultsList: ApiCallModel;
+  ResultsStats: ApiCallModel;
+  ResultsYears: ApiCallModel;
+  // global search
+  GlobalSearch: ApiCallModel;
+  // grant detail api
+  GrantDetailInfo: ApiCallModel;
+  GrantDetailPeriods: ApiCallModel;
+  GrantDetailPeriodInfo: ApiCallModel;
+  GrantDetailBudgetsFlow: ApiCallModel;
+  GrantDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  GrantDetailBudgetsTimeCycle: ApiCallModel;
+  GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  GrantDetailDisbursementsTreemap: ApiCallModel;
+  GrantDetailDisbursementsTimeCycle: ApiCallModel;
+  GrantDetailPerformanceRating: ApiCallModel;
+  GrantDetailPerformanceFramework: ApiCallModel;
+  GrantDetailPerformanceFrameworkExpand: ApiCallModel;
+  GrantDetailDocuments: ApiCallModel;
+  // location detail api
+  LocationDetailInfo: ApiCallModel;
+  EligibilityCountry: ApiCallModel;
+  LocationDetailDisbursementsTreemap: ApiCallModel;
+  LocationDetailDocuments: ApiCallModel;
+  LocationDetailBudgetsFlow: ApiCallModel;
+  LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  LocationDetailBudgetsTimeCycle: ApiCallModel;
+  LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  // filter options api
+  LocationFilterOptions: ApiCallModel;
+  ComponentFilterOptions: ApiCallModel;
+  PartnerTypeFilterOptions: ApiCallModel;
+  StatusFilterOptions: ApiCallModel;
+  ReplenishmentPeriodFilterOptions: ApiCallModel;
+  DonorFilterOptions: ApiCallModel;
+  // sync state variables
+  AppliedFiltersState: AppliedFiltersStateModel;
+  ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
+  PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel;
+  ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
+  ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
+  ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
+  ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
 }

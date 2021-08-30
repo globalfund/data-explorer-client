@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { TickIcon } from "app/assets/icons/Tick";
 import { ViewModel } from "../../utils/getControlItems";
 
@@ -11,6 +11,7 @@ interface ToolBoxPanelControlRowProps {
 }
 
 export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
+  const location = useLocation();
   return (
     <div
       css={`
@@ -35,7 +36,7 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
             <Link
               key={option.value}
               onClick={() => props.setSelected(option.value)}
-              to={option.link}
+              to={`${option.link}${location.search}`}
               css={`
                 gap: 6px;
                 display: flex;
@@ -53,7 +54,9 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 &:hover {
                   color: #fff;
                   cursor: pointer;
-                  background: #495057;
+                  background: ${props.selected === option.value
+                    ? "#495057"
+                    : "#2e4df9"};
                 }
               `}
             >
@@ -61,14 +64,16 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
               {option.label}
             </Link>
           ) : (
-            <div
-              role="button"
+            <button
+              type="button"
               key={option.value}
               onClick={() => props.setSelected(option.value)}
               css={`
                 gap: 6px;
                 display: flex;
                 font-size: 12px;
+                border-width: 0;
+                line-height: 24px;
                 padding: 8px 12px;
                 flex-direction: row;
                 border-radius: 20px;
@@ -81,13 +86,15 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 &:hover {
                   color: #fff;
                   cursor: pointer;
-                  background: #495057;
+                  background: ${props.selected === option.value
+                    ? "#495057"
+                    : "#2e4df9"};
                 }
               `}
             >
               {props.selected === option.value && <TickIcon />}
               {option.label}
-            </div>
+            </button>
           )
         )}
       </div>

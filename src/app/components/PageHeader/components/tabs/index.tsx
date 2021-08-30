@@ -1,7 +1,7 @@
 import React from "react";
 import { ProjectPalette } from "app/theme";
 import { css } from "styled-components/macro";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import {
   TabProps,
   PageHeaderTabProps,
@@ -67,7 +67,7 @@ const styles = {
     }
 
     &:hover {
-      background: #495057;
+      background: ${active ? "#495057" : "#2e4df9"};
       a {
         color: #fff;
         font-weight: bold;
@@ -86,10 +86,13 @@ const styles = {
 };
 
 function RouteTab(props: TabProps) {
-  const params = useParams<{ code: string; vizType: string }>();
-  const link = `${props.url.replace("<code>", params.code)}`;
+  const params = useParams<{ code: string; period: string; vizType: string }>();
+  const location = useLocation();
+  const link = `${props.url
+    .replace("<code>", params.code)
+    .replace("<period>", params.period)}${location.search}`;
   const urlsplits = props.url.split("/");
-  const isActive = urlsplits[3] === params.vizType;
+  const isActive = urlsplits[params.period ? 4 : 3] === params.vizType;
 
   return (
     <li css={styles.tabcss(isActive)}>

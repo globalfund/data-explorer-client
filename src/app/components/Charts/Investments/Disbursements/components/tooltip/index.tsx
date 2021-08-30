@@ -162,7 +162,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             <b>Committed</b>
           </div>
           <div>
-            {formatFinancialValue(data.tooltip.totalInvestments.commited)}
+            {formatFinancialValue(data.tooltip.totalInvestments.committed)}
           </div>
         </div>
         <div
