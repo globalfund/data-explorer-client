@@ -117,11 +117,12 @@ export function GrantsViz(props: GrantsVizProps) {
                 name={component}
                 key={component}
                 datayears={datayears}
+                components={components}
+                hoveredNode={hoveredNode}
                 yearItemWidth={yearItemWidth}
+                setHoveredNode={setHoveredNode}
                 rotateDeg={180 / components.length}
                 maxDisbursementValue={maxDisbursementValue}
-                components={components}
-                setHoveredNode={setHoveredNode}
               />
             );
           })}
@@ -312,6 +313,10 @@ export function ComponentRadarThingies(props: any) {
                       height: 100%;
                       position: absolute;
                       //bottom: ${(props.datayears.length - index - 1) * 10}px;
+                      opacity: ${props.hoveredNode &&
+                      props.hoveredNode.title !== item.title
+                        ? 0.4
+                        : 1};
                     `}
                   >
                     <div
