@@ -6,25 +6,39 @@ import minBy from "lodash/minBy";
 import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
 import { useMeasure } from "react-use";
+import { useHistory } from "react-router-dom";
+import useMousePosition from "app/hooks/useMousePosition";
 import {
+  GrantsVizProps,
   ratingColor,
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
-import { indiaGrants } from "./IndiaGrants";
 import { css } from "styled-components/macro";
+import { GrantsRadialTooltip } from "./components/tooltip";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
-//TODO: clean up component
-//TODO: discuss with Dafei what should happen when only 1 component is in the data.
-//TODO: the labels are a bit iffy when there are 5 components. -> create an algorithm that calculates the middle of the pie.
-export function GrantsViz() {
-  const data = indiaGrants;
+// TODO: clean up component
+// TODO: discuss with Dafei what should happen when only 1 component is in the data.
+// TODO: the labels are a bit iffy when there are 5 components. -> create an algorithm that calculates the middle of the pie.
+export function GrantsViz(props: GrantsVizProps) {
+  const { data } = props;
+  const { x, y } = useMousePosition();
   const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const lYear = minBy(data, "years[0]")?.years[0] || 2002;
-  const hYear = maxBy(data, "years[1]")?.years[1] || 2020;
+  const lYear = get(minBy(data, "years[0]"), "years[0]", 2002);
+  const hYear = get(maxBy(data, "years[1]"), "years[1]", 2020);
   const datayears: number[] = [];
   for (let i = hYear; i >= lYear; i--) {
     datayears.push(i);
   }
+  const [hoveredNode, setHoveredNode] = React.useState<{
+    name: number;
+    title: string;
+    value: number;
+    status: string;
+    years: number[];
+    component: string;
+    rating: string | null;
+  } | null>(null);
   const components = uniq(data.map((item: any) => item.component));
   const yearItemWidth = (width - 120) / 2 / datayears.length;
   const allValues: number[] = [];
@@ -40,68 +54,101 @@ export function GrantsViz() {
   const maxDisbursementValue = max(allValues);
 
   return (
-    <div
-      id={"rc-radial-chart"}
-      ref={ref}
-      css={`
-        width: 100%;
-        height: ${width / 2}px;
-        margin-top: 100px;
-        position: relative;
-        //border-bottom: 1px solid #c7cdd1;
-        border-top-left-radius: ${width * 2}px;
-        border-top-right-radius: ${width * 2}px;
-      `}
-    >
+    <React.Fragment>
+      {hoveredNode && (
+        <div
+          css={`
+            z-index: 101;
+            width: 320px;
+            padding: 20px;
+            color: #262c34;
+            top: ${y + 12}px;
+            left: ${x + 12}px;
+            position: absolute;
+            background: #f5f5f7;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+          `}
+        >
+          <GrantsRadialTooltip {...hoveredNode} />
+        </div>
+      )}
       <div
-        id={"rc-outline"}
+        id="rc-radial-chart"
+        ref={ref}
         css={`
-          //top: -60px;
-          //left: -60px;
-          position: absolute;
-          width: ${width}px;
-          //width: ${width + 120}px;
-          border: 1px solid #60647e;
-          border-bottom-style: none;
-          border-bottom: none;
-          // height: ${(width + 120) / 2}px;
+          width: 100%;
           height: ${width / 2}px;
+          margin-top: 100px;
+          position: relative;
+          //border-bottom: 1px solid #c7cdd1;
           border-top-left-radius: ${width * 2}px;
           border-top-right-radius: ${width * 2}px;
         `}
-      />
+      >
+        <div
+          id="rc-outline"
+          css={`
+            //top: -60px;
+            //left: -60px;
+            position: absolute;
+            width: ${width}px;
+            //width: ${width + 120}px;
+            border: 1px solid #60647e;
+            border-bottom-style: none;
+            border-bottom: none;
+            // height: ${(width + 120) / 2}px;
+            height: ${width / 2}px;
+            border-top-left-radius: ${width * 2}px;
+            border-top-right-radius: ${width * 2}px;
+          `}
+        />
 
-      <ComponentDividers width={width} components={components} />
+        <ComponentDividers width={width} components={components} />
 
-      <div id={"rc-components"}>
-        {components.map((component: string, index: number) => {
-          const items = filter(data, { component });
-          return (
-            <ComponentRadarThingies
-              index={index}
-              width={width}
-              items={items}
-              name={component}
-              key={component}
-              datayears={datayears}
-              yearItemWidth={yearItemWidth}
-              rotateDeg={180 / components.length}
-              maxDisbursementValue={maxDisbursementValue}
-              components={components}
-            />
-          );
-        })}
+        <div id="rc-components">
+          {components.map((component: any, index: number) => {
+            const items = filter(data, { component });
+            return (
+              <ComponentRadarThingies
+                index={index}
+                width={width}
+                items={items}
+                name={component}
+                key={component}
+                datayears={datayears}
+                yearItemWidth={yearItemWidth}
+                rotateDeg={180 / components.length}
+                maxDisbursementValue={maxDisbursementValue}
+                components={components}
+                setHoveredNode={setHoveredNode}
+              />
+            );
+          })}
+          <hr
+            css={`
+              bottom: 0;
+              margin: 0;
+              width: 100%;
+              z-index: 100;
+              position: absolute;
+              background-color: #c7cdd1;
+            `}
+          />
+        </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 }
 
 export function ComponentRadarThingies(props: any) {
-  let nOfImplementationPeriodsInComponent = 0;
-  for (let i = 0; i < props.items.length; i++) {
-    nOfImplementationPeriodsInComponent +=
-      props.items[i].implementationPeriods.length;
-  }
+  const history = useHistory();
+
+  // let nOfImplementationPeriodsInComponent = 0;
+  // for (let i = 0; i < props.items.length; i++) {
+  //   nOfImplementationPeriodsInComponent +=
+  //     props.items[i].implementationPeriods.length;
+  // }
 
   /*
      These are the degrees we take into consideration with upcoming calculations.
@@ -133,10 +180,9 @@ export function ComponentRadarThingies(props: any) {
       angleRange.end - angleRange.start;
     const angles = [];
     const addition =
-      nOfPossibleAnglesOnCircleWithinRange /
-      (nOfImplementationPeriodsInComponent + 1);
+      nOfPossibleAnglesOnCircleWithinRange / (props.items.length + 1);
 
-    for (let i = 1; i < nOfImplementationPeriodsInComponent + 1; i++) {
+    for (let i = 1; i < props.items.length + 1; i++) {
       angles.push(angleRange.start + addition * i);
     }
 
@@ -154,7 +200,7 @@ export function ComponentRadarThingies(props: any) {
         bottom: 0;
         position: absolute;
         transform-origin: bottom;
-        z-index: ${4 - props.index};
+        z-index: ${1 + props.index};
         height: ${(props.width - 120) / 2}px;
         border-top-left-radius: ${props.width * 2}px;
         border-top-right-radius: ${props.width * 2}px;
@@ -230,6 +276,9 @@ export function ComponentRadarThingies(props: any) {
               let prevItemHeight = 0;
               const subItems = item.implementationPeriods || [item];
 
+              const angle = angles[angles.length - 1];
+              angles.pop();
+
               return subItems.map((subItem: any, subItemIndex: number) => {
                 const startHeight = prevItemHeight;
                 const itemHeight =
@@ -241,14 +290,12 @@ export function ComponentRadarThingies(props: any) {
                 size = size < 6 ? 6 : size;
 
                 const radius = itemwidth / 2;
-                const angle = angles[angles.length - 1];
-                angles.pop();
 
                 function pointsOnCircle(
                   radius: number,
                   angle: number
                 ): { x: number; y: number } {
-                  angle = angle * (Math.PI / 180); // Convert from Degrees to Radians
+                  angle *= Math.PI / 180; // Convert from Degrees to Radians
                   const x = radius * Math.cos(angle);
                   const y = radius * Math.sin(angle);
                   return { x, y };
@@ -331,9 +378,23 @@ export function ComponentRadarThingies(props: any) {
                             `}
                           />
                           <div
+                            onClick={() =>
+                              history.push(
+                                `/grant/${item.name}/${subItem.name}/investments/disbursements`
+                              )
+                            }
+                            onMouseLeave={() => props.setHoveredNode(null)}
+                            onMouseEnter={() =>
+                              props.setHoveredNode({
+                                ...subItem,
+                                component: item.component,
+                                title: item.title || item.name,
+                              })
+                            }
                             id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-end`}
                             css={`
                               top: 0;
+                              cursor: pointer;
                               width: ${size}px;
                               background: #fff;
                               height: ${size}px;
@@ -341,11 +402,6 @@ export function ComponentRadarThingies(props: any) {
                               position: absolute;
                               left: -${size / 2}px;
                               border: 1px solid #495057;
-                              background: ${get(
-                                ratingColor,
-                                subItem.rating,
-                                ratingColor.None
-                              )};
                             `}
                           />
                         </div>
@@ -366,7 +422,7 @@ export function ComponentDividers(props: any) {
   const { components, width } = props;
   return (
     <div
-      id={"rc-divider-container"}
+      id="rc-divider-container"
       css={`
         position: absolute;
         bottom: 0px;
@@ -414,7 +470,7 @@ export function ComponentDividers(props: any) {
   );
 }
 
-export const RadialChartLegend = () => {
+export const RadialChartLegend = (props: any) => {
   const header = css`
     font-weight: bold;
     font-size: 12px;
@@ -536,7 +592,7 @@ export const RadialChartLegend = () => {
 
   return (
     <div
-      id={"rc-legend"}
+      id="rc-legend"
       css={`
         width: 100%;
         height: 100%;
@@ -570,7 +626,8 @@ export const RadialChartLegend = () => {
                 line-height: normal;
               `}
             >
-              Size of the circle: {`\n`} Disbursements (Max value 45.092.823)
+              Size of the circle: {`\n`} Disbursements {`\n`} (Max value{" "}
+              {formatFinancialValue(props.maxValue)})
             </div>
           </div>
           <div

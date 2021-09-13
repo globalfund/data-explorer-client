@@ -2,7 +2,6 @@
 import React from "react";
 import get from "lodash/get";
 import { useTitle } from "react-use";
-import Grid from "@material-ui/core/Grid";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   Link,
@@ -15,7 +14,6 @@ import {
 /* project */
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
-import { GrantsViz, RadialChartLegend } from "app/components/Charts/Grants";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { InformationPanel } from "app/components/InformationPanel";
@@ -35,6 +33,7 @@ import {
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
 import { LocationDetailInvestmentsDisbursedWrapper } from "../viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
+import { LocationGrants } from "./sub-modules/grants";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -190,16 +189,11 @@ export default function CountryDetail() {
         <Route path={`/location/${params.code}/eligibility`}>
           <LocationDetailEligibilityWrapper code={paramCode} />
         </Route>
+        <Route path={`/location/${params.code}/grants/list`}>
+          <GrantsModule code={paramCode} />
+        </Route>
         <Route path={`/location/${params.code}/grants`}>
-          <Grid container>
-            <Grid item xs={3}>
-              <RadialChartLegend />
-            </Grid>
-
-            <Grid item xs={9}>
-              <GrantsViz />
-            </Grid>
-          </Grid>
+          <LocationGrants code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/documents`}>
           <LocationDetailDocumentsModule
@@ -207,9 +201,6 @@ export default function CountryDetail() {
             isMultiCountry={params.code.length > 3}
             code={params.code.length > 3 ? locationInfoData.id : params.code}
           />
-        </Route>
-        <Route path={`/location/${params.code}/grants`}>
-          <GrantsModule code={paramCode} />
         </Route>
       </Switch>
       <InformationPanel

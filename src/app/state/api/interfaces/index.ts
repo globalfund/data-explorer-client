@@ -116,6 +116,7 @@ export interface StoreModel {
   LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
   LocationDetailBudgetsTimeCycle: ApiCallModel;
   LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  LocationGrants: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;

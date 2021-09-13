@@ -85,6 +85,7 @@ import PledgesContributionsTreemap from "../api/action-reducers/viz/pledgesContr
 import BudgetsGeomap, {
   BudgetsMCGeomap,
 } from "../api/action-reducers/viz/budgetsGeomap";
+import LocationGrants from "../api/action-reducers/locationDetail/grants";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -155,6 +156,7 @@ const storeContent: StoreModel = {
   LocationDetailBudgetsTimeCycleDrilldownLevel1: persist(
     LocationDetailBudgetsTimeCycleDrilldownLevel1
   ),
+  LocationGrants: persist(LocationGrants),
   // filter options api
   LocationFilterOptions: persist(LocationFilterOptions),
   ComponentFilterOptions: persist(ComponentFilterOptions),

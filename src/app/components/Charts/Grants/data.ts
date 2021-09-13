@@ -1,3 +1,7 @@
+export interface GrantsVizProps {
+  data: any;
+}
+
 export const ratingColor = {
   None: "#fff",
   A1: "#3B873E",
