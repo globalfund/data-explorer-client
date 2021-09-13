@@ -71,6 +71,18 @@ const views = {
       link: "/viz/allocations/geomap",
     },
   ],
+  grants: [
+    {
+      label: "Chart",
+      value: "Chart",
+      link: "/viz/grants",
+    },
+    {
+      label: "List",
+      value: "List",
+      link: "/viz/grants/list",
+    },
+  ],
   "pledges-contributions": [
     {
       label: "Map",

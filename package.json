@@ -33,6 +33,7 @@
     "dom-to-image": "^2.6.0",
     "dotenv": "^8.2.0",
     "easy-peasy": "^5.0.3",
+    "fs": "^0.0.1-security",
     "i18next": "^20.2.1",
     "i18next-browser-languagedetector": "^6.1.0",
     "json-loader": "^0.5.7",

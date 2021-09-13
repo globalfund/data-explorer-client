@@ -26,7 +26,6 @@ import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-mod
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { LocationEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/location";
 import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/locationDetail";
-import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import { LocationDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/locationDetail";
 import {
@@ -34,6 +33,7 @@ import {
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
 import { LocationDetailInvestmentsDisbursedWrapper } from "../viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
+import { LocationGrants } from "./sub-modules/grants";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -189,15 +189,18 @@ export default function CountryDetail() {
         <Route path={`/location/${params.code}/eligibility`}>
           <LocationDetailEligibilityWrapper code={paramCode} />
         </Route>
+        <Route path={`/location/${params.code}/grants/list`}>
+          <GrantsModule code={paramCode} />
+        </Route>
+        <Route path={`/location/${params.code}/grants`}>
+          <LocationGrants code={paramCode} />
+        </Route>
         <Route path={`/location/${params.code}/documents`}>
           <LocationDetailDocumentsModule
             mcName={params.code}
             isMultiCountry={params.code.length > 3}
             code={params.code.length > 3 ? locationInfoData.id : params.code}
           />
-        </Route>
-        <Route path={`/location/${params.code}/grants`}>
-          <GrantsModule code={paramCode} />
         </Route>
       </Switch>
       <InformationPanel

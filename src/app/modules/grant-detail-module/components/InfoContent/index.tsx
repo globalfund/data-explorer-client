@@ -68,8 +68,21 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
     <div
       css={`
         display: flex;
+        overflow-y: auto;
         padding: 30px 50px;
         flex-direction: column;
+
+        &::-webkit-scrollbar {
+          width: 5px;
+          background: #262c34;
+        }
+        &::-webkit-scrollbar-track {
+          background: #dfe3e6;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: #262c34;
+        }
+
         * {
           color: #262c34;
         }

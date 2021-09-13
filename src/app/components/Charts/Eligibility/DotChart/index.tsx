@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { InfoIcon } from "app/assets/icons/Info";
