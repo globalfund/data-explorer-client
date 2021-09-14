@@ -109,7 +109,7 @@ export function PerformanceFrameworkReportingPeriods(
           <div
             css={`
               top: -2px;
-              z-index: 10;
+              z-index: 15;
               background: #fff;
               cursor: ew-resize;
               border-radius: 4px;

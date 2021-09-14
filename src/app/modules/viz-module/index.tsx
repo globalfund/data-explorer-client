@@ -205,7 +205,7 @@ export default function VizModule() {
         css={`
           left: 0;
           top: 48px;
-          z-index: 10;
+          z-index: 15;
           width: 100%;
           height: 100%;
           position: fixed;

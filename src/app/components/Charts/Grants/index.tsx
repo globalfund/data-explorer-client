@@ -131,7 +131,7 @@ export function GrantsViz(props: GrantsVizProps) {
               bottom: 0;
               margin: 0;
               width: 100%;
-              z-index: 100;
+              z-index: 15;
               position: absolute;
               background-color: #c7cdd1;
             `}
