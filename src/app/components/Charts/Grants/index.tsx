@@ -246,7 +246,7 @@ export function ComponentRadarThingies(props: any) {
               // Left axis label
               &:before {
                 right: -12px;
-                bottom: -25px;
+                bottom: -35px;
                 color: #262c34;
                 font-size: 10px;
                 position: absolute;
@@ -256,7 +256,7 @@ export function ComponentRadarThingies(props: any) {
               // Right axis label
               &:after {
                 left: -12px;
-                bottom: -25px;
+                bottom: -35px;
                 color: #262c34;
                 font-size: 10px;
                 position: absolute;
