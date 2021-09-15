@@ -55,15 +55,15 @@ const nodeBorder = {
 
 export const backCircleRadius = [23, 38, 53, 68, 83, 97, 112];
 
-const backCircleColor = [
-  "transparent",
-  "#70777E",
-  "#98A1AA",
-  "#C7CDD1",
-  "#DFE3E6",
-  "#F5F5F7",
-  "#FFFFFF",
-];
+// const backCircleColor = [
+//   "transparent",
+//   "#70777E",
+//   "#98A1AA",
+//   "#C7CDD1",
+//   "#DFE3E6",
+//   "#F5F5F7",
+//   "#FFFFFF",
+// ];
 
 export function ScatterplotNode(props: ScatterplotNodeProps) {
   const { x, y } = useMousePosition();
@@ -88,7 +88,7 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
         transition: opacity 0.2s ease-in-out;
       `}
     >
-      {props.showExtraData && (
+      {/* {props.showExtraData && (
         <circle
           cx={props.x}
           cy={props.y}
@@ -101,7 +101,7 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
             stroke: ${props.data.incomeLevel === 0 ? "#262c34" : "none"};
           `}
         />
-      )}
+      )} */}
       <circle
         r="8"
         cx={props.x}

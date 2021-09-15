@@ -532,3 +532,13 @@ export const incomeLevels: (
   "Upper middle income",
   "High income",
 ];
+
+export const incomeLevelColors = [
+  "transparent",
+  "#70777E",
+  "#98A1AA",
+  "#C7CDD1",
+  "#DFE3E6",
+  "#F5F5F7",
+  "#FFFFFF",
+];

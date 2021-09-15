@@ -16,6 +16,7 @@ import {
   backCircleRadius,
 } from "app/components/Charts/Eligibility/Scatterplot/components/node";
 import { NoDataLabel } from "../../common/nodatalabel";
+import { AreaLayer } from "./components/area";
 
 const styles = {
   Eligible: css`
@@ -86,17 +87,17 @@ export function ScatterPlot(props: ScatterPlotProps) {
     });
   };
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      const scrollableDiv = document.getElementById("scatterplot-scroll-div");
-      if (scrollableDiv) {
-        scrollableDiv.scroll({
-          left: scrollableDiv.scrollWidth,
-          behavior: "smooth",
-        });
-      }
-    }, 500);
-  }, []);
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     const scrollableDiv = document.getElementById("scatterplot-scroll-div");
+  //     if (scrollableDiv) {
+  //       scrollableDiv.scroll({
+  //         left: scrollableDiv.scrollWidth,
+  //         behavior: "smooth",
+  //       });
+  //     }
+  //   }, 500);
+  // }, []);
 
   const noData =
     filter(
@@ -663,7 +664,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   data={props.data}
                   useMesh={false}
                   margin={{ top: 60, right: 100, bottom: 50, left: 50 }}
-                  layers={["grid", "axes", Nodes, "markers"]}
+                  layers={[AreaLayer, "grid", "axes", Nodes, "markers"]}
                   xScale={{ type: "point" }}
                   xFormat={(e: Value) => e.toString()}
                   yScale={{ type: "point" }}
