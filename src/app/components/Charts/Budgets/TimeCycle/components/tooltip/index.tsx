@@ -23,17 +23,6 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
     >
       <div
         css={`
-          top: -4px;
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          border-radius: 50%;
-          background: #262c34;
-          left: calc(50% - 4px);
-        `}
-      />
-      <div
-        css={`
           font-size: 18px;
           font-weight: bold;
           line-height: 20px;
