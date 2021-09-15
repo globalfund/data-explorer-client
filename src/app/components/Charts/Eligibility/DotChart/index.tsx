@@ -41,9 +41,9 @@ export function DotChart(props: DotChartProps) {
           css={`
             padding: 12px;
             color: #262c34;
+            position: fixed;
             top: ${y + 12}px;
             left: ${x + 12}px;
-            position: absolute;
             background: #f5f5f7;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
@@ -288,7 +288,16 @@ export function DotChart(props: DotChartProps) {
             )}
           </div>
         </Grid>
-        <Grid item container sm={12} md={10} spacing={4}>
+        <Grid
+          item
+          container
+          sm={12}
+          md={10}
+          spacing={4}
+          css={`
+            padding-bottom: 50px !important;
+          `}
+        >
           {props.data.length === 0 ? (
             <React.Fragment>
               <NoDataLabel />
