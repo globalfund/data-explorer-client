@@ -31,6 +31,7 @@ import { GrantDetailInvestmentsTableWrapper } from "app/modules/viz-module/sub-m
 import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
+import { BudgetsGeoMap } from "../viz-module/sub-modules/budgets/geomap";
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
@@ -203,6 +204,9 @@ export default function GrantDetail() {
             code={params.code}
             implementationPeriod={params.period}
           />
+        </Route>
+        <Route path={`/grant/${params.code}/${params.period}/budgets/geomap`}>
+          <BudgetsGeoMap grantCode={params.code} grantPeriod={params.period} />
         </Route>
         <Route
           path={`/grant/${params.code}/${params.period}/performance-rating`}

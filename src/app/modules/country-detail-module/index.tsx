@@ -34,6 +34,7 @@ import {
 } from "app/components/ToolBoxPanel/components/filters/data";
 import { LocationDetailInvestmentsDisbursedWrapper } from "../viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
 import { LocationGrants } from "./sub-modules/grants";
+import { BudgetsGeoMap } from "../viz-module/sub-modules/budgets/geomap";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -167,6 +168,9 @@ export default function CountryDetail() {
         </Route>
         <Route path={`/location/${params.code}/budgets/time-cycle`}>
           <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
+        </Route>
+        <Route path={`/location/${params.code}/budgets/geomap`}>
+          <BudgetsGeoMap code={paramCode} />
         </Route>
         <Route path={`/location/${params.code}/investments/disbursements`}>
           <LocationDetailInvestmentsDisbursedWrapper code={paramCode} />

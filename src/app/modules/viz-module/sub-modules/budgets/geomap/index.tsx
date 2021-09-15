@@ -16,6 +16,8 @@ import {
 
 interface Props {
   code?: string;
+  grantCode?: string;
+  grantPeriod?: string;
 }
 
 export function BudgetsGeoMap(props: Props) {
@@ -52,7 +54,7 @@ export function BudgetsGeoMap(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
+    let filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
@@ -60,12 +62,21 @@ export function BudgetsGeoMap(props: Props) {
           }
         : appliedFilters
     );
+    if (props.grantCode && props.grantPeriod) {
+      filterString = `grantId='${props.grantCode}'&IPnumber=${props.grantPeriod}`;
+    }
     if (geomapView === "countries") {
       fetchData({ filterString });
     } else if (geomapView === "multicountries") {
       fetchMCData({ filterString });
     }
-  }, [props.code, appliedFilters, geomapView]);
+  }, [
+    props.code,
+    props.grantCode,
+    props.grantPeriod,
+    appliedFilters,
+    geomapView,
+  ]);
 
   if (isLoading) {
     return <PageLoader />;

@@ -192,6 +192,10 @@ export function useGetAllVizData() {
     "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
     "/grant/<code>/budgets/flow": grantDetailBudgetsFlow,
     "/grant/<code>/budgets/time-cycle": grantDetailBudgetsTimeCycle,
+    "/grant/<code>/budgets/geomap": {
+      countries: budgetsGeomap,
+      multicountries: budgetsMCGeomap,
+    },
     "/grant/<code>/investments/time-cycle": grantDetailDisbursementsTimeCycle,
     "/grant/<code>/investments/disbursements": grantDetailDisbursementsTreemap,
     "/grant/<code>/investments/table": grantDetailDisbursementsTreemap,
@@ -209,6 +213,10 @@ export function useGetAllVizData() {
     "/location/<code>/investments/time-cycle": disbursementsTimeCycle,
     "/location/<code>/budgets/flow": locationDetailBudgetsFlow,
     "/location/<code>/budgets/time-cycle": locationDetailBudgetsTimeCycle,
+    "/location/<code>/budgets/geomap": {
+      countries: budgetsGeomap,
+      multicountries: budgetsMCGeomap,
+    },
     "/location/<code>/documents": locationDetailDocuments,
     "/location/<code>/allocation": allocations,
     "/location/<code>/grants": grantsList,
