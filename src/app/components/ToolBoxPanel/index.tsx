@@ -41,7 +41,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     type: "All",
   });
   const [selectedView, setSelectedView] = React.useState("");
-  const [selectedTab, setSelectedTab] = React.useState("Controls");
+  const [selectedTab, setSelectedTab] = React.useState("Filters");
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );

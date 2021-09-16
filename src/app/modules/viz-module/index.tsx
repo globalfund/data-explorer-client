@@ -29,11 +29,22 @@ import {
 export default function VizModule() {
   const location = useLocation();
   const params = useParams<{ vizType: string; subType?: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
   }, []);
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 500) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 500 - widthThreshold;
+  }
 
   return (
     <div
@@ -140,8 +151,10 @@ export default function VizModule() {
       <div
         id="export-view-div"
         css={`
-          width: 100%;
           height: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
       >
         <Switch>
@@ -210,8 +223,10 @@ export default function VizModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
+          visibility: ${openToolboxPanel && widthThreshold < 0
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

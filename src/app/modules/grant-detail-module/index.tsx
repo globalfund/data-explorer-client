@@ -38,7 +38,7 @@ export default function GrantDetail() {
   const location = useLocation();
   const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
@@ -99,6 +99,17 @@ export default function GrantDetail() {
       filterString: `grantNumber=${params.code}&IPnumber=${params.period}`,
     });
   }, [params.period]);
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 500) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 500 - widthThreshold;
+  }
 
   return (
     <div
@@ -184,74 +195,87 @@ export default function GrantDetail() {
         tabs={grantDetailTabs}
       />
       <div css="width: 100%;height: 25px;" />
-      <Switch>
-        <Route
-          exact
-          path={`/grant/${params.code}/${params.period}/investments`}
-        >
-          <Redirect to={`/grant/${params.code}/investments/disbursements`} />
-        </Route>
-        <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
-          <GrantDetailBudgetsFlowWrapper
-            code={params.code}
-            implementationPeriod={params.period}
-          />
-        </Route>
-        <Route
-          path={`/grant/${params.code}/${params.period}/budgets/time-cycle`}
-        >
-          <GrantDetailGenericBudgetsTimeCycleWrapper
-            code={params.code}
-            implementationPeriod={params.period}
-          />
-        </Route>
-        <Route path={`/grant/${params.code}/${params.period}/budgets/geomap`}>
-          <BudgetsGeoMap grantCode={params.code} grantPeriod={params.period} />
-        </Route>
-        <Route
-          path={`/grant/${params.code}/${params.period}/performance-rating`}
-        >
-          <PerformanceRatingModule
-            code={params.code}
-            implementationPeriod={params.period}
-          />
-        </Route>
-        <Route
-          path={`/grant/${params.code}/${params.period}/investments/disbursements`}
-        >
-          <GrantDetailInvestmentsDisbursedWrapper
-            code={params.code}
-            implementationPeriod={params.period}
-          />
-        </Route>
-        <Route
-          path={`/grant/${params.code}/${params.period}/investments/table`}
-        >
-          <GrantDetailInvestmentsTableWrapper
-            code={params.code}
-            implementationPeriod={params.period}
-          />
-        </Route>
-        <Route
-          path={`/grant/${params.code}/${params.period}/investments/time-cycle`}
-        >
-          <GrantDetailInvestmentsTimeCycleWrapper
-            code={params.code}
-            implementationPeriod={params.period}
-          />
-        </Route>
-        <Route path={`/grant/${params.code}/${params.period}/documents`}>
-          <GrantDetailDocumentsModule code={params.code} />
-        </Route>
-        <Route
-          path={`/grant/${params.code}/${params.period}/performance-framework`}
-        >
-          <PerformanceFrameworkModule
-            code={params.code}
-            implementationPeriod={params.period}
-          />
-        </Route>
-      </Switch>
+      <div
+        id="export-view-div"
+        css={`
+          height: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+        `}
+      >
+        <Switch>
+          <Route
+            exact
+            path={`/grant/${params.code}/${params.period}/investments`}
+          >
+            <Redirect to={`/grant/${params.code}/investments/disbursements`} />
+          </Route>
+          <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
+            <GrantDetailBudgetsFlowWrapper
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/budgets/time-cycle`}
+          >
+            <GrantDetailGenericBudgetsTimeCycleWrapper
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route path={`/grant/${params.code}/${params.period}/budgets/geomap`}>
+            <BudgetsGeoMap
+              grantCode={params.code}
+              grantPeriod={params.period}
+            />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/performance-rating`}
+          >
+            <PerformanceRatingModule
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/investments/disbursements`}
+          >
+            <GrantDetailInvestmentsDisbursedWrapper
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/investments/table`}
+          >
+            <GrantDetailInvestmentsTableWrapper
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/investments/time-cycle`}
+          >
+            <GrantDetailInvestmentsTimeCycleWrapper
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route path={`/grant/${params.code}/${params.period}/documents`}>
+            <GrantDetailDocumentsModule code={params.code} />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/performance-framework`}
+          >
+            <PerformanceFrameworkModule
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+        </Switch>
+      </div>
       <InformationPanel
         open={openInfoPanel}
         buttonLabel="Overview"
@@ -283,8 +307,10 @@ export default function GrantDetail() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
+          visibility: ${openToolboxPanel && widthThreshold < 0
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

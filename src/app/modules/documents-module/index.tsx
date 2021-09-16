@@ -18,7 +18,7 @@ export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
   const location = useLocation();
   const [search, setSearch] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -57,6 +57,17 @@ export default function DocumentsModule() {
     500,
     [search]
   );
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 500) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 500 - widthThreshold;
+  }
 
   return (
     <div
@@ -144,12 +155,21 @@ export default function DocumentsModule() {
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       {isLoading && <PageLoader />}
-      <DocumentsSubModule
-        data={data}
-        search={search}
-        setSearch={setSearch}
-        columns={["Location", "Documents"]}
-      />
+      <div
+        css={`
+          height: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+        `}
+      >
+        <DocumentsSubModule
+          data={data}
+          search={search}
+          setSearch={setSearch}
+          columns={["Location", "Documents"]}
+        />
+      </div>
       <div
         css={`
           left: 0;
@@ -159,8 +179,10 @@ export default function DocumentsModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
+          visibility: ${openToolboxPanel && widthThreshold < 0
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

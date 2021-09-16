@@ -17,8 +17,10 @@ import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { InformationPanel } from "app/components/InformationPanel";
+import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
+import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { LocationInfoContent } from "app/modules/country-detail-module/components/InfoContent";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
@@ -28,20 +30,18 @@ import { LocationEligibilityTableWrapper } from "app/modules/viz-module/sub-modu
 import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/locationDetail";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import { LocationDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/locationDetail";
+import { LocationDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
 import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { LocationDetailInvestmentsDisbursedWrapper } from "../viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
-import { LocationGrants } from "./sub-modules/grants";
-import { BudgetsGeoMap } from "../viz-module/sub-modules/budgets/geomap";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
   const location = useLocation();
   const params = useParams<{ code: string; vizType: string }>();
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   // api call & data
   const fetchLocationInfoData = useStoreActions(
@@ -74,6 +74,17 @@ export default function CountryDetail() {
 
     return () => clearEligibilityData();
   }, [paramCode]);
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 500) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 500 - widthThreshold;
+  }
 
   return (
     <div
@@ -159,54 +170,66 @@ export default function CountryDetail() {
         tabs={countryDetailTabs}
       />
       <div css="width: 100%;height: 25px;" />
-      <Switch>
-        <Route exact path={`/location/${params.code}/investments`}>
-          <Redirect to={`/location/${params.code}/investments/disbursements`} />
-        </Route>
-        <Route path={`/location/${params.code}/budgets/flow`}>
-          <LocationDetailBudgetsFlowWrapper code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/budgets/time-cycle`}>
-          <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/budgets/geomap`}>
-          <BudgetsGeoMap code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/investments/disbursements`}>
-          <LocationDetailInvestmentsDisbursedWrapper code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/investments/table`}>
-          <GenericInvestmentsTableWrapper code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/investments/time-cycle`}>
-          <GenericInvestmentsTimeCycleWrapper code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/investments/geomap`}>
-          <InvestmentsGeoMap code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/allocation`}>
-          <AllocationsModule code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/eligibility/table`}>
-          <LocationEligibilityTableWrapper code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/eligibility`}>
-          <LocationDetailEligibilityWrapper code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/grants/list`}>
-          <GrantsModule code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/grants`}>
-          <LocationGrants code={paramCode} />
-        </Route>
-        <Route path={`/location/${params.code}/documents`}>
-          <LocationDetailDocumentsModule
-            mcName={params.code}
-            isMultiCountry={params.code.length > 3}
-            code={params.code.length > 3 ? locationInfoData.id : params.code}
-          />
-        </Route>
-      </Switch>
+      <div
+        id="export-view-div"
+        css={`
+          height: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+        `}
+      >
+        <Switch>
+          <Route exact path={`/location/${params.code}/investments`}>
+            <Redirect
+              to={`/location/${params.code}/investments/disbursements`}
+            />
+          </Route>
+          <Route path={`/location/${params.code}/budgets/flow`}>
+            <LocationDetailBudgetsFlowWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/budgets/time-cycle`}>
+            <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/budgets/geomap`}>
+            <BudgetsGeoMap code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/investments/disbursements`}>
+            <LocationDetailInvestmentsDisbursedWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/investments/table`}>
+            <GenericInvestmentsTableWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/investments/time-cycle`}>
+            <GenericInvestmentsTimeCycleWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/investments/geomap`}>
+            <InvestmentsGeoMap code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/allocation`}>
+            <AllocationsModule code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/eligibility/table`}>
+            <LocationEligibilityTableWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/eligibility`}>
+            <LocationDetailEligibilityWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/grants/list`}>
+            <GrantsModule code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/grants`}>
+            <LocationGrants code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/documents`}>
+            <LocationDetailDocumentsModule
+              mcName={params.code}
+              isMultiCountry={params.code.length > 3}
+              code={params.code.length > 3 ? locationInfoData.id : params.code}
+            />
+          </Route>
+        </Switch>
+      </div>
       <InformationPanel
         open={openInfoPanel}
         buttonLabel="Overview"
@@ -246,8 +269,10 @@ export default function CountryDetail() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
+          visibility: ${openToolboxPanel && widthThreshold < 0
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

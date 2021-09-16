@@ -27,7 +27,7 @@ export default function ResultsModule() {
   const location = useLocation();
   const [search, setSearch] = React.useState("");
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   const dataYearOptions = useStoreState(
     (state) => get(state.ResultsYears.data, "data", []) as string[]
@@ -103,6 +103,17 @@ export default function ResultsModule() {
     500,
     [search]
   );
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 500) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 500 - widthThreshold;
+  }
 
   return (
     <div
@@ -199,7 +210,9 @@ export default function ResultsModule() {
       <div css="width: 100%;height: 25px;" />
       <div
         css={`
-          width: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
       >
         <Search value={search} setValue={setSearch} />
@@ -238,8 +251,10 @@ export default function ResultsModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
+          visibility: ${openToolboxPanel && widthThreshold < 0
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}
