@@ -2,11 +2,14 @@ import { Action, Thunk } from "easy-peasy";
 import {
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
+  ToolBoxPanelAllocationsPeriodStateModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
+  ToolBoxPanelEligibilityYearStateModel,
   ToolBoxPanelInvestmentsMapViewStateModel,
   ToolBoxPanelPFPeriodStateModel,
+  ToolBoxPanelResultsYearStateModel,
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 
@@ -137,8 +140,11 @@ export interface StoreModel {
   ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
   PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel;
   ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
+  ToolBoxPanelResultsYearState: ToolBoxPanelResultsYearStateModel;
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
+  ToolBoxPanelEligibilityYearState: ToolBoxPanelEligibilityYearStateModel;
+  ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
 }

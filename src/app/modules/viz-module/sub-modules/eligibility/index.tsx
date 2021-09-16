@@ -8,17 +8,12 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { DotChart } from "app/components/Charts/Eligibility/DotChart";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
-import { useUpdateEffect } from "react-use";
 
 export function EligibilityModule() {
   useTitle("The Data Explorer - Eligibility");
 
-  const dataYearOptions = useStoreState(
-    (state) => get(state.EligibilityYears.data, "data", []) as string[]
-  );
-
-  const [selectedYear, setSelectedYear] = React.useState<string>(
-    get(dataYearOptions, "[0]", "2020")
+  const selectedYear = useStoreState(
+    (state) => state.ToolBoxPanelEligibilityYearState.value
   );
 
   // aggregateBy control const
@@ -46,10 +41,6 @@ export function EligibilityModule() {
     fetchYearOptionsData({});
   }, []);
 
-  useUpdateEffect(() => setSelectedYear(get(dataYearOptions, "[0]", "2020")), [
-    dataYearOptions,
-  ]);
-
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);
     fetchData({
@@ -68,8 +59,6 @@ export function EligibilityModule() {
       data={data}
       aggregateBy={aggregateBy}
       selectedYear={selectedYear}
-      yearOptions={dataYearOptions}
-      setSelectedYear={setSelectedYear}
     />
   );
 }

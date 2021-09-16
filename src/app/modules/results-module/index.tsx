@@ -11,6 +11,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { InformationPanel } from "app/components/InformationPanel";
 import { Search } from "app/modules/grants-module/components/Search";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { ResultsList } from "app/modules/results-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
@@ -19,8 +20,6 @@ import {
   ResultListItemModel,
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { Dropdown } from "app/components/Dropdown";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -29,12 +28,8 @@ export default function ResultsModule() {
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
-  const dataYearOptions = useStoreState(
-    (state) => get(state.ResultsYears.data, "data", []) as string[]
-  );
-
-  const [selectedYear, setSelectedYear] = React.useState<string>(
-    get(dataYearOptions, "[0]", "2019")
+  const selectedYear = useStoreState(
+    (state) => state.ToolBoxPanelResultsYearState.value
   );
 
   // api call & data
@@ -84,10 +79,6 @@ export default function ResultsModule() {
       });
     }
   }, [search]);
-
-  useUpdateEffect(() => setSelectedYear(get(dataYearOptions, "[0]", "2020")), [
-    dataYearOptions,
-  ]);
 
   const [,] = useDebounce(
     () => {
@@ -230,13 +221,8 @@ export default function ResultsModule() {
               margin-right: 10px;
             `}
           >
-            Year
+            Year {selectedYear}
           </div>
-          <Dropdown
-            value={selectedYear}
-            options={dataYearOptions}
-            handleChange={setSelectedYear}
-          />
         </div>
         <div css="width: 100%;height: 25px;" />
         {data.length === 0 ? <NoDataLabel /> : <ResultsList listitems={data} />}

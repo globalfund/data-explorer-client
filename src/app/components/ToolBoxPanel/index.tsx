@@ -21,6 +21,10 @@ import {
   getControlItems,
   ViewModel,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { AllocationsPeriods } from "./components/allocationsperiods";
+import { EligibilityYear } from "./components/eligibilityyear";
+import { ResultsYear } from "./components/resultsyear";
 
 interface ToolBoxPanelProps {
   open: boolean;
@@ -132,6 +136,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   }, [controlItems.aggregates]);
 
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
+  const isResultsPage = history.location.pathname.indexOf("/results") > -1;
+  const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
 
   return (
     <ClickAwayListener
@@ -172,28 +178,35 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               role="button"
               tabIndex={-1}
               css={`
-                top: 45%;
+                top: 38%;
                 color: #fff;
-                font-size: 14px;
+                width: 16px;
+                height: 133px;
+                display: flex;
                 cursor: pointer;
-                padding: 6px 40px;
-                font-weight: bold;
                 position: absolute;
-                text-align: center;
                 background: #495057;
-                transform: rotate(-90deg);
-                border-radius: 20px 20px 0px 0px;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                border-radius: 10px 0px 0px 10px;
                 transition: background 0.2s ease-in-out;
-                left: -${!visibleVScrollbar || props.open ? 84 : 88}px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                left: -${!visibleVScrollbar || props.open ? 17 : 22}px;
 
                 &:hover {
                   background: #2e4df9;
                 }
+
+                > svg {
+                  transform: rotate(${!props.open ? "-" : ""}90deg);
+                  > path {
+                    fill: #fff;
+                  }
+                }
               `}
               onClick={() => props.onButtonClick()}
             >
-              Toolbox
+              <TriangleXSIcon />
               {appliedFilters.length > 0 && (
                 <div
                   css={`
@@ -226,6 +239,11 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 setSelected={setSelectedAggregation}
               />
             )}
+            {params.vizType === "allocations" && <AllocationsPeriods />}
+            {params.vizType === "eligibility" && !isLocationDetail && (
+              <EligibilityYear />
+            )}
+            {isResultsPage && <ResultsYear />}
             {((params.vizType === "investments" &&
               params.subType === "geomap") ||
               (params.vizType === "allocations" &&

@@ -4,13 +4,12 @@ import get from "lodash/get";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility/table";
-import { Dropdown } from "app/components/Dropdown";
-import { InfoIcon } from "app/assets/icons/Info";
 
 function getTableData(data: DotChartModel[]): SimpleTableRow[] {
   const updatedTableData: SimpleTableRow[] = [];
@@ -30,12 +29,8 @@ function getTableData(data: DotChartModel[]): SimpleTableRow[] {
 export function GenericEligibilityWrapper() {
   useTitle("The Data Explorer - Eligibility");
 
-  const dataYearOptions = useStoreState(
-    (state) => get(state.EligibilityYears.data, "data", []) as string[]
-  );
-
-  const [selectedYear, setSelectedYear] = React.useState<string>(
-    get(dataYearOptions, "[0]", "2020")
+  const selectedYear = useStoreState(
+    (state) => state.ToolBoxPanelEligibilityYearState.value
   );
 
   const fetchYearOptionsData = useStoreActions(
@@ -68,10 +63,6 @@ export function GenericEligibilityWrapper() {
     fetchYearOptionsData({});
   }, []);
 
-  useUpdateEffect(() => setSelectedYear(get(dataYearOptions, "[0]", "2020")), [
-    dataYearOptions,
-  ]);
-
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);
     fetchData({
@@ -102,13 +93,8 @@ export function GenericEligibilityWrapper() {
             margin-right: 10px;
           `}
         >
-          Year
+          Year {selectedYear}
         </div>
-        <Dropdown
-          value={selectedYear}
-          options={dataYearOptions}
-          handleChange={setSelectedYear}
-        />
         <div
           css={`
             display: flex;

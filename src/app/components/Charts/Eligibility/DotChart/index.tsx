@@ -2,7 +2,6 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { InfoIcon } from "app/assets/icons/Info";
-import { Dropdown } from "app/components/Dropdown";
 import useMousePosition from "app/hooks/useMousePosition";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import {
@@ -80,13 +79,8 @@ export function DotChart(props: DotChartProps) {
                 margin-right: 10px;
               `}
             >
-              Year
+              Year {props.selectedYear}
             </div>
-            <Dropdown
-              value={props.selectedYear}
-              options={props.yearOptions}
-              handleChange={props.setSelectedYear}
-            />
             <div
               css={`
                 display: flex;
@@ -128,8 +122,8 @@ export function DotChart(props: DotChartProps) {
             >
               <div
                 css={`
-                  width: 8px;
-                  height: 8px;
+                  width: 10px;
+                  height: 10px;
                   border-radius: 50%;
                   ${styles.Eligible}
                 `}
@@ -152,8 +146,8 @@ export function DotChart(props: DotChartProps) {
             >
               <div
                 css={`
-                  width: 8px;
-                  height: 8px;
+                  width: 10px;
+                  height: 10px;
                   border-radius: 50%;
                   ${styles["Not Eligible"]}
                 `}
@@ -177,8 +171,8 @@ export function DotChart(props: DotChartProps) {
             >
               <div
                 css={`
-                  width: 8px;
-                  height: 8px;
+                  width: 10px;
+                  height: 10px;
                   border-radius: 50%;
                   ${styles["Transition Funding"]}
                 `}
@@ -211,8 +205,8 @@ export function DotChart(props: DotChartProps) {
                   <div>
                     <div
                       css={`
-                        width: 8px;
-                        height: 8px;
+                        width: 10px;
+                        height: 10px;
                         border-radius: 50%;
                         ${styles.Eligible}
                       `}
@@ -229,8 +223,8 @@ export function DotChart(props: DotChartProps) {
                   <div>
                     <div
                       css={`
-                        width: 8px;
-                        height: 8px;
+                        width: 10px;
+                        height: 10px;
                         border-radius: 50%;
                         ${styles["Not Eligible"]}
                       `}
@@ -249,8 +243,8 @@ export function DotChart(props: DotChartProps) {
                   <div>
                     <div
                       css={`
-                        width: 8px;
-                        height: 8px;
+                        width: 10px;
+                        height: 10px;
                         border-radius: 50%;
                         ${styles.Eligible}
                       `}
@@ -267,8 +261,8 @@ export function DotChart(props: DotChartProps) {
                   <div>
                     <div
                       css={`
-                        width: 8px;
-                        height: 8px;
+                        width: 10px;
+                        height: 10px;
                         border-radius: 50%;
                         ${styles["Transition Funding"]}
                       `}
@@ -338,8 +332,8 @@ export function DotChart(props: DotChartProps) {
                         ) => (
                           <div
                             css={`
-                              width: 8px;
-                              height: 8px;
+                              width: 10px;
+                              height: 10px;
                               border-radius: 50%;
                               ${styles[item.status]}
                               transition: opacity 0.2s ease-in-out;
@@ -401,8 +395,8 @@ export function DotChart(props: DotChartProps) {
                         ) => (
                           <div
                             css={`
-                              width: 8px;
-                              height: 8px;
+                              width: 10px;
+                              height: 10px;
                               border-radius: 50%;
                               ${styles[item.status]}
                               transition: opacity 0.2s ease-in-out;

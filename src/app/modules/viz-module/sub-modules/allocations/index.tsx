@@ -3,7 +3,6 @@ import React from "react";
 import get from "lodash/get";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
-import Grid from "@material-ui/core/Grid";
 import ReactApexCharts from "react-apexcharts";
 import { useTitle, useMeasure } from "react-use";
 /* project */
@@ -11,19 +10,18 @@ import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
+import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
 import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
-import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { NoDataAllocations } from "./components/nodata";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { Dropdown } from "app/components/Dropdown";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -32,12 +30,8 @@ interface AllocationsModuleProps {
 export function AllocationsModule(props: AllocationsModuleProps) {
   useTitle(`The Data Explorer -${props.code ?? " Location"} Allocations`);
 
-  const dataPeriodOptions = useStoreState(
-    (state) => get(state.AllocationsPeriods.data, "data", []) as string[]
-  );
-
-  const [selectedPeriod, setSelectedPeriod] = React.useState<string>(
-    get(dataPeriodOptions, "[0]", "2014 - 2016")
+  const selectedPeriod = useStoreState(
+    (state) => state.ToolBoxPanelAllocationsPeriodState.value
   );
 
   // api call & data
@@ -285,11 +279,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     return () => window.removeEventListener("click", onClick);
   }, []);
 
-  React.useEffect(
-    () => setSelectedPeriod(get(dataPeriodOptions, "[0]", "2014 - 2016")),
-    [dataPeriodOptions]
-  );
-
   if (isLoading) {
     return <PageLoader />;
   }
@@ -328,35 +317,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               }
             `}
           >
-            Allocations <InfoIcon />
+            Allocations | {selectedPeriod} <InfoIcon />
           </div>
           <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-          <div
-            css={`
-              gap: 6px;
-              display: flex;
-              margin-top: 15px;
-              align-items: center;
-              flex-direction: row;
-            `}
-          >
-            <div
-              css={`
-                color: #262c34;
-                font-size: 14px;
-                font-weight: bold;
-                margin-right: 10px;
-              `}
-            >
-              Period
-            </div>
-            <Dropdown
-              enablePortal
-              value={selectedPeriod}
-              options={dataPeriodOptions}
-              handleChange={setSelectedPeriod}
-            />
-          </div>
           {total === 0 ? (
             <div css="display: flex;justify-content: center;">
               <NoDataLabel />

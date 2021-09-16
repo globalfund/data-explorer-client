@@ -5,7 +5,6 @@ import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { Dropdown } from "app/components/Dropdown";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -55,11 +54,8 @@ export function AllocationsGeoMap(props: Props) {
   const fetchPeriodOptionsData = useStoreActions(
     (store) => store.AllocationsPeriods.fetch
   );
-  const dataPeriodOptions = useStoreState(
-    (state) => get(state.AllocationsPeriods.data, "data", []) as string[]
-  );
-  const [selectedPeriod, setSelectedPeriod] = React.useState<string>(
-    get(dataPeriodOptions, "[0]", "2014 - 2016")
+  const selectedPeriod = useStoreState(
+    (state) => state.ToolBoxPanelAllocationsPeriodState.value
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
@@ -67,11 +63,6 @@ export function AllocationsGeoMap(props: Props) {
   React.useEffect(() => {
     fetchPeriodOptionsData({});
   }, []);
-
-  React.useEffect(
-    () => setSelectedPeriod(get(dataPeriodOptions, "[0]", "2014 - 2016")),
-    [dataPeriodOptions]
-  );
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -106,31 +97,6 @@ export function AllocationsGeoMap(props: Props) {
         flex-direction: column;
       `}
     >
-      <div
-        css={`
-          gap: 6px;
-          display: flex;
-          align-items: center;
-          flex-direction: row;
-        `}
-      >
-        <div
-          css={`
-            color: #262c34;
-            font-size: 14px;
-            font-weight: bold;
-            margin-right: 10px;
-          `}
-        >
-          Period
-        </div>
-        <Dropdown
-          enablePortal
-          value={selectedPeriod}
-          options={dataPeriodOptions}
-          handleChange={setSelectedPeriod}
-        />
-      </div>
       <GeoMap
         allowClickthrough
         type="allocations"
@@ -167,7 +133,7 @@ export function AllocationsGeoMap(props: Props) {
             `}
           >
             <div>
-              <b>Allocations</b>
+              <b>Allocations | {selectedPeriod}</b>
             </div>
             <div
               css={`

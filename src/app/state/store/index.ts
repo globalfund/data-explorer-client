@@ -5,11 +5,14 @@ import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters"
 import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
+  ToolBoxPanelAllocationsPeriodState,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
+  ToolBoxPanelEligibilityYearState,
   ToolBoxPanelInvestmentsMapViewState,
   ToolBoxPanelPFPeriodState,
+  ToolBoxPanelResultsYearState,
 } from "app/state/api/action-reducers/sync";
 
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
@@ -193,10 +196,15 @@ const storeContent: StoreModel = {
   ToolBoxPanelPFPeriodState: persist(ToolBoxPanelPFPeriodState),
   PageHeaderVizDrilldownsState: persist(PageHeaderVizDrilldownsState),
   ToolBoxPanelAggregateByState: persist(ToolBoxPanelAggregateByState),
+  ToolBoxPanelResultsYearState: persist(ToolBoxPanelResultsYearState),
   ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
   ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
+  ToolBoxPanelEligibilityYearState: persist(ToolBoxPanelEligibilityYearState),
   ToolBoxPanelInvestmentsMapViewState: persist(
     ToolBoxPanelInvestmentsMapViewState
+  ),
+  ToolBoxPanelAllocationsPeriodState: persist(
+    ToolBoxPanelAllocationsPeriodState
   ),
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
