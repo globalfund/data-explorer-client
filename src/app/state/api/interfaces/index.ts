@@ -117,6 +117,14 @@ export interface StoreModel {
   LocationDetailBudgetsTimeCycle: ApiCallModel;
   LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   LocationGrants: ApiCallModel;
+  // partner detail api
+  PartnerDetailInfo: ApiCallModel;
+  PartnerDetailDisbursementsTreemap: ApiCallModel;
+  PartnerDetailDisbursementsTreemapDrilldown: ApiCallModel;
+  PartnerDetailBudgetsFlow: ApiCallModel;
+  PartnerDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  PartnerDetailBudgetsTimeCycle: ApiCallModel;
+  PartnerDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;

@@ -61,14 +61,14 @@ export const grantDetailTabs: TabProps[] = [
 export const partnerDetailTabs: TabProps[] = [
   {
     name: "Investments",
-    url: "/location/<code>/investments/disbursements",
+    url: "/partner/<code>/investments/disbursements",
   },
   {
     name: "Budgets",
-    url: "/location/<code>/budgets/flow",
+    url: "/partner/<code>/budgets/flow",
   },
   {
     name: "Grants",
-    url: "/location/<code>/grants",
+    url: "/partner/<code>/grants",
   },
 ];

@@ -24,10 +24,20 @@ import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 interface GrantsModuleProps {
   code?: string;
+  detailFilterType?: string;
 }
 
 export default function GrantsModule(props: GrantsModuleProps) {
-  useTitle(`The Data Explorer -${props.code ? " Location" : ""} Grants`);
+  useTitle(
+    `The Data Explorer -${
+      props.detailFilterType
+        ? ` ${props.detailFilterType.slice(
+            1,
+            props.detailFilterType.length - 2
+          )}`
+        : ""
+    } Grants`
+  );
   const location = useLocation();
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
@@ -51,10 +61,13 @@ export default function GrantsModule(props: GrantsModuleProps) {
 
   const reloadData = (resetPage?: boolean) => {
     const filterString = getAPIFormattedFilters(
-      props.code
+      props.code && props.detailFilterType
         ? {
             ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
+            [props.detailFilterType]: [
+              ...get(appliedFilters, props.detailFilterType, []),
+              props.code,
+            ],
           }
         : appliedFilters,
       {
@@ -102,12 +115,14 @@ export default function GrantsModule(props: GrantsModuleProps) {
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
-  if (widthThreshold > 500) {
-    pushValue = 0;
-  } else if (widthThreshold < 0) {
-    pushValue = 0;
-  } else {
-    pushValue = 500 - widthThreshold;
+  if (!props.code && !props.detailFilterType) {
+    if (widthThreshold > 500) {
+      pushValue = 0;
+    } else if (widthThreshold < 0) {
+      pushValue = 0;
+    } else {
+      pushValue = 500 - widthThreshold;
+    }
   }
 
   return (

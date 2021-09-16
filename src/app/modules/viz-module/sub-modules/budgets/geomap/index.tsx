@@ -18,6 +18,7 @@ interface Props {
   code?: string;
   grantCode?: string;
   grantPeriod?: string;
+  detailFilterType?: string;
 }
 
 export function BudgetsGeoMap(props: Props) {
@@ -55,10 +56,13 @@ export function BudgetsGeoMap(props: Props) {
 
   React.useEffect(() => {
     let filterString = getAPIFormattedFilters(
-      props.code
+      props.code && props.detailFilterType
         ? {
             ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
+            [props.detailFilterType]: [
+              ...get(appliedFilters, props.detailFilterType, []),
+              props.code,
+            ],
           }
         : appliedFilters
     );

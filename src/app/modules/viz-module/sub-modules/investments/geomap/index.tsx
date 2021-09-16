@@ -13,6 +13,7 @@ import { InvestmentsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
+  detailFilterType?: string;
 }
 
 export function InvestmentsGeoMap(props: Props) {
@@ -54,10 +55,13 @@ export function InvestmentsGeoMap(props: Props) {
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
-      props.code
+      props.code && props.detailFilterType
         ? {
             ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
+            [props.detailFilterType]: [
+              ...get(appliedFilters, props.detailFilterType, []),
+              props.code,
+            ],
           }
         : appliedFilters
     );

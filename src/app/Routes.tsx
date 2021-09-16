@@ -20,6 +20,9 @@ const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
   () => import("app/modules/country-detail-module")
 );
+const PartnerDetailModule = lazy(
+  () => import("app/modules/partner-detail-module")
+);
 
 export function MainRoutes() {
   useFilterOptions({});
@@ -80,6 +83,10 @@ export function MainRoutes() {
 
         <Route exact path="/location/:code/:vizType/:subType?">
           <CountryDetailModule />
+        </Route>
+
+        <Route exact path="/partner/:code/:vizType/:subType?">
+          <PartnerDetailModule />
         </Route>
 
         <Route exact path="/grant/:code/:period/:vizType/:subType?">

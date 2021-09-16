@@ -16,63 +16,43 @@ import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { InformationPanel } from "app/components/InformationPanel";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
-import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
-import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
+import { partnerDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
-import { LocationInfoContent } from "app/modules/country-detail-module/components/InfoContent";
-import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
-import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/data-wrappers/location";
-import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
-import { LocationEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/location";
-import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/locationDetail";
-import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
-import { LocationDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/locationDetail";
-import { LocationDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
+import { PartnerDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/partnerDetail";
+import { PartnerInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/partnerDetail";
+import { PartnerDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/partnerDetail";
+import { PartnerDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/partnerDetail";
+import { PartnerDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/partnerDetail";
 import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
 
-export default function CountryDetail() {
-  useTitle("The Data Explorer - Location");
+export default function PartnerDetail() {
+  useTitle("The Data Explorer - Partner");
   const location = useLocation();
   const params = useParams<{ code: string; vizType: string }>();
-  const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   // api call & data
-  const fetchLocationInfoData = useStoreActions(
-    (store) => store.LocationDetailInfo.fetch
+  const fetchPartnerInfoData = useStoreActions(
+    (store) => store.PartnerDetailInfo.fetch
   );
-  const locationInfoData = useStoreState((state) =>
-    get(state.LocationDetailInfo.data, "data[0]", {
-      id: "",
-      locationName: "",
-      disbursed: 0,
-      committed: 0,
-      signed: 0,
-      countries: [],
-      multicountries: [],
-      portfolioManager: "",
-      portfolioManagerEmail: "",
+  const partnerInfoData = useStoreState((state) =>
+    get(state.PartnerDetailInfo.data, "data", {
+      partnerName: "",
     })
-  );
-  const clearEligibilityData = useStoreActions(
-    (store) => store.EligibilityCountry.clear
   );
 
   const paramCode = params.code.replace(/\|/g, "/");
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
-    fetchLocationInfoData({
-      filterString: `locations=${paramCode}`,
+    fetchPartnerInfoData({
+      filterString: `partners=${paramCode}`,
     });
-
-    return () => clearEligibilityData();
   }, [paramCode]);
 
   let pushValue = 0;
@@ -98,7 +78,7 @@ export default function CountryDetail() {
       `}
     >
       <PageHeader
-        title={locationInfoData.locationName}
+        title={partnerInfoData.partnerName}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -164,10 +144,10 @@ export default function CountryDetail() {
             ],
           },
           {
-            name: locationInfoData.locationName,
+            name: partnerInfoData.partnerName,
           },
         ]}
-        tabs={countryDetailTabs}
+        tabs={partnerDetailTabs}
       />
       <div css="width: 100%;height: 25px;" />
       <div
@@ -180,77 +160,40 @@ export default function CountryDetail() {
         `}
       >
         <Switch>
-          <Route exact path={`/location/${params.code}/investments`}>
+          <Route exact path={`/partner/${params.code}/investments`}>
             <Redirect
-              to={`/location/${params.code}/investments/disbursements`}
+              to={`/partner/${params.code}/investments/disbursements`}
             />
           </Route>
-          <Route path={`/location/${params.code}/budgets/flow`}>
-            <LocationDetailBudgetsFlowWrapper code={paramCode} />
+          <Route path={`/partner/${params.code}/investments/disbursements`}>
+            <PartnerDetailInvestmentsDisbursedWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/budgets/time-cycle`}>
-            <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
+          <Route path={`/partner/${params.code}/investments/table`}>
+            <PartnerInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/budgets/geomap`}>
-            <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
+          <Route path={`/partner/${params.code}/investments/time-cycle`}>
+            <PartnerDetailInvestmentsTimeCycleWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/investments/disbursements`}>
-            <LocationDetailInvestmentsDisbursedWrapper code={paramCode} />
+          <Route path={`/partner/${params.code}/investments/geomap`}>
+            <InvestmentsGeoMap code={paramCode} detailFilterType="partners" />
           </Route>
-          <Route path={`/location/${params.code}/investments/table`}>
-            <GenericInvestmentsTableWrapper code={paramCode} />
+          <Route path={`/partner/${params.code}/budgets/flow`}>
+            <PartnerDetailBudgetsFlowWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/investments/time-cycle`}>
-            <GenericInvestmentsTimeCycleWrapper code={paramCode} />
+          <Route path={`/partner/${params.code}/budgets/time-cycle`}>
+            <PartnerDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/investments/geomap`}>
-            <InvestmentsGeoMap code={paramCode} detailFilterType="locations" />
+          <Route path={`/partner/${params.code}/budgets/geomap`}>
+            <BudgetsGeoMap code={paramCode} detailFilterType="partners" />
           </Route>
-          <Route path={`/location/${params.code}/allocation`}>
-            <AllocationsModule code={paramCode} />
+          <Route path={`/partner/${params.code}/grants/list`}>
+            <GrantsModule code={paramCode} detailFilterType="partners" />
           </Route>
-          <Route path={`/location/${params.code}/eligibility/table`}>
-            <LocationEligibilityTableWrapper code={paramCode} />
-          </Route>
-          <Route path={`/location/${params.code}/eligibility`}>
-            <LocationDetailEligibilityWrapper code={paramCode} />
-          </Route>
-          <Route path={`/location/${params.code}/grants/list`}>
-            <GrantsModule code={paramCode} detailFilterType="locations" />
-          </Route>
-          <Route path={`/location/${params.code}/grants`}>
-            <LocationGrants code={paramCode} detailFilterType="locations" />
-          </Route>
-          <Route path={`/location/${params.code}/documents`}>
-            <LocationDetailDocumentsModule
-              mcName={params.code}
-              isMultiCountry={params.code.length > 3}
-              code={params.code.length > 3 ? locationInfoData.id : params.code}
-            />
+          <Route path={`/partner/${params.code}/grants`}>
+            <LocationGrants code={paramCode} detailFilterType="partners" />
           </Route>
         </Switch>
       </div>
-      <InformationPanel
-        open={openInfoPanel}
-        buttonLabel="Overview"
-        onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
-      >
-        <LocationInfoContent
-          title={locationInfoData.locationName}
-          code={paramCode}
-          investments={{
-            disbursed: locationInfoData.disbursed,
-            committed: locationInfoData.committed,
-            signed: locationInfoData.signed,
-          }}
-          countries={locationInfoData.countries}
-          multicountries={locationInfoData.multicountries}
-          manager={{
-            name: locationInfoData.portfolioManager,
-            email: locationInfoData.portfolioManagerEmail,
-          }}
-        />
-      </InformationPanel>
       <ToolBoxPanel
         open={openToolboxPanel}
         filterGroups={get(
