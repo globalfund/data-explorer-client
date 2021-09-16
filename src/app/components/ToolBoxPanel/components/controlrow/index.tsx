@@ -1,7 +1,9 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import { TickIcon } from "app/assets/icons/Tick";
-import { ViewModel } from "../../utils/getControlItems";
+import { Link, useLocation } from "react-router-dom";
+import { getChartIcon } from "app/components/ToolBoxPanel/utils/getChartIcon";
+import { ViewModel } from "app/components/ToolBoxPanel/utils/getControlItems";
 
 interface ToolBoxPanelControlRowProps {
   title: string;
@@ -18,8 +20,10 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
         gap: 12px;
         width: 100%;
         display: flex;
-        padding: 15px 25px;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        padding: 15px 35px 15px 25px;
+        justify-content: space-between;
         border-bottom: 1px solid #dfe3e6;
       `}
     >
@@ -33,36 +37,37 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
       >
         {props.options.map((option: ViewModel) =>
           option.link ? (
-            <Link
-              key={option.value}
-              onClick={() => props.setSelected(option.value)}
-              to={`${option.link}${location.search}`}
-              css={`
-                gap: 6px;
-                display: flex;
-                font-size: 12px;
-                padding: 8px 12px;
-                flex-direction: row;
-                border-radius: 20px;
-                align-items: center;
-                text-decoration: none;
-                color: ${props.selected === option.value ? "#fff" : "#495057"};
-                background: ${props.selected === option.value
-                  ? "#495057"
-                  : "#fff"};
+            <Tooltip title={option.label}>
+              <Link
+                key={option.value}
+                onClick={() => props.setSelected(option.value)}
+                to={`${option.link}${location.search}`}
+                css={`
+                  gap: 6px;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  text-decoration: none;
 
-                &:hover {
-                  color: #fff;
-                  cursor: pointer;
-                  background: ${props.selected === option.value
-                    ? "#495057"
-                    : "#2e4df9"};
-                }
-              `}
-            >
-              {props.selected === option.value && <TickIcon />}
-              {option.label}
-            </Link>
+                  path {
+                    fill: ${props.selected === option.value
+                      ? "#13183F"
+                      : "#868A9D"};
+                  }
+
+                  &:hover {
+                    color: #fff;
+                    cursor: pointer;
+
+                    path {
+                      fill: #13183f;
+                    }
+                  }
+                `}
+              >
+                {getChartIcon(option)}
+              </Link>
+            </Tooltip>
           ) : (
             <button
               type="button"

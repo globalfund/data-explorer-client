@@ -1,7 +1,4 @@
 import React from "react";
-import find from "lodash/find";
-import { Dropdown } from "app/components/Dropdown";
-import { useParams, useHistory } from "react-router-dom";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -41,29 +38,6 @@ export interface GrantDetailPeriodInformation {
 }
 
 export function GrantInfoContent(props: GrantInfoContentProps) {
-  const history = useHistory();
-  const params = useParams<{ code: string; period: string; vizType: string }>();
-
-  const selectedPeriod = find(
-    props.periods,
-    (p: GrantDetailPeriod) => p.number.toString() === params.period
-  ) || { startDate: "", endDate: "" };
-
-  function onSelectedPeriodChange(period: string) {
-    const fPeriod = find(
-      props.periods,
-      (p: GrantDetailPeriod) => `${p.startDate} - ${p.endDate}` === period
-    );
-    if (fPeriod) {
-      history.push(
-        history.location.pathname.replace(
-          `/${params.period}/`,
-          `/${fPeriod.number.toString()}/`
-        )
-      );
-    }
-  }
-
   return (
     <div
       css={`
@@ -134,32 +108,6 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
         <div>
           Component: <b>{props.component}</b>
         </div>
-      </div>
-      <div
-        css={`
-          font-size: 14px;
-          font-weight: bold;
-          margin-bottom: 5px;
-        `}
-      >
-        Implementation period
-      </div>
-      <div
-        css={`
-          gap: 12px;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          margin-bottom: 20px;
-        `}
-      >
-        <Dropdown
-          value={`${selectedPeriod.startDate} - ${selectedPeriod.endDate}`}
-          handleChange={onSelectedPeriodChange}
-          options={props.periods.map(
-            (p: GrantDetailPeriod) => `${p.startDate} - ${p.endDate}`
-          )}
-        />
       </div>
       <div
         css={`
