@@ -24,7 +24,7 @@ export const row = (size: number, style: string) => css`
 export const buttonrow = (position: "up" | "down") => css`
   gap: 20px;
   display: flex;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   padding: 16px 20px;
   flex-direction: row;
@@ -57,7 +57,7 @@ export const locationlist = css`
   overflow-y: auto;
   max-height: 150px;
   min-height: 150px;
-  padding: 12px 20px;
+  padding: 14px 20px;
   background: #495057;
   flex-direction: column;
   border-radius: 0 0 20px 20px;

@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -23,7 +22,6 @@ import {
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
-  const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
@@ -168,7 +166,11 @@ export default function ResultsModule() {
           </div>
         </div>
         <div css="width: 100%;height: 25px;" />
-        {data.length === 0 ? <NoDataLabel /> : <ResultsList listitems={data} />}
+        {data.length === 0 ? (
+          <NoDataLabel />
+        ) : (
+          <ResultsList listitems={data} isToolboxOpen={openToolboxPanel} />
+        )}
       </div>
       <div css="width: 100%;height: 25px;" />
       <div

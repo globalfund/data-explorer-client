@@ -79,6 +79,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
         css={`
           width: 100%;
           display: flex;
+          font-size: 14px;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;

@@ -318,7 +318,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           <IconButton onClick={props.goBack}>
             <TriangleXSIcon />
           </IconButton>
-          <b>{props.name}</b>
+          {props.name}
         </div>
         <div>
           <FormControlLabel
@@ -478,6 +478,10 @@ function FilterOption(props: FilterOptionProps) {
           css={`
             && {
               z-index: 3;
+
+              span {
+                font-size: 14px;
+              }
             }
           `}
           control={

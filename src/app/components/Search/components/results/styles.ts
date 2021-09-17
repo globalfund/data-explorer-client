@@ -27,7 +27,7 @@ export const tabs = css`
 export const tab = (active: boolean) => css`
   color: #262c34;
   padding: 5px 0;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: bold;
   border-bottom: 2px solid ${active ? "#262c34" : "transparent"};
 
@@ -80,7 +80,7 @@ export const result = css`
 
   > div {
     color: #262c34;
-    font-size: 12px;
+    font-size: 14px;
 
     &:first-of-type {
       margin-right: 40px;

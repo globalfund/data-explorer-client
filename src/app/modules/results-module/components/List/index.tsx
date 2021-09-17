@@ -20,18 +20,30 @@ export function ResultsList(props: ResultsListProps) {
   return (
     <Grid container spacing={2}>
       {props.listitems.map((item: ResultListItemModel) => (
-        <ResultsListItem {...item} key={item.id} />
+        <ResultsListItem
+          {...item}
+          key={item.id}
+          isToolboxOpen={props.isToolboxOpen}
+        />
       ))}
     </Grid>
   );
 }
 
 function ResultsListItem(props: ResultListItemModel) {
-  const [expand, setExpand] = React.useState(false);
   const history = useHistory();
+  const [expand, setExpand] = React.useState(false);
 
   return (
-    <Grid item key={props.id} xs={12} sm={6} md={4} id={props.id}>
+    <Grid
+      item
+      id={props.id}
+      key={props.id}
+      xs={12}
+      sm={6}
+      md={4}
+      lg={props.isToolboxOpen ? 6 : 4}
+    >
       <div css={listitem(history.location.hash === `#${props.id}` && !expand)}>
         {!expand && (
           <React.Fragment>

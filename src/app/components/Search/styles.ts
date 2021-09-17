@@ -16,5 +16,6 @@ export const input = css`
   color: #262c34;
   font-size: 14px;
   background: #fff;
+  font-weight: bold;
   border-style: none;
 `;

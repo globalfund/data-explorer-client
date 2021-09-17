@@ -50,7 +50,7 @@ export const StyledMenuItem = withStyles((theme) => ({
     borderBottom: "1px solid #DFE3E6",
     "& a": {
       width: "100%",
-      fontSize: "12px",
+      fontSize: "14px",
       color: "#262c34",
       padding: "6px 12px",
       textDecoration: "none",

@@ -1,6 +1,7 @@
 import React from "react";
 import { SearchIcon } from "app/assets/icons/Search";
 import { container, input } from "app/components/Search/styles";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { SearchResults } from "app/components/Search/components/results";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
 
@@ -14,6 +15,15 @@ interface SearchLayoutProps {
 }
 
 export function SearchLayout(props: SearchLayoutProps) {
+  const [open, setOpen] = React.useState(props.value.length > 0);
+
+  React.useEffect(() => {
+    const newOpen = props.value.length > 0;
+    if (newOpen !== open) {
+      setOpen(newOpen);
+    }
+  }, [props.value]);
+
   return (
     <div css={container}>
       <input
@@ -27,13 +37,21 @@ export function SearchLayout(props: SearchLayoutProps) {
         }
       />
       <SearchIcon />
-      {props.value.length > 0 && (
-        <SearchResults
-          loading={props.loading}
-          results={props.results}
-          activeTab={props.activeTab}
-          setActiveTab={props.setActiveTab}
-        />
+      {open && (
+        <ClickAwayListener
+          onClickAway={() => {
+            props.setValue("");
+          }}
+        >
+          <div>
+            <SearchResults
+              loading={props.loading}
+              results={props.results}
+              activeTab={props.activeTab}
+              setActiveTab={props.setActiveTab}
+            />
+          </div>
+        </ClickAwayListener>
       )}
     </div>
   );
