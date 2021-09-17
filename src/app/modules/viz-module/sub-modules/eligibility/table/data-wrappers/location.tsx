@@ -23,7 +23,7 @@ function getTableData(
   filter(
     data,
     (item: EligibilityScatterplotDataModel) =>
-      item.id.toString().trim().length > 0
+      item.id.toString() !== "dummy1" && item.id.toString() !== "dummy2"
   ).forEach((item: EligibilityScatterplotDataModel) => {
     item.data.forEach((subItem: EligibilityScatterplotDataItemModel) => {
       updatedTableData.push({

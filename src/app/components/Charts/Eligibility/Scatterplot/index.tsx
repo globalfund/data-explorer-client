@@ -20,15 +20,16 @@ import { AreaLayer } from "./components/area";
 
 const styles = {
   Eligible: css`
-    background: #262c34;
-    border: 1px solid #adb5bd;
+    background: #11ad6b;
+    border: 1px solid #1b2127;
   `,
   "Not Eligible": css`
-    background: #adb5bd;
-    border: 1px solid #262c34;
+    background: #fa7355;
+    border: 1px dotted #1b2127;
   `,
   "Transition Funding": css`
-    border: 1px dashed #262c34;
+    background: #ffd646;
+    border: 1px dashed #1b2127;
   `,
 };
 
@@ -66,10 +67,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
   );
 
   const Nodes = (nProps: any) => {
-    return filter(
-      nProps.nodes,
-      (node: any) => node.data.y.trim().length > 0
-    ).map((node: any) => {
+    return nProps.nodes.map((node: any) => {
       return (
         <ScatterplotNode
           x={node.x}
@@ -79,6 +77,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
           hovered={hoveredNode}
           onHover={setHoveredNode}
           showExtraData={showExtraData}
+          invisible={node.data.invisible}
           hoveredEligibilityLegend={hoveredLegend}
           hoveredBurdenLegend={hoveredBurdenLegend}
           hoveredIncomeLegend={hoveredIncomeLegend}
@@ -87,23 +86,32 @@ export function ScatterPlot(props: ScatterPlotProps) {
     });
   };
 
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const scrollableDiv = document.getElementById("scatterplot-scroll-div");
-  //     if (scrollableDiv) {
-  //       scrollableDiv.scroll({
-  //         left: scrollableDiv.scrollWidth,
-  //         behavior: "smooth",
-  //       });
-  //     }
-  //   }, 500);
-  // }, []);
+  const AreaLayerContainer = (aProps: any) => (
+    <AreaLayer
+      {...aProps}
+      hoveredEligibilityLegend={hoveredLegend}
+      hoveredBurdenLegend={hoveredBurdenLegend}
+      hoveredIncomeLegend={hoveredIncomeLegend}
+    />
+  );
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      const scrollableDiv = document.getElementById("scatterplot-scroll-div");
+      if (scrollableDiv) {
+        scrollableDiv.scroll({
+          left: scrollableDiv.scrollWidth,
+          behavior: "smooth",
+        });
+      }
+    }, 500);
+  }, []);
 
   const noData =
     filter(
       props.data,
       (item: EligibilityScatterplotDataModel) =>
-        item.id.toString().trim().length > 0
+        item.id.toString() !== "dummy1" && item.id.toString() !== "dummy2"
     ).length === 0;
 
   return (
@@ -502,6 +510,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                       width: calc(100% / 6);
 
                       &:nth-of-type(1) {
+                        background: #262c34;
                         border: 0.5px solid #262c34;
                         border-radius: 20px 0 0 20px;
 
@@ -663,8 +672,14 @@ export function ScatterPlot(props: ScatterPlotProps) {
                 <ResponsiveScatterPlot
                   data={props.data}
                   useMesh={false}
-                  margin={{ top: 60, right: 100, bottom: 50, left: 50 }}
-                  layers={[AreaLayer, "grid", "axes", Nodes, "markers"]}
+                  layers={[
+                    AreaLayerContainer,
+                    "grid",
+                    "axes",
+                    Nodes,
+                    "markers",
+                  ]}
+                  margin={{ top: 60, right: 0, bottom: 50, left: 50 }}
                   xScale={{ type: "point" }}
                   xFormat={(e: Value) => e.toString()}
                   yScale={{ type: "point" }}
@@ -674,12 +689,35 @@ export function ScatterPlot(props: ScatterPlotProps) {
                     tickSize: 0,
                     tickPadding: 15,
                     tickRotation: 0,
-                    format: (e: Value) => (e !== 2002 ? e.toString() : ""),
+                    format: (e: Value) =>
+                      e !== 2002 && e !== 2022 ? e.toString() : "",
                   }}
                   axisLeft={{
                     tickSize: 0,
                     tickPadding: 15,
                     tickRotation: -90,
+                    format: (e: Value) =>
+                      e !== "dummy1" && e !== "dummy2" ? e : "",
+                    renderTick: (tProps: any) => (
+                      <g
+                        css="opacity: 1;"
+                        transform={`translate(${tProps.x},${tProps.y - 15})`}
+                      >
+                        <text
+                          textAnchor="end"
+                          dominantBaseline="central"
+                          transform={`translate(${tProps.textX},${tProps.textY})  rotate(-90)`}
+                          css={`
+                            font-size: 12px;
+                            font-weight: bold;
+                            fill: rgb(38, 44, 52);
+                            font-family: sans-serif;
+                          `}
+                        >
+                          {tProps.format(tProps.value)}
+                        </text>
+                      </g>
+                    ),
                   }}
                   theme={{
                     axis: {
