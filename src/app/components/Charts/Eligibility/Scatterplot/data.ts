@@ -11,6 +11,7 @@ export interface EligibilityScatterplotDataItemModel {
   diseaseBurden: number;
   allocationCycleName?: string | null;
   eligibility: "Eligible" | "Not Eligible" | "Transition Funding";
+  invisible?: boolean;
 }
 
 export interface EligibilityScatterplotDataModel extends Serie {
@@ -531,4 +532,14 @@ export const incomeLevels: (
   "Upper-Lower middle income",
   "Upper middle income",
   "High income",
+];
+
+export const incomeLevelColors = [
+  "#262C34",
+  "#70777E",
+  "#98A1AA",
+  "#C7CDD1",
+  "#DFE3E6",
+  "#F5F5F7",
+  "#FFFFFF",
 ];
