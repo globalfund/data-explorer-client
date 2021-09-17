@@ -10,6 +10,10 @@ export interface PageHeaderTabProps {
 
 export const countryDetailTabs: TabProps[] = [
   {
+    name: "Overview",
+    url: "/location/<code>/overview",
+  },
+  {
     name: "Investments",
     url: "/location/<code>/investments/disbursements",
   },
@@ -37,6 +41,10 @@ export const countryDetailTabs: TabProps[] = [
 
 export const grantDetailTabs: TabProps[] = [
   {
+    name: "Overview",
+    url: "/grant/<code>/<period>/overview",
+  },
+  {
     name: "Investments",
     url: "/grant/<code>/<period>/investments/disbursements",
   },
@@ -55,5 +63,20 @@ export const grantDetailTabs: TabProps[] = [
   {
     name: "Documents",
     url: "/grant/<code>/<period>/documents",
+  },
+];
+
+export const partnerDetailTabs: TabProps[] = [
+  {
+    name: "Investments",
+    url: "/partner/<code>/investments/disbursements",
+  },
+  {
+    name: "Budgets",
+    url: "/partner/<code>/budgets/flow",
+  },
+  {
+    name: "Grants",
+    url: "/partner/<code>/grants",
   },
 ];

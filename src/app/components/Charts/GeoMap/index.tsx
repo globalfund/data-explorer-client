@@ -253,9 +253,7 @@ export function GeoMap(props: GeoMapProps) {
         hoveredFeature.properties.iso_a3 &&
         hoveredFeature.properties.value > 0
       ) {
-        history.push(
-          `/location/${hoveredFeature.properties.iso_a3}/investments`
-        );
+        history.push(`/location/${hoveredFeature.properties.iso_a3}/overview`);
       }
     }
   }, []);
@@ -318,7 +316,7 @@ export function GeoMap(props: GeoMapProps) {
               key={pin.id}
               marker={pin}
               setMarkerInfo={setInvestmentsPinMarkerHoverInfo}
-              onClick={() => history.push(`/location/${pin.code}/investments`)}
+              onClick={() => history.push(`/location/${pin.code}/overview`)}
               {...icons}
             />
           );
@@ -369,7 +367,7 @@ export function GeoMap(props: GeoMapProps) {
               key={pin.id}
               marker={pin}
               setMarkerInfo={setAllocationsPinMarkerHoverInfo}
-              onClick={() => history.push(`/location/${pin.code}/investments`)}
+              onClick={() => history.push(`/location/${pin.code}/overview`)}
               {...icons}
             />
           );

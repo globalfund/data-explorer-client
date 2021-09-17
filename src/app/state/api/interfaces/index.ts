@@ -2,11 +2,14 @@ import { Action, Thunk } from "easy-peasy";
 import {
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
+  ToolBoxPanelAllocationsPeriodStateModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
+  ToolBoxPanelEligibilityYearStateModel,
   ToolBoxPanelInvestmentsMapViewStateModel,
   ToolBoxPanelPFPeriodStateModel,
+  ToolBoxPanelResultsYearStateModel,
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 
@@ -117,6 +120,14 @@ export interface StoreModel {
   LocationDetailBudgetsTimeCycle: ApiCallModel;
   LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   LocationGrants: ApiCallModel;
+  // partner detail api
+  PartnerDetailInfo: ApiCallModel;
+  PartnerDetailDisbursementsTreemap: ApiCallModel;
+  PartnerDetailDisbursementsTreemapDrilldown: ApiCallModel;
+  PartnerDetailBudgetsFlow: ApiCallModel;
+  PartnerDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  PartnerDetailBudgetsTimeCycle: ApiCallModel;
+  PartnerDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;
@@ -129,8 +140,11 @@ export interface StoreModel {
   ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
   PageHeaderVizDrilldownsState: PageHeaderVizDrilldownsStateModel;
   ToolBoxPanelAggregateByState: ToolBoxPanelAggregateByStateModel;
+  ToolBoxPanelResultsYearState: ToolBoxPanelResultsYearStateModel;
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
+  ToolBoxPanelEligibilityYearState: ToolBoxPanelEligibilityYearStateModel;
+  ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
 }

@@ -7,9 +7,11 @@ export interface ResultListItemModel {
     name: string;
     value: number;
   }[];
+  isToolboxOpen?: boolean;
 }
 
 export interface ResultsListProps {
+  isToolboxOpen: boolean;
   listitems: ResultListItemModel[];
 }
 

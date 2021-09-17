@@ -385,7 +385,7 @@ export function ComponentRadarThingies(props: any) {
                           <div
                             onClick={() =>
                               history.push(
-                                `/grant/${item.name}/${subItem.name}/investments/disbursements`
+                                `/grant/${item.name}/${subItem.name}/overview`
                               )
                             }
                             onMouseLeave={() => props.setHoveredNode(null)}

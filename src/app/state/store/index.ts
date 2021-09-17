@@ -5,11 +5,14 @@ import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters"
 import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
+  ToolBoxPanelAllocationsPeriodState,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
+  ToolBoxPanelEligibilityYearState,
   ToolBoxPanelInvestmentsMapViewState,
   ToolBoxPanelPFPeriodState,
+  ToolBoxPanelResultsYearState,
 } from "app/state/api/action-reducers/sync";
 
 import GrantsList from "app/state/api/action-reducers/viz/grantsList";
@@ -86,6 +89,16 @@ import BudgetsGeomap, {
   BudgetsMCGeomap,
 } from "../api/action-reducers/viz/budgetsGeomap";
 import LocationGrants from "../api/action-reducers/locationDetail/grants";
+import PartnerDetailInfo from "../api/action-reducers/partnerDetail/info";
+import PartnerDetailDisbursementsTreemap, {
+  PartnerDetailDisbursementsTreemapDrilldown,
+} from "../api/action-reducers/partnerDetail/disbursementsTreemap";
+import PartnerDetailBudgetsFlow, {
+  PartnerDetailBudgetsFlowDrilldownLevel1,
+} from "../api/action-reducers/partnerDetail/budgetsFlow";
+import PartnerDetailBudgetsTimeCycle, {
+  PartnerDetailBudgetsTimeCycleDrilldownLevel1,
+} from "../api/action-reducers/partnerDetail/budgetsTimeCycle";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -157,6 +170,20 @@ const storeContent: StoreModel = {
     LocationDetailBudgetsTimeCycleDrilldownLevel1
   ),
   LocationGrants: persist(LocationGrants),
+  // partner detail api
+  PartnerDetailInfo: persist(PartnerDetailInfo),
+  PartnerDetailDisbursementsTreemap: persist(PartnerDetailDisbursementsTreemap),
+  PartnerDetailDisbursementsTreemapDrilldown: persist(
+    PartnerDetailDisbursementsTreemapDrilldown
+  ),
+  PartnerDetailBudgetsFlow: persist(PartnerDetailBudgetsFlow),
+  PartnerDetailBudgetsFlowDrilldownLevel1: persist(
+    PartnerDetailBudgetsFlowDrilldownLevel1
+  ),
+  PartnerDetailBudgetsTimeCycle: persist(PartnerDetailBudgetsTimeCycle),
+  PartnerDetailBudgetsTimeCycleDrilldownLevel1: persist(
+    PartnerDetailBudgetsTimeCycleDrilldownLevel1
+  ),
   // filter options api
   LocationFilterOptions: persist(LocationFilterOptions),
   ComponentFilterOptions: persist(ComponentFilterOptions),
@@ -169,10 +196,15 @@ const storeContent: StoreModel = {
   ToolBoxPanelPFPeriodState: persist(ToolBoxPanelPFPeriodState),
   PageHeaderVizDrilldownsState: persist(PageHeaderVizDrilldownsState),
   ToolBoxPanelAggregateByState: persist(ToolBoxPanelAggregateByState),
+  ToolBoxPanelResultsYearState: persist(ToolBoxPanelResultsYearState),
   ToolBoxPanelDonorMapTypeState: persist(ToolBoxPanelDonorMapTypeState),
   ToolBoxPanelDonorMapViewState: persist(ToolBoxPanelDonorMapViewState),
+  ToolBoxPanelEligibilityYearState: persist(ToolBoxPanelEligibilityYearState),
   ToolBoxPanelInvestmentsMapViewState: persist(
     ToolBoxPanelInvestmentsMapViewState
+  ),
+  ToolBoxPanelAllocationsPeriodState: persist(
+    ToolBoxPanelAllocationsPeriodState
   ),
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState

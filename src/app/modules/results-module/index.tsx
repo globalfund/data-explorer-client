@@ -1,16 +1,16 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { Link, useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { InformationPanel } from "app/components/InformationPanel";
+import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { Search } from "app/modules/grants-module/components/Search";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { ResultsList } from "app/modules/results-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
@@ -19,22 +19,16 @@ import {
   ResultListItemModel,
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { Dropdown } from "app/components/Dropdown";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
-  const location = useLocation();
+  const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
-  const dataYearOptions = useStoreState(
-    (state) => get(state.ResultsYears.data, "data", []) as string[]
-  );
-
-  const [selectedYear, setSelectedYear] = React.useState<string>(
-    get(dataYearOptions, "[0]", "2019")
+  const selectedYear = useStoreState(
+    (state) => state.ToolBoxPanelResultsYearState.value
   );
 
   // api call & data
@@ -85,10 +79,6 @@ export default function ResultsModule() {
     }
   }, [search]);
 
-  useUpdateEffect(() => setSelectedYear(get(dataYearOptions, "[0]", "2020")), [
-    dataYearOptions,
-  ]);
-
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
@@ -103,6 +93,17 @@ export default function ResultsModule() {
     500,
     [search]
   );
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 500) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 500 - widthThreshold;
+  }
 
   return (
     <div
@@ -121,65 +122,7 @@ export default function ResultsModule() {
           { name: "Home", link: "/" },
           {
             name: "Datasets",
-            menuitems: [
-              <Link
-                to="/datasets"
-                css={`
-                  display: flex;
-                  align-items: center;
-
-                  > svg {
-                    margin-right: 16px;
-                    transform: rotate(-180deg) scale(0.5);
-
-                    > path {
-                      fill: #13183f;
-                    }
-                  }
-                `}
-              >
-                <ArrowForwardIcon />
-                <b>Datasets</b>
-              </Link>,
-              <Link to={`/viz/investments/disbursements${location.search}`}>
-                <b>Finance</b>-Investments/Disbursements
-              </Link>,
-              <Link to={`/viz/investments/time-cycle${location.search}`}>
-                <b>Finance</b>-Investments/Time-Cycle
-              </Link>,
-              <Link to={`/viz/investments/geomap${location.search}`}>
-                <b>Finance</b>-Investments/GeoMap
-              </Link>,
-              <Link to={`/viz/budgets/flow${location.search}`}>
-                <b>Finance</b>-Budgets Flow
-              </Link>,
-              <Link to={`/viz/budgets/time-cycle${location.search}`}>
-                <b>Finance</b>-Budgets Time Cycle
-              </Link>,
-              <Link to={`/viz/allocations${location.search}`}>
-                <b>Finance</b>-Allocations
-              </Link>,
-              <Link to={`/viz/eligibility${location.search}`}>
-                <b>Finance</b>-Eligibility
-              </Link>,
-              <Link
-                to={`/viz/pledges-contributions/time-cycle${location.search}`}
-              >
-                <b>Finance</b>-Pledges & Contributions Time Cycle
-              </Link>,
-              <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
-                <b>Finance</b>-Pledges & Contributions GeoMap
-              </Link>,
-              <Link to={`/grants${location.search}`}>
-                <b>Grants</b>
-              </Link>,
-              <Link to={`/results${location.search}`}>
-                <b>Results</b>
-              </Link>,
-              <Link to={`/documents${location.search}`}>
-                <b>Documents</b>
-              </Link>,
-            ],
+            menuitems: datasetMenuItems,
           },
           { name: "Results" },
         ]}
@@ -199,7 +142,9 @@ export default function ResultsModule() {
       <div css="width: 100%;height: 25px;" />
       <div
         css={`
-          width: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
       >
         <Search value={search} setValue={setSearch} />
@@ -217,16 +162,15 @@ export default function ResultsModule() {
               margin-right: 10px;
             `}
           >
-            Year
+            Year {selectedYear}
           </div>
-          <Dropdown
-            value={selectedYear}
-            options={dataYearOptions}
-            handleChange={setSelectedYear}
-          />
         </div>
         <div css="width: 100%;height: 25px;" />
-        {data.length === 0 ? <NoDataLabel /> : <ResultsList listitems={data} />}
+        {data.length === 0 ? (
+          <NoDataLabel />
+        ) : (
+          <ResultsList listitems={data} isToolboxOpen={openToolboxPanel} />
+        )}
       </div>
       <div css="width: 100%;height: 25px;" />
       <div
@@ -238,8 +182,10 @@ export default function ResultsModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
+          visibility: ${openToolboxPanel && widthThreshold < 0
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

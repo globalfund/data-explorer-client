@@ -11,6 +11,7 @@ import { GrantsViz, RadialChartLegend } from "app/components/Charts/Grants";
 
 interface Props {
   code: string;
+  detailFilterType: string;
 }
 
 export function LocationGrants(props: Props) {
@@ -23,10 +24,13 @@ export function LocationGrants(props: Props) {
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
-      props.code
+      props.code && props.detailFilterType
         ? {
             ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
+            [props.detailFilterType]: [
+              ...get(appliedFilters, props.detailFilterType, []),
+              props.code,
+            ],
           }
         : appliedFilters
     );

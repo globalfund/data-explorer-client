@@ -158,6 +158,7 @@ export function ToolBoxPanelIconButtons() {
       css={`
         width: 100%;
         display: flex;
+        padding: 0 25px;
         flex-direction: row;
         justify-content: flex-end;
         border-bottom: 1px solid #dfe3e6;

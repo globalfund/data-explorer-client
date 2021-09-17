@@ -84,3 +84,39 @@ export const ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapView
     state.value = payload;
   }),
 };
+
+export interface ToolBoxPanelAllocationsPeriodStateModel {
+  value: string;
+  setValue: Action<ToolBoxPanelAllocationsPeriodStateModel, string>;
+}
+
+export const ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel = {
+  value: "2014 - 2016",
+  setValue: action((state, payload: string) => {
+    state.value = payload;
+  }),
+};
+
+export interface ToolBoxPanelEligibilityYearStateModel {
+  value: string;
+  setValue: Action<ToolBoxPanelEligibilityYearStateModel, string>;
+}
+
+export const ToolBoxPanelEligibilityYearState: ToolBoxPanelEligibilityYearStateModel = {
+  value: "2020",
+  setValue: action((state, payload: string) => {
+    state.value = payload;
+  }),
+};
+
+export interface ToolBoxPanelResultsYearStateModel {
+  value: string;
+  setValue: Action<ToolBoxPanelResultsYearStateModel, string>;
+}
+
+export const ToolBoxPanelResultsYearState: ToolBoxPanelResultsYearStateModel = {
+  value: "2020",
+  setValue: action((state, payload: string) => {
+    state.value = payload;
+  }),
+};
