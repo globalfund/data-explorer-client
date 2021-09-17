@@ -111,7 +111,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
         {props.multicountries.map(
           (mc: { name: string; code: string }, index: number) => (
             <React.Fragment key={mc.name}>
-              <Link to={`/location/${mc.code}/investments`}>{mc.name}</Link>
+              <Link to={`/location/${mc.code}/overview`}>{mc.name}</Link>
               {index < props.multicountries.length - 1 && ", "}
             </React.Fragment>
           )
@@ -119,7 +119,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
         {props.countries.map(
           (c: { name: string; code: string }, index: number) => (
             <React.Fragment key={c.name}>
-              <Link to={`/location/${c.code}/investments`}>{c.name}</Link>
+              <Link to={`/location/${c.code}/overview`}>{c.name}</Link>
               {index < props.countries.length - 1 && ", "}
             </React.Fragment>
           )

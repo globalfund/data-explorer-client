@@ -4,7 +4,6 @@ import get from "lodash/get";
 import { useTitle } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
-  Link,
   Switch,
   Route,
   useParams,
@@ -15,7 +14,7 @@ import {
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { partnerDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
@@ -33,6 +32,7 @@ import {
 export default function PartnerDetail() {
   useTitle("The Data Explorer - Partner");
   const location = useLocation();
+  const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ code: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
@@ -83,65 +83,7 @@ export default function PartnerDetail() {
           { name: "Home", link: "/" },
           {
             name: "Datasets",
-            menuitems: [
-              <Link
-                to="/datasets"
-                css={`
-                  display: flex;
-                  align-items: center;
-
-                  > svg {
-                    margin-right: 16px;
-                    transform: rotate(-180deg) scale(0.5);
-
-                    > path {
-                      fill: #13183f;
-                    }
-                  }
-                `}
-              >
-                <ArrowForwardIcon />
-                <b>Datasets</b>
-              </Link>,
-              <Link to={`/viz/investments/disbursements${location.search}`}>
-                <b>Finance</b>-Investments/Disbursements
-              </Link>,
-              <Link to={`/viz/investments/time-cycle${location.search}`}>
-                <b>Finance</b>-Investments/Time-Cycle
-              </Link>,
-              <Link to={`/viz/investments/geomap${location.search}`}>
-                <b>Finance</b>-Investments/GeoMap
-              </Link>,
-              <Link to={`/viz/budgets/flow${location.search}`}>
-                <b>Finance</b>-Budgets Flow
-              </Link>,
-              <Link to={`/viz/budgets/time-cycle${location.search}`}>
-                <b>Finance</b>-Budgets Time Cycle
-              </Link>,
-              <Link to={`/viz/allocations${location.search}`}>
-                <b>Finance</b>-Allocations
-              </Link>,
-              <Link to={`/viz/eligibility${location.search}`}>
-                <b>Finance</b>-Eligibility
-              </Link>,
-              <Link
-                to={`/viz/pledges-contributions/time-cycle${location.search}`}
-              >
-                <b>Finance</b>-Pledges & Contributions Time Cycle
-              </Link>,
-              <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
-                <b>Finance</b>-Pledges & Contributions GeoMap
-              </Link>,
-              <Link to={`/grants${location.search}`}>
-                <b>Grants</b>
-              </Link>,
-              <Link to={`/results${location.search}`}>
-                <b>Results</b>
-              </Link>,
-              <Link to={`/documents${location.search}`}>
-                <b>Documents</b>
-              </Link>,
-            ],
+            menuitems: datasetMenuItems,
           },
           {
             name: partnerInfoData.partnerName,

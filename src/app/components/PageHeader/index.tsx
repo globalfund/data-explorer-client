@@ -46,13 +46,13 @@ export const StyledMenu = withStyles({
 
 export const StyledMenuItem = withStyles((theme) => ({
   root: {
-    padding: "6px 0",
+    padding: 0,
     borderBottom: "1px solid #DFE3E6",
     "& a": {
       width: "100%",
       fontSize: "12px",
       color: "#262c34",
-      padding: "0 12px",
+      padding: "6px 12px",
       textDecoration: "none",
     },
     "& div": {

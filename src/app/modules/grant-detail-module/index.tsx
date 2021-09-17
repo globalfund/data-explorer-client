@@ -3,26 +3,15 @@ import React from "react";
 import get from "lodash/get";
 import { useTitle } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import {
-  Link,
-  Switch,
-  Route,
-  useParams,
-  Redirect,
-  useLocation,
-} from "react-router-dom";
+import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { InformationPanel } from "app/components/InformationPanel";
+import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
-import {
-  GrantDetailPeriod,
-  GrantDetailPeriodInformation,
-  GrantInfoContent,
-} from "app/modules/grant-detail-module/components/InfoContent";
+import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { filtergroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { GrantDetailOverviewModule } from "app//modules/grant-detail-module/components/sub-modules/overview";
 import { GrantDetailDocumentsModule } from "app/modules/grant-detail-module/components/sub-modules/documents";
 import { PerformanceRatingModule } from "app/modules/grant-detail-module/components/sub-modules/performance-rating";
 import { PerformanceFrameworkModule } from "app/modules/grant-detail-module/components/sub-modules/performance-framework";
@@ -31,13 +20,12 @@ import { GrantDetailInvestmentsTableWrapper } from "app/modules/viz-module/sub-m
 import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
-import { BudgetsGeoMap } from "../viz-module/sub-modules/budgets/geomap";
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
   const location = useLocation();
+  const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ code: string; period: string; vizType: string }>();
-  const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   // api call & data
@@ -67,21 +55,8 @@ export default function GrantDetail() {
   const fetchGrantPeriodsData = useStoreActions(
     (store) => store.GrantDetailPeriods.fetch
   );
-  const grantPeriodsData = useStoreState(
-    (state) =>
-      get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
-  );
   const fetchGrantPeriodInfoData = useStoreActions(
     (store) => store.GrantDetailPeriodInfo.fetch
-  );
-  const grantPeriodInfoData = useStoreState(
-    (state) =>
-      get(state.GrantDetailPeriodInfo.data, "data[0]", {
-        disbursed: 0,
-        committed: 0,
-        signed: 0,
-        rating: "",
-      }) as GrantDetailPeriodInformation
   );
 
   React.useEffect(() => {
@@ -128,65 +103,7 @@ export default function GrantDetail() {
           { name: "Home", link: "/" },
           {
             name: "Datasets",
-            menuitems: [
-              <Link
-                to="/datasets"
-                css={`
-                  display: flex;
-                  align-items: center;
-
-                  > svg {
-                    margin-right: 16px;
-                    transform: rotate(-180deg) scale(0.5);
-
-                    > path {
-                      fill: #13183f;
-                    }
-                  }
-                `}
-              >
-                <ArrowForwardIcon />
-                <b>Datasets</b>
-              </Link>,
-              <Link to={`/viz/investments/disbursements${location.search}`}>
-                <b>Finance</b>-Investments/Disbursements
-              </Link>,
-              <Link to={`/viz/investments/time-cycle${location.search}`}>
-                <b>Finance</b>-Investments/Time-Cycle
-              </Link>,
-              <Link to={`/viz/investments/geomap${location.search}`}>
-                <b>Finance</b>-Investments/GeoMap
-              </Link>,
-              <Link to={`/viz/budgets/flow${location.search}`}>
-                <b>Finance</b>-Budgets Flow
-              </Link>,
-              <Link to={`/viz/budgets/time-cycle${location.search}`}>
-                <b>Finance</b>-Budgets Time Cycle
-              </Link>,
-              <Link to={`/viz/allocations${location.search}`}>
-                <b>Finance</b>-Allocations
-              </Link>,
-              <Link to={`/viz/eligibility${location.search}`}>
-                <b>Finance</b>-Eligibility
-              </Link>,
-              <Link
-                to={`/viz/pledges-contributions/time-cycle${location.search}`}
-              >
-                <b>Finance</b>-Pledges & Contributions Time Cycle
-              </Link>,
-              <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
-                <b>Finance</b>-Pledges & Contributions GeoMap
-              </Link>,
-              <Link to={`/grants${location.search}`}>
-                <b>Grants</b>
-              </Link>,
-              <Link to={`/results${location.search}`}>
-                <b>Results</b>
-              </Link>,
-              <Link to={`/documents${location.search}`}>
-                <b>Documents</b>
-              </Link>,
-            ],
+            menuitems: datasetMenuItems,
           },
           {
             name: params.code,
@@ -205,11 +122,8 @@ export default function GrantDetail() {
         `}
       >
         <Switch>
-          <Route
-            exact
-            path={`/grant/${params.code}/${params.period}/investments`}
-          >
-            <Redirect to={`/grant/${params.code}/investments/disbursements`} />
+          <Route path={`/grant/${params.code}/${params.period}/overview`}>
+            <GrantDetailOverviewModule />
           </Route>
           <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
             <GrantDetailBudgetsFlowWrapper
@@ -276,22 +190,6 @@ export default function GrantDetail() {
           </Route>
         </Switch>
       </div>
-      <InformationPanel
-        open={openInfoPanel}
-        buttonLabel="Overview"
-        onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
-      >
-        <GrantInfoContent
-          {...grantInfoData}
-          periods={grantPeriodsData}
-          rating={grantPeriodInfoData.rating}
-          investments={{
-            disbursed: grantPeriodInfoData.disbursed,
-            committed: grantPeriodInfoData.committed,
-            signed: grantPeriodInfoData.signed,
-          }}
-        />
-      </InformationPanel>
       <ToolBoxPanel
         isGrantDetail
         open={openToolboxPanel}

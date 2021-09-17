@@ -39,7 +39,7 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   function goToGrantDetail(code: string) {
-    history.push(`/grant/${code}/1/investments/disbursements`);
+    history.push(`/grant/${code}/1/overview`);
   }
 
   React.useEffect(() => {

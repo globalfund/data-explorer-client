@@ -19,10 +19,7 @@ export function GrantsList(props: GrantsListProps) {
     <Grid container spacing={2}>
       {props.listitems.map((item: GrantListItemModel) => (
         <Grid item key={item.id} sm={12} md={6}>
-          <Link
-            to={`/grant/${item.id}/1/investments/disbursements`}
-            css={listitem}
-          >
+          <Link to={`/grant/${item.id}/1/overview`} css={listitem}>
             {/* 1st row */}
             <div css={row(12, "normal")}>
               <div>
