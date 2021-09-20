@@ -61,41 +61,41 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
 
   React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      const viz = document.getElementById("budgets-time-cycle");
-      if (viz) {
-        const svgs = viz.getElementsByTagName("svg");
-        if (svgs.length > 1) {
-          const pathElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-          );
-          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#2E4DF9");
-          pathElement.setAttribute("strokeWidth", "1");
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     const viz = document.getElementById("budgets-time-cycle");
+  //     if (viz) {
+  //       const svgs = viz.getElementsByTagName("svg");
+  //       if (svgs.length > 1) {
+  //         const pathElement = document.createElementNS(
+  //           "http://www.w3.org/2000/svg",
+  //           "path"
+  //         );
+  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+  //         pathElement.setAttribute("stroke", "#13183F");
+  //         pathElement.setAttribute("strokeWidth", "1");
 
-          const patternElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "pattern"
-          );
-          patternElement.setAttribute("id", "diagonalHatch");
-          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-          patternElement.setAttribute("width", "4");
-          patternElement.setAttribute("height", "4");
-          patternElement.appendChild(pathElement);
+  //         const patternElement = document.createElementNS(
+  //           "http://www.w3.org/2000/svg",
+  //           "pattern"
+  //         );
+  //         patternElement.setAttribute("id", "diagonalHatch");
+  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
+  //         patternElement.setAttribute("width", "4");
+  //         patternElement.setAttribute("height", "4");
+  //         patternElement.appendChild(pathElement);
 
-          const defsElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "defs"
-          );
-          defsElement.appendChild(patternElement);
+  //         const defsElement = document.createElementNS(
+  //           "http://www.w3.org/2000/svg",
+  //           "defs"
+  //         );
+  //         defsElement.appendChild(patternElement);
 
-          svgs[1].appendChild(defsElement);
-        }
-      }
-    }, 100);
-  }, []);
+  //         svgs[1].appendChild(defsElement);
+  //       }
+  //     }
+  //   }, 100);
+  // }, []);
 
   const Bars = (bprops: any) => {
     if (props.vizCompData.length !== bprops.bars.length) {

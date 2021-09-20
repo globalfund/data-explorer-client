@@ -11,15 +11,16 @@ import {
 
 const styles = {
   Eligible: css`
-    background: #262c34;
-    border: 1px solid #adb5bd;
+    background: #11ad6b;
+    border: 1px solid #1b2127;
   `,
   "Not Eligible": css`
-    background: #adb5bd;
-    border: 1px solid #262c34;
+    background: #fa7355;
+    border: 1px dotted #1b2127;
   `,
   "Transition Funding": css`
-    border: 1px dashed #262c34;
+    background: #ffd646;
+    border: 1px dashed #1b2127;
   `,
 };
 
@@ -255,7 +256,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Tuberculosis
+                      RSSH
                     </div>
                   </div>
                   <div>
@@ -274,7 +275,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      RSSH
+                      Tuberculosis
                     </div>
                   </div>
                 </div>

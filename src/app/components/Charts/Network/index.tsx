@@ -6,41 +6,41 @@ import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
 import { NoDataLabel } from "../common/nodatalabel";
 
 export function NetworkViz(props: NetworkVizProps) {
-  React.useEffect(() => {
-    setTimeout(() => {
-      const viz = document.getElementById("performance-framework-network");
-      if (viz) {
-        const svgs = viz.getElementsByTagName("svg");
-        if (svgs.length > 0) {
-          const pathElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-          );
-          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#262c34");
-          pathElement.setAttribute("strokeWidth", "0.5");
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     const viz = document.getElementById("performance-framework-network");
+  //     if (viz) {
+  //       const svgs = viz.getElementsByTagName("svg");
+  //       if (svgs.length > 0) {
+  //         const pathElement = document.createElementNS(
+  //           "http://www.w3.org/2000/svg",
+  //           "path"
+  //         );
+  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+  //         pathElement.setAttribute("stroke", "#262c34");
+  //         pathElement.setAttribute("strokeWidth", "0.5");
 
-          const patternElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "pattern"
-          );
-          patternElement.setAttribute("id", "diagonalHatch");
-          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-          patternElement.setAttribute("width", "4");
-          patternElement.setAttribute("height", "4");
-          patternElement.appendChild(pathElement);
+  //         const patternElement = document.createElementNS(
+  //           "http://www.w3.org/2000/svg",
+  //           "pattern"
+  //         );
+  //         patternElement.setAttribute("id", "diagonalHatch");
+  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
+  //         patternElement.setAttribute("width", "4");
+  //         patternElement.setAttribute("height", "4");
+  //         patternElement.appendChild(pathElement);
 
-          const defsElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "defs"
-          );
-          defsElement.appendChild(patternElement);
+  //         const defsElement = document.createElementNS(
+  //           "http://www.w3.org/2000/svg",
+  //           "defs"
+  //         );
+  //         defsElement.appendChild(patternElement);
 
-          svgs[0].appendChild(defsElement);
-        }
-      }
-    }, 100);
-  }, []);
+  //         svgs[0].appendChild(defsElement);
+  //       }
+  //     }
+  //   }, 100);
+  // }, []);
 
   const Nodes = (nodesData: any) => {
     return nodesData.nodes.map((node: any) => {
@@ -50,14 +50,14 @@ export function NetworkViz(props: NetworkVizProps) {
         <circle
           r={node.radius}
           strokeWidth="1"
-          // fill={node.color}
+          fill={node.color}
           stroke={node.borderColor}
           transform={`translate(${node.x}, ${node.y}) scale(1)`}
-          css={
-            node.color === "#E2E2E2"
-              ? `fill: url(#diagonalHatch);`
-              : `fill: ${node.color};`
-          }
+          // css={
+          //   node.color === "#E2E2E2"
+          //     ? `fill: url(#diagonalHatch);`
+          //     : `fill: ${node.color};`
+          // }
         />
       );
       return (

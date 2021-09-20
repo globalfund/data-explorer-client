@@ -87,7 +87,7 @@ export const ProjectPalette: ProjectPalette = {
     hoverOpacity: 0.08,
     hover: "rgba(0, 0, 0, 0.08)",
     // selected: "rgba(0, 0, 0, 0.14)",
-    selected: "#2E4DF9",
+    selected: "#13183F",
     disabledBackground: "rgba(0, 0, 0, 0.12)",
     disabled: "rgba(0, 0, 0, 0.26)",
     active: "rgba(0, 0, 0, 0.54)",
@@ -220,7 +220,7 @@ export default createMuiTheme({
       button: {
         "&:hover": {
           color: "#fff",
-          backgroundColor: "#2E4DF9",
+          backgroundColor: "#13183F",
           transition: "background 0.2s ease-in-out",
           "& *": {
             fill: "#fff",

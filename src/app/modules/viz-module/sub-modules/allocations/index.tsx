@@ -208,9 +208,10 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
           if (item.getAttribute("seriesName") === vizSelected) {
-            paths[0].style.stroke = "url(#diagonalHatch)";
+            // paths[0].style.stroke = "url(#diagonalHatch)";
+            paths[0].style.opacity = "1";
           } else {
-            paths[0].style.stroke = "";
+            paths[0].style.opacity = "0.3";
           }
         }
       });
@@ -231,7 +232,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
-          paths[0].style.stroke = "";
+          paths[0].style.opacity = "1";
         }
       });
       clearDrilldownLevelData();
@@ -241,39 +242,39 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   React.useEffect(() => {
     fetchPeriodOptionsData({});
 
-    setTimeout(() => {
-      const viz = document.getElementById("allocations-radial-bar");
-      if (viz) {
-        const svgs = viz.getElementsByTagName("svg");
-        if (svgs.length > 1) {
-          const pathElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-          );
-          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#2E4DF9");
-          pathElement.setAttribute("strokeWidth", "1");
+    // setTimeout(() => {
+    //   const viz = document.getElementById("allocations-radial-bar");
+    //   if (viz) {
+    //     const svgs = viz.getElementsByTagName("svg");
+    //     if (svgs.length > 1) {
+    //       const pathElement = document.createElementNS(
+    //         "http://www.w3.org/2000/svg",
+    //         "path"
+    //       );
+    //       pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+    //       pathElement.setAttribute("stroke", "#13183F");
+    //       pathElement.setAttribute("strokeWidth", "1");
 
-          const patternElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "pattern"
-          );
-          patternElement.setAttribute("id", "diagonalHatch");
-          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-          patternElement.setAttribute("width", "4");
-          patternElement.setAttribute("height", "4");
-          patternElement.appendChild(pathElement);
+    //       const patternElement = document.createElementNS(
+    //         "http://www.w3.org/2000/svg",
+    //         "pattern"
+    //       );
+    //       patternElement.setAttribute("id", "diagonalHatch");
+    //       patternElement.setAttribute("patternUnits", "userSpaceOnUse");
+    //       patternElement.setAttribute("width", "4");
+    //       patternElement.setAttribute("height", "4");
+    //       patternElement.appendChild(pathElement);
 
-          const defsElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "defs"
-          );
-          defsElement.appendChild(patternElement);
+    //       const defsElement = document.createElementNS(
+    //         "http://www.w3.org/2000/svg",
+    //         "defs"
+    //       );
+    //       defsElement.appendChild(patternElement);
 
-          svgs[1].appendChild(defsElement);
-        }
-      }
-    }, 1000);
+    //       svgs[1].appendChild(defsElement);
+    //     }
+    //   }
+    // }, 1000);
 
     window.addEventListener("click", onClick);
     return () => window.removeEventListener("click", onClick);

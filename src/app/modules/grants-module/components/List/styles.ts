@@ -14,7 +14,7 @@ export const listitem = css`
 
   &:hover {
     cursor: pointer;
-    background-color: #2e4df9;
+    background-color: #13183f;
 
     * {
       fill: #fff;

@@ -67,7 +67,7 @@ const styles = {
     }
 
     &:hover {
-      background: ${active ? "#495057" : "#2e4df9"};
+      background: #495057;
       a {
         color: #fff;
         font-weight: bold;

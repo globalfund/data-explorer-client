@@ -16,28 +16,6 @@ const containercss = (hover: boolean, selected: boolean) => css`
   transition: background 0.2s ease-in-out;
   overflow: ${!hover ? "visible" : "hidden"};
 
-  ${selected
-    ? `
-  background: repeating-linear-gradient(45deg, #2E4DF9 0 5px, #fff 5px 10px) !important;
-
-  > div {
-    color: #262C34;
-    background: rgba(255, 255, 255, 0.8);
-  }
-  `
-    : ""}
-
-  ${hover
-    ? `&:hover {
-        background: repeating-linear-gradient(45deg, #2E4DF9 0 5px, #fff 5px 10px) !important;
-
-        > div {
-          color: #262C34;
-          background: rgba(255, 255, 255, 0.8);
-        }
-    }`
-    : ""}
-
   > div {
     width: 100%;
     padding: 10px;

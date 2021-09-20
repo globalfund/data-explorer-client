@@ -194,7 +194,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 left: -${!visibleVScrollbar || props.open ? 17 : 22}px;
 
                 &:hover {
-                  background: #2e4df9;
+                  background: #13183f;
                 }
 
                 > svg {

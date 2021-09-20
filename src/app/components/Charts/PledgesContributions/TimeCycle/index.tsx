@@ -21,8 +21,8 @@ export function PledgesContributionsTimeCycle(
     "pledgesContributionsBar"
   );
   const legends = [
-    { name: "Pledge", color: "#868E96" },
-    { name: "Contribution", color: "#495057" },
+    { name: "Pledge", color: "#BFCFEE" },
+    { name: "Contribution", color: "#252C34" },
   ];
 
   const Bars = (bprops: any) => {

@@ -67,7 +67,7 @@ export const result = css`
   border-top: 1px solid #dfe3e6;
 
   &:hover {
-    background: #2e4df9;
+    background: #13183f;
 
     > div {
       color: #fff;

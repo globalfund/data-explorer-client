@@ -13,9 +13,10 @@ export function BarComponent(props: any) {
     label: props.label,
   };
 
-  let nodecss = "cursor: pointer;transition: opacity 0.2s ease-in-out;";
+  let nodecss =
+    "cursor: pointer;transition: opacity 0.2s ease-in-out;stroke: #1B2127;";
   if (props.selected === `${props.data.indexValue}-${props.data.id}`) {
-    nodecss += "z-index: 2;fill: url(#diagonalHatch);";
+    nodecss += "z-index: 2;";
   } else if (
     props.hoveredXIndex &&
     props.hoveredXIndex === `${props.data.indexValue}-${props.data.id}`
@@ -24,7 +25,7 @@ export function BarComponent(props: any) {
   } else if (props.hoveredLegend && props.hoveredLegend === props.data.id) {
     nodecss += "z-index: 2;";
   } else if (props.selected || props.hoveredXIndex || props.hoveredLegend) {
-    nodecss += "opacity: 0.3;";
+    nodecss += "opacity: 0.1;";
   }
 
   function onMouseMoveOrEnter(e: React.MouseEvent<SVGGElement>) {

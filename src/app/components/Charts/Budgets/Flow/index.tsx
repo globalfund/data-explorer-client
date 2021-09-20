@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
@@ -12,10 +13,11 @@ import {
 import { InfoIcon } from "app/assets/icons/Info";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { BudgetsFlowProps } from "app/components/Charts/Budgets/Flow/data";
+import { getNodes } from "app/components/Charts/Budgets/Flow/components/node";
+import { NoDataBudgetsFlow } from "app/components/Charts/Budgets/Flow/components/nodata";
 import { BudgetsFlowTooltip } from "app/components/Charts/Budgets/Flow/components/tooltip";
-import { NoDataBudgetsFlow } from "./components/nodata";
-import { NoDataLabel } from "../../common/nodatalabel";
 
 const container = css`
   width: 100%;
@@ -55,6 +57,19 @@ const header = css`
   }
 `;
 
+function getLegendItems(data: any) {
+  const legends: { name: string; color: string }[] = [];
+  data.forEach((item: any) => {
+    item?.components.forEach((component: any) => {
+      legends.push({
+        name: component.id,
+        color: component.color,
+      });
+    });
+  });
+  return uniqBy(legends, "name");
+}
+
 const getNodeLabel = (label: string, matchesSm: boolean): string => {
   if (matchesSm) {
     if (label.length > 13) {
@@ -70,6 +85,7 @@ const getNodeLabel = (label: string, matchesSm: boolean): string => {
 
 export function BudgetsFlow(props: BudgetsFlowProps) {
   const matches = useMediaQuery("(max-width: 767px)");
+  const legends = getLegendItems(props.data.nodes);
   //   const [xsTooltipData, setXsTooltipData] = React.useState(null);
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
@@ -94,35 +110,44 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
     if (props.vizCompData.length !== nProps.nodes.length) {
       props.setVizCompData(nProps.nodes);
     }
-    return nProps.nodes.map((node: any) => (
-      <rect
-        x={node.id === "Budgets" ? node.x - 20 : node.x}
-        y={node.y}
-        key={node.id}
-        height={node.height}
-        data-cy="bf-sankey-bar-comp"
-        width={node.id === "Budgets" ? 25 : node.width}
-        fill={node.id === props.selectedNodeId ? "#2E4DF9" : "#373D43"}
-        css={`
-          cursor: pointer;
-          &:hover {
-            fill: #2e4df9;
-          }
-        `}
-        onClick={() => {
-          props.onNodeClick(
-            { id: node.id.toString(), filterStr: node.filterStr.toString() },
-            node.x - 200,
-            node.y
-          );
-        }}
-      />
-    ));
+    return getNodes(nProps.nodes, props.selectedNodeId, props.onNodeClick);
   };
 
   return (
-    <div css={container} data-cy="budgets-flow" id="sankey">
+    <div data-cy="budgets-flow" id="sankey">
       <Grid container alignItems="center" spacing={4} css={header}>
+        <Grid item xs={12}>
+          <div
+            css={`
+              gap: 24px;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-end;
+            `}
+          >
+            {legends.map((legend: any) => (
+              <div
+                key={legend.name}
+                css={`
+                  gap: 6px;
+                  display: flex;
+                  font-size: 10px;
+                  align-items: center;
+                  flex-direction: row;
+                `}
+              >
+                <div
+                  css={`
+                    width: 12px;
+                    height: 12px;
+                    background: ${legend.color};
+                  `}
+                />
+                <div>{legend.name}</div>
+              </div>
+            ))}
+          </div>
+        </Grid>
         <Grid item xs={3}>
           <div
             css={`
@@ -156,7 +181,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           <NoDataLabel height="600px" />
         </React.Fragment>
       ) : (
-        <React.Fragment>
+        <div css={container}>
           <ResponsiveSankey
             data={props.data}
             colors={["#373D43"]}
@@ -165,7 +190,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             margin={{ top: 40, right: 0, bottom: 50, left: 0 }}
             nodeOpacity={1}
             nodeSpacing={34}
-            nodeThickness={15}
+            nodeThickness={25}
             nodeInnerPadding={5}
             linkOpacity={1}
             onClick={(
@@ -235,7 +260,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             </ClickAwayListener>
           </XsContainer>
         )} */}
-        </React.Fragment>
+        </div>
       )}
     </div>
   );

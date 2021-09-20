@@ -11,8 +11,6 @@ import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDo
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
 
-interface DatasetCarouselProps {}
-
 const griditem = (content: React.ReactElement, link: string) => (
   <Link to={link} css="text-decoration: none;">
     <div
@@ -34,7 +32,7 @@ const griditem = (content: React.ReactElement, link: string) => (
         }
 
         &:hover {
-          border-color: #2e4df9;
+          border-color: #13183f;
         }
       `}
     >

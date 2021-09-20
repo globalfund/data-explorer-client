@@ -65,7 +65,7 @@ export function InformationPanel(props: InformationPanelProps) {
                 transition: background 0.2s ease-in-out;
 
                 &:hover {
-                  background: #2e4df9;
+                  background: #13183f;
                 }
               `}
               onClick={() => props.onButtonClick()}

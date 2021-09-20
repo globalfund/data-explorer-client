@@ -124,7 +124,7 @@ export default function Datasets() {
                   }
 
                   &:hover {
-                    border-color: #2e4df9;
+                    border-color: #13183f;
                   }
                 `}
               >

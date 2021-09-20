@@ -36,7 +36,7 @@ export function getKeysPercentages(
 ): { percentages: number[]; colors: string[] } {
   const percentages = values.map((value: number) => (value * 100) / total);
   const colors = percentages.map((value: number) =>
-    hexToRGBA("#343A40", value / 100)
+    hexToRGBA("#1B2127", value / 100)
   );
 
   return { percentages, colors };

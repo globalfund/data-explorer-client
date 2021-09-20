@@ -49,7 +49,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
             ? `
           :hover {
             cursor: pointer;
-            background: #2e4df9;
+            background: #13183F;
 
             > td {
               color: #fff;

@@ -37,9 +37,8 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
       >
         {props.options.map((option: ViewModel) =>
           option.link ? (
-            <Tooltip title={option.label}>
+            <Tooltip title={option.label} key={option.value}>
               <Link
-                key={option.value}
                 onClick={() => props.setSelected(option.value)}
                 to={`${option.link}${location.search}`}
                 css={`
@@ -93,7 +92,7 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                   cursor: pointer;
                   background: ${props.selected === option.value
                     ? "#495057"
-                    : "#2e4df9"};
+                    : "#13183F"};
                 }
               `}
             >

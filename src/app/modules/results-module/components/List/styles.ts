@@ -8,7 +8,7 @@ export const listitem = (outline: boolean) => css`
   border-radius: 20px;
   flex-direction: column;
   justify-content: space-between;
-  border: 2px solid ${outline ? "#2E4DF9" : "#f5f5f7"};
+  border: 2px solid ${outline ? "#13183F" : "#f5f5f7"};
 `;
 
 export const row = (size: number, style: string) => css`
@@ -42,7 +42,7 @@ export const buttonrow = (position: "up" | "down") => css`
   &:hover {
     cursor: pointer;
     color: ${position === "down" ? "#fff" : "#495057"};
-    background: ${position === "down" ? "#2E4DF9" : "transparent"};
+    background: ${position === "down" ? "#13183F" : "transparent"};
 
     path {
       fill: ${position === "down" ? "#fff" : "#495057"};
