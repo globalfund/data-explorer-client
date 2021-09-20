@@ -41,7 +41,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
         motionDamping={15}
         groupMode="grouped"
         enableLabel={false}
-        colors={["#495057"]}
+        colors={["#1B2127"]}
         motionStiffness={90}
         isInteractive={false}
         padding={matches ? 0.3 : 0.5}

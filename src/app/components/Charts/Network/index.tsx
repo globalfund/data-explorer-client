@@ -2,45 +2,46 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Tooltip from "@material-ui/core/Tooltip";
 import { ResponsiveNetwork } from "@nivo/network";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
-import { NoDataLabel } from "../common/nodatalabel";
+import { NetworkLegends } from "app/components/Charts/Network/components/legends";
 
 export function NetworkViz(props: NetworkVizProps) {
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const viz = document.getElementById("performance-framework-network");
-  //     if (viz) {
-  //       const svgs = viz.getElementsByTagName("svg");
-  //       if (svgs.length > 0) {
-  //         const pathElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "path"
-  //         );
-  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-  //         pathElement.setAttribute("stroke", "#262c34");
-  //         pathElement.setAttribute("strokeWidth", "0.5");
+  React.useEffect(() => {
+    setTimeout(() => {
+      const viz = document.getElementById("performance-framework-network");
+      if (viz) {
+        const svgs = viz.getElementsByTagName("svg");
+        if (svgs.length > 0) {
+          const pathElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
+          );
+          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+          pathElement.setAttribute("stroke", "#262c34");
+          pathElement.setAttribute("strokeWidth", "0.5");
 
-  //         const patternElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "pattern"
-  //         );
-  //         patternElement.setAttribute("id", "diagonalHatch");
-  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-  //         patternElement.setAttribute("width", "4");
-  //         patternElement.setAttribute("height", "4");
-  //         patternElement.appendChild(pathElement);
+          const patternElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "pattern"
+          );
+          patternElement.setAttribute("id", "diagonalHatch");
+          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
+          patternElement.setAttribute("width", "4");
+          patternElement.setAttribute("height", "4");
+          patternElement.appendChild(pathElement);
 
-  //         const defsElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "defs"
-  //         );
-  //         defsElement.appendChild(patternElement);
+          const defsElement = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "defs"
+          );
+          defsElement.appendChild(patternElement);
 
-  //         svgs[0].appendChild(defsElement);
-  //       }
-  //     }
-  //   }, 100);
-  // }, []);
+          svgs[0].appendChild(defsElement);
+        }
+      }
+    }, 100);
+  }, []);
 
   const Nodes = (nodesData: any) => {
     return nodesData.nodes.map((node: any) => {
@@ -50,14 +51,14 @@ export function NetworkViz(props: NetworkVizProps) {
         <circle
           r={node.radius}
           strokeWidth="1"
-          fill={node.color}
+          // fill={node.color}
           stroke={node.borderColor}
           transform={`translate(${node.x}, ${node.y}) scale(1)`}
-          // css={
-          //   node.color === "#E2E2E2"
-          //     ? `fill: url(#diagonalHatch);`
-          //     : `fill: ${node.color};`
-          // }
+          css={
+            node.color === "#E2E2E2"
+              ? `fill: url(#diagonalHatch);`
+              : `fill: ${node.color};`
+          }
         />
       );
       return (
@@ -160,182 +161,19 @@ export function NetworkViz(props: NetworkVizProps) {
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={12} md={3}>
+      <Grid item xs={12}>
         <div
           css={`
             color: #262c34;
-            font-size: 12px;
             font-weight: bold;
-            margin-bottom: 20px;
           `}
         >
-          Achievement Rate
-        </div>
-        <div
-          css={`
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            margin-bottom: 40px;
-
-            > span {
-              height: 6px;
-              position: relative;
-              width: calc(100% / 8);
-              border: 0.5px solid #262c34;
-              border-style: solid none solid solid;
-
-              &:before {
-                left: -4px;
-                bottom: -25px;
-                color: #495057;
-                font-size: 10px;
-                position: absolute;
-              }
-
-              &:nth-of-type(1) {
-                border-radius: 20px 0 0 20px;
-              }
-              &:nth-of-type(8) {
-                border-style: solid;
-                border-radius: 0 20px 20px 0;
-
-                &:after {
-                  right: -8px;
-                  bottom: -25px;
-                  color: #495057;
-                  font-size: 10px;
-                  position: absolute;
-                }
-              }
-            }
-          `}
-        >
-          <span
-            css={`
-              background: #fa7355;
-              &:before {
-                content: "0";
-              }
-            `}
-          />
-          <span
-            css={`
-              background: #fa9a55;
-              &:before {
-                content: "0.2";
-              }
-            `}
-          />
-          <span
-            css={`
-              background: #ffaa46;
-              &:before {
-                content: "0.4";
-              }
-            `}
-          />
-          <span
-            css={`
-              background: #ffd646;
-              &:before {
-                content: "0.6";
-              }
-            `}
-          />
-          <span
-            css={`
-              background: #daff46;
-              &:before {
-                content: "0.8";
-              }
-            `}
-          />
-          <span
-            css={`
-              background: #97ff46;
-              &:before {
-                content: "1.0";
-              }
-            `}
-          />
-          <span
-            css={`
-              background: #60ff46;
-              &:before {
-                content: "1.2";
-              }
-            `}
-          />
-          <span
-            css={`
-              background: #11ad6b;
-              &:before {
-                content: "1.4";
-              }
-              &:after {
-                content: "1.6";
-              }
-            `}
-          />
-        </div>
-        <div
-          css={`
-            gap: 40px;
-            display: flex;
-            flex-direction: row;
-          `}
-        >
-          <div
-            css={`
-              gap: 10px;
-              display: flex;
-              font-size: 12px;
-              flex-direction: row;
-              align-items: center;
-            `}
-          >
-            <span
-              css={`
-                width: 40px;
-                height: 6px;
-                border-radius: 20px;
-                border: 0.5px solid #262c34;
-              `}
-            />
-            N/A
-          </div>
-          <div
-            css={`
-              gap: 10px;
-              display: flex;
-              font-size: 12px;
-              flex-direction: row;
-              align-items: center;
-            `}
-          >
-            <span
-              css={`
-                width: 40px;
-                height: 6px;
-                border-radius: 20px;
-                border: 0.5px solid #262c34;
-                background: repeating-linear-gradient(
-                  -45deg,
-                  #262c34 0 0.5px,
-                  #fff 1.5px 2px
-                );
-              `}
-            />
-            Not Reported
-          </div>
+          Performance Framework
         </div>
       </Grid>
       <Grid
         item
         xs={12}
-        sm={12}
-        md={9}
         css={`
           position: relative;
         `}
@@ -344,7 +182,7 @@ export function NetworkViz(props: NetworkVizProps) {
           id="performance-framework-network"
           css={`
             width: 100%;
-            height: 700px;
+            height: 650px;
 
             ${props.data.links.length === 0
               ? `
@@ -376,6 +214,9 @@ export function NetworkViz(props: NetworkVizProps) {
           />
         </div>
         {props.data.links.length === 0 && <NoDataLabel />}
+      </Grid>
+      <Grid item xs={12}>
+        <NetworkLegends />
       </Grid>
     </Grid>
   );
