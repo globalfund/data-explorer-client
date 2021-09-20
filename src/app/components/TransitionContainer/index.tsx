@@ -17,7 +17,8 @@ export function TransitionContainer(props: TransitionContainerProps) {
           > div {
             cursor: default !important;
             > div {
-              display: flex !important;
+              width: 100%;
+              // display: flex !important;
               transition: transform 0.5s ease !important;
             }
           }

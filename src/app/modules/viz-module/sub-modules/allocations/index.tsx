@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import max from "lodash/max";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import ReactApexCharts from "react-apexcharts";
@@ -47,6 +48,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   // );
   const values = useStoreState(
     (state) => get(state.Allocations.data, "values", []) as number[]
+  );
+  const maxValue = useStoreState((state) =>
+    max(get(state.Allocations.data, "values", []) as number[])
   );
   const isLoading = useStoreState((state) => state.Allocations.loading);
 
@@ -367,7 +371,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               `}
             >
               <div>0 USD</div>
-              <div>{formatFinancialValue(total)}</div>
+              <div>{formatFinancialValue(maxValue || 0)}</div>
             </div>
           </div>
         </div>

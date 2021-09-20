@@ -239,7 +239,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 setSelected={setSelectedAggregation}
               />
             )}
-            {params.vizType === "allocations" && <AllocationsPeriods />}
+            {(params.vizType === "allocations" ||
+              params.vizType === "allocation") && <AllocationsPeriods />}
             {params.vizType === "eligibility" && !isLocationDetail && (
               <EligibilityYear />
             )}

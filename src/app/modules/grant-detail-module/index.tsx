@@ -2,8 +2,8 @@
 import React from "react";
 import get from "lodash/get";
 import { useTitle } from "react-use";
+import { Switch, Route, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
@@ -23,10 +23,9 @@ import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/s
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
-  const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ code: string; period: string; vizType: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(

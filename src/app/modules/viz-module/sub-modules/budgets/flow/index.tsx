@@ -85,6 +85,21 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         overflow: visible !important;
       }`
           : ""}
+
+        ${props.links.length === 0
+          ? `
+            > div {
+              > div {
+                > div {
+                  > div {
+                    justify-content: center;
+                    display: flex !important;
+                  }
+                }
+              }
+            }
+          `
+          : ""}
       `}
     >
       <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>

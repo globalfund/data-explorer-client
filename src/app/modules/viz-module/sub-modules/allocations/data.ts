@@ -1,3 +1,4 @@
+import max from "lodash/max";
 import { hexToRGBA } from "app/utils/hexToRGBA";
 
 export interface AllocationsProps {
@@ -34,8 +35,12 @@ export function getKeysPercentages(
   total: number,
   values: number[]
 ): { percentages: number[]; colors: string[] } {
+  const maxVal = max(values);
   const percentages = values.map((value: number) => (value * 100) / total);
-  const colors = percentages.map((value: number) =>
+  const colorpercentages = values.map(
+    (value: number) => (value * 100) / (maxVal || total)
+  );
+  const colors = colorpercentages.map((value: number) =>
     hexToRGBA("#1B2127", value / 100)
   );
 

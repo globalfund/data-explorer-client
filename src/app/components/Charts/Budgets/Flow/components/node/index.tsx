@@ -23,7 +23,7 @@ export const styles = {
 function getInnerNodes(node: any, _selectedNode: any, onNodeClick: any) {
   const totHeight = node.y1 - node.y0;
   let prevY = node.y;
-  const selectedNode = (_selectedNode || { id: "" }).id === node.id;
+  const selectedNode = _selectedNode === node.id;
   const nodes = node.components.map((item: any) => {
     const height = (item.height * totHeight) / 100;
     const localPrevY = prevY;
