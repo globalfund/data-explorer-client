@@ -94,10 +94,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
 
   React.useEffect(() => {
     const node = document.getElementById("sankey");
-    const genericlineargradient = document.getElementById(
-      "genericlineargradient"
-    );
-    if (node && !genericlineargradient) {
+    if (node) {
       const vizsvgelem = node.querySelector("svg > g");
       if (vizsvgelem) {
         vizsvgelem
