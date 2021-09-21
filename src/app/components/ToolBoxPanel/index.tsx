@@ -207,19 +207,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               onClick={() => props.onButtonClick()}
             >
               <TriangleXSIcon />
-              {appliedFilters.length > 0 && (
-                <div
-                  css={`
-                    top: 8px;
-                    width: 6px;
-                    height: 6px;
-                    right: 30px;
-                    background: #fff;
-                    border-radius: 50%;
-                    position: absolute;
-                  `}
-                />
-              )}
             </div>
             <ToolBoxPanelIconButtons />
             {isGrantDetail && <GrantImplementationPeriods />}

@@ -94,8 +94,28 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
 
   React.useEffect(() => {
     const node = document.getElementById("sankey");
-    if (node) {
-      const nodes = [...node.getElementsByTagName("linearGradient")];
+    const genericlineargradient = document.getElementById(
+      "genericlineargradient"
+    );
+    if (node && !genericlineargradient) {
+      const vizsvgelem = node.querySelector("svg > g");
+      if (vizsvgelem) {
+        vizsvgelem
+          .querySelector("linearGradient")
+          ?.setAttribute("id", "genericlineargradient");
+        const paths = [...node.querySelectorAll("path")];
+        paths.forEach((path) => {
+          path.setAttribute("fill", 'url("#genericlineargradient")');
+        });
+        [...vizsvgelem.querySelectorAll("linearGradient")].forEach(
+          (lg, index) => {
+            if (index > 0) {
+              lg.remove();
+            }
+          }
+        );
+      }
+      const nodes = [...node.querySelectorAll("linearGradient")];
       nodes.forEach((lg) => {
         const elems = lg.getElementsByTagName("stop");
         if (elems && elems.length === 2) {
@@ -104,7 +124,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         }
       });
     }
-  }, []);
+  }, [props.data]);
 
   const Nodes = (nProps: any) => {
     if (props.vizCompData.length !== nProps.nodes.length) {
@@ -181,7 +201,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           <NoDataLabel height="600px" />
         </React.Fragment>
       ) : (
-        <div css={container}>
+        <div css={container} id="sankeyviz">
           <ResponsiveSankey
             data={props.data}
             colors={["#373D43"]}
