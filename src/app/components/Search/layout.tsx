@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import { SearchIcon } from "app/assets/icons/Search";
 import { container, input } from "app/components/Search/styles";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
@@ -39,8 +40,10 @@ export function SearchLayout(props: SearchLayoutProps) {
       <SearchIcon />
       {open && (
         <ClickAwayListener
-          onClickAway={() => {
-            props.setValue("");
+          onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
+            if (get(event.target, "tagName", "") !== "INPUT") {
+              props.setValue("");
+            }
           }}
         >
           <div>
