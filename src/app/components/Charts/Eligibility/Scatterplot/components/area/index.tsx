@@ -53,48 +53,40 @@ export function AreaLayer(props: CustomSvgLayerProps) {
   const shapes: any[] = [];
 
   const groupedYNodes = groupBy(
-    filter(
-      nodes,
-      (d: any) =>
-        d.id.split(".")[0] !== "dummy1" && d.id.split(".")[0] !== "dummy2"
-    ),
+    // filter(
+    nodes,
+    //   (d: any) =>
+    //     d.id.split(".")[0] !== "dummy1" && d.id.split(".")[0] !== "dummy2"
+    // ),
     (d: any) => d.id.split(".")[0]
   );
 
   Object.keys(groupedYNodes).forEach((key: string) => {
     groupedYNodes[key].forEach((yNode: any, index: number) => {
-      if (index > 0) {
-        let opacity = 0.3;
-        if (
-          (!hoveredEligibilityLegend ||
-            hoveredEligibilityLegend === yNode.data.eligibility) &&
-          (!hoveredBurdenLegend ||
-            hoveredBurdenLegend === diseaseBurdens[yNode.data.diseaseBurden]) &&
-          (!hoveredIncomeLegend ||
-            hoveredIncomeLegend === incomeLevels[yNode.data.incomeLevel])
-        ) {
-          opacity = 1;
-        }
-
-        shapes.push(
-          <path
-            opacity={opacity}
-            d={areaGenerator(
-              groupedYNodes[key].slice(
-                index,
-                index + 2 > groupedYNodes[key].length ? index : index + 2
-              )
-            )}
-            fill={
-              incomeLevelColors[
-                index === 0
-                  ? groupedYNodes[key][1].data.incomeLevel
-                  : yNode.data.incomeLevel
-              ]
-            }
-          />
-        );
+      let opacity = 0.3;
+      if (
+        (!hoveredEligibilityLegend ||
+          hoveredEligibilityLegend === yNode.data.eligibility) &&
+        (!hoveredBurdenLegend ||
+          hoveredBurdenLegend === diseaseBurdens[yNode.data.diseaseBurden]) &&
+        (!hoveredIncomeLegend ||
+          hoveredIncomeLegend === incomeLevels[yNode.data.incomeLevel])
+      ) {
+        opacity = 1;
       }
+
+      shapes.push(
+        <path
+          opacity={opacity}
+          d={areaGenerator(
+            groupedYNodes[key].slice(
+              index,
+              index + 2 > groupedYNodes[key].length ? index : index + 2
+            )
+          )}
+          fill={incomeLevelColors[index === 0 ? 0 : yNode.data.incomeLevel]}
+        />
+      );
     });
   });
 
