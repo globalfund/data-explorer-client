@@ -41,6 +41,9 @@ const container = css`
 
   path {
     cursor: pointer;
+    ${/^((?!chrome|android).)*safari/i.test(navigator.userAgent)
+      ? "fill: rgb(199, 205, 209);"
+      : ""};
   }
 
   > svg {
@@ -92,36 +95,36 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
     "value"
   );
 
-  React.useEffect(() => {
-    const node = document.getElementById("sankey");
-    if (node) {
-      const vizsvgelem = node.querySelector("svg > g");
-      if (vizsvgelem) {
-        vizsvgelem
-          .querySelector("linearGradient")
-          ?.setAttribute("id", "genericlineargradient");
-        const paths = [...node.querySelectorAll("path")];
-        paths.forEach((path) => {
-          path.setAttribute("fill", 'url("#genericlineargradient")');
-        });
-        [...vizsvgelem.querySelectorAll("linearGradient")].forEach(
-          (lg, index) => {
-            if (index > 0) {
-              lg.remove();
-            }
-          }
-        );
-      }
-      const nodes = [...node.querySelectorAll("linearGradient")];
-      nodes.forEach((lg) => {
-        const elems = lg.getElementsByTagName("stop");
-        if (elems && elems.length === 2) {
-          elems[0].setAttribute("stop-color", "rgb(199, 205, 209)");
-          elems[1].setAttribute("stop-color", "rgba(199, 205, 209, 0.1)");
-        }
-      });
-    }
-  }, [props.data]);
+  // React.useEffect(() => {
+  //   const node = document.getElementById("sankey");
+  //   if (node) {
+  //     const vizsvgelem = node.querySelector("svg > g");
+  //     if (vizsvgelem) {
+  //       vizsvgelem
+  //         .querySelector("linearGradient")
+  //         ?.setAttribute("id", "genericlineargradient");
+  //     const paths = [...node.querySelectorAll("path")];
+  //     paths.forEach((path) => {
+  //       path.setAttribute("fill", "rgb(199, 205, 209)");
+  //     });
+  //     [...vizsvgelem.querySelectorAll("linearGradient")].forEach(
+  //       (lg, index) => {
+  //         if (index > 0) {
+  //           lg.remove();
+  //         }
+  //       }
+  //     );
+  //     }
+  //     const nodes = [...node.querySelectorAll("linearGradient")];
+  //     nodes.forEach((lg) => {
+  //       const elems = lg.getElementsByTagName("stop");
+  //       if (elems && elems.length === 2) {
+  //         elems[0].setAttribute("stop-color", "rgb(199, 205, 209)");
+  //         elems[1].setAttribute("stop-color", "rgba(199, 205, 209, 0.1)");
+  //       }
+  //     });
+  //   }
+  // }, [props.data]);
 
   const Nodes = (nProps: any) => {
     if (props.vizCompData.length !== nProps.nodes.length) {

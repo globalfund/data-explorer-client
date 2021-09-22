@@ -99,7 +99,7 @@ body::webkit-scrollbar-thumb {
 }
 
 * {
-  user-select: none;
+  outline: none;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
 }
 

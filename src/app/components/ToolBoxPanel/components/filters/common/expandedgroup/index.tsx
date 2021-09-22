@@ -433,6 +433,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           font-weight: bold;
           width: fit-content;
           padding: 10px 20px;
+          border-style: none;
           border-radius: 20px;
           background: #495057;
           box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
