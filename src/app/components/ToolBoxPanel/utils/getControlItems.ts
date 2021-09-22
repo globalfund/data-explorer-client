@@ -61,8 +61,8 @@ const views = {
   ],
   allocations: [
     {
-      label: "Chart",
-      value: "Chart",
+      label: "Radial",
+      value: "Radial",
       link: "/viz/allocations",
     },
     {

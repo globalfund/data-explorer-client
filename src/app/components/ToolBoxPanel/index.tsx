@@ -141,8 +141,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
 
   return (
     <ClickAwayListener
-      onClickAway={() => {
-        if (props.open) {
+      onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
+        if (props.open && get(event.target, "tagName", "") !== "A") {
           props.onButtonClick();
         }
       }}
@@ -272,7 +272,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   periods={performanceFrameworkPeriods}
                 />
               )}
-            <ToolBoxPanelFilters groups={props.filterGroups} />
+            {!isGrantDetail && (
+              <ToolBoxPanelFilters groups={props.filterGroups} />
+            )}
           </div>
         </div>
       </Slide>
