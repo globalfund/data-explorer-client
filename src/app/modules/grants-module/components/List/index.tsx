@@ -34,6 +34,7 @@ export function GrantsList(props: GrantsListProps) {
                   font-weight: bold;
                   flex-direction: row;
                   align-items: center;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
                 <b>{item.component}</b>
@@ -48,14 +49,16 @@ export function GrantsList(props: GrantsListProps) {
                 css={`
                   gap: 24px;
                   display: flex;
-                  font-weight: bold;
                   flex-direction: row;
 
                   > div {
                     gap: 6px;
                     display: flex;
+                    font-weight: bold;
                     flex-direction: row;
                     align-items: center;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
                   }
                 `}
               >

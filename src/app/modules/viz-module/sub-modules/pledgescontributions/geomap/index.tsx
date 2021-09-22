@@ -153,6 +153,7 @@ export function PledgesContributionsGeoMap() {
             font-weight: bold;
             text-align: center;
             flex-direction: column;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           <div
@@ -164,7 +165,14 @@ export function PledgesContributionsGeoMap() {
               border: 0.5px solid #c7cdd1;
             `}
           />
-          <div>N/A</div>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            N/A
+          </div>
         </div>
       </div>
     </div>

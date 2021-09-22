@@ -20,6 +20,7 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.indexValue}
@@ -39,7 +40,13 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
             justify-content: space-between;
           `}
         >
-          <div css="font-weight: bold;text-transform: capitalize;">
+          <div
+            css={`
+              font-weight: bold;
+              text-transform: capitalize;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
             {props.id}
           </div>
           <div>{formatFinancialValue(props.value as number)}</div>

@@ -166,7 +166,6 @@ export function AllocationsGeoMap(props: Props) {
               height: 100%;
               display: flex;
               font-size: 12px;
-              font-weight: bold;
               text-align: center;
               flex-direction: column;
             `}
@@ -176,8 +175,10 @@ export function AllocationsGeoMap(props: Props) {
                 width: 100%;
                 height: 6px;
                 background: #fff;
+                font-weight: bold;
                 border-radius: 20px;
                 border: 0.5px solid #c7cdd1;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             />
             <div>N/A</div>

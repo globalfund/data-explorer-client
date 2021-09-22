@@ -41,6 +41,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -53,6 +54,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
             font-weight: bold;
             margin-bottom: 40px;
             text-decoration: none;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           See {props.title}&apos;s results
@@ -63,6 +65,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Investments
@@ -97,6 +100,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.multicountries.length > 0 &&
@@ -135,6 +139,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
         css={`
           font-size: 14px;
           font-weight: bold;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Fund Portfolio Manager

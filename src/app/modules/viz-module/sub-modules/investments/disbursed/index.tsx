@@ -71,7 +71,6 @@ export function InvestmentsDisbursedModule(
           > div {
             color: #262c34;
             font-size: 14px;
-            font-weight: bold;
           }
         `}
       >
@@ -79,7 +78,9 @@ export function InvestmentsDisbursedModule(
           <div
             css={`
               display: flex;
+              font-weight: bold;
               align-items: center;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               > svg {
                 margin-left: 10px;

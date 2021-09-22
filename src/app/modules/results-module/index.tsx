@@ -153,13 +153,14 @@ export default function ResultsModule() {
           css={`
             gap: 6px;
             display: flex;
-            font-weight: bold;
             align-items: center;
           `}
         >
           <div
             css={`
+              font-weight: bold;
               margin-right: 10px;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             Year {selectedYear}

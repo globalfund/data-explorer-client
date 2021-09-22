@@ -27,6 +27,7 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Budgets · {props.year}
@@ -46,7 +47,14 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
             justify-content: space-between;
           `}
         >
-          <div css="font-weight: bold;">Total amount</div>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Total amount
+          </div>
           <div>{formatFinancialValue(props.amount as number)}</div>
         </div>
         {valueKeys.map((key: string) => (
@@ -58,7 +66,14 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
               justify-content: space-between;
             `}
           >
-            <div css="font-weight: bold;">{key}</div>
+            <div
+              css={`
+                font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              `}
+            >
+              {key}
+            </div>
             <div>{formatFinancialValue(get(props, key, 0) as number)}</div>
           </div>
         ))}

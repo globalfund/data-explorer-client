@@ -19,6 +19,11 @@ const rowcss = css`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+
+  > div:first-of-type {
+    font-weight: bold;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  }
 `;
 
 export function GrantsRadialTooltip(props: Props) {
@@ -29,6 +34,7 @@ export function GrantsRadialTooltip(props: Props) {
           color: #262c34;
           font-size: 18px;
           font-weight: bold;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -41,35 +47,25 @@ export function GrantsRadialTooltip(props: Props) {
         `}
       />
       <div css={rowcss}>
-        <div>
-          <b>Period</b>
-        </div>
+        <div>Period</div>
         <div>
           {get(props.years, "[0]", "")} - {get(props.years, "[1]", "")}
         </div>
       </div>
       <div css={rowcss}>
-        <div>
-          <b>Disbursements</b>
-        </div>
+        <div>Disbursements</div>
         <div>{formatFinancialValue(props.value)}</div>
       </div>
       <div css={rowcss}>
-        <div>
-          <b>Component</b>
-        </div>
+        <div>Component</div>
         <div>{props.component}</div>
       </div>
       <div css={rowcss}>
-        <div>
-          <b>Status</b>
-        </div>
+        <div>Status</div>
         <div>{props.status}</div>
       </div>
       <div css={rowcss}>
-        <div>
-          <b>Latest Rating</b>
-        </div>
+        <div>Latest Rating</div>
         <div>{props.rating || "N/A"}</div>
       </div>
     </React.Fragment>

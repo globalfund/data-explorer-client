@@ -24,6 +24,7 @@ export function ToolBoxPanelTabs(props: ToolBoxPanelTabsProps) {
           border-style: none;
           text-align: center;
           width: calc(100% / ${props.options.length});
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
           &:hover {
             cursor: pointer;

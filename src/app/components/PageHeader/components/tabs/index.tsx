@@ -71,6 +71,7 @@ const styles = {
       a {
         color: #fff;
         font-weight: bold;
+        font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
       }
     }
 
@@ -81,6 +82,8 @@ const styles = {
       text-decoration: none;
       color: ${active ? "#fff" : "#13183F"};
       font-weight: ${active ? "bold" : "normal"};
+      font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
+        sans-serif;
     }
   `,
 };

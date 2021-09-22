@@ -75,6 +75,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -114,6 +115,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 5px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Rating
@@ -183,6 +185,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
         css={`
           font-size: 14px;
           font-weight: bold;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Fund Portfolio Manager

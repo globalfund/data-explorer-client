@@ -20,6 +20,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {data.tooltip.header}
@@ -38,11 +39,13 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           css={`
             width: 100%;
             display: flex;
-            font-weight: bold;
             flex-direction: row;
             justify-content: space-between;
 
             > div {
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
               &:nth-of-type(1) {
                 width: 30%;
                 text-align: start;
@@ -115,8 +118,13 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             justify-content: space-between;
           `}
         >
-          <div>
-            <b>Disbursed</b>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Disbursed
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.disbursed)}
@@ -147,8 +155,13 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             justify-content: space-between;
           `}
         >
-          <div>
-            <b>Committed</b>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Committed
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.committed)}
@@ -162,8 +175,13 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             justify-content: space-between;
           `}
         >
-          <div>
-            <b>Signed</b>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Signed
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.signed)}

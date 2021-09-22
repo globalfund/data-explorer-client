@@ -240,6 +240,7 @@ export function ComponentRadarThingies(props: any) {
               border-top-right-radius: ${itemwidth * 2}px;
               border-style: ${showGrid ? "solid" : "none"};
               border-bottom-style: none;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               left: ${(((props.width - 120) / props.datayears.length) * index) /
               2}px;
 
@@ -466,6 +467,7 @@ export function ComponentDividers(props: any) {
                 right: 70px;
                 transform: rotate(-115deg);
                 top: ${(width - 240) / components.length}px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
             `}
           />
@@ -482,6 +484,7 @@ export const RadialChartLegend = (props: any) => {
     line-height: 15px;
     letter-spacing: 0.5px;
     margin-bottom: 16px;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `;
 
   const body = css`

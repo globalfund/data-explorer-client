@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 // cc:refactor this component, inline css need to be moved to proper styled components
 
@@ -41,6 +41,7 @@ export const NoMatchPage = () => {
           line-height: normal;
           letter-spacing: 2.15px;
           color: #525252;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         404

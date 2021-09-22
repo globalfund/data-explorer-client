@@ -9,6 +9,7 @@ export function NetworkLegends() {
           font-size: 12px;
           font-weight: bold;
           margin-bottom: 10px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Achievement Rate

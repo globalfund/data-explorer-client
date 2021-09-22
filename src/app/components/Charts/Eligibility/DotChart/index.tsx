@@ -71,13 +71,14 @@ export function DotChart(props: DotChartProps) {
             css={`
               gap: 6px;
               display: flex;
-              font-weight: bold;
               align-items: center;
             `}
           >
             <div
               css={`
+                font-weight: bold;
                 margin-right: 10px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               Year {props.selectedYear}
@@ -103,6 +104,8 @@ export function DotChart(props: DotChartProps) {
                 font-size: 14px;
                 font-weight: bold;
                 margin-bottom: 5px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               Eligibility
@@ -188,6 +191,8 @@ export function DotChart(props: DotChartProps) {
                     margin-top: 50px;
                     font-weight: bold;
                     margin-bottom: 24px;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
                   `}
                 >
                   Country Name
@@ -307,6 +312,8 @@ export function DotChart(props: DotChartProps) {
                         font-size: 14px;
                         font-weight: bold;
                         margin-bottom: 12px;
+                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {group.name}
@@ -370,6 +377,8 @@ export function DotChart(props: DotChartProps) {
                         font-size: 14px;
                         font-weight: bold;
                         margin-bottom: 12px;
+                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {group.name}

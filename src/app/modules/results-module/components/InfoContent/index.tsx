@@ -125,6 +125,7 @@ function StatItem(props: ResultsInfoContentStatsProps) {
           flex-direction: row;
           align-items: center;
           text-transform: uppercase;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         <ComponentIcon />
@@ -135,6 +136,7 @@ function StatItem(props: ResultsInfoContentStatsProps) {
           font-size: 40px;
           font-weight: bold;
           line-height: 24px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {fValue.number} {fValue.text}

@@ -49,8 +49,8 @@ function ResultsListItem(props: ResultListItemModel) {
           <React.Fragment>
             <div css="width: 100%;height: 12px;" />
             {/* 1st row */}
-            <div css={row(40, "bold")}>
-              <div>{props.value.toLocaleString()}</div>
+            <div css={row(18, "bold")}>
+              {props.value.toLocaleString()}
               <div
                 css={`
                   gap: 6px;
@@ -59,6 +59,7 @@ function ResultsListItem(props: ResultListItemModel) {
                   font-weight: bold;
                   flex-direction: row;
                   align-items: center;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
                 <b>{props.component}</b>

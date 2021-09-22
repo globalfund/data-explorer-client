@@ -84,8 +84,10 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
                 gap: 12px;
                 width: 100%;
                 display: flex;
+                font-weight: bold;
                 align-items: center;
                 flex-direction: row;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
                 > svg {
                   transition: transform 0.1s ease-in-out;
@@ -173,7 +175,7 @@ export function ExpandableTable(props: ExpandableTableProps) {
                 css={tablecell}
                 key={column}
               >
-                {column}
+                <b>{column}</b>
               </TableCell>
             ))}
           </TableRow>

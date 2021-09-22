@@ -93,6 +93,9 @@ function Row(props: {
                   display: flex;
                   align-items: center;
                   flex-direction: row;
+                  font-weight: ${index === 0 ? "bold" : "normal"};
+                  font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
+                    "Helvetica Neue", sans-serif;
 
                   > svg {
                     transition: transform 0.1s ease-in-out;
@@ -148,7 +151,15 @@ export function SimpleTable(props: SimpleTableProps) {
           <TableHead>
             <TableRow>
               {props.columns.map((column: SimpleTableColumn) => (
-                <TableCell key={column.key} css={tablecell}>
+                <TableCell
+                  key={column.key}
+                  css={`
+                    ${tablecell}
+                    font-weight: bold;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                  `}
+                >
                   {column.name}
                 </TableCell>
               ))}

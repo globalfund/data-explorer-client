@@ -15,6 +15,7 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
         css={`
           font-size: 18px;
           font-weight: bold;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {formatFinancialValue(props.value)}

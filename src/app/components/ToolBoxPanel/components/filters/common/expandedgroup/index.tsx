@@ -437,6 +437,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           border-radius: 20px;
           background: #495057;
           box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Apply

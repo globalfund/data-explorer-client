@@ -124,3 +124,7 @@ body::webkit-scrollbar-thumb {
 .MuiPaginationItem-page.Mui-selected {
   color: #fff;
 }
+
+b {
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+}

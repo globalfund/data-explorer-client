@@ -59,23 +59,16 @@ export function PledgesContributionsTimeCycle(
       `}
       data-cy="investments-time-cycle"
     >
-      <Grid
-        container
-        alignItems="center"
-        spacing={4}
-        css={`
-          > div {
-            color: #262c34;
-            font-size: 14px;
-            font-weight: bold;
-          }
-        `}
-      >
+      <Grid container alignItems="center" spacing={4}>
         <Grid item xs={12} sm={12} md={3}>
           <div
             css={`
               display: flex;
+              color: #262c34;
+              font-size: 14px;
+              font-weight: bold;
               align-items: center;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               > svg {
                 margin-left: 10px;

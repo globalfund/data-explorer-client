@@ -137,8 +137,6 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         css={`
           > div {
             color: #262c34;
-            font-size: 14px;
-            font-weight: bold;
           }
         `}
       >
@@ -146,7 +144,10 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
           <div
             css={`
               display: flex;
+              font-size: 14px;
+              font-weight: bold;
               align-items: center;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               > svg {
                 margin-left: 10px;

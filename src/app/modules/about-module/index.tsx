@@ -45,6 +45,7 @@ export default function About() {
                 font-size: 24px;
                 font-weight: bold;
                 margin-bottom: 35px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               Links
@@ -68,6 +69,7 @@ export default function About() {
                   text-decoration: none;
                   border: 1px solid #dfe3e6;
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 }
               `}
             >
@@ -120,6 +122,7 @@ export default function About() {
               > div {
                 font-size: 24px;
                 font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
               > p {
                 > a {

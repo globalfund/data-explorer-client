@@ -58,6 +58,7 @@ const styles = {
 
     > div {
       font-weight: bold;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
 
     > button {

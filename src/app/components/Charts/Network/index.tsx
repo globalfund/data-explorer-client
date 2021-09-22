@@ -75,6 +75,7 @@ export function NetworkViz(props: NetworkVizProps) {
             }
             > text {
               font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             }`
                 : ""
             }
@@ -84,6 +85,7 @@ export function NetworkViz(props: NetworkVizProps) {
               }
               > text {
                 font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
             }
           `
@@ -166,6 +168,7 @@ export function NetworkViz(props: NetworkVizProps) {
           css={`
             color: #262c34;
             font-weight: bold;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           Performance Framework

@@ -20,6 +20,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {data.tooltip.header}
@@ -41,6 +42,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             font-weight: bold;
             flex-direction: row;
             justify-content: space-between;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
             > div {
               &:nth-of-type(1) {

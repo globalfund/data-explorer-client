@@ -133,6 +133,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
           <div
             css={`
               font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {hoveredNode.x} - {hoveredNode.y}
@@ -164,6 +165,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                 font-size: 14px;
                 font-weight: bold;
                 margin-bottom: 5px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               Eligibility
@@ -250,6 +252,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   font-size: 14px;
                   font-weight: bold;
                   margin-bottom: 5px;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
                 Disease Burden
@@ -493,6 +496,8 @@ export function ScatterPlot(props: ScatterPlotProps) {
                     font-size: 14px;
                     font-weight: bold;
                     margin-bottom: 5px;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
                   `}
                 >
                   Income Level
@@ -712,6 +717,8 @@ export function ScatterPlot(props: ScatterPlotProps) {
                             font-weight: bold;
                             fill: rgb(38, 44, 52);
                             font-family: sans-serif;
+                            font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                              sans-serif;
                           `}
                         >
                           {tProps.format(tProps.value)}

@@ -57,6 +57,7 @@ const header = css`
     color: #262c34;
     font-size: 14px;
     font-weight: bold;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 `;
 
@@ -154,6 +155,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                   font-size: 10px;
                   align-items: center;
                   flex-direction: row;
+                  font-weight: normal;
                 `}
               >
                 <div

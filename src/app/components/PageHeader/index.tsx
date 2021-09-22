@@ -94,6 +94,7 @@ const styles = {
     letter-spacing: 0.5px;
     text-overflow: ellipsis;
     font-family: GothamNarrow-Bold;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   breadcrumbs: css`
     display: flex;

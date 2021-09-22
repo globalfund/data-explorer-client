@@ -18,4 +18,5 @@ export const input = css`
   background: #fff;
   font-weight: bold;
   border-style: none;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 `;

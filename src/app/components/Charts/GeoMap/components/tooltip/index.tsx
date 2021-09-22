@@ -21,6 +21,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.name}
@@ -39,11 +40,13 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           css={`
             width: 100%;
             display: flex;
-            font-weight: bold;
             flex-direction: row;
             justify-content: space-between;
 
             > div {
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
               &:nth-of-type(1) {
                 width: 30%;
                 text-align: start;
@@ -116,8 +119,13 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
             justify-content: space-between;
           `}
         >
-          <div>
-            <b>Disbursed</b>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Disbursed
           </div>
           <div>{formatFinancialValue(props.data.disbursed)}</div>
         </div>
@@ -146,8 +154,13 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
             justify-content: space-between;
           `}
         >
-          <div>
-            <b>Committed</b>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Committed
           </div>
           <div>{formatFinancialValue(props.data.committed)}</div>
         </div>
@@ -159,8 +172,13 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
             justify-content: space-between;
           `}
         >
-          <div>
-            <b>Signed</b>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Signed
           </div>
           <div>{formatFinancialValue(props.data.signed)}</div>
         </div>
@@ -204,6 +222,7 @@ export function GeomapPinTooltip(props: {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.pin.geoName}
@@ -246,6 +265,7 @@ export function GeomapPinTooltip(props: {
                 font-weight: bold;
                 line-height: 20px;
                 border-bottom: 1px solid #dfe3e6;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               {d.geoName}
@@ -298,6 +318,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.name}
@@ -316,11 +337,13 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           css={`
             width: 100%;
             display: flex;
-            font-weight: bold;
             flex-direction: row;
             justify-content: space-between;
 
             > div {
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
               &:nth-of-type(1) {
                 width: 50%;
                 text-align: start;
@@ -387,8 +410,13 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
             justify-content: space-between;
           `}
         >
-          <div>
-            <b>Total</b>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Total
           </div>
           <div>{formatFinancialValue(props.data.value)}</div>
         </div>

@@ -29,6 +29,7 @@ export const tab = (active: boolean) => css`
   padding: 5px 0;
   font-size: 14px;
   font-weight: bold;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   border-bottom: 2px solid ${active ? "#262c34" : "transparent"};
 
   &:hover {

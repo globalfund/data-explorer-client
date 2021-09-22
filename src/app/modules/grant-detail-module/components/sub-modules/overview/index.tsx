@@ -55,6 +55,7 @@ export function GrantDetailOverviewModule() {
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 5px;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           Rating
@@ -128,6 +129,7 @@ export function GrantDetailOverviewModule() {
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 5px;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           Finance
@@ -164,6 +166,7 @@ export function GrantDetailOverviewModule() {
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 5px;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           Description
@@ -182,6 +185,7 @@ export function GrantDetailOverviewModule() {
           css={`
             font-size: 14px;
             font-weight: bold;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           Fund Portfolio Manager

@@ -74,6 +74,7 @@ const styles = {
       background: #495057;
       color: #fff;
       font-weight: bold;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
   `,
 };
