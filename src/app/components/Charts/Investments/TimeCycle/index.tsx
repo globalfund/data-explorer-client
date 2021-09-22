@@ -199,7 +199,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 css={`
                   gap: 6px;
                   display: flex;
-                  font-size: 10px;
+                  font-size: 12px;
                   cursor: pointer;
                   align-items: center;
                   flex-direction: row;

@@ -13,7 +13,8 @@ export function BarComponent(props: any) {
     label: props.label,
   };
 
-  let nodecss = "cursor: pointer;transition: opacity 0.2s ease-in-out;";
+  let nodecss =
+    "cursor: pointer;transition: opacity 0.2s ease-in-out;stroke: #1B2127;";
   if (props.selected === props.data.indexValue) {
     nodecss += "z-index: 2;";
   } else if (

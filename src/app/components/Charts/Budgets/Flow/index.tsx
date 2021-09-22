@@ -152,7 +152,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                 css={`
                   gap: 6px;
                   display: flex;
-                  font-size: 10px;
+                  font-size: 12px;
                   align-items: center;
                   flex-direction: row;
                   font-weight: normal;
