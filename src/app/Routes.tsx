@@ -29,27 +29,27 @@ export function MainRoutes() {
   useUrlFilters();
   useGA();
 
-  // const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  const isSmallScreen = useMediaQuery("(max-width: 600px)");
 
-  // if (isSmallScreen) {
-  //   return (
-  //     <div
-  //       css={`
-  //         width: 100vw;
-  //         height: 100vh;
-  //         display: flex;
-  //         text-align: center;
-  //         align-items: center;
-  //         flex-direction: column;
-  //         justify-content: center;
-  //       `}
-  //     >
-  //       App is not yet optimised for smaller screens.
-  //       <br />
-  //       Please visit the app on a desktop.
-  //     </div>
-  //   );
-  // }
+  if (isSmallScreen) {
+    return (
+      <div
+        css={`
+          width: 100vw;
+          height: 100vh;
+          display: flex;
+          text-align: center;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+        `}
+      >
+        App is not yet optimised for smaller screens.
+        <br />
+        Please visit the app on a desktop.
+      </div>
+    );
+  }
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
