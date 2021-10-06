@@ -102,7 +102,7 @@ export default function Datasets() {
       <div css="width: 100%;height: 25px;" />
       <Grid container spacing={4}>
         {datasets.map((dataset: DatasetItemModel) => (
-          <Grid item sm={6} md={6} key={dataset.link}>
+          <Grid item xs={12} sm={6} md={6} key={dataset.link}>
             <Link to={dataset.link} css="text-decoration: none;">
               <div
                 css={`
