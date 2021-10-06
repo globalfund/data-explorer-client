@@ -18,6 +18,18 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
         width: 100%;
         height: 600px;
         overflow: hidden;
+
+        ${!props.isChildTreemap
+          ? `
+        > div {
+          > div {
+            > div:first-of-type {
+              background: #373d43;
+            }
+          }
+        }
+        `
+          : ""}
       `}
       data-cy="investments-disbursements-treemap"
     >
@@ -44,7 +56,8 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
           }}
           leavesOnly
           labelSkipSize={12}
-          innerPadding={props.isChildTreemap ? 2 : 0}
+          innerPadding={props.isChildTreemap ? 2 : 1}
+          outerPadding={props.isChildTreemap ? 0 : 1}
           // @ts-ignore
           nodeComponent={(nodeProps: TreeMapNodeDatum) => (
             <TreeemapNode
