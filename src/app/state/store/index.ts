@@ -6,6 +6,7 @@ import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
+  ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
@@ -206,6 +207,7 @@ const storeContent: StoreModel = {
   ToolBoxPanelAllocationsPeriodState: persist(
     ToolBoxPanelAllocationsPeriodState
   ),
+  ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),

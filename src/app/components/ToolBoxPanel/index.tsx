@@ -25,6 +25,7 @@ import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { AllocationsPeriods } from "./components/allocationsperiods";
 import { EligibilityYear } from "./components/eligibilityyear";
 import { ResultsYear } from "./components/resultsyear";
+import { ToolBoxPanelDisbursementsSlider } from "./components/disbursementslider";
 
 interface ToolBoxPanelProps {
   open: boolean;
@@ -271,6 +272,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 <PerformanceFrameworkReportingPeriods
                   periods={performanceFrameworkPeriods}
                 />
+              )}
+            {params.vizType === "investments" &&
+              params.subType === "disbursements" && (
+                <ToolBoxPanelDisbursementsSlider />
               )}
             {!isGrantDetail && (
               <ToolBoxPanelFilters groups={props.filterGroups} />

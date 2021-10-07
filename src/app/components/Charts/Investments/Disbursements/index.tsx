@@ -1,13 +1,14 @@
+/* eslint-disable import/no-cycle */
 /* third-party */
 import React from "react";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ResponsiveTreeMapHtml, TreeMapNodeDatum } from "@nivo/treemap";
 /* project */
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { DisbursementsTreemapProps } from "app/components/Charts/Investments/Disbursements/data";
+import { NoDataTreemap } from "app/components/Charts/Investments/Disbursements/components/nodata";
 import { TreemapTooltip } from "app/components/Charts/Investments/Disbursements/components/tooltip";
 import { TreeemapNode } from "app/components/Charts/Investments/Disbursements/components/treemapnode";
-import { NoDataTreemap } from "./components/nodata";
-import { NoDataLabel } from "../../common/nodatalabel";
 
 export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
   const matches = useMediaQuery("(max-width: 767px)");
