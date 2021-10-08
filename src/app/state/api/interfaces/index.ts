@@ -122,6 +122,8 @@ export interface StoreModel {
   LocationDetailInfo: ApiCallModel;
   EligibilityCountry: ApiCallModel;
   LocationDetailDisbursementsTreemap: ApiCallModel;
+  LocationDetailSignedTreemap: ApiCallModel;
+  LocationDetailCommitmentTreemap: ApiCallModel;
   LocationDetailDocuments: ApiCallModel;
   LocationDetailBudgetsFlow: ApiCallModel;
   LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;

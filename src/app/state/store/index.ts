@@ -109,6 +109,8 @@ import CommitmentTreemap, {
   CommitmentTimeCycleDrilldown,
   CommitmentTreemapDrilldown,
 } from "../api/action-reducers/viz/commitment";
+import LocationDetailSignedTreemap from "../api/action-reducers/locationDetail/signedTreemap";
+import LocationDetailCommitmentTreemap from "../api/action-reducers/locationDetail/commitmentTreemap";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -178,6 +180,8 @@ const storeContent: StoreModel = {
   LocationDetailDisbursementsTreemap: persist(
     LocationDetailDisbursementsTreemap
   ),
+  LocationDetailSignedTreemap: persist(LocationDetailSignedTreemap),
+  LocationDetailCommitmentTreemap: persist(LocationDetailCommitmentTreemap),
   LocationDetailDocuments: persist(LocationDetailDocuments),
   LocationDetailBudgetsFlow: persist(LocationDetailBudgetsFlow),
   LocationDetailBudgetsFlowDrilldownLevel1: persist(

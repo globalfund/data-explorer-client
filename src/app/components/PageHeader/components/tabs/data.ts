@@ -14,8 +14,16 @@ export const countryDetailTabs: TabProps[] = [
     url: "/location/<code>/overview",
   },
   {
-    name: "Investments",
-    url: "/location/<code>/investments/disbursements",
+    name: "Signed",
+    url: "/location/<code>/signed/treemap",
+  },
+  {
+    name: "Commitment",
+    url: "/location/<code>/commitment/treemap",
+  },
+  {
+    name: "Disbursement",
+    url: "/location/<code>/disbursements/treemap",
   },
   {
     name: "Budgets",

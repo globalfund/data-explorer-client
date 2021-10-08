@@ -10,6 +10,7 @@ import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code: string;
+  type: "Disbursed" | "Signed" | "Commitment";
 }
 
 export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
@@ -21,20 +22,44 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   );
 
   // api call & data
-  const fetchData = useStoreActions(
-    (store) => store.LocationDetailDisbursementsTreemap.fetch
-  );
-  const data = useStoreState(
-    (state) =>
-      get(
-        state.LocationDetailDisbursementsTreemap.data,
-        "data",
-        []
-      ) as DisbursementsTreemapDataItem[]
-  );
-  const isLoading = useStoreState(
-    (state) => state.LocationDetailDisbursementsTreemap.loading
-  );
+  const fetchData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.LocationDetailDisbursementsTreemap.fetch;
+      case "Signed":
+        return store.LocationDetailSignedTreemap.fetch;
+      case "Commitment":
+        return store.LocationDetailCommitmentTreemap.fetch;
+      default:
+        return store.LocationDetailDisbursementsTreemap.fetch;
+    }
+  });
+  const data = useStoreState((state) => {
+    let compData = state.LocationDetailDisbursementsTreemap.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.LocationDetailSignedTreemap.data;
+        break;
+      case "Commitment":
+        compData = state.LocationDetailCommitmentTreemap.data;
+        break;
+      default:
+        compData = state.LocationDetailDisbursementsTreemap.data;
+    }
+    return get(compData, "data", []) as DisbursementsTreemapDataItem[];
+  });
+  const isLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.LocationDetailDisbursementsTreemap.loading;
+      case "Signed":
+        return state.LocationDetailSignedTreemap.loading;
+      case "Commitment":
+        return state.LocationDetailCommitmentTreemap.loading;
+      default:
+        return state.LocationDetailDisbursementsTreemap.loading;
+    }
+  });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -57,6 +82,7 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   return (
     <InvestmentsDisbursedModule
       data={data}
+      type={props.type}
       drilldownData={[]}
       vizLevel={vizLevel}
       isLoading={isLoading}

@@ -23,9 +23,23 @@ export const StyledMenu = withStyles({
   paper: {
     borderRadius: 10,
     border: "1px solid #d3d4d5",
+    "&::-webkit-scrollbar": {
+      width: 5,
+      borderRadius: 10,
+      background: "#262c34",
+    },
+    "&::-webkit-scrollbar-track": {
+      borderRadius: 10,
+      background: "#dfe3e6",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: 10,
+      background: "#262c34",
+    },
   },
   list: {
     padding: 0,
+    maxHeight: 400,
   },
 })((props: MenuProps) => (
   <Menu
@@ -33,11 +47,11 @@ export const StyledMenu = withStyles({
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center",
+      horizontal: "left",
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center",
+      horizontal: "left",
     }}
     autoFocus={false}
     {...props}

@@ -121,6 +121,7 @@ export default function CountryDetail() {
           <Route path={`/location/${params.code}/overview`}>
             <LocationDetailOverviewModule code={params.code} />
           </Route>
+          {/* Budgets */}
           <Route path={`/location/${params.code}/budgets/flow`}>
             <LocationDetailBudgetsFlowWrapper code={paramCode} />
           </Route>
@@ -130,36 +131,94 @@ export default function CountryDetail() {
           <Route path={`/location/${params.code}/budgets/geomap`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
           </Route>
-          <Route path={`/location/${params.code}/investments/disbursements`}>
-            <LocationDetailInvestmentsDisbursedWrapper code={paramCode} />
+          {/* Disbursements */}
+          <Route path={`/location/${params.code}/disbursements/treemap`}>
+            <LocationDetailInvestmentsDisbursedWrapper
+              code={paramCode}
+              type="Disbursed"
+            />
           </Route>
-          <Route path={`/location/${params.code}/investments/table`}>
+          <Route path={`/location/${params.code}/disbursements/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/investments/time-cycle`}>
+          <Route path={`/location/${params.code}/disbursements/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Disbursed"
               code={paramCode}
             />
           </Route>
-          <Route path={`/location/${params.code}/investments/geomap`}>
-            <InvestmentsGeoMap code={paramCode} detailFilterType="locations" />
+          <Route path={`/location/${params.code}/disbursements/geomap`}>
+            <InvestmentsGeoMap
+              type="Disbursed"
+              code={paramCode}
+              detailFilterType="locations"
+            />
           </Route>
+          {/* Signed */}
+          <Route path={`/location/${params.code}/signed/treemap`}>
+            <LocationDetailInvestmentsDisbursedWrapper
+              code={paramCode}
+              type="Signed"
+            />
+          </Route>
+          <Route path={`/location/${params.code}/signed/table`}>
+            <GenericInvestmentsTableWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/signed/time-cycle`}>
+            <GenericInvestmentsTimeCycleWrapper
+              type="Signed"
+              code={paramCode}
+            />
+          </Route>
+          <Route path={`/location/${params.code}/signed/geomap`}>
+            <InvestmentsGeoMap
+              type="Signed"
+              code={paramCode}
+              detailFilterType="locations"
+            />
+          </Route>
+          {/* Commitment */}
+          <Route path={`/location/${params.code}/commitment/treemap`}>
+            <LocationDetailInvestmentsDisbursedWrapper
+              code={paramCode}
+              type="Commitment"
+            />
+          </Route>
+          <Route path={`/location/${params.code}/commitment/table`}>
+            <GenericInvestmentsTableWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/commitment/time-cycle`}>
+            <GenericInvestmentsTimeCycleWrapper
+              type="Commitment"
+              code={paramCode}
+            />
+          </Route>
+          <Route path={`/location/${params.code}/commitment/geomap`}>
+            <InvestmentsGeoMap
+              type="Committed"
+              code={paramCode}
+              detailFilterType="locations"
+            />
+          </Route>
+          {/* Allocations */}
           <Route path={`/location/${params.code}/allocation`}>
             <AllocationsModule code={paramCode} />
           </Route>
+          {/* Eligibility */}
           <Route path={`/location/${params.code}/eligibility/table`}>
             <LocationEligibilityTableWrapper code={paramCode} />
           </Route>
           <Route path={`/location/${params.code}/eligibility`}>
             <LocationDetailEligibilityWrapper code={paramCode} />
           </Route>
+          {/* Grants */}
           <Route path={`/location/${params.code}/grants/list`}>
             <GrantsModule code={paramCode} detailFilterType="locations" />
           </Route>
           <Route path={`/location/${params.code}/grants`}>
             <LocationGrants code={paramCode} detailFilterType="locations" />
           </Route>
+          {/* Documents */}
           <Route path={`/location/${params.code}/documents`}>
             <LocationDetailDocumentsModule
               mcName={params.code}

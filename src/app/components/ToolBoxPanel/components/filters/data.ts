@@ -273,21 +273,91 @@ export const pathnameToFilterGroups = {
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
   // location detail page
-  "/location/<code>/investments/disbursements": filter(
+  "/location/<code>/overview": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/location/<code>/investments/time-cycle": filter(
+  "/location/<code>/disbursements/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/location/<code>/geomap": filter(
+  "/location/<code>/disbursements/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/disbursements/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/disbursements/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/signed/treemap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/signed/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/signed/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/signed/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/commitment/treemap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/commitment/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/commitment/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/location/<code>/commitment/geomap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&

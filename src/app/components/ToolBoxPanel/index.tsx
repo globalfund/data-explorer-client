@@ -4,7 +4,6 @@ import get from "lodash/get";
 import find from "lodash/find";
 import Slide from "@material-ui/core/Slide";
 import { useParams, useHistory } from "react-router-dom";
-import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
@@ -41,9 +40,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     vizType: string;
     subType?: string;
   }>();
-  const { appliedFilters } = useAppliedFilters({
-    type: "All",
-  });
   const [selectedView, setSelectedView] = React.useState("");
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight

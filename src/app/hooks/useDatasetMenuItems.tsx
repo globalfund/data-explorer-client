@@ -25,40 +25,58 @@ export function useDatasetMenuItems(): React.ReactChild[] {
       <b>Datasets</b>
     </Link>,
     <Link to={`/viz/disbursements/treemap${location.search}`}>
-      <b>Finance</b>- Disbursement
+      <b>Finance</b> - Disbursements Treemap
     </Link>,
     <Link to={`/viz/disbursements/time-cycle${location.search}`}>
-      <b>Finance</b>-Investments Time-Cycle
+      <b>Finance</b> - Disbursements Time-Cycle
     </Link>,
     <Link to={`/viz/disbursements/geomap${location.search}`}>
-      <b>Finance</b>-Investments Geomap
+      <b>Finance</b> - Disbursements Geomap
+    </Link>,
+    <Link to={`/viz/signed/treemap${location.search}`}>
+      <b>Finance</b> - Signed Treemap
+    </Link>,
+    <Link to={`/viz/signed/time-cycle${location.search}`}>
+      <b>Finance</b> - Signed Time-Cycle
+    </Link>,
+    <Link to={`/viz/signed/geomap${location.search}`}>
+      <b>Finance</b> - Signed Geomap
+    </Link>,
+    <Link to={`/viz/commitment/treemap${location.search}`}>
+      <b>Finance</b> - Commitment Treemap
+    </Link>,
+    <Link to={`/viz/commitment/time-cycle${location.search}`}>
+      <b>Finance</b> - Commitment Time-Cycle
+    </Link>,
+    <Link to={`/viz/commitment/geomap${location.search}`}>
+      <b>Finance</b> - Commitment Geomap
     </Link>,
     <Link to={`/viz/budgets/flow${location.search}`}>
-      <b>Finance</b>-Budgets Flow
+      <b>Finance</b> - Budgets Flow
     </Link>,
     <Link to={`/viz/budgets/time-cycle${location.search}`}>
-      <b>Finance</b>-Budgets Time Cycle
+      <b>Finance</b> - Budgets Time Cycle
     </Link>,
     <Link to={`/viz/budgets/geomap${location.search}`}>
-      <b>Finance</b>-Budgets Geomap
+      <b>Finance</b> - Budgets Geomap
     </Link>,
     <Link to={`/viz/allocations${location.search}`}>
-      <b>Finance</b>-Allocations
+      <b>Finance</b> - Allocations
     </Link>,
     <Link to={`/viz/allocations/geomap${location.search}`}>
-      <b>Finance</b>-Allocations Geomap
+      <b>Finance</b> - Allocations Geomap
     </Link>,
     <Link to={`/viz/eligibility${location.search}`}>
-      <b>Other</b>-Eligibility
+      <b>Other</b> - Eligibility
     </Link>,
     <Link to={`/viz/pledges-contributions/time-cycle${location.search}`}>
-      <b>Finance</b>-Pledges & Contributions Time Cycle
+      <b>Finance</b> - Pledges & Contributions Time Cycle
     </Link>,
     <Link to={`/viz/pledges-contributions/geomap${location.search}`}>
-      <b>Finance</b>-Pledges & Contributions Geomap
+      <b>Finance</b> - Pledges & Contributions Geomap
     </Link>,
     <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
-      <b>Finance</b>-Pledges & Contributions Treemap
+      <b>Finance</b> - Pledges & Contributions Treemap
     </Link>,
     <Link to={`/grants${location.search}`}>
       <b>Grants</b>
