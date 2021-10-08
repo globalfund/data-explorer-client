@@ -99,6 +99,16 @@ import PartnerDetailBudgetsFlow, {
 import PartnerDetailBudgetsTimeCycle, {
   PartnerDetailBudgetsTimeCycleDrilldownLevel1,
 } from "../api/action-reducers/partnerDetail/budgetsTimeCycle";
+import SignedTreemap, {
+  SignedTimeCycle,
+  SignedTimeCycleDrilldown,
+  SignedTreemapDrilldown,
+} from "../api/action-reducers/viz/signed";
+import CommitmentTreemap, {
+  CommitmentTimeCycle,
+  CommitmentTimeCycleDrilldown,
+  CommitmentTreemapDrilldown,
+} from "../api/action-reducers/viz/commitment";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -123,6 +133,14 @@ const storeContent: StoreModel = {
   DisbursementsTreemapDrilldown: persist(DisbursementsTreemapDrilldown),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
   DisbursementsTimeCycleDrilldown: persist(DisbursementsTimeCycleDrilldown),
+  SignedTreemap: persist(SignedTreemap),
+  SignedTreemapDrilldown: persist(SignedTreemapDrilldown),
+  SignedTimeCycle: persist(SignedTimeCycle),
+  SignedTimeCycleDrilldown: persist(SignedTimeCycleDrilldown),
+  CommitmentTreemap: persist(CommitmentTreemap),
+  CommitmentTreemapDrilldown: persist(CommitmentTreemapDrilldown),
+  CommitmentTimeCycle: persist(CommitmentTimeCycle),
+  CommitmentTimeCycleDrilldown: persist(CommitmentTimeCycleDrilldown),
   PledgesContributionsGeomap: persist(PledgesContributionsGeomap),
   PledgesContributionsTimeCycle: persist(PledgesContributionsTimeCycle),
   PledgesContributionsTimeCycleDrilldown: persist(

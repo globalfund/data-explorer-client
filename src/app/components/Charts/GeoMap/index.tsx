@@ -356,6 +356,7 @@ export function GeoMap(props: GeoMapProps) {
                   committed: investmentsPinMarkerHoverInfo.committed,
                   signed: investmentsPinMarkerHoverInfo.signed,
                 }}
+                investmentSubType={props.investmentSubType}
               />
             </div>
           </Popup>
@@ -467,7 +468,10 @@ export function GeoMap(props: GeoMapProps) {
             left: ${hoverInfo.x - 180}px;
           `}
         >
-          <GeomapTooltip {...hoverInfo.properties} />
+          <GeomapTooltip
+            {...hoverInfo.properties}
+            investmentSubType={props.investmentSubType}
+          />
         </div>
       )}
       {hoverInfo &&

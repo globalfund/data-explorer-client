@@ -172,22 +172,62 @@ export const pathnameToFilterGroups = {
       fg.name === "Locations" || fg.name === "Components"
   ),
   // viz data pages
-  "/viz/investments/disbursements": filter(
+  "/viz/disbursements/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/investments/time-cycle": filter(
+  "/viz/disbursements/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/investments/geomap": filter(
+  "/viz/disbursements/geomap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/investments/table": filter(
+  "/viz/disbursements/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/signed/treemap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/signed/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/signed/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/signed/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/commitment/treemap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/commitment/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/commitment/geomap": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/commitment/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"

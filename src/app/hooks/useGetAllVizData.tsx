@@ -178,13 +178,13 @@ export function useGetAllVizData() {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
-    "/viz/investments/geomap": {
+    "/viz/disbursements/geomap": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
-    "/viz/investments/time-cycle": disbursementsTimeCycle,
-    "/viz/investments/disbursements": disbursementsTreemap,
-    "/viz/investments/table": disbursementsTreemap,
+    "/viz/disbursements/time-cycle": disbursementsTimeCycle,
+    "/viz/disbursements/treemap": disbursementsTreemap,
+    "/viz/disbursements/table": disbursementsTreemap,
     "/viz/eligibility": eligibility,
     "/viz/eligibility/table": eligibility,
     "/viz/pledges-contributions/geomap": pledgesContributionsGeomap,

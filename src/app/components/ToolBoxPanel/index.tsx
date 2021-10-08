@@ -232,7 +232,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               <EligibilityYear />
             )}
             {isResultsPage && <ResultsYear />}
-            {((params.vizType === "investments" &&
+            {(((params.vizType === "commitment" ||
+              params.vizType === "disbursements" ||
+              params.vizType === "signed") &&
               params.subType === "geomap") ||
               (params.vizType === "allocations" &&
                 params.subType === "geomap") ||

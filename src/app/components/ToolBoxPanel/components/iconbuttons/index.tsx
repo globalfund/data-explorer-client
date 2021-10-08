@@ -16,9 +16,9 @@ import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 import { StyledMenu, StyledMenuItem } from "app/components/PageHeader";
 
 const locationsToNotShowImageExport = [
-  "/viz/investments/geomap",
+  "/viz/disbursements/geomap",
   "/location/<code>/investments/geomap",
-  "/viz/investments/table",
+  "/viz/disbursements/table",
   "/viz/eligibility/table",
   "/location/<code>/investments/table",
   "/location/<code>/eligibility/table",

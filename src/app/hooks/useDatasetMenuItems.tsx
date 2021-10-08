@@ -24,13 +24,13 @@ export function useDatasetMenuItems(): React.ReactChild[] {
       <ArrowForwardIcon />
       <b>Datasets</b>
     </Link>,
-    <Link to={`/viz/investments/disbursements${location.search}`}>
-      <b>Finance</b>-Investments Disbursements
+    <Link to={`/viz/disbursements/treemap${location.search}`}>
+      <b>Finance</b>- Disbursement
     </Link>,
-    <Link to={`/viz/investments/time-cycle${location.search}`}>
+    <Link to={`/viz/disbursements/time-cycle${location.search}`}>
       <b>Finance</b>-Investments Time-Cycle
     </Link>,
-    <Link to={`/viz/investments/geomap${location.search}`}>
+    <Link to={`/viz/disbursements/geomap${location.search}`}>
       <b>Finance</b>-Investments Geomap
     </Link>,
     <Link to={`/viz/budgets/flow${location.search}`}>

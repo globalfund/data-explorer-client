@@ -137,7 +137,10 @@ export default function CountryDetail() {
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
           <Route path={`/location/${params.code}/investments/time-cycle`}>
-            <GenericInvestmentsTimeCycleWrapper code={paramCode} />
+            <GenericInvestmentsTimeCycleWrapper
+              type="Disbursed"
+              code={paramCode}
+            />
           </Route>
           <Route path={`/location/${params.code}/investments/geomap`}>
             <InvestmentsGeoMap code={paramCode} detailFilterType="locations" />

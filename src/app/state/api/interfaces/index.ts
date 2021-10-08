@@ -87,6 +87,14 @@ export interface StoreModel {
   DisbursementsTreemapDrilldown: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
   DisbursementsTimeCycleDrilldown: ApiCallModel;
+  SignedTreemap: ApiCallModel;
+  SignedTreemapDrilldown: ApiCallModel;
+  SignedTimeCycle: ApiCallModel;
+  SignedTimeCycleDrilldown: ApiCallModel;
+  CommitmentTreemap: ApiCallModel;
+  CommitmentTreemapDrilldown: ApiCallModel;
+  CommitmentTimeCycle: ApiCallModel;
+  CommitmentTimeCycleDrilldown: ApiCallModel;
   PledgesContributionsGeomap: ApiCallModel;
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
