@@ -13,6 +13,8 @@ import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { Pagination } from "@material-ui/lab";
+import { useMediaQuery } from "@material-ui/core";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
@@ -20,6 +22,7 @@ export default function DocumentsModule() {
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -27,6 +30,7 @@ export default function DocumentsModule() {
     (state) =>
       get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
   );
+  const [page, setPage] = React.useState(1);
   const isLoading = useStoreState((state) => state.Documents.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -70,6 +74,12 @@ export default function DocumentsModule() {
     pushValue = 500 - widthThreshold;
   }
 
+  function visible() {
+    if (isSmallScreen) return 0;
+    if (openToolboxPanel && widthThreshold < 0) return 1;
+    return 0;
+  }
+
   return (
     <div
       css={`
@@ -92,11 +102,13 @@ export default function DocumentsModule() {
           { name: "Documents" },
         ]}
       />
-      <ToolBoxPanel
-        open={openToolboxPanel}
-        filterGroups={pathnameToFilterGroups.documents}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
-      />
+      {!isSmallScreen && (
+        <ToolBoxPanel
+          open={openToolboxPanel}
+          filterGroups={pathnameToFilterGroups.documents}
+          onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        />
+      )}
       {isLoading && <PageLoader />}
       <div
         css={`
@@ -106,12 +118,35 @@ export default function DocumentsModule() {
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
       >
-        <DocumentsSubModule
-          data={data}
-          search={search}
-          setSearch={setSearch}
-          columns={["Location", "Documents"]}
-        />
+        {isSmallScreen ? (
+          <>
+            <DocumentsSubModule
+              data={data.slice((page - 1) * 9, page * 9)}
+              search={search}
+              setSearch={setSearch}
+              columns={["Location", "Documents"]}
+            />
+            <div>
+              <Pagination
+                css={`
+                  display: flex;
+                  justify-content: center;
+                `}
+                count={Math.ceil(data.length / 9)}
+                boundaryCount={Math.ceil(data.length / 18)}
+                page={page}
+                onChange={(event, val) => setPage(val)}
+              />
+            </div>
+          </>
+        ) : (
+          <DocumentsSubModule
+            data={data}
+            search={search}
+            setSearch={setSearch}
+            columns={["Location", "Documents"]}
+          />
+        )}
       </div>
       <div
         css={`
@@ -122,10 +157,8 @@ export default function DocumentsModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
-          visibility: ${openToolboxPanel && widthThreshold < 0
-            ? "visible"
-            : "hidden"};
+          opacity: ${visible()};
+          visibility: ${visible() === 1 ? "visible" : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}
