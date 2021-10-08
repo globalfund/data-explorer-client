@@ -11,6 +11,7 @@ import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code?: string;
+  type: "Disbursed" | "Signed" | "Commitment";
 }
 
 export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
@@ -29,33 +30,82 @@ export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
   >(undefined);
 
   // api call & data
-  const fetchData = useStoreActions(
-    (store) => store.DisbursementsTimeCycle.fetch
-  );
-  const data = useStoreState(
-    (state) =>
-      get(state.DisbursementsTimeCycle.data, "data", []) as Record<
-        string,
-        unknown
-      >[]
-  );
-  const isLoading = useStoreState(
-    (state) => state.DisbursementsTimeCycle.loading
-  );
-  const fetchDrilldownData = useStoreActions(
-    (store) => store.DisbursementsTimeCycleDrilldown.fetch
-  );
-  const drilldownData = useStoreState(
-    (state) =>
-      get(
-        state.DisbursementsTimeCycleDrilldown.data,
-        "data",
-        []
-      ) as BudgetsTreemapDataItem[]
-  );
-  const isDrilldownLoading = useStoreState(
-    (state) => state.DisbursementsTimeCycleDrilldown.loading
-  );
+  const fetchData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.DisbursementsTimeCycle.fetch;
+      case "Signed":
+        return store.SignedTimeCycle.fetch;
+      case "Commitment":
+        return store.CommitmentTimeCycle.fetch;
+      default:
+        return store.DisbursementsTimeCycle.fetch;
+    }
+  });
+  const data = useStoreState((state) => {
+    let compData = state.DisbursementsTimeCycle.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.SignedTimeCycle.data;
+        break;
+      case "Commitment":
+        compData = state.CommitmentTimeCycle.data;
+        break;
+      default:
+        compData = state.DisbursementsTimeCycle.data;
+    }
+    return get(compData, "data", []) as Record<string, unknown>[];
+  });
+  const isLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.DisbursementsTimeCycle.loading;
+      case "Signed":
+        return state.SignedTimeCycle.loading;
+      case "Commitment":
+        return state.CommitmentTimeCycle.loading;
+      default:
+        return state.DisbursementsTimeCycle.loading;
+    }
+  });
+  const fetchDrilldownData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.DisbursementsTimeCycleDrilldown.fetch;
+      case "Signed":
+        return store.SignedTimeCycleDrilldown.fetch;
+      case "Commitment":
+        return store.CommitmentTimeCycleDrilldown.fetch;
+      default:
+        return store.DisbursementsTimeCycleDrilldown.fetch;
+    }
+  });
+  const drilldownData = useStoreState((state) => {
+    let compData = state.DisbursementsTimeCycleDrilldown.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.SignedTimeCycleDrilldown.data;
+        break;
+      case "Commitment":
+        compData = state.CommitmentTimeCycleDrilldown.data;
+        break;
+      default:
+        compData = state.DisbursementsTimeCycleDrilldown.data;
+    }
+    return get(compData, "data", []) as BudgetsTreemapDataItem[];
+  });
+  const isDrilldownLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.DisbursementsTimeCycleDrilldown.loading;
+      case "Signed":
+        return state.SignedTimeCycleDrilldown.loading;
+      case "Commitment":
+        return state.CommitmentTimeCycleDrilldown.loading;
+      default:
+        return state.DisbursementsTimeCycleDrilldown.loading;
+    }
+  });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -93,6 +143,7 @@ export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
   return (
     <InvestmentsTimeCycleModule
       data={data}
+      type={props.type}
       isDrilldownLoading={isDrilldownLoading}
       drilldownData={drilldownData}
       isLoading={isLoading}

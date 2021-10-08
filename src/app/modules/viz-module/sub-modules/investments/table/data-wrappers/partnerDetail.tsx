@@ -14,6 +14,7 @@ import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/
 
 interface Props {
   code?: string;
+  type: "Disbursed" | "Signed" | "Commitment";
 }
 
 function getTableData(data: DisbursementsTreemapDataItem[]): SimpleTableRow[] {
@@ -53,25 +54,49 @@ function getTableData(data: DisbursementsTreemapDataItem[]): SimpleTableRow[] {
 }
 
 export function PartnerInvestmentsTableWrapper(props: Props) {
-  const data = useStoreState(
-    (state) =>
-      get(
-        state.PartnerDetailDisbursementsTreemap.data,
-        "data",
-        []
-      ) as DisbursementsTreemapDataItem[]
-  );
+  const data = useStoreState((state) => {
+    let compData = state.PartnerDetailDisbursementsTreemap.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.PartnerDetailSignedTreemap.data;
+        break;
+      case "Commitment":
+        compData = state.PartnerDetailCommitmentTreemap.data;
+        break;
+      default:
+        compData = state.PartnerDetailDisbursementsTreemap.data;
+    }
+    return get(compData, "data", []) as DisbursementsTreemapDataItem[];
+  });
 
   const [tableData, setTableData] = React.useState<SimpleTableRow[]>(
     getTableData(data)
   );
 
-  const fetchData = useStoreActions(
-    (store) => store.DisbursementsTreemap.fetch
-  );
-  const isLoading = useStoreState(
-    (state) => state.DisbursementsTreemap.loading
-  );
+  const fetchData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.PartnerDetailDisbursementsTreemap.fetch;
+      case "Signed":
+        return store.PartnerDetailSignedTreemap.fetch;
+      case "Commitment":
+        return store.PartnerDetailCommitmentTreemap.fetch;
+      default:
+        return store.PartnerDetailDisbursementsTreemap.fetch;
+    }
+  });
+  const isLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.PartnerDetailDisbursementsTreemap.loading;
+      case "Signed":
+        return state.PartnerDetailSignedTreemap.loading;
+      case "Commitment":
+        return state.PartnerDetailCommitmentTreemap.loading;
+      default:
+        return state.PartnerDetailDisbursementsTreemap.loading;
+    }
+  });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 

@@ -531,6 +531,21 @@ export function exportCSV(
           { label: "Signed (USD)", key: "signed" },
         ],
       };
+    case "/grants/list":
+      return {
+        data,
+        filename: "grants.csv",
+        headers: [
+          { label: "Title", key: "title" },
+          { label: "Status", key: "status" },
+          { label: "Component", key: "component" },
+          { label: "Location", key: "geoLocation" },
+          { label: "Rating", key: "rating" },
+          { label: "Disbursement (USD)", key: "disbursed" },
+          { label: "Committment (USD)", key: "committed" },
+          { label: "Signed (USD)", key: "signed" },
+        ],
+      };
     case "/viz/grants":
       return {
         data,

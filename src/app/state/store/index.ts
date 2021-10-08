@@ -115,6 +115,12 @@ import GrantDetailSignedTreemap from "../api/action-reducers/grantDetail/signedT
 import GrantDetailCommitmentTreemap from "../api/action-reducers/grantDetail/commitmentTreemap";
 import GrantDetailSignedTimeCycle from "../api/action-reducers/grantDetail/signedTimeCycle";
 import GrantDetailCommitmentTimeCycle from "../api/action-reducers/grantDetail/commitmentTimeCycle";
+import PartnerDetailCommitmentTreemap, {
+  PartnerDetailCommitmentTreemapDrilldown,
+} from "../api/action-reducers/partnerDetail/commitmentTreemap";
+import PartnerDetailSignedTreemap, {
+  PartnerDetailSignedTreemapDrilldown,
+} from "../api/action-reducers/partnerDetail/signedTreemap";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -205,6 +211,14 @@ const storeContent: StoreModel = {
   PartnerDetailDisbursementsTreemap: persist(PartnerDetailDisbursementsTreemap),
   PartnerDetailDisbursementsTreemapDrilldown: persist(
     PartnerDetailDisbursementsTreemapDrilldown
+  ),
+  PartnerDetailSignedTreemap: persist(PartnerDetailSignedTreemap),
+  PartnerDetailSignedTreemapDrilldown: persist(
+    PartnerDetailSignedTreemapDrilldown
+  ),
+  PartnerDetailCommitmentTreemap: persist(PartnerDetailCommitmentTreemap),
+  PartnerDetailCommitmentTreemapDrilldown: persist(
+    PartnerDetailCommitmentTreemapDrilldown
   ),
   PartnerDetailBudgetsFlow: persist(PartnerDetailBudgetsFlow),
   PartnerDetailBudgetsFlowDrilldownLevel1: persist(

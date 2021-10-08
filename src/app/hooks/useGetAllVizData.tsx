@@ -228,6 +228,45 @@ export function useGetAllVizData() {
   const resultsList = useStoreState(
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
   );
+  const partnerDetailDisbursementsTreemap = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailDisbursementsTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const partnerDetailSignedTreemap = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailSignedTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const partnerDetailCommitmentTreemap = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailCommitmentTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const partnerDetailBudgetsFlow = useStoreState(
+    (state) =>
+      get(state.PartnerDetailBudgetsFlow.data, "links", []) as {
+        value: number;
+        source: string;
+        target: string;
+      }[]
+  );
+  const partnerDetailBudgetsTimeCycle = useStoreState(
+    (state) =>
+      get(state.PartnerDetailBudgetsTimeCycle.data, "data", []) as Record<
+        string,
+        unknown
+      >[]
+  );
 
   return {
     // Allocations
@@ -339,11 +378,46 @@ export function useGetAllVizData() {
     "/location/<code>/allocation": allocations,
     // Location Grants
     "/location/<code>/grants": grantsList,
+    "/location/<code>/grants/list": grantsList,
     // Grants
     "/grants": grantsList,
     // Results
     "/results": resultsList,
     // Documents
     "/documents": documents,
+    // Partner Disbursements
+    "/partner/<code>/disbursements/treemap": partnerDetailDisbursementsTreemap,
+    "/partner/<code>/disbursements/table": partnerDetailDisbursementsTreemap,
+    "/partner/<code>/disbursements/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/partner/<code>/disbursements/time-cycle": disbursementsTimeCycle,
+    // Partner Signed
+    "/partner/<code>/signed/treemap": partnerDetailSignedTreemap,
+    "/partner/<code>/signed/table": partnerDetailSignedTreemap,
+    "/partner/<code>/signed/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/partner/<code>/signed/time-cycle": disbursementsTimeCycle,
+    // Partner Commitment
+    "/partner/<code>/commitment/treemap": partnerDetailCommitmentTreemap,
+    "/partner/<code>/commitment/table": partnerDetailCommitmentTreemap,
+    "/partner/<code>/commitment/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/partner/<code>/commitment/time-cycle": disbursementsTimeCycle,
+    // Partner Budgets
+    "/partner/<code>/budgets/flow": partnerDetailBudgetsFlow,
+    "/partner/<code>/budgets/time-cycle": partnerDetailBudgetsTimeCycle,
+    "/partner/<code>/budgets/geomap": {
+      countries: budgetsGeomap,
+      multicountries: budgetsMCGeomap,
+    },
+    // Partner Grants
+    "/partner/<code>/grants": grantsList,
+    "/partner/<code>/grants/list": grantsList,
   };
 }

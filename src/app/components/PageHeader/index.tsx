@@ -70,6 +70,13 @@ export const StyledMenuItem = withStyles((theme) => ({
       padding: "6px 12px",
       textDecoration: "none",
     },
+    "& li": {
+      width: "100%",
+      fontSize: "14px",
+      color: "#262c34",
+      padding: "6px 12px",
+      textDecoration: "none",
+    },
     "& div": {
       width: "100%",
       fontSize: "12px",
@@ -240,7 +247,7 @@ export function PageHeader(props: PageHeaderProps) {
             justify-content: space-between;
           `}
         >
-          <Grid item sm={12}>
+          <Grid item sm={12} md={!props.isGrantDetail ? 4 : 12}>
             <Tooltip title={props.title}>
               <div
                 css={styles.title}
@@ -271,6 +278,7 @@ export function PageHeader(props: PageHeaderProps) {
           <Grid
             item
             sm={12}
+            md={!props.isGrantDetail ? 8 : 12}
             css={`
               display: flex;
               align-items: flex-end;

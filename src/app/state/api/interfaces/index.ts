@@ -138,6 +138,10 @@ export interface StoreModel {
   PartnerDetailInfo: ApiCallModel;
   PartnerDetailDisbursementsTreemap: ApiCallModel;
   PartnerDetailDisbursementsTreemapDrilldown: ApiCallModel;
+  PartnerDetailSignedTreemap: ApiCallModel;
+  PartnerDetailSignedTreemapDrilldown: ApiCallModel;
+  PartnerDetailCommitmentTreemap: ApiCallModel;
+  PartnerDetailCommitmentTreemapDrilldown: ApiCallModel;
   PartnerDetailBudgetsFlow: ApiCallModel;
   PartnerDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
   PartnerDetailBudgetsTimeCycle: ApiCallModel;
