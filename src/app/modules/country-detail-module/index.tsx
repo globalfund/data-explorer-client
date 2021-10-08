@@ -118,6 +118,7 @@ export default function CountryDetail() {
         `}
       >
         <Switch>
+          {/* Overview */}
           <Route path={`/location/${params.code}/overview`}>
             <LocationDetailOverviewModule code={params.code} />
           </Route>

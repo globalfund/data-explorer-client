@@ -111,6 +111,10 @@ import CommitmentTreemap, {
 } from "../api/action-reducers/viz/commitment";
 import LocationDetailSignedTreemap from "../api/action-reducers/locationDetail/signedTreemap";
 import LocationDetailCommitmentTreemap from "../api/action-reducers/locationDetail/commitmentTreemap";
+import GrantDetailSignedTreemap from "../api/action-reducers/grantDetail/signedTreemap";
+import GrantDetailCommitmentTreemap from "../api/action-reducers/grantDetail/commitmentTreemap";
+import GrantDetailSignedTimeCycle from "../api/action-reducers/grantDetail/signedTimeCycle";
+import GrantDetailCommitmentTimeCycle from "../api/action-reducers/grantDetail/commitmentTimeCycle";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -168,6 +172,10 @@ const storeContent: StoreModel = {
   ),
   GrantDetailDisbursementsTreemap: persist(GrantDetailDisbursementsTreemap),
   GrantDetailDisbursementsTimeCycle: persist(GrantDetailDisbursementsTimeCycle),
+  GrantDetailSignedTreemap: persist(GrantDetailSignedTreemap),
+  GrantDetailSignedTimeCycle: persist(GrantDetailSignedTimeCycle),
+  GrantDetailCommitmentTreemap: persist(GrantDetailCommitmentTreemap),
+  GrantDetailCommitmentTimeCycle: persist(GrantDetailCommitmentTimeCycle),
   GrantDetailPerformanceRating: persist(GrantDetailPerformanceRating),
   GrantDetailPerformanceFramework: persist(GrantDetailPerformanceFramework),
   GrantDetailPerformanceFrameworkExpand: persist(

@@ -16,6 +16,7 @@ import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
+  isGrantDetail?: boolean;
   breadcrumbs: BreadcrumbModel[];
 }
 
@@ -239,9 +240,14 @@ export function PageHeader(props: PageHeaderProps) {
             justify-content: space-between;
           `}
         >
-          <Grid item sm={12} md={4}>
+          <Grid item sm={12}>
             <Tooltip title={props.title}>
-              <div css={styles.title}>{props.title}</div>
+              <div
+                css={styles.title}
+                style={props.isGrantDetail ? { fontSize: 14 } : {}}
+              >
+                {props.title}
+              </div>
             </Tooltip>
             {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
@@ -253,17 +259,18 @@ export function PageHeader(props: PageHeaderProps) {
                 ))}
               </div>
             )}
-            <div
-              css={`
-                width: 100%;
-                height: 16px;
-              `}
-            />
+            {!props.isGrantDetail && (
+              <div
+                css={`
+                  width: 100%;
+                  height: 16px;
+                `}
+              />
+            )}
           </Grid>
           <Grid
             item
             sm={12}
-            md={8}
             css={`
               display: flex;
               align-items: flex-end;

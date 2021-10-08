@@ -30,6 +30,9 @@ const locationsToNotShowImageExport = [
   "/location/<code>/signed/table",
   "/location/<code>/commitment/table",
   "/location/<code>/eligibility/table",
+  "/grant/<code>/disbursements/table",
+  "/grant/<code>/signed/table",
+  "/grant/<code>/commitment/table",
   "/viz/pledges-contributions/geomap",
   "/viz/pledges-contributions/table",
   "/viz/budgets/geomap",
@@ -100,6 +103,9 @@ export function ToolBoxPanelIconButtons() {
             isDetail: params.code !== undefined,
           }
         )}
+        css={`
+          font-size: 12px !important;
+        `}
       >
         CSV
       </CSVLink>
@@ -132,7 +138,13 @@ export function ToolBoxPanelIconButtons() {
           handleClose();
         }}
       >
-        <div>PNG</div>
+        <div
+          css={`
+            padding: 6px 12px !important;
+          `}
+        >
+          PNG
+        </div>
       </StyledMenuItem>
     );
     menuitems.push(
@@ -156,7 +168,13 @@ export function ToolBoxPanelIconButtons() {
           handleClose();
         }}
       >
-        <div>SVG</div>
+        <div
+          css={`
+            padding: 6px 12px !important;
+          `}
+        >
+          SVG
+        </div>
       </StyledMenuItem>
     );
   }

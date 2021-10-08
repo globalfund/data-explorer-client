@@ -147,14 +147,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         <div
           css={`
             right: 0;
-            top: 133px;
             z-index: 20;
             width: 500px;
             position: fixed;
             background: #f5f5f7;
-            height: calc(100vh - 133px);
             visibility: visible !important;
+            top: ${!props.isGrantDetail ? 133 : 168}px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+            height: calc(100vh - ${!props.isGrantDetail ? 133 : 168}px);
 
             @media (max-width: 500px) {
               width: calc(100vw - 50px);

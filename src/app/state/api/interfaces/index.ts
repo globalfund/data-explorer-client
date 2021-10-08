@@ -113,7 +113,11 @@ export interface StoreModel {
   GrantDetailBudgetsTimeCycle: ApiCallModel;
   GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   GrantDetailDisbursementsTreemap: ApiCallModel;
+  GrantDetailSignedTreemap: ApiCallModel;
+  GrantDetailCommitmentTreemap: ApiCallModel;
   GrantDetailDisbursementsTimeCycle: ApiCallModel;
+  GrantDetailSignedTimeCycle: ApiCallModel;
+  GrantDetailCommitmentTimeCycle: ApiCallModel;
   GrantDetailPerformanceRating: ApiCallModel;
   GrantDetailPerformanceFramework: ApiCallModel;
   GrantDetailPerformanceFrameworkExpand: ApiCallModel;

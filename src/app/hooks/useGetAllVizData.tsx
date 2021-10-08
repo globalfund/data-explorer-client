@@ -138,8 +138,20 @@ export function useGetAllVizData() {
   const grantDetailDisbursementsTimeCycle = useStoreState(
     (state) => state.GrantDetailDisbursementsTimeCycle.data
   );
+  const grantDetailSignedTimeCycle = useStoreState(
+    (state) => state.GrantDetailSignedTimeCycle.data
+  );
+  const grantDetailCommitmentTimeCycle = useStoreState(
+    (state) => state.GrantDetailCommitmentTimeCycle.data
+  );
   const grantDetailDisbursementsTreemap = useStoreState(
     (state) => state.GrantDetailDisbursementsTreemap.data
+  );
+  const grantDetailSignedTreemap = useStoreState(
+    (state) => state.GrantDetailSignedTreemap.data
+  );
+  const grantDetailCommitmentTreemap = useStoreState(
+    (state) => state.GrantDetailCommitmentTreemap.data
   );
   const grantDetailDocuments = useStoreState(
     (state) => state.GrantDetailDocuments.data
@@ -269,10 +281,18 @@ export function useGetAllVizData() {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
-    // Grant Investments
-    "/grant/<code>/investments/time-cycle": grantDetailDisbursementsTimeCycle,
+    // Grant Disbursements
+    "/grant/<code>/disbursements/time-cycle": grantDetailDisbursementsTimeCycle,
     "/grant/<code>/investments/disbursements": grantDetailDisbursementsTreemap,
     "/grant/<code>/investments/table": grantDetailDisbursementsTreemap,
+    // Grant Signed
+    "/grant/<code>/signed/time-cycle": grantDetailSignedTimeCycle,
+    "/grant/<code>/signed/disbursements": grantDetailSignedTreemap,
+    "/grant/<code>/signed/table": grantDetailSignedTreemap,
+    // Grant Commitment
+    "/grant/<code>/commitment/time-cycle": grantDetailCommitmentTimeCycle,
+    "/grant/<code>/commitment/disbursements": grantDetailCommitmentTreemap,
+    "/grant/<code>/commitment/table": grantDetailCommitmentTreemap,
     // Grant Documents
     "/grant/<code>/documents": grantDetailDocuments,
     // Grant Performance Framework
