@@ -1,4 +1,4 @@
-//cc:application base#;application routes
+// cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
@@ -29,7 +29,7 @@ export function MainRoutes() {
   useUrlFilters();
   useGA();
 
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  const isSmallScreen = useMediaQuery("(max-width: 60px)");
 
   if (isSmallScreen) {
     return (
@@ -70,6 +70,11 @@ export function MainRoutes() {
         </Route>
 
         <Route exact path="/results">
+          <ResultsModule />
+        </Route>
+
+        {/* Only used in small size, considering move to the if small size */}
+        <Route exact path="/results/:vizType/datapoints">
           <ResultsModule />
         </Route>
 

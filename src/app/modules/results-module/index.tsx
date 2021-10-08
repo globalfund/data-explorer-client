@@ -6,19 +6,19 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { PageLoader } from "app/modules/common/page-loader";
 import { InformationPanel } from "app/components/InformationPanel";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
-import { Search } from "app/modules/grants-module/components/Search";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { ResultsList } from "app/modules/results-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   ResultListItemModel,
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
+import { Grid } from "@material-ui/core";
+import { Switch, Route } from "react-router-dom";
+import { DataList } from "./datalist";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -105,6 +105,61 @@ export default function ResultsModule() {
     pushValue = 500 - widthThreshold;
   }
 
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  if (isSmallScreen) {
+    return (
+      <div
+        css={`
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+        `}
+      >
+        <PageHeader
+          title="Results"
+          breadcrumbs={[
+            { name: "Home", link: "/" },
+            {
+              name: "Datasets",
+              menuitems: datasetMenuItems,
+            },
+            { name: "Results" },
+          ]}
+          tabs={[
+            { url: "/results", name: "Overview" },
+            { url: "/results/datapoints/datapoints", name: "Data points" },
+          ]}
+        />
+        <Switch>
+          <Route exact path="/results">
+            <Grid container spacing={4}>
+              <Grid item xs={6} sm={6} md={6}>
+                <ResultsInfoContent description="" stats={infoData} />
+              </Grid>
+              <Grid item xs={6} sm={6} md={6}>
+                <ResultsInfoContent description="" stats={infoData} />
+              </Grid>
+            </Grid>
+          </Route>
+          <Route exact path="/results/datapoints/datapoints">
+            <DataList
+              isLoading={isLoading}
+              search={search}
+              setSearch={setSearch}
+              selectedYear={selectedYear}
+              data={data}
+              openToolboxPanel={openToolboxPanel}
+              pushValue={pushValue}
+            />
+          </Route>
+        </Switch>
+      </div>
+    );
+  }
+
   return (
     <div
       css={`
@@ -138,41 +193,15 @@ export default function ResultsModule() {
         filterGroups={pathnameToFilterGroups.results}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
-      {isLoading && <PageLoader />}
-      <div css="width: 100%;height: 25px;" />
-      <div
-        css={`
-          align-self: flex-start;
-          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
-        `}
-      >
-        <Search value={search} setValue={setSearch} />
-        <div css="width: 100%;height: 25px;" />
-        <div
-          css={`
-            gap: 6px;
-            display: flex;
-            align-items: center;
-          `}
-        >
-          <div
-            css={`
-              font-weight: bold;
-              margin-right: 10px;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            `}
-          >
-            Year {selectedYear}
-          </div>
-        </div>
-        <div css="width: 100%;height: 25px;" />
-        {data.length === 0 ? (
-          <NoDataLabel />
-        ) : (
-          <ResultsList listitems={data} isToolboxOpen={openToolboxPanel} />
-        )}
-      </div>
+      <DataList
+        isLoading={isLoading}
+        search={search}
+        setSearch={setSearch}
+        selectedYear={selectedYear}
+        data={data}
+        openToolboxPanel={openToolboxPanel}
+        pushValue={pushValue}
+      />
       <div css="width: 100%;height: 25px;" />
       <div
         css={`
