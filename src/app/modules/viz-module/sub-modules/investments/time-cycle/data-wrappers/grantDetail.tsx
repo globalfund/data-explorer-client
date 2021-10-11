@@ -72,7 +72,7 @@ export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
         filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
       });
     }
-  }, [props.code, props.implementationPeriod]);
+  }, [props.code, props.implementationPeriod, props.type]);
 
   return (
     <InvestmentsTimeCycleModule

@@ -2,7 +2,7 @@
 
 import React, { Suspense, lazy } from "react";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { NoMatchPage } from "app/modules/common/no-match-page";
@@ -81,13 +81,49 @@ export function MainRoutes() {
           <VizModule />
         </Route>
 
+        <Route
+          exact
+          path="/location/:code"
+          render={(props: RouteComponentProps<any>) => (
+            <Redirect to={`/location/${props.match.params.code}/overview`} />
+          )}
+        />
+
         <Route exact path="/location/:code/:vizType/:subType?">
           <CountryDetailModule />
         </Route>
 
+        <Route
+          exact
+          path="/partner/:code"
+          render={(props: RouteComponentProps<any>) => (
+            <Redirect
+              to={`/partner/${props.match.params.code}/signed/treemap`}
+            />
+          )}
+        />
+
         <Route exact path="/partner/:code/:vizType/:subType?">
           <PartnerDetailModule />
         </Route>
+
+        <Route
+          exact
+          path="/grant/:code"
+          render={(props: RouteComponentProps<any>) => (
+            <Redirect to={`/grant/${props.match.params.code}/1/overview`} />
+          )}
+        />
+
+        <Route
+          exact
+          path="/grant/:code/:period"
+          render={(props: RouteComponentProps<any>) => (
+            <Redirect
+              to={`/grant/${props.match.params.code}/${props.match.params.period}/overview`}
+            />
+          )}
+        />
 
         <Route exact path="/grant/:code/:period/:vizType/:subType?">
           <GrantDetailModule />
