@@ -17,6 +17,100 @@ export const statusBorderStyle = {
   "Administratively Closed": "dotted",
 };
 
+export const circleLegendPositions = [
+  [
+    {
+      top: -30,
+      left: "49%",
+    },
+  ],
+  [
+    {
+      top: 150,
+      left: 30,
+    },
+    {
+      top: 150,
+      right: 30,
+    },
+  ],
+  [
+    {
+      top: 150,
+      left: 30,
+    },
+    {
+      top: -30,
+      left: "49%",
+    },
+    {
+      top: 150,
+      right: 30,
+    },
+  ],
+  [
+    {
+      top: 200,
+    },
+    {
+      left: 200,
+    },
+    {
+      right: 200,
+    },
+    {
+      top: 200,
+      right: -20,
+    },
+  ],
+  [
+    {
+      top: 250,
+    },
+    {
+      top: 70,
+      left: 100,
+    },
+    {
+      top: -30,
+      left: "49%",
+    },
+    {
+      top: 70,
+      right: 100,
+    },
+    {
+      top: 250,
+      right: 0,
+    },
+  ],
+  [
+    {
+      top: 275,
+    },
+    {
+      top: 75,
+      left: 75,
+    },
+    {
+      top: -30,
+      left: 300,
+    },
+    {
+      top: -30,
+      right: 300,
+    },
+    {
+      top: 75,
+      right: 75,
+    },
+    {
+      top: 275,
+      right: 0,
+    },
+  ],
+];
+
 export const mockdata = [
   {
     name: null,

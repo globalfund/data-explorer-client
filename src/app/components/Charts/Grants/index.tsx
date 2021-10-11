@@ -11,6 +11,7 @@ import { useMeasure } from "react-use";
 import { useHistory } from "react-router-dom";
 import useMousePosition from "app/hooks/useMousePosition";
 import {
+  circleLegendPositions,
   GrantsVizProps,
   ratingColor,
   statusBorderStyle,
@@ -105,6 +106,20 @@ export function GrantsViz(props: GrantsVizProps) {
             border-top-right-radius: ${width * 2}px;
           `}
         />
+
+        {components.map((component: any, index: number) => (
+          <div
+            key={component}
+            css={`
+              font-size: 13px;
+              font-weight: bold;
+              position: absolute;
+            `}
+            style={{ ...circleLegendPositions[components.length - 1][index] }}
+          >
+            {component}
+          </div>
+        ))}
 
         <ComponentDividers width={width} components={components} />
 
@@ -469,7 +484,7 @@ export function ComponentDividers(props: any) {
                 font-weight: bold;
                 position: relative;
                 display: inline-block;
-                content: "${component}";
+                content: " ";
                 right: 70px;
                 transform: rotate(-115deg);
                 top: ${(width - 240) / components.length}px;
@@ -536,9 +551,9 @@ export const RadialChartLegend = (props: any) => {
   const end = css`
     height: 38px;
     width: 38px;
-    background-color: white;
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid #000;
+    background-color: #ffc107;
 
     ::after {
       content: " ";
@@ -667,15 +682,15 @@ export const RadialChartLegend = (props: any) => {
           justify-content: space-evenly;
 
           > div {
-            width: 6px;
-            height: 6px;
+            width: 10px;
+            height: 10px;
             position: relative;
             border-radius: 50%;
             border: 0.5px solid #262c34;
 
             &:before {
               width: 40px;
-              left: -18px;
+              left: -16px;
               bottom: -25px;
               color: #495057;
               font-size: 12px;
