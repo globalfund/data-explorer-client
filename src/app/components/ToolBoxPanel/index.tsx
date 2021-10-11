@@ -7,7 +7,6 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { useMediaQuery } from "@material-ui/core";
 import { SubToolBoxPanel } from "./subToolBox";
 
 export interface ToolBoxPanelProps {
