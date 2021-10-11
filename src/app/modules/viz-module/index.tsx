@@ -26,8 +26,7 @@ import {
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
 import { ToolBoxPage } from "app/components/ToolBoxPanel/indexsm";
-import { Button, IconButton, useMediaQuery } from "@material-ui/core";
-import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
+import { IconButton, useMediaQuery } from "@material-ui/core";
 import TuneOutlinedIcon from "@material-ui/icons/TuneOutlined";
 
 export default function VizModule() {
@@ -172,47 +171,15 @@ export default function VizModule() {
         </Switch>
       </div>
       {isSmallScreen ? (
-        <>
-          <div
-            css={`
-              width: 100%;
-              height: 100%;
-              visibility: ${openToolboxPage ? "visible" : "hidden"};
-              opacity: ${openToolboxPage ? 1 : 0};
-              left: 0;
-              top: 40px;
-              position: fixed;
-              z-index: 15;
-            `}
-          >
-            <div>
-              <div css="height:24px;background-color: #373D43;width:100%;">
-                <IconButton
-                  css="
-                    width:12px;
-                    height:12px;"
-                  onClick={() => {
-                    setOpenToolboxPage(!openToolboxPage);
-                  }}
-                >
-                  <CloseOutlinedIcon
-                    htmlColor="#ffffff"
-                    viewBox=" -7 -7 30 30"
-                  />
-                </IconButton>
-              </div>
-              <ToolBoxPage
-                open={openToolboxPage}
-                onButtonClick={() => setOpenToolboxPage(!openToolboxPage)}
-                filterGroups={get(
-                  pathnameToFilterGroups,
-                  location.pathname,
-                  filtergroups
-                )}
-              />
-            </div>
-          </div>
-        </>
+        <ToolBoxPage
+          open={openToolboxPage}
+          onButtonClick={() => setOpenToolboxPage(!openToolboxPage)}
+          filterGroups={get(
+            pathnameToFilterGroups,
+            location.pathname,
+            filtergroups
+          )}
+        />
       ) : (
         <>
           <ToolBoxPanel
