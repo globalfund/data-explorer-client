@@ -129,11 +129,6 @@ const views = {
   ],
   "pledges-contributions": [
     {
-      label: "Map",
-      value: "Map",
-      link: "/viz/pledges-contributions/geomap",
-    },
-    {
       label: "Treemap",
       value: "Treemap",
       link: "/viz/pledges-contributions/treemap",
@@ -142,6 +137,11 @@ const views = {
       label: "Replenishment Periods",
       value: "Replenishment Periods",
       link: "/viz/pledges-contributions/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/pledges-contributions/geomap",
     },
     {
       label: "Table",
