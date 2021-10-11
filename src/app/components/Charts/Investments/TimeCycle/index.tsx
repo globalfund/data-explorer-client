@@ -176,7 +176,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
               }
             `}
           >
-            Disbursements <InfoIcon />
+            {props.type || "Disbursements"} <InfoIcon />
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalInvestmentValue)}

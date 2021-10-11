@@ -10,6 +10,7 @@ import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code?: string;
+  type: "Disbursed" | "Signed" | "Commitment";
 }
 
 export function GenericInvestmentsDisbursedWrapper(props: Props) {
@@ -20,34 +21,82 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
   );
 
   // api call & data
-  const fetchData = useStoreActions(
-    (store) => store.DisbursementsTreemap.fetch
-  );
-  const data = useStoreState(
-    (state) =>
-      get(
-        state.DisbursementsTreemap.data,
-        "data",
-        []
-      ) as DisbursementsTreemapDataItem[]
-  );
-  const isLoading = useStoreState(
-    (state) => state.DisbursementsTreemap.loading
-  );
-  const fetchDrilldownData = useStoreActions(
-    (store) => store.DisbursementsTreemapDrilldown.fetch
-  );
-  const drilldownData = useStoreState(
-    (state) =>
-      get(
-        state.DisbursementsTreemapDrilldown.data,
-        "data",
-        []
-      ) as DisbursementsTreemapDataItem[]
-  );
-  const isDrilldownLoading = useStoreState(
-    (state) => state.DisbursementsTreemapDrilldown.loading
-  );
+  const fetchData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.DisbursementsTreemap.fetch;
+      case "Signed":
+        return store.SignedTreemap.fetch;
+      case "Commitment":
+        return store.CommitmentTreemap.fetch;
+      default:
+        return store.DisbursementsTreemap.fetch;
+    }
+  });
+  const data = useStoreState((state) => {
+    let compData = state.DisbursementsTreemap.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.SignedTreemap.data;
+        break;
+      case "Commitment":
+        compData = state.CommitmentTreemap.data;
+        break;
+      default:
+        compData = state.DisbursementsTreemap.data;
+    }
+    return get(compData, "data", []) as DisbursementsTreemapDataItem[];
+  });
+  const isLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.DisbursementsTreemap.loading;
+      case "Signed":
+        return state.SignedTreemap.loading;
+      case "Commitment":
+        return state.DisbursementsTreemap.loading;
+      default:
+        return state.DisbursementsTreemap.loading;
+    }
+  });
+  const fetchDrilldownData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.DisbursementsTreemapDrilldown.fetch;
+      case "Signed":
+        return store.SignedTreemapDrilldown.fetch;
+      case "Commitment":
+        return store.CommitmentTreemapDrilldown.fetch;
+      default:
+        return store.DisbursementsTreemapDrilldown.fetch;
+    }
+  });
+  const drilldownData = useStoreState((state) => {
+    let compData = state.DisbursementsTreemapDrilldown.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.SignedTreemapDrilldown.data;
+        break;
+      case "Commitment":
+        compData = state.CommitmentTreemapDrilldown.data;
+        break;
+      default:
+        compData = state.DisbursementsTreemapDrilldown.data;
+    }
+    return get(compData, "data", []) as DisbursementsTreemapDataItem[];
+  });
+  const isDrilldownLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.DisbursementsTreemapDrilldown.loading;
+      case "Signed":
+        return state.SignedTreemapDrilldown.loading;
+      case "Commitment":
+        return state.CommitmentTreemapDrilldown.loading;
+      default:
+        return state.DisbursementsTreemapDrilldown.loading;
+    }
+  });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -85,6 +134,7 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
     <InvestmentsDisbursedModule
       data={data}
       allowDrilldown
+      type={props.type}
       vizLevel={vizLevel}
       isLoading={isLoading}
       setVizLevel={setVizLevel}

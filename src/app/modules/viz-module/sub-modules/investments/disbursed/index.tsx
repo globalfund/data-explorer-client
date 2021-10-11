@@ -26,6 +26,7 @@ interface InvestmentsDisbursedModuleProps {
   setVizSelected: (vizSelected: string | undefined) => void;
   allowDrilldown: boolean;
   onNodeClick?: (code: string) => void;
+  type?: string;
 }
 
 export function InvestmentsDisbursedModule(
@@ -87,7 +88,7 @@ export function InvestmentsDisbursedModule(
               }
             `}
           >
-            Investments - Disbursed <InfoIcon />
+            Investments - {props.type || "Disbursement"} <InfoIcon />
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalBudget)}

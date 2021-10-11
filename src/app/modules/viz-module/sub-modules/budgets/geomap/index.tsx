@@ -9,10 +9,7 @@ import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import {
-  AllocationsGeoMapPinMarker,
-  InvestmentsGeoMapPinMarker,
-} from "app/components/Charts/GeoMap/data";
+import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;

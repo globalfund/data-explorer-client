@@ -87,6 +87,14 @@ export interface StoreModel {
   DisbursementsTreemapDrilldown: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
   DisbursementsTimeCycleDrilldown: ApiCallModel;
+  SignedTreemap: ApiCallModel;
+  SignedTreemapDrilldown: ApiCallModel;
+  SignedTimeCycle: ApiCallModel;
+  SignedTimeCycleDrilldown: ApiCallModel;
+  CommitmentTreemap: ApiCallModel;
+  CommitmentTreemapDrilldown: ApiCallModel;
+  CommitmentTimeCycle: ApiCallModel;
+  CommitmentTimeCycleDrilldown: ApiCallModel;
   PledgesContributionsGeomap: ApiCallModel;
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
@@ -105,7 +113,11 @@ export interface StoreModel {
   GrantDetailBudgetsTimeCycle: ApiCallModel;
   GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   GrantDetailDisbursementsTreemap: ApiCallModel;
+  GrantDetailSignedTreemap: ApiCallModel;
+  GrantDetailCommitmentTreemap: ApiCallModel;
   GrantDetailDisbursementsTimeCycle: ApiCallModel;
+  GrantDetailSignedTimeCycle: ApiCallModel;
+  GrantDetailCommitmentTimeCycle: ApiCallModel;
   GrantDetailPerformanceRating: ApiCallModel;
   GrantDetailPerformanceFramework: ApiCallModel;
   GrantDetailPerformanceFrameworkExpand: ApiCallModel;
@@ -114,6 +126,8 @@ export interface StoreModel {
   LocationDetailInfo: ApiCallModel;
   EligibilityCountry: ApiCallModel;
   LocationDetailDisbursementsTreemap: ApiCallModel;
+  LocationDetailSignedTreemap: ApiCallModel;
+  LocationDetailCommitmentTreemap: ApiCallModel;
   LocationDetailDocuments: ApiCallModel;
   LocationDetailBudgetsFlow: ApiCallModel;
   LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
@@ -124,6 +138,10 @@ export interface StoreModel {
   PartnerDetailInfo: ApiCallModel;
   PartnerDetailDisbursementsTreemap: ApiCallModel;
   PartnerDetailDisbursementsTreemapDrilldown: ApiCallModel;
+  PartnerDetailSignedTreemap: ApiCallModel;
+  PartnerDetailSignedTreemapDrilldown: ApiCallModel;
+  PartnerDetailCommitmentTreemap: ApiCallModel;
+  PartnerDetailCommitmentTreemapDrilldown: ApiCallModel;
   PartnerDetailBudgetsFlow: ApiCallModel;
   PartnerDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
   PartnerDetailBudgetsTimeCycle: ApiCallModel;
