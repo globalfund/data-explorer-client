@@ -26,7 +26,7 @@ import {
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
 import { ToolBoxPage } from "app/components/ToolBoxPanel/indexsm";
-import { IconButton, useMediaQuery } from "@material-ui/core";
+import { IconButton, Tooltip, useMediaQuery } from "@material-ui/core";
 import TuneOutlinedIcon from "@material-ui/icons/TuneOutlined";
 
 export default function VizModule() {
@@ -98,17 +98,24 @@ export default function VizModule() {
         }
             `}
           >
-            <IconButton
-              css={`
-                align-self: flex-end;
-              `}
+            <Tooltip
+              title="Tap to open the toolbox"
+              aria-label="open the toolbox"
+              placement="bottom-end"
+              arrow
             >
-              <TuneOutlinedIcon
-                onClick={() => {
-                  setOpenToolboxPage(!openToolboxPage);
-                }}
-              />
-            </IconButton>
+              <IconButton
+                css={`
+                  align-self: flex-end;
+                `}
+              >
+                <TuneOutlinedIcon
+                  onClick={() => {
+                    setOpenToolboxPage(!openToolboxPage);
+                  }}
+                />
+              </IconButton>
+            </Tooltip>
           </div>
         </>
       )}
