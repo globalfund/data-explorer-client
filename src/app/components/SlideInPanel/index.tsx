@@ -1,6 +1,6 @@
 import React from "react";
 import Slide from "@material-ui/core/Slide";
-import { CloseIcon } from "app/assets/icons/Close";
+import CloseIcon from "@material-ui/icons/Close";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -60,12 +60,16 @@ export function SlideInContainer(props: SlideInContainerProps) {
         <IconButton
           css={`
             top: 0;
-            left: -50px;
+            left: -32px;
+            padding: 3px;
+            background: #fff;
+            border-radius: 5px;
             position: absolute;
+            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
           `}
           onClick={props.close}
         >
-          <CloseIcon />
+          <CloseIcon color="primary" />
         </IconButton>
         <div
           css={`
