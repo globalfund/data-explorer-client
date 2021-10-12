@@ -88,6 +88,7 @@ export default function VizModule() {
           },
         ]}
       />
+      {/* TODO: added the icon to the pageHeader component, cant find the same icon with the figma file */}
       {isSmallScreen && (
         <>
           <div
