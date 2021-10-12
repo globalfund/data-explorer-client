@@ -10,12 +10,12 @@ export function ToolBoxPage(props: ToolBoxPanelProps) {
       <div
         css={`
           right: 0;
-          top: 133px;
+          top: 150px;
           z-index: 20;
           width: 500px;
           position: fixed;
           background: #f5f5f7;
-          height: calc(100vh - 133px);
+          height: calc(100vh - 150px);
           visibility: visible !important;
           box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
