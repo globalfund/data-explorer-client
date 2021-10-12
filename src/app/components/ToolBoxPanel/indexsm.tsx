@@ -12,7 +12,7 @@ export function ToolBoxPage(props: ToolBoxPanelProps) {
           right: 0;
           top: 150px;
           z-index: 20;
-          width: 500px;
+          width: 392px;
           position: fixed;
           background: #f5f5f7;
           height: calc(100vh - 150px);
@@ -33,17 +33,15 @@ export function ToolBoxPage(props: ToolBoxPanelProps) {
             flex-direction: column;
           `}
         >
-          <div>
-            <div css="height:24px;background-color: #373D43;width:100%;">
-              <IconButton
-                css="width:12px;height:12px;"
-                onClick={props.onButtonClick}
-              >
-                <CloseOutlinedIcon htmlColor="#ffffff" viewBox=" -4 -4 30 30" />
-              </IconButton>
-            </div>
-            <SubToolBoxPanel filterGroups={props.filterGroups} />
+          <div css="height:24px;background-color: #373D43;width:100%;">
+            <IconButton
+              css="width:12px;height:12px;"
+              onClick={props.onButtonClick}
+            >
+              <CloseOutlinedIcon htmlColor="#ffffff" viewBox=" -4 -4 30 30" />
+            </IconButton>
           </div>
+          <SubToolBoxPanel filterGroups={props.filterGroups} />
         </div>
       </div>
     </Slide>
