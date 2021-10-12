@@ -1,13 +1,20 @@
 //cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
+import { useGA } from "app/hooks/useGA";
+import axios, { AxiosResponse } from "axios";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
-import { Redirect, Route, RouteComponentProps, Switch } from "react-router-dom";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { NoMatchPage } from "app/modules/common/no-match-page";
-import { useGA } from "app/hooks/useGA";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import {
+  Route,
+  Switch,
+  Redirect,
+  useHistory,
+  RouteComponentProps,
+} from "react-router-dom";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -23,6 +30,29 @@ const CountryDetailModule = lazy(
 const PartnerDetailModule = lazy(
   () => import("app/modules/partner-detail-module")
 );
+
+function GrantPeriodRedirect(props: RouteComponentProps<any>) {
+  const history = useHistory();
+  React.useEffect(() => {
+    axios
+      .get(
+        `${process.env.REACT_APP_API}/grant/periods/?grantNumber=${props.match.params.code}`
+      )
+      .then((response: AxiosResponse) => {
+        if (response.data.data && response.data.data.length > 0) {
+          history.replace(
+            `/grant/${props.match.params.code}/${response.data.data[0].number}/overview`
+          );
+        } else {
+          history.replace(`/grant/${props.match.params.code}/1/overview`);
+        }
+      })
+      .catch(() => {
+        history.replace(`/grant/${props.match.params.code}/1/overview`);
+      });
+  }, []);
+  return <PageLoader />;
+}
 
 export function MainRoutes() {
   useFilterOptions({});
@@ -111,7 +141,7 @@ export function MainRoutes() {
           exact
           path="/grant/:code"
           render={(props: RouteComponentProps<any>) => (
-            <Redirect to={`/grant/${props.match.params.code}/1/overview`} />
+            <GrantPeriodRedirect {...props} />
           )}
         />
 
