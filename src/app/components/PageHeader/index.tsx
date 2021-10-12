@@ -12,11 +12,14 @@ import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
+import { IconButton } from "@material-ui/core";
+import TuneOutlinedIcon from "@material-ui/icons/TuneOutlined";
 
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
   breadcrumbs: BreadcrumbModel[];
+  onButtonClick?: () => void;
 }
 
 export const StyledMenu = withStyles({
@@ -214,6 +217,24 @@ export function PageHeader(props: PageHeaderProps) {
                 </React.Fragment>
               );
             }
+          )}
+          {props.onButtonClick && (
+            <div css="right:10px;position:fixed">
+              <Tooltip
+                title="Tap to open the toolbox"
+                aria-label="open the toolbox"
+                placement="bottom-end"
+                arrow
+              >
+                <IconButton css="padding:0px !important">
+                  {/* havent found the same icon with the figma file */}
+                  <TuneOutlinedIcon
+                    viewBox=" -4 -4 30 30"
+                    onClick={props.onButtonClick}
+                  />
+                </IconButton>
+              </Tooltip>
+            </div>
           )}
         </div>
         <Grid

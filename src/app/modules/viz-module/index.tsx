@@ -86,39 +86,10 @@ export default function VizModule() {
             }`,
           },
         ]}
-      />
-      {/* TODO: added the icon to the pageHeader component, cant find the same icon with the figma file */}
-      {isSmallScreen && (
-        <>
-          <div
-            css={`
-            display: flex;
-            width: 100%;
-            justify-content: flex-end;
+        onButtonClick={
+          isSmallScreen ? () => setOpenToolboxPage(!openToolboxPage) : undefined
         }
-            `}
-          >
-            <Tooltip
-              title="Tap to open the toolbox"
-              aria-label="open the toolbox"
-              placement="bottom-end"
-              arrow
-            >
-              <IconButton
-                css={`
-                  align-self: flex-end;
-                `}
-              >
-                <TuneOutlinedIcon
-                  onClick={() => {
-                    setOpenToolboxPage(!openToolboxPage);
-                  }}
-                />
-              </IconButton>
-            </Tooltip>
-          </div>
-        </>
-      )}
+      />
       <div css="width: 100%;height: 25px;" />
       <div
         id="export-view-div"
