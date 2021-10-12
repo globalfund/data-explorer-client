@@ -28,6 +28,7 @@ interface InvestmentsTimeCycleModuleProps {
   vizPrevTranslation: { x: number; y: number };
   setVizPrevTranslation: (obj: { x: number; y: number }) => void;
   type?: string;
+  toolboxOpen?: boolean;
 }
 
 export function InvestmentsTimeCycleModule(
@@ -95,6 +96,7 @@ export function InvestmentsTimeCycleModule(
       <SlideInContainer
         vizLevel={props.vizLevel}
         selected={props.vizSelected}
+        toolboxOpen={props.toolboxOpen}
         loading={props.isDrilldownLoading}
         close={() => {
           props.setVizLevel(props.vizLevel - 1);

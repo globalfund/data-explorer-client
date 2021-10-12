@@ -210,7 +210,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             colors={["#373D43"]}
             // @ts-ignore
             layers={["links", Nodes, "labels"]}
-            margin={{ top: 0, right: 0, bottom: 0, left: 0 }}
+            margin={{ top: 0, right: 0, bottom: 10, left: 0 }}
             nodeOpacity={1}
             nodeSpacing={34}
             nodeThickness={25}

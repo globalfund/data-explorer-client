@@ -50,6 +50,7 @@ interface BudgetsFlowModuleProps {
     name: string;
     items: string[];
   }[];
+  toolboxOpen?: boolean;
 }
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
@@ -134,6 +135,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       <SlideInContainer
         vizLevel={props.vizLevel}
         selected={props.vizSelected.id}
+        toolboxOpen={props.toolboxOpen}
         loading={props.isDrilldownLoading}
         close={() => {
           props.setVizLevel(props.vizLevel - 1);

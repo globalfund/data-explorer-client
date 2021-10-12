@@ -10,6 +10,7 @@ import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
   type: "Disbursed" | "Signed" | "Commitment";
 }
 
@@ -94,6 +95,7 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
       setVizSelected={setVizSelected}
       vizTranslation={vizTranslation}
       setVizTranslation={setVizTranslation}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

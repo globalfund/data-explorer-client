@@ -77,6 +77,11 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     get(state.GrantDetailPerformanceFramework.data, "periods", [])
   );
 
+  // viz drilldown items
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+
   function getSelectedView() {
     let view: ViewModel | undefined;
     if (params.code) {
@@ -148,13 +153,20 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
           css={`
             right: 0;
             z-index: 20;
-            width: 500px;
+            width: 400px;
             position: fixed;
             background: #f5f5f7;
             visibility: visible !important;
-            top: ${!props.isGrantDetail ? 133 : 168}px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-            height: calc(100vh - ${!props.isGrantDetail ? 133 : 168}px);
+            top: ${!props.isGrantDetail && vizDrilldowns.length === 0
+              ? 133
+              : 168}px;
+            height: calc(
+              100vh -
+                ${!props.isGrantDetail && vizDrilldowns.length === 0
+                  ? 133
+                  : 168}px
+            );
 
             @media (max-width: 500px) {
               width: calc(100vw - 50px);

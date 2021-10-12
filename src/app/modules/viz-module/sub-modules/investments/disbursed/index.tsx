@@ -27,6 +27,7 @@ interface InvestmentsDisbursedModuleProps {
   allowDrilldown: boolean;
   onNodeClick?: (code: string) => void;
   type?: string;
+  toolboxOpen?: boolean;
 }
 
 export function InvestmentsDisbursedModule(
@@ -129,6 +130,7 @@ export function InvestmentsDisbursedModule(
         <SlideInContainer
           vizLevel={props.vizLevel}
           selected={props.vizSelected}
+          toolboxOpen={props.toolboxOpen}
           loading={props.isDrilldownLoading}
           close={() => {
             props.setVizLevel(0);

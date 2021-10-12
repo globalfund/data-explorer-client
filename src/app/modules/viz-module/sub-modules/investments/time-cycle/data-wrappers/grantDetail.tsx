@@ -7,6 +7,7 @@ import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
   implementationPeriod: string;
   type: "Disbursed" | "Signed" | "Commitment";
 }
@@ -90,6 +91,7 @@ export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
       setVizPrevSelected={setVizPrevSelected}
       vizPrevTranslation={vizPrevTranslation}
       setVizPrevTranslation={setVizPrevTranslation}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

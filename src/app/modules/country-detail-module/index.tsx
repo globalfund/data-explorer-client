@@ -124,10 +124,16 @@ export default function CountryDetail() {
           </Route>
           {/* Budgets */}
           <Route path={`/location/${params.code}/budgets/flow`}>
-            <LocationDetailBudgetsFlowWrapper code={paramCode} />
+            <LocationDetailBudgetsFlowWrapper
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path={`/location/${params.code}/budgets/time-cycle`}>
-            <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
+            <LocationDetailGenericBudgetsTimeCycleWrapper
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path={`/location/${params.code}/budgets/geomap`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
@@ -137,6 +143,7 @@ export default function CountryDetail() {
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Disbursed"
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/location/${params.code}/disbursements/table`}>
@@ -146,6 +153,7 @@ export default function CountryDetail() {
             <GenericInvestmentsTimeCycleWrapper
               type="Disbursed"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/location/${params.code}/disbursements/geomap`}>
@@ -160,6 +168,7 @@ export default function CountryDetail() {
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Signed"
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/location/${params.code}/signed/table`}>
@@ -169,6 +178,7 @@ export default function CountryDetail() {
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/location/${params.code}/signed/geomap`}>
@@ -183,6 +193,7 @@ export default function CountryDetail() {
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Commitment"
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/location/${params.code}/commitment/table`}>
@@ -192,6 +203,7 @@ export default function CountryDetail() {
             <GenericInvestmentsTimeCycleWrapper
               type="Commitment"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/location/${params.code}/commitment/geomap`}>
@@ -203,7 +215,10 @@ export default function CountryDetail() {
           </Route>
           {/* Allocations */}
           <Route path={`/location/${params.code}/allocation`}>
-            <AllocationsModule code={paramCode} />
+            <AllocationsModule
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           {/* Eligibility */}
           <Route path={`/location/${params.code}/eligibility/table`}>

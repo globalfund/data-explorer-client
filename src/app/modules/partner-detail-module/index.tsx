@@ -111,6 +111,7 @@ export default function PartnerDetail() {
             <PartnerDetailInvestmentsDisbursedWrapper
               type="Disbursed"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/partner/${params.code}/disbursements/table`}>
@@ -120,6 +121,7 @@ export default function PartnerDetail() {
             <PartnerDetailInvestmentsTimeCycleWrapper
               type="Disbursed"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/partner/${params.code}/disbursements/geomap`}>
@@ -134,6 +136,7 @@ export default function PartnerDetail() {
             <PartnerDetailInvestmentsDisbursedWrapper
               type="Signed"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/partner/${params.code}/signed/table`}>
@@ -143,6 +146,7 @@ export default function PartnerDetail() {
             <PartnerDetailInvestmentsTimeCycleWrapper
               type="Signed"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/partner/${params.code}/signed/geomap`}>
@@ -157,6 +161,7 @@ export default function PartnerDetail() {
             <PartnerDetailInvestmentsDisbursedWrapper
               type="Commitment"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/partner/${params.code}/commitment/table`}>
@@ -169,6 +174,7 @@ export default function PartnerDetail() {
             <PartnerDetailInvestmentsTimeCycleWrapper
               type="Commitment"
               code={paramCode}
+              toolboxOpen={openToolboxPanel}
             />
           </Route>
           <Route path={`/partner/${params.code}/commitment/geomap`}>
@@ -180,10 +186,16 @@ export default function PartnerDetail() {
           </Route>
           {/* Budgets */}
           <Route path={`/partner/${params.code}/budgets/flow`}>
-            <PartnerDetailBudgetsFlowWrapper code={paramCode} />
+            <PartnerDetailBudgetsFlowWrapper
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path={`/partner/${params.code}/budgets/time-cycle`}>
-            <PartnerDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
+            <PartnerDetailGenericBudgetsTimeCycleWrapper
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path={`/partner/${params.code}/budgets/geomap`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="partners" />

@@ -26,6 +26,7 @@ import {
 
 interface AllocationsModuleProps {
   code?: string;
+  toolboxOpen?: boolean;
 }
 
 export function AllocationsModule(props: AllocationsModuleProps) {
@@ -389,6 +390,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         vizLevel={vizLevel}
         selected={vizSelected}
         loading={isDrilldownLoading}
+        toolboxOpen={props.toolboxOpen}
         close={() => {
           setVizLevel(0);
           setVizScale(1);

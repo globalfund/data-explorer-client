@@ -134,6 +134,7 @@ export default function GrantDetail() {
           <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
             <GrantDetailBudgetsFlowWrapper
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -142,6 +143,7 @@ export default function GrantDetail() {
           >
             <GrantDetailGenericBudgetsTimeCycleWrapper
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -167,6 +169,7 @@ export default function GrantDetail() {
             <GrantDetailInvestmentsDisbursedWrapper
               type="Disbursed"
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -184,6 +187,7 @@ export default function GrantDetail() {
             <GrantDetailInvestmentsTimeCycleWrapper
               type="Disbursed"
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -192,6 +196,7 @@ export default function GrantDetail() {
             <GrantDetailInvestmentsDisbursedWrapper
               type="Signed"
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -207,6 +212,7 @@ export default function GrantDetail() {
             <GrantDetailInvestmentsTimeCycleWrapper
               type="Signed"
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -217,6 +223,7 @@ export default function GrantDetail() {
             <GrantDetailInvestmentsDisbursedWrapper
               type="Commitment"
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -234,6 +241,7 @@ export default function GrantDetail() {
             <GrantDetailInvestmentsTimeCycleWrapper
               type="Commitment"
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -247,6 +255,7 @@ export default function GrantDetail() {
           >
             <PerformanceFrameworkModule
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>

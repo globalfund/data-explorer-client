@@ -94,49 +94,67 @@ export default function VizModule() {
         <Switch>
           {/* Budgets */}
           <Route path="/viz/budgets/flow">
-            <GenericBudgetsFlowWrapper />
+            <GenericBudgetsFlowWrapper toolboxOpen={openToolboxPanel} />
           </Route>
           <Route path="/viz/budgets/time-cycle">
-            <GenericBudgetsTimeCycleWrapper />
+            <GenericBudgetsTimeCycleWrapper toolboxOpen={openToolboxPanel} />
           </Route>
           <Route path="/viz/budgets/geomap">
             <BudgetsGeoMap />
           </Route>
           {/* Disbursements */}
           <Route path="/viz/disbursements/treemap">
-            <GenericInvestmentsDisbursedWrapper type="Disbursed" />
+            <GenericInvestmentsDisbursedWrapper
+              type="Disbursed"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/disbursements/table">
             <GenericInvestmentsTableWrapper />
           </Route>
           <Route path="/viz/disbursements/time-cycle">
-            <GenericInvestmentsTimeCycleWrapper type="Disbursed" />
+            <GenericInvestmentsTimeCycleWrapper
+              type="Disbursed"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/disbursements/geomap">
             <InvestmentsGeoMap type="Disbursed" />
           </Route>
           {/* Signed */}
           <Route path="/viz/signed/treemap">
-            <GenericInvestmentsDisbursedWrapper type="Signed" />
+            <GenericInvestmentsDisbursedWrapper
+              type="Signed"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/signed/table">
             <GenericInvestmentsTableWrapper />
           </Route>
           <Route path="/viz/signed/time-cycle">
-            <GenericInvestmentsTimeCycleWrapper type="Signed" />
+            <GenericInvestmentsTimeCycleWrapper
+              type="Signed"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/signed/geomap">
             <InvestmentsGeoMap type="Signed" />
           </Route>
           {/* Commitment */}
           <Route path="/viz/commitment/treemap">
-            <GenericInvestmentsDisbursedWrapper type="Commitment" />
+            <GenericInvestmentsDisbursedWrapper
+              type="Commitment"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/commitment/table">
             <GenericInvestmentsTableWrapper />
           </Route>
           <Route path="/viz/commitment/time-cycle">
-            <GenericInvestmentsTimeCycleWrapper type="Commitment" />
+            <GenericInvestmentsTimeCycleWrapper
+              type="Commitment"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/commitment/geomap">
             <InvestmentsGeoMap type="Committed" />
@@ -146,11 +164,13 @@ export default function VizModule() {
             <AllocationsGeoMap />
           </Route>
           <Route path="/viz/allocations">
-            <AllocationsModule />
+            <AllocationsModule toolboxOpen={openToolboxPanel} />
           </Route>
           {/* Pledges & Contributions */}
           <Route path="/viz/pledges-contributions/time-cycle">
-            <PledgesContributionsTimeCycleModule />
+            <PledgesContributionsTimeCycleModule
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/pledges-contributions/table">
             <PledgesContributionsTable />

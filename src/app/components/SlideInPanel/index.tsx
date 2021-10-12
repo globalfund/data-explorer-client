@@ -11,6 +11,7 @@ interface SlideInContainerProps {
   selected?: string;
   close: () => void;
   loading?: boolean;
+  toolboxOpen?: boolean;
   children: React.ReactNode;
 }
 
@@ -36,13 +37,14 @@ export function SlideInContainer(props: SlideInContainerProps) {
         ref={props.ref}
         id="zoom-in-level"
         css={`
-          right: 0;
-          width: 60%;
           z-index: 2;
           display: flex;
           position: absolute;
           justify-content: flex-end;
+          right: ${props.toolboxOpen ? "400px" : 0};
+          width: ${props.toolboxOpen ? "50%" : "60%"};
           top: ${vizDrilldowns.length > 0 ? "168px" : "133px"};
+          transition: right 500ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           height: calc(100% - ${vizDrilldowns.length > 0 ? "168px" : "133px"});
 
           @media (max-width: 768px) {
