@@ -115,6 +115,7 @@ export interface FilterGroupProps {
 export interface FilterOptionProps extends FilterGroupOptionModel {
   level: number;
   selected: boolean;
+  forceExpand: boolean;
   selectedOptions: string[];
   onOptionChange: (
     checked: boolean,
@@ -263,6 +264,11 @@ export const pathnameToFilterGroups = {
       fg.name === "Locations" || fg.name === "Components"
   ),
   "/viz/pledges-contributions/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Donors" || fg.name === "Replenishment Periods"
+  ),
+  "/viz/pledges-contributions/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
