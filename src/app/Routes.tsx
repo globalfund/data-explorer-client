@@ -59,7 +59,7 @@ export function MainRoutes() {
   useUrlFilters();
   useGA();
 
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  const isSmallScreen = useMediaQuery("(max-width: 60px)");
 
   if (isSmallScreen) {
     return (
