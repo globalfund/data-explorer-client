@@ -89,7 +89,7 @@ export function InvestmentsGeoMap(props: Props) {
               }`,
       });
     }
-  }, [props.code, appliedFilters, geomapView]);
+  }, [props.code, appliedFilters, geomapView, props.type]);
 
   if (isLoading) {
     return <PageLoader />;

@@ -110,7 +110,7 @@ export function PartnerInvestmentsTableWrapper(props: Props) {
         : appliedFilters
     );
     fetchData({ filterString });
-  }, [props.code, appliedFilters]);
+  }, [props.code, appliedFilters, props.type]);
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
 
