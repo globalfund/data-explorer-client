@@ -17,6 +17,7 @@ import {
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
   implementationPeriod: string;
 }
 
@@ -131,6 +132,7 @@ export function PerformanceFrameworkModule(props: Props) {
         vizLevel={vizLevel}
         selected={vizSelected}
         loading={isExpandLoading}
+        toolboxOpen={props.toolboxOpen}
         close={() => {
           setVizLevel(0);
           setVizSelected(undefined);

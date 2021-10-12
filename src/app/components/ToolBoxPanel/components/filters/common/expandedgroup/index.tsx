@@ -402,6 +402,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
             {...option}
             level={1}
             key={option.value}
+            forceExpand={value.length > 0}
             onOptionChange={onOptionChange}
             selectedOptions={[
               ...tmpAppliedFilters,
@@ -448,6 +449,14 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
 
 function FilterOption(props: FilterOptionProps) {
   const [showSubOptions, setShowSubOptions] = React.useState(false);
+
+  React.useEffect(() => {
+    if (props.forceExpand && !showSubOptions) {
+      setShowSubOptions(true);
+    } else {
+      setShowSubOptions(false);
+    }
+  }, [props.forceExpand]);
 
   return (
     <div
@@ -540,6 +549,7 @@ function FilterOption(props: FilterOptionProps) {
               {...option}
               key={option.value}
               level={props.level + 1}
+              forceExpand={props.forceExpand}
               onOptionChange={props.onOptionChange}
               selectedOptions={props.selectedOptions}
               selected={

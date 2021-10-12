@@ -28,6 +28,8 @@ interface InvestmentsDisbursedModuleProps {
   setVizSelected: (vizSelected: string | undefined) => void;
   allowDrilldown: boolean;
   onNodeClick?: (code: string) => void;
+  type?: string;
+  toolboxOpen?: boolean;
 }
 
 function filterDisbursements(
@@ -143,7 +145,7 @@ export function InvestmentsDisbursedModule(
               }
             `}
           >
-            Investments - Disbursed <InfoIcon />
+            Investments - {props.type || "Disbursement"} <InfoIcon />
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalBudget)}
@@ -184,6 +186,7 @@ export function InvestmentsDisbursedModule(
         <SlideInContainer
           vizLevel={props.vizLevel}
           selected={props.vizSelected}
+          toolboxOpen={props.toolboxOpen}
           loading={props.isDrilldownLoading}
           close={() => {
             props.setVizLevel(0);

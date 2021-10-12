@@ -33,6 +33,7 @@ import {
 } from "app/components/Charts/GeoMap/components/tooltip";
 import { MapPin } from "app/components/Charts/GeoMap/components/pins";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { GeoMapControls } from "./components/controls";
 
 export function GeoMap(props: GeoMapProps) {
   const history = useHistory();
@@ -88,18 +89,18 @@ export function GeoMap(props: GeoMapProps) {
         default: "transparent",
         stops: [
           [0, "#ffffff"],
-          [1, "#f3f4f5"],
-          [2, "#dcdfe2"],
-          [3, "#c4cacf"],
-          [4, "#adb5bc"],
-          [5, "#959fa9"],
-          [6, "#7e8a96"],
-          [7, "#697581"],
-          [8, "#56606a"],
-          [9, "#434a52"],
-          [10, "#30353b"],
-          [11, "#30353b"],
-          [12, "#0a0b0c"],
+          [1, "#CDD4DF"],
+          [2, "#C0C7D2"],
+          [3, "#AFB6C1"],
+          [4, "#A0A7B1"],
+          [5, "#939AA4"],
+          [6, "#868D96"],
+          [7, "#787F88"],
+          [8, "#6B727B"],
+          [9, "#575E67"],
+          [10, "#444B53"],
+          [11, "#343B43"],
+          [12, "#252C34"],
         ],
       },
       "fill-opacity": [
@@ -258,6 +259,27 @@ export function GeoMap(props: GeoMapProps) {
     }
   }, []);
 
+  function zoomIn() {
+    if (settings.maxZoom > viewport.zoom) {
+      setViewport({
+        ...viewport,
+        zoom: viewport.zoom + 0.5,
+      });
+    }
+  }
+
+  function zoomOut() {
+    if (viewport.zoom >= settings.minZoom) {
+      setViewport({
+        ...viewport,
+        zoom:
+          viewport.zoom - 0.5 > settings.minZoom
+            ? viewport.zoom - 0.5
+            : settings.minZoom,
+      });
+    }
+  }
+
   const uMapStyle = mapStyle;
   if (props.data.features.length === 0 || props.noData) {
     uMapStyle.layers[0].paint["background-color"] = "hsl(204, 10%, 80%)";
@@ -356,6 +378,7 @@ export function GeoMap(props: GeoMapProps) {
                   committed: investmentsPinMarkerHoverInfo.committed,
                   signed: investmentsPinMarkerHoverInfo.signed,
                 }}
+                investmentSubType={props.investmentSubType}
               />
             </div>
           </Popup>
@@ -453,6 +476,7 @@ export function GeoMap(props: GeoMapProps) {
             </div>
           </Popup>
         )}
+        <GeoMapControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
       </MapGL>
       {hoverInfo && isHovering && props.type === "investments" && (
         <div
@@ -467,7 +491,10 @@ export function GeoMap(props: GeoMapProps) {
             left: ${hoverInfo.x - 180}px;
           `}
         >
-          <GeomapTooltip {...hoverInfo.properties} />
+          <GeomapTooltip
+            {...hoverInfo.properties}
+            investmentSubType={props.investmentSubType}
+          />
         </div>
       )}
       {hoverInfo &&

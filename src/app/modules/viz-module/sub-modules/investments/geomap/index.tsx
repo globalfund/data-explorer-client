@@ -14,6 +14,7 @@ import { InvestmentsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 interface Props {
   code?: string;
   detailFilterType?: string;
+  type?: "Disbursed" | "Signed" | "Committed";
 }
 
 export function InvestmentsGeoMap(props: Props) {
@@ -66,9 +67,27 @@ export function InvestmentsGeoMap(props: Props) {
         : appliedFilters
     );
     if (geomapView === "countries") {
-      fetchData({ filterString });
+      fetchData({
+        filterString:
+          filterString.length > 0
+            ? `${filterString}&aggregationField=${
+                props.type ? props.type.toLowerCase() : "disbursed"
+              }`
+            : `aggregationField=${
+                props.type ? props.type.toLowerCase() : "disbursed"
+              }`,
+      });
     } else if (geomapView === "multicountries") {
-      fetchMCData({ filterString });
+      fetchMCData({
+        filterString:
+          filterString.length > 0
+            ? `${filterString}&aggregationField=${
+                props.type ? props.type.toLowerCase() : "disbursed"
+              }`
+            : `aggregationField=${
+                props.type ? props.type.toLowerCase() : "disbursed"
+              }`,
+      });
     }
   }, [props.code, appliedFilters, geomapView]);
 
@@ -99,6 +118,7 @@ export function InvestmentsGeoMap(props: Props) {
         pins={[]}
         allocationsPins={[]}
         noData={maxValue === 0}
+        investmentSubType={props.type}
         investmentsPins={geomapView === "multicountries" ? dataMC : []}
       />
       {geomapView === "countries" && (
@@ -121,19 +141,14 @@ export function InvestmentsGeoMap(props: Props) {
             `}
           >
             <div>
-              <b>Disbursements</b>
+              <b>{props.type || "Disbursements"}</b>
             </div>
             <div
               css={`
                 width: 100%;
                 height: 6px;
                 border-radius: 20px;
-                background: linear-gradient(
-                    90deg,
-                    #f2f3f7 0%,
-                    rgba(255, 255, 255, 0) 100%
-                  ),
-                  #343a40;
+                background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
               `}
             />
             <div

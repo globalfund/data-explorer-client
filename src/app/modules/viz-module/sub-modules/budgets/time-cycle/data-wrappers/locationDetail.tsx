@@ -10,6 +10,7 @@ import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budge
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
 }
 
 export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
@@ -120,6 +121,7 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       vizPrevSelected={vizPrevSelected}
       drilldownPanelOptions={drilldownPanelOptions}
       dataDrilldownLevel1={dataDrilldownLevel1}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

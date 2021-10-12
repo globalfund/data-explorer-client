@@ -9,7 +9,9 @@ import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
   implementationPeriod: string;
+  type: "Disbursed" | "Signed" | "Commitment";
 }
 
 export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
@@ -20,20 +22,44 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
   );
 
   // api call & data
-  const fetchData = useStoreActions(
-    (store) => store.GrantDetailDisbursementsTreemap.fetch
-  );
-  const data = useStoreState(
-    (state) =>
-      get(
-        state.GrantDetailDisbursementsTreemap.data,
-        "data",
-        []
-      ) as DisbursementsTreemapDataItem[]
-  );
-  const isLoading = useStoreState(
-    (state) => state.GrantDetailDisbursementsTreemap.loading
-  );
+  const fetchData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.GrantDetailDisbursementsTreemap.fetch;
+      case "Signed":
+        return store.GrantDetailSignedTreemap.fetch;
+      case "Commitment":
+        return store.GrantDetailCommitmentTreemap.fetch;
+      default:
+        return store.GrantDetailDisbursementsTreemap.fetch;
+    }
+  });
+  const data = useStoreState((state) => {
+    let compData = state.GrantDetailDisbursementsTreemap.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.GrantDetailSignedTreemap.data;
+        break;
+      case "Commitment":
+        compData = state.GrantDetailCommitmentTreemap.data;
+        break;
+      default:
+        compData = state.GrantDetailDisbursementsTreemap.data;
+    }
+    return get(compData, "data", []) as DisbursementsTreemapDataItem[];
+  });
+  const isLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.GrantDetailDisbursementsTreemap.loading;
+      case "Signed":
+        return state.GrantDetailSignedTreemap.loading;
+      case "Commitment":
+        return state.GrantDetailCommitmentTreemap.loading;
+      default:
+        return state.GrantDetailDisbursementsTreemap.loading;
+    }
+  });
 
   React.useEffect(() => {
     if (props.code) {
@@ -50,6 +76,7 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
     <InvestmentsDisbursedModule
       data={data}
       vizLevel={0}
+      type={props.type}
       drilldownData={[]}
       isLoading={isLoading}
       allowDrilldown={false}
@@ -59,6 +86,7 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
       vizTranslation={{ x: 0, y: 0 }}
       setVizSelected={setVizSelected}
       setVizTranslation={setVizTranslation}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

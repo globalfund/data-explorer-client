@@ -5,14 +5,15 @@ import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { GeomapPreview } from "app/assets/dataset-preview/geomap";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
 import { GrantsListPreview } from "app/assets/dataset-preview/grantsList";
+import { ResultsListPreview } from "app/assets/dataset-preview/resultsList";
+import { DocumentsTablePreview } from "app/assets/dataset-preview/documentsTable";
 import { InvestmentsBarPreview } from "app/assets/dataset-preview/investmentsBar";
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
-import { ResultsListPreview } from "app/assets/dataset-preview/resultsList";
-import { DocumentsTablePreview } from "app/assets/dataset-preview/documentsTable";
 
 interface DatasetItemModel {
   name: string;
@@ -23,33 +24,111 @@ interface DatasetItemModel {
 
 const datasets: DatasetItemModel[] = [
   {
-    name: "Budgets",
+    name: "Budgets Flow",
     link: "/viz/budgets/flow",
     group: "Finance",
     preview: <BudgetFlowPreview />,
   },
   {
-    name: "Investments",
-    link: "/viz/investments/time-cycle",
+    name: "Budgets Time/Cycle",
+    link: "/viz/budgets/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
   },
   {
-    name: "Allocations",
+    name: "Budgets Geomap",
+    link: "/viz/budgets/geomap",
+    group: "Finance",
+    preview: <GeomapPreview />,
+  },
+  {
+    name: "Disbursements Treemap",
+    link: "/viz/disbursements/treemap",
+    group: "Finance",
+    preview: <InvestmentsTreemapPreview />,
+  },
+  {
+    name: "Disbursements Time/Cycle",
+    link: "/viz/disbursements/time-cycle",
+    group: "Finance",
+    preview: <InvestmentsBarPreview />,
+  },
+  {
+    name: "Disbursements Geomap",
+    link: "/viz/disbursements/geomap",
+    group: "Finance",
+    preview: <GeomapPreview />,
+  },
+  {
+    name: "Signed Treemap",
+    link: "/viz/signed/treemap",
+    group: "Finance",
+    preview: <InvestmentsTreemapPreview />,
+  },
+  {
+    name: "Signed Time/Cycle",
+    link: "/viz/signed/time-cycle",
+    group: "Finance",
+    preview: <InvestmentsBarPreview />,
+  },
+  {
+    name: "Signed Geomap",
+    link: "/viz/signed/geomap",
+    group: "Finance",
+    preview: <GeomapPreview />,
+  },
+  {
+    name: "Commitments Treemap",
+    link: "/viz/commitment/treemap",
+    group: "Finance",
+    preview: <InvestmentsTreemapPreview />,
+  },
+  {
+    name: "Commitments Time/Cycle",
+    link: "/viz/commitment/time-cycle",
+    group: "Finance",
+    preview: <InvestmentsBarPreview />,
+  },
+  {
+    name: "Commitments Geomap",
+    link: "/viz/commitment/geomap",
+    group: "Finance",
+    preview: <GeomapPreview />,
+  },
+  {
+    name: "Pledges & Contributions Treemap",
+    link: "/viz/pledges-contributions/treemap",
+    group: "Finance",
+    preview: <InvestmentsTreemapPreview />,
+  },
+  {
+    name: "Pledges & Contributions Time/Cycle",
+    link: "/viz/pledges-contributions/time-cycle",
+    group: "Finance",
+    preview: <InvestmentsBarPreview />,
+  },
+  {
+    name: "Pledges & Contributions Geomap",
+    link: "/viz/pledges-contributions/geomap",
+    group: "Finance",
+    preview: <GeomapPreview />,
+  },
+  {
+    name: "Allocations Radial",
     link: "/viz/allocations",
     group: "Finance",
     preview: <AllocationsRadialPreview />,
   },
   {
-    name: "Investments",
-    link: "/viz/investments/disbursements",
+    name: "Allocations Geomap",
+    link: "/viz/allocations/geomap",
     group: "Finance",
-    preview: <InvestmentsTreemapPreview />,
+    preview: <GeomapPreview />,
   },
   {
-    name: "Eligibility",
+    name: "",
     link: "/viz/eligibility",
-    group: "Other",
+    group: "Eligibility",
     preview: <EligibilityDotsPreview />,
   },
   {

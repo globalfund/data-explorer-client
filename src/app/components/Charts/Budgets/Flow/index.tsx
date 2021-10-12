@@ -21,8 +21,9 @@ import { BudgetsFlowTooltip } from "app/components/Charts/Budgets/Flow/component
 
 const container = css`
   width: 100%;
-  height: 900px;
+  padding-top: 40px;
   position: relative;
+  height: ${window.innerHeight - 300}px;
 
   linearGradient {
     stop {
@@ -209,7 +210,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             colors={["#373D43"]}
             // @ts-ignore
             layers={["links", Nodes, "labels"]}
-            margin={{ top: 40, right: 0, bottom: 50, left: 0 }}
+            margin={{ top: 0, right: 0, bottom: 10, left: 0 }}
             nodeOpacity={1}
             nodeSpacing={34}
             nodeThickness={25}

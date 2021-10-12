@@ -118,45 +118,123 @@ export default function CountryDetail() {
         `}
       >
         <Switch>
+          {/* Overview */}
           <Route path={`/location/${params.code}/overview`}>
             <LocationDetailOverviewModule code={params.code} />
           </Route>
+          {/* Budgets */}
           <Route path={`/location/${params.code}/budgets/flow`}>
-            <LocationDetailBudgetsFlowWrapper code={paramCode} />
+            <LocationDetailBudgetsFlowWrapper
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path={`/location/${params.code}/budgets/time-cycle`}>
-            <LocationDetailGenericBudgetsTimeCycleWrapper code={paramCode} />
+            <LocationDetailGenericBudgetsTimeCycleWrapper
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path={`/location/${params.code}/budgets/geomap`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
           </Route>
-          <Route path={`/location/${params.code}/investments/disbursements`}>
-            <LocationDetailInvestmentsDisbursedWrapper code={paramCode} />
+          {/* Disbursements */}
+          <Route path={`/location/${params.code}/disbursements/treemap`}>
+            <LocationDetailInvestmentsDisbursedWrapper
+              code={paramCode}
+              type="Disbursed"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
-          <Route path={`/location/${params.code}/investments/table`}>
+          <Route path={`/location/${params.code}/disbursements/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/investments/time-cycle`}>
-            <GenericInvestmentsTimeCycleWrapper code={paramCode} />
+          <Route path={`/location/${params.code}/disbursements/time-cycle`}>
+            <GenericInvestmentsTimeCycleWrapper
+              type="Disbursed"
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
-          <Route path={`/location/${params.code}/investments/geomap`}>
-            <InvestmentsGeoMap code={paramCode} detailFilterType="locations" />
+          <Route path={`/location/${params.code}/disbursements/geomap`}>
+            <InvestmentsGeoMap
+              type="Disbursed"
+              code={paramCode}
+              detailFilterType="locations"
+            />
           </Route>
+          {/* Signed */}
+          <Route path={`/location/${params.code}/signed/treemap`}>
+            <LocationDetailInvestmentsDisbursedWrapper
+              code={paramCode}
+              type="Signed"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path={`/location/${params.code}/signed/table`}>
+            <GenericInvestmentsTableWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/signed/time-cycle`}>
+            <GenericInvestmentsTimeCycleWrapper
+              type="Signed"
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path={`/location/${params.code}/signed/geomap`}>
+            <InvestmentsGeoMap
+              type="Signed"
+              code={paramCode}
+              detailFilterType="locations"
+            />
+          </Route>
+          {/* Commitment */}
+          <Route path={`/location/${params.code}/commitment/treemap`}>
+            <LocationDetailInvestmentsDisbursedWrapper
+              code={paramCode}
+              type="Commitment"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path={`/location/${params.code}/commitment/table`}>
+            <GenericInvestmentsTableWrapper code={paramCode} />
+          </Route>
+          <Route path={`/location/${params.code}/commitment/time-cycle`}>
+            <GenericInvestmentsTimeCycleWrapper
+              type="Commitment"
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path={`/location/${params.code}/commitment/geomap`}>
+            <InvestmentsGeoMap
+              type="Committed"
+              code={paramCode}
+              detailFilterType="locations"
+            />
+          </Route>
+          {/* Allocations */}
           <Route path={`/location/${params.code}/allocation`}>
-            <AllocationsModule code={paramCode} />
+            <AllocationsModule
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
+          {/* Eligibility */}
           <Route path={`/location/${params.code}/eligibility/table`}>
             <LocationEligibilityTableWrapper code={paramCode} />
           </Route>
           <Route path={`/location/${params.code}/eligibility`}>
             <LocationDetailEligibilityWrapper code={paramCode} />
           </Route>
+          {/* Grants */}
           <Route path={`/location/${params.code}/grants/list`}>
             <GrantsModule code={paramCode} detailFilterType="locations" />
           </Route>
           <Route path={`/location/${params.code}/grants`}>
             <LocationGrants code={paramCode} detailFilterType="locations" />
           </Route>
+          {/* Documents */}
           <Route path={`/location/${params.code}/documents`}>
             <LocationDetailDocumentsModule
               mcName={params.code}

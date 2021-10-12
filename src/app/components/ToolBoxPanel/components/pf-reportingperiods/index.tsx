@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import useMeasure from "react-use/lib/useMeasure";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -120,8 +122,12 @@ export function PerformanceFrameworkReportingPeriods(
             `}
           />
         </Draggable>
-        {props.periods.map((period: string[]) => (
-          <div key={`${period[0]}-${period[1]}`}>
+        {props.periods.map((period: string[], index: number) => (
+          <div
+            css="cursor: pointer;"
+            key={`${period[0]}-${period[1]}`}
+            onClick={() => setSelected(index)}
+          >
             <div>
               <span>{period[0]}</span>
               <span>{period[1]}</span>

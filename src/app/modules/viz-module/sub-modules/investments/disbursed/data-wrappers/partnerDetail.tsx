@@ -10,6 +10,8 @@ import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/i
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
+  type: "Disbursed" | "Signed" | "Commitment";
 }
 
 export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
@@ -21,20 +23,44 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   );
 
   // api call & data
-  const fetchData = useStoreActions(
-    (store) => store.PartnerDetailDisbursementsTreemap.fetch
-  );
-  const data = useStoreState(
-    (state) =>
-      get(
-        state.PartnerDetailDisbursementsTreemap.data,
-        "data",
-        []
-      ) as DisbursementsTreemapDataItem[]
-  );
-  const isLoading = useStoreState(
-    (state) => state.PartnerDetailDisbursementsTreemap.loading
-  );
+  const fetchData = useStoreActions((store) => {
+    switch (props.type) {
+      case "Disbursed":
+        return store.PartnerDetailDisbursementsTreemap.fetch;
+      case "Signed":
+        return store.PartnerDetailSignedTreemap.fetch;
+      case "Commitment":
+        return store.PartnerDetailCommitmentTreemap.fetch;
+      default:
+        return store.PartnerDetailDisbursementsTreemap.fetch;
+    }
+  });
+  const data = useStoreState((state) => {
+    let compData = state.PartnerDetailDisbursementsTreemap.data;
+    switch (props.type) {
+      case "Signed":
+        compData = state.PartnerDetailSignedTreemap.data;
+        break;
+      case "Commitment":
+        compData = state.PartnerDetailCommitmentTreemap.data;
+        break;
+      default:
+        compData = state.PartnerDetailDisbursementsTreemap.data;
+    }
+    return get(compData, "data", []) as DisbursementsTreemapDataItem[];
+  });
+  const isLoading = useStoreState((state) => {
+    switch (props.type) {
+      case "Disbursed":
+        return state.PartnerDetailDisbursementsTreemap.loading;
+      case "Signed":
+        return state.PartnerDetailSignedTreemap.loading;
+      case "Commitment":
+        return state.PartnerDetailCommitmentTreemap.loading;
+      default:
+        return state.PartnerDetailDisbursementsTreemap.loading;
+    }
+  });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -57,6 +83,7 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   return (
     <InvestmentsDisbursedModule
       data={data}
+      type={props.type}
       drilldownData={[]}
       vizLevel={vizLevel}
       isLoading={isLoading}
@@ -68,6 +95,7 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
       setVizSelected={setVizSelected}
       vizTranslation={vizTranslation}
       setVizTranslation={setVizTranslation}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

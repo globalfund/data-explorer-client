@@ -101,6 +101,7 @@ export default function GrantDetail() {
       `}
     >
       <PageHeader
+        isGrantDetail
         title={grantInfoData.title}
         breadcrumbs={[
           { name: "Home", link: "/" },
@@ -125,12 +126,15 @@ export default function GrantDetail() {
         `}
       >
         <Switch>
+          {/* Overview */}
           <Route path={`/grant/${params.code}/${params.period}/overview`}>
             <GrantDetailOverviewModule />
           </Route>
+          {/* Budgets */}
           <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
             <GrantDetailBudgetsFlowWrapper
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -139,6 +143,7 @@ export default function GrantDetail() {
           >
             <GrantDetailGenericBudgetsTimeCycleWrapper
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
@@ -148,6 +153,7 @@ export default function GrantDetail() {
               grantPeriod={params.period}
             />
           </Route>
+          {/* Performance Rating */}
           <Route
             path={`/grant/${params.code}/${params.period}/performance-rating`}
           >
@@ -156,16 +162,19 @@ export default function GrantDetail() {
               implementationPeriod={params.period}
             />
           </Route>
+          {/* Disbursements */}
           <Route
-            path={`/grant/${params.code}/${params.period}/investments/disbursements`}
+            path={`/grant/${params.code}/${params.period}/disbursements/treemap`}
           >
             <GrantDetailInvestmentsDisbursedWrapper
+              type="Disbursed"
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
           <Route
-            path={`/grant/${params.code}/${params.period}/investments/table`}
+            path={`/grant/${params.code}/${params.period}/disbursements/table`}
           >
             <GrantDetailInvestmentsTableWrapper
               code={params.code}
@@ -173,21 +182,80 @@ export default function GrantDetail() {
             />
           </Route>
           <Route
-            path={`/grant/${params.code}/${params.period}/investments/time-cycle`}
+            path={`/grant/${params.code}/${params.period}/disbursements/time-cycle`}
           >
             <GrantDetailInvestmentsTimeCycleWrapper
+              type="Disbursed"
+              code={params.code}
+              toolboxOpen={openToolboxPanel}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          {/* Signed */}
+          <Route path={`/grant/${params.code}/${params.period}/signed/treemap`}>
+            <GrantDetailInvestmentsDisbursedWrapper
+              type="Signed"
+              code={params.code}
+              toolboxOpen={openToolboxPanel}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route path={`/grant/${params.code}/${params.period}/signed/table`}>
+            <GrantDetailInvestmentsTableWrapper
               code={params.code}
               implementationPeriod={params.period}
             />
           </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/signed/time-cycle`}
+          >
+            <GrantDetailInvestmentsTimeCycleWrapper
+              type="Signed"
+              code={params.code}
+              toolboxOpen={openToolboxPanel}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          {/* Commitmeent */}
+          <Route
+            path={`/grant/${params.code}/${params.period}/commitment/treemap`}
+          >
+            <GrantDetailInvestmentsDisbursedWrapper
+              type="Commitment"
+              code={params.code}
+              toolboxOpen={openToolboxPanel}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/commitment/table`}
+          >
+            <GrantDetailInvestmentsTableWrapper
+              code={params.code}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          <Route
+            path={`/grant/${params.code}/${params.period}/commitment/time-cycle`}
+          >
+            <GrantDetailInvestmentsTimeCycleWrapper
+              type="Commitment"
+              code={params.code}
+              toolboxOpen={openToolboxPanel}
+              implementationPeriod={params.period}
+            />
+          </Route>
+          {/* Documents */}
           <Route path={`/grant/${params.code}/${params.period}/documents`}>
             <GrantDetailDocumentsModule code={params.code} />
           </Route>
+          {/* Performance Framework */}
           <Route
             path={`/grant/${params.code}/${params.period}/performance-framework`}
           >
             <PerformanceFrameworkModule
               code={params.code}
+              toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
           </Route>
