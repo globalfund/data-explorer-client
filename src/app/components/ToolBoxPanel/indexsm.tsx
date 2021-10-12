@@ -3,6 +3,7 @@ import { IconButton, Slide } from "@material-ui/core";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import { SubToolBoxPanel } from "./subToolBox";
 import { ToolBoxPanelProps } from ".";
+import { ToolBoxPanelIconButtons } from "./components/iconbuttons";
 
 export function ToolBoxPage(props: ToolBoxPanelProps) {
   return (
@@ -41,6 +42,7 @@ export function ToolBoxPage(props: ToolBoxPanelProps) {
               <CloseOutlinedIcon htmlColor="#ffffff" viewBox=" -4 -4 30 30" />
             </IconButton>
           </div>
+          <ToolBoxPanelIconButtons />
           <SubToolBoxPanel filterGroups={props.filterGroups} />
         </div>
       </div>
