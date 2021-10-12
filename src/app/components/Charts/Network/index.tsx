@@ -185,7 +185,7 @@ export function NetworkViz(props: NetworkVizProps) {
           id="performance-framework-network"
           css={`
             width: 100%;
-            height: 650px;
+            height: calc(100vh - 361px);
 
             ${props.data.links.length === 0
               ? `
