@@ -67,7 +67,7 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
         filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
       });
     }
-  }, [props.code, props.implementationPeriod]);
+  }, [props.code, props.implementationPeriod, props.type]);
 
   if (isLoading) {
     return <PageLoader />;

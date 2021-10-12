@@ -120,7 +120,7 @@ export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
         : appliedFilters
     );
     fetchData({ filterString });
-  }, [props.code, appliedFilters]);
+  }, [props.code, appliedFilters, props.type]);
 
   useUpdateEffect(() => {
     if (vizSelected) {

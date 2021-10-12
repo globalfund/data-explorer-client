@@ -111,7 +111,7 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
         : appliedFilters
     );
     fetchData({ filterString });
-  }, [props.code, appliedFilters]);
+  }, [props.code, appliedFilters, props.type]);
 
   useUpdateEffect(() => {
     if (vizSelected) {

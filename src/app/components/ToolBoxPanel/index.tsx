@@ -283,8 +283,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   periods={performanceFrameworkPeriods}
                 />
               )}
-            {params.vizType === "investments" &&
-              params.subType === "disbursements" && (
+            {(params.vizType === "commitment" ||
+              params.vizType === "disbursements" ||
+              params.vizType === "signed") &&
+              params.subType === "treemap" && (
                 <ToolBoxPanelDisbursementsSlider />
               )}
             {!isGrantDetail && (

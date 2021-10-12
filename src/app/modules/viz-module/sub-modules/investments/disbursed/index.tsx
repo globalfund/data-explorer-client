@@ -39,15 +39,18 @@ function filterDisbursements(
   const filteredData: DisbursementsTreemapDataItem[] = [];
 
   data.forEach((item: DisbursementsTreemapDataItem) => {
-    if (item.value >= values[0] && item.value <= values[1]) {
-      const filteredItem = {
-        ...item,
-        _children: filter(
-          item._children,
-          (child: DisbursementsTreemapDataItem) =>
-            child.value >= values[0] && child.value <= values[1]
-        ),
-      };
+    const filteredChildren = filter(
+      item._children,
+      (child: DisbursementsTreemapDataItem) =>
+        child.value >= values[0] && child.value <= values[1]
+    );
+    const filteredItem = {
+      ...item,
+      value: sumBy(filteredChildren, "value"),
+      formattedValue: formatFinancialValue(sumBy(filteredChildren, "value")),
+      _children: filteredChildren,
+    };
+    if (filteredItem._children.length > 0) {
       filteredData.push(filteredItem);
     }
   });
@@ -100,7 +103,13 @@ export function InvestmentsDisbursedModule(
   );
 
   React.useEffect(() => {
-    const lmax = maxBy(props.data, "value");
+    let allChildren: DisbursementsTreemapDataItem[] = [];
+    props.data.forEach((item: DisbursementsTreemapDataItem) => {
+      if (item._children) {
+        allChildren = [...allChildren, ...item._children];
+      }
+    });
+    const lmax = maxBy(allChildren, "value");
     if (lmax && lmax.value !== toolboxPanelDisbursementsSliderMaxValue) {
       setToolboxPanelDisbursementsSliderMaxValue(lmax.value);
       setToolboxPanelDisbursementsSliderValues([0, lmax.value]);
