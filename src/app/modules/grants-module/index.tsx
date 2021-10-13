@@ -117,7 +117,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
   if (!props.code && !props.detailFilterType) {
-    if (widthThreshold > 500) {
+    if (widthThreshold > 420) {
       pushValue = 0;
     } else if (widthThreshold < 0) {
       pushValue = 0;
