@@ -14,6 +14,7 @@ interface SlideInContainerProps {
   toolboxOpen?: boolean;
   children: React.ReactNode;
   bigHeader?: boolean;
+  enableOverflow?: boolean;
 }
 
 export function SlideInContainer(props: SlideInContainerProps) {
@@ -84,9 +85,10 @@ export function SlideInContainer(props: SlideInContainerProps) {
             width: 100%;
             height: 100%;
             max-height: 100%;
-            // overflow: visible;
-            // overflow-y: auto;
             padding: ${props.loading ? "0px" : "20px 50px"};
+            ${props.enableOverflow
+              ? `overflow: visible;overflow-y: auto;`
+              : ""};
 
             > div {
               height: calc(100% - 80px);
