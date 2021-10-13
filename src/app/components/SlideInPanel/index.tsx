@@ -66,17 +66,19 @@ export function SlideInContainer(props: SlideInContainerProps) {
           css={`
             top: ${isSmallScreen ? "15px" : "0"};
             left: ${isSmallScreen ? "0" : "-32px"};
+            height: 30px;
             padding: 3px;
             background: #fff;
             border-radius: 5px;
             position: absolute;
-            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+            box-shadow: ${isSmallScreen
+              ? "0"
+              : "0px 0px 10px rgba(152, 161, 170, 0.6)"};
           `}
           onClick={props.close}
         >
           <CloseIcon color="primary" />
         </IconButton>
-
         <div
           css={`
             width: 100%;
@@ -85,7 +87,8 @@ export function SlideInContainer(props: SlideInContainerProps) {
             // overflow: visible;
             // overflow-y: auto;
             padding: ${props.loading ? "0px" : "20px 50px"};
-
+            padding-top: ${isSmallScreen ? "44px !important" : ""};
+            padding-left: ${isSmallScreen ? "33px !important" : ""};
             > div {
               height: calc(100% - 80px);
               overflow: visible !important;
