@@ -4,6 +4,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
+import { useMediaQuery } from "@material-ui/core";
 
 interface SlideInContainerProps {
   ref?: any;
@@ -30,6 +31,8 @@ export function SlideInContainer(props: SlideInContainerProps) {
       setOpen(tmp);
     }
   }, [props.vizLevel, props.selected]);
+
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <Slide in={open} mountOnEnter unmountOnExit timeout={500} direction="left">
@@ -61,8 +64,8 @@ export function SlideInContainer(props: SlideInContainerProps) {
       >
         <IconButton
           css={`
-            top: 0;
-            left: -32px;
+            top: ${isSmallScreen ? "15px" : "0"};
+            left: ${isSmallScreen ? "0" : "-32px"};
             padding: 3px;
             background: #fff;
             border-radius: 5px;
@@ -73,6 +76,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
         >
           <CloseIcon color="primary" />
         </IconButton>
+
         <div
           css={`
             width: 100%;
