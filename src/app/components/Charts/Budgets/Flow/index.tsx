@@ -11,7 +11,10 @@ import {
   SankeyNodeDatum,
 } from "@nivo/sankey";
 import { InfoIcon } from "app/assets/icons/Info";
+// import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { XsContainer } from "app/components/Charts/common/styles";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { BudgetsFlowProps } from "app/components/Charts/Budgets/Flow/data";
@@ -24,6 +27,10 @@ const container = css`
   padding-top: 40px;
   position: relative;
   height: ${window.innerHeight - 300}px;
+
+  @media (max-height: 800px) {
+    height: 650px;
+  }
 
   linearGradient {
     stop {
@@ -91,7 +98,10 @@ const getNodeLabel = (label: string, matchesSm: boolean): string => {
 export function BudgetsFlow(props: BudgetsFlowProps) {
   const matches = useMediaQuery("(max-width: 767px)");
   const legends = getLegendItems(props.data.nodes);
-  //   const [xsTooltipData, setXsTooltipData] = React.useState(null);
+  const [
+    xsTooltipData,
+    setXsTooltipData,
+  ] = React.useState<SankeyLinkDatum | null>(null);
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
     "value"
@@ -220,6 +230,9 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
               data: SankeyNodeDatum | SankeyLinkDatum,
               event: React.MouseEvent
             ) => {
+              // if (isTouchDevice()) {
+              //   setXsTooltipData(data as SankeyLinkDatum);
+              // } else {
               const linkTarget = get(data, "target", null);
               if (linkTarget) {
                 props.onNodeClick(
@@ -231,25 +244,22 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                   linkTarget.y
                 );
               }
+              // }
             }}
             enableLinkGradient
             linkBlendMode="normal"
             linkHoverOthersOpacity={0.15}
-            linkTooltip={(tProps: any) =>
-              !matches && (
+            linkTooltip={
+              (tProps: any) => (
+                // !matches && (
                 <BudgetsFlowTooltip
                   value={tProps.value}
                   source={tProps.source.id}
                   target={tProps.target.id}
                 />
               )
+              // )
             }
-            //   labelTextColor={(l: any) => {
-            //     if (selectedNode) {
-            //       return selectedNode.id === l.id ? "#fff" : "#757575";
-            //     }
-            //     return "#fff";
-            //   }}
             labelFormat={(text: string | number) =>
               getNodeLabel(text as string, matches)
             }
@@ -269,20 +279,17 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
               },
             }}
           />
-          {/* {matchesSm && xsTooltipData && !props.selectedNode && (
-          <XsContainer>
-            <ClickAwayListener onClickAway={() => setXsTooltipData(null)}>
-              <Tooltip minWidth="150px" dataCy="sankey-popup">
-                <div css="width: 80vw;">
-                  <LinkTooltip
-                    {...xsTooltipData}
-                    close={() => setXsTooltipData(null)}
-                  />
-                </div>
-              </Tooltip>
-            </ClickAwayListener>
-          </XsContainer>
-        )} */}
+          {matches && xsTooltipData && !props.selectedNodeId && (
+            <XsContainer>
+              <ClickAwayListener onClickAway={() => setXsTooltipData(null)}>
+                <BudgetsFlowTooltip
+                  value={xsTooltipData.value}
+                  source={xsTooltipData.source.id}
+                  target={xsTooltipData.target.id}
+                />
+              </ClickAwayListener>
+            </XsContainer>
+          )}
         </div>
       )}
     </div>

@@ -25,6 +25,7 @@ import { AllocationsPeriods } from "./components/allocationsperiods";
 import { EligibilityYear } from "./components/eligibilityyear";
 import { ResultsYear } from "./components/resultsyear";
 import { ToolBoxPanelDisbursementsSlider } from "./components/disbursementslider";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 
 interface ToolBoxPanelProps {
   open: boolean;
@@ -200,7 +201,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 justify-content: center;
                 border-radius: 10px 0px 0px 10px;
                 transition: background 0.2s ease-in-out;
-                left: -${!visibleVScrollbar || props.open ? 17 : 22}px;
+                // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
+                // ${isTouchDevice() ? `left: -16px;` : ""}
+                left: -16px;
 
                 &:hover {
                   background: #13183f;

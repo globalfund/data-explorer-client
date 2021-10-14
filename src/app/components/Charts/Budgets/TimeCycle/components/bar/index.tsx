@@ -47,6 +47,11 @@ export function BarComponent(props: any) {
         props.hideTooltip();
         props.setHoveredXIndex(null);
       }}
+      onTouchStart={(e: React.TouchEvent<SVGGElement>) => {
+        if (props.data.indexValue !== props.selected) {
+          props.onClick(props.data.indexValue, props.x - 100, 0);
+        }
+      }}
       css={
         props.selected === props.data.indexValue ||
         (props.hoveredXIndex && props.hoveredXIndex === props.data.indexValue)
