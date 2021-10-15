@@ -32,6 +32,7 @@ interface BudgetsTimeCycleModuleProps {
   // setVizPrevSelected: (vizPrevSelected: string | undefined) => void;
   drilldownPanelOptions: string[];
   dataDrilldownLevel1: BudgetsTreemapDataItem[];
+  toolboxOpen?: boolean;
 }
 
 export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
@@ -95,6 +96,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       <SlideInContainer
         vizLevel={props.vizLevel}
         selected={props.vizSelected}
+        toolboxOpen={props.toolboxOpen}
         loading={props.isDrilldownLoading}
         close={() => {
           props.setVizLevel(props.vizLevel - 1);

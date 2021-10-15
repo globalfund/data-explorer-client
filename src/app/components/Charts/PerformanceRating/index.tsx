@@ -70,7 +70,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
               ? value.toString().slice(2, 4)
               : value.toString();
           },
-          tickRotation: matches && props.data.length > 3 ? 45 : 0,
+          tickRotation: matches || props.data.length > 5 ? 45 : 0,
         }}
         theme={{
           axis: {

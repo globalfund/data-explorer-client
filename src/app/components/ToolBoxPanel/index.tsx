@@ -4,7 +4,6 @@ import get from "lodash/get";
 import find from "lodash/find";
 import Slide from "@material-ui/core/Slide";
 import { useParams, useHistory } from "react-router-dom";
-import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
@@ -25,6 +24,8 @@ import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { AllocationsPeriods } from "./components/allocationsperiods";
 import { EligibilityYear } from "./components/eligibilityyear";
 import { ResultsYear } from "./components/resultsyear";
+import { ToolBoxPanelDisbursementsSlider } from "./components/disbursementslider";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 
 interface ToolBoxPanelProps {
   open: boolean;
@@ -41,9 +42,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     vizType: string;
     subType?: string;
   }>();
-  const { appliedFilters } = useAppliedFilters({
-    type: "All",
-  });
   const [selectedView, setSelectedView] = React.useState("");
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
@@ -79,6 +77,11 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   // performance framework periods data
   const performanceFrameworkPeriods = useStoreState((state) =>
     get(state.GrantDetailPerformanceFramework.data, "periods", [])
+  );
+
+  // viz drilldown items
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
   );
 
   function getSelectedView() {
@@ -151,14 +154,21 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         <div
           css={`
             right: 0;
-            top: 133px;
             z-index: 20;
-            width: 500px;
+            width: 400px;
             position: fixed;
             background: #f5f5f7;
-            height: calc(100vh - 133px);
             visibility: visible !important;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+            top: ${!props.isGrantDetail && vizDrilldowns.length === 0
+              ? 133
+              : 168}px;
+            height: calc(
+              100vh -
+                ${!props.isGrantDetail && vizDrilldowns.length === 0
+                  ? 133
+                  : 168}px
+            );
 
             @media (max-width: 500px) {
               width: calc(100vw - 50px);
@@ -191,7 +201,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 justify-content: center;
                 border-radius: 10px 0px 0px 10px;
                 transition: background 0.2s ease-in-out;
-                left: -${!visibleVScrollbar || props.open ? 17 : 22}px;
+                // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
+                // ${isTouchDevice() ? `left: -16px;` : ""}
+                left: -16px;
 
                 &:hover {
                   background: #13183f;
@@ -232,7 +244,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               <EligibilityYear />
             )}
             {isResultsPage && <ResultsYear />}
-            {((params.vizType === "investments" &&
+            {(((params.vizType === "commitment" ||
+              params.vizType === "disbursements" ||
+              params.vizType === "signed") &&
               params.subType === "geomap") ||
               (params.vizType === "allocations" &&
                 params.subType === "geomap") ||
@@ -271,6 +285,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 <PerformanceFrameworkReportingPeriods
                   periods={performanceFrameworkPeriods}
                 />
+              )}
+            {(params.vizType === "commitment" ||
+              params.vizType === "disbursements" ||
+              params.vizType === "signed") &&
+              params.subType === "treemap" && (
+                <ToolBoxPanelDisbursementsSlider />
               )}
             {!isGrantDetail && (
               <ToolBoxPanelFilters groups={props.filterGroups} />

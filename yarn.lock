@@ -12104,6 +12104,11 @@ react-motion@^0.5.2:
     prop-types "^15.5.8"
     raf "^3.1.0"
 
+react-range@1.4.7:
+  version "1.4.7"
+  resolved "https://registry.yarnpkg.com/react-range/-/react-range-1.4.7.tgz#e087aadd0861ccffc4ed5640e755f81948af629a"
+  integrity sha512-CWNX3z7p7x0YS/Tonvcidl+LM5olsr7QXKXQeunfPgiPAzAK+BOa5kLL4hbt2oxfjCIHCFRePEdxL2eKqeNTTA==
+
 react-refresh@^0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"

@@ -1,6 +1,6 @@
 import React from "react";
 import Slide from "@material-ui/core/Slide";
-import { CloseIcon } from "app/assets/icons/Close";
+import CloseIcon from "@material-ui/icons/Close";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -11,7 +11,10 @@ interface SlideInContainerProps {
   selected?: string;
   close: () => void;
   loading?: boolean;
+  toolboxOpen?: boolean;
   children: React.ReactNode;
+  bigHeader?: boolean;
+  enableOverflow?: boolean;
 }
 
 export function SlideInContainer(props: SlideInContainerProps) {
@@ -36,14 +39,20 @@ export function SlideInContainer(props: SlideInContainerProps) {
         ref={props.ref}
         id="zoom-in-level"
         css={`
-          right: 0;
-          width: 60%;
           z-index: 2;
           display: flex;
           position: absolute;
           justify-content: flex-end;
-          top: ${vizDrilldowns.length > 0 ? "168px" : "133px"};
-          height: calc(100% - ${vizDrilldowns.length > 0 ? "168px" : "133px"});
+          right: ${props.toolboxOpen ? "400px" : 0};
+          width: ${props.toolboxOpen ? "50%" : "60%"};
+          top: ${vizDrilldowns.length > 0 || props.bigHeader
+            ? "168px"
+            : "133px"};
+          transition: right 500ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          height: calc(
+            100% -
+              ${vizDrilldowns.length > 0 || props.bigHeader ? "168px" : "133px"}
+          );
 
           @media (max-width: 768px) {
             width: 100%;
@@ -60,21 +69,26 @@ export function SlideInContainer(props: SlideInContainerProps) {
         <IconButton
           css={`
             top: 0;
-            left: -50px;
+            left: -32px;
+            padding: 3px;
+            background: #fff;
+            border-radius: 5px;
             position: absolute;
+            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
           `}
           onClick={props.close}
         >
-          <CloseIcon />
+          <CloseIcon color="primary" />
         </IconButton>
         <div
           css={`
             width: 100%;
             height: 100%;
             max-height: 100%;
-            overflow: visible;
-            overflow-y: auto;
             padding: ${props.loading ? "0px" : "20px 50px"};
+            ${props.enableOverflow
+              ? `overflow: visible;overflow-y: auto;`
+              : ""};
 
             > div {
               height: calc(100% - 80px);

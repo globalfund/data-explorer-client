@@ -1,9 +1,19 @@
 import React from "react";
-import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursements/data";
+import { useLocation } from "react-router-dom";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursements/data";
 
 export function TreemapTooltip(props: TreemapTooltipProps) {
   const { data } = props.node;
+  const { pathname } = useLocation();
+
+  let type = "Disbursements";
+
+  if (pathname.indexOf("signed") > -1) {
+    type = "Signed";
+  } else if (pathname.indexOf("commitment") > -1) {
+    type = "Commitment";
+  }
 
   return (
     <div
@@ -65,7 +75,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
         >
           <div>Component</div>
           <div>Grants</div>
-          <div>Disbursements</div>
+          <div>{type}</div>
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (
           <div

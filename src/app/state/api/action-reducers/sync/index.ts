@@ -120,3 +120,21 @@ export const ToolBoxPanelResultsYearState: ToolBoxPanelResultsYearStateModel = {
     state.value = payload;
   }),
 };
+
+export interface ToolBoxPanelDisbursementsSliderValuesModel {
+  max: number;
+  setMax: Action<ToolBoxPanelDisbursementsSliderValuesModel, number>;
+  values: number[];
+  setValues: Action<ToolBoxPanelDisbursementsSliderValuesModel, number[]>;
+}
+
+export const ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel = {
+  max: 0,
+  setMax: action((state, payload: number) => {
+    state.max = payload;
+  }),
+  values: [0, 0],
+  setValues: action((state, payload: number[]) => {
+    state.values = payload;
+  }),
+};

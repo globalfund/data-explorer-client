@@ -1,8 +1,10 @@
 /* third-party */
 import React from "react";
+import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
-import { useUnmount, useTitle } from "react-use";
+import { useUnmount, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
@@ -26,6 +28,34 @@ interface InvestmentsDisbursedModuleProps {
   setVizSelected: (vizSelected: string | undefined) => void;
   allowDrilldown: boolean;
   onNodeClick?: (code: string) => void;
+  type?: string;
+  toolboxOpen?: boolean;
+}
+
+function filterDisbursements(
+  data: DisbursementsTreemapDataItem[],
+  values: number[]
+): DisbursementsTreemapDataItem[] {
+  const filteredData: DisbursementsTreemapDataItem[] = [];
+
+  data.forEach((item: DisbursementsTreemapDataItem) => {
+    const filteredChildren = filter(
+      item._children,
+      (child: DisbursementsTreemapDataItem) =>
+        child.value >= values[0] && child.value <= values[1]
+    );
+    const filteredItem = {
+      ...item,
+      value: sumBy(filteredChildren, "value"),
+      formattedValue: formatFinancialValue(sumBy(filteredChildren, "value")),
+      _children: filteredChildren,
+    };
+    if (filteredItem._children.length > 0) {
+      filteredData.push(filteredItem);
+    }
+  });
+
+  return filteredData;
 }
 
 export function InvestmentsDisbursedModule(
@@ -33,6 +63,10 @@ export function InvestmentsDisbursedModule(
 ) {
   useTitle("The Data Explorer - Investments/Disbursed");
   const totalBudget = sumBy(props.data, "value");
+
+  const [treemapData, setTreemapData] = React.useState<
+    DisbursementsTreemapDataItem[]
+  >(props.data);
 
   const vizDrilldowns = useStoreState(
     (state) => state.PageHeaderVizDrilldownsState.value
@@ -54,6 +88,39 @@ export function InvestmentsDisbursedModule(
   }, [props.vizLevel, props.vizSelected]);
 
   useUnmount(() => setVizDrilldowns([]));
+
+  const setToolboxPanelDisbursementsSliderMaxValue = useStoreActions(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.setMax
+  );
+  const toolboxPanelDisbursementsSliderMaxValue = useStoreState(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.max
+  );
+  const setToolboxPanelDisbursementsSliderValues = useStoreActions(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.setValues
+  );
+  const toolboxPanelDisbursementsSliderValues = useStoreState(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.values
+  );
+
+  React.useEffect(() => {
+    let allChildren: DisbursementsTreemapDataItem[] = [];
+    props.data.forEach((item: DisbursementsTreemapDataItem) => {
+      if (item._children) {
+        allChildren = [...allChildren, ...item._children];
+      }
+    });
+    const lmax = maxBy(allChildren, "value");
+    if (lmax && lmax.value !== toolboxPanelDisbursementsSliderMaxValue) {
+      setToolboxPanelDisbursementsSliderMaxValue(lmax.value);
+      setToolboxPanelDisbursementsSliderValues([0, lmax.value]);
+    }
+  }, [props.data]);
+
+  useUpdateEffect(() => {
+    setTreemapData(
+      filterDisbursements(props.data, toolboxPanelDisbursementsSliderValues)
+    );
+  }, [props.data, toolboxPanelDisbursementsSliderValues]);
 
   if (props.isLoading) {
     return <PageLoader />;
@@ -87,7 +154,7 @@ export function InvestmentsDisbursedModule(
               }
             `}
           >
-            Investments - Disbursed <InfoIcon />
+            Investments - {props.type || "Disbursement"} <InfoIcon />
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalBudget)}
@@ -107,7 +174,7 @@ export function InvestmentsDisbursedModule(
       >
         <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
           <DisbursementsTreemap
-            data={props.data}
+            data={treemapData}
             selectedNodeId={props.vizSelected}
             onNodeClick={(
               node: string,
@@ -128,6 +195,7 @@ export function InvestmentsDisbursedModule(
         <SlideInContainer
           vizLevel={props.vizLevel}
           selected={props.vizSelected}
+          toolboxOpen={props.toolboxOpen}
           loading={props.isDrilldownLoading}
           close={() => {
             props.setVizLevel(0);
