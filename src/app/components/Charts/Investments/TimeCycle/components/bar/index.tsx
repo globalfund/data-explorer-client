@@ -72,6 +72,7 @@ export function BarComponent(props: any) {
           props.onClick(props.data.indexValue, props.x - 100, 0);
         }
       }}
+      onTouchStart={() => props.onTouchStart(props.data)}
       data-cy="budgets-time-cycle-bar-component"
     >
       <text

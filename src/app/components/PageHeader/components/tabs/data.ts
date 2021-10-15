@@ -14,8 +14,16 @@ export const countryDetailTabs: TabProps[] = [
     url: "/location/<code>/overview",
   },
   {
-    name: "Investments",
-    url: "/location/<code>/investments/disbursements",
+    name: "Signed",
+    url: "/location/<code>/signed/treemap",
+  },
+  {
+    name: "Commitment",
+    url: "/location/<code>/commitment/treemap",
+  },
+  {
+    name: "Disbursement",
+    url: "/location/<code>/disbursements/treemap",
   },
   {
     name: "Budgets",
@@ -45,8 +53,16 @@ export const grantDetailTabs: TabProps[] = [
     url: "/grant/<code>/<period>/overview",
   },
   {
-    name: "Investments",
-    url: "/grant/<code>/<period>/investments/disbursements",
+    name: "Signed",
+    url: "/grant/<code>/<period>/signed/time-cycle",
+  },
+  {
+    name: "Commitment",
+    url: "/grant/<code>/<period>/commitment/time-cycle",
+  },
+  {
+    name: "Disbursement",
+    url: "/grant/<code>/<period>/disbursements/time-cycle",
   },
   {
     name: "Budgets",
@@ -68,8 +84,16 @@ export const grantDetailTabs: TabProps[] = [
 
 export const partnerDetailTabs: TabProps[] = [
   {
-    name: "Investments",
-    url: "/partner/<code>/investments/disbursements",
+    name: "Signed",
+    url: "/partner/<code>/signed/treemap",
+  },
+  {
+    name: "Commitment",
+    url: "/partner/<code>/commitment/treemap",
+  },
+  {
+    name: "Disbursement",
+    url: "/partner/<code>/disbursements/treemap",
   },
   {
     name: "Budgets",

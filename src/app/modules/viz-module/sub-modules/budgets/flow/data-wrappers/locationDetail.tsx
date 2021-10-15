@@ -11,6 +11,7 @@ import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/bud
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
 }
 
 export function LocationDetailBudgetsFlowWrapper(props: Props) {
@@ -135,6 +136,7 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
       drilldownPanelOptions={drilldownPanelOptions}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

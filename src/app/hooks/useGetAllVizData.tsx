@@ -90,6 +90,33 @@ export function useGetAllVizData() {
         []
       ) as DisbursementsTreemapDataItem[]
   );
+  const signedTimeCycle = useStoreState(
+    (state) =>
+      get(state.SignedTimeCycle.data, "data", []) as Record<string, unknown>[]
+  );
+  const signedTreemap = useStoreState(
+    (state) =>
+      get(
+        state.SignedTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const commitmentTimeCycle = useStoreState(
+    (state) =>
+      get(state.CommitmentTimeCycle.data, "data", []) as Record<
+        string,
+        unknown
+      >[]
+  );
+  const commitmentTreemap = useStoreState(
+    (state) =>
+      get(
+        state.CommitmentTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
   const documents = useStoreState((state) => state.Documents.data);
   const eligibility = useStoreState(
     (state) => get(state.Eligibility.data, "data", []) as DotChartModel[]
@@ -111,8 +138,20 @@ export function useGetAllVizData() {
   const grantDetailDisbursementsTimeCycle = useStoreState(
     (state) => state.GrantDetailDisbursementsTimeCycle.data
   );
+  const grantDetailSignedTimeCycle = useStoreState(
+    (state) => state.GrantDetailSignedTimeCycle.data
+  );
+  const grantDetailCommitmentTimeCycle = useStoreState(
+    (state) => state.GrantDetailCommitmentTimeCycle.data
+  );
   const grantDetailDisbursementsTreemap = useStoreState(
     (state) => state.GrantDetailDisbursementsTreemap.data
+  );
+  const grantDetailSignedTreemap = useStoreState(
+    (state) => state.GrantDetailSignedTreemap.data
+  );
+  const grantDetailCommitmentTreemap = useStoreState(
+    (state) => state.GrantDetailCommitmentTreemap.data
   );
   const grantDetailDocuments = useStoreState(
     (state) => state.GrantDetailDocuments.data
@@ -125,6 +164,30 @@ export function useGetAllVizData() {
   );
   const grantsList = useStoreState(
     (state) => get(state.GrantsList.data, "data", []) as GrantListItemModel[]
+  );
+  const locationDetailDisbursementsTreemap = useStoreState(
+    (state) =>
+      get(
+        state.LocationDetailDisbursementsTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const locationDetailSignedTreemap = useStoreState(
+    (state) =>
+      get(
+        state.LocationDetailSignedTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const locationDetailCommitmentTreemap = useStoreState(
+    (state) =>
+      get(
+        state.LocationDetailCommitmentTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
   );
   const locationDetailBudgetsFlow = useStoreState(
     (state) =>
@@ -165,63 +228,196 @@ export function useGetAllVizData() {
   const resultsList = useStoreState(
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
   );
+  const partnerDetailDisbursementsTreemap = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailDisbursementsTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const partnerDetailSignedTreemap = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailSignedTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const partnerDetailCommitmentTreemap = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailCommitmentTreemap.data,
+        "data",
+        []
+      ) as DisbursementsTreemapDataItem[]
+  );
+  const partnerDetailBudgetsFlow = useStoreState(
+    (state) =>
+      get(state.PartnerDetailBudgetsFlow.data, "links", []) as {
+        value: number;
+        source: string;
+        target: string;
+      }[]
+  );
+  const partnerDetailBudgetsTimeCycle = useStoreState(
+    (state) =>
+      get(state.PartnerDetailBudgetsTimeCycle.data, "data", []) as Record<
+        string,
+        unknown
+      >[]
+  );
 
   return {
+    // Allocations
     "/viz/allocations": allocations,
     "/viz/allocations/geomap": {
       countries: allocationsGeomap,
       multicountries: allocationsMCGeomap,
     },
+    // Budgets
     "/viz/budgets/flow": budgetsFlow,
     "/viz/budgets/time-cycle": budgetsTimeCycle,
     "/viz/budgets/geomap": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
-    "/viz/investments/geomap": {
+    // Disbursements
+    "/viz/disbursements/geomap": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
-    "/viz/investments/time-cycle": disbursementsTimeCycle,
-    "/viz/investments/disbursements": disbursementsTreemap,
-    "/viz/investments/table": disbursementsTreemap,
+    "/viz/disbursements/time-cycle": disbursementsTimeCycle,
+    "/viz/disbursements/treemap": disbursementsTreemap,
+    "/viz/disbursements/table": disbursementsTreemap,
+    // Signed
+    "/viz/signed/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/viz/signed/time-cycle": signedTimeCycle,
+    "/viz/signed/treemap": signedTreemap,
+    "/viz/signed/table": signedTreemap,
+    // Commitment
+    "/viz/commitment/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/viz/commitment/time-cycle": commitmentTimeCycle,
+    "/viz/commitment/treemap": commitmentTreemap,
+    "/viz/commitment/table": commitmentTreemap,
+    // Eligibility
     "/viz/eligibility": eligibility,
     "/viz/eligibility/table": eligibility,
+    // Pledges & Contributions
     "/viz/pledges-contributions/geomap": pledgesContributionsGeomap,
     "/viz/pledges-contributions/table": pledgesContributionsGeomap,
     "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
+    // Grant Budgets
     "/grant/<code>/budgets/flow": grantDetailBudgetsFlow,
     "/grant/<code>/budgets/time-cycle": grantDetailBudgetsTimeCycle,
     "/grant/<code>/budgets/geomap": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
-    "/grant/<code>/investments/time-cycle": grantDetailDisbursementsTimeCycle,
+    // Grant Disbursements
+    "/grant/<code>/disbursements/time-cycle": grantDetailDisbursementsTimeCycle,
     "/grant/<code>/investments/disbursements": grantDetailDisbursementsTreemap,
     "/grant/<code>/investments/table": grantDetailDisbursementsTreemap,
+    // Grant Signed
+    "/grant/<code>/signed/time-cycle": grantDetailSignedTimeCycle,
+    "/grant/<code>/signed/disbursements": grantDetailSignedTreemap,
+    "/grant/<code>/signed/table": grantDetailSignedTreemap,
+    // Grant Commitment
+    "/grant/<code>/commitment/time-cycle": grantDetailCommitmentTimeCycle,
+    "/grant/<code>/commitment/disbursements": grantDetailCommitmentTreemap,
+    "/grant/<code>/commitment/table": grantDetailCommitmentTreemap,
+    // Grant Documents
     "/grant/<code>/documents": grantDetailDocuments,
+    // Grant Performance Framework
     "/grant/<code>/performance-framework": grantDetailPerformanceFramework,
+    // Grant Performance Rating
     "/grant/<code>/performance-rating": grantDetailPerformanceRating,
+    // Location Eligibility
     "/location/<code>/eligibility": eligibilityCountry,
     "/location/<code>/eligibility/table": eligibilityCountry,
-    "/location/<code>/investments/disbursements": disbursementsTreemap,
-    "/location/<code>/investments/table": disbursementsTreemap,
-    "/location/<code>/investments/geomap": {
+    // Location Disbursements
+    "/location/<code>/disbursements/treemap": locationDetailDisbursementsTreemap,
+    "/location/<code>/disbursements/table": locationDetailDisbursementsTreemap,
+    "/location/<code>/disbursements/geomap": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
-    "/location/<code>/investments/time-cycle": disbursementsTimeCycle,
+    "/location/<code>/disbursements/time-cycle": disbursementsTimeCycle,
+    // Location Signed
+    "/location/<code>/signed/treemap": locationDetailSignedTreemap,
+    "/location/<code>/signed/table": locationDetailSignedTreemap,
+    "/location/<code>/signed/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/location/<code>/signed/time-cycle": disbursementsTimeCycle,
+    // Location Commitment
+    "/location/<code>/commitment/treemap": locationDetailCommitmentTreemap,
+    "/location/<code>/commitment/table": locationDetailCommitmentTreemap,
+    "/location/<code>/commitment/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/location/<code>/commitment/time-cycle": disbursementsTimeCycle,
+    // Location Budgets
     "/location/<code>/budgets/flow": locationDetailBudgetsFlow,
     "/location/<code>/budgets/time-cycle": locationDetailBudgetsTimeCycle,
     "/location/<code>/budgets/geomap": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
+    // Location Documents
     "/location/<code>/documents": locationDetailDocuments,
+    // Location Allocation
     "/location/<code>/allocation": allocations,
+    // Location Grants
     "/location/<code>/grants": grantsList,
+    "/location/<code>/grants/list": grantsList,
+    // Grants
     "/grants": grantsList,
+    // Results
     "/results": resultsList,
+    // Documents
     "/documents": documents,
+    // Partner Disbursements
+    "/partner/<code>/disbursements/treemap": partnerDetailDisbursementsTreemap,
+    "/partner/<code>/disbursements/table": partnerDetailDisbursementsTreemap,
+    "/partner/<code>/disbursements/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/partner/<code>/disbursements/time-cycle": disbursementsTimeCycle,
+    // Partner Signed
+    "/partner/<code>/signed/treemap": partnerDetailSignedTreemap,
+    "/partner/<code>/signed/table": partnerDetailSignedTreemap,
+    "/partner/<code>/signed/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/partner/<code>/signed/time-cycle": disbursementsTimeCycle,
+    // Partner Commitment
+    "/partner/<code>/commitment/treemap": partnerDetailCommitmentTreemap,
+    "/partner/<code>/commitment/table": partnerDetailCommitmentTreemap,
+    "/partner/<code>/commitment/geomap": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/partner/<code>/commitment/time-cycle": disbursementsTimeCycle,
+    // Partner Budgets
+    "/partner/<code>/budgets/flow": partnerDetailBudgetsFlow,
+    "/partner/<code>/budgets/time-cycle": partnerDetailBudgetsTimeCycle,
+    "/partner/<code>/budgets/geomap": {
+      countries: budgetsGeomap,
+      multicountries: budgetsMCGeomap,
+    },
+    // Partner Grants
+    "/partner/<code>/grants": grantsList,
+    "/partner/<code>/grants/list": grantsList,
   };
 }

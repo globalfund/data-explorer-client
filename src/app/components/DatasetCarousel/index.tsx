@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 // @ts-ignore
 import Carousel from "react-grid-carousel";
-
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import { GeomapPreview } from "app/assets/dataset-preview/geomap";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
 import { GrantsListPreview } from "app/assets/dataset-preview/grantsList";
+import { ResultsListPreview } from "app/assets/dataset-preview/resultsList";
 import { InvestmentsBarPreview } from "app/assets/dataset-preview/investmentsBar";
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
@@ -112,7 +113,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Budgets
+                <b>Finance</b> · Budgets Flow
               </div>
               <BudgetFlowPreview />
             </>,
@@ -123,18 +124,161 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Investments
+                <b>Finance</b> · Budgets Time/Cycle
               </div>
               <InvestmentsBarPreview />
             </>,
-            "/viz/investments/time-cycle"
+            "/viz/budgets/time-cycle"
           )}
         </Carousel.Item>
         <Carousel.Item>
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Allocations
+                <b>Finance</b> · Budgets Geomap
+              </div>
+              <GeomapPreview />
+            </>,
+            "/viz/budgets/geomap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Disbursements Treemap
+              </div>
+              <InvestmentsTreemapPreview />
+            </>,
+            "/viz/disbursements/treemap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Disbursements Time/Cycle
+              </div>
+              <InvestmentsBarPreview />
+            </>,
+            "/viz/disbursements/time-cycle"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Disbursements Geomap
+              </div>
+              <GeomapPreview />
+            </>,
+            "/viz/disbursements/geomap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Signed Treemap
+              </div>
+              <InvestmentsTreemapPreview />
+            </>,
+            "/viz/signed/treemap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Signed Time/Cycle
+              </div>
+              <InvestmentsBarPreview />
+            </>,
+            "/viz/signed/time-cycle"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Signed Geomap
+              </div>
+              <GeomapPreview />
+            </>,
+            "/viz/signed/geomap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Committments Treemap
+              </div>
+              <InvestmentsTreemapPreview />
+            </>,
+            "/viz/commitment/treemap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Committments Time/Cycle
+              </div>
+              <InvestmentsBarPreview />
+            </>,
+            "/viz/commitment/time-cycle"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Commitments Geomap
+              </div>
+              <GeomapPreview />
+            </>,
+            "/viz/commitment/geomap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Pledges & Contributions Treemap
+              </div>
+              <InvestmentsTreemapPreview />
+            </>,
+            "/viz/pledges-contributions/treemap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Pledges & Contributions Time/Cycle
+              </div>
+              <InvestmentsBarPreview />
+            </>,
+            "/viz/pledges-contributions/time-cycle"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Pledges & Contributions Geomap
+              </div>
+              <GeomapPreview />
+            </>,
+            "/viz/pledges-contributions/geomap"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Finance</b> · Allocations Radial
               </div>
               <AllocationsRadialPreview />
             </>,
@@ -145,11 +289,11 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Investments
+                <b>Finance</b> · Allocations Geomap
               </div>
-              <InvestmentsTreemapPreview />
+              <GeomapPreview />
             </>,
-            "/viz/investments/disbursements"
+            "/viz/allocations/geomap"
           )}
         </Carousel.Item>
         <Carousel.Item>
@@ -172,6 +316,17 @@ export function DatasetCarousel() {
               <GrantsListPreview />
             </>,
             "/grants"
+          )}
+        </Carousel.Item>
+        <Carousel.Item>
+          {griditem(
+            <>
+              <div>
+                <b>Results</b>
+              </div>
+              <ResultsListPreview />
+            </>,
+            "/results"
           )}
         </Carousel.Item>
       </Carousel>

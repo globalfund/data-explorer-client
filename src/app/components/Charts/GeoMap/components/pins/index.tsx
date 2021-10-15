@@ -1,10 +1,11 @@
 import React from "react";
 import { Marker } from "react-map-gl";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { CountryPin } from "app/components/Charts/GeoMap/components/pins/styles";
 import {
-  AllocationsGeoMapPinMarker,
   GeoMapPinMarker,
+  AllocationsGeoMapPinMarker,
   InvestmentsGeoMapPinMarker,
 } from "app/components/Charts/GeoMap/data";
 
@@ -32,9 +33,15 @@ export function MapPin(props: MapPinProps) {
       key={`marker-${props.marker.code}`}
     >
       <CountryPin
-        onClick={props.onClick}
-        onTouchEnd={props.onClick}
         data-cy={`geomap-pin-${props.marker.code}`}
+        onClick={() => {
+          if (isMobile || isTouchDevice()) {
+            setHovered(true);
+            props.setMarkerInfo(props.marker);
+          } else {
+            props.onClick();
+          }
+        }}
         onMouseLeave={() => {
           if (!isMobile) {
             setHovered(false);
@@ -43,6 +50,12 @@ export function MapPin(props: MapPinProps) {
         }}
         onMouseEnter={() => {
           if (!isMobile) {
+            setHovered(true);
+            props.setMarkerInfo(props.marker);
+          }
+        }}
+        onTouchStart={() => {
+          if (isMobile || isTouchDevice()) {
             setHovered(true);
             props.setMarkerInfo(props.marker);
           }

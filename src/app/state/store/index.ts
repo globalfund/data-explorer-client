@@ -6,6 +6,7 @@ import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
+  ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
@@ -99,6 +100,28 @@ import PartnerDetailBudgetsFlow, {
 import PartnerDetailBudgetsTimeCycle, {
   PartnerDetailBudgetsTimeCycleDrilldownLevel1,
 } from "../api/action-reducers/partnerDetail/budgetsTimeCycle";
+import SignedTreemap, {
+  SignedTimeCycle,
+  SignedTimeCycleDrilldown,
+  SignedTreemapDrilldown,
+} from "../api/action-reducers/viz/signed";
+import CommitmentTreemap, {
+  CommitmentTimeCycle,
+  CommitmentTimeCycleDrilldown,
+  CommitmentTreemapDrilldown,
+} from "../api/action-reducers/viz/commitment";
+import LocationDetailSignedTreemap from "../api/action-reducers/locationDetail/signedTreemap";
+import LocationDetailCommitmentTreemap from "../api/action-reducers/locationDetail/commitmentTreemap";
+import GrantDetailSignedTreemap from "../api/action-reducers/grantDetail/signedTreemap";
+import GrantDetailCommitmentTreemap from "../api/action-reducers/grantDetail/commitmentTreemap";
+import GrantDetailSignedTimeCycle from "../api/action-reducers/grantDetail/signedTimeCycle";
+import GrantDetailCommitmentTimeCycle from "../api/action-reducers/grantDetail/commitmentTimeCycle";
+import PartnerDetailCommitmentTreemap, {
+  PartnerDetailCommitmentTreemapDrilldown,
+} from "../api/action-reducers/partnerDetail/commitmentTreemap";
+import PartnerDetailSignedTreemap, {
+  PartnerDetailSignedTreemapDrilldown,
+} from "../api/action-reducers/partnerDetail/signedTreemap";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -123,6 +146,14 @@ const storeContent: StoreModel = {
   DisbursementsTreemapDrilldown: persist(DisbursementsTreemapDrilldown),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
   DisbursementsTimeCycleDrilldown: persist(DisbursementsTimeCycleDrilldown),
+  SignedTreemap: persist(SignedTreemap),
+  SignedTreemapDrilldown: persist(SignedTreemapDrilldown),
+  SignedTimeCycle: persist(SignedTimeCycle),
+  SignedTimeCycleDrilldown: persist(SignedTimeCycleDrilldown),
+  CommitmentTreemap: persist(CommitmentTreemap),
+  CommitmentTreemapDrilldown: persist(CommitmentTreemapDrilldown),
+  CommitmentTimeCycle: persist(CommitmentTimeCycle),
+  CommitmentTimeCycleDrilldown: persist(CommitmentTimeCycleDrilldown),
   PledgesContributionsGeomap: persist(PledgesContributionsGeomap),
   PledgesContributionsTimeCycle: persist(PledgesContributionsTimeCycle),
   PledgesContributionsTimeCycleDrilldown: persist(
@@ -148,6 +179,10 @@ const storeContent: StoreModel = {
   ),
   GrantDetailDisbursementsTreemap: persist(GrantDetailDisbursementsTreemap),
   GrantDetailDisbursementsTimeCycle: persist(GrantDetailDisbursementsTimeCycle),
+  GrantDetailSignedTreemap: persist(GrantDetailSignedTreemap),
+  GrantDetailSignedTimeCycle: persist(GrantDetailSignedTimeCycle),
+  GrantDetailCommitmentTreemap: persist(GrantDetailCommitmentTreemap),
+  GrantDetailCommitmentTimeCycle: persist(GrantDetailCommitmentTimeCycle),
   GrantDetailPerformanceRating: persist(GrantDetailPerformanceRating),
   GrantDetailPerformanceFramework: persist(GrantDetailPerformanceFramework),
   GrantDetailPerformanceFrameworkExpand: persist(
@@ -160,6 +195,8 @@ const storeContent: StoreModel = {
   LocationDetailDisbursementsTreemap: persist(
     LocationDetailDisbursementsTreemap
   ),
+  LocationDetailSignedTreemap: persist(LocationDetailSignedTreemap),
+  LocationDetailCommitmentTreemap: persist(LocationDetailCommitmentTreemap),
   LocationDetailDocuments: persist(LocationDetailDocuments),
   LocationDetailBudgetsFlow: persist(LocationDetailBudgetsFlow),
   LocationDetailBudgetsFlowDrilldownLevel1: persist(
@@ -175,6 +212,14 @@ const storeContent: StoreModel = {
   PartnerDetailDisbursementsTreemap: persist(PartnerDetailDisbursementsTreemap),
   PartnerDetailDisbursementsTreemapDrilldown: persist(
     PartnerDetailDisbursementsTreemapDrilldown
+  ),
+  PartnerDetailSignedTreemap: persist(PartnerDetailSignedTreemap),
+  PartnerDetailSignedTreemapDrilldown: persist(
+    PartnerDetailSignedTreemapDrilldown
+  ),
+  PartnerDetailCommitmentTreemap: persist(PartnerDetailCommitmentTreemap),
+  PartnerDetailCommitmentTreemapDrilldown: persist(
+    PartnerDetailCommitmentTreemapDrilldown
   ),
   PartnerDetailBudgetsFlow: persist(PartnerDetailBudgetsFlow),
   PartnerDetailBudgetsFlowDrilldownLevel1: persist(
@@ -206,6 +251,7 @@ const storeContent: StoreModel = {
   ToolBoxPanelAllocationsPeriodState: persist(
     ToolBoxPanelAllocationsPeriodState
   ),
+  ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),

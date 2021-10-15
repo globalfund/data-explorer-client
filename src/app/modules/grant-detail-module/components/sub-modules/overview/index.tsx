@@ -197,8 +197,14 @@ export function GrantDetailOverviewModule() {
         >
           {grantInfoData.manager.name}
         </div>
-        <a href={`mailto:${grantInfoData.manager.email}`}>
-          <img alt="" src="/static/fundportfoliomanager.png" />
+        <a
+          href={`mailto:${grantInfoData.manager.email}`}
+          css={`
+            color: #000;
+            font-size: 12px;
+          `}
+        >
+          {grantInfoData.manager.email}
         </a>
       </Grid>
     </Grid>

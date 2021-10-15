@@ -27,6 +27,8 @@ interface InvestmentsTimeCycleModuleProps {
   setVizPrevSelected: (vizPrevSelected: string | undefined) => void;
   vizPrevTranslation: { x: number; y: number };
   setVizPrevTranslation: (obj: { x: number; y: number }) => void;
+  type?: string;
+  toolboxOpen?: boolean;
 }
 
 export function InvestmentsTimeCycleModule(
@@ -74,6 +76,7 @@ export function InvestmentsTimeCycleModule(
         {(props.vizLevel === 0 || props.vizLevel === 1) && (
           <InvestmentsTimeCycle
             data={props.data}
+            type={props.type}
             selectedNodeId={props.vizSelected}
             onNodeClick={(node: string, x: number, y: number) => {
               props.setVizLevel(1);
@@ -93,6 +96,7 @@ export function InvestmentsTimeCycleModule(
       <SlideInContainer
         vizLevel={props.vizLevel}
         selected={props.vizSelected}
+        toolboxOpen={props.toolboxOpen}
         loading={props.isDrilldownLoading}
         close={() => {
           props.setVizLevel(props.vizLevel - 1);
