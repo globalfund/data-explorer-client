@@ -16,12 +16,31 @@ import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 import { StyledMenu, StyledMenuItem } from "app/components/PageHeader";
 
 const locationsToNotShowImageExport = [
-  "/viz/investments/geomap",
-  "/location/<code>/investments/geomap",
-  "/viz/investments/table",
+  "/viz/disbursements/geomap",
+  "/viz/signed/geomap",
+  "/viz/commitment/geomap",
+  "/location/<code>/disbursements/geomap",
+  "/location/<code>/signed/geomap",
+  "/location/<code>/commitment/geomap",
+  "/partner/<code>/disbursements/geomap",
+  "/partner/<code>/signed/geomap",
+  "/partner/<code>/commitment/geomap",
+  "/location/<code>/budgets/geomap",
+  "/partner/<code>/budgets/geomap",
+  "/viz/disbursements/table",
+  "/viz/signed/table",
+  "/viz/commitment/table",
   "/viz/eligibility/table",
-  "/location/<code>/investments/table",
+  "/location/<code>/disbursements/table",
+  "/location/<code>/signed/table",
+  "/location/<code>/commitment/table",
+  "/partner/<code>/disbursements/table",
+  "/partner/<code>/signed/table",
+  "/partner/<code>/commitment/table",
   "/location/<code>/eligibility/table",
+  "/grant/<code>/disbursements/table",
+  "/grant/<code>/signed/table",
+  "/grant/<code>/commitment/table",
   "/viz/pledges-contributions/geomap",
   "/viz/pledges-contributions/table",
   "/viz/budgets/geomap",
@@ -29,11 +48,12 @@ const locationsToNotShowImageExport = [
   "/grants",
   "/viz/grants",
   "/location/<code>/grants",
-  "/results",
+  "/results/datapoints",
 ];
 
 const locationsToNotShowExport = [
   "/viz/documents",
+  "/results/overview",
   "/location/<code>/documents",
 ];
 
@@ -92,6 +112,9 @@ export function ToolBoxPanelIconButtons() {
             isDetail: params.code !== undefined,
           }
         )}
+        css={`
+          font-size: 12px !important;
+        `}
       >
         CSV
       </CSVLink>
@@ -124,7 +147,13 @@ export function ToolBoxPanelIconButtons() {
           handleClose();
         }}
       >
-        <div>PNG</div>
+        <div
+          css={`
+            padding: 6px 12px !important;
+          `}
+        >
+          PNG
+        </div>
       </StyledMenuItem>
     );
     menuitems.push(
@@ -148,7 +177,13 @@ export function ToolBoxPanelIconButtons() {
           handleClose();
         }}
       >
-        <div>SVG</div>
+        <div
+          css={`
+            padding: 6px 12px !important;
+          `}
+        >
+          SVG
+        </div>
       </StyledMenuItem>
     );
   }

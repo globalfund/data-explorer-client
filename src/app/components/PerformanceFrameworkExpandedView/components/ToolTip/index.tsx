@@ -14,7 +14,7 @@ import {
 const styles = {
   container: (showAggrs: boolean) => css`
     gap: 10px;
-    width: 250px;
+    width: 267px;
     display: flex;
     padding: 15px;
     color: #262c34;
@@ -25,11 +25,11 @@ const styles = {
     background: ${showAggrs ? "#495057" : "#fff"};
   `,
   header: css`
-    gap: 10px;
     display: flex;
     margin-bottom: 10px;
     align-items: center;
     flex-direction: row;
+    justify-content: space-between;
   `,
   bottombtn: (showAggrs: boolean) => css`
     left: 0;
@@ -130,7 +130,11 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
             <React.Fragment>
               <div css={styles.header}>
                 <div>
-                  <b>Reporting period: {props.data.period}</b>
+                  <b>
+                    Reporting period:
+                    <br />
+                    {props.data.period}
+                  </b>
                 </div>
                 <IconButton size="small" onClick={() => props.close()}>
                   <CloseIcon />

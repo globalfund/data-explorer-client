@@ -39,12 +39,12 @@ export default function VizModule() {
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
-  if (widthThreshold > 500) {
+  if (widthThreshold > 420) {
     pushValue = 0;
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 420 - widthThreshold;
   }
 
   return (
@@ -92,35 +92,85 @@ export default function VizModule() {
         `}
       >
         <Switch>
+          {/* Budgets */}
           <Route path="/viz/budgets/flow">
-            <GenericBudgetsFlowWrapper />
+            <GenericBudgetsFlowWrapper toolboxOpen={openToolboxPanel} />
           </Route>
           <Route path="/viz/budgets/time-cycle">
-            <GenericBudgetsTimeCycleWrapper />
+            <GenericBudgetsTimeCycleWrapper toolboxOpen={openToolboxPanel} />
           </Route>
           <Route path="/viz/budgets/geomap">
             <BudgetsGeoMap />
           </Route>
-          <Route path="/viz/investments/disbursements">
-            <GenericInvestmentsDisbursedWrapper />
+          {/* Disbursements */}
+          <Route path="/viz/disbursements/treemap">
+            <GenericInvestmentsDisbursedWrapper
+              type="Disbursed"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
-          <Route path="/viz/investments/table">
+          <Route path="/viz/disbursements/table">
             <GenericInvestmentsTableWrapper />
           </Route>
-          <Route path="/viz/investments/time-cycle">
-            <GenericInvestmentsTimeCycleWrapper />
+          <Route path="/viz/disbursements/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper
+              type="Disbursed"
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
-          <Route path="/viz/investments/geomap">
-            <InvestmentsGeoMap />
+          <Route path="/viz/disbursements/geomap">
+            <InvestmentsGeoMap type="Disbursed" />
           </Route>
+          {/* Signed */}
+          <Route path="/viz/signed/treemap">
+            <GenericInvestmentsDisbursedWrapper
+              type="Signed"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/signed/table">
+            <GenericInvestmentsTableWrapper />
+          </Route>
+          <Route path="/viz/signed/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper
+              type="Signed"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/signed/geomap">
+            <InvestmentsGeoMap type="Signed" />
+          </Route>
+          {/* Commitment */}
+          <Route path="/viz/commitment/treemap">
+            <GenericInvestmentsDisbursedWrapper
+              type="Commitment"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/commitment/table">
+            <GenericInvestmentsTableWrapper />
+          </Route>
+          <Route path="/viz/commitment/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper
+              type="Commitment"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/commitment/geomap">
+            <InvestmentsGeoMap type="Committed" />
+          </Route>
+          {/* Allocations */}
           <Route path="/viz/allocations/geomap">
             <AllocationsGeoMap />
           </Route>
           <Route path="/viz/allocations">
-            <AllocationsModule />
+            <AllocationsModule toolboxOpen={openToolboxPanel} />
           </Route>
+          {/* Pledges & Contributions */}
           <Route path="/viz/pledges-contributions/time-cycle">
-            <PledgesContributionsTimeCycleModule />
+            <PledgesContributionsTimeCycleModule
+              toolboxOpen={openToolboxPanel}
+            />
           </Route>
           <Route path="/viz/pledges-contributions/table">
             <PledgesContributionsTable />
@@ -131,6 +181,7 @@ export default function VizModule() {
           <Route path="/viz/pledges-contributions/treemap">
             <PledgesContributionsTreemap />
           </Route>
+          {/* Eligibility */}
           <Route path="/viz/eligibility/table">
             <GenericEligibilityWrapper />
           </Route>

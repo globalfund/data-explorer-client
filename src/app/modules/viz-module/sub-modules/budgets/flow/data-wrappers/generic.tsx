@@ -9,7 +9,11 @@ import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/fl
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
 
-export function GenericBudgetsFlowWrapper() {
+interface Props {
+  toolboxOpen?: boolean;
+}
+
+export function GenericBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Budgets Flow");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
@@ -115,6 +119,7 @@ export function GenericBudgetsFlowWrapper() {
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
       drilldownPanelOptions={drilldownPanelOptions}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

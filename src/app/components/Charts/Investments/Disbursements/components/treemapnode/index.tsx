@@ -63,6 +63,10 @@ export function TreeemapNode(props: any) {
           );
         }
       }}
+      onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
+        e.stopPropagation();
+        props.setXsTooltipData(node);
+      }}
       //   onKeyPress={node.onClick}
       //   onFocus={node.onMouseEnter}
     >
@@ -129,6 +133,8 @@ export function TreeemapNode(props: any) {
             onNodeClick={props.onNodeClick}
             selectedNodeId={props.selectedNodeId}
             parentNodeCoords={{ x: node.x, y: node.y }}
+            setXsTooltipData={props.setXsTooltipData}
+            xsTooltipData={props.xsTooltipData}
           />
         </div>
       )}

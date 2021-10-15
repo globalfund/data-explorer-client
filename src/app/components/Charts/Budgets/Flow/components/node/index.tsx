@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import { css } from "styled-components/macro";
 
 export const styles = {
@@ -51,6 +50,13 @@ function getInnerNodes(node: any, _selectedNode: any, onNodeClick: any) {
         fill="transparent"
         width={node.width}
         onClick={() => {
+          onNodeClick(
+            { id: node.id.toString(), filterStr: node.filterStr.toString() },
+            node.x - 200,
+            node.y
+          );
+        }}
+        onTouchStart={() => {
           onNodeClick(
             { id: node.id.toString(), filterStr: node.filterStr.toString() },
             node.x - 200,
