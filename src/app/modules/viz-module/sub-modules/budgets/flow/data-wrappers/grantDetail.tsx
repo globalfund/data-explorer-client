@@ -10,6 +10,7 @@ import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/bud
 
 interface Props {
   code: string;
+  toolboxOpen?: boolean;
   implementationPeriod: string;
 }
 
@@ -121,6 +122,7 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
       drilldownPanelOptions={drilldownPanelOptions}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

@@ -60,6 +60,7 @@ export function BarComponent(props: any) {
         }
       }}
       data-cy="pledges-contributions-time-cycle-bar-component"
+      onTouchStart={() => props.onTouchStart(props.data)}
     >
       <rect
         x={props.x}

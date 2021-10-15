@@ -8,7 +8,11 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 
-export function GenericBudgetsTimeCycleWrapper() {
+interface Props {
+  toolboxOpen?: boolean;
+}
+
+export function GenericBudgetsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Budgets Time/Cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
@@ -97,6 +101,7 @@ export function GenericBudgetsTimeCycleWrapper() {
       vizPrevSelected={vizPrevSelected}
       drilldownPanelOptions={drilldownPanelOptions}
       dataDrilldownLevel1={dataDrilldownLevel1}
+      toolboxOpen={props.toolboxOpen}
     />
   );
 }

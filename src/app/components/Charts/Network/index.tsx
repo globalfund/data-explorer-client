@@ -96,6 +96,11 @@ export function NetworkViz(props: NetworkVizProps) {
               props.onNodeClick(node.id, node.x, 0);
             }
           }}
+          onTouchStart={() => {
+            if (node.depth === 2) {
+              props.onNodeClick(node.id, node.x, 0);
+            }
+          }}
         >
           {(node.depth === 1 || node.depth === 2) && (
             <text
@@ -185,7 +190,7 @@ export function NetworkViz(props: NetworkVizProps) {
           id="performance-framework-network"
           css={`
             width: 100%;
-            height: 650px;
+            height: calc(100vh - 361px);
 
             ${props.data.links.length === 0
               ? `

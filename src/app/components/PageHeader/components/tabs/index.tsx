@@ -66,12 +66,14 @@ const styles = {
       border-radius: 0px 15px 0px 0px;
     }
 
-    &:hover {
-      background: #495057;
-      a {
-        color: #fff;
-        font-weight: bold;
-        font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    @media (hover: hover) and (pointer: fine) {
+      &:hover {
+        background: #495057;
+        a {
+          color: #fff;
+          font-weight: bold;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+        }
       }
     }
 
@@ -89,13 +91,25 @@ const styles = {
 };
 
 function RouteTab(props: TabProps) {
-  const params = useParams<{ code: string; period: string; vizType: string }>();
+  const params = useParams<{
+    tab: string;
+    code: string;
+    period: string;
+    vizType: string;
+  }>();
   const location = useLocation();
   const link = `${props.url
     .replace("<code>", params.code)
     .replace("<period>", params.period)}${location.search}`;
   const urlsplits = props.url.split("/");
-  const isActive = urlsplits[params.period ? 4 : 3] === params.vizType;
+  let index = params.period ? 4 : 3;
+  let indexParam: "vizType" | "tab" = "vizType";
+  if (urlsplits[1] === "results") {
+    index = 2;
+    indexParam = "tab";
+  }
+  console.log(urlsplits[index], params[indexParam]);
+  const isActive = urlsplits[index] === params[indexParam];
 
   return (
     <li css={styles.tabcss(isActive)}>
