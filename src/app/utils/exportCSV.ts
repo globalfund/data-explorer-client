@@ -561,7 +561,7 @@ export function exportCSV(
           { label: "Signed (USD)", key: "signed" },
         ],
       };
-    case "/results":
+    case "/results/datapoints":
       data.forEach((item: any) => {
         csvData.push({
           title: item.title,
