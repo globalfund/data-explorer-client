@@ -22,6 +22,7 @@ interface PageHeaderProps {
 
 export const StyledMenu = withStyles({
   paper: {
+    minWidth: 220,
     borderRadius: 10,
     border: "1px solid #d3d4d5",
     "&::-webkit-scrollbar": {
@@ -40,7 +41,7 @@ export const StyledMenu = withStyles({
   },
   list: {
     padding: 0,
-    maxHeight: 400,
+    maxHeight: 450,
   },
 })((props: MenuProps) => (
   <Menu
@@ -62,6 +63,7 @@ export const StyledMenu = withStyles({
 export const StyledMenuItem = withStyles((theme) => ({
   root: {
     padding: 0,
+    width: "100%",
     borderBottom: "1px solid #DFE3E6",
     "& a": {
       width: "100%",
@@ -70,20 +72,20 @@ export const StyledMenuItem = withStyles((theme) => ({
       padding: "6px 12px",
       textDecoration: "none",
     },
-    "& li": {
-      width: "100%",
-      fontSize: "14px",
-      color: "#262c34",
-      padding: "6px 12px",
-      textDecoration: "none",
-    },
-    "& div": {
-      width: "100%",
-      fontSize: "12px",
-      color: "#262c34",
-      padding: "0 12px",
-      textDecoration: "none",
-    },
+    // "& li": {
+    //   width: "100%",
+    //   fontSize: "14px",
+    //   color: "#262c34",
+    //   padding: "6px 12px",
+    //   textDecoration: "none",
+    // },
+    // "& div": {
+    //   width: "100%",
+    //   fontSize: "14px",
+    //   color: "#262c34",
+    //   padding: "0 12px",
+    //   textDecoration: "none",
+    // },
   },
 }))(MenuItem);
 
@@ -223,7 +225,11 @@ export function PageHeader(props: PageHeaderProps) {
                     >
                       {breadcrumb.menuitems.map(
                         (item: React.ReactChild, itemIndex: number) => (
-                          <StyledMenuItem key={itemIndex}>
+                          <StyledMenuItem
+                            disableRipple
+                            key={itemIndex}
+                            disableTouchRipple
+                          >
                             {item}
                           </StyledMenuItem>
                         )
