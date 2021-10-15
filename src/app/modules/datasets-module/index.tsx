@@ -181,13 +181,16 @@ export default function Datasets() {
       <div css="width: 100%;height: 25px;" />
       <Grid container spacing={4}>
         {datasets.map((dataset: DatasetItemModel) => (
-          <Grid item sm={12} md={6} key={dataset.link}>
+          <Grid item xs={12} sm={6} md={6} key={dataset.link}>
             <Link to={dataset.link} css="text-decoration: none;">
               <div
                 css={`
+                  @media screen and (min-width: 900px) {
+                    height: 370px !important;
+                  }
                   width: 100%;
                   padding: 20px;
-                  height: 370px;
+                  height: 22vh;
                   color: #262c34;
                   background: #fff;
                   border-radius: 20px;
