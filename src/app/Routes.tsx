@@ -99,12 +99,7 @@ export function MainRoutes() {
           <GrantsModule />
         </Route>
 
-        <Route exact path="/results">
-          <ResultsModule />
-        </Route>
-
-        {/* Only used in small size, considering move to the if small size */}
-        <Route exact path="/results/:vizType/datapoints">
+        <Route exact path="/results/:tab">
           <ResultsModule />
         </Route>
 

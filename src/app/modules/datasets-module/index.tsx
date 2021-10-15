@@ -139,7 +139,7 @@ const datasets: DatasetItemModel[] = [
   },
   {
     name: "",
-    link: "/results",
+    link: "/results/overview",
     group: "Results",
     preview: <ResultsListPreview />,
   },

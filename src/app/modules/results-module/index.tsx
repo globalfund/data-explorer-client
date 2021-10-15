@@ -105,96 +105,6 @@ export default function ResultsModule() {
     pushValue = 500 - widthThreshold;
   }
 
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
-  if (isSmallScreen) {
-    return (
-      <div
-        css={`
-          width: 100%;
-          height: 100%;
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-          justify-content: center;
-        `}
-      >
-        <PageHeader
-          title="Results"
-          breadcrumbs={[
-            { name: "Home", link: "/" },
-            {
-              name: "Datasets",
-              menuitems: datasetMenuItems,
-            },
-            { name: "Results" },
-          ]}
-          tabs={[
-            { url: "/results", name: "Overview" },
-            { url: "/results/datapoints/datapoints", name: "Data points" },
-          ]}
-        />
-        <Switch>
-          <Route exact path="/results">
-            <Grid container spacing={4}>
-              <Grid item xs={6} sm={6} md={6}>
-                <ResultsInfoContent description="" stats={infoData} />
-              </Grid>
-              <Grid item xs={6} sm={6} md={6}>
-                <div
-                  css={`
-                    margin-top: 50px;
-                    gap: 12px;
-                    line-height: 20px;
-                    letter-spacing: 0.5px;
-                  `}
-                >
-                  <p>
-                    The Global Fund is a partnership designed to accelerate the
-                    end of AIDS, tuberculosis and malaria as epidemics. As an
-                    international organization, the Global Fund mobilizes and
-                    invests more than US$4 billion a year to support programs
-                    run by local experts in more than 100 countries. In
-                    partnership with governments, civil society, technical
-                    agencies, the private sector and people affected by the
-                    diseases, we are challenging barriers and embracing
-                    innovation.
-                  </p>
-                  <p>
-                    Amounts are in the specified currency. Where noted, the
-                    USD-equivalent is presented for amounts in non-USD
-                    currencies.
-                    <br />
-                    <br />
-                    Pledges and contributions made in currencies other than USD
-                    from 2014 onward were converted to USD using fixed
-                    Replenishment exchange rates. Pledges and contributions
-                    before 2014 were converted using spot exchange rates.
-                    <br />
-                    <br />
-                    Where pledges have been made that are not specific to
-                    individual years, the amount shown as pledged for a period
-                    is the sum of contributions received in that period.
-                  </p>
-                </div>
-              </Grid>
-            </Grid>
-          </Route>
-          <Route exact path="/results/datapoints/datapoints">
-            <DataList
-              isLoading={isLoading}
-              search={search}
-              setSearch={setSearch}
-              selectedYear={selectedYear}
-              data={data}
-              openToolboxPanel={openToolboxPanel}
-              pushValue={pushValue}
-            />
-          </Route>
-        </Switch>
-      </div>
-    );
-  }
-
   return (
     <div
       css={`
@@ -216,27 +126,72 @@ export default function ResultsModule() {
           },
           { name: "Results" },
         ]}
+        tabs={[
+          { url: "/results/overview", name: "Overview" },
+          { url: "/results/datapoints", name: "Data points" },
+        ]}
       />
-      <InformationPanel
-        open={openInfoPanel}
-        onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
-      >
-        <ResultsInfoContent description="" stats={infoData} />
-      </InformationPanel>
       <ToolBoxPanel
         open={openToolboxPanel}
         filterGroups={pathnameToFilterGroups.results}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
-      <DataList
-        isLoading={isLoading}
-        search={search}
-        setSearch={setSearch}
-        selectedYear={selectedYear}
-        data={data}
-        openToolboxPanel={openToolboxPanel}
-        pushValue={pushValue}
-      />
+      <Switch>
+        <Route exact path="/results/overview">
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6} md={6}>
+              <ResultsInfoContent description="" stats={infoData} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
+              <div
+                css={`
+                  margin-top: 50px;
+                  gap: 12px;
+                  line-height: 20px;
+                  letter-spacing: 0.5px;
+                `}
+              >
+                <p>
+                  The Global Fund is a partnership designed to accelerate the
+                  end of AIDS, tuberculosis and malaria as epidemics. As an
+                  international organization, the Global Fund mobilizes and
+                  invests more than US$4 billion a year to support programs run
+                  by local experts in more than 100 countries. In partnership
+                  with governments, civil society, technical agencies, the
+                  private sector and people affected by the diseases, we are
+                  challenging barriers and embracing innovation.
+                </p>
+                <p>
+                  Amounts are in the specified currency. Where noted, the
+                  USD-equivalent is presented for amounts in non-USD currencies.
+                  <br />
+                  <br />
+                  Pledges and contributions made in currencies other than USD
+                  from 2014 onward were converted to USD using fixed
+                  Replenishment exchange rates. Pledges and contributions before
+                  2014 were converted using spot exchange rates.
+                  <br />
+                  <br />
+                  Where pledges have been made that are not specific to
+                  individual years, the amount shown as pledged for a period is
+                  the sum of contributions received in that period.
+                </p>
+              </div>
+            </Grid>
+          </Grid>
+        </Route>
+        <Route exact path="/results/datapoints">
+          <DataList
+            isLoading={isLoading}
+            search={search}
+            setSearch={setSearch}
+            selectedYear={selectedYear}
+            data={data}
+            openToolboxPanel={openToolboxPanel}
+            pushValue={pushValue}
+          />
+        </Route>
+      </Switch>
       <div css="width: 100%;height: 25px;" />
       <div
         css={`
