@@ -1,106 +1,34 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import get from "lodash/get";
-import find from "lodash/find";
-import Slide from "@material-ui/core/Slide";
-import { useParams, useHistory } from "react-router-dom";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
-import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
-import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
-import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
-import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
-import { ToolBoxPanelDonorViews } from "app/components/ToolBoxPanel/components/donormapviews";
-import { ToolBoxPanelDonorMapTypes } from "app/components/ToolBoxPanel/components/donormaptypes";
-import { GrantImplementationPeriods } from "app/components/ToolBoxPanel/components/grantperiods";
-import { ToolBoxPanelEligibilityAdvanced } from "app/components/ToolBoxPanel/components/eligibilityadvanced";
-import { PerformanceFrameworkReportingPeriods } from "app/components/ToolBoxPanel/components/pf-reportingperiods";
-import {
-  getControlItems,
-  ViewModel,
-} from "app/components/ToolBoxPanel/utils/getControlItems";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { AllocationsPeriods } from "./components/allocationsperiods";
-import { EligibilityYear } from "./components/eligibilityyear";
-import { ResultsYear } from "./components/resultsyear";
-import { ToolBoxPanelDisbursementsSlider } from "./components/disbursementslider";
+import { useHistory } from "react-router-dom";
+import { useStoreState } from "app/state/store/hooks";
 import { isTouchDevice } from "app/utils/isTouchDevice";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
+import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
 
-interface ToolBoxPanelProps {
+export interface ToolBoxPanelProps {
   open: boolean;
   isGrantDetail?: boolean;
-  onButtonClick: () => void;
+  onCloseBtnClick: () => void;
   filterGroups: FilterGroupProps[];
 }
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
-  const params = useParams<{
-    code?: string;
-    period?: string;
-    vizType: string;
-    subType?: string;
-  }>();
-  const [selectedView, setSelectedView] = React.useState("");
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
-  );
-  const [controlItems, setControlItems] = React.useState<{
-    views: ViewModel[];
-    aggregates: ViewModel[];
-  }>(
-    getControlItems(
-      params.vizType,
-      history.location.pathname,
-      params.code,
-      params.period
-    )
-  );
-
-  // aggregateBy control const
-  const setSelectedAggregation = useStoreActions(
-    (store) => store.ToolBoxPanelAggregateByState.setValue
-  );
-  const selectedAggregation = useStoreState(
-    (state) => state.ToolBoxPanelAggregateByState.value
-  );
-
-  // geomanpView control const
-  const setGeomapView = useStoreActions(
-    (store) => store.ToolBoxPanelInvestmentsMapViewState.setValue
-  );
-  const geomapView = useStoreState(
-    (state) => state.ToolBoxPanelInvestmentsMapViewState.value
-  );
-
-  // performance framework periods data
-  const performanceFrameworkPeriods = useStoreState((state) =>
-    get(state.GrantDetailPerformanceFramework.data, "periods", [])
   );
 
   // viz drilldown items
   const vizDrilldowns = useStoreState(
     (state) => state.PageHeaderVizDrilldownsState.value
   );
-
-  function getSelectedView() {
-    let view: ViewModel | undefined;
-    if (params.code) {
-      view = find(
-        controlItems.views,
-        (v: ViewModel) =>
-          v.link?.replace("viz", `location/${params.code}`) ===
-          history.location.pathname
-      );
-    } else {
-      view = find(controlItems.views, { link: history.location.pathname });
-    }
-    if (view) {
-      return view.value;
-    }
-    return "";
-  }
 
   React.useLayoutEffect(() => {
     setVisibleVScrollbar(
@@ -114,39 +42,17 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     );
   }, [history.location.pathname]);
 
-  React.useEffect(
-    () =>
-      setControlItems(
-        getControlItems(
-          params.vizType,
-          history.location.pathname,
-          params.code,
-          params.period
-        )
-      ),
-    [params.vizType]
-  );
-
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
-
-  React.useEffect(() => {
-    setSelectedAggregation(
-      controlItems.aggregates.length > 0 ? controlItems.aggregates[0].value : ""
-    );
-  }, [controlItems.aggregates]);
-
-  const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
-  const isResultsPage = history.location.pathname.indexOf("/results") > -1;
-  const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <ClickAwayListener
       onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
-        if (props.open && get(event.target, "tagName", "") !== "A") {
-          props.onButtonClick();
+        if (
+          props.open &&
+          get(event.target, "tagName", "") !== "A" &&
+          get(event.target, "id", "") !== "page-header-toolbox-btn"
+        ) {
+          props.onCloseBtnClick();
         }
       }}
     >
@@ -184,117 +90,58 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               flex-direction: column;
             `}
           >
-            <div
-              role="button"
-              tabIndex={-1}
-              css={`
-                top: 38%;
-                color: #fff;
-                width: 16px;
-                height: 133px;
-                display: flex;
-                cursor: pointer;
-                position: absolute;
-                background: #495057;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                border-radius: 10px 0px 0px 10px;
-                transition: background 0.2s ease-in-out;
-                // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
-                // ${isTouchDevice() ? `left: -16px;` : ""}
-                left: -16px;
+            {isSmallScreen ? (
+              <div css="height:24px;background-color: #373D43;width:100%;">
+                <IconButton
+                  css="width:12px;height:12px;"
+                  onClick={props.onCloseBtnClick}
+                >
+                  <CloseOutlinedIcon
+                    htmlColor="#ffffff"
+                    viewBox=" -4 -4 30 30"
+                  />
+                </IconButton>
+              </div>
+            ) : (
+              <div
+                role="button"
+                tabIndex={-1}
+                css={`
+                  top: 38%;
+                  color: #fff;
+                  width: 16px;
+                  height: 133px;
+                  display: flex;
+                  cursor: pointer;
+                  position: absolute;
+                  background: #495057;
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: center;
+                  border-radius: 10px 0px 0px 10px;
+                  transition: background 0.2s ease-in-out;
+                  // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
+                  // ${isTouchDevice() ? `left: -16px;` : ""}
+                  left: -16px;
 
-                &:hover {
-                  background: #13183f;
-                }
-
-                > svg {
-                  transform: rotate(${!props.open ? "-" : ""}90deg);
-                  > path {
-                    fill: #fff;
+                  &:hover {
+                    background: #13183f;
                   }
-                }
-              `}
-              onClick={() => props.onButtonClick()}
-            >
-              <TriangleXSIcon />
-            </div>
+
+                  > svg {
+                    transform: rotate(${!props.open ? "-" : ""}90deg);
+                    > path {
+                      fill: #fff;
+                    }
+                  }
+                `}
+                onClick={props.onCloseBtnClick}
+              >
+                <TriangleXSIcon />
+              </div>
+            )}
             <ToolBoxPanelIconButtons />
-            {isGrantDetail && <GrantImplementationPeriods />}
-            {controlItems.views.length > 0 && (
-              <ToolBoxPanelControlRow
-                title="Views"
-                selected={selectedView}
-                options={controlItems.views}
-                setSelected={setSelectedView}
-              />
-            )}
-            {controlItems.aggregates.length > 0 && (
-              <ToolBoxPanelAggregateBy
-                title="Aggregate by"
-                selected={selectedAggregation}
-                options={controlItems.aggregates}
-                setSelected={setSelectedAggregation}
-              />
-            )}
-            {(params.vizType === "allocations" ||
-              params.vizType === "allocation") && <AllocationsPeriods />}
-            {params.vizType === "eligibility" && !isLocationDetail && (
-              <EligibilityYear />
-            )}
-            {isResultsPage && <ResultsYear />}
-            {(((params.vizType === "commitment" ||
-              params.vizType === "disbursements" ||
-              params.vizType === "signed") &&
-              params.subType === "geomap") ||
-              (params.vizType === "allocations" &&
-                params.subType === "geomap") ||
-              (params.vizType === "budgets" &&
-                params.subType === "geomap")) && (
-              <ToolBoxPanelAggregateBy
-                title="Aggregate by"
-                selected={geomapView}
-                setSelected={setGeomapView}
-                options={[
-                  { label: "Countries", value: "countries" },
-                  { label: "Multi-countries", value: "multicountries" },
-                ]}
-              />
-            )}
-            {params.vizType === "pledges-contributions" &&
-              (params.subType === "geomap" || params.subType === "table") && (
-                <React.Fragment>
-                  <ToolBoxPanelDonorViews />
-                </React.Fragment>
-              )}
-            {params.vizType === "pledges-contributions" &&
-              (params.subType === "geomap" ||
-                params.subType === "table" ||
-                params.subType === "treemap") && (
-                <React.Fragment>
-                  <ToolBoxPanelDonorMapTypes />
-                </React.Fragment>
-              )}
-            {params.code && params.vizType === "eligibility" && (
-              <ToolBoxPanelEligibilityAdvanced />
-            )}
-            {params.code &&
-              params.period &&
-              params.vizType === "performance-framework" && (
-                <PerformanceFrameworkReportingPeriods
-                  periods={performanceFrameworkPeriods}
-                />
-              )}
-            {(params.vizType === "commitment" ||
-              params.vizType === "disbursements" ||
-              params.vizType === "signed") &&
-              params.subType === "treemap" && (
-                <ToolBoxPanelDisbursementsSlider />
-              )}
-            {!isGrantDetail && (
-              <ToolBoxPanelFilters groups={props.filterGroups} />
-            )}
+            <SubToolBoxPanel filterGroups={props.filterGroups} />
           </div>
         </div>
       </Slide>

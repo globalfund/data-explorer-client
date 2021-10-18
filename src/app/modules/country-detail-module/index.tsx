@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { useTitle } from "react-use";
+import { useMediaQuery } from "@material-ui/core";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
@@ -14,6 +15,7 @@ import { countryDetailTabs } from "app/components/PageHeader/components/tabs/dat
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
+import { LocationDetailOverviewModule } from "app/modules/country-detail-module/sub-modules/overview";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
 import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/data-wrappers/location";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
@@ -26,7 +28,6 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { LocationDetailOverviewModule } from "./sub-modules/overview";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -81,6 +82,7 @@ export default function CountryDetail() {
   } else {
     pushValue = 500 - widthThreshold;
   }
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <div
@@ -106,6 +108,11 @@ export default function CountryDetail() {
           },
         ]}
         tabs={countryDetailTabs}
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
+        }
       />
       <div css="width: 100%;height: 25px;" />
       <div
@@ -251,7 +258,7 @@ export default function CountryDetail() {
           location.pathname.replace(params.code, "<code>"),
           filtergroups
         )}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       <div
         css={`

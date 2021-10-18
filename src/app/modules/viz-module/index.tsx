@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
@@ -47,6 +48,8 @@ export default function VizModule() {
     pushValue = 420 - widthThreshold;
   }
 
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   return (
     <div
       css={`
@@ -80,6 +83,11 @@ export default function VizModule() {
             }`,
           },
         ]}
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
+        }
       />
       <div css="width: 100%;height: 25px;" />
       <div
@@ -192,7 +200,7 @@ export default function VizModule() {
       </div>
       <ToolBoxPanel
         open={openToolboxPanel}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
         filterGroups={get(
           pathnameToFilterGroups,
           location.pathname,
@@ -208,10 +216,10 @@ export default function VizModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
-          visibility: ${openToolboxPanel && widthThreshold < 0
-            ? "visible"
-            : "hidden"};
+          opacity: ${openToolboxPanel && widthThreshold < 0}? 1 : 0};
+          visibility: ${
+            openToolboxPanel && widthThreshold < 0 ? "visible" : "hidden"
+          };
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

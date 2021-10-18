@@ -8,7 +8,11 @@ import {
 } from "app/components/PageHeader/components/tabs/data";
 
 const styles = {
-  container: css``,
+  container: css`
+    @media (max-width: 767px) {
+      width: 100%;
+    }
+  `,
   tooltip: css`
     fill: ${ProjectPalette.primary.main};
     :hover {
@@ -33,6 +37,10 @@ const styles = {
     @media (max-width: 992px) {
       overflow-x: auto;
       margin-left: 36px;
+    }
+
+    @media (max-width: 767px) {
+      margin-left: 0;
     }
 
     &::-webkit-scrollbar {
@@ -108,7 +116,6 @@ function RouteTab(props: TabProps) {
     index = 2;
     indexParam = "tab";
   }
-  console.log(urlsplits[index], params[indexParam]);
   const isActive = urlsplits[index] === params[indexParam];
 
   return (

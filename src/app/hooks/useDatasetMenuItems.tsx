@@ -156,7 +156,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
           transition: background 0.2s ease-in-out;
         }
       `}
-      to={`/results${location.search}`}
+      to={`/results/overview${location.search}`}
     >
       <b>Results</b>
     </Link>,

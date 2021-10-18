@@ -1,30 +1,28 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import Grid from "@material-ui/core/Grid";
+import { Switch, Route } from "react-router-dom";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { InformationPanel } from "app/components/InformationPanel";
+import { DataList } from "app/modules/results-module/datalist";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   ResultListItemModel,
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
-import { Grid } from "@material-ui/core";
-import { Switch, Route } from "react-router-dom";
-import { DataList } from "./datalist";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
-  const [openInfoPanel, setOpenInfoPanel] = React.useState(true);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
 
   const selectedYear = useStoreState(
@@ -104,6 +102,7 @@ export default function ResultsModule() {
   } else {
     pushValue = 500 - widthThreshold;
   }
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <div
@@ -130,11 +129,16 @@ export default function ResultsModule() {
           { url: "/results/overview", name: "Overview" },
           { url: "/results/datapoints", name: "Data points" },
         ]}
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
+        }
       />
       <ToolBoxPanel
         open={openToolboxPanel}
         filterGroups={pathnameToFilterGroups.results}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       <Switch>
         <Route exact path="/results/overview">
