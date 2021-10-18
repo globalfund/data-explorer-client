@@ -9,7 +9,9 @@ import {
 
 const styles = {
   container: css`
-    width: 100%;
+    @media (max-width: 767px) {
+      width: 100%;
+    }
   `,
   tooltip: css`
     fill: ${ProjectPalette.primary.main};
