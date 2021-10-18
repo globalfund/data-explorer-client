@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -18,7 +17,6 @@ import { useMediaQuery } from "@material-ui/core";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
-  const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
@@ -101,14 +99,17 @@ export default function DocumentsModule() {
           },
           { name: "Documents" },
         ]}
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
+        }
       />
-      {!isSmallScreen && (
-        <ToolBoxPanel
-          open={openToolboxPanel}
-          filterGroups={pathnameToFilterGroups.documents}
-          onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
-        />
-      )}
+      <ToolBoxPanel
+        open={openToolboxPanel}
+        filterGroups={pathnameToFilterGroups.documents}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+      />
       {isLoading && <PageLoader />}
       <div
         css={`

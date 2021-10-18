@@ -2,24 +2,24 @@ import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import { useParams, useHistory } from "react-router-dom";
-import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { ResultsYear } from "app/components/ToolBoxPanel/components/resultsyear";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { EligibilityYear } from "app/components/ToolBoxPanel/components/eligibilityyear";
 import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 import { ToolBoxPanelDonorViews } from "app/components/ToolBoxPanel/components/donormapviews";
+import { AllocationsPeriods } from "app/components/ToolBoxPanel/components/allocationsperiods";
 import { ToolBoxPanelDonorMapTypes } from "app/components/ToolBoxPanel/components/donormaptypes";
 import { GrantImplementationPeriods } from "app/components/ToolBoxPanel/components/grantperiods";
+import { ToolBoxPanelDisbursementsSlider } from "app/components/ToolBoxPanel/components/disbursementslider";
 import { ToolBoxPanelEligibilityAdvanced } from "app/components/ToolBoxPanel/components/eligibilityadvanced";
 import { PerformanceFrameworkReportingPeriods } from "app/components/ToolBoxPanel/components/pf-reportingperiods";
 import {
-  getControlItems,
   ViewModel,
+  getControlItems,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import { AllocationsPeriods } from "./components/allocationsperiods";
-import { EligibilityYear } from "./components/eligibilityyear";
-import { ResultsYear } from "./components/resultsyear";
 
 export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
   const history = useHistory();
@@ -29,13 +29,7 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
     vizType: string;
     subType?: string;
   }>();
-  const { appliedFilters } = useAppliedFilters({
-    type: "All",
-  });
   const [selectedView, setSelectedView] = React.useState("");
-  const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
-    document.body.scrollHeight > document.body.clientHeight
-  );
   const [controlItems, setControlItems] = React.useState<{
     views: ViewModel[];
     aggregates: ViewModel[];
@@ -86,18 +80,6 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
     }
     return "";
   }
-
-  React.useLayoutEffect(() => {
-    setVisibleVScrollbar(
-      document.body.scrollHeight > document.body.clientHeight
-    );
-  }, []);
-
-  React.useEffect(() => {
-    setVisibleVScrollbar(
-      document.body.scrollHeight > document.body.clientHeight
-    );
-  }, [history.location.pathname]);
 
   React.useEffect(
     () =>
@@ -152,7 +134,10 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
         <EligibilityYear />
       )}
       {isResultsPage && <ResultsYear />}
-      {((params.vizType === "investments" && params.subType === "geomap") ||
+      {(((params.vizType === "commitment" ||
+        params.vizType === "disbursements" ||
+        params.vizType === "signed") &&
+        params.subType === "geomap") ||
         (params.vizType === "allocations" && params.subType === "geomap") ||
         (params.vizType === "budgets" && params.subType === "geomap")) && (
         <ToolBoxPanelAggregateBy
@@ -189,6 +174,10 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
             periods={performanceFrameworkPeriods}
           />
         )}
+      {(params.vizType === "commitment" ||
+        params.vizType === "disbursements" ||
+        params.vizType === "signed") &&
+        params.subType === "treemap" && <ToolBoxPanelDisbursementsSlider />}
       {!isGrantDetail && <ToolBoxPanelFilters groups={props.filterGroups} />}
     </>
   );

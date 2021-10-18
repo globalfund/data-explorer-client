@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { useTitle } from "react-use";
+import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -88,6 +89,7 @@ export default function GrantDetail() {
   } else {
     pushValue = 500 - widthThreshold;
   }
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <div
@@ -114,6 +116,11 @@ export default function GrantDetail() {
           },
         ]}
         tabs={grantDetailTabs}
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
+        }
       />
       <div css="width: 100%;height: 25px;" />
       <div
@@ -265,7 +272,7 @@ export default function GrantDetail() {
         isGrantDetail
         open={openToolboxPanel}
         filterGroups={filtergroups}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       <div
         css={`

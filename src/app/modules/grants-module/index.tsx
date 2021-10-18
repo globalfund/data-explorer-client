@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -123,6 +124,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
       pushValue = 500 - widthThreshold;
     }
   }
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <div
@@ -150,11 +152,16 @@ export default function GrantsModule(props: GrantsModuleProps) {
                 name: "Grants",
               },
             ]}
+            onToolboxSmBtnClick={
+              isSmallScreen
+                ? () => setOpenToolboxPanel(!openToolboxPanel)
+                : undefined
+            }
           />
           <ToolBoxPanel
             open={openToolboxPanel}
             filterGroups={pathnameToFilterGroups.grants}
-            onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+            onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
           />
           <div css="width: 100%;height: 25px;" />
         </>

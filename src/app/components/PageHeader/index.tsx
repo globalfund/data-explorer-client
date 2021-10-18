@@ -6,21 +6,21 @@ import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import Container from "@material-ui/core/Container";
 import { useStoreState } from "app/state/store/hooks";
+import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
+import { ToolboxXsIcon } from "app/assets/icons/ToolboxXs";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
-import { IconButton } from "@material-ui/core";
-import TuneOutlinedIcon from "@material-ui/icons/TuneOutlined";
 
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
   isGrantDetail?: boolean;
   breadcrumbs: BreadcrumbModel[];
-  onButtonClick?: () => void;
+  onToolboxSmBtnClick?: () => void;
 }
 
 export const StyledMenu = withStyles({
@@ -246,7 +246,7 @@ export function PageHeader(props: PageHeaderProps) {
               );
             }
           )}
-          {props.onButtonClick && (
+          {props.onToolboxSmBtnClick && (
             <div css="right:10px;position:fixed">
               <Tooltip
                 title="Tap to open the toolbox"
@@ -254,12 +254,11 @@ export function PageHeader(props: PageHeaderProps) {
                 placement="bottom-end"
                 arrow
               >
-                <IconButton css="padding:0px !important">
-                  {/* havent found the same icon with the figma file */}
-                  <TuneOutlinedIcon
-                    viewBox=" -4 -4 30 30"
-                    onClick={props.onButtonClick}
-                  />
+                <IconButton
+                  css="padding:0px !important"
+                  onClick={props.onToolboxSmBtnClick}
+                >
+                  <ToolboxXsIcon />
                 </IconButton>
               </Tooltip>
             </div>
@@ -274,7 +273,16 @@ export function PageHeader(props: PageHeaderProps) {
             justify-content: space-between;
           `}
         >
-          <Grid item sm={12} md={!props.isGrantDetail ? 4 : 12}>
+          <Grid
+            item
+            sm={12}
+            md={!props.isGrantDetail ? 4 : 12}
+            css={`
+              @media (max-width: 767px) {
+                width: 100%;
+              }
+            `}
+          >
             <Tooltip title={props.title}>
               <div
                 css={styles.title}
@@ -310,6 +318,10 @@ export function PageHeader(props: PageHeaderProps) {
               display: flex;
               align-items: flex-end;
               justify-content: flex-end;
+
+              @media (max-width: 767px) {
+                width: 100%;
+              }
             `}
           >
             {props.tabs && props.tabs.length > 0 && (

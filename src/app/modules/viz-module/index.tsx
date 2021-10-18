@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
@@ -25,16 +26,12 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { ToolBoxPage } from "app/components/ToolBoxPanel/indexsm";
-import { IconButton, Tooltip, useMediaQuery } from "@material-ui/core";
-import TuneOutlinedIcon from "@material-ui/icons/TuneOutlined";
 
 export default function VizModule() {
   const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
-  const [openToolboxPage, setOpenToolboxPage] = React.useState(false);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -86,8 +83,10 @@ export default function VizModule() {
             }`,
           },
         ]}
-        onButtonClick={
-          isSmallScreen ? () => setOpenToolboxPage(!openToolboxPage) : undefined
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
         }
       />
       <div css="width: 100%;height: 25px;" />
@@ -199,29 +198,17 @@ export default function VizModule() {
           </Route>
         </Switch>
       </div>
-      {isSmallScreen ? (
-        <ToolBoxPage
-          open={openToolboxPage}
-          onButtonClick={() => setOpenToolboxPage(!openToolboxPage)}
-          filterGroups={get(
-            pathnameToFilterGroups,
-            location.pathname,
-            filtergroups
-          )}
-        />
-      ) : (
-        <>
-          <ToolBoxPanel
-            open={openToolboxPanel}
-            onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
-            filterGroups={get(
-              pathnameToFilterGroups,
-              location.pathname,
-              filtergroups
-            )}
-          />
-          <div
-            css={`
+      <ToolBoxPanel
+        open={openToolboxPanel}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        filterGroups={get(
+          pathnameToFilterGroups,
+          location.pathname,
+          filtergroups
+        )}
+      />
+      <div
+        css={`
           left: 0;
           top: 48px;
           z-index: 15;
@@ -236,9 +223,7 @@ export default function VizModule() {
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}
-          />
-        </>
-      )}
+      />
     </div>
   );
 }
