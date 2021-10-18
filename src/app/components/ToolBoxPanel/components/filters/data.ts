@@ -183,7 +183,7 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/disbursements/geomap": filter(
+  "/viz/disbursements/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
@@ -203,7 +203,7 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/signed/geomap": filter(
+  "/viz/signed/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
@@ -223,7 +223,7 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/commitment/geomap": filter(
+  "/viz/commitment/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
@@ -243,7 +243,7 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/budgets/geomap": filter(
+  "/viz/budgets/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
@@ -253,7 +253,7 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
-  "/viz/allocations/geomap": filter(
+  "/viz/allocations/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
@@ -273,7 +273,7 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
-  "/viz/pledges-contributions/geomap": filter(
+  "/viz/pledges-contributions/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
@@ -307,7 +307,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/location/<code>/disbursements/geomap": filter(
+  "/location/<code>/disbursements/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
@@ -335,7 +335,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/location/<code>/signed/geomap": filter(
+  "/location/<code>/signed/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
@@ -363,7 +363,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/location/<code>/commitment/geomap": filter(
+  "/location/<code>/commitment/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
@@ -425,7 +425,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/partner/<code>/disbursements/geomap": filter(
+  "/partner/<code>/disbursements/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
@@ -453,7 +453,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/partner/<code>/signed/geomap": filter(
+  "/partner/<code>/signed/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
@@ -481,7 +481,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/partner/<code>/commitment/geomap": filter(
+  "/partner/<code>/commitment/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&

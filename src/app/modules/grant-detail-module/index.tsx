@@ -154,7 +154,7 @@ export default function GrantDetail() {
               implementationPeriod={params.period}
             />
           </Route>
-          <Route path={`/grant/${params.code}/${params.period}/budgets/geomap`}>
+          <Route path={`/grant/${params.code}/${params.period}/budgets/map`}>
             <BudgetsGeoMap
               grantCode={params.code}
               grantPeriod={params.period}

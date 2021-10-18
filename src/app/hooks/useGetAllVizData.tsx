@@ -271,19 +271,19 @@ export function useGetAllVizData() {
   return {
     // Allocations
     "/viz/allocations": allocations,
-    "/viz/allocations/geomap": {
+    "/viz/allocations/map": {
       countries: allocationsGeomap,
       multicountries: allocationsMCGeomap,
     },
     // Budgets
     "/viz/budgets/flow": budgetsFlow,
     "/viz/budgets/time-cycle": budgetsTimeCycle,
-    "/viz/budgets/geomap": {
+    "/viz/budgets/map": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
     // Disbursements
-    "/viz/disbursements/geomap": {
+    "/viz/disbursements/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -291,7 +291,7 @@ export function useGetAllVizData() {
     "/viz/disbursements/treemap": disbursementsTreemap,
     "/viz/disbursements/table": disbursementsTreemap,
     // Signed
-    "/viz/signed/geomap": {
+    "/viz/signed/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -299,7 +299,7 @@ export function useGetAllVizData() {
     "/viz/signed/treemap": signedTreemap,
     "/viz/signed/table": signedTreemap,
     // Commitment
-    "/viz/commitment/geomap": {
+    "/viz/commitment/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -310,13 +310,13 @@ export function useGetAllVizData() {
     "/viz/eligibility": eligibility,
     "/viz/eligibility/table": eligibility,
     // Pledges & Contributions
-    "/viz/pledges-contributions/geomap": pledgesContributionsGeomap,
+    "/viz/pledges-contributions/map": pledgesContributionsGeomap,
     "/viz/pledges-contributions/table": pledgesContributionsGeomap,
     "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
     // Grant Budgets
     "/grant/<code>/budgets/flow": grantDetailBudgetsFlow,
     "/grant/<code>/budgets/time-cycle": grantDetailBudgetsTimeCycle,
-    "/grant/<code>/budgets/geomap": {
+    "/grant/<code>/budgets/map": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
@@ -344,7 +344,7 @@ export function useGetAllVizData() {
     // Location Disbursements
     "/location/<code>/disbursements/treemap": locationDetailDisbursementsTreemap,
     "/location/<code>/disbursements/table": locationDetailDisbursementsTreemap,
-    "/location/<code>/disbursements/geomap": {
+    "/location/<code>/disbursements/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -352,7 +352,7 @@ export function useGetAllVizData() {
     // Location Signed
     "/location/<code>/signed/treemap": locationDetailSignedTreemap,
     "/location/<code>/signed/table": locationDetailSignedTreemap,
-    "/location/<code>/signed/geomap": {
+    "/location/<code>/signed/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -360,7 +360,7 @@ export function useGetAllVizData() {
     // Location Commitment
     "/location/<code>/commitment/treemap": locationDetailCommitmentTreemap,
     "/location/<code>/commitment/table": locationDetailCommitmentTreemap,
-    "/location/<code>/commitment/geomap": {
+    "/location/<code>/commitment/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -368,7 +368,7 @@ export function useGetAllVizData() {
     // Location Budgets
     "/location/<code>/budgets/flow": locationDetailBudgetsFlow,
     "/location/<code>/budgets/time-cycle": locationDetailBudgetsTimeCycle,
-    "/location/<code>/budgets/geomap": {
+    "/location/<code>/budgets/map": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
@@ -389,7 +389,7 @@ export function useGetAllVizData() {
     // Partner Disbursements
     "/partner/<code>/disbursements/treemap": partnerDetailDisbursementsTreemap,
     "/partner/<code>/disbursements/table": partnerDetailDisbursementsTreemap,
-    "/partner/<code>/disbursements/geomap": {
+    "/partner/<code>/disbursements/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -397,7 +397,7 @@ export function useGetAllVizData() {
     // Partner Signed
     "/partner/<code>/signed/treemap": partnerDetailSignedTreemap,
     "/partner/<code>/signed/table": partnerDetailSignedTreemap,
-    "/partner/<code>/signed/geomap": {
+    "/partner/<code>/signed/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -405,7 +405,7 @@ export function useGetAllVizData() {
     // Partner Commitment
     "/partner/<code>/commitment/treemap": partnerDetailCommitmentTreemap,
     "/partner/<code>/commitment/table": partnerDetailCommitmentTreemap,
-    "/partner/<code>/commitment/geomap": {
+    "/partner/<code>/commitment/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
@@ -413,7 +413,7 @@ export function useGetAllVizData() {
     // Partner Budgets
     "/partner/<code>/budgets/flow": partnerDetailBudgetsFlow,
     "/partner/<code>/budgets/time-cycle": partnerDetailBudgetsTimeCycle,
-    "/partner/<code>/budgets/geomap": {
+    "/partner/<code>/budgets/map": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },

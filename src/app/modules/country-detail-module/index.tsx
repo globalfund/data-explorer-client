@@ -142,7 +142,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/budgets/geomap`}>
+          <Route path={`/location/${params.code}/budgets/map`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Disbursements */}
@@ -163,7 +163,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/geomap`}>
+          <Route path={`/location/${params.code}/disbursements/map`}>
             <InvestmentsGeoMap
               type="Disbursed"
               code={paramCode}
@@ -188,7 +188,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/signed/geomap`}>
+          <Route path={`/location/${params.code}/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"
               code={paramCode}
@@ -213,7 +213,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/commitment/geomap`}>
+          <Route path={`/location/${params.code}/commitment/map`}>
             <InvestmentsGeoMap
               type="Committed"
               code={paramCode}

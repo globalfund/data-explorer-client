@@ -142,11 +142,11 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Budgets Geomap
+                <b>Finance</b> · Budgets Map
               </div>
               <GeomapPreview />
             </>,
-            "/viz/budgets/geomap"
+            "/viz/budgets/map"
           )}
         </Carousel.Item>
         <Carousel.Item>
@@ -175,11 +175,11 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Disbursements Geomap
+                <b>Finance</b> · Disbursements Map
               </div>
               <GeomapPreview />
             </>,
-            "/viz/disbursements/geomap"
+            "/viz/disbursements/map"
           )}
         </Carousel.Item>
         <Carousel.Item>
@@ -208,11 +208,11 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Signed Geomap
+                <b>Finance</b> · Signed Map
               </div>
               <GeomapPreview />
             </>,
-            "/viz/signed/geomap"
+            "/viz/signed/map"
           )}
         </Carousel.Item>
         <Carousel.Item>
@@ -241,11 +241,11 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Commitments Geomap
+                <b>Finance</b> · Commitments Map
               </div>
               <GeomapPreview />
             </>,
-            "/viz/commitment/geomap"
+            "/viz/commitment/map"
           )}
         </Carousel.Item>
         <Carousel.Item>
@@ -274,11 +274,11 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Pledges & Contributions Geomap
+                <b>Finance</b> · Pledges & Contributions Map
               </div>
               <GeomapPreview />
             </>,
-            "/viz/pledges-contributions/geomap"
+            "/viz/pledges-contributions/map"
           )}
         </Carousel.Item>
         <Carousel.Item>
@@ -296,11 +296,11 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Allocations Geomap
+                <b>Finance</b> · Allocations Map
               </div>
               <GeomapPreview />
             </>,
-            "/viz/allocations/geomap"
+            "/viz/allocations/map"
           )}
         </Carousel.Item>
         <Carousel.Item>

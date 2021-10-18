@@ -17,17 +17,17 @@ function getFileName(
       return "disbursements-treemap";
     case "/viz/disbursements/time-cycle":
       return "disbursements-bar";
-    case "/viz/disbursements/geomap":
+    case "/viz/disbursements/map":
       return `disbursements-${options.investmentsMapView}`;
     case "/viz/budgets/flow":
       return "budgets-flow";
     case "/viz/budgets/time-cycle":
       return "budgets-time-cycle";
-    case "/viz/budgets/geomap":
+    case "/viz/budgets/map":
       return `budgets-${options.investmentsMapView}`;
     case "/viz/allocations":
       return "allocations";
-    case "/viz/allocations/geomap":
+    case "/viz/allocations/map":
       return `allocations-${options.investmentsMapView}`;
     case "/viz/allocation":
       return "allocations";
@@ -38,7 +38,7 @@ function getFileName(
       return `eligibility-by-${isComponent ? "component" : "location"}`;
     case "/viz/pledges-contributions/time-cycle":
       return "pledges-contributions-time-cycle";
-    case "/viz/pledges-contributions/geomap":
+    case "/viz/pledges-contributions/map":
       return `pledges-contributions-${options.donorMapView
         .toLowerCase()
         .replace(/ /g, "-")}`;

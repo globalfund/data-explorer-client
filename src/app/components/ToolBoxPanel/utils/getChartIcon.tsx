@@ -26,8 +26,6 @@ export function getChartIcon(view: ViewModel) {
       return <TableIcon />;
     case "Flow":
       return <SankeyIcon />;
-    case "Geomap":
-      return <MapIcon />;
     case "Chart":
       return <DotIcon />;
     case "Radial":
