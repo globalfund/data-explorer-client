@@ -9,10 +9,7 @@ import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import {
-  AllocationsGeoMapPinMarker,
-  InvestmentsGeoMapPinMarker,
-} from "app/components/Charts/GeoMap/data";
+import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -138,12 +135,7 @@ export function BudgetsGeoMap(props: Props) {
                 width: 100%;
                 height: 6px;
                 border-radius: 20px;
-                background: linear-gradient(
-                    90deg,
-                    #f2f3f7 0%,
-                    rgba(255, 255, 255, 0) 100%
-                  ),
-                  #343a40;
+                background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
               `}
             />
             <div

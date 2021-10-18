@@ -1,18 +1,21 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import get from "lodash/get";
-import Slide from "@material-ui/core/Slide";
 import { useHistory } from "react-router-dom";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
-import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
+import { useStoreState } from "app/state/store/hooks";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { SubToolBoxPanel } from "./subToolBox";
+import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
+import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
 
 export interface ToolBoxPanelProps {
   open: boolean;
   isGrantDetail?: boolean;
-  onButtonClick: () => void;
+  onCloseBtnClick: () => void;
   filterGroups: FilterGroupProps[];
 }
 
@@ -20,6 +23,11 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
+  );
+
+  // viz drilldown items
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
   );
 
   React.useLayoutEffect(() => {
@@ -34,11 +42,17 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     );
   }, [history.location.pathname]);
 
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   return (
     <ClickAwayListener
       onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
-        if (props.open && get(event.target, "tagName", "") !== "A") {
-          props.onButtonClick();
+        if (
+          props.open &&
+          get(event.target, "tagName", "") !== "A" &&
+          get(event.target, "id", "") !== "page-header-toolbox-btn"
+        ) {
+          props.onCloseBtnClick();
         }
       }}
     >
@@ -46,14 +60,21 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         <div
           css={`
             right: 0;
-            top: 133px;
             z-index: 20;
-            width: 500px;
+            width: 400px;
             position: fixed;
             background: #f5f5f7;
-            height: calc(100vh - 133px);
             visibility: visible !important;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+            top: ${!props.isGrantDetail && vizDrilldowns.length === 0
+              ? 133
+              : 168}px;
+            height: calc(
+              100vh -
+                ${!props.isGrantDetail && vizDrilldowns.length === 0
+                  ? 133
+                  : 168}px
+            );
 
             @media (max-width: 500px) {
               width: calc(100vw - 50px);
@@ -69,40 +90,56 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               flex-direction: column;
             `}
           >
-            <div
-              role="button"
-              tabIndex={-1}
-              css={`
-                top: 38%;
-                color: #fff;
-                width: 16px;
-                height: 133px;
-                display: flex;
-                cursor: pointer;
-                position: absolute;
-                background: #495057;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                border-radius: 10px 0px 0px 10px;
-                transition: background 0.2s ease-in-out;
-                left: -${!visibleVScrollbar || props.open ? 17 : 22}px;
+            {isSmallScreen ? (
+              <div css="height:24px;background-color: #373D43;width:100%;">
+                <IconButton
+                  css="width:12px;height:12px;"
+                  onClick={props.onCloseBtnClick}
+                >
+                  <CloseOutlinedIcon
+                    htmlColor="#ffffff"
+                    viewBox=" -4 -4 30 30"
+                  />
+                </IconButton>
+              </div>
+            ) : (
+              <div
+                role="button"
+                tabIndex={-1}
+                css={`
+                  top: 38%;
+                  color: #fff;
+                  width: 16px;
+                  height: 133px;
+                  display: flex;
+                  cursor: pointer;
+                  position: absolute;
+                  background: #495057;
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: center;
+                  border-radius: 10px 0px 0px 10px;
+                  transition: background 0.2s ease-in-out;
+                  // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
+                  // ${isTouchDevice() ? `left: -16px;` : ""}
+                  left: -16px;
 
-                &:hover {
-                  background: #13183f;
-                }
-
-                > svg {
-                  transform: rotate(${!props.open ? "-" : ""}90deg);
-                  > path {
-                    fill: #fff;
+                  &:hover {
+                    background: #13183f;
                   }
-                }
-              `}
-              onClick={() => props.onButtonClick()}
-            >
-              <TriangleXSIcon />
-            </div>
+
+                  > svg {
+                    transform: rotate(${!props.open ? "-" : ""}90deg);
+                    > path {
+                      fill: #fff;
+                    }
+                  }
+                `}
+                onClick={props.onCloseBtnClick}
+              >
+                <TriangleXSIcon />
+              </div>
+            )}
             <ToolBoxPanelIconButtons />
             <SubToolBoxPanel filterGroups={props.filterGroups} />
           </div>

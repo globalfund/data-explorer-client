@@ -66,7 +66,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
         >
           <div>Component</div>
           <div>Grants</div>
-          <div>Disbursements</div>
+          <div>{props.investmentSubType || "Disbursements"}</div>
         </div>
         {props.data.components.map((stat: any) => (
           <div

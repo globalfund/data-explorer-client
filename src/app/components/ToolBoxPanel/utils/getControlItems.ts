@@ -8,26 +8,70 @@ export interface ViewModel {
 }
 
 const views = {
-  investments: [
+  disbursements: [
     {
-      label: "Disbursements",
-      value: "Disbursements",
-      link: "/viz/investments/disbursements",
+      label: "Treemap",
+      value: "Treemap",
+      link: "/viz/disbursements/treemap",
     },
     {
       label: "Time/Cycle",
       value: "Time/Cycle",
-      link: "/viz/investments/time-cycle",
+      link: "/viz/disbursements/time-cycle",
     },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/investments/geomap",
+      link: "/viz/disbursements/geomap",
     },
     {
       label: "Table",
       value: "Table",
-      link: "/viz/investments/table",
+      link: "/viz/disbursements/table",
+    },
+  ],
+  signed: [
+    {
+      label: "Treemap",
+      value: "Treemap",
+      link: "/viz/signed/treemap",
+    },
+    {
+      label: "Time/Cycle",
+      value: "Time/Cycle",
+      link: "/viz/signed/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/signed/geomap",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/signed/table",
+    },
+  ],
+  commitment: [
+    {
+      label: "Treemap",
+      value: "Treemap",
+      link: "/viz/commitment/treemap",
+    },
+    {
+      label: "Time/Cycle",
+      value: "Time/Cycle",
+      link: "/viz/commitment/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/commitment/geomap",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/commitment/table",
     },
   ],
   budgets: [
@@ -85,11 +129,6 @@ const views = {
   ],
   "pledges-contributions": [
     {
-      label: "Map",
-      value: "Map",
-      link: "/viz/pledges-contributions/geomap",
-    },
-    {
       label: "Treemap",
       value: "Treemap",
       link: "/viz/pledges-contributions/treemap",
@@ -98,6 +137,11 @@ const views = {
       label: "Replenishment Periods",
       value: "Replenishment Periods",
       link: "/viz/pledges-contributions/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/pledges-contributions/geomap",
     },
     {
       label: "Table",

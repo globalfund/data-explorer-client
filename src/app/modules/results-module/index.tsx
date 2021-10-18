@@ -6,19 +6,19 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { PageLoader } from "app/modules/common/page-loader";
 import { InformationPanel } from "app/components/InformationPanel";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
-import { Search } from "app/modules/grants-module/components/Search";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { ResultsList } from "app/modules/results-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   ResultListItemModel,
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
+import { Grid } from "@material-ui/core";
+import { Switch, Route } from "react-router-dom";
+import { DataList } from "./datalist";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -97,7 +97,7 @@ export default function ResultsModule() {
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
-  if (widthThreshold > 500) {
+  if (widthThreshold > 420) {
     pushValue = 0;
   } else if (widthThreshold < 0) {
     pushValue = 0;
@@ -126,53 +126,72 @@ export default function ResultsModule() {
           },
           { name: "Results" },
         ]}
+        tabs={[
+          { url: "/results/overview", name: "Overview" },
+          { url: "/results/datapoints", name: "Data points" },
+        ]}
       />
-      <InformationPanel
-        open={openInfoPanel}
-        onButtonClick={() => setOpenInfoPanel(!openInfoPanel)}
-      >
-        <ResultsInfoContent description="" stats={infoData} />
-      </InformationPanel>
       <ToolBoxPanel
         open={openToolboxPanel}
         filterGroups={pathnameToFilterGroups.results}
         onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
-      {isLoading && <PageLoader />}
-      <div css="width: 100%;height: 25px;" />
-      <div
-        css={`
-          align-self: flex-start;
-          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
-        `}
-      >
-        <Search value={search} setValue={setSearch} />
-        <div css="width: 100%;height: 25px;" />
-        <div
-          css={`
-            gap: 6px;
-            display: flex;
-            align-items: center;
-          `}
-        >
-          <div
-            css={`
-              font-weight: bold;
-              margin-right: 10px;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            `}
-          >
-            Year {selectedYear}
-          </div>
-        </div>
-        <div css="width: 100%;height: 25px;" />
-        {data.length === 0 ? (
-          <NoDataLabel />
-        ) : (
-          <ResultsList listitems={data} isToolboxOpen={openToolboxPanel} />
-        )}
-      </div>
+      <Switch>
+        <Route exact path="/results/overview">
+          <Grid container spacing={4}>
+            <Grid item xs={12} sm={6} md={6}>
+              <ResultsInfoContent description="" stats={infoData} />
+            </Grid>
+            <Grid item xs={12} sm={6} md={6}>
+              <div
+                css={`
+                  margin-top: 50px;
+                  gap: 12px;
+                  line-height: 20px;
+                  letter-spacing: 0.5px;
+                `}
+              >
+                <p>
+                  The Global Fund is a partnership designed to accelerate the
+                  end of AIDS, tuberculosis and malaria as epidemics. As an
+                  international organization, the Global Fund mobilizes and
+                  invests more than US$4 billion a year to support programs run
+                  by local experts in more than 100 countries. In partnership
+                  with governments, civil society, technical agencies, the
+                  private sector and people affected by the diseases, we are
+                  challenging barriers and embracing innovation.
+                </p>
+                <p>
+                  Amounts are in the specified currency. Where noted, the
+                  USD-equivalent is presented for amounts in non-USD currencies.
+                  <br />
+                  <br />
+                  Pledges and contributions made in currencies other than USD
+                  from 2014 onward were converted to USD using fixed
+                  Replenishment exchange rates. Pledges and contributions before
+                  2014 were converted using spot exchange rates.
+                  <br />
+                  <br />
+                  Where pledges have been made that are not specific to
+                  individual years, the amount shown as pledged for a period is
+                  the sum of contributions received in that period.
+                </p>
+              </div>
+            </Grid>
+          </Grid>
+        </Route>
+        <Route exact path="/results/datapoints">
+          <DataList
+            isLoading={isLoading}
+            search={search}
+            setSearch={setSearch}
+            selectedYear={selectedYear}
+            data={data}
+            openToolboxPanel={openToolboxPanel}
+            pushValue={pushValue}
+          />
+        </Route>
+      </Switch>
       <div css="width: 100%;height: 25px;" />
       <div
         css={`

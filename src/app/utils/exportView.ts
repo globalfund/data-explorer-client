@@ -13,12 +13,12 @@ function getFileName(
 ): string {
   const isComponent = options.selectedAggregation === "componentName";
   switch (pathname) {
-    case "/viz/investments/disbursements":
-      return "investments-treemap";
-    case "/viz/investments/time-cycle":
-      return "investments-bar";
-    case "/viz/investments/geomap":
-      return `investments-${options.investmentsMapView}`;
+    case "/viz/disbursements/treemap":
+      return "disbursements-treemap";
+    case "/viz/disbursements/time-cycle":
+      return "disbursements-bar";
+    case "/viz/disbursements/geomap":
+      return `disbursements-${options.investmentsMapView}`;
     case "/viz/budgets/flow":
       return "budgets-flow";
     case "/viz/budgets/time-cycle":
@@ -46,7 +46,7 @@ function getFileName(
       return "grants";
     case "/viz/grants":
       return "grants";
-    case "/results":
+    case "/results/datapoints":
       return "results";
     default:
       return "";

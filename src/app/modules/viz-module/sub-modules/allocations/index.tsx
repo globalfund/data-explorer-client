@@ -23,9 +23,11 @@ import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 
 interface AllocationsModuleProps {
   code?: string;
+  toolboxOpen?: boolean;
 }
 
 export function AllocationsModule(props: AllocationsModuleProps) {
@@ -168,7 +170,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     ],
   };
 
-  function onClick(this: Window, e: MouseEvent) {
+  function onClick(this: Window, e: MouseEvent | TouchEvent) {
     // @ts-ignore
     if (e.target && e.target.parentNode && !vizSelected) {
       // @ts-ignore
@@ -176,11 +178,16 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       if (key) {
         // @ts-ignore
         const keySelected = e.target.getAttribute("selected");
-        if (keySelected === "true") {
+        if (keySelected === "true" || isTouchDevice()) {
           setVizLevel(1);
-          setVizScale(0.4);
           setVizSelected(key);
+          setVizTranslation({ x: -300, y: 0 });
         }
+        // @ts-ignore
+      } else if (e.target.className.baseVal === "apexcharts-radialbar-hollow") {
+        setVizLevel(1);
+        setVizSelected(keys.join(","));
+        setVizTranslation({ x: -300, y: 0 });
       }
     }
   }
@@ -228,7 +235,10 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           : appliedFilters
       );
       fetchDrilldownLevelData({
-        filterString: `levelParam=component/componentName eq '${vizSelected}'&periods=${selectedPeriod}${
+        filterString: `levelParam=component/componentName in (${vizSelected
+          .split(",")
+          .map((s: string) => `'${s}'`)
+          .join(",")})&periods=${selectedPeriod}${
           filterString.length > 0 ? `&${filterString}` : ""
         }`,
       });
@@ -281,7 +291,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     // }, 1000);
 
     window.addEventListener("click", onClick);
-    return () => window.removeEventListener("click", onClick);
+    window.addEventListener("touchstart", onClick);
+    return () => {
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("touchstart", onClick);
+    };
   }, []);
 
   if (isLoading) {
@@ -381,6 +395,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         vizLevel={vizLevel}
         selected={vizSelected}
         loading={isDrilldownLoading}
+        toolboxOpen={props.toolboxOpen}
         close={() => {
           setVizLevel(0);
           setVizScale(1);
@@ -399,7 +414,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         >
           <DrillDownArrowSelector
             options={keys}
-            selected={vizSelected as string}
+            selected={
+              (vizSelected === keys.join(",") ? "Total" : vizSelected) as string
+            }
             onChange={(value: string) => setVizSelected(value)}
           />
         </span>

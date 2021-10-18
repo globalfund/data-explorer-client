@@ -2,6 +2,7 @@
 import React from "react";
 import { useHoverDirty } from "react-use";
 import { useHistory } from "react-router-dom";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 // import WebMercatorViewport from "viewport-mercator-project";
 import MapGL, {
   LinearInterpolator,
@@ -31,12 +32,16 @@ import {
   GeomapPinTooltip,
   GeomapTooltip,
 } from "app/components/Charts/GeoMap/components/tooltip";
+import { isTouchDevice } from "app/utils/isTouchDevice";
+import { TooltipButton } from "app/components/Charts/common/styles";
 import { MapPin } from "app/components/Charts/GeoMap/components/pins";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { GeoMapControls } from "app/components/Charts/GeoMap/components/controls";
 
 export function GeoMap(props: GeoMapProps) {
   const history = useHistory();
   const mapRef = React.useRef<React.Ref<MapRef>>();
+  const isMobile = useMediaQuery("max-width: 767px");
   const containerRef = React.useRef<HTMLDivElement>(null);
   const isHovering = useHoverDirty(containerRef as React.RefObject<Element>);
   const [viewport, setViewport] = React.useState({
@@ -88,18 +93,18 @@ export function GeoMap(props: GeoMapProps) {
         default: "transparent",
         stops: [
           [0, "#ffffff"],
-          [1, "#f3f4f5"],
-          [2, "#dcdfe2"],
-          [3, "#c4cacf"],
-          [4, "#adb5bc"],
-          [5, "#959fa9"],
-          [6, "#7e8a96"],
-          [7, "#697581"],
-          [8, "#56606a"],
-          [9, "#434a52"],
-          [10, "#30353b"],
-          [11, "#30353b"],
-          [12, "#0a0b0c"],
+          [1, "#CDD4DF"],
+          [2, "#C0C7D2"],
+          [3, "#AFB6C1"],
+          [4, "#A0A7B1"],
+          [5, "#939AA4"],
+          [6, "#868D96"],
+          [7, "#787F88"],
+          [8, "#6B727B"],
+          [9, "#575E67"],
+          [10, "#444B53"],
+          [11, "#343B43"],
+          [12, "#252C34"],
         ],
       },
       "fill-opacity": [
@@ -244,7 +249,9 @@ export function GeoMap(props: GeoMapProps) {
   };
 
   const onClick = React.useCallback((event: any) => {
-    if (props.allowClickthrough) {
+    if (isMobile || isTouchDevice()) {
+      onHover(event);
+    } else if (props.allowClickthrough) {
       const { features } = event;
       const hoveredFeature = features && features[0];
       if (
@@ -257,6 +264,27 @@ export function GeoMap(props: GeoMapProps) {
       }
     }
   }, []);
+
+  function zoomIn() {
+    if (settings.maxZoom > viewport.zoom) {
+      setViewport({
+        ...viewport,
+        zoom: viewport.zoom + 0.5,
+      });
+    }
+  }
+
+  function zoomOut() {
+    if (viewport.zoom >= settings.minZoom) {
+      setViewport({
+        ...viewport,
+        zoom:
+          viewport.zoom - 0.5 > settings.minZoom
+            ? viewport.zoom - 0.5
+            : settings.minZoom,
+      });
+    }
+  }
 
   const uMapStyle = mapStyle;
   if (props.data.features.length === 0 || props.noData) {
@@ -356,7 +384,30 @@ export function GeoMap(props: GeoMapProps) {
                   committed: investmentsPinMarkerHoverInfo.committed,
                   signed: investmentsPinMarkerHoverInfo.signed,
                 }}
+                investmentSubType={props.investmentSubType}
               />
+              {isMobile ||
+                (isTouchDevice() && (
+                  <div
+                    css={`
+                      display: flex;
+                      margin-top: 10px;
+                      flex-direction: row;
+                      justify-content: flex-end;
+                    `}
+                  >
+                    <TooltipButton
+                      type="button"
+                      onTouchStart={() => {
+                        history.push(
+                          `/location/${investmentsPinMarkerHoverInfo.code}/overview`
+                        );
+                      }}
+                    >
+                      Go to detail page
+                    </TooltipButton>
+                  </div>
+                ))}
             </div>
           </Popup>
         )}
@@ -453,6 +504,7 @@ export function GeoMap(props: GeoMapProps) {
             </div>
           </Popup>
         )}
+        <GeoMapControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
       </MapGL>
       {hoverInfo && isHovering && props.type === "investments" && (
         <div
@@ -467,7 +519,32 @@ export function GeoMap(props: GeoMapProps) {
             left: ${hoverInfo.x - 180}px;
           `}
         >
-          <GeomapTooltip {...hoverInfo.properties} />
+          <GeomapTooltip
+            {...hoverInfo.properties}
+            investmentSubType={props.investmentSubType}
+          />
+          {isMobile ||
+            (isTouchDevice() && (
+              <div
+                css={`
+                  display: flex;
+                  margin-top: 10px;
+                  flex-direction: row;
+                  justify-content: flex-end;
+                `}
+              >
+                <TooltipButton
+                  type="button"
+                  onTouchStart={() => {
+                    history.push(
+                      `/location/${hoverInfo.properties.iso_a3}/overview`
+                    );
+                  }}
+                >
+                  Go to detail page
+                </TooltipButton>
+              </div>
+            ))}
         </div>
       )}
       {hoverInfo &&
@@ -489,6 +566,28 @@ export function GeoMap(props: GeoMapProps) {
               valueLabel={props.type}
               {...hoverInfo.properties}
             />
+            {isMobile ||
+              (isTouchDevice() && (
+                <div
+                  css={`
+                    display: flex;
+                    margin-top: 10px;
+                    flex-direction: row;
+                    justify-content: flex-end;
+                  `}
+                >
+                  <TooltipButton
+                    type="button"
+                    onTouchStart={() => {
+                      history.push(
+                        `/location/${hoverInfo.properties.iso_a3}/overview`
+                      );
+                    }}
+                  >
+                    Go to detail page
+                  </TooltipButton>
+                </div>
+              ))}
           </div>
         )}
       {hoverInfo && isHovering && props.type === "donors" && (

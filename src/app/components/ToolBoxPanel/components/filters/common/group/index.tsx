@@ -76,10 +76,12 @@ export function FilterGroup(props: FilterGroupCompProps) {
       `}
     >
       <div
+        onClick={props.expandGroup}
         css={`
           width: 100%;
           display: flex;
           font-size: 14px;
+          cursor: pointer;
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
@@ -91,7 +93,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
         `}
       >
         {props.name}
-        <IconButton onClick={props.expandGroup}>
+        <IconButton>
           <TriangleXSIcon />
         </IconButton>
       </div>

@@ -59,6 +59,7 @@ export interface GeoMapProps {
   investmentsPins: InvestmentsGeoMapPinMarker[];
   allocationsPins: AllocationsGeoMapPinMarker[];
   type: "investments" | "donors" | "allocations" | "budgets";
+  investmentSubType?: "Disbursed" | "Signed" | "Committed";
   allowClickthrough?: boolean;
   noData: boolean;
 }
@@ -495,6 +496,7 @@ export interface GeomapTooltipProps {
     committed: number;
     signed: number;
   };
+  investmentSubType?: "Disbursed" | "Signed" | "Committed";
 }
 
 export interface GeomapAllocationsTooltipProps {

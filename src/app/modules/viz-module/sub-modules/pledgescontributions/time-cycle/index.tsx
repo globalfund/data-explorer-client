@@ -15,7 +15,11 @@ import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
-export function PledgesContributionsTimeCycleModule() {
+interface Props {
+  toolboxOpen?: boolean;
+}
+
+export function PledgesContributionsTimeCycleModule(props: Props) {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizScale, setVizScale] = React.useState(1);
@@ -173,6 +177,7 @@ export function PledgesContributionsTimeCycleModule() {
         vizLevel={vizLevel}
         selected={vizSelected}
         loading={isDrilldownLoading}
+        toolboxOpen={props.toolboxOpen}
         close={() => {
           setVizLevel(0);
           setVizSelected(undefined);

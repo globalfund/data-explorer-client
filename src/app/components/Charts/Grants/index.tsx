@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import get from "lodash/get";
 import max from "lodash/max";
@@ -9,6 +11,7 @@ import { useMeasure } from "react-use";
 import { useHistory } from "react-router-dom";
 import useMousePosition from "app/hooks/useMousePosition";
 import {
+  circleLegendPositions,
   GrantsVizProps,
   ratingColor,
   statusBorderStyle,
@@ -103,6 +106,20 @@ export function GrantsViz(props: GrantsVizProps) {
             border-top-right-radius: ${width * 2}px;
           `}
         />
+
+        {components.map((component: any, index: number) => (
+          <div
+            key={component}
+            css={`
+              font-size: 13px;
+              font-weight: bold;
+              position: absolute;
+            `}
+            style={{ ...circleLegendPositions[components.length - 1][index] }}
+          >
+            {component}
+          </div>
+        ))}
 
         <ComponentDividers width={width} components={components} />
 
@@ -402,12 +419,16 @@ export function ComponentRadarThingies(props: any) {
                               top: 0;
                               cursor: pointer;
                               width: ${size}px;
-                              background: #fff;
                               height: ${size}px;
                               border-radius: 50%;
                               position: absolute;
                               left: -${size / 2}px;
                               border: 1px solid #495057;
+                              background: ${get(
+                                ratingColor,
+                                subItem.rating,
+                                ratingColor.None
+                              )};
                             `}
                           />
                         </div>
@@ -463,7 +484,7 @@ export function ComponentDividers(props: any) {
                 font-weight: bold;
                 position: relative;
                 display: inline-block;
-                content: "${component}";
+                content: " ";
                 right: 70px;
                 transform: rotate(-115deg);
                 top: ${(width - 240) / components.length}px;
@@ -530,9 +551,9 @@ export const RadialChartLegend = (props: any) => {
   const end = css`
     height: 38px;
     width: 38px;
-    background-color: white;
     border-radius: 50%;
-    border: 1px solid black;
+    border: 1px solid #000;
+    background-color: #ffc107;
 
     ::after {
       content: " ";
@@ -650,6 +671,85 @@ export const RadialChartLegend = (props: any) => {
       <div css={note}>
         *One grant could contains Multiple Implementation Periods
       </div>
+      <div css={header}>Latest Rating color code</div>
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          margin-left: -10px;
+          flex-direction: row;
+          margin-bottom: 30px;
+          justify-content: space-evenly;
+
+          > div {
+            width: 10px;
+            height: 10px;
+            position: relative;
+            border-radius: 50%;
+            border: 0.5px solid #262c34;
+
+            &:before {
+              width: 40px;
+              left: -16px;
+              bottom: -25px;
+              color: #495057;
+              font-size: 12px;
+              position: absolute;
+              text-align: center;
+            }
+          }
+        `}
+      >
+        <div
+          css={`
+            background: #fff;
+            &:before {
+              content: "None";
+            }
+          `}
+        />
+        <div
+          css={`
+            background: #3b873e;
+            &:before {
+              content: "A1";
+            }
+          `}
+        />
+        <div
+          css={`
+            background: #7bc67e;
+            &:before {
+              content: "A2";
+            }
+          `}
+        />
+        <div
+          css={`
+            background: #ffab00;
+            &:before {
+              content: "B1";
+            }
+          `}
+        />
+        <div
+          css={`
+            background: #ff6d00;
+            &:before {
+              content: "B2";
+            }
+          `}
+        />
+        <div
+          css={`
+            background: #e57373;
+            &:before {
+              content: "C";
+            }
+          `}
+        />
+      </div>
+      <div css="width: 100%;height: 15px;" />
       <div css={header}>Grant Status</div>
       <hr css={solid} />
       <div css={body}>Active</div>

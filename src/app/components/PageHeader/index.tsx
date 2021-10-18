@@ -18,17 +18,33 @@ import TuneOutlinedIcon from "@material-ui/icons/TuneOutlined";
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
+  isGrantDetail?: boolean;
   breadcrumbs: BreadcrumbModel[];
   onButtonClick?: () => void;
 }
 
 export const StyledMenu = withStyles({
   paper: {
+    minWidth: 220,
     borderRadius: 10,
     border: "1px solid #d3d4d5",
+    "&::-webkit-scrollbar": {
+      width: 5,
+      borderRadius: 10,
+      background: "#262c34",
+    },
+    "&::-webkit-scrollbar-track": {
+      borderRadius: 10,
+      background: "#dfe3e6",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: 10,
+      background: "#262c34",
+    },
   },
   list: {
     padding: 0,
+    maxHeight: 450,
   },
 })((props: MenuProps) => (
   <Menu
@@ -36,11 +52,11 @@ export const StyledMenu = withStyles({
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center",
+      horizontal: "left",
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center",
+      horizontal: "left",
     }}
     autoFocus={false}
     {...props}
@@ -50,6 +66,7 @@ export const StyledMenu = withStyles({
 export const StyledMenuItem = withStyles((theme) => ({
   root: {
     padding: 0,
+    width: "100%",
     borderBottom: "1px solid #DFE3E6",
     "& a": {
       width: "100%",
@@ -58,13 +75,20 @@ export const StyledMenuItem = withStyles((theme) => ({
       padding: "6px 12px",
       textDecoration: "none",
     },
-    "& div": {
-      width: "100%",
-      fontSize: "12px",
-      color: "#262c34",
-      padding: "0 12px",
-      textDecoration: "none",
-    },
+    // "& li": {
+    //   width: "100%",
+    //   fontSize: "14px",
+    //   color: "#262c34",
+    //   padding: "6px 12px",
+    //   textDecoration: "none",
+    // },
+    // "& div": {
+    //   width: "100%",
+    //   fontSize: "14px",
+    //   color: "#262c34",
+    //   padding: "0 12px",
+    //   textDecoration: "none",
+    // },
   },
 }))(MenuItem);
 
@@ -204,7 +228,11 @@ export function PageHeader(props: PageHeaderProps) {
                     >
                       {breadcrumb.menuitems.map(
                         (item: React.ReactChild, itemIndex: number) => (
-                          <StyledMenuItem key={itemIndex}>
+                          <StyledMenuItem
+                            disableRipple
+                            key={itemIndex}
+                            disableTouchRipple
+                          >
                             {item}
                           </StyledMenuItem>
                         )
@@ -246,9 +274,14 @@ export function PageHeader(props: PageHeaderProps) {
             justify-content: space-between;
           `}
         >
-          <Grid item sm={12} md={4}>
+          <Grid item sm={12} md={!props.isGrantDetail ? 4 : 12}>
             <Tooltip title={props.title}>
-              <div css={styles.title}>{props.title}</div>
+              <div
+                css={styles.title}
+                style={props.isGrantDetail ? { fontSize: 14 } : {}}
+              >
+                {props.title}
+              </div>
             </Tooltip>
             {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
@@ -260,17 +293,19 @@ export function PageHeader(props: PageHeaderProps) {
                 ))}
               </div>
             )}
-            <div
-              css={`
-                width: 100%;
-                height: 16px;
-              `}
-            />
+            {!props.isGrantDetail && (
+              <div
+                css={`
+                  width: 100%;
+                  height: 16px;
+                `}
+              />
+            )}
           </Grid>
           <Grid
             item
             sm={12}
-            md={8}
+            md={!props.isGrantDetail ? 8 : 12}
             css={`
               display: flex;
               align-items: flex-end;
