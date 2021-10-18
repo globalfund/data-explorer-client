@@ -25,11 +25,11 @@ export function Search() {
 
   useUpdateEffect(() => {
     setStoredValue(value);
-    if (value.length === 0) {
-      fetchData({
-        filterString: `q=${value}`,
-      });
-    }
+    // if (value.length === 0) {
+    //   fetchData({
+    //     filterString: `q=${value}`,
+    //   });
+    // }
   }, [value]);
 
   const [,] = useDebounce(
