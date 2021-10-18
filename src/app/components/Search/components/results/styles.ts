@@ -20,8 +20,17 @@ export const tabs = css`
   padding: 0 40px;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 16px;
+  padding-bottom: 16px;
   justify-content: space-between;
+
+  @media (max-width: 767px) {
+    gap: 25px;
+    max-width: 100%;
+    padding: 0 20px;
+    overflow-x: auto;
+    width: max-content;
+    padding-bottom: 16px;
+  }
 `;
 
 export const tab = (active: boolean) => css`
@@ -29,6 +38,7 @@ export const tab = (active: boolean) => css`
   padding: 5px 0;
   font-size: 14px;
   font-weight: bold;
+  white-space: nowrap;
   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   border-bottom: 2px solid ${active ? "#262c34" : "transparent"};
 
@@ -66,6 +76,10 @@ export const result = css`
   text-decoration: none;
   padding: 10px 40px 10px 55px;
   border-top: 1px solid #dfe3e6;
+
+  @media (max-width: 767px) {
+    padding: 10px 20px;
+  }
 
   &:hover {
     background: #13183f;
