@@ -169,7 +169,7 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Description
+          {/* Description */}
         </div>
         <div
           css={`
@@ -177,7 +177,7 @@ export function GrantDetailOverviewModule() {
             margin-bottom: 20px;
           `}
         >
-          {grantInfoData.description}
+          {/* {grantInfoData.description} */}
         </div>
       </Grid>
       <Grid item xs={12} sm={12} md={12} lg={6}>
