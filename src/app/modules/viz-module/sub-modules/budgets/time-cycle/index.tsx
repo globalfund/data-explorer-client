@@ -44,7 +44,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   );
 
   React.useEffect(() => {
-    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
+    if (props.vizLevel === 0) {
       setVizDrilldowns([]);
     }
     if (props.vizLevel > 0 && props.vizSelected) {
