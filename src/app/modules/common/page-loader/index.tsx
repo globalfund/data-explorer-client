@@ -30,7 +30,7 @@ export const LoadingComp = styled.div`
   width: ${(props: { inLoader?: boolean }) =>
     props.inLoader ? "100%" : "100vw"};
   height: ${(props: { inLoader?: boolean }) =>
-    props.inLoader ? "100%" : "100vw"};
+    props.inLoader ? "100%" : "100vh"};
   z-index: 100000;
   position: ${(props: { inLoader?: boolean }) =>
     props.inLoader ? "static" : "fixed"};

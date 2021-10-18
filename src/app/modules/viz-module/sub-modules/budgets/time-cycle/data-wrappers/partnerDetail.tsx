@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Partner Budgets Time/Cycle");
+  useTitle("The Data Explorer - Partner Budgets Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizPrevTranslation, setVizPrevTranslation] = React.useState({

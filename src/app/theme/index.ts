@@ -219,13 +219,9 @@ export default createMuiTheme({
     MuiListItem: {
       button: {
         "&:hover": {
-          color: "#fff",
-          backgroundColor: "#13183F",
+          color: "#262c34",
+          backgroundColor: "#fff",
           transition: "background 0.2s ease-in-out",
-          "& *": {
-            fill: "#fff",
-            color: "#fff",
-          },
         },
       },
     },

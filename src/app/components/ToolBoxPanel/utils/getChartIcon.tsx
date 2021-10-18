@@ -14,7 +14,7 @@ export function getChartIcon(view: ViewModel) {
       return <TreemapIcon />;
     case "Treemap":
       return <TreemapIcon />;
-    case "Time/Cycle":
+    case "Time cycle":
       return <BarIcon />;
     case "Replenishment Periods":
       return <BarIcon />;

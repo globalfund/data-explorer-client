@@ -71,7 +71,7 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
   );
 
   React.useEffect(() => {
-    if (vizLevel === 0 && vizDrilldowns.length > 0) {
+    if (vizLevel === 0) {
       setVizDrilldowns([]);
     }
     if (vizLevel > 0 && vizSelected) {

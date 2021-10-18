@@ -1,4 +1,4 @@
-//cc:application base#;application routes
+// cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
 import { useGA } from "app/hooks/useGA";
@@ -99,7 +99,7 @@ export function MainRoutes() {
           <GrantsModule />
         </Route>
 
-        <Route exact path="/results">
+        <Route exact path="/results/:tab">
           <ResultsModule />
         </Route>
 

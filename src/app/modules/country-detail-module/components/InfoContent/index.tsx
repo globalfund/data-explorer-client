@@ -48,7 +48,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
       </div>
       {props.code.length === 3 && (
         <Link
-          to={`/results?locations=${props.code}`}
+          to={`/results/datapoints?locations=${props.code}`}
           css={`
             font-size: 12px;
             font-weight: bold;

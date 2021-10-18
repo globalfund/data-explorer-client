@@ -24,7 +24,7 @@ const styles = {
   `,
   tablebody: css`
     td {
-      font-size: 10px;
+      font-size: 12px;
 
       > span {
         cursor: pointer;
@@ -98,7 +98,7 @@ function ResultsTableRow(props: ResultsTableRowProps) {
         >
           <div
             css={`
-              min-width: 20px;
+              min-width: 30px;
             `}
           >
             {props.achievementRate}

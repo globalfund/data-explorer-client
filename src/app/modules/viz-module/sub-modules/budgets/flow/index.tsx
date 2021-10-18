@@ -62,8 +62,8 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   );
 
   React.useEffect(() => {
-    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
-      setVizDrilldowns([]);
+    if (props.vizLevel === 0) {
+      setVizDrilldowns([{ name: "Dataset" }]);
     }
     if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
       setVizDrilldowns([{ name: "Dataset" }, { name: props.vizSelected.id }]);

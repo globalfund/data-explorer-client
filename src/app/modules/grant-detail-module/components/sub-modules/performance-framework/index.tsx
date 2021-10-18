@@ -129,6 +129,8 @@ export function PerformanceFrameworkModule(props: Props) {
         />
       </TransitionContainer>
       <SlideInContainer
+        bigHeader
+        enableOverflow
         vizLevel={vizLevel}
         selected={vizSelected}
         loading={isExpandLoading}

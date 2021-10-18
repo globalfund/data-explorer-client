@@ -23,6 +23,7 @@ import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -169,7 +170,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     ],
   };
 
-  function onClick(this: Window, e: MouseEvent) {
+  function onClick(this: Window, e: MouseEvent | TouchEvent) {
     // @ts-ignore
     if (e.target && e.target.parentNode && !vizSelected) {
       // @ts-ignore
@@ -177,7 +178,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       if (key) {
         // @ts-ignore
         const keySelected = e.target.getAttribute("selected");
-        if (keySelected === "true") {
+        if (keySelected === "true" || isTouchDevice()) {
           setVizLevel(1);
           setVizSelected(key);
           setVizTranslation({ x: -300, y: 0 });
@@ -290,7 +291,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     // }, 1000);
 
     window.addEventListener("click", onClick);
-    return () => window.removeEventListener("click", onClick);
+    window.addEventListener("touchstart", onClick);
+    return () => {
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("touchstart", onClick);
+    };
   }, []);
 
   if (isLoading) {

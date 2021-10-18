@@ -9,16 +9,16 @@ import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
 import { useMeasure } from "react-use";
 import { useHistory } from "react-router-dom";
+import { css } from "styled-components/macro";
 import useMousePosition from "app/hooks/useMousePosition";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { GrantsRadialTooltip } from "app/components/Charts/Grants/components/tooltip";
 import {
   circleLegendPositions,
   GrantsVizProps,
   ratingColor,
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
-import { css } from "styled-components/macro";
-import { GrantsRadialTooltip } from "./components/tooltip";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 // TODO: clean up component
 // TODO: discuss with Dafei what should happen when only 1 component is in the data.
@@ -37,6 +37,7 @@ export function GrantsViz(props: GrantsVizProps) {
     name: number;
     title: string;
     value: number;
+    number: number;
     status: string;
     years: number[];
     component: string;
@@ -412,6 +413,7 @@ export function ComponentRadarThingies(props: any) {
                                 ...subItem,
                                 component: item.component,
                                 title: item.title || item.name,
+                                number: item.name,
                               })
                             }
                             id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-end`}

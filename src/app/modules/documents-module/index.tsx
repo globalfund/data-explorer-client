@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -13,13 +12,15 @@ import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { Pagination } from "@material-ui/lab";
+import { useMediaQuery } from "@material-ui/core";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
-  const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -27,6 +28,7 @@ export default function DocumentsModule() {
     (state) =>
       get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
   );
+  const [page, setPage] = React.useState(1);
   const isLoading = useStoreState((state) => state.Documents.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -62,12 +64,18 @@ export default function DocumentsModule() {
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
-  if (widthThreshold > 500) {
+  if (widthThreshold > 420) {
     pushValue = 0;
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
     pushValue = 500 - widthThreshold;
+  }
+
+  function visible() {
+    if (isSmallScreen) return 0;
+    if (openToolboxPanel && widthThreshold < 0) return 1;
+    return 0;
   }
 
   return (
@@ -91,11 +99,16 @@ export default function DocumentsModule() {
           },
           { name: "Documents" },
         ]}
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
+        }
       />
       <ToolBoxPanel
         open={openToolboxPanel}
         filterGroups={pathnameToFilterGroups.documents}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       {isLoading && <PageLoader />}
       <div
@@ -106,12 +119,35 @@ export default function DocumentsModule() {
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
       >
-        <DocumentsSubModule
-          data={data}
-          search={search}
-          setSearch={setSearch}
-          columns={["Location", "Documents"]}
-        />
+        {isSmallScreen ? (
+          <>
+            <DocumentsSubModule
+              data={data.slice((page - 1) * 9, page * 9)}
+              search={search}
+              setSearch={setSearch}
+              columns={["Location", "Documents"]}
+            />
+            <div>
+              <Pagination
+                css={`
+                  display: flex;
+                  justify-content: center;
+                `}
+                count={Math.ceil(data.length / 9)}
+                boundaryCount={Math.ceil(data.length / 18)}
+                page={page}
+                onChange={(event, val) => setPage(val)}
+              />
+            </div>
+          </>
+        ) : (
+          <DocumentsSubModule
+            data={data}
+            search={search}
+            setSearch={setSearch}
+            columns={["Location", "Documents"]}
+          />
+        )}
       </div>
       <div
         css={`
@@ -122,10 +158,8 @@ export default function DocumentsModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
-          visibility: ${openToolboxPanel && widthThreshold < 0
-            ? "visible"
-            : "hidden"};
+          opacity: ${visible()};
+          visibility: ${visible() === 1 ? "visible" : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

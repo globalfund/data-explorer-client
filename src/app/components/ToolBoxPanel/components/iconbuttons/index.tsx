@@ -48,11 +48,12 @@ const locationsToNotShowImageExport = [
   "/grants",
   "/viz/grants",
   "/location/<code>/grants",
-  "/results",
+  "/results/datapoints",
 ];
 
 const locationsToNotShowExport = [
   "/viz/documents",
+  "/results/overview",
   "/location/<code>/documents",
 ];
 

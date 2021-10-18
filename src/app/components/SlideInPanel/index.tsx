@@ -14,6 +14,8 @@ interface SlideInContainerProps {
   loading?: boolean;
   toolboxOpen?: boolean;
   children: React.ReactNode;
+  bigHeader?: boolean;
+  enableOverflow?: boolean;
 }
 
 export function SlideInContainer(props: SlideInContainerProps) {
@@ -46,9 +48,14 @@ export function SlideInContainer(props: SlideInContainerProps) {
           justify-content: flex-end;
           right: ${props.toolboxOpen ? "400px" : 0};
           width: ${props.toolboxOpen ? "50%" : "60%"};
-          top: ${vizDrilldowns.length > 0 ? "168px" : "133px"};
+          top: ${vizDrilldowns.length > 0 || props.bigHeader
+            ? "168px"
+            : "133px"};
           transition: right 500ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          height: calc(100% - ${vizDrilldowns.length > 0 ? "168px" : "133px"});
+          height: calc(
+            100% -
+              ${vizDrilldowns.length > 0 || props.bigHeader ? "168px" : "133px"}
+          );
 
           @media (max-width: 768px) {
             width: 100%;
@@ -84,11 +91,13 @@ export function SlideInContainer(props: SlideInContainerProps) {
             width: 100%;
             height: 100%;
             max-height: 100%;
-            // overflow: visible;
-            // overflow-y: auto;
             padding: ${props.loading ? "0px" : "20px 50px"};
             padding-top: ${isSmallScreen ? "44px !important" : ""};
             padding-left: ${isSmallScreen ? "33px !important" : ""};
+            ${props.enableOverflow
+              ? `overflow: visible;overflow-y: auto;`
+              : ""};
+
             > div {
               height: calc(100% - 80px);
               overflow: visible !important;

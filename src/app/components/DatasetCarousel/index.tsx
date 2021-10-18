@@ -11,6 +11,7 @@ import { InvestmentsBarPreview } from "app/assets/dataset-preview/investmentsBar
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
+import { useMediaQuery } from "@material-ui/core";
 
 const griditem = (content: React.ReactElement, link: string) => (
   <Link to={link} css="text-decoration: none;">
@@ -43,6 +44,7 @@ const griditem = (content: React.ReactElement, link: string) => (
 );
 
 export function DatasetCarousel() {
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   return (
     <div
       css={`
@@ -52,13 +54,18 @@ export function DatasetCarousel() {
           > div:nth-of-type(2) {
             margin: 0;
           }
+          > div:nth-of-type(3) {
+            padding-top: 10px;
+          }
         }
       `}
     >
       <Carousel
-        cols={3}
+        cols={isSmallScreen ? 2 : 3}
         rows={1}
         gap={10}
+        hideArrow={isSmallScreen ? true : undefined}
+        showDots={isSmallScreen ? true : undefined}
         containerStyle={{ width: "100%" }}
         arrowLeft={
           <div
@@ -124,7 +131,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Budgets Time/Cycle
+                <b>Finance</b> · Budgets Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -157,7 +164,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Disbursements Time/Cycle
+                <b>Finance</b> · Disbursements Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -190,7 +197,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Signed Time/Cycle
+                <b>Finance</b> · Signed Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -223,7 +230,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Committments Time/Cycle
+                <b>Finance</b> · Committments Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -256,7 +263,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Pledges & Contributions Time/Cycle
+                <b>Finance</b> · Pledges & Contributions Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -326,7 +333,7 @@ export function DatasetCarousel() {
               </div>
               <ResultsListPreview />
             </>,
-            "/results"
+            "/results/overview"
           )}
         </Carousel.Item>
       </Carousel>

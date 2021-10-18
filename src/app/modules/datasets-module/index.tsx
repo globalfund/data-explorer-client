@@ -30,7 +30,7 @@ const datasets: DatasetItemModel[] = [
     preview: <BudgetFlowPreview />,
   },
   {
-    name: "Budgets Time/Cycle",
+    name: "Budgets Time cycle",
     link: "/viz/budgets/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -48,7 +48,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Disbursements Time/Cycle",
+    name: "Disbursements Time cycle",
     link: "/viz/disbursements/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -66,7 +66,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Signed Time/Cycle",
+    name: "Signed Time cycle",
     link: "/viz/signed/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -84,7 +84,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Commitments Time/Cycle",
+    name: "Commitments Time cycle",
     link: "/viz/commitment/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -102,7 +102,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Pledges & Contributions Time/Cycle",
+    name: "Pledges & Contributions Time cycle",
     link: "/viz/pledges-contributions/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -139,7 +139,7 @@ const datasets: DatasetItemModel[] = [
   },
   {
     name: "",
-    link: "/results",
+    link: "/results/overview",
     group: "Results",
     preview: <ResultsListPreview />,
   },
@@ -181,13 +181,16 @@ export default function Datasets() {
       <div css="width: 100%;height: 25px;" />
       <Grid container spacing={4}>
         {datasets.map((dataset: DatasetItemModel) => (
-          <Grid item sm={12} md={6} key={dataset.link}>
+          <Grid item xs={12} sm={6} md={6} key={dataset.link}>
             <Link to={dataset.link} css="text-decoration: none;">
               <div
                 css={`
+                  @media screen and (min-width: 900px) {
+                    height: 370px !important;
+                  }
                   width: 100%;
                   padding: 20px;
-                  height: 370px;
+                  height: 22vh;
                   color: #262c34;
                   background: #fff;
                   border-radius: 20px;

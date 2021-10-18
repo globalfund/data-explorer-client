@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
@@ -76,14 +77,21 @@ export function InvestmentsDisbursedModule(
   );
 
   React.useEffect(() => {
-    if (props.vizLevel === 0 && vizDrilldowns.length > 0) {
-      setVizDrilldowns([]);
+    if (props.vizLevel === 0) {
+      setVizDrilldowns([{ name: "Dataset" }]);
     }
     if (props.vizLevel > 0 && props.vizSelected) {
-      setVizDrilldowns([
-        { name: "Dataset" },
-        { name: props.vizSelected.split("-")[0] },
-      ]);
+      const code = props.vizSelected.split("-")[0];
+      let name = "";
+      props.data.forEach((item: DisbursementsTreemapDataItem) => {
+        if (name.length === 0) {
+          const fItem = find(item._children, { code });
+          if (fItem) {
+            name = fItem.name;
+          }
+        }
+      });
+      setVizDrilldowns([{ name: "Dataset" }, { name }]);
     }
   }, [props.vizLevel, props.vizSelected]);
 
