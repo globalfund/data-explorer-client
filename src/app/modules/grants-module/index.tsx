@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useLocation } from "react-router-dom";
+import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -17,10 +17,10 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { GrantListItemModel } from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 
 interface GrantsModuleProps {
   code?: string;
@@ -38,7 +38,6 @@ export default function GrantsModule(props: GrantsModuleProps) {
         : ""
     } Grants`
   );
-  const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
@@ -117,7 +116,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
   if (!props.code && !props.detailFilterType) {
-    if (widthThreshold > 500) {
+    if (widthThreshold > 420) {
       pushValue = 0;
     } else if (widthThreshold < 0) {
       pushValue = 0;
@@ -125,6 +124,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
       pushValue = 500 - widthThreshold;
     }
   }
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <div
@@ -152,11 +152,16 @@ export default function GrantsModule(props: GrantsModuleProps) {
                 name: "Grants",
               },
             ]}
+            onToolboxSmBtnClick={
+              isSmallScreen
+                ? () => setOpenToolboxPanel(!openToolboxPanel)
+                : undefined
+            }
           />
           <ToolBoxPanel
             open={openToolboxPanel}
             filterGroups={pathnameToFilterGroups.grants}
-            onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+            onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
           />
           <div css="width: 100%;height: 25px;" />
         </>

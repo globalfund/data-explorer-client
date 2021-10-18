@@ -125,7 +125,7 @@ export function LocationDetailOverviewModule(props: Props) {
       {props.code.length === 3 && (
         <Grid item md={12} lg={6}>
           <Link
-            to={`/results?locations=${props.code}`}
+            to={`/results/datapoints?locations=${props.code}`}
             css={`
               font-size: 14px;
               font-weight: bold;

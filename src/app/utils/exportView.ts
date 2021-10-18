@@ -46,7 +46,7 @@ function getFileName(
       return "grants";
     case "/viz/grants":
       return "grants";
-    case "/results":
+    case "/results/datapoints":
       return "results";
     default:
       return "";

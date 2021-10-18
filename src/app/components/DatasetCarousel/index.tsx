@@ -330,7 +330,7 @@ export function DatasetCarousel() {
               </div>
               <ResultsListPreview />
             </>,
-            "/results"
+            "/results/overview"
           )}
         </Carousel.Item>
       </Carousel>

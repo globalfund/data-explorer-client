@@ -17,4 +17,4 @@ ReactDOM.render(<App />, document.getElementById("root"));
 
 reportWebVitals();
 
-serviceWorker.register();
+// serviceWorker.register();

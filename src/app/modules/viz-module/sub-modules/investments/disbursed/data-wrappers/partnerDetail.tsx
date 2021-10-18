@@ -78,7 +78,7 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
         : appliedFilters
     );
     fetchData({ filterString });
-  }, [props.code, appliedFilters]);
+  }, [props.code, appliedFilters, props.type]);
 
   return (
     <InvestmentsDisbursedModule

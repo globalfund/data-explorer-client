@@ -96,6 +96,11 @@ export function NetworkViz(props: NetworkVizProps) {
               props.onNodeClick(node.id, node.x, 0);
             }
           }}
+          onTouchStart={() => {
+            if (node.depth === 2) {
+              props.onNodeClick(node.id, node.x, 0);
+            }
+          }}
         >
           {(node.depth === 1 || node.depth === 2) && (
             <text

@@ -17,7 +17,7 @@ export function ArrowSelector(props: ArrowSelectorProps) {
 
         > div {
           color: #262c34;
-          font-size: 10px;
+          font-size: 12px;
           max-width: 150px;
           line-height: 15px;
         }

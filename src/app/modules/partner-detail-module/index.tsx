@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { useTitle } from "react-use";
+import { useMediaQuery } from "@material-ui/core";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   Switch,
@@ -58,13 +59,14 @@ export default function PartnerDetail() {
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
-  if (widthThreshold > 500) {
+  if (widthThreshold > 420) {
     pushValue = 0;
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
     pushValue = 500 - widthThreshold;
   }
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <div
@@ -91,6 +93,11 @@ export default function PartnerDetail() {
           },
         ]}
         tabs={partnerDetailTabs}
+        onToolboxSmBtnClick={
+          isSmallScreen
+            ? () => setOpenToolboxPanel(!openToolboxPanel)
+            : undefined
+        }
       />
       <div css="width: 100%;height: 25px;" />
       <div
@@ -217,7 +224,7 @@ export default function PartnerDetail() {
           location.pathname.replace(params.code, "<code>"),
           filtergroups
         )}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       <div
         css={`
