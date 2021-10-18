@@ -7,6 +7,7 @@ interface Props {
   name: number;
   title: string;
   value: number;
+  number: number;
   status: string;
   years: number[];
   component: string;
@@ -46,6 +47,10 @@ export function GrantsRadialTooltip(props: Props) {
           border: 1px solid #dfe3e6;
         `}
       />
+      <div css={rowcss}>
+        <div>Grant agreement number</div>
+        <div>{props.number}</div>
+      </div>
       <div css={rowcss}>
         <div>Period</div>
         <div>
