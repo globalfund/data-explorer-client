@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Grant Budgets Time/Cycle");
+  useTitle("The Data Explorer - Grant Budgets Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizPrevTranslation, setVizPrevTranslation] = React.useState({

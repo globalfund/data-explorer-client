@@ -30,7 +30,7 @@ const datasets: DatasetItemModel[] = [
     preview: <BudgetFlowPreview />,
   },
   {
-    name: "Budgets Time/Cycle",
+    name: "Budgets Time cycle",
     link: "/viz/budgets/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -48,7 +48,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Disbursements Time/Cycle",
+    name: "Disbursements Time cycle",
     link: "/viz/disbursements/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -66,7 +66,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Signed Time/Cycle",
+    name: "Signed Time cycle",
     link: "/viz/signed/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -84,7 +84,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Commitments Time/Cycle",
+    name: "Commitments Time cycle",
     link: "/viz/commitment/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,
@@ -102,7 +102,7 @@ const datasets: DatasetItemModel[] = [
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Pledges & Contributions Time/Cycle",
+    name: "Pledges & Contributions Time cycle",
     link: "/viz/pledges-contributions/time-cycle",
     group: "Finance",
     preview: <InvestmentsBarPreview />,

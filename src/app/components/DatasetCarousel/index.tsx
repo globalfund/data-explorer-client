@@ -131,7 +131,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Budgets Time/Cycle
+                <b>Finance</b> · Budgets Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -164,7 +164,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Disbursements Time/Cycle
+                <b>Finance</b> · Disbursements Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -197,7 +197,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Signed Time/Cycle
+                <b>Finance</b> · Signed Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -230,7 +230,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Committments Time/Cycle
+                <b>Finance</b> · Committments Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
@@ -263,7 +263,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Pledges & Contributions Time/Cycle
+                <b>Finance</b> · Pledges & Contributions Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,

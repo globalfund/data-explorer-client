@@ -15,8 +15,8 @@ const views = {
       link: "/viz/disbursements/treemap",
     },
     {
-      label: "Time/Cycle",
-      value: "Time/Cycle",
+      label: "Time cycle",
+      value: "Time cycle",
       link: "/viz/disbursements/time-cycle",
     },
     {
@@ -37,8 +37,8 @@ const views = {
       link: "/viz/signed/treemap",
     },
     {
-      label: "Time/Cycle",
-      value: "Time/Cycle",
+      label: "Time cycle",
+      value: "Time cycle",
       link: "/viz/signed/time-cycle",
     },
     {
@@ -59,8 +59,8 @@ const views = {
       link: "/viz/commitment/treemap",
     },
     {
-      label: "Time/Cycle",
-      value: "Time/Cycle",
+      label: "Time cycle",
+      value: "Time cycle",
       link: "/viz/commitment/time-cycle",
     },
     {
@@ -81,8 +81,8 @@ const views = {
       link: "/viz/budgets/flow",
     },
     {
-      label: "Time/Cycle",
-      value: "Time/Cycle",
+      label: "Time cycle",
+      value: "Time cycle",
       link: "/viz/budgets/time-cycle",
     },
     {
