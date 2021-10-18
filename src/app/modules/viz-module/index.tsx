@@ -37,6 +37,12 @@ export default function VizModule() {
     document.body.style.background = "#fff";
   }, []);
 
+  React.useEffect(() => {
+    if (!openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
+  }, [location.pathname]);
+
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 

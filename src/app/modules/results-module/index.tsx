@@ -2,8 +2,8 @@
 import React from "react";
 import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
-import { Switch, Route } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Switch, Route, useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -21,6 +21,7 @@ import {
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
+  const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
@@ -49,6 +50,12 @@ export default function ResultsModule() {
     document.body.style.background = "#fff";
     fetchYearOptionsData({});
   }, []);
+
+  React.useEffect(() => {
+    if (!openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
+  }, [location.pathname]);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters, { search });
