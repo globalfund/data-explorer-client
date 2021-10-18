@@ -58,7 +58,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
           );
 
           @media (max-width: 768px) {
-            width: 100%;
+            width: 98%;
           }
 
           > div {
