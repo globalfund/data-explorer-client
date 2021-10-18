@@ -54,6 +54,9 @@ export function DatasetCarousel() {
           > div:nth-of-type(2) {
             margin: 0;
           }
+          > div:nth-of-type(3) {
+            padding-top: 10px;
+          }
         }
       `}
     >
