@@ -186,7 +186,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         // @ts-ignore
       } else if (e.target.className.baseVal === "apexcharts-radialbar-hollow") {
         setVizLevel(1);
-        setVizSelected(keys.join(","));
+        setVizSelected("Total");
         setVizTranslation({ x: -300, y: 0 });
       }
     }
@@ -235,7 +235,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           : appliedFilters
       );
       fetchDrilldownLevelData({
-        filterString: `levelParam=component/componentName in (${vizSelected
+        filterString: `levelParam=component/componentName in (${(vizSelected ===
+        "Total"
+          ? keys.join(",")
+          : vizSelected
+        )
           .split(",")
           .map((s: string) => `'${s}'`)
           .join(",")})&periods=${selectedPeriod}${
@@ -313,6 +317,18 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       // overflow: visible !important;
     }`
           : ""}
+
+        .apexcharts-radialbar-hollow {
+          r: 75;
+          z-index: 1;
+          cursor: pointer;
+          transition: fill 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          fill: ${vizSelected === "Total" ? "#cfd4da" : "transparent"};
+
+          &:hover {
+            fill: #cfd4da;
+          }
+        }
       `}
     >
       <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
@@ -413,10 +429,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           `}
         >
           <DrillDownArrowSelector
-            options={keys}
-            selected={
-              (vizSelected === keys.join(",") ? "Total" : vizSelected) as string
-            }
+            options={[...keys, "Total"]}
+            selected={vizSelected || ""}
             onChange={(value: string) => setVizSelected(value)}
           />
         </span>
