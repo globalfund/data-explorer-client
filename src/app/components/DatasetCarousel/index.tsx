@@ -11,6 +11,7 @@ import { InvestmentsBarPreview } from "app/assets/dataset-preview/investmentsBar
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
+import { useMediaQuery } from "@material-ui/core";
 
 const griditem = (content: React.ReactElement, link: string) => (
   <Link to={link} css="text-decoration: none;">
@@ -43,6 +44,7 @@ const griditem = (content: React.ReactElement, link: string) => (
 );
 
 export function DatasetCarousel() {
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   return (
     <div
       css={`
@@ -52,13 +54,18 @@ export function DatasetCarousel() {
           > div:nth-of-type(2) {
             margin: 0;
           }
+          > div:nth-of-type(3) {
+            padding-top: 10px;
+          }
         }
       `}
     >
       <Carousel
-        cols={3}
+        cols={isSmallScreen ? 2 : 3}
         rows={1}
         gap={10}
+        hideArrow={isSmallScreen ? true : undefined}
+        showDots={isSmallScreen ? true : undefined}
         containerStyle={{ width: "100%" }}
         arrowLeft={
           <div
