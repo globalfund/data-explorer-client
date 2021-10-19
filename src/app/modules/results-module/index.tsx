@@ -149,7 +149,17 @@ export default function ResultsModule() {
       />
       <Switch>
         <Route exact path="/results/overview">
-          <Grid container spacing={4}>
+          <Grid
+            container
+            spacing={4}
+            css={`
+              align-self: flex-start;
+              transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+              width: ${openToolboxPanel
+                ? `calc(100% - ${pushValue}px)`
+                : "100%"};
+            `}
+          >
             <Grid item xs={12} sm={6} md={6}>
               <ResultsInfoContent description="" stats={infoData} />
             </Grid>
