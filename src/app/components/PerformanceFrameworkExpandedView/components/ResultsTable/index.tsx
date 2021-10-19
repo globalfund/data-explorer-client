@@ -34,9 +34,7 @@ const styles = {
   `,
 };
 
-interface ResultsTableProps extends PFIndicator {}
-
-export function ResultsTable(props: ResultsTableProps) {
+export function ResultsTable(props: PFIndicator) {
   const selected = useStoreState(
     (state) => state.ToolBoxPanelPFPeriodState.value
   );
@@ -64,7 +62,7 @@ export function ResultsTable(props: ResultsTableProps) {
           {props.results.map((result: PFIndicatorResult, index: number) => (
             <ResultsTableRow
               key={result.period}
-              selected={index === selected}
+              selected={index === props.results.length - selected - 1}
               {...result}
             />
           ))}

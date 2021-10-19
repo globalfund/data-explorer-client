@@ -4,7 +4,10 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { ResponsiveNetwork } from "@nivo/network";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
-import { NetworkLegends } from "app/components/Charts/Network/components/legends";
+import {
+  AchievementRateLegend,
+  NetworkLegends,
+} from "app/components/Charts/Network/components/legends";
 
 export function NetworkViz(props: NetworkVizProps) {
   React.useEffect(() => {
@@ -224,7 +227,8 @@ export function NetworkViz(props: NetworkVizProps) {
         {props.data.links.length === 0 && <NoDataLabel />}
       </Grid>
       <Grid item xs={12}>
-        <NetworkLegends />
+        {/* <NetworkLegends /> */}
+        <AchievementRateLegend />
       </Grid>
     </Grid>
   );
