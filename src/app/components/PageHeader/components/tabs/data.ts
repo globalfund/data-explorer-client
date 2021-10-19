@@ -45,6 +45,10 @@ export const countryDetailTabs: TabProps[] = [
     name: "Grants",
     url: "/location/<code>/grants",
   },
+  {
+    name: "Results",
+    url: "/location/<code>/results",
+  },
 ];
 
 export const grantDetailTabs: TabProps[] = [

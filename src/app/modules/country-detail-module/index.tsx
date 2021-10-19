@@ -14,6 +14,7 @@ import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
+import { LocationResults } from "app/modules/country-detail-module/sub-modules/results";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { LocationDetailOverviewModule } from "app/modules/country-detail-module/sub-modules/overview";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
@@ -107,7 +108,11 @@ export default function CountryDetail() {
             name: locationInfoData.locationName,
           },
         ]}
-        tabs={countryDetailTabs}
+        tabs={
+          params.code.length === 3
+            ? countryDetailTabs
+            : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
+        }
         onToolboxSmBtnClick={
           isSmallScreen
             ? () => setOpenToolboxPanel(!openToolboxPanel)
@@ -240,6 +245,10 @@ export default function CountryDetail() {
           </Route>
           <Route path={`/location/${params.code}/grants`}>
             <LocationGrants code={paramCode} detailFilterType="locations" />
+          </Route>
+          {/* Results */}
+          <Route path={`/location/${params.code}/results`}>
+            <LocationResults code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Documents */}
           <Route path={`/location/${params.code}/documents`}>
