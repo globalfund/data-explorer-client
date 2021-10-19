@@ -226,7 +226,7 @@ export function NetworkViz(props: NetworkVizProps) {
         </div>
         {props.data.links.length === 0 && <NoDataLabel />}
       </Grid>
-      <Grid item xs={12}>
+      <Grid item xs={12} css="padding-bottom: 0 !important;">
         {/* <NetworkLegends /> */}
         <AchievementRateLegend />
       </Grid>

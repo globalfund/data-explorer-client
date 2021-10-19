@@ -193,12 +193,7 @@ const styles = {
   container: css`
     width: 100%;
     display: flex;
-    padding-bottom: 15px;
     flex-direction: column;
-
-    @media (max-width: 767px) {
-      padding: 0 10px 10px 10px;
-    }
   `,
   top: css`
     display: flex;
