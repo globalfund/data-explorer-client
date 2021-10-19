@@ -57,7 +57,13 @@ export interface PFIndicatorSet {
 }
 
 export interface PerformanceFrameworkExpandedViewProps {
+  allModules: {
+    module: string;
+    filterValue: string;
+  }[];
+  selectedModule?: string;
   indicators: PFIndicator[];
+  setSelectedModule: (value: string) => void;
   interventions: PFIndicatorResultIntervention[];
 }
 

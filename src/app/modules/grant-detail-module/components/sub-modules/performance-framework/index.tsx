@@ -14,6 +14,7 @@ import {
   PFIndicator,
   PFIndicatorResultIntervention,
 } from "app/components/PerformanceFrameworkExpandedView/data";
+import { filter } from "lodash";
 
 interface Props {
   code: string;
@@ -92,9 +93,11 @@ export function PerformanceFrameworkModule(props: Props) {
   useUpdateEffect(() => {
     if (vizSelected) {
       fetchExpandData({
-        filterString: `grantId=${props.code}&IPnumber=2&indicatorSet=${
-          vizSelected.split("|")[1]
-        }&moduleName=${vizSelected.split("|")[0]}`,
+        filterString: `grantId=${props.code}&IPnumber=${
+          props.implementationPeriod
+        }&indicatorSet=${vizSelected.split("|")[1]}&moduleName=${
+          vizSelected.split("|")[0]
+        }`,
       });
     } else {
       clearExpandData();
@@ -143,7 +146,13 @@ export function PerformanceFrameworkModule(props: Props) {
       >
         <PerformanceFrameworkExpandedView
           indicators={expandIndicators}
+          setSelectedModule={setVizSelected}
           interventions={expandInterventions}
+          selectedModule={vizSelected?.split("|")[0]}
+          allModules={filter(nodes, { depth: 2 }).map((node: InputNode) => ({
+            module: node.id.split("|")[0],
+            filterValue: node.id,
+          }))}
         />
       </SlideInContainer>
     </div>

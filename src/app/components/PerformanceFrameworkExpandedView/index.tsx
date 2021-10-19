@@ -60,6 +60,8 @@ const styles = {
     transition: background 0.2s ease-in-out;
     font-weight: ${active ? "bold" : "normal"};
     background: ${active ? "#495057" : "#C7CDD1"};
+    font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
+      sans-serif;
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -87,8 +89,12 @@ export function PerformanceFrameworkExpandedView(
   return (
     <div css={styles.container}>
       <div css={styles.arrowscontainer}>
-        <ArrowSelector indicator="Coverage/Output" />
-        <ArrowSelector indicator="Comprehensive prevention programs for MSM" />
+        {/* <ArrowSelector selected="Coverage/Output" /> */}
+        <ArrowSelector
+          options={props.allModules}
+          onChange={props.setSelectedModule}
+          selected={props.selectedModule || ""}
+        />
       </div>
       <div
         css={`
