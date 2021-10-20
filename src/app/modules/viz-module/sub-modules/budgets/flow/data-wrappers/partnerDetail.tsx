@@ -68,11 +68,28 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
         []
       ) as BudgetsTreemapDataItem[]
   );
+  const fetchDrilldownLevel2Data = useStoreActions(
+    (store) => store.PartnerDetailBudgetsFlowDrilldownLevel2.fetch
+  );
+  const clearDrilldownLevel2Data = useStoreActions(
+    (store) => store.PartnerDetailBudgetsFlowDrilldownLevel2.clear
+  );
+  const dataDrilldownLevel2 = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailBudgetsFlowDrilldownLevel2.data,
+        "data",
+        []
+      ) as BudgetsTreemapDataItem[]
+  );
   const isLoading = useStoreState(
     (state) => state.PartnerDetailBudgetsFlow.loading
   );
   const isDrilldownLoading = useStoreState(
     (state) => state.PartnerDetailBudgetsFlowDrilldownLevel1.loading
+  );
+  const isDrilldown2Loading = useStoreState(
+    (state) => state.PartnerDetailBudgetsFlowDrilldownLevel2.loading
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
@@ -115,6 +132,27 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
   }, [vizSelected.filterStr]);
 
   useUpdateEffect(() => {
+    if (
+      drilldownVizSelected.id !== undefined &&
+      vizSelected.filterStr !== undefined
+    ) {
+      const idSplits = drilldownVizSelected.id.split("-");
+      const filterString = getAPIFormattedFilters({
+        ...appliedFilters,
+        partners: [...appliedFilters.partners, props.code],
+        components: [...appliedFilters.components, idSplits[1]],
+      });
+      fetchDrilldownLevel2Data({
+        filterString: `levelParam=${vizSelected.filterStr}&activityAreaName=${
+          idSplits[0]
+        }${filterString.length > 0 ? `&${filterString}` : ""}`,
+      });
+    } else {
+      clearDrilldownLevel2Data();
+    }
+  }, [drilldownVizSelected.id]);
+
+  useUpdateEffect(() => {
     setDrilldownPanelOptions(getDrilldownPanelOptions(links));
   }, [links]);
 
@@ -123,7 +161,7 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
       nodes={nodes}
       links={links}
       isLoading={isLoading}
-      isDrilldownLoading={isDrilldownLoading}
+      isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
       vizTranslation={vizTranslation}
@@ -132,10 +170,15 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
       setVizSelected={setVizSelected}
       vizCompData={vizCompData}
       setVizCompData={setVizCompData}
+      vizPrevSelected={vizPrevSelected}
+      setVizPrevSelected={setVizPrevSelected}
       vizPrevTranslation={vizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
       drilldownPanelOptions={drilldownPanelOptions}
+      setVizPrevTranslation={setVizPrevTranslation}
+      dataDrilldownLevel2={dataDrilldownLevel2}
+      drilldownVizSelected={drilldownVizSelected.id}
       toolboxOpen={props.toolboxOpen}
     />
   );

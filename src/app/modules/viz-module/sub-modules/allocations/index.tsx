@@ -1,13 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import max from "lodash/max";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import ReactApexCharts from "react-apexcharts";
 import { useTitle, useMeasure } from "react-use";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -23,7 +23,6 @@ import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
-import { isTouchDevice } from "app/utils/isTouchDevice";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -45,14 +44,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const keys = useStoreState(
     (state) => get(state.Allocations.data, "keys", []) as string[]
   );
-  // const colors = useStoreState(
-  //   (state) => get(state.Allocations.data, "colors", []) as string[]
-  // );
+  const colors = useStoreState(
+    (state) => get(state.Allocations.data, "colors", []) as string[]
+  );
   const values = useStoreState(
     (state) => get(state.Allocations.data, "values", []) as number[]
-  );
-  const maxValue = useStoreState((state) =>
-    max(get(state.Allocations.data, "values", []) as number[])
   );
   const isLoading = useStoreState((state) => state.Allocations.loading);
 
@@ -135,7 +131,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         },
       },
     },
-    colors: keysPercentagesColors.colors,
+    colors,
     labels: keys,
     legend: {
       show: true,
@@ -369,42 +365,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               series={keysPercentagesColors.percentages}
             />
           )}
-          <div
-            css={`
-              gap: 6px;
-              width: 250px;
-              display: flex;
-              font-size: 12px;
-              flex-direction: column;
-            `}
-          >
-            <div>
-              <b>Allocations</b>
-            </div>
-            <div
-              css={`
-                width: 100%;
-                height: 6px;
-                border-radius: 20px;
-                background: linear-gradient(
-                    90deg,
-                    #f2f3f7 0%,
-                    rgba(255, 255, 255, 0) 100%
-                  ),
-                  #343a40;
-              `}
-            />
-            <div
-              css={`
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-              `}
-            >
-              <div>0 USD</div>
-              <div>{formatFinancialValue(maxValue || 0)}</div>
-            </div>
-          </div>
         </div>
       </TransitionContainer>
       <SlideInContainer
