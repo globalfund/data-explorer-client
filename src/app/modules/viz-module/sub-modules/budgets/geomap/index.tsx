@@ -10,6 +10,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
+import { useMediaQuery } from "@material-ui/core";
 
 interface Props {
   code?: string;
@@ -50,7 +51,7 @@ export function BudgetsGeoMap(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   React.useEffect(() => {
     let filterString = getAPIFormattedFilters(
       props.code && props.detailFilterType
@@ -92,6 +93,14 @@ export function BudgetsGeoMap(props: Props) {
         flex-direction: column;
       `}
     >
+      {geomapView === "countries" && isSmallScreen && (
+        <div>
+          <div>
+            <b>Budgets</b>
+          </div>
+          <div>{formatFinancialValue(maxValue)}</div>
+        </div>
+      )}
       <GeoMap
         allowClickthrough
         type="budgets"
@@ -108,7 +117,7 @@ export function BudgetsGeoMap(props: Props) {
         noData={maxValue === 0}
         allocationsPins={geomapView === "multicountries" ? dataMC : []}
       />
-      {geomapView === "countries" && (
+      {geomapView === "countries" && !isSmallScreen && (
         <div
           css={`
             gap: 12px;

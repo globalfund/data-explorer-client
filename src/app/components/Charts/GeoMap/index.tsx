@@ -42,6 +42,7 @@ export function GeoMap(props: GeoMapProps) {
   const history = useHistory();
   const mapRef = React.useRef<React.Ref<MapRef>>();
   const isMobile = useMediaQuery("max-width: 767px");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const containerRef = React.useRef<HTMLDivElement>(null);
   const isHovering = useHoverDirty(containerRef as React.RefObject<Element>);
   const [viewport, setViewport] = React.useState({
@@ -130,6 +131,28 @@ export function GeoMap(props: GeoMapProps) {
     setAllocationsPinMarkerHoverInfo,
   ] = React.useState<AllocationsGeoMapPinMarker | null>(null);
   const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
+
+  React.useEffect(() => {
+    if (isSmallScreen) {
+      setViewport({
+        ...viewport,
+        zoom: 0.5,
+      });
+      setSettings({
+        ...settings,
+        minZoom: 0.5,
+      });
+    } else {
+      setViewport({
+        ...viewport,
+        zoom: 1.3,
+      });
+      setSettings({
+        ...settings,
+        minZoom: 1.3,
+      });
+    }
+  }, [isSmallScreen]);
 
   React.useEffect(() => {
     if (
@@ -299,13 +322,12 @@ export function GeoMap(props: GeoMapProps) {
   if (props.type === "allocations") {
     heightDef = "274px";
   }
-
   return (
     <div
       ref={containerRef as React.RefObject<HTMLDivElement>}
       css={`
         width: 100%;
-        height: calc(100vh - ${heightDef});
+        height: ${isSmallScreen ? `50vh` : `calc(100vh - ${heightDef})`};
       `}
     >
       <MapGL
