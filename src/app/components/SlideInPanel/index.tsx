@@ -1,5 +1,6 @@
 import React from "react";
 import Slide from "@material-ui/core/Slide";
+import { useLocation } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
@@ -18,6 +19,7 @@ interface SlideInContainerProps {
 }
 
 export function SlideInContainer(props: SlideInContainerProps) {
+  const location = useLocation();
   const [open, setOpen] = React.useState(
     props.vizLevel > 0 && props.selected !== undefined
   );
@@ -25,6 +27,15 @@ export function SlideInContainer(props: SlideInContainerProps) {
   const vizDrilldowns = useStoreState(
     (state) => state.PageHeaderVizDrilldownsState.value
   );
+
+  const isGrantDetail = location.pathname.indexOf("/grant/") > -1;
+  let top = 133;
+  if (vizDrilldowns.length > 0 || props.bigHeader) {
+    top = 168;
+  }
+  if (isGrantDetail) {
+    top = 203;
+  }
 
   React.useEffect(() => {
     const tmp = props.vizLevel > 0 && props.selected !== undefined;
@@ -40,19 +51,14 @@ export function SlideInContainer(props: SlideInContainerProps) {
         id="zoom-in-level"
         css={`
           z-index: 2;
+          top: ${top}px;
           display: flex;
           position: absolute;
           justify-content: flex-end;
+          height: calc(100% - ${top}px);
           right: ${props.toolboxOpen ? "400px" : 0};
           width: ${props.toolboxOpen ? "50%" : "60%"};
-          top: ${vizDrilldowns.length > 0 || props.bigHeader
-            ? "168px"
-            : "133px"};
           transition: right 500ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          height: calc(
-            100% -
-              ${vizDrilldowns.length > 0 || props.bigHeader ? "168px" : "133px"}
-          );
 
           @media (max-width: 768px) {
             width: 100%;

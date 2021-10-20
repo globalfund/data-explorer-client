@@ -19,4 +19,8 @@ export const input = css`
   font-weight: bold;
   border-style: none;
   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+  &:focus::placeholder {
+    color: transparent;
+  }
 `;

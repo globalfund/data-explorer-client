@@ -121,7 +121,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
     } else if (widthThreshold < 0) {
       pushValue = 0;
     } else {
-      pushValue = 500 - widthThreshold;
+      pushValue = 400 - widthThreshold;
     }
   }
   const isSmallScreen = useMediaQuery("(max-width: 960px)");

@@ -147,7 +147,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
         <Grid
           item
           xs={12}
-          md={2}
+          md={3}
           css={`
             display: flex;
             flex-direction: column;
@@ -504,7 +504,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                 </div>
                 <div
                   css={`
-                    width: 100%;
+                    width: 90%;
                     height: 6px;
                     display: flex;
                     flex-direction: row;
@@ -645,7 +645,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
             </div>
           )}
         </Grid>
-        <Grid item xs={12} md={10}>
+        <Grid item xs={12} md={9}>
           <div
             id="scatterplot-scroll-div"
             css={`
