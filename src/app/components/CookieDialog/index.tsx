@@ -33,15 +33,14 @@ const BaseSnackbar = styled((props) => <Snackbar {...props} />)`
 `;
 
 export const CookieDialog = () => {
-  const [userConsent, setUserConsent, deleteUserConsent] = useCookie(
-    "userConsent",
-    false
-  );
   const [visible, setVisibility] = useState(true);
+  const [userConsent, setUserConsent] = useCookie("userConsent", null);
 
   // This useEffect makes sure the dialog is not displayed when a user revisits the site and has already accepted the cookie.
   React.useEffect(() => {
-    if (userConsent === true) {
+    if (userConsent === null) {
+      setVisibility(true);
+    } else {
       setVisibility(false);
     }
   }, [userConsent]);
@@ -60,7 +59,15 @@ export const CookieDialog = () => {
   };
 
   const handleReject = () => {
-    deleteUserConsent();
+    setUserConsent(false, {
+      expires: 31556926, // 12 months
+      domain: "",
+      path: "",
+      secure: false,
+      httpOnly: false,
+      maxAge: 0,
+      sameSite: "",
+    });
     setVisibility(false);
   };
 

@@ -22,8 +22,9 @@ const Button = styled((props) => <button type="button" {...props} />)`
 `;
 
 const Buttons = styled.div`
+  gap: 10px;
   display: flex;
-  align-self: center;
+  align-self: baseline;
 `;
 
 type MessageProps = {
@@ -79,6 +80,12 @@ export const Message = (props: MessageProps) => {
             onClick={() => props.handleAccept()}
           >
             Accept
+          </Button>
+          <Button
+            test-id="main-page-close"
+            onClick={() => props.handleReject()}
+          >
+            Close
           </Button>
         </Buttons>
       </Box>
