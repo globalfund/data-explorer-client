@@ -24,7 +24,7 @@ interface DatasetItemModel {
 
 const datasets: DatasetItemModel[] = [
   {
-    name: "Budgets Flow",
+    name: "Budgets",
     link: "/viz/budgets/flow",
     group: "Finance",
     preview: <BudgetFlowPreview />,
@@ -42,7 +42,7 @@ const datasets: DatasetItemModel[] = [
   //   preview: <GeomapPreview />,
   // },
   {
-    name: "Disbursements Treemap",
+    name: "Disbursements",
     link: "/viz/disbursements/treemap",
     group: "Finance",
     preview: <InvestmentsTreemapPreview />,
@@ -60,7 +60,7 @@ const datasets: DatasetItemModel[] = [
   //   preview: <GeomapPreview />,
   // },
   {
-    name: "Signed Treemap",
+    name: "Signed",
     link: "/viz/signed/treemap",
     group: "Finance",
     preview: <InvestmentsTreemapPreview />,
@@ -78,7 +78,7 @@ const datasets: DatasetItemModel[] = [
   //   preview: <GeomapPreview />,
   // },
   {
-    name: "Commitments Treemap",
+    name: "Commitments",
     link: "/viz/commitment/treemap",
     group: "Finance",
     preview: <InvestmentsTreemapPreview />,
@@ -96,7 +96,7 @@ const datasets: DatasetItemModel[] = [
   //   preview: <GeomapPreview />,
   // },
   {
-    name: "Pledges & Contributions Treemap",
+    name: "Pledges & Contributions",
     link: "/viz/pledges-contributions/treemap",
     group: "Finance",
     preview: <InvestmentsTreemapPreview />,
@@ -114,7 +114,7 @@ const datasets: DatasetItemModel[] = [
   //   preview: <GeomapPreview />,
   // },
   {
-    name: "Allocations Radial",
+    name: "Allocations",
     link: "/viz/allocations",
     group: "Finance",
     preview: <AllocationsRadialPreview />,

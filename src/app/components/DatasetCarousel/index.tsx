@@ -120,7 +120,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Budgets Flow
+                <b>Finance</b> · Budgets
               </div>
               <BudgetFlowPreview />
             </>,
@@ -153,7 +153,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Disbursements Treemap
+                <b>Finance</b> · Disbursements
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -186,7 +186,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Signed Treemap
+                <b>Finance</b> · Signed
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -219,7 +219,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Committments Treemap
+                <b>Finance</b> · Committments
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -252,7 +252,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Pledges & Contributions Treemap
+                <b>Finance</b> · Pledges & Contributions
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -285,7 +285,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Allocations Radial
+                <b>Finance</b> · Allocations
               </div>
               <AllocationsRadialPreview />
             </>,
