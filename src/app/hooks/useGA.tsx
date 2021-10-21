@@ -15,7 +15,7 @@ export function useGA() {
   const history = useHistory();
 
   React.useEffect(() => {
-    if (window.location.hostname === "data.v2.theglobalfund.org") {
+    if (window.location.hostname === "data.theglobalfund.org") {
       return history.listen(sendPageView);
     }
   }, [history]);
