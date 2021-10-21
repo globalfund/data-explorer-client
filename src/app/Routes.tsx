@@ -2,7 +2,9 @@
 
 import React, { Suspense, lazy } from "react";
 import { useGA } from "app/hooks/useGA";
+import BigLogo from "app/assets/BigLogo";
 import axios, { AxiosResponse } from "axios";
+import useCookie from "@devhammed/use-cookie";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -55,28 +57,65 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 }
 
 export function MainRoutes() {
+  const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
   useFilterOptions({});
   useUrlFilters();
   useGA();
 
-  const isSmallScreen = useMediaQuery("(max-width: 60px)");
+  const isSmallScreen = useMediaQuery("(max-width: 767px)");
 
-  if (isSmallScreen) {
+  if (isSmallScreen && showSMNotice) {
     return (
       <div
         css={`
           width: 100vw;
           height: 100vh;
           display: flex;
+          font-size: 16px;
           text-align: center;
           align-items: center;
           flex-direction: column;
           justify-content: center;
+
+          > svg {
+            width: 90%;
+          }
+
+          > button {
+            color: #fff;
+            font-size: 14px;
+            appearance: none;
+            padding: 9px 16px;
+            font-weight: bold;
+            line-height: 20px;
+            background: #495057;
+            border-radius: 20px;
+            border-color: #495057;
+            text-transform: unset;
+          }
         `}
       >
+        <BigLogo />
+        <br />
         App is not yet optimised for smaller screens.
         <br />
-        Please visit the app on a desktop.
+        <br />
+        <button
+          type="button"
+          onClick={() =>
+            setShowSMNotice(false, {
+              expires: 31556926, // 12 months
+              domain: "",
+              path: "",
+              secure: false,
+              httpOnly: false,
+              maxAge: 0,
+              sameSite: "",
+            })
+          }
+        >
+          Continue
+        </button>
       </div>
     );
   }
