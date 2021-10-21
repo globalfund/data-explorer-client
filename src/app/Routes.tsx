@@ -99,7 +99,7 @@ export function MainRoutes() {
           <GrantsModule />
         </Route>
 
-        <Route exact path="/results/:tab">
+        <Route exact path="/results">
           <ResultsModule />
         </Route>
 
