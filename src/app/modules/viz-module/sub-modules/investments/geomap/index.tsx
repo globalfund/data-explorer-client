@@ -9,7 +9,10 @@ import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { InvestmentsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
+import {
+  InvestmentsGeoMapPinMarker,
+  NO_DATA_COLOR,
+} from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -179,9 +182,9 @@ export function InvestmentsGeoMap(props: Props) {
               css={`
                 width: 100%;
                 height: 6px;
-                background: #fff;
                 border-radius: 20px;
                 border: 0.5px solid #c7cdd1;
+                background: ${NO_DATA_COLOR};
               `}
             />
             <div

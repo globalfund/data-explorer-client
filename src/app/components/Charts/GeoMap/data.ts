@@ -1552,3 +1552,6 @@ export const donorPins: GeoMapPinMarker[] = [
     intId: 53,
   },
 ];
+
+export const NO_DATA_COLOR = "#F7FAFF";
+export const NO_DATA_BORDER_COLOR = "#C7CDD1";
