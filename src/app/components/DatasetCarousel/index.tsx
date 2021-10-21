@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 // @ts-ignore
 import Carousel from "react-grid-carousel";
+import { useMediaQuery } from "@material-ui/core";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { GeomapPreview } from "app/assets/dataset-preview/geomap";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
@@ -11,7 +12,6 @@ import { InvestmentsBarPreview } from "app/assets/dataset-preview/investmentsBar
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
-import { useMediaQuery } from "@material-ui/core";
 
 const griditem = (content: React.ReactElement, link: string) => (
   <Link to={link} css="text-decoration: none;">
@@ -127,7 +127,7 @@ export function DatasetCarousel() {
             "/viz/budgets/flow"
           )}
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           {griditem(
             <>
               <div>
@@ -137,8 +137,8 @@ export function DatasetCarousel() {
             </>,
             "/viz/budgets/time-cycle"
           )}
-        </Carousel.Item>
-        <Carousel.Item>
+        </Carousel.Item> */}
+        {/* <Carousel.Item>
           {griditem(
             <>
               <div>
@@ -148,7 +148,7 @@ export function DatasetCarousel() {
             </>,
             "/viz/budgets/map"
           )}
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           {griditem(
             <>
@@ -160,7 +160,7 @@ export function DatasetCarousel() {
             "/viz/disbursements/treemap"
           )}
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           {griditem(
             <>
               <div>
@@ -181,7 +181,7 @@ export function DatasetCarousel() {
             </>,
             "/viz/disbursements/map"
           )}
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           {griditem(
             <>
@@ -193,7 +193,7 @@ export function DatasetCarousel() {
             "/viz/signed/treemap"
           )}
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           {griditem(
             <>
               <div>
@@ -214,7 +214,7 @@ export function DatasetCarousel() {
             </>,
             "/viz/signed/map"
           )}
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           {griditem(
             <>
@@ -226,7 +226,7 @@ export function DatasetCarousel() {
             "/viz/commitment/treemap"
           )}
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           {griditem(
             <>
               <div>
@@ -247,7 +247,7 @@ export function DatasetCarousel() {
             </>,
             "/viz/commitment/map"
           )}
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           {griditem(
             <>
@@ -259,7 +259,7 @@ export function DatasetCarousel() {
             "/viz/pledges-contributions/treemap"
           )}
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           {griditem(
             <>
               <div>
@@ -280,7 +280,7 @@ export function DatasetCarousel() {
             </>,
             "/viz/pledges-contributions/map"
           )}
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           {griditem(
             <>
@@ -292,7 +292,7 @@ export function DatasetCarousel() {
             "/viz/allocations"
           )}
         </Carousel.Item>
-        <Carousel.Item>
+        {/* <Carousel.Item>
           {griditem(
             <>
               <div>
@@ -302,7 +302,7 @@ export function DatasetCarousel() {
             </>,
             "/viz/allocations/map"
           )}
-        </Carousel.Item>
+        </Carousel.Item> */}
         <Carousel.Item>
           {griditem(
             <>
@@ -333,7 +333,7 @@ export function DatasetCarousel() {
               </div>
               <ResultsListPreview />
             </>,
-            "/results/overview"
+            "/results"
           )}
         </Carousel.Item>
       </Carousel>
