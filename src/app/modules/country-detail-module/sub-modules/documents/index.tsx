@@ -97,6 +97,7 @@ export function LocationDetailDocumentsModule(
 
   return (
     <DocumentsSubModule
+      forceExpand
       data={
         props.isMultiCountry
           ? [
