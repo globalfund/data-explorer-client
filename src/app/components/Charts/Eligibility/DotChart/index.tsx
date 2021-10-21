@@ -1,13 +1,14 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import { InfoIcon } from "app/assets/icons/Info";
+import { InfoIcon, InfoIconSmall } from "app/assets/icons/Info";
 import useMousePosition from "app/hooks/useMousePosition";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import {
   DotChartProps,
   DotChartModel,
 } from "app/components/Charts/Eligibility/DotChart/data";
+import { useMediaQuery } from "@material-ui/core";
 
 const styles = {
   Eligible: css`
@@ -26,6 +27,7 @@ const styles = {
 
 export function DotChart(props: DotChartProps) {
   const { x, y } = useMousePosition();
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: string;
     status: "Eligible" | "Not Eligible" | "Transition Funding";
@@ -63,8 +65,8 @@ export function DotChart(props: DotChartProps) {
           css={`
             display: flex;
             position: relative;
-            flex-direction: column;
-            justify-content: space-between;
+            flex-direction: ${isSmallScreen ? "row" : "column"};
+            justify-content: ${isSmallScreen ? "none" : "space-between"};
           `}
         >
           <div
@@ -76,21 +78,37 @@ export function DotChart(props: DotChartProps) {
           >
             <div
               css={`
-                font-weight: bold;
-                margin-right: 10px;
+                display: flex;
+                flex-direction: column;
+                align-self: flex-start;
+                margin-right: 30px;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              Year {props.selectedYear}
+              {isSmallScreen && (
+                <div css="display:flex;font-weight: bold;width:90px;justify-content:space-between;">
+                  Eligibility <InfoIconSmall />
+                </div>
+              )}
+              <div
+                css={`
+                  font-weight: ${isSmallScreen ? "none" : "bold"};
+                `}
+              >
+                Year {props.selectedYear}
+              </div>
             </div>
-            <div
-              css={`
-                display: flex;
-                margin-left: 10px;
-              `}
-            >
-              <InfoIcon />
-            </div>
+            {isSmallScreen || (
+              <div
+                css={`
+                  display: flex;
+                  margin-left: 0px;
+                  margin-right: 10px;
+                `}
+              >
+                <InfoIcon />
+              </div>
+            )}
           </div>
           <div
             css={`
