@@ -285,7 +285,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Allocations
+                <b>Access to Funding</b> · Allocations
               </div>
               <AllocationsRadialPreview />
             </>,
@@ -307,7 +307,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Other</b> · Eligibility
+                <b>Access to Funding</b> · Eligibility
               </div>
               <EligibilityDotsPreview />
             </>,

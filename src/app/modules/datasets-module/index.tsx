@@ -5,12 +5,10 @@ import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
-import { GeomapPreview } from "app/assets/dataset-preview/geomap";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
 import { GrantsListPreview } from "app/assets/dataset-preview/grantsList";
 import { ResultsListPreview } from "app/assets/dataset-preview/resultsList";
 import { DocumentsTablePreview } from "app/assets/dataset-preview/documentsTable";
-import { InvestmentsBarPreview } from "app/assets/dataset-preview/investmentsBar";
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
@@ -116,7 +114,7 @@ const datasets: DatasetItemModel[] = [
   {
     name: "Allocations",
     link: "/viz/allocations",
-    group: "Finance",
+    group: "Access to Funding",
     preview: <AllocationsRadialPreview />,
   },
   // {
@@ -126,9 +124,9 @@ const datasets: DatasetItemModel[] = [
   //   preview: <GeomapPreview />,
   // },
   {
-    name: "",
+    name: "Eligibility",
     link: "/viz/eligibility",
-    group: "Eligibility",
+    group: "Access to Funding",
     preview: <EligibilityDotsPreview />,
   },
   {
