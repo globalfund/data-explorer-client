@@ -82,6 +82,12 @@ export const CookieDialog = () => {
           }}
           open={visible}
           autoHideDuration={null}
+          css={`
+            width: 90%;
+            @media (min-width: 1280px) {
+              max-width: 1100px;
+            }
+          `}
         >
           <SnackbarContent
             aria-describedby="client-snackbar"

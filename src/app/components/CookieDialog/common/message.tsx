@@ -1,7 +1,6 @@
 import React from "react";
-import Box from "@material-ui/core/Box";
-import { ProjectPalette } from "app/theme";
 import styled from "styled-components/macro";
+import { useMediaQuery, Box } from "@material-ui/core";
 
 const Button = styled((props) => <button type="button" {...props} />)`
   color: #fff;
@@ -33,6 +32,7 @@ type MessageProps = {
 };
 
 export const Message = (props: MessageProps) => {
+  const isSmallScreen = useMediaQuery("(max-width: 767px)");
   return (
     <Box display="flex" flexDirection="column">
       <div
@@ -46,7 +46,7 @@ export const Message = (props: MessageProps) => {
       >
         Cookies
       </div>
-      <Box display="flex" flexDirection="row">
+      <Box display="flex" flexDirection={!isSmallScreen ? "row" : "column"}>
         <div
           css={`
             color: #495057;
@@ -74,6 +74,7 @@ export const Message = (props: MessageProps) => {
             Privacy Statement
           </a>
         </div>
+        {isSmallScreen && <div css="width: 100%;height: 15px;" />}
         <Buttons>
           <Button
             test-id="main-page-accept"
