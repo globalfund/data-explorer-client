@@ -1,9 +1,11 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
-import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
+import { Link, useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
@@ -180,6 +182,7 @@ const styles = {
 };
 
 export function PageHeader(props: PageHeaderProps) {
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const vizDrilldowns = useStoreState(
@@ -193,6 +196,12 @@ export function PageHeader(props: PageHeaderProps) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  React.useEffect(() => {
+    if (anchorEl) {
+      handleClose();
+    }
+  }, [history.location.pathname]);
 
   return (
     <div css={styles.container}>

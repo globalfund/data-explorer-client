@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
@@ -122,19 +124,19 @@ export function useDatasetMenuItems(): React.ReactChild[] {
       <b>Datasets</b>
     </Link>,
     <Expandable label="Finance">
-      <Link to={`/viz/signed/treemap${location.search}`}>Signed</Link>
-      <Link to={`/viz/commitment/treemap${location.search}`}>Commitment</Link>
-      <Link to={`/viz/disbursements/treemap${location.search}`}>
-        Disbursement
-      </Link>
-      <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
-      <Link to={`/viz/allocations${location.search}`}>Allocation</Link>
       <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
         Pledges & Contributions
       </Link>
+      <Link to={`/viz/signed/treemap${location.search}`}>Signed Amounts</Link>
+      <Link to={`/viz/commitment/treemap${location.search}`}>Commitments</Link>
+      <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
+      <Link to={`/viz/disbursements/treemap${location.search}`}>
+        Disbursements
+      </Link>
     </Expandable>,
-    <Expandable label="Other">
+    <Expandable label="Access to Funding">
       <Link to={`/viz/eligibility${location.search}`}>Eligibility</Link>
+      <Link to={`/viz/allocations${location.search}`}>Allocation</Link>
     </Expandable>,
     <Link
       css={`
@@ -156,7 +158,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
           transition: background 0.2s ease-in-out;
         }
       `}
-      to={`/results/overview${location.search}`}
+      to={`/results${location.search}`}
     >
       <b>Results</b>
     </Link>,

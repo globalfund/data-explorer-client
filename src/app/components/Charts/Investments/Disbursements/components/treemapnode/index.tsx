@@ -75,6 +75,11 @@ export function TreeemapNode(props: any) {
           onMouseMove={hasChildren ? node.onMouseMove : undefined}
           onMouseEnter={hasChildren ? node.onMouseEnter : undefined}
           onMouseLeave={hasChildren ? node.onMouseLeave : undefined}
+          ref={(el) => {
+            if (el) {
+              el.style.setProperty("overflow", "hidden", "important");
+            }
+          }}
         >
           <div
             ref={(el) => {

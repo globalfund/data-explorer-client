@@ -22,6 +22,7 @@ export interface ExpandableTableRowProps {
 
 export interface ExpandableTableProps {
   columns: string[];
+  forceExpand?: boolean;
   rows: ExpandableTableRowProps[];
 }
 

@@ -11,6 +11,7 @@ interface DocumentsSubModuleProps {
   data: ExpandableTableRowProps[];
   search: string;
   setSearch: (search: string) => void;
+  forceExpand?: boolean;
 }
 
 export function DocumentsSubModule(props: DocumentsSubModuleProps) {
@@ -27,7 +28,11 @@ export function DocumentsSubModule(props: DocumentsSubModuleProps) {
         {props.data.length === 0 ? (
           <NoDataLabel />
         ) : (
-          <ExpandableTable rows={props.data} columns={props.columns} />
+          <ExpandableTable
+            rows={props.data}
+            columns={props.columns}
+            forceExpand={props.forceExpand}
+          />
         )}
       </div>
       <div css="width: 100%;height: 25px;" />

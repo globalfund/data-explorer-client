@@ -107,7 +107,7 @@ export default function ResultsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 400 - widthThreshold;
   }
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
@@ -132,10 +132,6 @@ export default function ResultsModule() {
           },
           { name: "Results" },
         ]}
-        tabs={[
-          { url: "/results/overview", name: "Overview" },
-          { url: "/results/datapoints", name: "Data points" },
-        ]}
         onToolboxSmBtnClick={
           isSmallScreen
             ? () => setOpenToolboxPanel(!openToolboxPanel)
@@ -147,72 +143,15 @@ export default function ResultsModule() {
         filterGroups={pathnameToFilterGroups.results}
         onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
-      <Switch>
-        <Route exact path="/results/overview">
-          <Grid
-            container
-            spacing={4}
-            css={`
-              align-self: flex-start;
-              transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-              width: ${openToolboxPanel
-                ? `calc(100% - ${pushValue}px)`
-                : "100%"};
-            `}
-          >
-            <Grid item xs={12} sm={6} md={6}>
-              <ResultsInfoContent description="" stats={infoData} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={6}>
-              <div
-                css={`
-                  margin-top: 50px;
-                  gap: 12px;
-                  line-height: 20px;
-                  letter-spacing: 0.5px;
-                `}
-              >
-                <p>
-                  The Global Fund is a partnership designed to accelerate the
-                  end of AIDS, tuberculosis and malaria as epidemics. As an
-                  international organization, the Global Fund mobilizes and
-                  invests more than US$4 billion a year to support programs run
-                  by local experts in more than 100 countries. In partnership
-                  with governments, civil society, technical agencies, the
-                  private sector and people affected by the diseases, we are
-                  challenging barriers and embracing innovation.
-                </p>
-                <p>
-                  Amounts are in the specified currency. Where noted, the
-                  USD-equivalent is presented for amounts in non-USD currencies.
-                  <br />
-                  <br />
-                  Pledges and contributions made in currencies other than USD
-                  from 2014 onward were converted to USD using fixed
-                  Replenishment exchange rates. Pledges and contributions before
-                  2014 were converted using spot exchange rates.
-                  <br />
-                  <br />
-                  Where pledges have been made that are not specific to
-                  individual years, the amount shown as pledged for a period is
-                  the sum of contributions received in that period.
-                </p>
-              </div>
-            </Grid>
-          </Grid>
-        </Route>
-        <Route exact path="/results/datapoints">
-          <DataList
-            isLoading={isLoading}
-            search={search}
-            setSearch={setSearch}
-            selectedYear={selectedYear}
-            data={data}
-            openToolboxPanel={openToolboxPanel}
-            pushValue={pushValue}
-          />
-        </Route>
-      </Switch>
+      <DataList
+        isLoading={isLoading}
+        search={search}
+        setSearch={setSearch}
+        selectedYear={selectedYear}
+        data={data}
+        openToolboxPanel={openToolboxPanel}
+        pushValue={pushValue}
+      />
       <div css="width: 100%;height: 25px;" />
       <div
         css={`

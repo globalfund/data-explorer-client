@@ -25,12 +25,14 @@ import Allocations, {
 } from "app/state/api/action-reducers/viz/allocations";
 import BudgetsFlow, {
   BudgetsFlowDrilldownLevel1,
+  BudgetsFlowDrilldownLevel2,
 } from "app/state/api/action-reducers/viz/budgetsFlow";
 import Eligibility, {
   EligibilityYears,
 } from "app/state/api/action-reducers/viz/eligibility";
 import BudgetsTimeCycle, {
   BudgetsTimeCycleDrilldownLevel1,
+  BudgetsTimeCycleDrilldownLevel2,
 } from "app/state/api/action-reducers/viz/budgetsTimeCycle";
 import DisbursementsGeomap, {
   DisbursementsGeomapMulticountries,
@@ -70,9 +72,11 @@ import EligibilityCountry from "app/state/api/action-reducers/locationDetail/eli
 import LocationDetailDocuments from "app/state/api/action-reducers/locationDetail/documents";
 import GrantDetailBudgetsFlow, {
   GrantDetailBudgetsFlowDrilldownLevel1,
+  GrantDetailBudgetsFlowDrilldownLevel2,
 } from "app/state/api/action-reducers/grantDetail/budgetsFlow";
 import LocationDetailBudgetsFlow, {
   LocationDetailBudgetsFlowDrilldownLevel1,
+  LocationDetailBudgetsFlowDrilldownLevel2,
 } from "app/state/api/action-reducers/locationDetail/budgetsFlow";
 import GrantDetailBudgetsTimeCycle, {
   GrantDetailBudgetsTimeCycleDrilldownLevel1,
@@ -96,6 +100,7 @@ import PartnerDetailDisbursementsTreemap, {
 } from "../api/action-reducers/partnerDetail/disbursementsTreemap";
 import PartnerDetailBudgetsFlow, {
   PartnerDetailBudgetsFlowDrilldownLevel1,
+  PartnerDetailBudgetsFlowDrilldownLevel2,
 } from "../api/action-reducers/partnerDetail/budgetsFlow";
 import PartnerDetailBudgetsTimeCycle, {
   PartnerDetailBudgetsTimeCycleDrilldownLevel1,
@@ -129,6 +134,7 @@ const storeContent: StoreModel = {
   GrantsList: persist(GrantsList),
   BudgetsFlow: persist(BudgetsFlow),
   BudgetsFlowDrilldownLevel1: persist(BudgetsFlowDrilldownLevel1),
+  BudgetsFlowDrilldownLevel2: persist(BudgetsFlowDrilldownLevel2),
   Allocations: persist(Allocations),
   AllocationsPeriods: persist(AllocationsPeriods),
   AllocationsDrilldown: persist(AllocationsDrilldown),
@@ -140,6 +146,7 @@ const storeContent: StoreModel = {
   BudgetsMCGeomap: persist(BudgetsMCGeomap),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
   BudgetsTimeCycleDrilldownLevel1: persist(BudgetsTimeCycleDrilldownLevel1),
+  BudgetsTimeCycleDrilldownLevel2: persist(BudgetsTimeCycleDrilldownLevel2),
   DisbursementsGeomap: persist(DisbursementsGeomap),
   DisbursementsGeomapMulticountries: persist(DisbursementsGeomapMulticountries),
   DisbursementsTreemap: persist(DisbursementsTreemap),
@@ -173,6 +180,9 @@ const storeContent: StoreModel = {
   GrantDetailBudgetsFlowDrilldownLevel1: persist(
     GrantDetailBudgetsFlowDrilldownLevel1
   ),
+  GrantDetailBudgetsFlowDrilldownLevel2: persist(
+    GrantDetailBudgetsFlowDrilldownLevel2
+  ),
   GrantDetailBudgetsTimeCycle: persist(GrantDetailBudgetsTimeCycle),
   GrantDetailBudgetsTimeCycleDrilldownLevel1: persist(
     GrantDetailBudgetsTimeCycleDrilldownLevel1
@@ -202,6 +212,9 @@ const storeContent: StoreModel = {
   LocationDetailBudgetsFlowDrilldownLevel1: persist(
     LocationDetailBudgetsFlowDrilldownLevel1
   ),
+  LocationDetailBudgetsFlowDrilldownLevel2: persist(
+    LocationDetailBudgetsFlowDrilldownLevel2
+  ),
   LocationDetailBudgetsTimeCycle: persist(LocationDetailBudgetsTimeCycle),
   LocationDetailBudgetsTimeCycleDrilldownLevel1: persist(
     LocationDetailBudgetsTimeCycleDrilldownLevel1
@@ -224,6 +237,9 @@ const storeContent: StoreModel = {
   PartnerDetailBudgetsFlow: persist(PartnerDetailBudgetsFlow),
   PartnerDetailBudgetsFlowDrilldownLevel1: persist(
     PartnerDetailBudgetsFlowDrilldownLevel1
+  ),
+  PartnerDetailBudgetsFlowDrilldownLevel2: persist(
+    PartnerDetailBudgetsFlowDrilldownLevel2
   ),
   PartnerDetailBudgetsTimeCycle: persist(PartnerDetailBudgetsTimeCycle),
   PartnerDetailBudgetsTimeCycleDrilldownLevel1: persist(

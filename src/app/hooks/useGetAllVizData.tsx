@@ -382,7 +382,7 @@ export function useGetAllVizData() {
     // Grants
     "/grants": grantsList,
     // Results
-    "/results/overview": resultsList,
+    "/results": resultsList,
     "/results/datapoints": resultsList,
     // Documents
     "/documents": documents,

@@ -103,10 +103,15 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       setVizSelected={setVizSelected}
       vizCompData={vizCompData}
       setVizCompData={setVizCompData}
-      vizPrevTranslation={vizPrevTranslation}
       vizPrevSelected={vizPrevSelected}
+      setVizPrevSelected={setVizPrevSelected}
+      vizPrevTranslation={vizPrevTranslation}
       drilldownPanelOptions={drilldownPanelOptions}
+      setDrilldownVizSelected={setDrilldownVizSelected}
+      setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
+      dataDrilldownLevel2={dataDrilldownLevel1}
+      drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
     />
   );

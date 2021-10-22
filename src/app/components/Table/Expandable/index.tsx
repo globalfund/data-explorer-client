@@ -25,9 +25,13 @@ const useRowStyles = makeStyles({
   },
 });
 
-function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
+function Row(props: {
+  row: ExpandableTableRowProps;
+  paddingLeft?: number;
+  forceExpand?: boolean;
+}) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(props.forceExpand);
   const classes = useRowStyles();
 
   return (
@@ -134,6 +138,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
                         key={category.name}
                         row={category}
                         paddingLeft={50}
+                        forceExpand={props.forceExpand}
                       />
                     )
                   )}
@@ -146,6 +151,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
                         link: doc.link,
                       }}
                       paddingLeft={72}
+                      forceExpand={props.forceExpand}
                     />
                   ))}
               </TableBody>
@@ -182,7 +188,7 @@ export function ExpandableTable(props: ExpandableTableProps) {
         </TableHead>
         <TableBody>
           {props.rows.map((row: ExpandableTableRowProps) => (
-            <Row key={row.name} row={row} />
+            <Row forceExpand={props.forceExpand} key={row.name} row={row} />
           ))}
         </TableBody>
       </Table>

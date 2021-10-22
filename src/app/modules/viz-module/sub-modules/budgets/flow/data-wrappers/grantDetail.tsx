@@ -68,11 +68,28 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
         []
       ) as BudgetsTreemapDataItem[]
   );
+  const fetchDrilldownLevel2Data = useStoreActions(
+    (store) => store.GrantDetailBudgetsFlowDrilldownLevel2.fetch
+  );
+  const clearDrilldownLevel2Data = useStoreActions(
+    (store) => store.GrantDetailBudgetsFlowDrilldownLevel2.clear
+  );
+  const dataDrilldownLevel2 = useStoreState(
+    (state) =>
+      get(
+        state.GrantDetailBudgetsFlowDrilldownLevel2.data,
+        "data",
+        []
+      ) as BudgetsTreemapDataItem[]
+  );
   const isLoading = useStoreState(
     (state) => state.GrantDetailBudgetsFlow.loading
   );
   const isDrilldownLoading = useStoreState(
     (state) => state.GrantDetailBudgetsFlowDrilldownLevel1.loading
+  );
+  const isDrilldown2Loading = useStoreState(
+    (state) => state.GrantDetailBudgetsFlowDrilldownLevel2.loading
   );
 
   const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
@@ -101,6 +118,20 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
   }, [vizSelected.filterStr]);
 
   useUpdateEffect(() => {
+    if (
+      drilldownVizSelected.id !== undefined &&
+      vizSelected.filterStr !== undefined
+    ) {
+      const idSplits = drilldownVizSelected.id.split("-");
+      fetchDrilldownLevel2Data({
+        filterString: `levelParam=${vizSelected.filterStr}&activityAreaName=${idSplits[0]}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}&components=${idSplits[1]}`,
+      });
+    } else {
+      clearDrilldownLevel2Data();
+    }
+  }, [drilldownVizSelected.id]);
+
+  useUpdateEffect(() => {
     setDrilldownPanelOptions(getDrilldownPanelOptions(links));
   }, [links]);
 
@@ -109,7 +140,7 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
       nodes={nodes}
       links={links}
       isLoading={isLoading}
-      isDrilldownLoading={isDrilldownLoading}
+      isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
       vizTranslation={vizTranslation}
@@ -118,10 +149,15 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
       setVizSelected={setVizSelected}
       vizCompData={vizCompData}
       setVizCompData={setVizCompData}
+      vizPrevSelected={vizPrevSelected}
+      setVizPrevSelected={setVizPrevSelected}
       vizPrevTranslation={vizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
       drilldownPanelOptions={drilldownPanelOptions}
+      setVizPrevTranslation={setVizPrevTranslation}
+      dataDrilldownLevel2={dataDrilldownLevel2}
+      drilldownVizSelected={drilldownVizSelected.id}
       toolboxOpen={props.toolboxOpen}
     />
   );

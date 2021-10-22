@@ -10,3 +10,7 @@ export default BudgetsTimeCycle;
 export const BudgetsTimeCycleDrilldownLevel1: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/budgets/drilldown`),
 };
+
+export const BudgetsTimeCycleDrilldownLevel2: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/budgets/drilldown/2`),
+};

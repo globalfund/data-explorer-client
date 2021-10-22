@@ -9,8 +9,10 @@ import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
-import { useMediaQuery } from "@material-ui/core";
+import {
+  AllocationsGeoMapPinMarker,
+  NO_DATA_COLOR,
+} from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -51,7 +53,7 @@ export function BudgetsGeoMap(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   React.useEffect(() => {
     let filterString = getAPIFormattedFilters(
       props.code && props.detailFilterType
@@ -93,14 +95,6 @@ export function BudgetsGeoMap(props: Props) {
         flex-direction: column;
       `}
     >
-      {geomapView === "countries" && isSmallScreen && (
-        <div>
-          <div css="display:flex;">
-            <b>Budgets</b>
-          </div>
-          <div>{formatFinancialValue(maxValue)}</div>
-        </div>
-      )}
       <GeoMap
         allowClickthrough
         type="budgets"
@@ -117,7 +111,7 @@ export function BudgetsGeoMap(props: Props) {
         noData={maxValue === 0}
         allocationsPins={geomapView === "multicountries" ? dataMC : []}
       />
-      {geomapView === "countries" && !isSmallScreen && (
+      {geomapView === "countries" && (
         <div
           css={`
             gap: 12px;
@@ -173,10 +167,10 @@ export function BudgetsGeoMap(props: Props) {
               css={`
                 width: 100%;
                 height: 6px;
-                background: #fff;
                 font-weight: bold;
                 border-radius: 20px;
                 border: 0.5px solid #c7cdd1;
+                background: ${NO_DATA_COLOR};
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             />

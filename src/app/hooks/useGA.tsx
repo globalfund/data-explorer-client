@@ -1,5 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import useCookie from "@devhammed/use-cookie";
 
 function sendPageView(location: any) {
   // @ts-ignore
@@ -13,9 +14,10 @@ function sendPageView(location: any) {
 
 export function useGA() {
   const history = useHistory();
+  const [userConsent] = useCookie("userConsent", false);
 
   React.useEffect(() => {
-    if (window.location.hostname === "data.v2.theglobalfund.org") {
+    if (window.location.hostname === "data.theglobalfund.org" && userConsent) {
       return history.listen(sendPageView);
     }
   }, [history]);
