@@ -15,6 +15,7 @@ import {
   ScatterplotNode,
   backCircleRadius,
 } from "app/components/Charts/Eligibility/Scatterplot/components/node";
+import { useMediaQuery } from "@material-ui/core";
 import { NoDataLabel } from "../../common/nodatalabel";
 import { AreaLayer } from "./components/area";
 
@@ -38,6 +39,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
     hoveredNode,
     setHoveredNode,
   ] = React.useState<EligibilityScatterplotHoveredNode | null>(null);
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const [hoveredLegend, setHoveredLegend] = React.useState<
     "Eligible" | "Not Eligible" | "Transition Funding" | null
   >(null);
@@ -152,12 +154,20 @@ export function ScatterPlot(props: ScatterPlotProps) {
             display: flex;
             flex-direction: column;
             justify-content: flex-end;
+
+            @media (max-width: 960px) {
+              justify-content: flex-start;
+              flex-direction: row;
+            }
           `}
         >
           <div
             css={`
               font-size: 14px;
               margin-bottom: 40px;
+              @media (max-width: 960px) {
+                margin-right: 80px;
+              }
             `}
           >
             <div
@@ -245,6 +255,9 @@ export function ScatterPlot(props: ScatterPlotProps) {
             <div
               css={`
                 font-size: 14px;
+                @media (max-width: 960px) {
+                  width: 300px;
+                }
               `}
             >
               <div
@@ -524,7 +537,10 @@ export function ScatterPlot(props: ScatterPlotProps) {
                           content: "None";
                           position: absolute;
                           display: inline-block;
-                          transform: rotate(90deg);
+                          transform:rotate(90deg);
+                          @media (max-width: 960px) {
+                            transform: none;
+                          };
                         }
                       }
                       &:nth-of-type(2) {
@@ -537,6 +553,9 @@ export function ScatterPlot(props: ScatterPlotProps) {
                           position: absolute;
                           display: inline-block;
                           transform: rotate(90deg);
+                          @media (max-width: 960px) {
+                            transform: none;
+                          };
                         }
                       }
                       &:nth-of-type(3) {
@@ -565,7 +584,9 @@ export function ScatterPlot(props: ScatterPlotProps) {
                           position: absolute;
                           display: inline-block;
                           transform: rotate(90deg);
-                        }
+                          @media (max-width: 960px) {
+                            transform: none;
+                          };
                       }
                     }
                   `}
