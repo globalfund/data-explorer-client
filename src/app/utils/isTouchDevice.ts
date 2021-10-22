@@ -1,8 +1,16 @@
+import { deviceType, primaryInput } from "detect-it";
+
 export function isTouchDevice() {
-  return (
-    "ontouchstart" in window ||
-    navigator.maxTouchPoints > 0 ||
-    // @ts-ignore
-    navigator.msMaxTouchPoints > 0
-  );
+  if (deviceType === "mouseOnly") {
+    return false;
+  }
+  if (deviceType === "touchOnly") {
+    return true;
+  }
+  if (deviceType === "hybrid") {
+    if (primaryInput === "mouse") {
+      return false;
+    }
+    return true;
+  }
 }
