@@ -54,7 +54,7 @@ export function DatasetCarousel() {
             margin: 0;
           }
           > div:nth-of-type(3) {
-            padding-top: 10px;
+            padding-top: ${isSmallScreen ? "10px" : 0};
           }
         }
       `}
