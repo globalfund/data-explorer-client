@@ -383,7 +383,6 @@ export function useGetAllVizData() {
     "/grants": grantsList,
     // Results
     "/results": resultsList,
-    "/results/datapoints": resultsList,
     // Documents
     "/documents": documents,
     // Partner Disbursements

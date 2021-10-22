@@ -25,7 +25,7 @@ interface PageHeaderProps {
   onToolboxSmBtnClick?: () => void;
 }
 
-export const StyledMenu = withStyles({
+const StyledMenu = withStyles({
   paper: {
     minWidth: 220,
     borderRadius: 10,
