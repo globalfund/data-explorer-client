@@ -8,6 +8,7 @@ import {
   AchievementRateLegend,
   NetworkLegends,
 } from "app/components/Charts/Network/components/legends";
+import { useMediaQuery } from "@material-ui/core";
 
 export function NetworkViz(props: NetworkVizProps) {
   React.useEffect(() => {
@@ -168,6 +169,7 @@ export function NetworkViz(props: NetworkVizProps) {
       />
     ));
   };
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <Grid container spacing={2}>
@@ -182,6 +184,12 @@ export function NetworkViz(props: NetworkVizProps) {
           Performance Framework
         </div>
       </Grid>
+      {isSmallScreen && (
+        <Grid item xs={12} css="padding-bottom: 0 !important;">
+          {/* <NetworkLegends /> */}
+          <AchievementRateLegend />
+        </Grid>
+      )}
       <Grid
         item
         xs={12}
@@ -226,10 +234,12 @@ export function NetworkViz(props: NetworkVizProps) {
         </div>
         {props.data.links.length === 0 && <NoDataLabel />}
       </Grid>
-      <Grid item xs={12} css="padding-bottom: 0 !important;">
-        {/* <NetworkLegends /> */}
-        <AchievementRateLegend />
-      </Grid>
+      {isSmallScreen || (
+        <Grid item xs={12} css="padding-bottom: 0 !important;">
+          {/* <NetworkLegends /> */}
+          <AchievementRateLegend />
+        </Grid>
+      )}
     </Grid>
   );
 }
