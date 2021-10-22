@@ -11,7 +11,6 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 import { useMediaQuery } from "@material-ui/core";
-import { InfoIconSmall } from "app/assets/icons/Info";
 
 interface Props {
   code?: string;
@@ -98,7 +97,6 @@ export function BudgetsGeoMap(props: Props) {
         <div>
           <div css="display:flex;">
             <b>Budgets</b>
-            <InfoIconSmall />
           </div>
           <div>{formatFinancialValue(maxValue)}</div>
         </div>
