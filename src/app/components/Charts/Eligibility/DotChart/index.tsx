@@ -63,6 +63,7 @@ export function DotChart(props: DotChartProps) {
           sm={12}
           md={2}
           css={`
+            gap: 20px;
             display: flex;
             position: relative;
             flex-direction: ${isSmallScreen ? "row" : "column"};
@@ -86,7 +87,7 @@ export function DotChart(props: DotChartProps) {
               `}
             >
               {isSmallScreen && (
-                <div css="display:flex;font-weight: bold;width:90px;justify-content:space-between;">
+                <div css="display:flex;font-weight: bold;justify-content:space-between;">
                   Eligibility
                 </div>
               )}
@@ -98,7 +99,6 @@ export function DotChart(props: DotChartProps) {
                 Year {props.selectedYear}
               </div>
             </div>
-
             <div
               css={`
                 display: flex;
@@ -200,111 +200,114 @@ export function DotChart(props: DotChartProps) {
               />
               Transition Funding
             </div>
-            {props.aggregateBy === "geographicAreaName" && (
-              <React.Fragment>
-                <div
-                  css={`
-                    font-size: 14px;
-                    margin-top: 50px;
-                    font-weight: bold;
-                    margin-bottom: 24px;
-                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                      sans-serif;
-                  `}
-                >
-                  Country Name
-                </div>
-                <div
-                  css={`
-                    gap: 24px;
-                    display: flex;
-                    flex-direction: row;
-
-                    > div {
-                      position: relative;
-                    }
-                  `}
-                >
-                  <div>
-                    <div
-                      css={`
-                        width: 10px;
-                        height: 10px;
-                        border-radius: 50%;
-                        ${styles.Eligible}
-                      `}
-                    />
-                    <div
-                      css={`
-                        font-size: 12px;
-                        position: absolute;
-                      `}
-                    >
-                      HIV
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      css={`
-                        width: 10px;
-                        height: 10px;
-                        border-radius: 50%;
-                        ${styles["Not Eligible"]}
-                      `}
-                    />
-                    <div
-                      css={`
-                        top: -24px;
-                        left: -8px;
-                        font-size: 12px;
-                        position: absolute;
-                      `}
-                    >
-                      Malaria
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      css={`
-                        width: 10px;
-                        height: 10px;
-                        border-radius: 50%;
-                        ${styles.Eligible}
-                      `}
-                    />
-                    <div
-                      css={`
-                        font-size: 12px;
-                        position: absolute;
-                      `}
-                    >
-                      RSSH
-                    </div>
-                  </div>
-                  <div>
-                    <div
-                      css={`
-                        width: 10px;
-                        height: 10px;
-                        border-radius: 50%;
-                        ${styles["Transition Funding"]}
-                      `}
-                    />
-                    <div
-                      css={`
-                        top: -24px;
-                        font-size: 12px;
-                        position: absolute;
-                      `}
-                    >
-                      Tuberculosis
-                    </div>
-                  </div>
-                </div>
-              </React.Fragment>
-            )}
           </div>
+          {props.aggregateBy === "geographicAreaName" && (
+            <div
+              css={`
+                margin-top: ${!isSmallScreen ? "50px" : 0};
+              `}
+            >
+              <div
+                css={`
+                  font-size: 14px;
+                  font-weight: bold;
+                  margin-bottom: 24px;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                `}
+              >
+                Country Name
+              </div>
+              <div
+                css={`
+                  gap: 24px;
+                  display: flex;
+                  flex-direction: row;
+
+                  > div {
+                    position: relative;
+                  }
+                `}
+              >
+                <div>
+                  <div
+                    css={`
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      ${styles.Eligible}
+                    `}
+                  />
+                  <div
+                    css={`
+                      font-size: 12px;
+                      position: absolute;
+                    `}
+                  >
+                    HIV
+                  </div>
+                </div>
+                <div>
+                  <div
+                    css={`
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      ${styles["Not Eligible"]}
+                    `}
+                  />
+                  <div
+                    css={`
+                      top: -24px;
+                      left: -8px;
+                      font-size: 12px;
+                      position: absolute;
+                    `}
+                  >
+                    Malaria
+                  </div>
+                </div>
+                <div>
+                  <div
+                    css={`
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      ${styles.Eligible}
+                    `}
+                  />
+                  <div
+                    css={`
+                      font-size: 12px;
+                      position: absolute;
+                    `}
+                  >
+                    RSSH
+                  </div>
+                </div>
+                <div>
+                  <div
+                    css={`
+                      width: 10px;
+                      height: 10px;
+                      border-radius: 50%;
+                      ${styles["Transition Funding"]}
+                    `}
+                  />
+                  <div
+                    css={`
+                      top: -24px;
+                      font-size: 12px;
+                      position: absolute;
+                    `}
+                  >
+                    Tuberculosis
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </Grid>
+        {isSmallScreen && <div css="width: 100%; height: 20px" />}
         <Grid
           item
           container
