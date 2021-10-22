@@ -18,7 +18,7 @@ export function GrantsList(props: GrantsListProps) {
   return (
     <Grid container spacing={2}>
       {props.listitems.map((item: GrantListItemModel) => (
-        <Grid item key={item.id} sm={6} md={6}>
+        <Grid item key={item.id} xs={12} sm={6} md={6}>
           <Link to={`/grant/${item.id}`} css={listitem}>
             {/* 1st row */}
             <div css={row(14, "normal")}>
@@ -50,6 +50,11 @@ export function GrantsList(props: GrantsListProps) {
                   gap: 24px;
                   display: flex;
                   flex-direction: row;
+
+                  @media (max-width: 920px) {
+                    gap: 12px;
+                    flex-direction: column;
+                  }
 
                   > div {
                     gap: 6px;
