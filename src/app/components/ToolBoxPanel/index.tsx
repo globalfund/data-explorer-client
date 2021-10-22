@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import get from "lodash/get";
@@ -67,12 +68,20 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             visibility: visible !important;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
             top: ${!props.isGrantDetail && vizDrilldowns.length === 0
-              ? 133
+              ? isSmallScreen
+                ? 149
+                : 133
+              : isSmallScreen
+              ? 185
               : 168}px;
             height: calc(
               100vh -
                 ${!props.isGrantDetail && vizDrilldowns.length === 0
-                  ? 133
+                  ? isSmallScreen
+                    ? 149
+                    : 133
+                  : isSmallScreen
+                  ? 185
                   : 168}px
             );
 

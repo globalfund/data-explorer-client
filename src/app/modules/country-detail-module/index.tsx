@@ -83,7 +83,13 @@ export default function CountryDetail() {
   } else {
     pushValue = 400 - widthThreshold;
   }
+
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  function isToolboxOvervlayVisible() {
+    if (isSmallScreen) return 0;
+    if (openToolboxPanel && widthThreshold < 0) return 1;
+    return 0;
+  }
 
   return (
     <div
@@ -278,10 +284,8 @@ export default function CountryDetail() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
-          visibility: ${openToolboxPanel && widthThreshold < 0
-            ? "visible"
-            : "hidden"};
+          opacity: ${isToolboxOvervlayVisible()};
+          visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}
