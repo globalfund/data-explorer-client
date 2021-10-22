@@ -1,7 +1,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import { InfoIcon, InfoIconSmall } from "app/assets/icons/Info";
+import { InfoIcon } from "app/assets/icons/Info";
 import useMousePosition from "app/hooks/useMousePosition";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import {
@@ -87,7 +87,7 @@ export function DotChart(props: DotChartProps) {
             >
               {isSmallScreen && (
                 <div css="display:flex;font-weight: bold;width:90px;justify-content:space-between;">
-                  Eligibility <InfoIconSmall />
+                  Eligibility
                 </div>
               )}
               <div
@@ -98,17 +98,16 @@ export function DotChart(props: DotChartProps) {
                 Year {props.selectedYear}
               </div>
             </div>
-            {isSmallScreen || (
-              <div
-                css={`
-                  display: flex;
-                  margin-left: 0px;
-                  margin-right: 10px;
-                `}
-              >
-                <InfoIcon />
-              </div>
-            )}
+
+            <div
+              css={`
+                display: flex;
+                margin-left: 0px;
+                margin-right: 10px;
+              `}
+            >
+              <InfoIcon />
+            </div>
           </div>
           <div
             css={`
