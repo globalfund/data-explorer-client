@@ -91,7 +91,10 @@ export function SearchResults(props: SearchResultsProps) {
             </Link>
           );
         })}
-        {results.length === 0 && <div css={noresults}>No results found.</div>}
+        {results.length === 0 && !props.loading && (
+          <div css={noresults}>No results found.</div>
+        )}
+        {props.loading && <div css={noresults}>Loading...</div>}
       </div>
     </div>
   );

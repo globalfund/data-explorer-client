@@ -81,7 +81,7 @@ export function useFilterOptions(props: UseFilterOptionsProps) {
       "Grant Status": status,
       "Replenishment Periods": replenishmentPeriods,
       Donors:
-        location.pathname === "/viz/pledges-contributions/geomap"
+        location.pathname === "/viz/pledges-contributions/map"
           ? get(find(donors, { label: donorsMapView }), "subOptions", donors)
           : donors,
     };

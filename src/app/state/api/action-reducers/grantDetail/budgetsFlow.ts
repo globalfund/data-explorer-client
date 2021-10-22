@@ -10,3 +10,7 @@ export default GrantDetailBudgetsFlow;
 export const GrantDetailBudgetsFlowDrilldownLevel1: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/budgets/drilldown`),
 };
+
+export const GrantDetailBudgetsFlowDrilldownLevel2: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/budgets/drilldown/2`),
+};

@@ -2,7 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { InputNode, InputLink } from "@nivo/network";
-import { useTitle, useUpdateEffect } from "react-use";
+import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { NetworkViz } from "app/components/Charts/Network";
@@ -14,6 +14,7 @@ import {
   PFIndicator,
   PFIndicatorResultIntervention,
 } from "app/components/PerformanceFrameworkExpandedView/data";
+import { filter } from "lodash";
 
 interface Props {
   code: string;
@@ -80,6 +81,9 @@ export function PerformanceFrameworkModule(props: Props) {
   const selectedPeriod = useStoreState(
     (state) => state.ToolBoxPanelPFPeriodState.value
   );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
 
   React.useEffect(() => {
     if (props.code) {
@@ -92,14 +96,27 @@ export function PerformanceFrameworkModule(props: Props) {
   useUpdateEffect(() => {
     if (vizSelected) {
       fetchExpandData({
-        filterString: `grantId=${props.code}&IPnumber=2&indicatorSet=${
-          vizSelected.split("|")[1]
-        }&moduleName=${vizSelected.split("|")[0]}`,
+        filterString: `grantId=${props.code}&IPnumber=${
+          props.implementationPeriod
+        }&indicatorSet=${vizSelected.split("|")[1]}&moduleName=${
+          vizSelected.split("|")[0]
+        }`,
       });
     } else {
       clearExpandData();
     }
   }, [vizSelected]);
+
+  React.useEffect(() => {
+    if (vizLevel === 0) {
+      setVizDrilldowns([{ name: "Dataset" }]);
+    }
+    if (vizLevel === 1 && vizSelected) {
+      setVizDrilldowns([{ name: "Dataset" }, { name: vizSelected }]);
+    }
+  }, [vizLevel, vizSelected]);
+
+  useUnmount(() => setVizDrilldowns([]));
 
   if (isLoading) {
     return <PageLoader />;
@@ -143,7 +160,13 @@ export function PerformanceFrameworkModule(props: Props) {
       >
         <PerformanceFrameworkExpandedView
           indicators={expandIndicators}
+          setSelectedModule={setVizSelected}
           interventions={expandInterventions}
+          selectedModule={vizSelected?.split("|")[0]}
+          allModules={filter(nodes, { depth: 2 }).map((node: InputNode) => ({
+            module: node.id.split("|")[0],
+            filterValue: node.id,
+          }))}
         />
       </SlideInContainer>
     </div>

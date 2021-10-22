@@ -64,7 +64,7 @@ export default function PartnerDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 400 - widthThreshold;
   }
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
@@ -131,7 +131,7 @@ export default function PartnerDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/partner/${params.code}/disbursements/geomap`}>
+          <Route path={`/partner/${params.code}/disbursements/map`}>
             <InvestmentsGeoMap
               type="Disbursed"
               code={paramCode}
@@ -156,7 +156,7 @@ export default function PartnerDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/partner/${params.code}/signed/geomap`}>
+          <Route path={`/partner/${params.code}/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"
               code={paramCode}
@@ -184,7 +184,7 @@ export default function PartnerDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/partner/${params.code}/commitment/geomap`}>
+          <Route path={`/partner/${params.code}/commitment/map`}>
             <InvestmentsGeoMap
               type="Committed"
               code={paramCode}
@@ -204,7 +204,7 @@ export default function PartnerDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/partner/${params.code}/budgets/geomap`}>
+          <Route path={`/partner/${params.code}/budgets/map`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="partners" />
           </Route>
           {/* Grants */}

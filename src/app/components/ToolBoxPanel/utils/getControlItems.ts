@@ -22,7 +22,7 @@ const views = {
     {
       label: "Map",
       value: "Map",
-      link: "/viz/disbursements/geomap",
+      link: "/viz/disbursements/map",
     },
     {
       label: "Table",
@@ -44,7 +44,7 @@ const views = {
     {
       label: "Map",
       value: "Map",
-      link: "/viz/signed/geomap",
+      link: "/viz/signed/map",
     },
     {
       label: "Table",
@@ -66,7 +66,7 @@ const views = {
     {
       label: "Map",
       value: "Map",
-      link: "/viz/commitment/geomap",
+      link: "/viz/commitment/map",
     },
     {
       label: "Table",
@@ -86,9 +86,9 @@ const views = {
       link: "/viz/budgets/time-cycle",
     },
     {
-      label: "Geomap",
-      value: "Geomap",
-      link: "/viz/budgets/geomap",
+      label: "Map",
+      value: "Map",
+      link: "/viz/budgets/map",
     },
   ],
   eligibility: [
@@ -110,9 +110,9 @@ const views = {
       link: "/viz/allocations",
     },
     {
-      label: "Geomap",
-      value: "Geomap",
-      link: "/viz/allocations/geomap",
+      label: "Map",
+      value: "Map",
+      link: "/viz/allocations/map",
     },
   ],
   grants: [
@@ -141,7 +141,7 @@ const views = {
     {
       label: "Map",
       value: "Map",
-      link: "/viz/pledges-contributions/geomap",
+      link: "/viz/pledges-contributions/map",
     },
     {
       label: "Table",

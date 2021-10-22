@@ -87,7 +87,7 @@ export default function GrantDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 400 - widthThreshold;
   }
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
@@ -154,7 +154,7 @@ export default function GrantDetail() {
               implementationPeriod={params.period}
             />
           </Route>
-          <Route path={`/grant/${params.code}/${params.period}/budgets/geomap`}>
+          <Route path={`/grant/${params.code}/${params.period}/budgets/map`}>
             <BudgetsGeoMap
               grantCode={params.code}
               grantPeriod={params.period}

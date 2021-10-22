@@ -43,7 +43,7 @@ export function LocationDetailOverviewModule(props: Props) {
       `}
     >
       <div css="width: 100%;height: 25px;" />
-      <Grid item md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;
@@ -80,7 +80,7 @@ export function LocationDetailOverviewModule(props: Props) {
           {formatFinancialValue(locationInfoData.signed)}
         </div>
       </Grid>
-      <Grid item md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;
@@ -123,7 +123,7 @@ export function LocationDetailOverviewModule(props: Props) {
         </div>
       </Grid>
       {props.code.length === 3 && (
-        <Grid item md={12} lg={6}>
+        <Grid item xs={12} sm={6} md={6} lg={6}>
           <Link
             to={`/results/datapoints?locations=${props.code}`}
             css={`
@@ -137,7 +137,7 @@ export function LocationDetailOverviewModule(props: Props) {
           </Link>
         </Grid>
       )}
-      <Grid item md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;

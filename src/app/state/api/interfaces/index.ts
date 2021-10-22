@@ -78,10 +78,12 @@ export interface StoreModel {
   EligibilityYears: ApiCallModel;
   BudgetsFlow: ApiCallModel;
   BudgetsFlowDrilldownLevel1: ApiCallModel;
+  BudgetsFlowDrilldownLevel2: ApiCallModel;
   BudgetsGeomap: ApiCallModel;
   BudgetsMCGeomap: ApiCallModel;
   BudgetsTimeCycle: ApiCallModel;
   BudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  BudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   DisbursementsGeomap: ApiCallModel;
   DisbursementsGeomapMulticountries: ApiCallModel;
   DisbursementsTreemap: ApiCallModel;
@@ -111,6 +113,7 @@ export interface StoreModel {
   GrantDetailPeriodInfo: ApiCallModel;
   GrantDetailBudgetsFlow: ApiCallModel;
   GrantDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  GrantDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
   GrantDetailBudgetsTimeCycle: ApiCallModel;
   GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   GrantDetailDisbursementsTreemap: ApiCallModel;
@@ -132,6 +135,7 @@ export interface StoreModel {
   LocationDetailDocuments: ApiCallModel;
   LocationDetailBudgetsFlow: ApiCallModel;
   LocationDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  LocationDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
   LocationDetailBudgetsTimeCycle: ApiCallModel;
   LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   LocationGrants: ApiCallModel;
@@ -145,6 +149,7 @@ export interface StoreModel {
   PartnerDetailCommitmentTreemapDrilldown: ApiCallModel;
   PartnerDetailBudgetsFlow: ApiCallModel;
   PartnerDetailBudgetsFlowDrilldownLevel1: ApiCallModel;
+  PartnerDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
   PartnerDetailBudgetsTimeCycle: ApiCallModel;
   PartnerDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   // filter options api

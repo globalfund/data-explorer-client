@@ -37,6 +37,12 @@ export default function VizModule() {
     document.body.style.background = "#fff";
   }, []);
 
+  React.useEffect(() => {
+    if (!openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
+  }, [location.pathname]);
+
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
@@ -107,7 +113,7 @@ export default function VizModule() {
           <Route path="/viz/budgets/time-cycle">
             <GenericBudgetsTimeCycleWrapper toolboxOpen={openToolboxPanel} />
           </Route>
-          <Route path="/viz/budgets/geomap">
+          <Route path="/viz/budgets/map">
             <BudgetsGeoMap />
           </Route>
           {/* Disbursements */}
@@ -126,7 +132,7 @@ export default function VizModule() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/disbursements/geomap">
+          <Route path="/viz/disbursements/map">
             <InvestmentsGeoMap type="Disbursed" />
           </Route>
           {/* Signed */}
@@ -145,7 +151,7 @@ export default function VizModule() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/signed/geomap">
+          <Route path="/viz/signed/map">
             <InvestmentsGeoMap type="Signed" />
           </Route>
           {/* Commitment */}
@@ -164,11 +170,11 @@ export default function VizModule() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/commitment/geomap">
+          <Route path="/viz/commitment/map">
             <InvestmentsGeoMap type="Committed" />
           </Route>
           {/* Allocations */}
-          <Route path="/viz/allocations/geomap">
+          <Route path="/viz/allocations/map">
             <AllocationsGeoMap />
           </Route>
           <Route path="/viz/allocations">
@@ -183,7 +189,7 @@ export default function VizModule() {
           <Route path="/viz/pledges-contributions/table">
             <PledgesContributionsTable />
           </Route>
-          <Route path="/viz/pledges-contributions/geomap">
+          <Route path="/viz/pledges-contributions/map">
             <PledgesContributionsGeoMap />
           </Route>
           <Route path="/viz/pledges-contributions/treemap">

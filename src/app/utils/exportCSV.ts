@@ -86,7 +86,7 @@ export function exportCSV(
           { label: "Cumulative (USD)", key: "cumulative" },
         ],
       };
-    case "/viz/disbursements/geomap":
+    case "/viz/disbursements/map":
       if (options.investmentsMapView === "countries") {
         data.countries.features.forEach((item: any) => {
           if (item.properties && !isEmpty(item.properties.data)) {
@@ -211,7 +211,7 @@ export function exportCSV(
           { label: "Budget (USD)", key: "value" },
         ],
       };
-    case "/viz/budgets/geomap":
+    case "/viz/budgets/map":
       if (options.investmentsMapView === "countries") {
         data.countries.features.forEach((item: any) => {
           if (item.properties && !isEmpty(item.properties.data)) {
@@ -269,7 +269,7 @@ export function exportCSV(
           { label: "Allocation (USD)", key: "value" },
         ],
       };
-    case "/viz/allocations/geomap":
+    case "/viz/allocations/map":
       if (options.investmentsMapView === "countries") {
         data.countries.features.forEach((item: any) => {
           if (item.properties && !isEmpty(item.properties.data)) {
@@ -454,7 +454,7 @@ export function exportCSV(
           { label: "Contribution (USD)", key: "contribution" },
         ],
       };
-    case "/viz/pledges-contributions/geomap":
+    case "/viz/pledges-contributions/map":
       if (options.donorMapView === "Public Sector") {
         data.layers.features.forEach((item: any) => {
           if (item.properties && !isEmpty(item.properties.data)) {

@@ -5,12 +5,10 @@ import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
-import { GeomapPreview } from "app/assets/dataset-preview/geomap";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
 import { GrantsListPreview } from "app/assets/dataset-preview/grantsList";
 import { ResultsListPreview } from "app/assets/dataset-preview/resultsList";
 import { DocumentsTablePreview } from "app/assets/dataset-preview/documentsTable";
-import { InvestmentsBarPreview } from "app/assets/dataset-preview/investmentsBar";
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
@@ -24,112 +22,46 @@ interface DatasetItemModel {
 
 const datasets: DatasetItemModel[] = [
   {
-    name: "Budgets Flow",
-    link: "/viz/budgets/flow",
-    group: "Finance",
-    preview: <BudgetFlowPreview />,
-  },
-  {
-    name: "Budgets Time cycle",
-    link: "/viz/budgets/time-cycle",
-    group: "Finance",
-    preview: <InvestmentsBarPreview />,
-  },
-  {
-    name: "Budgets Geomap",
-    link: "/viz/budgets/geomap",
-    group: "Finance",
-    preview: <GeomapPreview />,
-  },
-  {
-    name: "Disbursements Treemap",
-    link: "/viz/disbursements/treemap",
-    group: "Finance",
-    preview: <InvestmentsTreemapPreview />,
-  },
-  {
-    name: "Disbursements Time cycle",
-    link: "/viz/disbursements/time-cycle",
-    group: "Finance",
-    preview: <InvestmentsBarPreview />,
-  },
-  {
-    name: "Disbursements Geomap",
-    link: "/viz/disbursements/geomap",
-    group: "Finance",
-    preview: <GeomapPreview />,
-  },
-  {
-    name: "Signed Treemap",
-    link: "/viz/signed/treemap",
-    group: "Finance",
-    preview: <InvestmentsTreemapPreview />,
-  },
-  {
-    name: "Signed Time cycle",
-    link: "/viz/signed/time-cycle",
-    group: "Finance",
-    preview: <InvestmentsBarPreview />,
-  },
-  {
-    name: "Signed Geomap",
-    link: "/viz/signed/geomap",
-    group: "Finance",
-    preview: <GeomapPreview />,
-  },
-  {
-    name: "Commitments Treemap",
-    link: "/viz/commitment/treemap",
-    group: "Finance",
-    preview: <InvestmentsTreemapPreview />,
-  },
-  {
-    name: "Commitments Time cycle",
-    link: "/viz/commitment/time-cycle",
-    group: "Finance",
-    preview: <InvestmentsBarPreview />,
-  },
-  {
-    name: "Commitments Geomap",
-    link: "/viz/commitment/geomap",
-    group: "Finance",
-    preview: <GeomapPreview />,
-  },
-  {
-    name: "Pledges & Contributions Treemap",
+    name: "Pledges & Contributions",
     link: "/viz/pledges-contributions/treemap",
     group: "Finance",
     preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Pledges & Contributions Time cycle",
-    link: "/viz/pledges-contributions/time-cycle",
+    name: "Signed",
+    link: "/viz/signed/treemap",
     group: "Finance",
-    preview: <InvestmentsBarPreview />,
+    preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Pledges & Contributions Geomap",
-    link: "/viz/pledges-contributions/geomap",
+    name: "Commitments",
+    link: "/viz/commitment/treemap",
     group: "Finance",
-    preview: <GeomapPreview />,
+    preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Allocations Radial",
-    link: "/viz/allocations",
+    name: "Disbursements",
+    link: "/viz/disbursements/treemap",
     group: "Finance",
-    preview: <AllocationsRadialPreview />,
+    preview: <InvestmentsTreemapPreview />,
   },
   {
-    name: "Allocations Geomap",
-    link: "/viz/allocations/geomap",
+    name: "Budgets",
+    link: "/viz/budgets/flow",
     group: "Finance",
-    preview: <GeomapPreview />,
+    preview: <BudgetFlowPreview />,
   },
   {
-    name: "",
+    name: "Eligibility",
     link: "/viz/eligibility",
-    group: "Eligibility",
+    group: "Access to Funding",
     preview: <EligibilityDotsPreview />,
+  },
+  {
+    name: "Allocations",
+    link: "/viz/allocations",
+    group: "Access to Funding",
+    preview: <AllocationsRadialPreview />,
   },
   {
     name: "",
@@ -139,7 +71,7 @@ const datasets: DatasetItemModel[] = [
   },
   {
     name: "",
-    link: "/results/overview",
+    link: "/results",
     group: "Results",
     preview: <ResultsListPreview />,
   },
@@ -149,6 +81,72 @@ const datasets: DatasetItemModel[] = [
     group: "Documents",
     preview: <DocumentsTablePreview />,
   },
+  // {
+  //   name: "Budgets Time cycle",
+  //   link: "/viz/budgets/time-cycle",
+  //   group: "Finance",
+  //   preview: <InvestmentsBarPreview />,
+  // },
+  // {
+  //   name: "Budgets Map",
+  //   link: "/viz/budgets/map",
+  //   group: "Finance",
+  //   preview: <GeomapPreview />,
+  // },
+  // {
+  //   name: "Disbursements Time cycle",
+  //   link: "/viz/disbursements/time-cycle",
+  //   group: "Finance",
+  //   preview: <InvestmentsBarPreview />,
+  // },
+  // {
+  //   name: "Disbursements Map",
+  //   link: "/viz/disbursements/map",
+  //   group: "Finance",
+  //   preview: <GeomapPreview />,
+  // },
+  // {
+  //   name: "Signed Time cycle",
+  //   link: "/viz/signed/time-cycle",
+  //   group: "Finance",
+  //   preview: <InvestmentsBarPreview />,
+  // },
+  // {
+  //   name: "Signed Map",
+  //   link: "/viz/signed/map",
+  //   group: "Finance",
+  //   preview: <GeomapPreview />,
+  // },
+  // {
+  //   name: "Commitments Time cycle",
+  //   link: "/viz/commitment/time-cycle",
+  //   group: "Finance",
+  //   preview: <InvestmentsBarPreview />,
+  // },
+  // {
+  //   name: "Commitments Map",
+  //   link: "/viz/commitment/map",
+  //   group: "Finance",
+  //   preview: <GeomapPreview />,
+  // },
+  // {
+  //   name: "Pledges & Contributions Time cycle",
+  //   link: "/viz/pledges-contributions/time-cycle",
+  //   group: "Finance",
+  //   preview: <InvestmentsBarPreview />,
+  // },
+  // {
+  //   name: "Pledges & Contributions Map",
+  //   link: "/viz/pledges-contributions/map",
+  //   group: "Finance",
+  //   preview: <GeomapPreview />,
+  // },
+  // {
+  //   name: "Allocations Map",
+  //   link: "/viz/allocations/map",
+  //   group: "Finance",
+  //   preview: <GeomapPreview />,
+  // },
 ];
 
 export default function Datasets() {

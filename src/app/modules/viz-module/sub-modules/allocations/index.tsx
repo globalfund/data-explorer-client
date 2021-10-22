@@ -1,13 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import max from "lodash/max";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import ReactApexCharts from "react-apexcharts";
 import { useTitle, useMeasure } from "react-use";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -23,7 +23,6 @@ import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
-import { isTouchDevice } from "app/utils/isTouchDevice";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -45,14 +44,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const keys = useStoreState(
     (state) => get(state.Allocations.data, "keys", []) as string[]
   );
-  // const colors = useStoreState(
-  //   (state) => get(state.Allocations.data, "colors", []) as string[]
-  // );
+  const colors = useStoreState(
+    (state) => get(state.Allocations.data, "colors", []) as string[]
+  );
   const values = useStoreState(
     (state) => get(state.Allocations.data, "values", []) as number[]
-  );
-  const maxValue = useStoreState((state) =>
-    max(get(state.Allocations.data, "values", []) as number[])
   );
   const isLoading = useStoreState((state) => state.Allocations.loading);
 
@@ -130,12 +126,13 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           },
           total: {
             show: true,
+            fontFamily: "GothamNarrow-Bold",
             formatter: () => formatFinancialValue(total),
           },
         },
       },
     },
-    colors: keysPercentagesColors.colors,
+    colors,
     labels: keys,
     legend: {
       show: true,
@@ -186,7 +183,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         // @ts-ignore
       } else if (e.target.className.baseVal === "apexcharts-radialbar-hollow") {
         setVizLevel(1);
-        setVizSelected(keys.join(","));
+        setVizSelected("Total");
         setVizTranslation({ x: -300, y: 0 });
       }
     }
@@ -235,7 +232,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           : appliedFilters
       );
       fetchDrilldownLevelData({
-        filterString: `levelParam=component/componentName in (${vizSelected
+        filterString: `levelParam=component/componentName in (${(vizSelected ===
+        "Total"
+          ? keys.join(",")
+          : vizSelected
+        )
           .split(",")
           .map((s: string) => `'${s}'`)
           .join(",")})&periods=${selectedPeriod}${
@@ -313,6 +314,18 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       // overflow: visible !important;
     }`
           : ""}
+
+        .apexcharts-radialbar-hollow {
+          r: 75;
+          z-index: 1;
+          cursor: pointer;
+          transition: fill 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          fill: ${vizSelected === "Total" ? "#cfd4da" : "transparent"};
+
+          &:hover {
+            fill: #cfd4da;
+          }
+        }
       `}
     >
       <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
@@ -353,42 +366,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               series={keysPercentagesColors.percentages}
             />
           )}
-          <div
-            css={`
-              gap: 6px;
-              width: 250px;
-              display: flex;
-              font-size: 12px;
-              flex-direction: column;
-            `}
-          >
-            <div>
-              <b>Allocations</b>
-            </div>
-            <div
-              css={`
-                width: 100%;
-                height: 6px;
-                border-radius: 20px;
-                background: linear-gradient(
-                    90deg,
-                    #f2f3f7 0%,
-                    rgba(255, 255, 255, 0) 100%
-                  ),
-                  #343a40;
-              `}
-            />
-            <div
-              css={`
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
-              `}
-            >
-              <div>0 USD</div>
-              <div>{formatFinancialValue(maxValue || 0)}</div>
-            </div>
-          </div>
         </div>
       </TransitionContainer>
       <SlideInContainer
@@ -413,10 +390,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           `}
         >
           <DrillDownArrowSelector
-            options={keys}
-            selected={
-              (vizSelected === keys.join(",") ? "Total" : vizSelected) as string
-            }
+            options={[...keys, "Total"]}
+            selected={vizSelected || ""}
             onChange={(value: string) => setVizSelected(value)}
           />
         </span>

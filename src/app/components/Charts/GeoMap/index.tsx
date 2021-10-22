@@ -26,6 +26,8 @@ import {
   getMapPinIcons,
   InvestmentsGeoMapPinMarker,
   AllocationsGeoMapPinMarker,
+  NO_DATA_COLOR,
+  NO_DATA_BORDER_COLOR,
 } from "app/components/Charts/GeoMap/data";
 import {
   GeomapAllocationsTooltip,
@@ -66,33 +68,39 @@ export function GeoMap(props: GeoMapProps) {
     minZoom: 1.3,
     maxZoom: 3,
   });
+  const layerBorderStyle: LayerProps = {
+    type: "line",
+    paint: {
+      "line-width": 2,
+      "line-color": {
+        property: "value",
+        default: NO_DATA_BORDER_COLOR,
+        stops: [
+          [0, NO_DATA_BORDER_COLOR],
+          [1, NO_DATA_COLOR],
+          [2, NO_DATA_COLOR],
+          [3, NO_DATA_COLOR],
+          [4, NO_DATA_COLOR],
+          [5, NO_DATA_COLOR],
+          [6, NO_DATA_COLOR],
+          [7, NO_DATA_COLOR],
+          [8, NO_DATA_COLOR],
+          [9, NO_DATA_COLOR],
+          [10, NO_DATA_COLOR],
+          [11, NO_DATA_COLOR],
+          [12, NO_DATA_COLOR],
+        ],
+      },
+    },
+  };
   const layerStyle: LayerProps = {
     type: "fill",
     paint: {
-      "fill-outline-color": {
-        property: "value",
-        default: "#ffffff",
-        stops: [
-          [0, "#C7CDD1"],
-          [1, "#ffffff"],
-          [2, "#ffffff"],
-          [3, "#ffffff"],
-          [4, "#ffffff"],
-          [5, "#ffffff"],
-          [6, "#ffffff"],
-          [7, "#ffffff"],
-          [8, "#ffffff"],
-          [9, "#ffffff"],
-          [10, "#ffffff"],
-          [11, "#ffffff"],
-          [12, "#ffffff"],
-        ],
-      },
       "fill-color": {
         property: "value",
-        default: "transparent",
+        default: NO_DATA_COLOR,
         stops: [
-          [0, "#ffffff"],
+          [0, NO_DATA_COLOR],
           [1, "#CDD4DF"],
           [2, "#C0C7D2"],
           [3, "#AFB6C1"],
@@ -336,6 +344,7 @@ export function GeoMap(props: GeoMapProps) {
           }
         >
           <Layer {...layerStyle} />
+          <Layer {...layerBorderStyle} />
         </Source>
         {props.investmentsPins.map((pin: InvestmentsGeoMapPinMarker) => {
           const icons = getMapPinIcons("Multicountry");

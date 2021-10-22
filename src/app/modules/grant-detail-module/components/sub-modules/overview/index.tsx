@@ -40,7 +40,7 @@ export function GrantDetailOverviewModule() {
   return (
     <Grid container spacing={2}>
       <div css="width: 100%;height: 25px;" />
-      <Grid item xs={12} sm={12} md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;
@@ -49,7 +49,7 @@ export function GrantDetailOverviewModule() {
           <b>Grant status</b>: {grantInfoData.status}
         </div>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;
@@ -91,7 +91,7 @@ export function GrantDetailOverviewModule() {
           ))}
         </div>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             gap: 6px;
@@ -123,7 +123,7 @@ export function GrantDetailOverviewModule() {
           </div>
         </div>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;
@@ -160,7 +160,7 @@ export function GrantDetailOverviewModule() {
           {formatFinancialValue(grantInfoData.investments.signed)}
         </div>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;
@@ -180,7 +180,7 @@ export function GrantDetailOverviewModule() {
           {/* {grantInfoData.description} */}
         </div>
       </Grid>
-      <Grid item xs={12} sm={12} md={12} lg={6}>
+      <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
             font-size: 14px;

@@ -30,6 +30,10 @@ export function NoDataLabel(props: Props) {
           padding: 10px;
           border-radius: 4px;
           background: #dfe3e6;
+
+          > div {
+            background: #dfe3e6 !important;
+          }
         }
       `}
     >

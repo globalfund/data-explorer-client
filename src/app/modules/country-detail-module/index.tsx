@@ -14,6 +14,7 @@ import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
+import { LocationResults } from "app/modules/country-detail-module/sub-modules/results";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { LocationDetailOverviewModule } from "app/modules/country-detail-module/sub-modules/overview";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
@@ -80,7 +81,7 @@ export default function CountryDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 400 - widthThreshold;
   }
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
@@ -107,7 +108,11 @@ export default function CountryDetail() {
             name: locationInfoData.locationName,
           },
         ]}
-        tabs={countryDetailTabs}
+        tabs={
+          params.code.length === 3
+            ? countryDetailTabs
+            : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
+        }
         onToolboxSmBtnClick={
           isSmallScreen
             ? () => setOpenToolboxPanel(!openToolboxPanel)
@@ -142,7 +147,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/budgets/geomap`}>
+          <Route path={`/location/${params.code}/budgets/map`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Disbursements */}
@@ -163,7 +168,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/geomap`}>
+          <Route path={`/location/${params.code}/disbursements/map`}>
             <InvestmentsGeoMap
               type="Disbursed"
               code={paramCode}
@@ -188,7 +193,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/signed/geomap`}>
+          <Route path={`/location/${params.code}/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"
               code={paramCode}
@@ -213,7 +218,7 @@ export default function CountryDetail() {
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/commitment/geomap`}>
+          <Route path={`/location/${params.code}/commitment/map`}>
             <InvestmentsGeoMap
               type="Committed"
               code={paramCode}
@@ -240,6 +245,10 @@ export default function CountryDetail() {
           </Route>
           <Route path={`/location/${params.code}/grants`}>
             <LocationGrants code={paramCode} detailFilterType="locations" />
+          </Route>
+          {/* Results */}
+          <Route path={`/location/${params.code}/results`}>
+            <LocationResults code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Documents */}
           <Route path={`/location/${params.code}/documents`}>

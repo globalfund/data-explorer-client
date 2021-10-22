@@ -137,9 +137,9 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
       {(((params.vizType === "commitment" ||
         params.vizType === "disbursements" ||
         params.vizType === "signed") &&
-        params.subType === "geomap") ||
-        (params.vizType === "allocations" && params.subType === "geomap") ||
-        (params.vizType === "budgets" && params.subType === "geomap")) && (
+        params.subType === "map") ||
+        (params.vizType === "allocations" && params.subType === "map") ||
+        (params.vizType === "budgets" && params.subType === "map")) && (
         <ToolBoxPanelAggregateBy
           title="Aggregate by"
           selected={geomapView}
@@ -151,13 +151,13 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
         />
       )}
       {params.vizType === "pledges-contributions" &&
-        (params.subType === "geomap" || params.subType === "table") && (
+        (params.subType === "map" || params.subType === "table") && (
           <React.Fragment>
             <ToolBoxPanelDonorViews />
           </React.Fragment>
         )}
       {params.vizType === "pledges-contributions" &&
-        (params.subType === "geomap" ||
+        (params.subType === "map" ||
           params.subType === "table" ||
           params.subType === "treemap") && (
           <React.Fragment>

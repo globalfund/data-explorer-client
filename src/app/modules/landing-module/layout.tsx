@@ -30,7 +30,7 @@ export const LandingLayout = () => {
         <BigLogo />
         <div css={subtitle}>Free and open access to the Global Fund Data</div>
         <Search />
-        <div css={datasetstitle}>Explore the datasets</div>
+        <div css={datasetstitle}>Explore the Datasets</div>
         <DatasetCarousel />
         <div css={datasetslink}>
           <Link to="/datasets">View all</Link>
