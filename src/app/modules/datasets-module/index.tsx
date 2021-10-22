@@ -199,7 +199,7 @@ export default function Datasets() {
                   }
 
                   > svg {
-                    width: calc(100% - 20px);
+                    width: 100%;
                     height: calc(100% - 30px);
                   }
 

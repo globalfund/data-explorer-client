@@ -28,7 +28,7 @@ const griditem = (content: React.ReactElement, link: string) => (
         }
 
         > svg {
-          width: calc(100% - 20px);
+          width: 100%;
           height: calc(100% - 30px);
         }
 
