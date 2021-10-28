@@ -52,7 +52,10 @@ export function useAppliedFilters(
         appliedFilters: data.replenishmentPeriods,
       };
     case "Donors":
-      if (location.pathname === "/viz/pledges-contributions/time-cycle") {
+      if (
+        location.pathname === "/viz/pledges-contributions/time-cycle" ||
+        location.pathname === "/viz/pledges-contributions/treemap"
+      ) {
         return {
           setAppliedFilters: actions.setDonorCategories,
           appliedFilters: data.donorCategories,
