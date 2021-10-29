@@ -267,6 +267,7 @@ export default function CountryDetail() {
         </Switch>
       </div>
       <ToolBoxPanel
+        isLocationDetail
         open={openToolboxPanel}
         filterGroups={get(
           pathnameToFilterGroups,

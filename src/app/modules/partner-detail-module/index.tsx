@@ -56,6 +56,10 @@ export default function PartnerDetail() {
     });
   }, [paramCode]);
 
+  React.useEffect(() => {
+    setOpenToolboxPanel(true);
+  }, [params.vizType]);
+
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 

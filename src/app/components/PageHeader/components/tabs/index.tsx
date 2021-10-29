@@ -8,8 +8,8 @@ import {
 } from "app/components/PageHeader/components/tabs/data";
 
 const styles = {
-  container: css`
-    @media (max-width: 1024px) {
+  container: (pathname: string) => css`
+    @media (max-width: ${pathname.indexOf("/partner") > -1 ? 500 : 1024}px) {
       width: 100%;
     }
   `,
@@ -126,8 +126,9 @@ function RouteTab(props: TabProps) {
 }
 
 export function PageHeaderTabs(props: PageHeaderTabProps) {
+  const location = useLocation();
   return (
-    <div css={styles.container}>
+    <div css={styles.container(location.pathname)}>
       <ul css={styles.tabsList}>
         {props.tabs.map((tab: TabProps) => (
           <RouteTab key={tab.name} {...tab} />
