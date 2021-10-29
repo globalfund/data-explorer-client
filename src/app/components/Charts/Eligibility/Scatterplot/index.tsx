@@ -689,7 +689,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
             <div
               css={`
                 height: 620px;
-                width: ${noData ? "100%" : "200vw"};
+                width: ${noData ? "100%" : "3000px"};
               `}
             >
               {noData ? (
