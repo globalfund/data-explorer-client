@@ -25,7 +25,7 @@ interface PageHeaderProps {
   onToolboxSmBtnClick?: () => void;
 }
 
-export const StyledMenu = withStyles({
+const StyledMenu = withStyles({
   paper: {
     minWidth: 220,
     borderRadius: 10,
@@ -256,21 +256,29 @@ export function PageHeader(props: PageHeaderProps) {
             }
           )}
           {props.onToolboxSmBtnClick && (
-            <div css="right:10px;position:fixed">
-              <Tooltip
-                title="Tap to open the toolbox"
-                aria-label="open the toolbox"
-                placement="bottom-end"
-                arrow
+            <Tooltip
+              title="Tap to open the toolbox"
+              aria-label="open the toolbox"
+              placement="bottom-end"
+              arrow
+            >
+              <IconButton
+                css={`
+                  top: 3px;
+                  right: 20px;
+                  position: absolute;
+                  padding: 0 !important;
+                `}
+                onClick={(e: any) => {
+                  e.stopPropagation();
+                  if (props.onToolboxSmBtnClick) {
+                    props.onToolboxSmBtnClick();
+                  }
+                }}
               >
-                <IconButton
-                  css="padding:0px !important"
-                  onClick={props.onToolboxSmBtnClick}
-                >
-                  <ToolboxXsIcon />
-                </IconButton>
-              </Tooltip>
-            </div>
+                <ToolboxXsIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </div>
         <Grid

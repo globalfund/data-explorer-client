@@ -30,7 +30,7 @@
     <title>The Data Explorer</title>
     <script async src="https://www.googletagmanager.com/gtag/js?id=%REACT_APP_GOOGLE_ANALYTICS_ID%"></script>
     <script>
-      const userConsent = document.cookie.match(`(^|;) ?${userConsent}=([^;]*)(;|$)`);
+      const userConsent = document.cookie.match("(^|;) ?userConsent=([^;]*)(;|$)");
       if (window.location.hostname === 'data.theglobalfund.org' && userConsent) {
         window.dataLayer = window.dataLayer || [];
         function gtag(){

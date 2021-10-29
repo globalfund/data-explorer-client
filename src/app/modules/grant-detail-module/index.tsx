@@ -89,6 +89,13 @@ export default function GrantDetail() {
   } else {
     pushValue = 400 - widthThreshold;
   }
+
+  function isToolboxOvervlayVisible() {
+    if (isSmallScreen) return 0;
+    if (openToolboxPanel && widthThreshold < 0) return 1;
+    return 0;
+  }
+
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
@@ -283,10 +290,8 @@ export default function GrantDetail() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel && widthThreshold < 0 ? 1 : 0};
-          visibility: ${openToolboxPanel && widthThreshold < 0
-            ? "visible"
-            : "hidden"};
+          opacity: ${isToolboxOvervlayVisible()};
+          visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

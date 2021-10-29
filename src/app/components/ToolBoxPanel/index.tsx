@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import get from "lodash/get";
@@ -15,6 +16,7 @@ import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/
 export interface ToolBoxPanelProps {
   open: boolean;
   isGrantDetail?: boolean;
+  isLocationDetail?: boolean;
   onCloseBtnClick: () => void;
   filterGroups: FilterGroupProps[];
 }
@@ -44,6 +46,44 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
+  let top = 133;
+
+  if (
+    !props.isGrantDetail &&
+    !props.isLocationDetail &&
+    vizDrilldowns.length === 0
+  ) {
+    if (isSmallScreen) {
+      top = 149;
+    } else {
+      top = 133;
+    }
+  }
+  if (isSmallScreen && vizDrilldowns.length > 0) {
+    top = 185;
+    if (props.isGrantDetail) {
+      top = 206;
+    }
+    if (props.isLocationDetail) {
+      top = 222;
+    }
+  } else if (isSmallScreen) {
+    if (props.isGrantDetail) {
+      top = 168;
+    }
+    if (props.isLocationDetail) {
+      top = 187;
+    }
+  } else if (vizDrilldowns.length > 0) {
+    if (props.isGrantDetail) {
+      top = 202;
+    } else {
+      top = 168;
+    }
+  } else if (props.isGrantDetail) {
+    top = 168;
+  }
+
   return (
     <ClickAwayListener
       onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
@@ -62,19 +102,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             right: 0;
             z-index: 20;
             width: 400px;
+            top: ${top}px;
             position: fixed;
             background: #f5f5f7;
+            height: calc(100vh - ${top}px);
             visibility: visible !important;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-            top: ${!props.isGrantDetail && vizDrilldowns.length === 0
-              ? 133
-              : 168}px;
-            height: calc(
-              100vh -
-                ${!props.isGrantDetail && vizDrilldowns.length === 0
-                  ? 133
-                  : 168}px
-            );
 
             @media (max-width: 500px) {
               width: calc(100vw - 50px);

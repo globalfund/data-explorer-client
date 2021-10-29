@@ -5,15 +5,17 @@ import { CSVLink } from "react-csv";
 import Snackbar from "@material-ui/core/Snackbar";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
+import { withStyles } from "@material-ui/core/styles";
+import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useLocation, useParams } from "react-router-dom";
 /* project */
 import { exportCSV } from "app/utils/exportCSV";
 import { LinkIcon } from "app/assets/icons/Link";
 import { exportView } from "app/utils/exportView";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { StyledMenuItem } from "app/components/PageHeader";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
-import { StyledMenu, StyledMenuItem } from "app/components/PageHeader";
 
 const locationsToNotShowImageExport = [
   "/viz/disbursements/map",
@@ -48,14 +50,38 @@ const locationsToNotShowImageExport = [
   "/grants",
   "/viz/grants",
   "/location/<code>/grants",
-  "/results/datapoints",
+  "/results",
 ];
 
 const locationsToNotShowExport = [
   "/viz/documents",
-  "/results",
   "/location/<code>/documents",
 ];
+
+const StyledMenu = withStyles({
+  paper: {
+    borderRadius: 10,
+    border: "1px solid #d3d4d5",
+  },
+  list: {
+    padding: 0,
+  },
+})((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: "bottom",
+      horizontal: "left",
+    }}
+    transformOrigin={{
+      vertical: "top",
+      horizontal: "left",
+    }}
+    autoFocus={false}
+    {...props}
+  />
+));
 
 export function ToolBoxPanelIconButtons() {
   const location = useLocation();

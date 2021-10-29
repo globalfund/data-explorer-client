@@ -126,6 +126,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           },
           total: {
             show: true,
+            fontFamily: "GothamNarrow-Bold",
             formatter: () => formatFinancialValue(total),
           },
         },

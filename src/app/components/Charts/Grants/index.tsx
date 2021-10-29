@@ -628,22 +628,22 @@ export const RadialChartLegend = (props: any) => {
       css={`
         width: 100%;
         height: 100%;
-        padding-right: 24px;
         display: flex;
-        justify-content: center;
+        padding-right: 24px;
         flex-direction: column;
+        justify-content: center;
 
-        @media (max-width: 960px) {
-          justify-content: flex-start;
+        @media (max-width: 1200px) {
           flex-direction: row;
+          justify-content: space-evenly;
         }
       `}
     >
       <div
         css={`
-          @media (max-width: 960px) {
-            margin-right: 20px;
-          }
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         `}
       >
         <div css={header}>Implementation Period</div>
@@ -687,94 +687,115 @@ export const RadialChartLegend = (props: any) => {
           *One grant could contains Multiple Implementation Periods
         </div>
       </div>
-
-      <div>
-        <div css={header}>Latest Rating color code</div>
+      <div
+        css={`
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        `}
+      >
         <div
           css={`
-            width: 100%;
             display: flex;
-            margin-left: -10px;
-            flex-direction: row;
-            margin-bottom: 30px;
-            justify-content: space-evenly;
-
-            > div {
-              width: 10px;
-              height: 10px;
-              position: relative;
-              border-radius: 50%;
-              border: 0.5px solid #262c34;
-
-              &:before {
-                width: 40px;
-                left: -16px;
-                bottom: -25px;
-                color: #495057;
-                font-size: 12px;
-                position: absolute;
-                text-align: center;
-              }
-            }
+            flex-direction: column;
+            justify-content: center;
           `}
         >
+          <div css={header}>Latest Rating color code</div>
           <div
             css={`
-              background: #fff;
-              &:before {
-                content: "None";
+              width: 100%;
+              display: flex;
+              margin-left: -10px;
+              flex-direction: row;
+              margin-bottom: 30px;
+              justify-content: space-evenly;
+
+              > div {
+                width: 10px;
+                height: 10px;
+                position: relative;
+                border-radius: 50%;
+                border: 0.5px solid #262c34;
+
+                &:before {
+                  width: 40px;
+                  left: -16px;
+                  bottom: -25px;
+                  color: #495057;
+                  font-size: 12px;
+                  position: absolute;
+                  text-align: center;
+                }
               }
             `}
-          />
-          <div
-            css={`
-              background: #3b873e;
-              &:before {
-                content: "A1";
-              }
-            `}
-          />
-          <div
-            css={`
-              background: #7bc67e;
-              &:before {
-                content: "A2";
-              }
-            `}
-          />
-          <div
-            css={`
-              background: #ffab00;
-              &:before {
-                content: "B1";
-              }
-            `}
-          />
-          <div
-            css={`
-              background: #ff6d00;
-              &:before {
-                content: "B2";
-              }
-            `}
-          />
-          <div
-            css={`
-              background: #e57373;
-              &:before {
-                content: "C";
-              }
-            `}
-          />
+          >
+            <div
+              css={`
+                background: #fff;
+                &:before {
+                  content: "None";
+                }
+              `}
+            />
+            <div
+              css={`
+                background: #3b873e;
+                &:before {
+                  content: "A1";
+                }
+              `}
+            />
+            <div
+              css={`
+                background: #7bc67e;
+                &:before {
+                  content: "A2";
+                }
+              `}
+            />
+            <div
+              css={`
+                background: #ffab00;
+                &:before {
+                  content: "B1";
+                }
+              `}
+            />
+            <div
+              css={`
+                background: #ff6d00;
+                &:before {
+                  content: "B2";
+                }
+              `}
+            />
+            <div
+              css={`
+                background: #e57373;
+                &:before {
+                  content: "C";
+                }
+              `}
+            />
+          </div>
         </div>
-        <div css="width: 100%;height: 15px;" />
-        <div css={header}>Grant Status</div>
-        <hr css={solid} />
-        <div css={body}>Active</div>
-        <hr css={dashed} />
-        <div css={body}>In closure</div>
-        <hr css={dotted} />
-        <div css={body}>Administratly Closed</div>
+        <div
+          css={`
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          `}
+        >
+          <div css="width: 100%;height: 15px;" />
+          <div css={header}>Grant Status</div>
+          <hr css={solid} />
+          <div css={body}>Active</div>
+          <hr css={dashed} />
+          <div css={body}>In closure</div>
+          <hr css={dotted} />
+          <div css={body}>Administratly Closed</div>
+        </div>
       </div>
     </div>
   );

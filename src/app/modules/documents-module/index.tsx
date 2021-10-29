@@ -1,6 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { Pagination } from "@material-ui/lab";
+import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -12,15 +14,12 @@ import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import { Pagination } from "@material-ui/lab";
-import { useMediaQuery } from "@material-ui/core";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -72,7 +71,8 @@ export default function DocumentsModule() {
     pushValue = 400 - widthThreshold;
   }
 
-  function visible() {
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  function isToolboxOvervlayVisible() {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
@@ -158,8 +158,10 @@ export default function DocumentsModule() {
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${visible()};
-          visibility: ${visible() === 1 ? "visible" : "hidden"};
+          opacity: ${isToolboxOvervlayVisible()};
+          visibility: ${isToolboxOvervlayVisible() === 1
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}
