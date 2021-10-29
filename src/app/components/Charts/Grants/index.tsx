@@ -19,6 +19,7 @@ import {
   ratingColor,
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
+import { useMediaQuery } from "@material-ui/core";
 
 // TODO: clean up component
 // TODO: discuss with Dafei what should happen when only 1 component is in the data.
