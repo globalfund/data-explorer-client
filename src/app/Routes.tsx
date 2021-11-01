@@ -6,10 +6,10 @@ import BigLogo from "app/assets/BigLogo";
 import axios, { AxiosResponse } from "axios";
 import useCookie from "@devhammed/use-cookie";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
+import { V1RouteRedirections } from "app/utils/v1Routes";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
-import { NoMatchPage } from "app/modules/common/no-match-page";
 import {
   Route,
   Switch,
@@ -202,9 +202,7 @@ export function MainRoutes() {
           <Redirect to="/datasets" />
         </Route>
 
-        <Route exact path="/notFound">
-          <NoMatchPage />
-        </Route>
+        <V1RouteRedirections />
       </Switch>
     </Suspense>
   );
