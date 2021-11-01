@@ -10,10 +10,6 @@ import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/f
 export function V1RouteRedirections() {
   return (
     <React.Fragment>
-      {/* Home */}
-      <Route exact path="/investments/home">
-        <Redirect to="/" />
-      </Route>
       {/* Donors */}
       <Route
         exact
@@ -79,36 +75,9 @@ export function V1RouteRedirections() {
         }}
       />
       {/* Investments */}
-      <Route
-        exact
-        path="/investments/grants/:location?/:component?/:partner_type?/:grant_status?"
-        render={(routeProps: any) => {
-          const {
-            location,
-            component,
-            grant_status,
-            partner_type,
-          } = routeProps.match.params;
-          let filterString = "";
-          if (location) {
-            filterString += `locations=${location}&`;
-          }
-          if (component) {
-            filterString += `components=${component}&`;
-          }
-          if (grant_status) {
-            filterString += `status=${grant_status}&`;
-          }
-          if (partner_type) {
-            filterString += `partnerTypes=${partner_type}`;
-          }
-          return (
-            <Redirect
-              to={`/grants${filterString.length > 0 ? "?" : ""}${filterString}`}
-            />
-          );
-        }}
-      />
+      <Route exact path="/investments/home">
+        <Redirect to="/" />
+      </Route>
       <Route
         exact
         path="/investments/locations/:location?/:component?/:partner_type?/:grant_status?"
@@ -169,6 +138,36 @@ export function V1RouteRedirections() {
               to={`/viz/disbursements/treemap${
                 filterString.length > 0 ? "?" : ""
               }${filterString}`}
+            />
+          );
+        }}
+      />
+      <Route
+        exact
+        path="/investments/grants/:location?/:component?/:partner_type?/:grant_status?"
+        render={(routeProps: any) => {
+          const {
+            location,
+            component,
+            grant_status,
+            partner_type,
+          } = routeProps.match.params;
+          let filterString = "";
+          if (location) {
+            filterString += `locations=${location}&`;
+          }
+          if (component) {
+            filterString += `components=${component}&`;
+          }
+          if (grant_status) {
+            filterString += `status=${grant_status}&`;
+          }
+          if (partner_type) {
+            filterString += `partnerTypes=${partner_type}`;
+          }
+          return (
+            <Redirect
+              to={`/grants${filterString.length > 0 ? "?" : ""}${filterString}`}
             />
           );
         }}
