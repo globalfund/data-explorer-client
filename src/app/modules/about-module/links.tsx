@@ -71,7 +71,7 @@ export default function LinkList() {
           rel="noreferrer"
           href={`mailto:website@theglobalfund.org?subject=Data Explorer Feedback - URL: ${window.location}&body=User Feedback: `}
         >
-          Feedbacks
+          Feedback
         </a>
         <a
           target="_blank"
