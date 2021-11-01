@@ -19,7 +19,7 @@ export const NoMatchPage = () => {
     >
       <div
         css={`
-          font-family: Inter, sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           font-size: 14px;
           font-weight: 500;
           font-style: normal;
@@ -33,7 +33,6 @@ export const NoMatchPage = () => {
       </div>
       <div
         css={`
-          font-family: Inter, sans-serif;
           font-size: 120px;
           font-weight: bold;
           font-style: normal;
@@ -48,7 +47,7 @@ export const NoMatchPage = () => {
       </div>
       <div
         css={`
-          font-family: Inter, sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           font-size: 14px;
           font-weight: 600;
           font-style: normal;
@@ -62,8 +61,12 @@ export const NoMatchPage = () => {
       >
         We are sorry, but the page you requested was not found
       </div>
-
-      <Link to="/">
+      <Link
+        to="/"
+        css={`
+          text-decoration: none;
+        `}
+      >
         <div
           css={`
             display: flex;
@@ -71,14 +74,14 @@ export const NoMatchPage = () => {
             align-items: center;
             width: 204px;
             height: 46px;
-            border-radius: 2px;
-            background-color: #25baa4;
+            background: #495057;
+            border-radius: 20px;
           `}
         >
           <span
             css={`
-              font-family: Inter, sans-serif;
-              font-size: 16px;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-size: 14px;
               font-weight: 500;
               font-style: normal;
               font-stretch: normal;
