@@ -33,7 +33,7 @@ export const LandingLayout = () => {
         <div css={datasetstitle}>Explore the Datasets</div>
         <DatasetCarousel />
         <div css={datasetslink}>
-          <Link to="/datasets">View all</Link>
+          <Link to="/datasets" data-cy="datasets-link">View all</Link>
         </div>
       </div>
     </div>
