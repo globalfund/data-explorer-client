@@ -26,7 +26,7 @@ export function SearchResults(props: SearchResultsProps) {
   const results = get(props.results, `[${props.activeTab}].results`, []);
 
   return (
-    <div css={container}>
+    <div css={container} data-cy="general-search-result">
       {props.loading && (
         <LinearProgress
           css={`
@@ -47,6 +47,7 @@ export function SearchResults(props: SearchResultsProps) {
             css={tabcss(index === props.activeTab)}
             onClick={() => props.setActiveTab(index)}
             onKeyDown={() => props.setActiveTab(index)}
+            data-cy={"filter-" + tab.name}
           >
             {tab.results.length} {tab.name}
           </div>

@@ -367,6 +367,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setValue(e.target.value)
           }
+          data-cy="toolbox-search-input"
         />
         <SearchIcon />
       </div>

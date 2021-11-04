@@ -37,7 +37,7 @@ export function GrantsList(props: GrantsListProps) {
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
-                <b>{item.component}</b>
+                <b data-cy="grant-search-result">{item.component}</b>
                 <ComponentIcon />
               </div>
             </div>
