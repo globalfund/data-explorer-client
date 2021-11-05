@@ -58,7 +58,7 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Rating
+          Latest Rating
         </div>
         <div
           css={`
