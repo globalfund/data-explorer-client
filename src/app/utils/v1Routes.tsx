@@ -201,6 +201,7 @@ function DonorRedirect(props: any) {
 
   React.useEffect(() => {
     const options = filterOptions?.Donors;
+    const values = donor_partner?.split(",");
     if (options) {
       const allOptions: FilterGroupOptionModel[] = [];
       options.forEach((option: FilterGroupOptionModel) => {
@@ -216,9 +217,11 @@ function DonorRedirect(props: any) {
           }
         });
       });
-      const fOptions = filter(allOptions, {
-        label: decodeURIComponent(donor_partner),
-      });
+      const fOptions: FilterGroupOptionModel[] = filter(
+        allOptions,
+        (o: FilterGroupOptionModel) =>
+          find(values, (v: string) => v === o.label)
+      ) as FilterGroupOptionModel[];
       if (fOptions) {
         setDonorId(
           fOptions
