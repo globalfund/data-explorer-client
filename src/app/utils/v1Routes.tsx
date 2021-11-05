@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React from "react";
 import find from "lodash/find";
+import filter from "lodash/filter";
 import { Route, Redirect } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
@@ -14,65 +15,23 @@ export function V1RouteRedirections() {
       <Route
         exact
         path="/donors/home/:donor_partner?/:rep_cycle?"
-        render={(routeProps: any) => {
-          const { donor_partner, rep_cycle } = routeProps.match.params;
-          let filterString = "";
-          if (donor_partner) {
-            filterString += `donors=${donor_partner}&`;
-          }
-          if (rep_cycle) {
-            filterString += `replenishmentPeriods=${rep_cycle}&`;
-          }
-          return (
-            <Redirect
-              to={`/viz/pledges-contributions/map${
-                filterString.length > 0 ? "?" : ""
-              }${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <DonorRedirect {...routeProps} viz="map" />
+        )}
       />
       <Route
         exact
         path="/donors/partners/:donor_partner?/:rep_cycle?"
-        render={(routeProps: any) => {
-          const { donor_partner, rep_cycle } = routeProps.match.params;
-          let filterString = "";
-          if (donor_partner) {
-            filterString += `donors=${donor_partner}&`;
-          }
-          if (rep_cycle) {
-            filterString += `replenishmentPeriods=${rep_cycle}&`;
-          }
-          return (
-            <Redirect
-              to={`/viz/pledges-contributions/treemap${
-                filterString.length > 0 ? "?" : ""
-              }${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <DonorRedirect {...routeProps} viz="treemap" />
+        )}
       />
       <Route
         exact
         path="/donors/replenishment-periods/:donor_partner?/:rep_cycle?"
-        render={(routeProps: any) => {
-          const { donor_partner, rep_cycle } = routeProps.match.params;
-          let filterString = "";
-          if (donor_partner) {
-            filterString += `donors=${donor_partner}&`;
-          }
-          if (rep_cycle) {
-            filterString += `replenishmentPeriods=${rep_cycle}&`;
-          }
-          return (
-            <Redirect
-              to={`/viz/pledges-contributions/time-cycle${
-                filterString.length > 0 ? "?" : ""
-              }${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <DonorRedirect {...routeProps} viz="time-cycle" />
+        )}
       />
       {/* Investments */}
       <Route exact path="/investments/home">
@@ -343,6 +302,62 @@ function PartnerRedirect(props: any) {
   return (
     <Redirect
       to={`/partner/${partnerId}${
+        filterString.length > 0 ? "?" : ""
+      }${filterString}`}
+    />
+  );
+}
+
+function DonorRedirect(props: any) {
+  const filterOptions = useFilterOptions({ returnFilterOptions: true });
+  const [donorId, setDonorId] = React.useState<string | null>(null);
+  const { donor_partner, rep_cycle } = props.match.params;
+
+  React.useEffect(() => {
+    const options = filterOptions?.Donors;
+    if (options) {
+      const allOptions: FilterGroupOptionModel[] = [];
+      options.forEach((option: FilterGroupOptionModel) => {
+        option.subOptions?.forEach((subOption: FilterGroupOptionModel) => {
+          if (subOption.subOptions) {
+            subOption.subOptions.forEach(
+              (subSubOption: FilterGroupOptionModel) => {
+                allOptions.push(subSubOption);
+              }
+            );
+          } else {
+            allOptions.push(subOption);
+          }
+        });
+      });
+      const fOptions = filter(allOptions, {
+        label: decodeURIComponent(donor_partner),
+      });
+      if (fOptions) {
+        setDonorId(
+          fOptions
+            .map((option: FilterGroupOptionModel) => option.value)
+            .join(",")
+        );
+      }
+    }
+  }, [filterOptions?.Donors]);
+
+  if (donor_partner && !donorId) {
+    return <PageLoader />;
+  }
+
+  let filterString = "";
+  if (donor_partner) {
+    filterString += `donors=${donorId}&`;
+  }
+  if (rep_cycle) {
+    filterString += `replenishmentPeriods=${rep_cycle}&`;
+  }
+
+  return (
+    <Redirect
+      to={`/viz/pledges-contributions/${props.viz}${
         filterString.length > 0 ? "?" : ""
       }${filterString}`}
     />
