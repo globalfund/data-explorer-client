@@ -40,96 +40,29 @@ export function V1RouteRedirections() {
       <Route
         exact
         path="/investments/locations/:location?/:component?/:partner_type?/:grant_status?"
-        render={(routeProps: any) => {
-          const {
-            location,
-            component,
-            grant_status,
-            partner_type,
-          } = routeProps.match.params;
-          let filterString = "";
-          if (location) {
-            filterString += `locations=${location}&`;
-          }
-          if (component) {
-            filterString += `components=${component}&`;
-          }
-          if (grant_status) {
-            filterString += `status=${grant_status}&`;
-          }
-          if (partner_type) {
-            filterString += `partnerTypes=${partner_type}`;
-          }
-          return (
-            <Redirect
-              to={`/viz/disbursements/map${
-                filterString.length > 0 ? "?" : ""
-              }${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <InvestmentsRedirect
+            {...routeProps}
+            pageRoute="viz/disbursements/map"
+          />
+        )}
       />
       <Route
         exact
         path="/investments/components/:location?/:component?/:partner_type?/:grant_status?"
-        render={(routeProps: any) => {
-          const {
-            location,
-            component,
-            grant_status,
-            partner_type,
-          } = routeProps.match.params;
-          let filterString = "";
-          if (location) {
-            filterString += `locations=${location}&`;
-          }
-          if (component) {
-            filterString += `components=${component}&`;
-          }
-          if (grant_status) {
-            filterString += `status=${grant_status}&`;
-          }
-          if (partner_type) {
-            filterString += `partnerTypes=${partner_type}`;
-          }
-          return (
-            <Redirect
-              to={`/viz/disbursements/treemap${
-                filterString.length > 0 ? "?" : ""
-              }${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <InvestmentsRedirect
+            {...routeProps}
+            pageRoute="viz/disbursements/treemap"
+          />
+        )}
       />
       <Route
         exact
         path="/investments/grants/:location?/:component?/:partner_type?/:grant_status?"
-        render={(routeProps: any) => {
-          const {
-            location,
-            component,
-            grant_status,
-            partner_type,
-          } = routeProps.match.params;
-          let filterString = "";
-          if (location) {
-            filterString += `locations=${location}&`;
-          }
-          if (component) {
-            filterString += `components=${component}&`;
-          }
-          if (grant_status) {
-            filterString += `status=${grant_status}&`;
-          }
-          if (partner_type) {
-            filterString += `partnerTypes=${partner_type}`;
-          }
-          return (
-            <Redirect
-              to={`/grants${filterString.length > 0 ? "?" : ""}${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <InvestmentsRedirect {...routeProps} pageRoute="grants" />
+        )}
       />
       <Route
         exact
@@ -140,34 +73,9 @@ export function V1RouteRedirections() {
       <Route
         exact
         path="/investments/documents/:location?/:component?/:partner_type?/:grant_status?"
-        render={(routeProps: any) => {
-          const {
-            location,
-            component,
-            grant_status,
-            partner_type,
-          } = routeProps.match.params;
-          let filterString = "";
-          if (location) {
-            filterString += `locations=${location}&`;
-          }
-          if (component) {
-            filterString += `components=${component}&`;
-          }
-          if (grant_status) {
-            filterString += `status=${grant_status}&`;
-          }
-          if (partner_type) {
-            filterString += `partnerTypes=${partner_type}`;
-          }
-          return (
-            <Redirect
-              to={`/documents${
-                filterString.length > 0 ? "?" : ""
-              }${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <InvestmentsRedirect {...routeProps} pageRoute="documents" />
+        )}
       />
       {/* Results */}
       <Route
@@ -176,11 +84,11 @@ export function V1RouteRedirections() {
         render={(routeProps: any) => {
           const { location, component } = routeProps.match.params;
           let filterString = "";
-          if (location) {
+          if (location && location !== "-") {
             filterString += `locations=${location}&`;
           }
-          if (component && component !== "all") {
-            filterString += `components=${component.replace("|", "/")}&`;
+          if (component && component !== "-") {
+            filterString += `components=${component}&`;
           }
           return (
             <Redirect
@@ -195,31 +103,9 @@ export function V1RouteRedirections() {
       <Route
         exact
         path="/investments/location/:location/:component?/:partner_type?/:grant_status?"
-        render={(routeProps: any) => {
-          const {
-            location,
-            component,
-            grant_status,
-            partner_type,
-          } = routeProps.match.params;
-          let filterString = "";
-          if (component) {
-            filterString += `components=${component}&`;
-          }
-          if (grant_status) {
-            filterString += `status=${grant_status}&`;
-          }
-          if (partner_type) {
-            filterString += `partnerTypes=${partner_type}`;
-          }
-          return (
-            <Redirect
-              to={`/location/${location}${
-                filterString.length > 0 ? "?" : ""
-              }${filterString}`}
-            />
-          );
-        }}
+        render={(routeProps: any) => (
+          <InvestmentsLocationRedirect {...routeProps} />
+        )}
       />
       <Route
         exact
@@ -286,22 +172,22 @@ function PartnerRedirect(props: any) {
   }
 
   let filterString = "";
-  if (location) {
+  if (location && location !== "-") {
     filterString += `locations=${location}&`;
   }
-  if (component) {
+  if (component && component !== "-") {
     filterString += `components=${component}&`;
   }
-  if (grant_status) {
+  if (grant_status && grant_status !== "-") {
     filterString += `status=${grant_status}&`;
   }
-  if (partner_type) {
+  if (partner_type && partner_type !== "-") {
     filterString += `partnerTypes=${partner_type}`;
   }
 
   return (
     <Redirect
-      to={`/partner/${partnerId}${
+      to={`/partner/${partnerId}/investments${
         filterString.length > 0 ? "?" : ""
       }${filterString}`}
     />
@@ -348,16 +234,118 @@ function DonorRedirect(props: any) {
   }
 
   let filterString = "";
-  if (donor_partner) {
+  if (donor_partner && donor_partner !== "-") {
     filterString += `donors=${donorId}&`;
   }
-  if (rep_cycle) {
+  if (rep_cycle && rep_cycle !== "-") {
     filterString += `replenishmentPeriods=${rep_cycle}&`;
   }
 
   return (
     <Redirect
       to={`/viz/pledges-contributions/${props.viz}${
+        filterString.length > 0 ? "?" : ""
+      }${filterString}`}
+    />
+  );
+}
+
+function InvestmentsRedirect(props: any) {
+  const filterOptions = useFilterOptions({ returnFilterOptions: true });
+  const [partnerTypes, setPartnerTypes] = React.useState<string | null>(null);
+  const {
+    location,
+    component,
+    grant_status,
+    partner_type,
+  } = props.match.params;
+
+  React.useEffect(() => {
+    const options = filterOptions?.["Partner Types"];
+    const values = partner_type?.split(",");
+    if (options && values.length > 0) {
+      const fOptions = filter(options, (o: FilterGroupOptionModel) =>
+        find(values, (v: string) => v === o.label)
+      );
+      if (fOptions) {
+        setPartnerTypes(
+          fOptions.map((o: FilterGroupOptionModel) => o.value).join(",")
+        );
+      }
+    }
+  }, [filterOptions?.["Partner Types"]]);
+
+  if (partner_type && partner_type !== "-" && !partnerTypes) {
+    return <PageLoader />;
+  }
+
+  let filterString = "";
+
+  if (location && location !== "-") {
+    filterString += `locations=${location}&`;
+  }
+  if (component && component !== "-") {
+    filterString += `components=${component}&`;
+  }
+  if (grant_status && grant_status !== "-") {
+    filterString += `status=${grant_status}&`;
+  }
+  if (partner_type && partner_type !== "-") {
+    filterString += `partnerTypes=${partnerTypes}`;
+  }
+  return (
+    <Redirect
+      to={`/${props.pageRoute}${
+        filterString.length > 0 ? "?" : ""
+      }${filterString}`}
+    />
+  );
+}
+
+function InvestmentsLocationRedirect(props: any) {
+  const filterOptions = useFilterOptions({ returnFilterOptions: true });
+  const [partnerTypes, setPartnerTypes] = React.useState<string | null>(null);
+  const {
+    location,
+    component,
+    grant_status,
+    partner_type,
+  } = props.match.params;
+
+  React.useEffect(() => {
+    const options = filterOptions?.["Partner Types"];
+    const values = partner_type?.split(",");
+    if (options && values.length > 0) {
+      const fOptions = filter(options, (o: FilterGroupOptionModel) =>
+        find(values, (v: string) => v === o.label)
+      );
+      if (fOptions) {
+        setPartnerTypes(
+          fOptions.map((o: FilterGroupOptionModel) => o.value).join(",")
+        );
+      }
+    }
+  }, [filterOptions?.["Partner Types"]]);
+
+  if (partner_type && partner_type !== "-" && !partnerTypes) {
+    return <PageLoader />;
+  }
+
+  let filterString = "";
+
+  if (component && component !== "-") {
+    filterString += `components=${component}&`;
+  }
+  if (grant_status && grant_status !== "-") {
+    filterString += `status=${grant_status}&`;
+  }
+  if (partner_type && partner_type !== "-" && partnerTypes) {
+    filterString += `partnerTypes=${partnerTypes}`;
+  }
+
+  return (
+    <Redirect
+      to={`/location/${location}/overview${
         filterString.length > 0 ? "?" : ""
       }${filterString}`}
     />

@@ -1,6 +1,6 @@
 /* core */
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 /* third-party */
 import CircularProgress from "@material-ui/core/CircularProgress";
 
@@ -40,7 +40,7 @@ export const LoadingComp = styled.div`
 export const PageLoader = (props: { inLoader?: boolean }) => {
   return (
     <LoadingComp inLoader={props.inLoader}>
-      <Container data-cy="general-loader">
+      <Container data-cy="general-loader" id="general-loader">
         <Background>
           <CircularProgress disableShrink />
         </Background>

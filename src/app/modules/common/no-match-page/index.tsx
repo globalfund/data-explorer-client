@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 // cc:refactor this component, inline css need to be moved to proper styled components
 
 export const NoMatchPage = () => {
+  const isLoading = document.getElementById("general-loader");
   return (
     <div
       css={`
@@ -11,7 +12,7 @@ export const NoMatchPage = () => {
         width: 100%;
         height: 100%;
         padding: 50px;
-        display: flex;
+        display: ${isLoading ? "none" : "flex"};
         justify-content: center;
         align-items: center;
         flex-direction: column;
