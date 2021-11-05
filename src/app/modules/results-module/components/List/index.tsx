@@ -33,6 +33,7 @@ export function ResultsList(props: ResultsListProps) {
 function ResultsListItem(props: ResultListItemModel) {
   const history = useHistory();
   const [expand, setExpand] = React.useState(false);
+  const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
 
   return (
     <Grid
@@ -69,7 +70,22 @@ function ResultsListItem(props: ResultListItemModel) {
             {/* 2nd row */}
             <div css={row(14, "normal")}>{props.title}</div>
             {/* 3rd row */}
-            <div css={buttonrow("down")} onClick={() => setExpand(true)}>
+            <div
+              css={buttonrow("down")}
+              onClick={() => {
+                if (!isLocationDetail) {
+                  setExpand(true);
+                }
+              }}
+              style={
+                isLocationDetail
+                  ? {
+                      opacity: 0,
+                      cursor: "default",
+                    }
+                  : {}
+              }
+            >
               <TriangleXSIcon />
               See more
             </div>
