@@ -76,7 +76,9 @@ export default function GrantDetail() {
   }, [params.period]);
 
   React.useEffect(() => {
-    setOpenToolboxPanel(true);
+    if (params.vizType !== "overview") {
+      setOpenToolboxPanel(true);
+    }
   }, [params.vizType]);
 
   let pushValue = 0;

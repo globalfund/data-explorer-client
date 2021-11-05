@@ -111,7 +111,10 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
 
   return (
     <>
-      {isGrantDetail && <GrantImplementationPeriods />}
+      {isGrantDetail &&
+        history.location.pathname.indexOf("/overview") === -1 && (
+          <GrantImplementationPeriods />
+        )}
       {controlItems.views.length > 0 && (
         <ToolBoxPanelControlRow
           title="Views"
