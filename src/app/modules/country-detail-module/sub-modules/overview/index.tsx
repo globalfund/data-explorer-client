@@ -122,21 +122,6 @@ export function LocationDetailOverviewModule(props: Props) {
           )}
         </div>
       </Grid>
-      {props.code.length === 3 && (
-        <Grid item xs={12} sm={6} md={6} lg={6}>
-          <Link
-            to={`/results?locations=${props.code}`}
-            css={`
-              font-size: 14px;
-              font-weight: bold;
-              margin-bottom: 40px;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            `}
-          >
-            See {locationInfoData.locationName}&apos;s results
-          </Link>
-        </Grid>
-      )}
       <Grid item xs={12} sm={6} md={6} lg={6}>
         <div
           css={`
