@@ -69,7 +69,7 @@ function ResultsListItem(props: ResultListItemModel) {
             {/* 2nd row */}
             <div css={row(14, "normal")}>{props.title}</div>
             {/* 3rd row */}
-            <div css={buttonrow("down")} onClick={() => setExpand(true)}>
+            <div css={buttonrow("down")} onClick={() => setExpand(true)} data-cy="expand-result">
               <TriangleXSIcon />
               See more
             </div>
@@ -78,7 +78,7 @@ function ResultsListItem(props: ResultListItemModel) {
         {expand && (
           <React.Fragment>
             {/* 1st row */}
-            <div css={buttonrow("up")} onClick={() => setExpand(false)}>
+            <div css={buttonrow("up")} onClick={() => setExpand(false)} data-cy="expanded-result">
               <TriangleXSIcon />
               See more
             </div>
