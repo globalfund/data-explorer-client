@@ -166,7 +166,7 @@ function Row(props: {
 export function ExpandableTable(props: ExpandableTableProps) {
   return (
     <TableContainer>
-      <Table aria-label="Expandable table">
+      <Table aria-label="Expandable table" data-cy="grant-search-result">
         <TableHead>
           <TableRow>
             {props.columns.map((column: string, index: number) => (
