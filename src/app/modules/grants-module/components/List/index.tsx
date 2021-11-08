@@ -21,7 +21,7 @@ export function GrantsList(props: GrantsListProps) {
         <Grid item key={item.id} xs={12} sm={6} md={6}>
           <Link to={`/grant/${item.id}`} css={listitem}>
             {/* 1st row */}
-            <div css={row(14, "normal")}>
+            <div css={row(14, "normal")} data-cy={`grant-${item.id}`}>
               <div>
                 <div>{item.status}</div>
                 <div>{item.id}</div>
