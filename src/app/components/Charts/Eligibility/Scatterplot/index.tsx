@@ -116,6 +116,12 @@ export function ScatterPlot(props: ScatterPlotProps) {
         item.id.toString() !== "dummy1" && item.id.toString() !== "dummy2"
     ).length === 0;
 
+  const components = filter(
+    props.data,
+    (item: EligibilityScatterplotDataModel) =>
+      item.id.toString() !== "dummy1" && item.id.toString() !== "dummy2"
+  ).map((item: EligibilityScatterplotDataModel) => item.id);
+
   return (
     <React.Fragment>
       {hoveredNode && (
@@ -666,7 +672,40 @@ export function ScatterPlot(props: ScatterPlotProps) {
             </div>
           )}
         </Grid>
-        <Grid item xs={12} md={9}>
+        <Grid
+          item
+          xs={12}
+          md={9}
+          css={`
+            display: flex;
+            position: relative;
+            flex-direction: row;
+          `}
+        >
+          {components.length > 0 && (
+            <div
+              css={`
+                display: flex;
+                position: sticky;
+                margin-top: 55px;
+                flex-direction: column;
+                height: calc(100% - 110px);
+                justify-content: space-evenly;
+
+                > div {
+                  font-size: 12px;
+                  font-weight: bold;
+                  text-align: center;
+                  color: rgb(38, 44, 52);
+                  transform: rotate(90deg);
+                }
+              `}
+            >
+              {components.map((component: string | number) => (
+                <div key={component}>{component}</div>
+              ))}
+            </div>
+          )}
           <div
             id="scatterplot-scroll-div"
             css={`
@@ -718,35 +757,36 @@ export function ScatterPlot(props: ScatterPlotProps) {
                     format: (e: Value) =>
                       e !== 2002 && e !== 2022 ? e.toString() : "",
                   }}
-                  axisLeft={{
-                    tickSize: 0,
-                    tickPadding: 15,
-                    tickRotation: -90,
-                    format: (e: Value) =>
-                      e !== "dummy1" && e !== "dummy2" ? e : "",
-                    renderTick: (tProps: any) => (
-                      <g
-                        css="opacity: 1;"
-                        transform={`translate(${tProps.x},${tProps.y - 15})`}
-                      >
-                        <text
-                          textAnchor="end"
-                          dominantBaseline="central"
-                          transform={`translate(${tProps.textX},${tProps.textY})  rotate(-90)`}
-                          css={`
-                            font-size: 12px;
-                            font-weight: bold;
-                            fill: rgb(38, 44, 52);
-                            font-family: sans-serif;
-                            font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                              sans-serif;
-                          `}
-                        >
-                          {tProps.format(tProps.value)}
-                        </text>
-                      </g>
-                    ),
-                  }}
+                  axisLeft={null}
+                  // axisLeft={{
+                  //   tickSize: 0,
+                  //   tickPadding: 15,
+                  //   tickRotation: -90,
+                  //   format: (e: Value) =>
+                  //     e !== "dummy1" && e !== "dummy2" ? e : "",
+                  //   renderTick: (tProps: any) => (
+                  //     <g
+                  //       css="opacity: 1;"
+                  //       transform={`translate(${tProps.x},${tProps.y - 15})`}
+                  //     >
+                  //       <text
+                  //         textAnchor="end"
+                  //         dominantBaseline="central"
+                  //         transform={`translate(${tProps.textX},${tProps.textY})  rotate(-90)`}
+                  //         css={`
+                  //           font-size: 12px;
+                  //           font-weight: bold;
+                  //           fill: rgb(38, 44, 52);
+                  //           font-family: sans-serif;
+                  //           font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                  //             sans-serif;
+                  //         `}
+                  //       >
+                  //         {tProps.format(tProps.value)}
+                  //       </text>
+                  //     </g>
+                  //   ),
+                  // }}
                   theme={{
                     axis: {
                       ticks: {

@@ -77,6 +77,7 @@ export function AreaLayer(props: CustomSvgLayerProps) {
 
       shapes.push(
         <path
+          key={`${yNode.data.x}-${yNode.data.y}-${index}`}
           opacity={opacity}
           d={areaGenerator(
             groupedYNodes[key].slice(
