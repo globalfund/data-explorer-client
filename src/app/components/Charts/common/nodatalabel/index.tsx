@@ -9,10 +9,8 @@ export function NoDataLabel(props: Props) {
   return (
     <div
       css={`
-        top: 0;
         left: 0;
         width: 100%;
-        height: ${props.height ? props.height : "100%"};
         display: flex;
         color: #262c34;
         font-size: 12px;
@@ -21,6 +19,8 @@ export function NoDataLabel(props: Props) {
         align-items: center;
         flex-direction: column;
         justify-content: center;
+        ${props.height ? "top: 0;" : ""}
+        height: ${props.height ? props.height : "50%"};
 
         a {
           color: #262c34;

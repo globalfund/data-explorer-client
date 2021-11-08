@@ -29,6 +29,7 @@ import {
 
 export default function VizModule() {
   const location = useLocation();
+  const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
@@ -109,6 +110,7 @@ export default function VizModule() {
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
+        ref={vizWrapperRef}
       >
         <Switch>
           {/* Budgets */}
@@ -211,6 +213,7 @@ export default function VizModule() {
       </div>
       <ToolBoxPanel
         open={openToolboxPanel}
+        vizWrapperRef={vizWrapperRef}
         onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
         filterGroups={get(
           pathnameToFilterGroups,

@@ -24,6 +24,7 @@ import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/s
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
+  const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
@@ -140,6 +141,7 @@ export default function GrantDetail() {
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
+        ref={vizWrapperRef}
       >
         <Switch>
           {/* Overview */}
@@ -281,6 +283,7 @@ export default function GrantDetail() {
         isGrantDetail
         open={openToolboxPanel}
         filterGroups={filtergroups}
+        vizWrapperRef={vizWrapperRef}
         onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
       <div

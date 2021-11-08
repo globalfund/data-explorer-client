@@ -38,6 +38,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
         : ""
     } Grants`
   );
+  const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
@@ -166,6 +167,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
           />
           <ToolBoxPanel
             open={openToolboxPanel}
+            vizWrapperRef={vizWrapperRef}
             filterGroups={pathnameToFilterGroups.grants}
             onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
           />
@@ -178,6 +180,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
+        ref={vizWrapperRef}
       >
         <Search value={search} setValue={setSearch} />
         <div css="width: 100%;height: 25px;" />

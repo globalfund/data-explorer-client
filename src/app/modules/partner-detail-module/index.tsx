@@ -33,6 +33,7 @@ import {
 export default function PartnerDetail() {
   useTitle("The Data Explorer - Partner");
   const location = useLocation();
+  const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ code: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
@@ -118,6 +119,7 @@ export default function PartnerDetail() {
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
+        ref={vizWrapperRef}
       >
         <Switch>
           <Route exact path={`/partner/${params.code}/investments`}>
@@ -229,6 +231,7 @@ export default function PartnerDetail() {
       <ToolBoxPanel
         isGrantDetail
         open={openToolboxPanel}
+        vizWrapperRef={vizWrapperRef}
         filterGroups={get(
           pathnameToFilterGroups,
           location.pathname.replace(params.code, "<code>"),

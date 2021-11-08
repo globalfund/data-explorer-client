@@ -17,6 +17,7 @@ import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/f
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
+  const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
@@ -107,6 +108,7 @@ export default function DocumentsModule() {
       />
       <ToolBoxPanel
         open={openToolboxPanel}
+        vizWrapperRef={vizWrapperRef}
         filterGroups={pathnameToFilterGroups.documents}
         onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
@@ -118,6 +120,7 @@ export default function DocumentsModule() {
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
+        ref={vizWrapperRef}
       >
         {isSmallScreen ? (
           <>

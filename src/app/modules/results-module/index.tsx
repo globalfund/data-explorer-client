@@ -22,6 +22,7 @@ import {
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
   const location = useLocation();
+  const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
@@ -146,18 +147,21 @@ export default function ResultsModule() {
       />
       <ToolBoxPanel
         open={openToolboxPanel}
+        vizWrapperRef={vizWrapperRef}
         filterGroups={pathnameToFilterGroups.results}
         onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
-      <DataList
-        isLoading={isLoading}
-        search={search}
-        setSearch={setSearch}
-        selectedYear={selectedYear}
-        data={data}
-        openToolboxPanel={openToolboxPanel}
-        pushValue={pushValue}
-      />
+      <div ref={vizWrapperRef}>
+        <DataList
+          isLoading={isLoading}
+          search={search}
+          setSearch={setSearch}
+          selectedYear={selectedYear}
+          data={data}
+          openToolboxPanel={openToolboxPanel}
+          pushValue={pushValue}
+        />
+      </div>
       <div css="width: 100%;height: 25px;" />
       <div
         css={`

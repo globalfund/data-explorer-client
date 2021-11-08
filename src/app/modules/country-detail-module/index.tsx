@@ -33,6 +33,7 @@ import {
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
   const location = useLocation();
+  const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const params = useParams<{ code: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
@@ -134,6 +135,7 @@ export default function CountryDetail() {
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
         `}
+        ref={vizWrapperRef}
       >
         <Switch>
           {/* Overview */}
@@ -269,6 +271,7 @@ export default function CountryDetail() {
       <ToolBoxPanel
         isLocationDetail
         open={openToolboxPanel}
+        vizWrapperRef={vizWrapperRef}
         filterGroups={get(
           pathnameToFilterGroups,
           location.pathname.replace(params.code, "<code>"),

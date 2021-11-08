@@ -15,6 +15,7 @@ import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/
 
 export interface ToolBoxPanelProps {
   open: boolean;
+  vizWrapperRef: any;
   isGrantDetail?: boolean;
   isLocationDetail?: boolean;
   onCloseBtnClick: () => void;
@@ -92,7 +93,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
           get(event.target, "tagName", "") !== "A" &&
           get(event.target, "id", "") !== "page-header-toolbox-btn"
         ) {
-          props.onCloseBtnClick();
+          if (props.vizWrapperRef) {
+            if (!props.vizWrapperRef.current.contains(event.target)) {
+              props.onCloseBtnClick();
+            }
+          } else {
+            props.onCloseBtnClick();
+          }
         }
       }}
     >
