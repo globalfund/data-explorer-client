@@ -85,6 +85,7 @@ function ResultsListItem(props: ResultListItemModel) {
                     }
                   : {}
               }
+              data-cy="result-expand"
             >
               <TriangleXSIcon />
               See more
@@ -94,11 +95,11 @@ function ResultsListItem(props: ResultListItemModel) {
         {expand && (
           <React.Fragment>
             {/* 1st row */}
-            <div css={buttonrow("up")} onClick={() => setExpand(false)}>
+            <div css={buttonrow("up")} onClick={() => setExpand(false)} >
               <TriangleXSIcon />
               See more
             </div>
-            <div css={locationlist}>
+            <div css={locationlist} data-cy="result-expanded">
               {props.geoLocations.map(
                 (location: { name: string; value: number }) => (
                   <div key={location.name}>
