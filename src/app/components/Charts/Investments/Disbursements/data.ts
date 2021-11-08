@@ -35,6 +35,7 @@ export interface DisbursementsTreemapProps {
 
 export interface TreemapTooltipProps {
   node: TreeMapNodeDatum;
+  tooltipKeyLabel?: string;
   tooltipValueLabel?: string;
 }
 

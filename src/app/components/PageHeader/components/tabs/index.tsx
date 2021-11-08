@@ -9,6 +9,8 @@ import {
 
 const styles = {
   container: (pathname: string) => css`
+    z-index: 1;
+
     @media (max-width: ${pathname.indexOf("/partner") > -1 ? 500 : 1024}px) {
       width: 100%;
     }

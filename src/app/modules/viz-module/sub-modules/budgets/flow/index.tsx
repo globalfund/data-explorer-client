@@ -276,6 +276,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         )}
         {props.vizLevel === 2 && (
           <BudgetsTreemap
+            tooltipKeyLabel="Grant"
             tooltipValueLabel="Budget"
             data={props.dataDrilldownLevel2}
             selectedNodeId={props.vizSelected.id}

@@ -57,7 +57,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
+          <div>{props.tooltipKeyLabel || "Component"}</div>
           <div>{props.tooltipValueLabel}</div>
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (

@@ -40,8 +40,8 @@ export function TreeemapNode(props: any) {
         background: node.data.color,
         border: "0px solid #373D43",
         fontSize: bigDevice ? 12 : 8,
-        cursor: node.data.orgs ? "pointer" : "default",
         color: props.isChildTreemap ? "#fff" : "#262C34",
+        cursor: props.isChildTreemap ? "pointer" : "default",
         borderStyle: props.isChildTreemap ? "none" : "solid",
       }}
       css={containercss(
@@ -124,6 +124,7 @@ export function TreeemapNode(props: any) {
             data={node.data._children}
             onNodeClick={props.onNodeClick}
             selectedNodeId={props.selectedNodeId}
+            tooltipKeyLabel={props.tooltipKeyLabel}
             tooltipValueLabel={props.tooltipValueLabel}
             parentNodeCoords={{ x: node.x, y: node.y }}
           />
