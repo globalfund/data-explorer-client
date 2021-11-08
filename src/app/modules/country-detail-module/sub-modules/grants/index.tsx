@@ -20,6 +20,12 @@ export function LocationGrants(props: Props) {
   const data = useStoreState((state) =>
     get(state.LocationGrants.data, "data", [])
   );
+  const periodsData: any[] = [];
+  data.forEach((item: any) => {
+    item.implementationPeriods.forEach((period: any) => {
+      periodsData.push(period);
+    });
+  });
   const isLoading = useStoreState((state) => state.LocationGrants.loading);
 
   React.useEffect(() => {
@@ -44,7 +50,9 @@ export function LocationGrants(props: Props) {
   return (
     <Grid container>
       <Grid item xs={12} sm={12} md={12} lg={3}>
-        <RadialChartLegend maxValue={get(maxBy(data, "value"), "value", 0)} />
+        <RadialChartLegend
+          maxValue={get(maxBy(periodsData, "value"), "value", 0)}
+        />
       </Grid>
 
       <Grid item xs={12} sm={12} md={12} lg={9}>
