@@ -697,7 +697,8 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   font-weight: bold;
                   text-align: center;
                   color: rgb(38, 44, 52);
-                  transform: rotate(90deg);
+                  transform: rotate(-90deg);
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 }
               `}
             >
