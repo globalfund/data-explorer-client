@@ -1,6 +1,6 @@
 // @ts-nocheck
 import React from "react";
-import filter from "lodash/filter";
+// import filter from "lodash/filter";
 import groupBy from "lodash/groupBy";
 import findIndex from "lodash/findIndex";
 import { area, curveLinear } from "d3-shape";
@@ -85,7 +85,7 @@ export function AreaLayer(props: CustomSvgLayerProps) {
               index + 2 > groupedYNodes[key].length ? index : index + 2
             )
           )}
-          fill={incomeLevelColors[index === 0 ? 0 : yNode.data.incomeLevel]}
+          fill={incomeLevelColors[yNode.data.incomeLevel]}
         />
       );
     });
