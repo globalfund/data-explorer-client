@@ -21,6 +21,7 @@ export function SearchLayout(props: SearchLayoutProps) {
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           props.setValue(e.target.value)
         }
+        data-cy="general-document-search"
       />
       <SearchIcon />
     </div>
