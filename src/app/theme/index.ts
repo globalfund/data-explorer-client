@@ -225,6 +225,14 @@ export default createMuiTheme({
         },
       },
     },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: 12,
+        color: "#fff",
+        backgroundColor: "#373d43",
+        fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
+      },
+    },
   },
   breakpoints: {
     keys: ["xs", "sm", "md", "lg", "xl"],

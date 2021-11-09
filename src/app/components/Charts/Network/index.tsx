@@ -1,14 +1,10 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
-import Tooltip from "@material-ui/core/Tooltip";
 import { ResponsiveNetwork } from "@nivo/network";
+import { useMediaQuery, Tooltip } from "@material-ui/core";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
-import {
-  AchievementRateLegend,
-  NetworkLegends,
-} from "app/components/Charts/Network/components/legends";
-import { useMediaQuery } from "@material-ui/core";
+import { AchievementRateLegend } from "app/components/Charts/Network/components/legends";
 
 export function NetworkViz(props: NetworkVizProps) {
   React.useEffect(() => {
@@ -50,7 +46,6 @@ export function NetworkViz(props: NetworkVizProps) {
   const Nodes = (nodesData: any) => {
     return nodesData.nodes.map((node: any) => {
       const id = node.id.split("|")[0];
-      const tSpans = id.split(" ").length > 2 ? id.split(" ") : [id];
       const circlecomp = (
         <circle
           r={node.radius}
@@ -65,12 +60,15 @@ export function NetworkViz(props: NetworkVizProps) {
           }
         />
       );
+      const isModule = node.depth === 2;
+      const isIndicatorSet = node.depth === 1;
       return (
-        <g
-          key={node.id}
-          css={
-            node.depth === 2
-              ? `
+        <Tooltip placement="left" title={id}>
+          <g
+            key={node.id}
+            css={
+              isModule
+                ? `
             cursor: pointer;
             ${
               props.selectedNodeId && props.selectedNodeId === node.id
@@ -93,61 +91,52 @@ export function NetworkViz(props: NetworkVizProps) {
               }
             }
           `
-              : ""
-          }
-          onClick={() => {
-            if (node.depth === 2) {
-              props.onNodeClick(node.id, node.x, 0);
+                : ""
             }
-          }}
-          onTouchStart={() => {
-            if (node.depth === 2) {
-              props.onNodeClick(node.id, node.x, 0);
-            }
-          }}
-        >
-          {(node.depth === 1 || node.depth === 2) && (
-            <text
-              transform={`translate(${node.x + 20}, ${node.y - 10})`}
-              css={`
-                font-size: ${node.depth === 2 ? 10 : 12}px;
-                font-weight: ${node.depth === 2 ? "normal" : "bold"};
-                text-decoration: ${node.depth === 2 ? "underline" : "none"};
-              `}
-            >
-              {node.depth === 2
-                ? tSpans.map((text: string, index: number) => (
-                    <tspan key={text} x={0} y={index * 10}>
-                      {text}
-                    </tspan>
-                  ))
-                : node.id}
-            </text>
-          )}
-          {node.depth === 0 && (
-            <text
-              transform={`translate(${node.x + 20}, ${node.y})`}
-              css={`
-                font-size: ${node.depth === 2 ? 10 : 12}px;
-                font-weight: ${node.depth === 2 ? "normal" : "bold"};
-                text-decoration: ${node.depth === 2 ? "underline" : "none"};
-              `}
-            >
-              {node.id.split(" - ").map((text: string, index: number) => (
-                <tspan key={text} x={0} y={index * 15}>
-                  {text}
-                </tspan>
-              ))}
-            </text>
-          )}
-          {node.depth === 3 ? (
-            <Tooltip placement="left" title={id}>
-              {circlecomp}
-            </Tooltip>
-          ) : (
-            circlecomp
-          )}
-        </g>
+            onClick={() => {
+              if (isModule) {
+                props.onNodeClick(node.id, node.x, 0);
+              }
+            }}
+            onTouchStart={() => {
+              if (isModule) {
+                props.onNodeClick(node.id, node.x, 0);
+              }
+            }}
+          >
+            {(isIndicatorSet || isModule) && (
+              <text
+                transform={`translate(${node.x + 10}, ${
+                  node.y + (isModule ? 15 : -15)
+                })`}
+                css={`
+                  font-size: ${isModule ? 10 : 12}px;
+                  font-weight: ${isModule ? "normal" : "bold"};
+                  text-decoration: ${isModule ? "underline" : "none"};
+                `}
+              >
+                {isModule && id.length > 15 ? `${id.substring(0, 15)}...` : id}
+              </text>
+            )}
+            {node.depth === 0 && (
+              <text
+                transform={`translate(${node.x + 20}, ${node.y})`}
+                css={`
+                  font-size: 12px;
+                  font-weight: bold;
+                  text-decoration: none;
+                `}
+              >
+                {node.id.split(" - ").map((text: string, index: number) => (
+                  <tspan key={text} x={0} y={index * 15}>
+                    {text}
+                  </tspan>
+                ))}
+              </text>
+            )}
+            {circlecomp}
+          </g>
+        </Tooltip>
       );
     });
   };
@@ -214,6 +203,7 @@ export function NetworkViz(props: NetworkVizProps) {
         >
           <ResponsiveNetwork
             repulsivity={200}
+            iterations={150}
             linkThickness={1}
             motionDamping={12}
             linkColor="#DFE3E6"
