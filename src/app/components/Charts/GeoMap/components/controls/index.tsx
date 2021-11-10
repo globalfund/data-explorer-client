@@ -32,10 +32,10 @@ export function GeoMapControls(props: GeoMapControlsProps) {
         flex-direction: column;
       `}
     >
-      <div css={buttoncss} onClick={props.onZoomIn}>
+      <div css={buttoncss} onClick={props.onZoomIn} data-cy="geomap-zoom-in">
         <ZoomInIcon />
       </div>
-      <div css={buttoncss} onClick={props.onZoomOut}>
+      <div css={buttoncss} onClick={props.onZoomOut} data-cy="geomap-zoom-out">
         <ZoomOutIcon />
       </div>
     </div>
