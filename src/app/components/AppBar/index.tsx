@@ -3,9 +3,11 @@ import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
 import { NavLink, useLocation } from "react-router-dom";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 export function AppBar() {
   const location = useLocation();
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   if (location.pathname === "/") {
     return <React.Fragment />;
@@ -21,7 +23,7 @@ export function AppBar() {
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: space-between;
+            justify-content: ${isMobile ? "center" : "space-between"};
           `}
         >
           <NavLink to="/" css="display: flex;">
@@ -32,17 +34,19 @@ export function AppBar() {
               alt="TGF Data Explorer logo"
             />
           </NavLink>
-          <NavLink
-            to="/about"
-            css={`
-              color: #fff;
-              font-size: 14px;
-              letter-spacing: 0.5px;
-              text-decoration: none;
-            `}
-          >
-            About
-          </NavLink>
+          {!isMobile && (
+            <NavLink
+              to="/about"
+              css={`
+                color: #fff;
+                font-size: 14px;
+                letter-spacing: 0.5px;
+                text-decoration: none;
+              `}
+            >
+              About
+            </NavLink>
+          )}
         </Toolbar>
       </Container>
     </MUIAppBar>

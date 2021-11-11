@@ -187,15 +187,18 @@ export default function Datasets() {
                     height: 370px !important;
                   }
                   width: 100%;
+                  height: 28vh;
                   padding: 20px;
-                  height: 22vh;
                   color: #262c34;
                   background: #fff;
                   border-radius: 20px;
                   border: 2px solid #fff;
 
                   > div {
+                    font-weight: bold;
                     margin-bottom: 10px;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
                   }
 
                   > svg {
@@ -209,7 +212,7 @@ export default function Datasets() {
                 `}
               >
                 <div>
-                  <b>{dataset.group}</b> {dataset.name.length > 0 ? "·" : ""}{" "}
+                  {dataset.group} {dataset.name.length > 0 ? "·" : ""}{" "}
                   {dataset.name}
                 </div>
                 {dataset.preview}
@@ -218,7 +221,16 @@ export default function Datasets() {
           </Grid>
         ))}
       </Grid>
-      <div css="width: 100%;height: 50px;" />
+      <div
+        css={`
+          width: 100%;
+          height: 50px;
+
+          @media (max-width: 767px) {
+            height: 90px;
+          }
+        `}
+      />
     </div>
   );
 }

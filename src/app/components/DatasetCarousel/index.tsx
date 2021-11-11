@@ -17,14 +17,20 @@ const griditem = (content: React.ReactElement, link: string) => (
     <div
       css={`
         padding: 20px;
-        height: 230px;
+        height: 260px;
         color: #262c34;
         background: #fff;
         border-radius: 20px;
         border: 2px solid #fff;
 
+        @media (max-width: 767px) {
+          height: 205px;
+        }
+
         > div {
+          font-weight: bold;
           margin-bottom: 10px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         }
 
         > svg {

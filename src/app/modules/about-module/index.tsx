@@ -36,7 +36,7 @@ export default function About() {
         ]}
       />
       <div css="width: 100%;height: 25px;" />
-      <Grid container spacing={6}>
+      <Grid container spacing={!isSmallScreen ? 6 : undefined}>
         {!isSmallScreen && (
           <Grid item md={3}>
             <LinkList />
@@ -205,6 +205,16 @@ export default function About() {
           </Grid>
         )}
       </Grid>
+      <div
+        css={`
+          width: 100%;
+          height: 0px;
+
+          @media (max-width: 767px) {
+            height: 90px;
+          }
+        `}
+      />
     </div>
   );
 }
