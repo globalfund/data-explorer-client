@@ -35,6 +35,12 @@ export function SearchResults(props: SearchResultsProps) {
             position: absolute;
             border-radius: 20px;
             width: calc(100% - 30px);
+
+            @media (max-width: 767px) {
+              margin: 0;
+              top: -18px;
+              width: 100%;
+            }
           `}
         />
       )}

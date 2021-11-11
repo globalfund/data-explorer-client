@@ -1,10 +1,17 @@
 import React from "react";
 import get from "lodash/get";
 import { SearchIcon } from "app/assets/icons/Search";
-import { container, input } from "app/components/Search/styles";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import IconChevronRight from "app/assets/icons/IconChevronRight";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { SearchResults } from "app/components/Search/components/results";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
+import {
+  container,
+  input,
+  mobilecontainer,
+  mobilebackbutton,
+} from "app/components/Search/styles";
 
 interface SearchLayoutProps {
   value: string;
@@ -16,6 +23,7 @@ interface SearchLayoutProps {
 }
 
 export function SearchLayout(props: SearchLayoutProps) {
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [open, setOpen] = React.useState(props.value.length > 0);
 
   React.useEffect(() => {
@@ -26,36 +34,41 @@ export function SearchLayout(props: SearchLayoutProps) {
   }, [props.value]);
 
   return (
-    <div css={container}>
-      <input
-        type="text"
-        css={input}
-        tabIndex={0}
-        value={props.value}
-        placeholder="e.g. Kenya"
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          props.setValue(e.target.value)
-        }
-      />
-      <SearchIcon />
-      {open && (
-        <ClickAwayListener
-          onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
-            if (get(event.target, "tagName", "") !== "INPUT") {
-              props.setValue("");
-            }
-          }}
-        >
-          <div>
-            <SearchResults
-              loading={props.loading}
-              results={props.results}
-              activeTab={props.activeTab}
-              setActiveTab={props.setActiveTab}
-            />
-          </div>
-        </ClickAwayListener>
-      )}
+    <div css={mobilecontainer(open)}>
+      <div css={container(open)}>
+        <span css={mobilebackbutton(open)} onClick={() => props.setValue("")}>
+          <IconChevronRight />
+        </span>
+        <input
+          type="text"
+          css={input}
+          tabIndex={0}
+          value={props.value}
+          placeholder="e.g. Kenya"
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            props.setValue(e.target.value)
+          }
+        />
+        <SearchIcon />
+        {open && (
+          <ClickAwayListener
+            onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
+              if (get(event.target, "tagName", "") !== "INPUT" && !isMobile) {
+                props.setValue("");
+              }
+            }}
+          >
+            <div>
+              <SearchResults
+                loading={props.loading}
+                results={props.results}
+                activeTab={props.activeTab}
+                setActiveTab={props.setActiveTab}
+              />
+            </div>
+          </ClickAwayListener>
+        )}
+      </div>
     </div>
   );
 }
