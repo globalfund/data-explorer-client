@@ -119,6 +119,7 @@ export function PledgesContributionsTimeCycle(
                       ? 1
                       : 0.3};
                   `}
+                  data-cy="filter"
                 >
                   <div
                     css={`
