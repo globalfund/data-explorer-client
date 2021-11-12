@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
@@ -151,6 +152,7 @@ const datasets: DatasetItemModel[] = [
 
 export default function Datasets() {
   useTitle(`The Data Explorer - Datasets`);
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   React.useEffect(() => {
     document.body.style.background = "#F5F5F7";
@@ -167,15 +169,17 @@ export default function Datasets() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="Datasets"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-          },
-        ]}
-      />
+      {!isMobile && (
+        <PageHeader
+          title="Datasets"
+          breadcrumbs={[
+            { name: "Home", link: "/" },
+            {
+              name: "Datasets",
+            },
+          ]}
+        />
+      )}
       <div css="width: 100%;height: 25px;" />
       <Grid container spacing={4}>
         {datasets.map((dataset: DatasetItemModel) => (

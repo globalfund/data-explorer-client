@@ -2,7 +2,6 @@ import React from "react";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
-import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 
 export function ToolBoxPanelEligibilityAdvanced() {
   const checked = useStoreState(

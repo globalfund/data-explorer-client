@@ -39,14 +39,16 @@ function Expandable(props: ExpandableProps) {
             }
           }
 
-          &:hover {
-            color: #fff;
-            background: #495057;
-            transition: background 0.2s ease-in-out;
+          @media (min-width: 768px) {
+            &:hover {
+              color: #fff;
+              background: #495057;
+              transition: background 0.2s ease-in-out;
 
-            > svg {
-              > path {
-                fill: #fff;
+              > svg {
+                > path {
+                  fill: #fff;
+                }
               }
             }
           }
@@ -70,10 +72,12 @@ function Expandable(props: ExpandableProps) {
             text-decoration: none;
             border-top: 1px solid #dfe3e6;
 
-            &:hover {
-              color: #fff;
-              background: #495057;
-              transition: background 0.2s ease-in-out;
+            @media (min-width: 768px) {
+              &:hover {
+                color: #fff;
+                background: #495057;
+                transition: background 0.2s ease-in-out;
+              }
             }
           }
         `}
@@ -107,14 +111,16 @@ export function useDatasetMenuItems(): React.ReactChild[] {
           }
         }
 
-        &:hover {
-          color: #fff;
-          background: #495057;
-          transition: background 0.2s ease-in-out;
+        @media (min-width: 768px) {
+          &:hover {
+            color: #fff;
+            background: #495057;
+            transition: background 0.2s ease-in-out;
 
-          > svg {
-            > path {
-              fill: #fff;
+            > svg {
+              > path {
+                fill: #fff;
+              }
             }
           }
         }
@@ -140,10 +146,12 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     </Expandable>,
     <Link
       css={`
-        &:hover {
-          color: #fff;
-          background: #495057;
-          transition: background 0.2s ease-in-out;
+        @media (min-width: 768px) {
+          &:hover {
+            color: #fff;
+            background: #495057;
+            transition: background 0.2s ease-in-out;
+          }
         }
       `}
       to={`/grants${location.search}`}
@@ -152,10 +160,12 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     </Link>,
     <Link
       css={`
-        &:hover {
-          color: #fff;
-          background: #495057;
-          transition: background 0.2s ease-in-out;
+        @media (min-width: 768px) {
+          &:hover {
+            color: #fff;
+            background: #495057;
+            transition: background 0.2s ease-in-out;
+          }
         }
       `}
       to={`/results${location.search}`}
@@ -164,10 +174,12 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     </Link>,
     <Link
       css={`
-        &:hover {
-          color: #fff;
-          background: #495057;
-          transition: background 0.2s ease-in-out;
+        @media (min-width: 768px) {
+          &:hover {
+            color: #fff;
+            background: #495057;
+            transition: background 0.2s ease-in-out;
+          }
         }
       `}
       to={`/documents${location.search}`}

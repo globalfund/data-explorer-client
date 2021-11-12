@@ -43,7 +43,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
   const [search, setSearch] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.GrantsList.fetch);
@@ -103,6 +104,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
     }
   }, [page, appliedFilters]);
 
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
+
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
@@ -159,11 +162,6 @@ export default function GrantsModule(props: GrantsModuleProps) {
                 name: "Grants",
               },
             ]}
-            onToolboxSmBtnClick={
-              isSmallScreen
-                ? () => setOpenToolboxPanel(!openToolboxPanel)
-                : undefined
-            }
           />
           <ToolBoxPanel
             open={openToolboxPanel}

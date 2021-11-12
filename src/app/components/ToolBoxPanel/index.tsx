@@ -2,8 +2,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import get from "lodash/get";
+import Fab from "@material-ui/core/Fab";
 import { useHistory } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
+import { FiltersIcon } from "app/assets/icons/Filters";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
@@ -18,12 +20,13 @@ export interface ToolBoxPanelProps {
   vizWrapperRef: any;
   isGrantDetail?: boolean;
   isLocationDetail?: boolean;
-  onCloseBtnClick: () => void;
   filterGroups: FilterGroupProps[];
+  onCloseBtnClick: (value?: boolean) => void;
 }
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
+  const fabBtnRef = React.useRef(null);
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );
@@ -45,6 +48,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     );
   }, [history.location.pathname]);
 
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   let top = 133;
@@ -56,12 +60,18 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   ) {
     if (isSmallScreen) {
       top = 149;
+      if (isMobile) {
+        top = 161;
+      }
     } else {
       top = 133;
     }
   }
   if (isSmallScreen && vizDrilldowns.length > 0) {
     top = 185;
+    if (isMobile) {
+      top = 196;
+    }
     if (props.isGrantDetail) {
       top = 206;
     }
@@ -86,105 +96,182 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   }
 
   return (
-    <ClickAwayListener
-      onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
-        if (
-          props.open &&
-          get(event.target, "tagName", "") !== "A" &&
-          get(event.target, "id", "") !== "page-header-toolbox-btn"
-        ) {
-          if (props.vizWrapperRef) {
-            if (!props.vizWrapperRef.current.contains(event.target)) {
+    <React.Fragment>
+      <ClickAwayListener
+        onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
+          if (
+            props.open &&
+            get(event.target, "tagName", "") !== "A" &&
+            get(event.target, "id", "") !== "page-header-toolbox-btn"
+          ) {
+            if (props.vizWrapperRef) {
+              if (!props.vizWrapperRef.current.contains(event.target)) {
+                if (
+                  fabBtnRef &&
+                  fabBtnRef.current &&
+                  (fabBtnRef.current as any).contains(event.target)
+                ) {
+                  return;
+                }
+                props.onCloseBtnClick();
+              }
+            } else {
               props.onCloseBtnClick();
             }
-          } else {
-            props.onCloseBtnClick();
           }
-        }
-      }}
-    >
-      <Slide direction="left" in={props.open}>
-        <div
-          css={`
-            right: 0;
-            z-index: 20;
-            width: 400px;
-            top: ${top}px;
-            position: fixed;
-            background: #f5f5f7;
-            height: calc(100vh - ${top}px);
-            visibility: visible !important;
-            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-
-            @media (max-width: 500px) {
-              width: calc(100vw - 50px);
-            }
-          `}
-        >
+        }}
+      >
+        <Slide direction="left" in={props.open}>
           <div
             css={`
-              width: 100%;
-              height: 100%;
-              display: flex;
-              position: relative;
-              flex-direction: column;
+              right: 0;
+              z-index: 20;
+              width: 400px;
+              top: ${top}px;
+              position: fixed;
+              background: #f5f5f7;
+              height: calc(100vh - ${top}px);
+              visibility: visible !important;
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+
+              @media (max-width: 767px) {
+                width: 100vw;
+                box-shadow: none;
+                height: calc(100vh - ${top + 56}px);
+              }
             `}
           >
-            {isSmallScreen ? (
-              <div css="height:24px;background-color: #373D43;width:100%;">
-                <IconButton
-                  css="width:12px;height:12px;"
-                  onClick={props.onCloseBtnClick}
-                >
-                  <CloseOutlinedIcon
-                    htmlColor="#ffffff"
-                    viewBox=" -4 -4 30 30"
-                  />
-                </IconButton>
-              </div>
-            ) : (
-              <div
-                role="button"
-                tabIndex={-1}
-                css={`
-                  top: 38%;
-                  color: #fff;
-                  width: 16px;
-                  height: 133px;
-                  display: flex;
-                  cursor: pointer;
-                  position: absolute;
-                  background: #495057;
-                  align-items: center;
-                  flex-direction: column;
-                  justify-content: center;
-                  border-radius: 10px 0px 0px 10px;
-                  transition: background 0.2s ease-in-out;
-                  // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
-                  // ${isTouchDevice() ? `left: -16px;` : ""}
-                  left: -16px;
+            <div
+              css={`
+                width: 100%;
+                height: 100%;
+                display: flex;
+                position: relative;
+                flex-direction: column;
+              `}
+            >
+              {!isSmallScreen && !isMobile && (
+                <div
+                  role="button"
+                  tabIndex={-1}
+                  css={`
+                    top: 38%;
+                    color: #fff;
+                    width: 16px;
+                    height: 133px;
+                    display: flex;
+                    cursor: pointer;
+                    position: absolute;
+                    background: #495057;
+                    align-items: center;
+                    flex-direction: column;
+                    justify-content: center;
+                    border-radius: 10px 0px 0px 10px;
+                    transition: background 0.2s ease-in-out;
+                    // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
+                    // ${isTouchDevice() ? `left: -16px;` : ""}
+                    left: -16px;
 
-                  &:hover {
-                    background: #13183f;
-                  }
-
-                  > svg {
-                    transform: rotate(${!props.open ? "-" : ""}90deg);
-                    > path {
-                      fill: #fff;
+                    &:hover {
+                      background: #13183f;
                     }
-                  }
-                `}
-                onClick={props.onCloseBtnClick}
-              >
-                <TriangleXSIcon />
-              </div>
-            )}
-            <ToolBoxPanelIconButtons />
-            <SubToolBoxPanel filterGroups={props.filterGroups} />
+
+                    > svg {
+                      transform: rotate(${!props.open ? "-" : ""}90deg);
+                      > path {
+                        fill: #fff;
+                      }
+                    }
+                  `}
+                  onClick={() => props.onCloseBtnClick()}
+                >
+                  <TriangleXSIcon />
+                </div>
+              )}
+              {isSmallScreen && !isMobile && (
+                <div
+                  css={`
+                    width: 100%;
+                    height: 24px;
+                    background-color: #373d43;
+                  `}
+                >
+                  <IconButton
+                    css={`
+                      width: 12px;
+                      height: 12px;
+                    `}
+                    onClick={() => props.onCloseBtnClick()}
+                  >
+                    <CloseOutlinedIcon
+                      htmlColor="#ffffff"
+                      viewBox=" -4 -4 30 30"
+                    />
+                  </IconButton>
+                </div>
+              )}
+              {isMobile && (
+                <div
+                  css={`
+                    width: 100%;
+                    padding: 16px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    border-bottom: 1px solid #dfe3e6;
+                  `}
+                >
+                  <div
+                    css={`
+                      font-size: 18px;
+                      font-weight: bold;
+                      font-family: GothamNarrow-Bold;
+                    `}
+                  >
+                    Toolbox
+                  </div>
+                  <IconButton
+                    css={`
+                      width: 14px;
+                      height: 14px;
+                    `}
+                    onClick={() => props.onCloseBtnClick()}
+                  >
+                    <CloseOutlinedIcon
+                      htmlColor="#2E4063"
+                      viewBox=" -4 -4 30 30"
+                    />
+                  </IconButton>
+                </div>
+              )}
+              <ToolBoxPanelIconButtons />
+              <SubToolBoxPanel
+                filterGroups={props.filterGroups}
+                closePanel={props.onCloseBtnClick}
+              />
+            </div>
           </div>
+        </Slide>
+      </ClickAwayListener>
+      {isMobile && (
+        <div
+          ref={fabBtnRef}
+          css={`
+            right: 20px;
+            z-index: 100;
+            bottom: 70px;
+            position: fixed;
+          `}
+        >
+          <Fab
+            color="primary"
+            aria-label="filters"
+            onClick={() => props.onCloseBtnClick()}
+          >
+            <FiltersIcon />
+          </Fab>
         </div>
-      </Slide>
-    </ClickAwayListener>
+      )}
+    </React.Fragment>
   );
 }

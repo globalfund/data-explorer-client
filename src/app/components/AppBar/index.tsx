@@ -13,6 +13,17 @@ export function AppBar() {
     return <React.Fragment />;
   }
 
+  function getMobilePageHeader(): string {
+    switch (location.pathname) {
+      case "/about":
+        return "About";
+      case "/datasets":
+        return "Datasets";
+      default:
+        return "";
+    }
+  }
+
   return (
     <MUIAppBar position="sticky" color="primary">
       <Container maxWidth="lg">
@@ -23,29 +34,42 @@ export function AppBar() {
             display: flex;
             flex-direction: row;
             align-items: center;
-            justify-content: ${isMobile ? "center" : "space-between"};
+            justify-content: space-between;
           `}
         >
-          <NavLink to="/" css="display: flex;">
-            <img
-              src="/gflogo.png"
-              width={295}
-              height={24}
-              alt="TGF Data Explorer logo"
-            />
-          </NavLink>
-          {!isMobile && (
-            <NavLink
-              to="/about"
+          {isMobile && (
+            <h2
               css={`
-                color: #fff;
-                font-size: 14px;
-                letter-spacing: 0.5px;
-                text-decoration: none;
+                font-size: 18px;
+                font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              About
-            </NavLink>
+              {getMobilePageHeader()}
+            </h2>
+          )}
+          {!isMobile && (
+            <React.Fragment>
+              <NavLink to="/" css="display: flex;">
+                <img
+                  src="/gflogo.png"
+                  width={295}
+                  height={24}
+                  alt="TGF Data Explorer logo"
+                />
+              </NavLink>
+              <NavLink
+                to="/about"
+                css={`
+                  color: #fff;
+                  font-size: 14px;
+                  letter-spacing: 0.5px;
+                  text-decoration: none;
+                `}
+              >
+                About
+              </NavLink>
+            </React.Fragment>
           )}
         </Toolbar>
       </Container>

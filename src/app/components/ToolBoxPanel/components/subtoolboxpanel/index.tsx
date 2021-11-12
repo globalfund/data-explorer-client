@@ -1,6 +1,8 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { useUpdateEffect } from "react-use";
+import { useMediaQuery } from "@material-ui/core";
 import { useParams, useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ResultsYear } from "app/components/ToolBoxPanel/components/resultsyear";
@@ -21,7 +23,12 @@ import {
   getControlItems,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
 
-export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
+interface SubToolBoxPanelProps {
+  filterGroups: FilterGroupProps[];
+  closePanel: (value?: boolean) => void;
+}
+
+export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
   const history = useHistory();
   const params = useParams<{
     code?: string;
@@ -29,6 +36,7 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
     vizType: string;
     subType?: string;
   }>();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [selectedView, setSelectedView] = React.useState("");
   const [controlItems, setControlItems] = React.useState<{
     views: ViewModel[];
@@ -50,7 +58,7 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
     (state) => state.ToolBoxPanelAggregateByState.value
   );
 
-  // geomanpView control const
+  // geomapView control const
   const setGeomapView = useStoreActions(
     (store) => store.ToolBoxPanelInvestmentsMapViewState.setValue
   );
@@ -62,6 +70,44 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
   const performanceFrameworkPeriods = useStoreState((state) =>
     get(state.GrantDetailPerformanceFramework.data, "periods", [])
   );
+
+  // performance framework period selection
+  const performanceFrameworkPeriodSelected = useStoreState(
+    (state) => state.ToolBoxPanelPFPeriodState.value
+  );
+
+  // donor type selection
+  const donorTypeViewSelection = useStoreState(
+    (state) => state.ToolBoxPanelDonorMapViewState.value
+  );
+
+  // donor value type selection
+  const donorValueViewSelection = useStoreState(
+    (state) => state.ToolBoxPanelDonorMapTypeState.value
+  );
+
+  // allocation period selection
+  const allocationPeriodSelection = useStoreState(
+    (state) => state.ToolBoxPanelAllocationsPeriodState.value
+  );
+
+  // eligibility period selection
+  const eligibilityPeriodSelection = useStoreState(
+    (state) => state.ToolBoxPanelEligibilityYearState.value
+  );
+
+  // eligibility advanced selection
+  const eligibilityAdvancedSelection = useStoreState(
+    (state) => state.ToolBoxPanelEligibilityAdvancedCheckboxState.value
+  );
+
+  // range slider values
+  const rangeSliderValues = useStoreState(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.values
+  );
+
+  // applied filters
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   function getSelectedView() {
     let view: ViewModel | undefined;
@@ -105,6 +151,25 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
     );
   }, [controlItems.aggregates]);
 
+  useUpdateEffect(() => {
+    if (isMobile) {
+      props.closePanel(false);
+    }
+  }, [
+    geomapView,
+    params.period,
+    appliedFilters,
+    selectedAggregation,
+    rangeSliderValues[0],
+    rangeSliderValues[1],
+    donorTypeViewSelection,
+    donorValueViewSelection,
+    allocationPeriodSelection,
+    eligibilityPeriodSelection,
+    eligibilityAdvancedSelection,
+    performanceFrameworkPeriodSelected,
+  ]);
+
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
   const isResultsPage = history.location.pathname.indexOf("/results") > -1;
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
@@ -115,7 +180,7 @@ export function SubToolBoxPanel(props: { filterGroups: FilterGroupProps[] }) {
         history.location.pathname.indexOf("/overview") === -1 && (
           <GrantImplementationPeriods />
         )}
-      {controlItems.views.length > 0 && (
+      {controlItems.views.length > 0 && !isMobile && (
         <ToolBoxPanelControlRow
           title="Views"
           selected={selectedView}

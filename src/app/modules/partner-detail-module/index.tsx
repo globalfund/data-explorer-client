@@ -1,8 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
+import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   Switch,
@@ -35,8 +35,9 @@ export default function PartnerDetail() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ code: string; vizType: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   // api call & data
   const fetchPartnerInfoData = useStoreActions(
@@ -60,6 +61,8 @@ export default function PartnerDetail() {
   React.useEffect(() => {
     setOpenToolboxPanel(true);
   }, [params.vizType]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
@@ -104,11 +107,6 @@ export default function PartnerDetail() {
           },
         ]}
         tabs={partnerDetailTabs}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
       <div css="width: 100%;height: 25px;" />
       <div

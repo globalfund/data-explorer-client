@@ -1,12 +1,14 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
@@ -31,18 +33,21 @@ export default function VizModule() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
   }, []);
 
   React.useEffect(() => {
-    if (!openToolboxPanel) {
+    if (!isMobile && !openToolboxPanel) {
       setOpenToolboxPanel(true);
     }
   }, [location.pathname]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
@@ -95,12 +100,8 @@ export default function VizModule() {
             }`,
           },
         ]}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
+      {isMobile && <MobileViewControl />}
       <div css="width: 100%;height: 25px;" />
       <div
         id="export-view-div"
@@ -211,10 +212,20 @@ export default function VizModule() {
           </Route>
         </Switch>
       </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) =>
+          setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
+        }
         filterGroups={get(
           pathnameToFilterGroups,
           location.pathname,

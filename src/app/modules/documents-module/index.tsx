@@ -20,7 +20,8 @@ export default function DocumentsModule() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -49,6 +50,8 @@ export default function DocumentsModule() {
       fetchData({ filterString });
     }
   }, [search]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   const [,] = useDebounce(
     () => {
@@ -100,11 +103,6 @@ export default function DocumentsModule() {
           },
           { name: "Documents" },
         ]}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
       <ToolBoxPanel
         open={openToolboxPanel}
@@ -142,6 +140,16 @@ export default function DocumentsModule() {
                 onChange={(event, val) => setPage(val)}
               />
             </div>
+            <div
+              css={`
+                width: 100%;
+                height: 25px;
+
+                @media (max-width: 767px) {
+                  height: 150px;
+                }
+              `}
+            />
           </>
         ) : (
           <DocumentsSubModule

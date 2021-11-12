@@ -13,6 +13,7 @@ export default function About() {
     document.body.style.background = "#F5F5F7";
   }, []);
 
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
@@ -26,15 +27,17 @@ export default function About() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="About"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "About",
-          },
-        ]}
-      />
+      {!isMobile && (
+        <PageHeader
+          title="About"
+          breadcrumbs={[
+            { name: "Home", link: "/" },
+            {
+              name: "About",
+            },
+          ]}
+        />
+      )}
       <div css="width: 100%;height: 25px;" />
       <Grid container spacing={!isSmallScreen ? 6 : undefined}>
         {!isSmallScreen && (

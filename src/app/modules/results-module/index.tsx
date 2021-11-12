@@ -25,7 +25,8 @@ export default function ResultsModule() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelResultsYearState.value
@@ -85,6 +86,8 @@ export default function ResultsModule() {
     }
   }, [search]);
 
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
+
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
@@ -139,11 +142,6 @@ export default function ResultsModule() {
           },
           { name: "Results" },
         ]}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
       <ToolBoxPanel
         open={openToolboxPanel}
@@ -162,7 +160,16 @@ export default function ResultsModule() {
           pushValue={pushValue}
         />
       </div>
-      <div css="width: 100%;height: 25px;" />
+      <div
+        css={`
+          width: 100%;
+          height: 25px;
+
+          @media (max-width: 767px) {
+            height: 70px;
+          }
+        `}
+      />
       <div
         css={`
           left: 0;

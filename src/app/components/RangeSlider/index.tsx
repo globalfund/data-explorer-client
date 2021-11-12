@@ -87,9 +87,8 @@ export function RangeSlider(props: RangeSliderProps) {
   return (
     <Container
       css={`
-        @media (max-width: 400px) {
+        @media (max-width: 767px) {
           align-items: flex-start;
-          width: calc(100% - 50px);
           justify-content: space-between;
         }
       `}

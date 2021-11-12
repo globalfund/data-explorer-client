@@ -223,6 +223,10 @@ export function ToolBoxPanelIconButtons() {
         flex-direction: row;
         justify-content: flex-end;
         border-bottom: 1px solid #dfe3e6;
+
+        @media (max-width: 767px) {
+          padding: 0 16px;
+        }
       `}
     >
       <Snackbar
