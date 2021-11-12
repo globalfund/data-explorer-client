@@ -7,6 +7,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import { DownloadIcon } from "app/assets/icons/Download";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Expandable/styles";
@@ -31,8 +32,9 @@ function Row(props: {
   forceExpand?: boolean;
 }) {
   const { row } = props;
-  const [open, setOpen] = React.useState(props.forceExpand);
   const classes = useRowStyles();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [open, setOpen] = React.useState(props.forceExpand);
 
   return (
     <React.Fragment>
@@ -111,6 +113,10 @@ function Row(props: {
           css={`
             ${tablecell}
             width: 30%;
+
+            @media (max-width: 767px) {
+              text-align: right;
+            }
           `}
         >
           {row.count}
@@ -137,8 +143,8 @@ function Row(props: {
                       <Row
                         key={category.name}
                         row={category}
-                        paddingLeft={50}
                         forceExpand={props.forceExpand}
+                        paddingLeft={!isMobile ? 50 : 40}
                       />
                     )
                   )}
@@ -150,8 +156,8 @@ function Row(props: {
                         name: doc.title,
                         link: doc.link,
                       }}
-                      paddingLeft={72}
                       forceExpand={props.forceExpand}
+                      paddingLeft={!isMobile ? 72 : 62}
                     />
                   ))}
               </TableBody>
