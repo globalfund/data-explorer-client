@@ -3,6 +3,9 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
+import { useMediaQuery } from "@material-ui/core";
+import { ComponentIcon } from "app/assets/icons/Component";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import {
   row,
   listitem,
@@ -13,8 +16,6 @@ import {
   ResultsListProps,
   ResultListItemModel,
 } from "app/modules/results-module/data";
-import { ComponentIcon } from "app/assets/icons/Component";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 
 export function ResultsList(props: ResultsListProps) {
   return (
@@ -33,6 +34,7 @@ export function ResultsList(props: ResultsListProps) {
 function ResultsListItem(props: ResultListItemModel) {
   const history = useHistory();
   const [expand, setExpand] = React.useState(false);
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
 
   return (
@@ -50,7 +52,7 @@ function ResultsListItem(props: ResultListItemModel) {
           <React.Fragment>
             <div css="width: 100%;height: 12px;" />
             {/* 1st row */}
-            <div css={row(18, "bold")}>
+            <div css={row(!isMobile ? 18 : 40, "bold")}>
               {props.value.toLocaleString()}
               <div
                 css={`
