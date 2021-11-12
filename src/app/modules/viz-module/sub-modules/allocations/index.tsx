@@ -154,6 +154,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       itemMargin: {
         vertical: 8,
       },
+      onItemClick: {
+        toggleDataSeries: false,
+      },
+      onItemHover: {
+        highlightDataSeries: false,
+      },
     },
     responsive: [
       {

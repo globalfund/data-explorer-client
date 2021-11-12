@@ -245,7 +245,9 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
       {(params.vizType === "commitment" ||
         params.vizType === "disbursements" ||
         params.vizType === "signed") &&
-        params.subType === "treemap" && <ToolBoxPanelDisbursementsSlider />}
+        params.subType === "treemap" && (
+          <ToolBoxPanelDisbursementsSlider label={params.vizType} />
+        )}
       {!isGrantDetail && <ToolBoxPanelFilters groups={props.filterGroups} />}
     </>
   );
