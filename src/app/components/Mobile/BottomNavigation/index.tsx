@@ -15,6 +15,7 @@ const useStyles = makeStyles({
     zIndex: 100,
     width: "100%",
     position: "fixed",
+    borderTop: "1px solid #dfe3e6",
   },
 });
 

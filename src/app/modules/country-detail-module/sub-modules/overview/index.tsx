@@ -3,6 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import { useMediaQuery } from "@material-ui/core";
 import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -13,6 +14,7 @@ interface Props {
 }
 
 export function LocationDetailOverviewModule(props: Props) {
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isLoading = useStoreState((state) => state.LocationDetailInfo.loading);
   const locationInfoData = useStoreState((state) =>
     get(state.LocationDetailInfo.data, "data[0]", {
@@ -35,7 +37,7 @@ export function LocationDetailOverviewModule(props: Props) {
   return (
     <Grid
       container
-      spacing={6}
+      spacing={!isMobile ? 6 : 3}
       css={`
         * {
           color: #262c34;

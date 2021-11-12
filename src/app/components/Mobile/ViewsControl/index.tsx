@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { RouteTab } from "app/components/PageHeader/components/tabs";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { getChartIcon } from "app/components/ToolBoxPanel/utils/getChartIcon";
 import {
@@ -204,11 +205,22 @@ export function MobileViewControl(props: MobileViewControlProps) {
           onClose={handleClose}
           open={Boolean(anchorEl)}
         >
-          {datasetMenuItems
-            .slice(1)
-            .map((item: React.ReactChild, itemIndex: number) => (
-              <StyledMenuItem disableRipple key={itemIndex} disableTouchRipple>
-                {item}
+          {!props.tabs &&
+            datasetMenuItems
+              .slice(1)
+              .map((item: React.ReactChild, itemIndex: number) => (
+                <StyledMenuItem
+                  disableRipple
+                  key={itemIndex}
+                  disableTouchRipple
+                >
+                  {item}
+                </StyledMenuItem>
+              ))}
+          {props.tabs &&
+            props.tabs.map((tab: TabProps) => (
+              <StyledMenuItem disableRipple key={tab.name} disableTouchRipple>
+                <RouteTab {...tab} onlyLink />
               </StyledMenuItem>
             ))}
         </StyledMenu>

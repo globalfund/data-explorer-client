@@ -10,6 +10,7 @@ import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
@@ -72,7 +73,9 @@ export default function CountryDetail() {
   }, [paramCode]);
 
   React.useEffect(() => {
-    setOpenToolboxPanel(true);
+    if (!isMobile && !openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
   }, [params.vizType]);
 
   useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
@@ -124,6 +127,15 @@ export default function CountryDetail() {
             : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
         }
       />
+      {isMobile && (
+        <MobileViewControl
+          tabs={
+            params.code.length === 3
+              ? countryDetailTabs
+              : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
+          }
+        />
+      )}
       <div css="width: 100%;height: 25px;" />
       <div
         id="export-view-div"
@@ -266,6 +278,14 @@ export default function CountryDetail() {
           </Route>
         </Switch>
       </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         isLocationDetail
         open={openToolboxPanel}
@@ -275,7 +295,9 @@ export default function CountryDetail() {
           location.pathname.replace(params.code, "<code>"),
           filtergroups
         )}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) =>
+          setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
+        }
       />
       <div
         css={`
