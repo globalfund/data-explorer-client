@@ -28,6 +28,14 @@ export function MobileAppbarSearch() {
   const isLoading = useStoreState((state) => state.GlobalSearch.loading);
 
   useUpdateEffect(() => {
+    if (open) {
+      document.body.style.overflowY = "hidden";
+    } else {
+      document.body.style.overflowY = "auto";
+    }
+  }, [open]);
+
+  useUpdateEffect(() => {
     setStoredValue(value);
   }, [value]);
 

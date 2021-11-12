@@ -3,6 +3,7 @@
 import React from "react";
 import get from "lodash/get";
 import Fab from "@material-ui/core/Fab";
+import { useUpdateEffect } from "react-use";
 import { useHistory } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { FiltersIcon } from "app/assets/icons/Filters";
@@ -50,6 +51,16 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
+  useUpdateEffect(() => {
+    if (isMobile) {
+      if (props.open) {
+        document.body.style.overflowY = "hidden";
+      } else {
+        document.body.style.overflowY = "auto";
+      }
+    }
+  }, [props.open]);
 
   let top = 133;
 
