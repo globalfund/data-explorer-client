@@ -3,10 +3,10 @@
 import React from "react";
 import get from "lodash/get";
 import Fab from "@material-ui/core/Fab";
-import { useUpdateEffect } from "react-use";
 import { useHistory } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { FiltersIcon } from "app/assets/icons/Filters";
+import { useUnmount, useUpdateEffect } from "react-use";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
@@ -61,6 +61,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
       }
     }
   }, [props.open]);
+
+  useUnmount(() => {
+    document.body.style.overflowY = "auto";
+  });
 
   let top = 133;
 

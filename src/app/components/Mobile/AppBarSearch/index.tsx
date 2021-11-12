@@ -4,7 +4,12 @@ import get from "lodash/get";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { useDebounce, useUpdateEffect, useSessionStorage } from "react-use";
+import {
+  useDebounce,
+  useUpdateEffect,
+  useSessionStorage,
+  useUnmount,
+} from "react-use";
 /* project */
 import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
@@ -34,6 +39,10 @@ export function MobileAppbarSearch() {
       document.body.style.overflowY = "auto";
     }
   }, [open]);
+
+  useUnmount(() => {
+    document.body.style.overflowY = "auto";
+  });
 
   useUpdateEffect(() => {
     setStoredValue(value);
