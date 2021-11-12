@@ -102,8 +102,18 @@ export default function VizModule() {
           },
         ]}
       />
-      {isMobile && <MobileViewControl />}
       <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl />
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
+            `}
+          />
+        </React.Fragment>
+      )}
       <div
         id="export-view-div"
         css={`

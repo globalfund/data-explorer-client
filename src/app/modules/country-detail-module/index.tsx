@@ -128,16 +128,18 @@ export default function CountryDetail() {
             : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
         }
       />
-      {isMobile && (
-        <MobileViewControl
-          tabs={
-            params.code.length === 3
-              ? countryDetailTabs
-              : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
-          }
-        />
-      )}
       <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl />
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
+            `}
+          />
+        </React.Fragment>
+      )}
       <div
         id="export-view-div"
         css={`
