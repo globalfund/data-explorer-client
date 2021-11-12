@@ -282,6 +282,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             z-index: 100;
             bottom: 70px;
             position: fixed;
+
+            > button {
+              box-shadow: none;
+            }
           `}
         >
           <Fab
