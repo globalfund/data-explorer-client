@@ -64,7 +64,11 @@ export function MobileBottomNavigation() {
       className={classes.root}
     >
       {actionButtons.map((btn: any) => (
-        <BottomNavigationAction label={btn.label} icon={btn.icon} />
+        <BottomNavigationAction
+          key={btn.label}
+          icon={btn.icon}
+          label={btn.label}
+        />
       ))}
     </BottomNavigation>
   );

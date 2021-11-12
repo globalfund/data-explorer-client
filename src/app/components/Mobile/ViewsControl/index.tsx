@@ -222,6 +222,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
         {controlItems.views.map((option: ViewModel, index: number) =>
           option.link ? (
             <Link
+              key={option.value}
               onClick={() => setSelectedView(option.value)}
               to={`${option.link}${history.location.search}`}
               css={`
