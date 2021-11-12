@@ -7,6 +7,7 @@ import axios, { AxiosResponse } from "axios";
 import useCookie from "@devhammed/use-cookie";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { V1RouteRedirections } from "app/utils/v1Routes";
+import { useScrollToTop } from "app/hooks/useScrollToTop";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
@@ -59,6 +60,7 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 export function MainRoutes() {
   const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
   useFilterOptions({});
+  useScrollToTop();
   useUrlFilters();
   useGA();
 
