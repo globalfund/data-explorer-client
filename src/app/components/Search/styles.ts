@@ -54,6 +54,16 @@ export const mobilecontainer = (focused: boolean) => css`
       background: #fff;
       position: absolute;
       padding: 20px 12px 0 12px;
+
+      > div {
+        padding: 5px;
+        border-radius: 0;
+        border-bottom: 1px solid #262c34;
+
+        > span {
+          display: block !important;
+        }
+      }
     `
       : ""}
   }
@@ -74,11 +84,10 @@ export const input = css`
   }
 `;
 
-export const mobilebackbutton = (focused: boolean) => css`
+export const mobilebackbutton = css`
   top: 5px;
   left: -16px;
   position: absolute;
-  display: ${focused ? "block" : "none"};
 
   > svg {
     transform: rotate(180deg) scale(1.5);

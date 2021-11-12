@@ -1,7 +1,12 @@
 import React from "react";
 import get from "lodash/get";
+import { useStoreState } from "app/state/store/hooks";
 import { HashLink as Link } from "react-router-hash-link";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import {
+  SearchResultsTabModel,
+  SearchResultModel,
+} from "app/components/Search/components/results/data";
 import {
   tab as tabcss,
   tabs,
@@ -10,10 +15,6 @@ import {
   results as resultscss,
   noresults,
 } from "app/components/Search/components/results/styles";
-import {
-  SearchResultsTabModel,
-  SearchResultModel,
-} from "app/components/Search/components/results/data";
 
 interface SearchResultsProps {
   results: SearchResultsTabModel[];
@@ -24,6 +25,7 @@ interface SearchResultsProps {
 
 export function SearchResults(props: SearchResultsProps) {
   const results = get(props.results, `[${props.activeTab}].results`, []);
+  const hasLoaded = useStoreState((state) => state.GlobalSearch.success);
 
   return (
     <div css={container}>
@@ -97,7 +99,7 @@ export function SearchResults(props: SearchResultsProps) {
             </Link>
           );
         })}
-        {results.length === 0 && !props.loading && (
+        {results.length === 0 && !props.loading && hasLoaded && (
           <div css={noresults}>No results found.</div>
         )}
         {props.loading && <div css={noresults}>Loading...</div>}

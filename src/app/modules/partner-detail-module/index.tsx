@@ -15,6 +15,7 @@ import {
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { partnerDetailTabs } from "app/components/PageHeader/components/tabs/data";
@@ -108,7 +109,7 @@ export default function PartnerDetail() {
         ]}
         tabs={partnerDetailTabs}
       />
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
       <div
         id="export-view-div"
         css={`

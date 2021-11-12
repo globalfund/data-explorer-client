@@ -9,6 +9,7 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
@@ -136,7 +137,7 @@ export default function CountryDetail() {
           }
         />
       )}
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
       <div
         id="export-view-div"
         css={`

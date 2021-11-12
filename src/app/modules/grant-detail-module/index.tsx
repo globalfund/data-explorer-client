@@ -8,6 +8,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
@@ -130,7 +131,7 @@ export default function GrantDetail() {
         ]}
         tabs={grantDetailTabs}
       />
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
       <div
         id="export-view-div"
         css={`

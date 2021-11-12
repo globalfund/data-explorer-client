@@ -10,6 +10,7 @@ import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { DocumentsSubModule } from "app/modules/common/documents";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
@@ -110,6 +111,7 @@ export default function DocumentsModule() {
         filterGroups={pathnameToFilterGroups.documents}
         onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
+      <PageTopSpacer />
       {isLoading && <PageLoader />}
       <div
         css={`

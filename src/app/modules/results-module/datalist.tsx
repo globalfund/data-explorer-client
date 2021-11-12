@@ -2,9 +2,9 @@ import React from "react";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { Search } from "app/modules/grants-module/components/Search";
+import { ResultListItemModel } from "app/modules/results-module/data";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { ResultsList } from "app/modules/results-module/components/List";
-import { ResultListItemModel } from "app/modules/results-module/data";
 
 export const DataList = (props: {
   isLoading: boolean;
@@ -18,7 +18,6 @@ export const DataList = (props: {
   return (
     <>
       {props.isLoading && <PageLoader />}
-      <div css="width: 100%;height: 25px;" />
       <div
         css={`
           align-self: flex-start;

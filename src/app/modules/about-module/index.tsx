@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
-import { PageHeader } from "app/components/PageHeader";
 import { useMediaQuery } from "@material-ui/core";
-import LinkList from "./links";
+import LinkList from "app/modules/about-module/links";
+import { PageHeader } from "app/components/PageHeader";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 
 export default function About() {
   useTitle(`The Data Explorer - About`);
@@ -38,7 +39,7 @@ export default function About() {
           ]}
         />
       )}
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
       <Grid container spacing={!isSmallScreen ? 6 : undefined}>
         {!isSmallScreen && (
           <Grid item md={3}>

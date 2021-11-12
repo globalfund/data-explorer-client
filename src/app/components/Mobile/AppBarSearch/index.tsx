@@ -1,13 +1,15 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import SearchIcon from "@material-ui/icons/Search";
+import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useDebounce, useUpdateEffect, useSessionStorage } from "react-use";
 /* project */
 import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
 
-export function Search() {
+export function MobileAppbarSearch() {
   const [open, setOpen] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(0);
   const [storedValue, setStoredValue] = useSessionStorage(
@@ -27,11 +29,6 @@ export function Search() {
 
   useUpdateEffect(() => {
     setStoredValue(value);
-    // if (value.length === 0) {
-    //   fetchData({
-    //     filterString: `q=${value}`,
-    //   });
-    // }
   }, [value]);
 
   const [,] = useDebounce(
@@ -49,28 +46,45 @@ export function Search() {
   );
 
   return (
-    <div
-      onClick={(e: any) => {
-        e.stopPropagation();
-        e.preventDefault();
-        if (!open) {
-          setOpen(true);
-        }
-      }}
-      css={`
-        width: 100%;
-      `}
-    >
-      <SearchLayout
-        value={value}
-        results={data}
-        forceFocus={open}
-        loading={isLoading}
-        setValue={setValue}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        onClose={() => setOpen(false)}
-      />
-    </div>
+    <React.Fragment>
+      {!open && (
+        <IconButton
+          css={`
+            padding-right: 0;
+          `}
+          onClick={() => setOpen(!open)}
+        >
+          <SearchIcon htmlColor="#fff" />
+        </IconButton>
+      )}
+      {open && (
+        <div
+          css={`
+            @media (max-width: 767px) {
+              top: 0;
+              left: 0;
+              width: 100vw;
+              position: absolute;
+              height: calc(100vh - 56px);
+
+              > div {
+                height: 100% !important;
+              }
+            }
+          `}
+        >
+          <SearchLayout
+            forceFocus
+            value={value}
+            results={data}
+            loading={isLoading}
+            setValue={setValue}
+            activeTab={activeTab}
+            setActiveTab={setActiveTab}
+            onClose={() => setOpen(false)}
+          />
+        </div>
+      )}
+    </React.Fragment>
   );
 }

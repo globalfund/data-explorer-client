@@ -6,6 +6,7 @@ import useTitle from "react-use/lib/useTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
 import { GrantsListPreview } from "app/assets/dataset-preview/grantsList";
 import { ResultsListPreview } from "app/assets/dataset-preview/resultsList";
@@ -180,7 +181,7 @@ export default function Datasets() {
           ]}
         />
       )}
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
       <Grid container spacing={4}>
         {datasets.map((dataset: DatasetItemModel) => (
           <Grid item xs={12} sm={6} md={6} key={dataset.link}>

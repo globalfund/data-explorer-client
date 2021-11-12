@@ -1,18 +1,17 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import Grid from "@material-ui/core/Grid";
+import { useLocation } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Switch, Route, useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 import {
   ResultListItemModel,
@@ -38,10 +37,6 @@ export default function ResultsModule() {
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
   );
   const fetchInfoData = useStoreActions((store) => store.ResultsStats.fetch);
-  const infoData = useStoreState(
-    (state) =>
-      get(state.ResultsStats.data, "data", []) as ResultsInfoContentStatsProps[]
-  );
   const fetchYearOptionsData = useStoreActions(
     (store) => store.ResultsYears.fetch
   );
@@ -149,6 +144,7 @@ export default function ResultsModule() {
         filterGroups={pathnameToFilterGroups.results}
         onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
       />
+      <PageTopSpacer />
       <div ref={vizWrapperRef}>
         <DataList
           isLoading={isLoading}

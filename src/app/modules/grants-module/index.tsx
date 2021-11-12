@@ -14,6 +14,7 @@ import {
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { GrantListItemModel } from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
@@ -169,7 +170,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
             filterGroups={pathnameToFilterGroups.grants}
             onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
           />
-          <div css="width: 100%;height: 25px;" />
+          <PageTopSpacer />
         </>
       )}
       <div
