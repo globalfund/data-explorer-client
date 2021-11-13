@@ -146,38 +146,55 @@ const styles = {
     margin-right: 10px;
   `,
   drilldowns: css`
+    gap: 3px;
     display: flex;
     margin-top: 16px;
     width: fit-content;
     flex-direction: row;
-    background: #373d43;
+
+    @media (max-width: 767px) {
+      width: 100%;
+      overflow-x: auto;
+    }
   `,
-  drilldownitem: css`
+  drilldownitem: (index: number) => css`
     color: #fff;
     font-size: 10px;
     padding: 2px 20px;
     margin-right: 6px;
     line-height: 15px;
-
     position: relative;
+    background: #373d43;
 
-    > svg {
+    &::after {
       top: 0;
-      right: -13px;
+      width: 0;
+      height: 0;
+      left: 100%;
+      content: "";
+      display: block;
       position: absolute;
-      transform: scale(1.5);
-
-      > path {
-        fill: #dfe3e6;
-      }
+      border-style: solid;
+      border-width: 9px 0 10px 9px;
+      border-color: rgba(0, 0, 0, 0) #373d43;
     }
 
-    &:last-of-type {
-      > svg {
-        right: -7px;
-        transform: scale(2.6);
+    ${index > 0
+      ? `
+      &::before {
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        border-style: solid;
+        border-width: 9px 0 10px 9px;
+        border-color: rgba(0, 0, 0, 0) #DFE3E6;
       }
-    }
+    `
+      : ""}
   `,
   drilldowntext: css`
     overflow: hidden;
@@ -295,10 +312,9 @@ export function PageHeader(props: PageHeaderProps) {
             </Tooltip>
             {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
-                {vizDrilldowns.map((item: DrilldownModel) => (
-                  <div css={styles.drilldownitem} key={item.name}>
-                    <div css={styles.drilldowntext}>{item.name}</div>{" "}
-                    <ArrowForwardIcon />
+                {vizDrilldowns.map((item: DrilldownModel, index: number) => (
+                  <div css={styles.drilldownitem(index)} key={item.name}>
+                    <div css={styles.drilldowntext}>{item.name}</div>
                   </div>
                 ))}
               </div>

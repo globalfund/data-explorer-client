@@ -153,7 +153,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
       css={`
         width: 100%;
         display: flex;
-        margin-top: 15px;
+        // margin-top: 15px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;

@@ -32,6 +32,11 @@ const container = css`
     height: 650px;
   }
 
+  @media (max-width: 767px) {
+    padding-top: 10px;
+    height: ${window.innerHeight - 200}px;
+  }
+
   linearGradient {
     stop {
       &:nth-child(1) {
@@ -66,6 +71,12 @@ const header = css`
     font-size: 14px;
     font-weight: bold;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+    @media (max-width: 767px) {
+      font-size: 10px;
+      font-weight: normal;
+      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    }
   }
 `;
 
@@ -96,7 +107,7 @@ const getNodeLabel = (label: string, matchesSm: boolean): string => {
 };
 
 export function BudgetsFlow(props: BudgetsFlowProps) {
-  const matches = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const legends = getLegendItems(props.data.nodes);
   const [
     xsTooltipData,
@@ -147,40 +158,52 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
 
   return (
     <div data-cy="budgets-flow" id="sankey">
-      <Grid container alignItems="center" spacing={4} css={header}>
-        <Grid item xs={12}>
-          <div
-            css={`
-              gap: 24px;
-              display: flex;
-              flex-direction: row;
-              justify-content: flex-end;
-            `}
-          >
-            {legends.map((legend: any) => (
-              <div
-                key={legend.name}
-                css={`
-                  gap: 6px;
-                  display: flex;
-                  font-size: 12px;
-                  align-items: center;
-                  flex-direction: row;
-                  font-weight: normal;
-                `}
-              >
+      <Grid
+        container
+        css={header}
+        alignItems="center"
+        spacing={!isMobile ? 4 : undefined}
+      >
+        {!isMobile && (
+          <Grid item xs={12}>
+            <div
+              css={`
+                gap: 24px;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+              `}
+            >
+              {legends.map((legend: any) => (
                 <div
+                  key={legend.name}
                   css={`
-                    width: 12px;
-                    height: 12px;
-                    background: ${legend.color};
+                    gap: 6px;
+                    display: flex;
+                    font-size: 12px;
+                    align-items: center;
+                    flex-direction: row;
+                    font-weight: normal;
                   `}
-                />
-                <div>{legend.name}</div>
-              </div>
-            ))}
-          </div>
-        </Grid>
+                >
+                  <div
+                    css={`
+                      width: 12px;
+                      height: 12px;
+                      background: ${legend.color};
+                    `}
+                  />
+                  <div>{legend.name}</div>
+                </div>
+              ))}
+            </div>
+          </Grid>
+        )}
+        {isMobile && (
+          <Grid item xs={12} css="font-size: 12px !important;">
+            <b>Total amount: {formatFinancialValue(totalBudget)}</b>
+          </Grid>
+        )}
         <Grid item xs={3}>
           <div
             css={`
@@ -194,9 +217,11 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           >
             Budget <InfoIcon />
           </div>
-          <div css="font-weight: normal;">
-            {formatFinancialValue(totalBudget)}
-          </div>
+          {!isMobile && (
+            <div css="font-weight: normal;">
+              {formatFinancialValue(totalBudget)}
+            </div>
+          )}
         </Grid>
         <Grid item xs={3}>
           Investment Landscape Level 1
@@ -251,7 +276,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             linkHoverOthersOpacity={0.15}
             linkTooltip={
               (tProps: any) => (
-                // !matches && (
+                // !isMobile && (
                 <BudgetsFlowTooltip
                   value={tProps.value}
                   source={tProps.source.id}
@@ -261,7 +286,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
               // )
             }
             labelFormat={(text: string | number) =>
-              getNodeLabel(text as string, matches)
+              getNodeLabel(text as string, isMobile)
             }
             animate
             motionDamping={13}
@@ -274,12 +299,17 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                   padding: "16px 25px",
                   position: "relative",
                   backgroundColor: "#f5f5f7",
-                  display: matches ? "none" : "inherit",
+                  display: isMobile ? "none" : "inherit",
+                },
+              },
+              labels: {
+                text: {
+                  display: !isMobile ? "inherit" : "none",
                 },
               },
             }}
           />
-          {matches && xsTooltipData && !props.selectedNodeId && (
+          {isMobile && xsTooltipData && !props.selectedNodeId && (
             <XsContainer>
               <ClickAwayListener onClickAway={() => setXsTooltipData(null)}>
                 <BudgetsFlowTooltip
