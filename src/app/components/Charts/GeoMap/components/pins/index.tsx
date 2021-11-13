@@ -21,7 +21,7 @@ interface MapPinProps {
 }
 
 export function MapPin(props: MapPinProps) {
-  const isMobile = useMediaQuery("max-width: 767px");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [hovered, setHovered] = React.useState(false);
 
   return (

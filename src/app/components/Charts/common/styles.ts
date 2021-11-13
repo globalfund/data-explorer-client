@@ -19,10 +19,11 @@ export const XsContainer = styled.div`
 `;
 
 export const TooltipButton = styled.button`
-  color: #fff;
+  width: 100%;
   padding: 12px;
+  color: #262c34;
   font-size: 14px;
   border-width: 0px;
   border-radius: 20px;
-  background: #495057;
+  background: #dfe3e6;
 `;
