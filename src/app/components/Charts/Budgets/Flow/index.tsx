@@ -14,13 +14,18 @@ import { InfoIcon } from "app/assets/icons/Info";
 // import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { XsContainer } from "app/components/Charts/common/styles";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { BudgetsFlowProps } from "app/components/Charts/Budgets/Flow/data";
 import { getNodes } from "app/components/Charts/Budgets/Flow/components/node";
 import { NoDataBudgetsFlow } from "app/components/Charts/Budgets/Flow/components/nodata";
-import { BudgetsFlowTooltip } from "app/components/Charts/Budgets/Flow/components/tooltip";
+import {
+  BudgetsFlowProps,
+  MobileBudgetsFlowTooltipProps,
+} from "app/components/Charts/Budgets/Flow/data";
+import {
+  BudgetsFlowTooltip,
+  MobileBudgetsFlowTooltip,
+} from "app/components/Charts/Budgets/Flow/components/tooltip";
 
 const container = css`
   width: 100%;
@@ -112,7 +117,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   const [
     xsTooltipData,
     setXsTooltipData,
-  ] = React.useState<SankeyLinkDatum | null>(null);
+  ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
     "value"
@@ -153,7 +158,12 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
     if (props.vizCompData.length !== nProps.nodes.length) {
       props.setVizCompData(nProps.nodes);
     }
-    return getNodes(nProps.nodes, props.selectedNodeId, props.onNodeClick);
+    return getNodes(
+      nProps.nodes,
+      props.selectedNodeId,
+      props.onNodeClick,
+      setXsTooltipData
+    );
   };
 
   return (
@@ -311,13 +321,26 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           />
           {isMobile && xsTooltipData && !props.selectedNodeId && (
             <XsContainer>
-              <ClickAwayListener onClickAway={() => setXsTooltipData(null)}>
-                <BudgetsFlowTooltip
-                  value={xsTooltipData.value}
-                  source={xsTooltipData.source.id}
-                  target={xsTooltipData.target.id}
+              <div
+                css={`
+                  width: 95%;
+                `}
+              >
+                <MobileBudgetsFlowTooltip
+                  {...xsTooltipData}
+                  onClose={() => setXsTooltipData(null)}
+                  drilldown={(id: string, filterStr: string) => {
+                    props.onNodeClick(
+                      {
+                        id,
+                        filterStr,
+                      },
+                      0,
+                      0
+                    );
+                  }}
                 />
-              </ClickAwayListener>
+              </div>
             </XsContainer>
           )}
         </div>

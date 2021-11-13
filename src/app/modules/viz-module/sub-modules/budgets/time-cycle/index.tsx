@@ -11,8 +11,6 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 interface BudgetsTimeCycleModuleProps {
@@ -47,7 +45,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([]);
+      setVizDrilldowns([{ name: "Dataset" }]);
     }
     if (props.vizLevel > 0 && props.vizSelected && props.vizSelected) {
       const newDrilldowns = [{ name: "Dataset" }, { name: props.vizSelected }];

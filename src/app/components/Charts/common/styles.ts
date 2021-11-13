@@ -11,8 +11,7 @@ export const XsContainer = styled.div`
   position: fixed;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
-  // background: rgba(0, 0, 0, 0.3);
+  justify-content: flex-start;
 
   * {
     z-index: 1010;

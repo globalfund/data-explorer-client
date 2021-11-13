@@ -19,7 +19,12 @@ export const styles = {
   `,
 };
 
-function getInnerNodes(node: any, _selectedNode: any, onNodeClick: any) {
+function getInnerNodes(
+  node: any,
+  _selectedNode: any,
+  onNodeClick: any,
+  setXsTooltipData: any
+) {
   const totHeight = node.y1 - node.y0;
   let prevY = node.y;
   const selectedNode = _selectedNode === node.id;
@@ -57,11 +62,17 @@ function getInnerNodes(node: any, _selectedNode: any, onNodeClick: any) {
           );
         }}
         onTouchStart={() => {
-          onNodeClick(
-            { id: node.id.toString(), filterStr: node.filterStr.toString() },
-            node.x - 200,
-            node.y
-          );
+          // onNodeClick(
+          //   { id: node.id.toString(), filterStr: node.filterStr.toString() },
+          //   node.x - 200,
+          //   node.y
+          // );
+          setXsTooltipData({
+            value: node.value,
+            id: node.id.toString(),
+            components: node.components,
+            filterStr: node.filterStr.toString(),
+          });
         }}
         css={_selectedNode && selectedNode ? "" : styles.nodeStyle}
         key={Math.random().toString(36).substring(7)}
@@ -72,13 +83,18 @@ function getInnerNodes(node: any, _selectedNode: any, onNodeClick: any) {
   return nodes;
 }
 
-export function getNodes(nodes: any, selectedNode: any, onNodeClick: any) {
+export function getNodes(
+  nodes: any,
+  selectedNode: any,
+  onNodeClick: any,
+  setXsTooltipData: any
+) {
   let resultNodes: any = [];
 
   nodes.forEach((node: any) => {
     resultNodes = [
       ...resultNodes,
-      ...getInnerNodes(node, selectedNode, onNodeClick),
+      ...getInnerNodes(node, selectedNode, onNodeClick, setXsTooltipData),
     ];
   });
 

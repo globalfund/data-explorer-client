@@ -1,5 +1,6 @@
 import React from "react";
-import { BudgetsTimeCycleTooltip } from "../tooltip";
+import filter from "lodash/filter";
+import { BudgetsTimeCycleTooltip } from "app/components/Charts/Budgets/TimeCycle/components/tooltip";
 
 export function BarComponent(props: any) {
   const fprops = {
@@ -49,7 +50,25 @@ export function BarComponent(props: any) {
       }}
       onTouchStart={(e: React.TouchEvent<SVGGElement>) => {
         if (props.data.indexValue !== props.selected) {
-          props.onClick(props.data.indexValue, props.x - 100, 0);
+          props.onTouchStart({
+            value: props.data.value,
+            id: `Year ${props.data.indexValue}`,
+            filterStr: props.data.indexValue.toString(),
+            components: filter(
+              Object.keys(props.data.data),
+              (key: string) =>
+                key.indexOf("Color") === -1 &&
+                key.indexOf("Code") === -1 &&
+                key !== "year" &&
+                key !== "amount"
+            ).map((key: string) => ({
+              id: key,
+              height: 0,
+              value: props.data.data[key],
+              color: props.data.data[`${key}Color`],
+            })),
+          });
+          // props.onClick(props.data.indexValue, props.x - 100, 0);
         }
       }}
       css={

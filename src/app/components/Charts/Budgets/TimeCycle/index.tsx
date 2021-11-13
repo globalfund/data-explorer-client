@@ -8,12 +8,15 @@ import { ResponsiveBar } from "@nivo/bar";
 import { InfoIcon } from "app/assets/icons/Info";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";
+import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { BudgetsTimeCycleProps } from "app/components/Charts/Budgets/TimeCycle/data";
 import { BarComponent } from "app/components/Charts/Budgets/TimeCycle/components/bar";
+import { MobileBudgetsFlowTooltipProps } from "app/components/Charts/Budgets/Flow/data";
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
-import { NoDataBudgetsTimeCycle } from "./components/nodata";
-import { NoDataLabel } from "../../common/nodatalabel";
+import { MobileBudgetsFlowTooltip } from "app/components/Charts/Budgets/Flow/components/tooltip";
+import { NoDataBudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle/components/nodata";
 
 function getKeysFromData(data: Record<string, unknown>[]) {
   if (data.length === 0) {
@@ -51,9 +54,13 @@ function getLegendItems(data: any) {
 }
 
 export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
-  const matches = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
+  const [
+    xsTooltipData,
+    setXsTooltipData,
+  ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
   const [keys, setKeys] = React.useState(getKeysFromData(props.data));
   const moneyAbbrRange = getVizValueRange(props.data, "budgetBarChart");
   const totalBudget = sumBy(props.data, "amount");
@@ -113,6 +120,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         hoveredLegend={hoveredLegend}
         selected={props.selectedNodeId}
         setHoveredXIndex={setHoveredXIndex}
+        onTouchStart={setXsTooltipData}
       />
     ));
   };
@@ -127,38 +135,51 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
           width: 100%;
           height: 100%;
         }
+
+        @media (max-width: 767px) {
+          height: 500px;
+        }
       `}
       data-cy="budgets-time-cycle"
     >
       <Grid
         container
         alignItems="center"
-        spacing={4}
+        spacing={!isMobile ? 4 : 2}
         css={`
           > div {
             color: #262c34;
           }
         `}
       >
-        <Grid item xs={3}>
-          <div
-            css={`
-              display: flex;
-              font-size: 14px;
-              font-weight: bold;
-              align-items: center;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+        <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+          {!isMobile && (
+            <React.Fragment>
+              <div
+                css={`
+                  display: flex;
+                  font-size: 14px;
+                  font-weight: bold;
+                  align-items: center;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
-              > svg {
-                margin-left: 10px;
-              }
-            `}
-          >
-            Budget <InfoIcon />
-          </div>
-          <div css="font-weight: normal;">
-            {formatFinancialValue(totalBudget)}
-          </div>
+                  > svg {
+                    margin-left: 10px;
+                  }
+                `}
+              >
+                Budget <InfoIcon />
+              </div>
+              <div css="font-weight: normal;">
+                {formatFinancialValue(totalBudget)}
+              </div>
+            </React.Fragment>
+          )}
+          {isMobile && (
+            <Grid item xs={12} css="font-size: 12px !important;">
+              <b>Total amount: {formatFinancialValue(totalBudget)}</b>
+            </Grid>
+          )}
         </Grid>
         <Grid item xs={12} sm={12} md={9}>
           <div
@@ -167,6 +188,12 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
               display: flex;
               flex-direction: row;
               justify-content: flex-end;
+
+              @media (max-width: 767px) {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+              }
             `}
           >
             {legends.map((legend: any) => (
@@ -211,14 +238,14 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
           motionDamping={15}
           borderColor="inherit:darker(1.6)"
           layers={["grid", "axes", Bars, "markers"]}
-          padding={matches ? 0.3 : 0.5}
+          padding={isMobile ? 0.3 : 0.5}
           innerPadding={0}
           data={props.data}
           colors={(value: any) => value.data[`${value.id}Color`]}
           keys={keys}
           indexBy="year"
           margin={{
-            top: 60,
+            top: !isMobile ? 60 : 20,
             right: 30,
             bottom: props.data.length > 5 ? 120 : 80,
             left: 70,
@@ -238,12 +265,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
               )}`,
           }}
           axisBottom={{
-            format: (value: number | string | Date) => {
-              return matches && props.data.length > 2
-                ? value.toString().slice(2, 4)
-                : value.toString();
-            },
-            tickRotation: matches && props.data.length > 3 ? 45 : 0,
+            tickRotation: isMobile && props.data.length > 3 ? 45 : 0,
           }}
           legends={[
             {
@@ -299,6 +321,23 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
           <NoDataBudgetsTimeCycle />
           <NoDataLabel />
         </React.Fragment>
+      )}
+      {isMobile && xsTooltipData && !props.selectedNodeId && (
+        <XsContainer>
+          <div
+            css={`
+              width: 95%;
+            `}
+          >
+            <MobileBudgetsFlowTooltip
+              {...xsTooltipData}
+              onClose={() => setXsTooltipData(null)}
+              drilldown={(id: string, filterStr: string) => {
+                props.onNodeClick(filterStr, 0, 0);
+              }}
+            />
+          </div>
+        </XsContainer>
       )}
     </div>
   );
