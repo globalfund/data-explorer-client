@@ -89,6 +89,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
               : "0px 0px 10px rgba(152, 161, 170, 0.6)"};
           `}
           onClick={props.close}
+          data-cy="close"
         >
           <CloseIcon color="primary" />
         </IconButton>
