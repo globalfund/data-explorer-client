@@ -50,6 +50,7 @@ export function DotChart(props: DotChartProps) {
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
           `}
+          data-cy={`eligibilityInfo-${hoveredNode.name}`}
         >
           <div>
             {hoveredNode.name}: {hoveredNode.status}
@@ -77,15 +78,15 @@ export function DotChart(props: DotChartProps) {
               align-items: center;
             `}
           >
-            <div
-              css={`
-                display: flex;
-                flex-direction: column;
-                align-self: flex-start;
-                margin-right: 30px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
+              <div
+                css={`
+                  display: flex;
+                  flex-direction: column;
+                  align-self: flex-start;
+                  margin-right: 30px;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                `}
+              >
               {isSmallScreen && (
                 <div css="display:flex;font-weight: bold;justify-content:space-between;">
                   Eligibility
@@ -138,6 +139,7 @@ export function DotChart(props: DotChartProps) {
                   ? 1
                   : 0.3};
               `}
+              data-cy="eligible"
               onMouseEnter={() => setHoveredLegend("Eligible")}
               onMouseLeave={() => setHoveredLegend(null)}
             >
@@ -148,7 +150,7 @@ export function DotChart(props: DotChartProps) {
                   border-radius: 50%;
                   ${styles.Eligible}
                 `}
-              />
+              /> 
               Eligible
             </div>
             <div
@@ -162,6 +164,7 @@ export function DotChart(props: DotChartProps) {
                   ? 1
                   : 0.3};
               `}
+              data-cy="not-eligible"
               onMouseEnter={() => setHoveredLegend("Not Eligible")}
               onMouseLeave={() => setHoveredLegend(null)}
             >
@@ -187,6 +190,7 @@ export function DotChart(props: DotChartProps) {
                   ? 1
                   : 0.3};
               `}
+              data-cy="transition-funding"
               onMouseEnter={() => setHoveredLegend("Transition Funding")}
               onMouseLeave={() => setHoveredLegend(null)}
             >
@@ -370,6 +374,7 @@ export function DotChart(props: DotChartProps) {
                                 ? 1
                                 : 0.3};
                             `}
+                            data-cy={`eligibility-${item.name}`}
                             key={item.name + index}
                             onMouseEnter={() => setHoveredNode(item)}
                             onMouseLeave={() => setHoveredNode(null)}
@@ -400,6 +405,7 @@ export function DotChart(props: DotChartProps) {
                         font-family: "GothamNarrow-Bold", "Helvetica Neue",
                           sans-serif;
                       `}
+                      data-cy="eligibility"
                     >
                       {group.name}
                     </div>
