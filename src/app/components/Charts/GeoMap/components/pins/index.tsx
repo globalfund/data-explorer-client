@@ -65,7 +65,7 @@ export function MapPin(props: MapPinProps) {
           alt=""
           width={24}
           height={24}
-          src={hovered ? props.activeImgSrc : props.inactiveImgSrc}
+          src={hovered && !isMobile ? props.activeImgSrc : props.inactiveImgSrc}
         />
       </CountryPin>
     </Marker>
