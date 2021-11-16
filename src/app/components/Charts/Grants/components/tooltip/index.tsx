@@ -37,6 +37,7 @@ export function GrantsRadialTooltip(props: Props) {
           font-weight: bold;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
+        data-cy={`grant-tooltip-${props.number}`}
       >
         {props.title}
       </div>
