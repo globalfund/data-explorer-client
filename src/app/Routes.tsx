@@ -2,13 +2,10 @@
 
 import React, { Suspense, lazy } from "react";
 import { useGA } from "app/hooks/useGA";
-import BigLogo from "app/assets/BigLogo";
 import axios, { AxiosResponse } from "axios";
-import useCookie from "@devhammed/use-cookie";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { V1RouteRedirections } from "app/utils/v1Routes";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import {
@@ -18,6 +15,9 @@ import {
   useHistory,
   RouteComponentProps,
 } from "react-router-dom";
+// import BigLogo from "app/assets/BigLogo";
+// import useCookie from "@devhammed/use-cookie";
+// import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -58,69 +58,70 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 }
 
 export function MainRoutes() {
-  const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
+  // const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
   useFilterOptions({});
   useScrollToTop();
   useUrlFilters();
   useGA();
 
-  const isSmallScreen = useMediaQuery("(max-width: 767px)");
+  // const isMobile = useMediaQuery("(max-width: 767px)");
 
-  if (isSmallScreen && showSMNotice) {
-    return (
-      <div
-        css={`
-          width: 100vw;
-          height: 100vh;
-          display: flex;
-          font-size: 16px;
-          text-align: center;
-          align-items: center;
-          flex-direction: column;
-          justify-content: center;
+  // if (isMobile && showSMNotice) {
+  //   return (
+  //     <div
+  //       css={`
+  //         width: 100vw;
+  //         height: 100vh;
+  //         display: flex;
+  //         font-size: 16px;
+  //         text-align: center;
+  //         align-items: center;
+  //         flex-direction: column;
+  //         justify-content: center;
 
-          > svg {
-            width: 90%;
-          }
+  //         > svg {
+  //           width: 90%;
+  //         }
 
-          > button {
-            color: #fff;
-            font-size: 14px;
-            appearance: none;
-            padding: 9px 16px;
-            font-weight: bold;
-            line-height: 20px;
-            background: #495057;
-            border-radius: 20px;
-            border-color: #495057;
-            text-transform: unset;
-          }
-        `}
-      >
-        <BigLogo />
-        <br />
-        App is not yet optimised for smaller screens.
-        <br />
-        <br />
-        <button
-          type="button"
-          onClick={() =>
-            setShowSMNotice(false, {
-              expires: 31556926, // 12 months
-              domain: "",
-              path: "",
-              secure: false,
-              httpOnly: false,
-              maxAge: 0,
-              sameSite: "",
-            })
-          }
-        >
-          Continue
-        </button>
-      </div>
-    );
-  }
+  //         > button {
+  //           color: #fff;
+  //           font-size: 14px;
+  //           appearance: none;
+  //           padding: 9px 16px;
+  //           font-weight: bold;
+  //           line-height: 20px;
+  //           background: #495057;
+  //           border-radius: 20px;
+  //           border-color: #495057;
+  //           text-transform: unset;
+  //         }
+  //       `}
+  //     >
+  //       <BigLogo />
+  //       <br />
+  //       App is not yet optimised for smaller screens.
+  //       <br />
+  //       <br />
+  //       <button
+  //         type="button"
+  //         onClick={() =>
+  //           setShowSMNotice(false, {
+  //             expires: 31556926, // 12 months
+  //             domain: "",
+  //             path: "",
+  //             secure: false,
+  //             httpOnly: false,
+  //             maxAge: 0,
+  //             sameSite: "",
+  //           })
+  //         }
+  //       >
+  //         Continue
+  //       </button>
+  //     </div>
+  //   );
+  // }
+
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
