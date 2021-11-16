@@ -2,13 +2,15 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { InfoIcon } from "app/assets/icons/Info";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
 import useMousePosition from "app/hooks/useMousePosition";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import {
   DotChartProps,
   DotChartModel,
 } from "app/components/Charts/Eligibility/DotChart/data";
-import { useMediaQuery } from "@material-ui/core";
 
 const styles = {
   Eligible: css`
@@ -49,10 +51,37 @@ export function DotChart(props: DotChartProps) {
             background: #f5f5f7;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
+
+            @media (max-width: 767px) {
+              // top: 40vh;
+              left: 16px;
+              z-index: 1;
+              width: calc(100vw - 32px);
+            }
           `}
         >
-          <div>
-            {hoveredNode.name}: {hoveredNode.status}
+          <div
+            css={`
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+
+              path {
+                fill: #2e4063;
+              }
+            `}
+          >
+            <div>
+              <b>{hoveredNode.name}</b>: {hoveredNode.status}
+            </div>
+            <IconButton
+              onTouchStart={() => setHoveredNode(null)}
+              css={`
+                padding: 0;
+              `}
+            >
+              <CloseIcon />
+            </IconButton>
           </div>
         </div>
       )}
