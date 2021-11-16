@@ -556,34 +556,63 @@ export function GeoMap(props: GeoMapProps) {
             border-radius: 20px;
             top: ${hoverInfo.y + 50}px;
             left: ${hoverInfo.x - 180}px;
+
+            @media (max-width: 767px) {
+              top: 29vh;
+              left: 16px;
+              background: #fff;
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+            }
           `}
         >
+          <div
+            css={`
+            display: flex;
+            flex-direction: row;
+            justify-content flex-end;
+
+            path {
+              fill: #2E4063;
+            }
+          `}
+          >
+            <IconButton
+              onTouchStart={() => {
+                setHoverInfo(null);
+              }}
+              css={`
+                padding: 0;
+              `}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
           <GeomapTooltip
             {...hoverInfo.properties}
             investmentSubType={props.investmentSubType}
           />
-          {isMobile ||
-            (isTouchDevice() && (
-              <div
-                css={`
-                  display: flex;
-                  margin-top: 10px;
-                  flex-direction: row;
-                  justify-content: flex-end;
-                `}
+          {(isMobile || isTouchDevice()) && (
+            <div
+              css={`
+                width: 100%;
+                display: flex;
+                margin-top: 10px;
+                flex-direction: row;
+                justify-content: flex-end;
+              `}
+            >
+              <TooltipButton
+                type="button"
+                onTouchStart={() => {
+                  history.push(
+                    `/location/${hoverInfo.properties.iso_a3}/overview`
+                  );
+                }}
               >
-                <TooltipButton
-                  type="button"
-                  onTouchStart={() => {
-                    history.push(
-                      `/location/${hoverInfo.properties.iso_a3}/overview`
-                    );
-                  }}
-                >
-                  Go to detail page
-                </TooltipButton>
-              </div>
-            ))}
+                Location detail page
+              </TooltipButton>
+            </div>
+          )}
         </div>
       )}
       {hoverInfo &&
