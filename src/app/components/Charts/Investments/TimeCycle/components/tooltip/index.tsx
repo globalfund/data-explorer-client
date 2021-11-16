@@ -23,7 +23,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        {props.indexValue}
+        Year {props.indexValue}
       </div>
       <div
         css={`
