@@ -10,7 +10,12 @@ import filter from "lodash/filter";
 import { useMeasure } from "react-use";
 import { useHistory } from "react-router-dom";
 import { css } from "styled-components/macro";
+import Button from "@material-ui/core/Button";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMousePosition from "app/hooks/useMousePosition";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { GrantsRadialTooltip } from "app/components/Charts/Grants/components/tooltip";
 import {
@@ -19,14 +24,15 @@ import {
   ratingColor,
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
-import { useMediaQuery } from "@material-ui/core";
 
 // TODO: clean up component
 // TODO: discuss with Dafei what should happen when only 1 component is in the data.
 // TODO: the labels are a bit iffy when there are 5 components. -> create an algorithm that calculates the middle of the pie.
 export function GrantsViz(props: GrantsVizProps) {
   const { data } = props;
+  const history = useHistory();
   const { x, y } = useMousePosition();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const lYear = get(minBy(data, "years[0]"), "years[0]", 2002);
   const hYear = get(maxBy(data, "years[1]"), "years[1]", 2020);
@@ -73,9 +79,65 @@ export function GrantsViz(props: GrantsVizProps) {
             background: #f5f5f7;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+
+            @media (max-width: 767px) {
+              top: 30vh;
+              left: 16px;
+              position: fixed;
+              background: #fff;
+              width: calc(100vw - 32px);
+            }
           `}
         >
+          {(isMobile || isTouchDevice()) && (
+            <div
+              css={`
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: flex-end;
+              `}
+            >
+              <IconButton
+                onTouchStart={() => setHoveredNode(null)}
+                css={`
+                  padding: 0;
+                `}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+          )}
           <GrantsRadialTooltip {...hoveredNode} />
+          {(isMobile || isTouchDevice()) && (
+            <Button
+              onTouchStart={() => {
+                history.push(
+                  `/grant/${hoveredNode.number}/${hoveredNode.name}/overview`
+                );
+              }}
+              css={`
+                width: 100%;
+                margin-top: 20px;
+                background: #dfe3e6;
+                border-radius: 22px;
+
+                &:hover {
+                  background: #dfe3e6;
+                }
+
+                > span {
+                  color: #262c34;
+                  font-size: 14px;
+                  font-weight: bold;
+                  text-transform: none;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                }
+              `}
+            >
+              Grant detail page
+            </Button>
+          )}
         </div>
       )}
       <div
@@ -163,6 +225,7 @@ export function GrantsViz(props: GrantsVizProps) {
 
 export function ComponentRadarThingies(props: any) {
   const history = useHistory();
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   // let nOfImplementationPeriodsInComponent = 0;
   // for (let i = 0; i < props.items.length; i++) {
@@ -403,20 +466,39 @@ export function ComponentRadarThingies(props: any) {
                             `}
                           />
                           <div
-                            onClick={() =>
-                              history.push(
-                                `/grant/${item.name}/${subItem.name}/overview`
-                              )
-                            }
-                            onMouseLeave={() => props.setHoveredNode(null)}
-                            onMouseEnter={() =>
+                            onClick={() => {
+                              if (!isMobile && !isTouchDevice()) {
+                                history.push(
+                                  `/grant/${item.name}/${subItem.name}/overview`
+                                );
+                              }
+                            }}
+                            onMouseLeave={() => {
+                              if (!isMobile && !isTouchDevice()) {
+                                props.setHoveredNode(null);
+                              }
+                            }}
+                            onMouseEnter={() => {
+                              if (!isMobile && !isTouchDevice()) {
+                                props.setHoveredNode({
+                                  ...subItem,
+                                  component: item.component,
+                                  title: item.title || item.name,
+                                  number: item.name,
+                                });
+                              }
+                            }}
+                            onTouchStart={(
+                              e: React.TouchEvent<HTMLDivElement>
+                            ) => {
+                              e.stopPropagation();
                               props.setHoveredNode({
                                 ...subItem,
                                 component: item.component,
                                 title: item.title || item.name,
                                 number: item.name,
-                              })
-                            }
+                              });
+                            }}
                             id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-end`}
                             css={`
                               top: 0;
@@ -637,6 +719,10 @@ export const RadialChartLegend = (props: any) => {
           flex-direction: row;
           justify-content: space-evenly;
         }
+
+        @media (max-width: 767px) {
+          flex-direction: column;
+        }
       `}
     >
       <div
@@ -692,6 +778,11 @@ export const RadialChartLegend = (props: any) => {
           display: flex;
           flex-direction: column;
           justify-content: center;
+
+          @media (max-width: 767px) {
+            flex-direction: row;
+            justify-content: space-between;
+          }
         `}
       >
         <div
@@ -710,6 +801,11 @@ export const RadialChartLegend = (props: any) => {
               flex-direction: row;
               margin-bottom: 30px;
               justify-content: space-evenly;
+
+              @media (max-width: 767px) {
+                gap: 10px;
+                margin-left: 0px;
+              }
 
               > div {
                 width: 10px;

@@ -131,7 +131,13 @@ export default function CountryDetail() {
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>
-          <MobileViewControl />
+          <MobileViewControl
+            tabs={
+              params.code.length === 3
+                ? countryDetailTabs
+                : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
+            }
+          />
           <div
             css={`
               width: 100%;

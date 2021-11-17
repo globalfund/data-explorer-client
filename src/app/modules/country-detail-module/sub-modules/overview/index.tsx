@@ -37,7 +37,7 @@ export function LocationDetailOverviewModule(props: Props) {
   return (
     <Grid
       container
-      spacing={!isMobile ? 6 : 3}
+      spacing={!isMobile ? 6 : 2}
       css={`
         * {
           color: #262c34;

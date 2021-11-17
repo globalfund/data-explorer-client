@@ -30,6 +30,10 @@ export function ToolBoxPanelEligibilityAdvanced() {
         span {
           font-size: 12px;
         }
+
+        @media (max-width: 767px) {
+          padding: 16px;
+        }
       `}
     >
       <b>Advanced</b>
