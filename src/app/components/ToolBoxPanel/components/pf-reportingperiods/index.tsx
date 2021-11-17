@@ -120,6 +120,7 @@ export function PerformanceFrameworkReportingPeriods(
               width: calc(100% / ${props.periods.length});
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
             `}
+            data-cy="time-draggable"
           />
         </Draggable>
         {props.periods.map((period: string[], index: number) => (
@@ -127,6 +128,7 @@ export function PerformanceFrameworkReportingPeriods(
             css="cursor: pointer;"
             key={`${period[0]}-${period[1]}`}
             onClick={() => setSelected(index)}
+            data-cy="time-draggable"
           >
             <div>
               <span>{period[0]}</span>

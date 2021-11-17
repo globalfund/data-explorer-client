@@ -128,7 +128,7 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
         <div css={styles.container(showAggrs)}>
           {!showAggrs ? (
             <React.Fragment>
-              <div css={styles.header}>
+              <div css={styles.header} data-cy="grant-tooltip-info">
                 <div>
                   <b>
                     Reporting period:
