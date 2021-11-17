@@ -43,6 +43,9 @@ export function SlideInContainer(props: SlideInContainerProps) {
   }
   if (isGrantDetail) {
     top = 203;
+    if (isMobile) {
+      top = 196;
+    }
   }
 
   React.useEffect(() => {

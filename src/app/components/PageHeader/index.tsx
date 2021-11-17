@@ -319,7 +319,7 @@ export function PageHeader(props: PageHeaderProps) {
                 ))}
               </div>
             )}
-            {!props.isGrantDetail && (
+            {(!props.isGrantDetail || isMobile) && (
               <div
                 css={`
                   width: 100%;

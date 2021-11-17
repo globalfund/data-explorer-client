@@ -53,10 +53,10 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         const idSplits = props.drilldownVizSelected.split("-");
         newDrilldowns.push(
           {
-            name: idSplits[0],
+            name: idSplits[1],
           },
           {
-            name: idSplits[1],
+            name: idSplits[0],
           }
         );
       }

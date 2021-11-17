@@ -10,6 +10,7 @@ import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { filtergroups } from "app/components/ToolBoxPanel/components/filters/data";
@@ -132,6 +133,17 @@ export default function GrantDetail() {
         tabs={grantDetailTabs}
       />
       <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl tabs={grantDetailTabs} />
+          <div
+            css={`
+              width: 100%;
+              height: 10px;
+            `}
+          />
+        </React.Fragment>
+      )}
       <div
         id="export-view-div"
         css={`
@@ -278,6 +290,14 @@ export default function GrantDetail() {
           </Route>
         </Switch>
       </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         isGrantDetail
         open={openToolboxPanel}
