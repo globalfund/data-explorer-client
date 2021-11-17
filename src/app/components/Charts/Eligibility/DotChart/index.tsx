@@ -53,10 +53,11 @@ export function DotChart(props: DotChartProps) {
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
 
             @media (max-width: 767px) {
-              // top: 40vh;
               left: 16px;
               z-index: 1;
+              background: #fff;
               width: calc(100vw - 32px);
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
             }
           `}
         >
@@ -295,7 +296,7 @@ export function DotChart(props: DotChartProps) {
                     Malaria
                   </div>
                 </div>
-                <div>
+                {/* <div>
                   <div
                     css={`
                       width: 10px;
@@ -312,7 +313,7 @@ export function DotChart(props: DotChartProps) {
                   >
                     RSSH
                   </div>
-                </div>
+                </div> */}
                 <div>
                   <div
                     css={`
@@ -324,7 +325,7 @@ export function DotChart(props: DotChartProps) {
                   />
                   <div
                     css={`
-                      top: -24px;
+                      // top: -24px;
                       font-size: 12px;
                       position: absolute;
                     `}
@@ -398,8 +399,14 @@ export function DotChart(props: DotChartProps) {
                               hoveredLegend === item.status
                                 ? 1
                                 : 0.3};
+
+                              @media (max-width: 767px) {
+                                width: 15px;
+                                height: 15px;
+                              }
                             `}
                             key={item.name + index}
+                            onTouchStart={() => setHoveredNode(item)}
                             onMouseEnter={() => setHoveredNode(item)}
                             onMouseLeave={() => setHoveredNode(null)}
                           />
@@ -439,6 +446,10 @@ export function DotChart(props: DotChartProps) {
                         flex-wrap: wrap;
                         padding: 5px 0 5px 5px;
                         border-left: 1px solid #acafbc;
+
+                        @media (max-width: 767px) {
+                          gap: 15px;
+                        }
                       `}
                     >
                       {group.items.map(
@@ -463,8 +474,14 @@ export function DotChart(props: DotChartProps) {
                               hoveredLegend === item.status
                                 ? 1
                                 : 0.3};
+
+                              @media (max-width: 767px) {
+                                width: 15px;
+                                height: 15px;
+                              }
                             `}
                             key={item.name + index}
+                            onTouchStart={() => setHoveredNode(item)}
                             onMouseEnter={() => setHoveredNode(item)}
                             onMouseLeave={() => setHoveredNode(null)}
                           />
