@@ -2,8 +2,9 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
+import { useTitle } from "react-use";
 import Grid from "@material-ui/core/Grid";
-import { useUnmount, useTitle, useUpdateEffect } from "react-use";
+import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
@@ -23,6 +24,10 @@ export function PledgesContributionsTreemap() {
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
+  const [
+    xsTooltipData,
+    setXsTooltipData,
+  ] = React.useState<TreeMapNodeDatum | null>(null);
 
   // api call & data
   const fetchData = useStoreActions(
@@ -127,9 +132,17 @@ export function PledgesContributionsTreemap() {
             color: #262c34;
             font-size: 14px;
           }
+
+          @media (max-width: 767px) {
+            margin-bottom: 0;
+
+            > div {
+              font-size: 12px;
+            }
+          }
         `}
       >
-        <Grid item xs={3}>
+        <Grid item xs={12}>
           <div
             css={`
               display: flex;
@@ -163,8 +176,11 @@ export function PledgesContributionsTreemap() {
         {/* <TransitionContainer vizScale={1} vizTranslation={vizTranslation}> */}
         <BudgetsTreemap
           data={data}
+          invertColors
           selectedNodeId={vizSelected}
           tooltipValueLabel={valueType}
+          xsTooltipData={xsTooltipData}
+          setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string, x: number, y: number, code?: string) => {
             // if (props.allowDrilldown) {
             //   props.setVizLevel(1);

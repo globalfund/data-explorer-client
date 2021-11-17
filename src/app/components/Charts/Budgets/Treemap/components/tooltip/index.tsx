@@ -11,6 +11,10 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
         color: #262c34;
         min-width: 350px;
         background: #f5f5f7;
+
+        @media (max-width: 767px) {
+          min-width: 0px;
+        }
       `}
     >
       <div
