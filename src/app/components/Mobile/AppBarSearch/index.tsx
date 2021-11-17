@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useHistory } from "react-router-dom";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -15,6 +16,7 @@ import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
 
 export function MobileAppbarSearch() {
+  const history = useHistory();
   const [open, setOpen] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(0);
   const [storedValue, setStoredValue] = useSessionStorage(
@@ -31,6 +33,14 @@ export function MobileAppbarSearch() {
       get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[]
   );
   const isLoading = useStoreState((state) => state.GlobalSearch.loading);
+
+  React.useEffect(() => {
+    history.listen(() => {
+      if (open) {
+        setOpen(false);
+      }
+    });
+  }, [history]);
 
   useUpdateEffect(() => {
     if (open) {
