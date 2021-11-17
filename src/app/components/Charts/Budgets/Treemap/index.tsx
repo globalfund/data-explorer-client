@@ -23,6 +23,10 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
           > div {
             > div:first-of-type {
               background: #373d43;
+
+              @media (max-width: 767px) {
+                background: #fff;
+              }
             }
           }
         }

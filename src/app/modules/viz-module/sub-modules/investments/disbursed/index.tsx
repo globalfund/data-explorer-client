@@ -5,6 +5,7 @@ import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useUnmount, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -63,15 +64,13 @@ export function InvestmentsDisbursedModule(
   props: InvestmentsDisbursedModuleProps
 ) {
   useTitle("The Data Explorer - Investments/Disbursed");
-  const totalBudget = sumBy(props.data, "value");
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const totalValue = sumBy(props.data, "value");
 
   const [treemapData, setTreemapData] = React.useState<
     DisbursementsTreemapDataItem[]
   >(props.data);
 
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
@@ -91,7 +90,7 @@ export function InvestmentsDisbursedModule(
           }
         }
       });
-      setVizDrilldowns([{ name: "Dataset" }, { name }]);
+      setVizDrilldowns([{ name: "Dataset" }, { name: name || code }]);
     }
   }, [props.vizLevel, props.vizSelected]);
 
@@ -147,27 +146,38 @@ export function InvestmentsDisbursedModule(
             color: #262c34;
             font-size: 14px;
           }
+
+          @media (max-width: 767px) {
+            margin-bottom: 0;
+          }
         `}
       >
-        <Grid item xs={3}>
-          <div
-            css={`
-              display: flex;
-              font-weight: bold;
-              align-items: center;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+        {!isMobile && (
+          <Grid item xs={3}>
+            <div
+              css={`
+                display: flex;
+                font-weight: bold;
+                align-items: center;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
-              > svg {
-                margin-left: 10px;
-              }
-            `}
-          >
-            Investments - {props.type || "Disbursement"} <InfoIcon />
-          </div>
-          <div css="font-weight: normal;">
-            {formatFinancialValue(totalBudget)}
-          </div>
-        </Grid>
+                > svg {
+                  margin-left: 10px;
+                }
+              `}
+            >
+              Investments - {props.type || "Disbursement"} <InfoIcon />
+            </div>
+            <div css="font-weight: normal;">
+              {formatFinancialValue(totalValue)}
+            </div>
+          </Grid>
+        )}
+        {isMobile && (
+          <Grid item xs={12} css="font-size: 12px !important;">
+            <b>Total amount: {formatFinancialValue(totalValue)}</b>
+          </Grid>
+        )}
       </Grid>
       <div
         css={`
@@ -212,6 +222,7 @@ export function InvestmentsDisbursedModule(
           }}
         >
           <DisbursementsTreemap
+            isDrilldownTreemap
             data={props.drilldownData}
             onNodeClick={(node: string, x: number, y: number) => {}}
           />

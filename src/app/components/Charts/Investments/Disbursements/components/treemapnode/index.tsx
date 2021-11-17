@@ -38,12 +38,12 @@ export function TreeemapNode(props: any) {
         left: node.x,
         width: node.width,
         height: node.height,
-        background: node.data.color,
-        border: "0px solid #373D43",
-        fontSize: bigDevice ? 12 : 8,
+        fontSize: bigDevice ? 12 : 10,
         cursor: node.data.orgs ? "pointer" : "default",
-        color: props.isChildTreemap ? "#fff" : "#262C34",
+        background: bigDevice ? node.data.color : "#595C70",
+        border: `0px solid #${bigDevice ? "373D43" : "fff"}`,
         borderStyle: props.isChildTreemap ? "none" : "solid",
+        color: props.isChildTreemap || !bigDevice ? "#fff" : "#262C34",
       }}
       css={containercss(
         !hasChildren,
@@ -101,7 +101,7 @@ export function TreeemapNode(props: any) {
           >
             {node.data.name}
           </div>
-          <div css="width: 100%;height: 5px;" />
+          {bigDevice && <div css="width: 100%;height: 5px;" />}
           <div
             ref={(el) => {
               if (el) {
@@ -118,7 +118,7 @@ export function TreeemapNode(props: any) {
           </div>
         </div>
       )}
-      {hasChildren && (
+      {hasChildren && bigDevice && (
         <div
           css={`
             height: 100%;
