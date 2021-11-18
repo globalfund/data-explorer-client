@@ -158,24 +158,27 @@ export function NetworkViz(props: NetworkVizProps) {
       />
     ));
   };
+
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12}>
-        <div
-          css={`
-            color: #262c34;
-            font-weight: bold;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          `}
-        >
-          Performance Framework
-        </div>
-      </Grid>
+      {!isMobile && (
+        <Grid item xs={12}>
+          <div
+            css={`
+              color: #262c34;
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Performance Framework
+          </div>
+        </Grid>
+      )}
       {isSmallScreen && (
         <Grid item xs={12} css="padding-bottom: 0 !important;">
-          {/* <NetworkLegends /> */}
           <AchievementRateLegend />
         </Grid>
       )}
@@ -224,9 +227,8 @@ export function NetworkViz(props: NetworkVizProps) {
         </div>
         {props.data.links.length === 0 && <NoDataLabel />}
       </Grid>
-      {isSmallScreen || (
+      {!isSmallScreen && (
         <Grid item xs={12} css="padding-bottom: 0 !important;">
-          {/* <NetworkLegends /> */}
           <AchievementRateLegend />
         </Grid>
       )}

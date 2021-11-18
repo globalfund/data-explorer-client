@@ -10,6 +10,9 @@ export function NoDataBudgetsFlow() {
         @media (max-width: 1000px) {
           width: 100%;
         }
+        @media (max-width: 767px) {
+          display: none;
+        }
       `}
     >
       <rect width="6" height="55.0962" fill="#C7CDD1" />

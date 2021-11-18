@@ -1,8 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import Grid from "@material-ui/core/Grid";
 import { useStoreState } from "app/state/store/hooks";
+import { Grid, useMediaQuery } from "@material-ui/core";
 /* project */
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
@@ -11,6 +11,7 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 
 export function GrantDetailOverviewModule() {
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isLoading = useStoreState((state) => state.GrantDetailInfo.loading);
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
@@ -49,7 +50,18 @@ export function GrantDetailOverviewModule() {
           <b>Grant status</b>: {grantInfoData.status}
         </div>
       </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={6}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        lg={6}
+        css={`
+          @media (max-width: 767px) {
+            order: 3;
+          }
+        `}
+      >
         <div
           css={`
             font-size: 14px;
@@ -91,7 +103,18 @@ export function GrantDetailOverviewModule() {
           ))}
         </div>
       </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={6}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        lg={6}
+        css={`
+          @media (max-width: 767px) {
+            order: 1;
+          }
+        `}
+      >
         <div
           css={`
             gap: 6px;
@@ -123,7 +146,18 @@ export function GrantDetailOverviewModule() {
           </div>
         </div>
       </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={6}>
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        lg={6}
+        css={`
+          @media (max-width: 767px) {
+            order: 2;
+          }
+        `}
+      >
         <div
           css={`
             font-size: 14px;
@@ -154,33 +188,50 @@ export function GrantDetailOverviewModule() {
           css={`
             font-size: 12px;
             margin-bottom: 40px;
+
+            @media (max-width: 767px) {
+              margin-bottom: 20px;
+            }
           `}
         >
           <b>Signed: </b>
           {formatFinancialValue(grantInfoData.investments.signed)}
         </div>
       </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={6}>
-        <div
-          css={`
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          `}
-        >
-          {/* Description */}
-        </div>
-        <div
-          css={`
-            font-size: 12px;
-            margin-bottom: 20px;
-          `}
-        >
-          {/* {grantInfoData.description} */}
-        </div>
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={6}>
+      {!isMobile && (
+        <Grid item xs={12} sm={6} md={6} lg={6}>
+          <div
+            css={`
+              font-size: 14px;
+              font-weight: bold;
+              margin-bottom: 5px;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            {/* Description */}
+          </div>
+          <div
+            css={`
+              font-size: 12px;
+              margin-bottom: 20px;
+            `}
+          >
+            {/* {grantInfoData.description} */}
+          </div>
+        </Grid>
+      )}
+      <Grid
+        item
+        xs={12}
+        sm={6}
+        md={6}
+        lg={6}
+        css={`
+          @media (max-width: 767px) {
+            order: 4;
+          }
+        `}
+      >
         <div
           css={`
             font-size: 14px;

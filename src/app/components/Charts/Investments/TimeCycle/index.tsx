@@ -271,10 +271,10 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
           </Grid>
         </Grid>
         {props.data.length === 0 ? (
-          <React.Fragment>
+          <div css="display: flex;justify-content: center;">
             <NoDataBudgetsTimeCycle />
             <NoDataLabel />
-          </React.Fragment>
+          </div>
         ) : (
           <ResponsiveBar
             animate

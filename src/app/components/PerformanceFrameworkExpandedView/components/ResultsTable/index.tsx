@@ -13,6 +13,12 @@ const styles = {
     width: 100%;
     margin: 10px 0;
     border-collapse: collapse;
+
+    @media (max-width: 767px) {
+      width: 700px;
+      min-width: 700px;
+      max-width: 700px;
+    }
   `,
   tablehead: css`
     th {
@@ -46,28 +52,38 @@ export function ResultsTable(props: PFIndicator) {
       `}
     >
       <b>Indicator: {props.name}</b>
-      <table css={styles.table}>
-        <thead css={styles.tablehead}>
-          <tr>
-            <th>Result type</th>
-            <th>Baseline</th>
-            <th>Target</th>
-            <th>Result</th>
-            <th>Achievement rate</th>
-            <th>Reporting periods</th>
-            <th> </th>
-          </tr>
-        </thead>
-        <tbody css={styles.tablebody}>
-          {props.results.map((result: PFIndicatorResult, index: number) => (
-            <ResultsTableRow
-              key={result.period}
-              selected={index === props.results.length - selected - 1}
-              {...result}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div
+        css={`
+          width: 100%;
+
+          @media (max-width: 767px) {
+            overflow-x: auto;
+          }
+        `}
+      >
+        <table css={styles.table}>
+          <thead css={styles.tablehead}>
+            <tr>
+              <th>Result type</th>
+              <th>Baseline</th>
+              <th>Target</th>
+              <th>Result</th>
+              <th>Achievement rate</th>
+              <th>Reporting periods</th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody css={styles.tablebody}>
+            {props.results.map((result: PFIndicatorResult, index: number) => (
+              <ResultsTableRow
+                key={result.period}
+                selected={index === props.results.length - selected - 1}
+                {...result}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

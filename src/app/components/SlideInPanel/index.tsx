@@ -68,7 +68,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
           display: flex;
           position: absolute;
           justify-content: flex-end;
-          height: calc(100% - ${top}px);
+          height: calc(100vh - ${top}px);
           right: ${props.toolboxOpen ? "400px" : 0};
           width: ${props.toolboxOpen ? "50%" : "60%"};
           transition: right 500ms cubic-bezier(0, 0, 0.2, 1) 0ms;
@@ -76,7 +76,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
           @media (max-width: 767px) {
             width: 100vw;
             box-shadow: none;
-            height: calc(100% - ${top + 56}px);
+            height: calc(100vh - ${top + 56}px);
           }
 
           > div {
@@ -127,7 +127,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
               padding: ${props.loading ? "0px" : "16px"} !important;
 
               > div {
-                height: calc(100% - 150px);
+                height: 100%;
               }
             }
           `}

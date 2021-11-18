@@ -11,6 +11,9 @@ export function NoDataAllocations() {
         @media (max-width: 617px) {
           width: 100%;
         }
+        @media (max-width: 767px) {
+          display: none;
+        }
       `}
     >
       <path

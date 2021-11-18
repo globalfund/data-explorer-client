@@ -66,6 +66,15 @@ export function PerformanceRating(props: PerformanceRatingProps) {
         }}
         axisBottom={{
           tickRotation: isMobile || props.data.length > 5 ? 45 : 0,
+          format: (value: number | string | Date) => {
+            if (isMobile) {
+              const splits = value.toString().split(" - ");
+              const date1 = splits[0].split(" ");
+              const date2 = splits[1].split(" ");
+              return `${date1[0]} - ${date2[0]} ${date1[1]}`;
+            }
+            return value.toString();
+          },
         }}
         theme={{
           axis: {

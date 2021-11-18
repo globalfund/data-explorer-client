@@ -10,6 +10,9 @@ export function NoDataTreemap() {
         @media (max-width: 1232px) {
           width: 100%;
         }
+        @media (max-width: 767px) {
+          display: none;
+        }
       `}
     >
       <rect width="1232" height="591" fill="#DFE3E6" />

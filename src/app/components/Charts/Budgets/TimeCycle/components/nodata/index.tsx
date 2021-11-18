@@ -10,6 +10,9 @@ export function NoDataBudgetsTimeCycle() {
         @media (max-width: 1231px) {
           width: 100%;
         }
+        @media (max-width: 767px) {
+          display: none;
+        }
       `}
     >
       <path

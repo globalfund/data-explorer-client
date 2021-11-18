@@ -80,7 +80,7 @@ export default function GrantDetail() {
   }, [params.period]);
 
   React.useEffect(() => {
-    if (params.vizType !== "overview") {
+    if (!isMobile && params.vizType !== "overview") {
       setOpenToolboxPanel(true);
     }
   }, [params.vizType]);
