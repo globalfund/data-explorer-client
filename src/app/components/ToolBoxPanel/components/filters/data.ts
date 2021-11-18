@@ -403,6 +403,13 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
+  "/location/<code>/grants/list": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
   // partner detail page
   "/partner/<code>/disbursements/treemap": filter(
     filtergroups,
@@ -503,6 +510,13 @@ export const pathnameToFilterGroups = {
       fg.name !== "Replenishment Periods"
   ),
   "/partner/<code>/grants": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/partner/<code>/grants/list": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
