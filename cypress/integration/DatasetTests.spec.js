@@ -1,0 +1,60 @@
+context('Datasets page tests', () => {
+    beforeEach('Set cookies', () => {
+        cy.setCookie('cookieNotice', 'false');
+        cy.setCookie('explainTooltip', 'false');
+    });
+    it('Scrolling', () => {
+        cy.visit('http://localhost:3000/datasets');
+        cy.waitPageLoader();
+        cy.get('button').eq(1).click();
+        cy.get('body').trigger('scroll', 'bottom');
+        cy.wait(2000);
+    });
+    it('Outline buttons on hover', () => {
+        cy.get('a > div').eq(9).trigger('mouseover');
+        cy.wait(2000);
+    });
+    it('Verify links', () => {
+        cy.get('body').trigger('scroll', 'top');
+        cy.get('a > div').eq(0).click();
+        cy.wait(3000);
+        cy.location('pathname').should('include', '/viz/pledges-contributions/treemap');
+        cy.go('back');
+        cy.get('a > div').eq(1).click();
+        cy.wait(3000);
+        cy.location('pathname').should('include', '/viz/signed/treemap');
+        cy.go('back');
+        cy.get('a > div').eq(2).click();
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'viz/commitment/treemap');
+        cy.go('back');
+        cy.get('a > div').eq(3).click({force: true});
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'viz/disbursements/treemap');
+        cy.go('back');
+        cy.get('a > div').eq(4).click({force: true});
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'viz/budgets/flow');
+        cy.go('back');
+        cy.get('a > div').eq(5).click({force: true});
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'viz/eligibility');
+        cy.go('back');
+        cy.get('a > div').eq(6).click({force: true});
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'viz/allocations');
+        cy.go('back');
+        cy.get('a > div').eq(7).click({force: true});
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'grants');
+        cy.go('back');
+        cy.get('a > div').eq(8).click({force: true});
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'results');
+        cy.go('back');
+        cy.get('a > div').eq(9).click({force: true});
+        cy.wait(3000);
+        cy.location('pathname').should('include', 'documents');
+        cy.go('back');
+    });
+});
