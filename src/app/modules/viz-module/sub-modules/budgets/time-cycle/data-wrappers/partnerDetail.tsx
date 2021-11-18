@@ -63,6 +63,23 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   const isDrilldownLoading = useStoreState(
     (state) => state.PartnerDetailBudgetsTimeCycleDrilldownLevel1.loading
   );
+  const fetchDrilldownLevel2Data = useStoreActions(
+    (store) => store.PartnerDetailBudgetsTimeCycleDrilldownLevel2.fetch
+  );
+  const clearDrilldownLevel2Data = useStoreActions(
+    (store) => store.PartnerDetailBudgetsTimeCycleDrilldownLevel2.clear
+  );
+  const dataDrilldownLevel2 = useStoreState(
+    (state) =>
+      get(
+        state.PartnerDetailBudgetsTimeCycleDrilldownLevel2.data,
+        "data",
+        []
+      ) as BudgetsTreemapDataItem[]
+  );
+  const isDrilldown2Loading = useStoreState(
+    (state) => state.PartnerDetailBudgetsTimeCycleDrilldownLevel2.loading
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -101,6 +118,28 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   }, [vizSelected]);
 
   useUpdateEffect(() => {
+    if (
+      drilldownVizSelected !== undefined &&
+      vizSelected !== undefined &&
+      props.code
+    ) {
+      const idSplits = drilldownVizSelected.split("-");
+      const filterString = getAPIFormattedFilters({
+        ...appliedFilters,
+        components: [...appliedFilters.components, idSplits[1]],
+        partners: [...appliedFilters.partners, props.code],
+      });
+      fetchDrilldownLevel2Data({
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&activityAreaName=${
+          idSplits[0]
+        }${filterString.length > 0 ? `&${filterString}` : ""}`,
+      });
+    } else {
+      clearDrilldownLevel2Data();
+    }
+  }, [drilldownVizSelected]);
+
+  useUpdateEffect(() => {
     setDrilldownPanelOptions(data.map((item: any) => item.year.toString()));
   }, [data]);
 
@@ -108,7 +147,7 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
     <BudgetsTimeCycleModule
       data={data}
       isLoading={isLoading}
-      isDrilldownLoading={isDrilldownLoading}
+      isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
       vizTranslation={vizTranslation}
@@ -124,7 +163,7 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       setDrilldownVizSelected={setDrilldownVizSelected}
       setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
-      dataDrilldownLevel2={dataDrilldownLevel1}
+      dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
     />

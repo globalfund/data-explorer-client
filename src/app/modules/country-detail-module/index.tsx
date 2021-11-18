@@ -111,6 +111,7 @@ export default function CountryDetail() {
       `}
     >
       <PageHeader
+        isDetail
         title={locationInfoData.locationName}
         breadcrumbs={[
           { name: "Home", link: "/" },

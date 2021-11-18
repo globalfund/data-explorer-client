@@ -112,10 +112,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   } else if (vizDrilldowns.length > 0) {
     if (props.isGrantDetail) {
       top = 202;
+    } else if (props.isLocationDetail) {
+      top = 203;
     } else {
       top = 168;
     }
-  } else if (props.isGrantDetail) {
+  } else if (props.isGrantDetail || props.isLocationDetail) {
     top = 168;
   }
 

@@ -118,7 +118,7 @@ export default function GrantDetail() {
       `}
     >
       <PageHeader
-        isGrantDetail
+        isDetail
         title={grantInfoData.title}
         breadcrumbs={[
           { name: "Home", link: "/" },

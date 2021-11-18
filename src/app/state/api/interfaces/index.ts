@@ -116,6 +116,7 @@ export interface StoreModel {
   GrantDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
   GrantDetailBudgetsTimeCycle: ApiCallModel;
   GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  GrantDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   GrantDetailDisbursementsTreemap: ApiCallModel;
   GrantDetailSignedTreemap: ApiCallModel;
   GrantDetailCommitmentTreemap: ApiCallModel;
@@ -138,6 +139,7 @@ export interface StoreModel {
   LocationDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
   LocationDetailBudgetsTimeCycle: ApiCallModel;
   LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  LocationDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   LocationGrants: ApiCallModel;
   // partner detail api
   PartnerDetailInfo: ApiCallModel;
@@ -152,6 +154,7 @@ export interface StoreModel {
   PartnerDetailBudgetsFlowDrilldownLevel2: ApiCallModel;
   PartnerDetailBudgetsTimeCycle: ApiCallModel;
   PartnerDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
+  PartnerDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   // filter options api
   LocationFilterOptions: ApiCallModel;
   ComponentFilterOptions: ApiCallModel;

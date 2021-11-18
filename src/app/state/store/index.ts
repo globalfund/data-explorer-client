@@ -80,9 +80,11 @@ import LocationDetailBudgetsFlow, {
 } from "app/state/api/action-reducers/locationDetail/budgetsFlow";
 import GrantDetailBudgetsTimeCycle, {
   GrantDetailBudgetsTimeCycleDrilldownLevel1,
+  GrantDetailBudgetsTimeCycleDrilldownLevel2,
 } from "app/state/api/action-reducers/grantDetail/budgetsTimeCycle";
 import LocationDetailBudgetsTimeCycle, {
   LocationDetailBudgetsTimeCycleDrilldownLevel1,
+  LocationDetailBudgetsTimeCycleDrilldownLevel2,
 } from "app/state/api/action-reducers/locationDetail/budgetsTimeCycle";
 import ResultsList, {
   ResultsStats,
@@ -104,6 +106,7 @@ import PartnerDetailBudgetsFlow, {
 } from "../api/action-reducers/partnerDetail/budgetsFlow";
 import PartnerDetailBudgetsTimeCycle, {
   PartnerDetailBudgetsTimeCycleDrilldownLevel1,
+  PartnerDetailBudgetsTimeCycleDrilldownLevel2,
 } from "../api/action-reducers/partnerDetail/budgetsTimeCycle";
 import SignedTreemap, {
   SignedTimeCycle,
@@ -187,6 +190,9 @@ const storeContent: StoreModel = {
   GrantDetailBudgetsTimeCycleDrilldownLevel1: persist(
     GrantDetailBudgetsTimeCycleDrilldownLevel1
   ),
+  GrantDetailBudgetsTimeCycleDrilldownLevel2: persist(
+    GrantDetailBudgetsTimeCycleDrilldownLevel2
+  ),
   GrantDetailDisbursementsTreemap: persist(GrantDetailDisbursementsTreemap),
   GrantDetailDisbursementsTimeCycle: persist(GrantDetailDisbursementsTimeCycle),
   GrantDetailSignedTreemap: persist(GrantDetailSignedTreemap),
@@ -216,6 +222,9 @@ const storeContent: StoreModel = {
     LocationDetailBudgetsFlowDrilldownLevel2
   ),
   LocationDetailBudgetsTimeCycle: persist(LocationDetailBudgetsTimeCycle),
+  LocationDetailBudgetsTimeCycleDrilldownLevel2: persist(
+    LocationDetailBudgetsTimeCycleDrilldownLevel2
+  ),
   LocationDetailBudgetsTimeCycleDrilldownLevel1: persist(
     LocationDetailBudgetsTimeCycleDrilldownLevel1
   ),
@@ -244,6 +253,9 @@ const storeContent: StoreModel = {
   PartnerDetailBudgetsTimeCycle: persist(PartnerDetailBudgetsTimeCycle),
   PartnerDetailBudgetsTimeCycleDrilldownLevel1: persist(
     PartnerDetailBudgetsTimeCycleDrilldownLevel1
+  ),
+  PartnerDetailBudgetsTimeCycleDrilldownLevel2: persist(
+    PartnerDetailBudgetsTimeCycleDrilldownLevel2
   ),
   // filter options api
   LocationFilterOptions: persist(LocationFilterOptions),
