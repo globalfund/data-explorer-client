@@ -10,3 +10,7 @@ export default GrantDetailBudgetsTimeCycle;
 export const GrantDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/budgets/drilldown`),
 };
+
+export const GrantDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/budgets/drilldown/2`),
+};

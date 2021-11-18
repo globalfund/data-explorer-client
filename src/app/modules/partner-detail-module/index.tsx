@@ -91,7 +91,7 @@ export default function PartnerDetail() {
       `}
     >
       <PageHeader
-        isGrantDetail
+        isDetail
         title={partnerInfoData.partnerName}
         breadcrumbs={[
           { name: "Home", link: "/" },

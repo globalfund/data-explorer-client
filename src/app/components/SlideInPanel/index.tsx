@@ -30,11 +30,13 @@ export function SlideInContainer(props: SlideInContainerProps) {
   );
 
   const isGrantDetail = location.pathname.indexOf("/grant/") > -1;
+  const isPartnerDetail = location.pathname.indexOf("/partner/") > -1;
+  const isLocationDetail = location.pathname.indexOf("/location/") > -1;
   let top = 133;
   if (vizDrilldowns.length > 0 || props.bigHeader) {
     top = 168;
   }
-  if (isGrantDetail) {
+  if (isGrantDetail || isPartnerDetail || isLocationDetail) {
     top = 203;
   }
 

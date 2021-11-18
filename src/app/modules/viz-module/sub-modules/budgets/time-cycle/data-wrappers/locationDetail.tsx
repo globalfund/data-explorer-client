@@ -63,6 +63,23 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   const isDrilldownLoading = useStoreState(
     (state) => state.LocationDetailBudgetsTimeCycleDrilldownLevel1.loading
   );
+  const fetchDrilldownLevel2Data = useStoreActions(
+    (store) => store.LocationDetailBudgetsTimeCycleDrilldownLevel2.fetch
+  );
+  const clearDrilldownLevel2Data = useStoreActions(
+    (store) => store.LocationDetailBudgetsTimeCycleDrilldownLevel2.clear
+  );
+  const dataDrilldownLevel2 = useStoreState(
+    (state) =>
+      get(
+        state.LocationDetailBudgetsTimeCycleDrilldownLevel2.data,
+        "data",
+        []
+      ) as BudgetsTreemapDataItem[]
+  );
+  const isDrilldown2Loading = useStoreState(
+    (state) => state.LocationDetailBudgetsTimeCycleDrilldownLevel2.loading
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -84,14 +101,10 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined && props.code) {
-      const filterString = getAPIFormattedFilters(
-        props.code
-          ? {
-              ...appliedFilters,
-              locations: [...appliedFilters.locations, props.code],
-            }
-          : appliedFilters
-      );
+      const filterString = getAPIFormattedFilters({
+        ...appliedFilters,
+        locations: [...appliedFilters.locations, props.code],
+      });
       fetchDrilldownLevel1Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&${filterString}`,
       });
@@ -101,6 +114,28 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   }, [vizSelected]);
 
   useUpdateEffect(() => {
+    if (
+      drilldownVizSelected !== undefined &&
+      vizSelected !== undefined &&
+      props.code
+    ) {
+      const idSplits = drilldownVizSelected.split("-");
+      const filterString = getAPIFormattedFilters({
+        ...appliedFilters,
+        components: [...appliedFilters.components, idSplits[1]],
+        locations: [...appliedFilters.locations, props.code],
+      });
+      fetchDrilldownLevel2Data({
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&activityAreaName=${
+          idSplits[0]
+        }${filterString.length > 0 ? `&${filterString}` : ""}`,
+      });
+    } else {
+      clearDrilldownLevel2Data();
+    }
+  }, [drilldownVizSelected]);
+
+  useUpdateEffect(() => {
     setDrilldownPanelOptions(data.map((item: any) => item.year.toString()));
   }, [data]);
 
@@ -108,7 +143,7 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
     <BudgetsTimeCycleModule
       data={data}
       isLoading={isLoading}
-      isDrilldownLoading={isDrilldownLoading}
+      isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
       vizTranslation={vizTranslation}
@@ -124,7 +159,7 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       setDrilldownVizSelected={setDrilldownVizSelected}
       setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
-      dataDrilldownLevel2={dataDrilldownLevel1}
+      dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
     />

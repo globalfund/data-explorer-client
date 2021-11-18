@@ -20,7 +20,7 @@ import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
-  isGrantDetail?: boolean;
+  isDetail?: boolean;
   breadcrumbs: BreadcrumbModel[];
   onToolboxSmBtnClick?: () => void;
 }
@@ -203,6 +203,8 @@ export function PageHeader(props: PageHeaderProps) {
     }
   }, [history.location.pathname]);
 
+  const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
+
   return (
     <div css={styles.container}>
       <Container maxWidth="lg" css={styles.innercontainer}>
@@ -293,7 +295,7 @@ export function PageHeader(props: PageHeaderProps) {
           <Grid
             item
             sm={12}
-            md={!props.isGrantDetail ? 4 : 12}
+            md={!props.isDetail ? 4 : 12}
             css={`
               @media (max-width: 767px) {
                 width: 100%;
@@ -303,7 +305,7 @@ export function PageHeader(props: PageHeaderProps) {
             <Tooltip title={props.title}>
               <div
                 css={styles.title}
-                style={props.isGrantDetail ? { fontSize: 14 } : {}}
+                style={isGrantDetail ? { fontSize: 14 } : {}}
               >
                 {props.title}
               </div>
@@ -318,7 +320,7 @@ export function PageHeader(props: PageHeaderProps) {
                 ))}
               </div>
             )}
-            {!props.isGrantDetail && (
+            {!props.isDetail && (
               <div
                 css={`
                   width: 100%;
@@ -330,7 +332,7 @@ export function PageHeader(props: PageHeaderProps) {
           <Grid
             item
             sm={12}
-            md={!props.isGrantDetail ? 8 : 12}
+            md={!props.isDetail ? 8 : 12}
             css={`
               display: flex;
               align-items: flex-end;
