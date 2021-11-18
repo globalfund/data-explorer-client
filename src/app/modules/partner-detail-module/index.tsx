@@ -17,6 +17,7 @@ import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { partnerDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
@@ -60,7 +61,9 @@ export default function PartnerDetail() {
   }, [paramCode]);
 
   React.useEffect(() => {
-    setOpenToolboxPanel(true);
+    if (!isMobile && !openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
   }, [params.vizType]);
 
   useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
@@ -110,6 +113,17 @@ export default function PartnerDetail() {
         tabs={partnerDetailTabs}
       />
       <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl tabs={partnerDetailTabs} />
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
+            `}
+          />
+        </React.Fragment>
+      )}
       <div
         id="export-view-div"
         css={`
@@ -227,6 +241,14 @@ export default function PartnerDetail() {
           </Route>
         </Switch>
       </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         isGrantDetail
         open={openToolboxPanel}

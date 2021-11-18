@@ -32,9 +32,11 @@ export default function GrantsModule(props: GrantsModuleProps) {
   useTitle(
     `The Data Explorer -${
       props.detailFilterType
-        ? ` ${props.detailFilterType.slice(
+        ? ` ${props.detailFilterType
+            .slice(0, 1)
+            .toUpperCase()}${props.detailFilterType.slice(
             1,
-            props.detailFilterType.length - 2
+            props.detailFilterType.length - 1
           )}`
         : ""
     } Grants`
