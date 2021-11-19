@@ -283,7 +283,8 @@ export function GeoMap(props: GeoMapProps) {
 
   const onClick = React.useCallback((event: any) => {
     if (isMobile || isTouchDevice()) {
-      onHover(event);
+      // disabled cause was causing a double click on touch devices
+      // onHover(event);
     } else if (props.allowClickthrough) {
       const { features } = event;
       const hoveredFeature = features && features[0];
@@ -332,6 +333,7 @@ export function GeoMap(props: GeoMapProps) {
   if (props.type === "allocations") {
     heightDef = "274px";
   }
+
   return (
     <div
       ref={containerRef as React.RefObject<HTMLDivElement>}
@@ -661,30 +663,32 @@ export function GeoMap(props: GeoMapProps) {
         )}
         <GeoMapControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
       </MapGL>
-      {hoverInfo && isHovering && props.type === "investments" && (
-        <div
-          css={`
-            z-index: 100;
-            width: 350px;
-            padding: 20px;
-            position: absolute;
-            background: #f5f5f7;
-            border-radius: 20px;
-            top: ${hoverInfo.y + 50}px;
-            left: ${hoverInfo.x - 180}px;
+      {hoverInfo &&
+        (isHovering || isMobile || isTouchDevice()) &&
+        props.type === "investments" && (
+          <div
+            css={`
+              z-index: 100;
+              width: 350px;
+              padding: 20px;
+              position: absolute;
+              background: #f5f5f7;
+              border-radius: 20px;
+              top: ${hoverInfo.y + 50}px;
+              left: ${hoverInfo.x - 180}px;
 
-            @media (max-width: 767px) {
-              top: 29vh;
-              left: 16px;
-              background: #fff;
-              width: calc(100vw - 32px);
-              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
-            }
-          `}
-        >
-          {(isMobile || isTouchDevice()) && (
-            <div
-              css={`
+              @media (max-width: 767px) {
+                top: 29vh;
+                left: 16px;
+                background: #fff;
+                width: calc(100vw - 32px);
+                box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+              }
+            `}
+          >
+            {(isMobile || isTouchDevice()) && (
+              <div
+                css={`
             display: flex;
             flex-direction: row;
             justify-content flex-end;
@@ -693,49 +697,49 @@ export function GeoMap(props: GeoMapProps) {
               fill: #2E4063;
             }
           `}
-            >
-              <IconButton
-                onTouchStart={() => {
-                  setHoverInfo(null);
-                }}
+              >
+                <IconButton
+                  onTouchStart={() => {
+                    setHoverInfo(null);
+                  }}
+                  css={`
+                    padding: 0;
+                  `}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+            )}
+            <GeomapTooltip
+              {...hoverInfo.properties}
+              investmentSubType={props.investmentSubType}
+            />
+            {(isMobile || isTouchDevice()) && (
+              <div
                 css={`
-                  padding: 0;
+                  width: 100%;
+                  display: flex;
+                  margin-top: 10px;
+                  flex-direction: row;
+                  justify-content: flex-end;
                 `}
               >
-                <CloseIcon />
-              </IconButton>
-            </div>
-          )}
-          <GeomapTooltip
-            {...hoverInfo.properties}
-            investmentSubType={props.investmentSubType}
-          />
-          {(isMobile || isTouchDevice()) && (
-            <div
-              css={`
-                width: 100%;
-                display: flex;
-                margin-top: 10px;
-                flex-direction: row;
-                justify-content: flex-end;
-              `}
-            >
-              <TooltipButton
-                type="button"
-                onTouchStart={() => {
-                  history.push(
-                    `/location/${hoverInfo.properties.iso_a3}/overview`
-                  );
-                }}
-              >
-                Location detail page
-              </TooltipButton>
-            </div>
-          )}
-        </div>
-      )}
+                <TooltipButton
+                  type="button"
+                  onTouchStart={() => {
+                    history.push(
+                      `/location/${hoverInfo.properties.iso_a3}/overview`
+                    );
+                  }}
+                >
+                  Location detail page
+                </TooltipButton>
+              </div>
+            )}
+          </div>
+        )}
       {hoverInfo &&
-        isHovering &&
+        (isHovering || isMobile || isTouchDevice()) &&
         (props.type === "allocations" || props.type === "budgets") && (
           <div
             css={`
@@ -809,30 +813,32 @@ export function GeoMap(props: GeoMapProps) {
             )}
           </div>
         )}
-      {hoverInfo && isHovering && props.type === "donors" && (
-        <div
-          css={`
-            z-index: 100;
-            width: 350px;
-            padding: 20px;
-            position: absolute;
-            background: #f5f5f7;
-            border-radius: 20px;
-            top: ${hoverInfo.y + 50}px;
-            left: ${hoverInfo.x - 180}px;
+      {hoverInfo &&
+        (isHovering || isMobile || isTouchDevice()) &&
+        props.type === "donors" && (
+          <div
+            css={`
+              z-index: 100;
+              width: 350px;
+              padding: 20px;
+              position: absolute;
+              background: #f5f5f7;
+              border-radius: 20px;
+              top: ${hoverInfo.y + 50}px;
+              left: ${hoverInfo.x - 180}px;
 
-            @media (max-width: 767px) {
-              top: 29vh;
-              left: 16px;
-              background: #fff;
-              width: calc(100vw - 32px);
-              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
-            }
-          `}
-        >
-          {(isMobile || isTouchDevice()) && (
-            <div
-              css={`
+              @media (max-width: 767px) {
+                top: 29vh;
+                left: 16px;
+                background: #fff;
+                width: calc(100vw - 32px);
+                box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+              }
+            `}
+          >
+            {(isMobile || isTouchDevice()) && (
+              <div
+                css={`
                 display: flex;
                 flex-direction: row;
                 justify-content flex-end;
@@ -841,25 +847,25 @@ export function GeoMap(props: GeoMapProps) {
                   fill: #2E4063;
                 }
               `}
-            >
-              <IconButton
-                onTouchStart={() => {
-                  setHoverInfo(null);
-                }}
-                css={`
-                  padding: 0;
-                `}
               >
-                <CloseIcon />
-              </IconButton>
-            </div>
-          )}
-          <GeomapPinTooltip
-            allPins={props.pins}
-            pin={hoverInfo.properties.data}
-          />
-        </div>
-      )}
+                <IconButton
+                  onTouchStart={() => {
+                    setHoverInfo(null);
+                  }}
+                  css={`
+                    padding: 0;
+                  `}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+            )}
+            <GeomapPinTooltip
+              allPins={props.pins}
+              pin={hoverInfo.properties.data}
+            />
+          </div>
+        )}
       {props.noData && <NoDataLabel />}
     </div>
   );
