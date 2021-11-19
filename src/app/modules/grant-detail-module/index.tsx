@@ -303,7 +303,13 @@ export default function GrantDetail() {
         open={openToolboxPanel}
         filterGroups={filtergroups}
         vizWrapperRef={vizWrapperRef}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
       <div
         css={`

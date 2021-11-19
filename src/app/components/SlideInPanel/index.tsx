@@ -43,7 +43,16 @@ export function SlideInContainer(props: SlideInContainerProps) {
       top = 195;
     }
   }
-  if (isGrantDetail || isPartnerDetail || isLocationDetail) {
+  if (isGrantDetail) {
+    top = 203;
+    if (isMobile) {
+      top = 104;
+      if (vizDrilldowns.length > 0) {
+        top = 140;
+      }
+    }
+  }
+  if (isPartnerDetail || isLocationDetail) {
     top = 203;
     if (isMobile) {
       top = 196;
@@ -73,17 +82,21 @@ export function SlideInContainer(props: SlideInContainerProps) {
           width: ${props.toolboxOpen ? "50%" : "60%"};
           transition: right 500ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
-          @media (max-width: 767px) {
-            width: 100vw;
-            box-shadow: none;
-            height: calc(100vh - ${top + 56}px);
-          }
-
           > div {
             width: 100%;
             background: #fff;
             margin: 0 !important;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+          }
+
+          @media (max-width: 767px) {
+            width: 100vw;
+            box-shadow: none;
+            height: calc(100vh - ${top + 56}px);
+
+            > div {
+              box-shadow: none;
+            }
           }
         `}
       >

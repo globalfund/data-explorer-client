@@ -35,7 +35,7 @@ const styles = {
     left: 0;
     gap: 15px;
     color: #fff;
-    width: 250px;
+    width: 267px;
     display: flex;
     cursor: pointer;
     position: absolute;

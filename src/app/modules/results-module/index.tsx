@@ -142,7 +142,13 @@ export default function ResultsModule() {
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}
         filterGroups={pathnameToFilterGroups.results}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
       <PageTopSpacer />
       <div ref={vizWrapperRef}>

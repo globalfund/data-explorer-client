@@ -15,6 +15,10 @@ export function PerformanceRating(props: PerformanceRatingProps) {
       css={`
         width: 100%;
         height: 600px;
+
+        @media (max-width: 767px) {
+          height: 500px;
+        }
       `}
     >
       <div

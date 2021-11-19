@@ -11,10 +11,10 @@ import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
+import { MobileFilterBar } from "app/components/PageHeader/components/filterbar";
 
 interface PageHeaderProps {
   title: string;
@@ -352,22 +352,7 @@ export function PageHeader(props: PageHeaderProps) {
           )}
         </Grid>
       </Container>
-      {isMobile && (
-        <div
-          css={`
-            width: 100vw;
-            padding: 16px 20px;
-            background: #495057;
-
-            > span {
-              color: #fff;
-              font-size: 12px;
-            }
-          `}
-        >
-          <span>Your selections</span>
-        </div>
-      )}
+      {isMobile && !isGrantDetail && <MobileFilterBar />}
     </div>
   );
 }

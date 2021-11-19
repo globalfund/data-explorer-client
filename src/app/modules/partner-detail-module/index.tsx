@@ -258,7 +258,13 @@ export default function PartnerDetail() {
           location.pathname.replace(params.code, "<code>"),
           filtergroups
         )}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
       <div
         css={`

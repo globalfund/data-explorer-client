@@ -84,8 +84,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   }
   if (isSmallScreen && vizDrilldowns.length > 0) {
     top = 185;
+    if (isMobile) {
+      top = 196;
+    }
     if (props.isGrantDetail) {
       top = 206;
+      if (isMobile) {
+        top = 139;
+      }
     }
     if (props.isLocationDetail) {
       top = 222;
@@ -93,14 +99,11 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         top = 196;
       }
     }
-    if (isMobile) {
-      top = 196;
-    }
   } else if (isSmallScreen) {
     if (props.isGrantDetail) {
       top = 168;
       if (isMobile) {
-        top = 161;
+        top = 104;
       }
     }
     if (props.isLocationDetail) {

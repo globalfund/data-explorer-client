@@ -170,7 +170,13 @@ export default function GrantsModule(props: GrantsModuleProps) {
             open={openToolboxPanel}
             vizWrapperRef={vizWrapperRef}
             filterGroups={pathnameToFilterGroups.grants}
-            onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+            onCloseBtnClick={(value?: boolean) => {
+              if (value !== undefined) {
+                setOpenToolboxPanel(value);
+              } else {
+                setOpenToolboxPanel(!openToolboxPanel);
+              }
+            }}
           />
           <PageTopSpacer />
         </>

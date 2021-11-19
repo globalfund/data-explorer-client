@@ -39,6 +39,10 @@ export function ToolBoxPanelAggregateBy(props: ToolBoxPanelAggregateByProps) {
         align-items: center;
         justify-content: space-between;
         border-bottom: 1px solid #dfe3e6;
+
+        @media (max-width: 767px) {
+          padding: 16px;
+        }
       `}
     >
       <b>{props.title}</b>

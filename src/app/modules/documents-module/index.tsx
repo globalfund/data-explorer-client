@@ -109,7 +109,13 @@ export default function DocumentsModule() {
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}
         filterGroups={pathnameToFilterGroups.documents}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
       <PageTopSpacer />
       {isLoading && <PageLoader />}
