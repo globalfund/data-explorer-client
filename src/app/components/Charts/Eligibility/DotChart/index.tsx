@@ -76,14 +76,16 @@ export function DotChart(props: DotChartProps) {
             <div>
               <b>{hoveredNode.name}</b>: {hoveredNode.status}
             </div>
-            <IconButton
-              onTouchStart={() => setHoveredNode(null)}
-              css={`
-                padding: 0;
-              `}
-            >
-              <CloseIcon />
-            </IconButton>
+            {isMobile && (
+              <IconButton
+                onTouchStart={() => setHoveredNode(null)}
+                css={`
+                  padding: 0;
+                `}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
           </div>
         </div>
       )}

@@ -52,7 +52,7 @@ export function GeoMap(props: GeoMapProps) {
   const [viewport, setViewport] = React.useState({
     latitude: 37.307990048281795,
     longitude: 4.5689197295041035,
-    zoom: 1.3,
+    zoom: !isSmallScreen ? 1.3 : 0.5,
     bearing: 0,
     pitch: 0,
     width: "100%",
@@ -239,7 +239,7 @@ export function GeoMap(props: GeoMapProps) {
       hoveredFeature.properties.name &&
       hoveredFeature.properties.value > 0;
 
-    if (mapRef.current) {
+    if (mapRef.current && !isMobile && !isTouchDevice()) {
       if (tileWithData) {
         // @ts-ignore
         mapRef.current.setFeatureState(
