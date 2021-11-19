@@ -224,6 +224,15 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   opacity: ${!hoveredLegend || hoveredLegend === "Eligible"
                     ? 1
                     : 0.3};
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 5px;
+                      }
+                    }
+                  }
                 `}
                 onMouseEnter={() => setHoveredLegend("Eligible")}
                 onMouseLeave={() => setHoveredLegend(null)}
@@ -247,6 +256,15 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   opacity: ${!hoveredLegend || hoveredLegend === "Not Eligible"
                     ? 1
                     : 0.3};
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 5px;
+                      }
+                    }
+                  }
                 `}
                 onMouseEnter={() => setHoveredLegend("Not Eligible")}
                 onMouseLeave={() => setHoveredLegend(null)}
@@ -271,6 +289,15 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   hoveredLegend === "Transition Funding"
                     ? 1
                     : 0.3};
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 5px;
+                      }
+                    }
+                  }
                 `}
                 onMouseEnter={() => setHoveredLegend("Transition Funding")}
                 onMouseLeave={() => setHoveredLegend(null)}

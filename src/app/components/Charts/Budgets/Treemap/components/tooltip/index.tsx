@@ -37,6 +37,14 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           padding: 16px 0;
           flex-direction: column;
           border-bottom: 1px solid #dfe3e6;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 10px;
+              }
+            }
+          }
         `}
       >
         <div

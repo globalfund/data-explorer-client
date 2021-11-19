@@ -108,6 +108,15 @@ function ResultsTableRow(props: ResultsTableRowProps) {
             display: flex;
             flex-direction: row;
             align-items: center;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 20px;
+                }
+              }
+            }
           `}
         >
           <div
@@ -123,6 +132,15 @@ function ResultsTableRow(props: ResultsTableRowProps) {
               display: flex;
               flex-direction: row;
               align-items: center;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 10px;
+                  }
+                }
+              }
 
               > svg {
                 transform: rotate(90deg);

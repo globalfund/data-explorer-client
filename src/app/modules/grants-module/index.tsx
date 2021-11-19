@@ -207,7 +207,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
           />
         )}
       </div>
-      <div css="width: 100%;height: 25px;" />
+      <div css="width: 100%;height: 56px;" />
       <div
         css={`
           left: 0;

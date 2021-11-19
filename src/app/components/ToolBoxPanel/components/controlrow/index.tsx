@@ -25,6 +25,14 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
         padding: 15px 35px 15px 25px;
         justify-content: space-between;
         border-bottom: 1px solid #dfe3e6;
+
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 12px;
+            }
+          }
+        }
       `}
     >
       <b>{props.title}</b>
@@ -33,6 +41,14 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
           gap: 12px;
           display: flex;
           flex-direction: row;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 12px;
+              }
+            }
+          }
         `}
       >
         {props.options.map((option: ViewModel) =>
@@ -47,6 +63,15 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                   flex-direction: row;
                   align-items: center;
                   text-decoration: none;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 6px;
+                      }
+                    }
+                  }
 
                   path {
                     fill: ${props.selected === option.value
@@ -86,6 +111,15 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 background: ${props.selected === option.value
                   ? "#495057"
                   : "#fff"};
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 6px;
+                    }
+                  }
+                }
 
                 &:hover {
                   color: #fff;

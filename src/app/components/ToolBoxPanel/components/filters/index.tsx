@@ -56,6 +56,13 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
 
         @media (max-width: 767px) {
           padding: 16px;
+          overflow-y: unset;
+
+          @supports (-webkit-touch-callout: none) {
+            height: unset;
+            max-height: unset;
+            padding-bottom: ${expandedGroup ? 100 : 200}px;
+          }
         }
       `}
     >

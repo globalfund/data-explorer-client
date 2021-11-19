@@ -90,6 +90,14 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           align-items: flex-end;
           justify-content: space-between;
           border-bottom: 1px solid #dfe3e6;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 5px;
+              }
+            }
+          }
         `}
       >
         <b>{props.id}</b>
@@ -105,6 +113,14 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           padding: 16px 0;
           flex-direction: column;
           border-bottom: 1px solid #dfe3e6;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 10px;
+              }
+            }
+          }
         `}
       >
         <div

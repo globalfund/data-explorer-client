@@ -8,6 +8,14 @@ export const styles = {
     padding: 16px 20px;
     background: #495057;
     align-items: center;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 12px;
+        }
+      }
+    }
   `,
   label: css`
     color: #fff;
@@ -18,6 +26,14 @@ export const styles = {
     gap: 12px;
     display: flex;
     flex-wrap: wrap;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 12px;
+        }
+      }
+    }
 
     @media (max-width: 767px) {
       flex-wrap: nowrap;

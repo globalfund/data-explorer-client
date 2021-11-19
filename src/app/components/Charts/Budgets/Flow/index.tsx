@@ -182,6 +182,15 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 24px;
+                    }
+                  }
+                }
               `}
             >
               {legends.map((legend: any) => (
@@ -194,6 +203,15 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                     align-items: center;
                     flex-direction: row;
                     font-weight: normal;
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 6px;
+                        }
+                      }
+                    }
                   `}
                 >
                   <div

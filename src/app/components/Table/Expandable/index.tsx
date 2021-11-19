@@ -90,10 +90,17 @@ function Row(props: {
                 gap: 12px;
                 width: 100%;
                 display: flex;
-                font-weight: bold;
                 align-items: center;
                 flex-direction: row;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 12px;
+                    }
+                  }
+                }
 
                 > svg {
                   transition: transform 0.1s ease-in-out;
@@ -104,7 +111,14 @@ function Row(props: {
               {(props.row.docCategories || props.row.docs) && (
                 <TriangleXSIcon />
               )}
-              {row.name}
+              <div
+                css={`
+                  font-weight: bold;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                `}
+              >
+                {row.name}
+              </div>
             </div>
             {row.link && <DownloadIcon />}
           </div>

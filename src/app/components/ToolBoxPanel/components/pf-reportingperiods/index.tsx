@@ -38,6 +38,14 @@ export function PerformanceFrameworkReportingPeriods(
         flex-direction: column;
         border-bottom: 1px solid #dfe3e6;
 
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 12px;
+            }
+          }
+        }
+
         span {
           font-size: 12px;
         }

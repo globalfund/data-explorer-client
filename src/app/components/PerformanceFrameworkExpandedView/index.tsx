@@ -14,6 +14,14 @@ const styles = {
     gap: 30px;
     display: flex;
     flex-direction: column;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 30px;
+        }
+      }
+    }
   `,
   arrowscontainer: css`
     display: flex;

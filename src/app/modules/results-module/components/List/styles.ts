@@ -38,6 +38,14 @@ export const buttonrow = (position: "up" | "down") => css`
   border-${position === "up" ? "bottom" : "top"}: 1px solid #c7cdd1;
   border-radius: ${position === "up" ? "20px 20px 0 0" : "0 0 20px 20px"};
 
+  > * {
+    @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+      &:not(:last-child) {
+        margin-right: 20px;
+      }
+    }
+  }
+
   path {
     fill: ${position === "up" ? "#fff" : "#495057"};
   }
@@ -64,6 +72,14 @@ export const locationlist = css`
   background: #495057;
   flex-direction: column;
   border-radius: 0 0 20px 20px;
+
+  > * {
+    @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+      &:not(:last-child) {
+        margin-right: 6px;
+      }
+    }
+  }
 
   > div {
     display: flex;

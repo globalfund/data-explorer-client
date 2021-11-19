@@ -152,9 +152,18 @@ const styles = {
     width: fit-content;
     flex-direction: row;
 
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 3px;
+        }
+      }
+    }
+
     @media (max-width: 767px) {
       width: 100%;
       overflow-x: auto;
+      overflow-y: hidden;
     }
   `,
   drilldownitem: (index: number) => css`

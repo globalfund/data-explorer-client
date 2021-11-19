@@ -166,6 +166,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               @media (max-width: 767px) {
                 width: 100vw;
                 box-shadow: none;
+                overflow-y: auto;
                 height: calc(100vh - ${top + 56}px);
               }
             `}

@@ -151,7 +151,12 @@ export default function ResultsModule() {
         }}
       />
       <PageTopSpacer />
-      <div ref={vizWrapperRef}>
+      <div
+        ref={vizWrapperRef}
+        css={`
+          width: 100%;
+        `}
+      >
         <DataList
           isLoading={isLoading}
           search={search}

@@ -138,6 +138,15 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
                 display: flex;
                 margin-bottom: 20px;
                 flex-direction: row;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 40px;
+                    }
+                  }
+                }
               `}
             >
               <DrillDownArrowSelector

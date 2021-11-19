@@ -104,6 +104,15 @@ export function PledgesContributionsTimeCycle(
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 24px;
+                    }
+                  }
+                }
               `}
             >
               {legends.map((legend: any) => (
@@ -125,6 +134,15 @@ export function PledgesContributionsTimeCycle(
                     hoveredLegend === legend.name.toLowerCase()
                       ? 1
                       : 0.3};
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 6px;
+                        }
+                      }
+                    }
                   `}
                 >
                   <div

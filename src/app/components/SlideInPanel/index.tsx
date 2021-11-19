@@ -92,7 +92,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
           @media (max-width: 767px) {
             width: 100vw;
             box-shadow: none;
-            height: calc(100vh - ${top + 56}px);
+            height: calc(100vh - 150px);
 
             > div {
               box-shadow: none;
@@ -152,6 +152,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
                 <Button
                   onClick={props.close}
                   css={`
+                    z-index: 1;
                     width: 100%;
                     margin-bottom: 20px;
                     background: #dfe3e6;

@@ -805,6 +805,15 @@ export const RadialChartLegend = (props: any) => {
               @media (max-width: 767px) {
                 gap: 10px;
                 margin-left: 0px;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 10px;
+                    }
+                  }
+                }
               }
 
               > div {

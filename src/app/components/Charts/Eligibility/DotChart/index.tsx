@@ -29,6 +29,7 @@ const styles = {
 
 export function DotChart(props: DotChartProps) {
   const { x, y } = useMousePosition();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: string;
@@ -98,6 +99,15 @@ export function DotChart(props: DotChartProps) {
             position: relative;
             flex-direction: ${isSmallScreen ? "row" : "column"};
             justify-content: ${isSmallScreen ? "none" : "space-between"};
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 20px;
+                }
+              }
+            }
           `}
         >
           <div
@@ -105,6 +115,15 @@ export function DotChart(props: DotChartProps) {
               gap: 6px;
               display: flex;
               align-items: center;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
             `}
           >
             <div
@@ -167,6 +186,15 @@ export function DotChart(props: DotChartProps) {
                 opacity: ${!hoveredLegend || hoveredLegend === "Eligible"
                   ? 1
                   : 0.3};
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 5px;
+                    }
+                  }
+                }
               `}
               onMouseEnter={() => setHoveredLegend("Eligible")}
               onMouseLeave={() => setHoveredLegend(null)}
@@ -179,7 +207,7 @@ export function DotChart(props: DotChartProps) {
                   ${styles.Eligible}
                 `}
               />
-              Eligible
+              <div>Eligible</div>
             </div>
             <div
               css={`
@@ -191,6 +219,15 @@ export function DotChart(props: DotChartProps) {
                 opacity: ${!hoveredLegend || hoveredLegend === "Not Eligible"
                   ? 1
                   : 0.3};
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 5px;
+                    }
+                  }
+                }
               `}
               onMouseEnter={() => setHoveredLegend("Not Eligible")}
               onMouseLeave={() => setHoveredLegend(null)}
@@ -203,7 +240,7 @@ export function DotChart(props: DotChartProps) {
                   ${styles["Not Eligible"]}
                 `}
               />
-              Not Eligible
+              <div>Not Eligible</div>
             </div>
             <div
               css={`
@@ -216,6 +253,15 @@ export function DotChart(props: DotChartProps) {
                 hoveredLegend === "Transition Funding"
                   ? 1
                   : 0.3};
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 5px;
+                    }
+                  }
+                }
               `}
               onMouseEnter={() => setHoveredLegend("Transition Funding")}
               onMouseLeave={() => setHoveredLegend(null)}
@@ -228,7 +274,7 @@ export function DotChart(props: DotChartProps) {
                   ${styles["Transition Funding"]}
                 `}
               />
-              Transition Funding
+              <div>Transition Funding</div>
             </div>
           </div>
           {props.aggregateBy === "geographicAreaName" && (
@@ -252,6 +298,15 @@ export function DotChart(props: DotChartProps) {
                   gap: 24px;
                   display: flex;
                   flex-direction: row;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 24px;
+                      }
+                    }
+                  }
 
                   > div {
                     position: relative;
@@ -343,7 +398,7 @@ export function DotChart(props: DotChartProps) {
           container
           sm={12}
           md={10}
-          spacing={4}
+          spacing={!isMobile ? 4 : 2}
           css={`
             padding-bottom: 50px !important;
           `}
@@ -375,6 +430,16 @@ export function DotChart(props: DotChartProps) {
                         flex-wrap: wrap;
                         padding-left: 5px;
                         border-left: 1px solid #acafbc;
+
+                        > * {
+                          @supports (-webkit-touch-callout: none) and
+                            (not (translate: none)) {
+                            &:not(:last-child) {
+                              margin-right: 24px;
+                              margin-bottom: 24px;
+                            }
+                          }
+                        }
                       `}
                     >
                       {group.items.map(
@@ -447,8 +512,26 @@ export function DotChart(props: DotChartProps) {
                         padding: 5px 0 5px 5px;
                         border-left: 1px solid #acafbc;
 
+                        > * {
+                          @supports (-webkit-touch-callout: none) and
+                            (not (translate: none)) {
+                            &:not(:last-child) {
+                              margin-right: 24px;
+                            }
+                          }
+                        }
+
                         @media (max-width: 767px) {
                           gap: 15px;
+
+                          > * {
+                            @supports (-webkit-touch-callout: none) and
+                              (not (translate: none)) {
+                              &:not(:last-child) {
+                                margin-right: 15px;
+                              }
+                            }
+                          }
                         }
                       `}
                     >

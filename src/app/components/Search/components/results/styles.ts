@@ -34,6 +34,14 @@ export const tabs = css`
     overflow-x: auto;
     width: max-content;
     padding-bottom: 16px;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 8px;
+        }
+      }
+    }
   }
 `;
 

@@ -39,6 +39,14 @@ export function ArrowSelector(props: ArrowSelectorProps) {
         flex-direction: row;
         align-items: center;
 
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 20px;
+            }
+          }
+        }
+
         > div {
           color: #262c34;
           font-size: 12px;

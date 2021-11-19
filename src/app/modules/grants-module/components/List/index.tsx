@@ -28,9 +28,45 @@ export function GrantsList(props: GrantsListProps) {
               display: flex;
               flex-direction: row;
 
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 24px;
+                  }
+                }
+              }
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 24px;
+                  }
+                }
+              }
+
               @media (max-width: 920px) {
                 gap: 12px;
                 flex-direction: column;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 12px;
+                    }
+                  }
+                }
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 12px;
+                    }
+                  }
+                }
               }
 
               > div {
@@ -40,22 +76,58 @@ export function GrantsList(props: GrantsListProps) {
                 flex-direction: row;
                 align-items: center;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 6px;
+                    }
+                  }
+                }
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 6px;
+                    }
+                  }
+                }
               }
 
               @media (max-width: 767px) {
                 gap: 24px;
                 flex-direction: row;
                 margin-bottom: 16px;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 24px;
+                    }
+                  }
+                }
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 24px;
+                    }
+                  }
+                }
               }
             `}
           >
             <div>
               <LocationIcon />
-              {item.geoLocation}
+              <div>{item.geoLocation}</div>
             </div>
             <div>
               <RatingIcon />
-              {item.rating}
+              <div>{item.rating}</div>
             </div>
           </div>,
           <div
@@ -88,6 +160,24 @@ export function GrantsList(props: GrantsListProps) {
                     align-items: center;
                     font-family: "GothamNarrow-Bold", "Helvetica Neue",
                       sans-serif;
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 6px;
+                        }
+                      }
+                    }
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 6px;
+                        }
+                      }
+                    }
                   `}
                 >
                   <b>{item.component}</b>

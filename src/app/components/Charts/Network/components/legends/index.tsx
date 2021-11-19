@@ -115,6 +115,14 @@ export function NetworkLegends() {
           margin-left: -10px;
           flex-direction: row;
 
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 40px;
+              }
+            }
+          }
+
           > span {
             width: 12px;
             height: 12px;

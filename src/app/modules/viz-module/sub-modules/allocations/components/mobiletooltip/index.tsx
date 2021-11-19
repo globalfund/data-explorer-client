@@ -48,6 +48,14 @@ export function AllocationsRadialMobileTooltip(
           align-items: flex-end;
           justify-content: space-between;
           border-bottom: 1px solid #dfe3e6;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 5px;
+              }
+            }
+          }
         `}
       >
         <b>{props.label}</b>

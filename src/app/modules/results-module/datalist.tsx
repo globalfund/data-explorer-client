@@ -34,6 +34,15 @@ export const DataList = (props: {
             gap: 6px;
             display: flex;
             align-items: center;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 6px;
+                }
+              }
+            }
           `}
         >
           <div

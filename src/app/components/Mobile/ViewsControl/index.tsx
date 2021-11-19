@@ -192,6 +192,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {params.vizType}

@@ -221,10 +221,28 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 flex-direction: row;
                 justify-content: flex-end;
 
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 24px;
+                    }
+                  }
+                }
+
                 @media (max-width: 767px) {
                   gap: 12px;
                   flex-wrap: wrap;
                   justify-content: flex-start;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 12px;
+                      }
+                    }
+                  }
                 }
               `}
             >
@@ -244,6 +262,15 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     opacity: ${!hoveredLegend || hoveredLegend === legend.name
                       ? 1
                       : 0.3};
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 6px;
+                        }
+                      }
+                    }
                   `}
                 >
                   <div

@@ -79,6 +79,15 @@ export function GrantDetailOverviewModule() {
             flex-direction: row;
             align-items: center;
             margin-bottom: 20px;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 12px;
+                }
+              }
+            }
           `}
         >
           {ratingValues.map((value: string) => (
@@ -123,6 +132,15 @@ export function GrantDetailOverviewModule() {
             margin-bottom: 10px;
             flex-direction: row;
             align-items: center;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 6px;
+                }
+              }
+            }
           `}
         >
           <LocationIcon />
@@ -138,6 +156,15 @@ export function GrantDetailOverviewModule() {
             margin-bottom: 20px;
             flex-direction: row;
             align-items: center;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 6px;
+                }
+              }
+            }
           `}
         >
           <ComponentIcon />

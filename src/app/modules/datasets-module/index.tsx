@@ -188,9 +188,6 @@ export default function Datasets() {
             <Link to={dataset.link} css="text-decoration: none;">
               <div
                 css={`
-                  @media screen and (min-width: 900px) {
-                    height: 370px !important;
-                  }
                   width: 100%;
                   height: 28vh;
                   padding: 20px;
@@ -198,6 +195,14 @@ export default function Datasets() {
                   background: #fff;
                   border-radius: 20px;
                   border: 2px solid #fff;
+
+                  @media screen and (min-width: 900px) {
+                    height: 370px;
+                  }
+
+                  @media screen and (max-width: 767px) {
+                    height: 227px;
+                  }
 
                   > div {
                     font-weight: bold;

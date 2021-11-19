@@ -63,6 +63,15 @@ function ResultsListItem(props: ResultListItemModel) {
                   flex-direction: row;
                   align-items: center;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 6px;
+                      }
+                    }
+                  }
                 `}
               >
                 <b>{props.component}</b>
@@ -89,7 +98,7 @@ function ResultsListItem(props: ResultListItemModel) {
               }
             >
               <TriangleXSIcon />
-              See more
+              <div>See more</div>
             </div>
           </React.Fragment>
         )}
@@ -98,7 +107,7 @@ function ResultsListItem(props: ResultListItemModel) {
             {/* 1st row */}
             <div css={buttonrow("up")} onClick={() => setExpand(false)}>
               <TriangleXSIcon />
-              See more
+              <div>See more</div>
             </div>
             <div css={locationlist}>
               {props.geoLocations.map(

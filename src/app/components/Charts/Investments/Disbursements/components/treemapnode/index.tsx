@@ -7,18 +7,33 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { DisbursementsTreemap } from "../..";
 
-const containercss = (hover: boolean, selected: boolean) => css`
+const containercss = (
+  hover: boolean,
+  selected: boolean,
+  bgcolor: string,
+  isChildTreemap: boolean
+) => css`
   display: flex;
+  font-size: 12px;
   position: absolute;
   box-sizing: border-box;
   flex-direction: column;
+  background: ${bgcolor};
   align-items: flex-start;
   transition: background 0.2s ease-in-out;
   overflow: ${!hover ? "visible" : "hidden"};
+  color: ${isChildTreemap ? "#fff" : "#262C34"};
+  cursor: ${isChildTreemap ? "pointer" : "default"};
 
   > div {
     width: 100%;
     padding: 10px;
+  }
+
+  @media (max-width: 767px) {
+    color: #fff;
+    font-size: 10px;
+    background: #595c70;
   }
 `;
 
@@ -38,17 +53,13 @@ export function TreeemapNode(props: any) {
         left: node.x,
         width: node.width,
         height: node.height,
-        fontSize: bigDevice ? 12 : 10,
-        cursor: node.data.orgs ? "pointer" : "default",
-        background: bigDevice ? node.data.color : "#595C70",
-        border: `0px solid #${bigDevice ? "373D43" : "fff"}`,
-        borderStyle: props.isChildTreemap ? "none" : "solid",
-        color: props.isChildTreemap || !bigDevice ? "#fff" : "#262C34",
       }}
       css={containercss(
         !hasChildren,
         props.selectedNodeId ===
-          `${node.data.code || node.id}-${node.data.tooltip.header}`
+          `${node.data.code || node.id}-${node.data.tooltip.header}`,
+        node.data.color,
+        props.isChildTreemap
       )}
       onMouseMove={!hasChildren ? node.onMouseMove : undefined}
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
