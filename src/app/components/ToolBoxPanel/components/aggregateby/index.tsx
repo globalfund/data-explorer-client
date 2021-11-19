@@ -46,7 +46,24 @@ export function ToolBoxPanelAggregateBy(props: ToolBoxPanelAggregateByProps) {
       `}
     >
       <b>{props.title}</b>
-      <div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            max-width: 50%;
+
+            > div {
+              width: 100%;
+            }
+
+            .MuiSelect-root {
+              font-size: 12px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            }
+          }
+        `}
+      >
         <Dropdown
           value={value}
           handleChange={handleChange}
