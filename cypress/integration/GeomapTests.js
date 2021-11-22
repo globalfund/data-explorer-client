@@ -24,8 +24,9 @@ context('Geomap tests', () => {
         cy.wait(1000);
         cy.get('[data-cy="geomap-zoom-out"]').click();
         cy.wait(1500);
-    })
-    /**it('Hover countries to show data', () => {
- 
-    });*/
-})
+    });
+    it('Hover countries to show data', () => {
+        cy.get('[class="overlays"]').trigger('mouseover', 150, 150, {force: true});
+        cy.wait(3000);
+    });
+});
