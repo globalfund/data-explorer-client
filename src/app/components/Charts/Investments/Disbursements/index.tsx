@@ -136,7 +136,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                   display: flex;
                   padding: 0 16px;
                   flex-direction: column;
-                  justify-content: flex-end;
+                  justify-content: center;
                 `
                   : ""}
               `}
