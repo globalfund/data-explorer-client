@@ -266,7 +266,7 @@ function InvestmentsRedirect(props: any) {
   React.useEffect(() => {
     const options = filterOptions?.["Partner Types"];
     const values = partner_type?.split(",");
-    if (options && values.length > 0) {
+    if (options && values && values.length > 0) {
       const fOptions = filter(options, (o: FilterGroupOptionModel) =>
         find(values, (v: string) => v === o.label)
       ) as FilterGroupOptionModel[];
@@ -318,7 +318,7 @@ function InvestmentsLocationRedirect(props: any) {
   React.useEffect(() => {
     const options = filterOptions?.["Partner Types"];
     const values = partner_type?.split(",");
-    if (options && values.length > 0) {
+    if (options && values && values.length > 0) {
       const fOptions = filter(options, (o: FilterGroupOptionModel) =>
         find(values, (v: string) => v === o.label)
       ) as FilterGroupOptionModel[];
