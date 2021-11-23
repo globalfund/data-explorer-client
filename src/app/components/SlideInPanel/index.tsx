@@ -103,7 +103,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
           @media (max-width: 767px) {
             width: 100vw;
             box-shadow: none;
-            height: calc(100vh - 150px);
+            height: calc(100vh - 50px);
 
             > div {
               box-shadow: none;
