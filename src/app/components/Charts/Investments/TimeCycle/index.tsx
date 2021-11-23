@@ -84,12 +84,12 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     });
   }
 
-  function handleChangeCumulative(event: React.ChangeEvent<HTMLInputElement>) {
-    setShowCumulative(event.target.checked);
-    if (event.target.checked) {
-      setTimeout(() => showHideBarLabels(event.target.checked), 100);
+  function handleChangeCumulative() {
+    setShowCumulative(!showCumulative);
+    if (!showCumulative) {
+      setTimeout(() => showHideBarLabels(!showCumulative), 100);
     } else {
-      showHideBarLabels(event.target.checked);
+      showHideBarLabels(!showCumulative);
     }
   }
 
@@ -284,17 +284,20 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 </div>
               ))}
               {props.data.length > 0 && (
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      color="primary"
-                      name="cumulative"
-                      defaultChecked={false}
-                      onChange={handleChangeCumulative}
-                    />
-                  }
-                  label="Show Cumulative"
-                />
+                <div onTouchStart={handleChangeCumulative}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        disableRipple
+                        color="primary"
+                        name="cumulative"
+                        checked={showCumulative}
+                        onChange={handleChangeCumulative}
+                      />
+                    }
+                    label="Show Cumulative"
+                  />
+                </div>
               )}
             </div>
           </Grid>
