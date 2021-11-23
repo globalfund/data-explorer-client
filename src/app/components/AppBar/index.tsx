@@ -70,7 +70,7 @@ export function AppBar() {
             justify-content: space-between;
           `}
         >
-          {isMobile && getMobilePageHeader()}
+          {/* {isMobile && getMobilePageHeader()} */}
           {!isMobile && (
             <React.Fragment>
               <NavLink to="/" css="display: flex;">
