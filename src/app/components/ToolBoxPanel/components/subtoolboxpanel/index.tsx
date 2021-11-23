@@ -24,6 +24,7 @@ import {
 } from "app/components/ToolBoxPanel/utils/getControlItems";
 
 interface SubToolBoxPanelProps {
+  isFinance?: boolean;
   filterGroups: FilterGroupProps[];
   closePanel: (value?: boolean) => void;
 }
@@ -46,7 +47,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
       params.vizType,
       history.location.pathname,
       params.code,
-      params.period
+      params.period,
+      props.isFinance
     )
   );
 
@@ -134,7 +136,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
           params.vizType,
           history.location.pathname,
           params.code,
-          params.period
+          params.period,
+          props.isFinance
         )
       ),
     [params.vizType]

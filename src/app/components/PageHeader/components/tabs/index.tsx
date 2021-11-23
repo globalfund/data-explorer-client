@@ -119,6 +119,9 @@ export function RouteTab(props: RouteTabProps) {
     index = 2;
     indexParam = "tab";
   }
+  if (props.isFinance) {
+    index = 1;
+  }
   const isActive = urlsplits[index] === params[indexParam];
 
   if (props.onlyLink) {
@@ -138,7 +141,7 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
     <div css={styles.container(location.pathname)}>
       <ul css={styles.tabsList}>
         {props.tabs.map((tab: TabProps) => (
-          <RouteTab key={tab.name} {...tab} />
+          <RouteTab key={tab.name} {...tab} isFinance={props.isFinance} />
         ))}
       </ul>
     </div>

@@ -17,6 +17,7 @@ import IconChevronRight from "app/assets/icons/IconChevronRight";
 
 interface MobileViewControlProps {
   tabs?: TabProps[];
+  isFinance?: boolean;
 }
 
 const StyledMenu = withStyles({
@@ -93,7 +94,8 @@ export function MobileViewControl(props: MobileViewControlProps) {
       params.vizType,
       history.location.pathname,
       params.code,
-      params.period
+      params.period,
+      props.isFinance
     )
   );
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -123,7 +125,8 @@ export function MobileViewControl(props: MobileViewControlProps) {
           params.vizType,
           history.location.pathname,
           params.code,
-          params.period
+          params.period,
+          props.isFinance
         )
       ),
     [params.vizType]

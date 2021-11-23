@@ -20,6 +20,7 @@ interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
   isDetail?: boolean;
+  isFinance?: boolean;
   breadcrumbs: BreadcrumbModel[];
 }
 
@@ -355,7 +356,7 @@ export function PageHeader(props: PageHeaderProps) {
               `}
             >
               {props.tabs && props.tabs.length > 0 && (
-                <PageHeaderTabs tabs={props.tabs} />
+                <PageHeaderTabs tabs={props.tabs} isFinance={props.isFinance} />
               )}
             </Grid>
           )}

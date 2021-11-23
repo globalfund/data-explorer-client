@@ -156,6 +156,12 @@ export const filtergroups: FilterGroupProps[] = [
 ];
 
 export const pathnameToFilterGroups = {
+  // prototype
+  finance: filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
   // independent data pages
   grants: filter(
     filtergroups,

@@ -6,10 +6,12 @@ export interface TabProps {
 
 export interface PageHeaderTabProps {
   tabs: TabProps[];
+  isFinance?: boolean;
 }
 
 export interface RouteTabProps extends TabProps {
   onlyLink?: boolean;
+  isFinance?: boolean;
 }
 
 export const countryDetailTabs: TabProps[] = [
@@ -110,5 +112,28 @@ export const partnerDetailTabs: TabProps[] = [
   {
     name: "Grants",
     url: "/partner/<code>/grants",
+  },
+];
+
+export const financeTabs: TabProps[] = [
+  // {
+  //   name: "Overview",
+  //   url: "/overview",
+  // },
+  // {
+  //   name: "Signed",
+  //   url: "/signed/treemap",
+  // },
+  {
+    name: "Commitment",
+    url: "/commitment/treemap",
+  },
+  {
+    name: "Disbursement",
+    url: "/disbursements/treemap",
+  },
+  {
+    name: "Budgets",
+    url: "/budgets/flow",
   },
 ];

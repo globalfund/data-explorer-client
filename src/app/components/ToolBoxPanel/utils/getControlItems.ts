@@ -196,7 +196,8 @@ export function getControlItems(
   vizType: string,
   pathname: string,
   detailPageCode?: string,
-  grantDetailPeriod?: string
+  grantDetailPeriod?: string,
+  isFinance?: boolean
 ): {
   views: ViewModel[];
   aggregates: ViewModel[];
@@ -225,6 +226,15 @@ export function getControlItems(
     }
     return {
       views: alteredViews,
+      aggregates: get(aggregates, vizType, []),
+    };
+  }
+  if (isFinance) {
+    return {
+      views: get(views, vizType, []).map((view: ViewModel) => ({
+        ...view,
+        link: view.link?.replace("/viz", ""),
+      })),
       aggregates: get(aggregates, vizType, []),
     };
   }

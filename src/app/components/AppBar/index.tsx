@@ -81,7 +81,7 @@ export function AppBar() {
                   alt="TGF Data Explorer logo"
                 />
               </NavLink>
-              <NavLink
+              {/* <NavLink
                 to="/about"
                 css={`
                   color: #fff;
@@ -91,7 +91,7 @@ export function AppBar() {
                 `}
               >
                 About
-              </NavLink>
+              </NavLink> */}
             </React.Fragment>
           )}
         </Toolbar>

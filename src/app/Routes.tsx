@@ -1,10 +1,9 @@
 // cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
-import { useGA } from "app/hooks/useGA";
+// import { useGA } from "app/hooks/useGA";
 import axios, { AxiosResponse } from "axios";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
-import { V1RouteRedirections } from "app/utils/v1Routes";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
@@ -17,15 +16,17 @@ import {
 } from "react-router-dom";
 // import BigLogo from "app/assets/BigLogo";
 // import useCookie from "@devhammed/use-cookie";
+// import { V1RouteRedirections } from "app/utils/v1Routes";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
 
-const VizModule = lazy(() => import("app/modules/viz-module"));
-const AboutModule = lazy(() => import("app/modules/about-module"));
-const GrantsModule = lazy(() => import("app/modules/grants-module"));
-const ResultsModule = lazy(() => import("app/modules/results-module"));
-const LandingModule = lazy(() => import("app/modules/landing-module"));
-const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
-const DocumentsModule = lazy(() => import("app/modules/documents-module"));
+// const VizModule = lazy(() => import("app/modules/viz-module"));
+// const AboutModule = lazy(() => import("app/modules/about-module"));
+// const GrantsModule = lazy(() => import("app/modules/grants-module"));
+// const ResultsModule = lazy(() => import("app/modules/results-module"));
+// const LandingModule = lazy(() => import("app/modules/landing-module"));
+const FinanceModule = lazy(() => import("app/modules/finance-module"));
+// const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
+// const DocumentsModule = lazy(() => import("app/modules/documents-module"));
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
   () => import("app/modules/country-detail-module")
@@ -62,7 +63,7 @@ export function MainRoutes() {
   useFilterOptions({});
   useScrollToTop();
   useUrlFilters();
-  useGA();
+  // useGA();
 
   // const isMobile = useMediaQuery("(max-width: 767px)");
 
@@ -126,6 +127,14 @@ export function MainRoutes() {
     <Suspense fallback={<PageLoader />}>
       <Switch>
         <Route exact path="/">
+          <Redirect to="/commitment/treemap" />
+        </Route>
+
+        <Route exact path="/:vizType/:subType?">
+          <FinanceModule />
+        </Route>
+
+        {/* <Route exact path="/">
           <LandingModule />
         </Route>
 
@@ -151,7 +160,7 @@ export function MainRoutes() {
 
         <Route exact path="/viz/:vizType/:subType?">
           <VizModule />
-        </Route>
+        </Route> */}
 
         <Route
           exact
@@ -201,11 +210,11 @@ export function MainRoutes() {
           <GrantDetailModule />
         </Route>
 
-        <Route exact path="/viz">
+        {/* <Route exact path="/viz">
           <Redirect to="/datasets" />
-        </Route>
+        </Route> */}
 
-        <V1RouteRedirections />
+        {/* <V1RouteRedirections /> */}
       </Switch>
     </Suspense>
   );

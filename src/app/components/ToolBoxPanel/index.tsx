@@ -19,6 +19,7 @@ import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/
 export interface ToolBoxPanelProps {
   open: boolean;
   vizWrapperRef: any;
+  isFinance?: boolean;
   isGrantDetail?: boolean;
   isLocationDetail?: boolean;
   filterGroups: FilterGroupProps[];
@@ -117,11 +118,15 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
       top = 203;
     } else if (props.isLocationDetail) {
       top = 203;
+    } else if (props.isFinance) {
+      top = 179;
     } else {
       top = 168;
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
     top = 168;
+  } else if (props.isFinance) {
+    top = 144;
   }
 
   return (
@@ -167,7 +172,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 width: 100vw;
                 box-shadow: none;
                 overflow-y: auto;
-                height: calc(100vh - ${top + 56}px);
+                height: calc(100vh - ${top}px);
               }
             `}
           >
@@ -276,6 +281,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               )}
               <ToolBoxPanelIconButtons />
               <SubToolBoxPanel
+                isFinance={props.isFinance}
                 filterGroups={props.filterGroups}
                 closePanel={props.onCloseBtnClick}
               />
@@ -289,7 +295,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
           css={`
             right: 20px;
             z-index: 100;
-            bottom: 70px;
+            bottom: 20px;
             position: fixed;
 
             > button {
