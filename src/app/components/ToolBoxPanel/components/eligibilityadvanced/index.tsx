@@ -48,10 +48,10 @@ export function ToolBoxPanelEligibilityAdvanced() {
       <FormControlLabel
         control={
           <Checkbox
+            name="checked"
             color="primary"
             checked={checked}
             onChange={handleChange}
-            name="checked"
           />
         }
         label="Show disease burden and income level"
