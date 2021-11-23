@@ -283,17 +283,19 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                   <div>{legend.name}</div>
                 </div>
               ))}
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked={false}
-                    onChange={handleChangeCumulative}
-                    disabled={props.data.length === 0}
-                  />
-                }
-                label="Show Cumulative"
-              />
+              {props.data.length > 0 && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      name="cumulative"
+                      defaultChecked={false}
+                      onChange={handleChangeCumulative}
+                    />
+                  }
+                  label="Show Cumulative"
+                />
+              )}
             </div>
           </Grid>
         </Grid>
@@ -303,80 +305,111 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             <NoDataLabel />
           </div>
         ) : (
-          <ResponsiveBar
-            animate
-            enableLabel={false}
-            indexScale={{ type: "band", round: true }}
-            groupMode="grouped"
-            motionStiffness={90}
-            motionDamping={15}
-            borderColor="inherit:darker(1.6)"
-            layers={["grid", "axes", Bars, "markers", "legends"]}
-            padding={isMobile ? 0.3 : 0.5}
-            innerPadding={6}
-            data={props.data}
-            keys={
-              showCumulative
-                ? keys
-                : filter(keys, (key: string) => key !== "cumulative")
-            }
-            indexBy="year"
-            margin={{
-              top: !isMobile ? 60 : 20,
-              right: 30,
-              bottom: props.data.length > 5 ? 120 : 80,
-              left: 70,
-            }}
-            axisLeft={{
-              orient: "left",
-              tickSize: 5,
-              tickPadding: 10,
-              tickRotation: 0,
-              legendOffset: -60,
-              legendPosition: "middle",
-              legend: `USD (${moneyAbbrRange.abbr})`,
-              format: (value: number | string | Date) =>
-                `${getFinancialValueWithMetricPrefix(
-                  parseInt(value.toString(), 10),
-                  moneyAbbrRange.index
-                )}`,
-            }}
-            axisBottom={{
-              tickRotation: isMobile && props.data.length > 3 ? 45 : 0,
-            }}
-            theme={{
-              axis: {
-                ticks: {
-                  line: {
-                    strokeWidth: 1,
-                    stroke: "#868E96",
-                    strokeOpacity: 0.3,
+          <div
+            id="bar-scroll-div"
+            css={`
+              width: 100%;
+              overflow-x: auto;
+              overflow-y: hidden;
+
+              &::-webkit-scrollbar {
+                height: 5px;
+                background: #262c34;
+              }
+              &::-webkit-scrollbar-track {
+                background: #dfe3e6;
+              }
+              &::-webkit-scrollbar-thumb {
+                background: #262c34;
+              }
+            `}
+          >
+            <div
+              css={`
+                height: 620px;
+                width: ${props.data.length === 0 ? "100%" : "1000px"};
+
+                @media (max-width: 767px) {
+                  height: 550px;
+                }
+              `}
+            >
+              <ResponsiveBar
+                animate
+                enableLabel={false}
+                indexScale={{ type: "band", round: true }}
+                groupMode="grouped"
+                motionStiffness={90}
+                motionDamping={15}
+                borderColor="inherit:darker(1.6)"
+                layers={["grid", "axes", Bars, "markers", "legends"]}
+                padding={isMobile ? 0.3 : 0.5}
+                innerPadding={6}
+                data={props.data}
+                keys={
+                  showCumulative
+                    ? keys
+                    : filter(keys, (key: string) => key !== "cumulative")
+                }
+                indexBy="year"
+                margin={{
+                  top: !isMobile ? 60 : 20,
+                  right: 30,
+                  bottom: 50,
+                  left: 70,
+                }}
+                axisLeft={{
+                  orient: "left",
+                  tickSize: 5,
+                  tickPadding: 10,
+                  tickRotation: 0,
+                  legendOffset: -60,
+                  legendPosition: "middle",
+                  legend: `USD (${moneyAbbrRange.abbr})`,
+                  format: (value: number | string | Date) =>
+                    `${getFinancialValueWithMetricPrefix(
+                      parseInt(value.toString(), 10),
+                      moneyAbbrRange.index
+                    )}`,
+                }}
+                // axisBottom={{
+                //   tickRotation: isMobile && props.data.length > 3 ? 90 : 0,
+                // }}
+                theme={{
+                  axis: {
+                    ticks: {
+                      line: {
+                        strokeWidth: 1,
+                        stroke: "#868E96",
+                        strokeOpacity: 0.3,
+                      },
+                      text: {
+                        fill: "#262c34",
+                        fontSize: 12,
+                      },
+                    },
+                    legend: {
+                      text: {
+                        fontWeight: "bold",
+                      },
+                    },
                   },
-                  text: {
-                    fill: "#262c34",
-                    fontSize: 12,
+                  legends: {
+                    text: {
+                      fontSize: 12,
+                    },
                   },
-                },
-                legend: {
-                  text: {
-                    fontWeight: "bold",
+                  grid: {
+                    line: {
+                      strokeWidth: 1,
+                      stroke: "#868E96",
+                      strokeOpacity: 0.3,
+                    },
                   },
-                },
-              },
-              legends: {
-                text: {
-                  fontSize: 12,
-                },
-              },
-              grid: {
-                line: {
-                  strokeWidth: 1,
-                  stroke: "#868E96",
-                  strokeOpacity: 0.3,
-                },
-              },
-            }}
-          />
+                }}
+              />
+            </div>
+          </div>
         )}
       </div>
       {(isMobile || isTouchDevice()) && xsTooltipData && !props.selectedNodeId && (
