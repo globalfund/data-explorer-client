@@ -338,7 +338,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             }}
           />
           {isMobile && xsTooltipData && !props.selectedNodeId && (
-            <XsContainer>
+            <XsContainer id="mobile-tooltip-container">
               <div
                 css={`
                   width: 95%;

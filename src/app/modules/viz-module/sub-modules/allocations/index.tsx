@@ -404,7 +404,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           )}
         </div>
         {(isMobile || isTouchDevice()) && xsTooltipData && (
-          <XsContainer>
+          <XsContainer id="mobile-tooltip-container">
             <div
               css={`
                 width: 95%;

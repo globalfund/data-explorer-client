@@ -416,7 +416,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
         )}
       </div>
       {(isMobile || isTouchDevice()) && xsTooltipData && !props.selectedNodeId && (
-        <XsContainer>
+        <XsContainer id="mobile-tooltip-container">
           <div
             css={`
               width: 95%;

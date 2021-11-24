@@ -106,7 +106,7 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
         props.xsTooltipData &&
         !props.selectedNodeId &&
         !props.isChildTreemap && (
-          <XsContainer>
+          <XsContainer id="mobile-tooltip-container">
             <div
               css={`
                 width: 100%;

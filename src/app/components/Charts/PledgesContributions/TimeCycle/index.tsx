@@ -238,7 +238,7 @@ export function PledgesContributionsTimeCycle(
         )}
       </div>
       {(isMobile || isTouchDevice()) && xsTooltipData && !props.selectedNodeId && (
-        <XsContainer>
+        <XsContainer id="mobile-tooltip-container">
           <div
             css={`
               width: 95%;
