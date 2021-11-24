@@ -6,6 +6,7 @@ import { css } from "styled-components/macro";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { DisbursementsTreemap } from "../..";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 
 const containercss = (
   hover: boolean,
@@ -64,8 +65,11 @@ export function TreeemapNode(props: any) {
       onMouseMove={!hasChildren ? node.onMouseMove : undefined}
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
       onMouseLeave={!hasChildren ? node.onMouseLeave : undefined}
-      onClick={() => {
-        if (props.isChildTreemap) {
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        if (isTouchDevice()) {
+          e.stopPropagation();
+          props.setXsTooltipData(node);
+        } else if (props.isChildTreemap) {
           props.onNodeClick(
             `${node.data.code || node.id}-${node.data.tooltip.header}`,
             node.x + props.parentNodeCoords.x,
@@ -73,10 +77,6 @@ export function TreeemapNode(props: any) {
             node.data.code
           );
         }
-      }}
-      onTouchStart={(e: React.TouchEvent<HTMLDivElement>) => {
-        e.stopPropagation();
-        props.setXsTooltipData(node);
       }}
       //   onKeyPress={node.onClick}
       //   onFocus={node.onMouseEnter}

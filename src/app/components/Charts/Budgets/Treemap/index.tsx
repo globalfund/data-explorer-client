@@ -141,7 +141,7 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
                     right: 10px;
                     position: absolute;
                   `}
-                  onTouchStart={() =>
+                  onClick={() =>
                     props.setXsTooltipData && props.setXsTooltipData(null)
                   }
                 >
