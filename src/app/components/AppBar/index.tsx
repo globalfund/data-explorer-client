@@ -23,17 +23,24 @@ const TextHeader = (label: string) => (
 function MobileHeader() {
   const history = useHistory();
 
+  const isDetail =
+    history.location.pathname.indexOf("/grant/") > -1 ||
+    history.location.pathname.indexOf("/partner/") > -1 ||
+    history.location.pathname.indexOf("/location/") > -1;
+
   return (
     <React.Fragment>
-      <IconButton
-        onClick={() => history.goBack()}
-        css={`
-          padding-left: 0;
-        `}
-      >
-        <IconChevronLeft htmlColor="#fff" />
-      </IconButton>
-      <MobileAppbarSearch />
+      {isDetail && (
+        <IconButton
+          onClick={() => history.goBack()}
+          css={`
+            padding-left: 0;
+          `}
+        >
+          <IconChevronLeft htmlColor="#fff" />
+        </IconButton>
+      )}
+      {/* <MobileAppbarSearch /> */}
     </React.Fragment>
   );
 }
@@ -70,7 +77,7 @@ export function AppBar() {
             justify-content: space-between;
           `}
         >
-          {/* {isMobile && getMobilePageHeader()} */}
+          {isMobile && getMobilePageHeader()}
           {!isMobile && (
             <React.Fragment>
               <NavLink to="/" css="display: flex;">

@@ -130,10 +130,6 @@ export function MainRoutes() {
           <Redirect to="/commitment/treemap" />
         </Route>
 
-        <Route exact path="/:vizType/:subType?">
-          <FinanceModule />
-        </Route>
-
         {/* <Route exact path="/">
           <LandingModule />
         </Route>
@@ -208,6 +204,10 @@ export function MainRoutes() {
 
         <Route exact path="/grant/:code/:period/:vizType/:subType?">
           <GrantDetailModule />
+        </Route>
+
+        <Route exact path="/:vizType/:subType?">
+          <FinanceModule />
         </Route>
 
         {/* <Route exact path="/viz">
