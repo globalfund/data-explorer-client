@@ -155,7 +155,10 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   // }, [props.data]);
 
   const Nodes = (nProps: any) => {
-    if (props.vizCompData.length !== nProps.nodes.length) {
+    if (
+      nProps.nodes.length > 0 &&
+      props.vizCompData.length !== nProps.nodes.length
+    ) {
       props.setVizCompData(nProps.nodes);
     }
     return getNodes(
