@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function GenericBudgetsFlowWrapper(props: Props) {
-  useTitle("The Data Explorer - Budgets Flow");
+  // useTitle("The Data Explorer - Budgets Flow");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizPrevTranslation, setVizPrevTranslation] = React.useState({

@@ -21,7 +21,7 @@ interface Props {
 }
 
 export function InvestmentsGeoMap(props: Props) {
-  useTitle("The Data Explorer - Investments/Map");
+  // useTitle("The Data Explorer - Investments/Map");
   // api call & data
   const fetchData = useStoreActions((store) => store.DisbursementsGeomap.fetch);
   const data = useStoreState(

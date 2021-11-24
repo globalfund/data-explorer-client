@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function BudgetsGeoMap(props: Props) {
-  useTitle(`The Data Explorer -${props.code ? ` ${props.code}` : ""} Budgets`);
+  // useTitle(`The Data Explorer -${props.code ? ` ${props.code}` : ""} Budgets`);
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   // api call & data

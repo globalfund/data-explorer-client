@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function GenericBudgetsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Budgets Time cycle");
+  // useTitle("The Data Explorer - Budgets Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizPrevTranslation, setVizPrevTranslation] = React.useState({

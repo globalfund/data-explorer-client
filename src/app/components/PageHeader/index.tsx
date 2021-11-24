@@ -3,7 +3,7 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import Tooltip from "@material-ui/core/Tooltip";
+// import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link, useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
@@ -314,14 +314,14 @@ export function PageHeader(props: PageHeaderProps) {
               }
             `}
           >
-            <Tooltip title={props.title}>
-              <div
-                css={styles.title}
-                style={isGrantDetail ? { fontSize: 14 } : {}}
-              >
-                {props.title}
-              </div>
-            </Tooltip>
+            {/* <Tooltip title={props.title}> */}
+            <div
+              css={styles.title}
+              style={isGrantDetail ? { fontSize: 14 } : {}}
+            >
+              {props.title}
+            </div>
+            {/* </Tooltip> */}
             {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
                 {vizDrilldowns.map((item: DrilldownModel, index: number) => (

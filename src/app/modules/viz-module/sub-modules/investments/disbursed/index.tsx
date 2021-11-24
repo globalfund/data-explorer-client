@@ -63,7 +63,7 @@ function filterDisbursements(
 export function InvestmentsDisbursedModule(
   props: InvestmentsDisbursedModuleProps
 ) {
-  useTitle("The Data Explorer - Investments/Disbursed");
+  // useTitle("The Data Explorer - Investments/Disbursed");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const totalValue = sumBy(props.data, "value");
 

@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function GenericInvestmentsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Investments/Time cycle");
+  // useTitle("The Data Explorer - Investments/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizPrevTranslation, setVizPrevTranslation] = React.useState({

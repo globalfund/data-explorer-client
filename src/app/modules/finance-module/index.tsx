@@ -1,36 +1,26 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
-import { Switch, Route, useParams, useLocation } from "react-router-dom";
+import { Switch, Route, useParams } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
+import { financeTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
-import {
-  countryDetailTabs,
-  financeTabs,
-} from "app/components/PageHeader/components/tabs/data";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
+import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
-import {
-  filtergroups,
-  pathnameToFilterGroups,
-} from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function FinanceModule() {
   useTitle("The Global Fund - Finance");
-  const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
