@@ -14,6 +14,7 @@ import {
   useHistory,
   RouteComponentProps,
 } from "react-router-dom";
+import { NoMatchPage } from "./modules/common/no-match-page";
 // import BigLogo from "app/assets/BigLogo";
 // import useCookie from "@devhammed/use-cookie";
 // import { V1RouteRedirections } from "app/utils/v1Routes";
@@ -208,6 +209,10 @@ export function MainRoutes() {
 
         <Route exact path="/:vizType/:subType?">
           <FinanceModule />
+        </Route>
+
+        <Route path="*">
+          <NoMatchPage />
         </Route>
 
         {/* <Route exact path="/viz">
