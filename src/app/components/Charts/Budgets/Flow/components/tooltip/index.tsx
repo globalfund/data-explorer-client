@@ -179,7 +179,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
       </div>
       {props.drilldown && (
         <Button
-          onTouchStart={() => {
+          onClick={() => {
             if (props.drilldown) {
               props.drilldown(props.id, props.filterStr);
             }
