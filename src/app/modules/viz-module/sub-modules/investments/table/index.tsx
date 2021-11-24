@@ -21,7 +21,7 @@ export function InvestmentsTable(props: InvestmentsTableProps) {
       columns={[
         { name: "Name", key: "name" },
         { name: "Grants", key: "grants" },
-        { name: "Signed (USD)", key: "signed" },
+        // { name: "Signed (USD)", key: "signed" },
         { name: "Committed (USD)", key: "committed" },
         { name: "Disbursed (USD)", key: "disbursed" },
       ]}

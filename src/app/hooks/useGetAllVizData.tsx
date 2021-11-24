@@ -419,5 +419,26 @@ export function useGetAllVizData() {
     // Partner Grants
     "/partner/<code>/grants": grantsList,
     "/partner/<code>/grants/list": grantsList,
+    // Finance
+    "/budgets/flow": budgetsFlow,
+    "/budgets/time-cycle": budgetsTimeCycle,
+    "/budgets/map": {
+      countries: budgetsGeomap,
+      multicountries: budgetsMCGeomap,
+    },
+    "/disbursements/map": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/disbursements/time-cycle": disbursementsTimeCycle,
+    "/disbursements/treemap": disbursementsTreemap,
+    "/disbursements/table": disbursementsTreemap,
+    "/commitment/map": {
+      countries: disbursementsGeomap,
+      multicountries: disbursementsMCGeomap,
+    },
+    "/commitment/time-cycle": commitmentTimeCycle,
+    "/commitment/treemap": commitmentTreemap,
+    "/commitment/table": commitmentTreemap,
   };
 }
