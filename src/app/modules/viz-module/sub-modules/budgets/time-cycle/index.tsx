@@ -3,6 +3,7 @@ import React from "react";
 import find from "lodash/find";
 import { useUnmount } from "react-use";
 import { useHistory } from "react-router-dom";
+import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -42,6 +43,10 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
+  const [
+    xsTooltipData,
+    setXsTooltipData,
+  ] = React.useState<TreeMapNodeDatum | null>(null);
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
@@ -168,8 +173,11 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
               />
             </span>
             <BudgetsTreemap
+              isDrilldownTreemap
               tooltipValueLabel="Budget"
+              xsTooltipData={xsTooltipData}
               data={props.dataDrilldownLevel1}
+              setXsTooltipData={setXsTooltipData}
               onNodeClick={(node: string, x: number, y: number) => {
                 props.setVizLevel(2);
                 props.setVizPrevSelected(props.vizSelected);
@@ -182,6 +190,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         )}
         {props.vizLevel === 2 && (
           <BudgetsTreemap
+            isDrilldownTreemap
             tooltipValueLabel="Budget"
             data={props.dataDrilldownLevel2}
             selectedNodeId={props.vizSelected}
