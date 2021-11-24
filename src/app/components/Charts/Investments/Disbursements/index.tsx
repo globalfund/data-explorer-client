@@ -125,7 +125,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
         actualXsTooltipData &&
         !props.selectedNodeId &&
         !props.isChildTreemap && (
-          <XsContainer>
+          <XsContainer id="mobile-tooltip-container">
             <div
               css={`
                 width: 100%;

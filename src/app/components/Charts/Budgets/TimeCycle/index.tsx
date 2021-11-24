@@ -350,7 +350,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         </React.Fragment>
       )}
       {isMobile && xsTooltipData && !props.selectedNodeId && (
-        <XsContainer>
+        <XsContainer id="mobile-tooltip-container">
           <div
             css={`
               width: 95%;
