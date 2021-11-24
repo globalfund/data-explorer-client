@@ -284,20 +284,18 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 </div>
               ))}
               {props.data.length > 0 && (
-                <div onTouchStart={handleChangeCumulative}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        disableRipple
-                        color="primary"
-                        name="cumulative"
-                        checked={showCumulative}
-                        onChange={handleChangeCumulative}
-                      />
-                    }
-                    label="Show Cumulative"
-                  />
-                </div>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      disableRipple
+                      color="primary"
+                      name="cumulative"
+                      checked={showCumulative}
+                      onChange={handleChangeCumulative}
+                    />
+                  }
+                  label="Show Cumulative"
+                />
               )}
             </div>
           </Grid>
