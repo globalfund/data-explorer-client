@@ -36,6 +36,8 @@ export function TransitionContainer(props: TransitionContainerProps) {
 
           #mobile-tooltip-container {
             top: 30vh;
+            left: 16px;
+            width: calc(100% - 32px);
           }
         }
 
