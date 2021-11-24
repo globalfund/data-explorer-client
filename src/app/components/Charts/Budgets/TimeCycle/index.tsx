@@ -359,6 +359,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
             <MobileBudgetsFlowTooltip
               {...xsTooltipData}
               onClose={() => setXsTooltipData(null)}
+              value={sumBy(xsTooltipData.components, "value")}
               drilldown={(id: string, filterStr: string) => {
                 props.onNodeClick(filterStr, 0, 0);
               }}
