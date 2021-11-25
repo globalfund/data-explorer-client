@@ -1,7 +1,7 @@
 import React from "react";
 import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
@@ -21,7 +21,7 @@ interface SlideInContainerProps {
 }
 
 export function SlideInContainer(props: SlideInContainerProps) {
-  // const location = useLocation();
+  const location = useLocation();
   const [open, setOpen] = React.useState(
     props.vizLevel > 0 && props.selected !== undefined
   );
@@ -33,40 +33,34 @@ export function SlideInContainer(props: SlideInContainerProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
-  // const isGrantDetail = location.pathname.indexOf("/grant/") > -1;
-  // const isPartnerDetail = location.pathname.indexOf("/partner/") > -1;
-  // const isLocationDetail = location.pathname.indexOf("/location/") > -1;
-  // let top = 133;
-  // if (vizDrilldowns.length > 0 || props.bigHeader) {
-  //   top = 168;
-  //   if (isMobile) {
-  //     top = 195;
-  //   }
-  // }
-  // if (isGrantDetail) {
-  //   top = 203;
-  //   if (isMobile) {
-  //     top = 104;
-  //     if (vizDrilldowns.length > 0) {
-  //       top = 140;
-  //     }
-  //   }
-  // }
-  // if (isPartnerDetail || isLocationDetail) {
-  //   top = 203;
-  //   if (isMobile) {
-  //     top = 196;
-  //   }
-  // }
+  const isGrantDetail = location.pathname.indexOf("/grant/") > -1;
+  const isPartnerDetail = location.pathname.indexOf("/partner/") > -1;
+  const isLocationDetail = location.pathname.indexOf("/location/") > -1;
 
   let top = 179;
-  if (isMobile) {
-    top = 195;
+  if (isMobile && !isGrantDetail) {
+    top = 125;
   }
   if (vizDrilldowns.length === 0) {
     top = 203;
     if (isMobile) {
       top = 104;
+    }
+  }
+
+  if (isGrantDetail) {
+    top = 203;
+    if (isMobile) {
+      top = 104;
+      if (vizDrilldowns.length > 0) {
+        top = 109;
+      }
+    }
+  }
+  if (isPartnerDetail || isLocationDetail) {
+    top = 203;
+    if (isMobile) {
+      top = 196;
     }
   }
 

@@ -5,7 +5,7 @@ export const styles = {
     gap: 12px;
     width: 100vw;
     display: flex;
-    padding: 16px 20px;
+    padding: 8px 20px;
     background: #495057;
     align-items: center;
 

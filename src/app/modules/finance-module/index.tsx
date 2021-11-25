@@ -81,6 +81,10 @@ export default function FinanceModule() {
             css={`
               width: 100%;
               height: 25px;
+
+              @media (max-width: 767px) {
+                height: 12px;
+              }
             `}
           />
         </React.Fragment>

@@ -199,7 +199,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
               }
 
               @media (max-width: 767px) {
-                gap: 12px;
+                gap: 8px;
                 flex-wrap: wrap;
                 justify-content: flex-start;
 

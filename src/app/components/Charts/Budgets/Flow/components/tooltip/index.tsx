@@ -15,8 +15,42 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
         color: #262c34;
         background: #f5f5f7;
         border-radius: 20px;
+
+        @media (max-width: 767px) {
+          padding: 25px;
+          color: #262c34;
+          background: #fff;
+          border-radius: 20px;
+          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+        }
       `}
     >
+      {props.onClose && (
+        <div
+          css={`
+            display: flex;
+            flex-direction: row;
+            justify-content flex-end;
+
+            path {
+              fill: #2E4063;
+            }
+          `}
+        >
+          <IconButton
+            onClick={() => {
+              if (props.onClose) {
+                props.onClose();
+              }
+            }}
+            css={`
+              padding: 0;
+            `}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+      )}
       <div
         css={`
           font-size: 18px;
@@ -39,6 +73,35 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
           {props.target}
         </span>
       </div>
+      {props.drilldown && (
+        <Button
+          onClick={() => {
+            if (props.drilldown) {
+              props.drilldown();
+            }
+          }}
+          css={`
+            width: 100%;
+            margin-top: 20px;
+            background: #dfe3e6;
+            border-radius: 22px;
+
+            &:hover {
+              background: #dfe3e6;
+            }
+
+            > span {
+              color: #262c34;
+              font-size: 14px;
+              font-weight: bold;
+              text-transform: none;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            }
+          `}
+        >
+          Drill down
+        </Button>
+      )}
     </div>
   );
 }
@@ -67,7 +130,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           `}
         >
           <IconButton
-            onTouchStart={() => {
+            onClick={() => {
               if (props.onClose) {
                 props.onClose();
               }

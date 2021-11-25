@@ -26,6 +26,7 @@ import {
   BudgetsFlowTooltip,
   MobileBudgetsFlowTooltip,
 } from "app/components/Charts/Budgets/Flow/components/tooltip";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 
 const container = css`
   width: 100%;
@@ -118,6 +119,10 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
     xsTooltipData,
     setXsTooltipData,
   ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
+  const [
+    xsLinkTooltipData,
+    setXsLinkTooltipData,
+  ] = React.useState<SankeyLinkDatum | null>(null);
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
     "value"
@@ -286,35 +291,33 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
               data: SankeyNodeDatum | SankeyLinkDatum,
               event: React.MouseEvent
             ) => {
-              // if (isTouchDevice()) {
-              //   setXsTooltipData(data as SankeyLinkDatum);
-              // } else {
-              const linkTarget = get(data, "target", null);
-              if (linkTarget) {
-                props.onNodeClick(
-                  {
-                    id: linkTarget.id.toString(),
-                    filterStr: linkTarget.filterStr.toString(),
-                  },
-                  linkTarget.x - 200,
-                  linkTarget.y
-                );
+              if (isMobile || isTouchDevice()) {
+                setXsLinkTooltipData(data as SankeyLinkDatum);
+              } else {
+                const linkTarget = get(data, "target", null);
+                if (linkTarget) {
+                  props.onNodeClick(
+                    {
+                      id: linkTarget.id.toString(),
+                      filterStr: linkTarget.filterStr.toString(),
+                    },
+                    linkTarget.x - 200,
+                    linkTarget.y
+                  );
+                }
               }
-              // }
             }}
             enableLinkGradient
             linkBlendMode="normal"
             linkHoverOthersOpacity={0.15}
-            linkTooltip={
-              (tProps: any) => (
-                // !isMobile && (
+            linkTooltip={(tProps: any) =>
+              !isMobile && (
                 <BudgetsFlowTooltip
                   value={tProps.value}
                   source={tProps.source.id}
                   target={tProps.target.id}
                 />
               )
-              // )
             }
             labelFormat={(text: string | number) =>
               getNodeLabel(text as string, isMobile)
@@ -358,6 +361,33 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                       },
                       0,
                       0
+                    );
+                  }}
+                />
+              </div>
+            </XsContainer>
+          )}
+          {isMobile && xsLinkTooltipData && !props.selectedNodeId && (
+            <XsContainer id="mobile-tooltip-container">
+              <div
+                css={`
+                  width: 95%;
+                `}
+              >
+                <BudgetsFlowTooltip
+                  value={xsLinkTooltipData.value}
+                  source={xsLinkTooltipData.source.id}
+                  target={xsLinkTooltipData.target.id}
+                  onClose={() => setXsLinkTooltipData(null)}
+                  drilldown={() => {
+                    props.onNodeClick(
+                      {
+                        id: xsLinkTooltipData.target.id.toString(),
+                        // @ts-ignore
+                        filterStr: xsLinkTooltipData.target.filterStr.toString(),
+                      },
+                      xsLinkTooltipData.target.x - 200,
+                      xsLinkTooltipData.target.y
                     );
                   }}
                 />

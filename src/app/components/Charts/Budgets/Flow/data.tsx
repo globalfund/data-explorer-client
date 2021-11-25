@@ -32,6 +32,8 @@ export interface BudgetsFlowTooltipProps {
   value: number;
   source: string;
   target: string;
+  onClose?: () => void;
+  drilldown?: () => void;
 }
 
 export interface MobileBudgetsFlowTooltipProps {

@@ -94,7 +94,7 @@ export const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 const styles = {
-  container: css`
+  container: (hasDrilldowns: boolean) => css`
     left: 0;
     top: 48px;
     z-index: 10;
@@ -104,6 +104,10 @@ const styles = {
     padding-top: 6px;
     background: #dfe3e6;
     flex-direction: column;
+
+    @media (max-width: 767px) {
+      padding-top: ${hasDrilldowns ? "6px" : "0"};
+    }
   `,
   innercontainer: css`
     display: flex;
@@ -133,6 +137,7 @@ const styles = {
     margin-bottom: 15px;
 
     @media (max-width: 767px) {
+      display: none;
       margin-bottom: 10px;
     }
   `,
@@ -163,6 +168,7 @@ const styles = {
 
     @media (max-width: 767px) {
       width: 100%;
+      margin-top: 4px;
       overflow-x: auto;
       overflow-y: hidden;
     }
@@ -239,7 +245,7 @@ export function PageHeader(props: PageHeaderProps) {
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
 
   return (
-    <div css={styles.container}>
+    <div css={styles.container(vizDrilldowns.length > 0 || !props.isFinance)}>
       <Container maxWidth="lg" css={styles.innercontainer}>
         <div css={styles.breadcrumbs}>
           {!isMobile && (
@@ -304,42 +310,50 @@ export function PageHeader(props: PageHeaderProps) {
             justify-content: space-between;
           `}
         >
-          <Grid
-            item
-            sm={12}
-            md={!props.isDetail ? 4 : 12}
-            css={`
-              @media (max-width: 767px) {
-                width: 100%;
-              }
-            `}
-          >
-            {/* <Tooltip title={props.title}> */}
-            <div
-              css={styles.title}
-              style={isGrantDetail ? { fontSize: 14 } : {}}
-            >
-              {props.title}
-            </div>
-            {/* </Tooltip> */}
-            {vizDrilldowns.length > 0 && (
-              <div css={styles.drilldowns}>
-                {vizDrilldowns.map((item: DrilldownModel, index: number) => (
-                  <div css={styles.drilldownitem(index)} key={item.name}>
-                    <div css={styles.drilldowntext}>{item.name}</div>
-                  </div>
-                ))}
-              </div>
-            )}
-            {(!props.isDetail || isMobile) && (
-              <div
-                css={`
+          {(!isMobile || vizDrilldowns.length > 0 || !props.isFinance) && (
+            <Grid
+              item
+              sm={12}
+              md={!props.isDetail ? 4 : 12}
+              css={`
+                @media (max-width: 767px) {
                   width: 100%;
-                  height: 16px;
-                `}
-              />
-            )}
-          </Grid>
+                }
+              `}
+            >
+              {/* <Tooltip title={props.title}> */}
+              {!props.isFinance && (
+                <div
+                  css={styles.title}
+                  style={isGrantDetail ? { fontSize: 14 } : {}}
+                >
+                  {props.title}
+                </div>
+              )}
+              {/* </Tooltip> */}
+              {vizDrilldowns.length > 0 && (
+                <div css={styles.drilldowns}>
+                  {vizDrilldowns.map((item: DrilldownModel, index: number) => (
+                    <div css={styles.drilldownitem(index)} key={item.name}>
+                      <div css={styles.drilldowntext}>{item.name}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {(!props.isDetail || isMobile) && (
+                <div
+                  css={`
+                    width: 100%;
+                    height: 16px;
+
+                    @media (max-width: 767px) {
+                      height: 8px;
+                    }
+                  `}
+                />
+              )}
+            </Grid>
+          )}
           {!isMobile && (
             <Grid
               item

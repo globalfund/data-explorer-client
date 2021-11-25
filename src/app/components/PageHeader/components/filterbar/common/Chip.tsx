@@ -10,14 +10,11 @@ const chipstyle = css`
     height: unset;
     color: #495057;
     font-size: 14px;
-    min-height: 32px;
-    line-height: 17px;
+    height: 26px;
     font-weight: bold;
     background-color: #dfe3e6;
 
     .MuiChip-label {
-      padding-top: 7px;
-      padding-bottom: 7px;
       white-space: break-spaces;
     }
 

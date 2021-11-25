@@ -231,7 +231,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 }
 
                 @media (max-width: 767px) {
-                  gap: 12px;
+                  gap: 8px;
                   flex-wrap: wrap;
                   justify-content: flex-start;
 
@@ -331,7 +331,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 width: ${props.data.length === 0 ? "100%" : "1000px"};
 
                 @media (max-width: 767px) {
-                  height: 550px;
+                  height: calc(100vh - 350px);
                 }
               `}
             >
