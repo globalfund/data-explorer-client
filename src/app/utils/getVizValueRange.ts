@@ -63,14 +63,14 @@ export function getVizValueRange(
           value += item[key];
         }
       });
+      if (value >= ranges[0].divider) {
+        rangesCount[0]++;
+      } else if (value >= ranges[1].divider) {
+        rangesCount[1]++;
+      } else if (value >= ranges[2].divider) {
+        rangesCount[2]++;
+      }
     });
-    if (value >= ranges[0].divider) {
-      rangesCount[0]++;
-    } else if (value >= ranges[1].divider) {
-      rangesCount[1]++;
-    } else if (value >= ranges[2].divider) {
-      rangesCount[2]++;
-    }
   } else {
     data.forEach((item1: any) => {
       item1.data.forEach((item: any) => {
