@@ -159,7 +159,7 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
                   >
                     <TooltipButton
                       type="button"
-                      onTouchStart={() => {
+                      onClick={() => {
                         if (props.xsTooltipData) {
                           props.onNodeClick(
                             `${props.xsTooltipData.id}-${props.xsTooltipData.data.tooltip.header}`,

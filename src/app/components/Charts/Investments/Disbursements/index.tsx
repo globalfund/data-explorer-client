@@ -169,7 +169,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                     right: 10px;
                     position: absolute;
                   `}
-                  onTouchStart={closeXsTooltip}
+                  onClick={closeXsTooltip}
                 >
                   <CloseIcon color="primary" />
                 </IconButton>
