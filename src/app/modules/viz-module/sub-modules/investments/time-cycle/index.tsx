@@ -107,6 +107,7 @@ export function InvestmentsTimeCycleModule(
         }}
       >
         <BudgetsTreemap
+          isDrilldownTreemap
           data={props.drilldownData}
           tooltipValueLabel="Disbursements"
           onNodeClick={(node: string, x: number, y: number) => {
