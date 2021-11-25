@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import { useUnmount } from "react-use";
+import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -34,6 +35,10 @@ interface InvestmentsTimeCycleModuleProps {
 export function InvestmentsTimeCycleModule(
   props: InvestmentsTimeCycleModuleProps
 ) {
+  const [
+    xsTooltipData,
+    setXsTooltipData,
+  ] = React.useState<TreeMapNodeDatum | null>(null);
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
@@ -107,9 +112,10 @@ export function InvestmentsTimeCycleModule(
         }}
       >
         <BudgetsTreemap
-          isDrilldownTreemap
           data={props.drilldownData}
+          xsTooltipData={xsTooltipData}
           tooltipValueLabel="Disbursements"
+          setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string, x: number, y: number) => {
             // props.setVizLevel(2);
             // props.setVizPrevSelected(props.vizSelected);
