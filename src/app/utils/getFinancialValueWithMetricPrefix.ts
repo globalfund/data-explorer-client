@@ -8,9 +8,9 @@ const ranges = [
 
 export function getFinancialValueWithMetricPrefix(
   n: number,
-  rangeIndex: number
+  rangeIndex?: number
 ): string {
-  if (rangeIndex) {
+  if (rangeIndex !== undefined) {
     return (n / ranges[rangeIndex].divider).toString();
   }
   for (let i = 0; i < ranges.length; i++) {
