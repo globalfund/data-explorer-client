@@ -35,11 +35,22 @@ function MobileHeader() {
           onClick={() => history.goBack()}
           css={`
             padding-left: 0;
+            padding-right: 0;
+            margin-left: -25px;
           `}
         >
           <IconChevronLeft htmlColor="#fff" />
         </IconButton>
       )}
+      <NavLink to="/" css="display: flex;">
+        <img
+          src="/gffinancelogo.png"
+          alt="TGF Finance logo"
+          css={`
+            transform: scale(0.9);
+          `}
+        />
+      </NavLink>
       {/* <MobileAppbarSearch /> */}
     </React.Fragment>
   );
@@ -75,6 +86,10 @@ export function AppBar() {
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
+
+            @media (max-width: 767px) {
+              justify-content: center;
+            }
           `}
         >
           {isMobile && getMobilePageHeader()}
@@ -82,10 +97,10 @@ export function AppBar() {
             <React.Fragment>
               <NavLink to="/" css="display: flex;">
                 <img
-                  src="/gflogo.png"
-                  width={295}
-                  height={24}
-                  alt="TGF Data Explorer logo"
+                  src="/gffinancelogo.png"
+                  width={307}
+                  height={22}
+                  alt="TGF Finance logo"
                 />
               </NavLink>
               {/* <NavLink
