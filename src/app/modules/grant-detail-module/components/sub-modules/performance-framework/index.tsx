@@ -132,6 +132,12 @@ export function PerformanceFrameworkModule(props: Props) {
             overflow: visible !important;
           }`
           : ""}
+
+        #zoom-in-level {
+          > div {
+            background-color: #f5f5f7;
+          }
+        }
       `}
     >
       <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>

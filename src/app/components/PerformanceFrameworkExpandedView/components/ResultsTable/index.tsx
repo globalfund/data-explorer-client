@@ -80,7 +80,11 @@ function ResultsTableRow(props: ResultsTableRowProps) {
   const [showTooltip, setShowTooltip] = React.useState(false);
 
   return (
-    <tr>
+    <tr
+      css={`
+        background-color: ${props.selected ? "#cfd4da" : "transparent"};
+      `}
+    >
       <td>{props.type}</td>
       <td>{props.baseline}</td>
       <td>{props.target}</td>
@@ -94,13 +98,6 @@ function ResultsTableRow(props: ResultsTableRowProps) {
             align-items: center;
           `}
         >
-          <div
-            css={`
-              min-width: 30px;
-            `}
-          >
-            {props.achievementRate}
-          </div>
           <div
             css={`
               gap: 10px;
@@ -122,13 +119,20 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 border-radius: 50%;
                 background: ${props.color === "#E2E2E2"
                   ? `repeating-linear-gradient(
-                  -45deg,
-                  #262c34 0 0.5px,
-                  #fff 1.5px 2px
-                )`
+                    -45deg,
+                    #262c34 0 0.5px,
+                    #fff 1.5px 2px
+                    )`
                   : props.color};
               `}
             />
+          </div>
+          <div
+            css={`
+              min-width: 30px;
+            `}
+          >
+            {props.achievementRate ? props.achievementRate : "N/A"}
           </div>
         </div>
       </td>
