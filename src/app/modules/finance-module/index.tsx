@@ -69,9 +69,9 @@ export default function FinanceModule() {
       <PageHeader
         isDetail
         isFinance
-        title="Finance"
         breadcrumbs={[]}
         tabs={financeTabs}
+        title="Finance at a Glance"
       />
       <PageTopSpacer />
       {isMobile && (

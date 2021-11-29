@@ -322,7 +322,7 @@ export function PageHeader(props: PageHeaderProps) {
               `}
             >
               {/* <Tooltip title={props.title}> */}
-              {!props.isFinance && (
+              {(!props.isFinance || !isMobile) && (
                 <div
                   css={styles.title}
                   style={isGrantDetail ? { fontSize: 14 } : {}}
