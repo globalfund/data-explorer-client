@@ -175,6 +175,7 @@ export function ToolBoxPanelIconButtons() {
       >
         <div
           css={`
+            font-size: 12px !important;
             padding: 6px 12px !important;
           `}
         >
@@ -205,6 +206,7 @@ export function ToolBoxPanelIconButtons() {
       >
         <div
           css={`
+            font-size: 12px !important;
             padding: 6px 12px !important;
           `}
         >
