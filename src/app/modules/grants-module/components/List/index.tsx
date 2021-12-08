@@ -23,28 +23,11 @@ export function GrantsList(props: GrantsListProps) {
             {/* 1st row */}
             <div css={row(14, "normal")}>
               <div>
-                <div>{item.status}</div>
+                <div>
+                  <b>{item.status}</b>
+                </div>
                 <div>{item.id}</div>
               </div>
-              <div
-                css={`
-                  gap: 6px;
-                  display: flex;
-                  font-size: 14px;
-                  font-weight: bold;
-                  flex-direction: row;
-                  align-items: center;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                `}
-              >
-                <b>{item.component}</b>
-                <ComponentIcon />
-              </div>
-            </div>
-            {/* 2nd row */}
-            <div css={row(18, "bold", 24)}>{item.title}</div>
-            {/* 3rd row */}
-            <div css={row(14, "normal")}>
               <div
                 css={`
                   gap: 24px;
@@ -75,11 +58,108 @@ export function GrantsList(props: GrantsListProps) {
                   <RatingIcon />
                   {item.rating}
                 </div>
+                <div>
+                  <b>{item.component}</b>
+                  <ComponentIcon />
+                </div>
               </div>
-              <div css="text-align: right;">
-                <div>Disbursed: {formatFinancialValue(item.disbursed)}</div>
-                <div>Committed: {formatFinancialValue(item.committed)}</div>
-                <div>Signed: {formatFinancialValue(item.signed)}</div>
+            </div>
+            {/* 2nd row */}
+            <div css={row(18, "bold", 24)}>{item.title}</div>
+            {/* 3rd row */}
+            <div
+              css={row(14, "normal")}
+              style={{
+                borderTop: "1px solid #DFE3E6",
+                paddingTop: 8,
+                marginTop: 0,
+              }}
+            >
+              <div
+                css={`
+                  gap: 10px;
+                  width: 100%;
+                  display: flex;
+                  font-size: 12px;
+                  padding-top: 16px;
+                  flex-direction: column;
+                `}
+              >
+                <div
+                  css={`
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                  `}
+                >
+                  <div
+                    css={`
+                      font-weight: bold;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                    `}
+                  >
+                    Disbursed ·{" "}
+                    {((item.disbursed * 100) / item.committed).toFixed(2)}%
+                  </div>
+                  <div>{formatFinancialValue(item.disbursed)}</div>
+                </div>
+                <div
+                  css={`
+                    width: 100%;
+                    height: 5px;
+                    border-radius: 20px;
+                    background: #c7cdd1;
+                  `}
+                >
+                  <div
+                    css={`
+                      height: 5px;
+                      border-radius: 20px;
+                      background: #373d43;
+                      width: ${(item.disbursed * 100) / item.committed}%;
+                    `}
+                  />
+                </div>
+                <div
+                  css={`
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                  `}
+                >
+                  <div
+                    css={`
+                      font-weight: bold;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                    `}
+                  >
+                    Committed
+                  </div>
+                  <div>{formatFinancialValue(item.committed)}</div>
+                </div>
+                <div
+                  css={`
+                    width: 100%;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                  `}
+                >
+                  <div
+                    css={`
+                      font-weight: bold;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                    `}
+                  >
+                    Signed
+                  </div>
+                  <div>{formatFinancialValue(item.signed)}</div>
+                </div>
               </div>
             </div>
           </Link>
