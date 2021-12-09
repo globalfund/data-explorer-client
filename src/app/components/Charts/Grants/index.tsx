@@ -151,6 +151,10 @@ export function GrantsViz(props: GrantsVizProps) {
           //border-bottom: 1px solid #c7cdd1;
           border-top-left-radius: ${width * 2}px;
           border-top-right-radius: ${width * 2}px;
+
+          @media (max-width: 767px) {
+            margin-top: 0;
+          }
         `}
       >
         <div

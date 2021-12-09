@@ -22,4 +22,8 @@ export const input = css`
     color: #262c34;
     font-weight: bold;
   }
+
+  &:focus::placeholder {
+    opacity: 0.3;
+  }
 `;

@@ -38,8 +38,12 @@ export default function CountryDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const params = useParams<{ code: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const params = useParams<{
+    code: string;
+    vizType: string;
+    subType?: string;
+  }>();
 
   // api call & data
   const fetchLocationInfoData = useStoreActions(
@@ -142,7 +146,9 @@ export default function CountryDetail() {
           <div
             css={`
               width: 100%;
-              height: 25px;
+              height: ${params.vizType === "grants" && !params.subType
+                ? "5px"
+                : "25px"};
             `}
           />
         </React.Fragment>
