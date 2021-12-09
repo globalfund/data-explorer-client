@@ -355,7 +355,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 indexBy="year"
                 margin={{
                   top: !isMobile ? 60 : 20,
-                  right: 30,
+                  right: !isMobile ? 30 : 70,
                   bottom: 50,
                   left: 70,
                 }}
@@ -365,7 +365,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                   tickPadding: 10,
                   tickRotation: 0,
                   legendOffset: -60,
-                  legendPosition: "middle",
+                  legendPosition: "end",
                   legend: `USD (${moneyAbbrRange.abbr})`,
                   format: (value: number | string | Date) =>
                     `${getFinancialValueWithMetricPrefix(
@@ -373,6 +373,24 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                       moneyAbbrRange.index
                     )}`,
                 }}
+                axisRight={
+                  isMobile
+                    ? {
+                        orient: "left",
+                        tickSize: 5,
+                        tickPadding: 10,
+                        tickRotation: 0,
+                        legendOffset: 60,
+                        legendPosition: "end",
+                        legend: `USD (${moneyAbbrRange.abbr})`,
+                        format: (value: number | string | Date) =>
+                          `${getFinancialValueWithMetricPrefix(
+                            parseInt(value.toString(), 10),
+                            moneyAbbrRange.index
+                          )}`,
+                      }
+                    : null
+                }
                 // axisBottom={{
                 //   tickRotation: isMobile && props.data.length > 3 ? 90 : 0,
                 // }}

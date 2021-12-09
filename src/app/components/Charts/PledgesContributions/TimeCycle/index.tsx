@@ -191,7 +191,7 @@ export function PledgesContributionsTimeCycle(
               tickPadding: 10,
               tickRotation: 0,
               legendOffset: -60,
-              legendPosition: "middle",
+              legendPosition: "end",
               legend: `USD (${moneyAbbrRange.abbr})`,
               format: (value: number | string | Date) =>
                 `${getFinancialValueWithMetricPrefix(

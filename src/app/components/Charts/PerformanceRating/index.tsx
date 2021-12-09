@@ -63,7 +63,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           tickRotation: 0,
           legend: "Rating",
           legendOffset: -60,
-          legendPosition: "middle",
+          legendPosition: "end",
           tickValues: [0, 1, 2, 3, 4, 5],
           format: (value: number | string | Date) =>
             ratingValues[value as number],
