@@ -1,10 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-cycle */
 /* third-party */
 import React from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { ResponsiveTreeMapHtml, TreeMapNodeDatum } from "@nivo/treemap";
 /* project */
 import { isTouchDevice } from "app/utils/isTouchDevice";
@@ -19,7 +19,7 @@ import { TreemapTooltip } from "app/components/Charts/Investments/Disbursements/
 import { TreeemapNode } from "app/components/Charts/Investments/Disbursements/components/treemapnode";
 
 export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
-  const matches = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [
     xsTooltipData,
     setXsTooltipData,
@@ -54,6 +54,10 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
           > div {
             > div:first-of-type {
               background: #373d43;
+
+              @media (max-width: 767px) {
+                background: #fff;
+              }
             }
           }
         }
@@ -110,19 +114,33 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                   padding: "16px 25px",
                   position: "relative",
                   backgroundColor: "#f5f5f7",
-                  display: matches || isTouchDevice() ? "none" : "inherit",
+                  display: isMobile || isTouchDevice() ? "none" : "inherit",
                 },
               },
             }}
           />
         )}
       </div>
-      {(matches || isTouchDevice()) &&
+      {(isMobile || isTouchDevice()) &&
         actualXsTooltipData &&
         !props.selectedNodeId &&
         !props.isChildTreemap && (
-          <XsContainer>
-            <ClickAwayListener onClickAway={closeXsTooltip}>
+          <XsContainer id="mobile-tooltip-container">
+            <div
+              css={`
+                width: 100%;
+
+                ${props.isDrilldownTreemap
+                  ? `
+                  height: 100%;
+                  display: flex;
+                  padding: 0 16px;
+                  flex-direction: column;
+                  justify-content: center;
+                `
+                  : ""}
+              `}
+            >
               <div
                 css={`
                   padding: 16px 25px;
@@ -133,6 +151,16 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                   > div {
                     background: #f5f5f7 !important;
                   }
+
+                  @media (max-width: 767px) {
+                    padding: 16px;
+                    background: #fff;
+                    box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+
+                    > div {
+                      background: #fff !important;
+                    }
+                  }
                 `}
               >
                 <IconButton
@@ -141,12 +169,12 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                     right: 10px;
                     position: absolute;
                   `}
-                  onTouchStart={closeXsTooltip}
+                  onClick={closeXsTooltip}
                 >
                   <CloseIcon color="primary" />
                 </IconButton>
                 <TreemapTooltip node={actualXsTooltipData} />
-                {!actualXsTooltipData.data._children && (
+                {!props.isDrilldownTreemap && (
                   <div
                     css={`
                       display: flex;
@@ -180,7 +208,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                   </div>
                 )}
               </div>
-            </ClickAwayListener>
+            </div>
           </XsContainer>
         )}
     </React.Fragment>

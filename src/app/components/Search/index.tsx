@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useDebounce, useUpdateEffect, useSessionStorage } from "react-use";
 /* project */
@@ -8,7 +9,9 @@ import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
 
 export function Search() {
+  const [open, setOpen] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(0);
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
     ""
@@ -16,6 +19,7 @@ export function Search() {
   const [value, setValue] = React.useState(storedValue);
 
   // api call & data
+  const clearData = useStoreActions((store) => store.GlobalSearch.clear);
   const fetchData = useStoreActions((store) => store.GlobalSearch.fetch);
   const data = useStoreState(
     (state) =>
@@ -38,6 +42,8 @@ export function Search() {
         fetchData({
           filterString: `q=${value}`,
         });
+      } else {
+        clearData();
       }
     },
     500,
@@ -45,13 +51,28 @@ export function Search() {
   );
 
   return (
-    <SearchLayout
-      value={value}
-      results={data}
-      loading={isLoading}
-      setValue={setValue}
-      activeTab={activeTab}
-      setActiveTab={setActiveTab}
-    />
+    <div
+      onClick={(e: any) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!open) {
+          setOpen(true);
+        }
+      }}
+      css={`
+        width: 100%;
+      `}
+    >
+      <SearchLayout
+        value={value}
+        results={data}
+        loading={isLoading}
+        setValue={setValue}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        forceFocus={isMobile && open}
+        onClose={() => setOpen(false)}
+      />
+    </div>
   );
 }

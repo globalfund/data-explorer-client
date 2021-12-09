@@ -31,6 +31,14 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
           display: flex;
           font-size: 12px;
           flex-direction: column;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <div

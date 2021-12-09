@@ -2,9 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
-import { PageHeader } from "app/components/PageHeader";
 import { useMediaQuery } from "@material-ui/core";
-import LinkList from "./links";
+import LinkList from "app/modules/about-module/links";
+import { PageHeader } from "app/components/PageHeader";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 
 export default function About() {
   useTitle(`The Data Explorer - About`);
@@ -13,6 +14,7 @@ export default function About() {
     document.body.style.background = "#F5F5F7";
   }, []);
 
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
@@ -26,17 +28,19 @@ export default function About() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="About"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "About",
-          },
-        ]}
-      />
-      <div css="width: 100%;height: 25px;" />
-      <Grid container spacing={6}>
+      {!isMobile && (
+        <PageHeader
+          title="About"
+          breadcrumbs={[
+            { name: "Home", link: "/" },
+            {
+              name: "About",
+            },
+          ]}
+        />
+      )}
+      <PageTopSpacer />
+      <Grid container spacing={!isSmallScreen ? 6 : undefined}>
         {!isSmallScreen && (
           <Grid item md={3}>
             <LinkList />
@@ -205,6 +209,16 @@ export default function About() {
           </Grid>
         )}
       </Grid>
+      <div
+        css={`
+          width: 100%;
+          height: 0px;
+
+          @media (max-width: 767px) {
+            height: 90px;
+          }
+        `}
+      />
     </div>
   );
 }

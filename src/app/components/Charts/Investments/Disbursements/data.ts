@@ -26,6 +26,7 @@ export interface DisbursementsTreemapDataItem {
 export interface DisbursementsTreemapProps {
   selectedNodeId?: string;
   isChildTreemap?: boolean;
+  isDrilldownTreemap?: boolean;
   data: DisbursementsTreemapDataItem[];
   xsTooltipData?: TreeMapNodeDatum | null;
   parentNodeCoords?: { x: number; y: number };

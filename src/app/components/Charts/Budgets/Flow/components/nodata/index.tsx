@@ -2,7 +2,19 @@ import React from "react";
 
 export function NoDataBudgetsFlow() {
   return (
-    <svg width="1000" height="397" viewBox="0 0 1000 397">
+    <svg
+      width="1000"
+      height="397"
+      viewBox="0 0 1000 397"
+      css={`
+        @media (max-width: 1000px) {
+          width: 100%;
+        }
+        @media (max-width: 767px) {
+          display: none;
+        }
+      `}
+    >
       <rect width="6" height="55.0962" fill="#C7CDD1" />
       <rect y="55.096" width="6" height="80.3097" fill="#C7CDD1" />
       <rect y="135.406" width="6" height="154.083" fill="#C7CDD1" />

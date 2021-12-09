@@ -1,18 +1,17 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import Grid from "@material-ui/core/Grid";
+import { useLocation } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { Switch, Route, useLocation } from "react-router-dom";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { ResultsInfoContent } from "app/modules/results-module/components/InfoContent";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 import {
   ResultListItemModel,
@@ -25,7 +24,8 @@ export default function ResultsModule() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelResultsYearState.value
@@ -37,10 +37,6 @@ export default function ResultsModule() {
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
   );
   const fetchInfoData = useStoreActions((store) => store.ResultsStats.fetch);
-  const infoData = useStoreState(
-    (state) =>
-      get(state.ResultsStats.data, "data", []) as ResultsInfoContentStatsProps[]
-  );
   const fetchYearOptionsData = useStoreActions(
     (store) => store.ResultsYears.fetch
   );
@@ -84,6 +80,8 @@ export default function ResultsModule() {
       });
     }
   }, [search]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   const [,] = useDebounce(
     () => {
@@ -139,19 +137,26 @@ export default function ResultsModule() {
           },
           { name: "Results" },
         ]}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}
         filterGroups={pathnameToFilterGroups.results}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
-      <div ref={vizWrapperRef}>
+      <PageTopSpacer />
+      <div
+        ref={vizWrapperRef}
+        css={`
+          width: 100%;
+        `}
+      >
         <DataList
           isLoading={isLoading}
           search={search}
@@ -162,7 +167,16 @@ export default function ResultsModule() {
           pushValue={pushValue}
         />
       </div>
-      <div css="width: 100%;height: 25px;" />
+      <div
+        css={`
+          width: 100%;
+          height: 25px;
+
+          @media (max-width: 767px) {
+            height: 70px;
+          }
+        `}
+      />
       <div
         css={`
           left: 0;

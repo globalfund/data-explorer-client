@@ -12,7 +12,6 @@ import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { BarComponent } from "app/components/Charts/Investments/TimeCycle/components/bar";
@@ -63,7 +62,7 @@ function getLegendItems(data: any) {
 }
 
 export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
-  const matches = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
   const [showCumulative, setShowCumulative] = React.useState(false);
@@ -85,12 +84,12 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     });
   }
 
-  function handleChangeCumulative(event: React.ChangeEvent<HTMLInputElement>) {
-    setShowCumulative(event.target.checked);
-    if (event.target.checked) {
-      setTimeout(() => showHideBarLabels(event.target.checked), 100);
+  function handleChangeCumulative() {
+    setShowCumulative(!showCumulative);
+    if (!showCumulative) {
+      setTimeout(() => showHideBarLabels(!showCumulative), 100);
     } else {
-      showHideBarLabels(event.target.checked);
+      showHideBarLabels(!showCumulative);
     }
   }
 
@@ -165,13 +164,17 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             width: 100%;
             height: 100%;
           }
+
+          @media (max-width: 767px) {
+            height: 500px;
+          }
         `}
         data-cy="investments-time-cycle"
       >
         <Grid
           container
           alignItems="center"
-          spacing={4}
+          spacing={!isMobile ? 4 : 2}
           css={`
             > div {
               color: #262c34;
@@ -179,24 +182,36 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             }
           `}
         >
-          <Grid item xs={12} sm={12} md={3}>
-            <div
-              css={`
-                display: flex;
-                font-weight: bold;
-                align-items: center;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+            {isMobile && (
+              <Grid item xs={12} css="font-size: 12px !important;">
+                <b>
+                  Total amount: {formatFinancialValue(totalInvestmentValue)}
+                </b>
+              </Grid>
+            )}
+            {!isMobile && (
+              <React.Fragment>
+                <div
+                  css={`
+                    display: flex;
+                    font-weight: bold;
+                    align-items: center;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
 
-                > svg {
-                  margin-left: 10px;
-                }
-              `}
-            >
-              {props.type || "Disbursements"} <InfoIcon />
-            </div>
-            <div css="font-weight: normal;">
-              {formatFinancialValue(totalInvestmentValue)}
-            </div>
+                    > svg {
+                      margin-left: 10px;
+                    }
+                  `}
+                >
+                  {props.type || "Disbursements"} <InfoIcon />
+                </div>
+                <div css="font-weight: normal;">
+                  {formatFinancialValue(totalInvestmentValue)}
+                </div>
+              </React.Fragment>
+            )}
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
             <div
@@ -205,6 +220,30 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 24px;
+                    }
+                  }
+                }
+
+                @media (max-width: 767px) {
+                  gap: 12px;
+                  flex-wrap: wrap;
+                  justify-content: flex-start;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 12px;
+                      }
+                    }
+                  }
+                }
               `}
             >
               {legends.map((legend: any) => (
@@ -223,6 +262,15 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     opacity: ${!hoveredLegend || hoveredLegend === legend.name
                       ? 1
                       : 0.3};
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 6px;
+                        }
+                      }
+                    }
                   `}
                 >
                   <div
@@ -235,110 +283,143 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                   <div>{legend.name}</div>
                 </div>
               ))}
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    color="primary"
-                    defaultChecked={false}
-                    onChange={handleChangeCumulative}
-                    disabled={props.data.length === 0}
-                  />
-                }
-                label="Show Cumulative"
-              />
+              {props.data.length > 0 && (
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      disableRipple
+                      color="primary"
+                      name="cumulative"
+                      checked={showCumulative}
+                      onChange={handleChangeCumulative}
+                    />
+                  }
+                  label="Show Cumulative"
+                />
+              )}
             </div>
           </Grid>
         </Grid>
         {props.data.length === 0 ? (
-          <React.Fragment>
+          <div css="display: flex;justify-content: center;">
             <NoDataBudgetsTimeCycle />
             <NoDataLabel />
-          </React.Fragment>
+          </div>
         ) : (
-          <ResponsiveBar
-            animate
-            enableLabel={false}
-            indexScale={{ type: "band", round: true }}
-            groupMode="grouped"
-            motionStiffness={90}
-            motionDamping={15}
-            borderColor="inherit:darker(1.6)"
-            layers={["grid", "axes", Bars, "markers", "legends"]}
-            padding={matches ? 0.3 : 0.5}
-            innerPadding={6}
-            data={props.data}
-            keys={
-              showCumulative
-                ? keys
-                : filter(keys, (key: string) => key !== "cumulative")
-            }
-            indexBy="year"
-            margin={{
-              top: 60,
-              right: 30,
-              bottom: props.data.length > 5 ? 120 : 80,
-              left: 70,
-            }}
-            axisLeft={{
-              orient: "left",
-              tickSize: 5,
-              tickPadding: 10,
-              tickRotation: 0,
-              legendOffset: -60,
-              legendPosition: "middle",
-              legend: `USD (${moneyAbbrRange.abbr})`,
-              format: (value: number | string | Date) =>
-                `${getFinancialValueWithMetricPrefix(
-                  parseInt(value.toString(), 10),
-                  moneyAbbrRange.index
-                )}`,
-            }}
-            axisBottom={{
-              format: (value: number | string | Date) => {
-                return matches && props.data.length > 2
-                  ? value.toString().slice(2, 4)
-                  : value.toString();
-              },
-              tickRotation: matches && props.data.length > 3 ? 45 : 0,
-            }}
-            theme={{
-              axis: {
-                ticks: {
-                  line: {
-                    strokeWidth: 1,
-                    stroke: "#868E96",
-                    strokeOpacity: 0.3,
+          <div
+            id="bar-scroll-div"
+            css={`
+              width: 100%;
+              overflow-x: auto;
+              overflow-y: hidden;
+
+              &::-webkit-scrollbar {
+                height: 5px;
+                background: #262c34;
+              }
+              &::-webkit-scrollbar-track {
+                background: #dfe3e6;
+              }
+              &::-webkit-scrollbar-thumb {
+                background: #262c34;
+              }
+            `}
+          >
+            <div
+              css={`
+                height: 620px;
+                width: ${props.data.length === 0 ? "100%" : "1000px"};
+
+                @media (max-width: 767px) {
+                  height: 550px;
+                }
+              `}
+            >
+              <ResponsiveBar
+                animate
+                enableLabel={false}
+                indexScale={{ type: "band", round: true }}
+                groupMode="grouped"
+                motionStiffness={90}
+                motionDamping={15}
+                borderColor="inherit:darker(1.6)"
+                layers={["grid", "axes", Bars, "markers", "legends"]}
+                padding={isMobile ? 0.3 : 0.5}
+                innerPadding={6}
+                data={props.data}
+                keys={
+                  showCumulative
+                    ? keys
+                    : filter(keys, (key: string) => key !== "cumulative")
+                }
+                indexBy="year"
+                margin={{
+                  top: !isMobile ? 60 : 20,
+                  right: 30,
+                  bottom: 50,
+                  left: 70,
+                }}
+                axisLeft={{
+                  orient: "left",
+                  tickSize: 5,
+                  tickPadding: 10,
+                  tickRotation: 0,
+                  legendOffset: -60,
+                  legendPosition: "middle",
+                  legend: `USD (${moneyAbbrRange.abbr})`,
+                  format: (value: number | string | Date) =>
+                    `${getFinancialValueWithMetricPrefix(
+                      parseInt(value.toString(), 10),
+                      moneyAbbrRange.index
+                    )}`,
+                }}
+                // axisBottom={{
+                //   tickRotation: isMobile && props.data.length > 3 ? 90 : 0,
+                // }}
+                theme={{
+                  axis: {
+                    ticks: {
+                      line: {
+                        strokeWidth: 1,
+                        stroke: "#868E96",
+                        strokeOpacity: 0.3,
+                      },
+                      text: {
+                        fill: "#262c34",
+                        fontSize: 12,
+                      },
+                    },
+                    legend: {
+                      text: {
+                        fontWeight: "bold",
+                      },
+                    },
                   },
-                  text: {
-                    fill: "#262c34",
-                    fontSize: 12,
+                  legends: {
+                    text: {
+                      fontSize: 12,
+                    },
                   },
-                },
-                legend: {
-                  text: {
-                    fontWeight: "bold",
+                  grid: {
+                    line: {
+                      strokeWidth: 1,
+                      stroke: "#868E96",
+                      strokeOpacity: 0.3,
+                    },
                   },
-                },
-              },
-              legends: {
-                text: {
-                  fontSize: 12,
-                },
-              },
-              grid: {
-                line: {
-                  strokeWidth: 1,
-                  stroke: "#868E96",
-                  strokeOpacity: 0.3,
-                },
-              },
-            }}
-          />
+                }}
+              />
+            </div>
+          </div>
         )}
       </div>
-      {(matches || isTouchDevice()) && xsTooltipData && !props.selectedNodeId && (
-        <XsContainer>
-          <ClickAwayListener onClickAway={closeXsTooltip}>
+      {(isMobile || isTouchDevice()) && xsTooltipData && !props.selectedNodeId && (
+        <XsContainer id="mobile-tooltip-container">
+          <div
+            css={`
+              width: 95%;
+            `}
+          >
             <div
               css={`
                 padding: 16px 25px;
@@ -346,15 +427,40 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 background: #f5f5f7;
                 border-radius: 20px;
 
-                > div {
-                  background: #f5f5f7 !important;
+                @media (max-width: 767px) {
+                  padding: 25px;
+                  color: #262c34;
+                  background: #fff;
+                  border-radius: 20px;
+                  box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
 
-                  &:first-of-type {
+                  > div {
                     padding: 0;
+                    background: #fff !important;
                   }
                 }
               `}
             >
+              <div
+                css={`
+                  display: flex;
+                  flex-direction: row;
+                  justify-content flex-end;
+
+                  path {
+                    fill: #2E4063;
+                  }
+                `}
+              >
+                <IconButton
+                  onTouchStart={closeXsTooltip}
+                  css={`
+                    padding: 0;
+                  `}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
               <InvestmentsTimeCycleTooltip {...xsTooltipData} />
               <div
                 css={`
@@ -382,18 +488,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                   Drilldown
                 </TooltipButton>
               </div>
-              <IconButton
-                css={`
-                  top: 1px;
-                  right: 10px;
-                  position: absolute;
-                `}
-                onTouchStart={closeXsTooltip}
-              >
-                <CloseIcon color="primary" />
-              </IconButton>
             </div>
-          </ClickAwayListener>
+          </div>
         </XsContainer>
       )}
     </React.Fragment>

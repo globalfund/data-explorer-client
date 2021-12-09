@@ -5,6 +5,7 @@ import { css } from "styled-components/macro";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "../..";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 
 const containercss = (hover: boolean, selected: boolean) => css`
   display: flex;
@@ -26,6 +27,11 @@ export function TreeemapNode(props: any) {
   const bigDevice = useMediaQuery("(min-width: 768px)");
   const hasChildren = node.data._children && node.data._children.length > 0;
 
+  let color = "#262C34";
+  if (props.isChildTreemap || (props.invertColors && !bigDevice)) {
+    color = "#fff";
+  }
+
   return (
     <div
       tabIndex={0}
@@ -37,12 +43,15 @@ export function TreeemapNode(props: any) {
         left: node.x,
         width: node.width,
         height: node.height,
-        background: node.data.color,
-        border: "0px solid #373D43",
-        fontSize: bigDevice ? 12 : 8,
-        color: props.isChildTreemap ? "#fff" : "#262C34",
+        fontSize: bigDevice ? 12 : 10,
+        border: `0px solid #${
+          bigDevice || !props.invertColors ? "373D43" : "fff"
+        }`,
         cursor: props.isChildTreemap ? "pointer" : "default",
         borderStyle: props.isChildTreemap ? "none" : "solid",
+        color,
+        background:
+          bigDevice || !props.invertColors ? node.data.color : "#595C70",
       }}
       css={containercss(
         !hasChildren,
@@ -51,8 +60,14 @@ export function TreeemapNode(props: any) {
       onMouseMove={!hasChildren ? node.onMouseMove : undefined}
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
       onMouseLeave={!hasChildren ? node.onMouseLeave : undefined}
-      onClick={() => {
-        if (props.isChildTreemap) {
+      onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        if (isTouchDevice() && props.setXsTooltipData) {
+          e.stopPropagation();
+          props.setXsTooltipData(node);
+        } else if (
+          props.isChildTreemap &&
+          (!props.setXsTooltipData || bigDevice)
+        ) {
           props.onNodeClick(
             `${node.id}-${node.data.tooltip.header}`,
             node.x + props.parentNodeCoords.x,
@@ -127,6 +142,8 @@ export function TreeemapNode(props: any) {
             tooltipKeyLabel={props.tooltipKeyLabel}
             tooltipValueLabel={props.tooltipValueLabel}
             parentNodeCoords={{ x: node.x, y: node.y }}
+            setXsTooltipData={props.setXsTooltipData}
+            xsTooltipData={props.xsTooltipData}
           />
         </div>
       )}

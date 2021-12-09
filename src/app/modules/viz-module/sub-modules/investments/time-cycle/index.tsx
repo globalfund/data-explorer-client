@@ -1,7 +1,8 @@
 /* third-party */
 import React from "react";
 import { useUnmount } from "react-use";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { TreeMapNodeDatum } from "@nivo/treemap";
+import { useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
@@ -34,16 +35,17 @@ interface InvestmentsTimeCycleModuleProps {
 export function InvestmentsTimeCycleModule(
   props: InvestmentsTimeCycleModuleProps
 ) {
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
+  const [
+    xsTooltipData,
+    setXsTooltipData,
+  ] = React.useState<TreeMapNodeDatum | null>(null);
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([]);
+      setVizDrilldowns([{ name: "Dataset" }]);
     }
     if (props.vizLevel > 0 && props.vizSelected) {
       setVizDrilldowns([
@@ -66,9 +68,9 @@ export function InvestmentsTimeCycleModule(
         width: 100%;
 
         ${!props.vizSelected
-          ? `* {
-      overflow: visible !important;
-    }`
+          ? `*:not(#bar-scroll-div) {
+            overflow: visible !important;
+          }`
           : ""}
       `}
     >
@@ -111,7 +113,9 @@ export function InvestmentsTimeCycleModule(
       >
         <BudgetsTreemap
           data={props.drilldownData}
+          xsTooltipData={xsTooltipData}
           tooltipValueLabel="Disbursements"
+          setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string, x: number, y: number) => {
             // props.setVizLevel(2);
             // props.setVizPrevSelected(props.vizSelected);

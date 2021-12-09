@@ -3,12 +3,24 @@ import get from "lodash/get";
 import find from "lodash/find";
 import { useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface UseFilterOptionsProps {
   returnFilterOptions?: boolean;
 }
 
-export function useFilterOptions(props: UseFilterOptionsProps) {
+export interface UseFilterOptionsReturn {
+  Locations: FilterGroupOptionModel[];
+  Components: FilterGroupOptionModel[];
+  "Partner Types": FilterGroupOptionModel[];
+  "Grant Status": FilterGroupOptionModel[];
+  "Replenishment Periods": FilterGroupOptionModel[];
+  Donors: FilterGroupOptionModel[];
+}
+
+export function useFilterOptions(
+  props: UseFilterOptionsProps
+): null | UseFilterOptionsReturn {
   const location = useLocation();
   const getLocations = useStoreActions(
     (store) => store.LocationFilterOptions.fetch

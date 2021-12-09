@@ -97,6 +97,15 @@ function Row(props: {
                   font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
                     "Helvetica Neue", sans-serif;
 
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 12px;
+                      }
+                    }
+                  }
+
                   > svg {
                     transition: transform 0.1s ease-in-out;
                     transform: rotate(${open ? "0deg" : "-180deg"});

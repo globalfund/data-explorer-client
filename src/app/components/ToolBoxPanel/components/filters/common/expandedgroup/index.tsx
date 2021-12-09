@@ -113,7 +113,9 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               subOption.subOptions.forEach(
                 (subSubOption: FilterGroupOptionModel) => {
                   if (
-                    (subSubOption.label || "").toLowerCase().indexOf(value) > -1
+                    (subSubOption.label || "")
+                      .toLowerCase()
+                      .indexOf(value.toLowerCase()) > -1
                   ) {
                     const fGrandParentIndex = findIndex(options, {
                       label: option.label,
@@ -382,6 +384,11 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           overflow-y: auto;
           max-height: calc(100% - 190px);
 
+          @media (max-width: 767px) {
+            max-height: unset;
+            overflow-y: unset;
+          }
+
           &::-webkit-scrollbar {
             width: 4px;
             border-radius: 4px;
@@ -418,17 +425,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           />
         ))}
       </div>
-      <div
-        css={`
-          width: 100%;
-          height: 50px;
-        `}
-      />
       <button
         type="button"
         onClick={handleApply}
         css={`
           color: #fff;
+          margin: 30px 0;
           font-size: 14px;
           cursor: pointer;
           font-weight: bold;
@@ -542,6 +544,15 @@ function FilterOption(props: FilterOptionProps) {
             display: flex;
             padding-left: 25px;
             flex-direction: column;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 6px;
+                }
+              }
+            }
           `}
         >
           {props.subOptions.map((option: FilterGroupOptionModel) => (

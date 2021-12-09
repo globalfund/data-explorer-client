@@ -10,6 +10,7 @@ import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { DocumentsSubModule } from "app/modules/common/documents";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
@@ -20,7 +21,8 @@ export default function DocumentsModule() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -49,6 +51,8 @@ export default function DocumentsModule() {
       fetchData({ filterString });
     }
   }, [search]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   const [,] = useDebounce(
     () => {
@@ -100,18 +104,20 @@ export default function DocumentsModule() {
           },
           { name: "Documents" },
         ]}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}
         filterGroups={pathnameToFilterGroups.documents}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
+      <PageTopSpacer />
       {isLoading && <PageLoader />}
       <div
         css={`
@@ -142,6 +148,16 @@ export default function DocumentsModule() {
                 onChange={(event, val) => setPage(val)}
               />
             </div>
+            <div
+              css={`
+                width: 100%;
+                height: 25px;
+
+                @media (max-width: 767px) {
+                  height: 150px;
+                }
+              `}
+            />
           </>
         ) : (
           <DocumentsSubModule

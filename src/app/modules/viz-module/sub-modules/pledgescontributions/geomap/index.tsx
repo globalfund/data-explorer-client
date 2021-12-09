@@ -108,6 +108,14 @@ export function PledgesContributionsGeoMap() {
           margin-top: 20px;
           flex-direction: row;
           align-items: flex-end;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 12px;
+              }
+            }
+          }
         `}
       >
         <div
@@ -117,6 +125,15 @@ export function PledgesContributionsGeoMap() {
             display: flex;
             font-size: 12px;
             flex-direction: column;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 6px;
+                }
+              }
+            }
           `}
         >
           <div>
@@ -152,6 +169,15 @@ export function PledgesContributionsGeoMap() {
             text-align: center;
             flex-direction: column;
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 6px;
+                }
+              }
+            }
           `}
         >
           <div

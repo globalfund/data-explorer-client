@@ -1,8 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
+import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   Switch,
@@ -15,7 +15,9 @@ import {
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { partnerDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
@@ -35,8 +37,9 @@ export default function PartnerDetail() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ code: string; vizType: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   // api call & data
   const fetchPartnerInfoData = useStoreActions(
@@ -58,8 +61,12 @@ export default function PartnerDetail() {
   }, [paramCode]);
 
   React.useEffect(() => {
-    setOpenToolboxPanel(true);
+    if (!isMobile && !openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
   }, [params.vizType]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
@@ -104,13 +111,19 @@ export default function PartnerDetail() {
           },
         ]}
         tabs={partnerDetailTabs}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl tabs={partnerDetailTabs} />
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
+            `}
+          />
+        </React.Fragment>
+      )}
       <div
         id="export-view-div"
         css={`
@@ -228,6 +241,14 @@ export default function PartnerDetail() {
           </Route>
         </Switch>
       </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         isGrantDetail
         open={openToolboxPanel}
@@ -237,7 +258,13 @@ export default function PartnerDetail() {
           location.pathname.replace(params.code, "<code>"),
           filtergroups
         )}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
       <div
         css={`

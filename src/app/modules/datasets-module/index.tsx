@@ -3,8 +3,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
 import { GrantsListPreview } from "app/assets/dataset-preview/grantsList";
 import { ResultsListPreview } from "app/assets/dataset-preview/resultsList";
@@ -151,6 +153,7 @@ const datasets: DatasetItemModel[] = [
 
 export default function Datasets() {
   useTitle(`The Data Explorer - Datasets`);
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   React.useEffect(() => {
     document.body.style.background = "#F5F5F7";
@@ -167,35 +170,45 @@ export default function Datasets() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="Datasets"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-          },
-        ]}
-      />
-      <div css="width: 100%;height: 25px;" />
+      {!isMobile && (
+        <PageHeader
+          title="Datasets"
+          breadcrumbs={[
+            { name: "Home", link: "/" },
+            {
+              name: "Datasets",
+            },
+          ]}
+        />
+      )}
+      <PageTopSpacer />
       <Grid container spacing={4}>
         {datasets.map((dataset: DatasetItemModel) => (
           <Grid item xs={12} sm={6} md={6} key={dataset.link}>
             <Link to={dataset.link} css="text-decoration: none;">
               <div
                 css={`
-                  @media screen and (min-width: 900px) {
-                    height: 370px !important;
-                  }
                   width: 100%;
+                  height: 28vh;
                   padding: 20px;
-                  height: 22vh;
                   color: #262c34;
                   background: #fff;
                   border-radius: 20px;
                   border: 2px solid #fff;
 
+                  @media screen and (min-width: 900px) {
+                    height: 370px;
+                  }
+
+                  @media screen and (max-width: 767px) {
+                    height: 227px;
+                  }
+
                   > div {
+                    font-weight: bold;
                     margin-bottom: 10px;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
                   }
 
                   > svg {
@@ -209,7 +222,7 @@ export default function Datasets() {
                 `}
               >
                 <div>
-                  <b>{dataset.group}</b> {dataset.name.length > 0 ? "·" : ""}{" "}
+                  {dataset.group} {dataset.name.length > 0 ? "·" : ""}{" "}
                   {dataset.name}
                 </div>
                 {dataset.preview}
@@ -218,7 +231,16 @@ export default function Datasets() {
           </Grid>
         ))}
       </Grid>
-      <div css="width: 100%;height: 50px;" />
+      <div
+        css={`
+          width: 100%;
+          height: 50px;
+
+          @media (max-width: 767px) {
+            height: 90px;
+          }
+        `}
+      />
     </div>
   );
 }

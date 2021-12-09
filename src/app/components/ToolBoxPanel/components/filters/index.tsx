@@ -53,6 +53,17 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
           border-radius: 4px;
           background: #495057;
         }
+
+        @media (max-width: 767px) {
+          padding: 16px;
+          overflow-y: unset;
+
+          @supports (-webkit-touch-callout: none) {
+            height: unset;
+            max-height: unset;
+            padding-bottom: ${expandedGroup ? 100 : 200}px;
+          }
+        }
       `}
     >
       {!expandedGroup && (
@@ -64,6 +75,10 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               align-items: center;
               justify-content: space-between;
               border-bottom: 1px solid #dfe3e6;
+
+              @media (max-width: 767px) {
+                font-size: 18px;
+              }
             `}
           >
             <b>Filters</b>

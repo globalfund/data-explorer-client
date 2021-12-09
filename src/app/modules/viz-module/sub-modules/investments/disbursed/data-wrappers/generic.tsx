@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { useUpdateEffect } from "react-use";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -16,6 +17,7 @@ interface Props {
 
 export function GenericInvestmentsDisbursedWrapper(props: Props) {
   const [vizLevel, setVizLevel] = React.useState(0);
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
@@ -116,16 +118,31 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
   useUpdateEffect(() => {
     if (vizSelected) {
       const splits = vizSelected.split("-");
+      let filterString = "";
       if (splits.length > 0) {
-        const locations = [...appliedFilters.locations];
-        if (props.code) {
-          locations.push(props.code);
+        if (!isMobile) {
+          const locations = [...appliedFilters.locations];
+          if (props.code) {
+            locations.push(props.code);
+          }
+          locations.push(splits[0]);
+          filterString = getAPIFormattedFilters({
+            ...appliedFilters,
+            locations,
+          });
+        } else {
+          const locations = [...appliedFilters.locations];
+          const components = [...appliedFilters.components];
+          if (props.code) {
+            locations.push(props.code);
+          }
+          components.push(splits[0]);
+          filterString = getAPIFormattedFilters({
+            ...appliedFilters,
+            locations,
+            components,
+          });
         }
-        locations.push(splits[0]);
-        const filterString = getAPIFormattedFilters({
-          ...appliedFilters,
-          locations,
-        });
         fetchDrilldownData({ filterString });
       }
     }

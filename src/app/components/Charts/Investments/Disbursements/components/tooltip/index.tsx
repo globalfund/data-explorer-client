@@ -21,6 +21,10 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
         color: #262c34;
         min-width: 350px;
         background: #f5f5f7;
+
+        @media (max-width: 767px) {
+          min-width: 0;
+        }
       `}
     >
       <div
@@ -43,6 +47,14 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           padding: 16px 0;
           flex-direction: column;
           border-bottom: 1px solid #dfe3e6;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 10px;
+              }
+            }
+          }
         `}
       >
         <div
@@ -118,6 +130,14 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           font-size: 12px;
           padding-top: 16px;
           flex-direction: column;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 10px;
+              }
+            }
+          }
         `}
       >
         <div

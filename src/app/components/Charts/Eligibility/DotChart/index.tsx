@@ -2,13 +2,15 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { InfoIcon } from "app/assets/icons/Info";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
 import useMousePosition from "app/hooks/useMousePosition";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import {
   DotChartProps,
   DotChartModel,
 } from "app/components/Charts/Eligibility/DotChart/data";
-import { useMediaQuery } from "@material-ui/core";
 
 const styles = {
   Eligible: css`
@@ -27,6 +29,7 @@ const styles = {
 
 export function DotChart(props: DotChartProps) {
   const { x, y } = useMousePosition();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: string;
@@ -49,10 +52,40 @@ export function DotChart(props: DotChartProps) {
             background: #f5f5f7;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
+
+            @media (max-width: 767px) {
+              left: 16px;
+              z-index: 1;
+              background: #fff;
+              width: calc(100vw - 32px);
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+            }
           `}
         >
-          <div>
-            {hoveredNode.name}: {hoveredNode.status}
+          <div
+            css={`
+              display: flex;
+              flex-direction: row;
+              justify-content: space-between;
+
+              path {
+                fill: #2e4063;
+              }
+            `}
+          >
+            <div>
+              <b>{hoveredNode.name}</b>: {hoveredNode.status}
+            </div>
+            {isMobile && (
+              <IconButton
+                onTouchStart={() => setHoveredNode(null)}
+                css={`
+                  padding: 0;
+                `}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
           </div>
         </div>
       )}
@@ -68,6 +101,15 @@ export function DotChart(props: DotChartProps) {
             position: relative;
             flex-direction: ${isSmallScreen ? "row" : "column"};
             justify-content: ${isSmallScreen ? "none" : "space-between"};
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 20px;
+                }
+              }
+            }
           `}
         >
           <div
@@ -75,6 +117,15 @@ export function DotChart(props: DotChartProps) {
               gap: 6px;
               display: flex;
               align-items: center;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
             `}
           >
             <div
@@ -137,6 +188,15 @@ export function DotChart(props: DotChartProps) {
                 opacity: ${!hoveredLegend || hoveredLegend === "Eligible"
                   ? 1
                   : 0.3};
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 5px;
+                    }
+                  }
+                }
               `}
               onMouseEnter={() => setHoveredLegend("Eligible")}
               onMouseLeave={() => setHoveredLegend(null)}
@@ -149,7 +209,7 @@ export function DotChart(props: DotChartProps) {
                   ${styles.Eligible}
                 `}
               />
-              Eligible
+              <div>Eligible</div>
             </div>
             <div
               css={`
@@ -161,6 +221,15 @@ export function DotChart(props: DotChartProps) {
                 opacity: ${!hoveredLegend || hoveredLegend === "Not Eligible"
                   ? 1
                   : 0.3};
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 5px;
+                    }
+                  }
+                }
               `}
               onMouseEnter={() => setHoveredLegend("Not Eligible")}
               onMouseLeave={() => setHoveredLegend(null)}
@@ -173,7 +242,7 @@ export function DotChart(props: DotChartProps) {
                   ${styles["Not Eligible"]}
                 `}
               />
-              Not Eligible
+              <div>Not Eligible</div>
             </div>
             <div
               css={`
@@ -186,6 +255,15 @@ export function DotChart(props: DotChartProps) {
                 hoveredLegend === "Transition Funding"
                   ? 1
                   : 0.3};
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 5px;
+                    }
+                  }
+                }
               `}
               onMouseEnter={() => setHoveredLegend("Transition Funding")}
               onMouseLeave={() => setHoveredLegend(null)}
@@ -198,7 +276,7 @@ export function DotChart(props: DotChartProps) {
                   ${styles["Transition Funding"]}
                 `}
               />
-              Transition Funding
+              <div>Transition Funding</div>
             </div>
           </div>
           {props.aggregateBy === "geographicAreaName" && (
@@ -222,6 +300,15 @@ export function DotChart(props: DotChartProps) {
                   gap: 24px;
                   display: flex;
                   flex-direction: row;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 24px;
+                      }
+                    }
+                  }
 
                   > div {
                     position: relative;
@@ -266,7 +353,7 @@ export function DotChart(props: DotChartProps) {
                     Malaria
                   </div>
                 </div>
-                <div>
+                {/* <div>
                   <div
                     css={`
                       width: 10px;
@@ -283,7 +370,7 @@ export function DotChart(props: DotChartProps) {
                   >
                     RSSH
                   </div>
-                </div>
+                </div> */}
                 <div>
                   <div
                     css={`
@@ -295,7 +382,7 @@ export function DotChart(props: DotChartProps) {
                   />
                   <div
                     css={`
-                      top: -24px;
+                      // top: -24px;
                       font-size: 12px;
                       position: absolute;
                     `}
@@ -313,7 +400,7 @@ export function DotChart(props: DotChartProps) {
           container
           sm={12}
           md={10}
-          spacing={4}
+          spacing={!isMobile ? 4 : 2}
           css={`
             padding-bottom: 50px !important;
           `}
@@ -345,6 +432,16 @@ export function DotChart(props: DotChartProps) {
                         flex-wrap: wrap;
                         padding-left: 5px;
                         border-left: 1px solid #acafbc;
+
+                        > * {
+                          @supports (-webkit-touch-callout: none) and
+                            (not (translate: none)) {
+                            &:not(:last-child) {
+                              margin-right: 24px;
+                              margin-bottom: 24px;
+                            }
+                          }
+                        }
                       `}
                     >
                       {group.items.map(
@@ -369,8 +466,14 @@ export function DotChart(props: DotChartProps) {
                               hoveredLegend === item.status
                                 ? 1
                                 : 0.3};
+
+                              @media (max-width: 767px) {
+                                width: 15px;
+                                height: 15px;
+                              }
                             `}
                             key={item.name + index}
+                            onTouchStart={() => setHoveredNode(item)}
                             onMouseEnter={() => setHoveredNode(item)}
                             onMouseLeave={() => setHoveredNode(null)}
                           />
@@ -410,6 +513,28 @@ export function DotChart(props: DotChartProps) {
                         flex-wrap: wrap;
                         padding: 5px 0 5px 5px;
                         border-left: 1px solid #acafbc;
+
+                        > * {
+                          @supports (-webkit-touch-callout: none) and
+                            (not (translate: none)) {
+                            &:not(:last-child) {
+                              margin-right: 24px;
+                            }
+                          }
+                        }
+
+                        @media (max-width: 767px) {
+                          gap: 15px;
+
+                          > * {
+                            @supports (-webkit-touch-callout: none) and
+                              (not (translate: none)) {
+                              &:not(:last-child) {
+                                margin-right: 15px;
+                              }
+                            }
+                          }
+                        }
                       `}
                     >
                       {group.items.map(
@@ -434,8 +559,14 @@ export function DotChart(props: DotChartProps) {
                               hoveredLegend === item.status
                                 ? 1
                                 : 0.3};
+
+                              @media (max-width: 767px) {
+                                width: 15px;
+                                height: 15px;
+                              }
                             `}
                             key={item.name + index}
+                            onTouchStart={() => setHoveredNode(item)}
                             onMouseEnter={() => setHoveredNode(item)}
                             onMouseLeave={() => setHoveredNode(null)}
                           />

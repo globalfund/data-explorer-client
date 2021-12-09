@@ -3,6 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { GeoMap } from "app/components/Charts/GeoMap";
@@ -23,6 +24,8 @@ interface Props {
 
 export function BudgetsGeoMap(props: Props) {
   useTitle(`The Data Explorer -${props.code ? ` ${props.code}` : ""} Budgets`);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+
   // api call & data
   const fetchData = useStoreActions((store) => store.BudgetsGeomap.fetch);
   const data = useStoreState(
@@ -111,7 +114,7 @@ export function BudgetsGeoMap(props: Props) {
         noData={maxValue === 0}
         allocationsPins={geomapView === "multicountries" ? dataMC : []}
       />
-      {geomapView === "countries" && (
+      {!isMobile && geomapView === "countries" && (
         <div
           css={`
             gap: 12px;
@@ -119,6 +122,15 @@ export function BudgetsGeoMap(props: Props) {
             margin-top: 20px;
             flex-direction: row;
             align-items: flex-end;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 12px;
+                }
+              }
+            }
           `}
         >
           <div
@@ -128,6 +140,15 @@ export function BudgetsGeoMap(props: Props) {
               display: flex;
               font-size: 12px;
               flex-direction: column;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
             `}
           >
             <div>
@@ -161,6 +182,15 @@ export function BudgetsGeoMap(props: Props) {
               font-size: 12px;
               text-align: center;
               flex-direction: column;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
             `}
           >
             <div

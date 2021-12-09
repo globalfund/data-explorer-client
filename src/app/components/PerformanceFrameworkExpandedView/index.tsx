@@ -14,11 +14,28 @@ const styles = {
     gap: 30px;
     display: flex;
     flex-direction: column;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 30px;
+        }
+      }
+    }
   `,
   arrowscontainer: css`
-    gap: 40px;
     display: flex;
     flex-direction: row;
+
+    @media (max-width: 767px) {
+      width: 100%;
+
+      > div {
+        > div {
+          max-width: 100%;
+        }
+      }
+    }
   `,
   tabsList: css`
     display: flex;
@@ -30,6 +47,11 @@ const styles = {
     @media (max-width: 992px) {
       overflow-x: auto;
       margin-left: 36px;
+    }
+
+    @media (max-width: 767px) {
+      margin: 0;
+      width: 100%;
     }
 
     &::-webkit-scrollbar {
@@ -73,10 +95,24 @@ const styles = {
     }
 
     &:hover {
-      background: #495057;
       color: #fff;
       font-weight: bold;
+      background: #495057;
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    }
+
+    @media (max-width: 767px) {
+      width: 50%;
+      justify-content: center;
+
+      :first-of-type {
+        border-radius: 20px 0px 0px 20px;
+      }
+
+      :last-of-type {
+        border-right-style: none;
+        border-radius: 0px 20px 20px 0px;
+      }
     }
   `,
 };
@@ -99,6 +135,10 @@ export function PerformanceFrameworkExpandedView(
       <div
         css={`
           border-bottom: 1px solid #adb5bd;
+
+          @media (max-width: 767px) {
+            border-bottom-style: none;
+          }
         `}
       >
         <ul css={styles.tabsList}>

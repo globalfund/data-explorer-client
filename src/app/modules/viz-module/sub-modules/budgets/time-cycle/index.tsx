@@ -3,6 +3,7 @@ import React from "react";
 import find from "lodash/find";
 import { useUnmount } from "react-use";
 import { useHistory } from "react-router-dom";
+import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -11,8 +12,6 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 interface BudgetsTimeCycleModuleProps {
@@ -44,10 +43,14 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
+  const [
+    xsTooltipData,
+    setXsTooltipData,
+  ] = React.useState<TreeMapNodeDatum | null>(null);
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([]);
+      setVizDrilldowns([{ name: "Dataset" }]);
     }
     if (props.vizLevel > 0 && props.vizSelected && props.vizSelected) {
       const newDrilldowns = [{ name: "Dataset" }, { name: props.vizSelected }];
@@ -55,10 +58,10 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         const idSplits = props.drilldownVizSelected.split("-");
         newDrilldowns.push(
           {
-            name: idSplits[0],
+            name: idSplits[1],
           },
           {
-            name: idSplits[1],
+            name: idSplits[0],
           }
         );
       }
@@ -140,6 +143,15 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
                 display: flex;
                 margin-bottom: 20px;
                 flex-direction: row;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 40px;
+                    }
+                  }
+                }
               `}
             >
               <DrillDownArrowSelector
@@ -161,8 +173,11 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
               />
             </span>
             <BudgetsTreemap
+              isDrilldownTreemap
               tooltipValueLabel="Budget"
+              xsTooltipData={xsTooltipData}
               data={props.dataDrilldownLevel1}
+              setXsTooltipData={setXsTooltipData}
               onNodeClick={(node: string, x: number, y: number) => {
                 props.setVizLevel(2);
                 props.setVizPrevSelected(props.vizSelected);
@@ -175,6 +190,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         )}
         {props.vizLevel === 2 && (
           <BudgetsTreemap
+            isDrilldownTreemap
             tooltipValueLabel="Budget"
             data={props.dataDrilldownLevel2}
             selectedNodeId={props.vizSelected}

@@ -21,7 +21,7 @@ interface MapPinProps {
 }
 
 export function MapPin(props: MapPinProps) {
-  const isMobile = useMediaQuery("max-width: 767px");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [hovered, setHovered] = React.useState(false);
 
   return (
@@ -65,7 +65,7 @@ export function MapPin(props: MapPinProps) {
           alt=""
           width={24}
           height={24}
-          src={hovered ? props.activeImgSrc : props.inactiveImgSrc}
+          src={hovered && !isMobile ? props.activeImgSrc : props.inactiveImgSrc}
         />
       </CountryPin>
     </Marker>

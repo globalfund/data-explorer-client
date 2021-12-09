@@ -29,6 +29,14 @@ export default function LinkList() {
           display: flex;
           flex-direction: column;
 
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-bottom: 10px;
+              }
+            }
+          }
+
           > a {
             width: 100%;
             color: #000;

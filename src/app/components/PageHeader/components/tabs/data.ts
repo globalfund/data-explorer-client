@@ -8,6 +8,10 @@ export interface PageHeaderTabProps {
   tabs: TabProps[];
 }
 
+export interface RouteTabProps extends TabProps {
+  onlyLink?: boolean;
+}
+
 export const countryDetailTabs: TabProps[] = [
   {
     name: "Overview",

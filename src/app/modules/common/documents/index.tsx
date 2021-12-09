@@ -3,8 +3,8 @@ import React from "react";
 /* project */
 import { ExpandableTable } from "app/components/Table/Expandable";
 import { Search } from "app/modules/grants-module/components/Search";
-import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 
 interface DocumentsSubModuleProps {
   columns: string[];
@@ -17,7 +17,6 @@ interface DocumentsSubModuleProps {
 export function DocumentsSubModule(props: DocumentsSubModuleProps) {
   return (
     <React.Fragment>
-      <div css="width: 100%;height: 25px;" />
       <div
         css={`
           width: 100%;

@@ -34,6 +34,20 @@ export interface BudgetsFlowTooltipProps {
   target: string;
 }
 
+export interface MobileBudgetsFlowTooltipProps {
+  id: string;
+  value: number;
+  filterStr: string;
+  components: {
+    id: string;
+    color: string;
+    value: number;
+    height: number;
+  }[];
+  onClose?: () => void;
+  drilldown?: (id: string, filterStr: string) => void;
+}
+
 export const mockdata: BudgetsFlowData = {
   nodes: [
     {

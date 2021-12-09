@@ -2,23 +2,26 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
 import { InfoIcon } from "app/assets/icons/Info";
+import CloseIcon from "@material-ui/icons/Close";
+import IconButton from "@material-ui/core/IconButton";
+import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
+import { NoDataBudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle/components/nodata";
 import { BarComponent } from "app/components/Charts/PledgesContributions/TimeCycle/components/bar";
 import { PledgesContributionsProps } from "app/components/Charts/PledgesContributions/TimeCycle/data";
-import { NoDataBudgetsTimeCycle } from "../../Budgets/TimeCycle/components/nodata";
-import { NoDataLabel } from "../../common/nodatalabel";
-import { isTouchDevice } from "app/utils/isTouchDevice";
-import { TooltipButton, XsContainer } from "../../common/styles";
-import { ClickAwayListener, IconButton } from "@material-ui/core";
-import { CloseIcon } from "app/assets/icons/Close";
-import { PledgesContributionsTimeCycleTooltip } from "./components/tooltip";
+import { PledgesContributionsTimeCycleTooltip } from "app/components/Charts/PledgesContributions/TimeCycle/components/tooltip";
+import {
+  TooltipButton,
+  XsContainer,
+} from "app/components/Charts/common/styles";
 
 export function PledgesContributionsTimeCycle(
   props: PledgesContributionsProps
 ) {
-  const matches = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
   const [xsTooltipData, setXsTooltipData] = React.useState<any>(null);
@@ -68,6 +71,10 @@ export function PledgesContributionsTimeCycle(
             width: 100%;
             height: 100%;
           }
+
+          @media (max-width: 767px) {
+            height: 500px;
+          }
         `}
         data-cy="investments-time-cycle"
       >
@@ -97,6 +104,15 @@ export function PledgesContributionsTimeCycle(
                 display: flex;
                 flex-direction: row;
                 justify-content: flex-end;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 24px;
+                    }
+                  }
+                }
               `}
             >
               {legends.map((legend: any) => (
@@ -118,6 +134,15 @@ export function PledgesContributionsTimeCycle(
                     hoveredLegend === legend.name.toLowerCase()
                       ? 1
                       : 0.3};
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 6px;
+                        }
+                      }
+                    }
                   `}
                 >
                   <div
@@ -148,14 +173,14 @@ export function PledgesContributionsTimeCycle(
             motionDamping={15}
             borderColor="inherit:darker(1.6)"
             layers={["grid", "axes", Bars, "markers", "legends"]}
-            padding={matches ? 0.3 : 0.5}
+            padding={isMobile ? 0.3 : 0.5}
             innerPadding={6}
             data={props.data}
             colors={(value: any) => value.data[`${value.id}Color`]}
             keys={["pledge", "contribution"]}
             indexBy="year"
             margin={{
-              top: 60,
+              top: !isMobile ? 60 : 20,
               right: 30,
               bottom: props.data.length > 5 ? 120 : 80,
               left: 70,
@@ -175,12 +200,7 @@ export function PledgesContributionsTimeCycle(
                 )}`,
             }}
             axisBottom={{
-              format: (value: number | string | Date) => {
-                return matches && props.data.length > 2
-                  ? value.toString().slice(2, 4)
-                  : value.toString();
-              },
-              tickRotation: matches && props.data.length > 3 ? 45 : 0,
+              tickRotation: isMobile && props.data.length > 3 ? 45 : 0,
             }}
             theme={{
               axis: {
@@ -217,9 +237,13 @@ export function PledgesContributionsTimeCycle(
           />
         )}
       </div>
-      {(matches || isTouchDevice()) && xsTooltipData && !props.selectedNodeId && (
-        <XsContainer>
-          <ClickAwayListener onClickAway={closeXsTooltip}>
+      {(isMobile || isTouchDevice()) && xsTooltipData && !props.selectedNodeId && (
+        <XsContainer id="mobile-tooltip-container">
+          <div
+            css={`
+              width: 95%;
+            `}
+          >
             <div
               css={`
                 padding: 16px 25px;
@@ -227,15 +251,40 @@ export function PledgesContributionsTimeCycle(
                 background: #f5f5f7;
                 border-radius: 20px;
 
-                > div {
-                  background: #f5f5f7 !important;
+                @media (max-width: 767px) {
+                  padding: 25px;
+                  color: #262c34;
+                  background: #fff;
+                  border-radius: 20px;
+                  box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
 
-                  &:first-of-type {
+                  > div {
                     padding: 0;
+                    background: #fff !important;
                   }
                 }
               `}
             >
+              <div
+                css={`
+                  display: flex;
+                  flex-direction: row;
+                  justify-content flex-end;
+
+                  path {
+                    fill: #2E4063;
+                  }
+                `}
+              >
+                <IconButton
+                  onTouchStart={closeXsTooltip}
+                  css={`
+                    padding: 0;
+                  `}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
               <PledgesContributionsTimeCycleTooltip {...xsTooltipData} />
               <div
                 css={`
@@ -253,7 +302,7 @@ export function PledgesContributionsTimeCycle(
                       xsTooltipData.indexValue !== props.selectedNodeId
                     ) {
                       props.onNodeClick(
-                        xsTooltipData.indexValue,
+                        `${xsTooltipData.indexValue}-${xsTooltipData.id}`,
                         xsTooltipData.x - 100,
                         0
                       );
@@ -263,18 +312,8 @@ export function PledgesContributionsTimeCycle(
                   Drilldown
                 </TooltipButton>
               </div>
-              <IconButton
-                css={`
-                  top: 1px;
-                  right: 10px;
-                  position: absolute;
-                `}
-                onTouchStart={closeXsTooltip}
-              >
-                <CloseIcon color="primary" />
-              </IconButton>
             </div>
-          </ClickAwayListener>
+          </div>
         </XsContainer>
       )}
     </React.Fragment>

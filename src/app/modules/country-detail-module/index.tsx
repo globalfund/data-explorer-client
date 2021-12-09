@@ -1,15 +1,17 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
+import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
@@ -35,8 +37,9 @@ export default function CountryDetail() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ code: string; vizType: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   // api call & data
   const fetchLocationInfoData = useStoreActions(
@@ -71,8 +74,12 @@ export default function CountryDetail() {
   }, [paramCode]);
 
   React.useEffect(() => {
-    setOpenToolboxPanel(true);
+    if (!isMobile && !openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
   }, [params.vizType]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
@@ -121,13 +128,25 @@ export default function CountryDetail() {
             ? countryDetailTabs
             : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
         }
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl
+            tabs={
+              params.code.length === 3
+                ? countryDetailTabs
+                : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
+            }
+          />
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
+            `}
+          />
+        </React.Fragment>
+      )}
       <div
         id="export-view-div"
         css={`
@@ -269,6 +288,14 @@ export default function CountryDetail() {
           </Route>
         </Switch>
       </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         isLocationDetail
         open={openToolboxPanel}
@@ -278,7 +305,9 @@ export default function CountryDetail() {
           location.pathname.replace(params.code, "<code>"),
           filtergroups
         )}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) =>
+          setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
+        }
       />
       <div
         css={`

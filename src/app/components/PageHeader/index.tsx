@@ -8,21 +8,19 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { Link, useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { useStoreState } from "app/state/store/hooks";
-import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
-import { ToolboxXsIcon } from "app/assets/icons/ToolboxXs";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
+import { MobileFilterBar } from "app/components/PageHeader/components/filterbar";
 
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
   isDetail?: boolean;
   breadcrumbs: BreadcrumbModel[];
-  onToolboxSmBtnClick?: () => void;
 }
 
 const StyledMenu = withStyles({
@@ -122,13 +120,20 @@ const styles = {
     white-space: nowrap;
     letter-spacing: 0.5px;
     text-overflow: ellipsis;
-    font-family: GothamNarrow-Bold;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+    @media (max-width: 767px) {
+      font-size: 18px;
+    }
   `,
   breadcrumbs: css`
     display: flex;
     flex-direction: row;
     margin-bottom: 15px;
+
+    @media (max-width: 767px) {
+      margin-bottom: 10px;
+    }
   `,
   bcitem: (linkable: boolean) => css`
     color: #262c34;
@@ -141,38 +146,64 @@ const styles = {
     margin-right: 10px;
   `,
   drilldowns: css`
+    gap: 3px;
     display: flex;
     margin-top: 16px;
     width: fit-content;
     flex-direction: row;
-    background: #373d43;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 3px;
+        }
+      }
+    }
+
+    @media (max-width: 767px) {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
   `,
-  drilldownitem: css`
+  drilldownitem: (index: number) => css`
     color: #fff;
     font-size: 10px;
     padding: 2px 20px;
     margin-right: 6px;
     line-height: 15px;
-
     position: relative;
+    background: #373d43;
 
-    > svg {
+    &::after {
       top: 0;
-      right: -13px;
+      width: 0;
+      height: 0;
+      left: 100%;
+      content: "";
+      display: block;
       position: absolute;
-      transform: scale(1.5);
-
-      > path {
-        fill: #dfe3e6;
-      }
+      border-style: solid;
+      border-width: 9px 0 10px 9px;
+      border-color: rgba(0, 0, 0, 0) #373d43;
     }
 
-    &:last-of-type {
-      > svg {
-        right: -7px;
-        transform: scale(2.6);
+    ${index > 0
+      ? `
+      &::before {
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        border-style: solid;
+        border-width: 9px 0 10px 9px;
+        border-color: rgba(0, 0, 0, 0) #DFE3E6;
       }
-    }
+    `
+      : ""}
   `,
   drilldowntext: css`
     overflow: hidden;
@@ -183,6 +214,7 @@ const styles = {
 
 export function PageHeader(props: PageHeaderProps) {
   const history = useHistory();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const vizDrilldowns = useStoreState(
@@ -209,78 +241,57 @@ export function PageHeader(props: PageHeaderProps) {
     <div css={styles.container}>
       <Container maxWidth="lg" css={styles.innercontainer}>
         <div css={styles.breadcrumbs}>
-          {props.breadcrumbs.map(
-            (breadcrumb: BreadcrumbModel, index: number) => {
-              if (breadcrumb.link) {
-                return (
-                  <React.Fragment key={breadcrumb.name}>
-                    <Link css={styles.bcitem(true)} to={breadcrumb.link}>
-                      {breadcrumb.name}
-                    </Link>
-                    <div css={styles.arrowseparator}>{`>`}</div>
-                  </React.Fragment>
-                );
-              }
-              return (
-                <React.Fragment key={breadcrumb.name}>
-                  <div
-                    css={styles.bcitem(breadcrumb.menuitems !== undefined)}
-                    onClick={breadcrumb.menuitems ? handleClick : undefined}
-                  >
-                    {breadcrumb.name}
-                  </div>
-                  {breadcrumb.menuitems && (
-                    <StyledMenu
-                      keepMounted
-                      anchorEl={anchorEl}
-                      id="breadcrumb-menu"
-                      onClose={handleClose}
-                      open={Boolean(anchorEl)}
-                    >
-                      {breadcrumb.menuitems.map(
-                        (item: React.ReactChild, itemIndex: number) => (
-                          <StyledMenuItem
-                            disableRipple
-                            key={itemIndex}
-                            disableTouchRipple
-                          >
-                            {item}
-                          </StyledMenuItem>
-                        )
-                      )}
-                    </StyledMenu>
-                  )}
-                  {index !== props.breadcrumbs.length - 1 && (
-                    <div css={styles.arrowseparator}>{`>`}</div>
-                  )}
-                </React.Fragment>
-              );
-            }
-          )}
-          {props.onToolboxSmBtnClick && (
-            <Tooltip
-              title="Tap to open the toolbox"
-              aria-label="open the toolbox"
-              placement="bottom-end"
-              arrow
-            >
-              <IconButton
-                css={`
-                  top: 3px;
-                  right: 20px;
-                  position: absolute;
-                  padding: 0 !important;
-                `}
-                onClick={(e: any) => {
-                  e.stopPropagation();
-                  if (props.onToolboxSmBtnClick) {
-                    props.onToolboxSmBtnClick();
+          {!isMobile && (
+            <React.Fragment>
+              {props.breadcrumbs.map(
+                (breadcrumb: BreadcrumbModel, index: number) => {
+                  if (breadcrumb.link) {
+                    return (
+                      <React.Fragment key={breadcrumb.name}>
+                        <Link css={styles.bcitem(true)} to={breadcrumb.link}>
+                          {breadcrumb.name}
+                        </Link>
+                        <div css={styles.arrowseparator}>{`>`}</div>
+                      </React.Fragment>
+                    );
                   }
-                }}
-              >
-                <ToolboxXsIcon />
-              </IconButton>
-            </Tooltip>
+                  return (
+                    <React.Fragment key={breadcrumb.name}>
+                      <div
+                        css={styles.bcitem(breadcrumb.menuitems !== undefined)}
+                        onClick={breadcrumb.menuitems ? handleClick : undefined}
+                      >
+                        {breadcrumb.name}
+                      </div>
+                      {breadcrumb.menuitems && (
+                        <StyledMenu
+                          keepMounted
+                          anchorEl={anchorEl}
+                          id="breadcrumb-menu"
+                          onClose={handleClose}
+                          open={Boolean(anchorEl)}
+                        >
+                          {breadcrumb.menuitems.map(
+                            (item: React.ReactChild, itemIndex: number) => (
+                              <StyledMenuItem
+                                disableRipple
+                                key={itemIndex}
+                                disableTouchRipple
+                              >
+                                {item}
+                              </StyledMenuItem>
+                            )
+                          )}
+                        </StyledMenu>
+                      )}
+                      {index !== props.breadcrumbs.length - 1 && (
+                        <div css={styles.arrowseparator}>{`>`}</div>
+                      )}
+                    </React.Fragment>
+                  );
+                }
+              )}
+            </React.Fragment>
           )}
         </div>
         <Grid
@@ -312,15 +323,14 @@ export function PageHeader(props: PageHeaderProps) {
             </Tooltip>
             {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
-                {vizDrilldowns.map((item: DrilldownModel) => (
-                  <div css={styles.drilldownitem} key={item.name}>
-                    <div css={styles.drilldowntext}>{item.name}</div>{" "}
-                    <ArrowForwardIcon />
+                {vizDrilldowns.map((item: DrilldownModel, index: number) => (
+                  <div css={styles.drilldownitem(index)} key={item.name}>
+                    <div css={styles.drilldowntext}>{item.name}</div>
                   </div>
                 ))}
               </div>
             )}
-            {!props.isDetail && (
+            {(!props.isDetail || isMobile) && (
               <div
                 css={`
                   width: 100%;
@@ -329,26 +339,29 @@ export function PageHeader(props: PageHeaderProps) {
               />
             )}
           </Grid>
-          <Grid
-            item
-            sm={12}
-            md={!props.isDetail ? 8 : 12}
-            css={`
-              display: flex;
-              align-items: flex-end;
-              justify-content: flex-end;
+          {!isMobile && (
+            <Grid
+              item
+              sm={12}
+              md={!props.isDetail ? 8 : 12}
+              css={`
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
 
-              @media (max-width: 767px) {
-                width: 100%;
-              }
-            `}
-          >
-            {props.tabs && props.tabs.length > 0 && (
-              <PageHeaderTabs tabs={props.tabs} />
-            )}
-          </Grid>
+                @media (max-width: 767px) {
+                  width: 100%;
+                }
+              `}
+            >
+              {props.tabs && props.tabs.length > 0 && (
+                <PageHeaderTabs tabs={props.tabs} />
+              )}
+            </Grid>
+          )}
         </Grid>
       </Container>
+      {isMobile && !isGrantDetail && <MobileFilterBar />}
     </div>
   );
 }

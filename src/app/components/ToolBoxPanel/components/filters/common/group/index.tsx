@@ -73,6 +73,14 @@ export function FilterGroup(props: FilterGroupCompProps) {
         padding: 15px 0;
         flex-direction: column;
         border-bottom: 1px solid #dfe3e6;
+
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 6px;
+            }
+          }
+        }
       `}
     >
       <div
@@ -112,6 +120,15 @@ export function FilterGroup(props: FilterGroupCompProps) {
             overflow-x: auto;
             flex-direction: row;
 
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 6px;
+                }
+              }
+            }
+
             &::-webkit-scrollbar {
               height: 4px;
               background: #495057;
@@ -145,6 +162,15 @@ export function FilterGroup(props: FilterGroupCompProps) {
                   border-radius: 20px;
                   flex-direction: row;
                   justify-content: space-between;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 6px;
+                      }
+                    }
+                  }
 
                   > div {
                     max-width: 100px;

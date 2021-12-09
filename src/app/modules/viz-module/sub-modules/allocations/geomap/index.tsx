@@ -124,6 +124,15 @@ export function AllocationsGeoMap(props: Props) {
             margin-top: 20px;
             flex-direction: row;
             align-items: flex-end;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 12px;
+                }
+              }
+            }
           `}
         >
           <div
@@ -133,6 +142,15 @@ export function AllocationsGeoMap(props: Props) {
               display: flex;
               font-size: 12px;
               flex-direction: column;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
             `}
           >
             <div>
@@ -166,6 +184,15 @@ export function AllocationsGeoMap(props: Props) {
               font-size: 12px;
               text-align: center;
               flex-direction: column;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
             `}
           >
             <div

@@ -17,13 +17,17 @@ export interface BudgetsTreemapDataItem {
 }
 
 export interface BudgetsTreemapProps {
+  invertColors?: boolean;
   selectedNodeId?: string;
   isChildTreemap?: boolean;
   tooltipKeyLabel?: string;
   tooltipValueLabel: string;
+  isDrilldownTreemap?: boolean;
   data: BudgetsTreemapDataItem[];
+  xsTooltipData?: TreeMapNodeDatum | null;
   parentNodeCoords?: { x: number; y: number };
   onNodeClick: (node: string, x: number, y: number) => void;
+  setXsTooltipData?: (data: TreeMapNodeDatum | null) => void;
 }
 
 export interface TreemapTooltipProps {

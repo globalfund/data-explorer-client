@@ -269,7 +269,7 @@ function InvestmentsRedirect(props: any) {
     if (options && values && values.length > 0) {
       const fOptions = filter(options, (o: FilterGroupOptionModel) =>
         find(values, (v: string) => v === o.label)
-      );
+      ) as FilterGroupOptionModel[];
       if (fOptions) {
         setPartnerTypes(
           fOptions.map((o: FilterGroupOptionModel) => o.value).join(",")
@@ -321,7 +321,7 @@ function InvestmentsLocationRedirect(props: any) {
     if (options && values && values.length > 0) {
       const fOptions = filter(options, (o: FilterGroupOptionModel) =>
         find(values, (v: string) => v === o.label)
-      );
+      ) as FilterGroupOptionModel[];
       if (fOptions) {
         setPartnerTypes(
           fOptions.map((o: FilterGroupOptionModel) => o.value).join(",")

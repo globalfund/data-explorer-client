@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import BigLogo from "app/assets/BigLogo";
 import { Search } from "app/components/Search";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { DatasetCarousel } from "app/components/DatasetCarousel";
 import {
   container,
@@ -11,6 +12,8 @@ import {
 } from "app/modules/landing-module/styles";
 
 export const LandingLayout = () => {
+  const isMobile = useMediaQuery("(max-width: 767px)");
+
   return (
     <div css={container}>
       <div
@@ -30,11 +33,15 @@ export const LandingLayout = () => {
         <BigLogo />
         <div css={subtitle}>Free and open access to the Global Fund Data</div>
         <Search />
-        <div css={datasetstitle}>Explore the Datasets</div>
-        <DatasetCarousel />
-        <div css={datasetslink}>
-          <Link to="/datasets">View all</Link>
-        </div>
+        {!isMobile && (
+          <React.Fragment>
+            <div css={datasetstitle}>Explore the Datasets</div>
+            <DatasetCarousel />
+            <div css={datasetslink}>
+              <Link to="/datasets">View all</Link>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     </div>
   );

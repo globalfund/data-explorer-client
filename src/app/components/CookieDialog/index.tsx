@@ -87,6 +87,9 @@ export const CookieDialog = () => {
             @media (min-width: 1280px) {
               max-width: 1100px;
             }
+            @media (max-width: 767px) {
+              width: calc(100% - 16px);
+            }
           `}
         >
           <SnackbarContent

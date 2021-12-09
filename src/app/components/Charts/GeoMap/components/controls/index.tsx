@@ -30,6 +30,14 @@ export function GeoMapControls(props: GeoMapControlsProps) {
         display: flex;
         position: absolute;
         flex-direction: column;
+
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 10px;
+            }
+          }
+        }
       `}
     >
       <div css={buttoncss} onClick={props.onZoomIn}>

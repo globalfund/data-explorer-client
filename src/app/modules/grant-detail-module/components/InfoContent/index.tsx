@@ -88,6 +88,14 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           margin-bottom: 10px;
           flex-direction: row;
           align-items: center;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <LocationIcon />
@@ -103,6 +111,14 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           margin-bottom: 20px;
           flex-direction: row;
           align-items: center;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <ComponentIcon />
@@ -127,6 +143,14 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           flex-direction: row;
           align-items: center;
           margin-bottom: 20px;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 12px;
+              }
+            }
+          }
         `}
       >
         {ratingValues.map((value: string) => (

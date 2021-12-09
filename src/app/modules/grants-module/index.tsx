@@ -14,6 +14,7 @@ import {
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { GrantListItemModel } from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
@@ -31,9 +32,11 @@ export default function GrantsModule(props: GrantsModuleProps) {
   useTitle(
     `The Data Explorer -${
       props.detailFilterType
-        ? ` ${props.detailFilterType.slice(
+        ? ` ${props.detailFilterType
+            .slice(0, 1)
+            .toUpperCase()}${props.detailFilterType.slice(
             1,
-            props.detailFilterType.length - 2
+            props.detailFilterType.length - 1
           )}`
         : ""
     } Grants`
@@ -43,7 +46,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
   const [search, setSearch] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.GrantsList.fetch);
@@ -103,6 +107,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
     }
   }, [page, appliedFilters]);
 
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
+
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
@@ -159,19 +165,20 @@ export default function GrantsModule(props: GrantsModuleProps) {
                 name: "Grants",
               },
             ]}
-            onToolboxSmBtnClick={
-              isSmallScreen
-                ? () => setOpenToolboxPanel(!openToolboxPanel)
-                : undefined
-            }
           />
           <ToolBoxPanel
             open={openToolboxPanel}
             vizWrapperRef={vizWrapperRef}
             filterGroups={pathnameToFilterGroups.grants}
-            onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+            onCloseBtnClick={(value?: boolean) => {
+              if (value !== undefined) {
+                setOpenToolboxPanel(value);
+              } else {
+                setOpenToolboxPanel(!openToolboxPanel);
+              }
+            }}
           />
-          <div css="width: 100%;height: 25px;" />
+          <PageTopSpacer />
         </>
       )}
       <div
@@ -200,7 +207,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
           />
         )}
       </div>
-      <div css="width: 100%;height: 25px;" />
+      <div css="width: 100%;height: 56px;" />
       <div
         css={`
           left: 0;

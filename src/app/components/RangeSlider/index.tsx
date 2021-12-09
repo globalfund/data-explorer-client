@@ -16,6 +16,17 @@ const Container = styled.div`
   > div {
     margin-right: 20px;
   }
+
+  @media (max-width: 767px) {
+    padding-right: 0;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    > div {
+      margin-right: 0;
+      width: calc(100% - 30px) !important;
+    }
+  }
 `;
 
 const ThumbLabel = (props: any) => {
@@ -85,15 +96,7 @@ export function RangeSlider(props: RangeSliderProps) {
   ]);
 
   return (
-    <Container
-      css={`
-        @media (max-width: 400px) {
-          align-items: flex-start;
-          width: calc(100% - 50px);
-          justify-content: space-between;
-        }
-      `}
-    >
+    <Container>
       {props.min < props.max && (
         <Range
           min={props.min}

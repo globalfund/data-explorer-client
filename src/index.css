@@ -128,3 +128,15 @@ body::webkit-scrollbar-thumb {
 b {
   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 }
+
+button {
+  appearance: none;
+  -webkit-appearance: button-bevel;
+}
+
+input[type="text"] {
+  margin: 0;
+  padding: 1px 2px;
+  appearance: none;
+  -webkit-appearance: none;
+}

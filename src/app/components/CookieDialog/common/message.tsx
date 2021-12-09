@@ -24,6 +24,14 @@ const Buttons = styled.div`
   gap: 10px;
   display: flex;
   align-self: baseline;
+
+  > * {
+    @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
 `;
 
 type MessageProps = {

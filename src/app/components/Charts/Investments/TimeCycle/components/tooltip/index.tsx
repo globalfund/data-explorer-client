@@ -23,7 +23,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        {props.indexValue}
+        Year {props.indexValue}
       </div>
       <div
         css={`
@@ -31,6 +31,14 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           display: flex;
           font-size: 12px;
           flex-direction: column;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <div

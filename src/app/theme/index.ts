@@ -233,6 +233,15 @@ export default createMuiTheme({
         fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
       },
     },
+    MuiBottomNavigationAction: {
+      label: {
+        fontSize: 12,
+        fontFamily: "GothamNarrow-Book",
+        "&.Mui-selected": {
+          fontSize: 12,
+        },
+      },
+    },
   },
   breakpoints: {
     keys: ["xs", "sm", "md", "lg", "xl"],

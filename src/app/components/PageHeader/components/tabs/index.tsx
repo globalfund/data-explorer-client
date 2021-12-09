@@ -4,6 +4,7 @@ import { css } from "styled-components/macro";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import {
   TabProps,
+  RouteTabProps,
   PageHeaderTabProps,
 } from "app/components/PageHeader/components/tabs/data";
 
@@ -100,7 +101,7 @@ const styles = {
   `,
 };
 
-function RouteTab(props: TabProps) {
+export function RouteTab(props: RouteTabProps) {
   const params = useParams<{
     tab: string;
     code: string;
@@ -119,6 +120,10 @@ function RouteTab(props: TabProps) {
     indexParam = "tab";
   }
   const isActive = urlsplits[index] === params[indexParam];
+
+  if (props.onlyLink) {
+    return <NavLink to={link}>{props.name}</NavLink>;
+  }
 
   return (
     <li css={styles.tabcss(isActive)}>

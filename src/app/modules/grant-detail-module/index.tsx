@@ -1,14 +1,16 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
+import { useTitle, useUpdateEffect } from "react-use";
 import { Switch, Route, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { filtergroups } from "app/components/ToolBoxPanel/components/filters/data";
@@ -26,8 +28,9 @@ export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const params = useParams<{ code: string; period: string; vizType: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
@@ -77,10 +80,12 @@ export default function GrantDetail() {
   }, [params.period]);
 
   React.useEffect(() => {
-    if (params.vizType !== "overview") {
+    if (!isMobile && params.vizType !== "overview") {
       setOpenToolboxPanel(true);
     }
   }, [params.vizType]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
@@ -126,13 +131,19 @@ export default function GrantDetail() {
           },
         ]}
         tabs={grantDetailTabs}
-        onToolboxSmBtnClick={
-          isSmallScreen
-            ? () => setOpenToolboxPanel(!openToolboxPanel)
-            : undefined
-        }
       />
-      <div css="width: 100%;height: 25px;" />
+      <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl tabs={grantDetailTabs} />
+          <div
+            css={`
+              width: 100%;
+              height: 10px;
+            `}
+          />
+        </React.Fragment>
+      )}
       <div
         id="export-view-div"
         css={`
@@ -279,12 +290,26 @@ export default function GrantDetail() {
           </Route>
         </Switch>
       </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         isGrantDetail
         open={openToolboxPanel}
         filterGroups={filtergroups}
         vizWrapperRef={vizWrapperRef}
-        onCloseBtnClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
       <div
         css={`

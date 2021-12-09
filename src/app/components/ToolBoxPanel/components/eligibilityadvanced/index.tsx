@@ -2,7 +2,6 @@ import React from "react";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
-import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 
 export function ToolBoxPanelEligibilityAdvanced() {
   const checked = useStoreState(
@@ -28,8 +27,20 @@ export function ToolBoxPanelEligibilityAdvanced() {
         justify-content: space-between;
         border-bottom: 1px solid #dfe3e6;
 
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 12px;
+            }
+          }
+        }
+
         span {
           font-size: 12px;
+        }
+
+        @media (max-width: 767px) {
+          padding: 16px;
         }
       `}
     >
@@ -37,10 +48,10 @@ export function ToolBoxPanelEligibilityAdvanced() {
       <FormControlLabel
         control={
           <Checkbox
+            name="checked"
             color="primary"
             checked={checked}
             onChange={handleChange}
-            name="checked"
           />
         }
         label="Show disease burden and income level"

@@ -1,15 +1,18 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import sum from "lodash/sum";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import ReactApexCharts from "react-apexcharts";
-import { useTitle, useMeasure } from "react-use";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTitle, useMeasure, useUnmount } from "react-use";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
+import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -19,6 +22,7 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
+import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
 import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
@@ -30,7 +34,7 @@ interface AllocationsModuleProps {
 }
 
 export function AllocationsModule(props: AllocationsModuleProps) {
-  useTitle(`The Data Explorer -${props.code ?? " Location"} Allocations`);
+  useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
 
   const selectedPeriod = useStoreState(
     (state) => state.ToolBoxPanelAllocationsPeriodState.value
@@ -72,9 +76,13 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const fetchPeriodOptionsData = useStoreActions(
     (store) => store.AllocationsPeriods.fetch
   );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
     percentages: number[];
@@ -86,6 +94,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
+  const [xsTooltipData, setXsTooltipData] = React.useState<any | null>(null);
 
   const options: ApexOptions = {
     plotOptions: {
@@ -137,12 +146,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     legend: {
       show: true,
       floating: true,
-      fontSize: "14px",
+      fontSize: !isMobile ? "14px" : "10px",
       fontFamily: "GothamNarrow-Book",
       fontWeight: "bold",
       position: "right",
       offsetX: width / 2,
-      offsetY: 25,
+      offsetY: !isMobile ? 25 : 15,
       markers: {
         width: 0,
       },
@@ -152,7 +161,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         )}`;
       },
       itemMargin: {
-        vertical: 8,
+        vertical: !isMobile ? 8 : 2,
       },
       onItemClick: {
         toggleDataSeries: false,
@@ -181,16 +190,28 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       if (key) {
         // @ts-ignore
         const keySelected = e.target.getAttribute("selected");
-        if (keySelected === "true" || isTouchDevice()) {
+        if (keySelected === "true") {
           setVizLevel(1);
           setVizSelected(key);
           setVizTranslation({ x: -300, y: 0 });
+        } else if (isMobile || isTouchDevice()) {
+          setXsTooltipData({
+            label: key,
+            value: values[keys.indexOf(key)],
+          });
         }
         // @ts-ignore
       } else if (e.target.className.baseVal === "apexcharts-radialbar-hollow") {
-        setVizLevel(1);
-        setVizSelected("Total");
-        setVizTranslation({ x: -300, y: 0 });
+        if (isMobile || isTouchDevice()) {
+          setXsTooltipData({
+            label: "Total",
+            value: sum(values),
+          });
+        } else {
+          setVizLevel(1);
+          setVizSelected("Total");
+          setVizTranslation({ x: -300, y: 0 });
+        }
       }
     }
   }
@@ -218,6 +239,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   React.useEffect(() => {
     const items = document.getElementsByClassName("apexcharts-radial-series");
     if (vizSelected) {
+      setVizDrilldowns([
+        { name: "Dataset" },
+        { name: selectedPeriod },
+        { name: vizSelected },
+      ]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
@@ -250,6 +276,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         }`,
       });
     } else {
+      setVizDrilldowns([{ name: "Dataset" }]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
@@ -261,6 +288,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }, [vizSelected, selectedPeriod]);
 
   React.useEffect(() => {
+    setVizDrilldowns([{ name: "Dataset" }]);
     fetchPeriodOptionsData({});
 
     // setTimeout(() => {
@@ -304,6 +332,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       window.removeEventListener("touchstart", onClick);
     };
   }, []);
+
+  useUnmount(() => setVizDrilldowns([]));
 
   if (isLoading) {
     return <PageLoader />;
@@ -366,13 +396,32 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             </div>
           ) : (
             <ReactApexCharts
-              height={580}
               type="radialBar"
               options={options}
+              height={isMobile ? 400 : 580}
               series={keysPercentagesColors.percentages}
             />
           )}
         </div>
+        {(isMobile || isTouchDevice()) && xsTooltipData && (
+          <XsContainer id="mobile-tooltip-container">
+            <div
+              css={`
+                width: 95%;
+              `}
+            >
+              <AllocationsRadialMobileTooltip
+                {...xsTooltipData}
+                close={() => setXsTooltipData(null)}
+                drilldown={() => {
+                  setVizLevel(1);
+                  setVizSelected(xsTooltipData.label);
+                  setVizTranslation({ x: -300, y: 0 });
+                }}
+              />
+            </div>
+          </XsContainer>
+        )}
       </TransitionContainer>
       <SlideInContainer
         vizLevel={vizLevel}
@@ -393,6 +442,15 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             display: flex;
             margin-bottom: 20px;
             flex-direction: row;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 40px;
+                }
+              }
+            }
           `}
         >
           <DrillDownArrowSelector
