@@ -1,85 +1,41 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
-import find from "lodash/find";
-import Slide from "@material-ui/core/Slide";
-import { useParams, useHistory } from "react-router-dom";
+import get from "lodash/get";
+import Fab from "@material-ui/core/Fab";
+import { useHistory } from "react-router-dom";
+import { useStoreState } from "app/state/store/hooks";
+import { FiltersIcon } from "app/assets/icons/Filters";
+import { useUnmount, useUpdateEffect } from "react-use";
+import { isTouchDevice } from "app/utils/isTouchDevice";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import { ToolBoxPanelTabs } from "app/components/ToolBoxPanel/components/tabs";
-import {
-  getControlItems,
-  ViewModel,
-} from "app/components/ToolBoxPanel/utils/getControlItems";
+import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
-import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
-import { ToolBoxPanelGeoMapViews } from "./components/geomapviews";
-import { ToolBoxPanelFilters } from "./components/filters";
-import { ToolBoxPanelEligibilityAdvanced } from "./components/eligibilityadvanced";
-import { PerformanceFrameworkReportingPeriods } from "./components/pf-reportingperiods";
 
-interface ToolBoxPanelProps {
+export interface ToolBoxPanelProps {
   open: boolean;
-  onButtonClick: () => void;
+  vizWrapperRef: any;
+  isGrantDetail?: boolean;
+  isLocationDetail?: boolean;
+  filterGroups: FilterGroupProps[];
+  onCloseBtnClick: (value?: boolean) => void;
 }
-
-const filtergroups = [
-  {
-    name: "Period",
-    selectedOptions: [],
-  },
-  {
-    name: "Grant Status",
-    selectedOptions: [],
-  },
-  {
-    name: "Components",
-    selectedOptions: [],
-  },
-  {
-    name: "Partners",
-    selectedOptions: [],
-  },
-  {
-    name: "Locations",
-    selectedOptions: [],
-  },
-];
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
-  const params = useParams<{
-    code?: string;
-    vizType: string;
-    subType?: string;
-  }>();
-  const [selectedView, setSelectedView] = React.useState("");
-  const [selectedTab, setSelectedTab] = React.useState("Control");
-  const [selectedAggregation, setSelectedAggregation] = React.useState("");
+  const fabBtnRef = React.useRef(null);
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );
-  const [controlItems, setControlItems] = React.useState<{
-    views: ViewModel[];
-    aggregates: ViewModel[];
-  }>(getControlItems(params.vizType, history.location.pathname, params.code));
-  const [geomapView, setGeomapView] = React.useState("countries");
 
-  function getSelectedView() {
-    let view: ViewModel | undefined;
-    if (params.code) {
-      view = find(
-        controlItems.views,
-        (v: ViewModel) =>
-          v.link?.replace("viz", `location/${params.code}`) ===
-          history.location.pathname
-      );
-    } else {
-      view = find(controlItems.views, { link: history.location.pathname });
-    }
-    if (view) {
-      return view.value;
-    }
-    return "";
-  }
+  // viz drilldown items
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
 
   React.useLayoutEffect(() => {
     setVisibleVScrollbar(
@@ -93,131 +49,263 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     );
   }, [history.location.pathname]);
 
-  React.useEffect(
-    () =>
-      setControlItems(
-        getControlItems(params.vizType, history.location.pathname, params.code)
-      ),
-    [params.vizType]
-  );
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
+  useUpdateEffect(() => {
+    if (isMobile) {
+      if (props.open) {
+        document.body.style.overflowY = "hidden";
+      } else {
+        document.body.style.overflowY = "auto";
+      }
+    }
+  }, [props.open]);
+
+  useUnmount(() => {
+    document.body.style.overflowY = "auto";
+  });
+
+  let top = 133;
+
+  if (
+    !props.isGrantDetail &&
+    !props.isLocationDetail &&
+    vizDrilldowns.length === 0
+  ) {
+    if (isSmallScreen) {
+      top = 149;
+      if (isMobile) {
+        top = 161;
+      }
+    } else {
+      top = 133;
+    }
+  }
+  if (isSmallScreen && vizDrilldowns.length > 0) {
+    top = 185;
+    if (isMobile) {
+      top = 196;
+    }
+    if (props.isGrantDetail) {
+      top = 206;
+      if (isMobile) {
+        top = 139;
+      }
+    }
+    if (props.isLocationDetail) {
+      top = 222;
+      if (isMobile) {
+        top = 196;
+      }
+    }
+  } else if (isSmallScreen) {
+    if (props.isGrantDetail) {
+      top = 168;
+      if (isMobile) {
+        top = 104;
+      }
+    }
+    if (props.isLocationDetail) {
+      top = 187;
+      if (isMobile) {
+        top = 161;
+      }
+    }
+  } else if (vizDrilldowns.length > 0) {
+    if (props.isGrantDetail) {
+      top = 203;
+    } else if (props.isLocationDetail) {
+      top = 203;
+    } else {
+      top = 168;
+    }
+  } else if (props.isGrantDetail || props.isLocationDetail) {
+    top = 168;
+  }
 
   return (
-    <ClickAwayListener
-      onClickAway={() => {
-        if (props.open) {
-          props.onButtonClick();
-        }
-      }}
-    >
-      <Slide direction="left" in={props.open}>
-        <div
-          css={`
-            right: 0;
-            top: 48px;
-            z-index: 20;
-            width: 500px;
-            position: fixed;
-            background: #f5f5f7;
-            height: calc(100vh - 48px);
-            visibility: visible !important;
-
-            @media (max-width: 500px) {
-              width: calc(100vw - 50px);
+    <React.Fragment>
+      <ClickAwayListener
+        onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
+          if (
+            props.open &&
+            get(event.target, "tagName", "") !== "A" &&
+            get(event.target, "id", "") !== "page-header-toolbox-btn"
+          ) {
+            if (props.vizWrapperRef) {
+              if (!props.vizWrapperRef.current.contains(event.target)) {
+                if (
+                  fabBtnRef &&
+                  fabBtnRef.current &&
+                  (fabBtnRef.current as any).contains(event.target)
+                ) {
+                  return;
+                }
+                props.onCloseBtnClick();
+              }
+            } else {
+              props.onCloseBtnClick();
             }
-          `}
-        >
+          }
+        }}
+      >
+        <Slide direction="left" in={props.open}>
           <div
             css={`
-              width: 100%;
-              height: 100%;
-              display: flex;
-              position: relative;
-              flex-direction: column;
+              right: 0;
+              z-index: 20;
+              width: 400px;
+              top: ${top}px;
+              position: fixed;
+              background: #f5f5f7;
+              height: calc(100vh - ${top}px);
+              visibility: visible !important;
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+
+              @media (max-width: 767px) {
+                width: 100vw;
+                box-shadow: none;
+                overflow-y: auto;
+                height: calc(100vh - ${top + 56}px);
+              }
             `}
           >
             <div
-              role="button"
-              tabIndex={-1}
               css={`
-                top: 45%;
-                color: #fff;
-                font-size: 14px;
-                cursor: pointer;
-                padding: 6px 40px;
-                font-weight: bold;
-                position: absolute;
-                text-align: center;
-                background: #495057;
-                transform: rotate(-90deg);
-                border-radius: 20px 20px 0px 0px;
-                left: -${!visibleVScrollbar || props.open ? 84 : 88}px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                position: relative;
+                flex-direction: column;
               `}
-              onClick={() => props.onButtonClick()}
             >
-              Toolbox
-              {/* <div
-                css={`
-                  top: 8px;
-                  width: 6px;
-                  height: 6px;
-                  right: 30px;
-                  background: #fff;
-                  border-radius: 50%;
-                  position: absolute;
-                `}
-              /> */}
-            </div>
-            <ToolBoxPanelTabs
-              selected={selectedTab}
-              onSelect={setSelectedTab}
-            />
-            {selectedTab === "Control" && (
-              <React.Fragment>
-                <ToolBoxPanelIconButtons />
-                {controlItems.views.length > 0 && (
-                  <ToolBoxPanelControlRow
-                    title="Views"
-                    selected={selectedView}
-                    options={controlItems.views}
-                    setSelected={setSelectedView}
-                  />
-                )}
-                {controlItems.aggregates.length > 0 && (
-                  <ToolBoxPanelControlRow
-                    title="Aggregate by"
-                    selected={selectedAggregation}
-                    options={controlItems.aggregates}
-                    setSelected={setSelectedAggregation}
-                  />
-                )}
-                {params.vizType === "investments" &&
-                  params.subType === "geomap" && (
-                    <ToolBoxPanelGeoMapViews
-                      title="Views"
-                      selected={geomapView}
-                      setSelected={setGeomapView}
+              {!isSmallScreen && !isMobile && (
+                <div
+                  role="button"
+                  tabIndex={-1}
+                  css={`
+                    top: 38%;
+                    color: #fff;
+                    width: 16px;
+                    height: 133px;
+                    display: flex;
+                    cursor: pointer;
+                    position: absolute;
+                    background: #495057;
+                    align-items: center;
+                    flex-direction: column;
+                    justify-content: center;
+                    border-radius: 10px 0px 0px 10px;
+                    transition: background 0.2s ease-in-out;
+                    // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
+                    // ${isTouchDevice() ? `left: -16px;` : ""}
+                    left: -16px;
+
+                    &:hover {
+                      background: #13183f;
+                    }
+
+                    > svg {
+                      transform: rotate(${!props.open ? "-" : ""}90deg);
+                      > path {
+                        fill: #fff;
+                      }
+                    }
+                  `}
+                  onClick={() => props.onCloseBtnClick()}
+                >
+                  <TriangleXSIcon />
+                </div>
+              )}
+              {isSmallScreen && !isMobile && (
+                <div
+                  css={`
+                    width: 100%;
+                    height: 24px;
+                    background-color: #373d43;
+                  `}
+                >
+                  <IconButton
+                    css={`
+                      width: 12px;
+                      height: 12px;
+                    `}
+                    onClick={() => props.onCloseBtnClick()}
+                  >
+                    <CloseOutlinedIcon
+                      htmlColor="#ffffff"
+                      viewBox=" -4 -4 30 30"
                     />
-                  )}
-                {params.code && params.vizType === "eligibility" && (
-                  <ToolBoxPanelEligibilityAdvanced />
-                )}
-                {/* {params.code && params.vizType === "performance-framework" && (
-                  <PerformanceFrameworkReportingPeriods />
-                )} */}
-              </React.Fragment>
-            )}
-            {selectedTab === "Filters" && (
-              <ToolBoxPanelFilters groups={filtergroups} />
-            )}
+                  </IconButton>
+                </div>
+              )}
+              {isMobile && (
+                <div
+                  css={`
+                    width: 100%;
+                    padding: 16px;
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+                    border-bottom: 1px solid #dfe3e6;
+                  `}
+                >
+                  <div
+                    css={`
+                      font-size: 18px;
+                      font-weight: bold;
+                      font-family: GothamNarrow-Bold;
+                    `}
+                  >
+                    Toolbox
+                  </div>
+                  <IconButton
+                    css={`
+                      width: 14px;
+                      height: 14px;
+                    `}
+                    onClick={() => props.onCloseBtnClick()}
+                  >
+                    <CloseOutlinedIcon
+                      htmlColor="#2E4063"
+                      viewBox=" -4 -4 30 30"
+                    />
+                  </IconButton>
+                </div>
+              )}
+              <ToolBoxPanelIconButtons />
+              <SubToolBoxPanel
+                filterGroups={props.filterGroups}
+                closePanel={props.onCloseBtnClick}
+              />
+            </div>
           </div>
+        </Slide>
+      </ClickAwayListener>
+      {isMobile && (
+        <div
+          ref={fabBtnRef}
+          css={`
+            right: 20px;
+            z-index: 100;
+            bottom: 70px;
+            position: fixed;
+
+            > button {
+              box-shadow: none;
+            }
+          `}
+        >
+          <Fab
+            color="primary"
+            aria-label="filters"
+            onClick={() => props.onCloseBtnClick()}
+          >
+            <FiltersIcon />
+          </Fab>
         </div>
-      </Slide>
-    </ClickAwayListener>
+      )}
+    </React.Fragment>
   );
 }

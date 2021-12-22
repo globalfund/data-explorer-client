@@ -1,166 +1,78 @@
+/* third-party */
 import React from "react";
+import get from "lodash/get";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useDebounce, useUpdateEffect, useSessionStorage } from "react-use";
+/* project */
 import { SearchLayout } from "app/components/Search/layout";
+import { SearchResultsTabModel } from "app/components/Search/components/results/data";
 
 export function Search() {
-  const [value, setValue] = React.useState("");
+  const [open, setOpen] = React.useState(false);
   const [activeTab, setActiveTab] = React.useState(0);
-  const results = [
-    {
-      name: "Location(s)",
-      results: [
-        {
-          type: "Country",
-          label: "Kenya",
-          value: "KEN",
-          link: "/location/KEN/investments",
-        },
-      ],
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [storedValue, setStoredValue] = useSessionStorage(
+    "stored-search-string",
+    ""
+  );
+  const [value, setValue] = React.useState(storedValue);
+
+  // api call & data
+  const clearData = useStoreActions((store) => store.GlobalSearch.clear);
+  const fetchData = useStoreActions((store) => store.GlobalSearch.fetch);
+  const data = useStoreState(
+    (state) =>
+      get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[]
+  );
+  const isLoading = useStoreState((state) => state.GlobalSearch.loading);
+
+  useUpdateEffect(() => {
+    setStoredValue(value);
+    // if (value.length === 0) {
+    //   fetchData({
+    //     filterString: `q=${value}`,
+    //   });
+    // }
+  }, [value]);
+
+  const [,] = useDebounce(
+    () => {
+      if (value.length > 0) {
+        fetchData({
+          filterString: `q=${value}`,
+        });
+      } else {
+        clearData();
+      }
     },
-    {
-      name: "Finance",
-      results: [
-        {
-          type: "Investment",
-          label: "Disbursements",
-          value: "Disbursements",
-          link: "/viz/investments/disbursements",
-        },
-        {
-          type: "Investment",
-          label: "Budget",
-          value: "Budget",
-          link: "/viz/budgets/flow",
-        },
-        {
-          type: "Investment",
-          label: "Allocation",
-          value: "Allocation",
-          link: "/viz/allocations",
-        },
-        {
-          type: "Donor",
-          label: "Pledges & Contributions",
-          value: "Pledges & Contributions",
-          link: "/viz/pledges-contributions/time-cycle",
-        },
-      ],
-    },
-    {
-      name: "Grant(s)",
-      results: [
-        {
-          type: "Active",
-          label:
-            "Program to strengthen the national response to HIV/AIDS and health systems in Niger",
-          value: "NER-H-MSP",
-          link: "/grant/NER-H-MSP/investments",
-        },
-        {
-          type: "Active",
-          label:
-            "Program to strengthen the national response to HIV/AIDS and health systems in Niger",
-          value: "NER-H-MSP",
-          link: "/grant/NER-H-MSP/investments",
-        },
-        {
-          type: "Active",
-          label:
-            "Program to strengthen the national response to HIV/AIDS and health systems in Niger",
-          value: "NER-H-MSP",
-          link: "/grant/NER-H-MSP/investments",
-        },
-        {
-          type: "Active",
-          label:
-            "Program to strengthen the national response to HIV/AIDS and health systems in Niger",
-          value: "NER-H-MSP",
-          link: "/grant/NER-H-MSP/investments",
-        },
-        {
-          type: "Active",
-          label:
-            "Program to strengthen the national response to HIV/AIDS and health systems in Niger",
-          value: "NER-H-MSP",
-          link: "/grant/NER-H-MSP/investments",
-        },
-        {
-          type: "Active",
-          label:
-            "Program to strengthen the national response to HIV/AIDS and health systems in Niger",
-          value: "NER-H-MSP",
-          link: "/grant/NER-H-MSP/investments",
-        },
-      ],
-    },
-    {
-      name: "Result(s)",
-      results: [
-        {
-          type: "",
-          label: "People on antiretroviral for HIV",
-          value: "People on antiretroviral for HIV",
-          link: "/results",
-        },
-        {
-          type: "",
-          label:
-            "HIV-positive pregnant women who received ART during pregnancy",
-          value:
-            "HIV-positive pregnant women who received ART during pregnancy",
-          link: "/results",
-        },
-        {
-          type: "",
-          label: "Number of HIV tests taken among general population",
-          value: "Number of HIV tests taken among general population",
-          link: "/results",
-        },
-        {
-          type: "",
-          label: "Number of HIV tests taken among other vulnerable population",
-          value: "Number of HIV tests taken among other vulnerable population",
-          link: "/results",
-        },
-        {
-          type: "",
-          label:
-            "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
-          value:
-            "People on ART with suppressed viral load at 12 months (<1000 copies/ml)",
-          link: "/results",
-        },
-        {
-          type: "",
-          label: "Number of HIV tests taken among general population",
-          value: "Number of HIV tests taken among general population",
-          link: "/results",
-        },
-      ],
-    },
-    {
-      name: "Document(s)",
-      results: [],
-    },
-    {
-      name: "Other(s)",
-      results: [
-        {
-          type: "",
-          label: "Eligibility",
-          value: "Eligibility",
-          link: "/viz/eligibility",
-        },
-      ],
-    },
-  ];
+    500,
+    [value]
+  );
 
   return (
-    <SearchLayout
-      value={value}
-      results={results}
-      setValue={setValue}
-      activeTab={activeTab}
-      setActiveTab={setActiveTab}
-    />
+    <div
+      onClick={(e: any) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!open) {
+          setOpen(true);
+        }
+      }}
+      css={`
+        width: 100%;
+      `}
+    >
+      <SearchLayout
+        value={value}
+        results={data}
+        loading={isLoading}
+        setValue={setValue}
+        activeTab={activeTab}
+        setActiveTab={setActiveTab}
+        forceFocus={isMobile && open}
+        onClose={() => setOpen(false)}
+      />
+    </div>
   );
 }

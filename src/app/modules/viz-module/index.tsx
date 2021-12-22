@@ -1,27 +1,72 @@
 /* third-party */
 import React from "react";
-import { Link, Switch, Route, useParams } from "react-router-dom";
+import get from "lodash/get";
+import { useUpdateEffect } from "react-use";
+import { useMediaQuery } from "@material-ui/core";
+import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { mockdata1 } from "app/components/Charts/Investments/Disbursements/data";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { MobileViewControl } from "app/components/Mobile/ViewsControl";
+import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
-import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
-import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
-import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
+import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
+import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
+import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
+import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
+import { GenericEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
+import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
+import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
+import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
+import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
+import {
+  filtergroups,
+  pathnameToFilterGroups,
+} from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function VizModule() {
+  const location = useLocation();
+  const vizWrapperRef = React.useRef(null);
+  const datasetMenuItems = useDatasetMenuItems();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
   }, []);
+
+  React.useEffect(() => {
+    if (!isMobile && !openToolboxPanel) {
+      setOpenToolboxPanel(true);
+    }
+  }, [location.pathname]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 420) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 420 - widthThreshold;
+  }
+
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  function isToolboxOvervlayVisible() {
+    if (isSmallScreen) return 0;
+    if (openToolboxPanel && widthThreshold < 0) return 1;
+    return 0;
+  }
 
   return (
     <div
@@ -40,60 +85,7 @@ export default function VizModule() {
           { name: "Home", link: "/" },
           {
             name: "Datasets",
-            menuitems: [
-              <Link
-                to="/datasets"
-                css={`
-                  display: flex;
-                  align-items: center;
-
-                  > svg {
-                    margin-right: 16px;
-                    transform: rotate(-180deg) scale(0.5);
-
-                    > path {
-                      fill: #13183f;
-                    }
-                  }
-                `}
-              >
-                <ArrowForwardIcon />
-                <b>Datasets</b>
-              </Link>,
-              <Link to="/viz/investments/disbursements">
-                <b>Finance</b>-Investments/Disbursements
-              </Link>,
-              <Link to="/viz/investments/time-cycle">
-                <b>Finance</b>-Investments/Time-Cycle
-              </Link>,
-              <Link to="/viz/investments/geomap">
-                <b>Finance</b>-Investments/GeoMap
-              </Link>,
-              <Link to="/viz/budgets/flow">
-                <b>Finance</b>-Budgets Flow
-              </Link>,
-              <Link to="/viz/budgets/time-cycle">
-                <b>Finance</b>-Budgets Time Cycle
-              </Link>,
-              <Link to="/viz/allocations">
-                <b>Finance</b>-Allocations
-              </Link>,
-              <Link to="/viz/eligibility">
-                <b>Finance</b>-Eligibility
-              </Link>,
-              <Link to="/viz/pledges-contributions/time-cycle">
-                <b>Finance</b>-Pledges & Contributions Time Cycle
-              </Link>,
-              <Link to="/grants">
-                <b>Grants</b>
-              </Link>,
-              <Link to="/results">
-                <b>Results</b>
-              </Link>,
-              <Link to="/documents">
-                <b>Documents</b>
-              </Link>,
-            ],
+            menuitems: datasetMenuItems,
           },
           {
             name: `${params.vizType
@@ -109,54 +101,161 @@ export default function VizModule() {
             }`,
           },
         ]}
-        // drilldowns={[
-        //   { name: "Dataset" },
-        //   { name: "Drill down level one" },
-        //   { name: "Drill down level two" },
-        // ]}
       />
-      <div css="width: 100%;height: 25px;" />
-      <Switch>
-        <Route path="/viz/budgets/flow">
-          <BudgetsFlowModule />
-        </Route>
-        <Route path="/viz/budgets/time-cycle">
-          <BudgetsTimeCycleModule />
-        </Route>
-        <Route path="/viz/investments/disbursements">
-          <InvestmentsDisbursedModule data={mockdata1} />
-        </Route>
-        <Route path="/viz/investments/time-cycle">
-          <InvestmentsTimeCycleModule />
-        </Route>
-        <Route path="/viz/investments/geomap">
-          <InvestmentsGeoMap />
-        </Route>
-        <Route path="/viz/allocations">
-          <AllocationsModule />
-        </Route>
-        <Route path="/viz/pledges-contributions/time-cycle">
-          <PledgesContributionsTimeCycleModule />
-        </Route>
-        <Route path="/viz/eligibility">
-          <EligibilityModule />
-        </Route>
-      </Switch>
+      <PageTopSpacer />
+      {isMobile && (
+        <React.Fragment>
+          <MobileViewControl />
+          <div
+            css={`
+              width: 100%;
+              height: 15px;
+            `}
+          />
+        </React.Fragment>
+      )}
+      <div
+        id="export-view-div"
+        css={`
+          height: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+        `}
+        ref={vizWrapperRef}
+      >
+        <Switch>
+          {/* Budgets */}
+          <Route path="/viz/budgets/flow">
+            <GenericBudgetsFlowWrapper toolboxOpen={openToolboxPanel} />
+          </Route>
+          <Route path="/viz/budgets/time-cycle">
+            <GenericBudgetsTimeCycleWrapper toolboxOpen={openToolboxPanel} />
+          </Route>
+          <Route path="/viz/budgets/map">
+            <BudgetsGeoMap />
+          </Route>
+          {/* Disbursements */}
+          <Route path="/viz/disbursements/treemap">
+            <GenericInvestmentsDisbursedWrapper
+              type="Disbursed"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/disbursements/table">
+            <GenericInvestmentsTableWrapper />
+          </Route>
+          <Route path="/viz/disbursements/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper
+              type="Disbursed"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/disbursements/map">
+            <InvestmentsGeoMap type="Disbursed" />
+          </Route>
+          {/* Signed */}
+          <Route path="/viz/signed/treemap">
+            <GenericInvestmentsDisbursedWrapper
+              type="Signed"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/signed/table">
+            <GenericInvestmentsTableWrapper />
+          </Route>
+          <Route path="/viz/signed/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper
+              type="Signed"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/signed/map">
+            <InvestmentsGeoMap type="Signed" />
+          </Route>
+          {/* Commitment */}
+          <Route path="/viz/commitment/treemap">
+            <GenericInvestmentsDisbursedWrapper
+              type="Commitment"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/commitment/table">
+            <GenericInvestmentsTableWrapper />
+          </Route>
+          <Route path="/viz/commitment/time-cycle">
+            <GenericInvestmentsTimeCycleWrapper
+              type="Commitment"
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/commitment/map">
+            <InvestmentsGeoMap type="Committed" />
+          </Route>
+          {/* Allocations */}
+          <Route path="/viz/allocations/map">
+            <AllocationsGeoMap />
+          </Route>
+          <Route path="/viz/allocations">
+            <AllocationsModule toolboxOpen={openToolboxPanel} />
+          </Route>
+          {/* Pledges & Contributions */}
+          <Route path="/viz/pledges-contributions/time-cycle">
+            <PledgesContributionsTimeCycleModule
+              toolboxOpen={openToolboxPanel}
+            />
+          </Route>
+          <Route path="/viz/pledges-contributions/table">
+            <PledgesContributionsTable />
+          </Route>
+          <Route path="/viz/pledges-contributions/map">
+            <PledgesContributionsGeoMap />
+          </Route>
+          <Route path="/viz/pledges-contributions/treemap">
+            <PledgesContributionsTreemap />
+          </Route>
+          {/* Eligibility */}
+          <Route path="/viz/eligibility/table">
+            <GenericEligibilityWrapper />
+          </Route>
+          <Route path="/viz/eligibility">
+            <EligibilityModule />
+          </Route>
+        </Switch>
+      </div>
+      <div
+        css={`
+          @media (max-width: 767px) {
+            width: 100%;
+            height: 140px;
+          }
+        `}
+      />
       <ToolBoxPanel
         open={openToolboxPanel}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        vizWrapperRef={vizWrapperRef}
+        onCloseBtnClick={(value?: boolean) =>
+          setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
+        }
+        filterGroups={get(
+          pathnameToFilterGroups,
+          location.pathname,
+          filtergroups
+        )}
       />
       <div
         css={`
           left: 0;
           top: 48px;
-          z-index: 10;
+          z-index: 15;
           width: 100%;
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${isToolboxOvervlayVisible()};
+          visibility: ${isToolboxOvervlayVisible() === 1
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

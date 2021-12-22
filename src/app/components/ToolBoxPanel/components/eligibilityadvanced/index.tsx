@@ -22,11 +22,25 @@ export function ToolBoxPanelEligibilityAdvanced() {
         width: 100%;
         display: flex;
         padding: 15px 25px;
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
         border-bottom: 1px solid #dfe3e6;
+
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 12px;
+            }
+          }
+        }
 
         span {
           font-size: 12px;
+        }
+
+        @media (max-width: 767px) {
+          padding: 16px;
         }
       `}
     >
@@ -34,10 +48,10 @@ export function ToolBoxPanelEligibilityAdvanced() {
       <FormControlLabel
         control={
           <Checkbox
+            name="checked"
             color="primary"
             checked={checked}
             onChange={handleChange}
-            name="checked"
           />
         }
         label="Show disease burden and income level"

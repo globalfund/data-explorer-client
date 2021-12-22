@@ -1,5 +1,6 @@
 import React from "react";
-import { BudgetsTimeCycleTooltip } from "../tooltip";
+import filter from "lodash/filter";
+import { BudgetsTimeCycleTooltip } from "app/components/Charts/Budgets/TimeCycle/components/tooltip";
 
 export function BarComponent(props: any) {
   const fprops = {
@@ -13,9 +14,10 @@ export function BarComponent(props: any) {
     label: props.label,
   };
 
-  let nodecss = "cursor: pointer;";
+  let nodecss =
+    "cursor: pointer;transition: opacity 0.2s ease-in-out;stroke: #1B2127;";
   if (props.selected === props.data.indexValue) {
-    nodecss += "z-index: 2;fill: url(#diagonalHatch);";
+    nodecss += "z-index: 2;";
   } else if (
     props.hoveredXIndex &&
     props.hoveredXIndex === props.data.indexValue
@@ -24,27 +26,50 @@ export function BarComponent(props: any) {
   } else if (props.hoveredLegend && props.hoveredLegend === props.data.id) {
     nodecss += "z-index: 2;";
   } else if (props.selected || props.hoveredXIndex || props.hoveredLegend) {
-    nodecss += "opacity: 0.3;";
+    nodecss += "opacity: 0.1;";
+  }
+
+  function onMouseMoveOrEnter(e: React.MouseEvent<SVGGElement>) {
+    if (
+      (props.selected || { indexValue: "" }).indexValue !==
+      props.data.indexValue
+    ) {
+      props.showTooltip(<BudgetsTimeCycleTooltip {...props.data.data} />, e);
+      props.setHoveredXIndex(props.data.indexValue);
+    }
   }
 
   return (
     <g
       {...fprops}
-      onMouseEnter={(e: React.MouseEvent<SVGGElement>) => {
-        if (
-          (props.selected || { indexValue: "" }).indexValue !==
-          props.data.indexValue
-        ) {
-          props.showTooltip(
-            <BudgetsTimeCycleTooltip {...props.data.data} />,
-            e
-          );
-          props.setHoveredXIndex(props.data.indexValue);
-        }
-      }}
+      onMouseMove={onMouseMoveOrEnter}
+      onMouseEnter={onMouseMoveOrEnter}
       onMouseLeave={() => {
         props.hideTooltip();
         props.setHoveredXIndex(null);
+      }}
+      onTouchStart={(e: React.TouchEvent<SVGGElement>) => {
+        if (props.data.indexValue !== props.selected) {
+          props.onTouchStart({
+            value: props.data.value,
+            id: `Year ${props.data.indexValue}`,
+            filterStr: props.data.indexValue.toString(),
+            components: filter(
+              Object.keys(props.data.data),
+              (key: string) =>
+                key.indexOf("Color") === -1 &&
+                key.indexOf("Code") === -1 &&
+                key !== "year" &&
+                key !== "amount"
+            ).map((key: string) => ({
+              id: key,
+              height: 0,
+              value: props.data.data[key],
+              color: props.data.data[`${key}Color`],
+            })),
+          });
+          // props.onClick(props.data.indexValue, props.x - 100, 0);
+        }
       }}
       css={
         props.selected === props.data.indexValue ||

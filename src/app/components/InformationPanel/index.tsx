@@ -5,6 +5,7 @@ import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 interface InformationPanelProps {
   open: boolean;
+  buttonLabel?: string;
   onButtonClick: () => void;
   children: React.ReactNode;
 }
@@ -50,7 +51,8 @@ export function InformationPanel(props: InformationPanelProps) {
               css={`
                 top: 45%;
                 color: #fff;
-                right: -94px;
+                width: 150px;
+                right: -93px;
                 font-size: 14px;
                 cursor: pointer;
                 padding: 6px 40px;
@@ -60,10 +62,16 @@ export function InformationPanel(props: InformationPanelProps) {
                 background: #495057;
                 transform: rotate(-90deg);
                 border-radius: 0px 0px 20px 20px;
+                transition: background 0.2s ease-in-out;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+                &:hover {
+                  background: #13183f;
+                }
               `}
               onClick={() => props.onButtonClick()}
             >
-              Information
+              {props.buttonLabel ? props.buttonLabel : "Information"}
             </div>
             {props.children}
           </div>

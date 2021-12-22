@@ -16,24 +16,14 @@ export function InvestmentsTimeCycleTooltip(props: any) {
     >
       <div
         css={`
-          top: -4px;
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          border-radius: 50%;
-          background: #262c34;
-          left: calc(50% - 4px);
-        `}
-      />
-      <div
-        css={`
           font-size: 18px;
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        {props.indexValue}
+        Year {props.indexValue}
       </div>
       <div
         css={`
@@ -41,6 +31,14 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           display: flex;
           font-size: 12px;
           flex-direction: column;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <div
@@ -50,7 +48,14 @@ export function InvestmentsTimeCycleTooltip(props: any) {
             justify-content: space-between;
           `}
         >
-          <div css="font-weight: bold;">Total amount</div>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Total amount
+          </div>
           <div>{formatFinancialValue(props.value as number)}</div>
         </div>
         {get(props.data, `${props.id}Children`, []).map((child: any) => (
@@ -62,7 +67,14 @@ export function InvestmentsTimeCycleTooltip(props: any) {
               justify-content: space-between;
             `}
           >
-            <div css="font-weight: bold;">{child.name}</div>
+            <div
+              css={`
+                font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              `}
+            >
+              {child.name}
+            </div>
             <div>{formatFinancialValue(get(child, "value", 0) as number)}</div>
           </div>
         ))}

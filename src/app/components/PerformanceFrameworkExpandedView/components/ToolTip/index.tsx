@@ -14,7 +14,7 @@ import {
 const styles = {
   container: (showAggrs: boolean) => css`
     gap: 10px;
-    width: 250px;
+    width: 267px;
     display: flex;
     padding: 15px;
     color: #262c34;
@@ -23,19 +23,27 @@ const styles = {
     border-radius: 20px;
     flex-direction: column;
     background: ${showAggrs ? "#495057" : "#fff"};
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 10px;
+        }
+      }
+    }
   `,
   header: css`
-    gap: 10px;
     display: flex;
     margin-bottom: 10px;
     align-items: center;
     flex-direction: row;
+    justify-content: space-between;
   `,
   bottombtn: (showAggrs: boolean) => css`
     left: 0;
     gap: 15px;
     color: #fff;
-    width: 250px;
+    width: 267px;
     display: flex;
     cursor: pointer;
     position: absolute;
@@ -48,6 +56,14 @@ const styles = {
     border-bottom-style: ${showAggrs ? "solid" : "none"};
     border-radius: ${showAggrs ? "20px 20px 0px 0px" : "0px 0px 20px 20px"};
 
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 15px;
+        }
+      }
+    }
+
     > svg {
       transform: rotate(${showAggrs ? 180 : 0}deg);
 
@@ -58,6 +74,7 @@ const styles = {
 
     > div {
       font-weight: bold;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
 
     > button {
@@ -77,6 +94,14 @@ const styles = {
     display: flex;
     flex-direction: column;
 
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 5px;
+        }
+      }
+    }
+
     > hr {
       width: 100%;
       border-color: #c7cdd1;
@@ -91,6 +116,14 @@ const styles = {
         gap: 10px;
         align-items: center;
 
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 10px;
+            }
+          }
+        }
+
         svg {
           transform: scale(0.7);
 
@@ -104,6 +137,14 @@ const styles = {
         gap: 20px;
         font-size: 10px;
         justify-content: space-between;
+
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 20px;
+            }
+          }
+        }
       }
     }
   `,
@@ -129,7 +170,11 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
             <React.Fragment>
               <div css={styles.header}>
                 <div>
-                  <b>Reporting period: {props.data.period}</b>
+                  <b>
+                    Reporting period:
+                    <br />
+                    {props.data.period}
+                  </b>
                 </div>
                 <IconButton size="small" onClick={() => props.close()}>
                   <CloseIcon />

@@ -11,6 +11,10 @@ import * as _ from "styled-components/cssprop";
 
 import reportWebVitals from "reportWebVitals";
 
+import * as serviceWorker from "./serviceWorker";
+
 ReactDOM.render(<App />, document.getElementById("root"));
 
 reportWebVitals();
+
+// serviceWorker.register();

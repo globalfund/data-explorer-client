@@ -1,6 +1,6 @@
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import React from "react";
 import { Link } from "react-router-dom";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 interface LocationInfoContentProps {
   title: string;
@@ -10,6 +10,10 @@ interface LocationInfoContentProps {
     committed: number;
     signed: number;
   };
+  countries: {
+    name: string;
+    code: string;
+  }[];
   multicountries: {
     name: string;
     code: string;
@@ -37,26 +41,31 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
       </div>
-      <Link
-        to={`/results`}
-        css={`
-          font-size: 12px;
-          font-weight: bold;
-          margin-bottom: 40px;
-          text-decoration: none;
-        `}
-      >
-        See {props.title}'s results
-      </Link>
+      {props.code.length === 3 && (
+        <Link
+          to={`/results?locations=${props.code}`}
+          css={`
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-decoration: none;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          `}
+        >
+          See {props.title}&apos;s results
+        </Link>
+      )}
       <div
         css={`
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Investments
@@ -91,15 +100,35 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Multicountries with {props.title}
+        {props.multicountries.length > 0 &&
+          `Multicountries with ${props.title}`}
+        {props.countries.length > 0 && `Countries in ${props.title}`}
       </div>
-      {props.multicountries.map((mc: { name: string; code: string }) => (
-        <Link key={mc.name} to={`/location/${mc.code}/investments`}>
-          {mc.name}
-        </Link>
-      ))}
+      <div
+        css={`
+          display: inline-block;
+        `}
+      >
+        {props.multicountries.map(
+          (mc: { name: string; code: string }, index: number) => (
+            <React.Fragment key={mc.name}>
+              <Link to={`/location/${mc.code}/overview`}>{mc.name}</Link>
+              {index < props.multicountries.length - 1 && ", "}
+            </React.Fragment>
+          )
+        )}
+        {props.countries.map(
+          (c: { name: string; code: string }, index: number) => (
+            <React.Fragment key={c.name}>
+              <Link to={`/location/${c.code}/overview`}>{c.name}</Link>
+              {index < props.countries.length - 1 && ", "}
+            </React.Fragment>
+          )
+        )}
+      </div>
       <div
         css={`
           width: 100%;
@@ -110,6 +139,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
         css={`
           font-size: 14px;
           font-weight: bold;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Fund Portfolio Manager
@@ -121,8 +151,13 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
       >
         {props.manager.name}
       </div>
-      <a href={`mailto:${props.manager.email}`}>
-        <img alt="" src="/static/fundportfoliomanager.png" />
+      <a
+        href={`mailto:${props.manager.email}`}
+        css={`
+          font-size: 12px;
+        `}
+      >
+        {props.manager.email}
       </a>
     </div>
   );

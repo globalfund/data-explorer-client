@@ -1,8 +1,11 @@
 import React from "react";
 import { SearchLayout } from "app/modules/grants-module/components/Search/layout";
 
-export function Search() {
-  const [value, setValue] = React.useState("");
+interface SearchProps {
+  value: string;
+  setValue: (value: string) => void;
+}
 
-  return <SearchLayout value={value} setValue={setValue} />;
+export function Search(props: SearchProps) {
+  return <SearchLayout value={props.value} setValue={props.setValue} />;
 }

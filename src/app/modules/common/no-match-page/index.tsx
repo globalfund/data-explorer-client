@@ -1,9 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 // cc:refactor this component, inline css need to be moved to proper styled components
 
 export const NoMatchPage = () => {
+  const isLoading = document.getElementById("general-loader");
   return (
     <div
       css={`
@@ -11,7 +12,7 @@ export const NoMatchPage = () => {
         width: 100%;
         height: 100%;
         padding: 50px;
-        display: flex;
+        display: ${isLoading ? "none" : "flex"};
         justify-content: center;
         align-items: center;
         flex-direction: column;
@@ -19,7 +20,7 @@ export const NoMatchPage = () => {
     >
       <div
         css={`
-          font-family: Inter, sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           font-size: 14px;
           font-weight: 500;
           font-style: normal;
@@ -33,7 +34,6 @@ export const NoMatchPage = () => {
       </div>
       <div
         css={`
-          font-family: Inter, sans-serif;
           font-size: 120px;
           font-weight: bold;
           font-style: normal;
@@ -41,13 +41,14 @@ export const NoMatchPage = () => {
           line-height: normal;
           letter-spacing: 2.15px;
           color: #525252;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         404
       </div>
       <div
         css={`
-          font-family: Inter, sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           font-size: 14px;
           font-weight: 600;
           font-style: normal;
@@ -61,8 +62,12 @@ export const NoMatchPage = () => {
       >
         We are sorry, but the page you requested was not found
       </div>
-
-      <Link to="/">
+      <Link
+        to="/"
+        css={`
+          text-decoration: none;
+        `}
+      >
         <div
           css={`
             display: flex;
@@ -70,14 +75,14 @@ export const NoMatchPage = () => {
             align-items: center;
             width: 204px;
             height: 46px;
-            border-radius: 2px;
-            background-color: #25baa4;
+            background: #495057;
+            border-radius: 20px;
           `}
         >
           <span
             css={`
-              font-family: Inter, sans-serif;
-              font-size: 16px;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+              font-size: 14px;
               font-weight: 500;
               font-style: normal;
               font-stretch: normal;

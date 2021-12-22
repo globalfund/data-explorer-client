@@ -16,21 +16,11 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
     >
       <div
         css={`
-          top: -4px;
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          border-radius: 50%;
-          background: #262c34;
-          left: calc(50% - 4px);
-        `}
-      />
-      <div
-        css={`
           font-size: 18px;
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.indexValue}
@@ -41,6 +31,14 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
           display: flex;
           font-size: 12px;
           flex-direction: column;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <div
@@ -50,7 +48,13 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
             justify-content: space-between;
           `}
         >
-          <div css="font-weight: bold;text-transform: capitalize;">
+          <div
+            css={`
+              font-weight: bold;
+              text-transform: capitalize;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
             {props.id}
           </div>
           <div>{formatFinancialValue(props.value as number)}</div>

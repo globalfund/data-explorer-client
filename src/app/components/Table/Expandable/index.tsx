@@ -7,6 +7,7 @@ import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import { DownloadIcon } from "app/assets/icons/Download";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Expandable/styles";
@@ -25,10 +26,15 @@ const useRowStyles = makeStyles({
   },
 });
 
-function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
+function Row(props: {
+  row: ExpandableTableRowProps;
+  paddingLeft?: number;
+  forceExpand?: boolean;
+}) {
   const { row } = props;
-  const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [open, setOpen] = React.useState(props.forceExpand);
 
   return (
     <React.Fragment>
@@ -43,12 +49,13 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
         }}
         css={`
           background: #f5f5f7;
+          transition: background 0.2s ease-in-out;
 
           ${row.link || props.row.docCategories || props.row.docs
             ? `
           :hover {
             cursor: pointer;
-            background: #495057;
+            background: #13183F;
 
             > td {
               color: #fff;
@@ -59,7 +66,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
             }
           }
           `
-            : ""}
+            : ""};
         `}
       >
         <TableCell
@@ -86,6 +93,15 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
                 align-items: center;
                 flex-direction: row;
 
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 12px;
+                    }
+                  }
+                }
+
                 > svg {
                   transition: transform 0.1s ease-in-out;
                   transform: rotate(${open ? "0deg" : "-180deg"});
@@ -95,7 +111,14 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
               {(props.row.docCategories || props.row.docs) && (
                 <TriangleXSIcon />
               )}
-              {row.name}
+              <div
+                css={`
+                  font-weight: bold;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                `}
+              >
+                {row.name}
+              </div>
             </div>
             {row.link && <DownloadIcon />}
           </div>
@@ -104,6 +127,10 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
           css={`
             ${tablecell}
             width: 30%;
+
+            @media (max-width: 767px) {
+              text-align: right;
+            }
           `}
         >
           {row.count}
@@ -130,7 +157,8 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
                       <Row
                         key={category.name}
                         row={category}
-                        paddingLeft={50}
+                        forceExpand={props.forceExpand}
+                        paddingLeft={!isMobile ? 50 : 40}
                       />
                     )
                   )}
@@ -142,7 +170,8 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
                         name: doc.title,
                         link: doc.link,
                       }}
-                      paddingLeft={72}
+                      forceExpand={props.forceExpand}
+                      paddingLeft={!isMobile ? 72 : 62}
                     />
                   ))}
               </TableBody>
@@ -157,7 +186,7 @@ function Row(props: { row: ExpandableTableRowProps; paddingLeft?: number }) {
 export function ExpandableTable(props: ExpandableTableProps) {
   return (
     <TableContainer>
-      <Table aria-label="expandable table">
+      <Table aria-label="Expandable table">
         <TableHead>
           <TableRow>
             {props.columns.map((column: string, index: number) => (
@@ -172,14 +201,14 @@ export function ExpandableTable(props: ExpandableTableProps) {
                 css={tablecell}
                 key={column}
               >
-                {column}
+                <b>{column}</b>
               </TableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
           {props.rows.map((row: ExpandableTableRowProps) => (
-            <Row key={row.name} row={row} />
+            <Row forceExpand={props.forceExpand} key={row.name} row={row} />
           ))}
         </TableBody>
       </Table>

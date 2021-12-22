@@ -86,7 +86,8 @@ export const ProjectPalette: ProjectPalette = {
   action: {
     hoverOpacity: 0.08,
     hover: "rgba(0, 0, 0, 0.08)",
-    selected: "rgba(0, 0, 0, 0.14)",
+    // selected: "rgba(0, 0, 0, 0.14)",
+    selected: "#13183F",
     disabledBackground: "rgba(0, 0, 0, 0.12)",
     disabled: "rgba(0, 0, 0, 0.26)",
     active: "rgba(0, 0, 0, 0.54)",
@@ -213,6 +214,32 @@ export default createMuiTheme({
     MuiFormControlLabel: {
       label: {
         fontSize: 12,
+      },
+    },
+    MuiListItem: {
+      button: {
+        "&:hover": {
+          color: "#262c34",
+          backgroundColor: "#fff",
+          transition: "background 0.2s ease-in-out",
+        },
+      },
+    },
+    MuiTooltip: {
+      tooltip: {
+        fontSize: 12,
+        color: "#fff",
+        backgroundColor: "#373d43",
+        fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
+      },
+    },
+    MuiBottomNavigationAction: {
+      label: {
+        fontSize: 12,
+        fontFamily: "GothamNarrow-Book",
+        "&.Mui-selected": {
+          fontSize: 12,
+        },
       },
     },
   },

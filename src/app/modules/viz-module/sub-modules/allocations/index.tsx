@@ -1,33 +1,100 @@
+/* third-party */
 import React from "react";
-import { useMeasure } from "react-use";
+import get from "lodash/get";
+import sum from "lodash/sum";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
-import Grid from "@material-ui/core/Grid";
 import ReactApexCharts from "react-apexcharts";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { useTitle, useMeasure, useUnmount } from "react-use";
+/* project */
 import { InfoIcon } from "app/assets/icons/Info";
+import { isTouchDevice } from "app/utils/isTouchDevice";
+import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
+import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
+import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
+import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
 import {
-  allocationmockdata,
   getKeysPercentages,
+  AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
 
-export function AllocationsModule() {
+interface AllocationsModuleProps {
+  code?: string;
+  toolboxOpen?: boolean;
+}
+
+export function AllocationsModule(props: AllocationsModuleProps) {
+  useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
+
+  const selectedPeriod = useStoreState(
+    (state) => state.ToolBoxPanelAllocationsPeriodState.value
+  );
+
+  // api call & data
+  const fetchData = useStoreActions((store) => store.Allocations.fetch);
+  const total = useStoreState(
+    (state) => get(state.Allocations.data, "total", []) as number
+  );
+  const keys = useStoreState(
+    (state) => get(state.Allocations.data, "keys", []) as string[]
+  );
+  const colors = useStoreState(
+    (state) => get(state.Allocations.data, "colors", []) as string[]
+  );
+  const values = useStoreState(
+    (state) => get(state.Allocations.data, "values", []) as number[]
+  );
+  const isLoading = useStoreState((state) => state.Allocations.loading);
+
+  const fetchDrilldownLevelData = useStoreActions(
+    (store) => store.AllocationsDrilldown.fetch
+  );
+  const clearDrilldownLevelData = useStoreActions(
+    (store) => store.AllocationsDrilldown.clear
+  );
+  const dataDrilldownLevel = useStoreState(
+    (state) =>
+      get(
+        state.AllocationsDrilldown.data,
+        "data",
+        []
+      ) as AllocationsTreemapDataItem[]
+  );
+  const isDrilldownLoading = useStoreState(
+    (state) => state.AllocationsDrilldown.loading
+  );
+  const fetchPeriodOptionsData = useStoreActions(
+    (store) => store.AllocationsPeriods.fetch
+  );
+  const setVizDrilldowns = useStoreActions(
+    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  );
+
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [ref, { width }] = useMeasure<HTMLDivElement>();
   const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
     percentages: number[];
     colors: string[];
-  }>(getKeysPercentages(allocationmockdata.total, allocationmockdata.values));
+  }>(getKeysPercentages(total, values));
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizScale, setVizScale] = React.useState(1);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
+  const [xsTooltipData, setXsTooltipData] = React.useState<any | null>(null);
 
   const options: ApexOptions = {
     plotOptions: {
@@ -61,41 +128,46 @@ export function AllocationsModule() {
                 (p: number) => p.toString() === value.toString()
               );
               if (fkeyIndex > -1) {
-                return formatFinancialValue(
-                  allocationmockdata.values[fkeyIndex]
-                );
+                return formatFinancialValue(values[fkeyIndex]);
               }
               return "";
             },
           },
           total: {
             show: true,
-            formatter: () => formatFinancialValue(allocationmockdata.total),
+            fontFamily: "GothamNarrow-Bold",
+            formatter: () => formatFinancialValue(total),
           },
         },
       },
     },
-    colors: keysPercentagesColors.colors,
-    labels: allocationmockdata.keys,
+    colors,
+    labels: keys,
     legend: {
       show: true,
       floating: true,
-      fontSize: "14px",
+      fontSize: !isMobile ? "14px" : "10px",
       fontFamily: "GothamNarrow-Book",
       fontWeight: "bold",
       position: "right",
       offsetX: width / 2,
-      offsetY: 25,
+      offsetY: !isMobile ? 25 : 15,
       markers: {
         width: 0,
       },
       formatter: (seriesName: string, opts: any) => {
         return `${seriesName}: ${formatLargeAmountsWithPrefix(
-          allocationmockdata.values[opts.seriesIndex]
+          values[opts.seriesIndex]
         )}`;
       },
       itemMargin: {
-        vertical: 8,
+        vertical: !isMobile ? 8 : 2,
+      },
+      onItemClick: {
+        toggleDataSeries: false,
+      },
+      onItemHover: {
+        highlightDataSeries: false,
       },
     },
     responsive: [
@@ -110,89 +182,162 @@ export function AllocationsModule() {
     ],
   };
 
-  function onClick(this: Window, e: MouseEvent) {
+  function onClick(this: Window, e: MouseEvent | TouchEvent) {
     // @ts-ignore
-    const key = e.target.parentNode.getAttribute("seriesName");
-    if (key) {
+    if (e.target && e.target.parentNode && !vizSelected) {
       // @ts-ignore
-      const keySelected = e.target.getAttribute("selected");
-      if (keySelected === "true") {
-        setVizLevel(1);
-        setVizScale(0.4);
-        setVizSelected(key);
-      } else {
-        setVizLevel(0);
-        setVizScale(1);
-        setVizSelected(undefined);
+      const key = e.target.parentNode.getAttribute("seriesName");
+      if (key) {
+        // @ts-ignore
+        const keySelected = e.target.getAttribute("selected");
+        if (keySelected === "true") {
+          setVizLevel(1);
+          setVizSelected(key);
+          setVizTranslation({ x: -300, y: 0 });
+        } else if (isMobile || isTouchDevice()) {
+          setXsTooltipData({
+            label: key,
+            value: values[keys.indexOf(key)],
+          });
+        }
+        // @ts-ignore
+      } else if (e.target.className.baseVal === "apexcharts-radialbar-hollow") {
+        if (isMobile || isTouchDevice()) {
+          setXsTooltipData({
+            label: "Total",
+            value: sum(values),
+          });
+        } else {
+          setVizLevel(1);
+          setVizSelected("Total");
+          setVizTranslation({ x: -300, y: 0 });
+        }
       }
-    } else {
-      setVizLevel(0);
-      setVizScale(1);
-      setVizSelected(undefined);
     }
   }
 
   React.useEffect(() => {
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({
+      filterString: `periods=${selectedPeriod}${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
+    });
+  }, [props.code, appliedFilters, selectedPeriod]);
+
+  React.useEffect(() => {
+    setKeysPercentagesColors(getKeysPercentages(total, values));
+  }, [total, values]);
+
+  React.useEffect(() => {
     const items = document.getElementsByClassName("apexcharts-radial-series");
     if (vizSelected) {
+      setVizDrilldowns([
+        { name: "Dataset" },
+        { name: selectedPeriod },
+        { name: vizSelected },
+      ]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
           if (item.getAttribute("seriesName") === vizSelected) {
-            paths[0].style.stroke = "url(#diagonalHatch)";
+            // paths[0].style.stroke = "url(#diagonalHatch)";
+            paths[0].style.opacity = "1";
           } else {
-            paths[0].style.stroke = "";
+            paths[0].style.opacity = "0.3";
           }
         }
       });
+      const filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
+      fetchDrilldownLevelData({
+        filterString: `levelParam=component/componentName in (${(vizSelected ===
+        "Total"
+          ? keys.join(",")
+          : vizSelected
+        )
+          .split(",")
+          .map((s: string) => `'${s}'`)
+          .join(",")})&periods=${selectedPeriod}${
+          filterString.length > 0 ? `&${filterString}` : ""
+        }`,
+      });
     } else {
+      setVizDrilldowns([{ name: "Dataset" }]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
-          paths[0].style.stroke = "";
+          paths[0].style.opacity = "1";
         }
       });
+      clearDrilldownLevelData();
     }
-  }, [vizSelected]);
+  }, [vizSelected, selectedPeriod]);
 
   React.useEffect(() => {
-    setTimeout(() => {
-      const viz = document.getElementById("allocations-radial-bar");
-      if (viz) {
-        const svgs = viz.getElementsByTagName("svg");
-        if (svgs.length > 1) {
-          const pathElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-          );
-          pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#FBAC1B");
-          pathElement.setAttribute("strokeWidth", "1");
+    setVizDrilldowns([{ name: "Dataset" }]);
+    fetchPeriodOptionsData({});
 
-          const patternElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "pattern"
-          );
-          patternElement.setAttribute("id", "diagonalHatch");
-          patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-          patternElement.setAttribute("width", "4");
-          patternElement.setAttribute("height", "4");
-          patternElement.appendChild(pathElement);
+    // setTimeout(() => {
+    //   const viz = document.getElementById("allocations-radial-bar");
+    //   if (viz) {
+    //     const svgs = viz.getElementsByTagName("svg");
+    //     if (svgs.length > 1) {
+    //       const pathElement = document.createElementNS(
+    //         "http://www.w3.org/2000/svg",
+    //         "path"
+    //       );
+    //       pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
+    //       pathElement.setAttribute("stroke", "#13183F");
+    //       pathElement.setAttribute("strokeWidth", "1");
 
-          const defsElement = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "defs"
-          );
-          defsElement.appendChild(patternElement);
+    //       const patternElement = document.createElementNS(
+    //         "http://www.w3.org/2000/svg",
+    //         "pattern"
+    //       );
+    //       patternElement.setAttribute("id", "diagonalHatch");
+    //       patternElement.setAttribute("patternUnits", "userSpaceOnUse");
+    //       patternElement.setAttribute("width", "4");
+    //       patternElement.setAttribute("height", "4");
+    //       patternElement.appendChild(pathElement);
 
-          svgs[1].appendChild(defsElement);
-        }
-      }
-    }, 1000);
+    //       const defsElement = document.createElementNS(
+    //         "http://www.w3.org/2000/svg",
+    //         "defs"
+    //       );
+    //       defsElement.appendChild(patternElement);
+
+    //       svgs[1].appendChild(defsElement);
+    //     }
+    //   }
+    // }, 1000);
 
     window.addEventListener("click", onClick);
-    return () => window.removeEventListener("click", onClick);
+    window.addEventListener("touchstart", onClick);
+    return () => {
+      window.removeEventListener("click", onClick);
+      window.removeEventListener("touchstart", onClick);
+    };
   }, []);
+
+  useUnmount(() => setVizDrilldowns([]));
+
+  if (isLoading) {
+    return <PageLoader />;
+  }
 
   return (
     <div
@@ -202,9 +347,21 @@ export function AllocationsModule() {
 
         ${!vizSelected
           ? `* {
-      overflow: visible !important;
+      // overflow: visible !important;
     }`
           : ""}
+
+        .apexcharts-radialbar-hollow {
+          r: 75;
+          z-index: 1;
+          cursor: pointer;
+          transition: fill 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          fill: ${vizSelected === "Total" ? "#cfd4da" : "transparent"};
+
+          &:hover {
+            fill: #cfd4da;
+          }
+        }
       `}
     >
       <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
@@ -215,91 +372,96 @@ export function AllocationsModule() {
             width: 100%;
           `}
         >
-          <Grid
-            container
-            alignItems="center"
-            spacing={4}
+          <div
             css={`
-              > div {
-                color: #262c34;
-                font-size: 14px;
-                font-weight: bold;
+              display: flex;
+              color: #262c34;
+              font-size: 14px;
+              font-weight: bold;
+              align-items: center;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+              > svg {
+                margin-left: 10px;
               }
             `}
           >
-            <Grid item xs={3}>
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-
-                  > svg {
-                    margin-left: 10px;
-                  }
-                `}
-              >
-                Allocations <InfoIcon />
-              </div>
-              <div css="font-weight: normal;">
-                {formatFinancialValue(allocationmockdata.total)}
-              </div>
-            </Grid>
-          </Grid>
-          <ReactApexCharts
-            height={580}
-            type="radialBar"
-            options={options}
-            series={keysPercentagesColors.percentages}
-          />
-          <div
-            css={`
-              gap: 6px;
-              width: 250px;
-              display: flex;
-              font-size: 12px;
-              flex-direction: column;
-            `}
-          >
-            <div>
-              <b>Allocations</b>
+            Allocations | {selectedPeriod} <InfoIcon />
+          </div>
+          <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
+          {total === 0 ? (
+            <div css="display: flex;justify-content: center;">
+              <NoDataLabel />
+              <NoDataAllocations />
             </div>
-            <div
-              css={`
-                width: 100%;
-                height: 6px;
-                border-radius: 20px;
-                background: linear-gradient(
-                    90deg,
-                    #f2f3f7 0%,
-                    rgba(255, 255, 255, 0) 100%
-                  ),
-                  #343a40;
-              `}
+          ) : (
+            <ReactApexCharts
+              type="radialBar"
+              options={options}
+              height={isMobile ? 400 : 580}
+              series={keysPercentagesColors.percentages}
             />
+          )}
+        </div>
+        {(isMobile || isTouchDevice()) && xsTooltipData && (
+          <XsContainer id="mobile-tooltip-container">
             <div
               css={`
-                display: flex;
-                flex-direction: row;
-                justify-content: space-between;
+                width: 95%;
               `}
             >
-              <div>0 USD</div>
-              <div>{formatFinancialValue(allocationmockdata.total)}</div>
+              <AllocationsRadialMobileTooltip
+                {...xsTooltipData}
+                close={() => setXsTooltipData(null)}
+                drilldown={() => {
+                  setVizLevel(1);
+                  setVizSelected(xsTooltipData.label);
+                  setVizTranslation({ x: -300, y: 0 });
+                }}
+              />
             </div>
-          </div>
-        </div>
+          </XsContainer>
+        )}
       </TransitionContainer>
       <SlideInContainer
         vizLevel={vizLevel}
         selected={vizSelected}
+        loading={isDrilldownLoading}
+        toolboxOpen={props.toolboxOpen}
         close={() => {
           setVizLevel(0);
+          setVizScale(1);
           setVizSelected(undefined);
           setVizTranslation({ x: 0, y: 0 });
         }}
       >
-        <DisbursementsTreemap
-          data={mockdata2}
+        <span
+          css={`
+            gap: 40px;
+            width: 100%;
+            display: flex;
+            margin-bottom: 20px;
+            flex-direction: row;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 40px;
+                }
+              }
+            }
+          `}
+        >
+          <DrillDownArrowSelector
+            options={[...keys, "Total"]}
+            selected={vizSelected || ""}
+            onChange={(value: string) => setVizSelected(value)}
+          />
+        </span>
+        <BudgetsTreemap
+          data={dataDrilldownLevel}
+          tooltipValueLabel="Allocation"
           onNodeClick={(node: string, x: number, y: number) => {}}
         />
       </SlideInContainer>

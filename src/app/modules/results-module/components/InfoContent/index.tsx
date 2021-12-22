@@ -85,6 +85,14 @@ export function ResultsInfoContent(props: ResultsInfoContentProps) {
         display: flex;
         padding: 30px 50px;
         flex-direction: column;
+
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 40px;
+            }
+          }
+        }
       `}
     >
       <div
@@ -115,6 +123,14 @@ function StatItem(props: ResultsInfoContentStatsProps) {
         color: #262c34;
         font-size: 14px;
         flex-direction: column;
+
+        > * {
+          @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+            &:not(:last-child) {
+              margin-right: 12px;
+            }
+          }
+        }
       `}
     >
       <div
@@ -125,6 +141,15 @@ function StatItem(props: ResultsInfoContentStatsProps) {
           flex-direction: row;
           align-items: center;
           text-transform: uppercase;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <ComponentIcon />
@@ -135,6 +160,7 @@ function StatItem(props: ResultsInfoContentStatsProps) {
           font-size: 40px;
           font-weight: bold;
           line-height: 24px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {fValue.number} {fValue.text}

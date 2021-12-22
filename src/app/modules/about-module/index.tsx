@@ -2,7 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
+import { useMediaQuery } from "@material-ui/core";
+import LinkList from "app/modules/about-module/links";
 import { PageHeader } from "app/components/PageHeader";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 
 export default function About() {
   useTitle(`The Data Explorer - About`);
@@ -10,6 +13,9 @@ export default function About() {
   React.useEffect(() => {
     document.body.style.background = "#F5F5F7";
   }, []);
+
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <div
@@ -22,93 +28,24 @@ export default function About() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="About"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "About",
-          },
-        ]}
-      />
-      <div css="width: 100%;height: 25px;" />
-      <Grid container spacing={6}>
-        <Grid item xs={12} sm={12} md={3}>
-          <div
-            css={`
-              top: 158px;
-              position: sticky;
-            `}
-          >
-            <div
-              css={`
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 35px;
-              `}
-            >
-              Links
-            </div>
-            <div
-              css={`
-                gap: 10px;
-                width: 100%;
-                display: flex;
-                flex-direction: column;
-
-                > a {
-                  width: 100%;
-                  color: #000;
-                  font-size: 14px;
-                  padding: 10px 0;
-                  font-weight: bold;
-                  text-align: center;
-                  background: #dfe3e6;
-                  border-radius: 20px;
-                  text-decoration: none;
-                  border: 1px solid #dfe3e6;
-                  box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-                }
-              `}
-            >
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://www.theglobalfund.org/en/methodology/"
-              >
-                Results Methodology
-              </a>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://www.theglobalfund.org/en/legal/"
-              >
-                Legal & Disclaimers
-              </a>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://www.theglobalfund.org/en/site/privacy-statement/"
-              >
-                Privacy Statements
-              </a>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href={`mailto:website@theglobalfund.org?subject=Data Explorer Feedback - URL: ${window.location}&body=User Feedback: `}
-              >
-                Feedbacks
-              </a>
-              <a
-                target="_blank"
-                rel="noreferrer"
-                href="https://data-service.theglobalfund.org/file_download/covid_approved_funding_report/pdf"
-              >
-                COVID-19
-              </a>
-            </div>
-          </div>
-        </Grid>
+      {!isMobile && (
+        <PageHeader
+          title="About"
+          breadcrumbs={[
+            { name: "Home", link: "/" },
+            {
+              name: "About",
+            },
+          ]}
+        />
+      )}
+      <PageTopSpacer />
+      <Grid container spacing={!isSmallScreen ? 6 : undefined}>
+        {!isSmallScreen && (
+          <Grid item md={3}>
+            <LinkList />
+          </Grid>
+        )}
         <Grid
           item
           sm={12}
@@ -120,6 +57,7 @@ export default function About() {
               > div {
                 font-size: 24px;
                 font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
               > p {
                 > a {
@@ -265,7 +203,22 @@ export default function About() {
             </p>
           </div>
         </Grid>
+        {isSmallScreen && (
+          <Grid item xs={6} sm={6}>
+            <LinkList />
+          </Grid>
+        )}
       </Grid>
+      <div
+        css={`
+          width: 100%;
+          height: 0px;
+
+          @media (max-width: 767px) {
+            height: 90px;
+          }
+        `}
+      />
     </div>
   );
 }

@@ -1,31 +1,50 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
-import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
+import { Link, useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
+import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { BreadcrumbModel, DrilldownModel } from "app/interfaces";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { PageHeaderTabs } from "app/components/PageHeader/components/tabs";
+import { MobileFilterBar } from "app/components/PageHeader/components/filterbar";
 
 interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
-  drilldowns?: DrilldownModel[];
+  isDetail?: boolean;
   breadcrumbs: BreadcrumbModel[];
 }
 
 const StyledMenu = withStyles({
   paper: {
+    minWidth: 220,
     borderRadius: 10,
     border: "1px solid #d3d4d5",
+    "&::-webkit-scrollbar": {
+      width: 5,
+      borderRadius: 10,
+      background: "#262c34",
+    },
+    "&::-webkit-scrollbar-track": {
+      borderRadius: 10,
+      background: "#dfe3e6",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      borderRadius: 10,
+      background: "#262c34",
+    },
   },
   list: {
     padding: 0,
+    maxHeight: 450,
   },
 })((props: MenuProps) => (
   <Menu
@@ -33,27 +52,43 @@ const StyledMenu = withStyles({
     getContentAnchorEl={null}
     anchorOrigin={{
       vertical: "bottom",
-      horizontal: "center",
+      horizontal: "left",
     }}
     transformOrigin={{
       vertical: "top",
-      horizontal: "center",
+      horizontal: "left",
     }}
+    autoFocus={false}
     {...props}
   />
 ));
 
-const StyledMenuItem = withStyles((theme) => ({
+export const StyledMenuItem = withStyles((theme) => ({
   root: {
-    padding: "6px 0",
+    padding: 0,
+    width: "100%",
     borderBottom: "1px solid #DFE3E6",
     "& a": {
       width: "100%",
-      fontSize: "12px",
+      fontSize: "14px",
       color: "#262c34",
-      padding: "0 12px",
+      padding: "6px 12px",
       textDecoration: "none",
     },
+    // "& li": {
+    //   width: "100%",
+    //   fontSize: "14px",
+    //   color: "#262c34",
+    //   padding: "6px 12px",
+    //   textDecoration: "none",
+    // },
+    // "& div": {
+    //   width: "100%",
+    //   fontSize: "14px",
+    //   color: "#262c34",
+    //   padding: "0 12px",
+    //   textDecoration: "none",
+    // },
   },
 }))(MenuItem);
 
@@ -85,12 +120,20 @@ const styles = {
     white-space: nowrap;
     letter-spacing: 0.5px;
     text-overflow: ellipsis;
-    font-family: GothamNarrow-Bold;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+    @media (max-width: 767px) {
+      font-size: 18px;
+    }
   `,
   breadcrumbs: css`
     display: flex;
     flex-direction: row;
     margin-bottom: 15px;
+
+    @media (max-width: 767px) {
+      margin-bottom: 10px;
+    }
   `,
   bcitem: (linkable: boolean) => css`
     color: #262c34;
@@ -103,43 +146,80 @@ const styles = {
     margin-right: 10px;
   `,
   drilldowns: css`
+    gap: 3px;
     display: flex;
-    margin-top: 25px;
+    margin-top: 16px;
     width: fit-content;
     flex-direction: row;
-    background: #373d43;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 3px;
+        }
+      }
+    }
+
+    @media (max-width: 767px) {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
   `,
-  drilldownitem: css`
+  drilldownitem: (index: number) => css`
     color: #fff;
     font-size: 10px;
     padding: 2px 20px;
     margin-right: 6px;
     line-height: 15px;
-
     position: relative;
+    background: #373d43;
 
-    > svg {
+    &::after {
       top: 0;
-      right: -13px;
+      width: 0;
+      height: 0;
+      left: 100%;
+      content: "";
+      display: block;
       position: absolute;
-      transform: scale(1.5);
-
-      > path {
-        fill: #dfe3e6;
-      }
+      border-style: solid;
+      border-width: 9px 0 10px 9px;
+      border-color: rgba(0, 0, 0, 0) #373d43;
     }
 
-    &:last-of-type {
-      > svg {
-        right: -7px;
-        transform: scale(2.6);
+    ${index > 0
+      ? `
+      &::before {
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 0;
+        content: "";
+        display: block;
+        position: absolute;
+        border-style: solid;
+        border-width: 9px 0 10px 9px;
+        border-color: rgba(0, 0, 0, 0) #DFE3E6;
       }
-    }
+    `
+      : ""}
+  `,
+  drilldowntext: css`
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   `,
 };
 
 export function PageHeader(props: PageHeaderProps) {
+  const history = useHistory();
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -149,51 +229,69 @@ export function PageHeader(props: PageHeaderProps) {
     setAnchorEl(null);
   };
 
+  React.useEffect(() => {
+    if (anchorEl) {
+      handleClose();
+    }
+  }, [history.location.pathname]);
+
+  const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
+
   return (
     <div css={styles.container}>
       <Container maxWidth="lg" css={styles.innercontainer}>
         <div css={styles.breadcrumbs}>
-          {props.breadcrumbs.map(
-            (breadcrumb: BreadcrumbModel, index: number) => {
-              if (breadcrumb.link) {
-                return (
-                  <React.Fragment key={breadcrumb.name}>
-                    <Link css={styles.bcitem(true)} to={breadcrumb.link}>
-                      {breadcrumb.name}
-                    </Link>
-                    <div css={styles.arrowseparator}>{`>`}</div>
-                  </React.Fragment>
-                );
-              }
-              return (
-                <React.Fragment key={breadcrumb.name}>
-                  <div
-                    css={styles.bcitem(breadcrumb.menuitems !== undefined)}
-                    onClick={breadcrumb.menuitems ? handleClick : undefined}
-                  >
-                    {breadcrumb.name}
-                  </div>
-                  {breadcrumb.menuitems && (
-                    <StyledMenu
-                      id="customized-menu"
-                      anchorEl={anchorEl}
-                      keepMounted
-                      open={Boolean(anchorEl)}
-                      onClose={handleClose}
-                    >
-                      {breadcrumb.menuitems.map(
-                        (item: React.ReactChild, index: number) => (
-                          <StyledMenuItem key={index}>{item}</StyledMenuItem>
-                        )
+          {!isMobile && (
+            <React.Fragment>
+              {props.breadcrumbs.map(
+                (breadcrumb: BreadcrumbModel, index: number) => {
+                  if (breadcrumb.link) {
+                    return (
+                      <React.Fragment key={breadcrumb.name}>
+                        <Link css={styles.bcitem(true)} to={breadcrumb.link}>
+                          {breadcrumb.name}
+                        </Link>
+                        <div css={styles.arrowseparator}>{`>`}</div>
+                      </React.Fragment>
+                    );
+                  }
+                  return (
+                    <React.Fragment key={breadcrumb.name}>
+                      <div
+                        css={styles.bcitem(breadcrumb.menuitems !== undefined)}
+                        onClick={breadcrumb.menuitems ? handleClick : undefined}
+                      >
+                        {breadcrumb.name}
+                      </div>
+                      {breadcrumb.menuitems && (
+                        <StyledMenu
+                          keepMounted
+                          anchorEl={anchorEl}
+                          id="breadcrumb-menu"
+                          onClose={handleClose}
+                          open={Boolean(anchorEl)}
+                        >
+                          {breadcrumb.menuitems.map(
+                            (item: React.ReactChild, itemIndex: number) => (
+                              <StyledMenuItem
+                                disableRipple
+                                key={itemIndex}
+                                disableTouchRipple
+                              >
+                                {item}
+                              </StyledMenuItem>
+                            )
+                          )}
+                        </StyledMenu>
                       )}
-                    </StyledMenu>
-                  )}
-                  {index !== props.breadcrumbs.length - 1 && (
-                    <div css={styles.arrowseparator}>{`>`}</div>
-                  )}
-                </React.Fragment>
-              );
-            }
+                      {index !== props.breadcrumbs.length - 1 && (
+                        <div css={styles.arrowseparator}>{`>`}</div>
+                      )}
+                    </React.Fragment>
+                  );
+                }
+              )}
+            </React.Fragment>
           )}
         </div>
         <Grid
@@ -205,42 +303,65 @@ export function PageHeader(props: PageHeaderProps) {
             justify-content: space-between;
           `}
         >
-          <Grid item sm={12} md={4}>
+          <Grid
+            item
+            sm={12}
+            md={!props.isDetail ? 4 : 12}
+            css={`
+              @media (max-width: 767px) {
+                width: 100%;
+              }
+            `}
+          >
             <Tooltip title={props.title}>
-              <div css={styles.title}>{props.title}</div>
+              <div
+                css={styles.title}
+                style={isGrantDetail ? { fontSize: 14 } : {}}
+              >
+                {props.title}
+              </div>
             </Tooltip>
-            {props.drilldowns && props.drilldowns.length > 0 && (
+            {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
-                {props.drilldowns.map((item: DrilldownModel) => (
-                  <div css={styles.drilldownitem} key={item.name}>
-                    {item.name} <ArrowForwardIcon />
+                {vizDrilldowns.map((item: DrilldownModel, index: number) => (
+                  <div css={styles.drilldownitem(index)} key={item.name}>
+                    <div css={styles.drilldowntext}>{item.name}</div>
                   </div>
                 ))}
               </div>
             )}
-            <div
-              css={`
-                width: 100%;
-                height: 16px;
-              `}
-            />
-          </Grid>
-          <Grid
-            item
-            sm={12}
-            md={8}
-            css={`
-              display: flex;
-              align-items: flex-end;
-              justify-content: flex-end;
-            `}
-          >
-            {props.tabs && props.tabs.length > 0 && (
-              <PageHeaderTabs tabs={props.tabs} />
+            {(!props.isDetail || isMobile) && (
+              <div
+                css={`
+                  width: 100%;
+                  height: 16px;
+                `}
+              />
             )}
           </Grid>
+          {!isMobile && (
+            <Grid
+              item
+              sm={12}
+              md={!props.isDetail ? 8 : 12}
+              css={`
+                display: flex;
+                align-items: flex-end;
+                justify-content: flex-end;
+
+                @media (max-width: 767px) {
+                  width: 100%;
+                }
+              `}
+            >
+              {props.tabs && props.tabs.length > 0 && (
+                <PageHeaderTabs tabs={props.tabs} />
+              )}
+            </Grid>
+          )}
         </Grid>
       </Container>
+      {isMobile && !isGrantDetail && <MobileFilterBar />}
     </div>
   );
 }

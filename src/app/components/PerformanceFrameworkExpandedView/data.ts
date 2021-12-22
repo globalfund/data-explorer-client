@@ -57,7 +57,13 @@ export interface PFIndicatorSet {
 }
 
 export interface PerformanceFrameworkExpandedViewProps {
+  allModules: {
+    module: string;
+    filterValue: string;
+  }[];
+  selectedModule?: string;
   indicators: PFIndicator[];
+  setSelectedModule: (value: string) => void;
   interventions: PFIndicatorResultIntervention[];
 }
 
@@ -134,6 +140,352 @@ export const mockdata: PFIndicatorSet[] = [
             ],
           },
         ],
+      },
+    ],
+  },
+];
+
+export const expandindicatorsmockdata: PFIndicator[] = [
+  {
+    name:
+      "Percentage of HIV-positive pregnant women who received antiretrovirals to reduce the risk of mother-to-child transmission",
+    results: [
+      {
+        type: "Percentage",
+        baseline: "59.3%",
+        target: "92%",
+        result: "90.6%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2017-07-01:2017-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "59.3%",
+        target: "92%",
+        result: "102.8%",
+        achievementRate: 1.12,
+        color: "#97ff46",
+        period: "2017-01-01:2017-06-30",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "59.3%",
+        target: "82%",
+        result: "88.5%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2016-07-01:2016-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "59.3%",
+        target: "82%",
+        result: "84%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2016-01-01:2016-06-30",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "59.3%",
+        target: "73%",
+        result: "86.4%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2015-07-01:2015-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+    ],
+  },
+  {
+    name: "Percentage of pregnant women who know their HIV status",
+    results: [
+      {
+        type: "Percentage",
+        baseline: "0.62%",
+        target: "82%",
+        result: "70.8%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2017-07-01:2017-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [
+          {
+            name: "HIV test status",
+            values: [
+              {
+                category: "Known positive HIV infection at ANC",
+                baseline: {
+                  numerator: 5106,
+                  denominator: 824668,
+                  percentage: 0.62,
+                },
+                reported: {
+                  numerator: 736321,
+                  denominator: 1040504,
+                  percentage: 70.8,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "Percentage",
+        baseline: "0.62%",
+        target: "82%",
+        result: "68.5%",
+        achievementRate: 0.84,
+        color: "#daff46",
+        period: "2017-01-01:2017-06-30",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [
+          {
+            name: "HIV test status",
+            values: [
+              {
+                category: "Known positive HIV infection at ANC",
+                baseline: {
+                  numerator: 5106,
+                  denominator: 824668,
+                  percentage: 0.62,
+                },
+                reported: {
+                  numerator: 356268,
+                  denominator: 520252,
+                  percentage: 68.5,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "Percentage",
+        baseline: "0.62%",
+        target: "81.1%",
+        result: "73.1%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2016-07-01:2016-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [
+          {
+            name: "HIV test status",
+            values: [
+              {
+                category: "Known positive HIV infection at ANC",
+                baseline: {
+                  numerator: 5106,
+                  denominator: 824668,
+                  percentage: 0.62,
+                },
+                reported: {
+                  numerator: 737430,
+                  denominator: 1008823,
+                  percentage: 73.1,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "Percentage",
+        baseline: "0.62%",
+        target: "81.1%",
+        result: "72%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2016-01-01:2016-06-30",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [
+          {
+            name: "HIV test status",
+            values: [
+              {
+                category: "Known positive HIV infection at ANC",
+                baseline: {
+                  numerator: 5106,
+                  denominator: 824668,
+                  percentage: 0.62,
+                },
+                reported: {
+                  numerator: 363299,
+                  denominator: 504412,
+                  percentage: 72,
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: "Percentage",
+        baseline: "0.62%",
+        target: "77.6%",
+        result: "73.8%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2015-07-01:2015-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [
+          {
+            name: "HIV test status",
+            values: [
+              {
+                category: "Known positive HIV infection at ANC",
+                baseline: {
+                  numerator: 5106,
+                  denominator: 824668,
+                  percentage: 0.62,
+                },
+                reported: {
+                  numerator: 726789,
+                  denominator: 984372,
+                  percentage: 73.8,
+                },
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name:
+      "Percentage of infants born to HIV-positive women receiving a virological test for HIV within 2 months of birth",
+    results: [
+      {
+        type: "Percentage",
+        baseline: "53.6%",
+        target: "70%",
+        result: "37.5%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2017-07-01:2017-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "53.6%",
+        target: "70%",
+        result: "36.1%",
+        achievementRate: 0.52,
+        color: "#ffaa46",
+        period: "2017-01-01:2017-06-30",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "53.6%",
+        target: "65%",
+        result: "34.8%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2016-07-01:2016-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "53.6%",
+        target: "60%",
+        result: "54.5%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2015-07-01:2015-12-31",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+      {
+        type: "Percentage",
+        baseline: "53.6%",
+        target: "65%",
+        result: "29.1%",
+        achievementRate: null,
+        color: "#E2E2E2",
+        period: "2016-01-01:2016-06-30",
+        isReversed: "No",
+        aggregationType: "Cumulative annually",
+        coverage: "National",
+        disaggregations: [],
+      },
+    ],
+  },
+];
+
+export const expandinterventionsmockdata: PFIndicatorResultIntervention[] = [
+  {
+    name:
+      "Ensure the supervision of community service providers and primary healthcare centers (CSPS) (50% of sites performing poorly) by the District Team each semester",
+    values: [
+      {
+        name: "Prong 3: Preventing vertical HIV transmission",
+        achievementRate: null,
+        valueText:
+          "Analysis each semester by the SR and the PR of the supervision reports",
+      },
+      {
+        name: "Prong 3: Preventing vertical HIV transmission",
+        achievementRate: null,
+        valueText: "Supervisions carried out",
+      },
+      {
+        name: "Prong 3: Preventing vertical HIV transmission",
+        achievementRate: null,
+        valueText:
+          "Identification, each semester, of CSPS/sites that are performing poorly",
+      },
+      {
+        name: "Prong 3: Preventing vertical HIV transmission",
+        achievementRate: null,
+        valueText: "Programming of the supervisions made",
+      },
+      {
+        name: "Prong 3: Preventing vertical HIV transmission",
+        achievementRate: null,
+        valueText: "Completed",
       },
     ],
   },

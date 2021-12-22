@@ -17,4 +17,13 @@ export const input = css`
   font-size: 14px;
   border-style: none;
   background: #dfe3e6;
+
+  ::placeholder {
+    color: #262c34;
+    font-weight: bold;
+  }
+
+  &:focus::placeholder {
+    opacity: 0.3;
+  }
 `;

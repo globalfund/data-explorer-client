@@ -1,18 +1,17 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 
 interface GrantInfoContentProps {
   title: string;
   code: string;
-  rating: string;
+  rating: string | null;
   status: string;
   location: string;
   component: string;
-  description: string;
+  description: string | null;
   investments: {
     disbursed: number;
     committed: number;
@@ -22,6 +21,20 @@ interface GrantInfoContentProps {
     name: string;
     email: string;
   };
+  periods: GrantDetailPeriod[];
+}
+
+export interface GrantDetailPeriod {
+  number: number;
+  startDate: string;
+  endDate: string;
+}
+
+export interface GrantDetailPeriodInformation {
+  disbursed: number;
+  committed: number;
+  signed: number;
+  rating: string;
 }
 
 export function GrantInfoContent(props: GrantInfoContentProps) {
@@ -29,8 +42,21 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
     <div
       css={`
         display: flex;
+        overflow-y: auto;
         padding: 30px 50px;
         flex-direction: column;
+
+        &::-webkit-scrollbar {
+          width: 5px;
+          background: #262c34;
+        }
+        &::-webkit-scrollbar-track {
+          background: #dfe3e6;
+        }
+        &::-webkit-scrollbar-thumb {
+          background: #262c34;
+        }
+
         * {
           color: #262c34;
         }
@@ -49,6 +75,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -61,6 +88,14 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           margin-bottom: 10px;
           flex-direction: row;
           align-items: center;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <LocationIcon />
@@ -76,6 +111,14 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           margin-bottom: 20px;
           flex-direction: row;
           align-items: center;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <ComponentIcon />
@@ -88,6 +131,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 5px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Rating
@@ -99,6 +143,14 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           flex-direction: row;
           align-items: center;
           margin-bottom: 20px;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 12px;
+              }
+            }
+          }
         `}
       >
         {ratingValues.map((value: string) => (
@@ -113,7 +165,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
               align-items: center;
               justify-content: center;
               border: 2px solid #262c34;
-              opacity: ${props.rating === value ? 1 : 0.3};
+              opacity: ${(props.rating || ratingValues[0]) === value ? 1 : 0.3};
             `}
           >
             {value}
@@ -157,6 +209,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
         css={`
           font-size: 14px;
           font-weight: bold;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Fund Portfolio Manager

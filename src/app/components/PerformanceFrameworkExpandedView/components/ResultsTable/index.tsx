@@ -1,5 +1,6 @@
 import React from "react";
 import { css } from "styled-components/macro";
+import { useStoreState } from "app/state/store/hooks";
 import {
   PFIndicator,
   PFIndicatorResult,
@@ -12,6 +13,12 @@ const styles = {
     width: 100%;
     margin: 10px 0;
     border-collapse: collapse;
+
+    @media (max-width: 767px) {
+      width: 700px;
+      min-width: 700px;
+      max-width: 700px;
+    }
   `,
   tablehead: css`
     th {
@@ -23,7 +30,7 @@ const styles = {
   `,
   tablebody: css`
     td {
-      font-size: 10px;
+      font-size: 12px;
 
       > span {
         cursor: pointer;
@@ -33,9 +40,11 @@ const styles = {
   `,
 };
 
-interface ResultsTableProps extends PFIndicator {}
+export function ResultsTable(props: PFIndicator) {
+  const selected = useStoreState(
+    (state) => state.ToolBoxPanelPFPeriodState.value
+  );
 
-export function ResultsTable(props: ResultsTableProps) {
   return (
     <div
       css={`
@@ -43,28 +52,38 @@ export function ResultsTable(props: ResultsTableProps) {
       `}
     >
       <b>Indicator: {props.name}</b>
-      <table css={styles.table}>
-        <thead css={styles.tablehead}>
-          <tr>
-            <th>Result type</th>
-            <th>Baseline</th>
-            <th>Target</th>
-            <th>Result</th>
-            <th>Achievement rate</th>
-            <th>Reporting periods</th>
-            <th> </th>
-          </tr>
-        </thead>
-        <tbody css={styles.tablebody}>
-          {props.results.map((result: PFIndicatorResult, index: number) => (
-            <ResultsTableRow
-              key={result.period}
-              selected={index === 1}
-              {...result}
-            />
-          ))}
-        </tbody>
-      </table>
+      <div
+        css={`
+          width: 100%;
+
+          @media (max-width: 767px) {
+            overflow-x: auto;
+          }
+        `}
+      >
+        <table css={styles.table}>
+          <thead css={styles.tablehead}>
+            <tr>
+              <th>Result type</th>
+              <th>Baseline</th>
+              <th>Target</th>
+              <th>Result</th>
+              <th>Achievement rate</th>
+              <th>Reporting periods</th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody css={styles.tablebody}>
+            {props.results.map((result: PFIndicatorResult, index: number) => (
+              <ResultsTableRow
+                key={result.period}
+                selected={index === props.results.length - selected - 1}
+                {...result}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
@@ -77,7 +96,11 @@ function ResultsTableRow(props: ResultsTableRowProps) {
   const [showTooltip, setShowTooltip] = React.useState(false);
 
   return (
-    <tr>
+    <tr
+      css={`
+        background-color: ${props.selected ? "#cfd4da" : "transparent"};
+      `}
+    >
       <td>{props.type}</td>
       <td>{props.baseline}</td>
       <td>{props.target}</td>
@@ -89,15 +112,32 @@ function ResultsTableRow(props: ResultsTableRowProps) {
             display: flex;
             flex-direction: row;
             align-items: center;
+
+            > * {
+              @supports (-webkit-touch-callout: none) and
+                (not (translate: none)) {
+                &:not(:last-child) {
+                  margin-right: 20px;
+                }
+              }
+            }
           `}
         >
-          {props.achievementRate}
           <div
             css={`
               gap: 10px;
               display: flex;
               flex-direction: row;
               align-items: center;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 10px;
+                  }
+                }
+              }
 
               > svg {
                 transform: rotate(90deg);
@@ -111,9 +151,22 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                background: ${props.color};
+                background: ${props.color === "#E2E2E2"
+                  ? `repeating-linear-gradient(
+                    -45deg,
+                    #262c34 0 0.5px,
+                    #fff 1.5px 2px
+                    )`
+                  : props.color};
               `}
             />
+          </div>
+          <div
+            css={`
+              min-width: 30px;
+            `}
+          >
+            {props.achievementRate ? props.achievementRate : "N/A"}
           </div>
         </div>
       </td>

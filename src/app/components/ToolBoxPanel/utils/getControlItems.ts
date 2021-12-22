@@ -8,21 +8,70 @@ export interface ViewModel {
 }
 
 const views = {
-  investments: [
+  disbursements: [
     {
-      label: "Disbursements",
-      value: "Disbursements",
-      link: "/viz/investments/disbursements",
+      label: "Treemap",
+      value: "Treemap",
+      link: "/viz/disbursements/treemap",
     },
     {
-      label: "Time/Cycle",
-      value: "Time/Cycle",
-      link: "/viz/investments/time-cycle",
+      label: "Time cycle",
+      value: "Time cycle",
+      link: "/viz/disbursements/time-cycle",
     },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/investments/geomap",
+      link: "/viz/disbursements/map",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/disbursements/table",
+    },
+  ],
+  signed: [
+    {
+      label: "Treemap",
+      value: "Treemap",
+      link: "/viz/signed/treemap",
+    },
+    {
+      label: "Time cycle",
+      value: "Time cycle",
+      link: "/viz/signed/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/signed/map",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/signed/table",
+    },
+  ],
+  commitment: [
+    {
+      label: "Treemap",
+      value: "Treemap",
+      link: "/viz/commitment/treemap",
+    },
+    {
+      label: "Time cycle",
+      value: "Time cycle",
+      link: "/viz/commitment/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/commitment/map",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/commitment/table",
     },
   ],
   budgets: [
@@ -32,40 +81,113 @@ const views = {
       link: "/viz/budgets/flow",
     },
     {
-      label: "Time/Cycle",
-      value: "Time/Cycle",
+      label: "Time cycle",
+      value: "Time cycle",
       link: "/viz/budgets/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/budgets/map",
+    },
+  ],
+  eligibility: [
+    {
+      label: "Chart",
+      value: "Chart",
+      link: "/viz/eligibility",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/eligibility/table",
+    },
+  ],
+  allocations: [
+    {
+      label: "Radial",
+      value: "Radial",
+      link: "/viz/allocations",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/allocations/map",
+    },
+  ],
+  grants: [
+    {
+      label: "Chart",
+      value: "Chart",
+      link: "/viz/grants",
+    },
+    {
+      label: "List",
+      value: "List",
+      link: "/viz/grants/list",
+    },
+  ],
+  "pledges-contributions": [
+    {
+      label: "Treemap",
+      value: "Treemap",
+      link: "/viz/pledges-contributions/treemap",
+    },
+    {
+      label: "Replenishment Periods",
+      value: "Replenishment Periods",
+      link: "/viz/pledges-contributions/time-cycle",
+    },
+    {
+      label: "Map",
+      value: "Map",
+      link: "/viz/pledges-contributions/map",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/pledges-contributions/table",
     },
   ],
 };
 
 const aggregates = {
-  investments: [
+  // investments: [
+  //   {
+  //     label: "Components",
+  //     value: "Components",
+  //   },
+  //   {
+  //     label: "Partners",
+  //     value: "Partners",
+  //   },
+  //   {
+  //     label: "Locations",
+  //     value: "Locations",
+  //   },
+  //   {
+  //     label: "Grants",
+  //     value: "Grants",
+  //   },
+  // ],
+  // budgets: [
+  //   {
+  //     label: "Components",
+  //     value: "Components",
+  //   },
+  //   {
+  //     label: "Locations",
+  //     value: "Locations",
+  //   },
+  // ],
+  eligibility: [
     {
       label: "Components",
-      value: "Components",
-    },
-    {
-      label: "Partners",
-      value: "Partners",
+      value: "componentName",
     },
     {
       label: "Locations",
-      value: "Locations",
-    },
-    {
-      label: "Grants",
-      value: "Grants",
-    },
-  ],
-  budgets: [
-    {
-      label: "Components",
-      value: "Components",
-    },
-    {
-      label: "Locations",
-      value: "Locations",
+      value: "geographicAreaName",
     },
   ],
 };
@@ -73,7 +195,8 @@ const aggregates = {
 export function getControlItems(
   vizType: string,
   pathname: string,
-  detailPageCode?: string
+  detailPageCode?: string,
+  grantDetailPeriod?: string
 ): {
   views: ViewModel[];
   aggregates: ViewModel[];
@@ -83,7 +206,12 @@ export function getControlItems(
     let alteredViews = get(views, vizType, []).map((view: ViewModel) => ({
       ...view,
       link: view.link
-        ? view.link.replace("viz", `${detailPageParam}/${detailPageCode}`)
+        ? view.link.replace(
+            "viz",
+            `${detailPageParam}/${detailPageCode}${
+              grantDetailPeriod ? `/${grantDetailPeriod}` : ""
+            }`
+          )
         : view.link,
     }));
     if (detailPageParam === "grant") {
@@ -91,6 +219,9 @@ export function getControlItems(
         alteredViews,
         (view: ViewModel) => view.label !== "Map"
       );
+    }
+    if (vizType === "eligibility") {
+      return { views: alteredViews, aggregates: [] };
     }
     return {
       views: alteredViews,

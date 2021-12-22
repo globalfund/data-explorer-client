@@ -1,19 +1,34 @@
 import React from "react";
+import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 import { ResetIcon } from "app/assets/icons/Reset";
 import IconButton from "@material-ui/core/IconButton";
-import {
-  componentsMockFilterOptions,
-  FilterGroupProps,
-} from "app/components/ToolBoxPanel/components/filters/data";
+import { useFilterOptions } from "app/hooks/useFilterOptions";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
-import { ExpandedFilterGroup } from "./common/expandedgroup";
+import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
 }
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
-  const [expandedGroup, setExpandedGroup] = React.useState<string | null>(null);
+  const filterOptions = useFilterOptions({ returnFilterOptions: true });
+  const [
+    expandedGroup,
+    setExpandedGroup,
+  ] = React.useState<FilterGroupProps | null>(null);
+
+  const actions = useStoreActions((store) => store.AppliedFiltersState);
+  const data = useStoreState((state) => state.AppliedFiltersState);
+
+  function resetAllFilters() {
+    if (!isEqual(data, defaultAppliedFilters)) {
+      actions.setAll(defaultAppliedFilters);
+    }
+  }
 
   return (
     <div
@@ -38,6 +53,17 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
           border-radius: 4px;
           background: #495057;
         }
+
+        @media (max-width: 767px) {
+          padding: 16px;
+          overflow-y: unset;
+
+          @supports (-webkit-touch-callout: none) {
+            height: unset;
+            max-height: unset;
+            padding-bottom: ${expandedGroup ? 100 : 200}px;
+          }
+        }
       `}
     >
       {!expandedGroup && (
@@ -49,10 +75,14 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               align-items: center;
               justify-content: space-between;
               border-bottom: 1px solid #dfe3e6;
+
+              @media (max-width: 767px) {
+                font-size: 18px;
+              }
             `}
           >
             <b>Filters</b>
-            <IconButton>
+            <IconButton onClick={resetAllFilters}>
               <ResetIcon />
             </IconButton>
           </div>
@@ -60,16 +90,17 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
             <FilterGroup
               {...group}
               key={group.name}
-              expandGroup={() => setExpandedGroup(group.name)}
+              options={get(filterOptions, group.name, [])}
+              expandGroup={() => setExpandedGroup(group)}
             />
           ))}
         </React.Fragment>
       )}
       {expandedGroup && (
         <ExpandedFilterGroup
-          selectedOptions={[]}
-          {...componentsMockFilterOptions}
+          {...expandedGroup}
           goBack={() => setExpandedGroup(null)}
+          options={get(filterOptions, expandedGroup.name, [])}
         />
       )}
     </div>

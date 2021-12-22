@@ -1,23 +1,87 @@
 /* third-party */
 import React from "react";
-import { Link } from "react-router-dom";
-import useTitle from "react-use/lib/useTitle";
+import get from "lodash/get";
+import { Pagination } from "@material-ui/lab";
+import { useMediaQuery } from "@material-ui/core";
+import { useTitle, useDebounce, useUpdateEffect } from "react-use";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
-import { ExpandableTable } from "app/components/Table/Expandable";
-import { docsmockdata } from "app/components/Table/Expandable/data";
-import { Search } from "app/modules/grants-module/components/Search";
-import { DocumentsSubModule } from "../common/documents";
+import { PageLoader } from "app/modules/common/page-loader";
+import { DocumentsSubModule } from "app/modules/common/documents";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
+import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const vizWrapperRef = React.useRef(null);
+  const datasetMenuItems = useDatasetMenuItems();
+  const [search, setSearch] = React.useState("");
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+
+  // api call & data
+  const fetchData = useStoreActions((store) => store.Documents.fetch);
+  const data = useStoreState(
+    (state) =>
+      get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
+  );
+  const [page, setPage] = React.useState(1);
+  const isLoading = useStoreState((state) => state.Documents.loading);
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
   }, []);
+
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters(appliedFilters, { search });
+    if (search.length === 0) {
+      fetchData({ filterString });
+    }
+  }, [appliedFilters]);
+
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      const filterString = getAPIFormattedFilters(appliedFilters);
+      fetchData({ filterString });
+    }
+  }, [search]);
+
+  useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        const filterString = getAPIFormattedFilters(appliedFilters, { search });
+        fetchData({ filterString });
+      }
+    },
+    500,
+    [search]
+  );
+
+  let pushValue = 0;
+  const widthThreshold = (window.innerWidth - 1280) / 2;
+
+  if (widthThreshold > 420) {
+    pushValue = 0;
+  } else if (widthThreshold < 0) {
+    pushValue = 0;
+  } else {
+    pushValue = 400 - widthThreshold;
+  }
+
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  function isToolboxOvervlayVisible() {
+    if (isSmallScreen) return 0;
+    if (openToolboxPanel && widthThreshold < 0) return 1;
+    return 0;
+  }
 
   return (
     <div
@@ -36,77 +100,87 @@ export default function DocumentsModule() {
           { name: "Home", link: "/" },
           {
             name: "Datasets",
-            menuitems: [
-              <Link
-                to="/datasets"
-                css={`
-                  display: flex;
-                  align-items: center;
-
-                  > svg {
-                    margin-right: 16px;
-                    transform: rotate(-180deg) scale(0.5);
-
-                    > path {
-                      fill: #13183f;
-                    }
-                  }
-                `}
-              >
-                <ArrowForwardIcon />
-                <b>Datasets</b>
-              </Link>,
-              <Link to="/viz/investments/disbursements">
-                <b>Finance</b>-Investments/Disbursements
-              </Link>,
-              <Link to="/viz/investments/time-cycle">
-                <b>Finance</b>-Investments/Time-Cycle
-              </Link>,
-              <Link to="/viz/budgets/flow">
-                <b>Finance</b>-Budgets Flow
-              </Link>,
-              <Link to="/viz/budgets/time-cycle">
-                <b>Finance</b>-Budgets Time Cycle
-              </Link>,
-              <Link to="/viz/allocations">
-                <b>Finance</b>-Allocations
-              </Link>,
-              <Link to="/viz/eligibility">
-                <b>Finance</b>-Eligibility
-              </Link>,
-              <Link to="/viz/pledges-contributions/time-cycle">
-                <b>Finance</b>-Pledges & Contributions Time Cycle
-              </Link>,
-              <Link to="/grants">
-                <b>Grants</b>
-              </Link>,
-              <Link to="/results">
-                <b>Results</b>
-              </Link>,
-              <Link to="/documents">
-                <b>Documents</b>
-              </Link>,
-            ],
+            menuitems: datasetMenuItems,
           },
           { name: "Documents" },
         ]}
       />
       <ToolBoxPanel
         open={openToolboxPanel}
-        onButtonClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+        vizWrapperRef={vizWrapperRef}
+        filterGroups={pathnameToFilterGroups.documents}
+        onCloseBtnClick={(value?: boolean) => {
+          if (value !== undefined) {
+            setOpenToolboxPanel(value);
+          } else {
+            setOpenToolboxPanel(!openToolboxPanel);
+          }
+        }}
       />
-      <DocumentsSubModule />
+      <PageTopSpacer />
+      {isLoading && <PageLoader />}
+      <div
+        css={`
+          height: 100%;
+          align-self: flex-start;
+          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+        `}
+        ref={vizWrapperRef}
+      >
+        {isSmallScreen ? (
+          <>
+            <DocumentsSubModule
+              data={data.slice((page - 1) * 9, page * 9)}
+              search={search}
+              setSearch={setSearch}
+              columns={["Location", "Documents"]}
+            />
+            <div>
+              <Pagination
+                css={`
+                  display: flex;
+                  justify-content: center;
+                `}
+                count={Math.ceil(data.length / 9)}
+                boundaryCount={Math.ceil(data.length / 18)}
+                page={page}
+                onChange={(event, val) => setPage(val)}
+              />
+            </div>
+            <div
+              css={`
+                width: 100%;
+                height: 25px;
+
+                @media (max-width: 767px) {
+                  height: 150px;
+                }
+              `}
+            />
+          </>
+        ) : (
+          <DocumentsSubModule
+            data={data}
+            search={search}
+            setSearch={setSearch}
+            columns={["Location", "Documents"]}
+          />
+        )}
+      </div>
       <div
         css={`
           left: 0;
           top: 48px;
-          z-index: 10;
+          z-index: 15;
           width: 100%;
           height: 100%;
           position: fixed;
           background: rgba(35, 35, 35, 0.5);
-          opacity: ${openToolboxPanel ? 1 : 0};
-          visibility: ${openToolboxPanel ? "visible" : "hidden"};
+          opacity: ${isToolboxOvervlayVisible()};
+          visibility: ${isToolboxOvervlayVisible() === 1
+            ? "visible"
+            : "hidden"};
           transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}

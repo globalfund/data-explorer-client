@@ -8,10 +8,26 @@ export interface PageHeaderTabProps {
   tabs: TabProps[];
 }
 
+export interface RouteTabProps extends TabProps {
+  onlyLink?: boolean;
+}
+
 export const countryDetailTabs: TabProps[] = [
   {
-    name: "Investements",
-    url: "/location/<code>/investments/disbursements",
+    name: "Overview",
+    url: "/location/<code>/overview",
+  },
+  {
+    name: "Signed",
+    url: "/location/<code>/signed/treemap",
+  },
+  {
+    name: "Commitment",
+    url: "/location/<code>/commitment/treemap",
+  },
+  {
+    name: "Disbursement",
+    url: "/location/<code>/disbursements/treemap",
   },
   {
     name: "Budgets",
@@ -33,27 +49,66 @@ export const countryDetailTabs: TabProps[] = [
     name: "Grants",
     url: "/location/<code>/grants",
   },
+  {
+    name: "Results",
+    url: "/location/<code>/results",
+  },
 ];
 
 export const grantDetailTabs: TabProps[] = [
   {
-    name: "Investements",
-    url: "/grant/<code>/investments/disbursements",
+    name: "Overview",
+    url: "/grant/<code>/<period>/overview",
+  },
+  {
+    name: "Signed",
+    url: "/grant/<code>/<period>/signed/time-cycle",
+  },
+  {
+    name: "Commitment",
+    url: "/grant/<code>/<period>/commitment/time-cycle",
+  },
+  {
+    name: "Disbursement",
+    url: "/grant/<code>/<period>/disbursements/time-cycle",
   },
   {
     name: "Budgets",
-    url: "/grant/<code>/budgets/flow",
+    url: "/grant/<code>/<period>/budgets/flow",
   },
   {
     name: "Performance Rating",
-    url: "/grant/<code>/performance-rating",
+    url: "/grant/<code>/<period>/performance-rating",
   },
   {
     name: "Performance Framework",
-    url: "/grant/<code>/performance-framework",
+    url: "/grant/<code>/<period>/performance-framework",
   },
   {
     name: "Documents",
-    url: "/grant/<code>/documents",
+    url: "/grant/<code>/<period>/documents",
+  },
+];
+
+export const partnerDetailTabs: TabProps[] = [
+  {
+    name: "Signed",
+    url: "/partner/<code>/signed/treemap",
+  },
+  {
+    name: "Commitment",
+    url: "/partner/<code>/commitment/treemap",
+  },
+  {
+    name: "Disbursement",
+    url: "/partner/<code>/disbursements/treemap",
+  },
+  {
+    name: "Budgets",
+    url: "/partner/<code>/budgets/flow",
+  },
+  {
+    name: "Grants",
+    url: "/partner/<code>/grants",
   },
 ];

@@ -7,12 +7,22 @@ export const container = css`
   align-items: center;
   flex-direction: column;
   justify-content: center;
+
+  @media (max-width: 767px) {
+    padding-top: 20vh;
+    position: relative;
+    justify-content: flex-start;
+  }
 `;
 
 export const subtitle = css`
   color: #262c34;
-  margin: 24px 0;
   font-size: 18px;
+  margin: 12px 0 24px 0;
+
+  @media (max-width: 767px) {
+    font-size: 12px;
+  }
 `;
 
 export const datasetstitle = css`
@@ -23,6 +33,7 @@ export const datasetstitle = css`
   font-weight: bold;
   text-align: center;
   margin-bottom: 16px;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 `;
 
 export const datasetslink = css`

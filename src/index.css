@@ -77,6 +77,7 @@ body {
   overflow-x: hidden;
   height: 100vh;
   width: 100vw;
+  transition: background 0.2s ease-in-out;
 }
 
 body::-webkit-scrollbar {
@@ -98,7 +99,7 @@ body::webkit-scrollbar-thumb {
 }
 
 * {
-  user-select: none;
+  outline: none;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
 }
 
@@ -107,4 +108,35 @@ body::webkit-scrollbar-thumb {
   background: #fff;
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+}
+
+#ruler {
+  z-index: 0;
+  visibility: hidden;
+  position: absolute;
+  white-space: nowrap;
+}
+
+.MuiListItem-button.Mui-selected {
+  color: #fff;
+}
+
+.MuiPaginationItem-page.Mui-selected {
+  color: #fff;
+}
+
+b {
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+}
+
+button {
+  appearance: none;
+  -webkit-appearance: button-bevel;
+}
+
+input[type="text"] {
+  margin: 0;
+  padding: 1px 2px;
+  appearance: none;
+  -webkit-appearance: none;
 }

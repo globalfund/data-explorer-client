@@ -23,21 +23,11 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
     >
       <div
         css={`
-          top: -4px;
-          width: 8px;
-          height: 8px;
-          position: absolute;
-          border-radius: 50%;
-          background: #262c34;
-          left: calc(50% - 4px);
-        `}
-      />
-      <div
-        css={`
           font-size: 18px;
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Budgets · {props.year}
@@ -48,6 +38,14 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
           display: flex;
           font-size: 12px;
           flex-direction: column;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 6px;
+              }
+            }
+          }
         `}
       >
         <div
@@ -57,7 +55,14 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
             justify-content: space-between;
           `}
         >
-          <div css="font-weight: bold;">Total amount</div>
+          <div
+            css={`
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            Total amount
+          </div>
           <div>{formatFinancialValue(props.amount as number)}</div>
         </div>
         {valueKeys.map((key: string) => (
@@ -69,7 +74,14 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
               justify-content: space-between;
             `}
           >
-            <div css="font-weight: bold;">{key}</div>
+            <div
+              css={`
+                font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              `}
+            >
+              {key}
+            </div>
             <div>{formatFinancialValue(get(props, key, 0) as number)}</div>
           </div>
         ))}

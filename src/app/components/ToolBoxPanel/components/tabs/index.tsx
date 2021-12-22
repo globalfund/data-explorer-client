@@ -2,6 +2,7 @@ import React from "react";
 
 interface ToolBoxPanelTabsProps {
   selected: string;
+  options: string[];
   onSelect: (tab: string) => void;
 }
 
@@ -13,39 +14,37 @@ export function ToolBoxPanelTabs(props: ToolBoxPanelTabsProps) {
         display: flex;
         flex-direction: row;
 
-        > div {
-          width: 50%;
+        > button {
           color: #fff;
+          outline: none;
           padding: 12px 0;
           font-size: 14px;
+          line-height: 1.7;
           font-weight: bold;
+          border-style: none;
           text-align: center;
+          width: calc(100% / ${props.options.length});
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
           &:hover {
             cursor: pointer;
-            background: #495057;
+            background: #13183f;
           }
         }
       `}
     >
-      <div
-        role="button"
-        onClick={() => props.onSelect("Control")}
-        css={`
-          background: ${props.selected === "Control" ? "#495057" : "#98a1aa"};
-        `}
-      >
-        Control
-      </div>
-      <div
-        role="button"
-        onClick={() => props.onSelect("Filters")}
-        css={`
-          background: ${props.selected === "Filters" ? "#495057" : "#98a1aa"};
-        `}
-      >
-        Filters
-      </div>
+      {props.options.map((option: string) => (
+        <button
+          key={option}
+          type="button"
+          onClick={() => props.onSelect(option)}
+          css={`
+            background: ${props.selected === option ? "#495057" : "#98a1aa"};
+          `}
+        >
+          {option}
+        </button>
+      ))}
     </div>
   );
 }

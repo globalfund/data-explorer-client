@@ -14,11 +14,28 @@ const styles = {
     gap: 30px;
     display: flex;
     flex-direction: column;
+
+    > * {
+      @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+        &:not(:last-child) {
+          margin-right: 30px;
+        }
+      }
+    }
   `,
   arrowscontainer: css`
-    gap: 40px;
     display: flex;
     flex-direction: row;
+
+    @media (max-width: 767px) {
+      width: 100%;
+
+      > div {
+        > div {
+          max-width: 100%;
+        }
+      }
+    }
   `,
   tabsList: css`
     display: flex;
@@ -30,6 +47,11 @@ const styles = {
     @media (max-width: 992px) {
       overflow-x: auto;
       margin-left: 36px;
+    }
+
+    @media (max-width: 767px) {
+      margin: 0;
+      width: 100%;
     }
 
     &::-webkit-scrollbar {
@@ -60,6 +82,8 @@ const styles = {
     transition: background 0.2s ease-in-out;
     font-weight: ${active ? "bold" : "normal"};
     background: ${active ? "#495057" : "#C7CDD1"};
+    font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
+      sans-serif;
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -71,9 +95,24 @@ const styles = {
     }
 
     &:hover {
-      background: #495057;
       color: #fff;
       font-weight: bold;
+      background: #495057;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    }
+
+    @media (max-width: 767px) {
+      width: 50%;
+      justify-content: center;
+
+      :first-of-type {
+        border-radius: 20px 0px 0px 20px;
+      }
+
+      :last-of-type {
+        border-right-style: none;
+        border-radius: 0px 20px 20px 0px;
+      }
     }
   `,
 };
@@ -86,12 +125,20 @@ export function PerformanceFrameworkExpandedView(
   return (
     <div css={styles.container}>
       <div css={styles.arrowscontainer}>
-        <ArrowSelector indicator="Coverage/Output" />
-        <ArrowSelector indicator="Comprehensive prevention programs for MSM" />
+        {/* <ArrowSelector selected="Coverage/Output" /> */}
+        <ArrowSelector
+          options={props.allModules}
+          onChange={props.setSelectedModule}
+          selected={props.selectedModule || ""}
+        />
       </div>
       <div
         css={`
           border-bottom: 1px solid #adb5bd;
+
+          @media (max-width: 767px) {
+            border-bottom-style: none;
+          }
         `}
       >
         <ul css={styles.tabsList}>

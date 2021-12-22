@@ -1,164 +1,75 @@
 export interface PledgesContributionsProps {
+  vizCompData: any;
   selectedNodeId?: string;
   data: Record<string, unknown>[];
+  setVizCompData: (vizCompData: any) => void;
   onNodeClick: (node: string, x: number, y: number) => void;
+}
+
+export interface PledgesContributionsTreemapDataItem {
+  name: string;
+  value: number;
+  formattedValue: string;
+  color: string;
+  _children?: PledgesContributionsTreemapDataItem[];
+  tooltip: {
+    header: string;
+    componentsStats: {
+      name: string;
+      value: number;
+    }[];
+    value: number;
+  };
 }
 
 export const mockdata: Record<string, unknown>[] = [
   {
-    year: "2017",
-    pledge: 2000000,
-    contribution: 2000000,
+    year: "2001-2005",
+    pledge: 4855441149.2,
+    contribution: 4855441149.2,
     pledgeColor: "#868E96",
     contributionColor: "#495057",
   },
   {
-    year: "2018",
-    pledge: 2000000,
-    contribution: 2000000,
+    year: "2006-2007",
+    pledge: 4750213146,
+    contribution: 4803345662.25,
     pledgeColor: "#868E96",
     contributionColor: "#495057",
   },
   {
-    year: "2019",
-    pledge: 2000000,
-    contribution: 2000000,
+    year: "2008-2010",
+    pledge: 10039407985.1,
+    contribution: 9643861786.12,
+    pledgeColor: "#868E96",
+    contributionColor: "#495057",
+  },
+  {
+    year: "2011-2013",
+    pledge: 10307673846.25,
+    contribution: 10303883939.29,
+    pledgeColor: "#868E96",
+    contributionColor: "#495057",
+  },
+  {
+    year: "2014-2016",
+    pledge: 12448929788.12,
+    contribution: 11713105696.93,
+    pledgeColor: "#868E96",
+    contributionColor: "#495057",
+  },
+  {
+    year: "2017-2019",
+    pledge: 12242930684.09,
+    contribution: 11374762402.26,
+    pledgeColor: "#868E96",
+    contributionColor: "#495057",
+  },
+  {
+    year: "2020-2022",
+    pledge: 17942307515.71,
+    contribution: 4191700290.72,
     pledgeColor: "#868E96",
     contributionColor: "#495057",
   },
 ];
-
-// export const mockdata: Record<string, unknown>[] = [
-//   {
-//     year: "2017",
-//     HIV: 1258028,
-//     HIVColor: "#70777E",
-//     Tuberculosis: 77,
-//     TuberculosisColor: "#252C34",
-//     Other: 720239,
-//     OtherColor: "#868E96",
-//     RSSH: 7876,
-//     RSSHColor: "#ADB5BD",
-//     amount: 1986220,
-//   },
-//   {
-//     year: "2018",
-//     Malaria: 546984602,
-//     MalariaColor: "#495057",
-//     Other: 342699700,
-//     OtherColor: "#868E96",
-//     HIV: 810464506,
-//     HIVColor: "#70777E",
-//     RSSH: 226120888,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 347103179,
-//     TuberculosisColor: "#252C34",
-//     Multicomponent: 7519915,
-//     MulticomponentColor: "#373D43",
-//     amount: 2280892790,
-//   },
-//   {
-//     year: "2019",
-//     Tuberculosis: 518291851,
-//     TuberculosisColor: "#252C34",
-//     RSSH: 378894659,
-//     RSSHColor: "#ADB5BD",
-//     Malaria: 931416148,
-//     MalariaColor: "#495057",
-//     HIV: 1277123100,
-//     HIVColor: "#70777E",
-//     Other: 468969148,
-//     OtherColor: "#868E96",
-//     Multicomponent: 5095709,
-//     MulticomponentColor: "#373D43",
-//     amount: 3579790615,
-//   },
-//   {
-//     year: "2020",
-//     Tuberculosis: 720800148,
-//     TuberculosisColor: "#252C34",
-//     HIV: 1577163657,
-//     HIVColor: "#70777E",
-//     Other: 599672112,
-//     OtherColor: "#868E96",
-//     RSSH: 518261340,
-//     RSSHColor: "#ADB5BD",
-//     "Emergency Response": 589650769,
-//     "Emergency ResponseColor": "#98A1AA",
-//     Malaria: 1209153486,
-//     MalariaColor: "#495057",
-//     Multicomponent: 7339735,
-//     MulticomponentColor: "#373D43",
-//     amount: 5222041247,
-//   },
-//   {
-//     year: "2021",
-//     RSSH: 547392185,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 643389463,
-//     TuberculosisColor: "#252C34",
-//     HIV: 1278534234,
-//     HIVColor: "#70777E",
-//     Other: 539011479,
-//     OtherColor: "#868E96",
-//     Malaria: 897371987,
-//     MalariaColor: "#495057",
-//     "Emergency Response": 170832632,
-//     "Emergency ResponseColor": "#98A1AA",
-//     Multicomponent: 22767257,
-//     MulticomponentColor: "#373D43",
-//     amount: 4099299237,
-//   },
-//   {
-//     year: "2022",
-//     Other: 436370294,
-//     OtherColor: "#868E96",
-//     HIV: 1467440558,
-//     HIVColor: "#70777E",
-//     Tuberculosis: 535424740,
-//     TuberculosisColor: "#252C34",
-//     Malaria: 946984777,
-//     MalariaColor: "#495057",
-//     RSSH: 419823038,
-//     RSSHColor: "#ADB5BD",
-//     Multicomponent: 99672054,
-//     MulticomponentColor: "#373D43",
-//     "Emergency Response": 767227,
-//     "Emergency ResponseColor": "#98A1AA",
-//     amount: 3906482688,
-//   },
-//   {
-//     year: "2023",
-//     Malaria: 751104009,
-//     MalariaColor: "#495057",
-//     Other: 401303584,
-//     OtherColor: "#868E96",
-//     HIV: 1290571466,
-//     HIVColor: "#70777E",
-//     RSSH: 274374667,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 439418027,
-//     TuberculosisColor: "#252C34",
-//     "Emergency Response": 1503433,
-//     "Emergency ResponseColor": "#98A1AA",
-//     Multicomponent: 108106672,
-//     MulticomponentColor: "#373D43",
-//     amount: 3266381858,
-//   },
-//   {
-//     year: "2024",
-//     Other: 6722521,
-//     OtherColor: "#868E96",
-//     HIV: 7417376,
-//     HIVColor: "#70777E",
-//     RSSH: 6002564,
-//     RSSHColor: "#ADB5BD",
-//     Tuberculosis: 5216882,
-//     TuberculosisColor: "#252C34",
-//     Malaria: 10320444,
-//     MalariaColor: "#495057",
-//     Multicomponent: 104695859,
-//     MulticomponentColor: "#373D43",
-//     amount: 140375646,
-//   },
-// ];

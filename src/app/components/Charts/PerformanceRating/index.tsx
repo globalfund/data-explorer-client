@@ -8,13 +8,17 @@ import {
 } from "app/components/Charts/PerformanceRating/data";
 
 export function PerformanceRating(props: PerformanceRatingProps) {
-  const matches = useMediaQuery("(max-width: 767px)");
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   return (
     <div
       css={`
         width: 100%;
         height: 600px;
+
+        @media (max-width: 767px) {
+          height: 500px;
+        }
       `}
     >
       <div
@@ -22,6 +26,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           display: flex;
           font-weight: bold;
           align-items: center;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
           > svg {
             margin-left: 10px;
@@ -33,6 +38,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
       <ResponsiveBar
         animate
         enableGridY
+        maxValue={5}
         indexBy="year"
         innerPadding={6}
         data={props.data}
@@ -40,13 +46,13 @@ export function PerformanceRating(props: PerformanceRatingProps) {
         motionDamping={15}
         groupMode="grouped"
         enableLabel={false}
-        colors={["#495057"]}
+        colors={["#1B2127"]}
         motionStiffness={90}
         isInteractive={false}
-        padding={matches ? 0.3 : 0.5}
+        padding={isMobile ? 0.3 : 0.5}
         gridYValues={[0, 1, 2, 3, 4, 5]}
         margin={{
-          top: 60,
+          top: !isMobile ? 60 : 20,
           right: 30,
           bottom: props.data.length > 5 ? 120 : 80,
           left: 70,
@@ -57,18 +63,22 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           tickRotation: 0,
           legend: "Rating",
           legendOffset: -60,
-          legendPosition: "middle",
+          legendPosition: "end",
           tickValues: [0, 1, 2, 3, 4, 5],
           format: (value: number | string | Date) =>
             ratingValues[value as number],
         }}
         axisBottom={{
+          tickRotation: isMobile || props.data.length > 5 ? 45 : 0,
           format: (value: number | string | Date) => {
-            return matches && props.data.length > 2
-              ? value.toString().slice(2, 4)
-              : value.toString();
+            if (isMobile) {
+              const splits = value.toString().split(" - ");
+              const date1 = splits[0].split(" ");
+              const date2 = splits[1].split(" ");
+              return `${date1[0]} - ${date2[0]} ${date1[1]}`;
+            }
+            return value.toString();
           },
-          tickRotation: matches && props.data.length > 3 ? 45 : 0,
         }}
         theme={{
           axis: {
