@@ -12,6 +12,7 @@ import { ResultListItemModel } from "app/modules/results-module/data";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityScatterplotDataModel } from "app/components/Charts/Eligibility/Scatterplot/data";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 export function useGetAllVizData() {
   const allocations = useStoreState((state) => ({
@@ -225,6 +226,14 @@ export function useGetAllVizData() {
         unknown
       >[]
   );
+  const pledgesContributionsTreemap = useStoreState(
+    (state) =>
+      get(
+        state.PledgesContributionsTreemap.data,
+        "data",
+        []
+      ) as BudgetsTreemapDataItem[]
+  );
   const resultsList = useStoreState(
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
   );
@@ -312,6 +321,7 @@ export function useGetAllVizData() {
     // Pledges & Contributions
     "/viz/pledges-contributions/map": pledgesContributionsGeomap,
     "/viz/pledges-contributions/table": pledgesContributionsGeomap,
+    "/viz/pledges-contributions/treemap": pledgesContributionsTreemap,
     "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
     // Grant Budgets
     "/grant/<code>/budgets/flow": grantDetailBudgetsFlow,

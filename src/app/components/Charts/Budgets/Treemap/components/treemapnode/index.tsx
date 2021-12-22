@@ -44,11 +44,10 @@ export function TreeemapNode(props: any) {
         width: node.width,
         height: node.height,
         fontSize: bigDevice ? 12 : 10,
-        border: `0px solid #${
+        border: `0px ${props.isChildTreemap ? "none" : "solid"} #${
           bigDevice || !props.invertColors ? "373D43" : "fff"
         }`,
         cursor: props.isChildTreemap ? "pointer" : "default",
-        borderStyle: props.isChildTreemap ? "none" : "solid",
         color,
         background:
           bigDevice || !props.invertColors ? node.data.color : "#595C70",

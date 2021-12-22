@@ -93,7 +93,18 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     }
   }
 
-  React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
+  React.useEffect(() => {
+    setKeys(getKeysFromData(props.data));
+    setTimeout(() => {
+      const scrollableDiv = document.getElementById("bar-scroll-div");
+      if (scrollableDiv && isMobile) {
+        scrollableDiv.scroll({
+          left: scrollableDiv.scrollWidth,
+          behavior: "smooth",
+        });
+      }
+    }, 1000);
+  }, [props.data]);
 
   // React.useEffect(() => {
   //   setTimeout(() => {
@@ -310,28 +321,31 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             id="bar-scroll-div"
             css={`
               width: 100%;
-              overflow-x: auto;
-              overflow-y: hidden;
+              @media (max-width: 767px) {
+                overflow-x: auto;
+                overflow-y: hidden;
 
-              &::-webkit-scrollbar {
-                height: 5px;
-                background: #262c34;
-              }
-              &::-webkit-scrollbar-track {
-                background: #dfe3e6;
-              }
-              &::-webkit-scrollbar-thumb {
-                background: #262c34;
+                &::-webkit-scrollbar {
+                  height: 5px;
+                  background: #262c34;
+                }
+                &::-webkit-scrollbar-track {
+                  background: #dfe3e6;
+                }
+                &::-webkit-scrollbar-thumb {
+                  background: #262c34;
+                }
               }
             `}
           >
             <div
               css={`
+                width: 100%;
                 height: 620px;
-                width: ${props.data.length === 0 ? "100%" : "1000px"};
 
                 @media (max-width: 767px) {
                   height: 550px;
+                  width: ${props.data.length === 0 ? "100%" : "1000px"};
                 }
               `}
             >

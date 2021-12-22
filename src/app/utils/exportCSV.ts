@@ -756,6 +756,23 @@ export function exportCSV(
           { label: "Contribution (USD)", key: "contribution" },
         ],
       };
+    case "/viz/pledges-contributions/treemap":
+      const type =
+        data && data[0] ? data[0].tooltip.componentsStats[0].name : "Pledge";
+      data.forEach((item: any) => {
+        csvData.push({
+          donor: item.name,
+          value: item.value,
+        });
+      });
+      return {
+        data: csvData,
+        filename: `${type}-treemap.csv`,
+        headers: [
+          { label: "Donor", key: "donor" },
+          { label: `${type} (USD)`, key: "value" },
+        ],
+      };
     case "/viz/pledges-contributions/map":
       if (options.donorMapView === "Public Sector") {
         data.layers.features.forEach((item: any) => {
