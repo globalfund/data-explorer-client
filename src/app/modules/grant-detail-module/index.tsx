@@ -29,8 +29,10 @@ export default function GrantDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const params = useParams<{ code: string; period: string; vizType: string }>();
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
+    !isMobile && params.vizType !== "overview"
+  );
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
