@@ -1,8 +1,8 @@
 // const reactHotReloadPlugin = require('craco-plugin-react-hot-reload');
-const BabelRcPlugin = require("@jackwilsdon/craco-use-babelrc");
-const { WebpackPluginRamdisk } = require("webpack-plugin-ramdisk");
+// const BabelRcPlugin = require("@jackwilsdon/craco-use-babelrc");
+// const { WebpackPluginRamdisk } = require("webpack-plugin-ramdisk");
 
-const { ESLINT_MODES } = require("@craco/craco");
+// const { ESLINT_MODES } = require("@craco/craco");
 
 module.exports = {
   eslint: {
@@ -24,10 +24,14 @@ module.exports = {
     ],
   },
 
-  plugins: [
-    {
-      // plugin: reactHotReloadPlugin,
-      plugin: BabelRcPlugin,
-    },
-  ],
+  babel: {
+    plugins: ["babel-plugin-styled-components"],
+  },
+
+  // plugins: [
+  //   {
+  //     // plugin: reactHotReloadPlugin,
+  //     plugin: BabelRcPlugin,
+  //   },
+  // ],
 };
