@@ -30,8 +30,16 @@ In order to be able to successfully run or build the app you need to create an e
 ```
 REACT_APP_API=<data middleware api url>
 REACT_APP_MAPBOX_TOKEN=<mapbox account token>
-REACT_APP_GOOGLE_ANALYTICS_ID=<optional>
+REACT_APP_GOOGLE_ANALYTICS_ID=<google analytics app id>
 ```
+
+`REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/zimmerman-team/the-data-explorer-api/) locally then you can use `http://localhost:4200`.
+
+`REACT_APP_MAPBOX_TOKEN`: to get a mapbox token you will need to register on their [website](https://www.mapbox.com).The token will be used to identify you and start serving up map tiles. The service is free until a certain level of traffic is exceeded.
+
+`REACT_APP_GOOGLE_ANALYTICS_ID`(optional): Google Analytics ID in order to be able to make use of Google Analytics services.
+
+---
 
 In the project directory, you can run:
 

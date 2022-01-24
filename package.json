@@ -1,13 +1,13 @@
 {
   "name": "the-data-explorer",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/zimmerman-team/the-data-explorer.git"
   },
   "dependencies": {
-    "@craco/craco": "^6.1.1",
+    "@craco/craco": "^6.4.3",
     "@devhammed/use-cookie": "^1.1.1",
     "@hot-loader/react-dom": "^17.0.1",
     "@jackwilsdon/craco-use-babelrc": "^1.0.0",
@@ -57,6 +57,7 @@
     "react-range": "1.4.7",
     "react-router-dom": "^5.2.0",
     "react-router-hash-link": "^2.4.3",
+    "react-scripts": "^5.0.0",
     "react-toastify": "^7.0.4",
     "react-use": "^17.2.3",
     "styled-components": "^5.2.3",
