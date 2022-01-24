@@ -384,6 +384,13 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
+  "/location/<code>/budgets/map": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
   "/location/<code>/allocation": filter(
     filtergroups,
     (fg: FilterGroupProps) => fg.name === "Components"
@@ -507,6 +514,13 @@ export const pathnameToFilterGroups = {
       fg.name !== "Replenishment Periods"
   ),
   "/partner/<code>/budgets/time-cycle": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Locations" &&
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods"
+  ),
+  "/partner/<code>/budgets/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
