@@ -163,197 +163,202 @@ export function DotChart(props: DotChartProps) {
           <div
             css={`
               bottom: 25px;
-              font-size: 14px;
               position: sticky;
             `}
           >
             <div
               css={`
                 font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 5px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
-              Eligibility
-            </div>
-            <div
-              css={`
-                gap: 5px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                transition: opacity 0.2s ease-in-out;
-                opacity: ${!hoveredLegend || hoveredLegend === "Eligible"
-                  ? 1
-                  : 0.3};
-
-                > * {
-                  @supports (-webkit-touch-callout: none) and
-                    (not (translate: none)) {
-                    &:not(:last-child) {
-                      margin-right: 5px;
-                    }
-                  }
-                }
-              `}
-              onMouseEnter={() => setHoveredLegend("Eligible")}
-              onMouseLeave={() => setHoveredLegend(null)}
-            >
-              <div
-                css={`
-                  width: 10px;
-                  height: 10px;
-                  border-radius: 50%;
-                  ${styles.Eligible}
-                `}
-              />
-              <div>Eligible</div>
-            </div>
-            <div
-              css={`
-                gap: 5px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                transition: opacity 0.2s ease-in-out;
-                opacity: ${!hoveredLegend || hoveredLegend === "Not Eligible"
-                  ? 1
-                  : 0.3};
-
-                > * {
-                  @supports (-webkit-touch-callout: none) and
-                    (not (translate: none)) {
-                    &:not(:last-child) {
-                      margin-right: 5px;
-                    }
-                  }
-                }
-              `}
-              onMouseEnter={() => setHoveredLegend("Not Eligible")}
-              onMouseLeave={() => setHoveredLegend(null)}
-            >
-              <div
-                css={`
-                  width: 10px;
-                  height: 10px;
-                  border-radius: 50%;
-                  ${styles["Not Eligible"]}
-                `}
-              />
-              <div>Not Eligible</div>
-            </div>
-            <div
-              css={`
-                gap: 5px;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                transition: opacity 0.2s ease-in-out;
-                opacity: ${!hoveredLegend ||
-                hoveredLegend === "Transition Funding"
-                  ? 1
-                  : 0.3};
-
-                > * {
-                  @supports (-webkit-touch-callout: none) and
-                    (not (translate: none)) {
-                    &:not(:last-child) {
-                      margin-right: 5px;
-                    }
-                  }
-                }
-              `}
-              onMouseEnter={() => setHoveredLegend("Transition Funding")}
-              onMouseLeave={() => setHoveredLegend(null)}
-            >
-              <div
-                css={`
-                  width: 10px;
-                  height: 10px;
-                  border-radius: 50%;
-                  ${styles["Transition Funding"]}
-                `}
-              />
-              <div>Transition Funding</div>
-            </div>
-          </div>
-          {props.aggregateBy === "geographicAreaName" && (
-            <div
-              css={`
-                margin-top: ${!isSmallScreen ? "50px" : 0};
               `}
             >
               <div
                 css={`
                   font-size: 14px;
                   font-weight: bold;
-                  margin-bottom: 24px;
+                  margin-bottom: 5px;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
-                Country Name
+                Eligibility
               </div>
               <div
                 css={`
-                  gap: 24px;
+                  gap: 5px;
                   display: flex;
                   flex-direction: row;
+                  align-items: center;
+                  transition: opacity 0.2s ease-in-out;
+                  opacity: ${!hoveredLegend || hoveredLegend === "Eligible"
+                    ? 1
+                    : 0.3};
 
                   > * {
                     @supports (-webkit-touch-callout: none) and
                       (not (translate: none)) {
                       &:not(:last-child) {
-                        margin-right: 24px;
+                        margin-right: 5px;
                       }
                     }
                   }
+                `}
+                onMouseEnter={() => setHoveredLegend("Eligible")}
+                onMouseLeave={() => setHoveredLegend(null)}
+              >
+                <div
+                  css={`
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    ${styles.Eligible}
+                  `}
+                />
+                <div>Eligible</div>
+              </div>
+              <div
+                css={`
+                  gap: 5px;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  transition: opacity 0.2s ease-in-out;
+                  opacity: ${!hoveredLegend || hoveredLegend === "Not Eligible"
+                    ? 1
+                    : 0.3};
 
-                  > div {
-                    position: relative;
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 5px;
+                      }
+                    }
                   }
                 `}
+                onMouseEnter={() => setHoveredLegend("Not Eligible")}
+                onMouseLeave={() => setHoveredLegend(null)}
               >
-                <div>
-                  <div
-                    css={`
-                      width: 10px;
-                      height: 10px;
-                      border-radius: 50%;
-                      ${styles.Eligible}
-                    `}
-                  />
-                  <div
-                    css={`
-                      font-size: 12px;
-                      position: absolute;
-                    `}
-                  >
-                    HIV
-                  </div>
+                <div
+                  css={`
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    ${styles["Not Eligible"]}
+                  `}
+                />
+                <div>Not Eligible</div>
+              </div>
+              <div
+                css={`
+                  gap: 5px;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                  transition: opacity 0.2s ease-in-out;
+                  opacity: ${!hoveredLegend ||
+                  hoveredLegend === "Transition Funding"
+                    ? 1
+                    : 0.3};
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 5px;
+                      }
+                    }
+                  }
+                `}
+                onMouseEnter={() => setHoveredLegend("Transition Funding")}
+                onMouseLeave={() => setHoveredLegend(null)}
+              >
+                <div
+                  css={`
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 50%;
+                    ${styles["Transition Funding"]}
+                  `}
+                />
+                <div>Transition Funding</div>
+              </div>
+            </div>
+            {props.aggregateBy === "geographicAreaName" && (
+              <div
+                css={`
+                  margin-top: ${!isSmallScreen ? "50px" : 0};
+                `}
+              >
+                <div
+                  css={`
+                    font-size: 14px;
+                    font-weight: bold;
+                    margin-bottom: 24px;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                  `}
+                >
+                  Country Name
                 </div>
-                <div>
-                  <div
-                    css={`
-                      width: 10px;
-                      height: 10px;
-                      border-radius: 50%;
-                      ${styles["Not Eligible"]}
-                    `}
-                  />
-                  <div
-                    css={`
-                      top: -24px;
-                      left: -8px;
-                      font-size: 12px;
-                      position: absolute;
-                    `}
-                  >
-                    Malaria
+                <div
+                  css={`
+                    gap: 24px;
+                    display: flex;
+                    flex-direction: row;
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 24px;
+                        }
+                      }
+                    }
+
+                    > div {
+                      position: relative;
+                    }
+                  `}
+                >
+                  <div>
+                    <div
+                      css={`
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        ${styles.Eligible}
+                      `}
+                    />
+                    <div
+                      css={`
+                        font-size: 12px;
+                        position: absolute;
+                      `}
+                    >
+                      HIV
+                    </div>
                   </div>
-                </div>
-                {/* <div>
+                  <div>
+                    <div
+                      css={`
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        ${styles["Not Eligible"]}
+                      `}
+                    />
+                    <div
+                      css={`
+                        top: -24px;
+                        left: -8px;
+                        font-size: 12px;
+                        position: absolute;
+                      `}
+                    >
+                      Malaria
+                    </div>
+                  </div>
+                  {/* <div>
                   <div
                     css={`
                       width: 10px;
@@ -371,28 +376,29 @@ export function DotChart(props: DotChartProps) {
                     RSSH
                   </div>
                 </div> */}
-                <div>
-                  <div
-                    css={`
-                      width: 10px;
-                      height: 10px;
-                      border-radius: 50%;
-                      ${styles["Transition Funding"]}
-                    `}
-                  />
-                  <div
-                    css={`
-                      // top: -24px;
-                      font-size: 12px;
-                      position: absolute;
-                    `}
-                  >
-                    Tuberculosis
+                  <div>
+                    <div
+                      css={`
+                        width: 10px;
+                        height: 10px;
+                        border-radius: 50%;
+                        ${styles["Transition Funding"]}
+                      `}
+                    />
+                    <div
+                      css={`
+                        // top: -24px;
+                        font-size: 12px;
+                        position: absolute;
+                      `}
+                    >
+                      Tuberculosis
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </Grid>
         {isSmallScreen && <div css="width: 100%; height: 20px" />}
         <Grid

@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { createMuiTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import { Palette } from "@material-ui/core/styles/createPalette";
 
 import {
@@ -177,7 +177,7 @@ export const ProjectTypography: TypographyOptions = {
   },
 };
 
-export default createMuiTheme({
+export default createTheme({
   overrides: {
     // Name of the component ⚛️
     // MuiCssBaseline: {
