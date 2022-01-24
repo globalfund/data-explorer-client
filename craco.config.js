@@ -26,6 +26,9 @@ module.exports = {
 
   babel: {
     plugins: ["babel-plugin-styled-components"],
+    loaderOptions: {
+      ignore: ["./node_modules/mapbox-gl/dist/mapbox-gl.js"],
+    },
   },
 
   // plugins: [
