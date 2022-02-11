@@ -48,20 +48,31 @@ export const APIModel = <QueryModel, ResponseModel>(
   }),
   fetch: thunk(async (actions, query: RequestValues<QueryModel>) => {
     actions.onRequest();
-    axios
-      .get(
-        `${url}${query.filterString ? "?" : ""}${query.filterString ?? ""}`,
-        {
+    if (query.isCMSfetch) {
+      axios
+        .get(url, {
           headers: {
             "Content-Type": "application/json",
           },
-        }
-      )
-      .then(
-        (resp: AxiosResponse) =>
-          actions.onSuccess({ ...resp.data, addOnData: query.addOnData }),
-        (error: any) => actions.onError(error.response)
-      );
+        })
+        .then(
+          (resp: AxiosResponse) =>
+            actions.onSuccess({ ...resp.data, addOnData: false }),
+          (error: any) => actions.onError(error.response)
+        );
+    } else {
+      axios
+        .post(url, query.values, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then(
+          (resp: AxiosResponse) =>
+            actions.onSuccess({ ...resp.data, addOnData: query.addOnData }),
+          (error: any) => actions.onError(error.response)
+        );
+    }
   }),
   setData: action((state, payload: any) => {
     state.data = payload;
@@ -76,3 +87,4 @@ export const APIModel = <QueryModel, ResponseModel>(
     state.errorData = null;
   }),
 });
+/* eslint-disable no-param-reassign */

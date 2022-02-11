@@ -131,6 +131,9 @@ import PartnerDetailSignedTreemap, {
   PartnerDetailSignedTreemapDrilldown,
 } from "../api/action-reducers/partnerDetail/signedTreemap";
 
+import modulesLanding from "app/state/api/action-reducers/cms/modulesLanding";
+import modulesAbout from "app/state/api/action-reducers/cms/modulesAbout";
+
 const storeContent: StoreModel = {
   // data viz api
   Documents: persist(Documents),
@@ -283,6 +286,11 @@ const storeContent: StoreModel = {
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),
+  // CMS API
+  cms: {
+    modulesLanding: persist(modulesLanding),
+    modulesAbout: persist(modulesAbout),
+  },
 };
 
 export const store = createStore(storeContent);

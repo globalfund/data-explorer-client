@@ -13,6 +13,9 @@ import {
   ToolBoxPanelResultsYearStateModel,
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
+import {
+  CMSApiModulesLanding, CMSApiModulesAbout
+} from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
   values?: T;
@@ -64,6 +67,14 @@ export type ApiCallModel = ApiModel<
   ApiCallParams | ApiCallParams[] | string,
   ApiResponseModel
 >;
+
+// CMS API Call model for
+export type CMSApiCallModel = ApiModel<
+  CMSApiCallParams, 
+  CMSApiModulesLanding | CMSApiModulesAbout
+>;
+
+export interface CMSApiCallParams {}
 
 export interface StoreModel {
   // data viz api
@@ -175,4 +186,9 @@ export interface StoreModel {
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
+  // CMS
+  cms: {
+    modulesLanding: CMSApiCallModel;
+    modulesAbout: CMSApiCallModel;
+  }
 }

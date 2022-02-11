@@ -5,6 +5,7 @@ import { useGA } from "app/hooks/useGA";
 import axios, { AxiosResponse } from "axios";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { V1RouteRedirections } from "app/utils/v1Routes";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
@@ -63,6 +64,10 @@ export function MainRoutes() {
   useScrollToTop();
   useUrlFilters();
   useGA();
+
+  useCMSData({
+    loadData: true,
+  })
 
   // const isMobile = useMediaQuery("(max-width: 767px)");
 
