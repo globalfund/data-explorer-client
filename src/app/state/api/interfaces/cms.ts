@@ -31,3 +31,59 @@ export interface CMSApiModulesAbout {
     linksTitle: string;
   }
 }
+
+export interface CMSApiModulesCommon {
+  data: {
+    noMatchOops: string;
+    noMatch404: string;
+    noMatchSorry: string;
+    noMatchBack: string;
+  }
+}
+
+export interface CMSApiModulesCountryDetail {
+  data: {
+    seeResultsStart: string;
+    seeResultsEnd: string;
+    investments: string;
+    disbursed: string;
+    committed: string;
+    signed: string;
+    fundManager: string;
+  }
+}
+
+export interface CMSApiModulesDatasets {
+  data: {
+    title: string;
+    titleShort: string;
+    home: string;
+  }
+}
+
+export interface CMSApiModulesGrantDetail {
+  data: {
+    titleStart: string;
+    titleEnd: string;
+    titleShort: string;
+    rating: string;
+    disbursed: string;
+    committed: string;
+    signed: string;
+    fundManager: string;
+    latestRating: string;
+    finance: string;
+  }
+}
+
+export interface CMSApiModulesGrants {
+  data: {
+    titleStart: string;
+    titleEnd: string;
+    titleShort: string;
+    home: string;
+    datasets: string;
+    grants: string;
+    searchPlaceholder: string;
+  }
+}

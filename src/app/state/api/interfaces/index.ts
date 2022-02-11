@@ -14,7 +14,7 @@ import {
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 import {
-  CMSApiModulesLanding, CMSApiModulesAbout
+  CMSApiModulesLanding, CMSApiModulesAbout, CMSApiModulesCommon, CMSApiModulesCountryDetail, CMSApiModulesDatasets, CMSApiModulesGrantDetail, CMSApiModulesGrants,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -71,7 +71,7 @@ export type ApiCallModel = ApiModel<
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
   CMSApiCallParams, 
-  CMSApiModulesLanding | CMSApiModulesAbout
+  CMSApiModulesLanding | CMSApiModulesAbout | CMSApiModulesCommon | CMSApiModulesCountryDetail | CMSApiModulesDatasets | CMSApiModulesGrantDetail | CMSApiModulesGrants
 >;
 
 export interface CMSApiCallParams {}
@@ -190,5 +190,10 @@ export interface StoreModel {
   cms: {
     modulesLanding: CMSApiCallModel;
     modulesAbout: CMSApiCallModel;
+    modulesCommon: CMSApiCallModel;
+    modulesCountryDetail: CMSApiCallModel;
+    modulesDatasets: CMSApiCallModel;
+    modulesGrantDetail: CMSApiCallModel;
+    modulesGrants: CMSApiCallModel;
   }
 }

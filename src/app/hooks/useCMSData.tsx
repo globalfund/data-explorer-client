@@ -14,7 +14,42 @@ export function useCMSData(props: useCMSDataProps) {
   const [cmsData, setCMSData] = useRecoilState(cmsDataAtom);
   
   // MODULES
-  // Modules - Landing
+  const modulesAboutCMSAction = useStoreActions(
+    (actions) => actions.cms.modulesAbout.fetch
+  );
+  const modulesAboutCMSData = useStoreState(
+    (state) => state.cms.modulesAbout.data
+  );
+  const modulesCommonCMSAction = useStoreActions(
+    (actions) => actions.cms.modulesCommon.fetch
+  );
+  const modulesCommonCMSData = useStoreState(
+    (state) => state.cms.modulesCommon.data
+  );
+  const modulesCountryDetailCMSAction = useStoreActions(
+    (actions) => actions.cms.modulesCountryDetail.fetch
+  );
+  const modulesCountryDetailCMSData = useStoreState(
+    (state) => state.cms.modulesCountryDetail.data
+  );
+  const modulesDatasetsCMSAction = useStoreActions(
+    (actions) => actions.cms.modulesDatasets.fetch
+  );
+  const modulesDatasetsCMSData = useStoreState(
+    (state) => state.cms.modulesDatasets.data
+  );
+  const modulesGrantDetailCMSAction = useStoreActions(
+    (actions) => actions.cms.modulesGrantDetail.fetch
+  );
+  const modulesGrantDetailCMSData = useStoreState(
+    (state) => state.cms.modulesGrantDetail.data
+  );
+  const modulesGrantsCMSAction = useStoreActions(
+    (actions) => actions.cms.modulesGrants.fetch
+  );
+  const modulesGrantsCMSData = useStoreState(
+    (state) => state.cms.modulesGrants.data
+  );
   const modulesLandingCMSAction = useStoreActions(
     (actions) => actions.cms.modulesLanding.fetch
   );
@@ -22,20 +57,27 @@ export function useCMSData(props: useCMSDataProps) {
     (state) => state.cms.modulesLanding.data
   );
 
-  // Modules - About
-  const modulesAboutCMSAction = useStoreActions(
-    (actions) => actions.cms.modulesAbout.fetch
-  );
-  const modulesAboutCMSData = useStoreState(
-    (state) => state.cms.modulesAbout.data
-  );
-
   React.useEffect(() => {
     if (props.loadData) {
-      modulesLandingCMSAction({
+      modulesAboutCMSAction({
         isCMSfetch: true,
       });
-      modulesAboutCMSAction({
+      modulesCommonCMSAction({
+        isCMSfetch: true,
+      });
+      modulesCountryDetailCMSAction({
+        isCMSfetch: true,
+      });
+      modulesDatasetsCMSAction({
+        isCMSfetch: true,
+      });
+      modulesGrantDetailCMSAction({
+        isCMSfetch: true,
+      });
+      modulesGrantsCMSAction({
+        isCMSfetch: true,
+      });
+      modulesLandingCMSAction({
         isCMSfetch: true,
       });
     }
@@ -46,12 +88,32 @@ export function useCMSData(props: useCMSDataProps) {
     const currentLanguage = "en";
     const items = [
       {
-        key: "modulesLanding",
-        data: modulesLandingCMSData || {},
-      },
-      {
         key: "modulesAbout",
         data: modulesAboutCMSData || {},
+      },
+      {
+        key: "modulesCommon",
+        data: modulesCommonCMSData || {},
+      },
+      {
+        key: "modulesCountryDetail",
+        data: modulesCountryDetailCMSData || {},
+      },
+      {
+        key: "modulesDatasets",
+        data: modulesDatasetsCMSData || {},
+      },
+      {
+        key: "modulesGrantDetail",
+        data: modulesGrantDetailCMSData || {},
+      },
+      {
+        key: "modulesGrants",
+        data: modulesGrantsCMSData || {},
+      },
+      {
+        key: "modulesLanding",
+        data: modulesLandingCMSData || {},
       },
     ];
     items.forEach((item) => {
@@ -92,8 +154,13 @@ export function useCMSData(props: useCMSDataProps) {
       formatCMSData();
     }
   }, [
-    modulesLandingCMSData,
     modulesAboutCMSData,
+    modulesCommonCMSData,
+    modulesCountryDetailCMSData,
+    modulesDatasetsCMSData,
+    modulesGrantDetailCMSData,
+    modulesGrantsCMSData,
+    modulesLandingCMSData,
   ]);
 
   if (props.returnData) {

@@ -8,6 +8,11 @@ export const cmsDataAtom = atom({
   default: {
     modulesLanding: {},
     modulesAbout: {},
+    modulesCommon: {},
+    modulesCountryDetail: {},
+    modulesDatasets: {},
+    modulesGrantDetail: {},
+    modulesGrants: {},
   },
   effects_UNSTABLE: [persistAtom],
 });

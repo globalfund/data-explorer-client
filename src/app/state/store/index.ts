@@ -133,6 +133,11 @@ import PartnerDetailSignedTreemap, {
 
 import modulesLanding from "app/state/api/action-reducers/cms/modulesLanding";
 import modulesAbout from "app/state/api/action-reducers/cms/modulesAbout";
+import modulesCommon from "app/state/api/action-reducers/cms/modulesCommon";
+import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCountryDetail";
+import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
+import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
+import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -290,6 +295,11 @@ const storeContent: StoreModel = {
   cms: {
     modulesLanding: persist(modulesLanding),
     modulesAbout: persist(modulesAbout),
+    modulesCommon: persist(modulesCommon),
+    modulesCountryDetail: persist(modulesCountryDetail),
+    modulesDatasets: persist(modulesDatasets),
+    modulesGrantDetail: persist(modulesGrantDetail),
+    modulesGrants: persist(modulesGrants),
   },
 };
 
