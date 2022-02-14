@@ -12,7 +12,7 @@ interface useCMSDataProps {
 
 export function useCMSData(props: useCMSDataProps) {
   const [cmsData, setCMSData] = useRecoilState(cmsDataAtom);
-  
+
   // MODULES
   const modulesAboutCMSAction = useStoreActions(
     (actions) => actions.cms.modulesAbout.fetch
@@ -147,7 +147,6 @@ export function useCMSData(props: useCMSDataProps) {
     });
     setCMSData(newData);
   }
-
 
   useUpdateEffect(() => {
     if (props.loadData) {
