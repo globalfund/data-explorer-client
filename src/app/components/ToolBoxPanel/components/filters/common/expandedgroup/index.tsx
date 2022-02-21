@@ -40,14 +40,10 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [tmpAppliedFilters, setTmpAppliedFilters] = React.useState([
     ...appliedFilters,
   ]);
-  const [
-    tmpAppliedFiltersChildren,
-    setTmpAppliedFiltersChildren,
-  ] = React.useState([...(appliedFiltersChildren || [])]);
-  const [
-    tmpAppliedFiltersGrandChildren,
-    setTmpAppliedFiltersGrandChildren,
-  ] = React.useState([...(appliedFiltersGrandChildren || [])]);
+  const [tmpAppliedFiltersChildren, setTmpAppliedFiltersChildren] =
+    React.useState([...(appliedFiltersChildren || [])]);
+  const [tmpAppliedFiltersGrandChildren, setTmpAppliedFiltersGrandChildren] =
+    React.useState([...(appliedFiltersGrandChildren || [])]);
 
   React.useEffect(() => {
     let allOptionsCount = 0;
@@ -279,6 +275,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   function resetFilters() {
     if (appliedFilters.length > 0) {
       setAppliedFilters([]);
+      setTmpAppliedFilters([]);
     }
     if (
       appliedFiltersChildren &&
@@ -286,6 +283,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       appliedFiltersChildren.length > 0
     ) {
       setAppliedFiltersChildren([]);
+      setTmpAppliedFiltersChildren([]);
     }
     if (
       appliedFiltersGrandChildren &&
@@ -293,6 +291,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       appliedFiltersGrandChildren.length > 0
     ) {
       setAppliedFiltersGrandChildren([]);
+      setTmpAppliedFiltersGrandChildren([]);
     }
   }
 
