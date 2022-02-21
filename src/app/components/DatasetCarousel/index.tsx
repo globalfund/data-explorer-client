@@ -147,7 +147,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Committments
+                <b>Finance</b> · Commitments
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -301,7 +301,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Committments Time cycle
+                <b>Finance</b> · Commitments Time cycle
               </div>
               <InvestmentsBarPreview />
             </>,
