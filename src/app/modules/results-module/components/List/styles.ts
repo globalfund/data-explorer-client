@@ -46,8 +46,12 @@ export const buttonrow = (position: "up" | "down") => css`
     }
   }
 
-  path {
-    fill: ${position === "up" ? "#fff" : "#495057"};
+  svg {
+    transform: rotate(${position === "up" ? "180deg" : "0deg"});
+    
+    path {
+      fill: ${position === "up" ? "#fff" : "#495057"};
+    }
   }
 
   &:hover {

@@ -82,9 +82,11 @@ function ResultsListItem(props: ResultListItemModel) {
             <div css={row(14, "normal")}>{props.title}</div>
             {/* 3rd row */}
             <div
+              id="result-see-more-button"
               css={buttonrow("down")}
-              onClick={() => {
+              onClick={(e: any) => {
                 if (!isLocationDetail) {
+                  e.stopPropagation();
                   setExpand(true);
                 }
               }}
@@ -105,7 +107,14 @@ function ResultsListItem(props: ResultListItemModel) {
         {expand && (
           <React.Fragment>
             {/* 1st row */}
-            <div css={buttonrow("up")} onClick={() => setExpand(false)}>
+            <div
+              id="result-see-more-button"
+              css={buttonrow("up")}
+              onClick={(e: any) => {
+                e.stopPropagation();
+                setExpand(false);
+              }}
+            >
               <TriangleXSIcon />
               <div>See more</div>
             </div>
