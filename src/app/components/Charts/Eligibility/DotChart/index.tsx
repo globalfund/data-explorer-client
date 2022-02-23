@@ -301,7 +301,7 @@ export function DotChart(props: DotChartProps) {
                       sans-serif;
                   `}
                 >
-                  Country Name
+                  {get(cmsData, "componentsChartsEligibility.countryName", "")}
                 </div>
                 <div
                   css={`
@@ -338,7 +338,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      HIV
+                      {get(cmsData, "componentsChartsEligibility.hiv", "")}
                     </div>
                   </div>
                   <div>
@@ -358,7 +358,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Malaria
+                      {get(cmsData, "componentsChartsEligibility.malaria", "")}
                     </div>
                   </div>
                   {/* <div>
@@ -395,7 +395,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Tuberculosis
+                      {get(cmsData, "componentsChartsEligibility.tuberculosis", "")}
                     </div>
                   </div>
                 </div>
