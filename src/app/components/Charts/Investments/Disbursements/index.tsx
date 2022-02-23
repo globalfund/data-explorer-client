@@ -17,8 +17,11 @@ import { DisbursementsTreemapProps } from "app/components/Charts/Investments/Dis
 import { NoDataTreemap } from "app/components/Charts/Investments/Disbursements/components/nodata";
 import { TreemapTooltip } from "app/components/Charts/Investments/Disbursements/components/tooltip";
 import { TreeemapNode } from "app/components/Charts/Investments/Disbursements/components/treemapnode";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
+  const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [
     xsTooltipData,
@@ -203,7 +206,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                         );
                       }}
                     >
-                      Drilldown
+                      {get(cmsData, "componentsChartsInvestments.drilldown", "")}
                     </TooltipButton>
                   </div>
                 )}

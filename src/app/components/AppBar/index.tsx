@@ -7,6 +7,8 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronLeft from "@material-ui/icons/ChevronLeft";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const TextHeader = (label: string) => (
   <h2
@@ -41,6 +43,7 @@ function MobileHeader() {
 export function AppBar() {
   const location = useLocation();
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
 
   if (location.pathname === "/") {
     return <React.Fragment />;
@@ -49,9 +52,9 @@ export function AppBar() {
   function getMobilePageHeader() {
     switch (location.pathname) {
       case "/about":
-        return TextHeader("About");
+        return TextHeader(get(cmsData, "componentsAppBar.about", ""));
       case "/datasets":
-        return TextHeader("Datasets");
+        return TextHeader(get(cmsData, "componentsAppBar.datasets", ""));
       default:
         return <MobileHeader />;
     }
@@ -78,7 +81,7 @@ export function AppBar() {
                   src="/gflogo.png"
                   width={295}
                   height={24}
-                  alt="TGF Data Explorer logo"
+                  alt={get(cmsData, "componentsAppBar.logoAlt", "")}
                 />
               </NavLink>
               <NavLink
@@ -90,7 +93,7 @@ export function AppBar() {
                   text-decoration: none;
                 `}
               >
-                About
+                {get(cmsData, "componentsAppBar.about", "")}
               </NavLink>
             </React.Fragment>
           )}

@@ -1,7 +1,11 @@
 import React from "react";
 import { css } from "styled-components/macro";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function NetworkLegends() {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <React.Fragment>
       <div
@@ -13,7 +17,7 @@ export function NetworkLegends() {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Achievement Rate
+        {get(cmsData, "componentsChartsNetwork.achievementRate", "")}
       </div>
       <div
         css={`
@@ -277,11 +281,13 @@ const styles = {
 };
 
 export function AchievementRateLegend() {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div css={styles.container}>
       <div css={styles.legendContainer}>
         <div css={styles.top}>
-          <div css={styles.title}>Achievement Rate</div>
+          <div css={styles.title}>{get(cmsData, "componentsChartsNetwork.achievementRate", "")}</div>
         </div>
         <div css={styles.spacer} />
         <div css={styles.legends}>
@@ -307,9 +313,9 @@ export function AchievementRateLegend() {
         </div>
       </div>
       <div css={styles.noDataLegendContainer}>
-        <div css={styles.noData(true)}>N/A</div>
+        <div css={styles.noData(true)}>{get(cmsData, "componentsChartsNetwork.notAvailable", "")}</div>
         <div css={styles.spacer} />
-        <div css={styles.noData(false)}>Not reported</div>
+        <div css={styles.noData(false)}>{get(cmsData, "componentsChartsNetwork.notReported", "")}</div>
       </div>
     </div>
   );

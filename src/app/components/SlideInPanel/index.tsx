@@ -7,6 +7,8 @@ import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface SlideInContainerProps {
   ref?: any;
@@ -65,6 +67,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
       setOpen(tmp);
     }
   }, [props.vizLevel, props.selected]);
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <Slide in={open} mountOnEnter unmountOnExit timeout={500} direction="left">
@@ -172,7 +175,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
                     }
                   `}
                 >
-                  Back
+                  {get(cmsData, "componentsSlideInPanel.back", "")}
                 </Button>
               )}
               {props.children}

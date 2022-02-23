@@ -156,7 +156,6 @@ const datasets: DatasetItemModel[] = [
 export default function Datasets() {
   const cmsData = useCMSData({ returnData: true });
   useTitle(get(cmsData, "modulesDatasets.title", ""));
-  console.log(cmsData)
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   React.useEffect(() => {

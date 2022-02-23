@@ -24,11 +24,13 @@ import {
   ratingColor,
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 // TODO: clean up component
 // TODO: discuss with Dafei what should happen when only 1 component is in the data.
 // TODO: the labels are a bit iffy when there are 5 components. -> create an algorithm that calculates the middle of the pie.
 export function GrantsViz(props: GrantsVizProps) {
+  const cmsData = useCMSData({ returnData: true });
   const { data } = props;
   const history = useHistory();
   const { x, y } = useMousePosition();
@@ -135,7 +137,7 @@ export function GrantsViz(props: GrantsVizProps) {
                 }
               `}
             >
-              Grant detail page
+              {get(cmsData, "componentsChartsGrants.grantsDetailPage", "")}
             </Button>
           )}
         </div>
@@ -588,6 +590,8 @@ export function ComponentDividers(props: any) {
 }
 
 export const RadialChartLegend = (props: any) => {
+  const cmsData = useCMSData({ returnData: true });
+
   const header = css`
     font-weight: bold;
     font-size: 12px;
@@ -736,7 +740,7 @@ export const RadialChartLegend = (props: any) => {
           justify-content: center;
         `}
       >
-        <div css={header}>Implementation Period</div>
+        <div css={header}>{get(cmsData, "componentsChartsGrants.implementationPeriod", "")}</div>
         <div css={implementationPeriodContainer}>
           <div css={implementationPeriod}>
             <div css={end} />
@@ -750,7 +754,7 @@ export const RadialChartLegend = (props: any) => {
                   transform: translateY(-8px);
                 `}
               >
-                Implementation End
+                {get(cmsData, "componentsChartsGrants.implementationEnd", "")}
               </div>
 
               <div
@@ -760,7 +764,7 @@ export const RadialChartLegend = (props: any) => {
                   line-height: normal;
                 `}
               >
-                Size of the circle: {`\n`} Disbursements {`\n`} (Max value{" "}
+                {get(cmsData, "componentsChartsGrants.circleSize", "")} {`\n`} {get(cmsData, "componentsChartsGrants.circleContent", "")} {`\n`} ({get(cmsData, "componentsChartsGrants.circleMaxValue", "")}{" "}
                 {formatFinancialValue(props.maxValue)})
               </div>
             </div>
@@ -769,12 +773,12 @@ export const RadialChartLegend = (props: any) => {
                 transform: translateY(6px);
               `}
             >
-              Implementation Start
+              {get(cmsData, "componentsChartsGrants.implementationStart", "")}
             </div>
           </div>
         </div>
         <div css={note}>
-          *One grant could contains Multiple Implementation Periods
+          {get(cmsData, "componentsChartsGrants.note", "")}
         </div>
       </div>
       <div
@@ -796,7 +800,7 @@ export const RadialChartLegend = (props: any) => {
             justify-content: center;
           `}
         >
-          <div css={header}>Latest Rating color code</div>
+          <div css={header}>L{get(cmsData, "componentsChartsGrants.latestRatingColor", "")}</div>
           <div
             css={`
               width: 100%;
@@ -897,13 +901,13 @@ export const RadialChartLegend = (props: any) => {
           `}
         >
           <div css="width: 100%;height: 15px;" />
-          <div css={header}>Grant Status</div>
+          <div css={header}>{get(cmsData, "componentsChartsGrants.grantStatus", "")}</div>
           <hr css={solid} />
-          <div css={body}>Active</div>
+          <div css={body}>{get(cmsData, "componentsChartsGrants.active", "")}</div>
           <hr css={dashed} />
-          <div css={body}>In closure</div>
+          <div css={body}>{get(cmsData, "componentsChartsGrants.closure", "")}</div>
           <hr css={dotted} />
-          <div css={body}>Administratly Closed</div>
+          <div css={body}>{get(cmsData, "componentsChartsGrants.closed", "")}</div>
         </div>
       </div>
     </div>

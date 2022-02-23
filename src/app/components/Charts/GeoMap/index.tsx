@@ -41,8 +41,11 @@ import { TooltipButton } from "app/components/Charts/common/styles";
 import { MapPin } from "app/components/Charts/GeoMap/components/pins";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { GeoMapControls } from "app/components/Charts/GeoMap/components/controls";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function GeoMap(props: GeoMapProps) {
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
   const mapRef = React.useRef<React.Ref<MapRef>>();
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -480,7 +483,7 @@ export function GeoMap(props: GeoMapProps) {
                       );
                     }}
                   >
-                    Go to detail page
+                    {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
                   </TooltipButton>
                 </div>
               )}
@@ -581,7 +584,7 @@ export function GeoMap(props: GeoMapProps) {
                       );
                     }}
                   >
-                    Go to detail page
+                    {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
                   </TooltipButton>
                 </div>
               )}
@@ -732,7 +735,7 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  Location detail page
+                  {get(cmsData, "componentsChartsGeomap.locationDetail", "")}
                 </TooltipButton>
               </div>
             )}
@@ -807,7 +810,7 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  Location detail page
+                  {get(cmsData, "componentsChartsGeomap.locationDetail", "")}
                 </TooltipButton>
               </div>
             )}

@@ -11,6 +11,8 @@ import { DocumentsTablePreview } from "app/assets/dataset-preview/documentsTable
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const griditem = (content: React.ReactElement, link: string) => (
   <Link to={link} css="text-decoration: none;">
@@ -50,6 +52,16 @@ const griditem = (content: React.ReactElement, link: string) => (
 
 export function DatasetCarousel() {
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  const cmsData = useCMSData({ returnData: true });
+
+  const fpText = {__html: (get(cmsData, "componentsDatasetCarousel.financePledgesContributions", ""))};
+  const fsText = {__html: (get(cmsData, "componentsDatasetCarousel.financeSignedAmounts", ""))};
+  const fcText = {__html: (get(cmsData, "componentsDatasetCarousel.financeCommitments", ""))};
+  const fdText = {__html: (get(cmsData, "componentsDatasetCarousel.financeDisbursements", ""))};
+  const fbText = {__html: (get(cmsData, "componentsDatasetCarousel.financeBudgets", ""))};
+  const aeText = {__html: (get(cmsData, "componentsDatasetCarousel.accessEligibility", ""))};
+  const aaText = {__html: (get(cmsData, "componentsDatasetCarousel.accessAllocations", ""))};
+
   return (
     <div
       css={`
@@ -125,7 +137,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Pledges & Contributions
+                <div dangerouslySetInnerHTML={fpText} />
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -136,7 +148,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Signed Amounts
+                <div dangerouslySetInnerHTML={fsText} />
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -147,7 +159,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Commitments
+                <div dangerouslySetInnerHTML={fcText} />
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -158,7 +170,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Disbursements
+                <div dangerouslySetInnerHTML={fdText} />
               </div>
               <InvestmentsTreemapPreview />
             </>,
@@ -169,7 +181,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Finance</b> · Budgets
+                <div dangerouslySetInnerHTML={fbText} />
               </div>
               <BudgetFlowPreview />
             </>,
@@ -180,7 +192,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Access to Funding</b> · Eligibility
+                <div dangerouslySetInnerHTML={aeText} />
               </div>
               <EligibilityDotsPreview />
             </>,
@@ -191,7 +203,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Access to Funding</b> · Allocations
+                <div dangerouslySetInnerHTML={aaText} />
               </div>
               <AllocationsRadialPreview />
             </>,
@@ -202,7 +214,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Grants</b>
+                <b>{get(cmsData, "componentsDatasetCarousel.grants", "")}</b>
               </div>
               <GrantsListPreview />
             </>,
@@ -213,7 +225,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Results</b>
+                <b>{get(cmsData, "componentsDatasetCarousel.results", "")}</b>
               </div>
               <ResultsListPreview />
             </>,
@@ -224,7 +236,7 @@ export function DatasetCarousel() {
           {griditem(
             <>
               <div>
-                <b>Documents</b>
+                <b>{get(cmsData, "componentsDatasetCarousel.documents", "")}</b>
               </div>
               <DocumentsTablePreview />
             </>,

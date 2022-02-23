@@ -17,6 +17,8 @@ import { MobileBudgetsFlowTooltipProps } from "app/components/Charts/Budgets/Flo
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { MobileBudgetsFlowTooltip } from "app/components/Charts/Budgets/Flow/components/tooltip";
 import { NoDataBudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle/components/nodata";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 function getKeysFromData(data: Record<string, unknown>[]) {
   if (data.length === 0) {
@@ -124,6 +126,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
       />
     ));
   };
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div
@@ -168,7 +171,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
                   }
                 `}
               >
-                Budget <InfoIcon />
+                {get(cmsData, "componentsChartsBudgets.budget", "")} <InfoIcon />
               </div>
               <div css="font-weight: normal;">
                 {formatFinancialValue(totalBudget)}
@@ -177,7 +180,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
           )}
           {isMobile && (
             <Grid item xs={12} css="font-size: 12px !important;">
-              <b>Total amount: {formatFinancialValue(totalBudget)}</b>
+              <b>{get(cmsData, "componentsChartsBudgets.totalAmount", "")} {formatFinancialValue(totalBudget)}</b>
             </Grid>
           )}
         </Grid>
