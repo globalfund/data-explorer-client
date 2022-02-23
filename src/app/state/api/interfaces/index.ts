@@ -14,6 +14,24 @@ import {
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 import {
+  CMSApiComponentsAppBar,
+  CMSApiComponentsChartsBudgets,
+  CMSApiComponentsChartsCommon,
+  CMSApiComponentsChartsEligibility,
+  CMSApiComponentsChartsGeomap,
+  CMSApiComponentsChartsGrants,
+  CMSApiComponentsChartsInvestments,
+  CMSApiComponentsChartsNetwork,
+  CMSApiComponentsChartsPerformanceRating,
+  CMSApiComponentsChartsPledges,
+  CMSApiComponentsCookieDialog,
+  CMSApiComponentsDatasetCarousel,
+  CMSApiComponentsInformationPanel,
+  CMSApiComponentsMobile,
+  CMSApiComponentsPageHeader,
+  CMSApiComponentsPerformanceFrameworkComponents,
+  CMSApiComponentsSearch,
+  CMSApiComponentsSlideInPanel,
   CMSApiModulesLanding, CMSApiModulesAbout, CMSApiModulesCommon, CMSApiModulesCountryDetail, CMSApiModulesDatasets, CMSApiModulesGrantDetail, CMSApiModulesGrants,
 } from "app/state/api/interfaces/cms";
 
@@ -71,6 +89,24 @@ export type ApiCallModel = ApiModel<
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
   CMSApiCallParams, 
+  CMSApiComponentsAppBar |
+  CMSApiComponentsChartsBudgets |
+  CMSApiComponentsChartsCommon |
+  CMSApiComponentsChartsEligibility |
+  CMSApiComponentsChartsGeomap |
+  CMSApiComponentsChartsGrants |
+  CMSApiComponentsChartsInvestments |
+  CMSApiComponentsChartsNetwork |
+  CMSApiComponentsChartsPerformanceRating |
+  CMSApiComponentsChartsPledges |
+  CMSApiComponentsCookieDialog |
+  CMSApiComponentsDatasetCarousel |
+  CMSApiComponentsInformationPanel |
+  CMSApiComponentsMobile |
+  CMSApiComponentsPageHeader |
+  CMSApiComponentsPerformanceFrameworkComponents |
+  CMSApiComponentsSearch |
+  CMSApiComponentsSlideInPanel | 
   CMSApiModulesLanding | CMSApiModulesAbout | CMSApiModulesCommon | CMSApiModulesCountryDetail | CMSApiModulesDatasets | CMSApiModulesGrantDetail | CMSApiModulesGrants
 >;
 
@@ -188,6 +224,24 @@ export interface StoreModel {
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
   // CMS
   cms: {
+    componentsAppBar: CMSApiCallModel;
+    componentsChartsBudgets: CMSApiCallModel;
+    componentsChartsCommon: CMSApiCallModel;
+    componentsChartsEligibility: CMSApiCallModel;
+    componentsChartsGeomap: CMSApiCallModel;
+    componentsChartsGrants: CMSApiCallModel;
+    componentsChartsInvestments: CMSApiCallModel;
+    componentsChartsNetwork: CMSApiCallModel;
+    componentsChartsPerformanceRating: CMSApiCallModel;
+    componentsChartsPledges: CMSApiCallModel;
+    componentsCookieDialog: CMSApiCallModel;
+    componentsDatasetCarousel: CMSApiCallModel;
+    componentsInformationPanel: CMSApiCallModel;
+    componentsMobile: CMSApiCallModel;
+    componentsPageHeader: CMSApiCallModel;
+    componentsPerformanceFrameworkComponents: CMSApiCallModel;
+    componentsSearch: CMSApiCallModel;
+    componentsSlideInPanel: CMSApiCallModel;
     modulesLanding: CMSApiCallModel;
     modulesAbout: CMSApiCallModel;
     modulesCommon: CMSApiCallModel;

@@ -131,6 +131,24 @@ import PartnerDetailSignedTreemap, {
   PartnerDetailSignedTreemapDrilldown,
 } from "../api/action-reducers/partnerDetail/signedTreemap";
 
+import componentsAppBar from "app/state/api/action-reducers/cms/componentsAppBar";
+import componentsChartsBudgets from "app/state/api/action-reducers/cms/componentsChartsBudgets";
+import componentsChartsCommon from "app/state/api/action-reducers/cms/componentsChartsCommon";
+import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
+import componentsChartsGeomap from "app/state/api/action-reducers/cms/componentsChartsGeomap";
+import componentsChartsGrants from "app/state/api/action-reducers/cms/componentsChartsGrants";
+import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
+import componentsChartsNetwork from "app/state/api/action-reducers/cms/componentsChartsNetwork";
+import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
+import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
+import componentsCookieDialog from "app/state/api/action-reducers/cms/componentsCookieDialog";
+import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
+import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
+import componentsMobile from "app/state/api/action-reducers/cms/componentsMobile";
+import componentsPageHeader from "app/state/api/action-reducers/cms/componentsPageHeader";
+import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
+import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch";
+import componentsSlideInPanel from "app/state/api/action-reducers/cms/componentsSlideInPanel";
 import modulesLanding from "app/state/api/action-reducers/cms/modulesLanding";
 import modulesAbout from "app/state/api/action-reducers/cms/modulesAbout";
 import modulesCommon from "app/state/api/action-reducers/cms/modulesCommon";
@@ -293,6 +311,24 @@ const storeContent: StoreModel = {
   ),
   // CMS API
   cms: {
+    componentsAppBar: persist(componentsAppBar),
+    componentsChartsBudgets: persist(componentsChartsBudgets),
+    componentsChartsCommon: persist(componentsChartsCommon),
+    componentsChartsEligibility: persist(componentsChartsEligibility),
+    componentsChartsGeomap: persist(componentsChartsGeomap),
+    componentsChartsGrants: persist(componentsChartsGrants),
+    componentsChartsInvestments: persist(componentsChartsInvestments),
+    componentsChartsNetwork: persist(componentsChartsNetwork),
+    componentsChartsPerformanceRating: persist(componentsChartsPerformanceRating),
+    componentsChartsPledges: persist(componentsChartsPledges),
+    componentsCookieDialog: persist(componentsCookieDialog),
+    componentsDatasetCarousel: persist(componentsDatasetCarousel),
+    componentsInformationPanel: persist(componentsInformationPanel),
+    componentsMobile: persist(componentsMobile),
+    componentsPageHeader: persist(componentsPageHeader),
+    componentsPerformanceFrameworkComponents: persist(componentsPerformanceFrameworkComponents),
+    componentsSearch: persist(componentsSearch),
+    componentsSlideInPanel: persist(componentsSlideInPanel),
     modulesLanding: persist(modulesLanding),
     modulesAbout: persist(modulesAbout),
     modulesCommon: persist(modulesCommon),
