@@ -113,16 +113,21 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       props.code
     ) {
       const idSplits = drilldownVizSelected.split("-");
+      const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
+      const activityAreaNameFilter =
+        idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
       const filterString = getAPIFormattedFilters({
         ...appliedFilters,
-        components: [...appliedFilters.components, idSplits[1]],
+        components: [...appliedFilters.components, componentFilter],
       });
       fetchDrilldownLevel2Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&grantId='${
           props.code
-        }'&IPnumber=${props.implementationPeriod}&activityAreaName=${
-          idSplits[0]
-        }${filterString.length > 0 ? `&${filterString}` : ""}`,
+        }'&IPnumber=${
+          props.implementationPeriod
+        }&activityAreaName=${activityAreaNameFilter}${
+          filterString.length > 0 ? `&${filterString}` : ""
+        }`,
       });
     } else {
       clearDrilldownLevel2Data();

@@ -100,14 +100,17 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
   useUpdateEffect(() => {
     if (drilldownVizSelected !== undefined && vizSelected !== undefined) {
       const idSplits = drilldownVizSelected.split("-");
+      const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
+      const activityAreaNameFilter =
+        idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
       const filterString = getAPIFormattedFilters({
         ...appliedFilters,
-        components: [...appliedFilters.components, idSplits[1]],
+        components: [...appliedFilters.components, componentFilter],
       });
       fetchDrilldownLevel2Data({
-        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&activityAreaName=${
-          idSplits[0]
-        }${filterString.length > 0 ? `&${filterString}` : ""}`,
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&activityAreaName=${activityAreaNameFilter}${
+          filterString.length > 0 ? `&${filterString}` : ""
+        }`,
       });
     } else {
       clearDrilldownLevel2Data();

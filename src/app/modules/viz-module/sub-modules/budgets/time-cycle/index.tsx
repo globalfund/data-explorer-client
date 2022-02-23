@@ -43,10 +43,8 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<TreeMapNodeDatum | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<TreeMapNodeDatum | null>(null);
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
@@ -56,12 +54,15 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       const newDrilldowns = [{ name: "Dataset" }, { name: props.vizSelected }];
       if (props.vizLevel === 2 && props.drilldownVizSelected) {
         const idSplits = props.drilldownVizSelected.split("-");
+        const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
+        const secondDrillDown =
+          idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
         newDrilldowns.push(
           {
-            name: idSplits[1],
+            name: firstDrillDown,
           },
           {
-            name: idSplits[0],
+            name: secondDrillDown,
           }
         );
       }

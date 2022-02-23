@@ -123,8 +123,11 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
       vizSelected.filterStr !== undefined
     ) {
       const idSplits = drilldownVizSelected.id.split("-");
+      const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
+      const activityAreaNameFilter =
+        idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
       fetchDrilldownLevel2Data({
-        filterString: `levelParam=${vizSelected.filterStr}&activityAreaName=${idSplits[0]}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}&components=${idSplits[1]}`,
+        filterString: `levelParam=${vizSelected.filterStr}&activityAreaName=${activityAreaNameFilter}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}&components=${componentFilter}`,
       });
     } else {
       clearDrilldownLevel2Data();
