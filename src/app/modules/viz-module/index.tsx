@@ -81,6 +81,9 @@ export default function VizModule() {
     >
       <PageHeader
         title="Finance"
+        partialTitle={`${params.vizType
+          .slice(0, 1)
+          .toUpperCase()}${params.vizType.slice(1)}`}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {

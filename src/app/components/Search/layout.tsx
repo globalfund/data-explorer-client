@@ -51,7 +51,7 @@ export function SearchLayout(props: SearchLayoutProps) {
 
   return (
     <div css={mobilecontainer(open)}>
-      <div css={container(open)}>
+      <div css={container(open)} id="search-container">
         {isMobile && open && (
           <span
             css={mobilebackbutton}

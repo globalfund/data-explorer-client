@@ -66,7 +66,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 133;
+  let top = 98;
 
   if (
     !props.isGrantDetail &&
@@ -74,54 +74,54 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     vizDrilldowns.length === 0
   ) {
     if (isSmallScreen) {
-      top = 149;
+      top = 99;
       if (isMobile) {
-        top = 161;
+        top = 154;
       }
     } else {
-      top = 133;
+      top = 98;
     }
   }
   if (isSmallScreen && vizDrilldowns.length > 0) {
-    top = 185;
+    top = 133;
     if (isMobile) {
-      top = 196;
+      top = 189;
     }
     if (props.isGrantDetail) {
-      top = 206;
+      top = 170;
       if (isMobile) {
-        top = 139;
+        top = 133;
       }
     }
     if (props.isLocationDetail) {
-      top = 222;
+      top = 170;
       if (isMobile) {
-        top = 196;
+        top = 189;
       }
     }
   } else if (isSmallScreen) {
     if (props.isGrantDetail) {
-      top = 168;
+      top = 137;
       if (isMobile) {
-        top = 104;
+        top = 98;
       }
     }
     if (props.isLocationDetail) {
-      top = 187;
+      top = 137;
       if (isMobile) {
-        top = 161;
+        top = 154;
       }
     }
   } else if (vizDrilldowns.length > 0) {
     if (props.isGrantDetail) {
-      top = 203;
-    } else if (props.isLocationDetail) {
-      top = 203;
-    } else {
       top = 168;
+    } else if (props.isLocationDetail) {
+      top = 168;
+    } else {
+      top = 133;
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
-    top = 168;
+    top = 133;
   }
 
   return (
@@ -181,7 +181,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 flex-direction: column;
               `}
             >
-              {!isSmallScreen && !isMobile && (
+              {!isMobile && (
                 <div
                   role="button"
                   tabIndex={-1}
@@ -217,28 +217,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   onClick={() => props.onCloseBtnClick()}
                 >
                   <TriangleXSIcon />
-                </div>
-              )}
-              {isSmallScreen && !isMobile && (
-                <div
-                  css={`
-                    width: 100%;
-                    height: 24px;
-                    background-color: #373d43;
-                  `}
-                >
-                  <IconButton
-                    css={`
-                      width: 12px;
-                      height: 12px;
-                    `}
-                    onClick={() => props.onCloseBtnClick()}
-                  >
-                    <CloseOutlinedIcon
-                      htmlColor="#ffffff"
-                      viewBox=" -4 -4 30 30"
-                    />
-                  </IconButton>
                 </div>
               )}
               {isMobile && (

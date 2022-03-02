@@ -36,26 +36,27 @@ export function SlideInContainer(props: SlideInContainerProps) {
   const isGrantDetail = location.pathname.indexOf("/grant/") > -1;
   const isPartnerDetail = location.pathname.indexOf("/partner/") > -1;
   const isLocationDetail = location.pathname.indexOf("/location/") > -1;
-  let top = 133;
+
+  let top = 98;
   if (vizDrilldowns.length > 0 || props.bigHeader) {
-    top = 168;
+    top = 133;
     if (isMobile) {
-      top = 195;
+      top = 189;
     }
   }
   if (isGrantDetail) {
-    top = 203;
+    top = 168;
     if (isMobile) {
       top = 104;
       if (vizDrilldowns.length > 0) {
-        top = 140;
+        top = 133;
       }
     }
   }
   if (isPartnerDetail || isLocationDetail) {
-    top = 203;
+    top = 168;
     if (isMobile) {
-      top = 196;
+      top = 189;
     }
   }
 

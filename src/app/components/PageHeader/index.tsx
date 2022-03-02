@@ -3,7 +3,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import { Link, useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
@@ -20,6 +19,7 @@ interface PageHeaderProps {
   title: string;
   tabs?: TabProps[];
   isDetail?: boolean;
+  partialTitle?: string;
   breadcrumbs: BreadcrumbModel[];
 }
 
@@ -100,7 +100,7 @@ const styles = {
     width: 100vw;
     display: flex;
     position: sticky;
-    padding-top: 6px;
+    padding-top: 10px;
     background: #dfe3e6;
     flex-direction: column;
   `,
@@ -114,20 +114,19 @@ const styles = {
     color: #262c34;
     font-size: 24px;
     overflow: hidden;
-    font-weight: bold;
     line-height: 24px;
     align-items: center;
     white-space: nowrap;
     letter-spacing: 0.5px;
     text-overflow: ellipsis;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     @media (max-width: 767px) {
       font-size: 18px;
     }
   `,
   breadcrumbs: css`
-    display: flex;
+    display: none;
+    // display: flex;
     flex-direction: row;
     margin-bottom: 15px;
 
@@ -313,14 +312,18 @@ export function PageHeader(props: PageHeaderProps) {
               }
             `}
           >
-            <Tooltip title={props.title}>
-              <div
-                css={styles.title}
-                style={isGrantDetail ? { fontSize: 14 } : {}}
-              >
-                {props.title}
-              </div>
-            </Tooltip>
+            <div
+              css={styles.title}
+              style={isGrantDetail ? { fontSize: 14 } : {}}
+            >
+              <b>{props.title}</b>
+              {props.partialTitle && (
+                <>
+                  <b> - </b>
+                  {props.partialTitle}
+                </>
+              )}
+            </div>
             {vizDrilldowns.length > 0 && (
               <div css={styles.drilldowns}>
                 {vizDrilldowns.map((item: DrilldownModel, index: number) => (

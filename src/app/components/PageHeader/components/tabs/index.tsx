@@ -38,8 +38,7 @@ const styles = {
     padding: 0;
 
     @media (max-width: 992px) {
-      overflow-x: auto;
-      margin-left: 36px;
+      overflow-x: overlay;
     }
 
     @media (max-width: 767px) {

@@ -8,7 +8,7 @@ export default function LinkList() {
   return (
     <div
       css={`
-        top: 158px;
+        top: 120px;
         position: sticky;
       `}
     >
