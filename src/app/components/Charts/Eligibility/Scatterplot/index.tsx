@@ -37,10 +37,8 @@ const styles = {
 };
 
 export function ScatterPlot(props: ScatterPlotProps) {
-  const [
-    hoveredNode,
-    setHoveredNode,
-  ] = React.useState<EligibilityScatterplotHoveredNode | null>(null);
+  const [hoveredNode, setHoveredNode] =
+    React.useState<EligibilityScatterplotHoveredNode | null>(null);
   const isMobile = useMediaQuery("(max-width: 960px)");
   const [hoveredLegend, setHoveredLegend] = React.useState<
     "Eligible" | "Not Eligible" | "Transition Funding" | null
@@ -165,14 +163,16 @@ export function ScatterPlot(props: ScatterPlotProps) {
             <div>
               {hoveredNode.x} - {hoveredNode.y}
             </div>
-            <IconButton
-              onTouchStart={() => setHoveredNode(null)}
-              css={`
-                padding: 0;
-              `}
-            >
-              <CloseIcon />
-            </IconButton>
+            {isMobile && (
+              <IconButton
+                onTouchStart={() => setHoveredNode(null)}
+                css={`
+                  padding: 0;
+                `}
+              >
+                <CloseIcon />
+              </IconButton>
+            )}
           </div>
           <div>Eligibility: {hoveredNode.eligibility}</div>
           <div>Disease Burden: {diseaseBurdens[hoveredNode.diseaseBurden]}</div>

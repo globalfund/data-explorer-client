@@ -114,10 +114,8 @@ const getNodeLabel = (label: string, matchesSm: boolean): string => {
 export function BudgetsFlow(props: BudgetsFlowProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const legends = getLegendItems(props.data.nodes);
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<MobileBudgetsFlowTooltipProps | null>(null);
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
     "value"
@@ -174,7 +172,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
       <Grid
         container
         css={header}
-        alignItems="center"
+        alignItems="baseline"
         spacing={!isMobile ? 4 : undefined}
       >
         {!isMobile && (
