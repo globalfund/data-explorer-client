@@ -108,6 +108,7 @@ export function PledgesContributionsGeoMap() {
           margin-top: 20px;
           flex-direction: row;
           align-items: flex-end;
+          visibility: ${view === "Public Sector" ? "visible" : "hidden"};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
