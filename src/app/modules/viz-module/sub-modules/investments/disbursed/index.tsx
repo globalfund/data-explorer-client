@@ -16,6 +16,7 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -138,7 +139,7 @@ export function InvestmentsDisbursedModule(
       <Grid
         container
         alignItems="center"
-        spacing={4}
+        spacing={2}
         css={`
           margin-bottom: 20px;
 
@@ -178,6 +179,9 @@ export function InvestmentsDisbursedModule(
             <b>Total amount: {formatFinancialValue(totalValue)}</b>
           </Grid>
         )}
+        <Grid item xs={12}>
+          <DrilldownPath />
+        </Grid>
       </Grid>
       <div
         css={`

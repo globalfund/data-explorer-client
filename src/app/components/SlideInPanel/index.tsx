@@ -16,7 +16,6 @@ interface SlideInContainerProps {
   loading?: boolean;
   toolboxOpen?: boolean;
   children: React.ReactNode;
-  bigHeader?: boolean;
   enableOverflow?: boolean;
 }
 
@@ -26,10 +25,6 @@ export function SlideInContainer(props: SlideInContainerProps) {
     props.vizLevel > 0 && props.selected !== undefined
   );
 
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
-
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
@@ -37,26 +32,18 @@ export function SlideInContainer(props: SlideInContainerProps) {
   const isPartnerDetail = location.pathname.indexOf("/partner/") > -1;
   const isLocationDetail = location.pathname.indexOf("/location/") > -1;
 
-  let top = 98;
-  if (vizDrilldowns.length > 0 || props.bigHeader) {
-    top = 133;
-    if (isMobile) {
-      top = 189;
-    }
-  }
+  let top = 92;
+
   if (isGrantDetail) {
-    top = 168;
+    top = 113;
     if (isMobile) {
-      top = 104;
-      if (vizDrilldowns.length > 0) {
-        top = 133;
-      }
+      top = 92;
     }
   }
   if (isPartnerDetail || isLocationDetail) {
-    top = 168;
+    top = 113;
     if (isMobile) {
-      top = 189;
+      top = 148;
     }
   }
 

@@ -195,7 +195,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            {params.vizType}
+            {params.vizType.replace("-", " & ")}
           </span>
           <ArrowForwardIcon />
         </Button>

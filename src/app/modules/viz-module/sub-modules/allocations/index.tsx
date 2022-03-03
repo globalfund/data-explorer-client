@@ -20,6 +20,7 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
 import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
@@ -364,6 +365,26 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         }
       `}
     >
+      <div
+        css={`
+          display: flex;
+          color: #262c34;
+          font-size: 14px;
+          font-weight: bold;
+          align-items: center;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+          > svg {
+            margin-left: 10px;
+          }
+        `}
+      >
+        Allocations | {selectedPeriod} <InfoIcon />
+      </div>
+      <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
+      <div css="margin-top: 5px;">
+        <DrilldownPath />
+      </div>
       <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
         <div
           ref={ref}
@@ -372,23 +393,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             width: 100%;
           `}
         >
-          <div
-            css={`
-              display: flex;
-              color: #262c34;
-              font-size: 14px;
-              font-weight: bold;
-              align-items: center;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
-              > svg {
-                margin-left: 10px;
-              }
-            `}
-          >
-            Allocations | {selectedPeriod} <InfoIcon />
-          </div>
-          <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
           {total === 0 ? (
             <div css="display: flex;justify-content: center;">
               <NoDataLabel />

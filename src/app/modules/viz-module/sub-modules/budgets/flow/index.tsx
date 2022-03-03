@@ -14,6 +14,7 @@ import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 interface BudgetsFlowModuleProps {
@@ -126,6 +127,9 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           : ""}
       `}
     >
+      <div>
+        <DrilldownPath />
+      </div>
       <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
         {(props.vizLevel === 0 || props.vizLevel === 1) && (
           <BudgetsFlow

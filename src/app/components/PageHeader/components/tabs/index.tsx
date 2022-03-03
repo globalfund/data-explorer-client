@@ -12,9 +12,13 @@ const styles = {
   container: (pathname: string) => css`
     z-index: 1;
 
-    @media (max-width: ${pathname.indexOf("/partner") > -1 ? 500 : 1024}px) {
+    ${pathname.indexOf("/partner") > -1
+      ? `
+    @media (max-width: 500px) {
       width: 100%;
     }
+    `
+      : "width: 100%;"}
   `,
   tooltip: css`
     fill: ${ProjectPalette.primary.main};
@@ -38,7 +42,7 @@ const styles = {
     padding: 0;
 
     @media (max-width: 992px) {
-      overflow-x: overlay;
+      overflow-x: auto;
     }
 
     @media (max-width: 767px) {

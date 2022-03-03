@@ -12,6 +12,7 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 interface BudgetsTimeCycleModuleProps {
@@ -89,6 +90,9 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           : ""}
       `}
     >
+      <div css="margin-bottom: 10px;">
+        <DrilldownPath />
+      </div>
       <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
         {(props.vizLevel === 0 || props.vizLevel === 1) && (
           <BudgetsTimeCycle

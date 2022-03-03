@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import { InputNode, InputLink } from "@nivo/network";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -9,12 +10,12 @@ import { NetworkViz } from "app/components/Charts/Network";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SlideInContainer } from "app/components/SlideInPanel";
 import { TransitionContainer } from "app/components/TransitionContainer";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
 import {
   PFIndicator,
   PFIndicatorResultIntervention,
 } from "app/components/PerformanceFrameworkExpandedView/data";
-import { filter } from "lodash";
 
 interface Props {
   code: string;
@@ -140,6 +141,9 @@ export function PerformanceFrameworkModule(props: Props) {
         }
       `}
     >
+      <div css="margin-bottom: 10px;">
+        <DrilldownPath />
+      </div>
       <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
         <NetworkViz
           data={{ nodes, links }}
@@ -152,7 +156,6 @@ export function PerformanceFrameworkModule(props: Props) {
         />
       </TransitionContainer>
       <SlideInContainer
-        bigHeader
         enableOverflow
         vizLevel={vizLevel}
         selected={vizSelected}

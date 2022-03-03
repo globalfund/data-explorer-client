@@ -4,7 +4,6 @@ import React from "react";
 import get from "lodash/get";
 import Fab from "@material-ui/core/Fab";
 import { useHistory } from "react-router-dom";
-import { useStoreState } from "app/state/store/hooks";
 import { FiltersIcon } from "app/assets/icons/Filters";
 import { useUnmount, useUpdateEffect } from "react-use";
 import { isTouchDevice } from "app/utils/isTouchDevice";
@@ -32,11 +31,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.scrollHeight > document.body.clientHeight
   );
 
-  // viz drilldown items
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
-
   React.useLayoutEffect(() => {
     setVisibleVScrollbar(
       document.body.scrollHeight > document.body.clientHeight
@@ -52,6 +46,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
+  const isPartnerDetail = history.location.pathname.indexOf("/partner/") > -1;
+
   useUpdateEffect(() => {
     if (isMobile) {
       if (props.open) {
@@ -66,62 +62,33 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 98;
+  let top = 92;
 
-  if (
-    !props.isGrantDetail &&
-    !props.isLocationDetail &&
-    vizDrilldowns.length === 0
-  ) {
+  if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {
-      top = 99;
+      top = 92;
       if (isMobile) {
-        top = 154;
+        top = 148;
       }
     } else {
-      top = 98;
+      top = 92;
     }
   }
-  if (isSmallScreen && vizDrilldowns.length > 0) {
-    top = 133;
-    if (isMobile) {
-      top = 189;
-    }
+  if (isSmallScreen) {
     if (props.isGrantDetail) {
-      top = 170;
+      top = 113;
       if (isMobile) {
-        top = 133;
+        top = 92;
       }
     }
-    if (props.isLocationDetail) {
-      top = 170;
+    if (props.isLocationDetail || isPartnerDetail) {
+      top = 113;
       if (isMobile) {
-        top = 189;
+        top = 148;
       }
-    }
-  } else if (isSmallScreen) {
-    if (props.isGrantDetail) {
-      top = 137;
-      if (isMobile) {
-        top = 98;
-      }
-    }
-    if (props.isLocationDetail) {
-      top = 137;
-      if (isMobile) {
-        top = 154;
-      }
-    }
-  } else if (vizDrilldowns.length > 0) {
-    if (props.isGrantDetail) {
-      top = 168;
-    } else if (props.isLocationDetail) {
-      top = 168;
-    } else {
-      top = 133;
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
-    top = 133;
+    top = 112;
   }
 
   return (

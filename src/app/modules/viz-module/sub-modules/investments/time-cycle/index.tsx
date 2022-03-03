@@ -9,6 +9,7 @@ import { SlideInContainer } from "app/components/SlideInPanel";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
@@ -35,10 +36,8 @@ interface InvestmentsTimeCycleModuleProps {
 export function InvestmentsTimeCycleModule(
   props: InvestmentsTimeCycleModuleProps
 ) {
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<TreeMapNodeDatum | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<TreeMapNodeDatum | null>(null);
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
@@ -74,6 +73,9 @@ export function InvestmentsTimeCycleModule(
           : ""}
       `}
     >
+      <div css="margin-bottom: 10px;">
+        <DrilldownPath />
+      </div>
       <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
         {(props.vizLevel === 0 || props.vizLevel === 1) && (
           <InvestmentsTimeCycle

@@ -12,6 +12,7 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
@@ -160,6 +161,9 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
           : ""}
       `}
     >
+      <div css="margin-bottom: 10px;">
+        <DrilldownPath />
+      </div>
       <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
         <PledgesContributionsTimeCycle
           data={data}
