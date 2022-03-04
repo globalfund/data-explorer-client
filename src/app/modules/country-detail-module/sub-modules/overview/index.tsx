@@ -230,35 +230,41 @@ export function LocationDetailOverviewModule(props: Props) {
                 )
               )}
             </div>
-            <div
-              css={`
-                font-size: 14px;
-                font-weight: bold;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
-              Fund Portfolio Manager
-            </div>
-            <div
-              css={`
-                font-size: 14px;
-              `}
-            >
-              {locationInfoData.portfolioManager}
-            </div>
-            <a
-              href={`mailto:${locationInfoData.portfolioManagerEmail}`}
-              css={`
-                font-size: 14px;
-                text-decoration: none;
+            {(locationInfoData.portfolioManager ||
+              locationInfoData.portfolioManagerEmail) && (
+              <React.Fragment>
+                <div
+                  css={`
+                    font-size: 14px;
+                    font-weight: bold;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                  `}
+                >
+                  Fund Portfolio Manager
+                </div>
+                <div
+                  css={`
+                    font-size: 14px;
+                  `}
+                >
+                  {locationInfoData.portfolioManager}
+                </div>
+                <a
+                  href={`mailto:${locationInfoData.portfolioManagerEmail}`}
+                  css={`
+                    font-size: 14px;
+                    text-decoration: none;
 
-                &:hover {
-                  text-decoration: underline;
-                }
-              `}
-            >
-              {locationInfoData.portfolioManagerEmail}
-            </a>
+                    &:hover {
+                      text-decoration: underline;
+                    }
+                  `}
+                >
+                  {locationInfoData.portfolioManagerEmail}
+                </a>
+              </React.Fragment>
+            )}
           </Grid>
         </Grid>
       </Grid>
