@@ -1,6 +1,7 @@
 import React from "react";
 import orderBy from "lodash/orderBy";
 import findIndex from "lodash/findIndex";
+import useMeasure from "react-use/lib/useMeasure";
 import { BarTooltipDatum, ResponsiveBar } from "@nivo/bar";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -139,6 +140,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
 export function InvestmentsTimeCycleViz(props: Props) {
   const colors = ["#727F95", "#21262B", "#595C70"];
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const [ref, { height }] = useMeasure<HTMLDivElement>();
   const [data, setData] = React.useState(formatData(props.rawData));
   const moneyAbbrRange = {
     index: 1,
@@ -161,11 +163,13 @@ export function InvestmentsTimeCycleViz(props: Props) {
 
   return (
     <div
+      ref={ref}
       id="bar-scroll-div"
       css={`
         width: 100%;
         overflow-x: auto;
         overflow-y: hidden;
+        height: calc(100% - 32px);
 
         &::-webkit-scrollbar {
           height: 5px;
@@ -181,7 +185,7 @@ export function InvestmentsTimeCycleViz(props: Props) {
     >
       <div
         css={`
-          height: 400px;
+          height: ${height}px;
           width: ${data.length === 0 ? "100%" : "2000px"};
         `}
       >

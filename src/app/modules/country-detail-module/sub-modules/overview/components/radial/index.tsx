@@ -13,7 +13,7 @@ import { getKeysPercentages } from "app/modules/viz-module/sub-modules/allocatio
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export function InvestmentsRadialViz() {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  // const isMobile = useMediaQuery("(max-width: 767px)");
   const [ref, { width }] = useMeasure<HTMLDivElement>();
 
   const locationInfoData = useStoreState((state) =>

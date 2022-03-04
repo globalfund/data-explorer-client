@@ -38,12 +38,14 @@ export default function CountryDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const params = useParams<{
     code: string;
     vizType: string;
     subType?: string;
   }>();
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
+    !isMobile && params.vizType !== "overview"
+  );
 
   // api call & data
   const fetchLocationInfoData = useStoreActions(
@@ -80,7 +82,7 @@ export default function CountryDetail() {
   }, [paramCode]);
 
   React.useEffect(() => {
-    if (!isMobile && !openToolboxPanel) {
+    if (!isMobile && !openToolboxPanel && params.vizType !== "overview") {
       setOpenToolboxPanel(true);
     }
   }, [params.vizType]);
