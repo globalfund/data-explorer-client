@@ -181,6 +181,10 @@ export function InvestmentsTimeCycleViz(props: Props) {
         &::-webkit-scrollbar-thumb {
           background: #262c34;
         }
+
+        @media (max-width: 767px) {
+          height: 420px;
+        }
       `}
     >
       <div
