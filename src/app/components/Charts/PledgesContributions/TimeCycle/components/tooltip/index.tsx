@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export function PledgesContributionsTimeCycleTooltip(props: any) {

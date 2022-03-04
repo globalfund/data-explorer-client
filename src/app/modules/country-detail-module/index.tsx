@@ -69,7 +69,9 @@ export default function CountryDetail() {
   const paramCode = params.code.replace(/\|/g, "/");
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    if (location.pathname.indexOf("/overview") === -1) {
+      document.body.style.background = "#fff";
+    }
     fetchLocationInfoData({
       filterString: `locations=${paramCode}`,
     });
@@ -166,7 +168,7 @@ export default function CountryDetail() {
         <Switch>
           {/* Overview */}
           <Route path={`/location/${params.code}/overview`}>
-            <LocationDetailOverviewModule code={params.code} />
+            <LocationDetailOverviewModule code={paramCode} />
           </Route>
           {/* Budgets */}
           <Route path={`/location/${params.code}/budgets/flow`}>
