@@ -7,18 +7,20 @@ import {
   FILTER_TYPES,
 } from "app/components/PageHeader/components/filterbar/data";
 import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/filters/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function getFilterGroupsChips(
   appliedFilters: AppliedFiltersModel,
   filterOptions: UseFilterOptionsReturn
 ): ChipModel[] {
   const chips: ChipModel[] = [];
+  const cmsData = useCMSData({ returnData: true });
 
   const locationChip = getFilterGroupChip(
     appliedFilters.locations,
     filterOptions.Locations,
     FILTER_TYPES.LOCATIONS,
-    "Locations"
+    get(cmsData, "componentsPageHeader.filterBarLocations", "")
   );
   if (locationChip.values.length > 0) {
     chips.push(locationChip);
@@ -28,7 +30,7 @@ export function getFilterGroupsChips(
     appliedFilters.components,
     filterOptions.Components,
     FILTER_TYPES.COMPONENTS,
-    "Components"
+    get(cmsData, "componentsPageHeader.filterBarComponents", "")
   );
   if (componentChip.values.length > 0) {
     chips.push(componentChip);
@@ -42,7 +44,7 @@ export function getFilterGroupsChips(
     ],
     filterOptions["Partner Types"],
     FILTER_TYPES.PARTNER_TYPES,
-    "Partner Types"
+    get(cmsData, "componentsPageHeader.filterBarPartnerTypes", "")
   );
   if (partnerChip.values.length > 0) {
     chips.push(partnerChip);
@@ -52,7 +54,7 @@ export function getFilterGroupsChips(
     appliedFilters.status,
     filterOptions["Grant Status"],
     FILTER_TYPES.GRANT_STATUS,
-    "Grant Status"
+    get(cmsData, "componentsPageHeader.filterBarGrantStatus", "")
   );
   if (statusChip.values.length > 0) {
     chips.push(statusChip);
@@ -62,7 +64,7 @@ export function getFilterGroupsChips(
     appliedFilters.replenishmentPeriods,
     filterOptions["Replenishment Periods"],
     FILTER_TYPES.REPLENISHMENT_PERIODS,
-    "Replenishment Periods"
+    get(cmsData, "componentsPageHeader.filterBarReplenishmentPeriods", "")
   );
   if (replenishmentPeriodChip.values.length > 0) {
     chips.push(replenishmentPeriodChip);

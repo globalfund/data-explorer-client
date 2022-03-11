@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface LocationInfoContentProps {
   title: string;
@@ -25,6 +27,7 @@ interface LocationInfoContentProps {
 }
 
 export function LocationInfoContent(props: LocationInfoContentProps) {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <div
       css={`
@@ -57,7 +60,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          See {props.title}&apos;s results
+          {get(cmsData, "modulesCountryDetail.seeResultsStart", "")} {props.title}{get(cmsData, "modulesCountryDetail.seeResultsEnd", "")}
         </Link>
       )}
       <div
@@ -68,14 +71,14 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Investments
+        {get(cmsData, "modulesCountryDetail.investments", "")}
       </div>
       <div
         css={`
           font-size: 12px;
         `}
       >
-        <b>Disbursed: </b>
+        <b>{get(cmsData, "modulesCountryDetail.disbursed", "")} </b>
         {formatFinancialValue(props.investments.disbursed)}
       </div>
       <div
@@ -83,7 +86,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 12px;
         `}
       >
-        <b>Committed: </b>
+        <b>{get(cmsData, "modulesCountryDetail.committed", "")} </b>
         {formatFinancialValue(props.investments.committed)}
       </div>
       <div
@@ -92,7 +95,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           margin-bottom: 40px;
         `}
       >
-        <b>Signed: </b>
+        <b>{get(cmsData, "modulesCountryDetail.signed", "")} </b>
         {formatFinancialValue(props.investments.signed)}
       </div>
       <div
@@ -142,7 +145,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Fund Portfolio Manager
+        {get(cmsData, "modulesCountryDetail.fundManager", "")}
       </div>
       <div
         css={`

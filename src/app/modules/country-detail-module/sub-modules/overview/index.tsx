@@ -8,12 +8,14 @@ import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface Props {
   code: string;
 }
 
 export function LocationDetailOverviewModule(props: Props) {
+  const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isLoading = useStoreState((state) => state.LocationDetailInfo.loading);
   const locationInfoData = useStoreState((state) =>
@@ -54,14 +56,14 @@ export function LocationDetailOverviewModule(props: Props) {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Investments
+          {get(cmsData, "modulesCountryDetail.investments", "")}
         </div>
         <div
           css={`
             font-size: 14px;
           `}
         >
-          <b>Disbursed: </b>
+          <b>{get(cmsData, "modulesCountryDetail.disbursed", "")} </b>
           {formatFinancialValue(locationInfoData.disbursed)}
         </div>
         <div
@@ -69,7 +71,7 @@ export function LocationDetailOverviewModule(props: Props) {
             font-size: 14px;
           `}
         >
-          <b>Committed: </b>
+          <b>{get(cmsData, "modulesCountryDetail.committed", "")} </b>
           {formatFinancialValue(locationInfoData.committed)}
         </div>
         <div
@@ -78,7 +80,7 @@ export function LocationDetailOverviewModule(props: Props) {
             margin-bottom: 40px;
           `}
         >
-          <b>Signed: </b>
+          <b>{get(cmsData, "modulesCountryDetail.signed", "")} </b>
           {formatFinancialValue(locationInfoData.signed)}
         </div>
       </Grid>
@@ -132,7 +134,7 @@ export function LocationDetailOverviewModule(props: Props) {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Fund Portfolio Manager
+          {get(cmsData, "modulesCountryDetail.fundManager", "")}
         </div>
         <div
           css={`

@@ -5,6 +5,8 @@ import { useMediaQuery, Tooltip } from "@material-ui/core";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
 import { AchievementRateLegend } from "app/components/Charts/Network/components/legends";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function NetworkViz(props: NetworkVizProps) {
   React.useEffect(() => {
@@ -161,7 +163,7 @@ export function NetworkViz(props: NetworkVizProps) {
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
-
+  const cmsData = useCMSData({ returnData: true });
   return (
     <Grid container spacing={2}>
       {!isMobile && (
@@ -173,7 +175,7 @@ export function NetworkViz(props: NetworkVizProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Performance Framework
+            {get(cmsData, "componentsChartsNetwork.performanceFramework", "")}
           </div>
         </Grid>
       )}

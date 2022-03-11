@@ -7,6 +7,8 @@ import {
   BudgetsFlowTooltipProps,
   MobileBudgetsFlowTooltipProps,
 } from "app/components/Charts/Budgets/Flow/data";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
   return (
@@ -44,6 +46,7 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
 }
 
 export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <div
       css={`
@@ -146,8 +149,8 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
-          <div>Budget</div>
+          <div>{get(cmsData, "componentsChartsBudgets.flowToolTipComponent", "")}</div>
+          <div>{get(cmsData, "componentsChartsBudgets.budget", "")}</div>
         </div>
         {props.components.map((stat: any) => (
           <div
@@ -203,7 +206,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             }
           `}
         >
-          Drill down
+          <div>{get(cmsData, "componentsChartsBudgets.flowToolTipDrilldown", "")}</div>
         </Button>
       )}
     </div>

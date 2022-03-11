@@ -1,6 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import BigLogo from "app/assets/BigLogo";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 import { Search } from "app/components/Search";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { DatasetCarousel } from "app/components/DatasetCarousel";
@@ -13,6 +15,7 @@ import {
 
 export const LandingLayout = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div css={container}>
@@ -31,14 +34,14 @@ export const LandingLayout = () => {
         `}
       >
         <BigLogo />
-        <div css={subtitle}>Free and open access to the Global Fund Data</div>
+        <div css={subtitle}>{get(cmsData, "modulesLanding.subTitle", "")}</div>
         <Search />
         {!isMobile && (
           <React.Fragment>
-            <div css={datasetstitle}>Explore the Datasets</div>
+            <div css={datasetstitle}>{get(cmsData, "modulesLanding.datasetsTitle", "")}</div>
             <DatasetCarousel />
             <div css={datasetslink}>
-              <Link to="/datasets">View all</Link>
+              <Link to="/datasets">{get(cmsData, "modulesLanding.datasetsLink", "")}</Link>
             </div>
           </React.Fragment>
         )}

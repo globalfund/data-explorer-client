@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import get from "lodash/get";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
@@ -14,6 +15,7 @@ import { DocumentsTablePreview } from "app/assets/dataset-preview/documentsTable
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface DatasetItemModel {
   name: string;
@@ -152,7 +154,8 @@ const datasets: DatasetItemModel[] = [
 ];
 
 export default function Datasets() {
-  useTitle(`The Data Explorer - Datasets`);
+  const cmsData = useCMSData({ returnData: true });
+  useTitle(get(cmsData, "modulesDatasets.title", ""));
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   React.useEffect(() => {
@@ -172,11 +175,11 @@ export default function Datasets() {
     >
       {!isMobile && (
         <PageHeader
-          title="Datasets"
+          title={get(cmsData, "modulesDatasets.titleShort", "")}
           breadcrumbs={[
-            { name: "Home", link: "/" },
+            { name: get(cmsData, "modulesDatasets.home", ""), link: "/" },
             {
-              name: "Datasets",
+              name: get(cmsData, "modulesDatasets.titleShort", ""),
             },
           ]}
         />

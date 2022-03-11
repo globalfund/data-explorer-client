@@ -6,9 +6,12 @@ import {
   PerformanceRatingProps,
   ratingValues,
 } from "app/components/Charts/PerformanceRating/data";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function PerformanceRating(props: PerformanceRatingProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div
@@ -33,7 +36,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           }
         `}
       >
-        Performance Rating <InfoIcon />
+        {get(cmsData, "componentsChartsPerformanceRating.performanceRating", "")} <InfoIcon />
       </div>
       <ResponsiveBar
         animate

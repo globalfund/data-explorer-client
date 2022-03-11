@@ -59,7 +59,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       )
       .then(
         (resp: AxiosResponse) =>
-          actions.onSuccess({ ...resp.data, addOnData: query.addOnData }),
+          actions.onSuccess({ ...resp.data, addOnData: false }),
         (error: any) => actions.onError(error.response)
       );
   }),

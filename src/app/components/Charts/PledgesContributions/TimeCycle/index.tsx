@@ -17,10 +17,13 @@ import {
   TooltipButton,
   XsContainer,
 } from "app/components/Charts/common/styles";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTimeCycle(
   props: PledgesContributionsProps
 ) {
+  const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
@@ -30,8 +33,8 @@ export function PledgesContributionsTimeCycle(
     "pledgesContributionsBar"
   );
   const legends = [
-    { name: "Pledge", color: "#BFCFEE" },
-    { name: "Contribution", color: "#252C34" },
+    { name: get(cmsData, "componentsChartsPledges.pledge", ""), color: "#BFCFEE" },
+    { name: get(cmsData, "componentsChartsPledges.contribution", ""), color: "#252C34" },
   ];
 
   const Bars = (bprops: any) => {
@@ -94,7 +97,7 @@ export function PledgesContributionsTimeCycle(
                 }
               `}
             >
-              Replenishment Periods <InfoIcon />
+              {get(cmsData, "componentsChartsPledges.replenishmentPeriods", "")} <InfoIcon />
             </div>
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
@@ -309,7 +312,7 @@ export function PledgesContributionsTimeCycle(
                     }
                   }}
                 >
-                  Drilldown
+                  {get(cmsData, "componentsChartsPledges.", "")}
                 </TooltipButton>
               </div>
             </div>

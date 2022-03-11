@@ -1,11 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface Props {
   height?: string;
 }
 
 export function NoDataLabel(props: Props) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
@@ -38,9 +42,9 @@ export function NoDataLabel(props: Props) {
       `}
     >
       <div>
-        <div>No data reported by The Global Fund</div>
+        <div>{get(cmsData, "componentsChartsCommon.noData", "")}</div>
         <div>
-          For more information please visit: <Link to="/faq">FAQ</Link>
+        {get(cmsData, "componentsChartsCommon.moreInfo", "")} <Link to="/faq">{get(cmsData, "componentsChartsCommon.moreInfoLink", "")}</Link>
         </div>
       </div>
     </div>

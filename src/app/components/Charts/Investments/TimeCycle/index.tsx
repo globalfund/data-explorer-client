@@ -23,6 +23,8 @@ import {
   XsContainer,
 } from "app/components/Charts/common/styles";
 import { InvestmentsTimeCycleTooltip } from "./components/tooltip";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 function getKeysFromData(data: Record<string, unknown>[]) {
   if (data.length === 0) {
@@ -164,6 +166,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     setXsTooltipData(null);
   }
 
+  const cmsData = useCMSData({ returnData: true });
+  
   return (
     <React.Fragment>
       <div
@@ -197,7 +201,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             {isMobile && (
               <Grid item xs={12} css="font-size: 12px !important;">
                 <b>
-                  Total amount: {formatFinancialValue(totalInvestmentValue)}
+                  {get(cmsData, "componentsChartsInvestments.totalAmount", "")}: {formatFinancialValue(totalInvestmentValue)}
                 </b>
               </Grid>
             )}
@@ -517,7 +521,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   }}
                 >
-                  Drilldown
+                  {get(cmsData, "componentsChartsInvestments.drilldown", "")}
                 </TooltipButton>
               </div>
             </div>

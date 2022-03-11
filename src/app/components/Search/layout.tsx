@@ -14,6 +14,7 @@ import {
   mobilecontainer,
   mobilebackbutton,
 } from "app/components/Search/styles";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface SearchLayoutProps {
   value: string;
@@ -48,6 +49,7 @@ export function SearchLayout(props: SearchLayoutProps) {
         (props.forceFocus !== undefined && props.forceFocus)
     );
   }, [props.forceFocus]);
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div css={mobilecontainer(open)}>
@@ -70,7 +72,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           css={input}
           tabIndex={0}
           value={props.value}
-          placeholder="e.g. Kenya"
+          placeholder={get(cmsData, "componentsSearch.placeholder", "")}
           autoFocus={props.forceFocus}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setValue(e.target.value)

@@ -7,6 +7,8 @@ import {
 } from "app/components/PerformanceFrameworkExpandedView/data";
 import { IndicatorToolTip } from "app/components/PerformanceFrameworkExpandedView/components/ToolTip";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const styles = {
   table: css`
@@ -44,6 +46,7 @@ export function ResultsTable(props: PFIndicator) {
   const selected = useStoreState(
     (state) => state.ToolBoxPanelPFPeriodState.value
   );
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div
@@ -51,7 +54,7 @@ export function ResultsTable(props: PFIndicator) {
         font-size: 12px;
       `}
     >
-      <b>Indicator: {props.name}</b>
+      <b>{get(cmsData, "componentsPerformanceFrameworkComponents.toolTipIndicator", "")}: {props.name}</b>
       <div
         css={`
           width: 100%;
@@ -64,12 +67,12 @@ export function ResultsTable(props: PFIndicator) {
         <table css={styles.table}>
           <thead css={styles.tablehead}>
             <tr>
-              <th>Result type</th>
-              <th>Baseline</th>
-              <th>Target</th>
-              <th>Result</th>
-              <th>Achievement rate</th>
-              <th>Reporting periods</th>
+              <th>{get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableResultType", "")}</th>
+              <th>{get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableBaseline", "")}</th>
+              <th>{get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableTarget", "")}</th>
+              <th>{get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableResult", "")}</th>
+              <th>{get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableAchievementRate", "")}</th>
+              <th>{get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableReportingPeriods", "")}</th>
               <th> </th>
             </tr>
           </thead>
@@ -94,6 +97,7 @@ interface ResultsTableRowProps extends PFIndicatorResult {
 
 function ResultsTableRow(props: ResultsTableRowProps) {
   const [showTooltip, setShowTooltip] = React.useState(false);
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <tr
@@ -166,7 +170,7 @@ function ResultsTableRow(props: ResultsTableRowProps) {
               min-width: 30px;
             `}
           >
-            {props.achievementRate ? props.achievementRate : "N/A"}
+            {props.achievementRate ? props.achievementRate : get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableNotAvailable", "")}
           </div>
         </div>
       </td>
@@ -177,7 +181,7 @@ function ResultsTableRow(props: ResultsTableRowProps) {
           show={showTooltip}
           close={() => setShowTooltip(false)}
         >
-          <span onClick={() => setShowTooltip(!showTooltip)}>More info</span>
+          <span onClick={() => setShowTooltip(!showTooltip)}>{get(cmsData, "componentsPerformanceFrameworkComponents.resultsTableTooltip", "")}</span>
         </IndicatorToolTip>
       </td>
     </tr>

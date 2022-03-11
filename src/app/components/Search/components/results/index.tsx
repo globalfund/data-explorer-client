@@ -15,6 +15,7 @@ import {
   results as resultscss,
   noresults,
 } from "app/components/Search/components/results/styles";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface SearchResultsProps {
   results: SearchResultsTabModel[];
@@ -26,6 +27,7 @@ interface SearchResultsProps {
 export function SearchResults(props: SearchResultsProps) {
   const results = get(props.results, `[${props.activeTab}].results`, []);
   const hasLoaded = useStoreState((state) => state.GlobalSearch.success);
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div css={container}>
@@ -100,9 +102,9 @@ export function SearchResults(props: SearchResultsProps) {
           );
         })}
         {results.length === 0 && !props.loading && hasLoaded && (
-          <div css={noresults}>No results found.</div>
+          <div css={noresults}>{get(cmsData, "componentsSearch.noResults", "")}</div>
         )}
-        {props.loading && <div css={noresults}>Loading...</div>}
+        {props.loading && <div css={noresults}>{get(cmsData, "componentsSearch.loading", "")}</div>}
       </div>
     </div>
   );

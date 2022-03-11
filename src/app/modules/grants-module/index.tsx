@@ -22,6 +22,7 @@ import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantsModuleProps {
   code?: string;
@@ -29,8 +30,9 @@ interface GrantsModuleProps {
 }
 
 export default function GrantsModule(props: GrantsModuleProps) {
+  const cmsData = useCMSData({ returnData: true });
   useTitle(
-    `The Data Explorer -${
+    `${get(cmsData, "modulesGrants.titleStart", "")}${
       props.detailFilterType
         ? ` ${props.detailFilterType
             .slice(0, 1)
@@ -39,7 +41,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
             props.detailFilterType.length - 1
           )}`
         : ""
-    } Grants`
+    } ${get(cmsData, "modulesGrants.titleEnd", "")}`
   );
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
@@ -154,15 +156,15 @@ export default function GrantsModule(props: GrantsModuleProps) {
       {!props.code && (
         <>
           <PageHeader
-            title="Grants"
+            title={get(cmsData, "modulesGrants.titleShort", "")}
             breadcrumbs={[
-              { name: "Home", link: "/" },
+              { name: get(cmsData, "modulesGrants.home", ""), link: "/" },
               {
-                name: "Datasets",
+                name: get(cmsData, "modulesGrants.datasets", ""),
                 menuitems: datasetMenuItems,
               },
               {
-                name: "Grants",
+                name: get(cmsData, "modulesGrants.titleShort", ""),
               },
             ]}
           />
