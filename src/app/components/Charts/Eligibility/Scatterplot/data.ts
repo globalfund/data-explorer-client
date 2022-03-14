@@ -1,8 +1,4 @@
 import { Serie } from "@nivo/scatterplot";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
-
-  const cmsData = useCMSData({ returnData: true });
 
 export interface ScatterPlotProps {
   data: EligibilityScatterplotDataModel[];
@@ -517,15 +513,7 @@ export const diseaseBurdens: (
   | "Moderate"
   | "Low"
   | "None"
-)[] = [
-  get(cmsData, "componentsChartsEligibility.diseaseBurdenNone", ""),
-  get(cmsData, "componentsChartsEligibility.diseaseBurdenLow", ""),
-  get(cmsData, "componentsChartsEligibility.diseaseBurdenModerate", ""),
-  get(cmsData, "componentsChartsEligibility.diseaseBurdenNotHigh", ""),, 
-  get(cmsData, "componentsChartsEligibility.diseaseBurdenHigh", ""),
-  get(cmsData, "componentsChartsEligibility.diseaseBurdenSevere", ""),
-  get(cmsData, "componentsChartsEligibility.diseaseBurdenExtreme", ""),
-];
+)[] = ["None", "Low", "Moderate", "Not High", "High", "Severe", "Extreme"];
 
 export const incomeLevels: (
   | "None"
@@ -537,13 +525,13 @@ export const incomeLevels: (
   | "Upper middle income"
   | "High income"
 )[] = [
-  get(cmsData, "componentsChartsEligibility.incomeLevelsNone", ""),
-  get(cmsData, "componentsChartsEligibility.incomeLevelsLow", ""),
-  get(cmsData, "componentsChartsEligibility.incomeLevelsLowerLower", ""),
-  get(cmsData, "componentsChartsEligibility.incomeLevelsLowerMiddle", ""),
-  get(cmsData, "componentsChartsEligibility.incomeLevelsUpperLower", ""),
-  get(cmsData, "componentsChartsEligibility.incomeLevelsUpperMiddle", ""),
-  get(cmsData, "componentsChartsEligibility.incomeLevelsHigh", ""),
+  "None",
+  "Low income",
+  "Lower-Lower middle income",
+  "Lower middle income",
+  "Upper-Lower middle income",
+  "Upper middle income",
+  "High income",
 ];
 
 export const incomeLevelColors = [
