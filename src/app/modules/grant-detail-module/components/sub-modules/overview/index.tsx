@@ -147,7 +147,7 @@ export function GrantDetailOverviewModule() {
         >
           <LocationIcon />
           <div>
-          {get(cmsData, "modulesGrantDetail.location", "")} <b>{grantInfoData.location}</b>
+            {get(cmsData, "modulesGrantDetail.location", "")} <b>{grantInfoData.location}</b>
           </div>
         </div>
         <div
@@ -171,7 +171,7 @@ export function GrantDetailOverviewModule() {
         >
           <ComponentIcon />
           <div>
-          {get(cmsData, "modulesGrantDetail.component", "")} <b>{grantInfoData.component}</b>
+            {get(cmsData, "modulesGrantDetail.component", "")} <b>{grantInfoData.component}</b>
           </div>
         </div>
       </Grid>
