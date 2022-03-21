@@ -7,14 +7,13 @@ import {
   FILTER_TYPES,
 } from "app/components/PageHeader/components/filterbar/data";
 import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function getFilterGroupsChips(
   appliedFilters: AppliedFiltersModel,
-  filterOptions: UseFilterOptionsReturn
+  filterOptions: UseFilterOptionsReturn,
+  cmsData: any
 ): ChipModel[] {
   const chips: ChipModel[] = [];
-  const cmsData = useCMSData({ returnData: true });
 
   const locationChip = getFilterGroupChip(
     appliedFilters.locations,
