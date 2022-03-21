@@ -1,10 +1,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 // cc:refactor this component, inline css need to be moved to proper styled components
 
 export const NoMatchPage = () => {
   const isLoading = document.getElementById("general-loader");
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
@@ -30,7 +34,7 @@ export const NoMatchPage = () => {
           color: #525252;
         `}
       >
-        Oops! Page not found
+        <div>{get(cmsData, "modulesCommon.noMatchOops", "")}</div>
       </div>
       <div
         css={`
@@ -44,7 +48,7 @@ export const NoMatchPage = () => {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        404
+        <div>{get(cmsData, "modulesCommon.noMatch404", "")}</div>
       </div>
       <div
         css={`
@@ -60,7 +64,7 @@ export const NoMatchPage = () => {
           margin-bottom: 50px;
         `}
       >
-        We are sorry, but the page you requested was not found
+        <div>{get(cmsData, "modulesCommon.noMatchSorry", "")}</div>
       </div>
       <Link
         to="/"
@@ -91,7 +95,7 @@ export const NoMatchPage = () => {
               color: white;
             `}
           >
-            Back to Home Page
+            <div>{get(cmsData, "modulesCommon.noMatchBack", "")}</div>
           </span>
         </div>
       </Link>

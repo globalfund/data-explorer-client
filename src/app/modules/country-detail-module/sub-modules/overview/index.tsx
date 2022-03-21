@@ -3,9 +3,12 @@ import React from "react";
 import get from "lodash/get";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { InvestmentsRadialViz } from "app/modules/country-detail-module/sub-modules/overview/components/radial";
@@ -23,6 +26,8 @@ export function LocationDetailOverviewModule(props: Props) {
       state.SignedTimeCycle.loading ||
       state.CommitmentTimeCycle.loading
   );
+  const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const locationInfoData = useStoreState((state) =>
     get(state.LocationDetailInfo.data, "data[0]", {
       id: "",
@@ -241,7 +246,7 @@ export function LocationDetailOverviewModule(props: Props) {
                       sans-serif;
                   `}
                 >
-                  Fund Portfolio Manager
+                  {get(cmsData, "modulesCountryDetail.fundManager", "")}
                 </div>
                 <div
                   css={`

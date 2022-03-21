@@ -6,8 +6,12 @@ import {
   GeoMapPinMarker,
   GeomapTooltipProps,
 } from "app/components/Charts/GeoMap/data";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function GeomapTooltip(props: GeomapTooltipProps) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
@@ -72,9 +76,9 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
-          <div>Grants</div>
-          <div>{props.investmentSubType || "Disbursements"}</div>
+          <div>{get(cmsData, "componentsChartsGeomap.tooltipComponent", "")}</div>
+          <div>{get(cmsData, "componentsChartsGeomap.tooltipGrants", "")}</div>
+          <div>{props.investmentSubType || get(cmsData, "componentsChartsGeomap.tooltipDefaultInvestment", "")}</div>
         </div>
         {props.data.components.map((stat: any) => (
           <div
@@ -141,7 +145,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Disbursed
+            {get(cmsData, "componentsChartsGeomap.tooltipDisbursed", "")}
           </div>
           <div>{formatFinancialValue(props.data.disbursed)}</div>
         </div>
@@ -176,7 +180,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Committed
+            {get(cmsData, "componentsChartsGeomap.committed", "")}
           </div>
           <div>{formatFinancialValue(props.data.committed)}</div>
         </div>
@@ -194,7 +198,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Signed
+            {get(cmsData, "componentsChartsGeomap.tooltipSigned", "")}
           </div>
           <div>{formatFinancialValue(props.data.signed)}</div>
         </div>
@@ -338,6 +342,8 @@ export function GeomapPinTooltip(props: {
 }
 
 export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
@@ -397,7 +403,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
+          <div>{get(cmsData, "componentsChartsGeomap.tooltipComponent", "")}</div>
           <div
             css={`
               text-transform: capitalize;
@@ -465,7 +471,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Total
+            {get(cmsData, "componentsChartsGeomap.tooltipTotal", "")}
           </div>
           <div>{formatFinancialValue(props.data.value)}</div>
         </div>

@@ -1,4 +1,6 @@
 import React from "react";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -38,6 +40,8 @@ export interface GrantDetailPeriodInformation {
 }
 
 export function GrantInfoContent(props: GrantInfoContentProps) {
+  const cmsData = useCMSData({ returnData: true });
+  
   return (
     <div
       css={`
@@ -68,7 +72,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           margin-bottom: 20px;
         `}
       >
-        Grant status: {props.status}
+        {get(cmsData, "modulesGrantDetail.grantStatus", "")} {props.status}
       </div>
       <div
         css={`
@@ -100,7 +104,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
       >
         <LocationIcon />
         <div>
-          Location: <b>{props.location}</b>
+        {get(cmsData, "modulesGrantDetail.location", "")} <b>{props.location}</b>
         </div>
       </div>
       <div
@@ -123,7 +127,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
       >
         <ComponentIcon />
         <div>
-          Component: <b>{props.component}</b>
+        {get(cmsData, "modulesGrantDetail.component", "")} <b>{props.component}</b>
         </div>
       </div>
       <div
@@ -134,7 +138,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Rating
+        {get(cmsData, "modulesGrantDetail.rating", "")}
       </div>
       <div
         css={`
@@ -185,7 +189,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 12px;
         `}
       >
-        <b>Disbursed: </b>
+        <b>{get(cmsData, "modulesGrantDetail.disbursed", "")} </b>
         {formatFinancialValue(props.investments.disbursed)}
       </div>
       <div
@@ -193,7 +197,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 12px;
         `}
       >
-        <b>Committed: </b>
+        <b>{get(cmsData, "modulesGrantDetail.committed", "")} </b>
         {formatFinancialValue(props.investments.committed)}
       </div>
       <div
@@ -202,7 +206,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           margin-bottom: 40px;
         `}
       >
-        <b>Signed: </b>
+        <b>{get(cmsData, "modulesGrantDetail.signed", "")} </b>
         {formatFinancialValue(props.investments.signed)}
       </div>
       <div
@@ -212,7 +216,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Fund Portfolio Manager
+        {get(cmsData, "modulesGrantDetail.fundManager", "")}
       </div>
       <div
         css={`

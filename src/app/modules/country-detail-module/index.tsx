@@ -169,44 +169,44 @@ export default function CountryDetail() {
       >
         <Switch>
           {/* Overview */}
-          <Route path={`/location/${params.code}/overview`}>
-            <LocationDetailOverviewModule code={paramCode} />
+          <Route path={`/location/:code/overview`}>
+            <LocationDetailOverviewModule code={params.code} />
           </Route>
           {/* Budgets */}
-          <Route path={`/location/${params.code}/budgets/flow`}>
+          <Route path={`/location/:code/budgets/flow`}>
             <LocationDetailBudgetsFlowWrapper
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/budgets/time-cycle`}>
+          <Route path={`/location/:code/budgets/time-cycle`}>
             <LocationDetailGenericBudgetsTimeCycleWrapper
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/budgets/map`}>
+          <Route path={`/location/:code/budgets/map`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Disbursements */}
-          <Route path={`/location/${params.code}/disbursements/treemap`}>
+          <Route path={`/location/:code/disbursements/treemap`}>
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Disbursed"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/table`}>
+          <Route path={`/location/:code/disbursements/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/time-cycle`}>
+          <Route path={`/location/:code/disbursements/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Disbursed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/map`}>
+          <Route path={`/location/:code/disbursements/map`}>
             <InvestmentsGeoMap
               type="Disbursed"
               code={paramCode}
@@ -214,24 +214,24 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Signed */}
-          <Route path={`/location/${params.code}/signed/treemap`}>
+          <Route path={`/location/:code/signed/treemap`}>
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Signed"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/signed/table`}>
+          <Route path={`/location/:code/signed/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/signed/time-cycle`}>
+          <Route path={`/location/:code/signed/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/signed/map`}>
+          <Route path={`/location/:code/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"
               code={paramCode}
@@ -239,24 +239,24 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Commitment */}
-          <Route path={`/location/${params.code}/commitment/treemap`}>
+          <Route path={`/location/:code/commitment/treemap`}>
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Commitment"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/commitment/table`}>
+          <Route path={`/location/:code/commitment/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/commitment/time-cycle`}>
+          <Route path={`/location/:code/commitment/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Commitment"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/commitment/map`}>
+          <Route path={`/location/:code/commitment/map`}>
             <InvestmentsGeoMap
               type="Committed"
               code={paramCode}
@@ -264,32 +264,32 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Allocations */}
-          <Route path={`/location/${params.code}/allocation`}>
+          <Route path={`/location/:code/allocation`}>
             <AllocationsModule
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
           {/* Eligibility */}
-          <Route path={`/location/${params.code}/eligibility/table`}>
+          <Route path={`/location/:code/eligibility/table`}>
             <LocationEligibilityTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/eligibility`}>
+          <Route path={`/location/:code/eligibility`}>
             <LocationDetailEligibilityWrapper code={paramCode} />
           </Route>
           {/* Grants */}
-          <Route path={`/location/${params.code}/grants/list`}>
+          <Route path={`/location/:code/grants/list`}>
             <GrantsModule code={paramCode} detailFilterType="locations" />
           </Route>
-          <Route path={`/location/${params.code}/grants`}>
+          <Route path={`/location/:code/grants`}>
             <LocationGrants code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Results */}
-          <Route path={`/location/${params.code}/results`}>
+          <Route path={`/location/:code/results`}>
             <LocationResults code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Documents */}
-          <Route path={`/location/${params.code}/documents`}>
+          <Route path={`/location/:code/documents`}>
             <LocationDetailDocumentsModule
               mcName={params.code}
               isMultiCountry={params.code.length > 3}

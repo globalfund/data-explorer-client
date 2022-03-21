@@ -7,6 +7,10 @@ import ExploreIcon from "@material-ui/icons/Explore";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
+
+
 
 const useStyles = makeStyles({
   root: {
@@ -19,28 +23,33 @@ const useStyles = makeStyles({
   },
 });
 
-const actionButtons = [
-  {
-    label: "Home",
-    icon: <HomeIcon />,
-    path: "/",
-  },
-  {
-    label: "Explore",
-    icon: <ExploreIcon />,
-    path: "/datasets",
-  },
-  {
-    label: "About",
-    icon: <InfoIcon />,
-    path: "/about",
-  },
-];
+export function createActionButtons() {
+  const cmsData = useCMSData({ returnData: true });
+
+  return [
+    {
+      label: get(cmsData, "componentsMobile.appbarLabelHome", ""),
+      icon: <HomeIcon />,
+      path: "/",
+    },
+    {
+      label: get(cmsData, "componentsMobile.appbarLabelExplore", ""),
+      icon: <ExploreIcon />,
+      path: "/datasets",
+    },
+    {
+      label: get(cmsData, "componentsMobile.appbarLabelAbout", ""),
+      icon: <InfoIcon />,
+      path: "/about",
+    },
+  ];
+}
 
 export function MobileBottomNavigation() {
   const history = useHistory();
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
+  const actionButtons = createActionButtons();
 
   React.useEffect(() => {
     history.listen((location: any) => {

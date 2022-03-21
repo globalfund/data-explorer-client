@@ -13,6 +13,8 @@ import IconChevronLeft from "@material-ui/icons/ChevronLeft";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const TextHeader = (label: string) => (
   <h2
@@ -116,6 +118,7 @@ export const StyledMenuItem = withStyles(() => ({
 export function AppBar() {
   const location = useLocation();
   const datasetMenuItems = useDatasetMenuItems();
+  const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openSearch, setOpenSearch] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -131,9 +134,9 @@ export function AppBar() {
   function getMobilePageHeader() {
     switch (location.pathname) {
       case "/about":
-        return TextHeader("About");
+        return TextHeader(get(cmsData, "componentsAppBar.about", ""));
       case "/datasets":
-        return TextHeader("Datasets");
+        return TextHeader(get(cmsData, "componentsAppBar.datasets", ""));
       default:
         return <MobileHeader />;
     }
@@ -206,7 +209,7 @@ export function AppBar() {
                       src="/gflogo.png"
                       width={295}
                       height={24}
-                      alt="TGF Data Explorer logo"
+                      alt={get(cmsData, "componentsAppBar.logoAlt", "")}
                     />
                   </NavLink>
                   <div
@@ -266,7 +269,7 @@ export function AppBar() {
                       }
                     `}
                   >
-                    About
+                    {get(cmsData, "componentsAppBar.about", "")}
                   </NavLink>
                 </div>
               )}

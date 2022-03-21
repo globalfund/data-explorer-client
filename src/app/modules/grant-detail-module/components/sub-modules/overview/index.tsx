@@ -9,6 +9,7 @@ import { ComponentIcon } from "app/assets/icons/Component";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function GrantDetailOverviewModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -33,6 +34,7 @@ export function GrantDetailOverviewModule() {
       },
     })
   );
+  const cmsData = useCMSData({ returnData: true });
 
   if (isLoading) {
     return <PageLoader />;
@@ -47,7 +49,7 @@ export function GrantDetailOverviewModule() {
             font-size: 14px;
           `}
         >
-          <b>Grant status</b>: {grantInfoData.status}
+          <b>{get(cmsData, "modulesGrantDetail.grantStatus", "")}</b> {grantInfoData.status}
         </div>
       </Grid>
       <Grid
@@ -70,7 +72,7 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Latest Rating
+          {get(cmsData, "modulesGrantDetail.lowestRating", "")}
         </div>
         <div
           css={`
@@ -145,7 +147,7 @@ export function GrantDetailOverviewModule() {
         >
           <LocationIcon />
           <div>
-            Location: <b>{grantInfoData.location}</b>
+            {get(cmsData, "modulesGrantDetail.location", "")} <b>{grantInfoData.location}</b>
           </div>
         </div>
         <div
@@ -169,7 +171,7 @@ export function GrantDetailOverviewModule() {
         >
           <ComponentIcon />
           <div>
-            Component: <b>{grantInfoData.component}</b>
+            {get(cmsData, "modulesGrantDetail.component", "")} <b>{grantInfoData.component}</b>
           </div>
         </div>
       </Grid>
@@ -193,14 +195,14 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Finance
+          {get(cmsData, "modulesGrantDetail.finance", "")}
         </div>
         <div
           css={`
             font-size: 12px;
           `}
         >
-          <b>Disbursed: </b>
+          <b>{get(cmsData, "modulesGrantDetail.disbursed", "")} </b>
           {formatFinancialValue(grantInfoData.investments.disbursed)}
         </div>
         <div
@@ -208,7 +210,7 @@ export function GrantDetailOverviewModule() {
             font-size: 12px;
           `}
         >
-          <b>Committed: </b>
+          <b>{get(cmsData, "modulesGrantDetail.committed", "")} </b>
           {formatFinancialValue(grantInfoData.investments.committed)}
         </div>
         <div
@@ -221,7 +223,7 @@ export function GrantDetailOverviewModule() {
             }
           `}
         >
-          <b>Signed: </b>
+          <b>{get(cmsData, "modulesGrantDetail.signed", "")} </b>
           {formatFinancialValue(grantInfoData.investments.signed)}
         </div>
       </Grid>
@@ -266,7 +268,7 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Fund Portfolio Manager
+          {get(cmsData, "modulesGrantDetail.fundManager", "")}
         </div>
         <div
           css={`

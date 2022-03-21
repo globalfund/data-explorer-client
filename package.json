@@ -59,6 +59,8 @@
     "react-scripts": "^5.0.0",
     "react-toastify": "^7.0.4",
     "react-use": "^17.2.3",
+    "recoil": "^0.6.1",
+    "recoil-persist": "^4.0.0",
     "styled-components": "^5.2.3",
     "swr": "^0.5.5",
     "use-fit-text": "^2.4.0",
