@@ -5,9 +5,8 @@ import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
+import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { TransitionContainer } from "app/components/TransitionContainer";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
@@ -56,63 +55,26 @@ export function InvestmentsTimeCycleModule(
 
   useUnmount(() => setVizDrilldowns([]));
 
-  if (props.isLoading) {
-    return <PageLoader />;
-  }
+  let vizComponent = <React.Fragment />;
 
-  return (
-    <div
-      id="investments-time-cycle"
-      css={`
-        width: 100%;
-
-        ${!props.vizSelected
-          ? `*:not(#bar-scroll-div) {
-            overflow: visible !important;
-          }`
-          : ""}
-      `}
-    >
-      <div css="margin-bottom: 10px;">
-        <DrilldownPath />
-      </div>
-      <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
-        {(props.vizLevel === 0 || props.vizLevel === 1) && (
-          <InvestmentsTimeCycle
-            data={props.data}
-            type={props.type}
-            selectedNodeId={props.vizSelected}
-            onNodeClick={(node: string, x: number, y: number) => {
-              props.setVizLevel(1);
-              props.setVizSelected(node);
-              props.setVizTranslation({ x: x * -1, y: 0 });
-            }}
-          />
-        )}
-        {props.vizLevel === 2 && (
-          <DisbursementsTreemap
-            data={mockdata2}
-            selectedNodeId={props.vizSelected}
-            onNodeClick={(node: string, x: number, y: number) => {}}
-          />
-        )}
-      </TransitionContainer>
-      <SlideInContainer
-        vizLevel={props.vizLevel}
-        selected={props.vizSelected}
-        toolboxOpen={props.toolboxOpen}
-        loading={props.isDrilldownLoading}
-        close={() => {
-          props.setVizLevel(props.vizLevel - 1);
-          props.setVizTranslation({ x: 0, y: 0 });
-          props.setVizSelected(
-            props.vizLevel === 1 ? undefined : props.vizPrevSelected
-          );
-          props.setVizTranslation(
-            props.vizLevel === 1 ? { x: 0, y: 0 } : props.vizPrevTranslation
-          );
-        }}
-      >
+  if (props.isLoading || props.isDrilldownLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (props.vizLevel === 0) {
+      vizComponent = (
+        <InvestmentsTimeCycle
+          data={props.data}
+          type={props.type}
+          // selectedNodeId={props.vizSelected}
+          onNodeClick={(node: string, x: number, y: number) => {
+            props.setVizLevel(1);
+            props.setVizSelected(node);
+            props.setVizTranslation({ x: x * -1, y: 0 });
+          }}
+        />
+      );
+    } else if (props.vizLevel === 1) {
+      vizComponent = (
         <BudgetsTreemap
           data={props.drilldownData}
           xsTooltipData={xsTooltipData}
@@ -126,7 +88,36 @@ export function InvestmentsTimeCycleModule(
             // props.setVizTranslation({ x: x * -1, y: 0 });
           }}
         />
-      </SlideInContainer>
+      );
+    } else if (props.vizLevel === 2) {
+      vizComponent = (
+        <DisbursementsTreemap
+          data={mockdata2}
+          selectedNodeId={props.vizSelected}
+          onNodeClick={(node: string, x: number, y: number) => {}}
+        />
+      );
+    }
+  }
+
+  return (
+    <div
+      id="investments-time-cycle"
+      css={`
+        width: 100%;
+
+        * {
+          overflow: visible !important;
+        }
+      `}
+    >
+      <div css="margin-bottom: 10px;">
+        <DrilldownPath />
+      </div>
+      {props.vizLevel > 0 && (
+        <VizBackBtn vizLevel={props.vizLevel} setVizLevel={props.setVizLevel} />
+      )}
+      {vizComponent}
     </div>
   );
 }

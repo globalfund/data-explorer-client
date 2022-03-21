@@ -8,8 +8,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { NetworkViz } from "app/components/Charts/Network";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
-import { TransitionContainer } from "app/components/TransitionContainer";
+import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
 import {
@@ -119,54 +118,25 @@ export function PerformanceFrameworkModule(props: Props) {
 
   useUnmount(() => setVizDrilldowns([]));
 
-  if (isLoading) {
-    return <PageLoader />;
-  }
+  let vizComponent = <React.Fragment />;
 
-  return (
-    <div
-      css={`
-        width: 100%;
-
-        ${!vizSelected
-          ? `* {
-            overflow: visible !important;
-          }`
-          : ""}
-
-        #zoom-in-level {
-          > div {
-            background-color: #f5f5f7;
-          }
-        }
-      `}
-    >
-      <div css="margin-bottom: 10px;">
-        <DrilldownPath />
-      </div>
-      <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
+  if (isLoading || isExpandLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (vizLevel === 0) {
+      vizComponent = (
         <NetworkViz
           data={{ nodes, links }}
-          selectedNodeId={vizSelected}
+          // selectedNodeId={vizSelected}
           onNodeClick={(node: string, x: number, y: number) => {
             setVizLevel(1);
             setVizSelected(node);
             setVizTranslation({ x: x * -1, y: y * -1 });
           }}
         />
-      </TransitionContainer>
-      <SlideInContainer
-        enableOverflow
-        vizLevel={vizLevel}
-        selected={vizSelected}
-        loading={isExpandLoading}
-        toolboxOpen={props.toolboxOpen}
-        close={() => {
-          setVizLevel(0);
-          setVizSelected(undefined);
-          setVizTranslation({ x: 0, y: 0 });
-        }}
-      >
+      );
+    } else if (vizLevel === 1) {
+      vizComponent = (
         <PerformanceFrameworkExpandedView
           indicators={expandIndicators}
           setSelectedModule={setVizSelected}
@@ -177,7 +147,35 @@ export function PerformanceFrameworkModule(props: Props) {
             filterValue: node.id,
           }))}
         />
-      </SlideInContainer>
+      );
+    }
+  }
+
+  return (
+    <div
+      css={`
+        width: 100%;
+
+        * {
+          overflow: visible !important;
+        }
+      `}
+    >
+      <div css="margin-bottom: 10px;">
+        <DrilldownPath />
+      </div>
+      {vizLevel > 0 && (
+        <VizBackBtn
+          vizLevel={vizLevel}
+          setVizLevel={(value: number) => {
+            if (value === 0) {
+              setVizSelected(undefined);
+            }
+            setVizLevel(value);
+          }}
+        />
+      )}
+      {vizComponent}
     </div>
   );
 }

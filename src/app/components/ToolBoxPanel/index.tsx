@@ -98,8 +98,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
           if (
             props.open &&
             get(event.target, "tagName", "") !== "A" &&
+            get(event.target, "tagName", "") !== "rect" &&
             get(event.target, "id", "") !== "page-header-toolbox-btn" &&
-            get(event.target, "id", "") !== "result-see-more-button"
+            get(event.target, "id", "") !== "result-see-more-button" &&
+            get(event.target, "id", "") !== "viz-back-button"
           ) {
             if (props.vizWrapperRef) {
               if (!props.vizWrapperRef.current.contains(event.target)) {

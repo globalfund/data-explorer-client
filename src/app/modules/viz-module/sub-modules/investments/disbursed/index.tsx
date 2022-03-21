@@ -11,12 +11,11 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
+import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { TransitionContainer } from "app/components/TransitionContainer";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -130,8 +129,36 @@ export function InvestmentsDisbursedModule(
     );
   }, [props.data, toolboxPanelDisbursementsSliderValues]);
 
-  if (props.isLoading) {
-    return <PageLoader />;
+  let vizComponent = <React.Fragment />;
+
+  if (props.isLoading || props.isDrilldownLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (props.vizLevel === 0) {
+      vizComponent = (
+        <DisbursementsTreemap
+          data={treemapData}
+          selectedNodeId={props.vizSelected}
+          onNodeClick={(node: string, x: number, y: number, code?: string) => {
+            if (props.allowDrilldown) {
+              props.setVizLevel(1);
+              props.setVizSelected(node);
+              props.setVizTranslation({ x: x * -1, y: y * -1 });
+            } else if (props.onNodeClick && code) {
+              props.onNodeClick(code);
+            }
+          }}
+        />
+      );
+    } else if (props.vizLevel === 1) {
+      vizComponent = (
+        <DisbursementsTreemap
+          isDrilldownTreemap
+          data={props.drilldownData}
+          onNodeClick={(node: string, x: number, y: number) => {}}
+        />
+      );
+    }
   }
 
   return (
@@ -187,50 +214,18 @@ export function InvestmentsDisbursedModule(
         css={`
           width: 100%;
 
-          ${!props.vizSelected
-            ? `* {
+          * {
             overflow: visible !important;
-          }`
-            : ""}
+          }
         `}
       >
-        <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
-          <DisbursementsTreemap
-            data={treemapData}
-            selectedNodeId={props.vizSelected}
-            onNodeClick={(
-              node: string,
-              x: number,
-              y: number,
-              code?: string
-            ) => {
-              if (props.allowDrilldown) {
-                props.setVizLevel(1);
-                props.setVizSelected(node);
-                props.setVizTranslation({ x: x * -1, y: y * -1 });
-              } else if (props.onNodeClick && code) {
-                props.onNodeClick(code);
-              }
-            }}
+        {props.vizLevel > 0 && (
+          <VizBackBtn
+            vizLevel={props.vizLevel}
+            setVizLevel={props.setVizLevel}
           />
-        </TransitionContainer>
-        <SlideInContainer
-          vizLevel={props.vizLevel}
-          selected={props.vizSelected}
-          toolboxOpen={props.toolboxOpen}
-          loading={props.isDrilldownLoading}
-          close={() => {
-            props.setVizLevel(0);
-            props.setVizSelected(undefined);
-            props.setVizTranslation({ x: 0, y: 0 });
-          }}
-        >
-          <DisbursementsTreemap
-            isDrilldownTreemap
-            data={props.drilldownData}
-            onNodeClick={(node: string, x: number, y: number) => {}}
-          />
-        </SlideInContainer>
+        )}
+        {vizComponent}
       </div>
     </React.Fragment>
   );
