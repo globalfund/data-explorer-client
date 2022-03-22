@@ -30,7 +30,7 @@ export const tabs = css`
   @media (max-width: 767px) {
     gap: 8px;
     padding: 0;
-    max-width: 100%;
+    max-width: 100vw;
     overflow-x: auto;
     width: max-content;
     padding-bottom: 16px;
