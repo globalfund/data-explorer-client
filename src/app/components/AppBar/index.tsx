@@ -54,7 +54,12 @@ export function AppBar() {
       case "/about":
         return TextHeader(get(cmsData, "componentsAppBar.about", ""));
       case "/datasets":
-        return TextHeader(get(cmsData, "componentsAppBar.datasets", ""));
+        return (
+          <>
+            {TextHeader("Explore")}{" "}
+            <img src="/gflogo.png" width={295} height={24} />
+          </>
+        );
       default:
         return <MobileHeader />;
     }
