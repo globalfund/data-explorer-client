@@ -159,7 +159,7 @@ export default function Datasets() {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   React.useEffect(() => {
-    document.body.style.background = "#F5F5F7";
+    document.body.style.background = "#DFE3E5";
   }, []);
 
   return (
@@ -185,7 +185,7 @@ export default function Datasets() {
         />
       )}
       <PageTopSpacer />
-      <Grid container spacing={4}>
+      <Grid container spacing={2}>
         {datasets.map((dataset: DatasetItemModel) => (
           <Grid item xs={12} sm={6} md={6} key={dataset.link}>
             <Link to={dataset.link} css="text-decoration: none;">
@@ -205,6 +205,7 @@ export default function Datasets() {
 
                   @media screen and (max-width: 767px) {
                     height: 227px;
+                    /* padding-bottom: 10px; */
                   }
 
                   > div {
