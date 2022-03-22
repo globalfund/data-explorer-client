@@ -22,10 +22,6 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
     x: 0,
     y: 0,
   });
-  const [vizSelected, setVizSelected] = React.useState<{
-    id: string | undefined;
-    filterStr: string | undefined;
-  }>({ id: undefined, filterStr: undefined });
   const [vizPrevSelected, setVizPrevSelected] = React.useState<
     string | undefined
   >(undefined);
@@ -91,15 +87,18 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
   const isDrilldown2Loading = useStoreState(
     (state) => state.PartnerDetailBudgetsFlowDrilldownLevel2.loading
   );
+  const setDrilldownLevelSelectors = useStoreActions(
+    (store) => store.ToolBoxPanelBudgetFlowDrilldownSelectors.setLevels
+  );
+  const vizSelected = useStoreState(
+    (state) => state.ToolBoxPanelBudgetFlowDrilldownSelectors.selectedLevelValue
+  );
+  const setVizSelected = useStoreActions(
+    (actions) =>
+      actions.ToolBoxPanelBudgetFlowDrilldownSelectors.setSelectedLevelValue
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-
-  const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
-    {
-      name: string;
-      items: string[];
-    }[]
-  >(getDrilldownPanelOptions(links));
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -158,7 +157,7 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
   }, [drilldownVizSelected.id]);
 
   useUpdateEffect(() => {
-    setDrilldownPanelOptions(getDrilldownPanelOptions(links));
+    setDrilldownLevelSelectors(getDrilldownPanelOptions(links));
   }, [links]);
 
   return (
@@ -180,7 +179,6 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
       vizPrevTranslation={vizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
-      drilldownPanelOptions={drilldownPanelOptions}
       setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected.id}

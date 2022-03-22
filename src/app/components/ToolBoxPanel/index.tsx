@@ -101,7 +101,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             get(event.target, "tagName", "") !== "rect" &&
             get(event.target, "id", "") !== "page-header-toolbox-btn" &&
             get(event.target, "id", "") !== "result-see-more-button" &&
-            get(event.target, "id", "") !== "viz-back-button"
+            get(event.target, "id", "") !== "viz-back-button" &&
+            get(event.target, "id", "") !== "appbar-datasets" &&
+            get(event.target, "id", "") !== "appbar-expandable-item" &&
+            get(event.target, "className", "").indexOf("treemapnode") === -1
           ) {
             if (props.vizWrapperRef) {
               if (!props.vizWrapperRef.current.contains(event.target)) {

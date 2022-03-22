@@ -6,6 +6,8 @@ import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
@@ -309,6 +311,8 @@ const storeContent: StoreModel = {
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),
@@ -319,14 +323,18 @@ const storeContent: StoreModel = {
     componentsChartsGrants: persist(componentsChartsGrants),
     componentsChartsInvestments: persist(componentsChartsInvestments),
     componentsChartsNetwork: persist(componentsChartsNetwork),
-    componentsChartsPerformanceRating: persist(componentsChartsPerformanceRating),
+    componentsChartsPerformanceRating: persist(
+      componentsChartsPerformanceRating
+    ),
     componentsChartsPledges: persist(componentsChartsPledges),
     componentsCookieDialog: persist(componentsCookieDialog),
     componentsDatasetCarousel: persist(componentsDatasetCarousel),
     componentsInformationPanel: persist(componentsInformationPanel),
     componentsMobile: persist(componentsMobile),
     componentsPageHeader: persist(componentsPageHeader),
-    componentsPerformanceFrameworkComponents: persist(componentsPerformanceFrameworkComponents),
+    componentsPerformanceFrameworkComponents: persist(
+      componentsPerformanceFrameworkComponents
+    ),
     componentsSearch: persist(componentsSearch),
     componentsSlideInPanel: persist(componentsSlideInPanel),
     modulesLanding: persist(modulesLanding),

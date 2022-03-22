@@ -3,6 +3,8 @@ import {
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelAllocationsPeriodStateModel,
+  ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel,
   ToolBoxPanelDisbursementsSliderValuesModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
@@ -32,7 +34,13 @@ import {
   CMSApiComponentsPerformanceFrameworkComponents,
   CMSApiComponentsSearch,
   CMSApiComponentsSlideInPanel,
-  CMSApiModulesLanding, CMSApiModulesAbout, CMSApiModulesCommon, CMSApiModulesCountryDetail, CMSApiModulesDatasets, CMSApiModulesGrantDetail, CMSApiModulesGrants,
+  CMSApiModulesLanding,
+  CMSApiModulesAbout,
+  CMSApiModulesCommon,
+  CMSApiModulesCountryDetail,
+  CMSApiModulesDatasets,
+  CMSApiModulesGrantDetail,
+  CMSApiModulesGrants,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -88,26 +96,32 @@ export type ApiCallModel = ApiModel<
 
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
-  CMSApiCallParams, 
-  CMSApiComponentsAppBar |
-  CMSApiComponentsChartsBudgets |
-  CMSApiComponentsChartsCommon |
-  CMSApiComponentsChartsEligibility |
-  CMSApiComponentsChartsGeomap |
-  CMSApiComponentsChartsGrants |
-  CMSApiComponentsChartsInvestments |
-  CMSApiComponentsChartsNetwork |
-  CMSApiComponentsChartsPerformanceRating |
-  CMSApiComponentsChartsPledges |
-  CMSApiComponentsCookieDialog |
-  CMSApiComponentsDatasetCarousel |
-  CMSApiComponentsInformationPanel |
-  CMSApiComponentsMobile |
-  CMSApiComponentsPageHeader |
-  CMSApiComponentsPerformanceFrameworkComponents |
-  CMSApiComponentsSearch |
-  CMSApiComponentsSlideInPanel | 
-  CMSApiModulesLanding | CMSApiModulesAbout | CMSApiModulesCommon | CMSApiModulesCountryDetail | CMSApiModulesDatasets | CMSApiModulesGrantDetail | CMSApiModulesGrants
+  CMSApiCallParams,
+  | CMSApiComponentsAppBar
+  | CMSApiComponentsChartsBudgets
+  | CMSApiComponentsChartsCommon
+  | CMSApiComponentsChartsEligibility
+  | CMSApiComponentsChartsGeomap
+  | CMSApiComponentsChartsGrants
+  | CMSApiComponentsChartsInvestments
+  | CMSApiComponentsChartsNetwork
+  | CMSApiComponentsChartsPerformanceRating
+  | CMSApiComponentsChartsPledges
+  | CMSApiComponentsCookieDialog
+  | CMSApiComponentsDatasetCarousel
+  | CMSApiComponentsInformationPanel
+  | CMSApiComponentsMobile
+  | CMSApiComponentsPageHeader
+  | CMSApiComponentsPerformanceFrameworkComponents
+  | CMSApiComponentsSearch
+  | CMSApiComponentsSlideInPanel
+  | CMSApiModulesLanding
+  | CMSApiModulesAbout
+  | CMSApiModulesCommon
+  | CMSApiModulesCountryDetail
+  | CMSApiModulesDatasets
+  | CMSApiModulesGrantDetail
+  | CMSApiModulesGrants
 >;
 
 export interface CMSApiCallParams {}
@@ -221,7 +235,9 @@ export interface StoreModel {
   ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
+  ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
   // CMS
   cms: {
     componentsAppBar: CMSApiCallModel;
@@ -249,5 +265,5 @@ export interface StoreModel {
     modulesDatasets: CMSApiCallModel;
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
-  }
+  };
 }

@@ -213,6 +213,7 @@ export function AppBar() {
                     />
                   </NavLink>
                   <div
+                    id="appbar-datasets"
                     onClick={handleClick}
                     css={`
                       height: 100%;

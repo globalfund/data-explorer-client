@@ -1,6 +1,5 @@
 /* third-party */
 import React from "react";
-import find from "lodash/find";
 import { useUnmount } from "react-use";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
@@ -10,7 +9,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
-import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
@@ -30,7 +28,6 @@ interface BudgetsTimeCycleModuleProps {
   setVizPrevTranslation: (obj: { x: number; y: number }) => void;
   vizPrevSelected: string | undefined;
   setVizPrevSelected: (vizPrevSelected: string | undefined) => void;
-  drilldownPanelOptions: string[];
   dataDrilldownLevel1: BudgetsTreemapDataItem[];
   dataDrilldownLevel2: BudgetsTreemapDataItem[];
   drilldownVizSelected: string | undefined;
@@ -94,42 +91,6 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
     } else if (props.vizLevel === 1) {
       vizComponent = (
         <React.Fragment>
-          <span
-            css={`
-              gap: 40px;
-              width: 100%;
-              display: flex;
-              margin-bottom: 20px;
-              flex-direction: row;
-
-              > * {
-                @supports (-webkit-touch-callout: none) and
-                  (not (translate: none)) {
-                  &:not(:last-child) {
-                    margin-right: 40px;
-                  }
-                }
-              }
-            `}
-          >
-            <DrillDownArrowSelector
-              options={props.drilldownPanelOptions}
-              selected={props.vizSelected as string}
-              onChange={(value: string) => {
-                props.setVizSelected(value);
-                const fVizNodeComp = find(
-                  props.vizCompData,
-                  (item: any) => item.data.indexValue === value
-                ) as any;
-                if (fVizNodeComp) {
-                  props.setVizTranslation({
-                    x: (fVizNodeComp.x - 100) * -1,
-                    y: 0,
-                  });
-                }
-              }}
-            />
-          </span>
           <BudgetsTreemap
             isDrilldownTreemap
             tooltipValueLabel="Budget"

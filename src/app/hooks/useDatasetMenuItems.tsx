@@ -53,6 +53,7 @@ function Expandable(props: ExpandableProps) {
             }
           }
         `}
+        id="appbar-expandable-item"
         onClick={() => setExpanded(!expanded)}
       >
         <b>{props.label}</b>
