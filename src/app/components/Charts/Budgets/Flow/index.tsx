@@ -231,7 +231,10 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         )}
         {isMobile && (
           <Grid item xs={12} css="font-size: 12px !important;">
-            <b>{get(cmsData, "componentsChartsBudgets.totalAmount", "")} {formatFinancialValue(totalBudget)}</b>
+            <b>
+              {get(cmsData, "componentsChartsBudgets.totalAmount", "")}{" "}
+              {formatFinancialValue(totalBudget)}
+            </b>
           </Grid>
         )}
         <Grid item xs={3}>
@@ -256,10 +259,10 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         <Grid item xs={3}>
           {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel1", "")}
         </Grid>
-        <Grid item xs={3} css="text-align: right;">
+        <Grid item xs={3}>
           {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel2", "")}
         </Grid>
-        <Grid item xs={3} css="text-align: right;">
+        <Grid item xs={3}>
           {get(cmsData, "componentsChartsBudgets.flowCostCategory", "")}
         </Grid>
       </Grid>

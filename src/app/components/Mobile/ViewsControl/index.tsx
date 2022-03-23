@@ -129,10 +129,10 @@ export function MobileViewControl(props: MobileViewControlProps) {
     [params.vizType]
   );
 
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
+  React.useEffect(
+    () => setSelectedView(getSelectedView()),
+    [controlItems.views, history.location.pathname]
+  );
 
   React.useEffect(() => {
     if (anchorEl) {
@@ -166,7 +166,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
           css={`
             font-size: 14px;
             font-weight: bold;
-            padding: 7px 16px;
+            padding: 3px 16px;
             border-radius: 20px;
             background: #dfe3e6;
             text-transform: capitalize;

@@ -295,6 +295,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
 
             > button {
               box-shadow: none;
+              width: 48px;
+              height: 48px;
             }
           `}
         >
