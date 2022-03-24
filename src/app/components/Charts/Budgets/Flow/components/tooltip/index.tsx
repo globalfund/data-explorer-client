@@ -55,6 +55,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
         background: #fff;
         border-radius: 20px;
         box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+        z-index: 2500;
       `}
     >
       {props.onClose && (
@@ -149,7 +150,9 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             }
           `}
         >
-          <div>{get(cmsData, "componentsChartsBudgets.flowToolTipComponent", "")}</div>
+          <div>
+            {get(cmsData, "componentsChartsBudgets.flowToolTipComponent", "")}
+          </div>
           <div>{get(cmsData, "componentsChartsBudgets.budget", "")}</div>
         </div>
         {props.components.map((stat: any) => (
@@ -206,7 +209,9 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             }
           `}
         >
-          <div>{get(cmsData, "componentsChartsBudgets.flowToolTipDrilldown", "")}</div>
+          <div>
+            {get(cmsData, "componentsChartsBudgets.flowToolTipDrilldown", "")}
+          </div>
         </Button>
       )}
     </div>

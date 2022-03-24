@@ -159,7 +159,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               width: 400px;
               top: ${top}px;
               position: fixed;
-              background: #f5f5f7;
+              background: #fff;
               height: calc(100vh - ${top}px);
               visibility: visible !important;
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
@@ -289,9 +289,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
           ref={fabBtnRef}
           css={`
             right: 20px;
-            z-index: 100;
             bottom: 70px;
             position: fixed;
+            z-index: 3;
 
             > button {
               box-shadow: none;
@@ -299,12 +299,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               height: 48px;
             }
           `}
+          onClick={() => props.onCloseBtnClick()}
         >
-          <Fab
-            color="primary"
-            aria-label="filters"
-            onClick={() => props.onCloseBtnClick()}
-          >
+          <Fab color="primary" aria-label="filters">
             <FiltersIcon />
           </Fab>
         </div>

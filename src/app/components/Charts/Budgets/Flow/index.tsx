@@ -346,7 +346,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             <XsContainer id="mobile-tooltip-container">
               <div
                 css={`
-                  width: 95%;
+                  width: 100%;
                 `}
               >
                 <MobileBudgetsFlowTooltip
