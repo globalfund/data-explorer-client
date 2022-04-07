@@ -352,7 +352,8 @@ export function useGetAllVizData() {
     "/location/<code>/eligibility": eligibilityCountry,
     "/location/<code>/eligibility/table": eligibilityCountry,
     // Location Disbursements
-    "/location/<code>/disbursements/treemap": locationDetailDisbursementsTreemap,
+    "/location/<code>/disbursements/treemap":
+      locationDetailDisbursementsTreemap,
     "/location/<code>/disbursements/table": locationDetailDisbursementsTreemap,
     "/location/<code>/disbursements/map": {
       countries: disbursementsGeomap,
@@ -389,6 +390,8 @@ export function useGetAllVizData() {
     // Location Grants
     "/location/<code>/grants": grantsList,
     "/location/<code>/grants/list": grantsList,
+    // Location Results
+    "/location/<code>/results": resultsList,
     // Grants
     "/grants": grantsList,
     // Results

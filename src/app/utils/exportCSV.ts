@@ -907,6 +907,27 @@ export function exportCSV(
           { label: "Component", key: "component" },
         ],
       };
+    case "/viz/results":
+      data.forEach((item: any) => {
+        item.geoLocations.forEach((loc: any) => {
+          csvData.push({
+            title: item.title,
+            value: loc.value,
+            component: item.component,
+            location: loc.name,
+          });
+        });
+      });
+      return {
+        data: csvData,
+        filename: "results.csv",
+        headers: [
+          { label: "Title", key: "title" },
+          { label: "Value", key: "value" },
+          { label: "Location", key: "location" },
+          { label: "Component", key: "component" },
+        ],
+      };
     default:
       return {
         data: [],
