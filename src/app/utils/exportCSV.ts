@@ -20,6 +20,7 @@ export function exportCSV(
     investmentsMapView: string;
     donorMapView: string;
     isDetail: boolean;
+    resultsSelectedYear: string;
   }
 ): CommonPropTypes {
   const csvData: any[] = [];
@@ -899,7 +900,7 @@ export function exportCSV(
       });
       return {
         data: csvData,
-        filename: "results.csv",
+        filename: `results-${options.resultsSelectedYear}.csv`,
         headers: [
           { label: "Title", key: "title" },
           { label: "Value", key: "value" },
@@ -920,7 +921,7 @@ export function exportCSV(
       });
       return {
         data: csvData,
-        filename: "results.csv",
+        filename: `results-${options.resultsSelectedYear}.csv`,
         headers: [
           { label: "Title", key: "title" },
           { label: "Value", key: "value" },
