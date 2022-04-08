@@ -55,10 +55,10 @@ export function AppBar() {
         return TextHeader(get(cmsData, "componentsAppBar.about", ""));
       case "/datasets":
         return (
-          <>
-            {TextHeader("Explore")}{" "}
-            <img src="/gflogo.png" width={295} height={24} />
-          </>
+          <React.Fragment>
+            {TextHeader("Explore")}
+            <MobileAppbarSearch />
+          </React.Fragment>
         );
       default:
         return <MobileHeader />;

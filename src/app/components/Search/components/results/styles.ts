@@ -32,8 +32,9 @@ export const tabs = css`
     padding: 0;
     max-width: 100vw;
     overflow-x: auto;
+    margin-left: -12px;
     width: max-content;
-    padding-bottom: 16px;
+    padding: 0 12px 16px 12px;
 
     > * {
       @supports (-webkit-touch-callout: none) and (not (translate: none)) {

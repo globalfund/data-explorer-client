@@ -24,7 +24,7 @@ export const dataSetsGridCss = css`
 
   @media screen and (max-width: 767px) {
     height: 227px;
-    /* padding-bottom: 10px; */
+    padding: 12px;
   }
 
   > div {

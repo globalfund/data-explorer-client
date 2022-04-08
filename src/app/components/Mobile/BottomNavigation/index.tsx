@@ -1,16 +1,14 @@
 import React from "react";
+import get from "lodash/get";
 import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
 import InfoIcon from "@material-ui/icons/Info";
+import { useCMSData } from "app/hooks/useCMSData";
 import ExploreIcon from "@material-ui/icons/Explore";
 import { makeStyles } from "@material-ui/core/styles";
 import BottomNavigation from "@material-ui/core/BottomNavigation";
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
-
-
 
 const useStyles = makeStyles({
   root: {
@@ -51,6 +49,22 @@ export function MobileBottomNavigation() {
   const [value, setValue] = React.useState(0);
   const actionButtons = createActionButtons();
 
+  function getIsActive(path: string) {
+    switch (path) {
+      case "/":
+        return history.location.pathname === "/";
+      case "/datasets":
+        return (
+          history.location.pathname !== "/" &&
+          history.location.pathname !== "/about"
+        );
+      case "/about":
+        return history.location.pathname === "/about";
+      default:
+        return false;
+    }
+  }
+
   React.useEffect(() => {
     history.listen((location: any) => {
       const path = location.pathname;
@@ -73,13 +87,26 @@ export function MobileBottomNavigation() {
       showLabels
       className={classes.root}
     >
-      {actionButtons.map((btn: any) => (
-        <BottomNavigationAction
-          key={btn.label}
-          icon={btn.icon}
-          label={btn.label}
-        />
-      ))}
+      {actionButtons.map((btn: any) => {
+        const isActive = getIsActive(btn.path);
+
+        return (
+          <BottomNavigationAction
+            key={btn.label}
+            icon={btn.icon}
+            label={btn.label}
+            css={`
+              && {
+                color: ${isActive ? "#262C34" : "#70777e"};
+
+                svg {
+                  fill: ${isActive ? "#262C34" : "#70777e"};
+                }
+              }
+            `}
+          />
+        );
+      })}
     </BottomNavigation>
   );
 }
