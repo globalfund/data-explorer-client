@@ -17,6 +17,7 @@ const buttoncss = css`
   align-items: center;
   justify-content: center;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+  z-index: 100;
 `;
 
 export function GeoMapControls(props: GeoMapControlsProps) {

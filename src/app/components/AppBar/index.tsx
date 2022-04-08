@@ -54,7 +54,12 @@ export function AppBar() {
       case "/about":
         return TextHeader(get(cmsData, "componentsAppBar.about", ""));
       case "/datasets":
-        return TextHeader(get(cmsData, "componentsAppBar.datasets", ""));
+        return (
+          <React.Fragment>
+            {TextHeader("Explore")}
+            <MobileAppbarSearch />
+          </React.Fragment>
+        );
       default:
         return <MobileHeader />;
     }

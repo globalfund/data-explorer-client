@@ -157,6 +157,7 @@ export default function CountryDetail() {
         id="export-view-div"
         css={`
           height: 100%;
+          z-index: -1;
           align-self: flex-start;
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
           width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
