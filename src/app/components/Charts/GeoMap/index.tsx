@@ -131,18 +131,12 @@ export function GeoMap(props: GeoMapProps) {
   };
   const [hoverInfo, setHoverInfo] = React.useState<any>(null);
   const [prevHoverInfo, setPrevHoverInfo] = React.useState<any>(null);
-  const [
-    pinMarkerHoverInfo,
-    setPinMarkerHoverInfo,
-  ] = React.useState<GeoMapPinMarker | null>(null);
-  const [
-    investmentsPinMarkerHoverInfo,
-    setInvestmentsPinMarkerHoverInfo,
-  ] = React.useState<InvestmentsGeoMapPinMarker | null>(null);
-  const [
-    allocationsPinMarkerHoverInfo,
-    setAllocationsPinMarkerHoverInfo,
-  ] = React.useState<AllocationsGeoMapPinMarker | null>(null);
+  const [pinMarkerHoverInfo, setPinMarkerHoverInfo] =
+    React.useState<GeoMapPinMarker | null>(null);
+  const [investmentsPinMarkerHoverInfo, setInvestmentsPinMarkerHoverInfo] =
+    React.useState<InvestmentsGeoMapPinMarker | null>(null);
+  const [allocationsPinMarkerHoverInfo, setAllocationsPinMarkerHoverInfo] =
+    React.useState<AllocationsGeoMapPinMarker | null>(null);
   const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -664,7 +658,13 @@ export function GeoMap(props: GeoMapProps) {
             </div>
           </Popup>
         )}
-        <GeoMapControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
+        <GeoMapControls
+          css={`
+            z-index: 200;
+          `}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+        />
       </MapGL>
       {hoverInfo &&
         (isHovering || isMobile || isTouchDevice()) &&
@@ -810,7 +810,8 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  {get(cmsData, "componentsChartsGeomap.locationDetail", "")}
+                  {/* {get(cmsData, "componentsChartsGeomap.locationDetail", "")} */}
+                  Country Detail Page
                 </TooltipButton>
               </div>
             )}

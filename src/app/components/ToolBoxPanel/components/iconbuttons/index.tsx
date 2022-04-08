@@ -114,6 +114,9 @@ export function ToolBoxPanelIconButtons() {
   const investmentsMapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
   );
+  const resultsSelectedYear = useStoreState(
+    (state) => state.ToolBoxPanelResultsYearState.value
+  );
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
@@ -151,6 +154,7 @@ export function ToolBoxPanelIconButtons() {
             donorMapView,
             investmentsMapView,
             isDetail: params.code !== undefined,
+            resultsSelectedYear,
           }
         )}
         css={`

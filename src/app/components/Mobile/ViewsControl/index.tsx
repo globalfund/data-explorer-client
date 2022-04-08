@@ -166,7 +166,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
           css={`
             font-size: 14px;
             font-weight: bold;
-            padding: 7px 16px;
+            padding: 6px 16px;
             border-radius: 20px;
             background: #dfe3e6;
             text-transform: capitalize;
