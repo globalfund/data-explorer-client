@@ -167,7 +167,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
   }
 
   const cmsData = useCMSData({ returnData: true });
-  
+
   return (
     <React.Fragment>
       <div
@@ -201,7 +201,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             {isMobile && (
               <Grid item xs={12} css="font-size: 12px !important;">
                 <b>
-                  {get(cmsData, "componentsChartsInvestments.totalAmount", "")}: {formatFinancialValue(totalInvestmentValue)}
+                  {get(cmsData, "componentsChartsInvestments.totalAmount", "")}:{" "}
+                  {formatFinancialValue(totalInvestmentValue)}
                 </b>
               </Grid>
             )}
@@ -220,7 +221,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   `}
                 >
-                  {props.type || "Disbursements"} <InfoIcon />
+                  Investments - {props.type || "Disbursement"} <InfoIcon />
                 </div>
                 <div css="font-weight: normal;">
                   {formatFinancialValue(totalInvestmentValue)}

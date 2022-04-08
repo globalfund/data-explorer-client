@@ -78,6 +78,7 @@ export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
   return (
     <InvestmentsTimeCycleModule
       data={data}
+      type={props.type}
       isDrilldownLoading={false}
       drilldownData={[]}
       isLoading={isLoading}

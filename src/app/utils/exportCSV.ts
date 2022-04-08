@@ -20,6 +20,7 @@ export function exportCSV(
     investmentsMapView: string;
     donorMapView: string;
     isDetail: boolean;
+    resultsSelectedYear: string;
   }
 ): CommonPropTypes {
   const csvData: any[] = [];
@@ -899,7 +900,28 @@ export function exportCSV(
       });
       return {
         data: csvData,
-        filename: "results.csv",
+        filename: `results-${options.resultsSelectedYear}.csv`,
+        headers: [
+          { label: "Title", key: "title" },
+          { label: "Value", key: "value" },
+          { label: "Location", key: "location" },
+          { label: "Component", key: "component" },
+        ],
+      };
+    case "/viz/results":
+      data.forEach((item: any) => {
+        item.geoLocations.forEach((loc: any) => {
+          csvData.push({
+            title: item.title,
+            value: loc.value,
+            component: item.component,
+            location: loc.name,
+          });
+        });
+      });
+      return {
+        data: csvData,
+        filename: `results-${options.resultsSelectedYear}.csv`,
         headers: [
           { label: "Title", key: "title" },
           { label: "Value", key: "value" },
