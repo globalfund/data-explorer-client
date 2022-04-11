@@ -1,12 +1,12 @@
 import React from "react";
+import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ResponsiveNetwork } from "@nivo/network";
 import { useMediaQuery, Tooltip } from "@material-ui/core";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
 import { AchievementRateLegend } from "app/components/Charts/Network/components/legends";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function NetworkViz(props: NetworkVizProps) {
   React.useEffect(() => {

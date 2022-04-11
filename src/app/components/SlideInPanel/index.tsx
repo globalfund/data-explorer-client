@@ -75,7 +75,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
         ref={props.ref}
         id="zoom-in-level"
         css={`
-          z-index: 2;
+          z-index: 3;
           top: ${top}px;
           display: flex;
           position: absolute;

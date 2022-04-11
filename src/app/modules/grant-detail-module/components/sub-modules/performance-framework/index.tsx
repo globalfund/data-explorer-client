@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import { InputNode, InputLink } from "@nivo/network";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -14,7 +15,6 @@ import {
   PFIndicator,
   PFIndicatorResultIntervention,
 } from "app/components/PerformanceFrameworkExpandedView/data";
-import { filter } from "lodash";
 
 interface Props {
   code: string;
@@ -140,7 +140,11 @@ export function PerformanceFrameworkModule(props: Props) {
         }
       `}
     >
-      <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
+      <TransitionContainer
+        vizScale={1}
+        enableMobilePan
+        vizTranslation={vizTranslation}
+      >
         <NetworkViz
           data={{ nodes, links }}
           selectedNodeId={vizSelected}

@@ -288,10 +288,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         <div
           ref={fabBtnRef}
           css={`
+            z-index: 4;
             right: 20px;
             bottom: 70px;
             position: fixed;
-            z-index: 3;
 
             > button {
               box-shadow: none;
