@@ -200,7 +200,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
               background: #dfe3e6;
             }
 
-            > span {
+            > span > div {
               color: #262c34;
               font-size: 14px;
               font-weight: bold;
@@ -210,7 +210,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           `}
         >
           <div>
-            {get(cmsData, "componentsChartsBudgets.flowToolTipDrilldown", "")}
+            {get(cmsData, "componentsChartsBudgets.flowTooltipDrilldown", "")}
           </div>
         </Button>
       )}
