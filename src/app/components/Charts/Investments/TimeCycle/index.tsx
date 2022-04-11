@@ -349,8 +349,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 height: 620px;
 
                 @media (max-width: 767px) {
-                  height: 550px;
-                  width: ${props.data.length === 0 ? "100%" : "1000px"};
+                  height: 500px;
+                  width: ${props.data.length < 3 ? "100%" : "700px"};
                 }
               `}
             >
@@ -363,7 +363,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 motionDamping={15}
                 borderColor="inherit:darker(1.6)"
                 layers={["grid", "axes", Bars, "markers", "legends"]}
-                padding={isMobile ? 0.3 : 0.5}
+                padding={isMobile ? 0.6 : 0.5}
                 innerPadding={6}
                 data={props.data}
                 keys={
