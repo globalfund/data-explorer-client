@@ -140,10 +140,10 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
     [params.vizType]
   );
 
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
+  React.useEffect(
+    () => setSelectedView(getSelectedView()),
+    [controlItems.views, history.location.pathname]
+  );
 
   React.useEffect(() => {
     setSelectedAggregation(
@@ -244,7 +244,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
         )}
       {(params.vizType === "commitment" ||
         params.vizType === "disbursements" ||
-        params.vizType === "signed") &&
+        params.vizType === "signed" ||
+        params.vizType === "pledges-contributions") &&
         params.subType === "treemap" && (
           <ToolBoxPanelDisbursementsSlider label={params.vizType} />
         )}
