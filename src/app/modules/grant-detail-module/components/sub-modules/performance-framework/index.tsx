@@ -158,6 +158,7 @@ export function PerformanceFrameworkModule(props: Props) {
       <SlideInContainer
         bigHeader
         enableOverflow
+        insideDivAutoHeight
         vizLevel={vizLevel}
         selected={vizSelected}
         loading={isExpandLoading}
