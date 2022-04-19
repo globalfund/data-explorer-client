@@ -202,14 +202,13 @@ export function AppBar() {
               {(location.pathname === "/" || !openSearch) && (
                 <div
                   css={`
-                    gap: 32px;
                     height: 100%;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
                   `}
                 >
-                  <NavLink to="/" css="display: flex;">
+                  <NavLink to="/" css="display: flex;margin-right: 52px;">
                     <img
                       src="/gflogo.png"
                       width={295}
@@ -227,6 +226,7 @@ export function AppBar() {
                       cursor: pointer;
                       font-size: 14px;
                       font-weight: bold;
+                      margin-right: 32px;
                       align-items: center;
                       letter-spacing: 0.5px;
                       text-decoration: none;
