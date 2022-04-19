@@ -22,7 +22,7 @@ export function DocumentsSubModule(props: DocumentsSubModuleProps) {
           width: 100%;
         `}
       >
-        {/* <Search value={props.search} setValue={props.setSearch} /> */}
+        <Search value={props.search} setValue={props.setSearch} />
         <div css="width: 100%;height: 25px;" />
         {props.data.length === 0 ? (
           <NoDataLabel />
