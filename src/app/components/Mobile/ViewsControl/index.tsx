@@ -8,6 +8,7 @@ import { useParams, useHistory, Link } from "react-router-dom";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { RouteTab } from "app/components/PageHeader/components/tabs";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { getChartIcon } from "app/components/ToolBoxPanel/utils/getChartIcon";
 import {
@@ -151,9 +152,9 @@ export function MobileViewControl(props: MobileViewControlProps) {
   return (
     <div
       css={`
+        z-index: 3;
         width: 100%;
         display: flex;
-        // margin-top: 15px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
@@ -180,7 +181,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
             svg {
               margin-left: 10px;
               transition: all 0.2s ease-in-out;
-              transform: rotate(${anchorEl ? "-" : ""}90deg) scale(0.7);
+              transform: rotate(${anchorEl ? "180" : "0"}deg);
               > path {
                 fill: #262c34;
               }
@@ -196,8 +197,8 @@ export function MobileViewControl(props: MobileViewControlProps) {
             `}
           >
             {params.vizType.replace("-", " & ")}
-          </span>
-          <ArrowForwardIcon />
+          </span>{" "}
+          <KeyboardArrowDownIcon />
         </Button>
         <StyledMenu
           keepMounted

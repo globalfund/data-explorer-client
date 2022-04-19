@@ -70,7 +70,7 @@ export function GrantDetailDocumentsModule(
           data={data.slice((page - 1) * 9, page * 9)}
           search={search}
           setSearch={setSearch}
-          columns={["Location", "Documents"]}
+          columns={["Name", "Documents"]}
         />
         <div>
           <Pagination

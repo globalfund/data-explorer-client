@@ -1,14 +1,14 @@
 import React from "react";
+import get from "lodash/get";
 import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
 import { useLocation } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface SlideInContainerProps {
   ref?: any;
@@ -19,6 +19,7 @@ interface SlideInContainerProps {
   toolboxOpen?: boolean;
   children: React.ReactNode;
   enableOverflow?: boolean;
+  insideDivAutoHeight?: boolean;
 }
 
 export function SlideInContainer(props: SlideInContainerProps) {
@@ -55,6 +56,17 @@ export function SlideInContainer(props: SlideInContainerProps) {
       setOpen(tmp);
     }
   }, [props.vizLevel, props.selected]);
+
+  React.useEffect(() => {
+    if (isMobile && props.insideDivAutoHeight) {
+      document.body.style.overflowY = "hidden";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [isMobile, props.insideDivAutoHeight]);
+
   const cmsData = useCMSData({ returnData: true });
 
   return (
@@ -63,7 +75,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
         ref={props.ref}
         id="zoom-in-level"
         css={`
-          z-index: 2;
+          z-index: 3;
           top: ${top}px;
           display: flex;
           position: absolute;
@@ -83,7 +95,9 @@ export function SlideInContainer(props: SlideInContainerProps) {
           @media (max-width: 767px) {
             width: 100vw;
             box-shadow: none;
-            height: calc(100vh - 50px);
+            height: ${props.insideDivAutoHeight
+              ? `calc(100vh - ${top + 56}px)`
+              : "calc(100vh - 50px)"};
 
             > div {
               box-shadow: none;
@@ -131,7 +145,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
               padding: ${props.loading ? "0px" : "16px"} !important;
 
               > div {
-                height: 100%;
+                height: ${props.insideDivAutoHeight ? "auto" : "100%"};
               }
             }
           `}

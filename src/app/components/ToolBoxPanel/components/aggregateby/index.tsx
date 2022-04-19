@@ -45,13 +45,7 @@ export function ToolBoxPanelAggregateBy(props: ToolBoxPanelAggregateByProps) {
         }
       `}
     >
-      <b
-        css={`
-          font-size: 18px;
-        `}
-      >
-        {props.title}
-      </b>
+      <b>{props.title}</b>
       <div
         css={`
           @media (max-width: 767px) {

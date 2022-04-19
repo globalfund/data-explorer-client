@@ -9,15 +9,15 @@ interface GeoMapControlsProps {
 }
 
 const buttoncss = css`
-  display: flex;
+  z-index: 100;
   padding: 3px;
+  display: flex;
   cursor: pointer;
   background: #fff;
   border-radius: 5px;
   align-items: center;
   justify-content: center;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-  z-index: 100;
 `;
 
 export function GeoMapControls(props: GeoMapControlsProps) {
@@ -31,6 +31,11 @@ export function GeoMapControls(props: GeoMapControlsProps) {
         display: flex;
         position: absolute;
         flex-direction: column;
+
+        @media (max-width: 767px) {
+          left: 15px;
+          right: unset;
+        }
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {

@@ -156,6 +156,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         width: 0,
       },
       formatter: (seriesName: string, opts: any) => {
+        if (isMobile) {
+          return seriesName;
+        }
         return `${seriesName}: ${formatLargeAmountsWithPrefix(
           values[opts.seriesIndex]
         )}`;

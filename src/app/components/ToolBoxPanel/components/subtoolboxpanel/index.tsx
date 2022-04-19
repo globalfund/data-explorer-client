@@ -259,7 +259,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
         )}
       {(params.vizType === "commitment" ||
         params.vizType === "disbursements" ||
-        params.vizType === "signed") &&
+        params.vizType === "signed" ||
+        params.vizType === "pledges-contributions") &&
         params.subType === "treemap" && (
           <ToolBoxPanelDisbursementsSlider label={params.vizType} />
         )}
