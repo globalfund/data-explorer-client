@@ -243,6 +243,9 @@ export default function VizModule() {
           location.pathname,
           filtergroups
         )}
+        css={`
+          z-index: 1;
+        `}
       />
       <div
         css={`

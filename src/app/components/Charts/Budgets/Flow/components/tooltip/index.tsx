@@ -1,14 +1,15 @@
 import React from "react";
+import get from "lodash/get";
+import orderBy from "lodash/orderBy";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
   BudgetsFlowTooltipProps,
   MobileBudgetsFlowTooltipProps,
 } from "app/components/Charts/Budgets/Flow/data";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
   return (
@@ -55,6 +56,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
         background: #fff;
         border-radius: 20px;
         box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+        z-index: 2500;
       `}
     >
       {props.onClose && (
@@ -138,21 +140,29 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               &:nth-of-type(1) {
-                width: 50%;
+                width: 40%;
                 text-align: start;
               }
 
               &:nth-of-type(2) {
-                width: 50%;
+                width: 20%;
+                text-align: right;
+              }
+
+              &:nth-of-type(3) {
+                width: 40%;
                 text-align: right;
               }
             }
           `}
         >
-          <div>{get(cmsData, "componentsChartsBudgets.flowToolTipComponent", "")}</div>
+          <div>
+            {get(cmsData, "componentsChartsBudgets.flowTooltipComponent", "")}
+          </div>
+          <div>{get(cmsData, "componentsChartsInvestments.grants", "")}</div>
           <div>{get(cmsData, "componentsChartsBudgets.budget", "")}</div>
         </div>
-        {props.components.map((stat: any) => (
+        {orderBy(props.components, "value", "desc").map((stat: any) => (
           <div
             key={stat.id}
             css={`
@@ -164,18 +174,24 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
 
               > div {
                 &:nth-of-type(1) {
-                  width: 50%;
+                  width: 40%;
                   text-align: start;
                 }
 
                 &:nth-of-type(2) {
-                  width: 50%;
+                  width: 20%;
+                  text-align: right;
+                }
+
+                &:nth-of-type(3) {
+                  width: 40%;
                   text-align: right;
                 }
               }
             `}
           >
             <div>{stat.id}</div>
+            <div>{stat.count}</div>
             <div>{formatFinancialValue(stat.value)}</div>
           </div>
         ))}
@@ -197,7 +213,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
               background: #dfe3e6;
             }
 
-            > span {
+            > span > div {
               color: #262c34;
               font-size: 14px;
               font-weight: bold;
@@ -206,7 +222,9 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             }
           `}
         >
-          <div>{get(cmsData, "componentsChartsBudgets.flowToolTipDrilldown", "")}</div>
+          <div>
+            {get(cmsData, "componentsChartsBudgets.flowTooltipDrilldown", "")}
+          </div>
         </Button>
       )}
     </div>

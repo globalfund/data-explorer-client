@@ -144,7 +144,11 @@ export function PerformanceFrameworkModule(props: Props) {
       <div css="margin-bottom: 10px;">
         <DrilldownPath />
       </div>
-      <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
+      <TransitionContainer
+        vizScale={1}
+        enableMobilePan
+        vizTranslation={vizTranslation}
+      >
         <NetworkViz
           data={{ nodes, links }}
           selectedNodeId={vizSelected}
@@ -157,6 +161,7 @@ export function PerformanceFrameworkModule(props: Props) {
       </TransitionContainer>
       <SlideInContainer
         enableOverflow
+        insideDivAutoHeight
         vizLevel={vizLevel}
         selected={vizSelected}
         loading={isExpandLoading}

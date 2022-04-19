@@ -233,21 +233,20 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         <div
           ref={fabBtnRef}
           css={`
+            z-index: 4;
             right: 20px;
-            z-index: 100;
             bottom: 70px;
             position: fixed;
 
             > button {
               box-shadow: none;
+              width: 48px;
+              height: 48px;
             }
           `}
+          onClick={() => props.onCloseBtnClick()}
         >
-          <Fab
-            color="primary"
-            aria-label="filters"
-            onClick={() => props.onCloseBtnClick()}
-          >
+          <Fab color="primary" aria-label="filters">
             <FiltersIcon />
           </Fab>
         </div>

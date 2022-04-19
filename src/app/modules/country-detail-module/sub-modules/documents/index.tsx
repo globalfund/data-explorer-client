@@ -103,6 +103,7 @@ export function LocationDetailDocumentsModule(
     return (
       <>
         <DocumentsSubModule
+          forceExpand
           data={
             props.isMultiCountry
               ? [
@@ -123,6 +124,7 @@ export function LocationDetailDocumentsModule(
               display: flex;
               justify-content: center;
             `}
+            color="primary"
             count={Math.ceil(data.length / 9)}
             boundaryCount={Math.ceil(data.length / 18)}
             page={page}

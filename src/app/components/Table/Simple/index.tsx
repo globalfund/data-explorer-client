@@ -52,7 +52,7 @@ function Row(props: {
             ? `
           :hover {
             cursor: pointer;
-            background: #13183F;
+            background: #495057;
 
             > td {
               color: #fff;

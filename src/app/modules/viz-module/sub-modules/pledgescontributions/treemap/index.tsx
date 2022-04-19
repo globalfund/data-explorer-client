@@ -2,9 +2,11 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
-import { useTitle } from "react-use";
+import maxBy from "lodash/maxBy";
+import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { TreeMapNodeDatum } from "@nivo/treemap";
+import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
@@ -24,10 +26,8 @@ export function PledgesContributionsTreemap() {
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<TreeMapNodeDatum | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<TreeMapNodeDatum | null>(null);
 
   // api call & data
   const fetchData = useStoreActions(
@@ -59,7 +59,23 @@ export function PledgesContributionsTreemap() {
   //   (state) => state.DisbursementsTreemapDrilldown.loading
   // );
 
+  const [treemapData, setTreemapData] =
+    React.useState<BudgetsTreemapDataItem[]>(data);
+
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  const setToolboxPanelDisbursementsSliderMaxValue = useStoreActions(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.setMax
+  );
+  const toolboxPanelDisbursementsSliderMaxValue = useStoreState(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.max
+  );
+  const setToolboxPanelDisbursementsSliderValues = useStoreActions(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.setValues
+  );
+  const toolboxPanelDisbursementsSliderValues = useStoreState(
+    (store) => store.ToolBoxPanelDisbursementsSliderValues.values
+  );
 
   const valueType = useStoreState(
     (state) => state.ToolBoxPanelDonorMapTypeState.value
@@ -73,6 +89,25 @@ export function PledgesContributionsTreemap() {
       }`,
     });
   }, [valueType, appliedFilters]);
+
+  React.useEffect(() => {
+    const lmax = maxBy(data, "value");
+    if (lmax && lmax.value !== toolboxPanelDisbursementsSliderMaxValue) {
+      setToolboxPanelDisbursementsSliderMaxValue(lmax.value);
+      setToolboxPanelDisbursementsSliderValues([0, lmax.value]);
+    }
+  }, [data]);
+
+  useUpdateEffect(() => {
+    setTreemapData(
+      filter(
+        data,
+        (item: BudgetsTreemapDataItem) =>
+          item.value >= toolboxPanelDisbursementsSliderValues[0] &&
+          item.value <= toolboxPanelDisbursementsSliderValues[1]
+      )
+    );
+  }, [data, toolboxPanelDisbursementsSliderValues]);
 
   // useUpdateEffect(() => {
   //   if (vizSelected) {
@@ -92,7 +127,7 @@ export function PledgesContributionsTreemap() {
   //   }
   // }, [vizSelected]);
 
-  const totalBudget = sumBy(data, "value");
+  const totalBudget = sumBy(treemapData, "value");
 
   // const vizDrilldowns = useStoreState(
   //   (state) => state.PageHeaderVizDrilldownsState.value
@@ -175,7 +210,7 @@ export function PledgesContributionsTreemap() {
       >
         {/* <TransitionContainer vizScale={1} vizTranslation={vizTranslation}> */}
         <BudgetsTreemap
-          data={data}
+          data={treemapData}
           invertColors
           selectedNodeId={vizSelected}
           tooltipValueLabel={valueType}
