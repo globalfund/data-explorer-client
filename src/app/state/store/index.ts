@@ -156,6 +156,8 @@ import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCount
 import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
+import { RawData } from "../api/action-reducers/data-themes/raw-data";
+import { DataThemesStepSelectionsState } from "../api/action-reducers/sync/data-themes";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -319,14 +321,18 @@ const storeContent: StoreModel = {
     componentsChartsGrants: persist(componentsChartsGrants),
     componentsChartsInvestments: persist(componentsChartsInvestments),
     componentsChartsNetwork: persist(componentsChartsNetwork),
-    componentsChartsPerformanceRating: persist(componentsChartsPerformanceRating),
+    componentsChartsPerformanceRating: persist(
+      componentsChartsPerformanceRating
+    ),
     componentsChartsPledges: persist(componentsChartsPledges),
     componentsCookieDialog: persist(componentsCookieDialog),
     componentsDatasetCarousel: persist(componentsDatasetCarousel),
     componentsInformationPanel: persist(componentsInformationPanel),
     componentsMobile: persist(componentsMobile),
     componentsPageHeader: persist(componentsPageHeader),
-    componentsPerformanceFrameworkComponents: persist(componentsPerformanceFrameworkComponents),
+    componentsPerformanceFrameworkComponents: persist(
+      componentsPerformanceFrameworkComponents
+    ),
     componentsSearch: persist(componentsSearch),
     componentsSlideInPanel: persist(componentsSlideInPanel),
     modulesLanding: persist(modulesLanding),
@@ -336,6 +342,12 @@ const storeContent: StoreModel = {
     modulesDatasets: persist(modulesDatasets),
     modulesGrantDetail: persist(modulesGrantDetail),
     modulesGrants: persist(modulesGrants),
+  },
+  dataThemes: {
+    rawData: persist(RawData),
+    sync: {
+      stepSelections: persist(DataThemesStepSelectionsState),
+    },
   },
 };
 

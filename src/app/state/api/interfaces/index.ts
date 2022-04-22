@@ -32,11 +32,19 @@ import {
   CMSApiComponentsPerformanceFrameworkComponents,
   CMSApiComponentsSearch,
   CMSApiComponentsSlideInPanel,
-  CMSApiModulesLanding, CMSApiModulesAbout, CMSApiModulesCommon, CMSApiModulesCountryDetail, CMSApiModulesDatasets, CMSApiModulesGrantDetail, CMSApiModulesGrants,
+  CMSApiModulesLanding,
+  CMSApiModulesAbout,
+  CMSApiModulesCommon,
+  CMSApiModulesCountryDetail,
+  CMSApiModulesDatasets,
+  CMSApiModulesGrantDetail,
+  CMSApiModulesGrants,
 } from "app/state/api/interfaces/cms";
+import { DataThemesStepSelectionsStateModel } from "../action-reducers/sync/data-themes";
 
 export interface RequestValues<T> {
   values?: T;
+  endpoint?: string;
   addOnData?: boolean;
   isCMSfetch?: boolean;
   filterString?: string;
@@ -69,6 +77,10 @@ export interface ApiModel<QueryModel, ResponseModel> {
   onRequest: Action<ApiModel<QueryModel, ResponseModel>>;
   fetch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
   clear: Action<ApiModel<QueryModel, ResponseModel>>;
+  fetchWithEndpoint: Thunk<
+    ApiModel<QueryModel, ResponseModel>,
+    RequestValues<QueryModel>
+  >;
 }
 
 // todo: add all available filters
@@ -88,26 +100,32 @@ export type ApiCallModel = ApiModel<
 
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
-  CMSApiCallParams, 
-  CMSApiComponentsAppBar |
-  CMSApiComponentsChartsBudgets |
-  CMSApiComponentsChartsCommon |
-  CMSApiComponentsChartsEligibility |
-  CMSApiComponentsChartsGeomap |
-  CMSApiComponentsChartsGrants |
-  CMSApiComponentsChartsInvestments |
-  CMSApiComponentsChartsNetwork |
-  CMSApiComponentsChartsPerformanceRating |
-  CMSApiComponentsChartsPledges |
-  CMSApiComponentsCookieDialog |
-  CMSApiComponentsDatasetCarousel |
-  CMSApiComponentsInformationPanel |
-  CMSApiComponentsMobile |
-  CMSApiComponentsPageHeader |
-  CMSApiComponentsPerformanceFrameworkComponents |
-  CMSApiComponentsSearch |
-  CMSApiComponentsSlideInPanel | 
-  CMSApiModulesLanding | CMSApiModulesAbout | CMSApiModulesCommon | CMSApiModulesCountryDetail | CMSApiModulesDatasets | CMSApiModulesGrantDetail | CMSApiModulesGrants
+  CMSApiCallParams,
+  | CMSApiComponentsAppBar
+  | CMSApiComponentsChartsBudgets
+  | CMSApiComponentsChartsCommon
+  | CMSApiComponentsChartsEligibility
+  | CMSApiComponentsChartsGeomap
+  | CMSApiComponentsChartsGrants
+  | CMSApiComponentsChartsInvestments
+  | CMSApiComponentsChartsNetwork
+  | CMSApiComponentsChartsPerformanceRating
+  | CMSApiComponentsChartsPledges
+  | CMSApiComponentsCookieDialog
+  | CMSApiComponentsDatasetCarousel
+  | CMSApiComponentsInformationPanel
+  | CMSApiComponentsMobile
+  | CMSApiComponentsPageHeader
+  | CMSApiComponentsPerformanceFrameworkComponents
+  | CMSApiComponentsSearch
+  | CMSApiComponentsSlideInPanel
+  | CMSApiModulesLanding
+  | CMSApiModulesAbout
+  | CMSApiModulesCommon
+  | CMSApiModulesCountryDetail
+  | CMSApiModulesDatasets
+  | CMSApiModulesGrantDetail
+  | CMSApiModulesGrants
 >;
 
 export interface CMSApiCallParams {}
@@ -249,5 +267,11 @@ export interface StoreModel {
     modulesDatasets: CMSApiCallModel;
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
-  }
+  };
+  dataThemes: {
+    rawData: ApiCallModel;
+    sync: {
+      stepSelections: DataThemesStepSelectionsStateModel;
+    };
+  };
 }

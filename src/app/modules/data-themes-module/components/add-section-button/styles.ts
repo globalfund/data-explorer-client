@@ -24,7 +24,7 @@ export const styles = {
     border-radius: 13px;
     background-color: #f1f3f5;
 
-    > button {
+    > * {
       padding: 3px;
       border-radius: 50%;
       border: 1px solid #373d43;

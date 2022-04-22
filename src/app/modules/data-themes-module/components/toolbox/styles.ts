@@ -8,23 +8,26 @@ export const styles = {
     width: 400px;
     display: flex;
     position: fixed;
-    padding: 25px 31px;
     background: #f1f3f5;
     flex-direction: column;
     height: calc(100vh - 48px);
 
-    > h5 {
-      font-size: 18px;
-      font-weight: 700;
-      margin: 0 0 16px 0;
-      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-    }
+    > section {
+      padding: 0 31px 25px 31px;
 
-    > h6 {
-      margin: 0;
-      font-size: 14px;
-      font-weight: 400;
-      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+      > h5 {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 25px 0 16px 0;
+        font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+      }
+
+      > h6 {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 400;
+        font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+      }
     }
   `,
   contentlist: css`

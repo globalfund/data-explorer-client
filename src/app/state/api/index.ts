@@ -75,4 +75,25 @@ export const APIModel = <QueryModel, ResponseModel>(
     };
     state.errorData = null;
   }),
+  fetchWithEndpoint: thunk(
+    async (actions, query: RequestValues<QueryModel>) => {
+      actions.onRequest();
+      axios
+        .get(
+          `${url}/${query.endpoint}${query.filterString ? "?" : ""}${
+            query.filterString ?? ""
+          }`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then(
+          (resp: AxiosResponse) =>
+            actions.onSuccess({ ...resp.data, addOnData: false }),
+          (error: any) => actions.onError(error.response)
+        );
+    }
+  ),
 });
