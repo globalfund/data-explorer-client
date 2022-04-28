@@ -29,3 +29,44 @@ export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
       }
     ),
   };
+
+export interface DataThemesStepChartTypeStateModel {
+  value: string | null;
+  setValue: Action<DataThemesStepChartTypeStateModel, string | null>;
+}
+
+export const DataThemesStepChartTypeState: DataThemesStepChartTypeStateModel = {
+  value: null,
+  setValue: action((state, payload: string | null) => {
+    state.value = payload;
+  }),
+};
+
+export interface DataThemesMappingStateModel {
+  value: {
+    [key: string]: any;
+  };
+  setValue: Action<DataThemesMappingStateModel, any>;
+  clearValue: Action<DataThemesMappingStateModel>;
+}
+
+export const DataThemesMappingState: DataThemesMappingStateModel = {
+  value: {},
+  setValue: action((state, payload: any) => {
+    let nextValue = { ...state.value };
+    const keysToRemove: string[] = [];
+    Object.keys(payload).forEach((key: string) => {
+      if (payload[key] === undefined) {
+        keysToRemove.push(key);
+      }
+    });
+    nextValue = { ...nextValue, ...payload };
+    keysToRemove.forEach((key: string) => {
+      delete nextValue[key];
+    });
+    state.value = { ...nextValue };
+  }),
+  clearValue: action((state) => {
+    state.value = {};
+  }),
+};

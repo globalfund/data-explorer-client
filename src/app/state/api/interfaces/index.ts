@@ -40,7 +40,11 @@ import {
   CMSApiModulesGrantDetail,
   CMSApiModulesGrants,
 } from "app/state/api/interfaces/cms";
-import { DataThemesStepSelectionsStateModel } from "../action-reducers/sync/data-themes";
+import {
+  DataThemesMappingStateModel,
+  DataThemesStepChartTypeStateModel,
+  DataThemesStepSelectionsStateModel,
+} from "../action-reducers/sync/data-themes";
 
 export interface RequestValues<T> {
   values?: T;
@@ -272,6 +276,8 @@ export interface StoreModel {
     rawData: ApiCallModel;
     sync: {
       stepSelections: DataThemesStepSelectionsStateModel;
+      chartType: DataThemesStepChartTypeStateModel;
+      mapping: DataThemesMappingStateModel;
     };
   };
 }

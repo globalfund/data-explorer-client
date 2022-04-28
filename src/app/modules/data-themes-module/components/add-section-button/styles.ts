@@ -2,10 +2,10 @@ import { css } from "styled-components/macro";
 
 export const styles = {
   container: css`
-    left: 0;
     z-index: 99;
     bottom: 10px;
-    position: sticky;
+    position: fixed;
+    left: calc((100vw - 1280px) / 2);
   `,
   innercontainer: css`
     gap: 24px;

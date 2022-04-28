@@ -7,7 +7,6 @@ import { useStoreState } from "app/state/store/hooks";
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { styles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/data/styles";
-import { DataThemesAddSectionButton } from "app/modules/data-themes-module/components/add-section-button";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 
 export function DataThemesBuilderDataView() {
@@ -34,7 +33,6 @@ export function DataThemesBuilderDataView() {
           <br />
           Please select a dataset in the right side panel
         </div>
-        <DataThemesAddSectionButton />
       </div>
     </div>
   );

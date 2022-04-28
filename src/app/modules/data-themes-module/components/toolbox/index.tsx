@@ -41,6 +41,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
         <DataThemesToolBoxSteps
           openPanel={props.openPanel}
           forceNextEnabled={props.forceNextEnabled}
+          currentChartData={props.currentChartData}
         />
       )}
     </div>

@@ -1,7 +1,10 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
+import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import MuiButton from "@material-ui/core/Button";
+import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import MuiAccordion from "@material-ui/core/Accordion";
@@ -9,6 +12,8 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 /* project */
+import { DataThemesToolBoxMapping } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
+import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
 
 const Accordion = withStyles({
@@ -107,12 +112,20 @@ const stepPaths = [
 
 interface DataThemesToolBoxStepsProps {
   openPanel?: number;
+  currentChartData?: any;
   forceNextEnabled?: boolean;
 }
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const history = useHistory();
   const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
+
+  const data = useStoreState(
+    (state) =>
+      get(state.dataThemes, "rawData.data.data", []) as {
+        [key: string]: number | string | null;
+      }[]
+  );
 
   const handleChange =
     (panel: number) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
@@ -123,24 +136,17 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      let goToStep = expanded;
-      if (direction === "prev") {
-        goToStep = expanded - 1;
-      } else {
-        goToStep = expanded + 1;
-      }
-      if (
-        goToStep === 0 &&
-        history.location.pathname === "/data-themes/create/preview"
-      ) {
-        history.push(stepPaths[1]);
-      } else if (
-        goToStep > 0 &&
-        history.location.pathname === "/data-themes/create/preview"
-      ) {
-        history.push(stepPaths[3]);
-      } else {
-        history.push(stepPaths[goToStep]);
+      const fStepPath = findIndex(
+        stepPaths,
+        (stepPath: string) => stepPath === history.location.pathname
+      );
+      if (fStepPath > -1) {
+        const newStepPathIndex =
+          direction === "prev" ? fStepPath - 1 : fStepPath + 1;
+        if (newStepPathIndex > stepPaths.length - 1) {
+          return;
+        }
+        history.push(stepPaths[newStepPathIndex]);
       }
     };
 
@@ -155,7 +161,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       <Accordion
         square
         expanded={expanded === 1}
-        onChange={handleChange(1)}
+        onChange={handleChange(data ? 2 : 1)}
         disabled={props.openPanel !== undefined && props.openPanel < 1}
       >
         <AccordionSummary
@@ -172,7 +178,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       <Accordion
         square
         expanded={expanded === 2}
-        onChange={handleChange(2)}
+        onChange={handleChange(3)}
         disabled={props.openPanel !== undefined && props.openPanel < 2}
       >
         <AccordionSummary
@@ -183,18 +189,13 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>2</div> Chart Type
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <DataThemesToolBoxChartType />
         </AccordionDetails>
       </Accordion>
       <Accordion
         square
         expanded={expanded === 3}
-        onChange={handleChange(3)}
+        onChange={handleChange(4)}
         disabled={props.openPanel !== undefined && props.openPanel < 3}
       >
         <AccordionSummary
@@ -205,12 +206,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>3</div> Mapping
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <DataThemesToolBoxMapping currentChartData={props.currentChartData} />
         </AccordionDetails>
       </Accordion>
       <Accordion

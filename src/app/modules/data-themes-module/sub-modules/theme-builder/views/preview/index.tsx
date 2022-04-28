@@ -7,11 +7,10 @@ import { useStoreState } from "app/state/store/hooks";
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesDataTable } from "app/modules/data-themes-module/components/data-table";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
-import { DataThemesAddSectionButton } from "app/modules/data-themes-module/components/add-section-button";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 
 export function DataThemesBuilderPreview() {
-  useTitle("The Data Explorer - Data Themes Preview");
+  useTitle("Data Themes - Preview");
 
   const data = useStoreState(
     (state) =>
@@ -30,7 +29,6 @@ export function DataThemesBuilderPreview() {
       />
       <div css={commonStyles.innercontainer}>
         <DataThemesDataTable data={data} />
-        <DataThemesAddSectionButton />
       </div>
     </div>
   );

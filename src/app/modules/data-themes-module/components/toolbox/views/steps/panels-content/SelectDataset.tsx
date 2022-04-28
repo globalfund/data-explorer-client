@@ -66,7 +66,45 @@ const StyledMenuItem = withStyles(() => ({
       borderBottom: "1px solid #C0C7D2",
     },
   },
+  selected: {
+    backgroundColor: "#262C34 !important",
+  },
 }))(MenuItem);
+
+const datasets = [
+  {
+    name: "Investment - Signed",
+    id: "investment-signed",
+  },
+  {
+    name: "Investment - Committed",
+    id: "investment-committed",
+  },
+  {
+    name: "Investment - Disbursed",
+    id: "investment-disbursed",
+  },
+  {
+    name: "Budgets",
+    id: "budgets",
+  },
+  {
+    name: "Pledges & Contributions",
+    id: "pledges-contributions",
+  },
+  {
+    name: "Allocations",
+    id: "allocations",
+  },
+  {
+    name: "Grants",
+    id: "grants",
+  },
+  {
+    name: "Eligibility",
+    id: "eligibility",
+  },
+];
 
 export function DataThemesToolBoxSelectDataset() {
   const history = useHistory();
@@ -179,38 +217,20 @@ export function DataThemesToolBoxSelectDataset() {
         onClose={handleClose}
         open={Boolean(anchorEl)}
       >
-        <StyledMenuItem
-          disableRipple
-          disableTouchRipple
-          onClick={handleItemClick(
-            "data-themes/raw-data/investment-signed",
-            "Investment - Signed"
-          )}
-          selected={stepSelectionsData.step1.dataset === "Investment - Signed"}
-        >
-          Investment - Signed
-        </StyledMenuItem>
-        <StyledMenuItem disableRipple disableTouchRipple>
-          Investment - Committed
-        </StyledMenuItem>
-        <StyledMenuItem disableRipple disableTouchRipple>
-          Investment - Disbursed
-        </StyledMenuItem>
-        <StyledMenuItem disableRipple disableTouchRipple>
-          Budgets
-        </StyledMenuItem>
-        <StyledMenuItem disableRipple disableTouchRipple>
-          Pledges & Contributions
-        </StyledMenuItem>
-        <StyledMenuItem disableRipple disableTouchRipple>
-          Allocations
-        </StyledMenuItem>
-        <StyledMenuItem disableRipple disableTouchRipple>
-          Grants
-        </StyledMenuItem>
-        <StyledMenuItem disableRipple disableTouchRipple>
-          Eligibility
-        </StyledMenuItem>
+        {datasets.map((dataset) => (
+          <StyledMenuItem
+            disableRipple
+            key={dataset.id}
+            disableTouchRipple
+            onClick={handleItemClick(
+              `data-themes/raw-data/${dataset.id}`,
+              dataset.name
+            )}
+            selected={stepSelectionsData.step1.dataset === dataset.name}
+          >
+            {dataset.name}
+          </StyledMenuItem>
+        ))}
       </StyledMenu>
       <Divider />
       <FormControlLabel
