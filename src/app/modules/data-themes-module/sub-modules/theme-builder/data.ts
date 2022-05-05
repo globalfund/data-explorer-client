@@ -19,16 +19,19 @@ export const charts = {
   barchartstacked,
 };
 
+export const CHART_DEFAULT_WIDTH = 1000;
+export const CHART_DEFAULT_HEIGHT = 750;
+
 export const defaultChartOptions = {
   barchart: {
     ...baseOptions,
     width: {
       ...baseOptions.width,
-      default: 1000,
+      default: CHART_DEFAULT_WIDTH,
     },
     height: {
       ...baseOptions.height,
-      default: 750,
+      default: CHART_DEFAULT_HEIGHT,
     },
     ...barchart.visualOptions,
     marginTop: {
@@ -55,20 +58,16 @@ export const defaultChartOptions = {
       ...barchart.visualOptions.sortBarsBy,
       default: "totalDescending",
     },
-    showLegend: {
-      ...barchart.visualOptions.showLegend,
-      default: true,
-    },
   },
   linechart: {
     ...baseOptions,
     width: {
       ...baseOptions.width,
-      default: 1000,
+      default: CHART_DEFAULT_WIDTH,
     },
     height: {
       ...baseOptions.height,
-      default: 750,
+      default: CHART_DEFAULT_HEIGHT,
     },
     ...linechart.visualOptions,
     marginTop: {
@@ -92,11 +91,11 @@ export const defaultChartOptions = {
     ...baseOptions,
     width: {
       ...baseOptions.width,
-      default: 1000,
+      default: CHART_DEFAULT_WIDTH,
     },
     height: {
       ...baseOptions.height,
-      default: 750,
+      default: CHART_DEFAULT_HEIGHT,
     },
     ...barchartmultiset.visualOptions,
     marginTop: {
@@ -120,11 +119,11 @@ export const defaultChartOptions = {
     ...baseOptions,
     width: {
       ...baseOptions.width,
-      default: 1000,
+      default: CHART_DEFAULT_WIDTH,
     },
     height: {
       ...baseOptions.height,
-      default: 750,
+      default: CHART_DEFAULT_HEIGHT,
     },
     ...alluvialdiagram.visualOptions,
     marginTop: {
@@ -172,11 +171,11 @@ export const defaultChartOptions = {
     ...baseOptions,
     width: {
       ...baseOptions.width,
-      default: 1000,
+      default: CHART_DEFAULT_WIDTH,
     },
     height: {
       ...baseOptions.height,
-      default: 750,
+      default: CHART_DEFAULT_HEIGHT,
     },
     ...treemap.visualOptions,
     marginTop: {
@@ -199,20 +198,16 @@ export const defaultChartOptions = {
       ...treemap.visualOptions.showHierarchyLabels,
       default: true,
     },
-    showLegend: {
-      ...treemap.visualOptions.showLegend,
-      default: true,
-    },
   },
   barchartstacked: {
     ...baseOptions,
     width: {
       ...baseOptions.width,
-      default: 1000,
+      default: CHART_DEFAULT_WIDTH,
     },
     height: {
       ...baseOptions.height,
-      default: 750,
+      default: CHART_DEFAULT_HEIGHT,
     },
     ...barchartstacked.visualOptions,
     marginTop: {

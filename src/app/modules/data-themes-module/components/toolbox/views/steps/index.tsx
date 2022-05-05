@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 import MuiButton from "@material-ui/core/Button";
 import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import MuiAccordion from "@material-ui/core/Accordion";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
@@ -14,6 +13,7 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 /* project */
 import { DataThemesToolBoxMapping } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
 import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
+import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Customize";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
 
 const Accordion = withStyles({
@@ -111,9 +111,13 @@ const stepPaths = [
 ];
 
 interface DataThemesToolBoxStepsProps {
+  mappedData?: any;
   openPanel?: number;
+  currentChart?: any;
+  visualOptions?: any;
   currentChartData?: any;
   forceNextEnabled?: boolean;
+  setVisualOptions?: (value: any) => void;
 }
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
@@ -136,6 +140,16 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      // remove this once filters and lock steps are implemented
+      if (history.location.pathname === stepPaths[4] && direction === "next") {
+        history.push(stepPaths[7]);
+        return;
+      }
+      // remove this once filters and lock steps are implemented
+      if (history.location.pathname === stepPaths[7] && direction === "prev") {
+        history.push(stepPaths[4]);
+        return;
+      }
       const fStepPath = findIndex(
         stepPaths,
         (stepPath: string) => stepPath === history.location.pathname
@@ -209,7 +223,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxMapping currentChartData={props.currentChartData} />
         </AccordionDetails>
       </Accordion>
-      <Accordion
+      {/* <Accordion
         square
         expanded={expanded === 4}
         onChange={handleChange(4)}
@@ -220,7 +234,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           aria-controls="step4-content"
           expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
         >
-          <div>4</div> Data scale
+          <div>4</div> Filters
         </AccordionSummary>
         <AccordionDetails>
           <Typography>
@@ -252,11 +266,11 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             lacus ex, sit amet blandit leo lobortis eget.
           </Typography>
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <Accordion
         square
         expanded={expanded === 6}
-        onChange={handleChange(6)}
+        onChange={handleChange(7)}
         disabled={props.openPanel !== undefined && props.openPanel < 6}
       >
         <AccordionSummary
@@ -267,12 +281,13 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>6</div> Customize
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <DataThemesToolBoxCustomize
+            mappedData={props.mappedData}
+            currentChart={props.currentChart}
+            visualOptions={props.visualOptions}
+            setVisualOptions={props.setVisualOptions}
+            currentChartData={props.currentChartData}
+          />
         </AccordionDetails>
       </Accordion>
       <div

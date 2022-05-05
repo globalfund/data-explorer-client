@@ -1,37 +1,31 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useDrop } from "react-dnd";
 import isEmpty from "lodash/isEmpty";
 import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
-import { DndProvider, useDrop } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import {
   getTypeName,
-  baseOptions,
-  getOptionsConfig,
   chart as rawChart,
-  getDefaultOptionsValues,
   getDefaultDimensionAggregation,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
 /* project */
+import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
+import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
-import {
-  charts,
-  defaultChartOptions,
-} from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { DataThemesToolBoxMappingItem } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
 import {
   arrayMove,
   getRequiredFieldsAndErrors,
   handleReplaceLocalMapping,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping/utils";
-import { DataThemesToolBoxMappingItem } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
 import {
   DataThemesBuilderMappingDimensionProps,
   DataThemesBuilderMappingMessageProps,
@@ -51,9 +45,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   const [draggingId, setDraggingId] = React.useState<string | null>(null);
 
   const loading = useStoreState((state) => state.dataThemes.rawData.loading);
-  const selectedChartType = useStoreState(
-    (state) => state.dataThemes.sync.chartType.value
-  );
   const data = useStoreState(
     (state) =>
       get(state.dataThemes, "rawData.data.data", []) as {
@@ -63,9 +54,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
-  );
-  const clearMapping = useStoreActions(
-    (actions) => actions.dataThemes.sync.mapping.clearValue
   );
 
   const replaceDimension = React.useCallback(
@@ -110,25 +98,14 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
     ]
   );
 
-  React.useEffect(() => {
-    return () => clearMapping();
-  }, []);
-
-  React.useEffect(() => {
-    if (containerRef.current && selectedChartType) {
-      props.setVisualOptions(() => {
-        const options = {
-          ...getOptionsConfig(
-            get(charts, selectedChartType, charts.barchart).visualOptions
-          ),
-          ...get(defaultChartOptions, selectedChartType, {}),
-          width: {
-            ...baseOptions.width,
-            // @ts-ignore
-            default: containerRef.current.clientWidth,
-          },
-        };
-        props.setVisualOptions(getDefaultOptionsValues(options));
+  useUpdateEffectOnce(() => {
+    if (
+      containerRef.current &&
+      props.visualOptions.width === CHART_DEFAULT_WIDTH
+    ) {
+      props.setVisualOptions({
+        ...props.visualOptions,
+        width: containerRef.current.clientWidth,
       });
     }
   }, [containerRef]);
@@ -185,54 +162,53 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   return (
     <div css={commonStyles.container}>
       <DataThemesPageSubHeader />
-      <DndProvider backend={HTML5Backend}>
-        <DataThemesToolBox
-          dataSteps
-          openPanel={3}
-          forceNextEnabled={nextEnabled}
-          currentChartData={props.currentChartData}
-        />
-        <div css={commonStyles.innercontainer}>
+      <DataThemesToolBox
+        dataSteps
+        openPanel={3}
+        forceNextEnabled={nextEnabled}
+        currentChartData={props.currentChartData}
+      />
+      <div css={commonStyles.innercontainer}>
+        <div
+          ref={containerRef}
+          css={`
+            width: calc(100% - 24px);
+            height: calc(100vh - 225px);
+          `}
+        >
           <div
-            ref={containerRef}
             css={`
-              width: calc(100% - 24px);
-              height: calc(100vh - 225px);
+              font-size: 14px;
+              margin-bottom: 16px;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            <div
-              css={`
-                font-size: 14px;
-                margin-bottom: 16px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
-              Chart variables
-            </div>
-            <Grid container spacing={2}>
-              {props.dimensions.map((dimension: any) => (
-                <DataThemesBuilderMappingDimension
-                  key={dimension.id}
-                  dimension={dimension}
-                  replaceDimension={replaceDimension}
-                  currentChartData={props.currentChartData}
-                />
-              ))}
-            </Grid>
-            <DataThemesBuilderMappingMessage dimensions={props.dimensions} />
-            <div
-              ref={domRef}
-              css={`
-                margin-top: 40px;
-
-                * {
-                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-                }
-              `}
-            />
+            Chart variables
           </div>
+          <Grid container spacing={2}>
+            {props.dimensions.map((dimension: any) => (
+              <DataThemesBuilderMappingDimension
+                key={dimension.id}
+                dimension={dimension}
+                replaceDimension={replaceDimension}
+                currentChartData={props.currentChartData}
+              />
+            ))}
+          </Grid>
+          <DataThemesBuilderMappingMessage dimensions={props.dimensions} />
+          <div
+            ref={domRef}
+            css={`
+              overflow-x: auto;
+              margin-top: 40px;
+
+              * {
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
+              }
+            `}
+          />
         </div>
-      </DndProvider>
+      </div>
     </div>
   );
 }

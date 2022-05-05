@@ -5,17 +5,9 @@ import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
-import {
-  getOptionsConfig,
-  getDefaultOptionsValues,
-  // @ts-ignore
-} from "@rawgraphs/rawgraphs-core";
 /* project */
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import {
-  charts,
-  defaultChartOptions,
-} from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { charts } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import {
@@ -45,22 +37,19 @@ export function DataThemesBuilderChartType(
   const setChartType = useStoreActions(
     (actions) => actions.dataThemes.sync.chartType.setValue
   );
+  const clearMapping = useStoreActions(
+    (actions) => actions.dataThemes.sync.mapping.clearValue
+  );
 
   const onChartTypeChange =
     (chartTypeId: string) => (e: React.MouseEvent<HTMLDivElement>) => {
+      clearMapping();
       setChartType(selectedChartType === chartTypeId ? null : chartTypeId);
       props.setCurrentChart(
         selectedChartType === chartTypeId
           ? null
           : get(charts, chartTypeId, null)
       );
-      const options = {
-        ...getOptionsConfig(
-          get(charts, chartTypeId, charts.barchart).visualOptions
-        ),
-        ...get(defaultChartOptions, chartTypeId, charts.barchart),
-      };
-      props.setVisualOptions(getDefaultOptionsValues(options));
     };
 
   if (data.length === 0 && !loading) {

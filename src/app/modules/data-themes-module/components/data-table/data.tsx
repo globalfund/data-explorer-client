@@ -1,7 +1,3 @@
-import EventIcon from "@material-ui/icons/Event";
-import Filter1Icon from "@material-ui/icons/Filter1";
-import TextFieldsIcon from "@material-ui/icons/TextFields";
-
 export interface DataThemesDataTableProps {
   data: { [key: string]: number | string | null }[];
 }
