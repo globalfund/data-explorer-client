@@ -1,4 +1,14 @@
 import { Action, Thunk } from "easy-peasy";
+import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
+import {
+  DataThemesAppliedFiltersStateModel,
+  DataThemesFilteredDataStateModel,
+} from "app/state/api/action-reducers/sync/data-themes/filters";
+import {
+  DataThemesMappingStateModel,
+  DataThemesStepChartTypeStateModel,
+  DataThemesStepSelectionsStateModel,
+} from "app/state/api/action-reducers/sync/data-themes";
 import {
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
@@ -12,7 +22,6 @@ import {
   ToolBoxPanelPFPeriodStateModel,
   ToolBoxPanelResultsYearStateModel,
 } from "app/state/api/action-reducers/sync";
-import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
 import {
   CMSApiComponentsAppBar,
   CMSApiComponentsChartsBudgets,
@@ -40,11 +49,6 @@ import {
   CMSApiModulesGrantDetail,
   CMSApiModulesGrants,
 } from "app/state/api/interfaces/cms";
-import {
-  DataThemesMappingStateModel,
-  DataThemesStepChartTypeStateModel,
-  DataThemesStepSelectionsStateModel,
-} from "../action-reducers/sync/data-themes";
 
 export interface RequestValues<T> {
   values?: T;
@@ -279,5 +283,7 @@ export interface StoreModel {
       chartType: DataThemesStepChartTypeStateModel;
       mapping: DataThemesMappingStateModel;
     };
+    filteredData: DataThemesFilteredDataStateModel;
+    appliedFilters: DataThemesAppliedFiltersStateModel;
   };
 }

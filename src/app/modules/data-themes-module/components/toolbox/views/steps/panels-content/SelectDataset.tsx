@@ -110,11 +110,14 @@ export function DataThemesToolBoxSelectDataset() {
   const history = useHistory();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
+  );
   const stepSelectionsActions = useStoreActions(
     (actions) => actions.dataThemes.sync.stepSelections
   );
-  const stepSelectionsData = useStoreState(
-    (state) => state.dataThemes.sync.stepSelections
+  const clearMapping = useStoreActions(
+    (actions) => actions.dataThemes.sync.mapping.clearValue
   );
 
   const fetchData = useStoreActions(
@@ -142,6 +145,7 @@ export function DataThemesToolBoxSelectDataset() {
         ...stepSelectionsData.step1,
         dataset: name,
       });
+      clearMapping();
       handleClose();
       history.push("/data-themes/create/preview");
     };

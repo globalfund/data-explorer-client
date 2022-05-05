@@ -1,3 +1,5 @@
+import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
+
 export interface DataThemesDataTableProps {
   data: { [key: string]: number | string | null }[];
 }
@@ -169,8 +171,8 @@ export function getColumnsFromData(
         headerRenderer: HeaderRenderer,
         cellClass: "data-themes-table-cell",
         _type: getFieldDataType(data[0][key]),
-        name: key.split(/(?=[A-Z])/).join(" "),
         headerCellClass: "data-themes-table-header-cell",
+        name: splitStrBasedOnCapitalLetters(key).replace(/_/g, ""),
       };
     }),
   ];

@@ -162,6 +162,10 @@ import {
   DataThemesStepChartTypeState,
   DataThemesStepSelectionsState,
 } from "../api/action-reducers/sync/data-themes";
+import {
+  DataThemesAppliedFiltersState,
+  DataThemesFilteredDataState,
+} from "../api/action-reducers/sync/data-themes/filters";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -354,6 +358,8 @@ const storeContent: StoreModel = {
       chartType: persist(DataThemesStepChartTypeState),
       mapping: persist(DataThemesMappingState),
     },
+    filteredData: persist(DataThemesFilteredDataState),
+    appliedFilters: persist(DataThemesAppliedFiltersState),
   },
 };
 

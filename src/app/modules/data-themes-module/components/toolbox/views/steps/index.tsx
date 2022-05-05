@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import MuiButton from "@material-ui/core/Button";
@@ -12,6 +13,7 @@ import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 /* project */
 import { DataThemesToolBoxMapping } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
+import { DataThemesToolBoxFilters } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Filters";
 import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
 import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Customize";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
@@ -21,12 +23,6 @@ const Accordion = withStyles({
     boxShadow: "none",
     borderTop: "1px solid #C0C7D2",
     backgroundColor: "transparent",
-    "&:not(:last-child)": {
-      borderBottom: 0,
-    },
-    "&:last-child": {
-      borderBottom: "1px solid #C0C7D2",
-    },
     "&:before": {
       display: "none",
     },
@@ -124,6 +120,11 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const history = useHistory();
   const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
 
+  const loading = useStoreState((state) => state.dataThemes.rawData.loading);
+  const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const selectedChartType = useStoreState(
+    (state) => state.dataThemes.sync.chartType.value
+  );
   const data = useStoreState(
     (state) =>
       get(state.dataThemes, "rawData.data.data", []) as {
@@ -140,14 +141,14 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      // remove this once filters and lock steps are implemented
-      if (history.location.pathname === stepPaths[4] && direction === "next") {
+      // remove this once filters and lock step is implemented
+      if (history.location.pathname === stepPaths[5] && direction === "next") {
         history.push(stepPaths[7]);
         return;
       }
-      // remove this once filters and lock steps are implemented
+      // remove this once filters and lock step is implemented
       if (history.location.pathname === stepPaths[7] && direction === "prev") {
-        history.push(stepPaths[4]);
+        history.push(stepPaths[5]);
         return;
       }
       const fStepPath = findIndex(
@@ -193,7 +194,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 2}
         onChange={handleChange(3)}
-        disabled={props.openPanel !== undefined && props.openPanel < 2}
+        disabled={data.length === 0 && !loading}
       >
         <AccordionSummary
           id="step2-header"
@@ -210,7 +211,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 3}
         onChange={handleChange(4)}
-        disabled={props.openPanel !== undefined && props.openPanel < 3}
+        disabled={(data.length === 0 && !loading) || !selectedChartType}
       >
         <AccordionSummary
           id="step3-header"
@@ -223,11 +224,16 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxMapping currentChartData={props.currentChartData} />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion
+      <Accordion
         square
         expanded={expanded === 4}
-        onChange={handleChange(4)}
-        disabled={props.openPanel !== undefined && props.openPanel < 4}
+        onChange={handleChange(5)}
+        disabled={
+          (data.length === 0 && !loading) ||
+          isEmpty(mapping) ||
+          !selectedChartType ||
+          (!props.forceNextEnabled && expanded !== 6)
+        }
       >
         <AccordionSummary
           id="step4-header"
@@ -237,15 +243,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>4</div> Filters
         </AccordionSummary>
         <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
+          <DataThemesToolBoxFilters />
         </AccordionDetails>
       </Accordion>
-      <Accordion
+      {/* <Accordion
         square
         expanded={expanded === 5}
         onChange={handleChange(5)}
@@ -258,20 +259,21 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         >
           <div>5</div> Lock
         </AccordionSummary>
-        <AccordionDetails>
-          <Typography>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse
-            malesuada lacus ex, sit amet blandit leo lobortis eget. Lorem ipsum
-            dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada
-            lacus ex, sit amet blandit leo lobortis eget.
-          </Typography>
-        </AccordionDetails>
+        <AccordionDetails></AccordionDetails>
       </Accordion> */}
       <Accordion
         square
         expanded={expanded === 6}
         onChange={handleChange(7)}
-        disabled={props.openPanel !== undefined && props.openPanel < 6}
+        disabled={
+          (data.length === 0 && !loading) ||
+          isEmpty(mapping) ||
+          !selectedChartType ||
+          (!props.forceNextEnabled && expanded !== 6)
+        }
+        css={`
+          border-bottom: 1px solid #c0c7d2;
+        `}
       >
         <AccordionSummary
           id="step6-header"
