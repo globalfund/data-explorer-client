@@ -1,8 +1,12 @@
 import React from "react";
+import get from "lodash/get";
+import minBy from "lodash/minBy";
+import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreState } from "app/state/store/hooks";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -10,18 +14,16 @@ import { ResponsiveScatterPlot, Value } from "@nivo/scatterplot";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { AreaLayer } from "app/components/Charts/Eligibility/Scatterplot/components/area";
 import {
+  ScatterplotNode,
+  backCircleRadius,
+} from "app/components/Charts/Eligibility/Scatterplot/components/node";
+import {
   incomeLevels,
   diseaseBurdens,
   EligibilityScatterplotHoveredNode,
   ScatterPlotProps,
   EligibilityScatterplotDataModel,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
-import {
-  ScatterplotNode,
-  backCircleRadius,
-} from "app/components/Charts/Eligibility/Scatterplot/components/node";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 const styles = {
   Eligible: css`
@@ -126,6 +128,13 @@ export function ScatterPlot(props: ScatterPlotProps) {
 
   const cmsData = useCMSData({ returnData: true });
 
+  const minYear = get(minBy(get(props.data, "[0].data", []), "x"), "x", 2002);
+  const maxYear = get(
+    maxBy(get(props.data, "[0].data", []), "x"),
+    "x",
+    new Date().getFullYear() + 1
+  );
+
   return (
     <React.Fragment>
       {hoveredNode && (
@@ -178,9 +187,30 @@ export function ScatterPlot(props: ScatterPlotProps) {
               </IconButton>
             )}
           </div>
-          <div>{get(cmsData, "componentsChartsEligibility.scatterPlotEligibility", "")} {hoveredNode.eligibility}</div>
-          <div>{get(cmsData, "componentsChartsEligibility.scatterPlotDiseaseBurden", "")} {diseaseBurdens[hoveredNode.diseaseBurden]}</div>
-          <div>{get(cmsData, "componentsChartsEligibility.scatterPlotIncomeLevel", "")} {incomeLevels[hoveredNode.incomeLevel]}</div>
+          <div>
+            {get(
+              cmsData,
+              "componentsChartsEligibility.scatterPlotEligibility",
+              ""
+            )}{" "}
+            {hoveredNode.eligibility}
+          </div>
+          <div>
+            {get(
+              cmsData,
+              "componentsChartsEligibility.scatterPlotDiseaseBurden",
+              ""
+            )}{" "}
+            {diseaseBurdens[hoveredNode.diseaseBurden]}
+          </div>
+          <div>
+            {get(
+              cmsData,
+              "componentsChartsEligibility.scatterPlotIncomeLevel",
+              ""
+            )}{" "}
+            {incomeLevels[hoveredNode.incomeLevel]}
+          </div>
         </div>
       )}
       <Grid container spacing={2}>
@@ -281,7 +311,11 @@ export function ScatterPlot(props: ScatterPlotProps) {
                     ${styles["Not Eligible"]}
                   `}
                 />
-                {get(cmsData, "componentsChartsEligibility.statusNotEligible", "")}
+                {get(
+                  cmsData,
+                  "componentsChartsEligibility.statusNotEligible",
+                  ""
+                )}
               </div>
               <div
                 css={`
@@ -314,7 +348,11 @@ export function ScatterPlot(props: ScatterPlotProps) {
                     ${styles["Transition Funding"]}
                   `}
                 />
-                {get(cmsData, "componentsChartsEligibility.statusTransitionFunding", "")}
+                {get(
+                  cmsData,
+                  "componentsChartsEligibility.statusTransitionFunding",
+                  ""
+                )}
               </div>
             </div>
             {showExtraData && (
@@ -335,7 +373,11 @@ export function ScatterPlot(props: ScatterPlotProps) {
                       sans-serif;
                   `}
                 >
-                  {get(cmsData, "componentsChartsEligibility.diseaseBurden", "")}
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.diseaseBurden",
+                    ""
+                  )}
                 </div>
                 <div
                   css={`
@@ -594,7 +636,11 @@ export function ScatterPlot(props: ScatterPlotProps) {
                         sans-serif;
                     `}
                   >
-                    {get(cmsData, "componentsChartsEligibility.incomeLevel", "")}
+                    {get(
+                      cmsData,
+                      "componentsChartsEligibility.incomeLevel",
+                      ""
+                    )}
                   </div>
                   <div
                     css={`
@@ -863,7 +909,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                     tickPadding: 15,
                     tickRotation: 0,
                     format: (e: Value) =>
-                      e !== 2002 && e !== 2022 ? e.toString() : "",
+                      e !== minYear && e !== maxYear ? e.toString() : "",
                   }}
                   axisLeft={null}
                   // axisLeft={{
