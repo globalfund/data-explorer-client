@@ -44,13 +44,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
   const [draggingId, setDraggingId] = React.useState<string | null>(null);
 
-  const loading = useStoreState((state) => state.dataThemes.rawData.loading);
-  const data = useStoreState(
-    (state) =>
-      get(state.dataThemes, "rawData.data.data", []) as {
-        [key: string]: number | string | null;
-      }[]
-  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
@@ -150,9 +143,9 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
         domRef.current.removeChild(domRef.current.firstChild);
       }
     }
-  }, [nextEnabled, props.currentChart, mapping]);
+  }, [nextEnabled, props.currentChart, props.currentChartData, mapping]);
 
-  if (data.length === 0 && !loading) {
+  if (props.data.length === 0 && !props.loading) {
     history.push("/data-themes/create/data");
   }
 
@@ -165,8 +158,12 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
       <DataThemesToolBox
         dataSteps
         openPanel={3}
+        data={props.data}
+        loading={props.loading}
         forceNextEnabled={nextEnabled}
+        loadDataset={props.loadDataset}
         currentChartData={props.currentChartData}
+        filterOptionGroups={props.filterOptionGroups}
       />
       <div css={commonStyles.innercontainer}>
         <div

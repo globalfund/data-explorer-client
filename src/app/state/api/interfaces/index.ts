@@ -1,9 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
 import { AppliedFiltersStateModel } from "app/state/api/action-reducers/sync/filters";
-import {
-  DataThemesAppliedFiltersStateModel,
-  DataThemesFilteredDataStateModel,
-} from "app/state/api/action-reducers/sync/data-themes/filters";
+import { DataThemesAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/data-themes/filters";
 import {
   DataThemesMappingStateModel,
   DataThemesStepChartTypeStateModel,
@@ -277,13 +274,11 @@ export interface StoreModel {
     modulesGrants: CMSApiCallModel;
   };
   dataThemes: {
-    rawData: ApiCallModel;
     sync: {
       stepSelections: DataThemesStepSelectionsStateModel;
       chartType: DataThemesStepChartTypeStateModel;
       mapping: DataThemesMappingStateModel;
     };
-    filteredData: DataThemesFilteredDataStateModel;
     appliedFilters: DataThemesAppliedFiltersStateModel;
   };
 }

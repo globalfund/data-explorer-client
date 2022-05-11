@@ -39,7 +39,7 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
         })
       )
     );
-  }, []);
+  }, [props.data]);
 
   useUpdateEffect(() => {
     setData(

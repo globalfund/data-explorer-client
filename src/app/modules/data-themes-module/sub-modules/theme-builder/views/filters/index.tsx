@@ -1,6 +1,5 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
@@ -27,13 +26,6 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
   const [mappedData, setMappedData] = React.useState(null);
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
-  const loading = useStoreState((state) => state.dataThemes.rawData.loading);
-  const data = useStoreState(
-    (state) =>
-      get(state.dataThemes, "rawData.data.data", []) as {
-        [key: string]: number | string | null;
-      }[]
-  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
   useUpdateEffectOnce(() => {
@@ -100,7 +92,7 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
     props.visualOptions,
   ]);
 
-  if ((data.length === 0 && !loading) || isEmpty(mapping)) {
+  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping)) {
     history.push("/data-themes/create/data");
   }
 
@@ -111,11 +103,15 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
         dataSteps
         openPanel={4}
         forceNextEnabled
+        data={props.data}
+        loading={props.loading}
         mappedData={mappedData}
         currentChart={props.currentChart}
         visualOptions={props.visualOptions}
+        loadDataset={props.loadDataset}
         setVisualOptions={props.setVisualOptions}
         currentChartData={props.currentChartData}
+        filterOptionGroups={props.filterOptionGroups}
       />
       <div css={commonStyles.innercontainer}>
         <div

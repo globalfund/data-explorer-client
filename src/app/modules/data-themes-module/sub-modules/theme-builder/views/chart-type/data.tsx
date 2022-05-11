@@ -4,10 +4,15 @@ import MultiSetBarChartIcon from "app/assets/icons/data-themes-chart-types/multi
 import AlluvialChartIcon from "app/assets/icons/data-themes-chart-types/alluvial";
 import TreeMapIcon from "app/assets/icons/data-themes-chart-types/treemap";
 import StackedBarChartIcon from "app/assets/icons/data-themes-chart-types/bar-stacked";
+import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 export interface DataThemesBuilderChartTypeProps {
+  data: { [key: string]: string | number | null }[];
+  loading: boolean;
   setCurrentChart: (chart: any) => void;
+  filterOptionGroups: FilterGroupModel[];
   setVisualOptions: (value: any) => void;
+  loadDataset: (endpoint: string) => Promise<boolean>;
 }
 
 export interface ChartTypeModel {

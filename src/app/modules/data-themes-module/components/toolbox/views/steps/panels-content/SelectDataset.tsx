@@ -106,8 +106,15 @@ const datasets = [
   },
 ];
 
-export function DataThemesToolBoxSelectDataset() {
+interface DataThemesToolBoxSelectDatasetProps {
+  loadDataset: (endpoint: string) => Promise<boolean>;
+}
+
+export function DataThemesToolBoxSelectDataset(
+  props: DataThemesToolBoxSelectDatasetProps
+) {
   const history = useHistory();
+  const { loadDataset } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const stepSelectionsData = useStoreState(
@@ -118,10 +125,6 @@ export function DataThemesToolBoxSelectDataset() {
   );
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
-  );
-
-  const fetchData = useStoreActions(
-    (actions) => actions.dataThemes.rawData.fetchWithEndpoint
   );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -138,16 +141,15 @@ export function DataThemesToolBoxSelectDataset() {
       if (name === stepSelectionsData.step1.dataset) {
         return;
       }
-      fetchData({
-        endpoint,
-      });
       stepSelectionsActions.setStep1({
         ...stepSelectionsData.step1,
         dataset: name,
       });
       clearMapping();
       handleClose();
-      history.push("/data-themes/create/preview");
+      loadDataset(endpoint).then(() => {
+        history.push("/data-themes/create/preview");
+      });
     };
 
   return (

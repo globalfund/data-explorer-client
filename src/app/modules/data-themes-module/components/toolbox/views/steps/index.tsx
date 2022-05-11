@@ -1,6 +1,5 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
@@ -17,6 +16,7 @@ import { DataThemesToolBoxFilters } from "app/modules/data-themes-module/compone
 import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
 import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Customize";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
+import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 const Accordion = withStyles({
   root: {
@@ -107,29 +107,27 @@ const stepPaths = [
 ];
 
 interface DataThemesToolBoxStepsProps {
+  data: { [key: string]: string | number | null }[];
+  loading: boolean;
   mappedData?: any;
   openPanel?: number;
   currentChart?: any;
   visualOptions?: any;
   currentChartData?: any;
   forceNextEnabled?: boolean;
+  filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
+  loadDataset: (endpoint: string) => Promise<boolean>;
 }
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const history = useHistory();
+  const { data, loading, loadDataset, filterOptionGroups } = props;
   const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
 
-  const loading = useStoreState((state) => state.dataThemes.rawData.loading);
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
-  );
-  const data = useStoreState(
-    (state) =>
-      get(state.dataThemes, "rawData.data.data", []) as {
-        [key: string]: number | string | null;
-      }[]
   );
 
   const handleChange =
@@ -187,7 +185,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>1</div> Select data
         </AccordionSummary>
         <AccordionDetails>
-          <DataThemesToolBoxSelectDataset />
+          <DataThemesToolBoxSelectDataset loadDataset={loadDataset} />
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -243,7 +241,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>4</div> Filters
         </AccordionSummary>
         <AccordionDetails>
-          <DataThemesToolBoxFilters />
+          <DataThemesToolBoxFilters filterOptionGroups={filterOptionGroups} />
         </AccordionDetails>
       </Accordion>
       {/* <Accordion

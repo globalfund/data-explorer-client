@@ -156,16 +156,12 @@ import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCount
 import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
-import { RawData } from "../api/action-reducers/data-themes/raw-data";
 import {
   DataThemesMappingState,
   DataThemesStepChartTypeState,
   DataThemesStepSelectionsState,
-} from "../api/action-reducers/sync/data-themes";
-import {
-  DataThemesAppliedFiltersState,
-  DataThemesFilteredDataState,
-} from "../api/action-reducers/sync/data-themes/filters";
+} from "app/state/api/action-reducers/sync/data-themes";
+import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -352,13 +348,11 @@ const storeContent: StoreModel = {
     modulesGrants: persist(modulesGrants),
   },
   dataThemes: {
-    rawData: persist(RawData),
     sync: {
       stepSelections: persist(DataThemesStepSelectionsState),
       chartType: persist(DataThemesStepChartTypeState),
       mapping: persist(DataThemesMappingState),
     },
-    filteredData: persist(DataThemesFilteredDataState),
     appliedFilters: persist(DataThemesAppliedFiltersState),
   },
 };

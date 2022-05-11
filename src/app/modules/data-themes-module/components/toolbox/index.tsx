@@ -39,13 +39,17 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       )}
       {props.dataSteps && (
         <DataThemesToolBoxSteps
+          data={props.data}
+          loading={props.loading}
           openPanel={props.openPanel}
           mappedData={props.mappedData}
+          loadDataset={props.loadDataset}
           currentChart={props.currentChart}
           visualOptions={props.visualOptions}
           forceNextEnabled={props.forceNextEnabled}
           currentChartData={props.currentChartData}
           setVisualOptions={props.setVisualOptions}
+          filterOptionGroups={props.filterOptionGroups}
         />
       )}
     </div>

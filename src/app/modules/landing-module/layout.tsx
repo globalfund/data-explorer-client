@@ -38,10 +38,22 @@ export const LandingLayout = () => {
         <Search />
         {!isMobile && (
           <React.Fragment>
-            <div css={datasetstitle}>{get(cmsData, "modulesLanding.datasetsTitle", "")}</div>
+            <div css={datasetstitle}>
+              {get(cmsData, "modulesLanding.datasetsTitle", "")}
+            </div>
             <DatasetCarousel />
             <div css={datasetslink}>
-              <Link to="/datasets">{get(cmsData, "modulesLanding.datasetsLink", "")}</Link>
+              <Link to="/datasets">
+                {get(cmsData, "modulesLanding.datasetsLink", "")}
+              </Link>
+              <Link
+                to="/data-themes/create"
+                css={`
+                  margin-left: 10px;
+                `}
+              >
+                Data Themes
+              </Link>
             </div>
           </React.Fragment>
         )}

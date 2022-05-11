@@ -1,26 +1,18 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
-import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/components/FilterGroup";
 import { ExpandedFilterGroup } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/components/ExpandedFilterGroup";
 
-interface DataThemesToolBoxFiltersProps {}
+interface DataThemesToolBoxFiltersProps {
+  filterOptionGroups: FilterGroupModel[];
+}
 
 export function DataThemesToolBoxFilters(props: DataThemesToolBoxFiltersProps) {
+  const { filterOptionGroups } = props;
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupModel | null>(null);
-
-  const filterOptionGroups = useStoreState(
-    (state) =>
-      get(
-        state.dataThemes,
-        "rawData.data.filterOptions",
-        []
-      ) as FilterGroupModel[]
-  );
 
   return (
     <div

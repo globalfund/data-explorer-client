@@ -1,23 +1,23 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { styles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/data/styles";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
+import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
-export function DataThemesBuilderDataView() {
+interface DataThemesBuilderDataViewProps {
+  filterOptionGroups: FilterGroupModel[];
+  data: { [key: string]: string | number | null }[];
+  loadDataset: (endpoint: string) => Promise<boolean>;
+}
+
+export function DataThemesBuilderDataView(
+  props: DataThemesBuilderDataViewProps
+) {
   useTitle("Data Themes - Select Data");
-
-  const data = useStoreState(
-    (state) =>
-      get(state.dataThemes, "rawData.data.data", []) as {
-        [key: string]: number | string | null;
-      }[]
-  );
 
   return (
     <div css={commonStyles.container}>
@@ -25,7 +25,11 @@ export function DataThemesBuilderDataView() {
       <DataThemesToolBox
         dataSteps
         openPanel={1}
-        forceNextEnabled={data.length > 0}
+        loading={false}
+        data={props.data}
+        loadDataset={props.loadDataset}
+        forceNextEnabled={props.data.length > 0}
+        filterOptionGroups={props.filterOptionGroups}
       />
       <div css={commonStyles.innercontainer}>
         <div css={styles.placeholder}>

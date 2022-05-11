@@ -23,14 +23,6 @@ export function DataThemesBuilderChartType(
 
   const history = useHistory();
 
-  const loading = useStoreState((state) => state.dataThemes.rawData.loading);
-  const data = useStoreState(
-    (state) =>
-      get(state.dataThemes, "rawData.data.data", []) as {
-        [key: string]: number | string | null;
-      }[]
-  );
-
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
@@ -52,7 +44,7 @@ export function DataThemesBuilderChartType(
       );
     };
 
-  if (data.length === 0 && !loading) {
+  if (props.data.length === 0 && !props.loading) {
     history.push("/data-themes/create/data");
   }
 
@@ -62,6 +54,10 @@ export function DataThemesBuilderChartType(
       <DataThemesToolBox
         dataSteps
         openPanel={2}
+        data={props.data}
+        loading={props.loading}
+        loadDataset={props.loadDataset}
+        filterOptionGroups={props.filterOptionGroups}
         forceNextEnabled={selectedChartType !== null}
       />
       <div css={commonStyles.innercontainer}>

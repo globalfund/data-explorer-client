@@ -39,29 +39,3 @@ export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
       }
     ),
   };
-
-export interface DataThemesFilteredDataStateModel {
-  value: {
-    [key: string]: number | string | null;
-  }[];
-  setValue: Action<
-    DataThemesFilteredDataStateModel,
-    {
-      [key: string]: number | string | null;
-    }[]
-  >;
-}
-
-export const DataThemesFilteredDataState: DataThemesFilteredDataStateModel = {
-  value: [],
-  setValue: action(
-    (
-      state,
-      payload: {
-        [key: string]: number | string | null;
-      }[]
-    ) => {
-      state.value = payload;
-    }
-  ),
-};
