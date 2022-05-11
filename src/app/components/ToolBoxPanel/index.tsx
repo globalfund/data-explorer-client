@@ -23,6 +23,7 @@ export interface ToolBoxPanelProps {
   isLocationDetail?: boolean;
   filterGroups: FilterGroupProps[];
   onCloseBtnClick: (value?: boolean) => void;
+  getAllAvailableGrants?: () => Promise<any>;
 }
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
@@ -275,7 +276,9 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   </IconButton>
                 </div>
               )}
-              <ToolBoxPanelIconButtons />
+              <ToolBoxPanelIconButtons
+                getAllAvailableGrants={props.getAllAvailableGrants}
+              />
               <SubToolBoxPanel
                 filterGroups={props.filterGroups}
                 closePanel={props.onCloseBtnClick}
