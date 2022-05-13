@@ -70,3 +70,16 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
     state.value = {};
   }),
 };
+
+export interface DataThemesStepSelectDataLiveStateModel {
+  value: boolean;
+  setValue: Action<DataThemesStepSelectDataLiveStateModel, boolean>;
+}
+
+export const DataThemesStepSelectDataLiveState: DataThemesStepSelectDataLiveStateModel =
+  {
+    value: false,
+    setValue: action((state, payload: boolean) => {
+      state.value = payload;
+    }),
+  };

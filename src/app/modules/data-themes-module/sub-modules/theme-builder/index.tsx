@@ -3,9 +3,9 @@ import React from "react";
 import get from "lodash/get";
 import { DndProvider } from "react-dnd";
 import { useSessionStorage } from "react-use";
-import { useStoreState } from "app/state/store/hooks";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Switch, Route, useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { Switch, Route, useHistory, useParams } from "react-router-dom";
 import {
   parseDataset,
   getOptionsConfig,
@@ -26,11 +26,22 @@ import { DataThemesBuilderInitialView } from "app/modules/data-themes-module/sub
 import { DataThemesBuilderChartType } from "app/modules/data-themes-module/sub-modules/theme-builder/views/chart-type";
 import {
   charts,
+  DataThemeAPIModel,
   defaultChartOptions,
+  emptyDataThemeAPI,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
 export function DataThemesBuilder() {
   const history = useHistory();
+  const { page, view } = useParams<{ page: string; view?: string }>();
+
+  const [currentChart, setCurrentChart] = React.useState(null);
+  const [isEditMode, setIsEditMode] = React.useState(page !== "new");
+  const [currentChartData, setCurrentChartData] = React.useState(null);
+  const [visualOptions, setVisualOptions] = useSessionStorage<any>(
+    "visualOptions",
+    {}
+  );
 
   const {
     data,
@@ -39,17 +50,30 @@ export function DataThemesBuilder() {
     loadDataset,
     filteredData,
     filterOptionGroups,
-  } = useDataThemesRawData();
-
-  const [currentChart, setCurrentChart] = React.useState(null);
-  const [currentChartData, setCurrentChartData] = React.useState(null);
-  const [visualOptions, setVisualOptions] = useSessionStorage<any>(
-    "visualOptions",
-    {}
-  );
+  } = useDataThemesRawData({
+    setVisualOptions,
+  });
 
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
+  );
+  const loadedDataTheme = useStoreState(
+    (state) =>
+      (state.dataThemes.DataThemeGet.crudData ??
+        emptyDataThemeAPI) as DataThemeAPIModel
+  );
+  const isSaveLoading = useStoreState(
+    (state) => state.dataThemes.DataThemeCreate.loading
+  );
+  const isDataThemeLoading = useStoreState(
+    (state) => state.dataThemes.DataThemeGet.loading
+  );
+
+  const loadDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeGet.fetch
+  );
+  const clearDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeGet.clear
   );
 
   function setVisualOptionsOnChange() {
@@ -87,12 +111,40 @@ export function DataThemesBuilder() {
     );
   }, [filteredData]);
 
+  React.useEffect(() => {
+    setIsEditMode(page !== "new");
+  }, [page]);
+
+  React.useEffect(() => {
+    if (isEditMode) {
+      loadDataTheme({
+        getId: page,
+        filterString:
+          'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":false,"createdDate":true}}',
+      });
+    } else {
+      clearDataTheme();
+    }
+
+    () => {
+      clearDataTheme();
+    };
+  }, [isEditMode]);
+
+  React.useEffect(() => {
+    if (loadedDataTheme.id && !view && !isDataThemeLoading) {
+      history.push(`/data-themes/${page}/preview`);
+    }
+  }, [loadedDataTheme.id, isDataThemeLoading]);
+
   return (
     <React.Fragment>
       <DndProvider backend={HTML5Backend}>
         <Switch>
-          {loadingData && <PageLoader />}
-          <Route path="/data-themes/create/customize">
+          {(loadingData || isSaveLoading || isDataThemeLoading) && (
+            <PageLoader />
+          )}
+          <Route path={`/data-themes/:page/customize`}>
             <DataThemesBuilderCustomize
               data={data}
               loading={loading}
@@ -105,8 +157,8 @@ export function DataThemesBuilder() {
               dimensions={get(currentChart, "dimensions", [])}
             />
           </Route>
-          <Route path="/data-themes/create/lock"></Route>
-          <Route path="/data-themes/create/filters">
+          <Route path={`/data-themes/:page/lock`}></Route>
+          <Route path={`/data-themes/:page/filters`}>
             <DataThemesBuilderFilters
               data={data}
               loading={loading}
@@ -119,7 +171,7 @@ export function DataThemesBuilder() {
               dimensions={get(currentChart, "dimensions", [])}
             />
           </Route>
-          <Route path="/data-themes/create/mapping">
+          <Route path={`/data-themes/:page/mapping`}>
             <DataThemesBuilderMapping
               data={data}
               loading={loading}
@@ -132,33 +184,43 @@ export function DataThemesBuilder() {
               dimensions={get(currentChart, "dimensions", [])}
             />
           </Route>
-          <Route path="/data-themes/create/chart-type">
+          <Route path={`/data-themes/:page/chart-type`}>
             <DataThemesBuilderChartType
               data={data}
               loading={loading}
               loadDataset={loadDataset}
+              visualOptions={visualOptions}
               setCurrentChart={setCurrentChart}
               setVisualOptions={setVisualOptions}
               filterOptionGroups={filterOptionGroups}
             />
           </Route>
-          <Route path="/data-themes/create/preview">
+          <Route path={`/data-themes/:page/preview`}>
             <DataThemesBuilderPreview
+              allData={data}
               loading={loading}
               data={filteredData}
               loadDataset={loadDataset}
+              visualOptions={visualOptions}
               filterOptionGroups={filterOptionGroups}
             />
           </Route>
-          <Route path="/data-themes/create/data">
+          <Route path={`/data-themes/:page/data`}>
             <DataThemesBuilderDataView
               data={data}
+              loading={loading}
               loadDataset={loadDataset}
+              visualOptions={visualOptions}
               filterOptionGroups={filterOptionGroups}
             />
           </Route>
-          <Route path="/data-themes/create">
-            <DataThemesBuilderInitialView />
+          <Route path={`/data-themes/:page`}>
+            <DataThemesBuilderInitialView
+              loading={loading}
+              data={filteredData}
+              visualOptions={visualOptions}
+              filterOptionGroups={filterOptionGroups}
+            />
           </Route>
           <Route path="*">
             <NoMatchPage />
@@ -167,7 +229,7 @@ export function DataThemesBuilder() {
       </DndProvider>
       <DataThemesAddSectionButton
         showCreateYourStoryText={
-          history.location.pathname === "/data-themes/create"
+          history.location.pathname === `/data-themes/:page`
         }
       />
     </React.Fragment>

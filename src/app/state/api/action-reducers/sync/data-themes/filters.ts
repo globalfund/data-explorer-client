@@ -11,6 +11,12 @@ export interface DataThemesAppliedFiltersStateModel {
       value: any[];
     }
   >;
+  setAll: Action<
+    DataThemesAppliedFiltersStateModel,
+    {
+      [key: string]: any[];
+    }
+  >;
 }
 
 export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
@@ -36,6 +42,16 @@ export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
             [payload.key]: payload.value,
           };
         }
+      }
+    ),
+    setAll: action(
+      (
+        state,
+        payload: {
+          [key: string]: any[];
+        }
+      ) => {
+        state.value = payload;
       }
     ),
   };

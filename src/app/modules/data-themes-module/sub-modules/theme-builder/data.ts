@@ -9,6 +9,7 @@ import {
   treemap,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-charts";
+import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 export const charts = {
   barchart,
@@ -227,4 +228,84 @@ export const defaultChartOptions = {
       default: 50,
     },
   },
+};
+
+export interface DataThemeTabVizAPIModel {
+  id: string;
+  mapping: any;
+  vizOptions: any;
+  liveData: boolean;
+  createdDate: Date;
+  filterOptionGroups: FilterGroupModel[];
+  appliedFilters: { [key: string]: any[] };
+  data: { [key: string]: string | number | null }[];
+  vizType:
+    | "barchart"
+    | "linechart"
+    | "barchartmultiset"
+    | "alluvialdiagram"
+    | "treemap"
+    | "barchartstacked";
+  datasetId:
+    | "investment-signed"
+    | "investment-committed"
+    | "investment-disbursed"
+    | "budgets"
+    | "pledges-contributions"
+    | "allocations"
+    | "grants"
+    | "eligibility";
+}
+
+export interface DataThemeTabTextAPIModel {
+  id: string;
+  content: string;
+  createdDate: Date;
+}
+
+export interface DataThemeTabAPIModel {
+  id: string;
+  title: string;
+  createdDate: Date;
+  texts: DataThemeTabTextAPIModel[];
+  visualisations: DataThemeTabVizAPIModel[];
+}
+
+export interface DataThemeAPIModel {
+  id: string;
+  title: string;
+  public: boolean;
+  subTitle: string;
+  createdDate: Date;
+  tabs: DataThemeTabAPIModel[];
+}
+
+export const emptyDataThemeAPI: DataThemeAPIModel = {
+  id: "",
+  title: "",
+  subTitle: "",
+  public: false,
+  createdDate: new Date(),
+  tabs: [
+    {
+      id: "",
+      title: "",
+      texts: [],
+      createdDate: new Date(),
+      visualisations: [
+        {
+          id: "",
+          mapping: {},
+          vizOptions: {},
+          liveData: false,
+          createdDate: new Date(),
+          filterOptionGroups: [],
+          appliedFilters: {},
+          data: [],
+          vizType: "barchart",
+          datasetId: "investment-signed",
+        },
+      ],
+    },
+  ],
 };

@@ -37,22 +37,45 @@ export const styles = {
     align-items: flex-start;
     justify-content: space-between;
 
-    h2 {
-      margin: 0;
-      gap: 14px;
-      display: flex;
-      color: #262c34;
-      font-size: 24px;
-      font-weight: 700;
-      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    > div {
+      > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+      }
     }
+  `,
+  titleInput: css`
+    margin: 0;
+    width: 200px;
+    height: 24px;
+    display: flex;
+    color: #262c34;
+    font-size: 24px;
+    font-weight: 700;
+    border-style: none;
+    background: transparent;
+    transition: background 0.2s ease-in-out;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
-    h5 {
-      margin: 0;
-      color: #262c34;
-      font-size: 14px;
-      font-weight: 400;
-      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+    &:focus {
+      background: #f1f3f5;
+    }
+  `,
+  subTitleInput: css`
+    margin: 0;
+    width: 110px;
+    height: 14px;
+    color: #262c34;
+    font-size: 14px;
+    font-weight: 400;
+    border-style: none;
+    background: transparent;
+    transition: background 0.2s ease-in-out;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+
+    &:focus {
+      background: #f1f3f5;
     }
   `,
   iconbtns: css`

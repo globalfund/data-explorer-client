@@ -1,10 +1,10 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import Divider from "@material-ui/core/Divider";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
+import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
@@ -114,6 +114,7 @@ export function DataThemesToolBoxSelectDataset(
   props: DataThemesToolBoxSelectDatasetProps
 ) {
   const history = useHistory();
+  const { page } = useParams<{ page: string }>();
   const { loadDataset } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -125,6 +126,12 @@ export function DataThemesToolBoxSelectDataset(
   );
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
+  );
+  const isLiveData = useStoreState(
+    (state) => state.dataThemes.sync.liveData.value
+  );
+  const setIsLiveData = useStoreActions(
+    (actions) => actions.dataThemes.sync.liveData.setValue
   );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -148,7 +155,7 @@ export function DataThemesToolBoxSelectDataset(
       clearMapping();
       handleClose();
       loadDataset(endpoint).then(() => {
-        history.push("/data-themes/create/preview");
+        history.push(`/data-themes/${page}/preview`);
       });
     };
 
@@ -242,7 +249,13 @@ export function DataThemesToolBoxSelectDataset(
       <FormControlLabel
         value="live-data"
         labelPlacement="start"
-        control={<Switch color="primary" />}
+        control={
+          <Switch
+            color="primary"
+            checked={isLiveData}
+            onChange={() => setIsLiveData(!isLiveData)}
+          />
+        }
         label="Use Live data for the visualization"
       />
     </div>

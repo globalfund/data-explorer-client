@@ -5,8 +5,8 @@ import { useDrop } from "react-dnd";
 import isEmpty from "lodash/isEmpty";
 import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
-import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
+import { useHistory, useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import {
   getTypeName,
@@ -37,6 +37,7 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   useTitle("Data Themes - Mapping");
 
   const history = useHistory();
+  const { page } = useParams<{ page: string }>();
 
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -146,7 +147,7 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   }, [nextEnabled, props.currentChart, props.currentChartData, mapping]);
 
   if (props.data.length === 0 && !props.loading) {
-    history.push("/data-themes/create/data");
+    history.push(`/data-themes/${page}/data`);
   }
 
   // console.log("mapping", mapping);
@@ -154,7 +155,12 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader />
+      <DataThemesPageSubHeader
+        data={props.data}
+        loading={props.loading}
+        visualOptions={props.visualOptions}
+        filterOptionGroups={props.filterOptionGroups}
+      />
       <DataThemesToolBox
         dataSteps
         openPanel={3}

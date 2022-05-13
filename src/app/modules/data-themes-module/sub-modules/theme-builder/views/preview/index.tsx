@@ -14,6 +14,10 @@ interface DataThemesBuilderPreviewProps {
   data: {
     [key: string]: string | number | null;
   }[];
+  allData: {
+    [key: string]: string | number | null;
+  }[];
+  visualOptions: any;
   filterOptionGroups: FilterGroupModel[];
   loadDataset: (endpoint: string) => Promise<boolean>;
 }
@@ -24,7 +28,12 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
   return (
     <div css={commonStyles.container}>
       {props.loading && <PageLoader />}
-      <DataThemesPageSubHeader />
+      <DataThemesPageSubHeader
+        data={props.allData}
+        loading={props.loading}
+        visualOptions={props.visualOptions}
+        filterOptionGroups={props.filterOptionGroups}
+      />
       <DataThemesToolBox
         dataSteps
         openPanel={1}

@@ -1,22 +1,29 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
+import { useParams } from "react-router-dom";
 import { useSessionStorage } from "react-use";
 import { useIndexedDB } from "react-indexed-db";
-import { useStoreState } from "app/state/store/hooks";
 import axios, { AxiosResponse, AxiosError } from "axios";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { filterDataThemesData } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/utils";
 
-export function useDataThemesRawData() {
+export function useDataThemesRawData(props: {
+  setVisualOptions: (value: any) => void;
+}) {
+  const { page } = useParams<{ page: string }>();
+
   const indexedDB = useIndexedDB("data-themes-raw-data");
 
   const [loading, setLoading] = React.useState(true);
   const [loadingData, setLoadingData] = React.useState(false);
+  const [isEditMode, setIsEditMode] = React.useState(page !== "new");
   const [rawData, setRawData] = React.useState({
     id: 0,
     count: 0,
     data: [],
-    filterOptions: [],
+    filterOptionGroups: [],
   });
   const [filteredData, setFilteredData] = React.useState<
     {
@@ -30,6 +37,25 @@ export function useDataThemesRawData() {
 
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
+  );
+
+  const setAppliedFilters = useStoreActions(
+    (actions) => actions.dataThemes.appliedFilters.setAll
+  );
+  const setMapping = useStoreActions(
+    (actions) => actions.dataThemes.sync.mapping.setValue
+  );
+  const setIsLiveData = useStoreActions(
+    (actions) => actions.dataThemes.sync.liveData.setValue
+  );
+  const setSelectedChartType = useStoreActions(
+    (actions) => actions.dataThemes.sync.chartType.setValue
+  );
+  const stepSelectionsActions = useStoreActions(
+    (actions) => actions.dataThemes.sync.stepSelections
   );
 
   async function clearStore() {
@@ -49,7 +75,7 @@ export function useDataThemesRawData() {
           return await indexedDB.add(response.data).then(
             (event) => {
               setIsInSession(1);
-              console.log("ID Generated: ", event);
+              // console.log("ID Generated: ", event);
               setRawData(response.data);
               setLoadingData(false);
               return true;
@@ -92,6 +118,60 @@ export function useDataThemesRawData() {
     setFilteredData(filterDataThemesData(rawData.data, appliedFilters));
   }, [rawData.data, appliedFilters]);
 
+  React.useEffect(() => {
+    setIsEditMode(page !== "new");
+  }, [page]);
+
+  React.useEffect(() => {
+    if (isEditMode) {
+      axios
+        .get(
+          `${process.env.REACT_APP_API}/data-themes/${page}?filter={"fields":{"id":false,"title":false,"subTitle":false,"public":false,"tabs":true,"createdDate":false}}`,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          clearStore().then(async () => {
+            const tabs = get(response.data, "tabs", []);
+            if (tabs.length > 0 && tabs[0].visualisations.length > 0) {
+              const dataToIndex = {
+                id: 0,
+                data: tabs[0].visualisations[0].data,
+                count: tabs[0].visualisations[0].data.length,
+                filterOptionGroups:
+                  tabs[0].visualisations[0].filterOptionGroups,
+              };
+              indexedDB.add(dataToIndex).then(
+                (event) => {
+                  setIsInSession(1);
+                  // console.log("ID Generated: ", event);
+                  setRawData(dataToIndex);
+                  setAppliedFilters(tabs[0].visualisations[0].appliedFilters);
+                  props.setVisualOptions(tabs[0].visualisations[0].vizOptions);
+                  setMapping(tabs[0].visualisations[0].mapping);
+                  setIsLiveData(tabs[0].visualisations[0].liveData);
+                  setSelectedChartType(tabs[0].visualisations[0].vizType);
+                  stepSelectionsActions.setStep1({
+                    ...stepSelectionsData.step1,
+                    dataset: tabs[0].visualisations[0].datasetId,
+                  });
+                },
+                (error) => {
+                  console.log("IndexedDB add error: ", error);
+                }
+              );
+            }
+          });
+        })
+        .catch((error) => {
+          console.log("API call error: " + error.message);
+        });
+    }
+  }, [isEditMode]);
+
   return {
     clearStore,
     loadDataset,
@@ -99,6 +179,6 @@ export function useDataThemesRawData() {
     filteredData,
     data: rawData.data,
     loading: loading || loadingData,
-    filterOptionGroups: rawData.filterOptions,
+    filterOptionGroups: rawData.filterOptionGroups,
   };
 }

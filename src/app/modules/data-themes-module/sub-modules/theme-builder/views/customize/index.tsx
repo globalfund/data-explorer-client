@@ -1,9 +1,9 @@
 /* third-party */
 import React from "react";
 import isEmpty from "lodash/isEmpty";
-import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreState } from "app/state/store/hooks";
+import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 /* project */
@@ -21,6 +21,7 @@ export function DataThemesBuilderCustomize(
   useTitle("Data Themes - Customize");
 
   const history = useHistory();
+  const { page } = useParams<{ page: string }>();
 
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
@@ -95,12 +96,17 @@ export function DataThemesBuilderCustomize(
   ]);
 
   if ((props.data.length === 0 && !props.loading) || isEmpty(mapping)) {
-    history.push("/data-themes/create/data");
+    history.push(`/data-themes/${page}/data`);
   }
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader />
+      <DataThemesPageSubHeader
+        data={props.data}
+        loading={props.loading}
+        visualOptions={props.visualOptions}
+        filterOptionGroups={props.filterOptionGroups}
+      />
       <DataThemesToolBox
         dataSteps
         openPanel={6}

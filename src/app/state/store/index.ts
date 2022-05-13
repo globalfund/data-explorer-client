@@ -159,9 +159,15 @@ import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
 import {
   DataThemesMappingState,
   DataThemesStepChartTypeState,
+  DataThemesStepSelectDataLiveState,
   DataThemesStepSelectionsState,
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
+import {
+  DataThemeCreate,
+  DataThemeGet,
+  DataThemeUpdate,
+} from "../api/action-reducers/data-themes";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -350,10 +356,14 @@ const storeContent: StoreModel = {
   dataThemes: {
     sync: {
       stepSelections: persist(DataThemesStepSelectionsState),
+      liveData: persist(DataThemesStepSelectDataLiveState),
       chartType: persist(DataThemesStepChartTypeState),
       mapping: persist(DataThemesMappingState),
     },
     appliedFilters: persist(DataThemesAppliedFiltersState),
+    DataThemeGet: persist(DataThemeGet),
+    DataThemeCreate: persist(DataThemeCreate),
+    DataThemeUpdate: persist(DataThemeUpdate),
   },
 };
 

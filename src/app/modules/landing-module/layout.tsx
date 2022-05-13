@@ -47,12 +47,20 @@ export const LandingLayout = () => {
                 {get(cmsData, "modulesLanding.datasetsLink", "")}
               </Link>
               <Link
-                to="/data-themes/create"
+                to="/data-themes/new"
                 css={`
                   margin-left: 10px;
                 `}
               >
                 Data Themes
+              </Link>
+              <Link
+                to="/data-themes/627e445fe90a65fd4915b2e0"
+                css={`
+                  margin-left: 10px;
+                `}
+              >
+                Existing Data Theme
               </Link>
             </div>
           </React.Fragment>

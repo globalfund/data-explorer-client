@@ -9,6 +9,8 @@ import { styles as commonStyles } from "app/modules/data-themes-module/sub-modul
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface DataThemesBuilderDataViewProps {
+  loading: boolean;
+  visualOptions: any;
   filterOptionGroups: FilterGroupModel[];
   data: { [key: string]: string | number | null }[];
   loadDataset: (endpoint: string) => Promise<boolean>;
@@ -21,7 +23,12 @@ export function DataThemesBuilderDataView(
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader />
+      <DataThemesPageSubHeader
+        data={props.data}
+        loading={props.loading}
+        visualOptions={props.visualOptions}
+        filterOptionGroups={props.filterOptionGroups}
+      />
       <DataThemesToolBox
         dataSteps
         openPanel={1}

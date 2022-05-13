@@ -4,6 +4,7 @@ import { DataThemesAppliedFiltersStateModel } from "app/state/api/action-reducer
 import {
   DataThemesMappingStateModel,
   DataThemesStepChartTypeStateModel,
+  DataThemesStepSelectDataLiveStateModel,
   DataThemesStepSelectionsStateModel,
 } from "app/state/api/action-reducers/sync/data-themes";
 import {
@@ -49,6 +50,8 @@ import {
 
 export interface RequestValues<T> {
   values?: T;
+  getId?: string;
+  patchId?: string;
   endpoint?: string;
   addOnData?: boolean;
   isCMSfetch?: boolean;
@@ -71,11 +74,17 @@ export interface ApiModel<QueryModel, ResponseModel> {
   loading: boolean;
   success: boolean;
   data: ResponseData<ResponseModel> | null | ResponseData<ResponseModel>[];
+  crudData: object | object[] | null;
   setData: Action<ApiModel<QueryModel, ResponseModel>, any>;
+  setCrudData: Action<ApiModel<QueryModel, object | object[] | null>, any>;
   errorData: Errors | null;
   onError: Action<ApiModel<QueryModel, ResponseModel>, Errors>;
   setSuccess: Action<ApiModel<QueryModel, ResponseModel>>;
   onSuccess: Action<
+    ApiModel<QueryModel, ResponseModel>,
+    ResponseData<ResponseModel> | ResponseData<ResponseModel>[]
+  >;
+  onSuccessCrudData: Action<
     ApiModel<QueryModel, ResponseModel>,
     ResponseData<ResponseModel> | ResponseData<ResponseModel>[]
   >;
@@ -86,6 +95,8 @@ export interface ApiModel<QueryModel, ResponseModel> {
     ApiModel<QueryModel, ResponseModel>,
     RequestValues<QueryModel>
   >;
+  post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
+  patch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
 // todo: add all available filters
@@ -276,9 +287,13 @@ export interface StoreModel {
   dataThemes: {
     sync: {
       stepSelections: DataThemesStepSelectionsStateModel;
+      liveData: DataThemesStepSelectDataLiveStateModel;
       chartType: DataThemesStepChartTypeStateModel;
       mapping: DataThemesMappingStateModel;
     };
     appliedFilters: DataThemesAppliedFiltersStateModel;
+    DataThemeGet: ApiCallModel;
+    DataThemeCreate: ApiCallModel;
+    DataThemeUpdate: ApiCallModel;
   };
 }

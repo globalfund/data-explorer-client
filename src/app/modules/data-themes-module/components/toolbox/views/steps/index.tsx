@@ -2,21 +2,23 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import findIndex from "lodash/findIndex";
-import { useHistory } from "react-router-dom";
+import Tooltip from "@material-ui/core/Tooltip";
 import MuiButton from "@material-ui/core/Button";
 import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
+import { useHistory, useParams } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 /* project */
+import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
+import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
 import { DataThemesToolBoxMapping } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
 import { DataThemesToolBoxFilters } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Filters";
 import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
 import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Customize";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 const Accordion = withStyles({
   root: {
@@ -95,17 +97,6 @@ const Button = withStyles(() => ({
   },
 }))(MuiButton);
 
-const stepPaths = [
-  "/data-themes/create",
-  "/data-themes/create/data",
-  "/data-themes/create/preview",
-  "/data-themes/create/chart-type",
-  "/data-themes/create/mapping",
-  "/data-themes/create/filters",
-  "/data-themes/create/lock",
-  "/data-themes/create/customize",
-];
-
 interface DataThemesToolBoxStepsProps {
   data: { [key: string]: string | number | null }[];
   loading: boolean;
@@ -122,6 +113,7 @@ interface DataThemesToolBoxStepsProps {
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const history = useHistory();
+  const { page } = useParams<{ page: string }>();
   const { data, loading, loadDataset, filterOptionGroups } = props;
   const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
 
@@ -129,6 +121,24 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
+  const appliedFilters = useStoreState(
+    (state) => state.dataThemes.appliedFilters.value
+  );
+  let appliedFiltersCount = 0;
+  Object.keys(appliedFilters).forEach((key) => {
+    appliedFiltersCount += appliedFilters[key].length;
+  });
+
+  const stepPaths = [
+    `/data-themes/${page}`,
+    `/data-themes/${page}/data`,
+    `/data-themes/${page}/preview`,
+    `/data-themes/${page}/chart-type`,
+    `/data-themes/${page}/mapping`,
+    `/data-themes/${page}/filters`,
+    `/data-themes/${page}/lock`,
+    `/data-themes/${page}/customize`,
+  ];
 
   const handleChange =
     (panel: number) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
@@ -237,8 +247,53 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           id="step4-header"
           aria-controls="step4-content"
           expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          css={`
+            && {
+              > .MuiAccordionSummary-content {
+                position: relative;
+              }
+            }
+          `}
         >
-          <div>4</div> Filters
+          <div>4</div> Filters{" "}
+          {appliedFiltersCount > 0 && (
+            <Tooltip
+              title={
+                <div
+                  css={`
+                    text-transform: capitalize;
+                  `}
+                >
+                  {Object.keys(appliedFilters)
+                    .map(
+                      (key) =>
+                        `${
+                          appliedFilters[key].length
+                        } ${splitStrBasedOnCapitalLetters(key)}${
+                          appliedFilters[key].length > 1 ? "s" : ""
+                        }`
+                    )
+                    .join(", ")}
+                </div>
+              }
+            >
+              <label
+                css={`
+                  top: 0;
+                  right: 0;
+                  color: #fff;
+                  font-size: 14px;
+                  padding: 0 10px;
+                  position: absolute;
+                  border-radius: 20px;
+                  background-color: #262c34;
+                `}
+              >
+                {appliedFiltersCount} applied filter
+                {appliedFiltersCount > 1 && "s"}
+              </label>
+            </Tooltip>
+          )}
         </AccordionSummary>
         <AccordionDetails>
           <DataThemesToolBoxFilters filterOptionGroups={filterOptionGroups} />

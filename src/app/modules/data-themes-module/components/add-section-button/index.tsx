@@ -2,11 +2,10 @@
 import React from "react";
 import { AddIcon } from "app/assets/icons/Add";
 import SearchIcon from "@material-ui/icons/Search";
-import { Link, useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import DashboardIcon from "@material-ui/icons/Dashboard";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+import { Link, useHistory, useParams } from "react-router-dom";
 /* project */
 import { styles } from "app/modules/data-themes-module/components/add-section-button/styles";
 import { DataThemesAddSectionButtonProps } from "app/modules/data-themes-module/components/add-section-button/data";
@@ -15,6 +14,8 @@ export function DataThemesAddSectionButton(
   props: DataThemesAddSectionButtonProps
 ) {
   const history = useHistory();
+  const { page } = useParams<{ page: string }>();
+
   const [open, setOpen] = React.useState(false);
 
   React.useEffect(() => {
@@ -42,7 +43,7 @@ export function DataThemesAddSectionButton(
         </IconButton>
         {open && (
           <div css={styles.contenttypeicons}>
-            <IconButton component={Link} to="/data-themes/create/data">
+            <IconButton component={Link} to={`/data-themes/${page}/data`}>
               <BarChartIcon htmlColor="#373D43" />
             </IconButton>
             <IconButton>

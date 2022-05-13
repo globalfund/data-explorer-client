@@ -2,8 +2,8 @@
 import React from "react";
 import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
-import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
+import { useHistory, useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
@@ -22,6 +22,7 @@ export function DataThemesBuilderChartType(
   useTitle("Data Themes - Chart Type");
 
   const history = useHistory();
+  const { page } = useParams<{ page: string }>();
 
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
@@ -45,12 +46,17 @@ export function DataThemesBuilderChartType(
     };
 
   if (props.data.length === 0 && !props.loading) {
-    history.push("/data-themes/create/data");
+    history.push(`/data-themes/${page}/data`);
   }
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader />
+      <DataThemesPageSubHeader
+        data={props.data}
+        loading={props.loading}
+        visualOptions={props.visualOptions}
+        filterOptionGroups={props.filterOptionGroups}
+      />
       <DataThemesToolBox
         dataSteps
         openPanel={2}
