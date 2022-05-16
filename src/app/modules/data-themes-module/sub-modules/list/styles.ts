@@ -96,7 +96,7 @@ export const styles = {
   `,
   gridItemCreateNew: css`
     width: 100%;
-    height: 100%;
+    height: 219px;
 
     > a {
       width: 100%;
