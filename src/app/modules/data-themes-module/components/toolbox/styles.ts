@@ -1,16 +1,16 @@
 import { css } from "styled-components/macro";
 
 export const styles = {
-  container: css`
+  container: (placeUnderSubHeader?: boolean) => css`
     right: 0;
-    top: 48px;
     z-index: 99;
     width: 400px;
     display: flex;
     position: fixed;
     background: #f1f3f5;
     flex-direction: column;
-    height: calc(100vh - 48px);
+    top: ${!placeUnderSubHeader ? 48 : 144}px;
+    height: calc(100vh - ${!placeUnderSubHeader ? 48 : 144}px);
 
     > section {
       padding: 0 31px 25px 31px;

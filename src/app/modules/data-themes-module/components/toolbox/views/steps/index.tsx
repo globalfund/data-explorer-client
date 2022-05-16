@@ -20,7 +20,7 @@ import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/compo
 import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Customize";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
 
-const Accordion = withStyles({
+export const Accordion = withStyles({
   root: {
     boxShadow: "none",
     borderTop: "1px solid #C0C7D2",
@@ -35,7 +35,7 @@ const Accordion = withStyles({
   expanded: {},
 })(MuiAccordion);
 
-const AccordionSummary = withStyles({
+export const AccordionSummary = withStyles({
   root: {
     minHeight: 56,
     marginBottom: -1,
@@ -70,7 +70,7 @@ const AccordionSummary = withStyles({
   expanded: {},
 })(MuiAccordionSummary);
 
-const AccordionDetails = withStyles(() => ({
+export const AccordionDetails = withStyles(() => ({
   root: {
     padding: "16px 24px",
   },
@@ -157,6 +157,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       // remove this once filters and lock step is implemented
       if (history.location.pathname === stepPaths[7] && direction === "prev") {
         history.push(stepPaths[5]);
+        return;
+      }
+      if (history.location.pathname === stepPaths[7] && direction === "next") {
+        history.push(stepPaths[0]);
         return;
       }
       const fStepPath = findIndex(
@@ -322,7 +326,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           (data.length === 0 && !loading) ||
           isEmpty(mapping) ||
           !selectedChartType ||
-          (!props.forceNextEnabled && expanded !== 6)
+          !props.forceNextEnabled
         }
         css={`
           border-bottom: 1px solid #c0c7d2;
@@ -363,10 +367,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         <Button
           onClick={onNavBtnClick("next")}
           disabled={
-            expanded === 6 ||
-            (props.openPanel !== undefined &&
-              props.openPanel < expanded + 1 &&
-              !props.forceNextEnabled)
+            props.openPanel !== undefined &&
+            props.openPanel < expanded + 1 &&
+            !props.forceNextEnabled
           }
         >
           Next

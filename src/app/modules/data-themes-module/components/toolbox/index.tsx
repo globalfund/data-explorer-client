@@ -7,10 +7,11 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import { styles } from "app/modules/data-themes-module/components/toolbox/styles";
 import { DataThemesToolBoxProps } from "app/modules/data-themes-module/components/toolbox/data";
 import { DataThemesToolBoxSteps } from "app/modules/data-themes-module/components/toolbox/views/steps";
+import { DataThemesToolBoxPreview } from "app/modules/data-themes-module/components/toolbox/views/preview";
 
 export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   return (
-    <div css={styles.container}>
+    <div css={styles.container(props.filtersView)}>
       {props.guideView && (
         <section>
           <h5>Guide</h5>
@@ -49,6 +50,11 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           forceNextEnabled={props.forceNextEnabled}
           currentChartData={props.currentChartData}
           setVisualOptions={props.setVisualOptions}
+          filterOptionGroups={props.filterOptionGroups}
+        />
+      )}
+      {props.filtersView && (
+        <DataThemesToolBoxPreview
           filterOptionGroups={props.filterOptionGroups}
         />
       )}

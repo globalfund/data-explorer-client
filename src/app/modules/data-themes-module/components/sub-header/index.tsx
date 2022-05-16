@@ -90,6 +90,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const createDataThemeSuccess = useStoreState(
     (state) => state.dataThemes.DataThemeCreate.success
   );
+  const editDataThemeSuccess = useStoreState(
+    (state) => state.dataThemes.DataThemeUpdate.success
+  );
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
@@ -102,6 +105,12 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
   const editDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeUpdate.patch
+  );
+  const createDataThemeClear = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeCreate.clear
+  );
+  const editDataThemeClear = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeUpdate.clear
   );
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -170,10 +179,14 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }, [loadedDataTheme]);
 
   React.useEffect(() => {
-    if (createDataThemeSuccess) {
+    if (createDataThemeSuccess || editDataThemeSuccess) {
       setShowSnackbar("Your Theme has been saved!");
     }
-  }, [createDataThemeSuccess]);
+    return () => {
+      createDataThemeClear();
+      editDataThemeClear();
+    };
+  }, [createDataThemeSuccess, editDataThemeSuccess]);
 
   return (
     <div css={styles.container}>
@@ -189,7 +202,16 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         />
       </InfoSnackbar>
       <div css={styles.innercontainer}>
-        <div css={styles.firstrow}>
+        <div
+          css={styles.firstrow}
+          style={
+            props.previewMode
+              ? {
+                  pointerEvents: "none",
+                }
+              : {}
+          }
+        >
           <div>
             <div>
               <input
@@ -207,23 +229,25 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               onChange={handleSubTitleChange}
             />
           </div>
-          <div css={styles.iconbtns}>
-            <IconButton>
-              <ShareIcon htmlColor="#262c34" />
-            </IconButton>
-            <IconButton>
-              <PlayCircleFilledIcon htmlColor="#262c34" />
-            </IconButton>
-            <IconButton
-              onClick={onSave}
-              disabled={!isSavedEnabled}
-              css={`
-                opacity: ${isSavedEnabled ? 1 : 0.5};
-              `}
-            >
-              <SaveIcon htmlColor="#262c34" />
-            </IconButton>
-          </div>
+          {!props.previewMode && (
+            <div css={styles.iconbtns}>
+              <IconButton>
+                <ShareIcon htmlColor="#262c34" />
+              </IconButton>
+              <IconButton>
+                <PlayCircleFilledIcon htmlColor="#262c34" />
+              </IconButton>
+              <IconButton
+                onClick={onSave}
+                disabled={!isSavedEnabled}
+                css={`
+                  opacity: ${isSavedEnabled ? 1 : 0.5};
+                `}
+              >
+                <SaveIcon htmlColor="#262c34" />
+              </IconButton>
+            </div>
+          )}
         </div>
         {/* <div css={styles.secondrow}>
           <DataThemesTabs />

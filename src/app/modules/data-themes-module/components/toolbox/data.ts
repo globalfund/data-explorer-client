@@ -9,6 +9,7 @@ export interface DataThemesToolBoxProps {
   dataSteps?: boolean;
   guideView?: boolean;
   visualOptions?: any;
+  filtersView?: boolean;
   currentChartData?: any;
   forceNextEnabled?: boolean;
   filterOptionGroups: FilterGroupModel[];

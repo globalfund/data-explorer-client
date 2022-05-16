@@ -1,9 +1,7 @@
 /* third-party */
 import React from "react";
-import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreState } from "app/state/store/hooks";
-import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 /* project */
@@ -12,22 +10,15 @@ import { DataThemesToolBox } from "app/modules/data-themes-module/components/too
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
-import { getRequiredFieldsAndErrors } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping/utils";
-import { DataThemesBuilderCustomizeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/data";
+import { DataThemesBuilderPreviewThemeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
 
-export function DataThemesBuilderCustomize(
-  props: DataThemesBuilderCustomizeProps
+export function DataThemesBuilderPreviewTheme(
+  props: DataThemesBuilderPreviewThemeProps
 ) {
-  useTitle("Data Themes - Customize");
-
-  const history = useHistory();
-  const { page } = useParams<{ page: string }>();
+  useTitle("Data Themes - Preview Theme");
 
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
-
-  const [mappedData, setMappedData] = React.useState(null);
-  const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
@@ -44,18 +35,7 @@ export function DataThemesBuilderCustomize(
   }, [containerRef]);
 
   React.useEffect(() => {
-    const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping, props.dimensions);
-
-    setNextEnabled(
-      updRequiredFields.length === 0 &&
-        updErrors.length === 0 &&
-        updMinValuesFields.length === 0
-    );
-  }, [mapping, props.dimensions]);
-
-  React.useEffect(() => {
-    if (nextEnabled && domRef && domRef.current) {
+    if (domRef && domRef.current) {
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
@@ -64,17 +44,14 @@ export function DataThemesBuilderCustomize(
           dataTypes: props.currentChartData.dataTypes,
         });
         const vizData = viz._getVizData();
-        setMappedData(vizData);
         try {
           const rawViz = viz.renderToDOM(domRef.current, vizData);
         } catch (e) {
-          setMappedData(null);
           if (process.env.NODE_ENV === "development") {
             console.log("chart error", e);
           }
         }
       } catch (e) {
-        setMappedData(null);
         while (domRef.current.firstChild) {
           domRef.current.removeChild(domRef.current.firstChild);
         }
@@ -82,43 +59,28 @@ export function DataThemesBuilderCustomize(
           console.log("chart error", e);
         }
       }
-    } else if (!nextEnabled && domRef && domRef.current) {
-      while (domRef.current.firstChild) {
-        domRef.current.removeChild(domRef.current.firstChild);
-      }
     }
   }, [
-    nextEnabled,
     props.currentChart,
     props.currentChartData,
     mapping,
     props.visualOptions,
   ]);
 
-  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping)) {
-    history.push(`/data-themes/${page}/data`);
-  }
-
   return (
     <div css={commonStyles.container}>
       <DataThemesPageSubHeader
+        previewMode
         data={props.data}
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
       />
       <DataThemesToolBox
-        dataSteps
-        openPanel={6}
+        filtersView
         data={props.data}
         loading={props.loading}
-        mappedData={mappedData}
-        forceNextEnabled={nextEnabled}
         loadDataset={props.loadDataset}
-        currentChart={props.currentChart}
-        visualOptions={props.visualOptions}
-        setVisualOptions={props.setVisualOptions}
-        currentChartData={props.currentChartData}
         filterOptionGroups={props.filterOptionGroups}
       />
       <div css={commonStyles.innercontainer}>

@@ -5,7 +5,13 @@ import { DndProvider } from "react-dnd";
 import { useSessionStorage } from "react-use";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { Switch, Route, useHistory, useParams } from "react-router-dom";
+import {
+  Switch,
+  Route,
+  useHistory,
+  useParams,
+  Redirect,
+} from "react-router-dom";
 import {
   parseDataset,
   getOptionsConfig,
@@ -24,11 +30,12 @@ import { DataThemesBuilderFilters } from "app/modules/data-themes-module/sub-mod
 import { DataThemesBuilderCustomize } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize";
 import { DataThemesBuilderInitialView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/initial";
 import { DataThemesBuilderChartType } from "app/modules/data-themes-module/sub-modules/theme-builder/views/chart-type";
+import { DataThemesBuilderPreviewTheme } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme";
 import {
   charts,
-  DataThemeAPIModel,
+  // DataThemeAPIModel,
   defaultChartOptions,
-  emptyDataThemeAPI,
+  // emptyDataThemeAPI,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
 export function DataThemesBuilder() {
@@ -57,11 +64,11 @@ export function DataThemesBuilder() {
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
-  const loadedDataTheme = useStoreState(
-    (state) =>
-      (state.dataThemes.DataThemeGet.crudData ??
-        emptyDataThemeAPI) as DataThemeAPIModel
-  );
+  // const loadedDataTheme = useStoreState(
+  //   (state) =>
+  //     (state.dataThemes.DataThemeGet.crudData ??
+  //       emptyDataThemeAPI) as DataThemeAPIModel
+  // );
   const isSaveLoading = useStoreState(
     (state) => state.dataThemes.DataThemeCreate.loading
   );
@@ -131,11 +138,11 @@ export function DataThemesBuilder() {
     };
   }, [isEditMode]);
 
-  React.useEffect(() => {
-    if (loadedDataTheme.id && !view && !isDataThemeLoading) {
-      history.push(`/data-themes/${page}/preview`);
-    }
-  }, [loadedDataTheme.id, isDataThemeLoading]);
+  // React.useEffect(() => {
+  //   if (loadedDataTheme.id && !view && !isDataThemeLoading) {
+  //     history.push(`/data-themes/${page}/preview`);
+  //   }
+  // }, [loadedDataTheme.id, isDataThemeLoading]);
 
   return (
     <React.Fragment>
@@ -214,7 +221,7 @@ export function DataThemesBuilder() {
               filterOptionGroups={filterOptionGroups}
             />
           </Route>
-          <Route path={`/data-themes/:page`}>
+          <Route path={`/data-themes/:page/initial`}>
             <DataThemesBuilderInitialView
               loading={loading}
               data={filteredData}
@@ -222,16 +229,39 @@ export function DataThemesBuilder() {
               filterOptionGroups={filterOptionGroups}
             />
           </Route>
+          <Route
+            path={`/data-themes/:page`}
+            component={() => {
+              if (page === "new") {
+                return <Redirect to="/data-themes/new/initial" />;
+              }
+              return (
+                <DataThemesBuilderPreviewTheme
+                  data={data}
+                  loading={loading}
+                  loadDataset={loadDataset}
+                  currentChart={currentChart}
+                  visualOptions={visualOptions}
+                  setVisualOptions={setVisualOptions}
+                  currentChartData={currentChartData}
+                  filterOptionGroups={filterOptionGroups}
+                  dimensions={get(currentChart, "dimensions", [])}
+                />
+              );
+            }}
+          />
           <Route path="*">
             <NoMatchPage />
           </Route>
         </Switch>
       </DndProvider>
-      <DataThemesAddSectionButton
-        showCreateYourStoryText={
-          history.location.pathname === `/data-themes/:page`
-        }
-      />
+      {(page === "new" || view) && (
+        <DataThemesAddSectionButton
+          showCreateYourStoryText={
+            history.location.pathname === `/data-themes/:page`
+          }
+        />
+      )}
     </React.Fragment>
   );
 }
