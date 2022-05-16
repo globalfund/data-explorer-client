@@ -44,6 +44,13 @@ export const styles = {
         align-items: center;
       }
     }
+
+    > h1 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: 700;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    }
   `,
   titleInput: css`
     margin: 0;

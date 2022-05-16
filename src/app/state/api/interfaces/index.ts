@@ -56,6 +56,7 @@ export interface RequestValues<T> {
   addOnData?: boolean;
   isCMSfetch?: boolean;
   filterString?: string;
+  storeInCrudData?: boolean;
 }
 
 export interface ResponseData<T> {
@@ -295,5 +296,6 @@ export interface StoreModel {
     DataThemeGet: ApiCallModel;
     DataThemeCreate: ApiCallModel;
     DataThemeUpdate: ApiCallModel;
+    DataThemeGetList: ApiCallModel;
   };
 }

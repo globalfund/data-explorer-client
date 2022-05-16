@@ -172,9 +172,14 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }, [page]);
 
   React.useEffect(() => {
+    console.log(loadedDataTheme);
     if (loadedDataTheme) {
-      setTitle(loadedDataTheme.title);
-      setSubTitle(loadedDataTheme.subTitle);
+      if (loadedDataTheme.title.length > 0) {
+        setTitle(loadedDataTheme.title);
+      }
+      if (loadedDataTheme.subTitle.length > 0) {
+        setSubTitle(loadedDataTheme.subTitle);
+      }
     }
   }, [loadedDataTheme]);
 
@@ -219,6 +224,13 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                 value={title}
                 css={styles.titleInput}
                 onChange={handleTitleChange}
+                style={
+                  props.previewMode
+                    ? {
+                        width: "fit-content",
+                      }
+                    : {}
+                }
               />
               <KeyboardArrowDownIcon htmlColor="#262c34" />
             </div>
@@ -227,6 +239,13 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               value={subTitle}
               css={styles.subTitleInput}
               onChange={handleSubTitleChange}
+              style={
+                props.previewMode
+                  ? {
+                      width: "fit-content",
+                    }
+                  : {}
+              }
             />
           </div>
           {!props.previewMode && (
@@ -248,6 +267,21 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               </IconButton>
             </div>
           )}
+        </div>
+        {/* <div css={styles.secondrow}>
+          <DataThemesTabs />
+        </div> */}
+      </div>
+    </div>
+  );
+}
+
+export function DataThemesGenericPageSubHeader(props: { title: string }) {
+  return (
+    <div css={styles.container}>
+      <div css={styles.innercontainer}>
+        <div css={styles.firstrow}>
+          <h1>{props.title}</h1>
         </div>
         {/* <div css={styles.secondrow}>
           <DataThemesTabs />

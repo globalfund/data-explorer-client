@@ -105,6 +105,7 @@ export function DataThemesBuilder() {
   }
 
   React.useEffect(() => {
+    document.body.style.background = "#fff";
     setVisualOptionsOnChange();
   }, [selectedChartType]);
 

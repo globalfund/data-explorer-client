@@ -67,7 +67,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       )
       .then(
         (resp: AxiosResponse) =>
-          query.getId
+          query.getId || query.storeInCrudData
             ? actions.onSuccessCrudData(resp.data)
             : actions.onSuccess({ ...resp.data, addOnData: false }),
         (error: any) => actions.onError(error.response)

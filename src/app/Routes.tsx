@@ -211,7 +211,7 @@ export function MainRoutes() {
           <Redirect to="/datasets" />
         </Route>
 
-        <Route exact path="/data-themes/:page/:view?">
+        <Route path="/data-themes">
           <DataThemesModule />
         </Route>
 

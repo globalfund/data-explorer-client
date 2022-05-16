@@ -166,8 +166,9 @@ import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/syn
 import {
   DataThemeCreate,
   DataThemeGet,
+  DataThemeGetList,
   DataThemeUpdate,
-} from "../api/action-reducers/data-themes";
+} from "app/state/api/action-reducers/data-themes";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -364,6 +365,7 @@ const storeContent: StoreModel = {
     DataThemeGet: persist(DataThemeGet),
     DataThemeCreate: persist(DataThemeCreate),
     DataThemeUpdate: persist(DataThemeUpdate),
+    DataThemeGetList: persist(DataThemeGetList),
   },
 };
 

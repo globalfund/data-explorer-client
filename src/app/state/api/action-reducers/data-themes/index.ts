@@ -12,3 +12,7 @@ export const DataThemeCreate: ApiCallModel = {
 export const DataThemeUpdate: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/data-themes`),
 };
+
+export const DataThemeGetList: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/data-themes`),
+};
