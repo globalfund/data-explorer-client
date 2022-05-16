@@ -12,13 +12,14 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 /* project */
+import { PageLoader } from "app/modules/common/page-loader";
 // import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
 import { styles } from "app/modules/data-themes-module/components/sub-header/styles";
+import { DataThemesPageSubHeaderProps } from "app/modules/data-themes-module/components/sub-header/data";
 import {
   DataThemeAPIModel,
   emptyDataThemeAPI,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
-import { DataThemesPageSubHeaderProps } from "app/modules/data-themes-module/components/sub-header/data";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -92,6 +93,11 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
   const editDataThemeSuccess = useStoreState(
     (state) => state.dataThemes.DataThemeUpdate.success
+  );
+  const createOrEditDataThemeLoading = useStoreState(
+    (state) =>
+      state.dataThemes.DataThemeCreate.loading ||
+      state.dataThemes.DataThemeUpdate.loading
   );
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
@@ -195,6 +201,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
 
   return (
     <div css={styles.container}>
+      {createOrEditDataThemeLoading && <PageLoader />}
       <InfoSnackbar
         data-testid="data-theme-snackbar"
         onClose={() => setShowSnackbar(null)}
@@ -202,8 +209,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       >
         <SnackbarContent
           message={showSnackbar}
-          action={<Link to="/">Go to my themes</Link>}
           aria-describedby="data-theme-snackbar-content"
+          action={<Link to="/data-themes">Go to my themes</Link>}
         />
       </InfoSnackbar>
       <div css={styles.innercontainer}>
