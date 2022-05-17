@@ -22,6 +22,7 @@ import {
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { useDataThemesRawData } from "app/hooks/useDataThemesRawData";
+import { DataThemesAlertDialog } from "app/modules/data-themes-module/components/alert-dialog";
 import { DataThemesAddSectionButton } from "app/modules/data-themes-module/components/add-section-button";
 import { DataThemesBuilderDataView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/data";
 import { DataThemesBuilderMapping } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping";
@@ -33,9 +34,7 @@ import { DataThemesBuilderChartType } from "app/modules/data-themes-module/sub-m
 import { DataThemesBuilderPreviewTheme } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme";
 import {
   charts,
-  // DataThemeAPIModel,
   defaultChartOptions,
-  // emptyDataThemeAPI,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
 export function DataThemesBuilder() {
@@ -53,6 +52,7 @@ export function DataThemesBuilder() {
   const {
     data,
     loading,
+    clearStore,
     loadingData,
     loadDataset,
     filteredData,
@@ -64,11 +64,6 @@ export function DataThemesBuilder() {
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
-  // const loadedDataTheme = useStoreState(
-  //   (state) =>
-  //     (state.dataThemes.DataThemeGet.crudData ??
-  //       emptyDataThemeAPI) as DataThemeAPIModel
-  // );
   const isSaveLoading = useStoreState(
     (state) => state.dataThemes.DataThemeCreate.loading
   );
@@ -81,6 +76,21 @@ export function DataThemesBuilder() {
   );
   const clearDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeGet.clear
+  );
+  const setAppliedFilters = useStoreActions(
+    (actions) => actions.dataThemes.appliedFilters.setAll
+  );
+  const setMapping = useStoreActions(
+    (actions) => actions.dataThemes.sync.mapping.setValue
+  );
+  const setIsLiveData = useStoreActions(
+    (actions) => actions.dataThemes.sync.liveData.setValue
+  );
+  const setSelectedChartType = useStoreActions(
+    (actions) => actions.dataThemes.sync.chartType.setValue
+  );
+  const stepSelectionsActions = useStoreActions(
+    (actions) => actions.dataThemes.sync.stepSelections
   );
 
   function setVisualOptionsOnChange() {
@@ -104,8 +114,28 @@ export function DataThemesBuilder() {
     });
   }
 
+  function clearDataThemeBuilder() {
+    setCurrentChart(null);
+    setCurrentChartData(null);
+    setVisualOptions({});
+    setMapping({});
+    setIsLiveData(false);
+    setSelectedChartType(null);
+    stepSelectionsActions.setStep1({ dataset: null });
+    setAppliedFilters({});
+    clearStore();
+  }
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
+
+    return () => {
+      clearDataTheme();
+      clearDataThemeBuilder();
+    };
+  }, []);
+
+  React.useEffect(() => {
     setVisualOptionsOnChange();
   }, [selectedChartType]);
 
@@ -133,20 +163,11 @@ export function DataThemesBuilder() {
     } else {
       clearDataTheme();
     }
-
-    () => {
-      clearDataTheme();
-    };
   }, [isEditMode]);
-
-  // React.useEffect(() => {
-  //   if (loadedDataTheme.id && !view && !isDataThemeLoading) {
-  //     history.push(`/data-themes/${page}/preview`);
-  //   }
-  // }, [loadedDataTheme.id, isDataThemeLoading]);
 
   return (
     <React.Fragment>
+      <DataThemesAlertDialog />
       <DndProvider backend={HTML5Backend}>
         <Switch>
           {(loadingData || isSaveLoading || isDataThemeLoading) && (
@@ -259,7 +280,7 @@ export function DataThemesBuilder() {
       {(page === "new" || view) && (
         <DataThemesAddSectionButton
           showCreateYourStoryText={
-            history.location.pathname === `/data-themes/:page`
+            history.location.pathname === `/data-themes/new/initial`
           }
         />
       )}

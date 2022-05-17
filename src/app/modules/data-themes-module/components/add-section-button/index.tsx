@@ -23,7 +23,9 @@ export function DataThemesAddSectionButton(
   }, [history]);
 
   return (
-    <div css={styles.container}>
+    <div
+      css={styles.container(props.showCreateYourStoryText ? "top" : "bottom")}
+    >
       <div css={styles.innercontainer}>
         <IconButton
           onClick={() => setOpen(!open)}

@@ -1,11 +1,11 @@
 import { css } from "styled-components/macro";
 
 export const styles = {
-  container: css`
+  container: (placement: "top" | "bottom") => css`
     z-index: 99;
-    bottom: 10px;
     position: fixed;
-    left: calc((100vw - 1280px) / 2);
+    left: calc(((100vw - 1280px) / 2) + 12px);
+    ${placement === "top" ? "top: 160px;" : "bottom: 10px;"}
   `,
   innercontainer: css`
     gap: 24px;

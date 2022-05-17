@@ -2,11 +2,11 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import styled from "styled-components/macro";
-import { Link, useParams } from "react-router-dom";
 import SaveIcon from "@material-ui/icons/Save";
 import ShareIcon from "@material-ui/icons/Share";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
+import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
@@ -70,6 +70,7 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
 `;
 
 export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
+  const history = useHistory();
   const { page } = useParams<{ page: string }>();
   const { data, loading, visualOptions, filterOptionGroups } = props;
 
@@ -80,12 +81,20 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
+  );
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
   const loadedDataTheme = useStoreState(
     (state) =>
       (state.dataThemes.DataThemeGet.crudData ??
+        emptyDataThemeAPI) as DataThemeAPIModel
+  );
+  const createDataThemeData = useStoreState(
+    (state) =>
+      (state.dataThemes.DataThemeCreate.crudData ??
         emptyDataThemeAPI) as DataThemeAPIModel
   );
   const createDataThemeSuccess = useStoreState(
@@ -138,6 +147,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             {
               mapping,
               vizType: selectedChartType,
+              datasetId: stepSelectionsData.step1.dataset,
               data,
               vizOptions: visualOptions,
               filterOptionGroups,
@@ -178,7 +188,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }, [page]);
 
   React.useEffect(() => {
-    console.log(loadedDataTheme);
     if (loadedDataTheme) {
       if (loadedDataTheme.title.length > 0) {
         setTitle(loadedDataTheme.title);
@@ -194,10 +203,23 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       setShowSnackbar("Your Theme has been saved!");
     }
     return () => {
-      createDataThemeClear();
+      if (isEditMode) {
+        createDataThemeClear();
+      }
       editDataThemeClear();
     };
   }, [createDataThemeSuccess, editDataThemeSuccess]);
+
+  React.useEffect(() => {
+    if (
+      !isEditMode &&
+      createDataThemeData.id.length > 0 &&
+      createDataThemeData.id !== page
+    ) {
+      const view = history.location.pathname.split("/")[3];
+      history.push(`/data-themes/${createDataThemeData.id}/${view}`);
+    }
+  }, [createDataThemeData]);
 
   return (
     <div css={styles.container}>
