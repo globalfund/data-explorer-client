@@ -27,12 +27,27 @@ export const styles = {
     position: relative;
     border-radius: 30px;
     padding: 16px !important;
+
+    #delete-button {
+      display: none;
+    }
+
+    &:hover {
+      #delete-button {
+        display: inherit;
+      }
+    }
   `,
   gridItemTitle: css`
+    height: 30px;
+    display: flex;
     color: #262c34;
     font-size: 18px;
     font-weight: 700;
     margin-bottom: 5px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   gridItemLabel: css`

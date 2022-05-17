@@ -52,6 +52,7 @@ export interface RequestValues<T> {
   values?: T;
   getId?: string;
   patchId?: string;
+  deleteId?: string;
   endpoint?: string;
   addOnData?: boolean;
   isCMSfetch?: boolean;
@@ -98,6 +99,7 @@ export interface ApiModel<QueryModel, ResponseModel> {
   >;
   post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
   patch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
+  delete: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
 // todo: add all available filters
@@ -296,6 +298,7 @@ export interface StoreModel {
     DataThemeGet: ApiCallModel;
     DataThemeCreate: ApiCallModel;
     DataThemeUpdate: ApiCallModel;
+    DataThemeDelete: ApiCallModel;
     DataThemeGetList: ApiCallModel;
   };
 }

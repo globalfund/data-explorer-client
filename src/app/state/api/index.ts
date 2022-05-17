@@ -136,4 +136,17 @@ export const APIModel = <QueryModel, ResponseModel>(
         (error: any) => actions.onError(error.response)
       );
   }),
+  delete: thunk(async (actions, query: RequestValues<QueryModel>) => {
+    actions.onRequest();
+    axios
+      .delete(`${url}/${query.deleteId}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(
+        (resp: AxiosResponse) => actions.onSuccessCrudData(resp.data),
+        (error: any) => actions.onError(error.response)
+      );
+  }),
 });

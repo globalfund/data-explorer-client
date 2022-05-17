@@ -3,6 +3,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { AddIcon } from "app/assets/icons/Add";
@@ -21,9 +23,47 @@ interface DataThemeListItemAPIModel {
 function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const date = new Date(props.createdDate);
 
+  const deleteDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeDelete.delete
+  );
+  const clearDeleteDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeDelete.clear
+  );
+  const deleteDataThemeSuccess = useStoreState(
+    (state) => state.dataThemes.DataThemeDelete.success
+  );
+  const loadDataThemes = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeGetList.fetch
+  );
+
+  function deleteItem() {
+    deleteDataTheme({
+      deleteId: props.id,
+    });
+  }
+
+  React.useEffect(() => {
+    if (deleteDataThemeSuccess) {
+      loadDataThemes({
+        storeInCrudData: true,
+        filterString:
+          'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":false,"createdDate":true}}',
+      });
+    }
+
+    return () => {
+      clearDeleteDataTheme();
+    };
+  }, [deleteDataThemeSuccess]);
+
   return (
     <div css={styles.gridItem}>
-      <div css={styles.gridItemTitle}>{props.title}</div>
+      <div css={styles.gridItemTitle}>
+        {props.title}
+        <IconButton id="delete-button" size="small" onClick={deleteItem}>
+          <DeleteIcon htmlColor="#262c34" />
+        </IconButton>
+      </div>
       <div css={styles.gridItemLabel}>{props.subTitle}</div>
       <div css={styles.gridItemDetails}>
         <div>
