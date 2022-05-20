@@ -9,6 +9,7 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageLoader } from "app/modules/common/page-loader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
@@ -46,7 +47,7 @@ export default function CountryDetail() {
     vizType: string;
     subType?: string;
   }>();
-  const { getAllAvailableGrants } = useGetAllAvailableGrants(
+  const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
     search,
     params.code,
     "locations"
@@ -121,6 +122,7 @@ export default function CountryDetail() {
         justify-content: center;
       `}
     >
+      {loading && <PageLoader />}
       <PageHeader
         isDetail
         title={locationInfoData.locationName}
