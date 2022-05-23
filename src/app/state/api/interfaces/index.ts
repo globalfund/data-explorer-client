@@ -41,6 +41,7 @@ import {
   CMSApiModulesDatasets,
   CMSApiModulesGrantDetail,
   CMSApiModulesGrants,
+  CMSApiCountrySummary,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -77,6 +78,7 @@ export interface ApiModel<QueryModel, ResponseModel> {
   onRequest: Action<ApiModel<QueryModel, ResponseModel>>;
   fetch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
   clear: Action<ApiModel<QueryModel, ResponseModel>>;
+  post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
 // todo: add all available filters
@@ -122,6 +124,7 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiModulesDatasets
   | CMSApiModulesGrantDetail
   | CMSApiModulesGrants
+  | CMSApiCountrySummary
 >;
 
 export interface CMSApiCallParams {}
@@ -265,5 +268,6 @@ export interface StoreModel {
     modulesDatasets: CMSApiCallModel;
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
+    countrySummary: CMSApiCallModel;
   };
 }

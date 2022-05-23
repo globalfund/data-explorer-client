@@ -158,6 +158,7 @@ import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCount
 import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
+import countrySummary from "../api/action-reducers/cms/countrySummary";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -344,6 +345,7 @@ const storeContent: StoreModel = {
     modulesDatasets: persist(modulesDatasets),
     modulesGrantDetail: persist(modulesGrantDetail),
     modulesGrants: persist(modulesGrants),
+    countrySummary: persist(countrySummary),
   },
 };
 

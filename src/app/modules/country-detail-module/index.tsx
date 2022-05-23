@@ -75,6 +75,12 @@ export default function CountryDetail() {
   const clearEligibilityData = useStoreActions(
     (store) => store.EligibilityCountry.clear
   );
+  const countrySummaryCMSAction = useStoreActions(
+    (actions) => actions.cms.countrySummary.post
+  );
+  const clearCountrySummaryCMS = useStoreActions(
+    (store) => store.cms.countrySummary.clear
+  );
 
   const paramCode = params.code.replace(/\|/g, "/");
 
@@ -85,8 +91,16 @@ export default function CountryDetail() {
     fetchLocationInfoData({
       filterString: `locations=${paramCode}`,
     });
+    countrySummaryCMSAction({
+      values: {
+        filter: { iso3: paramCode },
+      },
+    });
 
-    return () => clearEligibilityData();
+    return () => {
+      clearEligibilityData();
+      clearCountrySummaryCMS();
+    };
   }, [paramCode]);
 
   React.useEffect(() => {
@@ -179,7 +193,7 @@ export default function CountryDetail() {
         <Switch>
           {/* Overview */}
           <Route path={`/location/:code/overview`}>
-            <LocationDetailOverviewModule code={params.code} />
+            <LocationDetailOverviewModule openToolboxPanel={openToolboxPanel} />
           </Route>
           {/* Budgets */}
           <Route path={`/location/:code/budgets/flow`}>

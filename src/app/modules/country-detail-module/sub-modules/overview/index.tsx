@@ -1,33 +1,27 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { InvestmentsRadialViz } from "app/modules/country-detail-module/sub-modules/overview/components/radial";
-import { InvestmentsTimeCycleViz } from "app/modules/country-detail-module/sub-modules/overview/components/time-cyle";
 
 interface Props {
-  code: string;
+  openToolboxPanel: boolean;
 }
 
 export function LocationDetailOverviewModule(props: Props) {
+  const cmsData = useCMSData({ returnData: true });
+
   const isLoading = useStoreState(
     (state) =>
-      state.LocationDetailInfo.loading ||
-      state.DisbursementsTimeCycle.loading ||
-      state.SignedTimeCycle.loading ||
-      state.CommitmentTimeCycle.loading
+      state.LocationDetailInfo.loading || state.cms.countrySummary.loading
   );
-  const cmsData = useCMSData({ returnData: true });
-  const isMobile = useMediaQuery("(max-width: 767px)");
   const locationInfoData = useStoreState((state) =>
     get(state.LocationDetailInfo.data, "data[0]", {
       id: "",
@@ -42,46 +36,9 @@ export function LocationDetailOverviewModule(props: Props) {
       portfolioManagerEmail: "",
     })
   );
-  const fetchDisbursementsTimeCycleData = useStoreActions(
-    (store) => store.DisbursementsTimeCycle.fetch
+  const countrySummaryCMSData = useStoreState((state) =>
+    get(state.cms.countrySummary, "data.entries[0].summary", null)
   );
-  const fetchSignedTimeCycleData = useStoreActions(
-    (store) => store.SignedTimeCycle.fetch
-  );
-  const fetchCommitmentTimeCycleData = useStoreActions(
-    (store) => store.CommitmentTimeCycle.fetch
-  );
-  const timeCycleData = useStoreState((state) => ({
-    disbursed: get(state.DisbursementsTimeCycle.data, "data", []) as Record<
-      string,
-      unknown
-    >[],
-    signed: get(state.SignedTimeCycle.data, "data", []) as Record<
-      string,
-      unknown
-    >[],
-    committed: get(state.CommitmentTimeCycle.data, "data", []) as Record<
-      string,
-      unknown
-    >[],
-  }));
-
-  React.useEffect(() => {
-    const filterString = getAPIFormattedFilters({
-      locations: [props.code],
-      components: [],
-      partnerTypes: [],
-      partnerSubTypes: [],
-      partners: [],
-      status: [],
-      replenishmentPeriods: [],
-      donors: [],
-      donorCategories: [],
-    });
-    fetchSignedTimeCycleData({ filterString });
-    fetchCommitmentTimeCycleData({ filterString });
-    fetchDisbursementsTimeCycleData({ filterString });
-  }, [props.code]);
 
   React.useEffect(() => {
     document.body.style.background = "#F5F5F7";
@@ -103,91 +60,131 @@ export function LocationDetailOverviewModule(props: Props) {
         }
 
         > div {
-          padding: 28px;
-          background: #fff;
-          border-radius: 20px;
-          margin-bottom: 20px;
+          > div {
+            padding: 28px;
+            background: #fff;
 
-          @media (min-width: 600px) {
-            &:nth-of-type(2) {
-              margin-right: 20px;
-              max-width: calc(50% - 10px);
+            @media (max-width: 600px) {
+              margin-bottom: 20px;
             }
-            &:nth-of-type(3) {
-              max-width: calc(50% - 10px);
-            }
+
+            ${countrySummaryCMSData
+              ? `@media (min-height: 650px) {
+              overflow-y: auto;
+              max-height: calc(100vh - 150px);
+
+              &::-webkit-scrollbar {
+                width: 6px;
+                background: #ededf6;
+              }
+              &::-webkit-scrollbar-track {
+                border-radius: 4px;
+                background: #fff;
+              }
+              &::-webkit-scrollbar-thumb {
+                border-radius: 4px;
+                background: #495057;
+              }
+            }`
+              : ""}
           }
         }
       `}
+      spacing={2}
     >
-      <Grid item container xs={12}>
-        <Grid container spacing={4}>
-          <Grid item sm={12} md={8}>
-            <div
-              css={`
+      {countrySummaryCMSData && (
+        <Grid
+          item
+          xs={12}
+          lg={props.openToolboxPanel ? 7 : 8}
+          css={`
+            > div {
+              h3 {
                 font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 8px;
+                font-weight: 700;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
-              Total Disbursement
-            </div>
-            <div
-              css={`
-                font-size: 24px;
-                font-weight: bold;
-                margin-bottom: 27px;
+              }
+
+              h4 {
+                font-size: 12px;
+                font-weight: 700;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
-              {formatLargeAmountsWithPrefix(locationInfoData.disbursed)}
-            </div>
-            <Grid container spacing={4}>
-              {locationInfoData.indicators.map((indicator: any) => (
-                <Grid item xs={12} sm={6} md={4} key={indicator.name}>
-                  <div
-                    css={`
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-bottom: 8px;
-                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                        sans-serif;
-                    `}
-                  >
-                    {indicator.name}
-                  </div>
-                  <div
-                    css={`
-                      gap: 5px;
-                      display: flex;
-                      flex-direction: row;
-                      align-items: baseline;
-                    `}
-                  >
-                    <div
-                      css={`
-                        font-size: 18px;
-                        font-weight: bold;
-                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                          sans-serif;
-                      `}
-                    >
-                      {indicator.value}
-                    </div>
-                    <div
-                      css={`
-                        font-size: 14px;
-                      `}
-                    >
-                      ({indicator.year})
-                    </div>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-          </Grid>
-          <Grid item sm={12} md={4}>
+              }
+
+              p {
+                font-size: 14px;
+              }
+            }
+          `}
+        >
+          <div>
+            <h3>Country overview description</h3>
+            {parse(countrySummaryCMSData)}
+          </div>
+        </Grid>
+      )}
+      <Grid
+        item
+        container
+        xs={12}
+        lg={countrySummaryCMSData ? (props.openToolboxPanel ? 5 : 4) : 12}
+        justifyContent={countrySummaryCMSData ? undefined : "space-between"}
+      >
+        <Grid
+          item
+          xs={12}
+          md={countrySummaryCMSData ? 12 : 4}
+          css={`
+            margin-bottom: ${countrySummaryCMSData ? "20px" : 0};
+
+            > div {
+              > hr {
+                opacity: 0.3;
+                margin: 20px 0;
+                margin-left: -28px;
+                border-color: #dfe3e6;
+                width: calc(100% + 56px);
+              }
+            }
+          `}
+        >
+          <div>
+            {(locationInfoData.portfolioManager ||
+              locationInfoData.portfolioManagerEmail) && (
+              <React.Fragment>
+                <div
+                  css={`
+                    font-size: 14px;
+                    font-weight: bold;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+                  `}
+                >
+                  {get(cmsData, "modulesCountryDetail.fundManager", "")}
+                </div>
+                <div
+                  css={`
+                    font-size: 14px;
+                  `}
+                >
+                  {locationInfoData.portfolioManager}
+                </div>
+                <a
+                  href={`mailto:${locationInfoData.portfolioManagerEmail}`}
+                  css={`
+                    font-size: 14px;
+                    text-decoration: none;
+
+                    &:hover {
+                      text-decoration: underline;
+                    }
+                  `}
+                >
+                  {locationInfoData.portfolioManagerEmail}
+                </a>
+                <hr />
+              </React.Fragment>
+            )}
             <div
               css={`
                 font-size: 14px;
@@ -235,77 +232,30 @@ export function LocationDetailOverviewModule(props: Props) {
                 )
               )}
             </div>
-            {(locationInfoData.portfolioManager ||
-              locationInfoData.portfolioManagerEmail) && (
-              <React.Fragment>
-                <div
-                  css={`
-                    font-size: 14px;
-                    font-weight: bold;
-                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                      sans-serif;
-                  `}
-                >
-                  {get(cmsData, "modulesCountryDetail.fundManager", "")}
-                </div>
-                <div
-                  css={`
-                    font-size: 14px;
-                  `}
-                >
-                  {locationInfoData.portfolioManager}
-                </div>
-                <a
-                  href={`mailto:${locationInfoData.portfolioManagerEmail}`}
-                  css={`
-                    font-size: 14px;
-                    text-decoration: none;
-
-                    &:hover {
-                      text-decoration: underline;
-                    }
-                  `}
-                >
-                  {locationInfoData.portfolioManagerEmail}
-                </a>
-              </React.Fragment>
-            )}
-          </Grid>
+          </div>
+        </Grid>
+        <Grid item xs={12} md={countrySummaryCMSData ? 12 : 7}>
+          <div>
+            <div
+              css={`
+                font-size: 18px;
+                font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              `}
+            >
+              Investment
+            </div>
+            <div
+              css={`
+                font-size: 12px;
+              `}
+            >
+              Comparison between disbursed, commited and signed amounts
+            </div>
+            <InvestmentsRadialViz />
+          </div>
         </Grid>
       </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={6}>
-        <div
-          css={`
-            font-size: 18px;
-            font-weight: bold;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          `}
-        >
-          Investment
-        </div>
-        <div
-          css={`
-            font-size: 12px;
-          `}
-        >
-          Comparison between disbursed, commited and signed amounts
-        </div>
-        <InvestmentsRadialViz />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={6}>
-        <div
-          css={`
-            font-size: 18px;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          `}
-        >
-          Investment over time
-        </div>
-        <InvestmentsTimeCycleViz rawData={timeCycleData} />
-      </Grid>
-      <span css="width: 100%;height: 25px;" />
     </Grid>
   );
 }
