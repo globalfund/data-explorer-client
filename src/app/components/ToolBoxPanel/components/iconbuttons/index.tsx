@@ -98,11 +98,17 @@ const StyledMenuItem = withStyles(() => ({
   },
 }))(MenuItem);
 
-export function ToolBoxPanelIconButtons() {
+interface ToolBoxPanelIconButtonsProps {
+  getAllAvailableGrants?: () => Promise<any>;
+}
+
+export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
   const location = useLocation();
+  const csvLinkRef = React.useRef<any>();
   const params = useParams<{ code?: string }>();
   const vizData = useGetAllVizData();
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [allAvailableGrants, setAllAvailableGrants] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const selectedAggregation = useStoreState(
@@ -134,37 +140,84 @@ export function ToolBoxPanelIconButtons() {
     setOpenSnackbar(false);
   }
 
-  const menuitems = [
-    <StyledMenuItem key="export-csv-menuitem">
-      <CSVLink
-        target="_blank"
-        id="download-csv"
-        {...exportCSV(
-          location.pathname
-            .replace("/location/", "/viz/")
-            .replace("/grant/", "/viz/")
-            .replace(`/${params.code}`, ""),
-          get(
-            vizData,
-            location.pathname.replace(`/${params.code}`, "/<code>"),
-            []
-          ),
-          {
-            selectedAggregation,
-            donorMapView,
-            investmentsMapView,
-            isDetail: params.code !== undefined,
-            resultsSelectedYear,
-          }
-        )}
-        css={`
-          font-size: 12px !important;
-        `}
-      >
-        CSV
-      </CSVLink>
-    </StyledMenuItem>,
-  ];
+  let menuitems = [];
+
+  if (!props.getAllAvailableGrants) {
+    menuitems = [
+      <StyledMenuItem key="export-csv-menuitem">
+        <CSVLink
+          target="_blank"
+          id="download-csv"
+          {...exportCSV(
+            location.pathname
+              .replace("/location/", "/viz/")
+              .replace("/grant/", "/viz/")
+              .replace(`/${params.code}`, ""),
+            get(
+              vizData,
+              location.pathname.replace(`/${params.code}`, "/<code>"),
+              []
+            ),
+            {
+              selectedAggregation,
+              donorMapView,
+              investmentsMapView,
+              isDetail: params.code !== undefined,
+              resultsSelectedYear,
+            }
+          )}
+          css={`
+            font-size: 12px !important;
+          `}
+        >
+          CSV
+        </CSVLink>
+      </StyledMenuItem>,
+    ];
+  } else {
+    menuitems = [
+      <StyledMenuItem key="export-csv-menuitem">
+        <CSVLink
+          ref={csvLinkRef}
+          target="_blank"
+          id="download-csv"
+          data={allAvailableGrants}
+          filename="grants.csv"
+          headers={[
+            { label: "Title", key: "title" },
+            { label: "Status", key: "status" },
+            { label: "Component", key: "component" },
+            { label: "Location", key: "geoLocation" },
+            { label: "Rating", key: "rating" },
+            { label: "Disbursement (USD)", key: "disbursed" },
+            { label: "Committment (USD)", key: "committed" },
+            { label: "Signed (USD)", key: "signed" },
+          ]}
+          css={`
+            display: none;
+          `}
+        />
+        <div
+          onClick={() => {
+            if (props.getAllAvailableGrants) {
+              props.getAllAvailableGrants().then((grants: any) => {
+                setAllAvailableGrants(grants);
+                setTimeout(() => {
+                  csvLinkRef.current.link.click();
+                });
+              });
+            }
+          }}
+          css={`
+            font-size: 12px !important;
+            padding: 6px 12px !important;
+          `}
+        >
+          CSV
+        </div>
+      </StyledMenuItem>,
+    ];
+  }
 
   if (
     locationsToNotShowImageExport.indexOf(

@@ -9,9 +9,11 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageLoader } from "app/modules/common/page-loader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
+import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
@@ -37,6 +39,7 @@ export default function CountryDetail() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
     code: string;
@@ -45,6 +48,11 @@ export default function CountryDetail() {
   }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
+  );
+  const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
+    search,
+    params.code,
+    "locations"
   );
 
   // api call & data
@@ -118,6 +126,7 @@ export default function CountryDetail() {
         justify-content: center;
       `}
     >
+      {loading && <PageLoader />}
       <PageHeader
         isDetail
         title={locationInfoData.locationName}
@@ -279,7 +288,12 @@ export default function CountryDetail() {
           </Route>
           {/* Grants */}
           <Route path={`/location/:code/grants/list`}>
-            <GrantsModule code={paramCode} detailFilterType="locations" />
+            <GrantsModule
+              search={search}
+              code={paramCode}
+              setSearch={setSearch}
+              detailFilterType="locations"
+            />
           </Route>
           <Route path={`/location/:code/grants`}>
             <LocationGrants code={paramCode} detailFilterType="locations" />
@@ -317,6 +331,11 @@ export default function CountryDetail() {
         )}
         onCloseBtnClick={(value?: boolean) =>
           setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
+        }
+        getAllAvailableGrants={
+          params.vizType === "grants" && params.subType === "list"
+            ? getAllAvailableGrants
+            : undefined
         }
       />
       <div

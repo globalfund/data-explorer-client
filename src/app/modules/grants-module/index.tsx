@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -21,12 +22,14 @@ import { Search } from "app/modules/grants-module/components/Search";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantsModuleProps {
   code?: string;
+  search?: string;
   detailFilterType?: string;
+  setSearch?: (search: string) => void;
 }
 
 export default function GrantsModule(props: GrantsModuleProps) {
@@ -50,6 +53,11 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
+    props.search || search,
+    props.code,
+    props.detailFilterType
+  );
 
   // api call & data
   const fetchData = useStoreActions((store) => store.GrantsList.fetch);
@@ -79,7 +87,10 @@ export default function GrantsModule(props: GrantsModuleProps) {
         : appliedFilters,
       {
         page: resetPage ? 1 : page,
-        search: search.length > 0 ? search : undefined,
+        search:
+          (props.search || search).length > 0
+            ? props.search || search
+            : undefined,
       }
     );
     fetchData({
@@ -96,8 +107,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
   });
 
   useUpdateEffect(() => {
-    if (search.length === 0) reloadData(true);
-  }, [search]);
+    if ((props.search || search).length === 0) reloadData(true);
+  }, [props.search, search]);
 
   React.useEffect(() => {
     setPages(Math.floor(totalDataCount / 10) + 1);
@@ -113,12 +124,12 @@ export default function GrantsModule(props: GrantsModuleProps) {
 
   const [,] = useDebounce(
     () => {
-      if (search.length > 0) {
+      if ((props.search || search).length > 0) {
         reloadData(true);
       }
     },
     500,
-    [search]
+    [props.search, search]
   );
 
   let pushValue = 0;
@@ -152,7 +163,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
         justify-content: center;
       `}
     >
-      {isLoading && <PageLoader />}
+      {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
           <PageHeader
@@ -172,6 +183,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
             open={openToolboxPanel}
             vizWrapperRef={vizWrapperRef}
             filterGroups={pathnameToFilterGroups.grants}
+            getAllAvailableGrants={getAllAvailableGrants}
             onCloseBtnClick={(value?: boolean) => {
               if (value !== undefined) {
                 setOpenToolboxPanel(value);
@@ -191,7 +203,10 @@ export default function GrantsModule(props: GrantsModuleProps) {
         `}
         ref={vizWrapperRef}
       >
-        <Search value={search} setValue={setSearch} />
+        <Search
+          value={props.search || search}
+          setValue={props.setSearch || setSearch}
+        />
         <div css="width: 100%;height: 25px;" />
         {data.length === 0 ? <NoDataLabel /> : <GrantsList listitems={data} />}
         <div css="width: 100%;height: 25px;" />
