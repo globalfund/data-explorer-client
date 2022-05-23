@@ -81,6 +81,9 @@ export default function CountryDetail() {
   const clearCountrySummaryCMS = useStoreActions(
     (store) => store.cms.countrySummary.clear
   );
+  const notesDisclaimersCMSAction = useStoreActions(
+    (actions) => actions.cms.notesAndDisclaimers.post
+  );
 
   const paramCode = params.code.replace(/\|/g, "/");
 
@@ -94,6 +97,11 @@ export default function CountryDetail() {
     countrySummaryCMSAction({
       values: {
         filter: { iso3: paramCode },
+      },
+    });
+    notesDisclaimersCMSAction({
+      values: {
+        filter: { type: "COUNTRY_SUMMARY" },
       },
     });
 

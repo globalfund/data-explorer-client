@@ -39,6 +39,9 @@ export function LocationDetailOverviewModule(props: Props) {
   const countrySummaryCMSData = useStoreState((state) =>
     get(state.cms.countrySummary, "data.entries[0].summary", null)
   );
+  const notesDisclaimersCMSData = useStoreState((state) =>
+    get(state.cms.notesAndDisclaimers, "data.entries[0].content", null)
+  );
 
   React.useEffect(() => {
     document.body.style.background = "#F5F5F7";
@@ -120,6 +123,7 @@ export function LocationDetailOverviewModule(props: Props) {
           <div>
             <h3>Country overview description</h3>
             {parse(countrySummaryCMSData)}
+            {notesDisclaimersCMSData && parse(notesDisclaimersCMSData)}
           </div>
         </Grid>
       )}

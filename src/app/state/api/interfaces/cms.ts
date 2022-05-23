@@ -340,5 +340,14 @@ export interface CMSApiCountrySummary {
     summary: string;
     summary_de: string | null;
     summary_fr: string | null;
-  };
+  }[];
+}
+
+export interface CMSApiNotesAndDisclaimers {
+  entries: {
+    type: string;
+    content: string;
+    content_de: string | null;
+    content_fr: string | null;
+  }[];
 }

@@ -42,6 +42,7 @@ import {
   CMSApiModulesGrantDetail,
   CMSApiModulesGrants,
   CMSApiCountrySummary,
+  CMSApiNotesAndDisclaimers,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -125,6 +126,7 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiModulesGrantDetail
   | CMSApiModulesGrants
   | CMSApiCountrySummary
+  | CMSApiNotesAndDisclaimers
 >;
 
 export interface CMSApiCallParams {}
@@ -269,5 +271,6 @@ export interface StoreModel {
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
     countrySummary: CMSApiCallModel;
+    notesAndDisclaimers: CMSApiCallModel;
   };
 }
