@@ -264,7 +264,7 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
                     &:hover {
                       color: #fff;
                       font-weight: bold;
-                      background: #262c34;
+                      background: #495057;
                       transition: background 0.2s ease-in-out;
                       font-family: "GothamNarrow-Bold", "Helvetica Neue",
                         sans-serif;
