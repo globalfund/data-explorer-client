@@ -8,7 +8,6 @@ import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
-import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { InvestmentsRadialViz } from "app/modules/country-detail-module/sub-modules/overview/components/radial";
 
 interface Props {
@@ -65,7 +64,7 @@ export function LocationDetailOverviewModule(props: Props) {
 
         > div {
           > div {
-            padding: 28px;
+            padding: 24px;
             background: #fff;
 
             @media (max-width: 600px) {
@@ -92,6 +91,20 @@ export function LocationDetailOverviewModule(props: Props) {
             }`
               : ""}
           }
+          ${countrySummaryCMSData
+            ? `
+          @media (min-height: 650px) {
+            &:nth-of-type(2) {
+              > div:first-of-type {
+                max-height: calc(100vh - 150px - 20px - 532px);
+              }
+              > div:nth-of-type(2) {
+                max-height: 532px;
+              }
+            }
+          }
+          `
+            : ""}
         }
       `}
       spacing={2}
@@ -104,6 +117,7 @@ export function LocationDetailOverviewModule(props: Props) {
           css={`
             > div {
               h3 {
+                margin-top: 0px;
                 font-size: 14px;
                 font-weight: 700;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
@@ -142,14 +156,12 @@ export function LocationDetailOverviewModule(props: Props) {
           css={`
             margin-bottom: ${countrySummaryCMSData ? "20px" : 0};
 
-            > div {
-              > hr {
-                opacity: 0.3;
-                margin: 20px 0;
-                margin-left: -28px;
-                border-color: #dfe3e6;
-                width: calc(100% + 56px);
-              }
+            hr {
+              opacity: 0.3;
+              margin: 20px 0;
+              margin-left: -24px;
+              border-color: #dfe3e6;
+              width: calc(100% + 48px);
             }
           `}
         >
@@ -237,6 +249,49 @@ export function LocationDetailOverviewModule(props: Props) {
                 )
               )}
             </div>
+            {locationInfoData.principalRecipients &&
+              locationInfoData.principalRecipients.length > 0 && (
+                <div>
+                  <hr />
+                  <div
+                    css={`
+                      font-size: 14px;
+                      font-weight: bold;
+                      margin-bottom: 8px;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                    `}
+                  >
+                    Principal Recipients in {locationInfoData.locationName}
+                  </div>
+                  <div
+                    css={`
+                      display: flex;
+                      flex-direction: column;
+
+                      > a {
+                        width: fit-content;
+                        text-decoration: none;
+
+                        &:hover {
+                          text-decoration: underline;
+                        }
+                      }
+                    `}
+                  >
+                    {locationInfoData.principalRecipients.map(
+                      (pr: { name: string; code: string }) => (
+                        <Link
+                          to={`/partner/${pr.code}/investments`}
+                          key={pr.name}
+                        >
+                          {pr.name}
+                        </Link>
+                      )
+                    )}
+                  </div>
+                </div>
+              )}
           </div>
         </Grid>
         <Grid item xs={12} md={countrySummaryCMSData ? 12 : 7}>
@@ -261,43 +316,6 @@ export function LocationDetailOverviewModule(props: Props) {
           </div>
         </Grid>
       </Grid>
-      {locationInfoData.principalRecipients &&
-        locationInfoData.principalRecipients.length > 0 && (
-          <Grid item xs={12} sm={6} md={6} lg={6}>
-            <div
-              css={`
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 20px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
-              Principal Recipients in {locationInfoData.locationName}
-            </div>
-            <div
-              css={`
-                display: inline-block;
-
-                > a {
-                  font-weight: bold;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                }
-              `}
-            >
-              {locationInfoData.principalRecipients.map(
-                (pr: { name: string; code: string }, index: number) => (
-                  <React.Fragment key={pr.name}>
-                    <Link to={`/partner/${pr.code}/investments`}>
-                      {pr.name}
-                    </Link>
-                    {index < locationInfoData.principalRecipients.length - 1 &&
-                      ", "}
-                  </React.Fragment>
-                )
-              )}
-            </div>
-          </Grid>
-        )}
     </Grid>
   );
 }
