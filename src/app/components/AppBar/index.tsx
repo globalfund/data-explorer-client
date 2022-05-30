@@ -46,7 +46,7 @@ function MobileHeader() {
   );
 }
 
-const StyledMenu = withStyles({
+export const StyledMenu = withStyles({
   paper: {
     minWidth: 220,
     borderRadius: "0 0 10px 10px",

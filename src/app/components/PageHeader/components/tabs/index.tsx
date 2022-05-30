@@ -1,7 +1,11 @@
 import React from "react";
+import find from "lodash/find";
+import remove from "lodash/remove";
 import { ProjectPalette } from "app/theme";
 import { css } from "styled-components/macro";
 import { NavLink, useLocation, useParams } from "react-router-dom";
+import { StyledMenu, StyledMenuItem } from "app/components/AppBar";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import {
   TabProps,
   RouteTabProps,
@@ -11,6 +15,8 @@ import {
 const styles = {
   container: (pathname: string) => css`
     z-index: 1;
+    display: flex;
+    justify-content: flex-end;
 
     ${pathname.indexOf("/partner") > -1
       ? `
@@ -35,11 +41,11 @@ const styles = {
     margin-right: 12px;
   `,
   tabsList: css`
-    display: flex;
-    overflow-y: hidden;
-    list-style: none;
     margin: 0;
     padding: 0;
+    display: flex;
+    list-style: none;
+    overflow-y: hidden;
 
     @media (max-width: 992px) {
       overflow-x: auto;
@@ -63,7 +69,7 @@ const styles = {
       background: #2e4063;
     }
   `,
-  tabcss: (active: boolean) => css`
+  tabcss: (active?: boolean) => css`
     height: 35px;
     display: flex;
     margin-right: 1px;
@@ -83,15 +89,18 @@ const styles = {
     @media (hover: hover) and (pointer: fine) {
       &:hover {
         background: #495057;
-        a {
+        a,
+        div {
           color: #fff;
+          cursor: pointer;
           font-weight: bold;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         }
       }
     }
 
-    a {
+    a,
+    div {
       font-size: 14px;
       padding: 10px 15px;
       white-space: nowrap;
@@ -101,21 +110,42 @@ const styles = {
       font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
         sans-serif;
     }
+
+    div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
   `,
 };
 
 export function RouteTab(props: RouteTabProps) {
-  const params = useParams<{
+  if (props.onlyLink) {
+    return <NavLink to={props.url}>{props.name}</NavLink>;
+  }
+
+  return (
+    <li css={styles.tabcss(props.isActive)}>
+      <NavLink to={props.url}>{props.name}</NavLink>
+    </li>
+  );
+}
+
+function formatTabUrlWithParams(
+  tab: TabProps,
+  search: any,
+  params: {
     tab: string;
     code: string;
     period: string;
     vizType: string;
-  }>();
-  const location = useLocation();
-  const link = `${props.url
+  }
+) {
+  const link = `${tab.url
     .replace("<code>", params.code)
-    .replace("<period>", params.period)}${location.search}`;
-  const urlsplits = props.url.split("/");
+    .replace("<period>", params.period)}${search}`;
+  const urlsplits = tab.url.split("/");
   let index = params.period ? 4 : 3;
   let indexParam: "vizType" | "tab" = "vizType";
   if (urlsplits[1] === "results") {
@@ -124,26 +154,130 @@ export function RouteTab(props: RouteTabProps) {
   }
   const isActive = urlsplits[index] === params[indexParam];
 
-  if (props.onlyLink) {
-    return <NavLink to={link}>{props.name}</NavLink>;
-  }
-
-  return (
-    <li css={styles.tabcss(isActive)}>
-      <NavLink to={link}>{props.name}</NavLink>
-    </li>
-  );
+  return {
+    ...tab,
+    url: link,
+    isActive,
+  };
 }
 
 export function PageHeaderTabs(props: PageHeaderTabProps) {
   const location = useLocation();
+  const params = useParams<{
+    tab: string;
+    code: string;
+    period: string;
+    vizType: string;
+  }>();
+  const [tabsWithParams, setTabsWithParams] = React.useState(
+    props.tabs.map((tab: TabProps) =>
+      formatTabUrlWithParams(tab, location.search, params)
+    )
+  );
+  const [shownTabs, setShownTabs] = React.useState(tabsWithParams.slice(0, 5));
+  const [moreTabs, setMoreTabs] = React.useState(tabsWithParams.slice(5));
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  function handleClick(event: React.MouseEvent<HTMLElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  React.useEffect(() => {
+    setTabsWithParams(
+      props.tabs.map((tab: TabProps) =>
+        formatTabUrlWithParams(tab, location.search, params)
+      )
+    );
+  }, [props.tabs, location.search, params]);
+
+  React.useEffect(() => {
+    const updShownTabs = tabsWithParams.slice(0, 5);
+    const updMoreTabs = tabsWithParams.slice(5);
+
+    const fMoreTabToMove = find(updMoreTabs, { url: location.pathname });
+    if (fMoreTabToMove) {
+      const shownTabToMove = updShownTabs.pop();
+      remove(updMoreTabs, { url: location.pathname });
+      updShownTabs.push(fMoreTabToMove);
+      if (shownTabToMove) {
+        updMoreTabs.unshift(shownTabToMove);
+      }
+    }
+
+    setShownTabs(updShownTabs);
+    setMoreTabs(updMoreTabs);
+  }, [location.pathname, tabsWithParams]);
+
   return (
     <div css={styles.container(location.pathname)}>
       <ul css={styles.tabsList}>
-        {props.tabs.map((tab: TabProps) => (
+        {shownTabs.map((tab: TabProps) => (
           <RouteTab key={tab.name} {...tab} />
         ))}
+        {moreTabs.length > 0 && (
+          <li css={styles.tabcss(Boolean(anchorEl))} onClick={handleClick}>
+            <div>
+              More <KeyboardArrowDownIcon />
+            </div>
+          </li>
+        )}
       </ul>
+      {moreTabs.length > 0 && (
+        <StyledMenu
+          keepMounted
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          open={Boolean(anchorEl)}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          css={`
+            && {
+              .MuiMenu-paper {
+                min-width: 120px;
+              }
+            }
+          `}
+          id="page-header-more-tabs"
+        >
+          {moreTabs.map((tab: TabProps) => (
+            <StyledMenuItem
+              disableRipple
+              key={tab.name}
+              disableTouchRipple
+              css={`
+                border-bottom-style: none;
+
+                > a {
+                  background: #c7cdd1;
+
+                  @media (min-width: 768px) {
+                    &:hover {
+                      color: #fff;
+                      font-weight: bold;
+                      background: #262c34;
+                      transition: background 0.2s ease-in-out;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                    }
+                  }
+                }
+              `}
+            >
+              <RouteTab key={tab.name} onlyLink {...tab} />
+            </StyledMenuItem>
+          ))}
+        </StyledMenu>
+      )}
     </div>
   );
 }
