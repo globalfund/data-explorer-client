@@ -34,6 +34,7 @@ export function LocationDetailOverviewModule(props: Props) {
       indicators: [],
       portfolioManager: "",
       portfolioManagerEmail: "",
+      principalRecipients: [],
     })
   );
   const countrySummaryCMSData = useStoreState((state) =>
@@ -260,6 +261,43 @@ export function LocationDetailOverviewModule(props: Props) {
           </div>
         </Grid>
       </Grid>
+      {locationInfoData.principalRecipients &&
+        locationInfoData.principalRecipients.length > 0 && (
+          <Grid item xs={12} sm={6} md={6} lg={6}>
+            <div
+              css={`
+                font-size: 14px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              `}
+            >
+              Principal Recipients in {locationInfoData.locationName}
+            </div>
+            <div
+              css={`
+                display: inline-block;
+
+                > a {
+                  font-weight: bold;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                }
+              `}
+            >
+              {locationInfoData.principalRecipients.map(
+                (pr: { name: string; code: string }, index: number) => (
+                  <React.Fragment key={pr.name}>
+                    <Link to={`/partner/${pr.code}/investments`}>
+                      {pr.name}
+                    </Link>
+                    {index < locationInfoData.principalRecipients.length - 1 &&
+                      ", "}
+                  </React.Fragment>
+                )
+              )}
+            </div>
+          </Grid>
+        )}
     </Grid>
   );
 }

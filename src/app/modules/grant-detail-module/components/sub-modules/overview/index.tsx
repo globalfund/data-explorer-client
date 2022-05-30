@@ -1,15 +1,16 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { Link } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { Grid, useMediaQuery } from "@material-ui/core";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function GrantDetailOverviewModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -32,6 +33,11 @@ export function GrantDetailOverviewModule() {
         name: "",
         email: "",
       },
+      principalRecipient: {
+        code: "",
+        name: "",
+        shortName: "",
+      },
     })
   );
   const cmsData = useCMSData({ returnData: true });
@@ -49,7 +55,8 @@ export function GrantDetailOverviewModule() {
             font-size: 14px;
           `}
         >
-          <b>{get(cmsData, "modulesGrantDetail.grantStatus", "")}</b> {grantInfoData.status}
+          <b>{get(cmsData, "modulesGrantDetail.grantStatus", "")}</b>{" "}
+          {grantInfoData.status}
         </div>
       </Grid>
       <Grid
@@ -147,7 +154,8 @@ export function GrantDetailOverviewModule() {
         >
           <LocationIcon />
           <div>
-            {get(cmsData, "modulesGrantDetail.location", "")} <b>{grantInfoData.location}</b>
+            {get(cmsData, "modulesGrantDetail.location", "")}{" "}
+            <b>{grantInfoData.location}</b>
           </div>
         </div>
         <div
@@ -155,7 +163,7 @@ export function GrantDetailOverviewModule() {
             gap: 6px;
             display: flex;
             font-size: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             flex-direction: row;
             align-items: center;
 
@@ -171,9 +179,48 @@ export function GrantDetailOverviewModule() {
         >
           <ComponentIcon />
           <div>
-            {get(cmsData, "modulesGrantDetail.component", "")} <b>{grantInfoData.component}</b>
+            {get(cmsData, "modulesGrantDetail.component", "")}{" "}
+            <b>{grantInfoData.component}</b>
           </div>
         </div>
+        {grantInfoData.principalRecipient && (
+          <div
+            css={`
+              gap: 6px;
+              display: flex;
+              font-size: 12px;
+              margin-bottom: 20px;
+              flex-direction: row;
+              align-items: center;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
+            `}
+          >
+            <div>
+              Principal Recipient:{" "}
+              <Link
+                to={`/partner/${grantInfoData.principalRecipient.code}/investments`}
+                css={`
+                  color: #000;
+                  font-size: 12px;
+                `}
+              >
+                <b>
+                  {grantInfoData.principalRecipient.name}
+                  {grantInfoData.principalRecipient.shortName &&
+                    ` (${grantInfoData.principalRecipient.shortName})`}
+                </b>
+              </Link>
+            </div>
+          </div>
+        )}
       </Grid>
       <Grid
         item
