@@ -57,6 +57,7 @@ export function LocationDetailOverviewModule(props: Props) {
   return (
     <Grid
       container
+      spacing={2}
       css={`
         * {
           color: #262c34;
@@ -72,42 +73,68 @@ export function LocationDetailOverviewModule(props: Props) {
             }
 
             ${countrySummaryCMSData
-              ? `@media (min-height: 650px) {
-              overflow-y: auto;
-              max-height: calc(100vh - 150px);
+              ? `
+              @media (min-height: 650px) {
+                overflow-y: auto;
+                max-height: calc(100vh - 150px);
 
-              &::-webkit-scrollbar {
-                width: 6px;
-                background: #ededf6;
+                &::-webkit-scrollbar {
+                  width: 6px;
+                  background: #ededf6;
+                }
+                &::-webkit-scrollbar-track {
+                  border-radius: 4px;
+                  background: #fff;
+                }
+                &::-webkit-scrollbar-thumb {
+                  border-radius: 4px;
+                  background: #495057;
+                }
               }
-              &::-webkit-scrollbar-track {
-                border-radius: 4px;
-                background: #fff;
-              }
-              &::-webkit-scrollbar-thumb {
-                border-radius: 4px;
-                background: #495057;
-              }
-            }`
+            `
               : ""}
           }
           ${countrySummaryCMSData
             ? `
-          @media (min-height: 650px) {
-            &:nth-of-type(2) {
-              > div:first-of-type {
-                max-height: calc(100vh - 150px - 20px - 532px);
-              }
-              > div:nth-of-type(2) {
-                max-height: 532px;
+            @media (min-height: 650px) {
+              &:nth-of-type(2) {
+                > div:first-of-type {
+                  max-height: calc(100vh - 150px - 20px - 532px);
+                }
+                > div:nth-of-type(2) {
+                  max-height: 532px;
+                }
               }
             }
-          }
           `
-            : ""}
+            : `
+            @media (min-height: 650px) {
+              &:first-of-type {
+                > div:first-of-type {
+                  overflow-y: auto;
+                  max-height: calc(100vh - 150px);
+
+                  &::-webkit-scrollbar {
+                    width: 6px;
+                    background: #ededf6;
+                  }
+                  &::-webkit-scrollbar-track {
+                    border-radius: 4px;
+                    background: #fff;
+                  }
+                  &::-webkit-scrollbar-thumb {
+                    border-radius: 4px;
+                    background: #495057;
+                  }
+                }
+                > div:nth-of-type(2) {
+                  max-height: 532px;
+                }
+              }
+            }
+          `}
         }
       `}
-      spacing={2}
     >
       {countrySummaryCMSData && (
         <Grid
