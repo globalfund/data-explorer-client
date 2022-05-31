@@ -232,13 +232,6 @@ export const defaultChartOptions = {
 
 export interface DataThemeTabVizAPIModel {
   id: string;
-  mapping: any;
-  vizOptions: any;
-  liveData: boolean;
-  createdDate: Date;
-  filterOptionGroups: FilterGroupModel[];
-  appliedFilters: { [key: string]: any[] };
-  data: { [key: string]: string | number | null }[];
   vizType:
     | "barchart"
     | "linechart"
@@ -255,29 +248,35 @@ export interface DataThemeTabVizAPIModel {
     | "allocations"
     | "grants"
     | "eligibility";
+  data: { [key: string]: string | number | null }[];
+  mapping: any;
+  vizOptions: any;
+  filterOptionGroups: FilterGroupModel[];
+  appliedFilters: { [key: string]: any[] };
+  liveData: boolean;
+  createdDate: Date;
 }
 
 export interface DataThemeTabTextAPIModel {
   id: string;
-  content: string;
+  content: object;
   createdDate: Date;
 }
 
 export interface DataThemeTabAPIModel {
   id: string;
   title: string;
+  content: (DataThemeTabTextAPIModel | DataThemeTabVizAPIModel)[];
   createdDate: Date;
-  texts: DataThemeTabTextAPIModel[];
-  visualisations: DataThemeTabVizAPIModel[];
 }
 
 export interface DataThemeAPIModel {
   id: string;
   title: string;
-  public: boolean;
   subTitle: string;
-  createdDate: Date;
+  public: boolean;
   tabs: DataThemeTabAPIModel[];
+  createdDate: Date;
 }
 
 export const emptyDataThemeAPI: DataThemeAPIModel = {
@@ -290,9 +289,7 @@ export const emptyDataThemeAPI: DataThemeAPIModel = {
     {
       id: "",
       title: "",
-      texts: [],
-      createdDate: new Date(),
-      visualisations: [
+      content: [
         {
           id: "",
           mapping: {},
@@ -306,6 +303,7 @@ export const emptyDataThemeAPI: DataThemeAPIModel = {
           datasetId: "investment-signed",
         },
       ],
+      createdDate: new Date(),
     },
   ],
 };
