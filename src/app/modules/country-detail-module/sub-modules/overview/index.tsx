@@ -321,7 +321,21 @@ export function LocationDetailOverviewModule(props: Props) {
               )}
           </div>
         </Grid>
-        <Grid item xs={12} md={countrySummaryCMSData ? 12 : 7}>
+        <Grid
+          item
+          xs={12}
+          md={countrySummaryCMSData ? 12 : 7}
+          css={
+            !countrySummaryCMSData
+              ? `
+            @media (min-width: 960px) {
+              max-width: 65%;
+              flex-basis: 65%;
+            }
+          `
+              : ""
+          }
+        >
           <div>
             <div
               css={`
