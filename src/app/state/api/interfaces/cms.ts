@@ -4,7 +4,7 @@ export interface CMSApiComponentsAppBar {
     about: string;
     datasets: string;
     logoAlt: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsBudgets {
@@ -18,7 +18,7 @@ export interface CMSApiComponentsChartsBudgets {
     flowTooltipDrilldown: string;
     timeCycleTooltipBudgets: string;
     treemapTooltipDefaultKeyLabel: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsCommon {
@@ -30,7 +30,7 @@ export interface CMSApiComponentsChartsCommon {
     noMatch404: string;
     noMatchSorry: string;
     noMatchBack: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsEligibility {
@@ -63,7 +63,7 @@ export interface CMSApiComponentsChartsEligibility {
     scatterplotIncomeLevel: string;
     incomeLevel: string;
     diseaseBurden: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsGeomap {
@@ -77,7 +77,7 @@ export interface CMSApiComponentsChartsGeomap {
     tooltipCommitted: string;
     tooltipGrants: string;
     tooltipDefaultInvestment: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsGrants {
@@ -102,7 +102,7 @@ export interface CMSApiComponentsChartsGrants {
     tooltipStatus: string;
     tooltipRating: string;
     tooltipRatingDefault: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsInvestments {
@@ -114,7 +114,7 @@ export interface CMSApiComponentsChartsInvestments {
     committed: string;
     signed: string;
     totalAmount: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsNetwork {
@@ -123,13 +123,13 @@ export interface CMSApiComponentsChartsNetwork {
     notAvailable: string;
     notReported: string;
     performanceFramework: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsPerformanceRating {
   data: {
     performanceRating: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsChartsPledges {
@@ -138,7 +138,7 @@ export interface CMSApiComponentsChartsPledges {
     contribution: string;
     replenishmentPeriods: string;
     drilldown: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsCookieDialog {
@@ -147,7 +147,7 @@ export interface CMSApiComponentsCookieDialog {
     message: string;
     accept: string;
     close: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsDatasetCarousel {
@@ -162,13 +162,13 @@ export interface CMSApiComponentsDatasetCarousel {
     grants: string;
     results: string;
     documents: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsInformationPanel {
   data: {
     defaultLabel: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsMobile {
@@ -176,7 +176,7 @@ export interface CMSApiComponentsMobile {
     appbarLabelHome: string;
     appbarLabelExplore: string;
     appbarLabelAbout: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsPageHeader {
@@ -200,7 +200,7 @@ export interface CMSApiComponentsPageHeader {
     tabResults: string;
     tabPerformanceRating: string;
     tabPerformanceFramework: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsPerformanceFrameworkComponents {
@@ -226,7 +226,7 @@ export interface CMSApiComponentsPerformanceFrameworkComponents {
     toolTipCategory: string;
     toolTipBaseline: string;
     toolTipReported: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsSearch {
@@ -234,15 +234,14 @@ export interface CMSApiComponentsSearch {
     placeholder: string;
     loading: string;
     noResults: string;
-  }
+  };
 }
 
 export interface CMSApiComponentsSlideInPanel {
   data: {
     back: string;
-  }
+  };
 }
-
 
 // MODULES INTERFACES
 export interface CMSApiModulesLanding {
@@ -251,7 +250,7 @@ export interface CMSApiModulesLanding {
     subTitle: string;
     datasetsTitle: string;
     datasetsLink: string;
-  }
+  };
 }
 
 export interface CMSApiModulesAbout {
@@ -275,7 +274,7 @@ export interface CMSApiModulesAbout {
     linksFeedback: string;
     linksCovid: string;
     linksTitle: string;
-  }
+  };
 }
 
 export interface CMSApiModulesCommon {
@@ -284,7 +283,7 @@ export interface CMSApiModulesCommon {
     noMatch404: string;
     noMatchSorry: string;
     noMatchBack: string;
-  }
+  };
 }
 
 export interface CMSApiModulesCountryDetail {
@@ -296,7 +295,7 @@ export interface CMSApiModulesCountryDetail {
     committed: string;
     signed: string;
     fundManager: string;
-  }
+  };
 }
 
 export interface CMSApiModulesDatasets {
@@ -304,7 +303,7 @@ export interface CMSApiModulesDatasets {
     title: string;
     titleShort: string;
     home: string;
-  }
+  };
 }
 
 export interface CMSApiModulesGrantDetail {
@@ -319,7 +318,7 @@ export interface CMSApiModulesGrantDetail {
     fundManager: string;
     latestRating: string;
     finance: string;
-  }
+  };
 }
 
 export interface CMSApiModulesGrants {
@@ -331,5 +330,24 @@ export interface CMSApiModulesGrants {
     datasets: string;
     grants: string;
     searchPlaceholder: string;
-  }
+  };
+}
+
+// COUNTRY SUMMARY
+export interface CMSApiCountrySummary {
+  entries: {
+    iso3: string;
+    summary: string;
+    summary_de: string | null;
+    summary_fr: string | null;
+  }[];
+}
+
+export interface CMSApiNotesAndDisclaimers {
+  entries: {
+    type: string;
+    content: string;
+    content_de: string | null;
+    content_fr: string | null;
+  }[];
 }

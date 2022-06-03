@@ -22,10 +22,6 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
     x: 0,
     y: 0,
   });
-  const [vizSelected, setVizSelected] = React.useState<{
-    id: string | undefined;
-    filterStr: string | undefined;
-  }>({ id: undefined, filterStr: undefined });
   const [vizPrevSelected, setVizPrevSelected] = React.useState<
     string | undefined
   >(undefined);
@@ -91,13 +87,16 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
   const isDrilldown2Loading = useStoreState(
     (state) => state.GrantDetailBudgetsFlowDrilldownLevel2.loading
   );
-
-  const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
-    {
-      name: string;
-      items: string[];
-    }[]
-  >(getDrilldownPanelOptions(links));
+  const setDrilldownLevelSelectors = useStoreActions(
+    (store) => store.ToolBoxPanelBudgetFlowDrilldownSelectors.setLevels
+  );
+  const vizSelected = useStoreState(
+    (state) => state.ToolBoxPanelBudgetFlowDrilldownSelectors.selectedLevelValue
+  );
+  const setVizSelected = useStoreActions(
+    (actions) =>
+      actions.ToolBoxPanelBudgetFlowDrilldownSelectors.setSelectedLevelValue
+  );
 
   React.useEffect(() => {
     if (props.code) {
@@ -135,7 +134,7 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
   }, [drilldownVizSelected.id]);
 
   useUpdateEffect(() => {
-    setDrilldownPanelOptions(getDrilldownPanelOptions(links));
+    setDrilldownLevelSelectors(getDrilldownPanelOptions(links));
   }, [links]);
 
   return (
@@ -157,7 +156,6 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
       vizPrevTranslation={vizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
-      drilldownPanelOptions={drilldownPanelOptions}
       setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected.id}

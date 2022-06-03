@@ -6,6 +6,8 @@ import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
@@ -156,6 +158,8 @@ import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCount
 import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
+import countrySummary from "../api/action-reducers/cms/countrySummary";
+import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -309,6 +313,8 @@ const storeContent: StoreModel = {
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),
@@ -319,14 +325,18 @@ const storeContent: StoreModel = {
     componentsChartsGrants: persist(componentsChartsGrants),
     componentsChartsInvestments: persist(componentsChartsInvestments),
     componentsChartsNetwork: persist(componentsChartsNetwork),
-    componentsChartsPerformanceRating: persist(componentsChartsPerformanceRating),
+    componentsChartsPerformanceRating: persist(
+      componentsChartsPerformanceRating
+    ),
     componentsChartsPledges: persist(componentsChartsPledges),
     componentsCookieDialog: persist(componentsCookieDialog),
     componentsDatasetCarousel: persist(componentsDatasetCarousel),
     componentsInformationPanel: persist(componentsInformationPanel),
     componentsMobile: persist(componentsMobile),
     componentsPageHeader: persist(componentsPageHeader),
-    componentsPerformanceFrameworkComponents: persist(componentsPerformanceFrameworkComponents),
+    componentsPerformanceFrameworkComponents: persist(
+      componentsPerformanceFrameworkComponents
+    ),
     componentsSearch: persist(componentsSearch),
     componentsSlideInPanel: persist(componentsSlideInPanel),
     modulesLanding: persist(modulesLanding),
@@ -336,6 +346,8 @@ const storeContent: StoreModel = {
     modulesDatasets: persist(modulesDatasets),
     modulesGrantDetail: persist(modulesGrantDetail),
     modulesGrants: persist(modulesGrants),
+    countrySummary: persist(countrySummary),
+    notesAndDisclaimers: persist(notesAndDisclaimers),
   },
 };
 

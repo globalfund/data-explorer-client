@@ -75,4 +75,17 @@ export const APIModel = <QueryModel, ResponseModel>(
     };
     state.errorData = null;
   }),
+  post: thunk(async (actions, query: RequestValues<QueryModel>) => {
+    actions.onRequest();
+    axios
+      .post(url, query.values, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then(
+        (resp: AxiosResponse) => actions.onSuccess(resp.data),
+        (error: any) => actions.onError(error.response)
+      );
+  }),
 });

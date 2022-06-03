@@ -3,6 +3,8 @@ import {
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelAllocationsPeriodStateModel,
+  ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel,
   ToolBoxPanelDisbursementsSliderValuesModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
@@ -32,7 +34,15 @@ import {
   CMSApiComponentsPerformanceFrameworkComponents,
   CMSApiComponentsSearch,
   CMSApiComponentsSlideInPanel,
-  CMSApiModulesLanding, CMSApiModulesAbout, CMSApiModulesCommon, CMSApiModulesCountryDetail, CMSApiModulesDatasets, CMSApiModulesGrantDetail, CMSApiModulesGrants,
+  CMSApiModulesLanding,
+  CMSApiModulesAbout,
+  CMSApiModulesCommon,
+  CMSApiModulesCountryDetail,
+  CMSApiModulesDatasets,
+  CMSApiModulesGrantDetail,
+  CMSApiModulesGrants,
+  CMSApiCountrySummary,
+  CMSApiNotesAndDisclaimers,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -69,6 +79,7 @@ export interface ApiModel<QueryModel, ResponseModel> {
   onRequest: Action<ApiModel<QueryModel, ResponseModel>>;
   fetch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
   clear: Action<ApiModel<QueryModel, ResponseModel>>;
+  post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
 // todo: add all available filters
@@ -88,26 +99,34 @@ export type ApiCallModel = ApiModel<
 
 // CMS API Call model for
 export type CMSApiCallModel = ApiModel<
-  CMSApiCallParams, 
-  CMSApiComponentsAppBar |
-  CMSApiComponentsChartsBudgets |
-  CMSApiComponentsChartsCommon |
-  CMSApiComponentsChartsEligibility |
-  CMSApiComponentsChartsGeomap |
-  CMSApiComponentsChartsGrants |
-  CMSApiComponentsChartsInvestments |
-  CMSApiComponentsChartsNetwork |
-  CMSApiComponentsChartsPerformanceRating |
-  CMSApiComponentsChartsPledges |
-  CMSApiComponentsCookieDialog |
-  CMSApiComponentsDatasetCarousel |
-  CMSApiComponentsInformationPanel |
-  CMSApiComponentsMobile |
-  CMSApiComponentsPageHeader |
-  CMSApiComponentsPerformanceFrameworkComponents |
-  CMSApiComponentsSearch |
-  CMSApiComponentsSlideInPanel | 
-  CMSApiModulesLanding | CMSApiModulesAbout | CMSApiModulesCommon | CMSApiModulesCountryDetail | CMSApiModulesDatasets | CMSApiModulesGrantDetail | CMSApiModulesGrants
+  CMSApiCallParams,
+  | CMSApiComponentsAppBar
+  | CMSApiComponentsChartsBudgets
+  | CMSApiComponentsChartsCommon
+  | CMSApiComponentsChartsEligibility
+  | CMSApiComponentsChartsGeomap
+  | CMSApiComponentsChartsGrants
+  | CMSApiComponentsChartsInvestments
+  | CMSApiComponentsChartsNetwork
+  | CMSApiComponentsChartsPerformanceRating
+  | CMSApiComponentsChartsPledges
+  | CMSApiComponentsCookieDialog
+  | CMSApiComponentsDatasetCarousel
+  | CMSApiComponentsInformationPanel
+  | CMSApiComponentsMobile
+  | CMSApiComponentsPageHeader
+  | CMSApiComponentsPerformanceFrameworkComponents
+  | CMSApiComponentsSearch
+  | CMSApiComponentsSlideInPanel
+  | CMSApiModulesLanding
+  | CMSApiModulesAbout
+  | CMSApiModulesCommon
+  | CMSApiModulesCountryDetail
+  | CMSApiModulesDatasets
+  | CMSApiModulesGrantDetail
+  | CMSApiModulesGrants
+  | CMSApiCountrySummary
+  | CMSApiNotesAndDisclaimers
 >;
 
 export interface CMSApiCallParams {}
@@ -221,7 +240,9 @@ export interface StoreModel {
   ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
+  ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
   // CMS
   cms: {
     componentsAppBar: CMSApiCallModel;
@@ -249,5 +270,7 @@ export interface StoreModel {
     modulesDatasets: CMSApiCallModel;
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
-  }
+    countrySummary: CMSApiCallModel;
+    notesAndDisclaimers: CMSApiCallModel;
+  };
 }

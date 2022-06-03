@@ -16,7 +16,7 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
     <div
       css={`
         color: #262c34;
-        min-width: 250px;
+        min-width: 260px;
         padding: 16px 25px;
         position: relative;
         background: #f5f5f7;
@@ -32,7 +32,8 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        {get(cmsData, "componentsChartsBudgets.timeCycleTooltipBudgets", "")} {props.year}
+        {get(cmsData, "componentsChartsBudgets.timeCycleTooltipBudgets", "")}{" "}
+        {props.year}
       </div>
       <div
         css={`

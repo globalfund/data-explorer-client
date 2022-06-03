@@ -4,7 +4,6 @@ import React from "react";
 import get from "lodash/get";
 import Fab from "@material-ui/core/Fab";
 import { useHistory } from "react-router-dom";
-import { useStoreState } from "app/state/store/hooks";
 import { FiltersIcon } from "app/assets/icons/Filters";
 import { useUnmount, useUpdateEffect } from "react-use";
 import { isTouchDevice } from "app/utils/isTouchDevice";
@@ -33,11 +32,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.scrollHeight > document.body.clientHeight
   );
 
-  // viz drilldown items
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
-
   React.useLayoutEffect(() => {
     setVisibleVScrollbar(
       document.body.scrollHeight > document.body.clientHeight
@@ -53,6 +47,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
+  const isPartnerDetail = history.location.pathname.indexOf("/partner/") > -1;
+
   useUpdateEffect(() => {
     if (isMobile) {
       if (props.open) {
@@ -67,62 +63,33 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 133;
+  let top = 112;
 
-  if (
-    !props.isGrantDetail &&
-    !props.isLocationDetail &&
-    vizDrilldowns.length === 0
-  ) {
+  if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {
-      top = 149;
+      top = 92;
       if (isMobile) {
-        top = 161;
+        top = 148;
       }
     } else {
-      top = 133;
+      top = 112;
     }
   }
-  if (isSmallScreen && vizDrilldowns.length > 0) {
-    top = 185;
-    if (isMobile) {
-      top = 196;
-    }
+  if (isSmallScreen) {
     if (props.isGrantDetail) {
-      top = 206;
+      top = 113;
       if (isMobile) {
-        top = 139;
+        top = 92;
       }
     }
-    if (props.isLocationDetail) {
-      top = 222;
+    if (props.isLocationDetail || isPartnerDetail) {
+      top = 113;
       if (isMobile) {
-        top = 196;
+        top = 148;
       }
-    }
-  } else if (isSmallScreen) {
-    if (props.isGrantDetail) {
-      top = 168;
-      if (isMobile) {
-        top = 104;
-      }
-    }
-    if (props.isLocationDetail) {
-      top = 187;
-      if (isMobile) {
-        top = 161;
-      }
-    }
-  } else if (vizDrilldowns.length > 0) {
-    if (props.isGrantDetail) {
-      top = 203;
-    } else if (props.isLocationDetail) {
-      top = 203;
-    } else {
-      top = 168;
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
-    top = 168;
+    top = 112;
   }
 
   return (
@@ -132,8 +99,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
           if (
             props.open &&
             get(event.target, "tagName", "") !== "A" &&
+            get(event.target, "tagName", "") !== "rect" &&
             get(event.target, "id", "") !== "page-header-toolbox-btn" &&
-            get(event.target, "id", "") !== "result-see-more-button"
+            get(event.target, "id", "") !== "result-see-more-button" &&
+            get(event.target, "id", "") !== "viz-back-button" &&
+            get(event.target, "id", "") !== "appbar-datasets" &&
+            get(event.target, "id", "") !== "appbar-expandable-item" &&
+            get(event.target, "className", "").indexOf("treemapnode") === -1
           ) {
             if (props.vizWrapperRef) {
               if (!props.vizWrapperRef.current.contains(event.target)) {
@@ -182,7 +154,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 flex-direction: column;
               `}
             >
-              {!isSmallScreen && !isMobile && (
+              {!isMobile && (
                 <div
                   role="button"
                   tabIndex={-1}
@@ -218,28 +190,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   onClick={() => props.onCloseBtnClick()}
                 >
                   <TriangleXSIcon />
-                </div>
-              )}
-              {isSmallScreen && !isMobile && (
-                <div
-                  css={`
-                    width: 100%;
-                    height: 24px;
-                    background-color: #373d43;
-                  `}
-                >
-                  <IconButton
-                    css={`
-                      width: 12px;
-                      height: 12px;
-                    `}
-                    onClick={() => props.onCloseBtnClick()}
-                  >
-                    <CloseOutlinedIcon
-                      htmlColor="#ffffff"
-                      viewBox=" -4 -4 30 30"
-                    />
-                  </IconButton>
                 </div>
               )}
               {isMobile && (

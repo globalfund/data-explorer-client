@@ -41,12 +41,14 @@ export default function CountryDetail() {
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const params = useParams<{
     code: string;
     vizType: string;
     subType?: string;
   }>();
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
+    !isMobile && params.vizType !== "overview"
+  );
   const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
     search,
     params.code,
@@ -73,20 +75,44 @@ export default function CountryDetail() {
   const clearEligibilityData = useStoreActions(
     (store) => store.EligibilityCountry.clear
   );
+  const countrySummaryCMSAction = useStoreActions(
+    (actions) => actions.cms.countrySummary.post
+  );
+  const clearCountrySummaryCMS = useStoreActions(
+    (store) => store.cms.countrySummary.clear
+  );
+  const notesDisclaimersCMSAction = useStoreActions(
+    (actions) => actions.cms.notesAndDisclaimers.post
+  );
 
   const paramCode = params.code.replace(/\|/g, "/");
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    if (location.pathname.indexOf("/overview") === -1) {
+      document.body.style.background = "#fff";
+    }
     fetchLocationInfoData({
       filterString: `locations=${paramCode}`,
     });
+    countrySummaryCMSAction({
+      values: {
+        filter: { iso3: paramCode },
+      },
+    });
+    notesDisclaimersCMSAction({
+      values: {
+        filter: { type: "COUNTRY_SUMMARY" },
+      },
+    });
 
-    return () => clearEligibilityData();
+    return () => {
+      clearEligibilityData();
+      clearCountrySummaryCMS();
+    };
   }, [paramCode]);
 
   React.useEffect(() => {
-    if (!isMobile && !openToolboxPanel) {
+    if (!isMobile && !openToolboxPanel && params.vizType !== "overview") {
       setOpenToolboxPanel(true);
     }
   }, [params.vizType]);
@@ -175,7 +201,7 @@ export default function CountryDetail() {
         <Switch>
           {/* Overview */}
           <Route path={`/location/:code/overview`}>
-            <LocationDetailOverviewModule code={params.code} />
+            <LocationDetailOverviewModule openToolboxPanel={openToolboxPanel} />
           </Route>
           {/* Budgets */}
           <Route path={`/location/:code/budgets/flow`}>

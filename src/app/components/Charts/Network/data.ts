@@ -10,7 +10,7 @@ export interface NetworkVizProps {
     nodes: InputNode[];
     links: InputLink[];
   };
-  selectedNodeId: string | undefined;
+  selectedNodeId?: string;
   onNodeClick: (node: string, x: number, y: number) => void;
 }
 
@@ -45,8 +45,7 @@ export const mockdata = {
       borderColor: "#262C34",
     },
     {
-      id:
-        "Prevention programs for general population|Coverage / Output indicator",
+      id: "Prevention programs for general population|Coverage / Output indicator",
       radius: 12,
       depth: 2,
       color: "#fff",
@@ -81,16 +80,14 @@ export const mockdata = {
       borderColor: "#262C34",
     },
     {
-      id:
-        "Percentage of HIV-positive pregnant women who received antiretrovirals to reduce the risk of mother-to-child transmission",
+      id: "Percentage of HIV-positive pregnant women who received antiretrovirals to reduce the risk of mother-to-child transmission",
       radius: 12,
       depth: 3,
       color: "#97ff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "Percentage of infants born to HIV-positive women receiving a virological test for HIV within 2 months of birth",
+      id: "Percentage of infants born to HIV-positive women receiving a virological test for HIV within 2 months of birth",
       radius: 12,
       depth: 3,
       color: "#ffaa46",
@@ -104,80 +101,70 @@ export const mockdata = {
       borderColor: "#262C34",
     },
     {
-      id:
-        "Number of women and men aged 15+ who received an HIV test and know their results",
+      id: "Number of women and men aged 15+ who received an HIV test and know their results",
       radius: 12,
       depth: 3,
       color: "#60ff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "Percentage of HIV-positive patients who were screened for TB in HIV care or treatment settings",
+      id: "Percentage of HIV-positive patients who were screened for TB in HIV care or treatment settings",
       radius: 12,
       depth: 3,
       color: "#97ff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "Percentage of HIV-positive registered TB patients given anti-retroviral therapy during TB treatment",
+      id: "Percentage of HIV-positive registered TB patients given anti-retroviral therapy during TB treatment",
       radius: 12,
       depth: 3,
       color: "#daff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "Percentage of TB patients who had an HIV test result recorded in the TB register",
+      id: "Percentage of TB patients who had an HIV test result recorded in the TB register",
       radius: 12,
       depth: 3,
       color: "#daff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "Percentage of adults and children that initiated ART, with an undetectable viral load at 12 months (<1000 copies/ml)",
+      id: "Percentage of adults and children that initiated ART, with an undetectable viral load at 12 months (<1000 copies/ml)",
       radius: 12,
       depth: 3,
       color: "#daff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "TCS-other 1: Percentage of adults currently receiving ART among all adults living with HIV",
+      id: "TCS-other 1: Percentage of adults currently receiving ART among all adults living with HIV",
       radius: 12,
       depth: 3,
       color: "#daff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "TCS-other 2: Percentage of children currently receiving ART among all children living with HIV",
+      id: "TCS-other 2: Percentage of children currently receiving ART among all children living with HIV",
       radius: 12,
       depth: 3,
       color: "#daff46",
       borderColor: "#262C34",
     },
     {
-      id:
-        "TCS-other 3: Percentage of adults and children enrolled in care who have received a CD4 count.",
+      id: "TCS-other 3: Percentage of adults and children enrolled in care who have received a CD4 count.",
       radius: 12,
       depth: 3,
       color: "#fa9a55",
       borderColor: "#262C34",
     },
     {
-      id:
-        "Ensure the supervision of community service providers and primary healthcare centers (CSPS) (50% of sites performing poorly) by the District Team each semester",
+      id: "Ensure the supervision of community service providers and primary healthcare centers (CSPS) (50% of sites performing poorly) by the District Team each semester",
       radius: 12,
       depth: 3,
       color: "#E2E2E2",
       borderColor: "#262C34",
     },
     {
-      id:
-        "TB/HIV-4: Percentage of new HIV-positive patients starting IPT during the reporting period",
+      id: "TB/HIV-4: Percentage of new HIV-positive patients starting IPT during the reporting period",
       radius: 12,
       depth: 3,
       color: "#E2E2E2",
