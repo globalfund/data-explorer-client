@@ -30,6 +30,8 @@ export function DataThemesBuilderCustomize(
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
 
   useUpdateEffectOnce(() => {
     if (
@@ -45,7 +47,7 @@ export function DataThemesBuilderCustomize(
 
   React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping, props.dimensions);
+      getRequiredFieldsAndErrors(mapping[activeTabIndex][activeVizIndex], props.dimensions);
 
     setNextEnabled(
       updRequiredFields.length === 0 &&
@@ -59,7 +61,7 @@ export function DataThemesBuilderCustomize(
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
-          mapping: mapping,
+          mapping: mapping[activeTabIndex][activeVizIndex],
           visualOptions: props.visualOptions,
           dataTypes: props.currentChartData.dataTypes,
         });
@@ -95,7 +97,7 @@ export function DataThemesBuilderCustomize(
     props.visualOptions,
   ]);
 
-  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping)) {
+  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping[activeTabIndex][activeVizIndex])) {
     history.push(`/data-themes/${page}/data`);
   }
 

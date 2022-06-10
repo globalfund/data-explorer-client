@@ -41,13 +41,19 @@ export function DataThemesBuilder() {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
 
-  const [currentChart, setCurrentChart] = React.useState(null);
+  const [currentChart, setCurrentChart] = React.useState([[]]);
   const [isEditMode, setIsEditMode] = React.useState(page !== "new");
-  const [currentChartData, setCurrentChartData] = React.useState(null);
+  const [currentChartData, setCurrentChartData] = React.useState([[]]);
   const [visualOptions, setVisualOptions] = useSessionStorage<any>(
     "visualOptions",
-    {}
+    [[{}]]
   );
+
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+
+  const setActiveTabIndex = useStoreActions((state) => state.dataThemes.activeTabIndex.setValue);
+  const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
 
   const {
     data,
@@ -77,30 +83,36 @@ export function DataThemesBuilder() {
   const clearDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeGet.clear
   );
-  const setAppliedFilters = useStoreActions(
-    (actions) => actions.dataThemes.appliedFilters.setAll
+  const resetAppliedFilters = useStoreActions(
+    (actions) => actions.dataThemes.appliedFilters.reset
   );
-  const setMapping = useStoreActions(
-    (actions) => actions.dataThemes.sync.mapping.setValue
+  const resetMapping = useStoreActions(
+    (actions) => actions.dataThemes.sync.mapping.reset
   );
-  const setIsLiveData = useStoreActions(
-    (actions) => actions.dataThemes.sync.liveData.setValue
+  const resetIsLiveData = useStoreActions(
+    (actions) => actions.dataThemes.sync.liveData.reset
   );
-  const setSelectedChartType = useStoreActions(
-    (actions) => actions.dataThemes.sync.chartType.setValue
+  const resetSelectedChartType = useStoreActions(
+    (actions) => actions.dataThemes.sync.chartType.reset
   );
   const stepSelectionsActions = useStoreActions(
     (actions) => actions.dataThemes.sync.stepSelections
   );
+  const resetActiveTabIndex = useStoreActions(
+    (actions) => actions.dataThemes.activeTabIndex.reset
+  )
+  const resetActiveVizIndex = useStoreActions(
+    (actions) => actions.dataThemes.activeVizIndex.reset
+  )
 
   function setVisualOptionsOnChange() {
-    setCurrentChart(get(charts, selectedChartType || "barchart", null));
+    setCurrentChart(get(charts, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", null));
     const options = {
       ...getOptionsConfig(
-        get(charts, selectedChartType || "barchart", charts.barchart)
+        get(charts, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", charts.barchart)
           .visualOptions
       ),
-      ...get(defaultChartOptions, selectedChartType || "barchart", {}),
+      ...get(defaultChartOptions, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", {}),
     };
     const defaultOptionsValues = getDefaultOptionsValues(options);
     setVisualOptions({
@@ -115,14 +127,16 @@ export function DataThemesBuilder() {
   }
 
   function clearDataThemeBuilder() {
-    setCurrentChart(null);
-    setCurrentChartData(null);
-    setVisualOptions({});
-    setMapping({});
-    setIsLiveData(false);
-    setSelectedChartType(null);
-    stepSelectionsActions.setStep1({ dataset: null });
-    setAppliedFilters({});
+    resetActiveTabIndex();
+    resetActiveVizIndex();
+    setCurrentChart([[]]);
+    setCurrentChartData([[]]);
+    setVisualOptions([[{}]]);
+    resetMapping();
+    resetIsLiveData();
+    resetSelectedChartType();
+    stepSelectionsActions.reset();
+    resetAppliedFilters();
     clearStore();
   }
 

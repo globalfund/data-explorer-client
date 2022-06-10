@@ -118,6 +118,8 @@ export function DataThemesToolBoxSelectDataset(
   const { loadDataset } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
   );
@@ -145,15 +147,17 @@ export function DataThemesToolBoxSelectDataset(
   const handleItemClick =
     (endpoint: string, name: string) =>
     (event: React.MouseEvent<HTMLElement>) => {
-      if (name === stepSelectionsData.step1.dataset) {
+      if (name === stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset) {
         return;
       }
       stepSelectionsActions.setStep1({
-        ...stepSelectionsData.step1,
+        tab: activeTabIndex,
+        viz: activeVizIndex,
         dataset: name,
       });
-      clearMapping();
+      clearMapping({tab: activeTabIndex, viz: activeVizIndex});
       handleClose();
+      console.log(endpoint)
       loadDataset(endpoint).then(() => {
         history.push(`/data-themes/${page}/preview`);
       });
@@ -219,7 +223,7 @@ export function DataThemesToolBoxSelectDataset(
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
-          {stepSelectionsData.step1.dataset || "Datasets"}
+          {stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset || "Datasets"}
         </span>
         <KeyboardArrowDownIcon />
       </Button>
@@ -239,7 +243,7 @@ export function DataThemesToolBoxSelectDataset(
               `data-themes/raw-data/${dataset.id}`,
               dataset.name
             )}
-            selected={stepSelectionsData.step1.dataset === dataset.name}
+            selected={stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset === dataset.name}
           >
             {dataset.name}
           </StyledMenuItem>
@@ -252,8 +256,8 @@ export function DataThemesToolBoxSelectDataset(
         control={
           <Switch
             color="primary"
-            checked={isLiveData}
-            onChange={() => setIsLiveData(!isLiveData)}
+            checked={isLiveData[activeTabIndex][activeVizIndex]}
+            onChange={() => setIsLiveData({tab: activeTabIndex, viz: activeVizIndex, value: !isLiveData[activeTabIndex][activeVizIndex]})}
           />
         }
         label="Use Live data for the visualization"

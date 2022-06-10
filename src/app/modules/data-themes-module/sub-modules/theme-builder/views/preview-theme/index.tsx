@@ -20,6 +20,8 @@ export function DataThemesBuilderPreviewTheme(
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
   useUpdateEffectOnce(() => {
@@ -39,10 +41,11 @@ export function DataThemesBuilderPreviewTheme(
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
-          mapping: mapping,
+          mapping: mapping[activeTabIndex][activeVizIndex],
           visualOptions: props.visualOptions,
           dataTypes: props.currentChartData.dataTypes,
         });
+
         const vizData = viz._getVizData();
         try {
           const rawViz = viz.renderToDOM(domRef.current, vizData);

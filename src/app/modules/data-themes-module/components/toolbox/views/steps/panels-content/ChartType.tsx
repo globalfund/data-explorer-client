@@ -12,10 +12,12 @@ export function DataThemesToolBoxChartType() {
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
 
   const fChartType = find(
     chartTypes,
-    (chartType: ChartTypeModel) => chartType.id === selectedChartType
+    (chartType: ChartTypeModel) => chartType.id === selectedChartType[activeTabIndex][activeVizIndex]
   );
 
   return (
@@ -25,15 +27,15 @@ export function DataThemesToolBoxChartType() {
         height: 340px;
         display: flex;
         flex-direction: column;
-        align-items: ${selectedChartType && fChartType
+        align-items: ${selectedChartType[activeTabIndex][activeVizIndex] && fChartType
           ? "flex-start"
           : "center"};
-        justify-content: ${selectedChartType && fChartType
+        justify-content: ${selectedChartType[activeTabIndex][activeVizIndex] && fChartType
           ? "flex-start"
           : "center"};
       `}
     >
-      {!selectedChartType && (
+      {!selectedChartType[activeTabIndex][activeVizIndex] && (
         <div
           css={`
             color: #262c34;
@@ -44,7 +46,7 @@ export function DataThemesToolBoxChartType() {
           Please select a chart type
         </div>
       )}
-      {selectedChartType && fChartType && (
+      {selectedChartType[activeTabIndex][activeVizIndex] && fChartType && (
         <React.Fragment>
           <div
             css={`

@@ -27,6 +27,8 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
   const [mappedData, setMappedData] = React.useState(null);
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
   useUpdateEffectOnce(() => {
@@ -43,7 +45,7 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
 
   React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping, props.dimensions);
+      getRequiredFieldsAndErrors(mapping[activeTabIndex][activeVizIndex], props.dimensions);
 
     setNextEnabled(
       updRequiredFields.length === 0 &&
@@ -57,13 +59,14 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
-          mapping: mapping,
+          mapping: mapping[activeTabIndex][activeVizIndex],
           visualOptions: props.visualOptions,
           dataTypes: props.currentChartData.dataTypes,
         });
         const vizData = viz._getVizData();
         setMappedData(vizData);
         try {
+          /** TODO: const unused */
           const rawViz = viz.renderToDOM(domRef.current, vizData);
         } catch (e) {
           setMappedData(null);
@@ -93,7 +96,7 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
     props.visualOptions,
   ]);
 
-  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping)) {
+  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping[activeTabIndex][activeVizIndex])) {
     history.push(`/data-themes/${page}/data`);
   }
 

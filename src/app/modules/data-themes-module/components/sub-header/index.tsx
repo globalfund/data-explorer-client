@@ -81,6 +81,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
   );
@@ -143,19 +146,18 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       tabs: [
         {
           title: "Tab 1",
-          visualisations: [
+          content: [
             {
-              mapping,
-              vizType: selectedChartType,
-              datasetId: stepSelectionsData.step1.dataset,
+              mapping: mapping[activeTabIndex][activeVizIndex],
+              vizType: selectedChartType[activeTabIndex][activeVizIndex],
+              datasetId: stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset,
               data,
               vizOptions: visualOptions,
               filterOptionGroups,
-              appliedFilters,
-              liveData: isLiveData,
+              appliedFilters: appliedFilters[activeTabIndex][activeVizIndex],
+              liveData: isLiveData[activeTabIndex][activeVizIndex],
             },
           ],
-          texts: [],
         },
       ],
     };
@@ -177,9 +179,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     setIsSavedEnabled(
       data.length > 0 &&
         !loading &&
-        selectedChartType !== "" &&
-        selectedChartType !== null &&
-        !isEmpty(mapping)
+        selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
+        selectedChartType[activeTabIndex][activeVizIndex] !== null &&
+        !isEmpty(mapping[activeTabIndex][activeVizIndex])
     );
   }, [data, loading, selectedChartType, mapping]);
 

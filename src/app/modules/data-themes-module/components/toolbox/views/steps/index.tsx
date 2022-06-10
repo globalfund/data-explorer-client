@@ -125,8 +125,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
     (state) => state.dataThemes.appliedFilters.value
   );
   let appliedFiltersCount = 0;
-  Object.keys(appliedFilters).forEach((key) => {
-    appliedFiltersCount += appliedFilters[key].length;
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  Object.keys(appliedFilters[activeTabIndex][activeVizIndex]).forEach((key) => {
+    appliedFiltersCount += appliedFilters[activeTabIndex][activeVizIndex][key].length;
   });
 
   const stepPaths = [
@@ -223,7 +225,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 3}
         onChange={handleChange(4)}
-        disabled={(data.length === 0 && !loading) || !selectedChartType}
+        disabled={(data.length === 0 && !loading) || !selectedChartType[activeTabIndex][activeVizIndex]}
       >
         <AccordionSummary
           id="step3-header"
@@ -242,8 +244,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         onChange={handleChange(5)}
         disabled={
           (data.length === 0 && !loading) ||
-          isEmpty(mapping) ||
-          !selectedChartType ||
+          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
+          !selectedChartType[activeTabIndex][activeVizIndex] ||
           (!props.forceNextEnabled && expanded !== 6)
         }
       >
@@ -268,13 +270,13 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
                     text-transform: capitalize;
                   `}
                 >
-                  {Object.keys(appliedFilters)
+                  {Object.keys(appliedFilters[activeTabIndex][activeVizIndex])
                     .map(
                       (key) =>
                         `${
-                          appliedFilters[key].length
+                          appliedFilters[activeTabIndex][activeVizIndex][key].length
                         } ${splitStrBasedOnCapitalLetters(key)}${
-                          appliedFilters[key].length > 1 ? "s" : ""
+                          appliedFilters[activeTabIndex][activeVizIndex][key].length > 1 ? "s" : ""
                         }`
                     )
                     .join(", ")}
@@ -324,8 +326,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         onChange={handleChange(7)}
         disabled={
           (data.length === 0 && !loading) ||
-          isEmpty(mapping) ||
-          !selectedChartType ||
+          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
+          !selectedChartType[activeTabIndex][activeVizIndex] ||
           !props.forceNextEnabled
         }
         css={`

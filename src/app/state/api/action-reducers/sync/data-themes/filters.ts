@@ -1,57 +1,47 @@
 import { action, Action } from "easy-peasy";
 
 export interface DataThemesAppliedFiltersStateModel {
-  value: {
+  value: [[{
     [key: string]: any[];
-  };
+  }]];
   setValue: Action<
     DataThemesAppliedFiltersStateModel,
     {
+      tab: number;
+      viz: number;
       key: string;
       value: any[];
     }
   >;
-  setAll: Action<
-    DataThemesAppliedFiltersStateModel,
-    {
-      [key: string]: any[];
-    }
-  >;
+  reset: Action<DataThemesAppliedFiltersStateModel>;
 }
 
 export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
   {
-    value: {},
+    value: [[{}]],
     setValue: action(
       (
         state,
         payload: {
+          tab: number;
+          viz: number;
           key: string;
           value: any[];
         }
       ) => {
-        if (state.value[payload.key]) {
+        if (state.value[payload.tab][payload.viz][payload.key]) {
           if (payload.value.length === 0) {
-            delete state.value[payload.key];
+            delete state.value[payload.tab][payload.viz][payload.key];
           } else {
-            state.value[payload.key] = payload.value;
+            state.value[payload.tab][payload.viz][payload.key] = payload.value;
           }
         } else if (payload.value.length > 0) {
-          state.value = {
-            ...state.value,
+          state.value[payload.tab][payload.viz] = {
+            ...state.value[payload.tab][payload.viz],
             [payload.key]: payload.value,
           };
         }
       }
     ),
-    setAll: action(
-      (
-        state,
-        payload: {
-          [key: string]: any[];
-        }
-      ) => {
-        state.value = payload;
-      }
-    ),
+    reset: action((state) => {state.value = [[{}]]}),
   };

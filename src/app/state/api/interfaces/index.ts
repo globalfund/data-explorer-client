@@ -6,6 +6,7 @@ import {
   DataThemesStepChartTypeStateModel,
   DataThemesStepSelectDataLiveStateModel,
   DataThemesStepSelectionsStateModel,
+  DataThemesIndexStateModel,
 } from "app/state/api/action-reducers/sync/data-themes";
 import {
   PageHeaderVizDrilldownsStateModel,
@@ -288,6 +289,8 @@ export interface StoreModel {
     modulesGrants: CMSApiCallModel;
   };
   dataThemes: {
+    activeTabIndex: DataThemesIndexStateModel;
+    activeVizIndex: DataThemesIndexStateModel;
     sync: {
       stepSelections: DataThemesStepSelectionsStateModel;
       liveData: DataThemesStepSelectDataLiveStateModel;

@@ -35,6 +35,8 @@ export function useDataThemesRawData(props: {
     0
   );
 
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
@@ -43,7 +45,7 @@ export function useDataThemesRawData(props: {
   );
 
   const setAppliedFilters = useStoreActions(
-    (actions) => actions.dataThemes.appliedFilters.setAll
+    (actions) => actions.dataThemes.appliedFilters.setValue
   );
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
@@ -115,7 +117,7 @@ export function useDataThemesRawData(props: {
   }, []);
 
   React.useEffect(() => {
-    setFilteredData(filterDataThemesData(rawData.data, appliedFilters));
+    setFilteredData(filterDataThemesData(rawData.data, appliedFilters[activeTabIndex][activeVizIndex]));
   }, [rawData.data, appliedFilters]);
 
   React.useEffect(() => {
@@ -136,27 +138,32 @@ export function useDataThemesRawData(props: {
         .then((response) => {
           clearStore().then(async () => {
             const tabs = get(response.data, "tabs", []);
-            if (tabs.length > 0 && tabs[0].visualisations.length > 0) {
+            if (tabs.length > 0 && tabs[0].content.length > 0) {
               const dataToIndex = {
                 id: 0,
-                data: tabs[0].visualisations[0].data,
-                count: tabs[0].visualisations[0].data.length,
+                data: tabs[0].content[0].data,
+                count: tabs[0].content[0].data.length,
                 filterOptionGroups:
-                  tabs[0].visualisations[0].filterOptionGroups,
+                  tabs[0].content[0].filterOptionGroups,
               };
               indexedDB.add(dataToIndex).then(
                 (event) => {
                   setIsInSession(1);
-                  // console.log("ID Generated: ", event);
                   setRawData(dataToIndex);
-                  setAppliedFilters(tabs[0].visualisations[0].appliedFilters);
-                  props.setVisualOptions(tabs[0].visualisations[0].vizOptions);
-                  setMapping(tabs[0].visualisations[0].mapping);
-                  setIsLiveData(tabs[0].visualisations[0].liveData);
-                  setSelectedChartType(tabs[0].visualisations[0].vizType);
+                  setAppliedFilters({
+                      tab: 0, 
+                      viz: 0,
+                      key: tabs[0].content[0].appliedFilters.key || "",
+                      value: tabs[0].content[0].appliedFilters.value || {},
+                  });
+                  props.setVisualOptions(tabs[0].content[0].vizOptions);
+                  setMapping({tab: activeTabIndex, viz: activeVizIndex, mapping: tabs[0].content[0].mapping});
+                  setIsLiveData({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].liveData});
+                  setSelectedChartType({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].vizType});
                   stepSelectionsActions.setStep1({
-                    ...stepSelectionsData.step1,
-                    dataset: tabs[0].visualisations[0].datasetId,
+                    tab: activeTabIndex,
+                    viz: activeVizIndex,
+                    dataset: tabs[0].content[0].datasetId,
                   });
                 },
                 (error) => {

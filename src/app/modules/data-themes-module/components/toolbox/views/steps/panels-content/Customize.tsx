@@ -30,13 +30,15 @@ interface DataThemesToolBoxCustomizeProps {
 export function DataThemesToolBoxCustomize(
   props: DataThemesToolBoxCustomizeProps
 ) {
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
   const fChartType = find(
     chartTypes,
-    (chartType: ChartTypeModel) => chartType.id === selectedChartType
+    (chartType: ChartTypeModel) => chartType.id === selectedChartType[activeTabIndex][activeVizIndex]
   );
 
   const optionsConfig = React.useMemo(() => {
@@ -56,7 +58,7 @@ export function DataThemesToolBoxCustomize(
   });
 
   const enabledOptions = React.useMemo(() => {
-    return getEnabledOptions(optionsConfig, props.visualOptions, mapping);
+    return getEnabledOptions(optionsConfig, props.visualOptions, mapping[activeTabIndex][activeVizIndex]);
   }, [optionsConfig, props.visualOptions, mapping]);
 
   const optionsDefinitionsByGroup = React.useMemo(() => {
@@ -157,7 +159,7 @@ export function DataThemesToolBoxCustomize(
                   // (when a new value is dragged to the dimension that repeats the option)
                   // the same approach is applied in option validation by the raw core lib
                   return def.repeatFor ? (
-                    get(mapping, `[${def.repeatFor}].value`, []).map(
+                    get(mapping[activeTabIndex][activeVizIndex], `[${def.repeatFor}].value`, []).map(
                       (v: any, repeatIndex: number) => (
                         <WrapControlComponent
                           className="chart-option"
@@ -173,7 +175,7 @@ export function DataThemesToolBoxCustomize(
                           mapping={
                             def.type === "colorScale"
                               ? getPartialMapping(
-                                  mapping,
+                                  mapping[activeTabIndex][activeVizIndex],
                                   def.repeatFor,
                                   repeatIndex
                                 )
@@ -217,7 +219,7 @@ export function DataThemesToolBoxCustomize(
                       optionId={optionId}
                       // error={error?.errors?.[optionId]}
                       value={props.visualOptions?.[optionId]}
-                      mapping={def.type === "colorScale" ? mapping : undefined}
+                      mapping={def.type === "colorScale" ? mapping[activeTabIndex][activeVizIndex] : undefined}
                       chart={
                         def.type === "colorScale"
                           ? props.currentChart

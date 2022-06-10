@@ -32,8 +32,10 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [allSelected, setAllSelected] = React.useState(false);
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
 
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const appliedFilters = useStoreState((state) =>
-    get(state.dataThemes.appliedFilters, `value.${props.name}`, [])
+    get(state.dataThemes.appliedFilters, `value[${activeTabIndex}][${activeVizIndex}].${props.name}`, [])
   );
   const setAppliedFilters = useStoreActions(
     (actions) => actions.dataThemes.appliedFilters.setValue
@@ -158,6 +160,8 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   function handleApply() {
     if (!isEqual(appliedFilters, tmpAppliedFilters)) {
       setAppliedFilters({
+        tab: activeTabIndex,
+        viz: activeVizIndex,
         key: props.name,
         value: tmpAppliedFilters,
       });
@@ -182,6 +186,8 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   function resetFilters() {
     if (appliedFilters.length > 0) {
       setAppliedFilters({
+        tab: activeTabIndex,
+        viz: activeVizIndex,
         key: props.name,
         value: [],
       });
