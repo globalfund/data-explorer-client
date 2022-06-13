@@ -40,11 +40,11 @@ export function DataThemesBuilderChartType(
     (chartTypeId: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       clearMapping({tab: activeTabIndex, viz: activeVizIndex});
       setChartType({tab: activeTabIndex, viz: activeVizIndex, value: selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId ? null : chartTypeId});
-      props.setCurrentChart(
-        selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
-          ? null
-          : get(charts, chartTypeId, null)
-      );
+      let tmpCurrentChart = { ...props.currentChart };
+      tmpCurrentChart[activeTabIndex][activeVizIndex] = selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
+       ? null
+       : get(charts, chartTypeId, null)
+      props.setCurrentChart(tmpCurrentChart);
     };
 
   if (props.data.length === 0 && !props.loading) {

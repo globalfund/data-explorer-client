@@ -34,12 +34,14 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      props.visualOptions.width === CHART_DEFAULT_WIDTH
+      props.visualOptions[activeTabIndex][activeVizIndex].width === CHART_DEFAULT_WIDTH
     ) {
-      props.setVisualOptions({
-        ...props.visualOptions,
+      let tmpVisualOptions = { ...props.visualOptions };
+      tmpVisualOptions[activeTabIndex][activeVizIndex] = {
+        ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
-      });
+      }
+      props.setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
@@ -60,7 +62,7 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
           mapping: mapping[activeTabIndex][activeVizIndex],
-          visualOptions: props.visualOptions,
+          visualOptions: props.visualOptions[activeTabIndex][activeVizIndex],
           dataTypes: props.currentChartData.dataTypes,
         });
         const vizData = viz._getVizData();

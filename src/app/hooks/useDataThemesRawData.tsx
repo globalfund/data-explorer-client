@@ -156,10 +156,10 @@ export function useDataThemesRawData(props: {
                       key: tabs[0].content[0].appliedFilters.key || "",
                       value: tabs[0].content[0].appliedFilters.value || {},
                   });
-                  props.setVisualOptions(tabs[0].content[0].vizOptions);
-                  setMapping({tab: activeTabIndex, viz: activeVizIndex, mapping: tabs[0].content[0].mapping});
-                  setIsLiveData({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].liveData});
-                  setSelectedChartType({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].vizType});
+                  props.setVisualOptions([[tabs[0].content[0].vizOptions]]);
+                  setMapping({tab: activeTabIndex, viz: activeVizIndex, mapping: tabs[0].content[0].mapping || {}});
+                  setIsLiveData({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].liveData || false});
+                  setSelectedChartType({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].vizType || "barchart"});
                   stepSelectionsActions.setStep1({
                     tab: activeTabIndex,
                     viz: activeVizIndex,

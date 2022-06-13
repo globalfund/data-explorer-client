@@ -100,13 +100,15 @@ export function DataThemesBuilder() {
   );
   const resetActiveTabIndex = useStoreActions(
     (actions) => actions.dataThemes.activeTabIndex.reset
-  )
+  );
   const resetActiveVizIndex = useStoreActions(
     (actions) => actions.dataThemes.activeVizIndex.reset
-  )
+  );
 
   function setVisualOptionsOnChange() {
-    setCurrentChart(get(charts, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", null));
+    let tmpCurrentChart: any = { ...currentChart };
+    tmpCurrentChart[activeTabIndex][activeVizIndex] = get(charts, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", null);
+    setCurrentChart(tmpCurrentChart);
     const options = {
       ...getOptionsConfig(
         get(charts, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", charts.barchart)
@@ -115,15 +117,17 @@ export function DataThemesBuilder() {
       ...get(defaultChartOptions, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", {}),
     };
     const defaultOptionsValues = getDefaultOptionsValues(options);
-    setVisualOptions({
+    let tmpVisualOptions: any = { ...visualOptions };
+    tmpVisualOptions[activeTabIndex][activeVizIndex] = {
       ...defaultOptionsValues,
-      ...visualOptions,
+      ...visualOptions[activeTabIndex][activeVizIndex],
       width:
-        !visualOptions.width ||
-        visualOptions.width === defaultOptionsValues.width
+        !visualOptions[activeTabIndex][activeVizIndex].width ||
+        visualOptions[activeTabIndex][activeVizIndex].width === defaultOptionsValues.width
           ? defaultOptionsValues.width
-          : visualOptions.width,
-    });
+          : visualOptions[activeTabIndex][activeVizIndex].width,
+    };
+    setVisualOptions(tmpVisualOptions);
   }
 
   function clearDataThemeBuilder() {
@@ -154,13 +158,13 @@ export function DataThemesBuilder() {
   }, [selectedChartType]);
 
   React.useEffect(() => {
-    setCurrentChartData(
-      parseDataset(filteredData, null, {
-        locale: navigator.language || "en-US",
-        decimal: ".",
-        group: ",",
-      })
-    );
+    let tmpCurrentChartData: any = { ...currentChartData };
+    tmpCurrentChartData[activeTabIndex][activeVizIndex] = parseDataset(filteredData, null, {
+      locale: navigator.language || "en-US",
+      decimal: ".",
+      group: ",",
+    })
+    setCurrentChartData(tmpCurrentChartData);
   }, [filteredData]);
 
   React.useEffect(() => {
@@ -188,16 +192,17 @@ export function DataThemesBuilder() {
             <PageLoader />
           )}
           <Route path={`/data-themes/:page/customize`}>
+            {/** for each viz in activeTab */}
             <DataThemesBuilderCustomize
               data={data}
               loading={loading}
               loadDataset={loadDataset}
-              currentChart={currentChart}
+              currentChart={currentChart[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData}
+              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
               filterOptionGroups={filterOptionGroups}
-              dimensions={get(currentChart, "dimensions", [])}
+              dimensions={get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])}
             />
           </Route>
           <Route path={`/data-themes/:page/lock`}></Route>
@@ -206,12 +211,12 @@ export function DataThemesBuilder() {
               data={data}
               loading={loading}
               loadDataset={loadDataset}
-              currentChart={currentChart}
+              currentChart={currentChart[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData}
+              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
               filterOptionGroups={filterOptionGroups}
-              dimensions={get(currentChart, "dimensions", [])}
+              dimensions={get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])}
             />
           </Route>
           <Route path={`/data-themes/:page/mapping`}>
@@ -219,12 +224,12 @@ export function DataThemesBuilder() {
               data={data}
               loading={loading}
               loadDataset={loadDataset}
-              currentChart={currentChart}
+              currentChart={currentChart[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData}
+              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
               filterOptionGroups={filterOptionGroups}
-              dimensions={get(currentChart, "dimensions", [])}
+              dimensions={get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])}
             />
           </Route>
           <Route path={`/data-themes/:page/chart-type`}>
@@ -233,6 +238,7 @@ export function DataThemesBuilder() {
               loading={loading}
               loadDataset={loadDataset}
               visualOptions={visualOptions}
+              currentChart={currentChart}
               setCurrentChart={setCurrentChart}
               setVisualOptions={setVisualOptions}
               filterOptionGroups={filterOptionGroups}
@@ -276,12 +282,12 @@ export function DataThemesBuilder() {
                   data={data}
                   loading={loading}
                   loadDataset={loadDataset}
-                  currentChart={currentChart}
+                  currentChart={currentChart[activeTabIndex][activeVizIndex]}
                   visualOptions={visualOptions}
                   setVisualOptions={setVisualOptions}
-                  currentChartData={currentChartData}
+                  currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
                   filterOptionGroups={filterOptionGroups}
-                  dimensions={get(currentChart, "dimensions", [])}
+                  dimensions={get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])}
                 />
               );
             }}

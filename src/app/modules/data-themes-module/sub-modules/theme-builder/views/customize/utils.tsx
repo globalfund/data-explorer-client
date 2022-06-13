@@ -3,6 +3,7 @@
 import React from "react";
 import get from "lodash/get";
 import omit from "lodash/omit";
+import { useStoreState } from "app/state/store/hooks";
 // @ts-ignore
 import { getTypeName } from "@rawgraphs/rawgraphs-core";
 /* project */
@@ -53,6 +54,7 @@ export function getDefaultForRepeat(def, index) {
 export function WrapControlComponent({
   type,
   optionId,
+  allVisualOptions, // Introduced to be able to maintain both customized visual options and complete set of vizoptions for setVisualOptions function.
   setVisualOptions,
   label,
   repeatIndex,
@@ -60,6 +62,8 @@ export function WrapControlComponent({
 }) {
   // @ts-ignore
   const Component = CHART_OPTION_COMPONENTS[type];
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
 
   const remainingOptions = React.useMemo(() => {
     if (type !== "colorScale") {
@@ -149,10 +153,13 @@ export function WrapControlComponent({
           newValue = visualOptions[optionId] || [];
           newValue[repeatIndex] = nextValue;
         }
-        return {
-          ...visualOptions,
+
+        let tmpVisualOptions = { ...allVisualOptions };
+        tmpVisualOptions[activeTabIndex][activeVizIndex] = {
+          ...tmpVisualOptions[activeTabIndex][activeVizIndex],
           [optionId]: newValue,
         };
+        return tmpVisualOptions;
       });
     },
     [optionId, repeatIndex, setVisualOptions]

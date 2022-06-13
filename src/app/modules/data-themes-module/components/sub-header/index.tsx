@@ -152,7 +152,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               vizType: selectedChartType[activeTabIndex][activeVizIndex],
               datasetId: stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset,
               data,
-              vizOptions: visualOptions,
+              vizOptions: visualOptions[activeTabIndex][activeVizIndex],
               filterOptionGroups,
               appliedFilters: appliedFilters[activeTabIndex][activeVizIndex],
               liveData: isLiveData[activeTabIndex][activeVizIndex],

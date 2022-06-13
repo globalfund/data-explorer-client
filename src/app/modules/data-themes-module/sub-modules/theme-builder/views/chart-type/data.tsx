@@ -10,6 +10,7 @@ export interface DataThemesBuilderChartTypeProps {
   data: { [key: string]: string | number | null }[];
   loading: boolean;
   visualOptions: any;
+  currentChart: any;
   setCurrentChart: (chart: any) => void;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions: (value: any) => void;

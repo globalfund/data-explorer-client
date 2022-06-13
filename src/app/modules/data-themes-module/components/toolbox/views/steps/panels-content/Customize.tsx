@@ -58,7 +58,7 @@ export function DataThemesToolBoxCustomize(
   });
 
   const enabledOptions = React.useMemo(() => {
-    return getEnabledOptions(optionsConfig, props.visualOptions, mapping[activeTabIndex][activeVizIndex]);
+    return getEnabledOptions(optionsConfig, props.visualOptions ? props.visualOptions[activeTabIndex][activeVizIndex] : {}, mapping[activeTabIndex][activeVizIndex]);
   }, [optionsConfig, props.visualOptions, mapping]);
 
   const optionsDefinitionsByGroup = React.useMemo(() => {
@@ -169,7 +169,7 @@ export function DataThemesToolBoxCustomize(
                           optionId={optionId}
                           // error={error?.errors?.[optionId + repeatIndex]}
                           value={
-                            props.visualOptions?.[optionId]?.[repeatIndex] ??
+                            props.visualOptions[activeTabIndex][activeVizIndex]?.[optionId]?.[repeatIndex] ??
                             getDefaultForRepeat(def, repeatIndex)
                           }
                           mapping={
@@ -198,7 +198,7 @@ export function DataThemesToolBoxCustomize(
                           }
                           visualOptions={
                             def.type === "colorScale"
-                              ? props.visualOptions
+                              ? props.visualOptions[activeTabIndex][activeVizIndex]
                               : undefined
                           }
                           mappedData={getPartialMappedData(
@@ -206,6 +206,7 @@ export function DataThemesToolBoxCustomize(
                             def.repeatFor,
                             repeatIndex
                           )}
+                          allVisualOptions={props.visualOptions}
                           setVisualOptions={props.setVisualOptions}
                           isEnabled={enabledOptions[optionId]}
                         />
@@ -218,7 +219,7 @@ export function DataThemesToolBoxCustomize(
                       {...def}
                       optionId={optionId}
                       // error={error?.errors?.[optionId]}
-                      value={props.visualOptions?.[optionId]}
+                      value={props.visualOptions ? props.visualOptions[activeTabIndex][activeVizIndex]?.[optionId] : undefined}
                       mapping={def.type === "colorScale" ? mapping[activeTabIndex][activeVizIndex] : undefined}
                       chart={
                         def.type === "colorScale"
@@ -237,10 +238,11 @@ export function DataThemesToolBoxCustomize(
                       }
                       visualOptions={
                         def.type === "colorScale"
-                          ? props.visualOptions
+                          ? props.visualOptions[activeTabIndex][activeVizIndex]
                           : undefined
                       }
                       mappedData={props.mappedData}
+                      allVisualOptions={props.visualOptions}
                       setVisualOptions={props.setVisualOptions}
                       isEnabled={enabledOptions[optionId]}
                     />
