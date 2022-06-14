@@ -33,6 +33,7 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -84,6 +85,7 @@ export default function CountryDetail() {
   const notesDisclaimersCMSAction = useStoreActions(
     (actions) => actions.cms.notesAndDisclaimers.post
   );
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   const paramCode = params.code.replace(/\|/g, "/");
 
@@ -91,9 +93,6 @@ export default function CountryDetail() {
     if (location.pathname.indexOf("/overview") === -1) {
       document.body.style.background = "#fff";
     }
-    fetchLocationInfoData({
-      filterString: `locations=${paramCode}`,
-    });
     countrySummaryCMSAction({
       values: {
         filter: { iso3: paramCode },
@@ -116,6 +115,14 @@ export default function CountryDetail() {
       setOpenToolboxPanel(true);
     }
   }, [params.vizType]);
+
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters({
+      ...appliedFilters,
+      locations: [paramCode],
+    });
+    fetchLocationInfoData({ filterString });
+  }, [paramCode, appliedFilters]);
 
   useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
