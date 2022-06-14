@@ -10,6 +10,8 @@ import { styles as commonStyles } from "app/modules/data-themes-module/sub-modul
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface DataThemesBuilderPreviewProps {
+  tabIndex: number;
+  vizIndex: number;
   loading: boolean;
   data: {
     [key: string]: string | number | null;

@@ -51,6 +51,7 @@ export function DataThemesBuilder() {
 
   const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
   const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const themeIds = useStoreState((state) => state.dataThemes.ids.value);
 
   const setActiveTabIndex = useStoreActions((state) => state.dataThemes.activeTabIndex.setValue);
   const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
@@ -192,78 +193,102 @@ export function DataThemesBuilder() {
             <PageLoader />
           )}
           <Route path={`/data-themes/:page/customize`}>
-            {/** for each viz in activeTab */}
-            <DataThemesBuilderCustomize
-              data={data}
-              loading={loading}
-              loadDataset={loadDataset}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
-              filterOptionGroups={filterOptionGroups}
-              dimensions={get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])}
+            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
+              <DataThemesBuilderCustomize
+                tabIndex={tabIndex}
+                vizIndex={vizIndex}
+                data={data}
+                loading={loading}
+                loadDataset={loadDataset}
+                currentChart={currentChart[tabIndex][vizIndex]}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                currentChartData={currentChartData[tabIndex][vizIndex]}
+                filterOptionGroups={filterOptionGroups}
+                dimensions={get(currentChart[tabIndex][vizIndex], "dimensions", [])}
             />
+            )))) }
           </Route>
           <Route path={`/data-themes/:page/lock`}></Route>
           <Route path={`/data-themes/:page/filters`}>
-            <DataThemesBuilderFilters
-              data={data}
-              loading={loading}
-              loadDataset={loadDataset}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
-              filterOptionGroups={filterOptionGroups}
-              dimensions={get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])}
-            />
+            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
+              <DataThemesBuilderFilters
+                tabIndex={tabIndex}
+                vizIndex={vizIndex}
+                data={data}
+                loading={loading}
+                loadDataset={loadDataset}
+                currentChart={currentChart[tabIndex][vizIndex]}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                currentChartData={currentChartData[tabIndex][vizIndex]}
+                filterOptionGroups={filterOptionGroups}
+                dimensions={get(currentChart[tabIndex][vizIndex], "dimensions", [])}
+              />
+            )))) }
           </Route>
           <Route path={`/data-themes/:page/mapping`}>
-            <DataThemesBuilderMapping
-              data={data}
-              loading={loading}
-              loadDataset={loadDataset}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
-              filterOptionGroups={filterOptionGroups}
-              dimensions={get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])}
-            />
+            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
+              <DataThemesBuilderMapping
+                tabIndex={tabIndex}
+                vizIndex={vizIndex}
+                data={data}
+                loading={loading}
+                loadDataset={loadDataset}
+                currentChart={currentChart[tabIndex][vizIndex]}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                currentChartData={currentChartData[tabIndex][vizIndex]}
+                filterOptionGroups={filterOptionGroups}
+                dimensions={get(currentChart[tabIndex][vizIndex], "dimensions", [])}
+              />
+            )))) }
           </Route>
           <Route path={`/data-themes/:page/chart-type`}>
-            <DataThemesBuilderChartType
-              data={data}
-              loading={loading}
-              loadDataset={loadDataset}
-              visualOptions={visualOptions}
-              currentChart={currentChart}
-              setCurrentChart={setCurrentChart}
-              setVisualOptions={setVisualOptions}
-              filterOptionGroups={filterOptionGroups}
-            />
+            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
+              <DataThemesBuilderChartType
+                tabIndex={tabIndex}
+                vizIndex={vizIndex}
+                data={data}
+                loading={loading}
+                loadDataset={loadDataset}
+                visualOptions={visualOptions}
+                currentChart={currentChart}
+                setCurrentChart={setCurrentChart}
+                setVisualOptions={setVisualOptions}
+                filterOptionGroups={filterOptionGroups}
+              />
+            )))) }
           </Route>
           <Route path={`/data-themes/:page/preview`}>
-            <DataThemesBuilderPreview
-              allData={data}
-              loading={loading}
-              data={filteredData}
-              loadDataset={loadDataset}
-              visualOptions={visualOptions}
-              filterOptionGroups={filterOptionGroups}
-            />
+            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
+              <DataThemesBuilderPreview
+                tabIndex={tabIndex}
+                vizIndex={vizIndex}
+                allData={data}
+                loading={loading}
+                data={filteredData}
+                loadDataset={loadDataset}
+                visualOptions={visualOptions}
+                filterOptionGroups={filterOptionGroups}
+              />
+            )))) }
           </Route>
           <Route path={`/data-themes/:page/data`}>
-            <DataThemesBuilderDataView
-              data={data}
-              loading={loading}
-              loadDataset={loadDataset}
-              visualOptions={visualOptions}
-              filterOptionGroups={filterOptionGroups}
-            />
+            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
+              <DataThemesBuilderDataView
+                tabIndex={tabIndex}
+                vizIndex={vizIndex}
+                data={data}
+                loading={loading}
+                loadDataset={loadDataset}
+                visualOptions={visualOptions}
+                filterOptionGroups={filterOptionGroups}
+              />
+            )))) }
           </Route>
           <Route path={`/data-themes/:page/initial`}>
+            { /* The Initial route is not mapped to tab and viz index because there is always one tab and one viz. */}
             <DataThemesBuilderInitialView
               loading={loading}
               data={filteredData}
@@ -278,6 +303,7 @@ export function DataThemesBuilder() {
                 return <Redirect to="/data-themes/new/initial" />;
               }
               return (
+                // TODO: Rework preview to handle multiple TABS.
                 <DataThemesBuilderPreviewTheme
                   data={data}
                   loading={loading}

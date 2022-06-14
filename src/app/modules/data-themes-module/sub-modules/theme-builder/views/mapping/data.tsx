@@ -1,6 +1,8 @@
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 export interface DataThemesBuilderMappingProps {
+  tabIndex: number;
+  vizIndex: number;
   data: { [key: string]: string | number | null }[];
   loading: boolean;
   currentChart: any;

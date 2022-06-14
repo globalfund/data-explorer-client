@@ -9,6 +9,8 @@ import { styles as commonStyles } from "app/modules/data-themes-module/sub-modul
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface DataThemesBuilderDataViewProps {
+  tabIndex: number;
+  vizIndex: number;
   loading: boolean;
   visualOptions: any;
   filterOptionGroups: FilterGroupModel[];

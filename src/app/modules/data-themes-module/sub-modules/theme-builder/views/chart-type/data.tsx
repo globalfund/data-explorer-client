@@ -7,6 +7,8 @@ import StackedBarChartIcon from "app/assets/icons/data-themes-chart-types/bar-st
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 export interface DataThemesBuilderChartTypeProps {
+  tabIndex: number;
+  vizIndex: number;
   data: { [key: string]: string | number | null }[];
   loading: boolean;
   visualOptions: any;
