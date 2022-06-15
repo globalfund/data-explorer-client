@@ -22,6 +22,7 @@ export function DataThemesTabs(props: any) {
   const addTabAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addTab);
 
   function onAdd() {
+    setActiveVizIndex(0); // default select the fist viz.
     setActiveTabIndex(tabIds.length);
     addTabId();
     addTabChartType();

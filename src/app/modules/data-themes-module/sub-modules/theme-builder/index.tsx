@@ -158,6 +158,29 @@ export function DataThemesBuilder() {
     console.log("TODO: updateLocalStates setRawData fin:", rawData, visualOptions,currentChart,currentChartData)
   }
 
+  function addVizToLocalStates() {
+    let tmpVisualOptions: any = [ ...visualOptions ];
+    tmpVisualOptions[activeTabIndex].push({});
+    setVisualOptions(tmpVisualOptions);
+
+    let tmpCurrentChart: any = [ ...currentChart ];
+    tmpCurrentChart[activeTabIndex].push(undefined);
+    setCurrentChart(tmpCurrentChart);
+
+    let tmpCurrentChartData: any = [ ...currentChartData ];
+    tmpCurrentChartData[activeTabIndex].push(undefined);
+    setCurrentChartData(tmpCurrentChartData);
+
+    let tmpRawData = [ ...rawData ];
+    tmpRawData[activeTabIndex].push({
+      id: 0,
+      count: 0,
+      data: [],
+      filterOptionGroups: [],
+    });
+    setRawData(tmpRawData);
+  }
+
   async function clear() {
     // TODO: Why does setVisualOptions([[{}]]); not work?
     // setVisualOptions([[{}]]);
@@ -404,6 +427,7 @@ export function DataThemesBuilder() {
           showCreateYourStoryText={
             history.location.pathname === `/data-themes/new/initial`
           }
+          addVizToLocalStates={addVizToLocalStates}
         />
       )}
     </React.Fragment>

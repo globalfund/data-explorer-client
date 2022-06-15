@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { AddIcon } from "app/assets/icons/Add";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
@@ -18,9 +19,35 @@ export function DataThemesAddSectionButton(
 
   const [open, setOpen] = React.useState(false);
 
+  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+
+  const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
+  const addVizId = useStoreActions((state) => state.dataThemes.ids.addViz);
+  const addVizChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addViz);
+  const addVizLiveData = useStoreActions((state) => state.dataThemes.sync.liveData.addViz);
+  const addVizMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addViz);
+  const addVizStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addViz);
+  const addVizAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addViz);
+
+
   React.useEffect(() => {
     history.listen(() => setOpen(false));
   }, [history]);
+
+  function onChartPress() {
+    if (history.location.pathname !== `/data-themes/new/initial`) {
+      setActiveVizIndex(tabIds[activeTabIndex].length);
+      addVizId({tabIndex: activeTabIndex});
+      addVizChartType({tabIndex: activeTabIndex});
+      addVizLiveData({tabIndex: activeTabIndex});
+      addVizMapping({tabIndex: activeTabIndex});
+      addVizStepSelections({tabIndex: activeTabIndex});
+      addVizAppliedFilters({tabIndex: activeTabIndex});
+      props.addVizToLocalStates();
+    }
+    history.push(`/data-themes/${page}/data`);
+  }
 
   return (
     <div
@@ -45,7 +72,7 @@ export function DataThemesAddSectionButton(
         </IconButton>
         {open && (
           <div css={styles.contenttypeicons}>
-            <IconButton component={Link} to={`/data-themes/${page}/data`}>
+            <IconButton onClick={onChartPress}>
               <BarChartIcon htmlColor="#373D43" />
             </IconButton>
             <IconButton>

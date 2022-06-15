@@ -50,7 +50,6 @@ export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
       state.value.push([{}]);
     }),
     addViz: action((state, payload: {tabIndex: number}) => {
-      console.log("TODO: implement add viz")
-      // state.value[payload.tabIndex].push(false);
+      state.value[payload.tabIndex].push({});
     }),
   };

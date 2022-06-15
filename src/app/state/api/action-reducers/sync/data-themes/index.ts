@@ -36,8 +36,7 @@ export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
     state.step1.push([{dataset: null}]);
   }),
   addViz: action((state, payload: {tabIndex: number}) => {
-    console.log("TODO: implement add viz")
-    // state.step1[payload.tabIndex].push(false);
+    state.step1[payload.tabIndex].push({dataset: null});
   }),
 };
 
@@ -61,8 +60,7 @@ export const DataThemesStepChartTypeState: DataThemesStepChartTypeStateModel = {
     state.value.push([null]);
   }),
   addViz: action((state, payload: {tabIndex: number}) => {
-    console.log("TODO: implement add viz")
-    // state.value[payload.tabIndex].push(false);
+    state.value[payload.tabIndex].push(null);
   }),
 };
 
@@ -106,8 +104,7 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
     state.value.push([{}]);
   }),
   addViz: action((state, payload: {tabIndex: number}) => {
-    console.log("TODO: implement add viz")
-    // state.value[payload.tabIndex].push(false);
+    state.value[payload.tabIndex].push({});
   }),
 };
 
@@ -131,8 +128,7 @@ export const DataThemesStepSelectDataLiveState: DataThemesStepSelectDataLiveStat
     state.value.push([false]);
   }),
   addViz: action((state, payload: {tabIndex: number}) => {
-    console.log("TODO: implement add viz")
-    // state.value[payload.tabIndex].push(false);
+    state.value[payload.tabIndex].push(false);
   }),
 };
 
