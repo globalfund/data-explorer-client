@@ -14,6 +14,8 @@ export interface DataThemesAppliedFiltersStateModel {
     }
   >;
   reset: Action<DataThemesAppliedFiltersStateModel>;
+  addTab: Action<DataThemesAppliedFiltersStateModel>;
+  addViz: Action<DataThemesAppliedFiltersStateModel, {tabIndex: number}>;
 }
 
 export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
@@ -44,4 +46,11 @@ export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
       }
     ),
     reset: action((state) => {state.value = [[{}]]}),
+    addTab: action((state) => {
+      state.value.push([{}]);
+    }),
+    addViz: action((state, payload: {tabIndex: number}) => {
+      console.log("TODO: implement add viz")
+      // state.value[payload.tabIndex].push(false);
+    }),
   };

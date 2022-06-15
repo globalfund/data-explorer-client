@@ -17,6 +17,7 @@ export interface DataThemesBuilderChartTypeProps {
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions: (value: any) => void;
   loadDataset: (endpoint: string) => Promise<boolean>;
+  updateLocalStates: any;
 }
 
 export interface ChartTypeModel {

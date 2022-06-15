@@ -40,7 +40,7 @@ export function DataThemesBuilderChartType(
     (chartTypeId: string) => (e: React.MouseEvent<HTMLDivElement>) => {
       clearMapping({tab: activeTabIndex, viz: activeVizIndex});
       setChartType({tab: activeTabIndex, viz: activeVizIndex, value: selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId ? null : chartTypeId});
-      let tmpCurrentChart = { ...props.currentChart };
+      let tmpCurrentChart = [ ...props.currentChart ];
       tmpCurrentChart[activeTabIndex][activeVizIndex] = selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
        ? null
        : get(charts, chartTypeId, null)
@@ -58,6 +58,7 @@ export function DataThemesBuilderChartType(
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
       />
       <DataThemesToolBox
         dataSteps

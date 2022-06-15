@@ -6,4 +6,6 @@ export interface DataThemesPageSubHeaderProps {
   previewMode?: boolean;
   filterOptionGroups: FilterGroupModel[];
   data: { [key: string]: string | number | null }[];
+  updateLocalStates: any;
+  tabsDisabled?: boolean;
 }

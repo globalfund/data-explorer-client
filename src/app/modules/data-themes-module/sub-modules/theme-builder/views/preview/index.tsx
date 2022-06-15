@@ -22,6 +22,7 @@ interface DataThemesBuilderPreviewProps {
   visualOptions: any;
   filterOptionGroups: FilterGroupModel[];
   loadDataset: (endpoint: string) => Promise<boolean>;
+  updateLocalStates: any;
 }
 
 export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
@@ -35,6 +36,7 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
       />
       <DataThemesToolBox
         dataSteps

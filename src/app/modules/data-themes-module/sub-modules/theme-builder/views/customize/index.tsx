@@ -38,7 +38,7 @@ export function DataThemesBuilderCustomize(
       containerRef.current &&
       props.visualOptions[activeTabIndex][activeVizIndex].width === CHART_DEFAULT_WIDTH
     ) {
-      let tmpVisualOptions = { ...props.visualOptions };
+      let tmpVisualOptions = [ ...props.visualOptions ];
       tmpVisualOptions[activeTabIndex][activeVizIndex] = {
         ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
@@ -110,6 +110,7 @@ export function DataThemesBuilderCustomize(
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
       />
       <DataThemesToolBox
         dataSteps

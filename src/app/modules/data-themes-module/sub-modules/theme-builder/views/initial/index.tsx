@@ -15,6 +15,7 @@ interface DataThemesBuilderInitialViewProps {
   visualOptions: any;
   filterOptionGroups: FilterGroupModel[];
   data: { [key: string]: string | number | null }[];
+  updateLocalStates: any;
 }
 
 export function DataThemesBuilderInitialView(
@@ -29,6 +30,8 @@ export function DataThemesBuilderInitialView(
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
+        tabsDisabled={true}
       />
       <DataThemesToolBox
         guideView

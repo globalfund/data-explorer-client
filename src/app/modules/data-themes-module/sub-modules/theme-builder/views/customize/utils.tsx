@@ -154,7 +154,7 @@ export function WrapControlComponent({
           newValue[repeatIndex] = nextValue;
         }
 
-        let tmpVisualOptions = { ...allVisualOptions };
+        let tmpVisualOptions = [ ...allVisualOptions ];
         tmpVisualOptions[activeTabIndex][activeVizIndex] = {
           ...tmpVisualOptions[activeTabIndex][activeVizIndex],
           [optionId]: newValue,

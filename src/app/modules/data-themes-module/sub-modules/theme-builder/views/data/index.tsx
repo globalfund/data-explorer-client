@@ -16,6 +16,7 @@ interface DataThemesBuilderDataViewProps {
   filterOptionGroups: FilterGroupModel[];
   data: { [key: string]: string | number | null }[];
   loadDataset: (endpoint: string) => Promise<boolean>;
+  updateLocalStates: any;
 }
 
 export function DataThemesBuilderDataView(
@@ -30,6 +31,7 @@ export function DataThemesBuilderDataView(
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
       />
       <DataThemesToolBox
         dataSteps

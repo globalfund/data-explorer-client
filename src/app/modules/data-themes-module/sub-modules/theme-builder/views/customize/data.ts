@@ -12,4 +12,5 @@ export interface DataThemesBuilderCustomizeProps {
   setVisualOptions: (value: any) => void;
   filterOptionGroups: FilterGroupModel[];
   loadDataset: (endpoint: string) => Promise<boolean>;
+  updateLocalStates: any;
 }

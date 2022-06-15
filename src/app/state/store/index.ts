@@ -162,6 +162,7 @@ import {
   DataThemesStepSelectDataLiveState,
   DataThemesStepSelectionsState,
   DataThemesIndexState,
+  DataThemesVizIndexState,
   DataThemesIdsState,
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
@@ -360,7 +361,7 @@ const storeContent: StoreModel = {
   dataThemes: {
     /* TODO: Check if persist the same state twice works. */
     activeTabIndex: persist(DataThemesIndexState),
-    activeVizIndex: persist(DataThemesIndexState),
+    activeVizIndex: persist(DataThemesVizIndexState),
     ids: persist(DataThemesIdsState),
     sync: {
       stepSelections: persist(DataThemesStepSelectionsState),

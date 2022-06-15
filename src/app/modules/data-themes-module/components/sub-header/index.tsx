@@ -13,7 +13,7 @@ import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-// import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
+import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
 import { styles } from "app/modules/data-themes-module/components/sub-header/styles";
 import { DataThemesPageSubHeaderProps } from "app/modules/data-themes-module/components/sub-header/data";
 import {
@@ -83,6 +83,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
   const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
   
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
@@ -140,26 +141,29 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }
 
   function onSave() {
+    const tabs: any[] = []
+    tabIds.length > 0 && tabIds.map((content, tabIndex) => {
+      // Add an empty tab for each tab in the list
+      tabs.push({ title: tabIndex, content: []});
+      content.map((vizIndex) => {
+        // add a viz object for every viz in the current tab.
+        const vizObject = {
+          mapping: mapping[tabIndex][vizIndex],
+          vizType: selectedChartType[tabIndex][vizIndex],
+          datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+          data,
+          vizOptions: visualOptions[tabIndex][vizIndex],
+          filterOptionGroups,
+          appliedFilters: appliedFilters[tabIndex][vizIndex],
+          liveData: isLiveData[tabIndex][vizIndex],
+        };
+        tabs[tabIndex].content.push(vizObject);
+      });
+    });
     const dataTheme = {
       title,
       subTitle,
-      tabs: [
-        {
-          title: "Tab 1",
-          content: [
-            {
-              mapping: mapping[activeTabIndex][activeVizIndex],
-              vizType: selectedChartType[activeTabIndex][activeVizIndex],
-              datasetId: stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset,
-              data,
-              vizOptions: visualOptions[activeTabIndex][activeVizIndex],
-              filterOptionGroups,
-              appliedFilters: appliedFilters[activeTabIndex][activeVizIndex],
-              liveData: isLiveData[activeTabIndex][activeVizIndex],
-            },
-          ],
-        },
-      ],
+      tabs,
     };
     if (isSavedEnabled) {
       if (!isEditMode) {
@@ -219,7 +223,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       createDataThemeData.id !== page
     ) {
       const view = history.location.pathname.split("/")[3];
-      history.push(`/data-themes/${createDataThemeData.id}/${view}`);
+      history.push(`/data-themes/${createDataThemeData.id}`);
     }
   }, [createDataThemeData]);
 
@@ -299,9 +303,12 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             </div>
           )}
         </div>
-        {/* <div css={styles.secondrow}>
-          <DataThemesTabs />
-        </div> */}
+        <div css={styles.secondrow}>
+          <DataThemesTabs
+            updateLocalStates={props.updateLocalStates}
+            disabled={props.tabsDisabled}
+          />
+        </div>
       </div>
     </div>
   );
