@@ -149,12 +149,12 @@ export function useDataThemesRawData(props: {
   }, []);
 
   React.useEffect(() => {
-    rawData.forEach((tab, tabIndex) => {
-      tab.forEach((viz, vizIndex) => {
-        setFilteredData(filterDataThemesData(viz.data, appliedFilters[tabIndex][vizIndex]));
-      });
-    });
-    // setFilteredData(filterDataThemesData(rawData[activeTabIndex][activeVizIndex].data, appliedFilters[activeTabIndex][activeVizIndex]));
+    // rawData.forEach((tab, tabIndex) => {
+    //   tab.forEach((viz, vizIndex) => {
+    //     setFilteredData(filterDataThemesData(viz.data, appliedFilters[tabIndex][vizIndex]));
+    //   });
+    // });
+    setFilteredData(filterDataThemesData(rawData[activeTabIndex][activeVizIndex].data, appliedFilters[activeTabIndex][activeVizIndex]));
     // TODO: Check if this needs to point to rawData.data.
   }, [rawData, appliedFilters]);
   // }, [rawData[activeTabIndex][activeVizIndex].data, appliedFilters]);
