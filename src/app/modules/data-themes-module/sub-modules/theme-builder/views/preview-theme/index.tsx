@@ -39,6 +39,7 @@ export function DataThemesBuilderPreviewTheme(
   }, [containerRef]);
 
   React.useEffect(() => {
+    console.log("TODO: props on preview-theme.tsx: ", props)
     if (domRef && domRef.current) {
       try {
         const viz = rawChart(props.currentChart, {

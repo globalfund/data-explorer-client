@@ -10,7 +10,9 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { filterDataThemesData } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/utils";
 
 export function useDataThemesRawData(props: {
-  setVisualOptions: (value: any) => void;
+  // setVisualOptions: (value: any) => void;
+  // visualOptions: any;
+  updateLocalStates: any;
 }) {
   const { page } = useParams<{ page: string }>();
 
@@ -19,12 +21,12 @@ export function useDataThemesRawData(props: {
   const [loading, setLoading] = React.useState(true);
   const [loadingData, setLoadingData] = React.useState(false);
   const [isEditMode, setIsEditMode] = React.useState(page !== "new");
-  const [rawData, setRawData] = React.useState({
+  const [rawData, setRawData] = React.useState([[{
     id: 0,
     count: 0,
     data: [],
     filterOptionGroups: [],
-  });
+  }]]);
   const [filteredData, setFilteredData] = React.useState<
     {
       [key: string]: number | string | null;
@@ -34,9 +36,14 @@ export function useDataThemesRawData(props: {
     "isInSession",
     0
   );
+  const [visualOptions, setVisualOptions] = useSessionStorage<any>(
+    "visualOptions",
+    [[{}]]
+  );
 
   const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
   const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
@@ -60,11 +67,19 @@ export function useDataThemesRawData(props: {
     (actions) => actions.dataThemes.sync.stepSelections
   );
 
+  const addTabId = useStoreActions((state) => state.dataThemes.ids.addTab);
+  const addTabChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addTab);
+  const addTabLiveData = useStoreActions((state) => state.dataThemes.sync.liveData.addTab);
+  const addTabMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addTab);
+  const addTabStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addTab);
+  const addTabAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addTab);
+
   async function clearStore() {
     return await indexedDB.clear();
   }
 
   async function loadDataset(endpoint: string) {
+    console.log("TODO: loadDataset");
     setLoadingData(true);
     return await axios
       .get(`${process.env.REACT_APP_API}/${endpoint}`, {
@@ -74,12 +89,16 @@ export function useDataThemesRawData(props: {
       })
       .then(async (response: AxiosResponse) => {
         return await clearStore().then(async () => {
-          return await indexedDB.add(response.data).then(
+          const tmpRawData = [ ...rawData ];
+          tmpRawData[activeTabIndex][activeVizIndex] = response.data;
+          console.log("TODO: loaddataset: ", tmpRawData);
+          return await indexedDB.add(tmpRawData).then(
             (event) => {
               setIsInSession(1);
               // console.log("ID Generated: ", event);
-              setRawData(response.data);
+              setRawData(tmpRawData);
               setLoadingData(false);
+              console.log("TODO: loadDataset finished");
               return true;
             },
             (error) => {
@@ -99,10 +118,23 @@ export function useDataThemesRawData(props: {
 
   React.useEffect(() => {
     if (isInSession === 1) {
+      console.log("TODO: GET DATA isInSession from data[0]")
       indexedDB.getAll().then(
         (data) => {
+          console.log("TODO: data in isInSession", data)
           if (data.length > 0) {
-            setRawData(data[0]);
+            console.log("TODO: useEffect isInsession - data: ", data);
+            console.log("TODO: useEffect isInsession - data[0]: ", data[0]);
+            setRawData(data);
+            console.log("TODO: rawData result: ", rawData);
+          } else {
+            console.log("TODO: reset rawData because data.length is 0.")
+            setRawData([[{
+              id: 0,
+              count: 0,
+              data: [],
+              filterOptionGroups: [],
+            }]])
           }
           setLoading(false);
         },
@@ -117,8 +149,15 @@ export function useDataThemesRawData(props: {
   }, []);
 
   React.useEffect(() => {
-    setFilteredData(filterDataThemesData(rawData.data, appliedFilters[activeTabIndex][activeVizIndex]));
-  }, [rawData.data, appliedFilters]);
+    rawData.forEach((tab, tabIndex) => {
+      tab.forEach((viz, vizIndex) => {
+        setFilteredData(filterDataThemesData(viz.data, appliedFilters[tabIndex][vizIndex]));
+      });
+    });
+    // setFilteredData(filterDataThemesData(rawData[activeTabIndex][activeVizIndex].data, appliedFilters[activeTabIndex][activeVizIndex]));
+    // TODO: Check if this needs to point to rawData.data.
+  }, [rawData, appliedFilters]);
+  // }, [rawData[activeTabIndex][activeVizIndex].data, appliedFilters]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");
@@ -126,6 +165,7 @@ export function useDataThemesRawData(props: {
 
   React.useEffect(() => {
     if (isEditMode) {
+      console.log("TODO: IS EDIT MODE!")
       axios
         .get(
           `${process.env.REACT_APP_API}/data-themes/${page}?filter={"fields":{"id":false,"title":false,"subTitle":false,"public":false,"tabs":true,"createdDate":false}}`,
@@ -138,33 +178,75 @@ export function useDataThemesRawData(props: {
         .then((response) => {
           clearStore().then(async () => {
             const tabs = get(response.data, "tabs", []);
+            console.log("TODO: useEffect isEditMode tabs response: ", tabs);
             if (tabs.length > 0 && tabs[0].content.length > 0) {
-              const dataToIndex = {
-                id: 0,
-                data: tabs[0].content[0].data,
-                count: tabs[0].content[0].data.length,
-                filterOptionGroups:
-                  tabs[0].content[0].filterOptionGroups,
-              };
+              let dataToIndex: any[][] = []
+              let incr: number = 0;
+              for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+                // prepare the tabbed state
+                if (tabIndex !== 0 && tabIds.length < tabs.length) {
+                  addTabId();
+                  addTabChartType();
+                  addTabLiveData();
+                  addTabMapping();
+                  addTabStepSelections();
+                  addTabAppliedFilters();
+                  props.updateLocalStates(false);
+
+                  let tmpVisualOptions: any = [ ...visualOptions ];
+                  tmpVisualOptions.push([{}]);
+                  setVisualOptions(tmpVisualOptions);
+                }
+                
+                // add an empty list for 
+                dataToIndex.push([]);
+                for (let vizIndex = 0; vizIndex < tabs[tabIndex].content.length; vizIndex++) {
+                  // TODO: prepare the viz states
+                  // prepare the data to index index
+                  dataToIndex[tabIndex].push({
+                    id: incr++,
+                    data: tabs[tabIndex].content[vizIndex].data,
+                    count: tabs[tabIndex].content[vizIndex].data.length,
+                    filterOptionGroups:
+                      tabs[tabIndex].content[vizIndex].filterOptionGroups,
+                  });
+                }
+              }
               indexedDB.add(dataToIndex).then(
                 (event) => {
                   setIsInSession(1);
+                  console.log("TODO: useEffect isEditMode data to index: ", dataToIndex);
                   setRawData(dataToIndex);
-                  setAppliedFilters({
-                      tab: 0, 
-                      viz: 0,
-                      key: tabs[0].content[0].appliedFilters.key || "",
-                      value: tabs[0].content[0].appliedFilters.value || {},
-                  });
-                  props.setVisualOptions([[tabs[0].content[0].vizOptions]]);
-                  setMapping({tab: activeTabIndex, viz: activeVizIndex, mapping: tabs[0].content[0].mapping || {}});
-                  setIsLiveData({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].liveData || false});
-                  setSelectedChartType({tab: activeTabIndex, viz: activeVizIndex, value: tabs[0].content[0].vizType || "barchart"});
-                  stepSelectionsActions.setStep1({
-                    tab: activeTabIndex,
-                    viz: activeVizIndex,
-                    dataset: tabs[0].content[0].datasetId,
-                  });
+                  console.log("TODO: rawData result: ", rawData);
+
+                  let tmpVisualOptions = [ ...visualOptions ];
+                  // tmpVisualOptions[tabIndex][vizIndex] = tabs[tabIndex].content[vizIndex].vizOptions;
+                  for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+                    for (let vizIndex = 0; vizIndex < tabs[tabIndex].content.length; vizIndex++) {
+                      setAppliedFilters({
+                        tab: tabIndex, 
+                        viz: vizIndex,
+                        key: tabs[tabIndex].content[vizIndex].appliedFilters.key || "",
+                        value: tabs[tabIndex].content[vizIndex].appliedFilters.value || {},
+                      });
+
+                      console.log("TODO: Set Visual Options for tabviz", tabIndex,vizIndex, tabs, tmpVisualOptions);
+                      // let tmpVisualOptions = [ ...props.visualOptions];
+                      
+                      tmpVisualOptions[tabIndex][vizIndex] = tabs[tabIndex].content[vizIndex].vizOptions;
+                      // props.setVisualOptions(tmpVisualOptions);
+
+                      setMapping({tab: activeTabIndex, viz: activeVizIndex, mapping: tabs[tabIndex].content[vizIndex].mapping || {}});
+                      setIsLiveData({tab: activeTabIndex, viz: activeVizIndex, value: tabs[tabIndex].content[vizIndex].liveData || false});
+                      setSelectedChartType({tab: activeTabIndex, viz: activeVizIndex, value: tabs[tabIndex].content[vizIndex].vizType || "barchart"});
+                      stepSelectionsActions.setStep1({
+                        tab: activeTabIndex,
+                        viz: activeVizIndex,
+                        dataset: tabs[tabIndex].content[vizIndex].datasetId,
+                      });
+                    }
+                  }
+                  setVisualOptions(tmpVisualOptions);
                 },
                 (error) => {
                   console.log("IndexedDB add error: ", error);
@@ -184,8 +266,9 @@ export function useDataThemesRawData(props: {
     loadDataset,
     loadingData,
     filteredData,
-    data: rawData.data,
     loading: loading || loadingData,
-    filterOptionGroups: rawData.filterOptionGroups,
+    rawData,
+    setIsInSession,
+    setRawData,
   };
 }

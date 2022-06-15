@@ -223,7 +223,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       createDataThemeData.id !== page
     ) {
       const view = history.location.pathname.split("/")[3];
-      history.push(`/data-themes/${createDataThemeData.id}`);
+      history.push(`/data-themes/${createDataThemeData.id}/${view}`);
     }
   }, [createDataThemeData]);
 
