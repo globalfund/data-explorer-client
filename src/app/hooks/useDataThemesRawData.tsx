@@ -68,6 +68,7 @@ export function useDataThemesRawData(props: {
   );
 
   const addTabId = useStoreActions((state) => state.dataThemes.ids.addTab);
+  const addTabActivePanel = useStoreActions((state) => state.dataThemes.activePanels.addTab);
   const addTabChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addTab);
   const addTabLiveData = useStoreActions((state) => state.dataThemes.sync.liveData.addTab);
   const addTabMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addTab);
@@ -186,6 +187,7 @@ export function useDataThemesRawData(props: {
                 // prepare the tabbed state
                 if (tabIndex !== 0 && tabIds.length < tabs.length) {
                   addTabId();
+                  addTabActivePanel();
                   addTabChartType();
                   addTabLiveData();
                   addTabMapping();

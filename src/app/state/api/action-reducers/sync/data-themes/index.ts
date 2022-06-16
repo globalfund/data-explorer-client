@@ -183,3 +183,28 @@ export const DataThemesIdsState: DataThemesIdsStateModel = {
     state.value = [[0]];
   }),
 };
+
+export interface DataThemesActivePanelsStateModel {
+  value: number[][];
+  setValue: Action<DataThemesActivePanelsStateModel, {tabIndex: number, vizIndex: number, panel: number}>; // TODO: unused
+  addTab: Action<DataThemesActivePanelsStateModel>;
+  addViz: Action<DataThemesActivePanelsStateModel, {tabIndex: number}>;
+  reset: Action<DataThemesActivePanelsStateModel>;
+}
+
+export const DataThemesActivePanelsState: DataThemesActivePanelsStateModel = {
+  value: [[1]],
+  setValue: action((state, payload: {tabIndex: number, vizIndex: number, panel: number}) => {  // TODO: unused
+    state.value[payload.tabIndex][payload.vizIndex] = payload.panel;
+  }),
+  addTab: action((state) => {
+    state.value.push([1]);
+  }),
+  addViz: action((state, payload: {tabIndex: number}) => {
+    // Add a new value to the array of visualisations, with the length + 1 as the ID (length is 0 indexed so +1 is implicit)
+    state.value[payload.tabIndex].push(state.value[payload.tabIndex].length);
+  }),
+  reset: action((state) => {
+    state.value = [[1]];
+  }),
+};

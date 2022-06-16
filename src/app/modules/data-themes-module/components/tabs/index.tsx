@@ -15,6 +15,7 @@ export function DataThemesTabs(props: any) {
   const setActiveTabIndex = useStoreActions((state) => state.dataThemes.activeTabIndex.setValue);
   const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
   const addTabId = useStoreActions((state) => state.dataThemes.ids.addTab);
+  const addTabActivePanel = useStoreActions((state) => state.dataThemes.activePanels.addTab);
   const addTabChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addTab);
   const addTabLiveData = useStoreActions((state) => state.dataThemes.sync.liveData.addTab);
   const addTabMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addTab);
@@ -25,6 +26,7 @@ export function DataThemesTabs(props: any) {
     setActiveVizIndex(0); // default select the fist viz.
     setActiveTabIndex(tabIds.length);
     addTabId();
+    addTabActivePanel();
     addTabChartType();
     addTabLiveData();
     addTabMapping();
