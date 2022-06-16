@@ -49,12 +49,20 @@ export function DataThemesBuilder() {
     [[{}]]
   );
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const themeIds = useStoreState((state) => state.dataThemes.ids.value);
 
-  const setActiveTabIndex = useStoreActions((state) => state.dataThemes.activeTabIndex.setValue);
-  const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
+  const setActiveTabIndex = useStoreActions(
+    (state) => state.dataThemes.activeTabIndex.setValue
+  );
+  const setActiveVizIndex = useStoreActions(
+    (state) => state.dataThemes.activeVizIndex.setValue
+  );
 
   const {
     loading,
@@ -66,7 +74,8 @@ export function DataThemesBuilder() {
     setIsInSession,
     setRawData,
   } = useDataThemesRawData({
-    // setVisualOptions,
+    visualOptions,
+    setVisualOptions,
     updateLocalStates,
   });
 
@@ -97,7 +106,7 @@ export function DataThemesBuilder() {
   );
   const resetSelectedChartType = useStoreActions(
     (actions) => actions.dataThemes.sync.chartType.reset
-  );  
+  );
   const stepSelectionsActions = useStoreActions(
     (actions) => actions.dataThemes.sync.stepSelections
   );
@@ -112,66 +121,94 @@ export function DataThemesBuilder() {
   );
 
   function setVisualOptionsOnChange() {
-    let tmpCurrentChart: any = [ ...currentChart ];
-    tmpCurrentChart[activeTabIndex][activeVizIndex] = get(charts, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", null);
+    let tmpCurrentChart: any = [...currentChart];
+    tmpCurrentChart[activeTabIndex][activeVizIndex] = get(
+      charts,
+      selectedChartType[activeTabIndex][activeVizIndex] || "barchart",
+      null
+    );
     setCurrentChart(tmpCurrentChart);
     const options = {
       ...getOptionsConfig(
-        get(charts, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", charts.barchart)
-          .visualOptions
+        get(
+          charts,
+          selectedChartType[activeTabIndex][activeVizIndex] || "barchart",
+          charts.barchart
+        ).visualOptions
       ),
-      ...get(defaultChartOptions, selectedChartType[activeTabIndex][activeVizIndex] || "barchart", {}),
+      ...get(
+        defaultChartOptions,
+        selectedChartType[activeTabIndex][activeVizIndex] || "barchart",
+        {}
+      ),
     };
     const defaultOptionsValues = getDefaultOptionsValues(options);
 
-    let tmpVisualOptions: any = [ ...visualOptions ];
+    let tmpVisualOptions: any = [...visualOptions];
     if (visualOptions[activeTabIndex][activeVizIndex] === undefined) {
-      visualOptions[activeTabIndex][activeVizIndex] = { ...defaultOptionsValues };
+      visualOptions[activeTabIndex][activeVizIndex] = {
+        ...defaultOptionsValues,
+      };
     }
     tmpVisualOptions[activeTabIndex][activeVizIndex] = {
       ...defaultOptionsValues,
       ...visualOptions[activeTabIndex][activeVizIndex],
       width:
         !visualOptions[activeTabIndex][activeVizIndex].width ||
-        visualOptions[activeTabIndex][activeVizIndex].width === defaultOptionsValues.width
+        visualOptions[activeTabIndex][activeVizIndex].width ===
+          defaultOptionsValues.width
           ? defaultOptionsValues.width
           : visualOptions[activeTabIndex][activeVizIndex].width,
     };
+    console.log("SET VISUAL OPTIONS 2", tmpVisualOptions);
     setVisualOptions(tmpVisualOptions);
   }
 
   function updateLocalStates(addTab?: boolean) {
     if (addTab) {
-      let tmpVisualOptions: any = [ ...visualOptions ];
+      let tmpVisualOptions: any = [...visualOptions];
       tmpVisualOptions.push([{}]);
+      console.log("SET VISUAL OPTIONS 3");
       setVisualOptions(tmpVisualOptions);
     }
-    setCurrentChart(prev => [...prev, []]);
-    setCurrentChartData(prev => [...prev, []]);
-    console.log("TODO: updateLocalStates setRawData")
-    setRawData(prev => [...prev, [{
-      id: 0,
-      count: 0,
-      data: [],
-      filterOptionGroups: [],
-    }]])
-    console.log("TODO: updateLocalStates setRawData fin:", rawData, visualOptions,currentChart,currentChartData)
+    setCurrentChart((prev) => [...prev, []]);
+    setCurrentChartData((prev) => [...prev, []]);
+    console.log("TODO: updateLocalStates setRawData");
+    setRawData((prev) => [
+      ...prev,
+      [
+        {
+          id: 0,
+          count: 0,
+          data: [],
+          filterOptionGroups: [],
+        },
+      ],
+    ]);
+    console.log(
+      "TODO: updateLocalStates setRawData fin:",
+      rawData,
+      visualOptions,
+      currentChart,
+      currentChartData
+    );
   }
 
   function addVizToLocalStates() {
-    let tmpVisualOptions: any = [ ...visualOptions ];
+    let tmpVisualOptions: any = [...visualOptions];
     tmpVisualOptions[activeTabIndex].push({});
+    console.log("SET VISUAL OPTIONS 4");
     setVisualOptions(tmpVisualOptions);
 
-    let tmpCurrentChart: any = [ ...currentChart ];
+    let tmpCurrentChart: any = [...currentChart];
     tmpCurrentChart[activeTabIndex].push(undefined);
     setCurrentChart(tmpCurrentChart);
 
-    let tmpCurrentChartData: any = [ ...currentChartData ];
+    let tmpCurrentChartData: any = [...currentChartData];
     tmpCurrentChartData[activeTabIndex].push(undefined);
     setCurrentChartData(tmpCurrentChartData);
 
-    let tmpRawData = [ ...rawData ];
+    let tmpRawData = [...rawData];
     tmpRawData[activeTabIndex].push({
       id: 0,
       count: 0,
@@ -184,7 +221,7 @@ export function DataThemesBuilder() {
   async function clear() {
     // TODO: Why does setVisualOptions([[{}]]); not work?
     // setVisualOptions([[{}]]);
-    sessionStorage.setItem('visualOptions', JSON.stringify([[{}]]));
+    sessionStorage.setItem("visualOptions", JSON.stringify([[{}]]));
     resetActiveTabIndex();
     resetActiveVizIndex();
     resetThemeIds();
@@ -203,11 +240,16 @@ export function DataThemesBuilder() {
     clear().then(() => {
       console.log(
         "TODO: End of reset.",
-        "--resetActiveTabIndex", activeTabIndex,
-        "--themeIds", themeIds,
-        "--CurrentChart", currentChart,
-        "--currentChartData", currentChartData,
-        "--visualOptions", visualOptions,
+        "--resetActiveTabIndex",
+        activeTabIndex,
+        "--themeIds",
+        themeIds,
+        "--CurrentChart",
+        currentChart,
+        "--currentChartData",
+        currentChartData,
+        "--visualOptions",
+        visualOptions
       );
     });
   }
@@ -226,13 +268,24 @@ export function DataThemesBuilder() {
   }, [selectedChartType]);
 
   React.useEffect(() => {
-    let tmpCurrentChartData: any = [ ...currentChartData ];
-    tmpCurrentChartData[activeTabIndex][activeVizIndex] = parseDataset(filteredData, null, {
-      locale: navigator.language || "en-US",
-      decimal: ".",
-      group: ",",
-    })
+    let tmpCurrentChartData: any = [...currentChartData];
+    tmpCurrentChartData[activeTabIndex][activeVizIndex] = parseDataset(
+      filteredData,
+      null,
+      {
+        locale: navigator.language || "en-US",
+        decimal: ".",
+        group: ",",
+      }
+    );
     setCurrentChartData(tmpCurrentChartData);
+    let tmpCurrentChart: any = [...currentChart];
+    tmpCurrentChart[activeTabIndex][activeVizIndex] = get(
+      charts,
+      selectedChartType[activeTabIndex][activeVizIndex] || "barchart",
+      null
+    );
+    setCurrentChart(tmpCurrentChart);
   }, [filteredData]);
 
   React.useEffect(() => {
@@ -251,7 +304,9 @@ export function DataThemesBuilder() {
     }
   }, [isEditMode]);
 
-  console.log("TODO: Before render, data = ", rawData)
+  console.log("currentChart", currentChart);
+
+  console.log("TODO: Before render, data = ", rawData, currentChartData);
   return (
     <React.Fragment>
       <DataThemesAlertDialog />
@@ -261,125 +316,176 @@ export function DataThemesBuilder() {
             <PageLoader />
           )}
           <Route path={`/data-themes/:page/customize`}>
-            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
-              tabIndex === activeTabIndex ? (
-                <DataThemesBuilderCustomize
-                  tabIndex={tabIndex}
-                  vizIndex={vizIndex}
-                  data={rawData[tabIndex][vizIndex].data}
-                  loading={loading}
-                  loadDataset={loadDataset}
-                  currentChart={currentChart[tabIndex][vizIndex]}
-                  visualOptions={visualOptions}
-                  setVisualOptions={setVisualOptions}
-                  currentChartData={currentChartData[tabIndex][vizIndex]}
-                  filterOptionGroups={rawData[tabIndex][vizIndex].filterOptionGroups}
-                  dimensions={get(currentChart[tabIndex][vizIndex], "dimensions", [])}
-                  updateLocalStates={updateLocalStates}
-                />
-              ) : (<React.Fragment />)
-            )))) }
+            {themeIds.map((vizIds, tabIndex) =>
+              vizIds.map((vizIndex) =>
+                tabIndex === activeTabIndex ? (
+                  <DataThemesBuilderCustomize
+                    tabIndex={tabIndex}
+                    vizIndex={vizIndex}
+                    data={rawData[tabIndex][vizIndex].data}
+                    loading={loading}
+                    loadDataset={loadDataset}
+                    currentChart={currentChart[tabIndex][vizIndex]}
+                    visualOptions={visualOptions}
+                    setVisualOptions={setVisualOptions}
+                    currentChartData={currentChartData[tabIndex][vizIndex]}
+                    filterOptionGroups={
+                      rawData[tabIndex][vizIndex].filterOptionGroups
+                    }
+                    themeData={rawData}
+                    dimensions={get(
+                      currentChart[tabIndex][vizIndex],
+                      "dimensions",
+                      []
+                    )}
+                    updateLocalStates={updateLocalStates}
+                  />
+                ) : (
+                  <React.Fragment />
+                )
+              )
+            )}
           </Route>
           <Route path={`/data-themes/:page/lock`}></Route>
           <Route path={`/data-themes/:page/filters`}>
-            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
-              tabIndex === activeTabIndex ? (
-                <DataThemesBuilderFilters
-                  tabIndex={tabIndex}
-                  vizIndex={vizIndex}
-                  data={rawData[tabIndex][vizIndex].data}
-                  loading={loading}
-                  loadDataset={loadDataset}
-                  currentChart={currentChart[tabIndex][vizIndex]}
-                  visualOptions={visualOptions}
-                  setVisualOptions={setVisualOptions}
-                  currentChartData={currentChartData[tabIndex][vizIndex]}
-                  filterOptionGroups={rawData[tabIndex][vizIndex].filterOptionGroups}
-                  dimensions={get(currentChart[tabIndex][vizIndex], "dimensions", [])}
-                  updateLocalStates={updateLocalStates}
-                />
-              ) : (<React.Fragment />)
-            )))) }
+            {themeIds.map((vizIds, tabIndex) =>
+              vizIds.map((vizIndex) =>
+                tabIndex === activeTabIndex ? (
+                  <DataThemesBuilderFilters
+                    tabIndex={tabIndex}
+                    vizIndex={vizIndex}
+                    data={rawData[tabIndex][vizIndex].data}
+                    loading={loading}
+                    loadDataset={loadDataset}
+                    currentChart={currentChart[tabIndex][vizIndex]}
+                    visualOptions={visualOptions}
+                    setVisualOptions={setVisualOptions}
+                    currentChartData={currentChartData[tabIndex][vizIndex]}
+                    filterOptionGroups={
+                      rawData[tabIndex][vizIndex].filterOptionGroups
+                    }
+                    dimensions={get(
+                      currentChart[tabIndex][vizIndex],
+                      "dimensions",
+                      []
+                    )}
+                    updateLocalStates={updateLocalStates}
+                  />
+                ) : (
+                  <React.Fragment />
+                )
+              )
+            )}
           </Route>
           <Route path={`/data-themes/:page/mapping`}>
-            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
-              tabIndex === activeTabIndex ? (
-                <DataThemesBuilderMapping
-                  tabIndex={tabIndex}
-                  vizIndex={vizIndex}
-                  data={rawData[tabIndex][vizIndex].data}
-                  loading={loading}
-                  loadDataset={loadDataset}
-                  currentChart={currentChart[tabIndex][vizIndex]}
-                  visualOptions={visualOptions}
-                  setVisualOptions={setVisualOptions}
-                  currentChartData={currentChartData[tabIndex][vizIndex]}
-                  filterOptionGroups={rawData[tabIndex][vizIndex].filterOptionGroups}
-                  dimensions={get(currentChart[tabIndex][vizIndex], "dimensions", [])}
-                  updateLocalStates={updateLocalStates}
-                />
-              ) : (<React.Fragment />)
-            )))) }
+            {themeIds.map((vizIds, tabIndex) =>
+              vizIds.map((vizIndex) =>
+                tabIndex === activeTabIndex ? (
+                  <DataThemesBuilderMapping
+                    tabIndex={tabIndex}
+                    vizIndex={vizIndex}
+                    data={rawData[tabIndex][vizIndex].data}
+                    loading={loading}
+                    loadDataset={loadDataset}
+                    currentChart={currentChart[tabIndex][vizIndex]}
+                    visualOptions={visualOptions}
+                    setVisualOptions={setVisualOptions}
+                    currentChartData={currentChartData[tabIndex][vizIndex]}
+                    filterOptionGroups={
+                      rawData[tabIndex][vizIndex].filterOptionGroups
+                    }
+                    dimensions={get(
+                      currentChart[tabIndex][vizIndex],
+                      "dimensions",
+                      []
+                    )}
+                    updateLocalStates={updateLocalStates}
+                  />
+                ) : (
+                  <React.Fragment />
+                )
+              )
+            )}
           </Route>
           <Route path={`/data-themes/:page/chart-type`}>
-            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
-              tabIndex === activeTabIndex ? (
-                <DataThemesBuilderChartType
-                  tabIndex={tabIndex}
-                  vizIndex={vizIndex}
-                  data={rawData[tabIndex][vizIndex].data}
-                  loading={loading}
-                  loadDataset={loadDataset}
-                  visualOptions={visualOptions}
-                  currentChart={currentChart}
-                  setCurrentChart={setCurrentChart}
-                  setVisualOptions={setVisualOptions}
-                  filterOptionGroups={rawData[tabIndex][vizIndex].filterOptionGroups}
-                  updateLocalStates={updateLocalStates}
-                />
-              ) : (<React.Fragment />)
-            )))) }
+            {themeIds.map((vizIds, tabIndex) =>
+              vizIds.map((vizIndex) =>
+                tabIndex === activeTabIndex ? (
+                  <DataThemesBuilderChartType
+                    tabIndex={tabIndex}
+                    vizIndex={vizIndex}
+                    data={rawData[tabIndex][vizIndex].data}
+                    loading={loading}
+                    loadDataset={loadDataset}
+                    visualOptions={visualOptions}
+                    currentChart={currentChart}
+                    setCurrentChart={setCurrentChart}
+                    setVisualOptions={setVisualOptions}
+                    filterOptionGroups={
+                      rawData[tabIndex][vizIndex].filterOptionGroups
+                    }
+                    updateLocalStates={updateLocalStates}
+                  />
+                ) : (
+                  <React.Fragment />
+                )
+              )
+            )}
           </Route>
           <Route path={`/data-themes/:page/preview`}>
-            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
-              tabIndex === activeTabIndex ? (
-                <DataThemesBuilderPreview
-                  tabIndex={tabIndex}
-                  vizIndex={vizIndex}
-                  allData={rawData[tabIndex][vizIndex].data}
-                  loading={loading}
-                  data={filteredData}
-                  loadDataset={loadDataset}
-                  visualOptions={visualOptions}
-                  filterOptionGroups={rawData[tabIndex][vizIndex].filterOptionGroups}
-                  updateLocalStates={updateLocalStates}
-                />
-              ) : (<React.Fragment />)
-            )))) }
+            {themeIds.map((vizIds, tabIndex) =>
+              vizIds.map((vizIndex) =>
+                tabIndex === activeTabIndex ? (
+                  <DataThemesBuilderPreview
+                    tabIndex={tabIndex}
+                    vizIndex={vizIndex}
+                    allData={rawData[tabIndex][vizIndex].data}
+                    loading={loading}
+                    data={filteredData}
+                    loadDataset={loadDataset}
+                    visualOptions={visualOptions}
+                    filterOptionGroups={
+                      rawData[tabIndex][vizIndex].filterOptionGroups
+                    }
+                    updateLocalStates={updateLocalStates}
+                  />
+                ) : (
+                  <React.Fragment />
+                )
+              )
+            )}
           </Route>
           <Route path={`/data-themes/:page/data`}>
-            { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
-              tabIndex === activeTabIndex ? (
-                <DataThemesBuilderDataView
-                  tabIndex={tabIndex}
-                  vizIndex={vizIndex}
-                  data={rawData[tabIndex][vizIndex].data}
-                  loading={loading}
-                  loadDataset={loadDataset}
-                  visualOptions={visualOptions}
-                  filterOptionGroups={rawData[tabIndex][vizIndex].filterOptionGroups}
-                  updateLocalStates={updateLocalStates}
-                />
-              ) : (<React.Fragment />)
-            )))) }
+            {themeIds.map((vizIds, tabIndex) =>
+              vizIds.map((vizIndex) =>
+                tabIndex === activeTabIndex ? (
+                  <DataThemesBuilderDataView
+                    tabIndex={tabIndex}
+                    vizIndex={vizIndex}
+                    data={rawData[tabIndex][vizIndex].data}
+                    loading={loading}
+                    loadDataset={loadDataset}
+                    visualOptions={visualOptions}
+                    filterOptionGroups={
+                      rawData[tabIndex][vizIndex].filterOptionGroups
+                    }
+                    updateLocalStates={updateLocalStates}
+                  />
+                ) : (
+                  <React.Fragment />
+                )
+              )
+            )}
           </Route>
           <Route path={`/data-themes/:page/initial`}>
-            { /* The Initial route is not mapped to tab and viz index because there is always one tab and one viz. */}
+            {/* The Initial route is not mapped to tab and viz index because there is always one tab and one viz. */}
             <DataThemesBuilderInitialView
               loading={loading}
               data={filteredData}
               visualOptions={visualOptions}
-              filterOptionGroups={rawData[activeTabIndex][activeVizIndex].filterOptionGroups}
+              filterOptionGroups={
+                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              }
               updateLocalStates={updateLocalStates}
             />
           </Route>
@@ -390,29 +496,45 @@ export function DataThemesBuilder() {
                 return <Redirect to="/data-themes/new/initial" />;
               }
               console.log(
-                "TODO: Render datathemesbuilderpreview.\ndata:\n", rawData, 
-                "\nvisualOptions:\n", visualOptions,
-                "\ncurrentChart:\n", currentChart,
-                "\ncurrentChartData:\n", currentChartData,
+                "TODO: Render datathemesbuilderpreview.\ndata:\n",
+                rawData,
+                "\nvisualOptions:\n",
+                visualOptions,
+                "\ncurrentChart:\n",
+                currentChart,
+                "\ncurrentChartData:\n",
+                currentChartData
               );
               return (
                 <React.Fragment>
-                  { themeIds.map((vizIds, tabIndex) => (vizIds.map((vizIndex) => (
-                    tabIndex === activeTabIndex ? (
-                      <DataThemesBuilderPreviewTheme
-                        data={rawData[tabIndex][vizIndex].data}
-                        loading={loading}
-                        loadDataset={loadDataset}
-                        currentChart={currentChart[tabIndex][vizIndex]}
-                        visualOptions={visualOptions}
-                        setVisualOptions={setVisualOptions}
-                        currentChartData={currentChartData[tabIndex][vizIndex]}
-                        filterOptionGroups={rawData[tabIndex][vizIndex].filterOptionGroups}
-                        dimensions={get(currentChart[tabIndex][vizIndex], "dimensions", [])}
-                        updateLocalStates={updateLocalStates}
-                      />
-                    ) : (<React.Fragment />)
-                  )))) }
+                  {themeIds.map((vizIds, tabIndex) =>
+                    vizIds.map((vizIndex) =>
+                      tabIndex === activeTabIndex ? (
+                        <DataThemesBuilderPreviewTheme
+                          data={rawData[tabIndex][vizIndex].data}
+                          loading={loading}
+                          loadDataset={loadDataset}
+                          currentChart={currentChart[tabIndex][vizIndex]}
+                          visualOptions={visualOptions}
+                          setVisualOptions={setVisualOptions}
+                          currentChartData={
+                            currentChartData[tabIndex][vizIndex]
+                          }
+                          filterOptionGroups={
+                            rawData[tabIndex][vizIndex].filterOptionGroups
+                          }
+                          dimensions={get(
+                            currentChart[tabIndex][vizIndex],
+                            "dimensions",
+                            []
+                          )}
+                          updateLocalStates={updateLocalStates}
+                        />
+                      ) : (
+                        <React.Fragment />
+                      )
+                    )
+                  )}
                 </React.Fragment>
               );
             }}

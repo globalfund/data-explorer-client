@@ -30,26 +30,34 @@ export function DataThemesBuilderCustomize(
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
 
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      props.visualOptions[activeTabIndex][activeVizIndex].width === CHART_DEFAULT_WIDTH
+      props.visualOptions[activeTabIndex][activeVizIndex].width ===
+        CHART_DEFAULT_WIDTH
     ) {
-      let tmpVisualOptions = [ ...props.visualOptions ];
+      let tmpVisualOptions = [...props.visualOptions];
       tmpVisualOptions[activeTabIndex][activeVizIndex] = {
         ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
-      }
+      };
       props.setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
   React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping[activeTabIndex][activeVizIndex], props.dimensions);
+      getRequiredFieldsAndErrors(
+        mapping[activeTabIndex][activeVizIndex],
+        props.dimensions
+      );
 
     setNextEnabled(
       updRequiredFields.length === 0 &&
@@ -99,7 +107,10 @@ export function DataThemesBuilderCustomize(
     props.visualOptions,
   ]);
 
-  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping[activeTabIndex][activeVizIndex])) {
+  if (
+    (props.data.length === 0 && !props.loading) ||
+    isEmpty(mapping[activeTabIndex][activeVizIndex])
+  ) {
     history.push(`/data-themes/${page}/data`);
   }
 
@@ -108,6 +119,7 @@ export function DataThemesBuilderCustomize(
       <DataThemesPageSubHeader
         data={props.data}
         loading={props.loading}
+        themeData={props.themeData}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}

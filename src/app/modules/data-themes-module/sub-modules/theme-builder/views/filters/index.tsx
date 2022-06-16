@@ -27,27 +27,36 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
   const [mappedData, setMappedData] = React.useState(null);
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      props.visualOptions[activeTabIndex][activeVizIndex].width === CHART_DEFAULT_WIDTH
+      props.visualOptions[activeTabIndex][activeVizIndex].width ===
+        CHART_DEFAULT_WIDTH
     ) {
-      let tmpVisualOptions = [ ...props.visualOptions ];
+      let tmpVisualOptions = [...props.visualOptions];
       tmpVisualOptions[activeTabIndex][activeVizIndex] = {
         ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
-      }
+      };
+      console.log("SET VISUAL OPTIONS 7");
       props.setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
   React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping[activeTabIndex][activeVizIndex], props.dimensions);
+      getRequiredFieldsAndErrors(
+        mapping[activeTabIndex][activeVizIndex],
+        props.dimensions
+      );
 
     setNextEnabled(
       updRequiredFields.length === 0 &&
@@ -98,7 +107,10 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
     props.visualOptions,
   ]);
 
-  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping[activeTabIndex][activeVizIndex])) {
+  if (
+    (props.data.length === 0 && !props.loading) ||
+    isEmpty(mapping[activeTabIndex][activeVizIndex])
+  ) {
     history.push(`/data-themes/${page}/data`);
   }
 

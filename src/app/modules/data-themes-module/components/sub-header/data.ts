@@ -8,4 +8,10 @@ export interface DataThemesPageSubHeaderProps {
   data: { [key: string]: string | number | null }[];
   updateLocalStates: any;
   tabsDisabled?: boolean;
+  themeData?: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
 }

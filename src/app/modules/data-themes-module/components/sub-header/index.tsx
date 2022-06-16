@@ -81,10 +81,14 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const tabIds = useStoreState((state) => state.dataThemes.ids.value);
-  
+
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
   );
@@ -141,25 +145,30 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }
 
   function onSave() {
-    const tabs: any[] = []
-    tabIds.length > 0 && tabIds.map((content, tabIndex) => {
-      // Add an empty tab for each tab in the list
-      tabs.push({ title: tabIndex, content: []});
-      content.map((vizIndex) => {
-        // add a viz object for every viz in the current tab.
-        const vizObject = {
-          mapping: mapping[tabIndex][vizIndex],
-          vizType: selectedChartType[tabIndex][vizIndex],
-          datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-          data,
-          vizOptions: visualOptions[tabIndex][vizIndex],
-          filterOptionGroups,
-          appliedFilters: appliedFilters[tabIndex][vizIndex],
-          liveData: isLiveData[tabIndex][vizIndex],
-        };
-        tabs[tabIndex].content.push(vizObject);
+    const tabs: any[] = [];
+    tabIds.length > 0 &&
+      tabIds.map((content, tabIndex) => {
+        // Add an empty tab for each tab in the list
+        tabs.push({ title: tabIndex, content: [] });
+        content.map((vizIndex) => {
+          // add a viz object for every viz in the current tab.
+          const vizObject = {
+            mapping: mapping[tabIndex][vizIndex],
+            vizType: selectedChartType[tabIndex][vizIndex],
+            datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+            data: props.themeData
+              ? props.themeData[tabIndex][vizIndex].data
+              : data,
+            vizOptions: visualOptions[tabIndex][vizIndex],
+            filterOptionGroups: props.themeData
+              ? props.themeData[tabIndex][vizIndex].filterOptionGroups
+              : filterOptionGroups,
+            appliedFilters: appliedFilters[tabIndex][vizIndex],
+            liveData: isLiveData[tabIndex][vizIndex],
+          };
+          tabs[tabIndex].content.push(vizObject);
+        });
       });
-    });
     const dataTheme = {
       title,
       subTitle,

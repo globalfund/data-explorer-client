@@ -11,6 +11,7 @@ import { DataThemesPageSubHeader } from "app/modules/data-themes-module/componen
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { DataThemesBuilderPreviewThemeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
+import { useSessionStorage } from "react-use";
 
 export function DataThemesBuilderPreviewTheme(
   props: DataThemesBuilderPreviewThemeProps
@@ -20,32 +21,42 @@ export function DataThemesBuilderPreviewTheme(
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const { visualOptions, setVisualOptions } = props;
+  console.log("DataThemesBuilderPreviewTheme", visualOptions);
+
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      props.visualOptions[activeTabIndex][activeVizIndex].width === CHART_DEFAULT_WIDTH
+      visualOptions[activeTabIndex][activeVizIndex].width ===
+        CHART_DEFAULT_WIDTH
     ) {
-      let tmpVisualOptions = [ ...props.visualOptions ];
+      let tmpVisualOptions = [...visualOptions];
       tmpVisualOptions[activeTabIndex][activeVizIndex] = {
-        ...props.visualOptions[activeTabIndex][activeVizIndex],
+        ...visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
-      }
-      props.setVisualOptions(tmpVisualOptions);
+      };
+      console.log("SET VISUAL OPTIONS 9", tmpVisualOptions);
+      setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
   React.useEffect(() => {
-    console.log("TODO: props on preview-theme.tsx: ", props)
+    console.log("TODO: props on preview-theme.tsx: ", props);
     if (domRef && domRef.current) {
       try {
+        console.log("VIZ MAPPING", { mapping, activeTabIndex, activeVizIndex });
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
           mapping: mapping[activeTabIndex][activeVizIndex],
-          visualOptions: props.visualOptions[activeTabIndex][activeVizIndex],
+          visualOptions: visualOptions[activeTabIndex][activeVizIndex],
           dataTypes: props.currentChartData.dataTypes,
         });
 
@@ -66,12 +77,9 @@ export function DataThemesBuilderPreviewTheme(
         }
       }
     }
-  }, [
-    props.currentChart,
-    props.currentChartData,
-    mapping,
-    props.visualOptions,
-  ]);
+  }, [props.currentChart, props.currentChartData, mapping, visualOptions]);
+
+  console.log(visualOptions);
 
   return (
     <div css={commonStyles.container}>
@@ -79,7 +87,7 @@ export function DataThemesBuilderPreviewTheme(
         previewMode
         data={props.data}
         loading={props.loading}
-        visualOptions={props.visualOptions}
+        visualOptions={visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
         tabsDisabled={true}

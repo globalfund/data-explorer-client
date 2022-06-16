@@ -62,8 +62,12 @@ export function WrapControlComponent({
 }) {
   // @ts-ignore
   const Component = CHART_OPTION_COMPONENTS[type];
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
 
   const remainingOptions = React.useMemo(() => {
     if (type !== "colorScale") {
@@ -147,6 +151,7 @@ export function WrapControlComponent({
 
   const handleControlChange = React.useCallback(
     (nextValue) => {
+      console.log("SET VISUAL OPTIONS 6");
       setVisualOptions((visualOptions) => {
         let newValue = nextValue;
         if (repeatIndex !== undefined) {
@@ -154,7 +159,7 @@ export function WrapControlComponent({
           newValue[repeatIndex] = nextValue;
         }
 
-        let tmpVisualOptions = [ ...allVisualOptions ];
+        let tmpVisualOptions = [...allVisualOptions];
         tmpVisualOptions[activeTabIndex][activeVizIndex] = {
           ...tmpVisualOptions[activeTabIndex][activeVizIndex],
           [optionId]: newValue,
