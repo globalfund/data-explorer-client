@@ -219,7 +219,6 @@ export function useDataThemesRawData(props: {
                   setRawData(dataToIndex);
                   console.log("TODO: rawData result: ", rawData);
 
-                  let tmpVisualOptions = [ ...visualOptions ];
                   // tmpVisualOptions[tabIndex][vizIndex] = tabs[tabIndex].content[vizIndex].vizOptions;
                   for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
                     for (let vizIndex = 0; vizIndex < tabs[tabIndex].content.length; vizIndex++) {
@@ -230,10 +229,12 @@ export function useDataThemesRawData(props: {
                         value: tabs[tabIndex].content[vizIndex].appliedFilters.value || {},
                       });
 
-                      console.log("TODO: Set Visual Options for tabviz", tabIndex,vizIndex, tabs, tmpVisualOptions);
-                      // let tmpVisualOptions = [ ...props.visualOptions];
                       
+                      // let tmpVisualOptions = [ ...props.visualOptions];
+                      let tmpVisualOptions = [ ...visualOptions ];
                       tmpVisualOptions[tabIndex][vizIndex] = tabs[tabIndex].content[vizIndex].vizOptions;
+                      sessionStorage.setItem("visualOptions", JSON.stringify(tmpVisualOptions))
+                      console.log("TODO: Set Visual Options for tabviz", tabIndex,vizIndex, tabs, tmpVisualOptions);
                       // props.setVisualOptions(tmpVisualOptions);
 
                       setMapping({tab: activeTabIndex, viz: activeVizIndex, mapping: tabs[tabIndex].content[vizIndex].mapping || {}});
@@ -246,7 +247,6 @@ export function useDataThemesRawData(props: {
                       });
                     }
                   }
-                  setVisualOptions(tmpVisualOptions);
                 },
                 (error) => {
                   console.log("IndexedDB add error: ", error);
