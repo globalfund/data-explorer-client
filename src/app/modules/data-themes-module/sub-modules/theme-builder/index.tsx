@@ -160,7 +160,6 @@ export function DataThemesBuilder() {
           ? defaultOptionsValues.width
           : visualOptions[activeTabIndex][activeVizIndex].width,
     };
-    console.log("SET VISUAL OPTIONS 2", tmpVisualOptions);
     setVisualOptions(tmpVisualOptions);
   }
 
@@ -168,12 +167,10 @@ export function DataThemesBuilder() {
     if (addTab) {
       let tmpVisualOptions: any = [...visualOptions];
       tmpVisualOptions.push([{}]);
-      console.log("SET VISUAL OPTIONS 3");
       setVisualOptions(tmpVisualOptions);
     }
     setCurrentChart((prev) => [...prev, []]);
     setCurrentChartData((prev) => [...prev, []]);
-    console.log("TODO: updateLocalStates setRawData");
     setRawData((prev) => [
       ...prev,
       [
@@ -185,19 +182,11 @@ export function DataThemesBuilder() {
         },
       ],
     ]);
-    console.log(
-      "TODO: updateLocalStates setRawData fin:",
-      rawData,
-      visualOptions,
-      currentChart,
-      currentChartData
-    );
   }
 
   function addVizToLocalStates() {
     let tmpVisualOptions: any = [...visualOptions];
     tmpVisualOptions[activeTabIndex].push({});
-    console.log("SET VISUAL OPTIONS 4");
     setVisualOptions(tmpVisualOptions);
 
     let tmpCurrentChart: any = [...currentChart];
@@ -239,7 +228,7 @@ export function DataThemesBuilder() {
   function clearDataThemeBuilder() {
     clear().then(() => {
       console.log(
-        "TODO: End of reset.",
+        "End of reset.",
         "--resetActiveTabIndex",
         activeTabIndex,
         "--themeIds",
@@ -304,9 +293,6 @@ export function DataThemesBuilder() {
     }
   }, [isEditMode]);
 
-  console.log("currentChart", currentChart);
-
-  console.log("TODO: Before render, data = ", rawData, currentChartData);
   return (
     <React.Fragment>
       <DataThemesAlertDialog />
@@ -495,16 +481,6 @@ export function DataThemesBuilder() {
               if (page === "new") {
                 return <Redirect to="/data-themes/new/initial" />;
               }
-              console.log(
-                "TODO: Render datathemesbuilderpreview.\ndata:\n",
-                rawData,
-                "\nvisualOptions:\n",
-                visualOptions,
-                "\ncurrentChart:\n",
-                currentChart,
-                "\ncurrentChartData:\n",
-                currentChartData
-              );
               return (
                 <React.Fragment>
                   {themeIds.map((vizIds, tabIndex) =>

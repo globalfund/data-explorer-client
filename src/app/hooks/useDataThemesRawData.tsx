@@ -106,7 +106,6 @@ export function useDataThemesRawData(props: {
   }
 
   async function loadDataset(endpoint: string) {
-    console.log("TODO: loadDataset");
     setLoadingData(true);
     return await axios
       .get(`${process.env.REACT_APP_API}/${endpoint}`, {
@@ -118,14 +117,12 @@ export function useDataThemesRawData(props: {
         return await clearStore().then(async () => {
           const tmpRawData = [...rawData];
           tmpRawData[activeTabIndex][activeVizIndex] = response.data;
-          console.log("TODO: loaddataset: ", tmpRawData);
           return await indexedDB.add(tmpRawData).then(
             (event) => {
               setIsInSession(1);
               // console.log("ID Generated: ", event);
               setRawData(tmpRawData);
               setLoadingData(false);
-              console.log("TODO: loadDataset finished");
               return true;
             },
             (error) => {
@@ -145,17 +142,11 @@ export function useDataThemesRawData(props: {
 
   React.useEffect(() => {
     if (isInSession === 1) {
-      console.log("TODO: GET DATA isInSession from data[0]");
       indexedDB.getAll().then(
         (data) => {
-          console.log("TODO: data in isInSession", data);
           if (data.length > 0) {
-            console.log("TODO: useEffect isInsession - data: ", data);
-            console.log("TODO: useEffect isInsession - data[0]: ", data[0]);
             setRawData(data);
-            console.log("TODO: rawData result: ", rawData);
           } else {
-            console.log("TODO: reset rawData because data.length is 0.");
             setRawData([
               [
                 {
@@ -170,7 +161,6 @@ export function useDataThemesRawData(props: {
           setLoading(false);
         },
         (error) => {
-          console.log("IndexedDB getAll error: ", error);
           setLoading(false);
         }
       );
@@ -180,22 +170,13 @@ export function useDataThemesRawData(props: {
   }, []);
 
   React.useEffect(() => {
-    // rawData.forEach((tab, tabIndex) => {
-    //   tab.forEach((viz, vizIndex) => {
-    //     setFilteredData(
-    //       filterDataThemesData(viz.data, appliedFilters[tabIndex][vizIndex])
-    //     );
-    //   });
-    // });
     setFilteredData(
       filterDataThemesData(
         rawData[activeTabIndex][activeVizIndex].data,
         appliedFilters[activeTabIndex][activeVizIndex]
       )
     );
-    // TODO: Check if this needs to point to rawData.data.
   }, [rawData, appliedFilters, activeTabIndex]);
-  // }, [rawData[activeTabIndex][activeVizIndex].data, appliedFilters]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");
@@ -203,7 +184,6 @@ export function useDataThemesRawData(props: {
 
   React.useEffect(() => {
     if (isEditMode) {
-      console.log("TODO: IS EDIT MODE!");
       axios
         .get(
           `${process.env.REACT_APP_API}/data-themes/${page}?filter={"fields":{"id":false,"title":false,"subTitle":false,"public":false,"tabs":true,"createdDate":false}}`,
@@ -216,7 +196,6 @@ export function useDataThemesRawData(props: {
         .then((response) => {
           clearStore().then(async () => {
             const tabs = get(response.data, "tabs", []);
-            console.log("TODO: useEffect isEditMode tabs response: ", tabs);
             let tmpVisualOptions: any = [...visualOptions];
             if (tabs.length > 0 && tabs[0].content.length > 0) {
               let dataToIndex: any[][] = [];
@@ -243,7 +222,6 @@ export function useDataThemesRawData(props: {
                   vizIndex < tabs[tabIndex].content.length;
                   vizIndex++
                 ) {
-                  // TODO: prepare the viz states
                   // prepare the data to index index
                   dataToIndex[tabIndex].push({
                     id: incr++,
@@ -257,14 +235,7 @@ export function useDataThemesRawData(props: {
               indexedDB.add(dataToIndex).then(
                 (event) => {
                   setIsInSession(1);
-                  console.log(
-                    "TODO: useEffect isEditMode data to index: ",
-                    dataToIndex
-                  );
                   setRawData(dataToIndex);
-                  console.log("TODO: rawData result: ", rawData);
-
-                  // tmpVisualOptions[tabIndex][vizIndex] = tabs[tabIndex].content[vizIndex].vizOptions;
                   for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
                     for (
                       let vizIndex = 0;
@@ -282,21 +253,9 @@ export function useDataThemesRawData(props: {
                             .value || {},
                       });
 
-                      // let tmpVisualOptions = [ ...props.visualOptions];
-                      // let tmpVisualOptions = [...visualOptions];
                       tmpVisualOptions[tabIndex][vizIndex] =
                         tabs[tabIndex].content[vizIndex].vizOptions;
-                      console.log("SET VISUAL OPTIONS 1", tmpVisualOptions);
                       setVisualOptions(tmpVisualOptions);
-                      console.log(
-                        "TODO: Set Visual Options for tabviz",
-                        tabIndex,
-                        vizIndex,
-                        tabs,
-                        tmpVisualOptions
-                      );
-                      // props.setVisualOptions(tmpVisualOptions);
-
                       setMapping({
                         tab: tabIndex,
                         viz: vizIndex,

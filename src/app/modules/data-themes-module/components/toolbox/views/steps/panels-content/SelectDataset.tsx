@@ -157,7 +157,6 @@ export function DataThemesToolBoxSelectDataset(
       });
       clearMapping({tab: activeTabIndex, viz: activeVizIndex});
       handleClose();
-      console.log(endpoint)
       loadDataset(endpoint).then(() => {
         history.push(`/data-themes/${page}/preview`);
       });

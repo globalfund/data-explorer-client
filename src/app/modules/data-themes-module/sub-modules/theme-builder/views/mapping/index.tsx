@@ -113,7 +113,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
         ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
       };
-      console.log("SET VISUAL OPTIONS 8");
       props.setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
@@ -166,9 +165,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   if (props.data.length === 0 && !props.loading) {
     history.push(`/data-themes/${page}/data`);
   }
-
-  // console.log("mapping", mapping);
-  // console.log("dimensions", props.dimensions);
 
   return (
     <div css={commonStyles.container}>
@@ -432,9 +428,6 @@ function DataThemesBuilderMappingDimension(
     [dimensionMapping, setMapping]
   );
 
-  // console.log("dimension", dimension);
-  // console.log("dimensionMapping", dimensionMapping);
-
   return (
     <Grid item xs={12} sm={6} md={4}>
       <div
@@ -589,9 +582,6 @@ function DataThemesBuilderMappingMessage(
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
   React.useEffect(() => {
-    // console.log("mapping", mapping);
-    // console.log("dimensions", props.dimensions);
-
     const { updRequiredFields, updErrors, updMinValuesFields } =
       getRequiredFieldsAndErrors(
         mapping[activeTabIndex][activeVizIndex],

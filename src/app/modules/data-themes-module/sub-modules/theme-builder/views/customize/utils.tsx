@@ -151,7 +151,6 @@ export function WrapControlComponent({
 
   const handleControlChange = React.useCallback(
     (nextValue) => {
-      console.log("SET VISUAL OPTIONS 6");
       setVisualOptions((visualOptions) => {
         let newValue = nextValue;
         if (repeatIndex !== undefined) {

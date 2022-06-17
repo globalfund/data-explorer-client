@@ -22,7 +22,6 @@ export function DataThemesBuilderPreviewTheme(
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const { visualOptions, setVisualOptions } = props;
-  console.log("DataThemesBuilderPreviewTheme", visualOptions);
 
   const activeTabIndex = useStoreState(
     (state) => state.dataThemes.activeTabIndex.value
@@ -43,16 +42,13 @@ export function DataThemesBuilderPreviewTheme(
         ...visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
       };
-      console.log("SET VISUAL OPTIONS 9", tmpVisualOptions);
       setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
   React.useEffect(() => {
-    console.log("TODO: props on preview-theme.tsx: ", props);
     if (domRef && domRef.current) {
       try {
-        console.log("VIZ MAPPING", { mapping, activeTabIndex, activeVizIndex });
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
           mapping: mapping[activeTabIndex][activeVizIndex],
@@ -78,8 +74,6 @@ export function DataThemesBuilderPreviewTheme(
       }
     }
   }, [props.currentChart, props.currentChartData, mapping, visualOptions]);
-
-  console.log(visualOptions);
 
   return (
     <div css={commonStyles.container}>

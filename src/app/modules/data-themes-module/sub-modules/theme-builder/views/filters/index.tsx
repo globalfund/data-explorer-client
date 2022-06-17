@@ -46,7 +46,6 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
         ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
       };
-      console.log("SET VISUAL OPTIONS 7");
       props.setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
