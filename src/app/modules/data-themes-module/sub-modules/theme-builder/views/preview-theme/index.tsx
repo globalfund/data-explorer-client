@@ -1,8 +1,9 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import {
+  useHistory,
   useParams,
 } from "react-router-dom";
 // @ts-ignore
@@ -23,6 +24,7 @@ export function DataThemesBuilderPreviewTheme(
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
   const { page } = useParams<{ page: string }>();
+  const history = useHistory();
 
   const { visualOptions, setVisualOptions } = props;
 
@@ -33,6 +35,7 @@ export function DataThemesBuilderPreviewTheme(
     (state) => state.dataThemes.activeVizIndex.value
   );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
 
   useUpdateEffectOnce(() => {
     if (
@@ -78,6 +81,13 @@ export function DataThemesBuilderPreviewTheme(
     }
   }, [props.currentChart, props.currentChartData, mapping, visualOptions]);
 
+  const handleVizClick = () => {
+    if (page === "new") {
+      setActiveVizIndex(props.vizIndex);
+      history.push(`/data-themes/${page}/customize`);
+    }
+  }
+
   return (
     <div css={commonStyles.container}>
       <DataThemesPageSubHeader
@@ -106,6 +116,7 @@ export function DataThemesBuilderPreviewTheme(
           `}
         >
           <div
+            onClick={() => {handleVizClick()}}
             ref={domRef}
             css={`
               overflow-x: auto;
