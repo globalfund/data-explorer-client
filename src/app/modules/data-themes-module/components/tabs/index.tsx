@@ -50,8 +50,8 @@ export function DataThemesTabs(props: any) {
         {tabIds.map((_: number[], index: number) => (
           <div
             key={index}
-            css={styles.tab(index === activeTabIndex, props.disabled)}
-            onClick={props.disabled ? () => {} : () => onTabClick(index)}
+            css={styles.tab(index === activeTabIndex, props.disabled && !props.previewMode)}
+            onClick={props.disabled && !props.previewMode ? () => {} : () => onTabClick(index)}
           >
             {index}
             <KeyboardArrowDownIcon htmlColor="#262c34" />

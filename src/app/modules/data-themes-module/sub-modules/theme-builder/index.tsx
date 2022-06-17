@@ -120,6 +120,9 @@ export function DataThemesBuilder() {
   const resetThemeIds = useStoreActions(
     (actions) => actions.dataThemes.ids.reset
   );
+  const resetActivePanels = useStoreActions(
+    (actions) => actions.dataThemes.activePanels.reset
+  );
 
   function setVisualOptionsOnChange() {
     let tmpCurrentChart: any = [...currentChart];
@@ -214,6 +217,7 @@ export function DataThemesBuilder() {
     sessionStorage.setItem("visualOptions", JSON.stringify([[{}]]));
     resetActiveTabIndex();
     resetActiveVizIndex();
+    resetActivePanels();
     resetThemeIds();
     setCurrentChart([[]]);
     setCurrentChartData([[]]);
@@ -305,7 +309,7 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/customize`}>
             {themeIds.map((vizIds, tabIndex) =>
               vizIds.map((vizIndex) =>
-                tabIndex === activeTabIndex ? (
+                tabIndex === activeTabIndex && vizIndex === activeVizIndex ? (
                   <DataThemesBuilderCustomize
                     tabIndex={tabIndex}
                     vizIndex={vizIndex}
@@ -337,7 +341,7 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/filters`}>
             {themeIds.map((vizIds, tabIndex) =>
               vizIds.map((vizIndex) =>
-                tabIndex === activeTabIndex ? (
+                tabIndex === activeTabIndex && vizIndex === activeVizIndex ? (
                   <DataThemesBuilderFilters
                     tabIndex={tabIndex}
                     vizIndex={vizIndex}
@@ -367,7 +371,7 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/mapping`}>
             {themeIds.map((vizIds, tabIndex) =>
               vizIds.map((vizIndex) =>
-                tabIndex === activeTabIndex ? (
+                tabIndex === activeTabIndex && vizIndex === activeVizIndex ? (
                   <DataThemesBuilderMapping
                     tabIndex={tabIndex}
                     vizIndex={vizIndex}
@@ -397,7 +401,7 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/chart-type`}>
             {themeIds.map((vizIds, tabIndex) =>
               vizIds.map((vizIndex) =>
-                tabIndex === activeTabIndex ? (
+                tabIndex === activeTabIndex && vizIndex === activeVizIndex ? (
                   <DataThemesBuilderChartType
                     tabIndex={tabIndex}
                     vizIndex={vizIndex}
@@ -422,7 +426,7 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/preview`}>
             {themeIds.map((vizIds, tabIndex) =>
               vizIds.map((vizIndex) =>
-                tabIndex === activeTabIndex ? (
+                tabIndex === activeTabIndex && vizIndex === activeVizIndex ? (
                   <DataThemesBuilderPreview
                     tabIndex={tabIndex}
                     vizIndex={vizIndex}
@@ -445,7 +449,7 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/data`}>
             {themeIds.map((vizIds, tabIndex) =>
               vizIds.map((vizIndex) =>
-                tabIndex === activeTabIndex ? (
+                tabIndex === activeTabIndex && vizIndex === activeVizIndex ? (
                   <DataThemesBuilderDataView
                     tabIndex={tabIndex}
                     vizIndex={vizIndex}
@@ -488,6 +492,8 @@ export function DataThemesBuilder() {
                     vizIds.map((vizIndex) =>
                       tabIndex === activeTabIndex ? (
                         <DataThemesBuilderPreviewTheme
+                          tabIndex={tabIndex}
+                          vizIndex={vizIndex}
                           data={rawData[tabIndex][vizIndex].data}
                           loading={loading}
                           loadDataset={loadDataset}

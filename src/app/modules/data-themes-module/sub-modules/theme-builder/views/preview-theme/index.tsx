@@ -14,7 +14,6 @@ import { DataThemesPageSubHeader } from "app/modules/data-themes-module/componen
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { DataThemesBuilderPreviewThemeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
-import { useSessionStorage } from "react-use";
 
 export function DataThemesBuilderPreviewTheme(
   props: DataThemesBuilderPreviewThemeProps
@@ -38,12 +37,12 @@ export function DataThemesBuilderPreviewTheme(
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      visualOptions[activeTabIndex][activeVizIndex].width ===
+      visualOptions[props.tabIndex][props.vizIndex].width ===
         CHART_DEFAULT_WIDTH
     ) {
       let tmpVisualOptions = [...visualOptions];
-      tmpVisualOptions[activeTabIndex][activeVizIndex] = {
-        ...visualOptions[activeTabIndex][activeVizIndex],
+      tmpVisualOptions[props.tabIndex][props.vizIndex] = {
+        ...visualOptions[props.tabIndex][props.vizIndex],
         width: containerRef.current.clientWidth,
       };
       setVisualOptions(tmpVisualOptions);
@@ -55,8 +54,8 @@ export function DataThemesBuilderPreviewTheme(
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
-          mapping: mapping[activeTabIndex][activeVizIndex],
-          visualOptions: visualOptions[activeTabIndex][activeVizIndex],
+          mapping: mapping[props.tabIndex][props.vizIndex],
+          visualOptions: visualOptions[props.tabIndex][props.vizIndex],
           dataTypes: props.currentChartData.dataTypes,
         });
 

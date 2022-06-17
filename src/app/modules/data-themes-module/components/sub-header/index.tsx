@@ -233,8 +233,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       createDataThemeData.id.length > 0 &&
       createDataThemeData.id !== page
     ) {
-      const view = history.location.pathname.split("/")[3];
-      history.push(`/data-themes/${createDataThemeData.id}/${view}`);
+      history.push(`/data-themes/${createDataThemeData.id}`);
     }
   }, [createDataThemeData]);
 
@@ -318,6 +317,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
           <DataThemesTabs
             updateLocalStates={props.updateLocalStates}
             disabled={props.tabsDisabled}
+            previewMode={props.previewMode}
           />
         </div>
       </div>

@@ -98,8 +98,6 @@ export function DataThemesToolBoxCustomize(
     }, {});
   }, [optionsConfig]);
 
-  console.log("DataThemesToolBoxCustomize", props.visualOptions);
-
   return (
     <div
       className="chart-options"
