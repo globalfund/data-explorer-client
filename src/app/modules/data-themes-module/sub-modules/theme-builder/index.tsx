@@ -56,6 +56,7 @@ export function DataThemesBuilder() {
     (state) => state.dataThemes.activeVizIndex.value
   );
   const themeIds = useStoreState((state) => state.dataThemes.ids.value);
+  const activePanels = useStoreState((state) => state.dataThemes.activePanels.value);
 
   const setActiveTabIndex = useStoreActions(
     (state) => state.dataThemes.activeTabIndex.setValue
@@ -478,7 +479,7 @@ export function DataThemesBuilder() {
           <Route
             path={`/data-themes/:page`}
             component={() => {
-              if (page === "new") {
+              if (page === "new" && activePanels[activeTabIndex][activeVizIndex] !== 6) {
                 return <Redirect to="/data-themes/new/initial" />;
               }
               return (
@@ -505,6 +506,7 @@ export function DataThemesBuilder() {
                             []
                           )}
                           updateLocalStates={updateLocalStates}
+                          themeData={rawData}
                         />
                       ) : (
                         <React.Fragment />
@@ -520,7 +522,7 @@ export function DataThemesBuilder() {
           </Route>
         </Switch>
       </DndProvider>
-      {(page === "new" || view) && (
+      {(page === "new" && (!view || view === "initial")) && (
         <DataThemesAddSectionButton
           showCreateYourStoryText={
             history.location.pathname === `/data-themes/new/initial`

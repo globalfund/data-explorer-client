@@ -2,6 +2,9 @@
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreState } from "app/state/store/hooks";
+import {
+  useParams,
+} from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 /* project */
@@ -20,6 +23,7 @@ export function DataThemesBuilderPreviewTheme(
 
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const { page } = useParams<{ page: string }>();
 
   const { visualOptions, setVisualOptions } = props;
 
@@ -78,13 +82,14 @@ export function DataThemesBuilderPreviewTheme(
   return (
     <div css={commonStyles.container}>
       <DataThemesPageSubHeader
-        previewMode
+        previewMode={ page !== "new" ? true : false}
         data={props.data}
         loading={props.loading}
         visualOptions={visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
-        tabsDisabled={true}
+        tabsDisabled={page !== "new"}
+        themeData={props.themeData}
       />
       <DataThemesToolBox
         filtersView

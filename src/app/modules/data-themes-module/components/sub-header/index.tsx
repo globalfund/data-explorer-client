@@ -88,6 +88,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     (state) => state.dataThemes.activeVizIndex.value
   );
   const tabIds = useStoreState((state) => state.dataThemes.ids.value);
+  const activePanels = useStoreState((state) => state.dataThemes.activePanels.value);
 
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
@@ -194,7 +195,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         !loading &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
-        !isEmpty(mapping[activeTabIndex][activeVizIndex])
+        !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
+        activePanels[activeTabIndex][activeVizIndex] === 6
     );
   }, [data, loading, selectedChartType, mapping]);
 

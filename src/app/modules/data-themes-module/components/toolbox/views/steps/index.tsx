@@ -127,6 +127,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   let appliedFiltersCount = 0;
   const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
   const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activePanels = useStoreState((state) => state.dataThemes.activePanels.value);
+  
   Object.keys(appliedFilters[activeTabIndex][activeVizIndex]).forEach((key) => {
     appliedFiltersCount += appliedFilters[activeTabIndex][activeVizIndex][key].length;
   });
@@ -162,6 +164,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         return;
       }
       if (history.location.pathname === stepPaths[7] && direction === "next") {
+        // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
         history.push(stepPaths[0]);
         return;
       }
@@ -374,7 +377,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             !props.forceNextEnabled
           }
         >
-          Next
+          { activePanels[activeTabIndex][activeVizIndex] === 6 ? "Preview" : "Next" }
         </Button>
       </div>
     </div>

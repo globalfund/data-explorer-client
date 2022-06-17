@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
@@ -22,6 +23,13 @@ export function DataThemesBuilderInitialView(
   props: DataThemesBuilderInitialViewProps
 ) {
   useTitle("Data Themes - Create");
+
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+
+  // When the initial component is rendered, we are at step 0.
+  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 0});
 
   return (
     <div css={styles.container}>

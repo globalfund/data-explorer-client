@@ -29,7 +29,7 @@ export const styles = {
       background: #495057;
     }
   `,
-  tab: (active: boolean) => css`
+  tab: (active: boolean, disabled: boolean) => css`
     gap: 14px;
     color: #fff;
     width: 200px;
@@ -42,6 +42,7 @@ export const styles = {
     justify-content: center;
     border-right: 1px solid #dfe3e6;
     color: ${active ? "#fff" : "#495057"};
+    opacity: ${active ? "100%" : disabled && "50%"};
     background-color: ${active ? "#495057" : "#c7cdd1"};
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
@@ -95,5 +96,22 @@ export const styles = {
         }
       }
     }
+  `,
+
+  addbtnDisabled: css`
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 34px;
+    display: flex;
+    min-width: 60px;
+    position: sticky;
+    align-items: center;
+    justify-content: center;
+    background-color: #c7cdd1;
+    border-left: 1px solid #dfe3e6;
+    border-radius: 0px 20px 0px 0px;
+
+    opacity: 50%;
   `,
 };

@@ -50,15 +50,15 @@ export function DataThemesTabs(props: any) {
         {tabIds.map((_: number[], index: number) => (
           <div
             key={index}
-            css={styles.tab(index === activeTabIndex)}
-            onClick={() => onTabClick(index)}
+            css={styles.tab(index === activeTabIndex, props.disabled)}
+            onClick={props.disabled ? () => {} : () => onTabClick(index)}
           >
             {index}
             <KeyboardArrowDownIcon htmlColor="#262c34" />
           </div>
         ))}
       </div>
-      <div css={styles.addbtn} onClick={props.disabled ? () => {} : onAdd}>
+      <div css={props.disabled ? styles.addbtnDisabled : styles.addbtn} onClick={props.disabled ? () => {} : onAdd}>
         <AddCircleOutlineIcon htmlColor="#262c34" />
       </div>
     </div>

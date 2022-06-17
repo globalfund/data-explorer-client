@@ -35,6 +35,10 @@ export function DataThemesBuilderChartType(
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
   );
+  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+
+  // When the Chart Type component is rendered, we are at step 2.
+  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 2});
 
   const onChartTypeChange =
     (chartTypeId: string) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -59,6 +63,7 @@ export function DataThemesBuilderChartType(
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
+        tabsDisabled={true}
       />
       <DataThemesToolBox
         dataSteps

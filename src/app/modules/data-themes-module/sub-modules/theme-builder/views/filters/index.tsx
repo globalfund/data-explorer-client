@@ -2,7 +2,7 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
@@ -34,6 +34,11 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
     (state) => state.dataThemes.activeVizIndex.value
   );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+
+  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+
+  // When the Filters component is rendered, we are at step 4.
+  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 4});
 
   useUpdateEffectOnce(() => {
     if (
@@ -121,6 +126,7 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
+        tabsDisabled={true}
       />
       <DataThemesToolBox
         dataSteps

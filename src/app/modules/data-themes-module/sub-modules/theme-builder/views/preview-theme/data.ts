@@ -11,4 +11,10 @@ export interface DataThemesBuilderPreviewThemeProps {
   setVisualOptions: (value: any) => void;
   loadDataset: (endpoint: string) => Promise<boolean>;
   updateLocalStates: any;
+  themeData: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
 }
