@@ -127,6 +127,9 @@ export function DataThemesBuilder() {
   const resetActivePanels = useStoreActions(
     (actions) => actions.dataThemes.activePanels.reset
   );
+  const resetTitles = useStoreActions(
+    (actions) => actions.dataThemes.titles.reset
+  );
 
   function setVisualOptionsOnChange() {
     let tmpCurrentChart: any = [...currentChart];
@@ -236,6 +239,7 @@ export function DataThemesBuilder() {
     resetMapping();
     resetIsLiveData();
     resetSelectedChartType();
+    resetTitles();
     stepSelectionsActions.reset();
     resetAppliedFilters();
     clearStore();

@@ -74,8 +74,15 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const { page } = useParams<{ page: string }>();
   const { data, loading, visualOptions, filterOptionGroups } = props;
 
-  const [title, setTitle] = React.useState("New Theme");
-  const [subTitle, setSubTitle] = React.useState("Label");
+  const title = useStoreState((state) => state.dataThemes.titles.title);
+  const setTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setTitle
+  );
+  const subTitle = useStoreState((state) => state.dataThemes.titles.subTitle);
+  const setSubTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setSubTitle
+  );
+  const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
   const [isEditMode, setIsEditMode] = React.useState(page !== "new");
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
@@ -138,11 +145,11 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(event.target.value);
+    setTitle({title: event.target.value});
   }
 
   function handleSubTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setSubTitle(event.target.value);
+    setSubTitle({subTitle: event.target.value});
   }
 
   function onSave() {
@@ -150,7 +157,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     tabIds.length > 0 &&
       tabIds.map((content, tabIndex) => {
         // Add an empty tab for each tab in the list
-        tabs.push({ title: tabIndex, content: [] });
+        tabs.push({ title: tabTitles[tabIndex], content: [] });
         content.map((vizIndex) => {
           // add a viz object for every viz in the current tab.
           const vizObject = {
@@ -207,10 +214,10 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     if (loadedDataTheme) {
       if (loadedDataTheme.title.length > 0) {
-        setTitle(loadedDataTheme.title);
+        setTitle({title: loadedDataTheme.title});
       }
       if (loadedDataTheme.subTitle.length > 0) {
-        setSubTitle(loadedDataTheme.subTitle);
+        setSubTitle({subTitle: loadedDataTheme.subTitle});
       }
     }
   }, [loadedDataTheme]);

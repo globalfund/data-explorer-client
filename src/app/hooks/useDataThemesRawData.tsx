@@ -113,6 +113,9 @@ export function useDataThemesRawData(props: {
   const addTabAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.addTab
   );
+  const addTabTitles = useStoreActions(
+    (state) => state.dataThemes.titles.addTab
+  );
   const addVizId = useStoreActions((state) => state.dataThemes.ids.addViz);
   const addVizActivePanel = useStoreActions((state) => state.dataThemes.activePanels.addViz);
   const addVizChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addViz);
@@ -120,6 +123,9 @@ export function useDataThemesRawData(props: {
   const addVizMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addViz);
   const addVizStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addViz);
   const addVizAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addViz);
+  const setTabTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setTabTitle
+  );
 
   async function clearStore() {
     return await indexedDB.clear();
@@ -237,11 +243,15 @@ export function useDataThemesRawData(props: {
                   addTabMapping();
                   addTabStepSelections();
                   addTabAppliedFilters();
+                  addTabTitles();
                   tmpVisualOptions.push([{}]);
                   tmpCurrentChart.push([{}]);
                   tmpCurrentChartData.push([{}]);
                 }
                 
+                // set the tab title
+                setTabTitle({tabIndex: tabIndex, tabTitle: tabs[tabIndex].title})
+
                 for (let vizIndex = 1; vizIndex < tabs[tabIndex].content.length; vizIndex++) {
                   addVizId({tabIndex: tabIndex});
                   addVizActivePanel({tabIndex: tabIndex});

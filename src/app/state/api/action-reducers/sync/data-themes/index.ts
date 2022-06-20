@@ -208,3 +208,37 @@ export const DataThemesActivePanelsState: DataThemesActivePanelsStateModel = {
     state.value = [[1]];
   }),
 };
+
+export interface DataThemesTitlesStateModel {
+  title: string;
+  subTitle: string;
+  tabTitles: string[];
+  setTitle: Action<DataThemesTitlesStateModel, {title: string}>;
+  setSubTitle: Action<DataThemesTitlesStateModel, {subTitle: string}>;
+  setTabTitle: Action<DataThemesTitlesStateModel, {tabIndex: number, tabTitle: string}>;
+  addTab: Action<DataThemesTitlesStateModel>;
+  reset: Action<DataThemesTitlesStateModel>;
+}
+
+export const DataThemesTitlesState: DataThemesTitlesStateModel = {
+  title: "New Theme",
+  subTitle: "Subtitle",
+  tabTitles: ["Tab 1"],
+  setTitle: action((state, payload: {title: string}) => {
+    state.title = payload.title;
+  }),
+  setSubTitle: action((state, payload: {subTitle: string}) => {
+    state.subTitle = payload.subTitle;
+  }),
+  setTabTitle: action((state, payload: {tabIndex: number, tabTitle: string}) => {
+    state.tabTitles[payload.tabIndex] = payload.tabTitle;
+  }),
+  addTab: action((state) => {
+    state.tabTitles.push(`Tab ${state.tabTitles.length + 1}`);
+  }),
+  reset: action((state) => {
+    state.title = "New Theme";
+    state.subTitle = "Subtitle";
+    state.tabTitles = ["Tab 1"];
+  }),
+};

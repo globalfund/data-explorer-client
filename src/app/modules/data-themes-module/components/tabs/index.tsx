@@ -22,6 +22,14 @@ export function DataThemesTabs(props: any) {
   const addTabStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addTab);
   const addTabAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addTab);
 
+  const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
+  const setTabTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setTabTitle
+  );
+  const addTabTitles = useStoreActions(
+    (actions) => actions.dataThemes.titles.addTab
+  );
+
   function onAdd() {
     setActiveVizIndex(0); // default select the fist viz.
     setActiveTabIndex(tabIds.length);
@@ -32,6 +40,7 @@ export function DataThemesTabs(props: any) {
     addTabMapping();
     addTabStepSelections();
     addTabAppliedFilters();
+    addTabTitles();
     props.updateLocalStates(true);
     history.push(`/data-themes/${page}/initial`);
   }
@@ -40,7 +49,6 @@ export function DataThemesTabs(props: any) {
     if (activeTabIndex !== tab) {  // only change when necessary
       setActiveTabIndex(tab);
       setActiveVizIndex(0); // default select the fist viz.
-      // TODO: add history push to the correct page.
     }
   }
 
@@ -53,7 +61,16 @@ export function DataThemesTabs(props: any) {
             css={styles.tab(index === activeTabIndex, props.disabled && !props.previewMode)}
             onClick={props.disabled && !props.previewMode ? () => {} : () => onTabClick(index)}
           >
-            {index}
+            { activeTabIndex !== index || props.previewMode ? (
+              <div>{tabTitles[index]}</div>
+            ) : (
+              <input
+                type="text"
+                css={styles.tabTitle}
+                value={tabTitles[index]}
+                onChange={(event) => {setTabTitle({tabIndex: index, tabTitle: event.target.value})}}
+              />
+            )}
             <KeyboardArrowDownIcon htmlColor="#262c34" />
           </div>
         ))}
