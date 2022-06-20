@@ -6,16 +6,29 @@ import { useSessionStorage } from "react-use";
 import { useIndexedDB } from "react-indexed-db";
 import axios, { AxiosResponse, AxiosError } from "axios";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import {
+  parseDataset,
+  // @ts-ignore
+} from "@rawgraphs/rawgraphs-core";
 /* project */
 import { filterDataThemesData } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/utils";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
+import { charts } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
 export function useDataThemesRawData(props: {
   setVisualOptions: (value: any) => void;
   visualOptions: any;
+  setCurrentChart: (value: any) => void;
+  currentChart: any;
+  setCurrentChartData: (value: any) => void;
+  currentChartData: any;
   updateLocalStates: any;
 }) {
-  const { visualOptions, setVisualOptions } = props;
+  const {
+    visualOptions, setVisualOptions,
+    currentChart, setCurrentChart,
+    currentChartData, setCurrentChartData,
+  } = props;
 
   const { page } = useParams<{ page: string }>();
 
@@ -100,6 +113,13 @@ export function useDataThemesRawData(props: {
   const addTabAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.addTab
   );
+  const addVizId = useStoreActions((state) => state.dataThemes.ids.addViz);
+  const addVizActivePanel = useStoreActions((state) => state.dataThemes.activePanels.addViz);
+  const addVizChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addViz);
+  const addVizLiveData = useStoreActions((state) => state.dataThemes.sync.liveData.addViz);
+  const addVizMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addViz);
+  const addVizStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addViz);
+  const addVizAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addViz);
 
   async function clearStore() {
     return await indexedDB.clear();
@@ -170,13 +190,15 @@ export function useDataThemesRawData(props: {
   }, []);
 
   React.useEffect(() => {
-    setFilteredData(
-      filterDataThemesData(
-        rawData[activeTabIndex][activeVizIndex].data,
-        appliedFilters[activeTabIndex][activeVizIndex]
-      )
-    );
-  }, [rawData, appliedFilters, activeTabIndex]);
+    if (!loading) {
+      setFilteredData(
+        filterDataThemesData(
+          rawData[activeTabIndex][activeVizIndex].data,
+          appliedFilters[activeTabIndex][activeVizIndex]
+        )
+      );
+    }
+  }, [rawData, appliedFilters, activeTabIndex, loading]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");
@@ -184,6 +206,7 @@ export function useDataThemesRawData(props: {
 
   React.useEffect(() => {
     if (isEditMode) {
+      setLoading(true);
       axios
         .get(
           `${process.env.REACT_APP_API}/data-themes/${page}?filter={"fields":{"id":false,"title":false,"subTitle":false,"public":false,"tabs":true,"createdDate":false}}`,
@@ -195,8 +218,12 @@ export function useDataThemesRawData(props: {
         )
         .then((response) => {
           clearStore().then(async () => {
+            
             const tabs = get(response.data, "tabs", []);
             let tmpVisualOptions: any = [...visualOptions];
+            let tmpCurrentChart: any = [...currentChart];
+            let tmpCurrentChartData: any = [...currentChartData];
+
             if (tabs.length > 0 && tabs[0].content.length > 0) {
               let dataToIndex: any[][] = [];
               let incr: number = 0;
@@ -210,11 +237,24 @@ export function useDataThemesRawData(props: {
                   addTabMapping();
                   addTabStepSelections();
                   addTabAppliedFilters();
-                  props.updateLocalStates(false);
-
                   tmpVisualOptions.push([{}]);
+                  tmpCurrentChart.push([{}]);
+                  tmpCurrentChartData.push([{}]);
                 }
-
+                
+                for (let vizIndex = 1; vizIndex < tabs[tabIndex].content.length; vizIndex++) {
+                  addVizId({tabIndex: tabIndex});
+                  addVizActivePanel({tabIndex: tabIndex});
+                  addVizChartType({tabIndex: tabIndex});
+                  addVizLiveData({tabIndex: tabIndex});
+                  addVizMapping({tabIndex: tabIndex});
+                  addVizStepSelections({tabIndex: tabIndex});
+                  addVizAppliedFilters({tabIndex: tabIndex});
+                  tmpVisualOptions[tabIndex].push({});
+                  tmpCurrentChart[tabIndex].push({});
+                  tmpCurrentChartData[tabIndex].push({});
+                }
+                
                 // add an empty list for
                 dataToIndex.push([]);
                 for (
@@ -267,13 +307,33 @@ export function useDataThemesRawData(props: {
                         value:
                           tabs[tabIndex].content[vizIndex].liveData || false,
                       });
+
+                      const selectedChartTypeValue = tabs[tabIndex].content[vizIndex].vizType || "barchart";
                       setSelectedChartType({
                         tab: tabIndex,
                         viz: vizIndex,
-                        value:
-                          tabs[tabIndex].content[vizIndex].vizType ||
-                          "barchart",
+                        value: selectedChartTypeValue,
                       });
+
+                      tmpCurrentChart[tabIndex][vizIndex] = get(charts, selectedChartTypeValue, null)
+                      setCurrentChart(tmpCurrentChart);
+
+                      // Before, this was done through a hook on the appliedFilters.
+                      let tmpFilteredData = filterDataThemesData(
+                        dataToIndex[tabIndex][vizIndex].data,
+                        tabs[tabIndex].content[vizIndex].appliedFilters.value || {}
+                      )
+
+                      tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
+                        tmpFilteredData,
+                        null,
+                        {
+                          locale: navigator.language || "en-US",
+                          decimal: ".",
+                          group: ",",
+                        }
+                      );
+                      setCurrentChartData(tmpCurrentChartData);
                       stepSelectionsActions.setStep1({
                         tab: tabIndex,
                         viz: vizIndex,
@@ -281,9 +341,11 @@ export function useDataThemesRawData(props: {
                       });
                     }
                   }
+                  setLoading(false);
                 },
                 (error) => {
                   console.log("IndexedDB add error: ", error);
+                  setLoading(false);
                 }
               );
             }
@@ -291,6 +353,7 @@ export function useDataThemesRawData(props: {
         })
         .catch((error) => {
           console.log("API call error: " + error.message);
+          setLoading(false);
         });
     }
   }, [isEditMode]);
