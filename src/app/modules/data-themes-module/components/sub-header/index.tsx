@@ -11,6 +11,7 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { convertToRaw } from 'draft-js';
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
@@ -133,6 +134,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
   );
+  const textContent = useStoreState(
+    (state) => state.dataThemes.textContent.value
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -163,20 +167,29 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         tabs.push({ title: tabTitles[tabIndex], content: [] });
         content.map((vizIndex) => {
           // add a viz object for every viz in the current tab.
-          const vizObject = {
-            mapping: mapping[tabIndex][vizIndex],
-            vizType: selectedChartType[tabIndex][vizIndex],
-            datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-            data: props.themeData
-              ? props.themeData[tabIndex][vizIndex].data
-              : data,
-            vizOptions: visualOptions[tabIndex][vizIndex],
-            filterOptionGroups: props.themeData
-              ? props.themeData[tabIndex][vizIndex].filterOptionGroups
-              : filterOptionGroups,
-            appliedFilters: appliedFilters[tabIndex][vizIndex],
-            liveData: isLiveData[tabIndex][vizIndex],
-          };
+          let vizObject: any = {};
+          if (vizIsTextContent[tabIndex][vizIndex]) {
+            const contentState = textContent[tabIndex][vizIndex].getCurrentContent();
+            const rawContent = JSON.stringify(convertToRaw(contentState));
+            vizObject = {
+              content: rawContent,
+            }
+          } else {
+            vizObject = {
+                mapping: mapping[tabIndex][vizIndex],
+                vizType: selectedChartType[tabIndex][vizIndex],
+                datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+                data: props.themeData
+                  ? props.themeData[tabIndex][vizIndex].data
+                  : data,
+                vizOptions: visualOptions[tabIndex][vizIndex],
+                filterOptionGroups: props.themeData
+                  ? props.themeData[tabIndex][vizIndex].filterOptionGroups
+                  : filterOptionGroups,
+                appliedFilters: appliedFilters[tabIndex][vizIndex],
+                liveData: isLiveData[tabIndex][vizIndex],
+            };
+          }
           tabs[tabIndex].content.push(vizObject);
         });
       });

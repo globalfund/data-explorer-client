@@ -10,6 +10,7 @@ import {
   parseDataset,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
+import { convertFromRaw, EditorState } from 'draft-js';
 /* project */
 import { filterDataThemesData } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/utils";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
@@ -125,7 +126,9 @@ export function useDataThemesRawData(props: {
   const addVizStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addViz);
   const addVizAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addViz);
   const addVizTextContent = useStoreActions((state) => state.dataThemes.textContent.addViz);
-
+  const setTextContent = useStoreActions(
+    (state) => state.dataThemes.textContent.setValue
+  );
   const setTabTitle = useStoreActions(
     (actions) => actions.dataThemes.titles.setTabTitle
   );
@@ -280,10 +283,10 @@ export function useDataThemesRawData(props: {
                   // prepare the data to index index
                   dataToIndex[tabIndex].push({
                     id: incr++,
-                    data: tabs[tabIndex].content[vizIndex].data,
-                    count: tabs[tabIndex].content[vizIndex].data.length,
+                    data: tabs[tabIndex].content[vizIndex].content ? [] : tabs[tabIndex].content[vizIndex].data,
+                    count: tabs[tabIndex].content[vizIndex].content ? 0 : tabs[tabIndex].content[vizIndex].data.length,
                     filterOptionGroups:
-                      tabs[tabIndex].content[vizIndex].filterOptionGroups,
+                      tabs[tabIndex].content[vizIndex].content ? [] : tabs[tabIndex].content[vizIndex].filterOptionGroups,
                   });
                 }
               }
@@ -291,69 +294,78 @@ export function useDataThemesRawData(props: {
                 (event) => {
                   setIsInSession(1);
                   setRawData(dataToIndex);
-                  for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+                  let tabIndex: number = 0;
+                  for (tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+                    let vizIndex: number = 0;
                     for (
-                      let vizIndex = 0;
+                      vizIndex = 0;
                       vizIndex < tabs[tabIndex].content.length;
                       vizIndex++
                     ) {
-                      setAppliedFilters({
-                        tab: tabIndex,
-                        viz: vizIndex,
-                        key:
-                          tabs[tabIndex].content[vizIndex].appliedFilters.key ||
-                          "",
-                        value:
-                          tabs[tabIndex].content[vizIndex].appliedFilters
-                            .value || {},
-                      });
+                      if ("content" in tabs[tabIndex].content[vizIndex]) {
+                        const rawContent = tabs[tabIndex].content[vizIndex].content;
+                        const contentState = convertFromRaw(JSON.parse(rawContent));
+                        const editorState = EditorState.createWithContent(contentState);
+                        setTextContent({tab: tabIndex, viz: vizIndex, value: editorState});
+                      } else {
+                        setAppliedFilters({
+                          tab: tabIndex,
+                          viz: vizIndex,
+                          key:
+                            tabs[tabIndex].content[vizIndex].appliedFilters.key ||
+                            "",
+                          value:
+                            tabs[tabIndex].content[vizIndex].appliedFilters
+                              .value || {},
+                        });
 
-                      tmpVisualOptions[tabIndex][vizIndex] =
-                        tabs[tabIndex].content[vizIndex].vizOptions;
-                      setVisualOptions(tmpVisualOptions);
-                      setMapping({
-                        tab: tabIndex,
-                        viz: vizIndex,
-                        mapping: tabs[tabIndex].content[vizIndex].mapping || {},
-                      });
-                      setIsLiveData({
-                        tab: tabIndex,
-                        viz: vizIndex,
-                        value:
-                          tabs[tabIndex].content[vizIndex].liveData || false,
-                      });
+                        tmpVisualOptions[tabIndex][vizIndex] =
+                          tabs[tabIndex].content[vizIndex].vizOptions;
+                        setVisualOptions(tmpVisualOptions);
+                        setMapping({
+                          tab: tabIndex,
+                          viz: vizIndex,
+                          mapping: tabs[tabIndex].content[vizIndex].mapping || {},
+                        });
+                        setIsLiveData({
+                          tab: tabIndex,
+                          viz: vizIndex,
+                          value:
+                            tabs[tabIndex].content[vizIndex].liveData || false,
+                        });
 
-                      const selectedChartTypeValue = tabs[tabIndex].content[vizIndex].vizType || "barchart";
-                      setSelectedChartType({
-                        tab: tabIndex,
-                        viz: vizIndex,
-                        value: selectedChartTypeValue,
-                      });
+                        const selectedChartTypeValue = tabs[tabIndex].content[vizIndex].vizType || "barchart";
+                        setSelectedChartType({
+                          tab: tabIndex,
+                          viz: vizIndex,
+                          value: selectedChartTypeValue,
+                        });
 
-                      tmpCurrentChart[tabIndex][vizIndex] = get(charts, selectedChartTypeValue, null)
-                      setCurrentChart(tmpCurrentChart);
+                        tmpCurrentChart[tabIndex][vizIndex] = get(charts, selectedChartTypeValue, null)
+                        setCurrentChart(tmpCurrentChart);
 
-                      // Before, this was done through a hook on the appliedFilters.
-                      let tmpFilteredData = filterDataThemesData(
-                        dataToIndex[tabIndex][vizIndex].data,
-                        tabs[tabIndex].content[vizIndex].appliedFilters.value || {}
-                      )
+                        // Before, this was done through a hook on the appliedFilters.
+                        let tmpFilteredData = filterDataThemesData(
+                          dataToIndex[tabIndex][vizIndex].data,
+                          tabs[tabIndex].content[vizIndex].appliedFilters.value || {}
+                        )
 
-                      tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
-                        tmpFilteredData,
-                        null,
-                        {
-                          locale: navigator.language || "en-US",
-                          decimal: ".",
-                          group: ",",
-                        }
-                      );
-                      setCurrentChartData(tmpCurrentChartData);
-                      stepSelectionsActions.setStep1({
-                        tab: tabIndex,
-                        viz: vizIndex,
-                        dataset: tabs[tabIndex].content[vizIndex].datasetId,
-                      });
+                        tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
+                          tmpFilteredData,
+                          null,
+                          {
+                            locale: navigator.language || "en-US",
+                            decimal: ".",
+                            group: ",",
+                          }
+                        );
+                        setCurrentChartData(tmpCurrentChartData);
+                        stepSelectionsActions.setStep1({
+                          tab: tabIndex,
+                          viz: vizIndex,
+                          dataset: tabs[tabIndex].content[vizIndex].datasetId,
+                        });
+                      }
                     }
                   }
                   setLoading(false);

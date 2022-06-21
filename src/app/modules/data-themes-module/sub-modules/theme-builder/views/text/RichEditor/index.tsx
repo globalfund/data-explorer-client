@@ -56,7 +56,6 @@ export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex
     <div className={editorStyles.editor} onClick={focus}>
       <Editor
         readOnly={!props.editMode}
-        placeholder="Type here please!"
         editorKey="RichEditor"
         editorState={textContent[props.tabIndex][props.vizIndex]}
         onChange={onChange}
