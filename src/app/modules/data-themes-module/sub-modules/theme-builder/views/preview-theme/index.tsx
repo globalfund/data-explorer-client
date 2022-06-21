@@ -15,6 +15,7 @@ import { DataThemesPageSubHeader } from "app/modules/data-themes-module/componen
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { DataThemesBuilderPreviewThemeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
+import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
 
 export function DataThemesBuilderPreviewTheme(
   props: DataThemesBuilderPreviewThemeProps
@@ -28,14 +29,11 @@ export function DataThemesBuilderPreviewTheme(
 
   const { visualOptions, setVisualOptions } = props;
 
-  const activeTabIndex = useStoreState(
-    (state) => state.dataThemes.activeTabIndex.value
-  );
-  const activeVizIndex = useStoreState(
-    (state) => state.dataThemes.activeVizIndex.value
-  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
 
   useUpdateEffectOnce(() => {
     if (
@@ -88,6 +86,13 @@ export function DataThemesBuilderPreviewTheme(
     }
   }
 
+  const handleTextClick = () => {
+    if (page === "new") {
+      setActiveVizIndex(props.vizIndex);
+      history.push(`/data-themes/${page}/text`);
+    }
+  }
+
   return (
     <div css={commonStyles.container}>
       <DataThemesPageSubHeader
@@ -107,28 +112,34 @@ export function DataThemesBuilderPreviewTheme(
         loadDataset={props.loadDataset}
         filterOptionGroups={props.filterOptionGroups}
       />
-      <div css={commonStyles.innercontainer}>
-        <div
-          ref={containerRef}
-          css={`
-            width: calc(100% - 24px);
-            height: calc(100vh - 225px);
-          `}
-        >
-          <div
-            onClick={() => {handleVizClick()}}
-            ref={domRef}
-            css={`
-              overflow-x: auto;
-              margin-top: 40px;
-
-              * {
-                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-              }
-            `}
-          />
+      { vizIsTextContent[props.tabIndex][props.vizIndex] ? (
+        <div css={commonStyles.innercontainer} onClick={() => {handleTextClick()}}>
+          <RichEditor editMode={false} tabIndex={props.tabIndex} vizIndex={props.vizIndex} />
         </div>
-      </div>
+      ) : (
+        <div css={commonStyles.innercontainer}>
+          <div
+            ref={containerRef}
+            css={`
+              width: calc(100% - 24px);
+              height: calc(100vh - 225px);
+            `}
+          >
+            <div
+              onClick={() => {handleVizClick()}}
+              ref={domRef}
+              css={`
+                overflow-x: auto;
+                margin-top: 40px;
+
+                * {
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
+                }
+              `}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

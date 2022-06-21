@@ -1,5 +1,6 @@
 /* third-party */
 import useTitle from "react-use/lib/useTitle";
+import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
@@ -22,6 +23,10 @@ export function DataThemesBuilderTextView(
 ) {
   useTitle("Data Themes - Input text");
 
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+
+
   return (
     <div css={styles.container}>
       <DataThemesPageSubHeader
@@ -39,7 +44,7 @@ export function DataThemesBuilderTextView(
         filterOptionGroups={[]}
         loadDataset={emptyPromise}
       />
-      <RichEditor editMode={true} />
+      <RichEditor editMode={true} tabIndex={activeTabIndex} vizIndex={activeVizIndex} />
     </div>
   );
 }

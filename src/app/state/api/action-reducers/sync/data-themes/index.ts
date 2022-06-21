@@ -1,5 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { action, Action } from "easy-peasy";
+import { EditorState } from 'draft-js';
+import { createEditorStateWithText } from '@draft-js-plugins/editor';
 
 export interface DataThemesStepSelectionsStateModel {
   step1: [[{dataset: string | null}]];
@@ -244,25 +246,32 @@ export const DataThemesTitlesState: DataThemesTitlesStateModel = {
 };
 
 export interface DataThemesTextContentStateModel {
-  value: string[][];
-  setValue: Action<DataThemesTextContentStateModel, {tab: number, viz: number, value: string | null}>;
+  value: EditorState[][];
+  vizIsTextContent: boolean[][];
+  setValue: Action<DataThemesTextContentStateModel, {tab: number, viz: number, value: EditorState}>;
   addTab: Action<DataThemesTextContentStateModel>;
   addViz: Action<DataThemesTextContentStateModel, {tabIndex: number}>;
   reset: Action<DataThemesTextContentStateModel>;
 }
 
+const editorStatePlaceholderText = "Start writing your story …!";
 export const DataThemesTextContentState: DataThemesTextContentStateModel = {
-  value: [[""]],
-  setValue: action((state, payload: {tab: number, viz: number, value: string}) => {
+  value: [[createEditorStateWithText(editorStatePlaceholderText)]],
+  vizIsTextContent: [[false]],
+  setValue: action((state, payload: {tab: number, viz: number, value: EditorState}) => {
     state.value[payload.tab][payload.viz] = payload.value;
+    state.vizIsTextContent[payload.tab][payload.viz] = true;
   }),
   addTab: action((state) => {
-    state.value.push([""]);
+    state.value.push([createEditorStateWithText(editorStatePlaceholderText)]);
+    state.vizIsTextContent.push([false]);
   }),
   addViz: action((state, payload: {tabIndex: number}) => {
-    state.value[payload.tabIndex].push("");
+    state.value[payload.tabIndex].push(createEditorStateWithText(editorStatePlaceholderText));
+    state.vizIsTextContent[payload.tabIndex].push(false);
   }),
   reset: action((state) => {
-    state.value = [[""]]
+    state.value = [[createEditorStateWithText(editorStatePlaceholderText)]]
+    state.vizIsTextContent = [[false]];
   }),
 };

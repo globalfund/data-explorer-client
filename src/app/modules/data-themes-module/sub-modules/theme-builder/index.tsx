@@ -58,6 +58,9 @@ export function DataThemesBuilder() {
   );
   const themeIds = useStoreState((state) => state.dataThemes.ids.value);
   const activePanels = useStoreState((state) => state.dataThemes.activePanels.value);
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
 
   const setActiveTabIndex = useStoreActions(
     (state) => state.dataThemes.activeTabIndex.setValue
@@ -515,7 +518,7 @@ export function DataThemesBuilder() {
           <Route
             path={`/data-themes/:page`}
             component={() => {
-              if (page === "new" && activePanels[activeTabIndex][activeVizIndex] !== 6) {
+              if (page === "new" && (activePanels[activeTabIndex][activeVizIndex] !== 6) && !vizIsTextContent[activeTabIndex][activeVizIndex]) {
                 return <Redirect to="/data-themes/new/initial" />;
               }
               return (

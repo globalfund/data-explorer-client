@@ -130,6 +130,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const isLiveData = useStoreState(
     (state) => state.dataThemes.sync.liveData.value
   );
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -198,14 +201,17 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
 
   React.useEffect(() => {
     setIsSavedEnabled(
-      data.length > 0 &&
-        !loading &&
-        selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
-        selectedChartType[activeTabIndex][activeVizIndex] !== null &&
-        !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-        activePanels[activeTabIndex][activeVizIndex] === 6
+      !loading &&
+        (
+          data.length > 0 && (
+            selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
+            selectedChartType[activeTabIndex][activeVizIndex] !== null &&
+            !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
+            activePanels[activeTabIndex][activeVizIndex] === 6
+          ) 
+        ) || vizIsTextContent[activeTabIndex][activeVizIndex]
     );
-  }, [data, loading, selectedChartType, mapping]);
+  }, [data, loading, selectedChartType, mapping, vizIsTextContent]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");

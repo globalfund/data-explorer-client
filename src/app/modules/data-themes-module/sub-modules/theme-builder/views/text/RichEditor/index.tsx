@@ -26,9 +26,7 @@ import editorStyles from './editorStyles.module.css';
 import buttonStyles from './buttonStyles.module.css';
 import toolbarStyles from './toolbarStyles.module.css';
 
-const text = 'Start writing your story …!';
-
-export const RichEditor = (props: {editMode: boolean}): ReactElement => {
+export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex: number}): ReactElement => {
   const linkPlugin = createLinkPlugin();
   const [plugins, InlineToolbar] = useMemo(() => {
     const inlineToolbarPlugin = createInlineToolbarPlugin(
@@ -37,15 +35,6 @@ export const RichEditor = (props: {editMode: boolean}): ReactElement => {
     return [[inlineToolbarPlugin, linkPlugin], inlineToolbarPlugin.InlineToolbar];
   }, []);
 
-  const [editorState, setEditorState] = useState(() =>
-    createEditorStateWithText(text)
-  );
-  const activeTabIndex = useStoreState(
-    (state) => state.dataThemes.activeTabIndex.value
-  );
-  const activeVizIndex = useStoreState(
-    (state) => state.dataThemes.activeVizIndex.value
-  );
   const textContent = useStoreState(
     (state) => state.dataThemes.textContent.value
   );
@@ -56,7 +45,7 @@ export const RichEditor = (props: {editMode: boolean}): ReactElement => {
   const editor = useRef<Editor | null>(null);
 
   const onChange = (value: EditorState): void => {
-    setEditorState(value);
+    setTextContent({tab: props.tabIndex, viz: props.vizIndex, value: value});
   };
 
   const focus = (): void => {
@@ -67,8 +56,9 @@ export const RichEditor = (props: {editMode: boolean}): ReactElement => {
     <div className={editorStyles.editor} onClick={focus}>
       <Editor
         readOnly={!props.editMode}
+        placeholder="Type here please!"
         editorKey="RichEditor"
-        editorState={editorState}
+        editorState={textContent[props.tabIndex][props.vizIndex]}
         onChange={onChange}
         plugins={plugins}
         ref={(element) => {
