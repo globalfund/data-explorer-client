@@ -21,6 +21,7 @@ export function DataThemesTabs(props: any) {
   const addTabMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addTab);
   const addTabStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addTab);
   const addTabAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addTab);
+  const addTabTextContent = useStoreActions((state) => state.dataThemes.textContent.addTab);
 
   const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const setTabTitle = useStoreActions(
@@ -41,6 +42,7 @@ export function DataThemesTabs(props: any) {
     addTabStepSelections();
     addTabAppliedFilters();
     addTabTitles();
+    addTabTextContent();
     props.updateLocalStates(true);
     history.push(`/data-themes/${page}/initial`);
   }

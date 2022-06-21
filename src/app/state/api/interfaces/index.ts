@@ -10,6 +10,7 @@ import {
   DataThemesIdsStateModel,
   DataThemesActivePanelsStateModel,
   DataThemesTitlesStateModel,
+  DataThemesTextContentStateModel,
 } from "app/state/api/action-reducers/sync/data-themes";
 import {
   PageHeaderVizDrilldownsStateModel,
@@ -297,6 +298,7 @@ export interface StoreModel {
     ids: DataThemesIdsStateModel;
     activePanels: DataThemesActivePanelsStateModel;
     titles: DataThemesTitlesStateModel;
+    textContent: DataThemesTextContentStateModel;
     sync: {
       stepSelections: DataThemesStepSelectionsStateModel;
       liveData: DataThemesStepSelectDataLiveStateModel;

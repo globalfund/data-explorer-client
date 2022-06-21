@@ -242,3 +242,27 @@ export const DataThemesTitlesState: DataThemesTitlesStateModel = {
     state.tabTitles = ["Tab 1"];
   }),
 };
+
+export interface DataThemesTextContentStateModel {
+  value: string[][];
+  setValue: Action<DataThemesTextContentStateModel, {tab: number, viz: number, value: string | null}>;
+  addTab: Action<DataThemesTextContentStateModel>;
+  addViz: Action<DataThemesTextContentStateModel, {tabIndex: number}>;
+  reset: Action<DataThemesTextContentStateModel>;
+}
+
+export const DataThemesTextContentState: DataThemesTextContentStateModel = {
+  value: [[""]],
+  setValue: action((state, payload: {tab: number, viz: number, value: string}) => {
+    state.value[payload.tab][payload.viz] = payload.value;
+  }),
+  addTab: action((state) => {
+    state.value.push([""]);
+  }),
+  addViz: action((state, payload: {tabIndex: number}) => {
+    state.value[payload.tabIndex].push("");
+  }),
+  reset: action((state) => {
+    state.value = [[""]]
+  }),
+};

@@ -116,6 +116,7 @@ export function useDataThemesRawData(props: {
   const addTabTitles = useStoreActions(
     (state) => state.dataThemes.titles.addTab
   );
+  const addTabTextContent = useStoreActions((state) => state.dataThemes.textContent.addTab);
   const addVizId = useStoreActions((state) => state.dataThemes.ids.addViz);
   const addVizActivePanel = useStoreActions((state) => state.dataThemes.activePanels.addViz);
   const addVizChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addViz);
@@ -123,6 +124,8 @@ export function useDataThemesRawData(props: {
   const addVizMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addViz);
   const addVizStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addViz);
   const addVizAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addViz);
+  const addVizTextContent = useStoreActions((state) => state.dataThemes.textContent.addViz);
+
   const setTabTitle = useStoreActions(
     (actions) => actions.dataThemes.titles.setTabTitle
   );
@@ -244,6 +247,7 @@ export function useDataThemesRawData(props: {
                   addTabStepSelections();
                   addTabAppliedFilters();
                   addTabTitles();
+                  addTabTextContent();
                   tmpVisualOptions.push([{}]);
                   tmpCurrentChart.push([{}]);
                   tmpCurrentChartData.push([{}]);
@@ -260,6 +264,7 @@ export function useDataThemesRawData(props: {
                   addVizMapping({tabIndex: tabIndex});
                   addVizStepSelections({tabIndex: tabIndex});
                   addVizAppliedFilters({tabIndex: tabIndex});
+                  addVizTextContent({tabIndex: tabIndex});
                   tmpVisualOptions[tabIndex].push({});
                   tmpCurrentChart[tabIndex].push({});
                   tmpCurrentChartData[tabIndex].push({});
