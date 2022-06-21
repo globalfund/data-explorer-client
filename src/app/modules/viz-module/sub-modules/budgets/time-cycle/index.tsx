@@ -9,7 +9,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 interface BudgetsTimeCycleModuleProps {
@@ -33,6 +32,7 @@ interface BudgetsTimeCycleModuleProps {
   drilldownVizSelected: string | undefined;
   setDrilldownVizSelected: (drilldownVizSelected: string | undefined) => void;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
@@ -45,10 +45,13 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      setVizDrilldowns([{ name: "Budget-time cycle" }]);
     }
     if (props.vizLevel > 0 && props.vizSelected && props.vizSelected) {
-      const newDrilldowns = [{ name: "Dataset" }, { name: props.vizSelected }];
+      const newDrilldowns = [
+        { name: "Budget-time cycle" },
+        { name: props.vizSelected },
+      ];
       if (props.vizLevel === 2 && props.drilldownVizSelected) {
         const idSplits = props.drilldownVizSelected.split("-");
         const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
@@ -138,11 +141,12 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         }
       `}
     >
-      <div css="margin-bottom: 10px;">
-        <DrilldownPath />
-      </div>
       {props.vizLevel > 0 && (
-        <VizBackBtn vizLevel={props.vizLevel} setVizLevel={props.setVizLevel} />
+        <VizBackBtn
+          vizLevel={props.vizLevel}
+          setVizLevel={props.setVizLevel}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
+        />
       )}
       {vizComponent}
     </div>

@@ -10,7 +10,8 @@ import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/da
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
 
 interface Props {
-  toolboxOpen?: boolean;
+  toolboxOpen: boolean;
+  setOpenToolboxPanel: (value: boolean) => void;
 }
 
 export function GenericBudgetsFlowWrapper(props: Props) {
@@ -165,6 +166,7 @@ export function GenericBudgetsFlowWrapper(props: Props) {
       dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected.id}
       toolboxOpen={props.toolboxOpen}
+      setOpenToolboxPanel={props.setOpenToolboxPanel}
     />
   );
 }

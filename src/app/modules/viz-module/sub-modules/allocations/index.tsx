@@ -19,7 +19,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
 import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
@@ -31,6 +30,7 @@ import {
 interface AllocationsModuleProps {
   code?: string;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function AllocationsModule(props: AllocationsModuleProps) {
@@ -243,7 +243,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     const items = document.getElementsByClassName("apexcharts-radial-series");
     if (vizSelected) {
       setVizDrilldowns([
-        { name: "Dataset" },
+        { name: "Allocation-radial" },
         { name: selectedPeriod },
         { name: vizSelected },
       ]);
@@ -279,7 +279,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         }`,
       });
     } else {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      setVizDrilldowns([{ name: "Allocation-radial" }]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
@@ -291,7 +291,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }, [vizSelected, selectedPeriod]);
 
   React.useEffect(() => {
-    setVizDrilldowns([{ name: "Dataset" }]);
+    setVizDrilldowns([{ name: "Allocation-radial" }]);
     fetchPeriodOptionsData({});
 
     // setTimeout(() => {
@@ -476,9 +476,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         Allocations | {selectedPeriod} <InfoIcon />
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-      <div css="margin-top: 5px;">
-        <DrilldownPath />
-      </div>
       {vizLevel > 0 && (
         <VizBackBtn
           vizLevel={vizLevel}
@@ -488,6 +485,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             }
             setVizLevel(value);
           }}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
         />
       )}
       {vizComponent}

@@ -8,7 +8,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
@@ -30,6 +29,7 @@ interface InvestmentsTimeCycleModuleProps {
   setVizPrevTranslation: (obj: { x: number; y: number }) => void;
   type?: string;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function InvestmentsTimeCycleModule(
@@ -43,11 +43,11 @@ export function InvestmentsTimeCycleModule(
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      setVizDrilldowns([{ name: `${props.type}-time cycle` }]);
     }
     if (props.vizLevel > 0 && props.vizSelected) {
       setVizDrilldowns([
-        { name: "Dataset" },
+        { name: `${props.type}-time cycle` },
         { name: props.vizSelected.split("-")[0] },
       ]);
     }
@@ -111,11 +111,12 @@ export function InvestmentsTimeCycleModule(
         }
       `}
     >
-      <div css="margin-bottom: 10px;">
-        <DrilldownPath />
-      </div>
       {props.vizLevel > 0 && (
-        <VizBackBtn vizLevel={props.vizLevel} setVizLevel={props.setVizLevel} />
+        <VizBackBtn
+          vizLevel={props.vizLevel}
+          setVizLevel={props.setVizLevel}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
+        />
       )}
       {vizComponent}
     </div>

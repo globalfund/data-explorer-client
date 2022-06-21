@@ -288,6 +288,7 @@ export default function GrantDetail() {
               code={params.code}
               toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
+              setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
         </Switch>

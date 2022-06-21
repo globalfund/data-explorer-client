@@ -128,10 +128,16 @@ export default function VizModule() {
         <Switch>
           {/* Budgets */}
           <Route path="/viz/budgets/flow">
-            <GenericBudgetsFlowWrapper toolboxOpen={openToolboxPanel} />
+            <GenericBudgetsFlowWrapper
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path="/viz/budgets/time-cycle">
-            <GenericBudgetsTimeCycleWrapper toolboxOpen={openToolboxPanel} />
+            <GenericBudgetsTimeCycleWrapper
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path="/viz/budgets/map">
             <BudgetsGeoMap />
@@ -198,12 +204,16 @@ export default function VizModule() {
             <AllocationsGeoMap />
           </Route>
           <Route path="/viz/allocations">
-            <AllocationsModule toolboxOpen={openToolboxPanel} />
+            <AllocationsModule
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           {/* Pledges & Contributions */}
           <Route path="/viz/pledges-contributions/time-cycle">
             <PledgesContributionsTimeCycleModule
               toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
           <Route path="/viz/pledges-contributions/table">

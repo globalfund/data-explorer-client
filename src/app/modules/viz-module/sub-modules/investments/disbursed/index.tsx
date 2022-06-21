@@ -13,7 +13,6 @@ import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 
@@ -32,6 +31,7 @@ interface InvestmentsDisbursedModuleProps {
   onNodeClick?: (code: string) => void;
   type?: string;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 function filterDisbursements(
@@ -77,7 +77,7 @@ export function InvestmentsDisbursedModule(
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      setVizDrilldowns([{ name: `${props.type}-treemap` }]);
     }
     if (props.vizLevel > 0 && props.vizSelected) {
       const code = props.vizSelected.split("-")[0];
@@ -90,7 +90,10 @@ export function InvestmentsDisbursedModule(
           }
         }
       });
-      setVizDrilldowns([{ name: "Dataset" }, { name: name || code }]);
+      setVizDrilldowns([
+        { name: `${props.type}-treemap` },
+        { name: name || code },
+      ]);
     }
   }, [props.vizLevel, props.vizSelected]);
 
@@ -206,9 +209,6 @@ export function InvestmentsDisbursedModule(
             <b>Total amount: {formatFinancialValue(totalValue)}</b>
           </Grid>
         )}
-        <Grid item xs={12}>
-          <DrilldownPath />
-        </Grid>
       </Grid>
       <div
         css={`
@@ -223,6 +223,7 @@ export function InvestmentsDisbursedModule(
           <VizBackBtn
             vizLevel={props.vizLevel}
             setVizLevel={props.setVizLevel}
+            setOpenToolboxPanel={props.setOpenToolboxPanel}
           />
         )}
         {vizComponent}

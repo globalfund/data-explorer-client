@@ -13,6 +13,7 @@ interface Props {
   code?: string;
   toolboxOpen?: boolean;
   type: "Disbursed" | "Signed" | "Commitment";
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function GenericInvestmentsDisbursedWrapper(props: Props) {
@@ -163,6 +164,7 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
       setVizTranslation={setVizTranslation}
       isDrilldownLoading={isDrilldownLoading}
       toolboxOpen={props.toolboxOpen}
+      setOpenToolboxPanel={props.setOpenToolboxPanel}
     />
   );
 }

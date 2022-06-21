@@ -160,6 +160,7 @@ import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDe
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
 import countrySummary from "../api/action-reducers/cms/countrySummary";
 import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
+import { DataPathPanelVisibilityState } from "../api/action-reducers/sync/dataPath";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -315,6 +316,8 @@ const storeContent: StoreModel = {
   ),
   ToolBoxPanelBudgetFlowDrilldownSelectors,
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
+  // sync data path vars
+  DataPathPanelVisibilityState,
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),

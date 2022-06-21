@@ -11,6 +11,8 @@ import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { DataPathPanel } from "app/components/ToolBoxPanel/components/datapath";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
@@ -32,6 +34,16 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.scrollHeight > document.body.clientHeight
   );
 
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+  const showDataPath = useStoreState(
+    (state) => state.DataPathPanelVisibilityState.value
+  );
+  const setShowDataPath = useStoreActions(
+    (state) => state.DataPathPanelVisibilityState.setValue
+  );
+
   React.useLayoutEffect(() => {
     setVisibleVScrollbar(
       document.body.scrollHeight > document.body.clientHeight
@@ -43,6 +55,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
       document.body.scrollHeight > document.body.clientHeight
     );
   }, [history.location.pathname]);
+
+  React.useEffect(() => {
+    if (vizDrilldowns.length < 2 && showDataPath) {
+      setShowDataPath(false);
+    } else if (!showDataPath && vizDrilldowns.length > 1) {
+      setShowDataPath(true);
+    }
+  }, [vizDrilldowns]);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -192,47 +212,53 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   <TriangleXSIcon />
                 </div>
               )}
-              {isMobile && (
-                <div
-                  css={`
-                    width: 100%;
-                    padding: 16px;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    border-bottom: 1px solid #dfe3e6;
-                  `}
-                >
-                  <div
-                    css={`
-                      font-size: 18px;
-                      font-weight: bold;
-                      font-family: GothamNarrow-Bold;
-                    `}
-                  >
-                    Toolbox
-                  </div>
-                  <IconButton
-                    css={`
-                      width: 14px;
-                      height: 14px;
-                    `}
-                    onClick={() => props.onCloseBtnClick()}
-                  >
-                    <CloseOutlinedIcon
-                      htmlColor="#2E4063"
-                      viewBox=" -4 -4 30 30"
-                    />
-                  </IconButton>
-                </div>
+              {!showDataPath ? (
+                <React.Fragment>
+                  {isMobile && (
+                    <div
+                      css={`
+                        width: 100%;
+                        padding: 16px;
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
+                        border-bottom: 1px solid #dfe3e6;
+                      `}
+                    >
+                      <div
+                        css={`
+                          font-size: 18px;
+                          font-weight: bold;
+                          font-family: GothamNarrow-Bold;
+                        `}
+                      >
+                        Toolbox
+                      </div>
+                      <IconButton
+                        css={`
+                          width: 14px;
+                          height: 14px;
+                        `}
+                        onClick={() => props.onCloseBtnClick()}
+                      >
+                        <CloseOutlinedIcon
+                          htmlColor="#2E4063"
+                          viewBox=" -4 -4 30 30"
+                        />
+                      </IconButton>
+                    </div>
+                  )}
+                  <ToolBoxPanelIconButtons
+                    getAllAvailableGrants={props.getAllAvailableGrants}
+                  />
+                  <SubToolBoxPanel
+                    filterGroups={props.filterGroups}
+                    closePanel={props.onCloseBtnClick}
+                  />
+                </React.Fragment>
+              ) : (
+                <DataPathPanel />
               )}
-              <ToolBoxPanelIconButtons
-                getAllAvailableGrants={props.getAllAvailableGrants}
-              />
-              <SubToolBoxPanel
-                filterGroups={props.filterGroups}
-                closePanel={props.onCloseBtnClick}
-              />
             </div>
           </div>
         </Slide>

@@ -9,7 +9,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 interface BudgetsFlowModuleProps {
@@ -48,6 +47,7 @@ interface BudgetsFlowModuleProps {
   vizPrevSelected: string | undefined;
   drilldownVizSelected: string | undefined;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
@@ -60,11 +60,11 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      setVizDrilldowns([{ name: "Budget-budget flow" }]);
     }
     if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
       const newDrilldowns = [
-        { name: "Dataset" },
+        { name: "Budget-budget flow" },
         { name: props.vizSelected.id },
       ];
       if (props.vizLevel === 2 && props.drilldownVizSelected) {
@@ -166,11 +166,12 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         }
       `}
     >
-      <div>
-        <DrilldownPath />
-      </div>
       {props.vizLevel > 0 && (
-        <VizBackBtn vizLevel={props.vizLevel} setVizLevel={props.setVizLevel} />
+        <VizBackBtn
+          vizLevel={props.vizLevel}
+          setVizLevel={props.setVizLevel}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
+        />
       )}
       {vizComponent}
     </div>

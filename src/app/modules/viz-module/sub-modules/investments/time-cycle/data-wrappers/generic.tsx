@@ -13,6 +13,7 @@ interface Props {
   code?: string;
   toolboxOpen?: boolean;
   type: "Disbursed" | "Signed" | "Commitment";
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function GenericInvestmentsTimeCycleWrapper(props: Props) {
@@ -159,6 +160,7 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
       vizPrevTranslation={vizPrevTranslation}
       setVizPrevTranslation={setVizPrevTranslation}
       toolboxOpen={props.toolboxOpen}
+      setOpenToolboxPanel={props.setOpenToolboxPanel}
     />
   );
 }

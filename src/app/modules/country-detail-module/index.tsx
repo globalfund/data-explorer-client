@@ -306,6 +306,7 @@ export default function CountryDetail() {
             <AllocationsModule
               code={paramCode}
               toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
           {/* Eligibility */}

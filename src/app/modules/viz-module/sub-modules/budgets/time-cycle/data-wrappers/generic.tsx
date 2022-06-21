@@ -10,6 +10,7 @@ import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budge
 
 interface Props {
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function GenericBudgetsTimeCycleWrapper(props: Props) {
@@ -147,6 +148,7 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
       dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
+      setOpenToolboxPanel={props.setOpenToolboxPanel}
     />
   );
 }
