@@ -32,6 +32,7 @@ import { DataThemesBuilderCustomize } from "app/modules/data-themes-module/sub-m
 import { DataThemesBuilderInitialView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/initial";
 import { DataThemesBuilderChartType } from "app/modules/data-themes-module/sub-modules/theme-builder/views/chart-type";
 import { DataThemesBuilderPreviewTheme } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme";
+import { DataThemesBuilderTextView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text";
 import {
   charts,
   defaultChartOptions,
@@ -496,6 +497,16 @@ export function DataThemesBuilder() {
               }
               updateLocalStates={updateLocalStates}
             />
+          </Route>
+          <Route path={`/data-themes/:page/text`}>
+            <DataThemesBuilderTextView
+              data={rawData}
+              loading={loading}
+              visualOptions={visualOptions}
+              filterOptionGroups={rawData}
+              updateLocalStates={updateLocalStates}
+            />
+            <React.Fragment />
           </Route>
           <Route
             path={`/data-themes/:page`}

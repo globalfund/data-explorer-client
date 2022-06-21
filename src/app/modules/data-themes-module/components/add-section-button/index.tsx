@@ -5,6 +5,7 @@ import { AddIcon } from "app/assets/icons/Add";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import BarChartIcon from "@material-ui/icons/BarChart";
+import TextFieldsIcon from "@material-ui/icons/TextFields";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import { Link, useHistory, useParams } from "react-router-dom";
 /* project */
@@ -49,6 +50,10 @@ export function DataThemesAddSectionButton(
     history.push(`/data-themes/${page}/data`);
   }
 
+  function onTextPress() {
+    history.push(`/data-themes/${page}/text`);
+  }
+
   return (
     <div
       css={styles.container(props.showCreateYourStoryText ? "top" : "bottom")}
@@ -74,6 +79,9 @@ export function DataThemesAddSectionButton(
           <div css={styles.contenttypeicons}>
             <IconButton onClick={onChartPress}>
               <BarChartIcon htmlColor="#373D43" />
+            </IconButton>
+            <IconButton onClick={onTextPress}>
+              <TextFieldsIcon htmlColor="#373D43" />
             </IconButton>
             <IconButton>
               <SearchIcon htmlColor="#373D43" />

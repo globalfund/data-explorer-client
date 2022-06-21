@@ -3,11 +3,13 @@ import React from "react";
 import SearchIcon from "@material-ui/icons/Search";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import TextFieldsIcon from "@material-ui/icons/TextFields";
 /* project */
 import { styles } from "app/modules/data-themes-module/components/toolbox/styles";
 import { DataThemesToolBoxProps } from "app/modules/data-themes-module/components/toolbox/data";
 import { DataThemesToolBoxSteps } from "app/modules/data-themes-module/components/toolbox/views/steps";
 import { DataThemesToolBoxPreview } from "app/modules/data-themes-module/components/toolbox/views/preview";
+import { DataThemesToolBoxText } from "app/modules/data-themes-module/components/toolbox/views/text";
 
 export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   return (
@@ -22,6 +24,12 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
                 <BarChartIcon htmlColor="#262C34" />
               </div>
               Data visualisation
+            </div>
+            <div>
+              <div>
+                <TextFieldsIcon htmlColor="#262C34" />
+              </div>
+              Rich Text
             </div>
             <div>
               <div>
@@ -57,6 +65,9 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
         <DataThemesToolBoxPreview
           filterOptionGroups={props.filterOptionGroups}
         />
+      )}
+      {props.textView && (
+        <DataThemesToolBoxText />
       )}
     </div>
   );
