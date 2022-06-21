@@ -66,6 +66,10 @@ export function DataPathPanel() {
                   }
                 }
 
+                // .MuiTimelineItem-root {
+                //   min-height: 100px;
+                // }
+
                 .MuiTimelineDot-root {
                   margin: 0;
                   padding: 3px;
@@ -91,15 +95,29 @@ export function DataPathPanel() {
                     <TimelineDot />
                     {index < vizDrilldowns.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
-                  <TimelineContent
-                    css={`
-                      text-transform: capitalize;
-                      text-decoration: ${index === 0 ? "none" : "underline"};
-                    `}
-                  >
-                    {index === vizDrilldowns.length - 1
-                      ? drilldown.name.split("-")[1]
-                      : drilldown.name}
+                  <TimelineContent>
+                    <div
+                      css={`
+                        text-transform: capitalize;
+                        text-decoration: ${index === 0 ? "none" : "underline"};
+                      `}
+                    >
+                      {index === vizDrilldowns.length - 1
+                        ? drilldown.name.split("-")[1]
+                        : drilldown.name}
+                    </div>
+                    {/* <div
+                      css={`
+                        color: #fff;
+                        margin-top: 8px;
+                        padding: 2px 8px;
+                        width: fit-content;
+                        background: #98a1aa;
+                        border-radius: 26px;
+                      `}
+                    >
+                      By Components
+                    </div> */}
                   </TimelineContent>
                 </TimelineItem>
               ))}
