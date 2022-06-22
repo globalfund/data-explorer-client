@@ -13,6 +13,14 @@ export interface DataThemesAppliedFiltersStateModel {
       value: any[];
     }
   >;
+  setAll: Action<
+    DataThemesAppliedFiltersStateModel,
+    {
+      tab: number;
+      viz: number;
+      value: any;
+    }
+  >;
   reset: Action<DataThemesAppliedFiltersStateModel>;
   addTab: Action<DataThemesAppliedFiltersStateModel>;
   addViz: Action<DataThemesAppliedFiltersStateModel, {tabIndex: number}>;
@@ -44,6 +52,16 @@ export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
           };
         }
       }
+    ),
+    setAll: action(
+      (
+        state,
+        payload: {
+          tab: number;
+          viz: number;
+          value: any;
+        }
+      ) => { state.value[payload.tab][payload.viz] = payload.value; }
     ),
     reset: action((state) => {state.value = [[{}]]}),
     addTab: action((state) => {

@@ -82,6 +82,9 @@ export function useDataThemesRawData(props: {
   const setAppliedFilters = useStoreActions(
     (actions) => actions.dataThemes.appliedFilters.setValue
   );
+  const setAllAppliedFilters = useStoreActions(
+    (actions) => actions.dataThemes.appliedFilters.setAll
+  );
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
   );
@@ -308,15 +311,11 @@ export function useDataThemesRawData(props: {
                         const editorState = EditorState.createWithContent(contentState);
                         setTextContent({tab: tabIndex, viz: vizIndex, value: editorState});
                       } else {
-                        setAppliedFilters({
+                        setAllAppliedFilters({
                           tab: tabIndex,
                           viz: vizIndex,
-                          key:
-                            tabs[tabIndex].content[vizIndex].appliedFilters.key ||
-                            "",
                           value:
-                            tabs[tabIndex].content[vizIndex].appliedFilters
-                              .value || {},
+                            tabs[tabIndex].content[vizIndex].appliedFilters,
                         });
 
                         tmpVisualOptions[tabIndex][vizIndex] =
@@ -347,7 +346,7 @@ export function useDataThemesRawData(props: {
                         // Before, this was done through a hook on the appliedFilters.
                         let tmpFilteredData = filterDataThemesData(
                           dataToIndex[tabIndex][vizIndex].data,
-                          tabs[tabIndex].content[vizIndex].appliedFilters.value || {}
+                          tabs[tabIndex].content[vizIndex].appliedFilters
                         )
 
                         tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
