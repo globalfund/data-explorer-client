@@ -87,7 +87,7 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
         mapping: handleReplaceLocalMapping(
           nextId,
           isEmpty(mapping[activeTabIndex][activeVizIndex])
-            ? mappingFromStorage
+            ? mappingFromStorage[activeTabIndex][activeVizIndex]
             : mapping[activeTabIndex][activeVizIndex],
           fromDimension,
           toDimension,
@@ -276,7 +276,7 @@ function DataThemesBuilderMappingDimension(
         {}
       ) as { [key: string]: any };
       const dimensionMappingFromStorage = get(
-        mappingFromStorage,
+        mappingFromStorage[activeTabIndex][activeVizIndex],
         dimension.id,
         {}
       );
@@ -347,7 +347,6 @@ function DataThemesBuilderMappingDimension(
       if (nextDimensionMapping.ids.length === 0) {
         nextDimensionMapping = undefined;
       }
-
       setMapping({
         tab: activeTabIndex,
         viz: activeVizIndex,
