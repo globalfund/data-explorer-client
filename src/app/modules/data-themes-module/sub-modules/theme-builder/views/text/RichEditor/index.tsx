@@ -53,7 +53,7 @@ export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex
   };
 
   return (
-    <div className={editorStyles.editor} onClick={focus}>
+    <div className={props.editMode ? editorStyles.editor : editorStyles.editorPreview} onClick={focus}>
       <Editor
         readOnly={!props.editMode}
         editorKey="RichEditor"

@@ -51,7 +51,7 @@ export function DataThemesBuilderPreviewTheme(
   }, [containerRef]);
 
   React.useEffect(() => {
-    if (domRef && domRef.current) {
+    if (!vizIsTextContent[props.tabIndex][props.vizIndex] && (domRef && domRef.current)) {
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
@@ -94,7 +94,7 @@ export function DataThemesBuilderPreviewTheme(
   }
 
   return (
-    <div css={commonStyles.container}>
+    <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
       <DataThemesPageSubHeader
         previewMode={ page !== "new" ? true : false}
         data={props.data}
@@ -113,16 +113,15 @@ export function DataThemesBuilderPreviewTheme(
         filterOptionGroups={props.filterOptionGroups}
       />
       { vizIsTextContent[props.tabIndex][props.vizIndex] ? (
-        <div css={commonStyles.innercontainer} onClick={() => {handleTextClick()}}>
+        <div css={commonStyles.previewInnercontainer} onClick={() => {handleTextClick()}}>
           <RichEditor editMode={false} tabIndex={props.tabIndex} vizIndex={props.vizIndex} />
         </div>
       ) : (
-        <div css={commonStyles.innercontainer}>
+        <div css={commonStyles.previewInnercontainer}>
           <div
             ref={containerRef}
             css={`
               width: calc(100% - 24px);
-              height: calc(100vh - 225px);
             `}
           >
             <div
@@ -130,7 +129,6 @@ export function DataThemesBuilderPreviewTheme(
               ref={domRef}
               css={`
                 overflow-x: auto;
-                margin-top: 40px;
 
                 * {
                   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
