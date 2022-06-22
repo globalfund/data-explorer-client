@@ -25,26 +25,17 @@ interface BudgetsFlowModuleProps {
   isDrilldownLoading: boolean;
   vizLevel: number;
   setVizLevel: (vizLevel: number) => void;
-  vizTranslation: { x: number; y: number };
-  setVizTranslation: (obj: { x: number; y: number }) => void;
   vizSelected: { id: string | undefined; filterStr: string | undefined };
   setVizSelected: (vizSelected: {
     id: string | undefined;
     filterStr: string | undefined;
   }) => void;
-  vizCompData: any;
-  setVizCompData: (comps: any) => void;
-  vizPrevTranslation: { x: number; y: number };
-  // setVizPrevTranslation: (obj: { x: number; y: number }) => void;
   dataDrilldownLevel1: BudgetsTreemapDataItem[];
   dataDrilldownLevel2: BudgetsTreemapDataItem[];
   setDrilldownVizSelected: (obj: {
     id: string | undefined;
     filterStr: string | undefined;
   }) => void;
-  setVizPrevSelected: (vizPrevSelected: string | undefined) => void;
-  setVizPrevTranslation: (obj: { x: number; y: number }) => void;
-  vizPrevSelected: string | undefined;
   drilldownVizSelected: string | undefined;
   toolboxOpen?: boolean;
   setOpenToolboxPanel?: (value: boolean) => void;
@@ -72,14 +63,17 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
         const secondDrillDown =
           idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-        newDrilldowns.push(
-          {
-            name: firstDrillDown,
-          },
-          {
-            name: secondDrillDown,
-          }
-        );
+        // newDrilldowns.push(
+        //   {
+        //     name: firstDrillDown,
+        //   },
+        //   {
+        //     name: secondDrillDown,
+        //   }
+        // );
+        newDrilldowns.push({
+          name: `${firstDrillDown} - ${secondDrillDown}`,
+        });
       }
       setVizDrilldowns(newDrilldowns);
     }
@@ -107,33 +101,25 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           ) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
-            props.setVizTranslation({ x: x * -1, y: 0 });
           }}
-          vizCompData={props.vizCompData}
-          setVizCompData={props.setVizCompData}
         />
       );
     } else if (props.vizLevel === 1) {
       vizComponent = (
-        <React.Fragment>
-          <BudgetsTreemap
-            isDrilldownTreemap
-            tooltipValueLabel="Budget"
-            xsTooltipData={xsTooltipData}
-            data={props.dataDrilldownLevel1}
-            setXsTooltipData={setXsTooltipData}
-            onNodeClick={(node: string, x: number, y: number) => {
-              props.setVizLevel(2);
-              props.setVizPrevSelected(props.vizSelected.id);
-              props.setDrilldownVizSelected({
-                id: node,
-                filterStr: undefined,
-              });
-              props.setVizPrevTranslation(props.vizTranslation);
-              props.setVizTranslation({ x: x * -1, y: 0 });
-            }}
-          />
-        </React.Fragment>
+        <BudgetsTreemap
+          isDrilldownTreemap
+          tooltipValueLabel="Budget"
+          xsTooltipData={xsTooltipData}
+          data={props.dataDrilldownLevel1}
+          setXsTooltipData={setXsTooltipData}
+          onNodeClick={(node: string, x: number, y: number) => {
+            props.setVizLevel(2);
+            props.setDrilldownVizSelected({
+              id: node,
+              filterStr: undefined,
+            });
+          }}
+        />
       );
     } else if (props.vizLevel === 2) {
       vizComponent = (
@@ -148,7 +134,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
               const idSplits = props.drilldownVizSelected.split("-");
               let code = node.replace(idSplits[0], "");
               code = code.slice(0, code.length - 1);
-              history.push(`/grant/${code}`);
+              history.push(`/grant/${code}/1/budgets/flow`);
             }
           }}
         />

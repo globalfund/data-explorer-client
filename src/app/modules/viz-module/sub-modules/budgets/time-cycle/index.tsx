@@ -122,7 +122,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
               const idSplits = props.drilldownVizSelected.split("-");
               let code = node.replace(idSplits[0], "");
               code = code.slice(0, code.length - 1);
-              history.push(`/grant/${code}`);
+              history.push(`/grant/${code}/1/budgets/time-cycle`);
             }
           }}
         />

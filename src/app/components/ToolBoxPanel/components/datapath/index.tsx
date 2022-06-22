@@ -87,7 +87,7 @@ export function DataPathPanel() {
               }
             `}
           >
-            {vizDrilldowns
+            {[...vizDrilldowns]
               .reverse()
               .map((drilldown: DrilldownModel, index: number) => (
                 <TimelineItem key={drilldown.name}>
@@ -128,7 +128,7 @@ export function DataPathPanel() {
               padding-left: 40px;
             `}
           >
-            {vizDrilldowns[vizDrilldowns.length - 1].name}
+            {vizDrilldowns[0].name}
           </div>
         </div>
       )}

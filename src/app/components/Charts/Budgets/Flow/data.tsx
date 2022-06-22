@@ -19,8 +19,6 @@ export interface BudgetsFlowData {
 
 export interface BudgetsFlowProps {
   data: BudgetsFlowData;
-  vizCompData: any;
-  setVizCompData: (vizCompData: any) => void;
   selectedNodeId?: string;
   onNodeClick: (
     node: { id: string; filterStr: string },

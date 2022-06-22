@@ -17,19 +17,10 @@ interface Props {
 export function LocationDetailBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Location Budgets Flow");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
     id: string | undefined;
     filterStr: string | undefined;
   }>({ id: undefined, filterStr: undefined });
-  const [vizCompData, setVizCompData] = React.useState([]);
 
   // api call & data
   const fetchData = useStoreActions(
@@ -168,18 +159,10 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
       isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       vizSelected={vizSelected}
       setVizSelected={setVizSelected}
-      vizCompData={vizCompData}
-      setVizCompData={setVizCompData}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
-      setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected.id}
       toolboxOpen={props.toolboxOpen}
