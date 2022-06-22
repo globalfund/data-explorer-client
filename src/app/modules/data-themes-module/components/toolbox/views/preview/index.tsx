@@ -101,6 +101,8 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
             name={expandedGroup.name}
             options={expandedGroup.options}
             goBack={() => setExpandedGroup(null)}
+            tabIndex={props.tabIndex}
+            vizIndex={props.vizIndex}
           />
         </div>
       )}

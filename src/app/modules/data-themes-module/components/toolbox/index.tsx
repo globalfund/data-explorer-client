@@ -63,6 +63,8 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       )}
       {props.filtersView && (
         <DataThemesToolBoxPreview
+          tabIndex={props.tabIndex}
+          vizIndex={props.vizIndex}
           filterOptionGroups={props.filterOptionGroups}
         />
       )}

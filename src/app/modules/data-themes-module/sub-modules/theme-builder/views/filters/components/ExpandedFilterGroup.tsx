@@ -25,6 +25,8 @@ import {
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
+  tabIndex?: number;
+  vizIndex?: number;
 }
 
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
@@ -32,8 +34,8 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [allSelected, setAllSelected] = React.useState(false);
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = props.tabIndex || useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = props.vizIndex || useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const appliedFilters = useStoreState((state) =>
     get(state.dataThemes.appliedFilters, `value[${activeTabIndex}][${activeVizIndex}].${props.name}`, [])
   );

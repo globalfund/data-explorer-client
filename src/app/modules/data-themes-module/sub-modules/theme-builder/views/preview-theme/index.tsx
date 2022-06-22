@@ -107,6 +107,8 @@ export function DataThemesBuilderPreviewTheme(
       />
       <DataThemesToolBox
         filtersView
+        tabIndex={props.tabIndex}
+        vizIndex={props.vizIndex}
         data={props.data}
         loading={props.loading}
         loadDataset={props.loadDataset}

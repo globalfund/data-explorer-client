@@ -11,6 +11,8 @@ export interface DataThemesToolBoxProps {
   textView?: boolean;
   visualOptions?: any;
   filtersView?: boolean;
+  tabIndex?: number;
+  vizIndex?: number;
   currentChartData?: any;
   forceNextEnabled?: boolean;
   filterOptionGroups: FilterGroupModel[];
