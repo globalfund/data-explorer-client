@@ -71,6 +71,7 @@ export function DataThemesBuilder() {
 
   const {
     loading,
+    setLoading,
     clearStore,
     loadingData,
     loadDataset,
@@ -78,6 +79,7 @@ export function DataThemesBuilder() {
     rawData,
     setIsInSession,
     setRawData,
+    setFilteredData,
   } = useDataThemesRawData({
     visualOptions,
     setVisualOptions,
@@ -189,6 +191,7 @@ export function DataThemesBuilder() {
     }
     setCurrentChart((prev) => [...prev, []]);
     setCurrentChartData((prev) => [...prev, []]);
+    setFilteredData((prev) => [...prev, [[]]]);
     setRawData((prev) => [
       ...prev,
       [
@@ -214,7 +217,6 @@ export function DataThemesBuilder() {
     let tmpCurrentChartData: any = [...currentChartData];
     tmpCurrentChartData[activeTabIndex].push(undefined);
     setCurrentChartData(tmpCurrentChartData);
-
     let tmpRawData = [...rawData];
     tmpRawData[activeTabIndex].push({
       id: 0,
@@ -237,6 +239,7 @@ export function DataThemesBuilder() {
         },
       ],
     ]);
+    setFilteredData([[[]]]);
     setCurrentChart([[]]);
     setCurrentChartData([[]]);
     resetActiveTabIndex();
@@ -289,7 +292,7 @@ export function DataThemesBuilder() {
     if (!loading) {
       let tmpCurrentChartData: any = [...currentChartData];
       tmpCurrentChartData[activeTabIndex][activeVizIndex] = parseDataset(
-        filteredData,
+        filteredData[activeTabIndex][activeVizIndex],
         null,
         {
           locale: navigator.language || "en-US",
@@ -423,7 +426,7 @@ export function DataThemesBuilder() {
               vizIndex={activeVizIndex}
               allData={rawData[activeTabIndex][activeVizIndex].data}
               loading={loading}
-              data={filteredData}
+              data={filteredData[activeTabIndex][activeVizIndex]}
               loadDataset={loadDataset}
               visualOptions={visualOptions}
               filterOptionGroups={
@@ -449,7 +452,7 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/initial`}>
             <DataThemesBuilderInitialView
               loading={loading}
-              data={filteredData}
+              data={filteredData[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               filterOptionGroups={
                 rawData[activeTabIndex][activeVizIndex].filterOptionGroups

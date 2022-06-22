@@ -58,8 +58,8 @@ export function useDataThemesRawData(props: {
   const [filteredData, setFilteredData] = React.useState<
     {
       [key: string]: number | string | null;
-    }[]
-  >([]);
+    }[][][]
+  >([[[]]]);
   const [isInSession, setIsInSession] = useSessionStorage<number>(
     "isInSession",
     0
@@ -206,12 +206,12 @@ export function useDataThemesRawData(props: {
 
   React.useEffect(() => {
     if (!loading) {
-      setFilteredData(
-        filterDataThemesData(
-          rawData[activeTabIndex][activeVizIndex].data,
-          appliedFilters[activeTabIndex][activeVizIndex]
-        )
-      );
+      let tmpFilteredData = [ ...filteredData ]
+      tmpFilteredData[activeTabIndex][activeVizIndex] = filterDataThemesData(
+        rawData[activeTabIndex][activeVizIndex].data,
+        appliedFilters[activeTabIndex][activeVizIndex]
+      )
+      setFilteredData(tmpFilteredData);
     }
   }, [rawData, appliedFilters, activeTabIndex, loading]);
 
@@ -238,6 +238,7 @@ export function useDataThemesRawData(props: {
             let tmpVisualOptions: any = [...visualOptions];
             let tmpCurrentChart: any = [...currentChart];
             let tmpCurrentChartData: any = [...currentChartData];
+            let tmpFilteredData: any = [...filteredData];
 
             if (tabs.length > 0 && tabs[0].content.length > 0) {
               let dataToIndex: any[][] = [];
@@ -257,6 +258,7 @@ export function useDataThemesRawData(props: {
                   tmpVisualOptions.push([{}]);
                   tmpCurrentChart.push([{}]);
                   tmpCurrentChartData.push([{}]);
+                  tmpFilteredData.push([[]]);
                 }
                 
                 // set the tab title
@@ -274,6 +276,7 @@ export function useDataThemesRawData(props: {
                   tmpVisualOptions[tabIndex].push({});
                   tmpCurrentChart[tabIndex].push({});
                   tmpCurrentChartData[tabIndex].push({});
+                  tmpFilteredData[tabIndex].push([]);
                 }
                 
                 // add an empty list for
@@ -344,13 +347,14 @@ export function useDataThemesRawData(props: {
                         setCurrentChart(tmpCurrentChart);
 
                         // Before, this was done through a hook on the appliedFilters.
-                        let tmpFilteredData = filterDataThemesData(
+                        tmpFilteredData[tabIndex][vizIndex] = filterDataThemesData(
                           dataToIndex[tabIndex][vizIndex].data,
                           tabs[tabIndex].content[vizIndex].appliedFilters
-                        )
+                        );
+                        setFilteredData(tmpFilteredData);
 
                         tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
-                          tmpFilteredData,
+                          tmpFilteredData[tabIndex][vizIndex],
                           null,
                           {
                             locale: navigator.language || "en-US",
@@ -390,8 +394,10 @@ export function useDataThemesRawData(props: {
     loadingData,
     filteredData,
     loading: loading || loadingData,
+    setLoading,
     rawData,
     setIsInSession,
     setRawData,
+    setFilteredData,
   };
 }
