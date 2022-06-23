@@ -62,6 +62,7 @@ export interface GeoMapProps {
   investmentSubType?: "Disbursed" | "Signed" | "Committed";
   allowClickthrough?: boolean;
   noData: boolean;
+  clickthroughPath?: string;
 }
 
 export const mapStyle = {
@@ -1015,8 +1016,7 @@ export const donorPins: GeoMapPinMarker[] = [
     intId: 23,
   },
   {
-    code:
-      "Rotary Australia World Community Service and Rotarians Against Malaria",
+    code: "Rotary Australia World Community Service and Rotarians Against Malaria",
     geoName:
       "Rotary Australia World Community Service and Rotarians Against Malaria",
     id: "ddea828b-46bc-4d6d-adc2-830d9ce4985e",

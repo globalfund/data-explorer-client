@@ -102,6 +102,7 @@ export function AllocationsGeoMap(props: Props) {
     >
       <GeoMap
         allowClickthrough
+        clickthroughPath="allocation"
         type="allocations"
         data={
           geomapView === "countries"

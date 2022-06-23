@@ -94,6 +94,13 @@ export function InvestmentsGeoMap(props: Props) {
     }
   }, [props.code, appliedFilters, geomapView, props.type]);
 
+  let clickthroughPath = "signed/treemap";
+  if (props.type === "Committed") {
+    clickthroughPath = "commitment/treemap";
+  } else if (props.type === "Disbursed") {
+    clickthroughPath = "disbursements/treemap";
+  }
+
   if (isLoading) {
     return <PageLoader />;
   }
@@ -109,6 +116,7 @@ export function InvestmentsGeoMap(props: Props) {
     >
       <GeoMap
         allowClickthrough
+        clickthroughPath={clickthroughPath}
         type="investments"
         data={
           geomapView === "countries"
