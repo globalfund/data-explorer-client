@@ -16,7 +16,6 @@ interface Props {
 
 export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -83,9 +82,7 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
       vizSelected={undefined}
       setVizLevel={setVizLevel}
       isDrilldownLoading={false}
-      vizTranslation={{ x: 0, y: 0 }}
       setVizSelected={setVizSelected}
-      setVizTranslation={setVizTranslation}
       toolboxOpen={props.toolboxOpen}
     />
   );

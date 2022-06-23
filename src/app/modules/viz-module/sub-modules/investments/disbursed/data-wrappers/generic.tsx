@@ -19,7 +19,6 @@ interface Props {
 export function GenericInvestmentsDisbursedWrapper(props: Props) {
   const [vizLevel, setVizLevel] = React.useState(0);
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -101,6 +100,12 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
         return state.DisbursementsTreemapDrilldown.loading;
     }
   });
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -149,6 +154,20 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
     }
   }, [vizSelected]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (dataPathActiveStep.vizSelected) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        clearDataPathActiveStep();
+      } else if (!dataPathActiveStep.vizSelected && vizSelected) {
+        setVizLevel(0);
+        setVizSelected(undefined);
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <InvestmentsDisbursedModule
       data={data}
@@ -160,8 +179,6 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
       vizSelected={vizSelected}
       drilldownData={drilldownData}
       setVizSelected={setVizSelected}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       isDrilldownLoading={isDrilldownLoading}
       toolboxOpen={props.toolboxOpen}
       setOpenToolboxPanel={props.setOpenToolboxPanel}

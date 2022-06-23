@@ -1252,5 +1252,5 @@ export function getIso3FromName(name: string): string {
     return fCountry.iso3;
   }
 
-  return "";
+  return name;
 }
