@@ -80,14 +80,14 @@ export function DataThemesBuilderPreviewTheme(
   }, [props.currentChart, props.currentChartData, mapping, visualOptions]);
 
   const handleVizClick = () => {
-    if (page === "new") {
+    if (page === "new" || props.editable) {
       setActiveVizIndex(props.vizIndex);
       history.push(`/data-themes/${page}/customize`);
     }
   }
 
   const handleTextClick = () => {
-    if (page === "new") {
+    if (page === "new" || props.editable) {
       setActiveVizIndex(props.vizIndex);
       history.push(`/data-themes/${page}/text`);
     }
@@ -96,13 +96,13 @@ export function DataThemesBuilderPreviewTheme(
   return (
     <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
       <DataThemesPageSubHeader
-        previewMode={ page !== "new" ? true : false}
+        previewMode={!props.editable && page !== "new"}
         data={props.data}
         loading={props.loading}
         visualOptions={visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
-        tabsDisabled={page !== "new"}
+        tabsDisabled={page !== "new" && !props.editable}
         themeData={props.themeData}
       />
       <DataThemesToolBox

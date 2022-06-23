@@ -259,7 +259,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       createDataThemeData.id.length > 0 &&
       createDataThemeData.id !== page
     ) {
-      history.push(`/data-themes/${createDataThemeData.id}`);
+      history.push(`/data-themes/${createDataThemeData.id}`, {editMode: true});
     }
   }, [createDataThemeData]);
 

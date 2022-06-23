@@ -1,9 +1,11 @@
 /* third-party */
 import React from "react";
+import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -22,6 +24,7 @@ interface DataThemeListItemAPIModel {
 
 function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const date = new Date(props.createdDate);
+  const history = useHistory();
 
   const deleteDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeDelete.delete
@@ -60,6 +63,9 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     <div css={styles.gridItem}>
       <div css={styles.gridItemTitle}>
         {props.title}
+        <IconButton id="delete-button" size="small" onClick={() => {history.push(`/data-themes/${props.id}`, { editMode: true })}}>
+          <EditIcon htmlColor="#262c34" />
+        </IconButton>
         <IconButton id="delete-button" size="small" onClick={deleteItem}>
           <DeleteIcon htmlColor="#262c34" />
         </IconButton>

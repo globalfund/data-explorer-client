@@ -19,4 +19,5 @@ export interface DataThemesBuilderPreviewThemeProps {
     data: { [key: string]: string | number | null }[];
     filterOptionGroups: FilterGroupModel[];
   }[][];
+  editable: any;
 }

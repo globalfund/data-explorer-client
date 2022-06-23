@@ -9,6 +9,7 @@ import {
   Switch,
   Route,
   useHistory,
+  useLocation,
   useParams,
   Redirect,
 } from "react-router-dom";
@@ -40,6 +41,7 @@ import {
 
 export function DataThemesBuilder() {
   const history = useHistory();
+  const location = useLocation();
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const [currentChart, setCurrentChart] = React.useState([[{}]]);
@@ -312,7 +314,8 @@ export function DataThemesBuilder() {
   }, [filteredData, loading]);
 
   React.useEffect(() => {
-    setIsEditMode(page !== "new");
+    const locationStateSet: boolean = typeof location.state !== "undefined";
+    setIsEditMode(page !== "new" && locationStateSet);
   }, [page]);
 
   React.useEffect(() => {
@@ -486,6 +489,7 @@ export function DataThemesBuilder() {
                         content.map((_, vizIndex) =>
                           tabIndex === activeTabIndex ? (
                             <DataThemesBuilderPreviewTheme
+                              editable={isEditMode}
                               tabIndex={tabIndex}
                               vizIndex={vizIndex}
                               data={rawData[tabIndex][vizIndex].data}
@@ -524,7 +528,7 @@ export function DataThemesBuilder() {
           </Route>
         </Switch>
       </DndProvider>
-      {(page === "new" && (!view || view === "initial")) && (
+      {((page === "new" || isEditMode) && (!view || view === "initial")) && (
         <DataThemesAddSectionButton
           showCreateYourStoryText={
             history.location.pathname === `/data-themes/new/initial`
