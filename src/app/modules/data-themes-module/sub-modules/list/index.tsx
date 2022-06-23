@@ -20,6 +20,7 @@ interface DataThemeListItemAPIModel {
   public: boolean;
   subTitle: string;
   createdDate: Date;
+  tabs: any;
 }
 
 function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
@@ -50,7 +51,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
       loadDataThemes({
         storeInCrudData: true,
         filterString:
-          'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":false,"createdDate":true}}',
+          'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":true,"createdDate":true}}',
       });
     }
 
@@ -58,6 +59,12 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
       clearDeleteDataTheme();
     };
   }, [deleteDataThemeSuccess]);
+
+  const calculateVizCountForTabs = () => {
+    let count = 0;
+    props.tabs && props.tabs.forEach((tab: any) => {tab.content.forEach((_: any) => count++)});
+    return count;
+  }
 
   return (
     <div css={styles.gridItem}>
@@ -84,7 +91,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
         </div>
         <div>
           <div>Visualizations</div>
-          <div>1</div>
+          <div>{calculateVizCountForTabs()}</div>
         </div>
       </div>
       <Link css={styles.gridItemLinkBtn} to={`/data-themes/${props.id}`}>
@@ -117,7 +124,7 @@ export function DataThemesListView() {
     loadDataThemes({
       storeInCrudData: true,
       filterString:
-        'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":false,"createdDate":true}}',
+        'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":true,"createdDate":true}}',
     });
   }, []);
 

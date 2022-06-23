@@ -64,16 +64,8 @@ export function DataThemesBuilder() {
     (state) => state.dataThemes.textContent.vizIsTextContent
   );
 
-  const setActiveTabIndex = useStoreActions(
-    (state) => state.dataThemes.activeTabIndex.setValue
-  );
-  const setActiveVizIndex = useStoreActions(
-    (state) => state.dataThemes.activeVizIndex.setValue
-  );
-
   const {
     loading,
-    setLoading,
     clearStore,
     loadingData,
     loadDataset,
