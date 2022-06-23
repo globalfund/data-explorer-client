@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
 import Container from "@material-ui/core/Container";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   aboutLinkCss,
   dataThemesLinkCss,
@@ -13,6 +13,7 @@ import {
 } from "app/components/LandingPageAppBar/style";
 
 export function LandingAppBar() {
+  const location = useLocation();
   return (
     <MUIAppBar position="fixed" color="primary">
       <Container maxWidth="lg">
@@ -29,9 +30,11 @@ export function LandingAppBar() {
                 About
               </NavLink>
 
-              <NavLink to="/data-themes" css={dataThemesLinkCss}>
-                Themes
-              </NavLink>
+              {location.pathname !== "/data-themes" && (
+                <NavLink to="/data-themes" css={dataThemesLinkCss}>
+                  Themes
+                </NavLink>
+              )}
 
               <NavLink to="/data-themes" css={dlCss}>
                 DL

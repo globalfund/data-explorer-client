@@ -20,6 +20,28 @@ export const styles = {
     width: 100%;
     height: 72px;
     padding: 18px 0;
+    display: flex;
+    justify-content: flex-end;
+
+    > * {
+      margin-left: 2rem;
+      cursor: pointer;
+    }
+
+    button {
+      height: 23.999992370605547px;
+      width: 90.00000000000038px;
+      border-radius: 20px;
+      background: #262c34;
+      cursor: pointer;
+      color: #fff;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+    }
   `,
   gridItem: css`
     height: 219px;

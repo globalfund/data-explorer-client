@@ -1,11 +1,13 @@
 /* third-party */
 import React from "react";
-import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
+import SearchIcon from "@material-ui/icons/Search";
+import SortIcon from "@material-ui/icons/Sort";
+import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -13,6 +15,7 @@ import { AddIcon } from "app/assets/icons/Add";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/data-themes-module/sub-modules/list/styles";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
+import { Box } from "@material-ui/core";
 
 interface DataThemeListItemAPIModel {
   id: string;
@@ -104,6 +107,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
 
 export function DataThemesListView() {
   useTitle("Data Themes - List");
+  const history = useHistory();
 
   React.useEffect(() => {
     document.body.style.background = "#F0F3F5";
@@ -132,21 +136,31 @@ export function DataThemesListView() {
       {isLoadingDataThemes && <PageLoader />}
       <DataThemesGenericPageSubHeader title="Themes" />
       <div css={styles.innercontainer}>
-        <div css={styles.toolbar} />
+        <Box css={styles.toolbar}>
+          <SearchIcon />
+          <SortIcon />
+          <ViewAgendaIcon />
+          <button onClick={() => history.push("/data-themes/new")}>
+            Create
+          </button>
+        </Box>
+
         <Grid container spacing={2}>
           {loadedDataThemes.map((item) => (
             <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
               <DataThemesListViewItem {...item} />
             </Grid>
           ))}
-          <Grid item xs={12} sm={6} md={4} lg={4}>
-            <div css={styles.gridItemCreateNew}>
-              <Link to="/data-themes/new">
-                <AddIcon />
-                <div>Create new data theme</div>
-              </Link>
-            </div>
-          </Grid>
+          {loadedDataThemes.length === 0 && (
+            <Grid item xs={12} sm={6} md={4} lg={4}>
+              <div css={styles.gridItemCreateNew}>
+                <Link to="/data-themes/new">
+                  <AddIcon />
+                  <div>Create new data theme</div>
+                </Link>
+              </div>
+            </Grid>
+          )}
         </Grid>
       </div>
     </div>
