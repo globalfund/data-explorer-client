@@ -88,6 +88,12 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
     (actions) =>
       actions.ToolBoxPanelBudgetFlowDrilldownSelectors.setSelectedLevelValue
   );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -151,12 +157,45 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
     setDrilldownLevelSelectors(getDrilldownPanelOptions(links));
   }, [links]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (
+        dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        dataPathActiveStep.vizSelected &&
+        dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(2);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        setDrilldownVizSelected(dataPathActiveStep.drilldownVizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        !dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected &&
+        vizSelected &&
+        drilldownVizSelected
+      ) {
+        setVizLevel(0);
+        setVizSelected({ id: undefined, filterStr: undefined });
+        setDrilldownVizSelected({ id: undefined, filterStr: undefined });
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <BudgetsFlowModule
       nodes={nodes}
       links={links}
+      isLocationDetail
       isLoading={isLoading}
       isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
+      codeParam={props.code}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
       vizSelected={vizSelected}
@@ -164,7 +203,7 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
       dataDrilldownLevel2={dataDrilldownLevel2}
-      drilldownVizSelected={drilldownVizSelected.id}
+      drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
     />
   );

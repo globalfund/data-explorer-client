@@ -8,6 +8,7 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
+import { useHistory } from "react-router-dom";
 
 interface Props {
   toolboxOpen: boolean;
@@ -16,6 +17,9 @@ interface Props {
 
 export function GenericBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Budgets Flow");
+
+  const history = useHistory();
+
   const [vizLevel, setVizLevel] = React.useState(0);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
     id: string | undefined;
@@ -84,12 +88,23 @@ export function GenericBudgetsFlowWrapper(props: Props) {
     (actions) =>
       actions.ToolBoxPanelBudgetFlowDrilldownSelectors.setSelectedLevelValue
   );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
-    fetchData({ filterString });
+    if (
+      history.location.search.length > 0 &&
+      appliedFilters.locations.length > 0
+    ) {
+      const filterString = getAPIFormattedFilters(appliedFilters);
+      fetchData({ filterString });
+    }
   }, [appliedFilters]);
 
   useUpdateEffect(() => {
@@ -134,6 +149,38 @@ export function GenericBudgetsFlowWrapper(props: Props) {
     setDrilldownLevelSelectors(getDrilldownPanelOptions(links));
   }, [links]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      // console.log("generic dataPathActiveStep", dataPathActiveStep);
+      if (
+        dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        dataPathActiveStep.vizSelected &&
+        dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(2);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        setDrilldownVizSelected(dataPathActiveStep.drilldownVizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        !dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected &&
+        vizSelected &&
+        drilldownVizSelected
+      ) {
+        setVizLevel(0);
+        setVizSelected({ id: undefined, filterStr: undefined });
+        setDrilldownVizSelected({ id: undefined, filterStr: undefined });
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <BudgetsFlowModule
       nodes={nodes}
@@ -147,7 +194,7 @@ export function GenericBudgetsFlowWrapper(props: Props) {
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
       dataDrilldownLevel2={dataDrilldownLevel2}
-      drilldownVizSelected={drilldownVizSelected.id}
+      drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
       setOpenToolboxPanel={props.setOpenToolboxPanel}
     />

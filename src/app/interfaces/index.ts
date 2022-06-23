@@ -7,3 +7,17 @@ export interface BreadcrumbModel {
 export interface DrilldownModel {
   name: string;
 }
+
+export interface DrilldownModelUpdated {
+  id: string;
+  name: string;
+  path: string;
+  vizSelected?: {
+    id: string;
+    filterStr: string;
+  };
+  drilldownVizSelected?: {
+    id: string;
+    filterStr: string;
+  };
+}

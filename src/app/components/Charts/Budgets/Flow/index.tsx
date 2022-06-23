@@ -133,7 +133,13 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   };
 
   return (
-    <div data-cy="budgets-flow" id="sankey">
+    <div
+      data-cy="budgets-flow"
+      id="sankey"
+      css={`
+        position: relative;
+      `}
+    >
       <Grid
         container
         css={header}

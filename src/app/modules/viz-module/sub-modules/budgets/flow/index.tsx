@@ -1,10 +1,12 @@
 /* third-party */
 import React from "react";
-import { useUnmount } from "react-use";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { DrilldownModelUpdated } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
@@ -36,50 +38,111 @@ interface BudgetsFlowModuleProps {
     id: string | undefined;
     filterStr: string | undefined;
   }) => void;
-  drilldownVizSelected: string | undefined;
+  drilldownVizSelected: {
+    id: string | undefined;
+    filterStr: string | undefined;
+  };
   toolboxOpen?: boolean;
   setOpenToolboxPanel?: (value: boolean) => void;
+  codeParam?: string;
+  isGrantDetail?: boolean;
+  isPartnerDetail?: boolean;
+  isLocationDetail?: boolean;
 }
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
-  const setVizDrilldowns = useStoreActions(
-    (actions) => actions.PageHeaderVizDrilldownsState.setValue
-  );
+
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Budget-budget flow" }]);
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Budget-budget flow" })
+      ) {
+        setDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Budget-budget flow",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isGrantDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
+      ) {
+        setDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam || "Grant",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isLocationDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/location/") > -1)
+      ) {
+        setDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam || "Location",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isPartnerDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
+      ) {
+        setDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam || "Partner",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      }
     }
     if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
-      const newDrilldowns = [
-        { name: "Budget-budget flow" },
-        { name: props.vizSelected.id },
-      ];
-      if (props.vizLevel === 2 && props.drilldownVizSelected) {
-        const idSplits = props.drilldownVizSelected.split("-");
+      const newDrilldowns: DrilldownModelUpdated[] = [];
+      if (props.vizLevel === 1) {
+        newDrilldowns.push({
+          id: uniqueId(),
+          name: props.vizSelected.id,
+          path: `${history.location.pathname}${history.location.search}`,
+          vizSelected: {
+            id: props.vizSelected.id || "",
+            filterStr: props.vizSelected.filterStr || "",
+          },
+        });
+      } else if (props.vizLevel === 2 && props.drilldownVizSelected.id) {
+        const idSplits = props.drilldownVizSelected.id.split("-");
         const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
         const secondDrillDown =
           idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-        // newDrilldowns.push(
-        //   {
-        //     name: firstDrillDown,
-        //   },
-        //   {
-        //     name: secondDrillDown,
-        //   }
-        // );
         newDrilldowns.push({
+          id: uniqueId(),
           name: `${firstDrillDown} - ${secondDrillDown}`,
+          path: `${history.location.pathname}${history.location.search}`,
+          vizSelected: {
+            id: props.vizSelected.id || "",
+            filterStr: props.vizSelected.filterStr || "",
+          },
+          drilldownVizSelected: {
+            id: props.drilldownVizSelected.id || "",
+            filterStr: props.drilldownVizSelected.filterStr || "",
+          },
         });
       }
-      setVizDrilldowns(newDrilldowns);
+      setDataPathSteps(newDrilldowns);
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
-
-  useUnmount(() => setVizDrilldowns([]));
 
   let vizComponent = <React.Fragment />;
 
@@ -130,11 +193,18 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected.id}
           onNodeClick={(node: string, x: number, y: number) => {
-            if (props.drilldownVizSelected) {
-              const idSplits = props.drilldownVizSelected.split("-");
+            if (props.drilldownVizSelected.id) {
+              const idSplits = props.drilldownVizSelected.id.split("-");
               let code = node.replace(idSplits[0], "");
               code = code.slice(0, code.length - 1);
-              history.push(`/grant/${code}/1/budgets/flow`);
+              setDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: code,
+                  path: `/grant/${code}/period/budgets/flow`,
+                },
+              ]);
+              history.push(`/grant/${code}/period/budgets/flow`);
             }
           }}
         />
@@ -152,7 +222,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         }
       `}
     >
-      {props.vizLevel > 0 && (
+      {(props.vizLevel > 0 || dataPathSteps.length > 1) && (
         <VizBackBtn
           vizLevel={props.vizLevel}
           setVizLevel={props.setVizLevel}

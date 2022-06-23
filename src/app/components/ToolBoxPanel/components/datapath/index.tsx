@@ -1,7 +1,9 @@
 import React from "react";
-import { DrilldownModel } from "app/interfaces";
+import findIndex from "lodash/findIndex";
+import { useHistory } from "react-router-dom";
 import Timeline from "@material-ui/lab/Timeline";
 import IconButton from "@material-ui/core/IconButton";
+import { DrilldownModelUpdated } from "app/interfaces";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 import TimelineItem from "@material-ui/lab/TimelineItem";
 import TimelineContent from "@material-ui/lab/TimelineContent";
@@ -11,12 +13,34 @@ import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 
 export function DataPathPanel() {
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
+  const history = useHistory();
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
+  );
+  const setActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.setStep
   );
   const setShowDataPath = useStoreActions(
     (state) => state.DataPathPanelVisibilityState.setValue
   );
+
+  function onItemClick(index: number, item: DrilldownModelUpdated) {
+    if (index > 0) {
+      const fItemIndex = findIndex(dataPathSteps, { id: item.id });
+      if (fItemIndex > -1) {
+        setDataPathSteps(dataPathSteps.slice(0, fItemIndex));
+      }
+      setActiveStep(item);
+      if (
+        item &&
+        item.path !== `${history.location.pathname}${history.location.search}`
+      ) {
+        history.push(item.path);
+      }
+    }
+  }
 
   return (
     <div
@@ -51,7 +75,7 @@ export function DataPathPanel() {
           <CloseOutlinedIcon htmlColor="#2E4063" />
         </IconButton>
       </div>
-      {vizDrilldowns.length > 0 && (
+      {dataPathSteps.length > 0 && (
         <div>
           <Timeline
             css={`
@@ -87,22 +111,24 @@ export function DataPathPanel() {
               }
             `}
           >
-            {[...vizDrilldowns]
+            {[...dataPathSteps]
               .reverse()
-              .map((drilldown: DrilldownModel, index: number) => (
-                <TimelineItem key={drilldown.name}>
+              .map((drilldown: DrilldownModelUpdated, index: number) => (
+                <TimelineItem key={`${drilldown.name}-${drilldown.path}`}>
                   <TimelineSeparator>
                     <TimelineDot />
-                    {index < vizDrilldowns.length - 1 && <TimelineConnector />}
+                    {index < dataPathSteps.length - 1 && <TimelineConnector />}
                   </TimelineSeparator>
                   <TimelineContent>
                     <div
+                      onClick={() => onItemClick(index, drilldown)}
                       css={`
                         text-transform: capitalize;
+                        cursor: ${index === 0 ? "default" : "pointer"};
                         text-decoration: ${index === 0 ? "none" : "underline"};
                       `}
                     >
-                      {index === vizDrilldowns.length - 1
+                      {index === dataPathSteps.length - 1
                         ? drilldown.name.split("-")[1]
                         : drilldown.name}
                     </div>
@@ -128,7 +154,7 @@ export function DataPathPanel() {
               padding-left: 40px;
             `}
           >
-            {vizDrilldowns[0].name}
+            {dataPathSteps[0].name}
           </div>
         </div>
       )}

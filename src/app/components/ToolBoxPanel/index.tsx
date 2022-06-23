@@ -34,9 +34,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.scrollHeight > document.body.clientHeight
   );
 
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const showDataPath = useStoreState(
     (state) => state.DataPathPanelVisibilityState.value
   );
@@ -57,12 +55,12 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   }, [history.location.pathname]);
 
   React.useEffect(() => {
-    if (vizDrilldowns.length < 2 && showDataPath) {
+    if (dataPathSteps.length < 2 && showDataPath) {
       setShowDataPath(false);
-    } else if (!showDataPath && vizDrilldowns.length > 1) {
+    } else if (!showDataPath && dataPathSteps.length > 1) {
       setShowDataPath(true);
     }
-  }, [vizDrilldowns]);
+  }, [dataPathSteps]);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
