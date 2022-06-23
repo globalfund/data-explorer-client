@@ -330,6 +330,7 @@ export function DataThemesBuilder() {
     }
   }, [isEditMode]);
 
+  let renderingKey = 0;
   return (
     <React.Fragment>
       <DataThemesAlertDialog />
@@ -489,6 +490,7 @@ export function DataThemesBuilder() {
                         content.map((_, vizIndex) =>
                           tabIndex === activeTabIndex ? (
                             <DataThemesBuilderPreviewTheme
+                              key={renderingKey++}
                               editable={isEditMode}
                               tabIndex={tabIndex}
                               vizIndex={vizIndex}
@@ -513,7 +515,7 @@ export function DataThemesBuilder() {
                               themeData={rawData}
                             />
                           ) : (
-                            <React.Fragment />
+                            <React.Fragment key={renderingKey++} />
                           )
                         )
                       )}
