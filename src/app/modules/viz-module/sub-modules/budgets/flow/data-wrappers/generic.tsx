@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useHistory } from "react-router-dom";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -8,7 +9,6 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
-import { useHistory } from "react-router-dom";
 
 interface Props {
   toolboxOpen: boolean;
@@ -151,7 +151,6 @@ export function GenericBudgetsFlowWrapper(props: Props) {
 
   React.useEffect(() => {
     if (dataPathActiveStep) {
-      // console.log("generic dataPathActiveStep", dataPathActiveStep);
       if (
         dataPathActiveStep.vizSelected &&
         !dataPathActiveStep.drilldownVizSelected
