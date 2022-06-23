@@ -88,7 +88,7 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
   React.useEffect(() => {
     if (
       history.location.search.length > 0 &&
-      appliedFilters.locations.length > 0
+      appliedFilters.appliedFiltersCount > 0
     ) {
       const filterString = getAPIFormattedFilters(appliedFilters);
       fetchData({ filterString });
