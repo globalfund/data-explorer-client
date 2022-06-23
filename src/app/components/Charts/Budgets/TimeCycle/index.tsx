@@ -59,10 +59,8 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<MobileBudgetsFlowTooltipProps | null>(null);
   const [keys, setKeys] = React.useState(getKeysFromData(props.data));
   const moneyAbbrRange = getVizValueRange(props.data, "budgetBarChart");
   const totalBudget = sumBy(props.data, "amount");
@@ -107,9 +105,6 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
   // }, []);
 
   const Bars = (bprops: any) => {
-    if (props.vizCompData.length !== bprops.bars.length) {
-      props.setVizCompData(bprops.bars);
-    }
     return bprops.bars.map((bar: any) => (
       <BarComponent
         {...bar}
@@ -171,7 +166,8 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
                   }
                 `}
               >
-                {get(cmsData, "componentsChartsBudgets.budget", "")} <InfoIcon />
+                {get(cmsData, "componentsChartsBudgets.budget", "")}{" "}
+                <InfoIcon />
               </div>
               <div css="font-weight: normal;">
                 {formatFinancialValue(totalBudget)}
@@ -180,7 +176,10 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
           )}
           {isMobile && (
             <Grid item xs={12} css="font-size: 12px !important;">
-              <b>{get(cmsData, "componentsChartsBudgets.totalAmount", "")} {formatFinancialValue(totalBudget)}</b>
+              <b>
+                {get(cmsData, "componentsChartsBudgets.totalAmount", "")}{" "}
+                {formatFinancialValue(totalBudget)}
+              </b>
             </Grid>
           )}
         </Grid>

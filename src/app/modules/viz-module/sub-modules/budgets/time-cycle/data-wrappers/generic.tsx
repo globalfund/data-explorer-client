@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useHistory } from "react-router-dom";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -15,19 +16,13 @@ interface Props {
 
 export function GenericBudgetsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Budgets Time cycle");
+
+  const history = useHistory();
+
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
     string | undefined
   >(undefined);
-  const [vizCompData, setVizCompData] = React.useState([]);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.BudgetsTimeCycle.fetch);
@@ -81,12 +76,23 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
     (actions) =>
       actions.ToolBoxPanelBudgetTimeCycleDrilldownYearSelector.setSelectedOption
   );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
-    fetchData({ filterString });
+    if (
+      history.location.search.length > 0 &&
+      appliedFilters.locations.length > 0
+    ) {
+      const filterString = getAPIFormattedFilters(appliedFilters);
+      fetchData({ filterString });
+    }
   }, [appliedFilters]);
 
   useUpdateEffect(() => {
@@ -126,6 +132,37 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
     setDrilldownLevelSelectors(data.map((item: any) => item.year.toString()));
   }, [data]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (
+        dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        clearDataPathActiveStep();
+      } else if (
+        dataPathActiveStep.vizSelected &&
+        dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(2);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        setDrilldownVizSelected(dataPathActiveStep.drilldownVizSelected.id);
+        clearDataPathActiveStep();
+      } else if (
+        !dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected &&
+        vizSelected &&
+        drilldownVizSelected
+      ) {
+        setVizLevel(0);
+        setVizSelected(undefined);
+        setDrilldownVizSelected(undefined);
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <BudgetsTimeCycleModule
       data={data}
@@ -133,17 +170,9 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
       isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       vizSelected={vizSelected}
       setVizSelected={setVizSelected}
-      vizCompData={vizCompData}
-      setVizCompData={setVizCompData}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
       setDrilldownVizSelected={setDrilldownVizSelected}
-      setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected}
