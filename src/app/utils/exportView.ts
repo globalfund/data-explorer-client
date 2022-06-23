@@ -29,7 +29,7 @@ function getFileName(
       return "allocations";
     case "/viz/allocations/map":
       return `allocations-${options.investmentsMapView}`;
-    case "/viz/allocation":
+    case "/viz/allocations":
       return "allocations";
     case "/viz/eligibility":
       if (options.isDetail) {

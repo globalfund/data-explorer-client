@@ -302,7 +302,7 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Allocations */}
-          <Route path={`/location/:code/allocation`}>
+          <Route path={`/location/:code/allocations`}>
             <AllocationsModule
               code={paramCode}
               toolboxOpen={openToolboxPanel}

@@ -57,7 +57,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
     React.useState<TreeMapNodeDatum | null>(null);
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
-  const setDataPathSteps = useStoreActions(
+  const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
 
@@ -67,7 +67,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         dataPathSteps.length === 0 ||
         !find(dataPathSteps, { name: "Budget-budget flow" })
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: "Budget-budget flow",
@@ -78,7 +78,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         props.isGrantDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: props.codeParam || "Grant",
@@ -89,7 +89,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         props.isLocationDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/location/") > -1)
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: props.codeParam || "Location",
@@ -100,7 +100,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         props.isPartnerDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: props.codeParam || "Partner",
@@ -140,7 +140,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           },
         });
       }
-      setDataPathSteps(newDrilldowns);
+      addDataPathSteps(newDrilldowns);
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
 
@@ -197,7 +197,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
               const idSplits = props.drilldownVizSelected.id.split("-");
               let code = node.replace(idSplits[0], "");
               code = code.slice(0, code.length - 1);
-              setDataPathSteps([
+              addDataPathSteps([
                 {
                   id: uniqueId(),
                   name: code,

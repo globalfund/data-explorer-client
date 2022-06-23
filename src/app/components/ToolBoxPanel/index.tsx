@@ -118,12 +118,17 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
             props.open &&
             get(event.target, "tagName", "") !== "A" &&
             get(event.target, "tagName", "") !== "rect" &&
+            get(event.target, "tagName", "") !== "svg" &&
             get(event.target, "id", "") !== "page-header-toolbox-btn" &&
             get(event.target, "id", "") !== "result-see-more-button" &&
             get(event.target, "id", "") !== "viz-back-button" &&
             get(event.target, "id", "") !== "appbar-datasets" &&
             get(event.target, "id", "") !== "appbar-expandable-item" &&
-            get(event.target, "className", "").indexOf("treemapnode") === -1
+            get(event.target, "id", "") !== "drilldown-arrow-selector-prev" &&
+            get(event.target, "id", "") !== "drilldown-arrow-selector-next" &&
+            get(event.target, "className", "")
+              .toString()
+              .indexOf("treemapnode") === -1
           ) {
             if (props.vizWrapperRef) {
               if (!props.vizWrapperRef.current.contains(event.target)) {
