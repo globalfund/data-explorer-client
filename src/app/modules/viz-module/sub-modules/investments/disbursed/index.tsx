@@ -228,9 +228,7 @@ export function InvestmentsDisbursedModule(
               {
                 id: uniqueId(),
                 name: `${idSplits[1]} - ${idSplits[0]}`,
-                path: `/location/${code}/${
-                  clickthroughPath || "overview"
-                }?components=${idSplits[0]}`,
+                path: `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`,
               },
             ]);
             history.push(

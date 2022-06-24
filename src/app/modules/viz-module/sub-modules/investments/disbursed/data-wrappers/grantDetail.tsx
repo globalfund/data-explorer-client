@@ -75,6 +75,7 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
     <InvestmentsDisbursedModule
       data={data}
       vizLevel={0}
+      isGrantDetail
       type={props.type}
       drilldownData={[]}
       isLoading={isLoading}

@@ -19,17 +19,9 @@ interface Props {
 export function GenericInvestmentsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Investments/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -108,6 +100,12 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
         return state.DisbursementsTimeCycleDrilldown.loading;
     }
   });
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -142,23 +140,33 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
     }
   }, [vizSelected]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (dataPathActiveStep.vizSelected) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        clearDataPathActiveStep();
+      } else if (!dataPathActiveStep.vizSelected && vizSelected) {
+        setVizLevel(0);
+        setVizSelected(undefined);
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <InvestmentsTimeCycleModule
       data={data}
       isDrilldownLoading={isDrilldownLoading}
+      isLocationDetail={props.code !== undefined}
+      codeParam={props.code}
       drilldownData={drilldownData}
       isLoading={isLoading}
       type={props.type}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       vizSelected={vizSelected}
       setVizSelected={setVizSelected}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
-      setVizPrevTranslation={setVizPrevTranslation}
       toolboxOpen={props.toolboxOpen}
       setOpenToolboxPanel={props.setOpenToolboxPanel}
     />

@@ -252,7 +252,7 @@ export const countryList = [
     iso3: "COM",
   },
   {
-    name: "Congo (the Democratic Republic of the)",
+    name: "Congo (Democratic Republic)",
     iso2: "CD",
     iso3: "COD",
   },

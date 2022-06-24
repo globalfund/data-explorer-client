@@ -40,7 +40,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
     React.useState<TreeMapNodeDatum | null>(null);
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
-  const setDataPathSteps = useStoreActions(
+  const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
 
@@ -50,7 +50,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         dataPathSteps.length === 0 ||
         !find(dataPathSteps, { name: "Budget-time cycle" })
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: "Budget-time cycle",
@@ -61,7 +61,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         props.isGrantDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: props.codeParam || "Grant",
@@ -72,7 +72,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         props.isLocationDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/location/") > -1)
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: props.codeParam || "Location",
@@ -83,7 +83,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         props.isPartnerDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
       ) {
-        setDataPathSteps([
+        addDataPathSteps([
           {
             id: uniqueId(),
             name: props.codeParam || "Partner",
@@ -123,7 +123,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           },
         });
       }
-      setDataPathSteps(newDrilldowns);
+      addDataPathSteps(newDrilldowns);
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
 
@@ -171,7 +171,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
               const idSplits = props.drilldownVizSelected.split("-");
               let code = node.replace(idSplits[0], "");
               code = code.slice(0, code.length - 1);
-              setDataPathSteps([
+              addDataPathSteps([
                 {
                   id: uniqueId(),
                   name: code,
