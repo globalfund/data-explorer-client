@@ -8,6 +8,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { DrilldownModelUpdated } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
+import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
@@ -92,7 +93,9 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         addDataPathSteps([
           {
             id: uniqueId(),
-            name: props.codeParam || "Location",
+            name: props.codeParam
+              ? getNameFromIso3(props.codeParam)
+              : "Location",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);

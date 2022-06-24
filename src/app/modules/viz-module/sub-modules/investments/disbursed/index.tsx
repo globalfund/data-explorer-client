@@ -15,9 +15,9 @@ import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import { getIso3FromName } from "app/utils/getIso3FromName";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -114,7 +114,9 @@ export function InvestmentsDisbursedModule(
         addDataPathSteps([
           {
             id: uniqueId(),
-            name: props.codeParam || "Location",
+            name: props.codeParam
+              ? getNameFromIso3(props.codeParam)
+              : "Location",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);

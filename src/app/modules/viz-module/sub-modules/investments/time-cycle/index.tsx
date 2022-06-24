@@ -9,11 +9,11 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
+import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { getIso3FromName } from "app/utils/getIso3FromName";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -77,7 +77,9 @@ export function InvestmentsTimeCycleModule(
         addDataPathSteps([
           {
             id: uniqueId(),
-            name: props.codeParam || "Location",
+            name: props.codeParam
+              ? getNameFromIso3(props.codeParam)
+              : "Location",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);

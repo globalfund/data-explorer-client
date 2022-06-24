@@ -1254,3 +1254,15 @@ export function getIso3FromName(name: string): string {
 
   return name;
 }
+
+export function getNameFromIso3(code: string): string {
+  const fCountry = find(countryList, (country) => {
+    return country.iso3 === code;
+  });
+
+  if (fCountry) {
+    return fCountry.name;
+  }
+
+  return code;
+}
