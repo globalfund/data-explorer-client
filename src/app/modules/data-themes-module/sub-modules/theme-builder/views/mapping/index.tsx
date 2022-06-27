@@ -55,10 +55,16 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
   );
-  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
 
   // When the Mapping component is rendered, we are at step 3.
-  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 3});
+  setActivePanels({
+    tabIndex: activeTabIndex,
+    vizIndex: activeVizIndex,
+    panel: 3,
+  });
 
   const replaceDimension = React.useCallback(
     (
