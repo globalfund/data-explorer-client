@@ -18,5 +18,5 @@ export const DataThemeDelete: ApiCallModel = {
 };
 
 export const DataThemeGetList: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/data-themes`),
+  ...APIModel(`${process.env.REACT_APP_API}/data-themes-with-viz-count`),
 };

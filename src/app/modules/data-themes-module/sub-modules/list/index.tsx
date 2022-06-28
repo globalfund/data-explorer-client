@@ -21,6 +21,7 @@ interface DataThemeListItemAPIModel {
   subTitle: string;
   createdDate: Date;
   tabs: any;
+  vizCount: number;
 }
 
 function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
@@ -50,8 +51,6 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     if (deleteDataThemeSuccess) {
       loadDataThemes({
         storeInCrudData: true,
-        filterString:
-          'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":true,"createdDate":true}}',
       });
     }
 
@@ -60,17 +59,17 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     };
   }, [deleteDataThemeSuccess]);
 
-  const calculateVizCountForTabs = () => {
-    let count = 0;
-    props.tabs && props.tabs.forEach((tab: any) => {tab.content.forEach((_: any) => count++)});
-    return count;
-  }
-
   return (
     <div css={styles.gridItem}>
       <div css={styles.gridItemTitle}>
         {props.title}
-        <IconButton id="delete-button" size="small" onClick={() => {history.push(`/data-themes/${props.id}`, { editMode: true })}}>
+        <IconButton
+          id="delete-button"
+          size="small"
+          onClick={() => {
+            history.push(`/data-themes/${props.id}`, { editMode: true });
+          }}
+        >
           <EditIcon htmlColor="#262c34" />
         </IconButton>
         <IconButton id="delete-button" size="small" onClick={deleteItem}>
@@ -91,7 +90,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
         </div>
         <div>
           <div>Visualizations</div>
-          <div>{calculateVizCountForTabs()}</div>
+          <div>{props.vizCount}</div>
         </div>
       </div>
       <Link css={styles.gridItemLinkBtn} to={`/data-themes/${props.id}`}>
@@ -123,8 +122,6 @@ export function DataThemesListView() {
   React.useEffect(() => {
     loadDataThemes({
       storeInCrudData: true,
-      filterString:
-        'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":true,"createdDate":true}}',
     });
   }, []);
 
