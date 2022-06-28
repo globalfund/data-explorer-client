@@ -79,9 +79,10 @@ export const styles = {
     font-size: 14px;
     font-weight: 700;
     border-style: none;
-    background: transparent;
-    justify-content: center;
+    text-align: center;
     align-items: center;
+    justify-content: center;
+    background: transparent;
     transition: background 0.2s ease-in-out;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
