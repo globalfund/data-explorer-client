@@ -63,18 +63,20 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     <div css={styles.gridItem}>
       <div css={styles.gridItemTitle}>
         {props.title}
-        <IconButton
-          id="delete-button"
-          size="small"
-          onClick={() => {
-            history.push(`/data-themes/${props.id}`, { editMode: true });
-          }}
-        >
-          <EditIcon htmlColor="#262c34" />
-        </IconButton>
-        <IconButton id="delete-button" size="small" onClick={deleteItem}>
-          <DeleteIcon htmlColor="#262c34" />
-        </IconButton>
+        <div>
+          <IconButton
+            id="edit-button"
+            size="small"
+            onClick={() => {
+              history.push(`/data-themes/${props.id}`, { editMode: true });
+            }}
+          >
+            <EditIcon htmlColor="#262c34" />
+          </IconButton>
+          <IconButton id="delete-button" size="small" onClick={deleteItem}>
+            <DeleteIcon htmlColor="#262c34" />
+          </IconButton>
+        </div>
       </div>
       <div css={styles.gridItemLabel}>{props.subTitle}</div>
       <div css={styles.gridItemDetails}>

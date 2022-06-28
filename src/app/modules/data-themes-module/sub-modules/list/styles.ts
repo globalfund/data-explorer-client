@@ -28,12 +28,14 @@ export const styles = {
     border-radius: 30px;
     padding: 16px !important;
 
-    #delete-button {
+    #delete-button,
+    #edit-button {
       display: none;
     }
 
     &:hover {
-      #delete-button {
+      #delete-button,
+      #edit-button {
         display: inherit;
       }
     }
@@ -49,6 +51,12 @@ export const styles = {
     align-items: center;
     justify-content: space-between;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+    > div {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
   `,
   gridItemLabel: css`
     color: #262c34;
