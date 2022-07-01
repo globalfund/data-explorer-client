@@ -4,6 +4,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./app/theme/rawgraphs.css";
 import "./index.css";
+import { PublicClientApplication } from "@azure/msal-browser";
+import { MsalProvider } from "@azure/msal-react";
+import { msalConfig } from "./authConfig";
 import { App } from "app";
 
 // this import looks unused; it isn't so please do not remove
@@ -14,7 +17,14 @@ import reportWebVitals from "reportWebVitals";
 
 import * as serviceWorker from "./serviceWorker";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+const msalInstance = new PublicClientApplication(msalConfig);
+
+ReactDOM.render(
+  <MsalProvider instance={msalInstance}>
+    <App />
+  </MsalProvider>,
+  document.getElementById("root")
+);
 
 reportWebVitals();
 

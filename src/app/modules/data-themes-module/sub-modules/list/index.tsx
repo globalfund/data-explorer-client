@@ -10,12 +10,14 @@ import SortIcon from "@material-ui/icons/Sort";
 import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useIsAuthenticated } from "@azure/msal-react";
 /* project */
 import { AddIcon } from "app/assets/icons/Add";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/data-themes-module/sub-modules/list/styles";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { Box } from "@material-ui/core";
+
 
 interface DataThemeListItemAPIModel {
   id: string;
@@ -61,6 +63,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
       clearDeleteDataTheme();
     };
   }, [deleteDataThemeSuccess]);
+  const isAuthenticated = useIsAuthenticated();
 
   return (
     <div css={styles.gridItem}>
@@ -70,13 +73,21 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
           <IconButton
             id="edit-button"
             size="small"
+            disabled={!isAuthenticated}
+            css={`opacity: ${isAuthenticated ? 1 : 0.3};`}
             onClick={() => {
               history.push(`/data-themes/${props.id}`, { editMode: true });
             }}
           >
             <EditIcon htmlColor="#262c34" />
           </IconButton>
-          <IconButton id="delete-button" size="small" onClick={deleteItem}>
+          <IconButton
+            id="delete-button"
+            size="small"
+            disabled={!isAuthenticated}
+            css={`opacity: ${isAuthenticated ? 1 : 0.3};`}
+            onClick={deleteItem}
+          >
             <DeleteIcon htmlColor="#262c34" />
           </IconButton>
         </div>
@@ -131,6 +142,8 @@ export function DataThemesListView() {
     });
   }, []);
 
+  const isAuthenticated = useIsAuthenticated();
+
   return (
     <div css={styles.container}>
       {isLoadingDataThemes && <PageLoader />}
@@ -140,7 +153,11 @@ export function DataThemesListView() {
           <SearchIcon />
           <SortIcon />
           <ViewAgendaIcon />
-          <button onClick={() => history.push("/data-themes/new")}>
+          <button
+            disabled={!isAuthenticated}
+            css={`opacity: ${isAuthenticated ? 1 : 0.3};`}
+            onClick={() => history.push("/data-themes/new")}
+          >
             Create
           </button>
         </Box>
