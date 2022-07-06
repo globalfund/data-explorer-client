@@ -2,8 +2,11 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
 import Container from "@material-ui/core/Container";
 import { NavLink, useLocation } from "react-router-dom";
+import { useAuth0 } from '@auth0/auth0-react';
+/* project */
 import {
   aboutLinkCss,
   dataThemesLinkCss,
@@ -14,6 +17,14 @@ import {
 
 export function LandingAppBar() {
   const location = useLocation();
+
+  const {
+    isAuthenticated,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
+
   return (
     <MUIAppBar position="fixed" color="primary">
       <Container maxWidth="lg">
@@ -36,9 +47,15 @@ export function LandingAppBar() {
                 </NavLink>
               )}
 
-              <NavLink to="/data-themes" css={dlCss}>
-                DL
-              </NavLink>
+              { isAuthenticated ? (
+                <Button css={dlCss} onClick={() => logout({returnTo: window.location.origin})}>
+                  { user?.name?.match(/\b(\w)/g)?.join('') || 'Sign out'}
+                </Button>
+              ) : (
+                <Button css={dlCss} onClick={loginWithRedirect}>
+                  Sign in!
+                </Button>
+              ) }
             </Grid>
           </Grid>
         </Toolbar>

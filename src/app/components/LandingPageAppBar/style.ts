@@ -22,8 +22,6 @@ export const dlCss = css`
   align-items: center;
   justify-content: center;
   background: #cfd4da;
-  height: 33px;
-  width: 33px;
   border-radius: 100%;
 `;
 
