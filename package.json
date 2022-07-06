@@ -7,6 +7,7 @@
     "url": "https://github.com/zimmerman-team/the-data-explorer.git"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^1.10.2",
     "@craco/craco": "^6.4.3",
     "@devhammed/use-cookie": "^1.1.1",
     "@draft-js-plugins/anchor": "^4.1.4",
