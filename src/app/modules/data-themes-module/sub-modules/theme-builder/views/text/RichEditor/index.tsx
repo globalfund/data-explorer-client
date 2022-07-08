@@ -1,16 +1,11 @@
-import React, {
-    ReactElement,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-  } from 'react';
-import { EditorState } from 'draft-js';
-import Editor, { createEditorStateWithText } from '@draft-js-plugins/editor';
-import createInlineToolbarPlugin, { Separator } from '@draft-js-plugins/inline-toolbar';
-import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
+import React, { ReactElement, useMemo, useRef } from "react";
+import { EditorState } from "draft-js";
+import Editor from "@draft-js-plugins/editor";
 import createLinkPlugin from "@draft-js-plugins/anchor";
-import "@draft-js-plugins/anchor/lib/plugin.css";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import createInlineToolbarPlugin, {
+  Separator,
+} from "@draft-js-plugins/inline-toolbar";
 import {
   ItalicButton,
   BoldButton,
@@ -18,21 +13,29 @@ import {
   HeadlineOneButton,
   HeadlineTwoButton,
   BlockquoteButton,
-} from '@draft-js-plugins/buttons';
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+} from "@draft-js-plugins/buttons";
 
-/* Project */
-import editorStyles from './editorStyles.module.css';
-import buttonStyles from './buttonStyles.module.css';
-import toolbarStyles from './toolbarStyles.module.css';
+/* stylesheets */
+import "@draft-js-plugins/anchor/lib/plugin.css";
+import editorStyles from "./editorStyles.module.css";
+import buttonStyles from "./buttonStyles.module.css";
+import toolbarStyles from "./toolbarStyles.module.css";
+import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 
-export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex: number}): ReactElement => {
+export const RichEditor = (props: {
+  editMode: boolean;
+  tabIndex: number;
+  vizIndex: number;
+}): ReactElement => {
   const linkPlugin = createLinkPlugin();
   const [plugins, InlineToolbar] = useMemo(() => {
-    const inlineToolbarPlugin = createInlineToolbarPlugin(
-      {theme: {buttonStyles, toolbarStyles}}
-    );
-    return [[inlineToolbarPlugin, linkPlugin], inlineToolbarPlugin.InlineToolbar];
+    const inlineToolbarPlugin = createInlineToolbarPlugin({
+      theme: { buttonStyles, toolbarStyles },
+    });
+    return [
+      [inlineToolbarPlugin, linkPlugin],
+      inlineToolbarPlugin.InlineToolbar,
+    ];
   }, []);
 
   const textContent = useStoreState(
@@ -45,7 +48,7 @@ export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex
   const editor = useRef<Editor | null>(null);
 
   const onChange = (value: EditorState): void => {
-    setTextContent({tab: props.tabIndex, viz: props.vizIndex, value: value});
+    setTextContent({ tab: props.tabIndex, viz: props.vizIndex, value: value });
   };
 
   const focus = (): void => {
@@ -53,7 +56,29 @@ export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex
   };
 
   return (
-    <div className={props.editMode ? editorStyles.editor : editorStyles.editorPreview} onClick={focus}>
+    <div
+      className={
+        props.editMode ? editorStyles.editor : editorStyles.editorPreview
+      }
+      onClick={focus}
+      css={`
+        max-width: 800px !important;
+
+        h1,
+        h2 {
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          * {
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          }
+        }
+
+        blockquote {
+          padding-left: 11px;
+          margin-inline-start: 0px;
+          border-left: 4px solid #262c34;
+        }
+      `}
+    >
       <Editor
         readOnly={!props.editMode}
         editorKey="RichEditor"
@@ -62,6 +87,19 @@ export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex
         plugins={plugins}
         ref={(element) => {
           editor.current = element;
+        }}
+        customStyleMap={{
+          BOLD: {
+            fontFamily: "'GothamNarrow-Bold', 'Helvetica Neue', sans-serif",
+          },
+          ITALIC: {
+            fontStyle: "italic",
+            fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
+          },
+          UNDERLINE: {
+            textDecoration: "underline",
+            fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
+          },
         }}
       />
       <InlineToolbar>
@@ -80,4 +118,4 @@ export const RichEditor = (props: {editMode: boolean, tabIndex: number, vizIndex
       </InlineToolbar>
     </div>
   );
-}
+};
