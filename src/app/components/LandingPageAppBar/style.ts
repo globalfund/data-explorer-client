@@ -25,6 +25,7 @@ export const dlCss = css`
   height: 33px;
   width: 33px;
   border-radius: 100%;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 `;
 
 export const dataThemesLinkCss = css`
@@ -40,12 +41,12 @@ export const dataThemesLinkCss = css`
   width: 75px;
   background: #cfd4da;
   border-radius: 19.16666603088379px;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 `;
 
 export const aboutLinkCss = css`
   color: #fff;
   font-size: 14px;
-  font-weight: 700;
   letter-spacing: 0.5px;
   text-decoration: none;
 `;

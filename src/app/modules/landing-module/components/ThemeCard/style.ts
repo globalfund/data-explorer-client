@@ -1,12 +1,12 @@
 import { css } from "styled-components/macro";
 
 export const themeCardCss = css`
-  padding: 20px 15px;
+  padding: 20px;
   color: #262c34;
   background: #fff;
   border: 2px solid #fff;
-  height: 205px;
-  width: 353px;
+  height: 260px;
+  // width: 353px;
   border-radius: 23px;
   cursor: pointer;
 
@@ -22,17 +22,19 @@ export const themeCardCss = css`
     margin: 0;
     margin-bottom: 1rem;
     color: #000;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 `;
 
 export const cardGraphsCss = css`
   display: flex;
+  bottom: -25px;
+  position: relative;
   justify-content: space-between;
+
   > div {
-    height: 91px;
-    width: 150px;
-    left: 17px;
-    top: 90px;
+    // height: 91px;
+    // width: 150px;
     border-radius: 5px;
     padding: 1rem;
     background: #f1f3f5;

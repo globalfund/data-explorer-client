@@ -24,6 +24,7 @@ export const LandingLayout = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
   const [alignment, setAlignment] = React.useState("Themes");
+
   const handleChange = (newAlignment: string) => setAlignment(newAlignment);
 
   return (
@@ -39,13 +40,8 @@ export const LandingLayout = () => {
           )}
         </div>
         <Search />
-
         {!isMobile && (
           <React.Fragment>
-            <div css={datasetstitle}>
-              {get(cmsData, "modulesLanding.datasetsTitle", "")}
-            </div>
-
             <Box css={activeContainerCss}>
               <div
                 css={`
@@ -69,13 +65,11 @@ export const LandingLayout = () => {
                 Datasets
               </div>
             </Box>
-
             {alignment === "Datasets" ? (
               <DatasetCarousel />
             ) : (
               <ThemesCarousel />
             )}
-
             <div css={datasetslink}>
               {/* <Link to="/datasets">
                 {get(cmsData, "modulesLanding.datasetsLink", "")}

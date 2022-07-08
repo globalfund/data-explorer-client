@@ -60,13 +60,24 @@ export const alignments = css`
   align-items: center;
   justify-content: center;
   padding: 8px, 22px, 8px, 22px;
-  background: #eeeeee;
-  color: #0000008a;
+  background: #eee;
+  color: rgba(0, 0, 0, 0.54);
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+  &:hover {
+    color: #495057;
+    background: #fff;
+  }
 `;
 
 export const activeThemeCss = css`
   color: #fff;
   background: #262c34;
+
+  &:hover {
+    color: #fff;
+    background: #262c34;
+  }
 `;
 
 export const containerCss = css`
@@ -84,5 +95,5 @@ export const containerCss = css`
 
 export const activeContainerCss = css`
   display: flex;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 `;

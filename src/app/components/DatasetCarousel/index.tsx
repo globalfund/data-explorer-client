@@ -54,13 +54,31 @@ export function DatasetCarousel() {
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const cmsData = useCMSData({ returnData: true });
 
-  const fpText = {__html: (get(cmsData, "componentsDatasetCarousel.financePledgesContributions", ""))};
-  const fsText = {__html: (get(cmsData, "componentsDatasetCarousel.financeSignedAmounts", ""))};
-  const fcText = {__html: (get(cmsData, "componentsDatasetCarousel.financeCommitments", ""))};
-  const fdText = {__html: (get(cmsData, "componentsDatasetCarousel.financeDisbursements", ""))};
-  const fbText = {__html: (get(cmsData, "componentsDatasetCarousel.financeBudgets", ""))};
-  const aeText = {__html: (get(cmsData, "componentsDatasetCarousel.accessEligibility", ""))};
-  const aaText = {__html: (get(cmsData, "componentsDatasetCarousel.accessAllocations", ""))};
+  const fpText = {
+    __html: get(
+      cmsData,
+      "componentsDatasetCarousel.financePledgesContributions",
+      ""
+    ),
+  };
+  const fsText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeSignedAmounts", ""),
+  };
+  const fcText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeCommitments", ""),
+  };
+  const fdText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeDisbursements", ""),
+  };
+  const fbText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeBudgets", ""),
+  };
+  const aeText = {
+    __html: get(cmsData, "componentsDatasetCarousel.accessEligibility", ""),
+  };
+  const aaText = {
+    __html: get(cmsData, "componentsDatasetCarousel.accessAllocations", ""),
+  };
 
   return (
     <div
