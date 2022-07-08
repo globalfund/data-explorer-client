@@ -19,12 +19,12 @@ export function LandingAppBar() {
       <Container maxWidth="lg">
         <Toolbar disableGutters variant="dense">
           <Grid container justifyContent="space-between" alignItems="center">
-            <Grid item xs={6} sm={9} md={10}>
+            <Grid item xs={6} sm={9}>
               <NavLink to="/" css="display: flex;">
                 <img src="/gflogo.png" css={imgCss} />
               </NavLink>
             </Grid>
-            <Grid item xs={6} sm={3} md={2} css={linksCss}>
+            <Grid item xs={6} sm={3} css={linksCss}>
               <NavLink to="/about" css={aboutLinkCss}>
                 About
               </NavLink>

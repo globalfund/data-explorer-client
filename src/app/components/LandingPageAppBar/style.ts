@@ -2,8 +2,13 @@ import { css } from "styled-components/macro";
 
 export const linksCss = css`
   display: flex;
-  justify-content: space-evenly;
   align-items: center;
+  justify-content: flex-end;
+
+  > * {
+    cursor: pointer;
+    margin-left: 1.5rem;
+  }
 `;
 
 export const imgCss = css`

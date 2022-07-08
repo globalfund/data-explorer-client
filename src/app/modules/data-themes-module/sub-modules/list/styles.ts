@@ -24,7 +24,7 @@ export const styles = {
     justify-content: flex-end;
 
     > * {
-      margin-left: 2rem;
+      margin-left: 1.5rem;
       cursor: pointer;
     }
 
@@ -41,6 +41,7 @@ export const styles = {
       font-weight: 700;
       line-height: 20px;
       letter-spacing: 0.5px;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
   `,
   gridItem: css`
