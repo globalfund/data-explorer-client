@@ -739,8 +739,8 @@ export function GraphPreview() {
           y2="45.2533"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_1073_3041"
@@ -750,8 +750,8 @@ export function GraphPreview() {
           y2="41.6776"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_1073_3041"
@@ -761,8 +761,8 @@ export function GraphPreview() {
           y2="12.9206"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint3_linear_1073_3041"
@@ -772,8 +772,8 @@ export function GraphPreview() {
           y2="66.3376"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint4_linear_1073_3041"
@@ -783,8 +783,8 @@ export function GraphPreview() {
           y2="3.29743"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint5_linear_1073_3041"
@@ -794,8 +794,8 @@ export function GraphPreview() {
           y2="69.5567"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint6_linear_1073_3041"
@@ -805,8 +805,8 @@ export function GraphPreview() {
           y2="61.1021"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint7_linear_1073_3041"
@@ -816,8 +816,8 @@ export function GraphPreview() {
           y2="45.2691"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint8_linear_1073_3041"
@@ -827,8 +827,8 @@ export function GraphPreview() {
           y2="19.166"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint9_linear_1073_3041"
@@ -838,8 +838,8 @@ export function GraphPreview() {
           y2="24.9882"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint10_linear_1073_3041"
@@ -849,8 +849,8 @@ export function GraphPreview() {
           y2="17.2988"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint11_linear_1073_3041"
@@ -860,8 +860,8 @@ export function GraphPreview() {
           y2="37.8158"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint12_linear_1073_3041"
@@ -871,8 +871,8 @@ export function GraphPreview() {
           y2="23.248"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint13_linear_1073_3041"
@@ -882,8 +882,8 @@ export function GraphPreview() {
           y2="12.5056"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
         <linearGradient
           id="paint14_linear_1073_3041"
@@ -893,8 +893,8 @@ export function GraphPreview() {
           y2="48.7897"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#C7CDD1" />
-          <stop offset="0.734375" stop-color="white" />
+          <stop stopColor="#C7CDD1" />
+          <stop offset="0.734375" stopColor="white" />
         </linearGradient>
       </defs>
     </svg>
