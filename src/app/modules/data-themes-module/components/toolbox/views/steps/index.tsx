@@ -82,8 +82,12 @@ const Button = withStyles(() => ({
     height: "48px",
     borderRadius: "0px",
     backgroundColor: "#262C34",
+    fontFamily: "GothamNarrow-Bold, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
+    },
+    "&:hover": {
+      backgroundColor: "#495057",
     },
   },
   label: {
@@ -125,12 +129,19 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
     (state) => state.dataThemes.appliedFilters.value
   );
   let appliedFiltersCount = 0;
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
-  const activePanels = useStoreState((state) => state.dataThemes.activePanels.value);
-  
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const activePanels = useStoreState(
+    (state) => state.dataThemes.activePanels.value
+  );
+
   Object.keys(appliedFilters[activeTabIndex][activeVizIndex]).forEach((key) => {
-    appliedFiltersCount += appliedFilters[activeTabIndex][activeVizIndex][key].length;
+    appliedFiltersCount +=
+      appliedFilters[activeTabIndex][activeVizIndex][key].length;
   });
 
   const stepPaths = [
@@ -228,7 +239,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 3}
         onChange={handleChange(4)}
-        disabled={(data.length === 0 && !loading) || !selectedChartType[activeTabIndex][activeVizIndex]}
+        disabled={
+          (data.length === 0 && !loading) ||
+          !selectedChartType[activeTabIndex][activeVizIndex]
+        }
       >
         <AccordionSummary
           id="step3-header"
@@ -277,9 +291,13 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
                     .map(
                       (key) =>
                         `${
-                          appliedFilters[activeTabIndex][activeVizIndex][key].length
+                          appliedFilters[activeTabIndex][activeVizIndex][key]
+                            .length
                         } ${splitStrBasedOnCapitalLetters(key)}${
-                          appliedFilters[activeTabIndex][activeVizIndex][key].length > 1 ? "s" : ""
+                          appliedFilters[activeTabIndex][activeVizIndex][key]
+                            .length > 1
+                            ? "s"
+                            : ""
                         }`
                     )
                     .join(", ")}
@@ -377,7 +395,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             !props.forceNextEnabled
           }
         >
-          { activePanels[activeTabIndex][activeVizIndex] === 6 ? "Preview" : "Next" }
+          {activePanels[activeTabIndex][activeVizIndex] === 6
+            ? "Preview"
+            : "Next"}
         </Button>
       </div>
     </div>
