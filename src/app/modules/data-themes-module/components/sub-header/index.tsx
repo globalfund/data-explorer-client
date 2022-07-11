@@ -11,7 +11,7 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { convertToRaw } from 'draft-js';
+import { convertToRaw } from "draft-js";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
@@ -96,7 +96,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     (state) => state.dataThemes.activeVizIndex.value
   );
   const tabIds = useStoreState((state) => state.dataThemes.ids.value);
-  const activePanels = useStoreState((state) => state.dataThemes.activePanels.value);
+  const activePanels = useStoreState(
+    (state) => state.dataThemes.activePanels.value
+  );
 
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
@@ -152,11 +154,11 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle({title: event.target.value});
+    setTitle({ title: event.target.value });
   }
 
   function handleSubTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setSubTitle({subTitle: event.target.value});
+    setSubTitle({ subTitle: event.target.value });
   }
 
   function onSave() {
@@ -169,25 +171,26 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
           // add a viz object for every viz in the current tab.
           let vizObject: any = {};
           if (vizIsTextContent[tabIndex][vizIndex]) {
-            const contentState = textContent[tabIndex][vizIndex].getCurrentContent();
+            const contentState =
+              textContent[tabIndex][vizIndex].getCurrentContent();
             const rawContent = JSON.stringify(convertToRaw(contentState));
             vizObject = {
               content: rawContent,
-            }
+            };
           } else {
             vizObject = {
-                mapping: mapping[tabIndex][vizIndex],
-                vizType: selectedChartType[tabIndex][vizIndex],
-                datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-                data: props.themeData
-                  ? props.themeData[tabIndex][vizIndex].data
-                  : data,
-                vizOptions: visualOptions[tabIndex][vizIndex],
-                filterOptionGroups: props.themeData
-                  ? props.themeData[tabIndex][vizIndex].filterOptionGroups
-                  : filterOptionGroups,
-                appliedFilters: appliedFilters[tabIndex][vizIndex],
-                liveData: isLiveData[tabIndex][vizIndex],
+              mapping: mapping[tabIndex][vizIndex],
+              vizType: selectedChartType[tabIndex][vizIndex],
+              datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+              data: props.themeData
+                ? props.themeData[tabIndex][vizIndex].data
+                : data,
+              vizOptions: visualOptions[tabIndex][vizIndex],
+              filterOptionGroups: props.themeData
+                ? props.themeData[tabIndex][vizIndex].filterOptionGroups
+                : filterOptionGroups,
+              appliedFilters: appliedFilters[tabIndex][vizIndex],
+              liveData: isLiveData[tabIndex][vizIndex],
             };
           }
           tabs[tabIndex].content.push(vizObject);
@@ -214,15 +217,13 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
 
   React.useEffect(() => {
     setIsSavedEnabled(
-      !loading &&
-        (
-          data.length > 0 && (
-            selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
-            selectedChartType[activeTabIndex][activeVizIndex] !== null &&
-            !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-            activePanels[activeTabIndex][activeVizIndex] === 6
-          ) 
-        ) || vizIsTextContent[activeTabIndex][activeVizIndex]
+      (!loading &&
+        data.length > 0 &&
+        selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
+        selectedChartType[activeTabIndex][activeVizIndex] !== null &&
+        !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
+        activePanels[activeTabIndex][activeVizIndex] === 6) ||
+        vizIsTextContent[activeTabIndex][activeVizIndex]
     );
   }, [data, loading, selectedChartType, mapping, vizIsTextContent]);
 
@@ -233,10 +234,10 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     if (loadedDataTheme) {
       if (loadedDataTheme.title.length > 0) {
-        setTitle({title: loadedDataTheme.title});
+        setTitle({ title: loadedDataTheme.title });
       }
       if (loadedDataTheme.subTitle.length > 0) {
-        setSubTitle({subTitle: loadedDataTheme.subTitle});
+        setSubTitle({ subTitle: loadedDataTheme.subTitle });
       }
     }
   }, [loadedDataTheme]);
@@ -259,7 +260,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       createDataThemeData.id.length > 0 &&
       createDataThemeData.id !== page
     ) {
-      history.push(`/data-themes/${createDataThemeData.id}`, {editMode: true});
+      history.push(`/data-themes/${createDataThemeData.id}`, {
+        editMode: true,
+      });
     }
   }, [createDataThemeData]);
 
@@ -303,7 +306,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                     : {}
                 }
               />
-              <KeyboardArrowDownIcon htmlColor="#262c34" />
+              {!props.previewMode && (
+                <KeyboardArrowDownIcon htmlColor="#262c34" />
+              )}
             </div>
             <input
               type="text"
