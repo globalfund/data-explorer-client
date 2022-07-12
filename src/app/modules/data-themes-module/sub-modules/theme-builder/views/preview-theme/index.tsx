@@ -1,11 +1,9 @@
 /* third-party */
 import React from "react";
+import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
-import {
-  useHistory,
-  useParams,
-} from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 /* project */
@@ -13,9 +11,9 @@ import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { DataThemesBuilderPreviewThemeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
-import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
 
 export function DataThemesBuilderPreviewTheme(
   props: DataThemesBuilderPreviewThemeProps
@@ -30,7 +28,9 @@ export function DataThemesBuilderPreviewTheme(
   const { visualOptions, setVisualOptions } = props;
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
-  const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
+  const setActiveVizIndex = useStoreActions(
+    (state) => state.dataThemes.activeVizIndex.setValue
+  );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
   );
@@ -51,7 +51,13 @@ export function DataThemesBuilderPreviewTheme(
   }, [containerRef]);
 
   React.useEffect(() => {
-    if (!vizIsTextContent[props.tabIndex][props.vizIndex] && (domRef && domRef.current)) {
+    if (
+      !vizIsTextContent[props.tabIndex][props.vizIndex] &&
+      domRef &&
+      domRef.current &&
+      !isEmpty(mapping[props.tabIndex][props.vizIndex]) &&
+      !isEmpty(visualOptions[props.tabIndex][props.vizIndex])
+    ) {
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
@@ -84,14 +90,14 @@ export function DataThemesBuilderPreviewTheme(
       setActiveVizIndex(props.vizIndex);
       history.push(`/data-themes/${page}/customize`);
     }
-  }
+  };
 
   const handleTextClick = () => {
     if (page === "new" || props.editable) {
       setActiveVizIndex(props.vizIndex);
       history.push(`/data-themes/${page}/text`);
     }
-  }
+  };
 
   return (
     <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
@@ -114,9 +120,18 @@ export function DataThemesBuilderPreviewTheme(
         loadDataset={props.loadDataset}
         filterOptionGroups={props.filterOptionGroups}
       />
-      { vizIsTextContent[props.tabIndex][props.vizIndex] ? (
-        <div css={commonStyles.previewInnercontainer} onClick={() => {handleTextClick()}}>
-          <RichEditor editMode={false} tabIndex={props.tabIndex} vizIndex={props.vizIndex} />
+      {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
+        <div
+          css={commonStyles.previewInnercontainer}
+          onClick={() => {
+            handleTextClick();
+          }}
+        >
+          <RichEditor
+            editMode={false}
+            tabIndex={props.tabIndex}
+            vizIndex={props.vizIndex}
+          />
         </div>
       ) : (
         <div css={commonStyles.previewInnercontainer}>
@@ -127,7 +142,9 @@ export function DataThemesBuilderPreviewTheme(
             `}
           >
             <div
-              onClick={() => {handleVizClick()}}
+              onClick={() => {
+                handleVizClick();
+              }}
               ref={domRef}
               css={`
                 overflow-x: auto;
