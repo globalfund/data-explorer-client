@@ -59,12 +59,14 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
     (state) => state.dataThemes.activePanels.setValue
   );
 
-  // When the Mapping component is rendered, we are at step 3.
-  setActivePanels({
-    tabIndex: activeTabIndex,
-    vizIndex: activeVizIndex,
-    panel: 3,
-  });
+  React.useEffect(() => {
+    // When the Mapping component is rendered, we are at step 3.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 3,
+    });
+  }, []);
 
   const replaceDimension = React.useCallback(
     (
