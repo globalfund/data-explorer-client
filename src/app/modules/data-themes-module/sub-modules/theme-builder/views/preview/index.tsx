@@ -29,12 +29,24 @@ interface DataThemesBuilderPreviewProps {
 export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
   useTitle("Data Themes - Preview");
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
-  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
 
-  // When the Preview component is rendered, we are at step 1.
-  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 1});
+  React.useEffect(() => {
+    // When the Preview component is rendered, we are at step 1.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 1,
+    });
+  }, []);
 
   return (
     <div css={commonStyles.container}>

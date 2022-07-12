@@ -36,11 +36,18 @@ export function DataThemesBuilderCustomize(
   const activeVizIndex = useStoreState(
     (state) => state.dataThemes.activeVizIndex.value
   );
-  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
 
-  // When the Customize component is rendered, we are at step 6.
-  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 6});
-
+  React.useEffect(() => {
+    // When the Customize component is rendered, we are at step 6.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 6,
+    });
+  }, []);
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
