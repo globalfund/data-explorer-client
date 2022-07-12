@@ -94,11 +94,9 @@ export const RichEditor = (props: {
           },
           ITALIC: {
             fontStyle: "italic",
-            fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
           },
           UNDERLINE: {
             textDecoration: "underline",
-            fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
           },
         }}
       />
