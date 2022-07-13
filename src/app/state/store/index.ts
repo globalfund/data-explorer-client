@@ -172,6 +172,7 @@ import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/syn
 import {
   DataThemeCreate,
   DataThemeDelete,
+  DataThemeDuplicate,
   DataThemeGet,
   DataThemeGetList,
   DataThemeUpdate,
@@ -379,6 +380,7 @@ const storeContent: StoreModel = {
     DataThemeCreate: persist(DataThemeCreate),
     DataThemeUpdate: persist(DataThemeUpdate),
     DataThemeDelete: persist(DataThemeDelete),
+    DataThemeDuplicate: persist(DataThemeDuplicate),
     DataThemeGetList: persist(DataThemeGetList),
   },
 };

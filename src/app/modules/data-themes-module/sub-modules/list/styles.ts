@@ -81,18 +81,6 @@ export const styles = {
     position: relative;
     border-radius: 30px;
     padding: 16px !important;
-
-    #delete-button,
-    #edit-button {
-      display: none;
-    }
-
-    &:hover {
-      #delete-button,
-      #edit-button {
-        display: inherit;
-      }
-    }
   `,
   gridItemTitle: css`
     height: 30px;
@@ -105,11 +93,20 @@ export const styles = {
     align-items: center;
     justify-content: space-between;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  `,
+  menuBtns: css`
+    gap: 16px;
+    width: 175px;
+    height: 57px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #f1f3f5;
+    justify-content: center;
 
-    > div {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+    > button {
+      border-radius: 50%;
+      border: 1px solid #000;
     }
   `,
   gridItemLabel: css`

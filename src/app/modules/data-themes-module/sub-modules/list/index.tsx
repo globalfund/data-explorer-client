@@ -1,23 +1,26 @@
 /* third-party */
 import React from "react";
 import { useDebounce } from "react-use";
-import { Link, useHistory } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
-import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import SearchIcon from "@material-ui/icons/Search";
 import SortIcon from "@material-ui/icons/Sort";
-import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
+import Popover from "@material-ui/core/Popover";
+import QueueIcon from "@material-ui/icons/Queue";
+import SearchIcon from "@material-ui/icons/Search";
+import DeleteIcon from "@material-ui/icons/Delete";
+import { Link, useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { AddIcon } from "app/assets/icons/Add";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/data-themes-module/sub-modules/list/styles";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 interface DataThemeListItemAPIModel {
   id: string;
@@ -42,13 +45,40 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const deleteDataThemeSuccess = useStoreState(
     (state) => state.dataThemes.DataThemeDelete.success
   );
+  const duplicateDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeDuplicate.fetch
+  );
+  const clearDuplicateDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeDuplicate.clear
+  );
+  const duplicateDataThemeSuccess = useStoreState(
+    (state) => state.dataThemes.DataThemeDuplicate.success
+  );
   const loadDataThemes = useStoreActions(
     (actions) => actions.dataThemes.DataThemeGetList.fetch
   );
 
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
   function deleteItem() {
     deleteDataTheme({
       deleteId: props.id,
+    });
+  }
+
+  function duplicateItem() {
+    duplicateDataTheme({
+      getId: props.id,
     });
   }
 
@@ -64,24 +94,65 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     };
   }, [deleteDataThemeSuccess]);
 
+  React.useEffect(() => {
+    if (duplicateDataThemeSuccess) {
+      loadDataThemes({
+        storeInCrudData: true,
+      });
+    }
+
+    return () => {
+      clearDuplicateDataTheme();
+    };
+  }, [duplicateDataThemeSuccess]);
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <div css={styles.gridItem}>
       <div css={styles.gridItemTitle}>
         {props.title}
-        <div>
-          <IconButton
-            id="edit-button"
-            size="small"
-            onClick={() => {
-              history.push(`/data-themes/${props.id}`, { editMode: true });
-            }}
-          >
-            <EditIcon htmlColor="#262c34" />
-          </IconButton>
-          <IconButton id="delete-button" size="small" onClick={deleteItem}>
-            <DeleteIcon htmlColor="#262c34" />
-          </IconButton>
-        </div>
+        <IconButton id="menu-button" size="small" onClick={handleClick}>
+          <MoreVertIcon htmlColor="#262c34" />
+        </IconButton>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          css={`
+            .MuiPaper-root {
+              box-shadow: none;
+              border-radius: 13px;
+            }
+          `}
+        >
+          <div css={styles.menuBtns}>
+            <IconButton size="small" onClick={duplicateItem}>
+              <QueueIcon htmlColor="#262c34" />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => {
+                history.push(`/data-themes/${props.id}`, { editMode: true });
+              }}
+            >
+              <EditIcon htmlColor="#262c34" />
+            </IconButton>
+            <IconButton size="small" onClick={deleteItem}>
+              <DeleteIcon htmlColor="#262c34" />
+            </IconButton>
+          </div>
+        </Popover>
       </div>
       <div css={styles.gridItemLabel}>{props.subTitle}</div>
       <div css={styles.gridItemDetails}>
