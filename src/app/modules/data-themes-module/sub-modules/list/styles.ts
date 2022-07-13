@@ -18,19 +18,21 @@ export const styles = {
   `,
   toolbar: css`
     width: 100%;
+    gap: 1.5rem;
     height: 72px;
     padding: 18px 0;
     display: flex;
+    align-items: center;
     justify-content: flex-end;
 
     > * {
-      margin-left: 1.5rem;
       cursor: pointer;
     }
 
     button {
-      height: 23.999992370605547px;
-      width: 90.00000000000038px;
+      width: 90px;
+      min-width: 90px;
+      height: 23px;
       border-radius: 20px;
       background: #262c34;
       cursor: pointer;
@@ -42,6 +44,35 @@ export const styles = {
       line-height: 20px;
       letter-spacing: 0.5px;
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    }
+  `,
+  toolbarSearch: (showInput: boolean) => css`
+    display: flex;
+    margin-left: 0;
+    position: relative;
+    border-radius: 20px;
+    width: ${showInput ? "100%" : ""};
+    padding: ${showInput ? "5px 20px" : "0"};
+    box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+    background: ${showInput ? "#dfe3e6" : "transparent"};
+
+    > input {
+      width: 100%;
+      outline: none;
+      color: #262c34;
+      font-size: 14px;
+      border-style: none;
+      background: #dfe3e6;
+      display: ${showInput ? "inherit" : "none"};
+
+      ::placeholder {
+        color: #262c34;
+        font-weight: bold;
+      }
+
+      &:focus::placeholder {
+        opacity: 0.3;
+      }
     }
   `,
   gridItem: css`

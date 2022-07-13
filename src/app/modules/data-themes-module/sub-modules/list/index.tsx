@@ -1,6 +1,8 @@
 /* third-party */
 import React from "react";
+import { useDebounce } from "react-use";
 import { Link, useHistory } from "react-router-dom";
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import DeleteIcon from "@material-ui/icons/Delete";
@@ -15,7 +17,7 @@ import { AddIcon } from "app/assets/icons/Add";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/data-themes-module/sub-modules/list/styles";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
-import { Box } from "@material-ui/core";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 interface DataThemeListItemAPIModel {
   id: string;
@@ -109,6 +111,10 @@ export function DataThemesListView() {
   useTitle("Data Themes - List");
   const history = useHistory();
 
+  const [search, setSearch] = React.useState("");
+  const [searchOpen, setSearchOpen] = React.useState(false);
+  const [searchDebounced, setSearchDebounced] = React.useState("");
+
   React.useEffect(() => {
     document.body.style.background = "#F0F3F5";
   }, []);
@@ -125,11 +131,29 @@ export function DataThemesListView() {
     (actions) => actions.dataThemes.DataThemeGetList.fetch
   );
 
+  const [,] = useDebounce(
+    () => {
+      setSearchDebounced(search);
+    },
+    500,
+    [search]
+  );
+
   React.useEffect(() => {
-    loadDataThemes({
+    let params: {
+      storeInCrudData: boolean;
+      filterString?: string;
+    } = {
       storeInCrudData: true,
-    });
-  }, []);
+    };
+    if (searchDebounced.length > 0) {
+      params = {
+        storeInCrudData: true,
+        filterString: `q=${searchDebounced}`,
+      };
+    }
+    loadDataThemes(params);
+  }, [searchDebounced]);
 
   return (
     <div css={styles.container}>
@@ -137,14 +161,47 @@ export function DataThemesListView() {
       <DataThemesGenericPageSubHeader title="Themes" />
       <div css={styles.innercontainer}>
         <Box css={styles.toolbar}>
-          <SearchIcon />
+          <ClickAwayListener
+            onClickAway={() => {
+              if (searchOpen && searchDebounced.length === 0) {
+                setSearchOpen(false);
+              }
+            }}
+          >
+            <div css={styles.toolbarSearch(searchOpen)}>
+              <input
+                type="text"
+                tabIndex={0}
+                value={search}
+                placeholder="Search..."
+                id="data-themes-search-input"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearch(e.target.value)
+                }
+              />
+              <SearchIcon
+                onClick={() => {
+                  if (!searchOpen) {
+                    setSearchOpen(true);
+                    setTimeout(() => {
+                      const input = document.getElementById(
+                        "data-themes-search-input"
+                      );
+                      if (input) {
+                        input.focus();
+                      }
+                    }, 100);
+                  }
+                }}
+              />
+            </div>
+          </ClickAwayListener>
           <SortIcon />
           <ViewAgendaIcon />
           <button onClick={() => history.push("/data-themes/new")}>
             Create
           </button>
         </Box>
-
         <Grid container spacing={2}>
           {loadedDataThemes.map((item) => (
             <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
