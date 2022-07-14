@@ -13,12 +13,10 @@ import { DataThemesPageSubHeader } from "app/modules/data-themes-module/componen
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { getRequiredFieldsAndErrors } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping/utils";
-import { DataThemesBuilderCustomizeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/data";
+import { DataThemesBuilderExportProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/export/data";
 
-export function DataThemesBuilderCustomize(
-  props: DataThemesBuilderCustomizeProps
-) {
-  useTitle("Data Themes - Customize");
+export function DataThemesBuilderExport(props: DataThemesBuilderExportProps) {
+  useTitle("Data Themes - Export");
 
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
@@ -26,6 +24,7 @@ export function DataThemesBuilderCustomize(
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
+  const [rawViz, setRawViz] = React.useState(null);
   const [mappedData, setMappedData] = React.useState(null);
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
@@ -41,13 +40,14 @@ export function DataThemesBuilderCustomize(
   );
 
   React.useEffect(() => {
-    // When the Customize component is rendered, we are at step 6.
+    // When the Export component is rendered, we are at step 7.
     setActivePanels({
       tabIndex: activeTabIndex,
       vizIndex: activeVizIndex,
-      panel: 6,
+      panel: 7,
     });
   }, []);
+
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
@@ -89,7 +89,8 @@ export function DataThemesBuilderCustomize(
         const vizData = viz._getVizData();
         setMappedData(vizData);
         try {
-          const rawViz = viz.renderToDOM(domRef.current, vizData);
+          const newRawViz = viz.renderToDOM(domRef.current, vizData);
+          setRawViz(newRawViz);
         } catch (e) {
           setMappedData(null);
           if (process.env.NODE_ENV === "development") {
@@ -107,6 +108,7 @@ export function DataThemesBuilderCustomize(
       }
     } else if (!nextEnabled && domRef && domRef.current) {
       while (domRef.current.firstChild) {
+        setRawViz(null);
         domRef.current.removeChild(domRef.current.firstChild);
       }
     }
@@ -138,7 +140,8 @@ export function DataThemesBuilderCustomize(
       />
       <DataThemesToolBox
         dataSteps
-        openPanel={6}
+        openPanel={7}
+        rawViz={rawViz}
         data={props.data}
         loading={props.loading}
         mappedData={mappedData}
