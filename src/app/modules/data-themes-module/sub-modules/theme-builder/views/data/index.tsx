@@ -16,7 +16,8 @@ interface DataThemesBuilderDataViewProps {
   visualOptions: any;
   filterOptionGroups: FilterGroupModel[];
   data: { [key: string]: string | number | null }[];
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  totalAvailable: number;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
 }
 
@@ -60,6 +61,7 @@ export function DataThemesBuilderDataView(
         loading={false}
         data={props.data}
         loadDataset={props.loadDataset}
+        totalAvailable={props.totalAvailable}
         forceNextEnabled={props.data.length > 0}
         filterOptionGroups={props.filterOptionGroups}
       />

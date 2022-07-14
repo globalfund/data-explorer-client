@@ -17,7 +17,6 @@ export function DataThemesToolBoxExport(props: DataThemesToolBoxExportProps) {
         overflow-y: auto;
         padding-right: 15px;
         flex-direction: column;
-        max-height: calc(100vh - 456px);
 
         * {
           font-size: 14px;

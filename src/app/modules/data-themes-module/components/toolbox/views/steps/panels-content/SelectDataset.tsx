@@ -1,14 +1,26 @@
 import React from "react";
+import find from "lodash/find";
+import { Range } from "react-range";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import Divider from "@material-ui/core/Divider";
+import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
+import { IThumbProps } from "react-range/lib/types";
 import { withStyles } from "@material-ui/core/styles";
+import InfoIcon from "@material-ui/icons/InfoOutlined";
 import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import {
+  Container,
+  ThumbLabel,
+  THUMB_SIZE,
+  Track,
+} from "app/components/RangeSlider";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 const StyledMenu = withStyles({
   paper: {
@@ -71,6 +83,15 @@ const StyledMenuItem = withStyles(() => ({
   },
 }))(MenuItem);
 
+const LightTooltip = withStyles(() => ({
+  tooltip: {
+    color: "#262C34",
+    fontSize: "12px",
+    boxShadow: "none",
+    background: "#DFE3E6",
+  },
+}))(Tooltip);
+
 const datasets = [
   {
     name: "Investment - Signed",
@@ -107,7 +128,8 @@ const datasets = [
 ];
 
 interface DataThemesToolBoxSelectDatasetProps {
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  totalAvailable?: number;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }
 
 export function DataThemesToolBoxSelectDataset(
@@ -117,9 +139,16 @@ export function DataThemesToolBoxSelectDataset(
   const { page } = useParams<{ page: string }>();
   const { loadDataset } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [sliderValues, setSliderValues] = React.useState([100]);
+  const [openTooltip, setOpenTooltip] = React.useState(true);
+  const rangeRef = React.useRef();
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
   );
@@ -147,20 +176,30 @@ export function DataThemesToolBoxSelectDataset(
   const handleItemClick =
     (endpoint: string, name: string) =>
     (event: React.MouseEvent<HTMLElement>) => {
-      if (name === stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset) {
+      if (
+        name ===
+        stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset
+      ) {
         return;
       }
       stepSelectionsActions.setStep1({
         tab: activeTabIndex,
         viz: activeVizIndex,
         dataset: name,
+        dataPoints: sliderValues[0],
       });
-      clearMapping({tab: activeTabIndex, viz: activeVizIndex});
+      clearMapping({ tab: activeTabIndex, viz: activeVizIndex });
       handleClose();
-      loadDataset(endpoint).then(() => {
+      loadDataset(endpoint, sliderValues[0]).then(() => {
         history.push(`/data-themes/${page}/preview`);
       });
     };
+
+  React.useEffect(() => {
+    setSliderValues([
+      stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataPoints,
+    ]);
+  }, [stepSelectionsData.step1, activeTabIndex, activeVizIndex]);
 
   return (
     <div
@@ -222,7 +261,8 @@ export function DataThemesToolBoxSelectDataset(
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
-          {stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset || "Datasets"}
+          {stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ||
+            "Datasets"}
         </span>
         <KeyboardArrowDownIcon />
       </Button>
@@ -242,7 +282,10 @@ export function DataThemesToolBoxSelectDataset(
               `data-themes/raw-data/${dataset.id}`,
               dataset.name
             )}
-            selected={stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset === dataset.name}
+            selected={
+              stepSelectionsData.step1[activeTabIndex][activeVizIndex]
+                .dataset === dataset.name
+            }
           >
             {dataset.name}
           </StyledMenuItem>
@@ -256,11 +299,165 @@ export function DataThemesToolBoxSelectDataset(
           <Switch
             color="primary"
             checked={isLiveData[activeTabIndex][activeVizIndex]}
-            onChange={() => setIsLiveData({tab: activeTabIndex, viz: activeVizIndex, value: !isLiveData[activeTabIndex][activeVizIndex]})}
+            onChange={() =>
+              setIsLiveData({
+                tab: activeTabIndex,
+                viz: activeVizIndex,
+                value: !isLiveData[activeTabIndex][activeVizIndex],
+              })
+            }
           />
         }
         label="Use Live data for the visualization"
       />
+      {stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset && (
+        <div
+          css={`
+            width: 100%;
+            padding: 15px 0;
+          `}
+        >
+          <div
+            css={`
+              gap: 12px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+            `}
+          >
+            Data points
+            <LightTooltip
+              arrow
+              placement="right"
+              open={openTooltip}
+              title={
+                <ClickAwayListener
+                  onClickAway={() => {
+                    if (openTooltip) {
+                      setOpenTooltip(false);
+                    }
+                  }}
+                >
+                  <span>
+                    Use this slider to activate all
+                    <br />
+                    available data from your selection
+                  </span>
+                </ClickAwayListener>
+              }
+            >
+              <InfoIcon
+                htmlColor="#262C34"
+                css="cursor: pointer;"
+                onClick={() => setOpenTooltip(true)}
+              />
+            </LightTooltip>
+          </div>
+          <div
+            css={`
+              position: relative;
+
+              &:before {
+                left: 0;
+                top: -10px;
+                content: "1";
+                font-size: 10px;
+                position: absolute;
+              }
+
+              &:after {
+                right: 0;
+                top: -10px;
+                font-size: 10px;
+                position: absolute;
+                content: "${props.totalAvailable || 0} (Max)";
+              }
+
+              > div {
+                > div {
+                  width: calc(100% - 35px) !important;
+                }
+              }
+            `}
+          >
+            <Container>
+              <Range
+                min={1}
+                max={props.totalAvailable || 1000}
+                step={10}
+                // @ts-ignore
+                ref={rangeRef}
+                renderTrack={Track}
+                values={sliderValues}
+                onChange={(values: number[]) => {
+                  setSliderValues(values);
+                }}
+                onFinalChange={(values: number[]) => {
+                  if (
+                    values[0] !==
+                      stepSelectionsData.step1[activeTabIndex][activeVizIndex]
+                        .dataPoints &&
+                    stepSelectionsData.step1[activeTabIndex][activeVizIndex]
+                      .dataset !== null
+                  ) {
+                    const dataset = find(datasets, {
+                      name: stepSelectionsData.step1[activeTabIndex][
+                        activeVizIndex
+                      ].dataset,
+                    }) as { name: string; id: string } | undefined;
+                    if (dataset) {
+                      stepSelectionsActions.setStep1({
+                        tab: activeTabIndex,
+                        viz: activeVizIndex,
+                        dataset:
+                          stepSelectionsData.step1[activeTabIndex][
+                            activeVizIndex
+                          ].dataset,
+                        dataPoints: values[0],
+                      });
+                      loadDataset(
+                        `data-themes/raw-data/${dataset.id}`,
+                        values[0]
+                      ).then(() => {
+                        history.push(`/data-themes/${page}/preview`);
+                      });
+                    }
+                  }
+                }}
+                renderThumb={(params: {
+                  props: IThumbProps;
+                  value: number;
+                  index: number;
+                  isDragged: boolean;
+                }) => (
+                  <div
+                    {...params.props}
+                    style={{
+                      ...params.props.style,
+                      height: `${THUMB_SIZE}px`,
+                      width: `${THUMB_SIZE}px`,
+                      borderRadius: "50%",
+                      backgroundColor: "#fff",
+                      display: "flex",
+                      outline: "none",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      boxShadow: "0px 2px 6px #AAA",
+                    }}
+                  >
+                    <ThumbLabel
+                      raw
+                      index={params.index}
+                      values={sliderValues}
+                      rangeRef1={rangeRef.current}
+                    />
+                  </div>
+                )}
+              />
+            </Container>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -455,6 +455,7 @@ export function DataThemesBuilder() {
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
               allData={rawData[activeTabIndex][activeVizIndex].data}
+              totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
               loading={loading}
               data={filteredData[activeTabIndex][activeVizIndex]}
               loadDataset={loadDataset}
@@ -470,6 +471,7 @@ export function DataThemesBuilder() {
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
               data={rawData[activeTabIndex][activeVizIndex].data}
+              totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
               loading={loading}
               loadDataset={loadDataset}
               visualOptions={visualOptions}

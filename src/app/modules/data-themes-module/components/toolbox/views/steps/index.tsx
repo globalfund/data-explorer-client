@@ -112,9 +112,10 @@ interface DataThemesToolBoxStepsProps {
   currentChartData?: any;
   forceNextEnabled?: boolean;
   rawViz?: any;
+  totalAvailable?: number;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
@@ -218,7 +219,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>1</div> Select data
         </AccordionSummary>
         <AccordionDetails>
-          <DataThemesToolBoxSelectDataset loadDataset={loadDataset} />
+          <DataThemesToolBoxSelectDataset
+            loadDataset={loadDataset}
+            totalAvailable={props.totalAvailable}
+          />
         </AccordionDetails>
       </Accordion>
       <Accordion

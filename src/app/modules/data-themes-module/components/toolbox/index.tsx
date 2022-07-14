@@ -57,6 +57,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           loadDataset={props.loadDataset}
           currentChart={props.currentChart}
           visualOptions={props.visualOptions}
+          totalAvailable={props.totalAvailable}
           forceNextEnabled={props.forceNextEnabled}
           currentChartData={props.currentChartData}
           setVisualOptions={props.setVisualOptions}

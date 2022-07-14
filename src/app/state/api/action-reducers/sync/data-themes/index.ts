@@ -3,13 +3,14 @@ import { action, Action } from "easy-peasy";
 import { EditorState } from "draft-js";
 
 export interface DataThemesStepSelectionsStateModel {
-  step1: [[{ dataset: string | null }]];
+  step1: [[{ dataset: string | null; dataPoints: number }]];
   setStep1: Action<
     DataThemesStepSelectionsStateModel,
     {
       tab: number;
       viz: number;
       dataset: string | null;
+      dataPoints: number;
     }
   >;
   activeStep: number[][];
@@ -24,13 +25,21 @@ export interface DataThemesStepSelectionsStateModel {
 
 export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
   {
-    step1: [[{ dataset: null }]],
+    step1: [[{ dataset: null, dataPoints: 100 }]],
     setStep1: action(
       (
         state,
-        payload: { tab: number; viz: number; dataset: string | null }
+        payload: {
+          tab: number;
+          viz: number;
+          dataset: string | null;
+          dataPoints: number;
+        }
       ) => {
-        state.step1[payload.tab][payload.viz] = { dataset: payload.dataset };
+        state.step1[payload.tab][payload.viz] = {
+          dataset: payload.dataset,
+          dataPoints: payload.dataPoints,
+        };
       }
     ),
     activeStep: [[0]],
@@ -40,13 +49,13 @@ export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
       }
     ),
     reset: action((state) => {
-      state.step1 = [[{ dataset: null }]];
+      state.step1 = [[{ dataset: null, dataPoints: 100 }]];
     }),
     addTab: action((state) => {
-      state.step1.push([{ dataset: null }]);
+      state.step1.push([{ dataset: null, dataPoints: 100 }]);
     }),
     addViz: action((state, payload: { tabIndex: number }) => {
-      state.step1[payload.tabIndex].push({ dataset: null });
+      state.step1[payload.tabIndex].push({ dataset: null, dataPoints: 100 });
     }),
   };
 
