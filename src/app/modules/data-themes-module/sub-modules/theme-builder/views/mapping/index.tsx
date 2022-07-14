@@ -11,6 +11,7 @@ import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import {
   getTypeName,
   chart as rawChart,
+  getAggregatorNames,
   getDefaultDimensionAggregation,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
@@ -334,6 +335,36 @@ function DataThemesBuilderMappingDimension(
     },
   }));
 
+  const setAggregation = React.useCallback(
+    (newAggregations) => {
+      setMapping({
+        tab: activeTabIndex,
+        viz: activeVizIndex,
+        mapping: {
+          [dimension.id]: {
+            ...dimensionMapping,
+            config: {
+              aggregation: [...newAggregations],
+            },
+          },
+        },
+      });
+    },
+    [mapping, setMapping, activeTabIndex, activeVizIndex, dimensionMapping]
+  );
+
+  const aggregators = getAggregatorNames();
+  let aggregationsMappedHere = get(mapping, "config.aggregation", []);
+
+  const onChangeAggregation = React.useCallback(
+    (i, aggregatorName) => {
+      const newAggregations = [...aggregationsMappedHere];
+      newAggregations[i] = aggregatorName;
+      setAggregation(newAggregations);
+    },
+    [aggregationsMappedHere, setAggregation]
+  );
+
   const onDeleteItem = React.useCallback(
     (i: number) => {
       let nextConfig;
@@ -517,10 +548,10 @@ function DataThemesBuilderMappingDimension(
             const columnDataType = getTypeName(
               props.currentChartData.dataTypes[columnId]
             );
-            // const relatedAggregation = dimension.aggregation
-            //   ? dimensionMapping.config.aggregation[index] ||
-            //     getDefaultDimensionAggregation(dimension, columnDataType)
-            //   : undefined;
+            const relatedAggregation = dimension.aggregation
+              ? dimensionMapping.config.aggregation[index] ||
+                getDefaultDimensionAggregation(dimension, columnDataType)
+              : undefined;
             const isValid =
               dimension.validTypes?.length === 0 ||
               dimension.validTypes?.includes(columnDataType);
@@ -538,11 +569,15 @@ function DataThemesBuilderMappingDimension(
                 type={type}
                 index={index}
                 onMove={onMove}
+                isValid={isValid}
                 dimension={dimension}
                 dataTypeName={columnId}
+                aggregators={aggregators}
                 replaceDimension={replaceDimension}
                 onChangeDimension={onChangeDimension}
+                relatedAggregation={relatedAggregation}
                 onDeleteItem={() => onDeleteItem(index)}
+                onChangeAggregation={onChangeAggregation}
                 backgroundColor={isValid ? undefined : "#fa7355"}
                 marginBottom={!dimension.multiple ? "0px" : "16px"}
               />

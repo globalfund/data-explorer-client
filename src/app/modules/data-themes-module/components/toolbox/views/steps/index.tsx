@@ -221,6 +221,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         <AccordionDetails>
           <DataThemesToolBoxSelectDataset
             loadDataset={loadDataset}
+            expanded={expanded === 1}
             totalAvailable={props.totalAvailable}
           />
         </AccordionDetails>

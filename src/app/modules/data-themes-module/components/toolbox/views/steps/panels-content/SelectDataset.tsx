@@ -129,6 +129,7 @@ const datasets = [
 
 interface DataThemesToolBoxSelectDatasetProps {
   totalAvailable?: number;
+  expanded: boolean;
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }
 
@@ -140,7 +141,7 @@ export function DataThemesToolBoxSelectDataset(
   const { loadDataset } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [sliderValues, setSliderValues] = React.useState([100]);
-  const [openTooltip, setOpenTooltip] = React.useState(true);
+  const [openTooltip, setOpenTooltip] = React.useState(props.expanded);
   const rangeRef = React.useRef();
 
   const activeTabIndex = useStoreState(
