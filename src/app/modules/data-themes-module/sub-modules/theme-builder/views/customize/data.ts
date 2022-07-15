@@ -1,6 +1,8 @@
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 export interface DataThemesBuilderCustomizeProps {
+  tabIndex: number;
+  vizIndex: number;
   data: { [key: string]: string | number | null }[];
   loading: boolean;
   currentChart: any;
@@ -9,5 +11,12 @@ export interface DataThemesBuilderCustomizeProps {
   currentChartData: any;
   setVisualOptions: (value: any) => void;
   filterOptionGroups: FilterGroupModel[];
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
+  updateLocalStates: any;
+  themeData: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
 }

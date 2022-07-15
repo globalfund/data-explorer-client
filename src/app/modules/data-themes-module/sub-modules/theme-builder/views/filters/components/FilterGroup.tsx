@@ -22,8 +22,10 @@ export function FilterGroup(props: FilterGroupCompProps) {
   const [flattenOptions, setFlattenOptions] = React.useState<
     FilterGroupOptionModel[]
   >([]);
+  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
   const appliedFilters = useStoreState((state) =>
-    get(state.dataThemes.appliedFilters, `value.${props.name}`, [])
+    get(state.dataThemes.appliedFilters, `value[${activeTabIndex}][${activeVizIndex}].${props.name}`, [])
   );
   const setAppliedFilters = useStoreActions(
     (actions) => actions.dataThemes.appliedFilters.setValue
@@ -31,6 +33,8 @@ export function FilterGroup(props: FilterGroupCompProps) {
 
   function onFilterRemove(option: string) {
     setAppliedFilters({
+      tab: activeTabIndex,
+      viz: activeVizIndex,
       key: props.name,
       value: filter(appliedFilters, (af: string) => af !== option),
     });

@@ -8,11 +8,17 @@ export interface DataThemesToolBoxProps {
   currentChart?: any;
   dataSteps?: boolean;
   guideView?: boolean;
+  textView?: boolean;
   visualOptions?: any;
   filtersView?: boolean;
+  exportView?: boolean;
+  tabIndex?: number;
+  vizIndex?: number;
+  rawViz?: any;
   currentChartData?: any;
+  totalAvailable?: number;
   forceNextEnabled?: boolean;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }

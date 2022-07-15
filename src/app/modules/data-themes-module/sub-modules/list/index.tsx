@@ -1,10 +1,20 @@
 /* third-party */
 import React from "react";
-import { Link } from "react-router-dom";
+import { useDebounce } from "react-use";
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
+import EditIcon from "@material-ui/icons/Edit";
+import SortIcon from "@material-ui/icons/Sort";
+import Popover from "@material-ui/core/Popover";
+import QueueIcon from "@material-ui/icons/Queue";
+import SearchIcon from "@material-ui/icons/Search";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { Link, useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { AddIcon } from "app/assets/icons/Add";
@@ -18,10 +28,13 @@ interface DataThemeListItemAPIModel {
   public: boolean;
   subTitle: string;
   createdDate: Date;
+  tabs: any;
+  vizCount: number;
 }
 
 function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const date = new Date(props.createdDate);
+  const history = useHistory();
 
   const deleteDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeDelete.delete
@@ -32,9 +45,30 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const deleteDataThemeSuccess = useStoreState(
     (state) => state.dataThemes.DataThemeDelete.success
   );
+  const duplicateDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeDuplicate.fetch
+  );
+  const clearDuplicateDataTheme = useStoreActions(
+    (actions) => actions.dataThemes.DataThemeDuplicate.clear
+  );
+  const duplicateDataThemeSuccess = useStoreState(
+    (state) => state.dataThemes.DataThemeDuplicate.success
+  );
   const loadDataThemes = useStoreActions(
     (actions) => actions.dataThemes.DataThemeGetList.fetch
   );
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
 
   function deleteItem() {
     deleteDataTheme({
@@ -42,12 +76,16 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     });
   }
 
+  function duplicateItem() {
+    duplicateDataTheme({
+      getId: props.id,
+    });
+  }
+
   React.useEffect(() => {
     if (deleteDataThemeSuccess) {
       loadDataThemes({
         storeInCrudData: true,
-        filterString:
-          'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":false,"createdDate":true}}',
       });
     }
 
@@ -56,13 +94,65 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     };
   }, [deleteDataThemeSuccess]);
 
+  React.useEffect(() => {
+    if (duplicateDataThemeSuccess) {
+      loadDataThemes({
+        storeInCrudData: true,
+      });
+    }
+
+    return () => {
+      clearDuplicateDataTheme();
+    };
+  }, [duplicateDataThemeSuccess]);
+
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <div css={styles.gridItem}>
       <div css={styles.gridItemTitle}>
         {props.title}
-        <IconButton id="delete-button" size="small" onClick={deleteItem}>
-          <DeleteIcon htmlColor="#262c34" />
+        <IconButton id="menu-button" size="small" onClick={handleClick}>
+          <MoreVertIcon htmlColor="#262c34" />
         </IconButton>
+        <Popover
+          id={id}
+          open={open}
+          anchorEl={anchorEl}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          css={`
+            .MuiPaper-root {
+              box-shadow: none;
+              border-radius: 13px;
+            }
+          `}
+        >
+          <div css={styles.menuBtns}>
+            <IconButton size="small" onClick={duplicateItem}>
+              <QueueIcon htmlColor="#262c34" />
+            </IconButton>
+            <IconButton
+              size="small"
+              onClick={() => {
+                history.push(`/data-themes/${props.id}`, { editMode: true });
+              }}
+            >
+              <EditIcon htmlColor="#262c34" />
+            </IconButton>
+            <IconButton size="small" onClick={deleteItem}>
+              <DeleteIcon htmlColor="#262c34" />
+            </IconButton>
+          </div>
+        </Popover>
       </div>
       <div css={styles.gridItemLabel}>{props.subTitle}</div>
       <div css={styles.gridItemDetails}>
@@ -78,7 +168,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
         </div>
         <div>
           <div>Visualizations</div>
-          <div>1</div>
+          <div>{props.vizCount}</div>
         </div>
       </div>
       <Link css={styles.gridItemLinkBtn} to={`/data-themes/${props.id}`}>
@@ -90,6 +180,11 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
 
 export function DataThemesListView() {
   useTitle("Data Themes - List");
+  const history = useHistory();
+
+  const [search, setSearch] = React.useState("");
+  const [searchOpen, setSearchOpen] = React.useState(false);
+  const [searchDebounced, setSearchDebounced] = React.useState("");
 
   React.useEffect(() => {
     document.body.style.background = "#F0F3F5";
@@ -107,34 +202,93 @@ export function DataThemesListView() {
     (actions) => actions.dataThemes.DataThemeGetList.fetch
   );
 
+  const [,] = useDebounce(
+    () => {
+      setSearchDebounced(search);
+    },
+    500,
+    [search]
+  );
+
   React.useEffect(() => {
-    loadDataThemes({
+    let params: {
+      storeInCrudData: boolean;
+      filterString?: string;
+    } = {
       storeInCrudData: true,
-      filterString:
-        'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":false,"createdDate":true}}',
-    });
-  }, []);
+    };
+    if (searchDebounced.length > 0) {
+      params = {
+        storeInCrudData: true,
+        filterString: `q=${searchDebounced}`,
+      };
+    }
+    loadDataThemes(params);
+  }, [searchDebounced]);
 
   return (
     <div css={styles.container}>
       {isLoadingDataThemes && <PageLoader />}
       <DataThemesGenericPageSubHeader title="Themes" />
       <div css={styles.innercontainer}>
-        <div css={styles.toolbar} />
+        <Box css={styles.toolbar}>
+          <ClickAwayListener
+            onClickAway={() => {
+              if (searchOpen && searchDebounced.length === 0) {
+                setSearchOpen(false);
+              }
+            }}
+          >
+            <div css={styles.toolbarSearch(searchOpen)}>
+              <input
+                type="text"
+                tabIndex={0}
+                value={search}
+                placeholder="Search..."
+                id="data-themes-search-input"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearch(e.target.value)
+                }
+              />
+              <SearchIcon
+                onClick={() => {
+                  if (!searchOpen) {
+                    setSearchOpen(true);
+                    setTimeout(() => {
+                      const input = document.getElementById(
+                        "data-themes-search-input"
+                      );
+                      if (input) {
+                        input.focus();
+                      }
+                    }, 100);
+                  }
+                }}
+              />
+            </div>
+          </ClickAwayListener>
+          <SortIcon />
+          <ViewAgendaIcon />
+          <button onClick={() => history.push("/data-themes/new")}>
+            Create
+          </button>
+        </Box>
         <Grid container spacing={2}>
           {loadedDataThemes.map((item) => (
             <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
               <DataThemesListViewItem {...item} />
             </Grid>
           ))}
-          <Grid item xs={12} sm={6} md={4} lg={4}>
-            <div css={styles.gridItemCreateNew}>
-              <Link to="/data-themes/new">
-                <AddIcon />
-                <div>Create new data theme</div>
-              </Link>
-            </div>
-          </Grid>
+          {loadedDataThemes.length === 0 && (
+            <Grid item xs={12} sm={6} md={4} lg={4}>
+              <div css={styles.gridItemCreateNew}>
+                <Link to="/data-themes/new">
+                  <AddIcon />
+                  <div>Create new data theme</div>
+                </Link>
+              </div>
+            </Grid>
+          )}
         </Grid>
       </div>
     </div>

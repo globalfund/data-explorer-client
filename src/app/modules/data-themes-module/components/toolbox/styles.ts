@@ -54,4 +54,18 @@ export const styles = {
       }
     }
   `,
+  textcontent: css`
+    width: 192px;
+    display: flex;
+    color: #98a1aa;
+    font-size: 18px;
+    font-weight: 700;
+    padding-top: 96px;
+    line-height: 22px;
+    text-align: center;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  `,
+  exportview: css`
+    padding: 24px;
+  `,
 };

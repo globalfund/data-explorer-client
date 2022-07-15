@@ -29,7 +29,12 @@ export const styles = {
       background: #495057;
     }
   `,
-  tab: (active: boolean) => css`
+  tab: (
+    active: boolean,
+    disabled: boolean,
+    previewMode: boolean,
+    isOnlyTab: boolean
+  ) => css`
     gap: 14px;
     color: #fff;
     width: 200px;
@@ -42,6 +47,7 @@ export const styles = {
     justify-content: center;
     border-right: 1px solid #dfe3e6;
     color: ${active ? "#fff" : "#495057"};
+    opacity: ${active ? "100%" : disabled && "50%"};
     background-color: ${active ? "#495057" : "#c7cdd1"};
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
@@ -63,12 +69,35 @@ export const styles = {
       }
     }
 
+    &:last-of-type {
+      border-style: none;
+      border-radius: ${previewMode ? "0 20px 0 0" : 0};
+    }
+
     &:first-of-type {
       border-radius: 20px 0 0 0;
     }
 
-    &:last-of-type {
-      border-style: none;
+    ${isOnlyTab && previewMode
+      ? "border-radius: 20px 20px 0 0 !important;"
+      : ""}
+  `,
+  tabTitle: css`
+    margin: 0;
+    display: flex;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    border-style: none;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    transition: background 0.2s ease-in-out;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+    &:focus {
+      background: #495057;
     }
   `,
   addbtn: css`
@@ -95,5 +124,21 @@ export const styles = {
         }
       }
     }
+  `,
+  addbtnDisabled: css`
+    top: 0;
+    right: 0;
+    width: 60px;
+    height: 34px;
+    display: flex;
+    min-width: 60px;
+    position: sticky;
+    align-items: center;
+    justify-content: center;
+    background-color: #c7cdd1;
+    border-left: 1px solid #dfe3e6;
+    border-radius: 0px 20px 0px 0px;
+
+    opacity: 50%;
   `,
 };

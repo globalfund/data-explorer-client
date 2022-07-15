@@ -2,10 +2,10 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
 import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
@@ -30,22 +30,45 @@ export function DataThemesBuilderCustomize(
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
 
+  React.useEffect(() => {
+    // When the Customize component is rendered, we are at step 6.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 6,
+    });
+  }, []);
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      props.visualOptions.width === CHART_DEFAULT_WIDTH
+      props.visualOptions[activeTabIndex][activeVizIndex].width ===
+        CHART_DEFAULT_WIDTH
     ) {
-      props.setVisualOptions({
-        ...props.visualOptions,
+      let tmpVisualOptions = [...props.visualOptions];
+      tmpVisualOptions[activeTabIndex][activeVizIndex] = {
+        ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
-      });
+      };
+      props.setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
   React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping, props.dimensions);
+      getRequiredFieldsAndErrors(
+        mapping[activeTabIndex][activeVizIndex],
+        props.dimensions
+      );
 
     setNextEnabled(
       updRequiredFields.length === 0 &&
@@ -59,8 +82,8 @@ export function DataThemesBuilderCustomize(
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
-          mapping: mapping,
-          visualOptions: props.visualOptions,
+          mapping: mapping[activeTabIndex][activeVizIndex],
+          visualOptions: props.visualOptions[activeTabIndex][activeVizIndex],
           dataTypes: props.currentChartData.dataTypes,
         });
         const vizData = viz._getVizData();
@@ -95,7 +118,10 @@ export function DataThemesBuilderCustomize(
     props.visualOptions,
   ]);
 
-  if ((props.data.length === 0 && !props.loading) || isEmpty(mapping)) {
+  if (
+    (props.data.length === 0 && !props.loading) ||
+    isEmpty(mapping[activeTabIndex][activeVizIndex])
+  ) {
     history.push(`/data-themes/${page}/data`);
   }
 
@@ -104,8 +130,11 @@ export function DataThemesBuilderCustomize(
       <DataThemesPageSubHeader
         data={props.data}
         loading={props.loading}
+        themeData={props.themeData}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
+        tabsDisabled={true}
       />
       <DataThemesToolBox
         dataSteps

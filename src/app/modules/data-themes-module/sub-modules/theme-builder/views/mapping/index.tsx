@@ -11,6 +11,7 @@ import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import {
   getTypeName,
   chart as rawChart,
+  getAggregatorNames,
   getDefaultDimensionAggregation,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
@@ -45,10 +46,28 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
   const [draggingId, setDraggingId] = React.useState<string | null>(null);
 
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
   );
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
+
+  React.useEffect(() => {
+    // When the Mapping component is rendered, we are at step 3.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 3,
+    });
+  }, []);
 
   const replaceDimension = React.useCallback(
     (
@@ -71,18 +90,22 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
       if (multiple) {
         setDraggingId(nextId);
       }
-      setMapping(
-        handleReplaceLocalMapping(
+      setMapping({
+        tab: activeTabIndex,
+        viz: activeVizIndex,
+        mapping: handleReplaceLocalMapping(
           nextId,
-          isEmpty(mapping) ? mappingFromStorage : mapping,
+          isEmpty(mapping[activeTabIndex][activeVizIndex])
+            ? mappingFromStorage[activeTabIndex][activeVizIndex]
+            : mapping[activeTabIndex][activeVizIndex],
           fromDimension,
           toDimension,
           fromIndex,
           toIndex,
           props.dimensions,
           props.currentChartData.dataTypes
-        )
-      );
+        ),
+      });
     },
     [
       mapping,
@@ -95,18 +118,24 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      props.visualOptions.width === CHART_DEFAULT_WIDTH
+      props.visualOptions[activeTabIndex][activeVizIndex].width ===
+        CHART_DEFAULT_WIDTH
     ) {
-      props.setVisualOptions({
-        ...props.visualOptions,
+      let tmpVisualOptions = [...props.visualOptions];
+      tmpVisualOptions[activeTabIndex][activeVizIndex] = {
+        ...props.visualOptions[activeTabIndex][activeVizIndex],
         width: containerRef.current.clientWidth,
-      });
+      };
+      props.setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
   React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping, props.dimensions);
+      getRequiredFieldsAndErrors(
+        mapping[activeTabIndex][activeVizIndex],
+        props.dimensions
+      );
 
     setNextEnabled(
       updRequiredFields.length === 0 &&
@@ -120,8 +149,8 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
-          mapping: mapping,
-          visualOptions: props.visualOptions,
+          mapping: mapping[activeTabIndex][activeVizIndex],
+          visualOptions: props.visualOptions[activeTabIndex][activeVizIndex],
           dataTypes: props.currentChartData.dataTypes,
         });
         try {
@@ -150,9 +179,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
     history.push(`/data-themes/${page}/data`);
   }
 
-  // console.log("mapping", mapping);
-  // console.log("dimensions", props.dimensions);
-
   return (
     <div css={commonStyles.container}>
       <DataThemesPageSubHeader
@@ -160,6 +186,8 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
+        tabsDisabled={true}
       />
       <DataThemesToolBox
         dataSteps
@@ -221,12 +249,22 @@ function DataThemesBuilderMappingDimension(
 ) {
   const { dimension, currentChartData, replaceDimension } = props;
 
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
   );
 
-  const dimensionMapping = get(mapping, dimension.id, {});
+  const dimensionMapping = get(
+    mapping[activeTabIndex][activeVizIndex],
+    dimension.id,
+    {}
+  );
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ["column", "card"],
@@ -247,7 +285,7 @@ function DataThemesBuilderMappingDimension(
         {}
       ) as { [key: string]: any };
       const dimensionMappingFromStorage = get(
-        mappingFromStorage,
+        mappingFromStorage[activeTabIndex][activeVizIndex],
         dimension.id,
         {}
       );
@@ -266,19 +304,24 @@ function DataThemesBuilderMappingDimension(
           dimension.validTypes?.length === 0 ||
           dimension.validTypes?.includes(columnDataType);
         setMapping({
-          [dimension.id]: {
-            ids: (localDimensionMapping.ids || []).concat(uniqueId()),
-            value: [...(localDimensionMapping.value || []), item.id],
-            isValid: isValid,
-            mappedType: columnDataType,
-            config: dimension.aggregation
-              ? {
-                  aggregation: [
-                    ...(get(localDimensionMapping, "config.aggregation") || []),
-                    defaulAggregation,
-                  ],
-                }
-              : undefined,
+          tab: activeTabIndex,
+          viz: activeVizIndex,
+          mapping: {
+            [dimension.id]: {
+              ids: (localDimensionMapping.ids || []).concat(uniqueId()),
+              value: [...(localDimensionMapping.value || []), item.id],
+              isValid: isValid,
+              mappedType: columnDataType,
+              config: dimension.aggregation
+                ? {
+                    aggregation: [
+                      ...(get(localDimensionMapping, "config.aggregation") ||
+                        []),
+                      defaulAggregation,
+                    ],
+                  }
+                : undefined,
+            },
           },
         });
       } else if (item.dimensionId !== dimension.id) {
@@ -291,6 +334,36 @@ function DataThemesBuilderMappingDimension(
       }
     },
   }));
+
+  const setAggregation = React.useCallback(
+    (newAggregations) => {
+      setMapping({
+        tab: activeTabIndex,
+        viz: activeVizIndex,
+        mapping: {
+          [dimension.id]: {
+            ...dimensionMapping,
+            config: {
+              aggregation: [...newAggregations],
+            },
+          },
+        },
+      });
+    },
+    [mapping, setMapping, activeTabIndex, activeVizIndex, dimensionMapping]
+  );
+
+  const aggregators = getAggregatorNames();
+  let aggregationsMappedHere = get(mapping, "config.aggregation", []);
+
+  const onChangeAggregation = React.useCallback(
+    (i, aggregatorName) => {
+      const newAggregations = [...aggregationsMappedHere];
+      newAggregations[i] = aggregatorName;
+      setAggregation(newAggregations);
+    },
+    [aggregationsMappedHere, setAggregation]
+  );
 
   const onDeleteItem = React.useCallback(
     (i: number) => {
@@ -313,9 +386,10 @@ function DataThemesBuilderMappingDimension(
       if (nextDimensionMapping.ids.length === 0) {
         nextDimensionMapping = undefined;
       }
-
       setMapping({
-        [dimension.id]: nextDimensionMapping,
+        tab: activeTabIndex,
+        viz: activeVizIndex,
+        mapping: { [dimension.id]: nextDimensionMapping },
       });
     },
     [dimensionMapping, setMapping]
@@ -347,7 +421,9 @@ function DataThemesBuilderMappingDimension(
       }
 
       setMapping({
-        [dimension.id]: nextDimensionMapping,
+        tab: activeTabIndex,
+        viz: activeVizIndex,
+        mapping: { [dimension.id]: nextDimensionMapping },
       });
     },
     [dimensionMapping, setMapping]
@@ -387,14 +463,13 @@ function DataThemesBuilderMappingDimension(
       }
 
       setMapping({
-        [dimension.id]: nextDimensionMapping,
+        tab: activeTabIndex,
+        viz: activeVizIndex,
+        mapping: { [dimension.id]: nextDimensionMapping },
       });
     },
     [dimensionMapping, setMapping]
   );
-
-  // console.log("dimension", dimension);
-  // console.log("dimensionMapping", dimensionMapping);
 
   return (
     <Grid item xs={12} sm={6} md={4}>
@@ -473,10 +548,10 @@ function DataThemesBuilderMappingDimension(
             const columnDataType = getTypeName(
               props.currentChartData.dataTypes[columnId]
             );
-            // const relatedAggregation = dimension.aggregation
-            //   ? dimensionMapping.config.aggregation[index] ||
-            //     getDefaultDimensionAggregation(dimension, columnDataType)
-            //   : undefined;
+            const relatedAggregation = dimension.aggregation
+              ? dimensionMapping.config.aggregation[index] ||
+                getDefaultDimensionAggregation(dimension, columnDataType)
+              : undefined;
             const isValid =
               dimension.validTypes?.length === 0 ||
               dimension.validTypes?.includes(columnDataType);
@@ -494,11 +569,15 @@ function DataThemesBuilderMappingDimension(
                 type={type}
                 index={index}
                 onMove={onMove}
+                isValid={isValid}
                 dimension={dimension}
                 dataTypeName={columnId}
+                aggregators={aggregators}
                 replaceDimension={replaceDimension}
                 onChangeDimension={onChangeDimension}
+                relatedAggregation={relatedAggregation}
                 onDeleteItem={() => onDeleteItem(index)}
+                onChangeAggregation={onChangeAggregation}
                 backgroundColor={isValid ? undefined : "#fa7355"}
                 marginBottom={!dimension.multiple ? "0px" : "16px"}
               />
@@ -541,14 +620,20 @@ function DataThemesBuilderMappingMessage(
     { id: string; name: string; minValues: number }[]
   >([]);
 
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
   React.useEffect(() => {
-    // console.log("mapping", mapping);
-    // console.log("dimensions", props.dimensions);
-
     const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping, props.dimensions);
+      getRequiredFieldsAndErrors(
+        mapping[activeTabIndex][activeVizIndex],
+        props.dimensions
+      );
 
     setRequiredFields(updRequiredFields);
     setErrors(updErrors);

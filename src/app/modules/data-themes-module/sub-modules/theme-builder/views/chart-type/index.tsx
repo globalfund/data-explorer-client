@@ -24,6 +24,12 @@ export function DataThemesBuilderChartType(
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
 
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
@@ -33,16 +39,36 @@ export function DataThemesBuilderChartType(
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
   );
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
+
+  React.useEffect(() => {
+    // When the Chart Type component is rendered, we are at step 2.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 2,
+    });
+  }, []);
 
   const onChartTypeChange =
     (chartTypeId: string) => (e: React.MouseEvent<HTMLDivElement>) => {
-      clearMapping();
-      setChartType(selectedChartType === chartTypeId ? null : chartTypeId);
-      props.setCurrentChart(
-        selectedChartType === chartTypeId
+      clearMapping({ tab: activeTabIndex, viz: activeVizIndex });
+      setChartType({
+        tab: activeTabIndex,
+        viz: activeVizIndex,
+        value:
+          selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
+            ? null
+            : chartTypeId,
+      });
+      let tmpCurrentChart = [...props.currentChart];
+      tmpCurrentChart[activeTabIndex][activeVizIndex] =
+        selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
           ? null
-          : get(charts, chartTypeId, null)
-      );
+          : get(charts, chartTypeId, null);
+      props.setCurrentChart(tmpCurrentChart);
     };
 
   if (props.data.length === 0 && !props.loading) {
@@ -56,6 +82,8 @@ export function DataThemesBuilderChartType(
         loading={props.loading}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
+        tabsDisabled={true}
       />
       <DataThemesToolBox
         dataSteps
@@ -64,7 +92,9 @@ export function DataThemesBuilderChartType(
         loading={props.loading}
         loadDataset={props.loadDataset}
         filterOptionGroups={props.filterOptionGroups}
-        forceNextEnabled={selectedChartType !== null}
+        forceNextEnabled={
+          selectedChartType[activeTabIndex][activeVizIndex] !== null
+        }
       />
       <div css={commonStyles.innercontainer}>
         <div
@@ -87,11 +117,14 @@ export function DataThemesBuilderChartType(
                     border-radius: 8px;
                     flex-direction: row;
                     align-items: center;
-                    background: ${selectedChartType === chartType.id
+                    background: ${selectedChartType[activeTabIndex][
+                      activeVizIndex
+                    ] === chartType.id
                       ? "#cfd4da"
                       : "#dfe3e6"};
                     border: 1px solid
-                      ${selectedChartType === chartType.id
+                      ${selectedChartType[activeTabIndex][activeVizIndex] ===
+                      chartType.id
                         ? "#262c34"
                         : "#dfe3e6"};
 

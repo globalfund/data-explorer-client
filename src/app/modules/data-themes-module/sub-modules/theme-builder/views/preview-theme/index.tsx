@@ -1,7 +1,9 @@
 /* third-party */
 import React from "react";
+import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 /* project */
@@ -9,6 +11,7 @@ import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { DataThemesBuilderPreviewThemeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
 
@@ -19,30 +22,50 @@ export function DataThemesBuilderPreviewTheme(
 
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const { page } = useParams<{ page: string }>();
+  const history = useHistory();
+
+  const { visualOptions, setVisualOptions } = props;
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const setActiveVizIndex = useStoreActions(
+    (state) => state.dataThemes.activeVizIndex.setValue
+  );
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
 
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      props.visualOptions.width === CHART_DEFAULT_WIDTH
+      visualOptions[props.tabIndex][props.vizIndex].width ===
+        CHART_DEFAULT_WIDTH
     ) {
-      props.setVisualOptions({
-        ...props.visualOptions,
+      let tmpVisualOptions = [...visualOptions];
+      tmpVisualOptions[props.tabIndex][props.vizIndex] = {
+        ...visualOptions[props.tabIndex][props.vizIndex],
         width: containerRef.current.clientWidth,
-      });
+      };
+      setVisualOptions(tmpVisualOptions);
     }
   }, [containerRef]);
 
   React.useEffect(() => {
-    if (domRef && domRef.current) {
+    if (
+      !vizIsTextContent[props.tabIndex][props.vizIndex] &&
+      domRef &&
+      domRef.current &&
+      !isEmpty(mapping[props.tabIndex][props.vizIndex]) &&
+      !isEmpty(visualOptions[props.tabIndex][props.vizIndex])
+    ) {
       try {
         const viz = rawChart(props.currentChart, {
           data: props.currentChartData.dataset,
-          mapping: mapping,
-          visualOptions: props.visualOptions,
+          mapping: mapping[props.tabIndex][props.vizIndex],
+          visualOptions: visualOptions[props.tabIndex][props.vizIndex],
           dataTypes: props.currentChartData.dataTypes,
         });
+
         const vizData = viz._getVizData();
         try {
           const rawViz = viz.renderToDOM(domRef.current, vizData);
@@ -60,50 +83,80 @@ export function DataThemesBuilderPreviewTheme(
         }
       }
     }
-  }, [
-    props.currentChart,
-    props.currentChartData,
-    mapping,
-    props.visualOptions,
-  ]);
+  }, [props.currentChart, props.currentChartData, mapping, visualOptions]);
+
+  const handleVizClick = () => {
+    if (page === "new" || props.editable) {
+      setActiveVizIndex(props.vizIndex);
+      history.push(`/data-themes/${page}/customize`);
+    }
+  };
+
+  const handleTextClick = () => {
+    if (page === "new" || props.editable) {
+      setActiveVizIndex(props.vizIndex);
+      history.push(`/data-themes/${page}/text`);
+    }
+  };
 
   return (
-    <div css={commonStyles.container}>
+    <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
       <DataThemesPageSubHeader
-        previewMode
+        previewMode={!props.editable && page !== "new"}
         data={props.data}
         loading={props.loading}
-        visualOptions={props.visualOptions}
+        visualOptions={visualOptions}
         filterOptionGroups={props.filterOptionGroups}
+        updateLocalStates={props.updateLocalStates}
+        tabsDisabled={page !== "new" && !props.editable}
+        themeData={props.themeData}
       />
       <DataThemesToolBox
         filtersView
+        tabIndex={props.tabIndex}
+        vizIndex={props.vizIndex}
         data={props.data}
         loading={props.loading}
         loadDataset={props.loadDataset}
         filterOptionGroups={props.filterOptionGroups}
       />
-      <div css={commonStyles.innercontainer}>
+      {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
         <div
-          ref={containerRef}
-          css={`
-            width: calc(100% - 24px);
-            height: calc(100vh - 225px);
-          `}
+          css={commonStyles.previewInnercontainer}
+          onClick={() => {
+            handleTextClick();
+          }}
         >
-          <div
-            ref={domRef}
-            css={`
-              overflow-x: auto;
-              margin-top: 40px;
-
-              * {
-                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-              }
-            `}
+          <RichEditor
+            editMode={false}
+            tabIndex={props.tabIndex}
+            vizIndex={props.vizIndex}
           />
         </div>
-      </div>
+      ) : (
+        <div css={commonStyles.previewInnercontainer}>
+          <div
+            ref={containerRef}
+            css={`
+              width: calc(100% - 24px);
+            `}
+          >
+            <div
+              onClick={() => {
+                handleVizClick();
+              }}
+              ref={domRef}
+              css={`
+                overflow-x: auto;
+
+                * {
+                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
+                }
+              `}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -11,48 +11,75 @@ import {
   subtitle,
   datasetstitle,
   datasetslink,
+  activeContainerCss,
+  activeThemeCss,
+  alignments,
+  containerCss,
 } from "app/modules/landing-module/styles";
+import { ThemesCarousel } from "app/modules/landing-module/components/ThemeCarousel";
+import { Box } from "@material-ui/core";
+import { LandingAppBar } from "app/components/LandingPageAppBar";
 
 export const LandingLayout = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
+  const [alignment, setAlignment] = React.useState("Themes");
+
+  const handleChange = (newAlignment: string) => setAlignment(newAlignment);
 
   return (
     <div css={container}>
-      <div
-        css={`
-          width: 100%;
-          display: flex;
-          align-items: center;
-          flex-direction: column;
-
-          @media (max-width: 600px) {
-            > svg {
-              width: 100%;
-            }
-          }
-        `}
-      >
+      <LandingAppBar />
+      <div css={containerCss}>
         <BigLogo />
-        <div css={subtitle}>{get(cmsData, "modulesLanding.subTitle", "")}</div>
+        <div css={subtitle}>
+          {get(
+            cmsData,
+            "modulesLanding.subTitle",
+            "Free and open access to The Global Fund Data"
+          )}
+        </div>
         <Search />
         {!isMobile && (
           <React.Fragment>
-            <div css={datasetstitle}>
-              {get(cmsData, "modulesLanding.datasetsTitle", "")}
-            </div>
-            <DatasetCarousel />
-            <div css={datasetslink}>
-              <Link to="/datasets">
-                {get(cmsData, "modulesLanding.datasetsLink", "")}
-              </Link>
-              <Link
-                to="/data-themes"
+            <Box css={activeContainerCss}>
+              <div
                 css={`
-                  margin-left: 10px;
+                  border-radius: 20px 0px 0px 20px;
+                  ${alignments}
+                  ${alignment === "Themes" && activeThemeCss}
+                `}
+                onClick={() => handleChange("Themes")}
+              >
+                Themes
+              </div>
+
+              <div
+                onClick={() => handleChange("Datasets")}
+                css={`
+                  border-radius: 0px 20px 20px 0px;
+                  ${alignments}
+                  ${alignment === "Datasets" && activeThemeCss}
                 `}
               >
-                Data Themes
+                Datasets
+              </div>
+            </Box>
+            {alignment === "Datasets" ? (
+              <DatasetCarousel />
+            ) : (
+              <ThemesCarousel />
+            )}
+            <div css={datasetslink}>
+              {/* <Link to="/datasets">
+                {get(cmsData, "modulesLanding.datasetsLink", "")}
+              </Link> */}
+
+              <Link
+                to={alignment === "Themes" ? "/data-themes" : "/datasets"}
+                css={"margin-left: 10px;"}
+              >
+                View all
               </Link>
             </div>
           </React.Fragment>

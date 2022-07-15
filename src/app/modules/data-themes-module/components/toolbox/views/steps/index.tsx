@@ -14,6 +14,7 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 /* project */
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
+import { DataThemesToolBoxExport } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Export";
 import { DataThemesToolBoxMapping } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
 import { DataThemesToolBoxFilters } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Filters";
 import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
@@ -82,8 +83,12 @@ const Button = withStyles(() => ({
     height: "48px",
     borderRadius: "0px",
     backgroundColor: "#262C34",
+    fontFamily: "GothamNarrow-Bold, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
+    },
+    "&:hover": {
+      backgroundColor: "#495057",
     },
   },
   label: {
@@ -106,9 +111,11 @@ interface DataThemesToolBoxStepsProps {
   visualOptions?: any;
   currentChartData?: any;
   forceNextEnabled?: boolean;
+  rawViz?: any;
+  totalAvailable?: number;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
@@ -125,8 +132,19 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
     (state) => state.dataThemes.appliedFilters.value
   );
   let appliedFiltersCount = 0;
-  Object.keys(appliedFilters).forEach((key) => {
-    appliedFiltersCount += appliedFilters[key].length;
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const activePanels = useStoreState(
+    (state) => state.dataThemes.activePanels.value
+  );
+
+  Object.keys(appliedFilters[activeTabIndex][activeVizIndex]).forEach((key) => {
+    appliedFiltersCount +=
+      appliedFilters[activeTabIndex][activeVizIndex][key].length;
   });
 
   const stepPaths = [
@@ -138,6 +156,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
     `/data-themes/${page}/filters`,
     `/data-themes/${page}/lock`,
     `/data-themes/${page}/customize`,
+    `/data-themes/${page}/export`,
   ];
 
   const handleChange =
@@ -159,7 +178,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         history.push(stepPaths[5]);
         return;
       }
-      if (history.location.pathname === stepPaths[7] && direction === "next") {
+      if (history.location.pathname === stepPaths[8] && direction === "next") {
+        // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
         history.push(stepPaths[0]);
         return;
       }
@@ -199,7 +219,11 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>1</div> Select data
         </AccordionSummary>
         <AccordionDetails>
-          <DataThemesToolBoxSelectDataset loadDataset={loadDataset} />
+          <DataThemesToolBoxSelectDataset
+            loadDataset={loadDataset}
+            expanded={expanded === 1}
+            totalAvailable={props.totalAvailable}
+          />
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -223,7 +247,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 3}
         onChange={handleChange(4)}
-        disabled={(data.length === 0 && !loading) || !selectedChartType}
+        disabled={
+          (data.length === 0 && !loading) ||
+          !selectedChartType[activeTabIndex][activeVizIndex]
+        }
       >
         <AccordionSummary
           id="step3-header"
@@ -242,8 +269,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         onChange={handleChange(5)}
         disabled={
           (data.length === 0 && !loading) ||
-          isEmpty(mapping) ||
-          !selectedChartType ||
+          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
+          !selectedChartType[activeTabIndex][activeVizIndex] ||
           (!props.forceNextEnabled && expanded !== 6)
         }
       >
@@ -268,13 +295,17 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
                     text-transform: capitalize;
                   `}
                 >
-                  {Object.keys(appliedFilters)
+                  {Object.keys(appliedFilters[activeTabIndex][activeVizIndex])
                     .map(
                       (key) =>
                         `${
-                          appliedFilters[key].length
+                          appliedFilters[activeTabIndex][activeVizIndex][key]
+                            .length
                         } ${splitStrBasedOnCapitalLetters(key)}${
-                          appliedFilters[key].length > 1 ? "s" : ""
+                          appliedFilters[activeTabIndex][activeVizIndex][key]
+                            .length > 1
+                            ? "s"
+                            : ""
                         }`
                     )
                     .join(", ")}
@@ -324,13 +355,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         onChange={handleChange(7)}
         disabled={
           (data.length === 0 && !loading) ||
-          isEmpty(mapping) ||
-          !selectedChartType ||
+          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
+          !selectedChartType[activeTabIndex][activeVizIndex] ||
           !props.forceNextEnabled
         }
-        css={`
-          border-bottom: 1px solid #c0c7d2;
-        `}
       >
         <AccordionSummary
           id="step6-header"
@@ -347,6 +375,31 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             setVisualOptions={props.setVisualOptions}
             currentChartData={props.currentChartData}
           />
+        </AccordionDetails>
+      </Accordion>
+      <Accordion
+        square
+        expanded={expanded === 7}
+        onChange={handleChange(8)}
+        disabled={
+          (data.length === 0 && !loading) ||
+          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
+          !selectedChartType[activeTabIndex][activeVizIndex] ||
+          !props.forceNextEnabled
+        }
+        css={`
+          border-bottom: 1px solid #c0c7d2;
+        `}
+      >
+        <AccordionSummary
+          id="step7-header"
+          aria-controls="step7-content"
+          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+        >
+          <div>7</div> Export
+        </AccordionSummary>
+        <AccordionDetails>
+          <DataThemesToolBoxExport rawViz={props.rawViz} />
         </AccordionDetails>
       </Accordion>
       <div
@@ -372,7 +425,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             !props.forceNextEnabled
           }
         >
-          Next
+          {activePanels[activeTabIndex][activeVizIndex] === 7
+            ? "Preview"
+            : "Next"}
         </Button>
       </div>
     </div>

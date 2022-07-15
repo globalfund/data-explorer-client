@@ -23,4 +23,17 @@ export const styles = {
       width: calc(100vw - 400px);
     }
   `,
+  previewInnercontainer: css`
+    left: 0;
+    top: 144px;
+    padding-top: 20px;
+    max-width: 1280px;
+    position: relative;
+    align-self: flex-start;
+    width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
+
+    @media (max-width: 1280px) {
+      width: calc(100vw - 400px);
+    }
+  `,
 };

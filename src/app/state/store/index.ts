@@ -161,11 +161,18 @@ import {
   DataThemesStepChartTypeState,
   DataThemesStepSelectDataLiveState,
   DataThemesStepSelectionsState,
+  DataThemesIndexState,
+  DataThemesVizIndexState,
+  DataThemesIdsState,
+  DataThemesActivePanelsState,
+  DataThemesTitlesState,
+  DataThemesTextContentState,
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
 import {
   DataThemeCreate,
   DataThemeDelete,
+  DataThemeDuplicate,
   DataThemeGet,
   DataThemeGetList,
   DataThemeUpdate,
@@ -356,6 +363,12 @@ const storeContent: StoreModel = {
     modulesGrants: persist(modulesGrants),
   },
   dataThemes: {
+    activeTabIndex: persist(DataThemesIndexState),
+    activeVizIndex: persist(DataThemesVizIndexState),
+    ids: persist(DataThemesIdsState),
+    activePanels: persist(DataThemesActivePanelsState),
+    titles: persist(DataThemesTitlesState),
+    textContent: persist(DataThemesTextContentState),
     sync: {
       stepSelections: persist(DataThemesStepSelectionsState),
       liveData: persist(DataThemesStepSelectDataLiveState),
@@ -367,6 +380,7 @@ const storeContent: StoreModel = {
     DataThemeCreate: persist(DataThemeCreate),
     DataThemeUpdate: persist(DataThemeUpdate),
     DataThemeDelete: persist(DataThemeDelete),
+    DataThemeDuplicate: persist(DataThemeDuplicate),
     DataThemeGetList: persist(DataThemeGetList),
   },
 };

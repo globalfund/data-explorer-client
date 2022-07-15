@@ -83,7 +83,7 @@ export function handleReplaceLocalMapping(
     [fromDimension]: removeIndex(prev[fromDimension], fromIndex),
     [toDimension]: toDimensionMapping,
   };
-  console.log(obj);
+  // console.log(obj);
   return obj;
 }
 

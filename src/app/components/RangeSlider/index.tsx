@@ -4,9 +4,9 @@ import { Range, useThumbOverlap } from "react-range";
 import { IThumbProps, ITrackProps } from "react-range/lib/types";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
-const THUMB_SIZE = 15;
+export const THUMB_SIZE = 15;
 
-const Container = styled.div`
+export const Container = styled.div`
   display: flex;
   margin-top: 40px;
   align-items: center;
@@ -29,7 +29,7 @@ const Container = styled.div`
   }
 `;
 
-const ThumbLabel = (props: any) => {
+export const ThumbLabel = (props: any) => {
   const [labelValue, style] = useThumbOverlap(
     props.rangeRef1,
     props.values,
@@ -53,14 +53,16 @@ const ThumbLabel = (props: any) => {
         ...(style as React.CSSProperties),
       }}
     >
-      {labels
-        .map((label) => formatFinancialValue(parseInt(label.trim(), 10)))
-        .join(" - ")}
+      {props.raw
+        ? labelValue.toString().replace(".0", "")
+        : labels
+            .map((label) => formatFinancialValue(parseInt(label.trim(), 10)))
+            .join(" - ")}
     </div>
   );
 };
 
-const Track = (params: {
+export const Track = (params: {
   props: ITrackProps;
   children: React.ReactNode;
   isDragged: boolean;
@@ -72,6 +74,7 @@ const Track = (params: {
     style={{
       ...params.props.style,
       height: "6px",
+      borderRadius: "20px",
       width: "calc(100% - 50px)",
       background: `linear-gradient(to right, #fff,#7e8a96,#0a0b0c)`,
     }}
@@ -90,10 +93,10 @@ export function RangeSlider(props: RangeSliderProps) {
   const rangeRef = React.useRef();
   const [localValues, setLocalValues] = React.useState([props.min, props.max]);
 
-  React.useEffect(() => setLocalValues([props.min, props.max]), [
-    props.min,
-    props.max,
-  ]);
+  React.useEffect(
+    () => setLocalValues([props.min, props.max]),
+    [props.min, props.max]
+  );
 
   return (
     <Container>

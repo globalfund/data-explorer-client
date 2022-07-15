@@ -1,121 +1,78 @@
 // @ts-ignore
 import { baseOptions } from "@rawgraphs/rawgraphs-core";
 import {
+  alluvialdiagram,
+  arcdiagram,
   barchart,
   barchartmultiset,
   barchartstacked,
+  beeswarm,
+  boxplot,
+  bubblechart,
+  bumpchart,
+  circlepacking,
+  circularDendrogram,
+  contourPlot,
+  convexHull,
+  dendrogram,
+  ganttChart,
+  hexagonalBinning,
+  horizongraph,
   linechart,
-  alluvialdiagram,
+  matrixplot,
+  parallelcoordinates,
+  piechart,
+  radarchart,
+  sankeydiagram,
+  slopechart,
+  streamgraph,
+  sunburst,
   treemap,
+  violinplot,
+  voronoidiagram,
+  voronoitreemap,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-charts";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 export const charts = {
-  barchart,
-  linechart,
-  barchartmultiset,
   alluvialdiagram,
-  treemap,
+  arcdiagram,
+  barchart,
+  barchartmultiset,
   barchartstacked,
+  beeswarm,
+  boxplot,
+  bubblechart,
+  bumpchart,
+  // calendarHeatmap,
+  circlepacking,
+  circularDendrogram,
+  contourPlot,
+  convexHull,
+  dendrogram,
+  ganttChart,
+  hexagonalBinning,
+  horizongraph,
+  linechart,
+  matrixplot,
+  parallelcoordinates,
+  piechart,
+  radarchart,
+  sankeydiagram,
+  slopechart,
+  streamgraph,
+  sunburst,
+  treemap,
+  violinplot,
+  voronoidiagram,
+  voronoitreemap,
 };
 
 export const CHART_DEFAULT_WIDTH = 1000;
 export const CHART_DEFAULT_HEIGHT = 750;
 
 export const defaultChartOptions = {
-  barchart: {
-    ...baseOptions,
-    width: {
-      ...baseOptions.width,
-      default: CHART_DEFAULT_WIDTH,
-    },
-    height: {
-      ...baseOptions.height,
-      default: CHART_DEFAULT_HEIGHT,
-    },
-    ...barchart.visualOptions,
-    marginTop: {
-      ...barchart.visualOptions.marginTop,
-      default: 50,
-    },
-    marginLeft: {
-      ...barchart.visualOptions.marginLeft,
-      default: 70,
-    },
-    marginRight: {
-      ...barchart.visualOptions.marginRight,
-      default: 70,
-    },
-    marginBottom: {
-      ...barchart.visualOptions.marginBottom,
-      default: 50,
-    },
-    padding: {
-      ...barchart.visualOptions.padding,
-      default: 10,
-    },
-    sortBarsBy: {
-      ...barchart.visualOptions.sortBarsBy,
-      default: "totalDescending",
-    },
-  },
-  linechart: {
-    ...baseOptions,
-    width: {
-      ...baseOptions.width,
-      default: CHART_DEFAULT_WIDTH,
-    },
-    height: {
-      ...baseOptions.height,
-      default: CHART_DEFAULT_HEIGHT,
-    },
-    ...linechart.visualOptions,
-    marginTop: {
-      ...linechart.visualOptions.marginTop,
-      default: 50,
-    },
-    marginLeft: {
-      ...linechart.visualOptions.marginLeft,
-      default: 70,
-    },
-    marginRight: {
-      ...linechart.visualOptions.marginRight,
-      default: 70,
-    },
-    marginBottom: {
-      ...linechart.visualOptions.marginBottom,
-      default: 50,
-    },
-  },
-  barchartmultiset: {
-    ...baseOptions,
-    width: {
-      ...baseOptions.width,
-      default: CHART_DEFAULT_WIDTH,
-    },
-    height: {
-      ...baseOptions.height,
-      default: CHART_DEFAULT_HEIGHT,
-    },
-    ...barchartmultiset.visualOptions,
-    marginTop: {
-      ...barchartmultiset.visualOptions.marginTop,
-      default: 50,
-    },
-    marginLeft: {
-      ...barchartmultiset.visualOptions.marginLeft,
-      default: 70,
-    },
-    marginRight: {
-      ...barchartmultiset.visualOptions.marginRight,
-      default: 70,
-    },
-    marginBottom: {
-      ...barchartmultiset.visualOptions.marginBottom,
-      default: 50,
-    },
-  },
   alluvialdiagram: {
     ...baseOptions,
     width: {
@@ -167,6 +124,822 @@ export const defaultChartOptions = {
       ...alluvialdiagram.visualOptions.showValues,
       default: true,
     },
+    showLegend: {
+      ...alluvialdiagram.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  arcdiagram: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...arcdiagram.visualOptions,
+    marginTop: {
+      ...arcdiagram.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...arcdiagram.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...arcdiagram.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...arcdiagram.visualOptions.marginBottom,
+      default: 50,
+    },
+    padding: {
+      ...arcdiagram.visualOptions.padding,
+      default: 10,
+    },
+    showLegend: {
+      ...arcdiagram.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  barchart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...barchart.visualOptions,
+    marginTop: {
+      ...barchart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...barchart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...barchart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...barchart.visualOptions.marginBottom,
+      default: 50,
+    },
+    padding: {
+      ...barchart.visualOptions.padding,
+      default: 10,
+    },
+    sortBarsBy: {
+      ...barchart.visualOptions.sortBarsBy,
+      default: "totalDescending",
+    },
+    showLegend: {
+      ...barchart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  barchartmultiset: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...barchartmultiset.visualOptions,
+    marginTop: {
+      ...barchartmultiset.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...barchartmultiset.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...barchartmultiset.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...barchartmultiset.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...barchartmultiset.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  barchartstacked: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...barchartstacked.visualOptions,
+    marginTop: {
+      ...barchartstacked.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...barchartstacked.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...barchartstacked.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...barchartstacked.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...barchartstacked.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  beeswarm: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...beeswarm.visualOptions,
+    marginTop: {
+      ...beeswarm.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...beeswarm.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...beeswarm.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...beeswarm.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...beeswarm.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  boxplot: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...boxplot.visualOptions,
+    marginTop: {
+      ...boxplot.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...boxplot.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...boxplot.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...boxplot.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...boxplot.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  bubblechart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...bubblechart.visualOptions,
+    marginTop: {
+      ...bubblechart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...bubblechart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...bubblechart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...bubblechart.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...bubblechart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  bumpchart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...bumpchart.visualOptions,
+    marginTop: {
+      ...bumpchart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...bumpchart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...bumpchart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...bumpchart.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...bumpchart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  circlepacking: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...circlepacking.visualOptions,
+    marginTop: {
+      ...circlepacking.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...circlepacking.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...circlepacking.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...circlepacking.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...circlepacking.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  circularDendrogram: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...circularDendrogram.visualOptions,
+    marginTop: {
+      ...circularDendrogram.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...circularDendrogram.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...circularDendrogram.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...circularDendrogram.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...circularDendrogram.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  contourPlot: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...contourPlot.visualOptions,
+    marginTop: {
+      ...contourPlot.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...contourPlot.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...contourPlot.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...contourPlot.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...contourPlot.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  convexHull: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...convexHull.visualOptions,
+    marginTop: {
+      ...convexHull.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...convexHull.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...convexHull.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...convexHull.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...convexHull.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  dendrogram: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...dendrogram.visualOptions,
+    marginTop: {
+      ...dendrogram.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...dendrogram.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...dendrogram.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...dendrogram.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...dendrogram.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  ganttChart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...ganttChart.visualOptions,
+    marginTop: {
+      ...ganttChart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...ganttChart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...ganttChart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...ganttChart.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...ganttChart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  hexagonalBinning: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...hexagonalBinning.visualOptions,
+    marginTop: {
+      ...hexagonalBinning.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...hexagonalBinning.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...hexagonalBinning.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...hexagonalBinning.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...hexagonalBinning.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  horizongraph: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...horizongraph.visualOptions,
+    marginTop: {
+      ...horizongraph.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...horizongraph.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...horizongraph.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...horizongraph.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...horizongraph.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  linechart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...linechart.visualOptions,
+    marginTop: {
+      ...linechart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...linechart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...linechart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...linechart.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...linechart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  matrixplot: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...matrixplot.visualOptions,
+    marginTop: {
+      ...matrixplot.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...matrixplot.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...matrixplot.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...matrixplot.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...matrixplot.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  parallelcoordinates: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...parallelcoordinates.visualOptions,
+    marginTop: {
+      ...parallelcoordinates.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...parallelcoordinates.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...parallelcoordinates.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...parallelcoordinates.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...parallelcoordinates.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  piechart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...piechart.visualOptions,
+    marginTop: {
+      ...piechart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...piechart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...piechart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...piechart.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...piechart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  radarchart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...radarchart.visualOptions,
+    marginTop: {
+      ...radarchart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...radarchart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...radarchart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...radarchart.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...radarchart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  sankeydiagram: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...sankeydiagram.visualOptions,
+    marginTop: {
+      ...sankeydiagram.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...sankeydiagram.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...sankeydiagram.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...sankeydiagram.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...sankeydiagram.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  slopechart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...slopechart.visualOptions,
+    marginTop: {
+      ...slopechart.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...slopechart.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...slopechart.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...slopechart.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...slopechart.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  streamgraph: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...streamgraph.visualOptions,
+    marginTop: {
+      ...streamgraph.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...streamgraph.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...streamgraph.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...streamgraph.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...streamgraph.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  sunburst: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...sunburst.visualOptions,
+    marginTop: {
+      ...sunburst.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...sunburst.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...sunburst.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...sunburst.visualOptions.marginBottom,
+      default: 50,
+    },
+    showLegend: {
+      ...sunburst.visualOptions.showLegend,
+      default: true,
+    },
   },
   treemap: {
     ...baseOptions,
@@ -199,8 +972,12 @@ export const defaultChartOptions = {
       ...treemap.visualOptions.showHierarchyLabels,
       default: true,
     },
+    showLegend: {
+      ...treemap.visualOptions.showLegend,
+      default: true,
+    },
   },
-  barchartstacked: {
+  violinplot: {
     ...baseOptions,
     width: {
       ...baseOptions.width,
@@ -210,35 +987,108 @@ export const defaultChartOptions = {
       ...baseOptions.height,
       default: CHART_DEFAULT_HEIGHT,
     },
-    ...barchartstacked.visualOptions,
+    ...violinplot.visualOptions,
     marginTop: {
-      ...barchartstacked.visualOptions.marginTop,
+      ...violinplot.visualOptions.marginTop,
       default: 50,
     },
     marginLeft: {
-      ...barchartstacked.visualOptions.marginLeft,
+      ...violinplot.visualOptions.marginLeft,
       default: 70,
     },
     marginRight: {
-      ...barchartstacked.visualOptions.marginRight,
+      ...violinplot.visualOptions.marginRight,
       default: 70,
     },
     marginBottom: {
-      ...barchartstacked.visualOptions.marginBottom,
+      ...violinplot.visualOptions.marginBottom,
       default: 50,
+    },
+    showHierarchyLabels: {
+      ...violinplot.visualOptions.showHierarchyLabels,
+      default: true,
+    },
+    showLegend: {
+      ...violinplot.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  voronoidiagram: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...voronoidiagram.visualOptions,
+    marginTop: {
+      ...voronoidiagram.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...voronoidiagram.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...voronoidiagram.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...voronoidiagram.visualOptions.marginBottom,
+      default: 50,
+    },
+    showHierarchyLabels: {
+      ...voronoidiagram.visualOptions.showHierarchyLabels,
+      default: true,
+    },
+    showLegend: {
+      ...voronoidiagram.visualOptions.showLegend,
+      default: true,
+    },
+  },
+  voronoitreemap: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...voronoitreemap.visualOptions,
+    marginTop: {
+      ...voronoitreemap.visualOptions.marginTop,
+      default: 50,
+    },
+    marginLeft: {
+      ...voronoitreemap.visualOptions.marginLeft,
+      default: 70,
+    },
+    marginRight: {
+      ...voronoitreemap.visualOptions.marginRight,
+      default: 70,
+    },
+    marginBottom: {
+      ...voronoitreemap.visualOptions.marginBottom,
+      default: 50,
+    },
+    showHierarchyLabels: {
+      ...voronoitreemap.visualOptions.showHierarchyLabels,
+      default: true,
+    },
+    showLegend: {
+      ...voronoitreemap.visualOptions.showLegend,
+      default: true,
     },
   },
 };
 
 export interface DataThemeTabVizAPIModel {
   id: string;
-  mapping: any;
-  vizOptions: any;
-  liveData: boolean;
-  createdDate: Date;
-  filterOptionGroups: FilterGroupModel[];
-  appliedFilters: { [key: string]: any[] };
-  data: { [key: string]: string | number | null }[];
   vizType:
     | "barchart"
     | "linechart"
@@ -255,29 +1105,35 @@ export interface DataThemeTabVizAPIModel {
     | "allocations"
     | "grants"
     | "eligibility";
+  data: { [key: string]: string | number | null }[];
+  mapping: any;
+  vizOptions: any;
+  filterOptionGroups: FilterGroupModel[];
+  appliedFilters: { [key: string]: any[] };
+  liveData: boolean;
+  createdDate: Date;
 }
 
 export interface DataThemeTabTextAPIModel {
   id: string;
-  content: string;
+  content: object;
   createdDate: Date;
 }
 
 export interface DataThemeTabAPIModel {
   id: string;
   title: string;
+  content: (DataThemeTabTextAPIModel | DataThemeTabVizAPIModel)[];
   createdDate: Date;
-  texts: DataThemeTabTextAPIModel[];
-  visualisations: DataThemeTabVizAPIModel[];
 }
 
 export interface DataThemeAPIModel {
   id: string;
   title: string;
-  public: boolean;
   subTitle: string;
-  createdDate: Date;
+  public: boolean;
   tabs: DataThemeTabAPIModel[];
+  createdDate: Date;
 }
 
 export const emptyDataThemeAPI: DataThemeAPIModel = {
@@ -290,9 +1146,7 @@ export const emptyDataThemeAPI: DataThemeAPIModel = {
     {
       id: "",
       title: "",
-      texts: [],
-      createdDate: new Date(),
-      visualisations: [
+      content: [
         {
           id: "",
           mapping: {},
@@ -306,6 +1160,7 @@ export const emptyDataThemeAPI: DataThemeAPIModel = {
           datasetId: "investment-signed",
         },
       ],
+      createdDate: new Date(),
     },
   ],
 };

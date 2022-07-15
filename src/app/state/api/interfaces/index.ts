@@ -6,6 +6,11 @@ import {
   DataThemesStepChartTypeStateModel,
   DataThemesStepSelectDataLiveStateModel,
   DataThemesStepSelectionsStateModel,
+  DataThemesIndexStateModel,
+  DataThemesIdsStateModel,
+  DataThemesActivePanelsStateModel,
+  DataThemesTitlesStateModel,
+  DataThemesTextContentStateModel,
 } from "app/state/api/action-reducers/sync/data-themes";
 import {
   PageHeaderVizDrilldownsStateModel,
@@ -288,6 +293,12 @@ export interface StoreModel {
     modulesGrants: CMSApiCallModel;
   };
   dataThemes: {
+    activeTabIndex: DataThemesIndexStateModel;
+    activeVizIndex: DataThemesIndexStateModel;
+    ids: DataThemesIdsStateModel;
+    activePanels: DataThemesActivePanelsStateModel;
+    titles: DataThemesTitlesStateModel;
+    textContent: DataThemesTextContentStateModel;
     sync: {
       stepSelections: DataThemesStepSelectionsStateModel;
       liveData: DataThemesStepSelectDataLiveStateModel;
@@ -299,6 +310,7 @@ export interface StoreModel {
     DataThemeCreate: ApiCallModel;
     DataThemeUpdate: ApiCallModel;
     DataThemeDelete: ApiCallModel;
+    DataThemeDuplicate: ApiCallModel;
     DataThemeGetList: ApiCallModel;
   };
 }

@@ -11,9 +11,10 @@ import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { convertToRaw } from "draft-js";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-// import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
+import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
 import { styles } from "app/modules/data-themes-module/components/sub-header/styles";
 import { DataThemesPageSubHeaderProps } from "app/modules/data-themes-module/components/sub-header/data";
 import {
@@ -74,13 +75,31 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const { page } = useParams<{ page: string }>();
   const { data, loading, visualOptions, filterOptionGroups } = props;
 
-  const [title, setTitle] = React.useState("New Theme");
-  const [subTitle, setSubTitle] = React.useState("Label");
+  const title = useStoreState((state) => state.dataThemes.titles.title);
+  const setTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setTitle
+  );
+  const subTitle = useStoreState((state) => state.dataThemes.titles.subTitle);
+  const setSubTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setSubTitle
+  );
+  const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
   const [isEditMode, setIsEditMode] = React.useState(page !== "new");
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
+  const activePanels = useStoreState(
+    (state) => state.dataThemes.activePanels.value
+  );
+
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
   );
@@ -114,6 +133,12 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const isLiveData = useStoreState(
     (state) => state.dataThemes.sync.liveData.value
   );
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
+  const textContent = useStoreState(
+    (state) => state.dataThemes.textContent.value
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -129,35 +154,52 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setTitle(event.target.value);
+    setTitle({ title: event.target.value });
   }
 
   function handleSubTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setSubTitle(event.target.value);
+    setSubTitle({ subTitle: event.target.value });
   }
 
   function onSave() {
+    const tabs: any[] = [];
+    tabIds.length > 0 &&
+      tabIds.map((content, tabIndex) => {
+        // Add an empty tab for each tab in the list
+        tabs.push({ title: tabTitles[tabIndex], content: [] });
+        content.map((vizIndex) => {
+          // add a viz object for every viz in the current tab.
+          let vizObject: any = {};
+          if (vizIsTextContent[tabIndex][vizIndex]) {
+            const contentState =
+              textContent[tabIndex][vizIndex].getCurrentContent();
+            const rawContent = JSON.stringify(convertToRaw(contentState));
+            vizObject = {
+              content: rawContent,
+            };
+          } else {
+            vizObject = {
+              mapping: mapping[tabIndex][vizIndex],
+              vizType: selectedChartType[tabIndex][vizIndex],
+              datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+              data: props.themeData
+                ? props.themeData[tabIndex][vizIndex].data
+                : data,
+              vizOptions: visualOptions[tabIndex][vizIndex],
+              filterOptionGroups: props.themeData
+                ? props.themeData[tabIndex][vizIndex].filterOptionGroups
+                : filterOptionGroups,
+              appliedFilters: appliedFilters[tabIndex][vizIndex],
+              liveData: isLiveData[tabIndex][vizIndex],
+            };
+          }
+          tabs[tabIndex].content.push(vizObject);
+        });
+      });
     const dataTheme = {
       title,
       subTitle,
-      tabs: [
-        {
-          title: "Tab 1",
-          visualisations: [
-            {
-              mapping,
-              vizType: selectedChartType,
-              datasetId: stepSelectionsData.step1.dataset,
-              data,
-              vizOptions: visualOptions,
-              filterOptionGroups,
-              appliedFilters,
-              liveData: isLiveData,
-            },
-          ],
-          texts: [],
-        },
-      ],
+      tabs,
     };
     if (isSavedEnabled) {
       if (!isEditMode) {
@@ -175,13 +217,15 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
 
   React.useEffect(() => {
     setIsSavedEnabled(
-      data.length > 0 &&
-        !loading &&
-        selectedChartType !== "" &&
-        selectedChartType !== null &&
-        !isEmpty(mapping)
+      (!loading &&
+        data.length > 0 &&
+        selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
+        selectedChartType[activeTabIndex][activeVizIndex] !== null &&
+        !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
+        activePanels[activeTabIndex][activeVizIndex] === 6) ||
+        vizIsTextContent[activeTabIndex][activeVizIndex]
     );
-  }, [data, loading, selectedChartType, mapping]);
+  }, [data, loading, selectedChartType, mapping, vizIsTextContent]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");
@@ -190,10 +234,10 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     if (loadedDataTheme) {
       if (loadedDataTheme.title.length > 0) {
-        setTitle(loadedDataTheme.title);
+        setTitle({ title: loadedDataTheme.title });
       }
       if (loadedDataTheme.subTitle.length > 0) {
-        setSubTitle(loadedDataTheme.subTitle);
+        setSubTitle({ subTitle: loadedDataTheme.subTitle });
       }
     }
   }, [loadedDataTheme]);
@@ -216,8 +260,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       createDataThemeData.id.length > 0 &&
       createDataThemeData.id !== page
     ) {
-      const view = history.location.pathname.split("/")[3];
-      history.push(`/data-themes/${createDataThemeData.id}/${view}`);
+      history.push(`/data-themes/${createDataThemeData.id}`, {
+        editMode: true,
+      });
     }
   }, [createDataThemeData]);
 
@@ -261,7 +306,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                     : {}
                 }
               />
-              <KeyboardArrowDownIcon htmlColor="#262c34" />
+              {!props.previewMode && (
+                <KeyboardArrowDownIcon htmlColor="#262c34" />
+              )}
             </div>
             <input
               type="text"
@@ -297,9 +344,13 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             </div>
           )}
         </div>
-        {/* <div css={styles.secondrow}>
-          <DataThemesTabs />
-        </div> */}
+        <div css={styles.secondrow}>
+          <DataThemesTabs
+            updateLocalStates={props.updateLocalStates}
+            disabled={props.tabsDisabled}
+            previewMode={props.previewMode}
+          />
+        </div>
       </div>
     </div>
   );

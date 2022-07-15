@@ -30,13 +30,20 @@ interface DataThemesToolBoxCustomizeProps {
 export function DataThemesToolBoxCustomize(
   props: DataThemesToolBoxCustomizeProps
 ) {
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
   const fChartType = find(
     chartTypes,
-    (chartType: ChartTypeModel) => chartType.id === selectedChartType
+    (chartType: ChartTypeModel) =>
+      chartType.id === selectedChartType[activeTabIndex][activeVizIndex]
   );
 
   const optionsConfig = React.useMemo(() => {
@@ -56,7 +63,13 @@ export function DataThemesToolBoxCustomize(
   });
 
   const enabledOptions = React.useMemo(() => {
-    return getEnabledOptions(optionsConfig, props.visualOptions, mapping);
+    return getEnabledOptions(
+      optionsConfig,
+      props.visualOptions
+        ? props.visualOptions[activeTabIndex][activeVizIndex]
+        : {},
+      mapping[activeTabIndex][activeVizIndex]
+    );
   }, [optionsConfig, props.visualOptions, mapping]);
 
   const optionsDefinitionsByGroup = React.useMemo(() => {
@@ -94,7 +107,7 @@ export function DataThemesToolBoxCustomize(
         overflow-y: auto;
         padding-right: 15px;
         flex-direction: column;
-        max-height: calc(100vh - 456px);
+        max-height: calc(100vh - 512px);
 
         * {
           font-size: 14px;
@@ -157,58 +170,65 @@ export function DataThemesToolBoxCustomize(
                   // (when a new value is dragged to the dimension that repeats the option)
                   // the same approach is applied in option validation by the raw core lib
                   return def.repeatFor ? (
-                    get(mapping, `[${def.repeatFor}].value`, []).map(
-                      (v: any, repeatIndex: number) => (
-                        <WrapControlComponent
-                          className="chart-option"
-                          key={optionId + repeatIndex}
-                          repeatIndex={repeatIndex}
-                          {...def}
-                          optionId={optionId}
-                          // error={error?.errors?.[optionId + repeatIndex]}
-                          value={
-                            props.visualOptions?.[optionId]?.[repeatIndex] ??
-                            getDefaultForRepeat(def, repeatIndex)
-                          }
-                          mapping={
-                            def.type === "colorScale"
-                              ? getPartialMapping(
-                                  mapping,
-                                  def.repeatFor,
-                                  repeatIndex
-                                )
-                              : undefined
-                          }
-                          chart={
-                            def.type === "colorScale"
-                              ? props.currentChart
-                              : undefined
-                          }
-                          dataset={
-                            def.type === "colorScale"
-                              ? props.currentChartData?.dataset
-                              : undefined
-                          }
-                          dataTypes={
-                            def.type === "colorScale"
-                              ? props.currentChartData?.dataTypes
-                              : undefined
-                          }
-                          visualOptions={
-                            def.type === "colorScale"
-                              ? props.visualOptions
-                              : undefined
-                          }
-                          mappedData={getPartialMappedData(
-                            props.mappedData,
-                            def.repeatFor,
-                            repeatIndex
-                          )}
-                          setVisualOptions={props.setVisualOptions}
-                          isEnabled={enabledOptions[optionId]}
-                        />
-                      )
-                    )
+                    get(
+                      mapping[activeTabIndex][activeVizIndex],
+                      `[${def.repeatFor}].value`,
+                      []
+                    ).map((v: any, repeatIndex: number) => (
+                      <WrapControlComponent
+                        className="chart-option"
+                        key={optionId + repeatIndex}
+                        repeatIndex={repeatIndex}
+                        {...def}
+                        optionId={optionId}
+                        // error={error?.errors?.[optionId + repeatIndex]}
+                        value={
+                          props.visualOptions[activeTabIndex][activeVizIndex]?.[
+                            optionId
+                          ]?.[repeatIndex] ??
+                          getDefaultForRepeat(def, repeatIndex)
+                        }
+                        mapping={
+                          def.type === "colorScale"
+                            ? getPartialMapping(
+                                mapping[activeTabIndex][activeVizIndex],
+                                def.repeatFor,
+                                repeatIndex
+                              )
+                            : undefined
+                        }
+                        chart={
+                          def.type === "colorScale"
+                            ? props.currentChart
+                            : undefined
+                        }
+                        dataset={
+                          def.type === "colorScale"
+                            ? props.currentChartData?.dataset
+                            : undefined
+                        }
+                        dataTypes={
+                          def.type === "colorScale"
+                            ? props.currentChartData?.dataTypes
+                            : undefined
+                        }
+                        visualOptions={
+                          def.type === "colorScale"
+                            ? props.visualOptions[activeTabIndex][
+                                activeVizIndex
+                              ]
+                            : undefined
+                        }
+                        mappedData={getPartialMappedData(
+                          props.mappedData,
+                          def.repeatFor,
+                          repeatIndex
+                        )}
+                        allVisualOptions={props.visualOptions}
+                        setVisualOptions={props.setVisualOptions}
+                        isEnabled={enabledOptions[optionId]}
+                      />
+                    ))
                   ) : (
                     <WrapControlComponent
                       className="chart-option"
@@ -216,8 +236,18 @@ export function DataThemesToolBoxCustomize(
                       {...def}
                       optionId={optionId}
                       // error={error?.errors?.[optionId]}
-                      value={props.visualOptions?.[optionId]}
-                      mapping={def.type === "colorScale" ? mapping : undefined}
+                      value={
+                        props.visualOptions
+                          ? props.visualOptions[activeTabIndex][
+                              activeVizIndex
+                            ]?.[optionId]
+                          : undefined
+                      }
+                      mapping={
+                        def.type === "colorScale"
+                          ? mapping[activeTabIndex][activeVizIndex]
+                          : undefined
+                      }
                       chart={
                         def.type === "colorScale"
                           ? props.currentChart
@@ -235,10 +265,11 @@ export function DataThemesToolBoxCustomize(
                       }
                       visualOptions={
                         def.type === "colorScale"
-                          ? props.visualOptions
+                          ? props.visualOptions[activeTabIndex][activeVizIndex]
                           : undefined
                       }
                       mappedData={props.mappedData}
+                      allVisualOptions={props.visualOptions}
                       setVisualOptions={props.setVisualOptions}
                       isEnabled={enabledOptions[optionId]}
                     />

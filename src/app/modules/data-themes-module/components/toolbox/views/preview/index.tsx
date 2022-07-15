@@ -20,13 +20,14 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupModel | null>(null);
 
-  const setAppliedFilters = useStoreActions(
-    (actions) => actions.dataThemes.appliedFilters.setAll
+  /** TODO: Is this the correct action here? or should it only reset for the current active tab/vizualisation */
+  const resetAppliedFilters = useStoreActions(
+    (actions) => actions.dataThemes.appliedFilters.reset
   );
 
   function onReset(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
-    setAppliedFilters({});
+    resetAppliedFilters();
   }
 
   return (
@@ -78,7 +79,7 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
                 flex-direction: column;
               `}
             >
-              {filterOptionGroups.map((group: FilterGroupModel) => (
+              {(filterOptionGroups || []).map((group: FilterGroupModel) => (
                 <FilterGroup
                   key={group.name}
                   name={group.name}
@@ -100,6 +101,8 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
             name={expandedGroup.name}
             options={expandedGroup.options}
             goBack={() => setExpandedGroup(null)}
+            tabIndex={props.tabIndex}
+            vizIndex={props.vizIndex}
           />
         </div>
       )}

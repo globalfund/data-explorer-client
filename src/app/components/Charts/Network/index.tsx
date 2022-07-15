@@ -75,7 +75,7 @@ export function NetworkViz(props: NetworkVizProps) {
             ${
               props.selectedNodeId && props.selectedNodeId === node.id
                 ? `> circle {
-              stroke-width: 2px;
+              strokeWidth: 2px;
             }
             > text {
               font-weight: bold;
@@ -85,7 +85,7 @@ export function NetworkViz(props: NetworkVizProps) {
             }
             &:hover {
               > circle {
-                stroke-width: 2px;
+                strokeWidth: 2px;
               }
               > text {
                 font-weight: bold;
