@@ -222,10 +222,20 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-        activePanels[activeTabIndex][activeVizIndex] === 6) ||
+        (activePanels[activeTabIndex][activeVizIndex] === 6 ||
+          activePanels[activeTabIndex][activeVizIndex] === 7)) ||
         vizIsTextContent[activeTabIndex][activeVizIndex]
     );
-  }, [data, loading, selectedChartType, mapping, vizIsTextContent]);
+  }, [
+    data,
+    loading,
+    selectedChartType,
+    mapping,
+    vizIsTextContent,
+    activePanels,
+    activeTabIndex,
+    activeVizIndex,
+  ]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");

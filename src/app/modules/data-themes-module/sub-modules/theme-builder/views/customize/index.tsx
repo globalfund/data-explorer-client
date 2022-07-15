@@ -48,6 +48,7 @@ export function DataThemesBuilderCustomize(
       panel: 6,
     });
   }, []);
+
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&

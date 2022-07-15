@@ -326,6 +326,7 @@ export function DataThemesBuilder() {
   }, [isEditMode]);
 
   let renderingKey = 0;
+
   return (
     <React.Fragment>
       <DataThemesAlertDialog />
@@ -507,7 +508,7 @@ export function DataThemesBuilder() {
             component={() => {
               if (
                 page === "new" &&
-                activePanels[activeTabIndex][activeVizIndex] !== 6 &&
+                activePanels[activeTabIndex][activeVizIndex] !== 7 &&
                 !vizIsTextContent[activeTabIndex][activeVizIndex]
               ) {
                 return <Redirect to="/data-themes/new/initial" />;
