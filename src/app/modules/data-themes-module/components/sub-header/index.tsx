@@ -1,17 +1,24 @@
 /* third-party */
 import React from "react";
 import isEmpty from "lodash/isEmpty";
+import { convertToRaw } from "draft-js";
 import styled from "styled-components/macro";
+import Button from "@material-ui/core/Button";
+import Switch from "@material-ui/core/Switch";
 import SaveIcon from "@material-ui/icons/Save";
+import Divider from "@material-ui/core/Divider";
+import Popover from "@material-ui/core/Popover";
+import { LinkIcon } from "app/assets/icons/Link";
 import ShareIcon from "@material-ui/icons/Share";
 import Snackbar from "@material-ui/core/Snackbar";
 import IconButton from "@material-ui/core/IconButton";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { convertToRaw } from "draft-js";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
@@ -139,6 +146,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const textContent = useStoreState(
     (state) => state.dataThemes.textContent.value
   );
+  const isPublicTheme = useStoreState(
+    (state) => state.dataThemes.sync.public.value
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -152,6 +162,30 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const editDataThemeClear = useStoreActions(
     (actions) => actions.dataThemes.DataThemeUpdate.clear
   );
+  const setIsPublicTheme = useStoreActions(
+    (actions) => actions.dataThemes.sync.public.setValue
+  );
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  function handleCopy(text: string, result: boolean) {
+    setOpenSnackbar(result);
+  }
+
+  function handleCloseSnackbar() {
+    setOpenSnackbar(false);
+  }
 
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle({ title: event.target.value });
@@ -276,6 +310,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     }
   }, [createDataThemeData]);
 
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
   return (
     <div css={styles.container}>
       {createOrEditDataThemeLoading && <PageLoader />}
@@ -290,6 +327,16 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
           action={<Link to="/data-themes">Go to my themes</Link>}
         />
       </InfoSnackbar>
+      <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        open={openSnackbar}
+        autoHideDuration={5000}
+        onClose={handleCloseSnackbar}
+        message="Link copied to clipboard"
+      />
       <div css={styles.innercontainer}>
         <div
           css={styles.firstrow}
@@ -336,9 +383,51 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
           </div>
           {!props.previewMode && (
             <div css={styles.iconbtns}>
-              <IconButton>
+              <IconButton onClick={handleClick}>
                 <ShareIcon htmlColor="#262c34" />
               </IconButton>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                css={`
+                  .MuiPaper-root {
+                    border-radius: 10px;
+                    background: #495057;
+                  }
+                `}
+              >
+                <div css={styles.sharePopup}>
+                  <FormControlLabel
+                    value="public-theme"
+                    label="Public theme"
+                    labelPlacement="start"
+                    control={
+                      <Switch
+                        color="primary"
+                        checked={isPublicTheme}
+                        onChange={() => setIsPublicTheme(!isPublicTheme)}
+                      />
+                    }
+                  />
+                  <Divider />
+                  <CopyToClipboard
+                    text={window.location.href}
+                    onCopy={handleCopy}
+                  >
+                    <Button startIcon={<LinkIcon />}>Copy link</Button>
+                  </CopyToClipboard>
+                </div>
+              </Popover>
               <IconButton>
                 <PlayCircleFilledIcon htmlColor="#262c34" />
               </IconButton>

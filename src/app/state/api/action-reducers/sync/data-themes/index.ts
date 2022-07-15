@@ -324,3 +324,15 @@ export const DataThemesTextContentState: DataThemesTextContentStateModel = {
     state.vizIsTextContent = [[false]];
   }),
 };
+
+export interface DataThemesPublicStateModel {
+  value: boolean;
+  setValue: Action<DataThemesPublicStateModel, boolean>;
+}
+
+export const DataThemesPublicState: DataThemesPublicStateModel = {
+  value: true,
+  setValue: action((state, payload: boolean) => {
+    state.value = payload;
+  }),
+};

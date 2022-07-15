@@ -52,6 +52,49 @@ export const styles = {
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
   `,
+  sharePopup: css`
+    width: 240px;
+    display: flex;
+    padding: 6px 13px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    * {
+      margin: 0;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    .MuiSwitch-track {
+      background: #98a1aa;
+    }
+
+    .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track {
+      background: #000;
+    }
+
+    hr {
+      width: 100%;
+      background: #cfd4da;
+    }
+
+    button {
+      padding: 6px 0;
+
+      span {
+        text-transform: initial;
+      }
+
+      svg {
+        margin-right: 10px;
+
+        path {
+          fill: #fff;
+        }
+      }
+    }
+  `,
   titleInput: css`
     margin: 0;
     width: 200px;

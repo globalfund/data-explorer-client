@@ -12,6 +12,7 @@ import InfoIcon from "@material-ui/icons/InfoOutlined";
 import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import {
@@ -20,7 +21,6 @@ import {
   THUMB_SIZE,
   Track,
 } from "app/components/RangeSlider";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 
 const StyledMenu = withStyles({
   paper: {

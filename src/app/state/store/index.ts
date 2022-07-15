@@ -167,6 +167,7 @@ import {
   DataThemesActivePanelsState,
   DataThemesTitlesState,
   DataThemesTextContentState,
+  DataThemesPublicState,
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
 import {
@@ -374,6 +375,7 @@ const storeContent: StoreModel = {
       liveData: persist(DataThemesStepSelectDataLiveState),
       chartType: persist(DataThemesStepChartTypeState),
       mapping: persist(DataThemesMappingState),
+      public: persist(DataThemesPublicState),
     },
     appliedFilters: persist(DataThemesAppliedFiltersState),
     DataThemeGet: persist(DataThemeGet),

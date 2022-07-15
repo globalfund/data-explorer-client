@@ -11,6 +11,7 @@ import {
   DataThemesActivePanelsStateModel,
   DataThemesTitlesStateModel,
   DataThemesTextContentStateModel,
+  DataThemesPublicStateModel,
 } from "app/state/api/action-reducers/sync/data-themes";
 import {
   PageHeaderVizDrilldownsStateModel,
@@ -304,6 +305,7 @@ export interface StoreModel {
       liveData: DataThemesStepSelectDataLiveStateModel;
       chartType: DataThemesStepChartTypeStateModel;
       mapping: DataThemesMappingStateModel;
+      public: DataThemesPublicStateModel;
     };
     appliedFilters: DataThemesAppliedFiltersStateModel;
     DataThemeGet: ApiCallModel;
