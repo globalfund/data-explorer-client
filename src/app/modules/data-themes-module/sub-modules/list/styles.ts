@@ -18,8 +18,62 @@ export const styles = {
   `,
   toolbar: css`
     width: 100%;
+    gap: 1.5rem;
     height: 72px;
     padding: 18px 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    > * {
+      cursor: pointer;
+    }
+
+    button {
+      width: 90px;
+      min-width: 90px;
+      height: 23px;
+      border-radius: 20px;
+      background: #262c34;
+      cursor: pointer;
+      color: #fff;
+      border: none;
+      outline: none;
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    }
+  `,
+  toolbarSearch: (showInput: boolean) => css`
+    display: flex;
+    margin-left: 0;
+    position: relative;
+    border-radius: 20px;
+    width: ${showInput ? "100%" : ""};
+    padding: ${showInput ? "5px 20px" : "0"};
+    box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+    background: ${showInput ? "#dfe3e6" : "transparent"};
+
+    > input {
+      width: 100%;
+      outline: none;
+      color: #262c34;
+      font-size: 14px;
+      border-style: none;
+      background: #dfe3e6;
+      display: ${showInput ? "inherit" : "none"};
+
+      ::placeholder {
+        color: #262c34;
+        font-weight: bold;
+      }
+
+      &:focus::placeholder {
+        opacity: 0.3;
+      }
+    }
   `,
   gridItem: css`
     height: 219px;
@@ -27,18 +81,6 @@ export const styles = {
     position: relative;
     border-radius: 30px;
     padding: 16px !important;
-
-    #delete-button,
-    #edit-button {
-      display: none;
-    }
-
-    &:hover {
-      #delete-button,
-      #edit-button {
-        display: inherit;
-      }
-    }
   `,
   gridItemTitle: css`
     height: 30px;
@@ -51,11 +93,20 @@ export const styles = {
     align-items: center;
     justify-content: space-between;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  `,
+  menuBtns: css`
+    gap: 16px;
+    width: 175px;
+    height: 57px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #f1f3f5;
+    justify-content: center;
 
-    > div {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
+    > button {
+      border-radius: 50%;
+      border: 1px solid #000;
     }
   `,
   gridItemLabel: css`

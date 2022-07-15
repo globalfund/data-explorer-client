@@ -35,10 +35,18 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
   );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
 
-  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
 
-  // When the Filters component is rendered, we are at step 4.
-  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 4});
+  React.useEffect(() => {
+    // When the Filters component is rendered, we are at step 4.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 4,
+    });
+  }, []);
 
   useUpdateEffectOnce(() => {
     if (

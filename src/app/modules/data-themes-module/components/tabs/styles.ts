@@ -29,7 +29,12 @@ export const styles = {
       background: #495057;
     }
   `,
-  tab: (active: boolean, disabled: boolean) => css`
+  tab: (
+    active: boolean,
+    disabled: boolean,
+    previewMode: boolean,
+    isOnlyTab: boolean
+  ) => css`
     gap: 14px;
     color: #fff;
     width: 200px;
@@ -64,13 +69,18 @@ export const styles = {
       }
     }
 
+    &:last-of-type {
+      border-style: none;
+      border-radius: ${previewMode ? "0 20px 0 0" : 0};
+    }
+
     &:first-of-type {
       border-radius: 20px 0 0 0;
     }
 
-    &:last-of-type {
-      border-style: none;
-    }
+    ${isOnlyTab && previewMode
+      ? "border-radius: 20px 20px 0 0 !important;"
+      : ""}
   `,
   tabTitle: css`
     margin: 0;
@@ -115,7 +125,6 @@ export const styles = {
       }
     }
   `,
-
   addbtnDisabled: css`
     top: 0;
     right: 0;

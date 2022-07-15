@@ -21,17 +21,17 @@ export default function Icon() {
       <path
         d="M42 32C42 22.0589 33.9411 14 24 14C14.0589 14 6 22.0589 6 32"
         stroke="#262C34"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M37.6957 31.8478C37.6957 26.9613 33.7343 23 28.8478 23C23.9613 23 20 26.9613 20 31.8478"
         stroke="#262C34"
-        stroke-width="2"
+        strokeWidth="2"
       />
       <path
         d="M28.6957 31.8478C28.6957 26.9613 24.7343 23 19.8478 23C14.9613 23 11 26.9613 11 31.8478"
         stroke="#262C34"
-        stroke-width="2"
+        strokeWidth="2"
       />
     </svg>
   );

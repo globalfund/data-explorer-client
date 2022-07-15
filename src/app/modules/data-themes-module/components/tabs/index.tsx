@@ -10,18 +10,38 @@ export function DataThemesTabs(props: any) {
   const { page } = useParams<{ page: string }>();
 
   const tabIds = useStoreState((state) => state.dataThemes.ids.value);
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
 
-  const setActiveTabIndex = useStoreActions((state) => state.dataThemes.activeTabIndex.setValue);
-  const setActiveVizIndex = useStoreActions((state) => state.dataThemes.activeVizIndex.setValue);
+  const setActiveTabIndex = useStoreActions(
+    (state) => state.dataThemes.activeTabIndex.setValue
+  );
+  const setActiveVizIndex = useStoreActions(
+    (state) => state.dataThemes.activeVizIndex.setValue
+  );
   const addTabId = useStoreActions((state) => state.dataThemes.ids.addTab);
-  const addTabActivePanel = useStoreActions((state) => state.dataThemes.activePanels.addTab);
-  const addTabChartType = useStoreActions((state) => state.dataThemes.sync.chartType.addTab);
-  const addTabLiveData = useStoreActions((state) => state.dataThemes.sync.liveData.addTab);
-  const addTabMapping = useStoreActions((state) => state.dataThemes.sync.mapping.addTab);
-  const addTabStepSelections = useStoreActions((state) => state.dataThemes.sync.stepSelections.addTab);
-  const addTabAppliedFilters = useStoreActions((state) => state.dataThemes.appliedFilters.addTab);
-  const addTabTextContent = useStoreActions((state) => state.dataThemes.textContent.addTab);
+  const addTabActivePanel = useStoreActions(
+    (state) => state.dataThemes.activePanels.addTab
+  );
+  const addTabChartType = useStoreActions(
+    (state) => state.dataThemes.sync.chartType.addTab
+  );
+  const addTabLiveData = useStoreActions(
+    (state) => state.dataThemes.sync.liveData.addTab
+  );
+  const addTabMapping = useStoreActions(
+    (state) => state.dataThemes.sync.mapping.addTab
+  );
+  const addTabStepSelections = useStoreActions(
+    (state) => state.dataThemes.sync.stepSelections.addTab
+  );
+  const addTabAppliedFilters = useStoreActions(
+    (state) => state.dataThemes.appliedFilters.addTab
+  );
+  const addTabTextContent = useStoreActions(
+    (state) => state.dataThemes.textContent.addTab
+  );
 
   const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const setTabTitle = useStoreActions(
@@ -48,7 +68,8 @@ export function DataThemesTabs(props: any) {
   }
 
   function onTabClick(tab: number) {
-    if (activeTabIndex !== tab) {  // only change when necessary
+    if (activeTabIndex !== tab) {
+      // only change when necessary
       setActiveTabIndex(tab);
       setActiveVizIndex(0); // default select the fist viz.
     }
@@ -60,26 +81,47 @@ export function DataThemesTabs(props: any) {
         {tabIds.map((_: number[], index: number) => (
           <div
             key={index}
-            css={styles.tab(index === activeTabIndex, props.disabled && !props.previewMode)}
-            onClick={props.disabled && !props.previewMode ? () => {} : () => onTabClick(index)}
+            css={styles.tab(
+              index === activeTabIndex,
+              props.disabled && !props.previewMode,
+              props.previewMode,
+              tabIds.length === 1
+            )}
+            onClick={
+              props.disabled && !props.previewMode
+                ? () => {}
+                : () => onTabClick(index)
+            }
           >
-            { activeTabIndex !== index || props.previewMode ? (
+            {activeTabIndex !== index || props.previewMode ? (
               <div>{tabTitles[index]}</div>
             ) : (
               <input
                 type="text"
                 css={styles.tabTitle}
                 value={tabTitles[index]}
-                onChange={(event) => {setTabTitle({tabIndex: index, tabTitle: event.target.value})}}
+                onChange={(event) => {
+                  setTabTitle({
+                    tabIndex: index,
+                    tabTitle: event.target.value,
+                  });
+                }}
               />
             )}
-            <KeyboardArrowDownIcon htmlColor="#262c34" />
+            {!props.previewMode && (
+              <KeyboardArrowDownIcon htmlColor="#262c34" />
+            )}
           </div>
         ))}
       </div>
-      <div css={props.disabled ? styles.addbtnDisabled : styles.addbtn} onClick={props.disabled ? () => {} : onAdd}>
-        <AddCircleOutlineIcon htmlColor="#262c34" />
-      </div>
+      {!props.previewMode && (
+        <div
+          css={props.disabled ? styles.addbtnDisabled : styles.addbtn}
+          onClick={props.disabled ? () => {} : onAdd}
+        >
+          <AddCircleOutlineIcon htmlColor="#262c34" />
+        </div>
+      )}
     </div>
   );
 }

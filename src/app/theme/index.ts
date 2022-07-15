@@ -226,6 +226,9 @@ export default createTheme({
       },
     },
     MuiTooltip: {
+      arrow: {
+        color: "#DFE3E6",
+      },
       tooltip: {
         fontSize: 12,
         color: "#fff",

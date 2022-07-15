@@ -14,7 +14,7 @@ export const styles = {
     cursor: pointer;
     &:hover {
       stroke: #13183f;
-      stroke-width: 3px;
+      strokewidth: 3px;
     }
   `,
 };

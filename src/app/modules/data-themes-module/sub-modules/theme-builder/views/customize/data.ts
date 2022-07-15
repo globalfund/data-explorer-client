@@ -11,7 +11,7 @@ export interface DataThemesBuilderCustomizeProps {
   currentChartData: any;
   setVisualOptions: (value: any) => void;
   filterOptionGroups: FilterGroupModel[];
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
   themeData: {
     id: number;

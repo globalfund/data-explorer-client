@@ -9,30 +9,23 @@ export default function Icon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <line
-        x1="8.5"
-        y1="7"
-        x2="8.5"
-        y2="41"
-        stroke="#262C34"
-        stroke-width="3"
-      />
+      <line x1="8.5" y1="7" x2="8.5" y2="41" stroke="#262C34" strokeWidth="3" />
       <line
         x1="19.5"
         y1="7"
         x2="19.5"
         y2="41"
         stroke="#262C34"
-        stroke-width="3"
+        strokeWidth="3"
       />
-      <path d="M29 7L29 41" stroke="#262C34" stroke-width="3" />
+      <path d="M29 7L29 41" stroke="#262C34" strokeWidth="3" />
       <line
         x1="41.5"
         y1="7"
         x2="41.5"
         y2="41"
         stroke="#262C34"
-        stroke-width="3"
+        strokeWidth="3"
       />
       <line
         y1="-0.5"

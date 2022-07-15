@@ -16,7 +16,8 @@ interface DataThemesBuilderDataViewProps {
   visualOptions: any;
   filterOptionGroups: FilterGroupModel[];
   data: { [key: string]: string | number | null }[];
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  totalAvailable: number;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
 }
 
@@ -25,12 +26,24 @@ export function DataThemesBuilderDataView(
 ) {
   useTitle("Data Themes - Select Data");
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
-  const setActivePanels = useStoreActions((state) => state.dataThemes.activePanels.setValue);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const setActivePanels = useStoreActions(
+    (state) => state.dataThemes.activePanels.setValue
+  );
 
-  // When the Data View component is rendered, we are at step 1.
-  setActivePanels({tabIndex: activeTabIndex, vizIndex: activeVizIndex, panel: 1});
+  React.useEffect(() => {
+    // When the Data View component is rendered, we are at step 1.
+    setActivePanels({
+      tabIndex: activeTabIndex,
+      vizIndex: activeVizIndex,
+      panel: 1,
+    });
+  }, []);
 
   return (
     <div css={commonStyles.container}>
@@ -48,6 +61,7 @@ export function DataThemesBuilderDataView(
         loading={false}
         data={props.data}
         loadDataset={props.loadDataset}
+        totalAvailable={props.totalAvailable}
         forceNextEnabled={props.data.length > 0}
         filterOptionGroups={props.filterOptionGroups}
       />

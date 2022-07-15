@@ -310,6 +310,7 @@ export interface StoreModel {
     DataThemeCreate: ApiCallModel;
     DataThemeUpdate: ApiCallModel;
     DataThemeDelete: ApiCallModel;
+    DataThemeDuplicate: ApiCallModel;
     DataThemeGetList: ApiCallModel;
   };
 }

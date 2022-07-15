@@ -17,6 +17,10 @@ export const DataThemeDelete: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/data-themes`),
 };
 
+export const DataThemeDuplicate: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/data-themes/duplicate`),
+};
+
 export const DataThemeGetList: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/data-themes-with-viz-count`),
 };

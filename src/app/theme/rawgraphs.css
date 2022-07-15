@@ -2741,8 +2741,8 @@ fieldset:disabled .btn {
 .btn-primary:active,
 .show>.btn-primary.dropdown-toggle {
     color: #fff;
-    background-color: #0a58ca;
-    border-color: #0a53be
+    background-color: #262c34;
+    border-color: #262c34
 }
 
 .btn-check:active+.btn-primary:focus,
@@ -11816,8 +11816,8 @@ fieldset:disabled .btn {
 }
 
 .raw-dropdown .dropdown-toggle::after {
-    right: 8px;
-    bottom: calc(50% - 1px);
+    right: 5px;
+    bottom: calc(50% - 2px);
     position: absolute;
 }
 

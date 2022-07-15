@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { Dropdown } from "react-bootstrap";
 import { useDrag, useDrop } from "react-dnd";
 import Close from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
@@ -12,6 +13,18 @@ const typeIcon = {
   string: "/icons/string.svg",
   number: "/icons/number.svg",
   date: "/icons/date.svg",
+};
+
+export const AGGREGATIONS_LABELS = {
+  count: "Count",
+  mean: "Average",
+  median: "Median",
+  max: "Max",
+  min: "Min",
+  countDistinct: "Count unique",
+  sum: "Sum",
+  csv: "CSV",
+  csvDistinct: "CSV (unique)",
 };
 
 export function DataThemesToolBoxMapping(props: DataThemesToolBoxMappingProps) {
@@ -86,6 +99,10 @@ interface DataThemesToolBoxMappingItemProps {
   backgroundColor?: string;
   onDeleteItem?: () => void;
   type: "string" | "number" | "date";
+  relatedAggregation?: any;
+  aggregators?: any;
+  isValid?: boolean;
+  onChangeAggregation?: (index: number, value: any) => void;
   onChangeDimension?: (index: number, item: any) => void;
   onMove?: (dragIndex: number, hoverIndex: number) => void;
   replaceDimension?: (
@@ -243,10 +260,11 @@ export function DataThemesToolBoxMappingItem(
         }
       `}
     >
-      <span
+      <div
         css={`
           width: 16px;
           height: 16px;
+          min-width: 16px;
           margin-right: 13px;
           background-size: contain;
           background-position: center;
@@ -268,10 +286,81 @@ export function DataThemesToolBoxMappingItem(
       >
         {props.dataTypeName}
       </div>
+      {dimension &&
+        props.isValid &&
+        dimension.aggregation &&
+        props.relatedAggregation &&
+        props.aggregators &&
+        props.onChangeAggregation && (
+          <Dropdown
+            className="d-inline-block ml-2 raw-dropdown"
+            css={`
+              margin-right: -7px;
+            `}
+          >
+            <Dropdown.Toggle
+              css={`
+                width: 110px;
+                color: #262c34;
+                font-size: 14px;
+                border-style: none;
+                border-radius: 26px;
+                padding-right: 16px;
+                background: #868e96;
+                box-shadow: none !important;
+
+                &:hover,
+                &:active,
+                &:focus {
+                  color: #fff;
+                  background: #262c34;
+                }
+              `}
+            >
+              {get(
+                AGGREGATIONS_LABELS,
+                props.relatedAggregation,
+                props.relatedAggregation
+              )}
+            </Dropdown.Toggle>
+            <Dropdown.Menu
+              css={`
+                min-width: 110px;
+                background: #dfe3e6;
+                border-radius: 13px;
+                box-shadow: none !important;
+              `}
+            >
+              {props.aggregators.map((aggregatorName: string) => (
+                <Dropdown.Item
+                  key={aggregatorName}
+                  onClick={() =>
+                    props.onChangeAggregation &&
+                    props.onChangeAggregation(index, aggregatorName)
+                  }
+                  css={`
+                    color: #262c34;
+                    font-size: 14px;
+                    padding: 6px 12px !important;
+                    border-bottom: 1px solid rgba(173, 181, 189, 0.5);
+
+                    &:hover {
+                      color: #fff;
+                      background: #262c34;
+                    }
+                  `}
+                >
+                  {get(AGGREGATIONS_LABELS, aggregatorName, aggregatorName)}
+                </Dropdown.Item>
+              ))}
+            </Dropdown.Menu>
+          </Dropdown>
+        )}
       {props.onDeleteItem && (
         <IconButton
           onClick={props.onDeleteItem}
           css={`
+            margin-right: -7px;
             transform: scale(0.7);
           `}
         >

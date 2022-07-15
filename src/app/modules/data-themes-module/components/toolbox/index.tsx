@@ -6,10 +6,11 @@ import DashboardIcon from "@material-ui/icons/Dashboard";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 /* project */
 import { styles } from "app/modules/data-themes-module/components/toolbox/styles";
+import { DataThemesExporter } from "app/modules/data-themes-module/components/exporter";
 import { DataThemesToolBoxProps } from "app/modules/data-themes-module/components/toolbox/data";
+import { DataThemesToolBoxText } from "app/modules/data-themes-module/components/toolbox/views/text";
 import { DataThemesToolBoxSteps } from "app/modules/data-themes-module/components/toolbox/views/steps";
 import { DataThemesToolBoxPreview } from "app/modules/data-themes-module/components/toolbox/views/preview";
-import { DataThemesToolBoxText } from "app/modules/data-themes-module/components/toolbox/views/text";
 
 export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   return (
@@ -49,17 +50,24 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       {props.dataSteps && (
         <DataThemesToolBoxSteps
           data={props.data}
+          rawViz={props.rawViz}
           loading={props.loading}
           openPanel={props.openPanel}
           mappedData={props.mappedData}
           loadDataset={props.loadDataset}
           currentChart={props.currentChart}
           visualOptions={props.visualOptions}
+          totalAvailable={props.totalAvailable}
           forceNextEnabled={props.forceNextEnabled}
           currentChartData={props.currentChartData}
           setVisualOptions={props.setVisualOptions}
           filterOptionGroups={props.filterOptionGroups}
         />
+      )}
+      {props.exportView && props.rawViz && (
+        <div css={styles.exportview}>
+          <DataThemesExporter rawViz={props.rawViz} />
+        </div>
       )}
       {props.filtersView && (
         <DataThemesToolBoxPreview
@@ -68,9 +76,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           filterOptionGroups={props.filterOptionGroups}
         />
       )}
-      {props.textView && (
-        <DataThemesToolBoxText />
-      )}
+      {props.textView && <DataThemesToolBoxText />}
     </div>
   );
 }

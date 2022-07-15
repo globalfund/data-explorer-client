@@ -38,6 +38,7 @@ import {
   charts,
   defaultChartOptions,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { DataThemesBuilderExport } from "./views/export";
 
 export function DataThemesBuilder() {
   const history = useHistory();
@@ -59,7 +60,9 @@ export function DataThemesBuilder() {
     (state) => state.dataThemes.activeVizIndex.value
   );
   const themeIds = useStoreState((state) => state.dataThemes.ids.value);
-  const activePanels = useStoreState((state) => state.dataThemes.activePanels.value);
+  const activePanels = useStoreState(
+    (state) => state.dataThemes.activePanels.value
+  );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
   );
@@ -331,6 +334,31 @@ export function DataThemesBuilder() {
           {(loadingData || isSaveLoading || isDataThemeLoading) && (
             <PageLoader />
           )}
+          <Route path={`/data-themes/:page/export`}>
+            <DataThemesBuilderExport
+              tabIndex={activeTabIndex}
+              vizIndex={activeVizIndex}
+              data={rawData[activeTabIndex][activeVizIndex].data}
+              loading={loading}
+              loadDataset={loadDataset}
+              currentChart={currentChart[activeTabIndex][activeVizIndex]}
+              visualOptions={visualOptions}
+              setVisualOptions={setVisualOptions}
+              currentChartData={
+                currentChartData[activeTabIndex][activeVizIndex]
+              }
+              filterOptionGroups={
+                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              }
+              themeData={rawData}
+              dimensions={get(
+                currentChart[activeTabIndex][activeVizIndex],
+                "dimensions",
+                []
+              )}
+              updateLocalStates={updateLocalStates}
+            />
+          </Route>
           <Route path={`/data-themes/:page/customize`}>
             <DataThemesBuilderCustomize
               tabIndex={activeTabIndex}
@@ -341,7 +369,9 @@ export function DataThemesBuilder() {
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
+              currentChartData={
+                currentChartData[activeTabIndex][activeVizIndex]
+              }
               filterOptionGroups={
                 rawData[activeTabIndex][activeVizIndex].filterOptionGroups
               }
@@ -365,7 +395,9 @@ export function DataThemesBuilder() {
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
+              currentChartData={
+                currentChartData[activeTabIndex][activeVizIndex]
+              }
               filterOptionGroups={
                 rawData[activeTabIndex][activeVizIndex].filterOptionGroups
               }
@@ -387,7 +419,9 @@ export function DataThemesBuilder() {
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData[activeTabIndex][activeVizIndex]}
+              currentChartData={
+                currentChartData[activeTabIndex][activeVizIndex]
+              }
               filterOptionGroups={
                 rawData[activeTabIndex][activeVizIndex].filterOptionGroups
               }
@@ -421,6 +455,7 @@ export function DataThemesBuilder() {
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
               allData={rawData[activeTabIndex][activeVizIndex].data}
+              totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
               loading={loading}
               data={filteredData[activeTabIndex][activeVizIndex]}
               loadDataset={loadDataset}
@@ -436,6 +471,7 @@ export function DataThemesBuilder() {
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
               data={rawData[activeTabIndex][activeVizIndex].data}
+              totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
               loading={loading}
               loadDataset={loadDataset}
               visualOptions={visualOptions}
@@ -469,13 +505,17 @@ export function DataThemesBuilder() {
           <Route
             path={`/data-themes/:page`}
             component={() => {
-              if (page === "new" && (activePanels[activeTabIndex][activeVizIndex] !== 6) && !vizIsTextContent[activeTabIndex][activeVizIndex]) {
+              if (
+                page === "new" &&
+                activePanels[activeTabIndex][activeVizIndex] !== 6 &&
+                !vizIsTextContent[activeTabIndex][activeVizIndex]
+              ) {
                 return <Redirect to="/data-themes/new/initial" />;
               }
               return (
                 <React.Fragment>
                   {loading ? (
-                    <PageLoader/>
+                    <PageLoader />
                   ) : (
                     <React.Fragment>
                       {rawData.map((content, tabIndex) =>
@@ -522,7 +562,7 @@ export function DataThemesBuilder() {
           </Route>
         </Switch>
       </DndProvider>
-      {((page === "new" || isEditMode) && (!view || view === "initial")) && (
+      {(page === "new" || isEditMode) && (!view || view === "initial") && (
         <DataThemesAddSectionButton
           showCreateYourStoryText={
             history.location.pathname === `/data-themes/new/initial`

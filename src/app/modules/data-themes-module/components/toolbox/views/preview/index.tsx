@@ -79,7 +79,7 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
                 flex-direction: column;
               `}
             >
-              {filterOptionGroups.map((group: FilterGroupModel) => (
+              {(filterOptionGroups || []).map((group: FilterGroupModel) => (
                 <FilterGroup
                   key={group.name}
                   name={group.name}

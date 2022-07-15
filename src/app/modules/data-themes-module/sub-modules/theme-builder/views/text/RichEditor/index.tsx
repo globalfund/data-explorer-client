@@ -77,11 +77,16 @@ export const RichEditor = (props: {
           margin-inline-start: 0px;
           border-left: 4px solid #262c34;
         }
+
+        .public-DraftEditorPlaceholder-inner {
+          position: absolute;
+        }
       `}
     >
       <Editor
         readOnly={!props.editMode}
         editorKey="RichEditor"
+        placeholder="Add your story..."
         editorState={textContent[props.tabIndex][props.vizIndex]}
         onChange={onChange}
         plugins={plugins}
@@ -94,11 +99,9 @@ export const RichEditor = (props: {
           },
           ITALIC: {
             fontStyle: "italic",
-            fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
           },
           UNDERLINE: {
             textDecoration: "underline",
-            fontFamily: "'GothamNarrow-Book', 'Helvetica Neue', sans-serif",
           },
         }}
       />

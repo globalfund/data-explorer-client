@@ -39,7 +39,7 @@ export interface DataThemesBuilderChartTypeProps {
   setCurrentChart: (chart: any) => void;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions: (value: any) => void;
-  loadDataset: (endpoint: string) => Promise<boolean>;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
 }
 
@@ -133,7 +133,7 @@ export const chartTypes: ChartTypeModel[] = [
       "It displays values of leaf nodes of a hierarchical structure by using circles areas. The hierarchical structure is depicted using nested circles. A further quantitative dimension with size and a quantitative or categorical dimension with color.",
   },
   {
-    id: "circulardendrogram",
+    id: "circularDendrogram",
     label: "Circular dendrogram",
     icon: <CircularDendogramChartIcon />,
     categories: ["Hierarchies", "Proportions"],
@@ -141,7 +141,7 @@ export const chartTypes: ChartTypeModel[] = [
       "It displays hierarchically structured data with a radial tree structure, where the root node is in the center with the hierarchies moving outward. The area of nodes can be used to encode a further quantitative dimension and a quantitative or categorical dimension with color.",
   },
   {
-    id: "contourplot",
+    id: "contourPlot",
     label: "Contour plot",
     icon: <ContourPlotChartIcon />,
     categories: ["Correlations", "Distributions"],
@@ -149,7 +149,7 @@ export const chartTypes: ChartTypeModel[] = [
       "It shows the estimated density of point clouds, which is especially useful to avoid overplotting in large datasets.",
   },
   {
-    id: "convexhull",
+    id: "convexHull",
     label: "Convex hull",
     icon: <ConvexHullChartIcon />,
     categories: ["Correlations", "Proportions"],
@@ -157,7 +157,7 @@ export const chartTypes: ChartTypeModel[] = [
       "In mathematics, the convex hull is the smallest convex shape containing a set of points. Applied to a scatterplot, it is useful to identify points belonging to the same category.",
   },
   {
-    id: "lineardendrogram",
+    id: "dendrogram",
     label: "Linear dendrogram",
     icon: <LinearDendogramChartIcon />,
     categories: ["Hierarchies", "Proportions"],
@@ -165,7 +165,7 @@ export const chartTypes: ChartTypeModel[] = [
       "It displays hierarchically structured data with a tree structure, where the root node is on the left and leaves are on the right. The size of nodes can be used to encode a further quantitative dimension with size and a quantitative or categorical dimension with color.",
   },
   {
-    id: "ganttchart",
+    id: "ganttChart",
     label: "Gantt chart",
     icon: <GanttChartIcon />,
     categories: ["Time series", "Correlations"],
@@ -173,7 +173,7 @@ export const chartTypes: ChartTypeModel[] = [
       "A Gantt chart is a type of bar chart, developed by Henry Gantt in the 1910s, that illustrates a project schedule. Gantt charts illustrate the start and finish dates of the terminal elements and summary elements of a project.",
   },
   {
-    id: "hexagonalbinning",
+    id: "hexagonalBinning",
     label: "Hexagonal binning",
     icon: <HexagonalBinningChartIcon />,
     categories: ["Correlations", "Distributions"],
