@@ -300,6 +300,8 @@ export interface StoreModel {
     modulesDatasets: CMSApiCallModel;
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
+    countrySummary: CMSApiCallModel;
+    notesAndDisclaimers: CMSApiCallModel;
   };
   dataThemes: {
     activeTabIndex: DataThemesIndexStateModel;
@@ -322,7 +324,5 @@ export interface StoreModel {
     DataThemeDelete: ApiCallModel;
     DataThemeDuplicate: ApiCallModel;
     DataThemeGetList: ApiCallModel;
-    countrySummary: CMSApiCallModel;
-    notesAndDisclaimers: CMSApiCallModel;
   };
 }
