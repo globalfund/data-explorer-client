@@ -18,6 +18,7 @@ export interface DataThemesToolBoxProps {
   currentChartData?: any;
   totalAvailable?: number;
   forceNextEnabled?: boolean;
+  addVizToLocalStates?: () => void;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
   setFilterOptionGroups?: (key: string, value: boolean) => void;

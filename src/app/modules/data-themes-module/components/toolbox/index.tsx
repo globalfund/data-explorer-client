@@ -11,8 +11,13 @@ import { DataThemesToolBoxProps } from "app/modules/data-themes-module/component
 import { DataThemesToolBoxText } from "app/modules/data-themes-module/components/toolbox/views/text";
 import { DataThemesToolBoxSteps } from "app/modules/data-themes-module/components/toolbox/views/steps";
 import { DataThemesToolBoxPreview } from "app/modules/data-themes-module/components/toolbox/views/preview";
+import { useDataThemesAddSection } from "app/hooks/useDataThemesAddSection";
 
 export function DataThemesToolBox(props: DataThemesToolBoxProps) {
+  const { onChartPress, onTextPress } = useDataThemesAddSection({
+    addVizToLocalStates: props.addVizToLocalStates,
+  });
+
   return (
     <div css={styles.container(props.filtersView)}>
       {props.guideView && (
@@ -20,13 +25,13 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           <h5>Guide</h5>
           <h6>You can add following contents in the theme</h6>
           <div css={styles.contentlist}>
-            <div>
+            <div onClick={onChartPress}>
               <div>
                 <BarChartIcon htmlColor="#262C34" />
               </div>
               Data visualisation
             </div>
-            <div>
+            <div onClick={onTextPress}>
               <div>
                 <TextFieldsIcon htmlColor="#262C34" />
               </div>

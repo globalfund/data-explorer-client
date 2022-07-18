@@ -17,6 +17,7 @@ interface DataThemesBuilderInitialViewProps {
   filterOptionGroups: FilterGroupModel[];
   data: { [key: string]: string | number | null }[];
   updateLocalStates: any;
+  addVizToLocalStates: () => void;
 }
 
 export function DataThemesBuilderInitialView(
@@ -59,6 +60,7 @@ export function DataThemesBuilderInitialView(
         loading={false}
         filterOptionGroups={[]}
         loadDataset={emptyPromise}
+        addVizToLocalStates={props.addVizToLocalStates}
       />
       <div css={styles.innercontainer}></div>
     </div>

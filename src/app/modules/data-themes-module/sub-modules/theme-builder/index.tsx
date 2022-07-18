@@ -532,6 +532,7 @@ export function DataThemesBuilder() {
                 rawData[activeTabIndex][activeVizIndex].filterOptionGroups
               }
               updateLocalStates={updateLocalStates}
+              addVizToLocalStates={addVizToLocalStates}
             />
           </Route>
           <Route path={`/data-themes/:page/text`}>

@@ -44,6 +44,11 @@ export const styles = {
       align-items: center;
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
+      :nth-of-type(1),
+      :nth-of-type(2) {
+        cursor: pointer;
+      }
+
       > div {
         width: 32px;
         height: 32px;
