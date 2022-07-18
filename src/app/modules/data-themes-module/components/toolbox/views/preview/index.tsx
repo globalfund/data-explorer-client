@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import filter from "lodash/filter";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions } from "app/state/store/hooks";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -79,14 +80,16 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
                 flex-direction: column;
               `}
             >
-              {(filterOptionGroups || []).map((group: FilterGroupModel) => (
-                <FilterGroup
-                  key={group.name}
-                  name={group.name}
-                  options={group.options}
-                  expandGroup={() => setExpandedGroup(group)}
-                />
-              ))}
+              {filter(filterOptionGroups || [], { enabled: true }).map(
+                (group: FilterGroupModel) => (
+                  <FilterGroup
+                    key={group.name}
+                    name={group.name}
+                    options={group.options}
+                    expandGroup={() => setExpandedGroup(group)}
+                  />
+                )
+              )}
             </div>
           </AccordionDetails>
         </Accordion>

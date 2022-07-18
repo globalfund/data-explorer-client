@@ -20,5 +20,6 @@ export interface DataThemesToolBoxProps {
   forceNextEnabled?: boolean;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
+  setFilterOptionGroups?: (key: string, value: boolean) => void;
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }

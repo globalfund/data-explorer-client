@@ -62,6 +62,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           currentChartData={props.currentChartData}
           setVisualOptions={props.setVisualOptions}
           filterOptionGroups={props.filterOptionGroups}
+          setFilterOptionGroups={props.setFilterOptionGroups}
         />
       )}
       {props.exportView && props.rawViz && (

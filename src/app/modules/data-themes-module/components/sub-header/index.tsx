@@ -256,8 +256,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-        (activePanels[activeTabIndex][activeVizIndex] === 6 ||
-          activePanels[activeTabIndex][activeVizIndex] === 7)) ||
+        activePanels[activeTabIndex][activeVizIndex] > 3) ||
         vizIsTextContent[activeTabIndex][activeVizIndex]
     );
   }, [

@@ -14,6 +14,7 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 /* project */
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
+import { DataThemesToolBoxLock } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Lock";
 import { DataThemesToolBoxExport } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Export";
 import { DataThemesToolBoxMapping } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
 import { DataThemesToolBoxFilters } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Filters";
@@ -115,6 +116,7 @@ interface DataThemesToolBoxStepsProps {
   totalAvailable?: number;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
+  setFilterOptionGroups?: (key: string, value: boolean) => void;
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }
 
@@ -168,16 +170,6 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      // remove this once filters and lock step is implemented
-      if (history.location.pathname === stepPaths[5] && direction === "next") {
-        history.push(stepPaths[7]);
-        return;
-      }
-      // remove this once filters and lock step is implemented
-      if (history.location.pathname === stepPaths[7] && direction === "prev") {
-        history.push(stepPaths[5]);
-        return;
-      }
       if (history.location.pathname === stepPaths[8] && direction === "next") {
         // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
         history.push(stepPaths[0]);
@@ -334,11 +326,16 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxFilters filterOptionGroups={filterOptionGroups} />
         </AccordionDetails>
       </Accordion>
-      {/* <Accordion
+      <Accordion
         square
         expanded={expanded === 5}
-        onChange={handleChange(5)}
-        disabled={props.openPanel !== undefined && props.openPanel < 5}
+        onChange={handleChange(6)}
+        disabled={
+          (data.length === 0 && !loading) ||
+          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
+          !selectedChartType[activeTabIndex][activeVizIndex] ||
+          !props.forceNextEnabled
+        }
       >
         <AccordionSummary
           id="step5-header"
@@ -347,8 +344,15 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         >
           <div>5</div> Lock
         </AccordionSummary>
-        <AccordionDetails></AccordionDetails>
-      </Accordion> */}
+        <AccordionDetails>
+          {props.setFilterOptionGroups && (
+            <DataThemesToolBoxLock
+              filterOptionGroups={props.filterOptionGroups}
+              setFilterOptionGroups={props.setFilterOptionGroups}
+            />
+          )}
+        </AccordionDetails>
+      </Accordion>
       <Accordion
         square
         expanded={expanded === 6}

@@ -443,7 +443,7 @@ export function useDataThemesRawData(props: {
     filteredData,
     loading: loading || loadingData,
     setLoading,
-    rawData,
+    rawData: [...rawData],
     setIsInSession,
     setRawData,
     setFilteredData,

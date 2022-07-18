@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { DndProvider } from "react-dnd";
+import findIndex from "lodash/findIndex";
 import { useSessionStorage } from "react-use";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -34,11 +35,12 @@ import { DataThemesBuilderInitialView } from "app/modules/data-themes-module/sub
 import { DataThemesBuilderChartType } from "app/modules/data-themes-module/sub-modules/theme-builder/views/chart-type";
 import { DataThemesBuilderPreviewTheme } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme";
 import { DataThemesBuilderTextView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text";
+import { DataThemesBuilderExport } from "app/modules/data-themes-module/sub-modules/theme-builder/views/export";
+import { DataThemesBuilderLock } from "app/modules/data-themes-module/sub-modules/theme-builder/views/lock";
 import {
   charts,
   defaultChartOptions,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
-import { DataThemesBuilderExport } from "./views/export";
 
 export function DataThemesBuilder() {
   const history = useHistory();
@@ -272,6 +274,20 @@ export function DataThemesBuilder() {
     });
   }
 
+  function setFilterOptionGroups(key: string, value: boolean) {
+    const fOptionGroupsIndex = findIndex(
+      rawData[activeTabIndex][activeVizIndex].filterOptionGroups,
+      { name: key }
+    );
+    if (fOptionGroupsIndex > -1) {
+      const updRawData = [...rawData];
+      updRawData[activeTabIndex][activeVizIndex].filterOptionGroups[
+        fOptionGroupsIndex
+      ].enabled = value;
+      setRawData(updRawData);
+    }
+  }
+
   React.useEffect(() => {
     document.body.style.background = "#fff";
 
@@ -385,7 +401,32 @@ export function DataThemesBuilder() {
               updateLocalStates={updateLocalStates}
             />
           </Route>
-          <Route path={`/data-themes/:page/lock`}></Route>
+          <Route path={`/data-themes/:page/lock`}>
+            <DataThemesBuilderLock
+              tabIndex={activeTabIndex}
+              vizIndex={activeVizIndex}
+              data={rawData[activeTabIndex][activeVizIndex].data}
+              loading={loading}
+              loadDataset={loadDataset}
+              currentChart={currentChart[activeTabIndex][activeVizIndex]}
+              visualOptions={visualOptions}
+              setVisualOptions={setVisualOptions}
+              currentChartData={
+                currentChartData[activeTabIndex][activeVizIndex]
+              }
+              filterOptionGroups={
+                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              }
+              setFilterOptionGroups={setFilterOptionGroups}
+              themeData={rawData}
+              dimensions={get(
+                currentChart[activeTabIndex][activeVizIndex],
+                "dimensions",
+                []
+              )}
+              updateLocalStates={updateLocalStates}
+            />
+          </Route>
           <Route path={`/data-themes/:page/filters`}>
             <DataThemesBuilderFilters
               tabIndex={activeTabIndex}
