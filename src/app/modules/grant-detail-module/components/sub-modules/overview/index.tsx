@@ -240,7 +240,7 @@ export function GrantDetailOverviewModule() {
                 }
               `}
             >
-              {ratingValues.map((value: string) => (
+              {ratingValues.map((value: string, index: number) => (
                 <div
                   key={value}
                   css={`
@@ -251,11 +251,17 @@ export function GrantDetailOverviewModule() {
                     border-radius: 50%;
                     align-items: center;
                     justify-content: center;
-                    border: 2px solid #262c34;
+                    ${(grantInfoData.rating || ratingValues[0]) === value &&
+                    `font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;`}
                     opacity: ${(grantInfoData.rating || ratingValues[0]) ===
                     value
                       ? 1
                       : 0.3};
+                    ${index > 0 &&
+                    `
+                      background: #f5f5f7;
+                      border: 2px solid #262c34;
+                    `}
                   `}
                 >
                   {value}
