@@ -9,7 +9,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { StoreProvider, useStoreRehydrated } from "easy-peasy";
 import { Container, StylesProvider, CssBaseline } from "@material-ui/core";
-import { LandingAppBar } from "app/components/LandingPageAppBar";
 
 type ProviderProps = {
   children: any;
@@ -26,8 +25,7 @@ function Providers(props: ProviderProps) {
             <AppContainer>
               {/* react router */}
               <Router>
-                {/* <AppBar /> */}
-                <LandingAppBar />
+                <AppBar />
                 <Container
                   maxWidth="lg"
                   css={`

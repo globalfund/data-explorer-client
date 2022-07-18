@@ -1,24 +1,22 @@
 import React from "react";
-import { Link } from "react-router-dom";
-import BigLogo from "app/assets/BigLogo";
 import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
+import { Link } from "react-router-dom";
+import Box from "@material-ui/core/Box";
+import BigLogo from "app/assets/BigLogo";
 import { Search } from "app/components/Search";
+import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { DatasetCarousel } from "app/components/DatasetCarousel";
+import { ThemesCarousel } from "app/modules/landing-module/components/ThemeCarousel";
 import {
   container,
   subtitle,
-  datasetstitle,
   datasetslink,
   activeContainerCss,
   activeThemeCss,
   alignments,
   containerCss,
 } from "app/modules/landing-module/styles";
-import { ThemesCarousel } from "app/modules/landing-module/components/ThemeCarousel";
-import { Box } from "@material-ui/core";
-import { LandingAppBar } from "app/components/LandingPageAppBar";
 
 export const LandingLayout = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -29,7 +27,6 @@ export const LandingLayout = () => {
 
   return (
     <div css={container}>
-      <LandingAppBar />
       <div css={containerCss}>
         <BigLogo />
         <div css={subtitle}>
