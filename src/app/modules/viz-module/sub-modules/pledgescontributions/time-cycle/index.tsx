@@ -7,11 +7,11 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
+import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
@@ -143,8 +143,101 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
 
   useUnmount(() => setVizDrilldowns([]));
 
-  if (isLoading) {
-    return <PageLoader />;
+  let vizComponent = <React.Fragment />;
+
+  if (isLoading || isDrilldownLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (vizLevel === 0) {
+      vizComponent = (
+        <PledgesContributionsTimeCycle
+          data={data}
+          vizCompData={vizCompData}
+          // selectedNodeId={vizSelected}
+          setVizCompData={setVizCompData}
+          onNodeClick={(node: string, x: number, y: number) => {
+            setVizLevel(1);
+            setVizSelected(node);
+            setVizTranslation({ x: x * -1, y: 0 });
+          }}
+        />
+      );
+    } else if (vizLevel === 1) {
+      vizComponent = (
+        <React.Fragment>
+          <span
+            css={`
+              gap: 40px;
+              width: 100%;
+              display: flex;
+              margin-bottom: 20px;
+              flex-direction: row;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 40px;
+                  }
+                }
+              }
+            `}
+          >
+            <DrillDownArrowSelector
+              selected={`${(vizSelected || "").split("-")[0]}-${
+                (vizSelected || "").split("-")[1]
+              }`}
+              options={vizCompData.map((item: any) => item.data.indexValue)}
+              onChange={(value: string) => {
+                const splits = (vizSelected as string).split("-");
+                if (splits.length > 2) {
+                  const newSelected = `${value}-${splits[2]}`;
+                  setVizSelected(newSelected);
+                  const fVizNodeComp = find(
+                    vizCompData,
+                    (item: any) =>
+                      `${item.data.indexValue}-${item.data.id}` === newSelected
+                  ) as any;
+                  if (fVizNodeComp) {
+                    setVizTranslation({
+                      x: (fVizNodeComp.x - 100) * -1,
+                      y: 0,
+                    });
+                  }
+                }
+              }}
+            />
+            <Dropdown
+              options={["pledge", "contribution"]}
+              value={(vizSelected || "").split("-")[2]}
+              handleChange={(value: string) => {
+                const splits = (vizSelected as string).split("-");
+                if (splits.length > 2) {
+                  const newSelected = `${splits[0]}-${splits[1]}-${value}`;
+                  setVizSelected(newSelected);
+                  const fVizNodeComp = find(
+                    vizCompData,
+                    (item: any) =>
+                      `${item.data.indexValue}-${item.data.id}` === newSelected
+                  ) as any;
+                  if (fVizNodeComp) {
+                    setVizTranslation({
+                      x: (fVizNodeComp.x - 100) * -1,
+                      y: 0,
+                    });
+                  }
+                }
+              }}
+            />
+          </span>
+          <BudgetsTreemap
+            data={dataDrilldownLevel}
+            tooltipValueLabel="Amount"
+            onNodeClick={(node: string, x: number, y: number) => {}}
+          />
+        </React.Fragment>
+      );
+    }
   }
 
   return (
@@ -153,108 +246,26 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
       css={`
         width: 100%;
 
-        ${!vizSelected
-          ? `* {
-      overflow: visible !important;
-    }`
-          : ""}
+        * {
+          overflow: visible !important;
+        }
       `}
     >
-      <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
-        <PledgesContributionsTimeCycle
-          data={data}
-          vizCompData={vizCompData}
-          selectedNodeId={vizSelected}
-          setVizCompData={setVizCompData}
-          onNodeClick={(node: string, x: number, y: number) => {
-            setVizLevel(1);
-            setVizSelected(node);
-            setVizTranslation({ x: x * -1, y: 0 });
+      <div css="margin-bottom: 10px;">
+        <DrilldownPath />
+      </div>
+      {vizLevel > 0 && (
+        <VizBackBtn
+          vizLevel={vizLevel}
+          setVizLevel={(value: number) => {
+            if (value === 0) {
+              setVizSelected(undefined);
+            }
+            setVizLevel(value);
           }}
         />
-      </TransitionContainer>
-      <SlideInContainer
-        vizLevel={vizLevel}
-        selected={vizSelected}
-        loading={isDrilldownLoading}
-        toolboxOpen={props.toolboxOpen}
-        close={() => {
-          setVizLevel(0);
-          setVizSelected(undefined);
-          setVizTranslation({ x: 0, y: 0 });
-        }}
-      >
-        <span
-          css={`
-            gap: 40px;
-            width: 100%;
-            display: flex;
-            margin-bottom: 20px;
-            flex-direction: row;
-
-            > * {
-              @supports (-webkit-touch-callout: none) and
-                (not (translate: none)) {
-                &:not(:last-child) {
-                  margin-right: 40px;
-                }
-              }
-            }
-          `}
-        >
-          <DrillDownArrowSelector
-            selected={`${(vizSelected || "").split("-")[0]}-${
-              (vizSelected || "").split("-")[1]
-            }`}
-            options={vizCompData.map((item: any) => item.data.indexValue)}
-            onChange={(value: string) => {
-              const splits = (vizSelected as string).split("-");
-              if (splits.length > 2) {
-                const newSelected = `${value}-${splits[2]}`;
-                setVizSelected(newSelected);
-                const fVizNodeComp = find(
-                  vizCompData,
-                  (item: any) =>
-                    `${item.data.indexValue}-${item.data.id}` === newSelected
-                ) as any;
-                if (fVizNodeComp) {
-                  setVizTranslation({
-                    x: (fVizNodeComp.x - 100) * -1,
-                    y: 0,
-                  });
-                }
-              }
-            }}
-          />
-          <Dropdown
-            options={["pledge", "contribution"]}
-            value={(vizSelected || "").split("-")[2]}
-            handleChange={(value: string) => {
-              const splits = (vizSelected as string).split("-");
-              if (splits.length > 2) {
-                const newSelected = `${splits[0]}-${splits[1]}-${value}`;
-                setVizSelected(newSelected);
-                const fVizNodeComp = find(
-                  vizCompData,
-                  (item: any) =>
-                    `${item.data.indexValue}-${item.data.id}` === newSelected
-                ) as any;
-                if (fVizNodeComp) {
-                  setVizTranslation({
-                    x: (fVizNodeComp.x - 100) * -1,
-                    y: 0,
-                  });
-                }
-              }
-            }}
-          />
-        </span>
-        <BudgetsTreemap
-          data={dataDrilldownLevel}
-          tooltipValueLabel="Amount"
-          onNodeClick={(node: string, x: number, y: number) => {}}
-        />
-      </SlideInContainer>
+      )}
+      {vizComponent}
     </div>
   );
 }

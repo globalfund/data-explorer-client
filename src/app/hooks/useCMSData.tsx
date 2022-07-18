@@ -169,32 +169,32 @@ export function useCMSData(props: useCMSDataProps) {
   React.useEffect(() => {
     if (props.loadData) {
       // COMPONENTS
-      componentsAppBarCMSAction({isCMSfetch: true,});
-      componentsChartsBudgetsCMSAction({isCMSfetch: true,});
-      componentsChartsCommonCMSAction({isCMSfetch: true,});
-      componentsChartsEligibilityCMSAction({isCMSfetch: true,});
-      componentsChartsGeomapCMSAction({isCMSfetch: true,});
-      componentsChartsGrantsCMSAction({isCMSfetch: true,});
-      componentsChartsInvestmentsCMSAction({isCMSfetch: true,});
-      componentsChartsNetworkCMSAction({isCMSfetch: true,});
-      componentsChartsPerformanceRatingCMSAction({isCMSfetch: true,});
-      componentsChartsPledgesCMSAction({isCMSfetch: true,});
-      componentsCookieDialogCMSAction({isCMSfetch: true,});
-      componentsDatasetCarouselCMSAction({isCMSfetch: true,});
-      componentsInformationPanelCMSAction({isCMSfetch: true,});
-      componentsMobileCMSAction({isCMSfetch: true,});
-      componentsPageHeaderCMSAction({isCMSfetch: true,});
-      componentsPerformanceFrameworkComponentsCMSAction({isCMSfetch: true,});
-      componentsSearchCMSAction({isCMSfetch: true,});
-      componentsSlideInPanelCMSAction({isCMSfetch: true,});
+      componentsAppBarCMSAction({ isCMSfetch: true });
+      componentsChartsBudgetsCMSAction({ isCMSfetch: true });
+      componentsChartsCommonCMSAction({ isCMSfetch: true });
+      componentsChartsEligibilityCMSAction({ isCMSfetch: true });
+      componentsChartsGeomapCMSAction({ isCMSfetch: true });
+      componentsChartsGrantsCMSAction({ isCMSfetch: true });
+      componentsChartsInvestmentsCMSAction({ isCMSfetch: true });
+      componentsChartsNetworkCMSAction({ isCMSfetch: true });
+      componentsChartsPerformanceRatingCMSAction({ isCMSfetch: true });
+      componentsChartsPledgesCMSAction({ isCMSfetch: true });
+      componentsCookieDialogCMSAction({ isCMSfetch: true });
+      componentsDatasetCarouselCMSAction({ isCMSfetch: true });
+      componentsInformationPanelCMSAction({ isCMSfetch: true });
+      componentsMobileCMSAction({ isCMSfetch: true });
+      componentsPageHeaderCMSAction({ isCMSfetch: true });
+      componentsPerformanceFrameworkComponentsCMSAction({ isCMSfetch: true });
+      componentsSearchCMSAction({ isCMSfetch: true });
+      componentsSlideInPanelCMSAction({ isCMSfetch: true });
       // MODULES
-      modulesAboutCMSAction({isCMSfetch: true,});
-      modulesCommonCMSAction({isCMSfetch: true,});
-      modulesCountryDetailCMSAction({isCMSfetch: true,});
-      modulesDatasetsCMSAction({isCMSfetch: true,});
-      modulesGrantDetailCMSAction({isCMSfetch: true,});
-      modulesGrantsCMSAction({isCMSfetch: true,});
-      modulesLandingCMSAction({isCMSfetch: true,});
+      modulesAboutCMSAction({ isCMSfetch: true });
+      modulesCommonCMSAction({ isCMSfetch: true });
+      modulesCountryDetailCMSAction({ isCMSfetch: true });
+      modulesDatasetsCMSAction({ isCMSfetch: true });
+      modulesGrantDetailCMSAction({ isCMSfetch: true });
+      modulesGrantsCMSAction({ isCMSfetch: true });
+      modulesLandingCMSAction({ isCMSfetch: true });
     }
   }, []);
 

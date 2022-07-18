@@ -5,6 +5,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useParams, useHistory, Link } from "react-router-dom";
+import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { RouteTab } from "app/components/PageHeader/components/tabs";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
@@ -14,7 +15,6 @@ import {
   ViewModel,
   getControlItems,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import IconChevronRight from "app/assets/icons/IconChevronRight";
 
 interface MobileViewControlProps {
   tabs?: TabProps[];
@@ -60,7 +60,7 @@ const StyledMenu = withStyles({
   />
 ));
 
-export const StyledMenuItem = withStyles((theme) => ({
+export const StyledMenuItem = withStyles(() => ({
   root: {
     padding: 0,
     minHeight: 0,
@@ -70,7 +70,7 @@ export const StyledMenuItem = withStyles((theme) => ({
       width: "100%",
       fontSize: "14px",
       color: "#262c34",
-      padding: "6px 12px",
+      padding: "10px 12px",
       textDecoration: "none",
     },
   },
@@ -196,7 +196,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            {params.vizType}
+            {params.vizType.replace("-", " & ")}
           </span>{" "}
           <KeyboardArrowDownIcon />
         </Button>
@@ -208,9 +208,8 @@ export function MobileViewControl(props: MobileViewControlProps) {
           open={Boolean(anchorEl)}
         >
           {!props.tabs &&
-            datasetMenuItems
-              .slice(1)
-              .map((item: React.ReactChild, itemIndex: number) => (
+            datasetMenuItems.map(
+              (item: React.ReactChild, itemIndex: number) => (
                 <StyledMenuItem
                   disableRipple
                   key={itemIndex}
@@ -218,7 +217,8 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 >
                   {item}
                 </StyledMenuItem>
-              ))}
+              )
+            )}
           {props.tabs &&
             props.tabs.map((tab: TabProps) => (
               <StyledMenuItem disableRipple key={tab.name} disableTouchRipple>

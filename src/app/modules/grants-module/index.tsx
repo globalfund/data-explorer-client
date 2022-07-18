@@ -53,7 +53,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const { getAllAvailableGrants } = useGetAllAvailableGrants(
+  const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
     props.search || search,
     props.code,
     props.detailFilterType
@@ -163,7 +163,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
         justify-content: center;
       `}
     >
-      {isLoading && <PageLoader />}
+      {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
           <PageHeader

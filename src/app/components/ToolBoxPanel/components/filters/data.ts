@@ -286,6 +286,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
+  // "/location/<code>/overview": [],
   "/location/<code>/disbursements/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>

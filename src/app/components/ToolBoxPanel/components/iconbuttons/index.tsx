@@ -3,6 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import { CSVLink } from "react-csv";
 import Snackbar from "@material-ui/core/Snackbar";
+import MenuItem from "@material-ui/core/MenuItem";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
@@ -13,7 +14,6 @@ import { exportCSV } from "app/utils/exportCSV";
 import { LinkIcon } from "app/assets/icons/Link";
 import { exportView } from "app/utils/exportView";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { StyledMenuItem } from "app/components/PageHeader";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 
@@ -82,6 +82,21 @@ const StyledMenu = withStyles({
     {...props}
   />
 ));
+
+const StyledMenuItem = withStyles(() => ({
+  root: {
+    padding: 0,
+    width: "100%",
+    borderBottom: "1px solid #DFE3E6",
+    "& a": {
+      width: "100%",
+      fontSize: "14px",
+      color: "#262c34",
+      padding: "6px 12px",
+      textDecoration: "none",
+    },
+  },
+}))(MenuItem);
 
 interface ToolBoxPanelIconButtonsProps {
   getAllAvailableGrants?: () => Promise<any>;

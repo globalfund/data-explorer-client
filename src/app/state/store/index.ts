@@ -6,6 +6,8 @@ import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
@@ -178,6 +180,8 @@ import {
   DataThemeGetList,
   DataThemeUpdate,
 } from "app/state/api/action-reducers/data-themes";
+import countrySummary from "../api/action-reducers/cms/countrySummary";
+import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -331,6 +335,8 @@ const storeContent: StoreModel = {
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),
@@ -362,6 +368,8 @@ const storeContent: StoreModel = {
     modulesDatasets: persist(modulesDatasets),
     modulesGrantDetail: persist(modulesGrantDetail),
     modulesGrants: persist(modulesGrants),
+    countrySummary: persist(countrySummary),
+    notesAndDisclaimers: persist(notesAndDisclaimers),
   },
   dataThemes: {
     activeTabIndex: persist(DataThemesIndexState),

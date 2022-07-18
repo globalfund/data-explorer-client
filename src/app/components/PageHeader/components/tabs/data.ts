@@ -2,6 +2,7 @@ export interface TabProps {
   url: string;
   name: string;
   index?: number;
+  isActive?: boolean;
 }
 
 export interface PageHeaderTabProps {

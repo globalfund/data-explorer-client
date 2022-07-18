@@ -30,7 +30,7 @@ export function SearchResults(props: SearchResultsProps) {
   const cmsData = useCMSData({ returnData: true });
 
   return (
-    <div css={container}>
+    <div css={container} id="search-results-container">
       {props.loading && (
         <LinearProgress
           css={`

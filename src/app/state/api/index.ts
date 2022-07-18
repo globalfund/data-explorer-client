@@ -119,7 +119,10 @@ export const APIModel = <QueryModel, ResponseModel>(
         },
       })
       .then(
-        (resp: AxiosResponse) => actions.onSuccessCrudData(resp.data),
+        (resp: AxiosResponse) => {
+          actions.onSuccess(resp.data);
+          return actions.onSuccessCrudData(resp.data);
+        },
         (error: any) => actions.onError(error.response)
       );
   }),

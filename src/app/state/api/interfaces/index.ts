@@ -17,6 +17,8 @@ import {
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelAllocationsPeriodStateModel,
+  ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel,
   ToolBoxPanelDisbursementsSliderValuesModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
@@ -52,6 +54,8 @@ import {
   CMSApiModulesDatasets,
   CMSApiModulesGrantDetail,
   CMSApiModulesGrants,
+  CMSApiCountrySummary,
+  CMSApiNotesAndDisclaimers,
 } from "app/state/api/interfaces/cms";
 
 export interface RequestValues<T> {
@@ -151,6 +155,8 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiModulesDatasets
   | CMSApiModulesGrantDetail
   | CMSApiModulesGrants
+  | CMSApiCountrySummary
+  | CMSApiNotesAndDisclaimers
 >;
 
 export interface CMSApiCallParams {}
@@ -264,7 +270,9 @@ export interface StoreModel {
   ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
+  ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
   // CMS
   cms: {
     componentsAppBar: CMSApiCallModel;
@@ -314,5 +322,7 @@ export interface StoreModel {
     DataThemeDelete: ApiCallModel;
     DataThemeDuplicate: ApiCallModel;
     DataThemeGetList: ApiCallModel;
+    countrySummary: CMSApiCallModel;
+    notesAndDisclaimers: CMSApiCallModel;
   };
 }

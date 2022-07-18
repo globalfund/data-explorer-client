@@ -4,11 +4,15 @@ import Grid from "@material-ui/core/Grid";
 import { useCMSData } from "app/hooks/useCMSData";
 import { ResponsiveNetwork } from "@nivo/network";
 import { useMediaQuery, Tooltip } from "@material-ui/core";
+import { NetworkVizProps } from "app/components/Charts/Network/data";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
 import { AchievementRateLegend } from "app/components/Charts/Network/components/legends";
 
 export function NetworkViz(props: NetworkVizProps) {
+  const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   React.useEffect(() => {
     setTimeout(() => {
       const viz = document.getElementById("performance-framework-network");
@@ -161,9 +165,6 @@ export function NetworkViz(props: NetworkVizProps) {
     ));
   };
 
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
-  const cmsData = useCMSData({ returnData: true });
   return (
     <Grid container spacing={2}>
       {!isMobile && (
@@ -214,12 +215,8 @@ export function NetworkViz(props: NetworkVizProps) {
             linkColor="#DFE3E6"
             nodeBorderWidth={1}
             motionStiffness={160}
-            nodes={
-              props.data.nodes.length > 0 ? props.data.nodes : mockdata.nodes
-            }
-            links={
-              props.data.links.length > 0 ? props.data.links : mockdata.links
-            }
+            nodes={props.data.nodes.length > 0 ? props.data.nodes : []}
+            links={props.data.links.length > 0 ? props.data.links : []}
             layers={[Links, Nodes]}
             nodeColor={(e: any) => e.color}
             linkDistance={(e: any) => e.distance}

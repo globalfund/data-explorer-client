@@ -9,12 +9,11 @@ export function useGetAllAvailableGrants(
   code?: string,
   detailFilterType?: string
 ) {
-  // const totalDataCount = useStoreState((state) =>
-  //   get(state.GrantsList.data, "count", 0)
-  // );
+  const [loading, setLoading] = React.useState(false);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   async function getAllAvailableGrants() {
+    setLoading(true);
     const filterString = getAPIFormattedFilters(
       code && detailFilterType
         ? {
@@ -32,7 +31,7 @@ export function useGetAllAvailableGrants(
     return await axios
       .get(
         `${process.env.REACT_APP_API}/grants?${
-          `${filterString}&pageSize=1000` ?? `pageSize=1000`
+          `${filterString}&pageSize=0` ?? `pageSize=0`
         }`,
         {
           headers: {
@@ -42,6 +41,7 @@ export function useGetAllAvailableGrants(
       )
       .then(async (response) => {
         const data = get(response.data, "data", []);
+        setLoading(false);
         return data;
       })
       .catch(async (error) => {
@@ -50,5 +50,5 @@ export function useGetAllAvailableGrants(
       });
   }
 
-  return { getAllAvailableGrants };
+  return { getAllAvailableGrants, loading };
 }
