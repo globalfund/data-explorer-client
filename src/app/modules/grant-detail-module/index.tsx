@@ -66,7 +66,6 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
