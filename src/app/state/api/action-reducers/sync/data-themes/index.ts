@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { action, Action } from "easy-peasy";
 import { EditorState } from "draft-js";
+import filter from "lodash/filter";
 
 export interface DataThemesStepSelectionsStateModel {
   step1: [[{ dataset: string | null; dataPoints: number }]];
@@ -101,6 +102,10 @@ export interface DataThemesMappingStateModel {
   reset: Action<DataThemesMappingStateModel>;
   addTab: Action<DataThemesMappingStateModel>;
   addViz: Action<DataThemesMappingStateModel, { tabIndex: number }>;
+  removeViz: Action<
+    DataThemesMappingStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
 }
 
 export const DataThemesMappingState: DataThemesMappingStateModel = {
@@ -136,6 +141,11 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
   addViz: action((state, payload: { tabIndex: number }) => {
     state.value[payload.tabIndex].push({});
   }),
+  removeViz: action(
+    (state, payload: { tabIndex: number; vizIndex: number }) => {
+      state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+    }
+  ),
 };
 
 export interface DataThemesStepSelectDataLiveStateModel {
@@ -199,6 +209,10 @@ export interface DataThemesIdsStateModel {
   // setValue: Action<DataThemesIdsStateModel, {tabIndex: number, vizIndex: number}>; // TODO: unused
   addTab: Action<DataThemesIdsStateModel>;
   addViz: Action<DataThemesIdsStateModel, { tabIndex: number }>;
+  removeViz: Action<
+    DataThemesIdsStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
   reset: Action<DataThemesIdsStateModel>;
 }
 
@@ -215,6 +229,14 @@ export const DataThemesIdsState: DataThemesIdsStateModel = {
     // Add a new value to the array of visualisations, with the length + 1 as the ID (length is 0 indexed so +1 is implicit)
     state.value[payload.tabIndex].push(state.value[payload.tabIndex].length);
   }),
+  removeViz: action(
+    (state, payload: { tabIndex: number; vizIndex: number }) => {
+      state.value[payload.tabIndex] = filter(
+        state.value[payload.tabIndex],
+        (id: number) => id !== payload.vizIndex
+      );
+    }
+  ),
   reset: action((state) => {
     state.value = [[0]];
   }),

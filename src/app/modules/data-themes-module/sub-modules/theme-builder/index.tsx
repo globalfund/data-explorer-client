@@ -138,6 +138,15 @@ export function DataThemesBuilder() {
   const resetTextContent = useStoreActions(
     (actions) => actions.dataThemes.textContent.reset
   );
+  const removeVizId = useStoreActions(
+    (state) => state.dataThemes.ids.removeViz
+  );
+  const setActiveVizIndex = useStoreActions(
+    (state) => state.dataThemes.activeVizIndex.setValue
+  );
+  const removeVizMapping = useStoreActions(
+    (actions) => actions.dataThemes.sync.mapping.removeViz
+  );
 
   function setVisualOptionsOnChange() {
     let tmpCurrentChart: any = [...currentChart];
@@ -224,6 +233,41 @@ export function DataThemesBuilder() {
       filterOptionGroups: [],
     });
     setRawData(tmpRawData);
+  }
+
+  function deleteViz(tabIndex: number, vizIndex: number) {
+    let tmpRawData = [...rawData];
+    if (tmpRawData[tabIndex] && tmpRawData[tabIndex][vizIndex]) {
+      tmpRawData[tabIndex].splice(vizIndex, 1);
+      setRawData(tmpRawData);
+      // if (themeIds[tabIndex].length > 1) {
+      //   const fVizIdIndex = findIndex(
+      //     themeIds[tabIndex],
+      //     (id: number) => id === vizIndex
+      //   );
+      //   if (fVizIdIndex === 0) {
+      //     setActiveVizIndex(1);
+      //   }
+      // }
+      removeVizId({ tabIndex, vizIndex });
+    }
+    // removeVizMapping({ tabIndex, vizIndex });
+    // let tmpVisualOptions: any = [...visualOptions];
+    // if (tmpVisualOptions[tabIndex] && tmpVisualOptions[tabIndex][vizIndex]) {
+    //   tmpVisualOptions[tabIndex].splice(vizIndex, 1);
+    //   setVisualOptions(tmpVisualOptions);
+    // }
+    // let tmpCurrentChartData: any = [...currentChartData];
+    // if (
+    //   tmpCurrentChartData[tabIndex] &&
+    //   tmpCurrentChartData[tabIndex][vizIndex]
+    // ) {
+    //   tmpCurrentChartData[tabIndex].splice(vizIndex, 1);
+    //   setCurrentChartData(tmpCurrentChartData);
+    // }
+    if (tmpRawData[tabIndex].length === 0) {
+      addVizToLocalStates();
+    }
   }
 
   async function clear() {
@@ -588,6 +632,7 @@ export function DataThemesBuilder() {
                               )}
                               updateLocalStates={updateLocalStates}
                               themeData={rawData}
+                              deleteViz={deleteViz}
                             />
                           ) : (
                             <React.Fragment key={renderingKey++} />

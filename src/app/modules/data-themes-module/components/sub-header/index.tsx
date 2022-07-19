@@ -216,13 +216,19 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               mapping: mapping[tabIndex][vizIndex],
               vizType: selectedChartType[tabIndex][vizIndex],
               datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-              data: props.themeData
-                ? props.themeData[tabIndex][vizIndex].data
-                : data,
+              data:
+                props.themeData &&
+                props.themeData[tabIndex] &&
+                props.themeData[tabIndex][vizIndex]
+                  ? props.themeData[tabIndex][vizIndex].data
+                  : data,
               vizOptions: visualOptions[tabIndex][vizIndex],
-              filterOptionGroups: props.themeData
-                ? props.themeData[tabIndex][vizIndex].filterOptionGroups
-                : filterOptionGroups,
+              filterOptionGroups:
+                props.themeData &&
+                props.themeData[tabIndex] &&
+                props.themeData[tabIndex][vizIndex]
+                  ? props.themeData[tabIndex][vizIndex].filterOptionGroups
+                  : filterOptionGroups,
               appliedFilters: appliedFilters[tabIndex][vizIndex],
               liveData: isLiveData[tabIndex][vizIndex],
             };

@@ -10,6 +10,7 @@ import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
+import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
@@ -34,6 +35,25 @@ export function DataThemesBuilderPreviewTheme(
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
   );
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
+
+  function handleClick(event: React.MouseEvent<HTMLElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  function handleDeleteItem() {
+    // props.deleteViz(props.tabIndex, props.vizIndex);
+    handleClose();
+  }
+
+  function handleDuplicateItem() {
+    handleClose();
+  }
 
   useUpdateEffectOnce(() => {
     if (
@@ -122,11 +142,12 @@ export function DataThemesBuilderPreviewTheme(
       />
       {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
         <div
-          css={commonStyles.previewInnercontainer}
+          css={commonStyles.previewInnercontainer(props.editable)}
           onClick={() => {
             handleTextClick();
           }}
         >
+          {props.editable && <div onClick={handleClick} />}
           <RichEditor
             editMode={false}
             tabIndex={props.tabIndex}
@@ -134,7 +155,23 @@ export function DataThemesBuilderPreviewTheme(
           />
         </div>
       ) : (
-        <div css={commonStyles.previewInnercontainer}>
+        <div css={commonStyles.previewInnercontainer(props.editable)}>
+          {props.editable && <div onClick={handleClick} />}
+          <DataThemesUtilsPopover
+            anchorEl={anchorEl}
+            onEdit={handleVizClick}
+            handleClose={handleClose}
+            deleteItem={handleDeleteItem}
+            duplicateItem={handleDuplicateItem}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "left",
+            }}
+          />
           <div
             ref={containerRef}
             css={`
