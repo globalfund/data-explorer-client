@@ -81,6 +81,14 @@ export const RichEditor = (props: {
         .public-DraftEditorPlaceholder-inner {
           position: absolute;
         }
+
+        #headline-one-button {
+          font-size: 20px;
+        }
+
+        #headline-two-button {
+          font-size: 14px;
+        }
       `}
     >
       <Editor
@@ -113,8 +121,18 @@ export const RichEditor = (props: {
             <UnderlineButton {...externalProps} />
             <linkPlugin.LinkButton {...externalProps} />
             <Separator />
-            <HeadlineOneButton {...externalProps} />
-            <HeadlineTwoButton {...externalProps} />
+            <HeadlineOneButton
+              {...externalProps}
+              buttonProps={{
+                id: "headline-one-button",
+              }}
+            />
+            <HeadlineTwoButton
+              {...externalProps}
+              buttonProps={{
+                id: "headline-two-button",
+              }}
+            />
             <BlockquoteButton {...externalProps} />
           </React.Fragment>
         )}
