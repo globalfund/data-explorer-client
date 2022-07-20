@@ -13,7 +13,13 @@ export default function DataThemes() {
   return (
     <Switch>
       <Route path={`/data-themes/:page/:view?`}>
-        <DataThemesBuilder />
+        <div
+          css={`
+            padding-top: 144px;
+          `}
+        >
+          <DataThemesBuilder />
+        </div>
       </Route>
       <Route exact path={`/data-themes`}>
         <DataThemesListView />

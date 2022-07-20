@@ -39,7 +39,7 @@ export function DataThemesBuilderPreviewTheme(
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
-    setAnchorEl(event.currentTarget);
+    // setAnchorEl(event.currentTarget);
   }
 
   function handleClose() {
@@ -121,25 +121,6 @@ export function DataThemesBuilderPreviewTheme(
 
   return (
     <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
-      <DataThemesPageSubHeader
-        previewMode={!props.editable && page !== "new"}
-        data={props.data}
-        loading={props.loading}
-        visualOptions={visualOptions}
-        filterOptionGroups={props.filterOptionGroups}
-        updateLocalStates={props.updateLocalStates}
-        tabsDisabled={page !== "new" && !props.editable}
-        themeData={props.themeData}
-      />
-      <DataThemesToolBox
-        filtersView
-        tabIndex={props.tabIndex}
-        vizIndex={props.vizIndex}
-        data={props.data}
-        loading={props.loading}
-        loadDataset={props.loadDataset}
-        filterOptionGroups={props.filterOptionGroups}
-      />
       {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
         <div
           css={commonStyles.previewInnercontainer(props.editable)}

@@ -104,7 +104,6 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   }, [duplicateDataThemeSuccess]);
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   return (
     <div css={styles.gridItem}>

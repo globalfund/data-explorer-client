@@ -3,8 +3,8 @@ import React from "react";
 import get from "lodash/get";
 import { DndProvider } from "react-dnd";
 import findIndex from "lodash/findIndex";
-import { useSessionStorage } from "react-use";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { useSessionStorage, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   Switch,
@@ -24,7 +24,10 @@ import {
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { useDataThemesRawData } from "app/hooks/useDataThemesRawData";
+import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
+import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { DataThemesAlertDialog } from "app/modules/data-themes-module/components/alert-dialog";
+import { DataThemesTabOrderViz } from "app/modules/data-themes-module/components/order-tab-viz";
 import { DataThemesAddSectionButton } from "app/modules/data-themes-module/components/add-section-button";
 import { DataThemesBuilderDataView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/data";
 import { DataThemesBuilderMapping } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping";
@@ -146,6 +149,9 @@ export function DataThemesBuilder() {
   );
   const removeVizMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.removeViz
+  );
+  const clearOrderData = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizOrderData.clear
   );
 
   function setVisualOptionsOnChange() {
@@ -338,6 +344,7 @@ export function DataThemesBuilder() {
     return () => {
       clearDataTheme();
       clearDataThemeBuilder();
+      clearOrderData();
     };
   }, []);
 
@@ -384,6 +391,10 @@ export function DataThemesBuilder() {
       clearDataTheme();
     }
   }, [isEditMode]);
+
+  useUpdateEffect(() => {
+    clearOrderData();
+  }, [activeTabIndex]);
 
   let renderingKey = 0;
 
@@ -605,40 +616,65 @@ export function DataThemesBuilder() {
                     <PageLoader />
                   ) : (
                     <React.Fragment>
-                      {rawData.map((content, tabIndex) =>
-                        content.map((_, vizIndex) =>
-                          tabIndex === activeTabIndex ? (
-                            <DataThemesBuilderPreviewTheme
-                              key={renderingKey++}
-                              editable={isEditMode}
-                              tabIndex={tabIndex}
-                              vizIndex={vizIndex}
-                              data={rawData[tabIndex][vizIndex].data}
-                              loading={loading}
-                              loadDataset={loadDataset}
-                              currentChart={currentChart[tabIndex][vizIndex]}
-                              visualOptions={visualOptions}
-                              setVisualOptions={setVisualOptions}
-                              currentChartData={
-                                currentChartData[tabIndex][vizIndex]
-                              }
-                              filterOptionGroups={
-                                rawData[tabIndex][vizIndex].filterOptionGroups
-                              }
-                              dimensions={get(
-                                currentChart[tabIndex][vizIndex],
-                                "dimensions",
-                                []
-                              )}
-                              updateLocalStates={updateLocalStates}
-                              themeData={rawData}
-                              deleteViz={deleteViz}
-                            />
-                          ) : (
-                            <React.Fragment key={renderingKey++} />
+                      <DataThemesPageSubHeader
+                        previewMode={!isEditMode && page !== "new"}
+                        data={rawData[activeTabIndex][0].data}
+                        loading={loading}
+                        visualOptions={visualOptions}
+                        filterOptionGroups={
+                          rawData[activeTabIndex][0].filterOptionGroups
+                        }
+                        updateLocalStates={updateLocalStates}
+                        tabsDisabled={page !== "new" && !isEditMode}
+                        themeData={rawData}
+                      />
+                      <DataThemesToolBox
+                        filtersView
+                        tabIndex={activeTabIndex}
+                        vizIndex={0}
+                        data={rawData[activeTabIndex][0].data}
+                        loading={loading}
+                        loadDataset={loadDataset}
+                        filterOptionGroups={
+                          rawData[activeTabIndex][0].filterOptionGroups
+                        }
+                      />
+                      <DataThemesTabOrderViz enabled={isEditMode}>
+                        {rawData.map((content, tabIndex) =>
+                          content.map((_, vizIndex) =>
+                            tabIndex === activeTabIndex ? (
+                              <DataThemesBuilderPreviewTheme
+                                key={renderingKey++}
+                                editable={isEditMode}
+                                tabIndex={tabIndex}
+                                vizIndex={vizIndex}
+                                data={rawData[tabIndex][vizIndex].data}
+                                loading={loading}
+                                loadDataset={loadDataset}
+                                currentChart={currentChart[tabIndex][vizIndex]}
+                                visualOptions={visualOptions}
+                                setVisualOptions={setVisualOptions}
+                                currentChartData={
+                                  currentChartData[tabIndex][vizIndex]
+                                }
+                                filterOptionGroups={
+                                  rawData[tabIndex][vizIndex].filterOptionGroups
+                                }
+                                dimensions={get(
+                                  currentChart[tabIndex][vizIndex],
+                                  "dimensions",
+                                  []
+                                )}
+                                updateLocalStates={updateLocalStates}
+                                themeData={rawData}
+                                deleteViz={deleteViz}
+                              />
+                            ) : (
+                              <React.Fragment key={renderingKey++} />
+                            )
                           )
-                        )
-                      )}
+                        )}
+                      </DataThemesTabOrderViz>
                     </React.Fragment>
                   )}
                 </React.Fragment>

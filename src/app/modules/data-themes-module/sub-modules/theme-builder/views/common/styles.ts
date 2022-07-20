@@ -11,7 +11,7 @@ export const styles = {
   `,
   innercontainer: css`
     left: 0;
-    top: 144px;
+    // top: 144px;
     padding-top: 20px;
     max-width: 1280px;
     position: relative;
@@ -25,7 +25,7 @@ export const styles = {
   `,
   previewInnercontainer: (isEditMode: boolean) => css`
     left: 0;
-    top: 144px;
+    // top: 144px;
     padding-top: 20px;
     max-width: 1280px;
     position: relative;
@@ -40,14 +40,14 @@ export const styles = {
       flex-direction: row;
 
       > div:first-of-type {
-        width: 20px;
         flex: 1 1 100%;
+        max-width: 20px;
         border-radius: 3px;
         position: relative;
         background: #262c34;
 
         &:hover {
-          cursor: pointer;
+          cursor: move;
           background: #adb5bd;
 
           &:before {
@@ -56,9 +56,9 @@ export const styles = {
         }
 
         &:before {
-          top: 50%;
-          left: 6px;
+          left: 5px;
           position: absolute;
+          top: calc(50% - 8px);
           content: url("data:image/svg+xml,%3Csvg width='11' height='20' viewBox='0 0 11 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='2' cy='2' r='2' fill='%23CFD4DA'/%3E%3Ccircle cx='2' cy='10' r='2' fill='%23CFD4DA'/%3E%3Ccircle cx='2' cy='18' r='2' fill='%23CFD4DA'/%3E%3Ccircle cx='9' cy='2' r='2' fill='%23CFD4DA'/%3E%3Ccircle cx='9' cy='10' r='2' fill='%23CFD4DA'/%3E%3Ccircle cx='9' cy='18' r='2' fill='%23CFD4DA'/%3E%3C/svg%3E%0A");
         }
       }

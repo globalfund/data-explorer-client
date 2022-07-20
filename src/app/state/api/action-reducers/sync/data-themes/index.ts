@@ -358,3 +358,42 @@ export const DataThemesPublicState: DataThemesPublicStateModel = {
     state.value = payload;
   }),
 };
+
+export interface DataThemesVizOrderStateModel {
+  value: {
+    order: number[];
+    hasChanged: boolean;
+  };
+  setValue: Action<
+    DataThemesVizOrderStateModel,
+    {
+      order: number[];
+      hasChanged: boolean;
+    }
+  >;
+  clear: Action<DataThemesVizOrderStateModel>;
+}
+
+export const DataThemesVizOrderState: DataThemesVizOrderStateModel = {
+  value: {
+    order: [],
+    hasChanged: false,
+  },
+  setValue: action(
+    (
+      state,
+      payload: {
+        order: number[];
+        hasChanged: boolean;
+      }
+    ) => {
+      state.value = payload;
+    }
+  ),
+  clear: action((state) => {
+    state.value = {
+      order: [],
+      hasChanged: false,
+    };
+  }),
+};

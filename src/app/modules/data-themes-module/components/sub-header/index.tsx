@@ -149,6 +149,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const isPublicTheme = useStoreState(
     (state) => state.dataThemes.sync.public.value
   );
+  const orderData = useStoreState(
+    (state) => state.dataThemes.sync.vizOrderData.value
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -164,6 +167,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
   const setIsPublicTheme = useStoreActions(
     (actions) => actions.dataThemes.sync.public.setValue
+  );
+  const clearOrderData = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizOrderData.clear
   );
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -236,6 +242,11 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
           tabs[tabIndex].content.push(vizObject);
         });
       });
+    if (tabs[activeTabIndex]) {
+      tabs[activeTabIndex].content = orderData.order.map(
+        (order: number) => tabs[activeTabIndex].content[order]
+      );
+    }
     const dataTheme = {
       title,
       subTitle,
@@ -263,7 +274,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
         activePanels[activeTabIndex][activeVizIndex] > 3) ||
-        vizIsTextContent[activeTabIndex][activeVizIndex]
+        vizIsTextContent[activeTabIndex][activeVizIndex] ||
+        orderData.hasChanged
     );
   }, [
     data,
@@ -274,6 +286,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     activePanels,
     activeTabIndex,
     activeVizIndex,
+    orderData.hasChanged,
   ]);
 
   React.useEffect(() => {
@@ -294,6 +307,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     if (createDataThemeSuccess || editDataThemeSuccess) {
       setShowSnackbar("Your Theme has been saved!");
+      clearOrderData();
     }
     return () => {
       if (isEditMode) {
