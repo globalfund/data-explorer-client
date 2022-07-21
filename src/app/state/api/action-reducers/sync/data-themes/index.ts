@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { action, Action } from "easy-peasy";
 import { EditorState } from "draft-js";
+import filter from "lodash/filter";
 
 export interface DataThemesStepSelectionsStateModel {
   step1: [[{ dataset: string | null; dataPoints: number }]];
@@ -21,6 +22,14 @@ export interface DataThemesStepSelectionsStateModel {
   reset: Action<DataThemesStepSelectionsStateModel>;
   addTab: Action<DataThemesStepSelectionsStateModel>;
   addViz: Action<DataThemesStepSelectionsStateModel, { tabIndex: number }>;
+  copyViz: Action<
+    DataThemesStepSelectionsStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeViz: Action<
+    DataThemesStepSelectionsStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
 }
 
 export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
@@ -57,6 +66,18 @@ export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
     addViz: action((state, payload: { tabIndex: number }) => {
       state.step1[payload.tabIndex].push({ dataset: null, dataPoints: 100 });
     }),
+    copyViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.step1[payload.tabIndex].push(
+          state.step1[payload.tabIndex][payload.vizIndex]
+        );
+      }
+    ),
+    removeViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.step1[payload.tabIndex].splice(payload.vizIndex, 1);
+      }
+    ),
   };
 
 export interface DataThemesStepChartTypeStateModel {
@@ -68,6 +89,14 @@ export interface DataThemesStepChartTypeStateModel {
   reset: Action<DataThemesStepChartTypeStateModel>;
   addTab: Action<DataThemesStepChartTypeStateModel>;
   addViz: Action<DataThemesStepChartTypeStateModel, { tabIndex: number }>;
+  copyViz: Action<
+    DataThemesStepChartTypeStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeViz: Action<
+    DataThemesStepChartTypeStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
 }
 
 export const DataThemesStepChartTypeState: DataThemesStepChartTypeStateModel = {
@@ -86,6 +115,16 @@ export const DataThemesStepChartTypeState: DataThemesStepChartTypeStateModel = {
   addViz: action((state, payload: { tabIndex: number }) => {
     state.value[payload.tabIndex].push(null);
   }),
+  copyViz: action((state, payload: { tabIndex: number; vizIndex: number }) => {
+    state.value[payload.tabIndex].push(
+      state.value[payload.tabIndex][payload.vizIndex]
+    );
+  }),
+  removeViz: action(
+    (state, payload: { tabIndex: number; vizIndex: number }) => {
+      state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+    }
+  ),
 };
 
 export interface DataThemesMappingStateModel {
@@ -101,6 +140,14 @@ export interface DataThemesMappingStateModel {
   reset: Action<DataThemesMappingStateModel>;
   addTab: Action<DataThemesMappingStateModel>;
   addViz: Action<DataThemesMappingStateModel, { tabIndex: number }>;
+  copyViz: Action<
+    DataThemesMappingStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeViz: Action<
+    DataThemesMappingStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
 }
 
 export const DataThemesMappingState: DataThemesMappingStateModel = {
@@ -136,6 +183,16 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
   addViz: action((state, payload: { tabIndex: number }) => {
     state.value[payload.tabIndex].push({});
   }),
+  copyViz: action((state, payload: { tabIndex: number; vizIndex: number }) => {
+    state.value[payload.tabIndex].push(
+      state.value[payload.tabIndex][payload.vizIndex]
+    );
+  }),
+  removeViz: action(
+    (state, payload: { tabIndex: number; vizIndex: number }) => {
+      state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+    }
+  ),
 };
 
 export interface DataThemesStepSelectDataLiveStateModel {
@@ -147,6 +204,14 @@ export interface DataThemesStepSelectDataLiveStateModel {
   reset: Action<DataThemesStepSelectDataLiveStateModel>;
   addTab: Action<DataThemesStepSelectDataLiveStateModel>;
   addViz: Action<DataThemesStepSelectDataLiveStateModel, { tabIndex: number }>;
+  copyViz: Action<
+    DataThemesStepSelectDataLiveStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeViz: Action<
+    DataThemesStepSelectDataLiveStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
 }
 
 export const DataThemesStepSelectDataLiveState: DataThemesStepSelectDataLiveStateModel =
@@ -166,6 +231,18 @@ export const DataThemesStepSelectDataLiveState: DataThemesStepSelectDataLiveStat
     addViz: action((state, payload: { tabIndex: number }) => {
       state.value[payload.tabIndex].push(false);
     }),
+    copyViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.value[payload.tabIndex].push(
+          state.value[payload.tabIndex][payload.vizIndex]
+        );
+      }
+    ),
+    removeViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+      }
+    ),
   };
 
 export interface DataThemesIndexStateModel {
@@ -199,6 +276,10 @@ export interface DataThemesIdsStateModel {
   // setValue: Action<DataThemesIdsStateModel, {tabIndex: number, vizIndex: number}>; // TODO: unused
   addTab: Action<DataThemesIdsStateModel>;
   addViz: Action<DataThemesIdsStateModel, { tabIndex: number }>;
+  removeViz: Action<
+    DataThemesIdsStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
   reset: Action<DataThemesIdsStateModel>;
 }
 
@@ -215,6 +296,14 @@ export const DataThemesIdsState: DataThemesIdsStateModel = {
     // Add a new value to the array of visualisations, with the length + 1 as the ID (length is 0 indexed so +1 is implicit)
     state.value[payload.tabIndex].push(state.value[payload.tabIndex].length);
   }),
+  removeViz: action(
+    (state, payload: { tabIndex: number; vizIndex: number }) => {
+      state.value[payload.tabIndex] = filter(
+        state.value[payload.tabIndex],
+        (id: number) => id !== payload.vizIndex
+      );
+    }
+  ),
   reset: action((state) => {
     state.value = [[0]];
   }),
@@ -228,6 +317,10 @@ export interface DataThemesActivePanelsStateModel {
   >; // TODO: unused
   addTab: Action<DataThemesActivePanelsStateModel>;
   addViz: Action<DataThemesActivePanelsStateModel, { tabIndex: number }>;
+  removeViz: Action<
+    DataThemesActivePanelsStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
   reset: Action<DataThemesActivePanelsStateModel>;
 }
 
@@ -246,6 +339,11 @@ export const DataThemesActivePanelsState: DataThemesActivePanelsStateModel = {
     // Add a new value to the array of visualisations, with the length + 1 as the ID (length is 0 indexed so +1 is implicit)
     state.value[payload.tabIndex].push(state.value[payload.tabIndex].length);
   }),
+  removeViz: action(
+    (state, payload: { tabIndex: number; vizIndex: number }) => {
+      state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+    }
+  ),
   reset: action((state) => {
     state.value = [[1]];
   }),
@@ -299,6 +397,14 @@ export interface DataThemesTextContentStateModel {
   >;
   addTab: Action<DataThemesTextContentStateModel>;
   addViz: Action<DataThemesTextContentStateModel, { tabIndex: number }>;
+  copyViz: Action<
+    DataThemesTextContentStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeViz: Action<
+    DataThemesTextContentStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
   reset: Action<DataThemesTextContentStateModel>;
 }
 
@@ -319,6 +425,20 @@ export const DataThemesTextContentState: DataThemesTextContentStateModel = {
     state.value[payload.tabIndex].push(EditorState.createEmpty());
     state.vizIsTextContent[payload.tabIndex].push(false);
   }),
+  copyViz: action((state, payload: { tabIndex: number; vizIndex: number }) => {
+    state.value[payload.tabIndex].push(
+      state.value[payload.tabIndex][payload.vizIndex]
+    );
+    state.vizIsTextContent[payload.tabIndex].push(
+      state.vizIsTextContent[payload.tabIndex][payload.vizIndex]
+    );
+  }),
+  removeViz: action(
+    (state, payload: { tabIndex: number; vizIndex: number }) => {
+      state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+      state.vizIsTextContent[payload.tabIndex].splice(payload.vizIndex, 1);
+    }
+  ),
   reset: action((state) => {
     state.value = [[EditorState.createEmpty()]];
     state.vizIsTextContent = [[false]];
@@ -332,6 +452,69 @@ export interface DataThemesPublicStateModel {
 
 export const DataThemesPublicState: DataThemesPublicStateModel = {
   value: true,
+  setValue: action((state, payload: boolean) => {
+    state.value = payload;
+  }),
+};
+
+export interface DataThemesVizOrderStateModel {
+  value: {
+    order: number[];
+    hasChanged: boolean;
+  };
+  setValue: Action<
+    DataThemesVizOrderStateModel,
+    {
+      order: number[];
+      hasChanged: boolean;
+    }
+  >;
+  clear: Action<DataThemesVizOrderStateModel>;
+}
+
+export const DataThemesVizOrderState: DataThemesVizOrderStateModel = {
+  value: {
+    order: [],
+    hasChanged: false,
+  },
+  setValue: action(
+    (
+      state,
+      payload: {
+        order: number[];
+        hasChanged: boolean;
+      }
+    ) => {
+      state.value = payload;
+    }
+  ),
+  clear: action((state) => {
+    state.value = {
+      order: [],
+      hasChanged: false,
+    };
+  }),
+};
+
+export interface DataThemesVizDeletedStateModel {
+  value: boolean;
+  setValue: Action<DataThemesVizDeletedStateModel, boolean>;
+}
+
+export const DataThemesVizDeletedState: DataThemesVizDeletedStateModel = {
+  value: false,
+  setValue: action((state, payload: boolean) => {
+    state.value = payload;
+  }),
+};
+
+export interface DataThemesVizDuplicatedStateModel {
+  value: boolean;
+  setValue: Action<DataThemesVizDuplicatedStateModel, boolean>;
+}
+
+export const DataThemesVizDuplicatedState: DataThemesVizDuplicatedStateModel = {
+  value: false,
   setValue: action((state, payload: boolean) => {
     state.value = payload;
   }),

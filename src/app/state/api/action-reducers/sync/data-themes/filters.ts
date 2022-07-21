@@ -1,9 +1,13 @@
 import { action, Action } from "easy-peasy";
 
 export interface DataThemesAppliedFiltersStateModel {
-  value: [[{
-    [key: string]: any[];
-  }]];
+  value: [
+    [
+      {
+        [key: string]: any[];
+      }
+    ]
+  ];
   setValue: Action<
     DataThemesAppliedFiltersStateModel,
     {
@@ -23,7 +27,15 @@ export interface DataThemesAppliedFiltersStateModel {
   >;
   reset: Action<DataThemesAppliedFiltersStateModel>;
   addTab: Action<DataThemesAppliedFiltersStateModel>;
-  addViz: Action<DataThemesAppliedFiltersStateModel, {tabIndex: number}>;
+  addViz: Action<DataThemesAppliedFiltersStateModel, { tabIndex: number }>;
+  copyViz: Action<
+    DataThemesAppliedFiltersStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeViz: Action<
+    DataThemesAppliedFiltersStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
 }
 
 export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
@@ -61,13 +73,29 @@ export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
           viz: number;
           value: any;
         }
-      ) => { state.value[payload.tab][payload.viz] = payload.value; }
+      ) => {
+        state.value[payload.tab][payload.viz] = payload.value;
+      }
     ),
-    reset: action((state) => {state.value = [[{}]]}),
+    reset: action((state) => {
+      state.value = [[{}]];
+    }),
     addTab: action((state) => {
       state.value.push([{}]);
     }),
-    addViz: action((state, payload: {tabIndex: number}) => {
+    addViz: action((state, payload: { tabIndex: number }) => {
       state.value[payload.tabIndex].push({});
     }),
+    copyViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.value[payload.tabIndex].push(
+          state.value[payload.tabIndex][payload.vizIndex]
+        );
+      }
+    ),
+    removeViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+      }
+    ),
   };

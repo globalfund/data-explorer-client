@@ -170,6 +170,9 @@ import {
   DataThemesTitlesState,
   DataThemesTextContentState,
   DataThemesPublicState,
+  DataThemesVizOrderState,
+  DataThemesVizDeletedState,
+  DataThemesVizDuplicatedState,
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
 import {
@@ -384,6 +387,9 @@ const storeContent: StoreModel = {
       chartType: persist(DataThemesStepChartTypeState),
       mapping: persist(DataThemesMappingState),
       public: persist(DataThemesPublicState),
+      vizOrderData: persist(DataThemesVizOrderState),
+      vizDeleted: persist(DataThemesVizDeletedState),
+      vizDuplicated: persist(DataThemesVizDuplicatedState),
     },
     appliedFilters: persist(DataThemesAppliedFiltersState),
     DataThemeGet: persist(DataThemeGet),

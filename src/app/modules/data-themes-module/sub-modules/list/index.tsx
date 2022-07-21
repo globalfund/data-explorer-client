@@ -4,12 +4,8 @@ import { useDebounce } from "react-use";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
-import EditIcon from "@material-ui/icons/Edit";
 import SortIcon from "@material-ui/icons/Sort";
-import Popover from "@material-ui/core/Popover";
-import QueueIcon from "@material-ui/icons/Queue";
 import SearchIcon from "@material-ui/icons/Search";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { Link, useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
@@ -20,6 +16,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { AddIcon } from "app/assets/icons/Add";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/data-themes-module/sub-modules/list/styles";
+import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 
 interface DataThemeListItemAPIModel {
@@ -107,7 +104,6 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   }, [duplicateDataThemeSuccess]);
 
   const open = Boolean(anchorEl);
-  const id = open ? "simple-popover" : undefined;
 
   return (
     <div css={styles.gridItem}>
@@ -116,11 +112,14 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
         <IconButton id="menu-button" size="small" onClick={handleClick}>
           <MoreVertIcon htmlColor="#262c34" />
         </IconButton>
-        <Popover
-          id={id}
-          open={open}
+        <DataThemesUtilsPopover
           anchorEl={anchorEl}
-          onClose={handleClose}
+          deleteItem={deleteItem}
+          handleClose={handleClose}
+          duplicateItem={duplicateItem}
+          onEdit={() => {
+            history.push(`/data-themes/${props.id}`, { editMode: true });
+          }}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "center",
@@ -129,30 +128,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
             vertical: "top",
             horizontal: "right",
           }}
-          css={`
-            .MuiPaper-root {
-              box-shadow: none;
-              border-radius: 13px;
-            }
-          `}
-        >
-          <div css={styles.menuBtns}>
-            <IconButton size="small" onClick={duplicateItem}>
-              <QueueIcon htmlColor="#262c34" />
-            </IconButton>
-            <IconButton
-              size="small"
-              onClick={() => {
-                history.push(`/data-themes/${props.id}`, { editMode: true });
-              }}
-            >
-              <EditIcon htmlColor="#262c34" />
-            </IconButton>
-            <IconButton size="small" onClick={deleteItem}>
-              <DeleteIcon htmlColor="#262c34" />
-            </IconButton>
-          </div>
-        </Popover>
+        />
       </div>
       <div css={styles.gridItemLabel}>{props.subTitle}</div>
       <div css={styles.gridItemDetails}>

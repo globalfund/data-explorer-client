@@ -20,4 +20,6 @@ export interface DataThemesBuilderPreviewThemeProps {
     filterOptionGroups: FilterGroupModel[];
   }[][];
   editable: any;
+  deleteViz: (tabIndex: number, vizIndex: number) => void;
+  duplicateViz: (tabIndex: number, vizIndex: number) => void;
 }

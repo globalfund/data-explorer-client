@@ -12,6 +12,9 @@ import {
   DataThemesTitlesStateModel,
   DataThemesTextContentStateModel,
   DataThemesPublicStateModel,
+  DataThemesVizOrderStateModel,
+  DataThemesVizDeletedStateModel,
+  DataThemesVizDuplicatedStateModel,
 } from "app/state/api/action-reducers/sync/data-themes";
 import {
   PageHeaderVizDrilldownsStateModel,
@@ -316,6 +319,9 @@ export interface StoreModel {
       chartType: DataThemesStepChartTypeStateModel;
       mapping: DataThemesMappingStateModel;
       public: DataThemesPublicStateModel;
+      vizOrderData: DataThemesVizOrderStateModel;
+      vizDeleted: DataThemesVizDeletedStateModel;
+      vizDuplicated: DataThemesVizDuplicatedStateModel;
     };
     appliedFilters: DataThemesAppliedFiltersStateModel;
     DataThemeGet: ApiCallModel;

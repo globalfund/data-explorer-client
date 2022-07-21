@@ -106,6 +106,12 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const activePanels = useStoreState(
     (state) => state.dataThemes.activePanels.value
   );
+  const vizDeleted = useStoreState(
+    (state) => state.dataThemes.sync.vizDeleted.value
+  );
+  const vizDuplicated = useStoreState(
+    (state) => state.dataThemes.sync.vizDuplicated.value
+  );
 
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
@@ -149,6 +155,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const isPublicTheme = useStoreState(
     (state) => state.dataThemes.sync.public.value
   );
+  const orderData = useStoreState(
+    (state) => state.dataThemes.sync.vizOrderData.value
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -164,6 +173,15 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
   const setIsPublicTheme = useStoreActions(
     (actions) => actions.dataThemes.sync.public.setValue
+  );
+  const clearOrderData = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizOrderData.clear
+  );
+  const setVizDeleted = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizDeleted.setValue
+  );
+  const setVizDuplicated = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizDuplicated.setValue
   );
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -196,46 +214,57 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }
 
   function onSave() {
-    const tabs: any[] = [];
-    tabIds.length > 0 &&
-      tabIds.map((content, tabIndex) => {
-        // Add an empty tab for each tab in the list
-        tabs.push({ title: tabTitles[tabIndex], content: [] });
-        content.map((vizIndex) => {
-          // add a viz object for every viz in the current tab.
-          let vizObject: any = {};
-          if (vizIsTextContent[tabIndex][vizIndex]) {
-            const contentState =
-              textContent[tabIndex][vizIndex].getCurrentContent();
-            const rawContent = JSON.stringify(convertToRaw(contentState));
-            vizObject = {
-              content: rawContent,
-            };
-          } else {
-            vizObject = {
-              mapping: mapping[tabIndex][vizIndex],
-              vizType: selectedChartType[tabIndex][vizIndex],
-              datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-              data: props.themeData
-                ? props.themeData[tabIndex][vizIndex].data
-                : data,
-              vizOptions: visualOptions[tabIndex][vizIndex],
-              filterOptionGroups: props.themeData
-                ? props.themeData[tabIndex][vizIndex].filterOptionGroups
-                : filterOptionGroups,
-              appliedFilters: appliedFilters[tabIndex][vizIndex],
-              liveData: isLiveData[tabIndex][vizIndex],
-            };
-          }
-          tabs[tabIndex].content.push(vizObject);
-        });
-      });
-    const dataTheme = {
-      title,
-      subTitle,
-      tabs,
-    };
     if (isSavedEnabled) {
+      const tabs: any[] = [];
+      tabIds.length > 0 &&
+        tabIds.map((content, tabIndex) => {
+          // Add an empty tab for each tab in the list
+          tabs.push({ title: tabTitles[tabIndex], content: [] });
+          content.map((index, vizIndex) => {
+            // add a viz object for every viz in the current tab.
+            let vizObject: any = {};
+            if (vizIsTextContent[tabIndex][vizIndex]) {
+              const contentState =
+                textContent[tabIndex][vizIndex].getCurrentContent();
+              const rawContent = JSON.stringify(convertToRaw(contentState));
+              vizObject = {
+                content: rawContent,
+              };
+            } else {
+              vizObject = {
+                mapping: mapping[tabIndex][vizIndex],
+                vizType: selectedChartType[tabIndex][vizIndex],
+                datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+                data:
+                  props.themeData &&
+                  props.themeData[tabIndex] &&
+                  props.themeData[tabIndex][vizIndex]
+                    ? props.themeData[tabIndex][vizIndex].data
+                    : data,
+                vizOptions: visualOptions[tabIndex][vizIndex],
+                filterOptionGroups:
+                  props.themeData &&
+                  props.themeData[tabIndex] &&
+                  props.themeData[tabIndex][vizIndex]
+                    ? props.themeData[tabIndex][vizIndex].filterOptionGroups
+                    : filterOptionGroups,
+                appliedFilters: appliedFilters[tabIndex][vizIndex],
+                liveData: isLiveData[tabIndex][vizIndex],
+              };
+            }
+            tabs[tabIndex].content.push(vizObject);
+          });
+        });
+      if (tabs[activeTabIndex] && orderData.order.length > 1) {
+        tabs[activeTabIndex].content = orderData.order.map(
+          (order: number) => tabs[activeTabIndex].content[order]
+        );
+      }
+      const dataTheme = {
+        title,
+        subTitle,
+        tabs,
+      };
       if (!isEditMode) {
         createDataTheme({
           values: dataTheme,
@@ -257,7 +286,10 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
         activePanels[activeTabIndex][activeVizIndex] > 3) ||
-        vizIsTextContent[activeTabIndex][activeVizIndex]
+        vizIsTextContent[activeTabIndex][activeVizIndex] ||
+        orderData.hasChanged ||
+        vizDeleted ||
+        vizDuplicated
     );
   }, [
     data,
@@ -268,6 +300,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     activePanels,
     activeTabIndex,
     activeVizIndex,
+    orderData.hasChanged,
+    vizDeleted,
+    vizDuplicated,
   ]);
 
   React.useEffect(() => {
@@ -288,6 +323,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     if (createDataThemeSuccess || editDataThemeSuccess) {
       setShowSnackbar("Your Theme has been saved!");
+      clearOrderData();
+      setVizDeleted(false);
+      setVizDuplicated(false);
     }
     return () => {
       if (isEditMode) {
