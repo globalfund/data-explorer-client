@@ -37,7 +37,7 @@ const sortItems = [
   },
   {
     content: "Date (desc)",
-    value: "-createdDate",
+    value: "createdDate DESC",
   },
   {
     content: "Label (asc)",
@@ -45,7 +45,7 @@ const sortItems = [
   },
   {
     content: "Label (desc)",
-    value: "-subTitle",
+    value: "subTitle DESC",
   },
   {
     content: "Title (asc)",
@@ -53,7 +53,7 @@ const sortItems = [
   },
   {
     content: "Title (desc)",
-    value: "-title",
+    value: "title DESC",
   },
 ];
 
@@ -185,7 +185,7 @@ export function DataThemesListView() {
   const history = useHistory();
 
   const [search, setSearch] = React.useState("");
-  const [order, setOrder] = React.useState("-createdDate");
+  const [order, setOrder] = React.useState("createdDate DESC");
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [searchDebounced, setSearchDebounced] = React.useState("");
 
