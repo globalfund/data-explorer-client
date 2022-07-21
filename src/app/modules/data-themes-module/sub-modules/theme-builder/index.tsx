@@ -145,9 +145,6 @@ export function DataThemesBuilder() {
   const removeVizId = useStoreActions(
     (state) => state.dataThemes.ids.removeViz
   );
-  const setActiveVizIndex = useStoreActions(
-    (state) => state.dataThemes.activeVizIndex.setValue
-  );
   const removeVizMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.removeViz
   );

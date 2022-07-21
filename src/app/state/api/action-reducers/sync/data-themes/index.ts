@@ -436,6 +436,7 @@ export const DataThemesTextContentState: DataThemesTextContentStateModel = {
   removeViz: action(
     (state, payload: { tabIndex: number; vizIndex: number }) => {
       state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+      state.vizIsTextContent[payload.tabIndex].splice(payload.vizIndex, 1);
     }
   ),
   reset: action((state) => {

@@ -39,6 +39,7 @@ export function DataThemesBuilderPreviewTheme(
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
+    event.stopPropagation();
     setAnchorEl(event.currentTarget);
   }
 
@@ -54,6 +55,14 @@ export function DataThemesBuilderPreviewTheme(
   function handleDuplicateItem() {
     props.duplicateViz(props.tabIndex, props.vizIndex);
     handleClose();
+  }
+
+  function handleEdit() {
+    if (vizIsTextContent[props.tabIndex][props.vizIndex]) {
+      handleTextClick();
+    } else {
+      handleVizClick();
+    }
   }
 
   useUpdateEffectOnce(() => {
@@ -139,21 +148,6 @@ export function DataThemesBuilderPreviewTheme(
       ) : (
         <div css={commonStyles.previewInnercontainer(props.editable)}>
           {props.editable && <div onClick={handleClick} />}
-          <DataThemesUtilsPopover
-            anchorEl={anchorEl}
-            onEdit={handleVizClick}
-            handleClose={handleClose}
-            deleteItem={handleDeleteItem}
-            duplicateItem={handleDuplicateItem}
-            anchorOrigin={{
-              vertical: "top",
-              horizontal: "right",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "left",
-            }}
-          />
           <div
             ref={containerRef}
             css={`
@@ -176,6 +170,21 @@ export function DataThemesBuilderPreviewTheme(
           </div>
         </div>
       )}
+      <DataThemesUtilsPopover
+        anchorEl={anchorEl}
+        onEdit={handleEdit}
+        handleClose={handleClose}
+        deleteItem={handleDeleteItem}
+        duplicateItem={handleDuplicateItem}
+        anchorOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "left",
+        }}
+      />
     </div>
   );
 }
