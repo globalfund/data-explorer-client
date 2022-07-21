@@ -17,6 +17,7 @@ import { AddIcon } from "app/assets/icons/Add";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/data-themes-module/sub-modules/list/styles";
 import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
+import { DataThemesToolbarPopover } from "app/modules/data-themes-module/components/toolbar-popover";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 
 interface DataThemeListItemAPIModel {
@@ -28,6 +29,33 @@ interface DataThemeListItemAPIModel {
   tabs: any;
   vizCount: number;
 }
+
+const sortItems = [
+  {
+    content: "Date (asc)",
+    value: "createdDate",
+  },
+  {
+    content: "Date (desc)",
+    value: "-createdDate",
+  },
+  {
+    content: "Label (asc)",
+    value: "subTitle",
+  },
+  {
+    content: "Label (desc)",
+    value: "-subTitle",
+  },
+  {
+    content: "Title (asc)",
+    value: "title",
+  },
+  {
+    content: "Title (desc)",
+    value: "-title",
+  },
+];
 
 function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const date = new Date(props.createdDate);
@@ -103,8 +131,6 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
     };
   }, [duplicateDataThemeSuccess]);
 
-  const open = Boolean(anchorEl);
-
   return (
     <div css={styles.gridItem}>
       <div css={styles.gridItemTitle}>
@@ -159,12 +185,25 @@ export function DataThemesListView() {
   const history = useHistory();
 
   const [search, setSearch] = React.useState("");
+  const [order, setOrder] = React.useState("-createdDate");
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [searchDebounced, setSearchDebounced] = React.useState("");
 
-  React.useEffect(() => {
-    document.body.style.background = "#F0F3F5";
-  }, []);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+
+  function handleSortClick(event: React.MouseEvent<HTMLButtonElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleSortClose() {
+    setAnchorEl(null);
+  }
+
+  function onSortItemClick(value: string) {
+    setOrder(value);
+  }
 
   const loadedDataThemes = useStoreState(
     (state) =>
@@ -187,7 +226,12 @@ export function DataThemesListView() {
   );
 
   React.useEffect(() => {
+    document.body.style.background = "#F0F3F5";
+  }, []);
+
+  React.useEffect(() => {
     let params: {
+      order?: string;
       storeInCrudData: boolean;
       filterString?: string;
     } = {
@@ -195,12 +239,25 @@ export function DataThemesListView() {
     };
     if (searchDebounced.length > 0) {
       params = {
-        storeInCrudData: true,
+        ...params,
         filterString: `q=${searchDebounced}`,
       };
     }
+    if (order.length > 0) {
+      if (params.filterString) {
+        params = {
+          ...params,
+          filterString: `${params.filterString}&order=${order}`,
+        };
+      } else {
+        params = {
+          ...params,
+          filterString: `order=${order}`,
+        };
+      }
+    }
     loadDataThemes(params);
-  }, [searchDebounced]);
+  }, [searchDebounced, order]);
 
   return (
     <div css={styles.container}>
@@ -243,9 +300,29 @@ export function DataThemesListView() {
               />
             </div>
           </ClickAwayListener>
-          <SortIcon />
+          <IconButton size="small" onClick={handleSortClick}>
+            <SortIcon htmlColor="#262C34" />
+          </IconButton>
+          <DataThemesToolbarPopover
+            anchorEl={anchorEl}
+            handleClose={handleSortClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            selected={order}
+            items={sortItems}
+            onItemClick={onSortItemClick}
+          />
           <ViewAgendaIcon />
-          <button onClick={() => history.push("/data-themes/new")}>
+          <button
+            css={styles.createNewButton}
+            onClick={() => history.push("/data-themes/new")}
+          >
             Create
           </button>
         </Box>

@@ -28,23 +28,6 @@ export const styles = {
     > * {
       cursor: pointer;
     }
-
-    button {
-      width: 90px;
-      min-width: 90px;
-      height: 23px;
-      border-radius: 20px;
-      background: #262c34;
-      cursor: pointer;
-      color: #fff;
-      border: none;
-      outline: none;
-      font-size: 14px;
-      font-weight: 700;
-      line-height: 20px;
-      letter-spacing: 0.5px;
-      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-    }
   `,
   toolbarSearch: (showInput: boolean) => css`
     display: flex;
@@ -74,6 +57,22 @@ export const styles = {
         opacity: 0.3;
       }
     }
+  `,
+  createNewButton: css`
+    width: 90px;
+    min-width: 90px;
+    height: 23px;
+    border-radius: 20px;
+    background: #262c34;
+    cursor: pointer;
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   gridItem: css`
     height: 219px;
@@ -163,9 +162,7 @@ export const styles = {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     &:hover {
-      color: #262c34;
-      background: #fff;
-      border-top: 1px solid #f0f3f5;
+      background: #495057;
     }
   `,
   gridItemCreateNew: css`
