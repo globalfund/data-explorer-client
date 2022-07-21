@@ -202,57 +202,57 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }
 
   function onSave() {
-    const tabs: any[] = [];
-    tabIds.length > 0 &&
-      tabIds.map((content, tabIndex) => {
-        // Add an empty tab for each tab in the list
-        tabs.push({ title: tabTitles[tabIndex], content: [] });
-        content.map((vizIndex) => {
-          // add a viz object for every viz in the current tab.
-          let vizObject: any = {};
-          if (vizIsTextContent[tabIndex][vizIndex]) {
-            const contentState =
-              textContent[tabIndex][vizIndex].getCurrentContent();
-            const rawContent = JSON.stringify(convertToRaw(contentState));
-            vizObject = {
-              content: rawContent,
-            };
-          } else {
-            vizObject = {
-              mapping: mapping[tabIndex][vizIndex],
-              vizType: selectedChartType[tabIndex][vizIndex],
-              datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-              data:
-                props.themeData &&
-                props.themeData[tabIndex] &&
-                props.themeData[tabIndex][vizIndex]
-                  ? props.themeData[tabIndex][vizIndex].data
-                  : data,
-              vizOptions: visualOptions[tabIndex][vizIndex],
-              filterOptionGroups:
-                props.themeData &&
-                props.themeData[tabIndex] &&
-                props.themeData[tabIndex][vizIndex]
-                  ? props.themeData[tabIndex][vizIndex].filterOptionGroups
-                  : filterOptionGroups,
-              appliedFilters: appliedFilters[tabIndex][vizIndex],
-              liveData: isLiveData[tabIndex][vizIndex],
-            };
-          }
-          tabs[tabIndex].content.push(vizObject);
-        });
-      });
-    if (tabs[activeTabIndex]) {
-      tabs[activeTabIndex].content = orderData.order.map(
-        (order: number) => tabs[activeTabIndex].content[order]
-      );
-    }
-    const dataTheme = {
-      title,
-      subTitle,
-      tabs,
-    };
     if (isSavedEnabled) {
+      const tabs: any[] = [];
+      tabIds.length > 0 &&
+        tabIds.map((content, tabIndex) => {
+          // Add an empty tab for each tab in the list
+          tabs.push({ title: tabTitles[tabIndex], content: [] });
+          content.map((vizIndex) => {
+            // add a viz object for every viz in the current tab.
+            let vizObject: any = {};
+            if (vizIsTextContent[tabIndex][vizIndex]) {
+              const contentState =
+                textContent[tabIndex][vizIndex].getCurrentContent();
+              const rawContent = JSON.stringify(convertToRaw(contentState));
+              vizObject = {
+                content: rawContent,
+              };
+            } else {
+              vizObject = {
+                mapping: mapping[tabIndex][vizIndex],
+                vizType: selectedChartType[tabIndex][vizIndex],
+                datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+                data:
+                  props.themeData &&
+                  props.themeData[tabIndex] &&
+                  props.themeData[tabIndex][vizIndex]
+                    ? props.themeData[tabIndex][vizIndex].data
+                    : data,
+                vizOptions: visualOptions[tabIndex][vizIndex],
+                filterOptionGroups:
+                  props.themeData &&
+                  props.themeData[tabIndex] &&
+                  props.themeData[tabIndex][vizIndex]
+                    ? props.themeData[tabIndex][vizIndex].filterOptionGroups
+                    : filterOptionGroups,
+                appliedFilters: appliedFilters[tabIndex][vizIndex],
+                liveData: isLiveData[tabIndex][vizIndex],
+              };
+            }
+            tabs[tabIndex].content.push(vizObject);
+          });
+        });
+      if (tabs[activeTabIndex] && orderData.order.length > 1) {
+        tabs[activeTabIndex].content = orderData.order.map(
+          (order: number) => tabs[activeTabIndex].content[order]
+        );
+      }
+      const dataTheme = {
+        title,
+        subTitle,
+        tabs,
+      };
       if (!isEditMode) {
         createDataTheme({
           values: dataTheme,
