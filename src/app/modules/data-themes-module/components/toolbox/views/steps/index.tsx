@@ -124,7 +124,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
   const { data, loading, loadDataset, filterOptionGroups } = props;
-  const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
+
+  const [expanded] = React.useState<number>(props.openPanel || 0);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const selectedChartType = useStoreState(
@@ -144,10 +145,12 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
     (state) => state.dataThemes.activePanels.value
   );
 
-  Object.keys(appliedFilters[activeTabIndex][activeVizIndex]).forEach((key) => {
-    appliedFiltersCount +=
-      appliedFilters[activeTabIndex][activeVizIndex][key].length;
-  });
+  Object.keys(appliedFilters[activeTabIndex][activeVizIndex] || {}).forEach(
+    (key) => {
+      appliedFiltersCount +=
+        appliedFilters[activeTabIndex][activeVizIndex][key].length;
+    }
+  );
 
   const stepPaths = [
     `/data-themes/${page}`,

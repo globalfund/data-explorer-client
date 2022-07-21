@@ -8,7 +8,7 @@ export function filterDataThemesData(
     [key: string]: any[];
   }
 ) {
-  const filterKeys = Object.keys(appliedFilters);
+  const filterKeys = Object.keys(appliedFilters || {});
 
   if (filterKeys.length === 0) {
     return rawData;

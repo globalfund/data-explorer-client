@@ -92,6 +92,7 @@ export function DataThemesBuilder() {
     updateLocalStates,
   });
 
+  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
@@ -150,8 +151,54 @@ export function DataThemesBuilder() {
   const removeVizMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.removeViz
   );
+  const removeVizActivePanel = useStoreActions(
+    (state) => state.dataThemes.activePanels.removeViz
+  );
+  const removeVizChartType = useStoreActions(
+    (state) => state.dataThemes.sync.chartType.removeViz
+  );
+  const removeVizLiveData = useStoreActions(
+    (state) => state.dataThemes.sync.liveData.removeViz
+  );
+  const removeVizStepSelections = useStoreActions(
+    (state) => state.dataThemes.sync.stepSelections.removeViz
+  );
+  const removeVizAppliedFilters = useStoreActions(
+    (state) => state.dataThemes.appliedFilters.removeViz
+  );
+  const removeVizTextContent = useStoreActions(
+    (state) => state.dataThemes.textContent.removeViz
+  );
   const clearOrderData = useStoreActions(
     (actions) => actions.dataThemes.sync.vizOrderData.clear
+  );
+  const setVizDeleted = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizDeleted.setValue
+  );
+  const setVizDuplicated = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizDuplicated.setValue
+  );
+  const copyVizId = useStoreActions((state) => state.dataThemes.ids.addViz);
+  const copyVizActivePanel = useStoreActions(
+    (state) => state.dataThemes.activePanels.addViz
+  );
+  const copyVizChartType = useStoreActions(
+    (state) => state.dataThemes.sync.chartType.copyViz
+  );
+  const copyVizLiveData = useStoreActions(
+    (state) => state.dataThemes.sync.liveData.copyViz
+  );
+  const copyVizMapping = useStoreActions(
+    (state) => state.dataThemes.sync.mapping.copyViz
+  );
+  const copyVizStepSelections = useStoreActions(
+    (state) => state.dataThemes.sync.stepSelections.copyViz
+  );
+  const copyVizAppliedFilters = useStoreActions(
+    (state) => state.dataThemes.appliedFilters.copyViz
+  );
+  const copyVizTextContent = useStoreActions(
+    (state) => state.dataThemes.textContent.copyViz
   );
 
   function setVisualOptionsOnChange() {
@@ -241,38 +288,65 @@ export function DataThemesBuilder() {
     setRawData(tmpRawData);
   }
 
+  function duplicateViz(tabIndex: number, vizIndex: number) {
+    copyVizId({ tabIndex });
+    copyVizActivePanel({ tabIndex });
+    copyVizChartType({ tabIndex, vizIndex });
+    copyVizLiveData({ tabIndex, vizIndex });
+    copyVizMapping({ tabIndex, vizIndex });
+    copyVizStepSelections({ tabIndex, vizIndex });
+    copyVizAppliedFilters({ tabIndex, vizIndex });
+    copyVizTextContent({ tabIndex, vizIndex });
+
+    let tmpVisualOptions: any = [...visualOptions];
+    tmpVisualOptions[tabIndex].push(tmpVisualOptions[tabIndex][vizIndex]);
+    setVisualOptions(tmpVisualOptions);
+
+    let tmpCurrentChart: any = [...currentChart];
+    tmpCurrentChart[tabIndex].push(tmpCurrentChart[tabIndex][vizIndex]);
+    setCurrentChart(tmpCurrentChart);
+
+    let tmpCurrentChartData: any = [...currentChartData];
+    tmpCurrentChartData[tabIndex].push(tmpCurrentChartData[tabIndex][vizIndex]);
+    setCurrentChartData(tmpCurrentChartData);
+    let tmpRawData = [...rawData];
+    tmpRawData[tabIndex].push(tmpRawData[tabIndex][vizIndex]);
+    setRawData(tmpRawData);
+    setVizDuplicated(true);
+  }
+
   function deleteViz(tabIndex: number, vizIndex: number) {
     let tmpRawData = [...rawData];
-    if (tmpRawData[tabIndex] && tmpRawData[tabIndex][vizIndex]) {
+    let tmpVisualOptions: any = [...visualOptions];
+    let tmpCurrentChartData: any = [...currentChartData];
+    if (
+      tmpRawData[tabIndex] &&
+      tmpRawData[tabIndex][vizIndex] &&
+      tmpVisualOptions[tabIndex] &&
+      tmpVisualOptions[tabIndex][vizIndex] &&
+      tmpCurrentChartData[tabIndex] &&
+      tmpCurrentChartData[tabIndex][vizIndex]
+    ) {
       tmpRawData[tabIndex].splice(vizIndex, 1);
       setRawData(tmpRawData);
-      // if (themeIds[tabIndex].length > 1) {
-      //   const fVizIdIndex = findIndex(
-      //     themeIds[tabIndex],
-      //     (id: number) => id === vizIndex
-      //   );
-      //   if (fVizIdIndex === 0) {
-      //     setActiveVizIndex(1);
-      //   }
-      // }
+      tmpVisualOptions[tabIndex].splice(vizIndex, 1);
+      setVisualOptions(tmpVisualOptions);
+      tmpCurrentChartData[tabIndex].splice(vizIndex, 1);
+      setCurrentChartData(tmpCurrentChartData);
       removeVizId({ tabIndex, vizIndex });
+      removeVizActivePanel({ tabIndex, vizIndex });
+      removeVizChartType({ tabIndex, vizIndex });
+      removeVizLiveData({ tabIndex, vizIndex });
+      removeVizMapping({ tabIndex, vizIndex });
+      removeVizStepSelections({ tabIndex, vizIndex });
+      removeVizAppliedFilters({ tabIndex, vizIndex });
+      removeVizTextContent({ tabIndex, vizIndex });
     }
-    // removeVizMapping({ tabIndex, vizIndex });
-    // let tmpVisualOptions: any = [...visualOptions];
-    // if (tmpVisualOptions[tabIndex] && tmpVisualOptions[tabIndex][vizIndex]) {
-    //   tmpVisualOptions[tabIndex].splice(vizIndex, 1);
-    //   setVisualOptions(tmpVisualOptions);
-    // }
-    // let tmpCurrentChartData: any = [...currentChartData];
-    // if (
-    //   tmpCurrentChartData[tabIndex] &&
-    //   tmpCurrentChartData[tabIndex][vizIndex]
-    // ) {
-    //   tmpCurrentChartData[tabIndex].splice(vizIndex, 1);
-    //   setCurrentChartData(tmpCurrentChartData);
-    // }
     if (tmpRawData[tabIndex].length === 0) {
       addVizToLocalStates();
+      history.push(`/data-themes/${page}/initial`);
+    } else {
+      setVizDeleted(true);
     }
   }
 
@@ -345,6 +419,8 @@ export function DataThemesBuilder() {
       clearDataTheme();
       clearDataThemeBuilder();
       clearOrderData();
+      setVizDeleted(false);
+      setVizDuplicated(false);
     };
   }, []);
 
@@ -394,6 +470,8 @@ export function DataThemesBuilder() {
 
   useUpdateEffect(() => {
     clearOrderData();
+    setVizDeleted(false);
+    setVizDuplicated(false);
   }, [activeTabIndex]);
 
   let renderingKey = 0;
@@ -410,7 +488,12 @@ export function DataThemesBuilder() {
             <DataThemesBuilderExport
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              data={rawData[activeTabIndex][activeVizIndex].data}
+              // data={rawData[activeTabIndex][activeVizIndex].data}
+              data={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
               loading={loading}
               loadDataset={loadDataset}
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
@@ -419,9 +502,14 @@ export function DataThemesBuilder() {
               currentChartData={
                 currentChartData[activeTabIndex][activeVizIndex]
               }
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               themeData={rawData}
               dimensions={get(
                 currentChart[activeTabIndex][activeVizIndex],
@@ -435,7 +523,12 @@ export function DataThemesBuilder() {
             <DataThemesBuilderCustomize
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              data={rawData[activeTabIndex][activeVizIndex].data}
+              data={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
+              // data={rawData[activeTabIndex][activeVizIndex].data}
               loading={loading}
               loadDataset={loadDataset}
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
@@ -444,9 +537,14 @@ export function DataThemesBuilder() {
               currentChartData={
                 currentChartData[activeTabIndex][activeVizIndex]
               }
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               themeData={rawData}
               dimensions={get(
                 currentChart[activeTabIndex][activeVizIndex],
@@ -460,7 +558,12 @@ export function DataThemesBuilder() {
             <DataThemesBuilderLock
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              data={rawData[activeTabIndex][activeVizIndex].data}
+              data={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
+              // data={rawData[activeTabIndex][activeVizIndex].data}
               loading={loading}
               loadDataset={loadDataset}
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
@@ -469,9 +572,14 @@ export function DataThemesBuilder() {
               currentChartData={
                 currentChartData[activeTabIndex][activeVizIndex]
               }
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               setFilterOptionGroups={setFilterOptionGroups}
               themeData={rawData}
               dimensions={get(
@@ -486,7 +594,12 @@ export function DataThemesBuilder() {
             <DataThemesBuilderFilters
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              data={rawData[activeTabIndex][activeVizIndex].data}
+              data={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
+              // data={rawData[activeTabIndex][activeVizIndex].data}
               loading={loading}
               loadDataset={loadDataset}
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
@@ -495,9 +608,14 @@ export function DataThemesBuilder() {
               currentChartData={
                 currentChartData[activeTabIndex][activeVizIndex]
               }
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               dimensions={get(
                 currentChart[activeTabIndex][activeVizIndex],
                 "dimensions",
@@ -510,7 +628,12 @@ export function DataThemesBuilder() {
             <DataThemesBuilderMapping
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              data={rawData[activeTabIndex][activeVizIndex].data}
+              data={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
+              // data={rawData[activeTabIndex][activeVizIndex].data}
               loading={loading}
               loadDataset={loadDataset}
               currentChart={currentChart[activeTabIndex][activeVizIndex]}
@@ -519,9 +642,14 @@ export function DataThemesBuilder() {
               currentChartData={
                 currentChartData[activeTabIndex][activeVizIndex]
               }
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               dimensions={get(
                 currentChart[activeTabIndex][activeVizIndex],
                 "dimensions",
@@ -534,16 +662,26 @@ export function DataThemesBuilder() {
             <DataThemesBuilderChartType
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              data={rawData[activeTabIndex][activeVizIndex].data}
+              data={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
+              // data={rawData[activeTabIndex][activeVizIndex].data}
               loading={loading}
               loadDataset={loadDataset}
               visualOptions={visualOptions}
               currentChart={currentChart}
               setCurrentChart={setCurrentChart}
               setVisualOptions={setVisualOptions}
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               updateLocalStates={updateLocalStates}
             />
           </Route>
@@ -551,15 +689,30 @@ export function DataThemesBuilder() {
             <DataThemesBuilderPreview
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              allData={rawData[activeTabIndex][activeVizIndex].data}
-              totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
+              allData={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
+              // allData={rawData[activeTabIndex][activeVizIndex].data}
+              totalAvailable={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].count`,
+                0
+              )}
+              // totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
               loading={loading}
               data={filteredData[activeTabIndex][activeVizIndex]}
               loadDataset={loadDataset}
               visualOptions={visualOptions}
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               updateLocalStates={updateLocalStates}
             />
           </Route>
@@ -567,14 +720,29 @@ export function DataThemesBuilder() {
             <DataThemesBuilderDataView
               tabIndex={activeTabIndex}
               vizIndex={activeVizIndex}
-              data={rawData[activeTabIndex][activeVizIndex].data}
-              totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
+              data={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].data`,
+                []
+              )}
+              // data={rawData[activeTabIndex][activeVizIndex].data}
+              totalAvailable={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].count`,
+                0
+              )}
+              // totalAvailable={rawData[activeTabIndex][activeVizIndex].count}
               loading={loading}
               loadDataset={loadDataset}
               visualOptions={visualOptions}
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               updateLocalStates={updateLocalStates}
             />
           </Route>
@@ -583,9 +751,14 @@ export function DataThemesBuilder() {
               loading={loading}
               data={filteredData[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
-              filterOptionGroups={
-                rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-              }
+              // filterOptionGroups={
+              //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+              // }
+              filterOptionGroups={get(
+                rawData,
+                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+                []
+              )}
               updateLocalStates={updateLocalStates}
               addVizToLocalStates={addVizToLocalStates}
             />
@@ -668,6 +841,7 @@ export function DataThemesBuilder() {
                                 updateLocalStates={updateLocalStates}
                                 themeData={rawData}
                                 deleteViz={deleteViz}
+                                duplicateViz={duplicateViz}
                               />
                             ) : (
                               <React.Fragment key={renderingKey++} />

@@ -39,7 +39,7 @@ export function DataThemesBuilderPreviewTheme(
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
-    // setAnchorEl(event.currentTarget);
+    setAnchorEl(event.currentTarget);
   }
 
   function handleClose() {
@@ -47,11 +47,12 @@ export function DataThemesBuilderPreviewTheme(
   }
 
   function handleDeleteItem() {
-    // props.deleteViz(props.tabIndex, props.vizIndex);
+    props.deleteViz(props.tabIndex, props.vizIndex);
     handleClose();
   }
 
   function handleDuplicateItem() {
+    props.duplicateViz(props.tabIndex, props.vizIndex);
     handleClose();
   }
 

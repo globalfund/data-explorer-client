@@ -26,7 +26,7 @@ export const styles = {
   previewInnercontainer: (isEditMode: boolean) => css`
     left: 0;
     // top: 144px;
-    padding-top: 20px;
+    margin-top: 20px;
     max-width: 1280px;
     position: relative;
     align-self: flex-start;
@@ -38,6 +38,18 @@ export const styles = {
       flex-flow: row;
       flex: 1 1 100%;
       flex-direction: row;
+      
+      &:hover {
+        background: #edf1f3;
+        transition: background 0.2s ease-in-out;
+
+        svg {
+          > rect {
+            fill: #edf1f3;
+            transition: fill 0.2s ease-in-out;
+          }
+        }
+      }
 
       > div:first-of-type {
         flex: 1 1 100%;
