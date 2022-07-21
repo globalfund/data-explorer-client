@@ -73,6 +73,10 @@ export const styles = {
     line-height: 20px;
     letter-spacing: 0.5px;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+    &:hover {
+      background: #495057;
+    }
   `,
   gridItem: css`
     height: 219px;
