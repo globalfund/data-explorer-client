@@ -23,6 +23,8 @@ import {
   XsContainer,
 } from "app/components/Charts/common/styles";
 import { InvestmentsTimeCycleTooltip } from "./components/tooltip";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 function getKeysFromData(data: Record<string, unknown>[]) {
   if (data.length === 0) {
@@ -164,6 +166,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     setXsTooltipData(null);
   }
 
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <React.Fragment>
       <div
@@ -197,7 +201,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             {isMobile && (
               <Grid item xs={12} css="font-size: 12px !important;">
                 <b>
-                  Total amount: {formatFinancialValue(totalInvestmentValue)}
+                  {get(cmsData, "componentsChartsInvestments.totalAmount", "")}:{" "}
+                  {formatFinancialValue(totalInvestmentValue)}
                 </b>
               </Grid>
             )}
@@ -216,7 +221,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   `}
                 >
-                  {props.type || "Disbursements"} <InfoIcon />
+                  Investments - {props.type || "Disbursement"} <InfoIcon />
                 </div>
                 <div css="font-weight: normal;">
                   {formatFinancialValue(totalInvestmentValue)}
@@ -344,8 +349,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 height: 620px;
 
                 @media (max-width: 767px) {
-                  height: 550px;
-                  width: ${props.data.length === 0 ? "100%" : "1000px"};
+                  height: 500px;
+                  width: ${props.data.length < 3 ? "100%" : "700px"};
                 }
               `}
             >
@@ -358,7 +363,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 motionDamping={15}
                 borderColor="inherit:darker(1.6)"
                 layers={["grid", "axes", Bars, "markers", "legends"]}
-                padding={isMobile ? 0.3 : 0.5}
+                padding={isMobile ? 0.6 : 0.5}
                 innerPadding={6}
                 data={props.data}
                 keys={
@@ -517,7 +522,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   }}
                 >
-                  Drilldown
+                  {get(cmsData, "componentsChartsInvestments.drilldown", "")}
                 </TooltipButton>
               </div>
             </div>

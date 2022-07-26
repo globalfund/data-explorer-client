@@ -26,6 +26,7 @@ import {
   BudgetsFlowTooltip,
   MobileBudgetsFlowTooltip,
 } from "app/components/Charts/Budgets/Flow/components/tooltip";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const container = css`
   width: 100%;
@@ -114,15 +115,13 @@ const getNodeLabel = (label: string, matchesSm: boolean): string => {
 export function BudgetsFlow(props: BudgetsFlowProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const legends = getLegendItems(props.data.nodes);
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<MobileBudgetsFlowTooltipProps | null>(null);
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
     "value"
   );
-
+  const cmsData = useCMSData({ returnData: true });
   // React.useEffect(() => {
   //   const node = document.getElementById("sankey");
   //   if (node) {
@@ -174,7 +173,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
       <Grid
         container
         css={header}
-        alignItems="center"
+        alignItems="baseline"
         spacing={!isMobile ? 4 : undefined}
       >
         {!isMobile && (
@@ -232,7 +231,10 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         )}
         {isMobile && (
           <Grid item xs={12} css="font-size: 12px !important;">
-            <b>Total amount: {formatFinancialValue(totalBudget)}</b>
+            <b>
+              {get(cmsData, "componentsChartsBudgets.totalAmount", "")}{" "}
+              {formatFinancialValue(totalBudget)}
+            </b>
           </Grid>
         )}
         <Grid item xs={3}>
@@ -246,7 +248,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
               }
             `}
           >
-            Budget <InfoIcon />
+            {get(cmsData, "componentsChartsBudgets.budget", "")} <InfoIcon />
           </div>
           {!isMobile && (
             <div css="font-weight: normal;">
@@ -255,13 +257,13 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           )}
         </Grid>
         <Grid item xs={3}>
-          Investment Landscape Level 1
+          {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel1", "")}
         </Grid>
-        <Grid item xs={3} css="text-align: right;">
-          Investment Landscape Level 2
+        <Grid item xs={3}>
+          {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel2", "")}
         </Grid>
-        <Grid item xs={3} css="text-align: right;">
-          Cost category
+        <Grid item xs={3}>
+          {get(cmsData, "componentsChartsBudgets.flowCostCategory", "")}
         </Grid>
       </Grid>
       {props.data.links.length === 0 ? (
@@ -344,7 +346,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             <XsContainer id="mobile-tooltip-container">
               <div
                 css={`
-                  width: 95%;
+                  width: 100%;
                 `}
               >
                 <MobileBudgetsFlowTooltip

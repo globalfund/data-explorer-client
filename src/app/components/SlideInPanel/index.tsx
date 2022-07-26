@@ -1,8 +1,10 @@
 import React from "react";
+import get from "lodash/get";
 import Slide from "@material-ui/core/Slide";
 import Button from "@material-ui/core/Button";
 import { useLocation } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -16,8 +18,8 @@ interface SlideInContainerProps {
   loading?: boolean;
   toolboxOpen?: boolean;
   children: React.ReactNode;
-  bigHeader?: boolean;
   enableOverflow?: boolean;
+  insideDivAutoHeight?: boolean;
 }
 
 export function SlideInContainer(props: SlideInContainerProps) {
@@ -26,36 +28,25 @@ export function SlideInContainer(props: SlideInContainerProps) {
     props.vizLevel > 0 && props.selected !== undefined
   );
 
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
-
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   const isGrantDetail = location.pathname.indexOf("/grant/") > -1;
   const isPartnerDetail = location.pathname.indexOf("/partner/") > -1;
   const isLocationDetail = location.pathname.indexOf("/location/") > -1;
-  let top = 133;
-  if (vizDrilldowns.length > 0 || props.bigHeader) {
-    top = 168;
-    if (isMobile) {
-      top = 195;
-    }
-  }
+
+  let top = 92;
+
   if (isGrantDetail) {
-    top = 203;
+    top = 113;
     if (isMobile) {
-      top = 104;
-      if (vizDrilldowns.length > 0) {
-        top = 140;
-      }
+      top = 92;
     }
   }
   if (isPartnerDetail || isLocationDetail) {
-    top = 203;
+    top = 113;
     if (isMobile) {
-      top = 196;
+      top = 148;
     }
   }
 
@@ -66,13 +57,25 @@ export function SlideInContainer(props: SlideInContainerProps) {
     }
   }, [props.vizLevel, props.selected]);
 
+  React.useEffect(() => {
+    if (isMobile && props.insideDivAutoHeight) {
+      document.body.style.overflowY = "hidden";
+    }
+
+    return () => {
+      document.body.style.overflowY = "auto";
+    };
+  }, [isMobile, props.insideDivAutoHeight]);
+
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <Slide in={open} mountOnEnter unmountOnExit timeout={500} direction="left">
       <div
         ref={props.ref}
         id="zoom-in-level"
         css={`
-          z-index: 2;
+          z-index: 3;
           top: ${top}px;
           display: flex;
           position: absolute;
@@ -92,7 +95,9 @@ export function SlideInContainer(props: SlideInContainerProps) {
           @media (max-width: 767px) {
             width: 100vw;
             box-shadow: none;
-            height: calc(100vh - 50px);
+            height: ${props.insideDivAutoHeight
+              ? `calc(100vh - ${top + 56}px)`
+              : "calc(100vh - 50px)"};
 
             > div {
               box-shadow: none;
@@ -140,7 +145,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
               padding: ${props.loading ? "0px" : "16px"} !important;
 
               > div {
-                height: 100%;
+                height: ${props.insideDivAutoHeight ? "auto" : "100%"};
               }
             }
           `}
@@ -172,7 +177,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
                     }
                   `}
                 >
-                  Back
+                  {get(cmsData, "componentsSlideInPanel.back", "")}
                 </Button>
               )}
               {props.children}

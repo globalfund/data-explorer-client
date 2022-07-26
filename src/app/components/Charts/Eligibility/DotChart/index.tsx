@@ -11,6 +11,8 @@ import {
   DotChartProps,
   DotChartModel,
 } from "app/components/Charts/Eligibility/DotChart/data";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const styles = {
   Eligible: css`
@@ -28,6 +30,7 @@ const styles = {
 };
 
 export function DotChart(props: DotChartProps) {
+  const cmsData = useCMSData({ returnData: true });
   const { x, y } = useMousePosition();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -139,7 +142,7 @@ export function DotChart(props: DotChartProps) {
             >
               {isSmallScreen && (
                 <div css="display:flex;font-weight: bold;justify-content:space-between;">
-                  Eligibility
+                  {get(cmsData, "componentsChartsEligibility.eligibility", "")}
                 </div>
               )}
               <div
@@ -147,7 +150,7 @@ export function DotChart(props: DotChartProps) {
                   font-weight: ${isSmallScreen ? "none" : "bold"};
                 `}
               >
-                Year {props.selectedYear}
+                {get(cmsData, "componentsChartsEligibility.year", "")} {props.selectedYear}
               </div>
             </div>
             <div
@@ -180,7 +183,7 @@ export function DotChart(props: DotChartProps) {
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
-                Eligibility
+                {get(cmsData, "componentsChartsEligibility.eligibility", "")}
               </div>
               <div
                 css={`
@@ -213,7 +216,7 @@ export function DotChart(props: DotChartProps) {
                     ${styles.Eligible}
                   `}
                 />
-                <div>Eligible</div>
+                <div>{get(cmsData, "componentsChartsEligibility.statusEligible", "")}</div>
               </div>
               <div
                 css={`
@@ -246,7 +249,7 @@ export function DotChart(props: DotChartProps) {
                     ${styles["Not Eligible"]}
                   `}
                 />
-                <div>Not Eligible</div>
+                <div>{get(cmsData, "componentsChartsEligibility.statusNotEligible", "")}</div>
               </div>
               <div
                 css={`
@@ -280,7 +283,7 @@ export function DotChart(props: DotChartProps) {
                     ${styles["Transition Funding"]}
                   `}
                 />
-                <div>Transition Funding</div>
+                <div>{get(cmsData, "componentsChartsEligibility.statusTransitionFunding", "")}</div>
               </div>
             </div>
             {props.aggregateBy === "geographicAreaName" && (
@@ -298,7 +301,7 @@ export function DotChart(props: DotChartProps) {
                       sans-serif;
                   `}
                 >
-                  Country Name
+                  {get(cmsData, "componentsChartsEligibility.countryName", "")}
                 </div>
                 <div
                   css={`
@@ -335,7 +338,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      HIV
+                      {get(cmsData, "componentsChartsEligibility.hiv", "")}
                     </div>
                   </div>
                   <div>
@@ -355,7 +358,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Malaria
+                      {get(cmsData, "componentsChartsEligibility.malaria", "")}
                     </div>
                   </div>
                   {/* <div>
@@ -392,7 +395,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Tuberculosis
+                      {get(cmsData, "componentsChartsEligibility.tuberculosis", "")}
                     </div>
                   </div>
                 </div>

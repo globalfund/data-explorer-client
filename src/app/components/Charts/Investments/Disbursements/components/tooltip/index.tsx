@@ -2,10 +2,13 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursements/data";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function TreemapTooltip(props: TreemapTooltipProps) {
   const { data } = props.node;
   const { pathname } = useLocation();
+  const cmsData = useCMSData({ returnData: true });
 
   let type = "Disbursements";
 
@@ -85,8 +88,8 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
-          <div>Grants</div>
+          <div>{get(cmsData, "componentsChartsInvestments.component", "")}</div>
+          <div>{get(cmsData, "componentsChartsInvestments.grants", "")}</div>
           <div>{type}</div>
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (
@@ -154,7 +157,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Disbursed
+            {get(cmsData, "componentsChartsInvestments.disbursed", "")}
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.disbursed)}
@@ -191,7 +194,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Committed
+            {get(cmsData, "componentsChartsInvestments.committed", "")}
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.committed)}
@@ -211,7 +214,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Signed
+            {get(cmsData, "componentsChartsInvestments.signed", "")}
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.signed)}

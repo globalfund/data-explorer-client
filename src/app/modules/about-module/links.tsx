@@ -3,12 +3,16 @@ import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { PageHeader } from "app/components/PageHeader";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export default function LinkList() {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
-        top: 158px;
+        top: 120px;
         position: sticky;
       `}
     >
@@ -20,7 +24,7 @@ export default function LinkList() {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Links
+        {get(cmsData, "modulesAbout.linksTitle", "")}
       </div>
       <div
         css={`
@@ -58,35 +62,35 @@ export default function LinkList() {
           rel="noreferrer"
           href="https://www.theglobalfund.org/en/methodology/"
         >
-          Results Methodology
+          {get(cmsData, "modulesAbout.linksResultMethodology", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href="https://www.theglobalfund.org/en/legal/"
         >
-          Legal & Disclaimers
+          {get(cmsData, "modulesAbout.linksLegalDisclaimers", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href="https://www.theglobalfund.org/en/site/privacy-statement/"
         >
-          Privacy Statements
+          {get(cmsData, "modulesAbout.linksPrivacyStatements", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href={`mailto:website@theglobalfund.org?subject=Data Explorer Feedback - URL: ${window.location}&body=User Feedback: `}
         >
-          Feedback
+          {get(cmsData, "modulesAbout.linksFeedback", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href="https://data-service.theglobalfund.org/file_download/covid_approved_funding_report/pdf"
         >
-          COVID-19
+          {get(cmsData, "modulesAbout.linksCovid", "")}
         </a>
       </div>
     </div>

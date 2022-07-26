@@ -25,7 +25,7 @@ export function PerformanceFrameworkReportingPeriods(
     const newSelectedIndex =
       props.periods.length -
       (width - data.lastX) / (width / props.periods.length);
-    setSelected(newSelectedIndex);
+    setSelected(Math.round(newSelectedIndex));
   }
 
   return (

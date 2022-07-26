@@ -26,7 +26,7 @@ function Expandable(props: ExpandableProps) {
           display: flex;
           color: #262c34;
           font-size: 14px;
-          padding: 6px 12px;
+          padding: 10px 12px;
           align-items: center;
           justify-content: space-between;
 
@@ -42,7 +42,7 @@ function Expandable(props: ExpandableProps) {
           @media (min-width: 768px) {
             &:hover {
               color: #fff;
-              background: #495057;
+              background: #262c34;
               transition: background 0.2s ease-in-out;
 
               > svg {
@@ -53,6 +53,7 @@ function Expandable(props: ExpandableProps) {
             }
           }
         `}
+        id="appbar-expandable-item"
         onClick={() => setExpanded(!expanded)}
       >
         <b>{props.label}</b>
@@ -68,14 +69,14 @@ function Expandable(props: ExpandableProps) {
             width: 100%;
             color: #495057;
             font-size: 14px;
-            padding: 6px 12px;
+            padding: 10px 15px;
             text-decoration: none;
-            border-top: 1px solid #dfe3e6;
 
             @media (min-width: 768px) {
               &:hover {
                 color: #fff;
-                background: #495057;
+                font-weight: bold;
+                background: #262c34;
                 transition: background 0.2s ease-in-out;
               }
             }
@@ -91,44 +92,44 @@ function Expandable(props: ExpandableProps) {
 export function useDatasetMenuItems(): React.ReactChild[] {
   const location = useLocation();
   return [
-    <Link
-      to="/datasets"
-      css={`
-        width: 100%;
-        display: flex;
-        color: #262c34;
-        font-size: 14px;
-        padding: 6px 12px;
-        align-items: center;
-        text-decoration: none;
+    // <Link
+    //   to="/datasets"
+    //   css={`
+    //     width: 100%;
+    //     display: flex;
+    //     color: #262c34;
+    //     font-size: 14px;
+    //     padding: 6px 12px;
+    //     align-items: center;
+    //     text-decoration: none;
 
-        > svg {
-          margin-right: 16px;
-          transform: rotate(-180deg) scale(0.5);
+    //     > svg {
+    //       margin-right: 16px;
+    //       transform: rotate(-180deg) scale(0.5);
 
-          > path {
-            fill: #13183f;
-          }
-        }
+    //       > path {
+    //         fill: #13183f;
+    //       }
+    //     }
 
-        @media (min-width: 768px) {
-          &:hover {
-            color: #fff;
-            background: #495057;
-            transition: background 0.2s ease-in-out;
+    //     @media (min-width: 768px) {
+    //       &:hover {
+    //         color: #fff;
+    //         background: #262C34;
+    //         transition: background 0.2s ease-in-out;
 
-            > svg {
-              > path {
-                fill: #fff;
-              }
-            }
-          }
-        }
-      `}
-    >
-      <ArrowForwardIcon />
-      <b>Datasets</b>
-    </Link>,
+    //         > svg {
+    //           > path {
+    //             fill: #fff;
+    //           }
+    //         }
+    //       }
+    //     }
+    //   `}
+    // >
+    //   <ArrowForwardIcon />
+    //   <b>Datasets</b>
+    // </Link>,
     <Expandable label="Finance">
       <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
         Pledges & Contributions
@@ -149,7 +150,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         @media (min-width: 768px) {
           &:hover {
             color: #fff;
-            background: #495057;
+            background: #262c34;
             transition: background 0.2s ease-in-out;
           }
         }
@@ -163,7 +164,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         @media (min-width: 768px) {
           &:hover {
             color: #fff;
-            background: #495057;
+            background: #262c34;
             transition: background 0.2s ease-in-out;
           }
         }
@@ -177,7 +178,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         @media (min-width: 768px) {
           &:hover {
             color: #fff;
-            background: #495057;
+            background: #262c34;
             transition: background 0.2s ease-in-out;
           }
         }

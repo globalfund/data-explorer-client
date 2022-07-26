@@ -9,9 +9,11 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import { PageLoader } from "app/modules/common/page-loader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
+import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
@@ -31,19 +33,28 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const params = useParams<{
     code: string;
     vizType: string;
     subType?: string;
   }>();
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
+    !isMobile && params.vizType !== "overview"
+  );
+  const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
+    search,
+    params.code,
+    "locations"
+  );
 
   // api call & data
   const fetchLocationInfoData = useStoreActions(
@@ -65,23 +76,53 @@ export default function CountryDetail() {
   const clearEligibilityData = useStoreActions(
     (store) => store.EligibilityCountry.clear
   );
+  const countrySummaryCMSAction = useStoreActions(
+    (actions) => actions.cms.countrySummary.post
+  );
+  const clearCountrySummaryCMS = useStoreActions(
+    (store) => store.cms.countrySummary.clear
+  );
+  const notesDisclaimersCMSAction = useStoreActions(
+    (actions) => actions.cms.notesAndDisclaimers.post
+  );
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   const paramCode = params.code.replace(/\|/g, "/");
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
-    fetchLocationInfoData({
-      filterString: `locations=${paramCode}`,
+    if (location.pathname.indexOf("/overview") === -1) {
+      document.body.style.background = "#fff";
+    }
+    countrySummaryCMSAction({
+      values: {
+        filter: { iso3: paramCode },
+      },
+    });
+    notesDisclaimersCMSAction({
+      values: {
+        filter: { type: "COUNTRY_SUMMARY" },
+      },
     });
 
-    return () => clearEligibilityData();
+    return () => {
+      clearEligibilityData();
+      clearCountrySummaryCMS();
+    };
   }, [paramCode]);
 
   React.useEffect(() => {
-    if (!isMobile && !openToolboxPanel) {
+    if (!isMobile && !openToolboxPanel && params.vizType !== "overview") {
       setOpenToolboxPanel(true);
     }
   }, [params.vizType]);
+
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters({
+      ...appliedFilters,
+      locations: [paramCode],
+    });
+    fetchLocationInfoData({ filterString });
+  }, [paramCode, appliedFilters]);
 
   useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
@@ -114,6 +155,7 @@ export default function CountryDetail() {
         justify-content: center;
       `}
     >
+      {loading && <PageLoader />}
       <PageHeader
         isDetail
         title={locationInfoData.locationName}
@@ -165,44 +207,44 @@ export default function CountryDetail() {
       >
         <Switch>
           {/* Overview */}
-          <Route path={`/location/${params.code}/overview`}>
-            <LocationDetailOverviewModule code={params.code} />
+          <Route path={`/location/:code/overview`}>
+            <LocationDetailOverviewModule openToolboxPanel={openToolboxPanel} />
           </Route>
           {/* Budgets */}
-          <Route path={`/location/${params.code}/budgets/flow`}>
+          <Route path={`/location/:code/budgets/flow`}>
             <LocationDetailBudgetsFlowWrapper
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/budgets/time-cycle`}>
+          <Route path={`/location/:code/budgets/time-cycle`}>
             <LocationDetailGenericBudgetsTimeCycleWrapper
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/budgets/map`}>
+          <Route path={`/location/:code/budgets/map`}>
             <BudgetsGeoMap code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Disbursements */}
-          <Route path={`/location/${params.code}/disbursements/treemap`}>
+          <Route path={`/location/:code/disbursements/treemap`}>
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Disbursed"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/table`}>
+          <Route path={`/location/:code/disbursements/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/time-cycle`}>
+          <Route path={`/location/:code/disbursements/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Disbursed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/disbursements/map`}>
+          <Route path={`/location/:code/disbursements/map`}>
             <InvestmentsGeoMap
               type="Disbursed"
               code={paramCode}
@@ -210,24 +252,24 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Signed */}
-          <Route path={`/location/${params.code}/signed/treemap`}>
+          <Route path={`/location/:code/signed/treemap`}>
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Signed"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/signed/table`}>
+          <Route path={`/location/:code/signed/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/signed/time-cycle`}>
+          <Route path={`/location/:code/signed/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/signed/map`}>
+          <Route path={`/location/:code/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"
               code={paramCode}
@@ -235,24 +277,24 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Commitment */}
-          <Route path={`/location/${params.code}/commitment/treemap`}>
+          <Route path={`/location/:code/commitment/treemap`}>
             <LocationDetailInvestmentsDisbursedWrapper
               code={paramCode}
               type="Commitment"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/commitment/table`}>
+          <Route path={`/location/:code/commitment/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/commitment/time-cycle`}>
+          <Route path={`/location/:code/commitment/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Commitment"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path={`/location/${params.code}/commitment/map`}>
+          <Route path={`/location/:code/commitment/map`}>
             <InvestmentsGeoMap
               type="Committed"
               code={paramCode}
@@ -260,32 +302,37 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Allocations */}
-          <Route path={`/location/${params.code}/allocation`}>
+          <Route path={`/location/:code/allocation`}>
             <AllocationsModule
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
           </Route>
           {/* Eligibility */}
-          <Route path={`/location/${params.code}/eligibility/table`}>
+          <Route path={`/location/:code/eligibility/table`}>
             <LocationEligibilityTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/${params.code}/eligibility`}>
+          <Route path={`/location/:code/eligibility`}>
             <LocationDetailEligibilityWrapper code={paramCode} />
           </Route>
           {/* Grants */}
-          <Route path={`/location/${params.code}/grants/list`}>
-            <GrantsModule code={paramCode} detailFilterType="locations" />
+          <Route path={`/location/:code/grants/list`}>
+            <GrantsModule
+              search={search}
+              code={paramCode}
+              setSearch={setSearch}
+              detailFilterType="locations"
+            />
           </Route>
-          <Route path={`/location/${params.code}/grants`}>
+          <Route path={`/location/:code/grants`}>
             <LocationGrants code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Results */}
-          <Route path={`/location/${params.code}/results`}>
+          <Route path={`/location/:code/results`}>
             <LocationResults code={paramCode} detailFilterType="locations" />
           </Route>
           {/* Documents */}
-          <Route path={`/location/${params.code}/documents`}>
+          <Route path={`/location/:code/documents`}>
             <LocationDetailDocumentsModule
               mcName={params.code}
               isMultiCountry={params.code.length > 3}
@@ -313,6 +360,11 @@ export default function CountryDetail() {
         )}
         onCloseBtnClick={(value?: boolean) =>
           setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
+        }
+        getAllAvailableGrants={
+          params.vizType === "grants" && params.subType === "list"
+            ? getAllAvailableGrants
+            : undefined
         }
       />
       <div

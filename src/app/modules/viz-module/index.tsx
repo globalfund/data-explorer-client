@@ -81,6 +81,7 @@ export default function VizModule() {
     >
       <PageHeader
         title="Finance"
+        partialTitle={params.vizType.replace("-", " & ")}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -242,6 +243,9 @@ export default function VizModule() {
           location.pathname,
           filtergroups
         )}
+        css={`
+          z-index: 1;
+        `}
       />
       <div
         css={`

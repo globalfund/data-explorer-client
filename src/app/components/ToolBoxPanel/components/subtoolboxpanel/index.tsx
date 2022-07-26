@@ -18,6 +18,8 @@ import { GrantImplementationPeriods } from "app/components/ToolBoxPanel/componen
 import { ToolBoxPanelDisbursementsSlider } from "app/components/ToolBoxPanel/components/disbursementslider";
 import { ToolBoxPanelEligibilityAdvanced } from "app/components/ToolBoxPanel/components/eligibilityadvanced";
 import { PerformanceFrameworkReportingPeriods } from "app/components/ToolBoxPanel/components/pf-reportingperiods";
+import { ToolBoxPanelBudgetFlowLevelSelectors } from "app/components/ToolBoxPanel/components/budgetflowlevelselectors";
+import { ToolBoxPanelBudgetTimeCycleYearSelector } from "app/components/ToolBoxPanel/components/budgettimecycleyearselector";
 import {
   ViewModel,
   getControlItems,
@@ -109,6 +111,11 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
   // applied filters
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  // viz drilldowns
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+
   function getSelectedView() {
     let view: ViewModel | undefined;
     if (params.code) {
@@ -140,10 +147,10 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
     [params.vizType]
   );
 
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
+  React.useEffect(
+    () => setSelectedView(getSelectedView()),
+    [controlItems.views, history.location.pathname]
+  );
 
   React.useEffect(() => {
     setSelectedAggregation(
@@ -188,6 +195,14 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
           setSelected={setSelectedView}
         />
       )}
+      {params.vizType === "budgets" &&
+        params.subType === "flow" &&
+        vizDrilldowns.length === 2 && <ToolBoxPanelBudgetFlowLevelSelectors />}
+      {params.vizType === "budgets" &&
+        params.subType === "time-cycle" &&
+        vizDrilldowns.length === 2 && (
+          <ToolBoxPanelBudgetTimeCycleYearSelector />
+        )}
       {controlItems.aggregates.length > 0 && (
         <ToolBoxPanelAggregateBy
           title="Aggregate by"
@@ -244,7 +259,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
         )}
       {(params.vizType === "commitment" ||
         params.vizType === "disbursements" ||
-        params.vizType === "signed") &&
+        params.vizType === "signed" ||
+        params.vizType === "pledges-contributions") &&
         params.subType === "treemap" && (
           <ToolBoxPanelDisbursementsSlider label={params.vizType} />
         )}

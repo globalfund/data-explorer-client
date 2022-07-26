@@ -5,7 +5,8 @@ export const styles = {
     gap: 12px;
     width: 100vw;
     display: flex;
-    padding: 16px 20px;
+    min-height: 52px;
+    padding: 10px 20px;
     background: #495057;
     align-items: center;
 

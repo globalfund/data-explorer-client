@@ -2,6 +2,8 @@
 import React from "react";
 import Slide from "@material-ui/core/Slide";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface InformationPanelProps {
   open: boolean;
@@ -11,6 +13,8 @@ interface InformationPanelProps {
 }
 
 export function InformationPanel(props: InformationPanelProps) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <ClickAwayListener
       onClickAway={() => {
@@ -71,7 +75,7 @@ export function InformationPanel(props: InformationPanelProps) {
               `}
               onClick={() => props.onButtonClick()}
             >
-              {props.buttonLabel ? props.buttonLabel : "Information"}
+              {props.buttonLabel ? props.buttonLabel : get(cmsData, "componentsInformationPanel.defaultLabel", "")}
             </div>
             {props.children}
           </div>

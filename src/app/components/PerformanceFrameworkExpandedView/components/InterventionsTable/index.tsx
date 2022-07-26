@@ -5,6 +5,8 @@ import {
   PFIndicatorResultIntervention,
   PFIndicatorResultInterventionValue,
 } from "../../data";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const styles = {
   table: css`
@@ -32,6 +34,8 @@ const styles = {
 };
 
 export function InterventionsTable(props: PFIndicatorResultIntervention) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
@@ -42,9 +46,9 @@ export function InterventionsTable(props: PFIndicatorResultIntervention) {
       <table css={styles.table}>
         <thead css={styles.tablehead}>
           <tr>
-            <th>Interventions</th>
-            <th>Achievement rate</th>
-            <th>Value text</th>
+            <th>{get(cmsData, "componentsPerformanceFrameworkComponents.interventionTableInterventions", "")}</th>
+            <th>{get(cmsData, "componentsPerformanceFrameworkComponents.interventionTableAchievementRate", "")}</th>
+            <th>{get(cmsData, "componentsPerformanceFrameworkComponents.interventionTableValueText", "")}</th>
           </tr>
         </thead>
         <tbody css={styles.tablebody}>

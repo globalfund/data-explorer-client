@@ -5,12 +5,32 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface TransitionContainerProps {
   vizScale: number;
+  enableMobilePan?: boolean;
   children: React.ReactNode;
   vizTranslation: { x: number; y: number };
 }
 
 export function TransitionContainer(props: TransitionContainerProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
+  let content = props.children;
+  if (!isMobile) {
+    content = (
+      <MapInteractionCSS
+        disablePan
+        disableZoom
+        value={{
+          scale: props.vizScale,
+          translation: props.vizTranslation,
+        }}
+      >
+        {props.children}
+      </MapInteractionCSS>
+    );
+  } else if (props.enableMobilePan) {
+    content = (
+      <MapInteractionCSS disableZoom>{props.children}</MapInteractionCSS>
+    );
+  }
   return (
     <div
       id="transition-container"
@@ -46,20 +66,7 @@ export function TransitionContainer(props: TransitionContainerProps) {
         }
       `}
     >
-      {!isMobile ? (
-        <MapInteractionCSS
-          disablePan
-          disableZoom
-          value={{
-            scale: props.vizScale,
-            translation: props.vizTranslation,
-          }}
-        >
-          {props.children}
-        </MapInteractionCSS>
-      ) : (
-        props.children
-      )}
+      {content}
     </div>
   );
 }

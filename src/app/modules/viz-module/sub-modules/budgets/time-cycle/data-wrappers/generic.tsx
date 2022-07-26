@@ -20,9 +20,6 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
     x: 0,
     y: 0,
   });
-  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
-  );
   const [vizPrevSelected, setVizPrevSelected] = React.useState<
     string | undefined
   >(undefined);
@@ -72,12 +69,19 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
   const isDrilldown2Loading = useStoreState(
     (state) => state.BudgetsTimeCycleDrilldownLevel2.loading
   );
+  const setDrilldownLevelSelectors = useStoreActions(
+    (store) => store.ToolBoxPanelBudgetTimeCycleDrilldownYearSelector.setOptions
+  );
+  const vizSelected = useStoreState(
+    (state) =>
+      state.ToolBoxPanelBudgetTimeCycleDrilldownYearSelector.selectedOption
+  );
+  const setVizSelected = useStoreActions(
+    (actions) =>
+      actions.ToolBoxPanelBudgetTimeCycleDrilldownYearSelector.setSelectedOption
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-
-  const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
-    string[]
-  >(data.map((item: any) => item.year));
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);
@@ -118,7 +122,7 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
   }, [drilldownVizSelected]);
 
   useUpdateEffect(() => {
-    setDrilldownPanelOptions(data.map((item: any) => item.year.toString()));
+    setDrilldownLevelSelectors(data.map((item: any) => item.year.toString()));
   }, [data]);
 
   return (
@@ -137,7 +141,6 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
       vizPrevSelected={vizPrevSelected}
       setVizPrevSelected={setVizPrevSelected}
       vizPrevTranslation={vizPrevTranslation}
-      drilldownPanelOptions={drilldownPanelOptions}
       setDrilldownVizSelected={setDrilldownVizSelected}
       setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}

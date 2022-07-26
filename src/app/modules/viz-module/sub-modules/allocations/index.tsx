@@ -11,15 +11,15 @@ import { useTitle, useMeasure, useUnmount } from "react-use";
 import { InfoIcon } from "app/assets/icons/Info";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
+import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
 import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
@@ -156,6 +156,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         width: 0,
       },
       formatter: (seriesName: string, opts: any) => {
+        if (isMobile) {
+          return seriesName;
+        }
         return `${seriesName}: ${formatLargeAmountsWithPrefix(
           values[opts.seriesIndex]
         )}`;
@@ -335,8 +338,106 @@ export function AllocationsModule(props: AllocationsModuleProps) {
 
   useUnmount(() => setVizDrilldowns([]));
 
-  if (isLoading) {
-    return <PageLoader />;
+  let vizComponent = <React.Fragment />;
+
+  if (isLoading || isDrilldownLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (vizLevel === 0) {
+      vizComponent = (
+        <div
+          css={`
+            @media (max-width: 767px) {
+              z-index: 2;
+              width: 100%;
+              position: relative;
+              padding-bottom: 100px;
+
+              #mobile-tooltip-container {
+                top: 30vh;
+                left: 16px;
+                width: calc(100% - 32px);
+              }
+            }
+          `}
+        >
+          <div
+            ref={ref}
+            id="allocations-radial-bar"
+            css={`
+              width: 100%;
+            `}
+          >
+            {total === 0 ? (
+              <div css="display: flex;justify-content: center;">
+                <NoDataLabel />
+                <NoDataAllocations />
+              </div>
+            ) : (
+              <ReactApexCharts
+                type="radialBar"
+                options={options}
+                height={isMobile ? 400 : 580}
+                series={keysPercentagesColors.percentages}
+              />
+            )}
+          </div>
+          {(isMobile || isTouchDevice()) && xsTooltipData && (
+            <XsContainer id="mobile-tooltip-container">
+              <div
+                css={`
+                  width: 95%;
+                `}
+              >
+                <AllocationsRadialMobileTooltip
+                  {...xsTooltipData}
+                  close={() => setXsTooltipData(null)}
+                  drilldown={() => {
+                    setVizLevel(1);
+                    setVizSelected(xsTooltipData.label);
+                    setVizTranslation({ x: -300, y: 0 });
+                  }}
+                />
+              </div>
+            </XsContainer>
+          )}
+        </div>
+      );
+    } else if (vizLevel === 1) {
+      vizComponent = (
+        <React.Fragment>
+          <span
+            css={`
+              gap: 40px;
+              width: 100%;
+              display: flex;
+              margin-bottom: 20px;
+              flex-direction: row;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 40px;
+                  }
+                }
+              }
+            `}
+          >
+            <DrillDownArrowSelector
+              options={[...keys, "Total"]}
+              selected={vizSelected || ""}
+              onChange={(value: string) => setVizSelected(value)}
+            />
+          </span>
+          <BudgetsTreemap
+            data={dataDrilldownLevel}
+            tooltipValueLabel="Allocation"
+            onNodeClick={(node: string, x: number, y: number) => {}}
+          />
+        </React.Fragment>
+      );
+    }
   }
 
   return (
@@ -344,12 +445,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       id="allocations-radial-bar"
       css={`
         width: 100%;
-
-        ${!vizSelected
-          ? `* {
-      // overflow: visible !important;
-    }`
-          : ""}
 
         .apexcharts-radialbar-hollow {
           r: 75;
@@ -364,107 +459,38 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         }
       `}
     >
-      <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
-        <div
-          ref={ref}
-          id="allocations-radial-bar"
-          css={`
-            width: 100%;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              color: #262c34;
-              font-size: 14px;
-              font-weight: bold;
-              align-items: center;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+      <div
+        css={`
+          display: flex;
+          color: #262c34;
+          font-size: 14px;
+          font-weight: bold;
+          align-items: center;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
-              > svg {
-                margin-left: 10px;
-              }
-            `}
-          >
-            Allocations | {selectedPeriod} <InfoIcon />
-          </div>
-          <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-          {total === 0 ? (
-            <div css="display: flex;justify-content: center;">
-              <NoDataLabel />
-              <NoDataAllocations />
-            </div>
-          ) : (
-            <ReactApexCharts
-              type="radialBar"
-              options={options}
-              height={isMobile ? 400 : 580}
-              series={keysPercentagesColors.percentages}
-            />
-          )}
-        </div>
-        {(isMobile || isTouchDevice()) && xsTooltipData && (
-          <XsContainer id="mobile-tooltip-container">
-            <div
-              css={`
-                width: 95%;
-              `}
-            >
-              <AllocationsRadialMobileTooltip
-                {...xsTooltipData}
-                close={() => setXsTooltipData(null)}
-                drilldown={() => {
-                  setVizLevel(1);
-                  setVizSelected(xsTooltipData.label);
-                  setVizTranslation({ x: -300, y: 0 });
-                }}
-              />
-            </div>
-          </XsContainer>
-        )}
-      </TransitionContainer>
-      <SlideInContainer
-        vizLevel={vizLevel}
-        selected={vizSelected}
-        loading={isDrilldownLoading}
-        toolboxOpen={props.toolboxOpen}
-        close={() => {
-          setVizLevel(0);
-          setVizScale(1);
-          setVizSelected(undefined);
-          setVizTranslation({ x: 0, y: 0 });
-        }}
+          > svg {
+            margin-left: 10px;
+          }
+        `}
       >
-        <span
-          css={`
-            gap: 40px;
-            width: 100%;
-            display: flex;
-            margin-bottom: 20px;
-            flex-direction: row;
-
-            > * {
-              @supports (-webkit-touch-callout: none) and
-                (not (translate: none)) {
-                &:not(:last-child) {
-                  margin-right: 40px;
-                }
-              }
+        Allocations | {selectedPeriod} <InfoIcon />
+      </div>
+      <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
+      <div css="margin-top: 5px;">
+        <DrilldownPath />
+      </div>
+      {vizLevel > 0 && (
+        <VizBackBtn
+          vizLevel={vizLevel}
+          setVizLevel={(value: number) => {
+            if (value === 0) {
+              setVizSelected(undefined);
             }
-          `}
-        >
-          <DrillDownArrowSelector
-            options={[...keys, "Total"]}
-            selected={vizSelected || ""}
-            onChange={(value: string) => setVizSelected(value)}
-          />
-        </span>
-        <BudgetsTreemap
-          data={dataDrilldownLevel}
-          tooltipValueLabel="Allocation"
-          onNodeClick={(node: string, x: number, y: number) => {}}
+            setVizLevel(value);
+          }}
         />
-      </SlideInContainer>
+      )}
+      {vizComponent}
     </div>
   );
 }

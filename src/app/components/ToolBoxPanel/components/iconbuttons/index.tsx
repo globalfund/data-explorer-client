@@ -3,6 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import { CSVLink } from "react-csv";
 import Snackbar from "@material-ui/core/Snackbar";
+import MenuItem from "@material-ui/core/MenuItem";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
@@ -13,7 +14,6 @@ import { exportCSV } from "app/utils/exportCSV";
 import { LinkIcon } from "app/assets/icons/Link";
 import { exportView } from "app/utils/exportView";
 import { CopyToClipboard } from "react-copy-to-clipboard";
-import { StyledMenuItem } from "app/components/PageHeader";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 
@@ -83,11 +83,32 @@ const StyledMenu = withStyles({
   />
 ));
 
-export function ToolBoxPanelIconButtons() {
+const StyledMenuItem = withStyles(() => ({
+  root: {
+    padding: 0,
+    width: "100%",
+    borderBottom: "1px solid #DFE3E6",
+    "& a": {
+      width: "100%",
+      fontSize: "14px",
+      color: "#262c34",
+      padding: "6px 12px",
+      textDecoration: "none",
+    },
+  },
+}))(MenuItem);
+
+interface ToolBoxPanelIconButtonsProps {
+  getAllAvailableGrants?: () => Promise<any>;
+}
+
+export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
   const location = useLocation();
+  const csvLinkRef = React.useRef<any>();
   const params = useParams<{ code?: string }>();
   const vizData = useGetAllVizData();
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [allAvailableGrants, setAllAvailableGrants] = React.useState([]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const selectedAggregation = useStoreState(
@@ -98,6 +119,9 @@ export function ToolBoxPanelIconButtons() {
   );
   const investmentsMapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
+  );
+  const resultsSelectedYear = useStoreState(
+    (state) => state.ToolBoxPanelResultsYearState.value
   );
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
@@ -116,36 +140,84 @@ export function ToolBoxPanelIconButtons() {
     setOpenSnackbar(false);
   }
 
-  const menuitems = [
-    <StyledMenuItem key="export-csv-menuitem">
-      <CSVLink
-        target="_blank"
-        id="download-csv"
-        {...exportCSV(
-          location.pathname
-            .replace("/location/", "/viz/")
-            .replace("/grant/", "/viz/")
-            .replace(`/${params.code}`, ""),
-          get(
-            vizData,
-            location.pathname.replace(`/${params.code}`, "/<code>"),
-            []
-          ),
-          {
-            selectedAggregation,
-            donorMapView,
-            investmentsMapView,
-            isDetail: params.code !== undefined,
-          }
-        )}
-        css={`
-          font-size: 12px !important;
-        `}
-      >
-        CSV
-      </CSVLink>
-    </StyledMenuItem>,
-  ];
+  let menuitems = [];
+
+  if (!props.getAllAvailableGrants) {
+    menuitems = [
+      <StyledMenuItem key="export-csv-menuitem">
+        <CSVLink
+          target="_blank"
+          id="download-csv"
+          {...exportCSV(
+            location.pathname
+              .replace("/location/", "/viz/")
+              .replace("/grant/", "/viz/")
+              .replace(`/${params.code}`, ""),
+            get(
+              vizData,
+              location.pathname.replace(`/${params.code}`, "/<code>"),
+              []
+            ),
+            {
+              selectedAggregation,
+              donorMapView,
+              investmentsMapView,
+              isDetail: params.code !== undefined,
+              resultsSelectedYear,
+            }
+          )}
+          css={`
+            font-size: 12px !important;
+          `}
+        >
+          CSV
+        </CSVLink>
+      </StyledMenuItem>,
+    ];
+  } else {
+    menuitems = [
+      <StyledMenuItem key="export-csv-menuitem">
+        <CSVLink
+          ref={csvLinkRef}
+          target="_blank"
+          id="download-csv"
+          data={allAvailableGrants}
+          filename="grants.csv"
+          headers={[
+            { label: "Title", key: "title" },
+            { label: "Status", key: "status" },
+            { label: "Component", key: "component" },
+            { label: "Location", key: "geoLocation" },
+            { label: "Rating", key: "rating" },
+            { label: "Disbursement (USD)", key: "disbursed" },
+            { label: "Committment (USD)", key: "committed" },
+            { label: "Signed (USD)", key: "signed" },
+          ]}
+          css={`
+            display: none;
+          `}
+        />
+        <div
+          onClick={() => {
+            if (props.getAllAvailableGrants) {
+              props.getAllAvailableGrants().then((grants: any) => {
+                setAllAvailableGrants(grants);
+                setTimeout(() => {
+                  csvLinkRef.current.link.click();
+                });
+              });
+            }
+          }}
+          css={`
+            font-size: 12px !important;
+            padding: 6px 12px !important;
+          `}
+        >
+          CSV
+        </div>
+      </StyledMenuItem>,
+    ];
+  }
 
   if (
     locationsToNotShowImageExport.indexOf(

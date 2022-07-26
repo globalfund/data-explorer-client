@@ -25,5 +25,7 @@ export const TooltipButton = styled.button`
   font-size: 14px;
   border-width: 0px;
   border-radius: 20px;
+  font-weight: 700;
   background: #dfe3e6;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 `;

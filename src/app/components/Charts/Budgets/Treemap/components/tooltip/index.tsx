@@ -1,9 +1,12 @@
 import React from "react";
 import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursements/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function TreemapTooltip(props: TreemapTooltipProps) {
   const { data } = props.node;
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div
@@ -69,7 +72,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             }
           `}
         >
-          <div>{props.tooltipKeyLabel || "Component"}</div>
+          <div>{props.tooltipKeyLabel || get(cmsData, "componentsChartsBudgets.treemapTooltipDefaultKeyLabel", "")}</div>
           <div>{props.tooltipValueLabel}</div>
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (

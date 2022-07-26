@@ -22,6 +22,7 @@ export const subtitle = css`
 
   @media (max-width: 767px) {
     font-size: 12px;
+    margin-top: 0;
   }
 `;
 

@@ -1,8 +1,11 @@
 import React from "react";
 import get from "lodash/get";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function InvestmentsTimeCycleTooltip(props: any) {
+  const cmsData = useCMSData({ returnData: true });
+  
   return (
     <div
       css={`
@@ -54,7 +57,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Total amount
+            {get(cmsData, "componentsChartsInvestments.totalAmount", "")}
           </div>
           <div>{formatFinancialValue(props.value as number)}</div>
         </div>

@@ -5,15 +5,16 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useParams, useHistory, Link } from "react-router-dom";
+import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { RouteTab } from "app/components/PageHeader/components/tabs";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { getChartIcon } from "app/components/ToolBoxPanel/utils/getChartIcon";
 import {
   ViewModel,
   getControlItems,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import IconChevronRight from "app/assets/icons/IconChevronRight";
 
 interface MobileViewControlProps {
   tabs?: TabProps[];
@@ -59,7 +60,7 @@ const StyledMenu = withStyles({
   />
 ));
 
-export const StyledMenuItem = withStyles((theme) => ({
+export const StyledMenuItem = withStyles(() => ({
   root: {
     padding: 0,
     minHeight: 0,
@@ -69,7 +70,7 @@ export const StyledMenuItem = withStyles((theme) => ({
       width: "100%",
       fontSize: "14px",
       color: "#262c34",
-      padding: "6px 12px",
+      padding: "10px 12px",
       textDecoration: "none",
     },
   },
@@ -129,10 +130,10 @@ export function MobileViewControl(props: MobileViewControlProps) {
     [params.vizType]
   );
 
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
+  React.useEffect(
+    () => setSelectedView(getSelectedView()),
+    [controlItems.views, history.location.pathname]
+  );
 
   React.useEffect(() => {
     if (anchorEl) {
@@ -151,9 +152,9 @@ export function MobileViewControl(props: MobileViewControlProps) {
   return (
     <div
       css={`
+        z-index: 3;
         width: 100%;
         display: flex;
-        // margin-top: 15px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
@@ -166,7 +167,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
           css={`
             font-size: 14px;
             font-weight: bold;
-            padding: 7px 16px;
+            padding: 6px 16px;
             border-radius: 20px;
             background: #dfe3e6;
             text-transform: capitalize;
@@ -180,7 +181,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
             svg {
               margin-left: 10px;
               transition: all 0.2s ease-in-out;
-              transform: rotate(${anchorEl ? "-" : ""}90deg);
+              transform: rotate(${anchorEl ? "180" : "0"}deg);
               > path {
                 fill: #262c34;
               }
@@ -195,9 +196,9 @@ export function MobileViewControl(props: MobileViewControlProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            {params.vizType}
+            {params.vizType.replace("-", " & ")}
           </span>{" "}
-          <IconChevronRight />
+          <KeyboardArrowDownIcon />
         </Button>
         <StyledMenu
           keepMounted
@@ -207,9 +208,8 @@ export function MobileViewControl(props: MobileViewControlProps) {
           open={Boolean(anchorEl)}
         >
           {!props.tabs &&
-            datasetMenuItems
-              .slice(1)
-              .map((item: React.ReactChild, itemIndex: number) => (
+            datasetMenuItems.map(
+              (item: React.ReactChild, itemIndex: number) => (
                 <StyledMenuItem
                   disableRipple
                   key={itemIndex}
@@ -217,7 +217,8 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 >
                   {item}
                 </StyledMenuItem>
-              ))}
+              )
+            )}
           {props.tabs &&
             props.tabs.map((tab: TabProps) => (
               <StyledMenuItem disableRipple key={tab.name} disableTouchRipple>

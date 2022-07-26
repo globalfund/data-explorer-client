@@ -41,8 +41,11 @@ import { TooltipButton } from "app/components/Charts/common/styles";
 import { MapPin } from "app/components/Charts/GeoMap/components/pins";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { GeoMapControls } from "app/components/Charts/GeoMap/components/controls";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function GeoMap(props: GeoMapProps) {
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
   const mapRef = React.useRef<React.Ref<MapRef>>();
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -128,18 +131,12 @@ export function GeoMap(props: GeoMapProps) {
   };
   const [hoverInfo, setHoverInfo] = React.useState<any>(null);
   const [prevHoverInfo, setPrevHoverInfo] = React.useState<any>(null);
-  const [
-    pinMarkerHoverInfo,
-    setPinMarkerHoverInfo,
-  ] = React.useState<GeoMapPinMarker | null>(null);
-  const [
-    investmentsPinMarkerHoverInfo,
-    setInvestmentsPinMarkerHoverInfo,
-  ] = React.useState<InvestmentsGeoMapPinMarker | null>(null);
-  const [
-    allocationsPinMarkerHoverInfo,
-    setAllocationsPinMarkerHoverInfo,
-  ] = React.useState<AllocationsGeoMapPinMarker | null>(null);
+  const [pinMarkerHoverInfo, setPinMarkerHoverInfo] =
+    React.useState<GeoMapPinMarker | null>(null);
+  const [investmentsPinMarkerHoverInfo, setInvestmentsPinMarkerHoverInfo] =
+    React.useState<InvestmentsGeoMapPinMarker | null>(null);
+  const [allocationsPinMarkerHoverInfo, setAllocationsPinMarkerHoverInfo] =
+    React.useState<AllocationsGeoMapPinMarker | null>(null);
   const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
 
   React.useEffect(() => {
@@ -480,7 +477,7 @@ export function GeoMap(props: GeoMapProps) {
                       );
                     }}
                   >
-                    Go to detail page
+                    {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
                   </TooltipButton>
                 </div>
               )}
@@ -581,7 +578,7 @@ export function GeoMap(props: GeoMapProps) {
                       );
                     }}
                   >
-                    Go to detail page
+                    {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
                   </TooltipButton>
                 </div>
               )}
@@ -661,7 +658,13 @@ export function GeoMap(props: GeoMapProps) {
             </div>
           </Popup>
         )}
-        <GeoMapControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
+        <GeoMapControls
+          css={`
+            z-index: 200;
+          `}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+        />
       </MapGL>
       {hoverInfo &&
         (isHovering || isMobile || isTouchDevice()) &&
@@ -732,7 +735,7 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  Location detail page
+                  {get(cmsData, "componentsChartsGeomap.locationDetail", "")}
                 </TooltipButton>
               </div>
             )}
@@ -807,7 +810,8 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  Location detail page
+                  {/* {get(cmsData, "componentsChartsGeomap.locationDetail", "")} */}
+                  Country Detail Page
                 </TooltipButton>
               </div>
             )}
