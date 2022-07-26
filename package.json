@@ -1,0 +1,145 @@
+{
+  "name": "the-data-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zimmerman-team/the-data-explorer.git"
+  },
+  "dependencies": {
+    "@craco/craco": "^6.4.3",
+    "@devhammed/use-cookie": "^1.1.1",
+    "@hot-loader/react-dom": "^17.0.1",
+    "@material-ui/core": "^4.11.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.57",
+    "@nivo/bar": "^0.68.0",
+    "@nivo/core": "^0.68.0",
+    "@nivo/network": "^0.69.0",
+    "@nivo/sankey": "^0.68.0",
+    "@nivo/scatterplot": "^0.69.1",
+    "@nivo/treemap": "^0.68.0",
+    "@turf/bbox": "^6.3.0",
+    "@turf/bezier-spline": "^6.3.0",
+    "@turf/center": "^6.3.0",
+    "@turf/helpers": "^6.3.0",
+    "@types/d3-shape": "^3.0.2",
+    "@types/detect-it": "^4.0.1",
+    "@types/lodash": "^4.14.168",
+    "@types/react-copy-to-clipboard": "^5.0.1",
+    "@types/react-csv": "^1.1.1",
+    "@types/react-router-hash-link": "^2.4.0",
+    "apexcharts": "^3.27.0",
+    "axios": "^0.21.3",
+    "craco-plugin-react-hot-reload": "^0.1.0",
+    "d3-shape": "^3.0.1",
+    "detect-it": "^4.0.1",
+    "dom-to-image": "^2.6.0",
+    "dotenv": "^8.2.0",
+    "easy-peasy": "^5.0.4",
+    "fs": "^0.0.1-security",
+    "i18next": "^20.2.1",
+    "i18next-browser-languagedetector": "^6.1.0",
+    "json-loader": "^0.5.7",
+    "lodash": "^4.17.21",
+    "postcss": "^8.2.13",
+    "postcss-js": "^3.0.3",
+    "react": "^17.0.2",
+    "react-apexcharts": "^1.3.9",
+    "react-copy-to-clipboard": "^5.0.3",
+    "react-csv": "^2.0.3",
+    "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.3",
+    "react-grid-carousel": "^1.0.1",
+    "react-map-gl": "^6.1.13",
+    "react-map-interaction": "^2.0.0",
+    "react-range": "1.4.7",
+    "react-router-dom": "^5.2.0",
+    "react-router-hash-link": "^2.4.3",
+    "react-scripts": "^5.0.0",
+    "react-toastify": "^7.0.4",
+    "react-use": "^17.2.3",
+    "styled-components": "^5.2.3",
+    "swr": "^0.5.5",
+    "use-fit-text": "^2.4.0",
+    "viewport-mercator-project": "^7.0.2",
+    "web-vitals": "^1.1.1"
+  },
+  "devDependencies": {
+    "@types/i18next-xhr-backend": "^1.4.2",
+    "@types/jest": "^27.4.0",
+    "@types/material-ui": "^0.21.8",
+    "@types/node": "^14.14.41",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@types/react-router-dom": "^5.1.7",
+    "@types/styled-components": "^5.1.9",
+    "babel-plugin-macros": "^3.0.1",
+    "babel-plugin-react-data-testid": "^0.2.0",
+    "babel-plugin-styled-components": "^1.12.0",
+    "cypress-shadow-dom": "^1.4.1",
+    "depcheck": "^1.4.0",
+    "eslint-config-airbnb-typescript-prettier": "^4.2.0",
+    "eslint-config-prettier": "^8.2.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "eslint-plugin-sonarjs": "^0.6.0",
+    "figmint": "^0.8.1",
+    "happo-cypress": "^1.20.0",
+    "happo.io": "^6.4.0",
+    "husky": "^6.0.0",
+    "paths.macro": "^3.0.1",
+    "prettier": "^2.2.1",
+    "pretty-quick": "^3.1.0",
+    "source-map-explorer": "^2.5.2",
+    "stylelint": "^13.12.0",
+    "stylelint-config-recommended": "^4.0.0",
+    "stylelint-config-styled-components": "^0.1.1",
+    "stylelint-prettier": "^1.2.0",
+    "stylelint-processor-styled-components": "^1.10.0",
+    "typescript": "^4.2.4",
+    "typescript-plugin-styled-components": "^1.5.0",
+    "webpack-plugin-ramdisk": "^0.1.8",
+    "yarn-upgrade-all": "^0.5.4"
+  },
+  "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "depcheck": "depcheck",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
+    "eject": "craco eject",
+    "upgrade-all": "yarn-upgrade-all"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "release": {
+    "branches": [
+      "main",
+      {
+        "name": "develop",
+        "prerelease": true
+      }
+    ],
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github"
+    ]
+  }
+}
