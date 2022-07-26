@@ -1,10 +1,10 @@
 {
-  "name": "the-data-explorer",
+  "name": "data-explorer-client",
   "version": "1.0.0",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/zimmerman-team/the-data-explorer.git"
+    "url": "https://github.com/globalfund/data-explorer-client.git"
   },
   "dependencies": {
     "@craco/craco": "^6.4.3",
