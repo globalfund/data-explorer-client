@@ -202,81 +202,143 @@ export function AppBar() {
               {(location.pathname === "/" || !openSearch) && (
                 <div
                   css={`
+                    width: 100%;
                     height: 100%;
                     display: flex;
                     flex-direction: row;
                     align-items: center;
+                    justify-content: space-between;
                   `}
                 >
-                  <NavLink to="/" css="display: flex;margin-right: 52px;">
-                    <img
-                      src="/gflogo.png"
-                      width={295}
-                      height={24}
-                      alt={get(cmsData, "componentsAppBar.logoAlt", "")}
-                    />
-                  </NavLink>
                   <div
-                    id="appbar-datasets"
-                    onClick={handleClick}
                     css={`
                       height: 100%;
                       display: flex;
-                      color: ${anchorEl ? "#fff" : "#dfe3e6"};
-                      cursor: pointer;
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-right: 32px;
+                      flex-direction: row;
                       align-items: center;
-                      letter-spacing: 0.5px;
-                      text-decoration: none;
-
-                      &:hover {
-                        color: #fff;
-                      }
                     `}
                   >
-                    Datasets
+                    <NavLink to="/" css="display: flex;margin-right: 52px;">
+                      <img
+                        src="/gflogo.png"
+                        width={295}
+                        height={24}
+                        alt={get(cmsData, "componentsAppBar.logoAlt", "")}
+                      />
+                    </NavLink>
+                    <div
+                      id="appbar-datasets"
+                      onClick={handleClick}
+                      css={`
+                        height: 100%;
+                        display: flex;
+                        color: ${anchorEl ? "#fff" : "#dfe3e6"};
+                        cursor: pointer;
+                        font-size: 14px;
+                        font-weight: bold;
+                        margin-right: 32px;
+                        align-items: center;
+                        letter-spacing: 0.5px;
+                        text-decoration: none;
+
+                        &:hover {
+                          color: #fff;
+                        }
+                      `}
+                    >
+                      Datasets
+                    </div>
+                    <StyledMenu
+                      keepMounted
+                      anchorEl={anchorEl}
+                      onClose={handleClose}
+                      open={Boolean(anchorEl)}
+                      id="appbar-datasets-menu"
+                    >
+                      {datasetMenuItems.map(
+                        (item: React.ReactChild, itemIndex: number) => (
+                          <StyledMenuItem
+                            disableRipple
+                            key={itemIndex}
+                            disableTouchRipple
+                          >
+                            {item}
+                          </StyledMenuItem>
+                        )
+                      )}
+                    </StyledMenu>
+                    <NavLink
+                      to="/about"
+                      css={`
+                        color: #dfe3e6;
+                        font-size: 14px;
+                        font-weight: bold;
+                        margin-right: 32px;
+                        letter-spacing: 0.5px;
+                        text-decoration: none;
+
+                        &:hover {
+                          color: #fff;
+                        }
+
+                        &.active {
+                          color: #fff;
+                        }
+                      `}
+                    >
+                      {get(cmsData, "componentsAppBar.about", "")}
+                    </NavLink>
+                    <NavLink
+                      to="/data-themes"
+                      css={`
+                        color: #dfe3e6;
+                        font-size: 14px;
+                        font-weight: bold;
+                        letter-spacing: 0.5px;
+                        text-decoration: none;
+
+                        &:hover {
+                          color: #fff;
+                        }
+
+                        &.active {
+                          color: #fff;
+                        }
+                      `}
+                    >
+                      Themes
+                    </NavLink>
                   </div>
-                  <StyledMenu
-                    keepMounted
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    open={Boolean(anchorEl)}
-                    id="appbar-datasets-menu"
-                  >
-                    {datasetMenuItems.map(
-                      (item: React.ReactChild, itemIndex: number) => (
-                        <StyledMenuItem
-                          disableRipple
-                          key={itemIndex}
-                          disableTouchRipple
-                        >
-                          {item}
-                        </StyledMenuItem>
-                      )
-                    )}
-                  </StyledMenu>
-                  <NavLink
-                    to="/about"
+                  {/* <div
                     css={`
-                      color: #dfe3e6;
-                      font-size: 14px;
-                      font-weight: bold;
-                      letter-spacing: 0.5px;
-                      text-decoration: none;
-
-                      &:hover {
-                        color: #fff;
-                      }
-
-                      &.active {
-                        color: #fff;
-                      }
+                      height: 100%;
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
                     `}
                   >
-                    {get(cmsData, "componentsAppBar.about", "")}
-                  </NavLink>
+                    <NavLink
+                      to="/data-themes"
+                      css={`
+                        font-weight: 700;
+                        color: #262c34;
+                        font-size: 14px;
+                        letter-spacing: 0.5px;
+                        text-decoration: none;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: #cfd4da;
+                        height: 33px;
+                        width: 33px;
+                        border-radius: 100%;
+                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                          sans-serif;
+                      `}
+                    >
+                      DL
+                    </NavLink>
+                  </div> */}
                 </div>
               )}
               {location.pathname !== "/" && (

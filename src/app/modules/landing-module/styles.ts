@@ -7,6 +7,7 @@ export const container = css`
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  padding-top: 2rem;
 
   @media (max-width: 767px) {
     padding-top: 20vh;
@@ -46,4 +47,53 @@ export const datasetslink = css`
   > a {
     color: #13183f;
   }
+`;
+
+export const alignments = css`
+  height: 31px;
+  width: 104px;
+  font-size: 12px;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px, 22px, 8px, 22px;
+  background: #eee;
+  color: rgba(0, 0, 0, 0.54);
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+  &:hover {
+    color: #495057;
+    background: #fff;
+  }
+`;
+
+export const activeThemeCss = css`
+  color: #fff;
+  background: #262c34;
+
+  &:hover {
+    color: #fff;
+    background: #262c34;
+  }
+`;
+
+export const containerCss = css`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  @media (max-width: 600px) {
+    > svg {
+      width: 100%;
+    }
+  }
+`;
+
+export const activeContainerCss = css`
+  display: flex;
+  margin: 2rem 0;
 `;

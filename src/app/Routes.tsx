@@ -34,6 +34,7 @@ const CountryDetailModule = lazy(
 const PartnerDetailModule = lazy(
   () => import("app/modules/partner-detail-module")
 );
+const DataThemesModule = lazy(() => import("app/modules/data-themes-module"));
 
 function GrantPeriodRedirect(props: RouteComponentProps<any>) {
   const history = useHistory();
@@ -67,7 +68,7 @@ export function MainRoutes() {
 
   useCMSData({
     loadData: true,
-  })
+  });
 
   // const isMobile = useMediaQuery("(max-width: 767px)");
 
@@ -208,6 +209,10 @@ export function MainRoutes() {
 
         <Route exact path="/viz">
           <Redirect to="/datasets" />
+        </Route>
+
+        <Route path="/data-themes">
+          <DataThemesModule />
         </Route>
 
         <V1RouteRedirections />

@@ -100,6 +100,9 @@ body::webkit-scrollbar-thumb {
 
 * {
   outline: none;
+}
+
+*:not([data-text="true"]) {
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
 }
 
@@ -126,7 +129,11 @@ body::webkit-scrollbar-thumb {
 }
 
 b {
-  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif !important;
+}
+
+a:hover {
+  color: none;
 }
 
 button {
@@ -139,4 +146,33 @@ input[type="text"] {
   padding: 1px 2px;
   appearance: none;
   -webkit-appearance: none;
+}
+
+/* Data themes table */
+
+.data-themes-table-header-cell {
+  color: #262C34;
+  font-weight: 400;
+  border-width: 1px;
+  background: #DFE3E6;
+  border-color: #98A1AA;
+  border-style: solid solid solid none;
+}
+
+.data-themes-table-header-cell:first-of-type {
+  border-style: solid;
+}
+
+.data-themes-table-id-cell {
+  color: #868E96;
+  border-width: 1px;
+  text-align: center;
+  background: #DFE3E6;
+  border-color: #98A1AA;
+  border-style: none solid solid solid;
+}
+
+.data-themes-table-cell {
+  color: #262C34;
+  background: #F1F3F5;
 }
