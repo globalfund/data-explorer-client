@@ -66,6 +66,7 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
+    document.body.style.background = "#fff";
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
@@ -287,6 +288,7 @@ export default function GrantDetail() {
               code={params.code}
               toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
+              setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
         </Switch>

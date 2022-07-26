@@ -17,7 +17,6 @@ interface Props {
 export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   const history = useHistory();
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -65,7 +64,13 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   function goToGrantDetail(code: string) {
-    history.push(`/grant/${code}/1/overview`);
+    let clickthroughPath = "signed/treemap";
+    if (props.type === "Commitment") {
+      clickthroughPath = "commitment/treemap";
+    } else if (props.type === "Disbursed") {
+      clickthroughPath = "disbursements/treemap";
+    }
+    history.push(`/grant/${code}/period/${clickthroughPath}`);
   }
 
   React.useEffect(() => {
@@ -83,18 +88,18 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   return (
     <InvestmentsDisbursedModule
       data={data}
+      isPartnerDetail
       type={props.type}
       drilldownData={[]}
       vizLevel={vizLevel}
       isLoading={isLoading}
+      codeParam={props.code}
       allowDrilldown={false}
       setVizLevel={setVizLevel}
       vizSelected={vizSelected}
       isDrilldownLoading={false}
       onNodeClick={goToGrantDetail}
       setVizSelected={setVizSelected}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       toolboxOpen={props.toolboxOpen}
     />
   );

@@ -392,7 +392,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
-  "/location/<code>/allocation": filter(
+  "/location/<code>/allocations": filter(
     filtergroups,
     (fg: FilterGroupProps) => fg.name === "Components"
   ),

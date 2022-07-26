@@ -615,7 +615,7 @@ export function exportCSV(
           { label: "Budget (USD)", key: "budget" },
         ],
       };
-    case "/viz/allocation":
+    case "/viz/allocations":
       data.keys.forEach((key: string, index: number) => {
         csvData.push({
           component: key,

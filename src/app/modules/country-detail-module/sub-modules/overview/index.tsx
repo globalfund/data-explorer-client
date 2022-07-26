@@ -214,7 +214,6 @@ export function LocationDetailOverviewModule(props: Props) {
                   {locationInfoData.portfolioManager}
                 </div>
                 <a
-                  target="_blank"
                   href={`mailto:${locationInfoData.portfolioManagerEmail}`}
                   css={`
                     font-size: 14px;
