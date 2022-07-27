@@ -17,6 +17,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          persist-credentials: false
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         with:
@@ -34,4 +37,4 @@ jobs:
             "@semantic-release/release-notes-generator"
             "@semantic-release/github"
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
