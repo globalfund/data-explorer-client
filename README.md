@@ -2,8 +2,7 @@
 
 ---
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/zimmerman-team/the-data-explorer/blob/main/LICENSE.MD)
-[![CircleCI](https://circleci.com/gh/zimmerman-team/the-data-explorer/tree/main.svg?style=svg&circle-token=6f6ecdaed1d23739b91848d368c60fa6c9518b5c)](https://circleci.com/gh/zimmerman-team/the-data-explorer/tree/main)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/globalfund/data-explorer-client/blob/main/LICENSE.MD)
 
 ## What is the Data Explorer?
 
@@ -13,15 +12,15 @@ The Global Fund invests in smart, effective health programs to end AIDS, tubercu
 
 We regularly improve and enhance the Data Explorer, and those updates are noted on the <a href= "https://www.theglobalfund.org/en/updates/data/" target="_blank">Data Explorer Updates</a> page on the Global Fund website. The data behind the Data Explorer and our API are available through the <a href="https://data-service.theglobalfund.org/" target="_blank">Global Fund Data Service </a>.
 
-It makes use of [Data API Middleware](https://github.com/zimmerman-team/the-data-explorer-api/) in order to retrieve all data needed for the visualisations/tables/filters and detail pages.
+It makes use of [Data API Middleware](https://github.com/globalfund/data-explorer-server/) in order to retrieve all data needed for the visualisations/tables/filters and detail pages.
 
 ## About the project
 
 - Website: <a href="https://data.theglobalfund.org" target="_blank">data.theglobalfund.org</a>
 - Authors: <a href="https://www.zimmerman.team/" target="_blank">Zimmerman</a>
 - Github Repo:
-  - Frontend: <a href="https://github.com/zimmerman-team/the-data-explorer" target="_blank">https://github.com/zimmerman-team/the-data-explorer</a>
-  - Backend: <a href="https://github.com/zimmerman-team/the-data-explorer-api" target="_blank">https://github.com/zimmerman-team/the-data-explorer-api</a>
+  - Frontend: <a href="https://github.com/globalfund/data-explorer-client" target="_blank">https://github.com/globalfund/data-explorer-client</a>
+  - Backend: <a href="https://github.com/globalfund/data-explorer-server" target="_blank">https://github.com/globalfund/data-explorer-server</a>
 
 ## Installation
 
@@ -35,7 +34,7 @@ REACT_APP_CMS_API=<cockpit cms api url>
 REACT_APP_CMS_TOKEN=<cockpit cms api token>
 ```
 
-`REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/zimmerman-team/the-data-explorer-api/) locally then you can use `http://localhost:4200`.
+`REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/globalfund/data-explorer-server/) locally then you can use `http://localhost:4200`.
 
 `REACT_APP_MAPBOX_TOKEN`: to get a mapbox token you will need to register on their [website](https://www.mapbox.com).The token will be used to identify you and start serving up map tiles. The service is free until a certain level of traffic is exceeded.
 
