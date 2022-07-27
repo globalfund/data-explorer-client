@@ -18,6 +18,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
+          # Need these two configurations because this job runs on protected branches
           fetch-depth: 0
           persist-credentials: false
       - name: Semantic Release
