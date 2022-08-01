@@ -804,10 +804,12 @@ export function DataThemesBuilder() {
                         vizIndex={0}
                         data={rawData[activeTabIndex][0].data}
                         loading={loading}
+                        visualOptions={visualOptions}
                         loadDataset={loadDataset}
                         filterOptionGroups={
                           rawData[activeTabIndex][0].filterOptionGroups
                         }
+                        themeData={rawData}
                       />
                       <DataThemesTabOrderViz enabled={isEditMode}>
                         {rawData.map((content, tabIndex) =>
