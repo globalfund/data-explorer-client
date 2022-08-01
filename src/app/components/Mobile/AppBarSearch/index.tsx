@@ -18,7 +18,6 @@ import { SearchResultsTabModel } from "app/components/Search/components/results/
 export function MobileAppbarSearch() {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState(0);
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
     ""
@@ -106,8 +105,6 @@ export function MobileAppbarSearch() {
             results={data}
             loading={isLoading}
             setValue={setValue}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
             onClose={() => setOpen(false)}
           />
         </div>

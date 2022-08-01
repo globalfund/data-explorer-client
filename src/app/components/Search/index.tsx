@@ -5,13 +5,14 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useDebounce, useUpdateEffect, useSessionStorage } from "react-use";
 /* project */
+import { categories } from "app/components/Search/data";
 import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
 
 export function Search() {
   const [open, setOpen] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState(0);
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const [category, setCategory] = React.useState(categories[0].label);
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
     ""
@@ -68,8 +69,8 @@ export function Search() {
         results={data}
         loading={isLoading}
         setValue={setValue}
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        category={category}
+        setCategory={setCategory}
         forceFocus={isMobile && open}
         onClose={() => setOpen(false)}
       />

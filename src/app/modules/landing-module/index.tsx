@@ -1,10 +1,10 @@
 /* third-party */
 import React from "react";
-import useTitle from "react-use/lib/useTitle";
 import get from "lodash/get";
-import { LandingLayout } from "app/modules/landing-module/layout";
-import { useCMSData } from "app/hooks/useCMSData";
+import useTitle from "react-use/lib/useTitle";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
+import { LandingLayout } from "app/modules/landing-module/layout";
 
 export default function Landing() {
   const cmsData = useCMSData({ returnData: true });

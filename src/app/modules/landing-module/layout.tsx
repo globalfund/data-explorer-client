@@ -1,10 +1,12 @@
+/* third-party */
 import React from "react";
-import { Link } from "react-router-dom";
-import BigLogo from "app/assets/BigLogo";
 import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
-import { Search } from "app/components/Search";
+import { Link } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+/* project */
+import BigLogo from "app/assets/BigLogo";
+import { Search } from "app/components/Search";
+import { useCMSData } from "app/hooks/useCMSData";
 import { DatasetCarousel } from "app/components/DatasetCarousel";
 import {
   container,
@@ -38,10 +40,14 @@ export const LandingLayout = () => {
         <Search />
         {!isMobile && (
           <React.Fragment>
-            <div css={datasetstitle}>{get(cmsData, "modulesLanding.datasetsTitle", "")}</div>
+            <div css={datasetstitle}>
+              {get(cmsData, "modulesLanding.datasetsTitle", "")}
+            </div>
             <DatasetCarousel />
             <div css={datasetslink}>
-              <Link to="/datasets">{get(cmsData, "modulesLanding.datasetsLink", "")}</Link>
+              <Link to="/datasets">
+                {get(cmsData, "modulesLanding.datasetsLink", "")}
+              </Link>
             </div>
           </React.Fragment>
         )}
