@@ -7,7 +7,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import BigLogo from "app/assets/BigLogo";
 import { Search } from "app/components/Search";
 import { useCMSData } from "app/hooks/useCMSData";
-import { DatasetCarousel } from "app/components/DatasetCarousel";
+import { LandingDatasetGrid } from "app/modules/landing-module/components/dataset-grid";
 import {
   container,
   subtitle,
@@ -43,12 +43,7 @@ export const LandingLayout = () => {
             <div css={datasetstitle}>
               {get(cmsData, "modulesLanding.datasetsTitle", "")}
             </div>
-            <DatasetCarousel />
-            <div css={datasetslink}>
-              <Link to="/datasets">
-                {get(cmsData, "modulesLanding.datasetsLink", "")}
-              </Link>
-            </div>
+            <LandingDatasetGrid />
           </React.Fragment>
         )}
       </div>

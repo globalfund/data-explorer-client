@@ -178,6 +178,7 @@ export function AppBar() {
             @media (min-width: 768px) {
               #search-container {
                 padding: 3px 20px;
+                align-items: center;
               }
 
               #search-results-container {

@@ -66,7 +66,7 @@ const StyledMenu = withStyles({
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: "bottom",
+      vertical: 53,
       horizontal: "left",
     }}
     transformOrigin={{

@@ -10,7 +10,7 @@ export const container = css`
   position: absolute;
   border-radius: 20px;
   flex-direction: column;
-  box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+  box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
   @media (max-width: 767px) {
     padding: 0 0 20px 0;
