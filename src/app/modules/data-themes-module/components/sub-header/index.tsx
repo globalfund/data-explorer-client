@@ -92,6 +92,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
   const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
+  const [isPreviewEnabled, setIsPreviewEnabled] = React.useState(false);
   const [isEditMode, setIsEditMode] = React.useState(page !== "new");
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
 
@@ -279,18 +280,20 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }
 
   React.useEffect(() => {
-    setIsSavedEnabled(
+    const newValue =
       (!loading &&
         data.length > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
         activePanels[activeTabIndex][activeVizIndex] > 3) ||
-        vizIsTextContent[activeTabIndex][activeVizIndex] ||
-        orderData.hasChanged ||
-        vizDeleted ||
-        vizDuplicated
-    );
+      vizIsTextContent[activeTabIndex][activeVizIndex] ||
+      orderData.hasChanged ||
+      vizDeleted ||
+      vizDuplicated;
+    if (newValue !== isSavedEnabled) {
+      setIsSavedEnabled(newValue);
+    }
   }, [
     data,
     loading,
@@ -303,6 +306,29 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     orderData.hasChanged,
     vizDeleted,
     vizDuplicated,
+  ]);
+
+  React.useEffect(() => {
+    const newValue =
+      (!loading &&
+        data.length > 0 &&
+        selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
+        selectedChartType[activeTabIndex][activeVizIndex] !== null &&
+        !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
+        activePanels[activeTabIndex][activeVizIndex] > 3) ||
+      vizIsTextContent[activeTabIndex][activeVizIndex];
+    if (newValue !== isPreviewEnabled) {
+      setIsPreviewEnabled(newValue);
+    }
+  }, [
+    data,
+    loading,
+    selectedChartType,
+    mapping,
+    vizIsTextContent,
+    activePanels,
+    activeTabIndex,
+    activeVizIndex,
   ]);
 
   React.useEffect(() => {
@@ -465,7 +491,14 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                   </CopyToClipboard>
                 </div>
               </Popover>
-              <IconButton>
+              <IconButton
+                component={Link}
+                to={`/data-themes/${page}`}
+                disabled={!isPreviewEnabled}
+                css={`
+                  opacity: ${isPreviewEnabled ? 1 : 0.5};
+                `}
+              >
                 <PlayCircleFilledIcon htmlColor="#262c34" />
               </IconButton>
               <IconButton

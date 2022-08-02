@@ -775,7 +775,7 @@ export function DataThemesBuilder() {
             component={() => {
               if (
                 page === "new" &&
-                activePanels[activeTabIndex][activeVizIndex] !== 7 &&
+                activePanels[activeTabIndex][activeVizIndex] !== 4 &&
                 !vizIsTextContent[activeTabIndex][activeVizIndex]
               ) {
                 return <Redirect to="/data-themes/new/initial" />;
