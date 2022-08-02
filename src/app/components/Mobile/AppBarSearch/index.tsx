@@ -42,10 +42,17 @@ export function MobileAppbarSearch() {
   }, [history]);
 
   useUpdateEffect(() => {
+    const gihubBtn = document.getElementById("github-linkbtn");
     if (open) {
       document.body.style.overflowY = "hidden";
+      if (gihubBtn) {
+        gihubBtn.style.display = "none";
+      }
     } else {
       document.body.style.overflowY = "auto";
+      if (gihubBtn) {
+        gihubBtn.style.display = "inherit";
+      }
     }
   }, [open]);
 

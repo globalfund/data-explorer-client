@@ -13,6 +13,7 @@ export const container = css`
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
   @media (max-width: 767px) {
+    box-shadow: none;
     padding: 0 0 20px 0;
   }
 `;
@@ -78,9 +79,9 @@ export const results = css`
   flex-direction: column;
 
   @media (max-width: 767px) {
-    height: calc(100vh - 200px);
-    min-height: calc(100vh - 200px);
-    max-height: calc(100vh - 200px);
+    height: calc(100vh - 150px);
+    min-height: calc(100vh - 150px);
+    max-height: calc(100vh - 150px);
   }
 `;
 
@@ -105,6 +106,7 @@ export const result = css`
   }
 
   &:first-of-type {
+    border-top-style: none;
     border-radius: 20px 20px 0 0;
   }
 

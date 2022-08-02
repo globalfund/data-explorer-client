@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { Link } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
 import BigLogo from "app/assets/BigLogo";
@@ -12,7 +11,6 @@ import {
   container,
   subtitle,
   datasetstitle,
-  datasetslink,
 } from "app/modules/landing-module/styles";
 
 export const LandingLayout = () => {
