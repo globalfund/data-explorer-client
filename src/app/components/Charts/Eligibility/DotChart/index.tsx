@@ -11,6 +11,7 @@ import {
   DotChartProps,
   DotChartModel,
 } from "app/components/Charts/Eligibility/DotChart/data";
+import { EligibilityType } from "../Scatterplot/data";
 
 const styles = {
   Eligible: css`
@@ -32,11 +33,10 @@ export function DotChart(props: DotChartProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: string;
-    status: "Eligible" | "Not Eligible" | "Transition Funding";
+    status: EligibilityType;
   } | null>(null);
-  const [hoveredLegend, setHoveredLegend] = React.useState<
-    "Eligible" | "Not Eligible" | "Transition Funding" | null
-  >(null);
+  const [hoveredLegend, setHoveredLegend] =
+    React.useState<EligibilityType | null>(null);
 
   return (
     <React.Fragment>
@@ -485,10 +485,7 @@ export function DotChart(props: DotChartProps) {
                         (
                           item: {
                             name: string;
-                            status:
-                              | "Eligible"
-                              | "Not Eligible"
-                              | "Transition Funding";
+                            status: EligibilityType;
                           },
                           index: number
                         ) => (
@@ -578,10 +575,7 @@ export function DotChart(props: DotChartProps) {
                         (
                           item: {
                             name: string;
-                            status:
-                              | "Eligible"
-                              | "Not Eligible"
-                              | "Transition Funding";
+                            status: EligibilityType;
                           },
                           index: number
                         ) => (

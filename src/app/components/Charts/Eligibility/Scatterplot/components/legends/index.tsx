@@ -4,60 +4,19 @@ import { backCircleRadius } from "app/components/Charts/Eligibility/Scatterplot/
 import {
   incomeLevels,
   diseaseBurdens,
+  DiseaseBurdenType,
+  IncomeLevelType,
+  EligibilityType,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 
 interface Props {
-  hoveredEligibilityLegend:
-    | "Eligible"
-    | "Not Eligible"
-    | "Transition Funding"
-    | null;
-  setHoveredEligibilityLegend: (
-    l: "Eligible" | "Not Eligible" | "Transition Funding" | null
-  ) => void;
+  hoveredEligibilityLegend: EligibilityType | null;
+  setHoveredEligibilityLegend: (l: EligibilityType | null) => void;
   showExtraLegends: boolean;
-  hoveredBurdenLegend:
-    | "Extreme"
-    | "Severe"
-    | "High"
-    | "Not High"
-    | "Moderate"
-    | "Low"
-    | "None"
-    | null;
-  hoveredIncomeLegend:
-    | "None"
-    | "Low"
-    | "Low income"
-    | "Lower-Lower middle income"
-    | "Lower middle income"
-    | "Upper-Lower middle income"
-    | "Upper middle income"
-    | "High income"
-    | null;
-  setHoveredBurdenLegend: (
-    l:
-      | "Extreme"
-      | "Severe"
-      | "High"
-      | "Not High"
-      | "Moderate"
-      | "Low"
-      | "None"
-      | null
-  ) => void;
-  setHoveredIncomeLegend: (
-    l:
-      | "None"
-      | "Low"
-      | "Low income"
-      | "Lower-Lower middle income"
-      | "Lower middle income"
-      | "Upper-Lower middle income"
-      | "Upper middle income"
-      | "High income"
-      | null
-  ) => void;
+  hoveredBurdenLegend: DiseaseBurdenType | null;
+  hoveredIncomeLegend: IncomeLevelType | null;
+  setHoveredBurdenLegend: (l: DiseaseBurdenType | null) => void;
+  setHoveredIncomeLegend: (l: IncomeLevelType | null) => void;
 }
 
 const styles = {
@@ -76,11 +35,9 @@ const styles = {
 };
 
 const EligibilityLegend = (props: {
-  value: "Eligible" | "Not Eligible" | "Transition Funding";
-  activeValue: "Eligible" | "Not Eligible" | "Transition Funding" | null;
-  onHover: (
-    l: "Eligible" | "Not Eligible" | "Transition Funding" | null
-  ) => void;
+  value: EligibilityType;
+  activeValue: EligibilityType | null;
+  onHover: (l: EligibilityType | null) => void;
 }) => {
   return (
     <div
@@ -118,14 +75,7 @@ const EligibilityLegend = (props: {
 };
 
 const BurdenLegend = (props: {
-  value:
-    | "Extreme"
-    | "Severe"
-    | "High"
-    | "Not High"
-    | "Moderate"
-    | "Low"
-    | "None";
+  value: DiseaseBurdenType;
   activeValue:
     | "Extreme"
     | "Severe"
@@ -161,37 +111,9 @@ const BurdenLegend = (props: {
 };
 
 const IncomeLegend = (props: {
-  value:
-    | "None"
-    | "Low"
-    | "Low income"
-    | "Lower-Lower middle income"
-    | "Lower middle income"
-    | "Upper-Lower middle income"
-    | "Upper middle income"
-    | "High income";
-  activeValue:
-    | "None"
-    | "Low"
-    | "Low income"
-    | "Lower-Lower middle income"
-    | "Lower middle income"
-    | "Upper-Lower middle income"
-    | "Upper middle income"
-    | "High income"
-    | null;
-  onHover: (
-    l:
-      | "None"
-      | "Low"
-      | "Low income"
-      | "Lower-Lower middle income"
-      | "Lower middle income"
-      | "Upper-Lower middle income"
-      | "Upper middle income"
-      | "High income"
-      | null
-  ) => void;
+  value: IncomeLevelType;
+  activeValue: IncomeLevelType | null;
+  onHover: (l: IncomeLevelType | null) => void;
 }) => {
   return (
     <span

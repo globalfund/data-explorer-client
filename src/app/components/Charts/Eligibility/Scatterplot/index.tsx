@@ -16,36 +16,21 @@ import {
   EligibilityScatterplotHoveredNode,
   ScatterPlotProps,
   EligibilityScatterplotDataModel,
+  DiseaseBurdenType,
+  IncomeLevelType,
+  EligibilityType,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 
 export function ScatterPlot(props: ScatterPlotProps) {
   const [hoveredNode, setHoveredNode] =
     React.useState<EligibilityScatterplotHoveredNode | null>(null);
   const isMobile = useMediaQuery("(max-width: 960px)");
-  const [hoveredLegend, setHoveredLegend] = React.useState<
-    "Eligible" | "Not Eligible" | "Transition Funding" | null
-  >(null);
-  const [hoveredBurdenLegend, setHoveredBurdenLegend] = React.useState<
-    | "Extreme"
-    | "Severe"
-    | "High"
-    | "Not High"
-    | "Moderate"
-    | "Low"
-    | "None"
-    | null
-  >(null);
-  const [hoveredIncomeLegend, setHoveredIncomeLegend] = React.useState<
-    | "None"
-    | "Low"
-    | "Low income"
-    | "Lower-Lower middle income"
-    | "Lower middle income"
-    | "Upper-Lower middle income"
-    | "Upper middle income"
-    | "High income"
-    | null
-  >(null);
+  const [hoveredLegend, setHoveredLegend] =
+    React.useState<EligibilityType | null>(null);
+  const [hoveredBurdenLegend, setHoveredBurdenLegend] =
+    React.useState<DiseaseBurdenType | null>(null);
+  const [hoveredIncomeLegend, setHoveredIncomeLegend] =
+    React.useState<IncomeLevelType | null>(null);
   const showExtraData = useStoreState(
     (state) => state.ToolBoxPanelEligibilityAdvancedCheckboxState.value
   );

@@ -4,13 +4,18 @@ export interface ScatterPlotProps {
   data: EligibilityScatterplotDataModel[];
 }
 
+export type EligibilityType =
+  | "Eligible"
+  | "Not Eligible"
+  | "Transition Funding";
+
 export interface EligibilityScatterplotDataItemModel {
   x: number;
   y: string;
   incomeLevel: number;
   diseaseBurden: number;
   allocationCycleName?: string | null;
-  eligibility: "Eligible" | "Not Eligible" | "Transition Funding";
+  eligibility: EligibilityType;
   invisible?: boolean;
 }
 
@@ -505,17 +510,26 @@ export const mockdata: EligibilityScatterplotDataModel[] = [
   },
 ];
 
-export const diseaseBurdens: (
+export type DiseaseBurdenType =
   | "Extreme"
   | "Severe"
   | "High"
   | "Not High"
   | "Moderate"
   | "Low"
-  | "None"
-)[] = ["None", "Low", "Moderate", "Not High", "High", "Severe", "Extreme"];
+  | "None";
 
-export const incomeLevels: (
+export const diseaseBurdens: DiseaseBurdenType[] = [
+  "None",
+  "Low",
+  "Moderate",
+  "Not High",
+  "High",
+  "Severe",
+  "Extreme",
+];
+
+export type IncomeLevelType =
   | "None"
   | "Low"
   | "Low income"
@@ -523,8 +537,9 @@ export const incomeLevels: (
   | "Lower middle income"
   | "Upper-Lower middle income"
   | "Upper middle income"
-  | "High income"
-)[] = [
+  | "High income";
+
+export const incomeLevels: IncomeLevelType[] = [
   "None",
   "Low income",
   "Lower-Lower middle income",
