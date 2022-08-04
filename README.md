@@ -2,7 +2,7 @@
 
 ---
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/globalfund/data-explorer-client/blob/main/LICENSE.MD)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/globalfund/data-explorer-client/blob/main/LICENSE.MD) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=globalfund_data-explorer-client&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=globalfund_data-explorer-client) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=globalfund_data-explorer-client&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=globalfund_data-explorer-client) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=globalfund_data-explorer-client&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=globalfund_data-explorer-client)
 
 ## What is the Data Explorer?
 
