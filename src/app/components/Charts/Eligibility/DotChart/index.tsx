@@ -11,6 +11,7 @@ import {
   DotChartProps,
   DotChartModel,
 } from "app/components/Charts/Eligibility/DotChart/data";
+import { EligibilityType } from "../Scatterplot/data";
 
 const styles = {
   Eligible: css`
@@ -30,14 +31,12 @@ const styles = {
 export function DotChart(props: DotChartProps) {
   const { x, y } = useMousePosition();
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: string;
-    status: "Eligible" | "Not Eligible" | "Transition Funding";
+    status: EligibilityType;
   } | null>(null);
-  const [hoveredLegend, setHoveredLegend] = React.useState<
-    "Eligible" | "Not Eligible" | "Transition Funding" | null
-  >(null);
+  const [hoveredLegend, setHoveredLegend] =
+    React.useState<EligibilityType | null>(null);
 
   return (
     <React.Fragment>
@@ -76,16 +75,19 @@ export function DotChart(props: DotChartProps) {
             <div>
               <b>{hoveredNode.name}</b>: {hoveredNode.status}
             </div>
-            {isMobile && (
-              <IconButton
-                onTouchStart={() => setHoveredNode(null)}
-                css={`
-                  padding: 0;
-                `}
-              >
-                <CloseIcon />
-              </IconButton>
-            )}
+            <IconButton
+              onTouchStart={() => setHoveredNode(null)}
+              css={`
+                padding: 0;
+                display: none;
+
+                @media (max-width: 767px) {
+                  display: inherit;
+                }
+              `}
+            >
+              <CloseIcon />
+            </IconButton>
           </div>
         </div>
       )}
@@ -99,8 +101,13 @@ export function DotChart(props: DotChartProps) {
             gap: 20px;
             display: flex;
             position: relative;
-            flex-direction: ${isSmallScreen ? "row" : "column"};
-            justify-content: ${isSmallScreen ? "none" : "space-between"};
+            flex-direction: column;
+            justify-content: space-between;
+
+            @media (max-width: 960px) {
+              flex-direction: row;
+              justify-content: none;
+            }
 
             > * {
               @supports (-webkit-touch-callout: none) and
@@ -137,14 +144,26 @@ export function DotChart(props: DotChartProps) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              {isSmallScreen && (
-                <div css="display:flex;font-weight: bold;justify-content:space-between;">
-                  Eligibility
-                </div>
-              )}
               <div
                 css={`
-                  font-weight: ${isSmallScreen ? "none" : "bold"};
+                  display: none;
+                  font-weight: bold;
+                  justify-content: space-between;
+
+                  @media (max-width: 960px) {
+                    display: flex;
+                  }
+                `}
+              >
+                Eligibility
+              </div>
+              <div
+                css={`
+                  font-weight: bold;
+
+                  @media (max-width: 960px) {
+                    font-weight: none;
+                  }
                 `}
               >
                 Year {props.selectedYear}
@@ -286,7 +305,9 @@ export function DotChart(props: DotChartProps) {
             {props.aggregateBy === "geographicAreaName" && (
               <div
                 css={`
-                  margin-top: ${!isSmallScreen ? "50px" : 0};
+                  @media (max-width: 960px) {
+                    margin-top: 50px;
+                  }
                 `}
               >
                 <div
@@ -400,7 +421,17 @@ export function DotChart(props: DotChartProps) {
             )}
           </div>
         </Grid>
-        {isSmallScreen && <div css="width: 100%; height: 20px" />}
+        <div
+          css={`
+            width: 100%;
+            height: 20px;
+            display: none;
+
+            @media (max-width: 960px) {
+              display: inherit;
+            }
+          `}
+        />
         <Grid
           item
           container
@@ -454,10 +485,7 @@ export function DotChart(props: DotChartProps) {
                         (
                           item: {
                             name: string;
-                            status:
-                              | "Eligible"
-                              | "Not Eligible"
-                              | "Transition Funding";
+                            status: EligibilityType;
                           },
                           index: number
                         ) => (
@@ -547,10 +575,7 @@ export function DotChart(props: DotChartProps) {
                         (
                           item: {
                             name: string;
-                            status:
-                              | "Eligible"
-                              | "Not Eligible"
-                              | "Transition Funding";
+                            status: EligibilityType;
                           },
                           index: number
                         ) => (
