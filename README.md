@@ -10,7 +10,7 @@ This tool allows the exploration of data on investments and results in the fight
 
 The Global Fund invests in smart, effective health programs to end AIDS, tuberculosis and malaria as epidemics. The Data Explorer visualizes where our investments come from, where they are and what they achieve by providing pledge and contribution data, grant financial data, and results data at global, regional and country levels.
 
-We regularly improve and enhance the Data Explorer, and those updates are noted on the <a href= "https://www.theglobalfund.org/en/updates/data/" target="_blank">Data Explorer Updates</a> page on the Global Fund website. The data behind the Data Explorer and our API are available through the <a href="https://data-service.theglobalfund.org/" target="_blank">Global Fund Data Service </a>.
+We regularly improve and enhance the Data Explorer, and those updates are noted on the <a href= "https://www.theglobalfund.org/en/updates/" target="_blank">Data Explorer Updates</a> page on the Global Fund website. The data behind the Data Explorer and our API are available through the <a href="https://data-service.theglobalfund.org/" target="_blank">Global Fund Data Service </a>.
 
 It makes use of [Data API Middleware](https://github.com/globalfund/data-explorer-server/) in order to retrieve all data needed for the visualisations/tables/filters and detail pages.
 
