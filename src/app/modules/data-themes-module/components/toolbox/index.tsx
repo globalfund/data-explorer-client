@@ -99,6 +99,11 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   const orderData = useStoreState(
     (state) => state.dataThemes.sync.vizOrderData.value
   );
+  const loadedDataTheme = useStoreState(
+    (state) =>
+      (state.dataThemes.DataThemeGet.crudData ??
+        emptyDataThemeAPI) as DataThemeAPIModel
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -171,18 +176,22 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   }
 
   React.useEffect(() => {
-    setIsSavedEnabled(
+    const newValue =
       (!props.loading &&
         props.data.length > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
         activePanels[activeTabIndex][activeVizIndex] > 3) ||
-        vizIsTextContent[activeTabIndex][activeVizIndex] ||
-        orderData.hasChanged ||
-        vizDeleted ||
-        vizDuplicated
-    );
+      vizIsTextContent[activeTabIndex][activeVizIndex] ||
+      orderData.hasChanged ||
+      vizDeleted ||
+      vizDuplicated ||
+      title !== loadedDataTheme.title ||
+      subTitle !== loadedDataTheme.subTitle;
+    if (newValue !== isSavedEnabled) {
+      setIsSavedEnabled(newValue);
+    }
   }, [
     props.data,
     props.loading,
@@ -195,6 +204,8 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
     orderData.hasChanged,
     vizDeleted,
     vizDuplicated,
+    title,
+    subTitle,
   ]);
 
   React.useEffect(() => {

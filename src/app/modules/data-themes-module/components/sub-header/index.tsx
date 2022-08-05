@@ -154,6 +154,11 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const orderData = useStoreState(
     (state) => state.dataThemes.sync.vizOrderData.value
   );
+  const loadedDataTheme = useStoreState(
+    (state) =>
+      (state.dataThemes.DataThemeGet.crudData ??
+        emptyDataThemeAPI) as DataThemeAPIModel
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -285,7 +290,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       vizIsTextContent[activeTabIndex][activeVizIndex] ||
       orderData.hasChanged ||
       vizDeleted ||
-      vizDuplicated;
+      vizDuplicated ||
+      title !== loadedDataTheme.title ||
+      subTitle !== loadedDataTheme.subTitle;
     if (newValue !== isSavedEnabled) {
       setIsSavedEnabled(newValue);
     }
@@ -301,6 +308,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     orderData.hasChanged,
     vizDeleted,
     vizDuplicated,
+    title,
+    subTitle,
   ]);
 
   React.useEffect(() => {
