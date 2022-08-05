@@ -810,41 +810,38 @@ export function DataThemesBuilder() {
                         }
                       />
                       <DataThemesTabOrderViz enabled={isEditMode}>
-                        {rawData.map((content, tabIndex) =>
-                          content.map((_, vizIndex) =>
-                            tabIndex === activeTabIndex ? (
-                              <DataThemesBuilderPreviewTheme
-                                key={renderingKey++}
-                                editable={isEditMode}
-                                tabIndex={tabIndex}
-                                vizIndex={vizIndex}
-                                data={rawData[tabIndex][vizIndex].data}
-                                loading={loading}
-                                loadDataset={loadDataset}
-                                currentChart={currentChart[tabIndex][vizIndex]}
-                                visualOptions={visualOptions}
-                                setVisualOptions={setVisualOptions}
-                                currentChartData={
-                                  currentChartData[tabIndex][vizIndex]
-                                }
-                                filterOptionGroups={
-                                  rawData[tabIndex][vizIndex].filterOptionGroups
-                                }
-                                dimensions={get(
-                                  currentChart[tabIndex][vizIndex],
-                                  "dimensions",
-                                  []
-                                )}
-                                updateLocalStates={updateLocalStates}
-                                themeData={rawData}
-                                deleteViz={deleteViz}
-                                duplicateViz={duplicateViz}
-                              />
-                            ) : (
-                              <React.Fragment key={renderingKey++} />
-                            )
-                          )
-                        )}
+                        {rawData[activeTabIndex].map((_, vizIndex) => (
+                          <DataThemesBuilderPreviewTheme
+                            key={renderingKey++}
+                            editable={isEditMode}
+                            tabIndex={activeTabIndex}
+                            vizIndex={vizIndex}
+                            data={rawData[activeTabIndex][vizIndex].data}
+                            loading={loading}
+                            loadDataset={loadDataset}
+                            currentChart={
+                              currentChart[activeTabIndex][vizIndex]
+                            }
+                            visualOptions={visualOptions}
+                            setVisualOptions={setVisualOptions}
+                            currentChartData={
+                              currentChartData[activeTabIndex][vizIndex]
+                            }
+                            filterOptionGroups={
+                              rawData[activeTabIndex][vizIndex]
+                                .filterOptionGroups
+                            }
+                            dimensions={get(
+                              currentChart[activeTabIndex][vizIndex],
+                              "dimensions",
+                              []
+                            )}
+                            updateLocalStates={updateLocalStates}
+                            themeData={rawData}
+                            deleteViz={deleteViz}
+                            duplicateViz={duplicateViz}
+                          />
+                        ))}
                       </DataThemesTabOrderViz>
                     </React.Fragment>
                   )}

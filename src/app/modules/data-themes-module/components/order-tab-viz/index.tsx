@@ -134,12 +134,10 @@ interface Props {
 
 export function DataThemesTabOrderViz(props: Props) {
   const [items, setItems] = React.useState(
-    get(props.children, "[0]", []).map(
-      (child: React.ReactNode, index: number) => ({
-        id: index,
-        content: child,
-      })
-    )
+    props.children.map((child: React.ReactNode, index: number) => ({
+      id: index,
+      content: child,
+    }))
   );
 
   const setOrderData = useStoreActions(
@@ -174,12 +172,10 @@ export function DataThemesTabOrderViz(props: Props) {
 
   useUpdateEffect(() => {
     setItems(
-      get(props.children, "[0]", []).map(
-        (child: React.ReactNode, index: number) => ({
-          id: index,
-          content: child,
-        })
-      )
+      props.children.map((child: React.ReactNode, index: number) => ({
+        id: index,
+        content: child,
+      }))
     );
   }, [props.children]);
 

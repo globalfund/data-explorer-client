@@ -36,6 +36,7 @@ export function DataThemesToolbarPopover(props: Props) {
     >
       {props.items.map((item) => (
         <div
+          key={item.value}
           onClick={() => props.onItemClick(item.value)}
           css={`
             width: 100%;
