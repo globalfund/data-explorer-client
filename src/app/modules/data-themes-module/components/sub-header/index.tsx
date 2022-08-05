@@ -119,11 +119,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
-  const loadedDataTheme = useStoreState(
-    (state) =>
-      (state.dataThemes.DataThemeGet.crudData ??
-        emptyDataThemeAPI) as DataThemeAPIModel
-  );
   const createDataThemeData = useStoreState(
     (state) =>
       (state.dataThemes.DataThemeCreate.crudData ??
@@ -308,17 +303,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     setIsEditMode(page !== "new");
   }, [page]);
-
-  React.useEffect(() => {
-    if (loadedDataTheme) {
-      if (loadedDataTheme.title.length > 0) {
-        setTitle({ title: loadedDataTheme.title });
-      }
-      if (loadedDataTheme.subTitle.length > 0) {
-        setSubTitle({ subTitle: loadedDataTheme.subTitle });
-      }
-    }
-  }, [loadedDataTheme]);
 
   React.useEffect(() => {
     if (createDataThemeSuccess || editDataThemeSuccess) {

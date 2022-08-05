@@ -42,6 +42,8 @@ import { DataThemesBuilderExport } from "app/modules/data-themes-module/sub-modu
 import { DataThemesBuilderLock } from "app/modules/data-themes-module/sub-modules/theme-builder/views/lock";
 import {
   charts,
+  emptyDataThemeAPI,
+  DataThemeAPIModel,
   defaultChartOptions,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
@@ -92,7 +94,6 @@ export function DataThemesBuilder() {
     updateLocalStates,
   });
 
-  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
@@ -105,6 +106,11 @@ export function DataThemesBuilder() {
 
   const loadDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeGet.fetch
+  );
+  const loadedDataTheme = useStoreState(
+    (state) =>
+      (state.dataThemes.DataThemeGet.crudData ??
+        emptyDataThemeAPI) as DataThemeAPIModel
   );
   const clearDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeGet.clear
@@ -168,6 +174,12 @@ export function DataThemesBuilder() {
   );
   const clearOrderData = useStoreActions(
     (actions) => actions.dataThemes.sync.vizOrderData.clear
+  );
+  const setTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setTitle
+  );
+  const setSubTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setSubTitle
   );
   const setVizDeleted = useStoreActions(
     (actions) => actions.dataThemes.sync.vizDeleted.setValue
@@ -464,6 +476,17 @@ export function DataThemesBuilder() {
       clearDataTheme();
     }
   }, [isEditMode]);
+
+  React.useEffect(() => {
+    if (loadedDataTheme) {
+      if (loadedDataTheme.title.length > 0) {
+        setTitle({ title: loadedDataTheme.title });
+      }
+      if (loadedDataTheme.subTitle.length > 0) {
+        setSubTitle({ subTitle: loadedDataTheme.subTitle });
+      }
+    }
+  }, [loadedDataTheme]);
 
   useUpdateEffect(() => {
     clearOrderData();
