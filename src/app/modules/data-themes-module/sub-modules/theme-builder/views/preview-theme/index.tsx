@@ -152,39 +152,6 @@ export function DataThemesBuilderPreviewTheme(
 
   return (
     <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
-      <div
-        id={`chart-placeholder-${props.tabIndex}-${props.vizIndex}`}
-        css={`
-          display: flex;
-          padding: 0 24px;
-          margin-top: 20px;
-          max-width: 1280px;
-          align-items: center;
-          align-self: flex-start;
-          justify-content: center;
-          width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
-          height: ${visualOptions[props.tabIndex][props.vizIndex].height}px;
-
-          @media (max-width: 1280px) {
-            width: calc(100vw - 400px);
-          }
-
-          .MuiSkeleton-wave::after {
-            background: linear-gradient(
-              90deg,
-              transparent,
-              rgba(223, 227, 230, 1),
-              transparent
-            );
-          }
-
-          .MuiSkeleton-root {
-            background: transparent;
-          }
-        `}
-      >
-        <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
-      </div>
       {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
         <div
           css={commonStyles.previewInnercontainer(props.editable)}
@@ -200,29 +167,70 @@ export function DataThemesBuilderPreviewTheme(
           />
         </div>
       ) : (
-        <div css={commonStyles.previewInnercontainer(props.editable)}>
-          {props.editable && <div onClick={handleClick} />}
+        <React.Fragment>
           <div
-            ref={containerRef}
+            id={`chart-placeholder-${props.tabIndex}-${props.vizIndex}`}
             css={`
-              width: calc(100% - 24px);
+              display: flex;
+              padding: 0 24px;
+              margin-top: 20px;
+              max-width: 1280px;
+              align-items: center;
+              align-self: flex-start;
+              justify-content: center;
+              width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
+              height: ${visualOptions[props.tabIndex][props.vizIndex].height}px;
+
+              @media (max-width: 1280px) {
+                width: calc(100vw - 400px);
+              }
+
+              .MuiSkeleton-wave::after {
+                background: linear-gradient(
+                  90deg,
+                  transparent,
+                  rgba(223, 227, 230, 1),
+                  transparent
+                );
+              }
+
+              .MuiSkeleton-root {
+                background: transparent;
+              }
             `}
           >
-            <div
-              onClick={() => {
-                handleVizClick();
-              }}
-              ref={domRef}
-              css={`
-                overflow-x: auto;
-
-                * {
-                  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-                }
-              `}
+            <Skeleton
+              animation="wave"
+              variant="rect"
+              width="100%"
+              height="100%"
             />
           </div>
-        </div>
+          <div css={commonStyles.previewInnercontainer(props.editable)}>
+            {props.editable && <div onClick={handleClick} />}
+            <div
+              ref={containerRef}
+              css={`
+                width: calc(100% - 24px);
+              `}
+            >
+              <div
+                onClick={() => {
+                  handleVizClick();
+                }}
+                ref={domRef}
+                css={`
+                  overflow-x: auto;
+
+                  * {
+                    font-family: "GothamNarrow-Book", "Helvetica Neue",
+                      sans-serif !important;
+                  }
+                `}
+              />
+            </div>
+          </div>
+        </React.Fragment>
       )}
       <DataThemesUtilsPopover
         anchorEl={anchorEl}
