@@ -798,7 +798,7 @@ export function DataThemesBuilder() {
             component={() => {
               if (
                 page === "new" &&
-                activePanels[activeTabIndex][activeVizIndex] !== 7 &&
+                activePanels[activeTabIndex][activeVizIndex] !== 4 &&
                 !vizIsTextContent[activeTabIndex][activeVizIndex]
               ) {
                 return <Redirect to="/data-themes/new/initial" />;
@@ -827,10 +827,12 @@ export function DataThemesBuilder() {
                         vizIndex={0}
                         data={rawData[activeTabIndex][0].data}
                         loading={loading}
+                        visualOptions={visualOptions}
                         loadDataset={loadDataset}
                         filterOptionGroups={
                           rawData[activeTabIndex][0].filterOptionGroups
                         }
+                        themeData={rawData}
                       />
                       <DataThemesTabOrderViz enabled={isEditMode}>
                         {rawData[activeTabIndex].map((_, vizIndex) => (

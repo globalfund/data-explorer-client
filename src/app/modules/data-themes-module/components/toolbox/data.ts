@@ -22,5 +22,11 @@ export interface DataThemesToolBoxProps {
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
   setFilterOptionGroups?: (key: string, value: boolean) => void;
+  themeData?: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }
