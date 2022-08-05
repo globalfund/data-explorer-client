@@ -40,6 +40,7 @@
     "@types/react-router-hash-link": "^2.4.0",
     "apexcharts": "^3.27.0",
     "axios": "^0.21.3",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "craco-plugin-react-hot-reload": "^0.1.0",
     "d3-shape": "^3.0.1",
     "detect-it": "^4.0.1",

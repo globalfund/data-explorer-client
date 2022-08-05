@@ -1,42 +1,39 @@
-// const reactHotReloadPlugin = require('craco-plugin-react-hot-reload');
-// const BabelRcPlugin = require("@jackwilsdon/craco-use-babelrc");
-// const { WebpackPluginRamdisk } = require("webpack-plugin-ramdisk");
+module.exports = () => {
+  const babelPlugins = ["babel-plugin-styled-components"];
 
-// const { ESLINT_MODES } = require("@craco/craco");
+  if (process.env.NODE_ENV === "production") {
+    babelPlugins.push([
+      "transform-remove-console",
+      { exclude: ["error", "warn"] },
+    ]);
+  }
 
-module.exports = {
-  eslint: {
-    enable: false,
-    // mode: ESLINT_MODES.file,
-  },
-
-  webpack: {
-    alias: {
-      // 'react-dom': '@hot-loader/react-dom',
-      "react/jsx-dev-runtime": "react/jsx-dev-runtime.js",
-      "react/jsx-runtime": "react/jsx-runtime.js",
+  return {
+    eslint: {
+      enable: false,
     },
-    plugins: [
-      // new StyleLintPlugin({
-      //   configBasedir: __dirname,
-      //   context: path.resolve(__dirname, 'src'),
-      //   files: ['**/*.tsx', '**/*.ts'],
-      // }),
-      // new WebpackPluginRamdisk(),
-    ],
-  },
 
-  babel: {
-    plugins: ["babel-plugin-styled-components"],
-    loaderOptions: {
-      ignore: ["./node_modules/mapbox-gl/dist/mapbox-gl.js"],
+    webpack: {
+      alias: {
+        // 'react-dom': '@hot-loader/react-dom',
+        "react/jsx-dev-runtime": "react/jsx-dev-runtime.js",
+        "react/jsx-runtime": "react/jsx-runtime.js",
+      },
+      plugins: [
+        // new StyleLintPlugin({
+        //   configBasedir: __dirname,
+        //   context: path.resolve(__dirname, 'src'),
+        //   files: ['**/*.tsx', '**/*.ts'],
+        // }),
+        // new WebpackPluginRamdisk(),
+      ],
     },
-  },
 
-  // plugins: [
-  //   {
-  //     // plugin: reactHotReloadPlugin,
-  //     plugin: BabelRcPlugin,
-  //   },
-  // ],
+    babel: {
+      plugins: babelPlugins,
+      loaderOptions: {
+        ignore: ["./node_modules/mapbox-gl/dist/mapbox-gl.js"],
+      },
+    },
+  };
 };
