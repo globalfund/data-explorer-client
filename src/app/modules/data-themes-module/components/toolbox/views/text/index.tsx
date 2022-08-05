@@ -13,8 +13,12 @@ const Button = withStyles(() => ({
     height: "48px",
     borderRadius: "0px",
     backgroundColor: "#262C34",
+    fontFamily: "GothamNarrow-Bold, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
+    },
+    "&:hover": {
+      backgroundColor: "#495057",
     },
   },
   label: {
@@ -34,12 +38,18 @@ export function DataThemesToolBoxText() {
 
   return (
     <div>
-        <section css={`display: flex;justify-content: center;`}>
-            <div css={styles.textcontent}>
-                {/* No options available in the control panel now. Options will automatically appear, don't worry. */}
-                Use our rich text editor to write your story! Select part of the text to make use of the toolbar.
-            </div>
-        </section>
+      <section
+        css={`
+          display: flex;
+          justify-content: center;
+        `}
+      >
+        <div css={styles.textcontent}>
+          {/* No options available in the control panel now. Options will automatically appear, don't worry. */}
+          Use our rich text editor to write your story! Select part of the text
+          to make use of the toolbar.
+        </div>
+      </section>
       <div
         css={`
           bottom: 0;
