@@ -2,14 +2,13 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
+import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
+import Skeleton from "@material-ui/lab/Skeleton";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
@@ -97,13 +96,35 @@ export function DataThemesBuilderPreviewTheme(
         });
 
         const vizData = viz._getVizData();
-        try {
-          const rawViz = viz.renderToDOM(domRef.current, vizData);
-        } catch (e) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("chart error", e);
+
+        const loader = document.getElementById(
+          `chart-placeholder-${props.tabIndex}-${props.vizIndex}`
+        );
+
+        new Promise((resolve, reject) => {
+          try {
+            if (loader) {
+              loader.style.display = "flex";
+            }
+            const rawViz = viz.renderToDOM(domRef.current, vizData);
+            resolve(1);
+          } catch (e) {
+            if (process.env.NODE_ENV === "development") {
+              console.log("chart error", e);
+              reject(0);
+            }
           }
-        }
+        })
+          .then(() => {
+            if (loader) {
+              loader.style.display = "none";
+            }
+          })
+          .catch(() => {
+            if (loader) {
+              loader.style.display = "none";
+            }
+          });
       } catch (e) {
         while (domRef.current.firstChild) {
           domRef.current.removeChild(domRef.current.firstChild);
@@ -131,6 +152,39 @@ export function DataThemesBuilderPreviewTheme(
 
   return (
     <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
+      <div
+        id={`chart-placeholder-${props.tabIndex}-${props.vizIndex}`}
+        css={`
+          display: flex;
+          padding: 0 24px;
+          margin-top: 20px;
+          max-width: 1280px;
+          align-items: center;
+          align-self: flex-start;
+          justify-content: center;
+          width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
+          height: ${visualOptions[props.tabIndex][props.vizIndex].height}px;
+
+          @media (max-width: 1280px) {
+            width: calc(100vw - 400px);
+          }
+
+          .MuiSkeleton-wave::after {
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(223, 227, 230, 1),
+              transparent
+            );
+          }
+
+          .MuiSkeleton-root {
+            background: transparent;
+          }
+        `}
+      >
+        <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
+      </div>
       {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
         <div
           css={commonStyles.previewInnercontainer(props.editable)}
