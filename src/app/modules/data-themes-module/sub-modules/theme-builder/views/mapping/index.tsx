@@ -284,14 +284,11 @@ function DataThemesBuilderMappingDimension(
         "data.value",
         {}
       ) as { [key: string]: any };
-      const dimensionMappingFromStorage = get(
+      const localDimensionMapping = get(
         mappingFromStorage[activeTabIndex][activeVizIndex],
         dimension.id,
         {}
       );
-      const localDimensionMapping = isEmpty(dimensionMapping)
-        ? dimensionMappingFromStorage
-        : dimensionMapping;
       if (item.type === "column") {
         const defaulAggregation = dimension.aggregation
           ? getDefaultDimensionAggregation(
@@ -381,6 +378,7 @@ function DataThemesBuilderMappingDimension(
         ...dimensionMapping,
         ids: dimensionMapping.ids.filter((col: any, j: number) => j !== i),
         value: dimensionMapping.value.filter((col: any, j: number) => j !== i),
+        isValid: true,
         config: nextConfig,
       };
       if (nextDimensionMapping.ids.length === 0) {
@@ -545,9 +543,8 @@ function DataThemesBuilderMappingDimension(
         {dimensionMapping.ids &&
           dimensionMapping.ids.map((id: string, index: number) => {
             const columnId = dimensionMapping.value[index];
-            const columnDataType = getTypeName(
-              props.currentChartData.dataTypes[columnId]
-            );
+            let type = props.currentChartData.dataTypes[columnId];
+            const columnDataType = getTypeName(type);
             const relatedAggregation = dimension.aggregation
               ? dimensionMapping.config.aggregation[index] ||
                 getDefaultDimensionAggregation(dimension, columnDataType)
@@ -556,7 +553,6 @@ function DataThemesBuilderMappingDimension(
               dimension.validTypes?.length === 0 ||
               dimension.validTypes?.includes(columnDataType);
 
-            let type = props.currentChartData.dataTypes[columnId];
             if (
               typeof props.currentChartData.dataTypes[columnId] === "object"
             ) {
