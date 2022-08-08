@@ -16,6 +16,7 @@ interface DataThemesBuilderTextViewProps {
   filterOptionGroups: any;
   data: any;
   updateLocalStates: any;
+  deleteTab: (value: number) => void;
 }
 
 export function DataThemesBuilderTextView(
@@ -23,9 +24,12 @@ export function DataThemesBuilderTextView(
 ) {
   useTitle("Data Themes - Input text");
 
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
-
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
 
   return (
     <div css={styles.container}>
@@ -36,6 +40,7 @@ export function DataThemesBuilderTextView(
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
         tabsDisabled={true}
+        deleteTab={props.deleteTab}
       />
       <DataThemesToolBox
         textView
@@ -44,7 +49,11 @@ export function DataThemesBuilderTextView(
         filterOptionGroups={[]}
         loadDataset={emptyPromise}
       />
-      <RichEditor editMode={true} tabIndex={activeTabIndex} vizIndex={activeVizIndex} />
+      <RichEditor
+        editMode={true}
+        tabIndex={activeTabIndex}
+        vizIndex={activeVizIndex}
+      />
     </div>
   );
 }

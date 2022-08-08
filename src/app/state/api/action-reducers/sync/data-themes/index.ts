@@ -30,6 +30,7 @@ export interface DataThemesStepSelectionsStateModel {
     DataThemesStepSelectionsStateModel,
     { tabIndex: number; vizIndex: number }
   >;
+  removeTab: Action<DataThemesStepSelectionsStateModel, { tabIndex: number }>;
 }
 
 export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
@@ -78,6 +79,9 @@ export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
         state.step1[payload.tabIndex].splice(payload.vizIndex, 1);
       }
     ),
+    removeTab: action((state, payload: { tabIndex: number }) => {
+      state.step1.splice(payload.tabIndex, 1);
+    }),
   };
 
 export interface DataThemesStepChartTypeStateModel {
@@ -97,6 +101,7 @@ export interface DataThemesStepChartTypeStateModel {
     DataThemesStepChartTypeStateModel,
     { tabIndex: number; vizIndex: number }
   >;
+  removeTab: Action<DataThemesStepChartTypeStateModel, { tabIndex: number }>;
 }
 
 export const DataThemesStepChartTypeState: DataThemesStepChartTypeStateModel = {
@@ -125,6 +130,9 @@ export const DataThemesStepChartTypeState: DataThemesStepChartTypeStateModel = {
       state.value[payload.tabIndex].splice(payload.vizIndex, 1);
     }
   ),
+  removeTab: action((state, payload: { tabIndex: number }) => {
+    state.value.splice(payload.tabIndex, 1);
+  }),
 };
 
 export interface DataThemesMappingStateModel {
@@ -148,6 +156,7 @@ export interface DataThemesMappingStateModel {
     DataThemesMappingStateModel,
     { tabIndex: number; vizIndex: number }
   >;
+  removeTab: Action<DataThemesMappingStateModel, { tabIndex: number }>;
 }
 
 export const DataThemesMappingState: DataThemesMappingStateModel = {
@@ -168,15 +177,12 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
       state.value[payload.tab][payload.viz] = { ...nextValue };
     }
   ),
-
   clearValue: action((state, payload: { tab: number; viz: number }) => {
     state.value[payload.tab][payload.viz] = {};
   }),
-
   reset: action((state) => {
     state.value = [[{}]];
   }),
-
   addTab: action((state) => {
     state.value.push([{}]);
   }),
@@ -193,6 +199,9 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
       state.value[payload.tabIndex].splice(payload.vizIndex, 1);
     }
   ),
+  removeTab: action((state, payload: { tabIndex: number }) => {
+    state.value.splice(payload.tabIndex, 1);
+  }),
 };
 
 export interface DataThemesStepSelectDataLiveStateModel {
@@ -211,6 +220,10 @@ export interface DataThemesStepSelectDataLiveStateModel {
   removeViz: Action<
     DataThemesStepSelectDataLiveStateModel,
     { tabIndex: number; vizIndex: number }
+  >;
+  removeTab: Action<
+    DataThemesStepSelectDataLiveStateModel,
+    { tabIndex: number }
   >;
 }
 
@@ -243,6 +256,9 @@ export const DataThemesStepSelectDataLiveState: DataThemesStepSelectDataLiveStat
         state.value[payload.tabIndex].splice(payload.vizIndex, 1);
       }
     ),
+    removeTab: action((state, payload: { tabIndex: number }) => {
+      state.value.splice(payload.tabIndex, 1);
+    }),
   };
 
 export interface DataThemesIndexStateModel {
@@ -281,6 +297,7 @@ export interface DataThemesIdsStateModel {
     { tabIndex: number; vizIndex: number }
   >;
   reset: Action<DataThemesIdsStateModel>;
+  removeTab: Action<DataThemesIdsStateModel, { tabIndex: number }>;
 }
 
 export const DataThemesIdsState: DataThemesIdsStateModel = {
@@ -307,6 +324,9 @@ export const DataThemesIdsState: DataThemesIdsStateModel = {
   reset: action((state) => {
     state.value = [[0]];
   }),
+  removeTab: action((state, payload: { tabIndex: number }) => {
+    state.value.splice(payload.tabIndex, 1);
+  }),
 };
 
 export interface DataThemesActivePanelsStateModel {
@@ -322,6 +342,7 @@ export interface DataThemesActivePanelsStateModel {
     { tabIndex: number; vizIndex: number }
   >;
   reset: Action<DataThemesActivePanelsStateModel>;
+  removeTab: Action<DataThemesActivePanelsStateModel, { tabIndex: number }>;
 }
 
 export const DataThemesActivePanelsState: DataThemesActivePanelsStateModel = {
@@ -347,6 +368,9 @@ export const DataThemesActivePanelsState: DataThemesActivePanelsStateModel = {
   reset: action((state) => {
     state.value = [[1]];
   }),
+  removeTab: action((state, payload: { tabIndex: number }) => {
+    state.value.splice(payload.tabIndex, 1);
+  }),
 };
 
 export interface DataThemesTitlesStateModel {
@@ -361,6 +385,7 @@ export interface DataThemesTitlesStateModel {
   >;
   addTab: Action<DataThemesTitlesStateModel>;
   reset: Action<DataThemesTitlesStateModel>;
+  removeTab: Action<DataThemesTitlesStateModel, { tabIndex: number }>;
 }
 
 export const DataThemesTitlesState: DataThemesTitlesStateModel = {
@@ -386,6 +411,9 @@ export const DataThemesTitlesState: DataThemesTitlesStateModel = {
     state.subTitle = "Subtitle";
     state.tabTitles = ["Tab 1"];
   }),
+  removeTab: action((state, payload: { tabIndex: number }) => {
+    state.tabTitles.splice(payload.tabIndex, 1);
+  }),
 };
 
 export interface DataThemesTextContentStateModel {
@@ -406,6 +434,7 @@ export interface DataThemesTextContentStateModel {
     { tabIndex: number; vizIndex: number }
   >;
   reset: Action<DataThemesTextContentStateModel>;
+  removeTab: Action<DataThemesTextContentStateModel, { tabIndex: number }>;
 }
 
 export const DataThemesTextContentState: DataThemesTextContentStateModel = {
@@ -442,6 +471,9 @@ export const DataThemesTextContentState: DataThemesTextContentStateModel = {
   reset: action((state) => {
     state.value = [[EditorState.createEmpty()]];
     state.vizIsTextContent = [[false]];
+  }),
+  removeTab: action((state, payload: { tabIndex: number }) => {
+    state.value.splice(payload.tabIndex, 1);
   }),
 };
 
@@ -500,6 +532,18 @@ export interface DataThemesVizDeletedStateModel {
   value: boolean;
   setValue: Action<DataThemesVizDeletedStateModel, boolean>;
 }
+
+export interface DataThemesTabDeletedStateModel {
+  value: boolean;
+  setValue: Action<DataThemesTabDeletedStateModel, boolean>;
+}
+
+export const DataThemesTabDeletedState: DataThemesTabDeletedStateModel = {
+  value: false,
+  setValue: action((state, payload: boolean) => {
+    state.value = payload;
+  }),
+};
 
 export const DataThemesVizDeletedState: DataThemesVizDeletedStateModel = {
   value: false,

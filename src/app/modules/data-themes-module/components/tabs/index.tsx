@@ -1,13 +1,22 @@
+/* third-party */
 import React from "react";
+import Button from "@material-ui/core/Button";
+import Popover from "@material-ui/core/Popover";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 import { useHistory, useParams } from "react-router-dom";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+/* project */
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { styles } from "app/modules/data-themes-module/components/tabs/styles";
 
-export function DataThemesTabs(props: any) {
-  const history = useHistory();
-  const { page } = useParams<{ page: string }>();
+function DataThemesTabItem(props: any) {
+  const { index, updateLocalStates, disabled, previewMode, deleteTab } = props;
+
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
 
   const tabIds = useStoreState((state) => state.dataThemes.ids.value);
   const activeTabIndex = useStoreState(
@@ -19,6 +28,155 @@ export function DataThemesTabs(props: any) {
   );
   const setActiveVizIndex = useStoreActions(
     (state) => state.dataThemes.activeVizIndex.setValue
+  );
+
+  const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
+  const setTabTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setTabTitle
+  );
+
+  const removeTabId = useStoreActions(
+    (state) => state.dataThemes.ids.removeTab
+  );
+  const removeTabActivePanel = useStoreActions(
+    (state) => state.dataThemes.activePanels.removeTab
+  );
+  const removeTabChartType = useStoreActions(
+    (state) => state.dataThemes.sync.chartType.removeTab
+  );
+  const removeTabLiveData = useStoreActions(
+    (state) => state.dataThemes.sync.liveData.removeTab
+  );
+  const removeTabMapping = useStoreActions(
+    (state) => state.dataThemes.sync.mapping.removeTab
+  );
+  const removeTabStepSelections = useStoreActions(
+    (state) => state.dataThemes.sync.stepSelections.removeTab
+  );
+  const removeTabAppliedFilters = useStoreActions(
+    (state) => state.dataThemes.appliedFilters.removeTab
+  );
+  const removeTabTextContent = useStoreActions(
+    (state) => state.dataThemes.textContent.removeTab
+  );
+  const removeTabTitles = useStoreActions(
+    (actions) => actions.dataThemes.titles.removeTab
+  );
+
+  function onDelete(id: number) {
+    setActiveVizIndex(0); // default select the fist viz.
+    setActiveTabIndex(0);
+    removeTabId({ tabIndex: id });
+    removeTabActivePanel({ tabIndex: id });
+    removeTabChartType({ tabIndex: id });
+    removeTabLiveData({ tabIndex: id });
+    removeTabMapping({ tabIndex: id });
+    removeTabStepSelections({ tabIndex: id });
+    removeTabAppliedFilters({ tabIndex: id });
+    removeTabTitles({ tabIndex: id });
+    removeTabTextContent({ tabIndex: id });
+    deleteTab(id);
+    updateLocalStates(true);
+  }
+
+  function onTabClick(tab: number) {
+    if (activeTabIndex !== tab) {
+      // only change when necessary
+      setActiveTabIndex(tab);
+      setActiveVizIndex(0); // default select the fist viz.
+    }
+  }
+
+  function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
+    setAnchorEl(event.currentTarget);
+  }
+
+  function handleClose() {
+    setAnchorEl(null);
+  }
+
+  const open = Boolean(anchorEl);
+
+  return (
+    <div
+      css={styles.tab(
+        index === activeTabIndex,
+        disabled && !previewMode,
+        previewMode,
+        tabIds.length === 1
+      )}
+      onClick={disabled && !previewMode ? () => {} : () => onTabClick(index)}
+    >
+      {activeTabIndex !== index || previewMode ? (
+        <div>{tabTitles[index]}</div>
+      ) : (
+        <input
+          type="text"
+          css={styles.tabTitle}
+          value={tabTitles[index]}
+          onChange={(event) => {
+            setTabTitle({
+              tabIndex: index,
+              tabTitle: event.target.value,
+            });
+          }}
+        />
+      )}
+      {activeTabIndex !== index ||
+        (!previewMode && (
+          <React.Fragment>
+            <IconButton size="small" onClick={handleClick}>
+              <KeyboardArrowDownIcon htmlColor="#262c34" />
+            </IconButton>
+            <Popover
+              open={open}
+              keepMounted
+              disablePortal
+              anchorEl={anchorEl}
+              onClose={handleClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              css={`
+                .MuiPaper-root {
+                  border-radius: 10px;
+                  background: #495057;
+                }
+              `}
+            >
+              <div css={styles.tabPopup}>
+                <Button
+                  startIcon={<DeleteIcon />}
+                  onClick={() => onDelete(index)}
+                >
+                  Delete tab
+                </Button>
+              </div>
+            </Popover>
+          </React.Fragment>
+        ))}
+    </div>
+  );
+}
+
+export function DataThemesTabs(props: any) {
+  const history = useHistory();
+  const { page } = useParams<{ page: string }>();
+
+  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
+  const setActiveTabIndex = useStoreActions(
+    (state) => state.dataThemes.activeTabIndex.setValue
+  );
+  const setActiveVizIndex = useStoreActions(
+    (state) => state.dataThemes.activeVizIndex.setValue
+  );
+  const addTabTitles = useStoreActions(
+    (actions) => actions.dataThemes.titles.addTab
   );
   const addTabId = useStoreActions((state) => state.dataThemes.ids.addTab);
   const addTabActivePanel = useStoreActions(
@@ -43,14 +201,6 @@ export function DataThemesTabs(props: any) {
     (state) => state.dataThemes.textContent.addTab
   );
 
-  const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
-  const setTabTitle = useStoreActions(
-    (actions) => actions.dataThemes.titles.setTabTitle
-  );
-  const addTabTitles = useStoreActions(
-    (actions) => actions.dataThemes.titles.addTab
-  );
-
   function onAdd() {
     setActiveVizIndex(0); // default select the fist viz.
     setActiveTabIndex(tabIds.length);
@@ -67,51 +217,18 @@ export function DataThemesTabs(props: any) {
     history.push(`/data-themes/${page}/initial`);
   }
 
-  function onTabClick(tab: number) {
-    if (activeTabIndex !== tab) {
-      // only change when necessary
-      setActiveTabIndex(tab);
-      setActiveVizIndex(0); // default select the fist viz.
-    }
-  }
-
   return (
     <div css={styles.container}>
       <div css={styles.innertabscontainer}>
         {tabIds.map((_: number[], index: number) => (
-          <div
+          <DataThemesTabItem
             key={index}
-            css={styles.tab(
-              index === activeTabIndex,
-              props.disabled && !props.previewMode,
-              props.previewMode,
-              tabIds.length === 1
-            )}
-            onClick={
-              props.disabled && !props.previewMode
-                ? () => {}
-                : () => onTabClick(index)
-            }
-          >
-            {activeTabIndex !== index || props.previewMode ? (
-              <div>{tabTitles[index]}</div>
-            ) : (
-              <input
-                type="text"
-                css={styles.tabTitle}
-                value={tabTitles[index]}
-                onChange={(event) => {
-                  setTabTitle({
-                    tabIndex: index,
-                    tabTitle: event.target.value,
-                  });
-                }}
-              />
-            )}
-            {!props.previewMode && (
-              <KeyboardArrowDownIcon htmlColor="#262c34" />
-            )}
-          </div>
+            index={index}
+            deleteTab={props.deleteTab}
+            updateLocalStates={props.updateLocalStates}
+            disabled={props.tabsDisabled}
+            previewMode={props.previewMode}
+          />
         ))}
       </div>
       {!props.previewMode && (

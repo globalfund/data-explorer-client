@@ -84,6 +84,7 @@ export function DataThemesBuilderChartType(
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
         tabsDisabled={true}
+        deleteTab={props.deleteTab}
       />
       <DataThemesToolBox
         dataSteps

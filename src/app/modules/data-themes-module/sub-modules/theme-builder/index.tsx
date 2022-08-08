@@ -181,6 +181,9 @@ export function DataThemesBuilder() {
   const setSubTitle = useStoreActions(
     (actions) => actions.dataThemes.titles.setSubTitle
   );
+  const setTabDeleted = useStoreActions(
+    (actions) => actions.dataThemes.sync.tabDeleted.setValue
+  );
   const setVizDeleted = useStoreActions(
     (actions) => actions.dataThemes.sync.vizDeleted.setValue
   );
@@ -359,6 +362,25 @@ export function DataThemesBuilder() {
     }
   }
 
+  function deleteTab(tabIndex: number) {
+    let tmpRawData = [...rawData];
+    let tmpVisualOptions: any = [...visualOptions];
+    let tmpCurrentChartData: any = [...currentChartData];
+    if (
+      tmpRawData[tabIndex] &&
+      tmpVisualOptions[tabIndex] &&
+      tmpCurrentChartData[tabIndex]
+    ) {
+      tmpRawData.splice(tabIndex, 1);
+      setRawData(tmpRawData);
+      tmpVisualOptions.splice(tabIndex, 1);
+      setVisualOptions(tmpVisualOptions);
+      tmpCurrentChartData.splice(tabIndex, 1);
+      setCurrentChartData(tmpCurrentChartData);
+      setTabDeleted(true);
+    }
+  }
+
   async function clear() {
     sessionStorage.setItem("visualOptions", JSON.stringify([[{}]]));
     setRawData([
@@ -428,6 +450,7 @@ export function DataThemesBuilder() {
       clearDataTheme();
       clearDataThemeBuilder();
       clearOrderData();
+      setTabDeleted(false);
       setVizDeleted(false);
       setVizDuplicated(false);
     };
@@ -491,6 +514,7 @@ export function DataThemesBuilder() {
   useUpdateEffect(() => {
     clearOrderData();
     setVizDeleted(false);
+    setTabDeleted(false);
     setVizDuplicated(false);
   }, [activeTabIndex]);
 
@@ -537,6 +561,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/customize`}>
@@ -572,6 +597,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/lock`}>
@@ -608,6 +634,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/filters`}>
@@ -642,6 +669,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/mapping`}>
@@ -676,6 +704,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/chart-type`}>
@@ -703,6 +732,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/preview`}>
@@ -734,6 +764,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/data`}>
@@ -764,6 +795,7 @@ export function DataThemesBuilder() {
                 []
               )}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/initial`}>
@@ -781,6 +813,7 @@ export function DataThemesBuilder() {
               )}
               updateLocalStates={updateLocalStates}
               addVizToLocalStates={addVizToLocalStates}
+              deleteTab={deleteTab}
             />
           </Route>
           <Route path={`/data-themes/:page/text`}>
@@ -790,6 +823,7 @@ export function DataThemesBuilder() {
               visualOptions={visualOptions}
               filterOptionGroups={rawData}
               updateLocalStates={updateLocalStates}
+              deleteTab={deleteTab}
             />
             <React.Fragment />
           </Route>
@@ -820,6 +854,7 @@ export function DataThemesBuilder() {
                         updateLocalStates={updateLocalStates}
                         tabsDisabled={page !== "new" && !isEditMode}
                         themeData={rawData}
+                        deleteTab={deleteTab}
                       />
                       <DataThemesToolBox
                         filtersView

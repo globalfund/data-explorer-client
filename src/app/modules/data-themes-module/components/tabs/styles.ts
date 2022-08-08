@@ -84,8 +84,8 @@ export const styles = {
   `,
   tabTitle: css`
     margin: 0;
-    display: flex;
     color: #fff;
+    display: flex;
     font-size: 14px;
     font-weight: 700;
     border-style: none;
@@ -140,5 +140,34 @@ export const styles = {
     border-radius: 0px 20px 0px 0px;
 
     opacity: 50%;
+  `,
+  tabPopup: css`
+    display: flex;
+    padding: 6px 13px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    * {
+      margin: 0;
+      color: #fff;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 6px 0;
+
+      span {
+        text-transform: initial;
+      }
+
+      svg {
+        margin-right: 10px;
+
+        path {
+          fill: #fff;
+        }
+      }
+    }
   `,
 };

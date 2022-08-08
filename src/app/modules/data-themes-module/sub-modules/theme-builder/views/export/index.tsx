@@ -137,6 +137,7 @@ export function DataThemesBuilderExport(props: DataThemesBuilderExportProps) {
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
         tabsDisabled={true}
+        deleteTab={props.deleteTab}
       />
       <DataThemesToolBox
         dataSteps

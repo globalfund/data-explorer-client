@@ -25,6 +25,7 @@ interface DataThemesBuilderPreviewProps {
   filterOptionGroups: FilterGroupModel[];
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
+  deleteTab: (value: number) => void;
 }
 
 export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
@@ -59,6 +60,7 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
         tabsDisabled={true}
+        deleteTab={props.deleteTab}
       />
       <DataThemesToolBox
         dataSteps

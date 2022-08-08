@@ -113,6 +113,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const vizDuplicated = useStoreState(
     (state) => state.dataThemes.sync.vizDuplicated.value
   );
+  const tabDeleted = useStoreState(
+    (state) => state.dataThemes.sync.tabDeleted.value
+  );
 
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
@@ -183,6 +186,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
   const setVizDuplicated = useStoreActions(
     (actions) => actions.dataThemes.sync.vizDuplicated.setValue
+  );
+  const setTabDeleted = useStoreActions(
+    (actions) => actions.dataThemes.sync.tabDeleted.setValue
   );
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -290,6 +296,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       vizIsTextContent[activeTabIndex][activeVizIndex] ||
       orderData.hasChanged ||
       vizDeleted ||
+      tabDeleted ||
       vizDuplicated ||
       title !== loadedDataTheme.title ||
       subTitle !== loadedDataTheme.subTitle;
@@ -306,6 +313,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     activeTabIndex,
     activeVizIndex,
     orderData.hasChanged,
+    tabDeleted,
     vizDeleted,
     vizDuplicated,
     title,
@@ -344,6 +352,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       setShowSnackbar("Your Theme has been saved!");
       clearOrderData();
       setVizDeleted(false);
+      setTabDeleted(false);
       setVizDuplicated(false);
     }
     return () => {
@@ -511,6 +520,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             updateLocalStates={props.updateLocalStates}
             disabled={props.tabsDisabled}
             previewMode={props.previewMode}
+            deleteTab={props.deleteTab}
           />
         </div>
       </div>

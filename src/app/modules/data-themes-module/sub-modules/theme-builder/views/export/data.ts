@@ -13,6 +13,7 @@ export interface DataThemesBuilderExportProps {
   filterOptionGroups: FilterGroupModel[];
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
+  deleteTab: (value: number) => void;
   themeData: {
     id: number;
     count: number;

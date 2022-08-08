@@ -13,4 +13,5 @@ export interface DataThemesBuilderFiltersProps {
   setVisualOptions: (value: any) => void;
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
+  deleteTab: (value: number) => void;
 }

@@ -15,6 +15,7 @@ import {
   DataThemesVizOrderStateModel,
   DataThemesVizDeletedStateModel,
   DataThemesVizDuplicatedStateModel,
+  DataThemesTabDeletedStateModel,
 } from "app/state/api/action-reducers/sync/data-themes";
 import {
   PageHeaderVizDrilldownsStateModel,
@@ -322,6 +323,7 @@ export interface StoreModel {
       vizOrderData: DataThemesVizOrderStateModel;
       vizDeleted: DataThemesVizDeletedStateModel;
       vizDuplicated: DataThemesVizDuplicatedStateModel;
+      tabDeleted: DataThemesTabDeletedStateModel;
     };
     appliedFilters: DataThemesAppliedFiltersStateModel;
     DataThemeGet: ApiCallModel;

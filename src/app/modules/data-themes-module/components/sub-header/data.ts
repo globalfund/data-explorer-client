@@ -8,6 +8,7 @@ export interface DataThemesPageSubHeaderProps {
   data: { [key: string]: string | number | null }[];
   updateLocalStates: any;
   tabsDisabled?: boolean;
+  deleteTab: (value: number) => void;
   themeData?: {
     id: number;
     count: number;

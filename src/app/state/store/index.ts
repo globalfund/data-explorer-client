@@ -173,6 +173,7 @@ import {
   DataThemesVizOrderState,
   DataThemesVizDeletedState,
   DataThemesVizDuplicatedState,
+  DataThemesTabDeletedState,
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
 import {
@@ -390,6 +391,7 @@ const storeContent: StoreModel = {
       vizOrderData: persist(DataThemesVizOrderState),
       vizDeleted: persist(DataThemesVizDeletedState),
       vizDuplicated: persist(DataThemesVizDuplicatedState),
+      tabDeleted: persist(DataThemesTabDeletedState),
     },
     appliedFilters: persist(DataThemesAppliedFiltersState),
     DataThemeGet: persist(DataThemeGet),
