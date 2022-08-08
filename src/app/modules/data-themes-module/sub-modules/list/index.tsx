@@ -207,7 +207,7 @@ export function DataThemesListView() {
 
   const [search, setSearch] = React.useState("");
   const [order, setOrder] = React.useState("createdDate DESC");
-  const [view, setView] = React.useState<"list" | "table">("table");
+  const [view, setView] = React.useState<"list" | "table">("list");
 
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [searchDebounced, setSearchDebounced] = React.useState("");
