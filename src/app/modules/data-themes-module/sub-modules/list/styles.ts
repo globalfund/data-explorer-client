@@ -57,6 +57,10 @@ export const styles = {
         opacity: 0.3;
       }
     }
+
+    > svg {
+      display: ${showInput ? "inherit" : "none"};
+    }
   `,
   createNewButton: css`
     width: 90px;

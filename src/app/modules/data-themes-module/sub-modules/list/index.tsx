@@ -5,22 +5,24 @@ import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import SortIcon from "@material-ui/icons/Sort";
+import CloseIcon from "@material-ui/icons/Close";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link, useHistory } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import ViewAgendaIcon from "@material-ui/icons/ViewAgenda";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import AgendaIcon from "@material-ui/icons/ViewAgenda";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { AddIcon } from "app/assets/icons/Add";
+import { TableIcon } from "app/assets/icons/charts/Table";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/data-themes-module/sub-modules/list/styles";
+import { DataThemesTableView } from "app/modules/data-themes-module/components/table";
 import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
 import { DataThemesToolbarPopover } from "app/modules/data-themes-module/components/toolbar-popover";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 
-interface DataThemeListItemAPIModel {
+export interface DataThemeListItemAPIModel {
   id: string;
   title: string;
   public: boolean;
@@ -54,6 +56,25 @@ const sortItems = [
   {
     content: "Title (desc)",
     value: "title DESC",
+  },
+];
+
+const viewItems = [
+  {
+    content: (
+      <div>
+        List <AgendaIcon />
+      </div>
+    ),
+    value: "list",
+  },
+  {
+    content: (
+      <div>
+        Table <TableIcon />
+      </div>
+    ),
+    value: "table",
   },
 ];
 
@@ -186,10 +207,15 @@ export function DataThemesListView() {
 
   const [search, setSearch] = React.useState("");
   const [order, setOrder] = React.useState("createdDate DESC");
+  const [view, setView] = React.useState<"list" | "table">("table");
+
   const [searchOpen, setSearchOpen] = React.useState(false);
   const [searchDebounced, setSearchDebounced] = React.useState("");
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
+    null
+  );
+  const [anchorEl2, setAnchorEl2] = React.useState<HTMLButtonElement | null>(
     null
   );
 
@@ -203,6 +229,18 @@ export function DataThemesListView() {
 
   function onSortItemClick(value: string) {
     setOrder(value);
+  }
+
+  function handleViewClick(event: React.MouseEvent<HTMLButtonElement>) {
+    setAnchorEl2(event.currentTarget);
+  }
+
+  function handleViewClose() {
+    setAnchorEl2(null);
+  }
+
+  function onViewItemClick(value: string) {
+    setView(value as "list" | "table");
   }
 
   const loadedDataThemes = useStoreState(
@@ -265,41 +303,39 @@ export function DataThemesListView() {
       <DataThemesGenericPageSubHeader title="Themes" />
       <div css={styles.innercontainer}>
         <Box css={styles.toolbar}>
-          <ClickAwayListener
-            onClickAway={() => {
-              if (searchOpen && searchDebounced.length === 0) {
+          <div css={styles.toolbarSearch(searchOpen)}>
+            <input
+              type="text"
+              tabIndex={0}
+              value={search}
+              placeholder="Search..."
+              id="data-themes-search-input"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSearch(e.target.value)
+              }
+            />
+            <CloseIcon
+              onClick={() => {
+                setSearch("");
                 setSearchOpen(false);
+              }}
+            />
+          </div>
+          <SearchIcon
+            onClick={() => {
+              if (!searchOpen) {
+                setSearchOpen(true);
+                setTimeout(() => {
+                  const input = document.getElementById(
+                    "data-themes-search-input"
+                  );
+                  if (input) {
+                    input.focus();
+                  }
+                }, 100);
               }
             }}
-          >
-            <div css={styles.toolbarSearch(searchOpen)}>
-              <input
-                type="text"
-                tabIndex={0}
-                value={search}
-                placeholder="Search..."
-                id="data-themes-search-input"
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setSearch(e.target.value)
-                }
-              />
-              <SearchIcon
-                onClick={() => {
-                  if (!searchOpen) {
-                    setSearchOpen(true);
-                    setTimeout(() => {
-                      const input = document.getElementById(
-                        "data-themes-search-input"
-                      );
-                      if (input) {
-                        input.focus();
-                      }
-                    }, 100);
-                  }
-                }}
-              />
-            </div>
-          </ClickAwayListener>
+          />
           <IconButton size="small" onClick={handleSortClick}>
             <SortIcon htmlColor="#262C34" />
           </IconButton>
@@ -318,7 +354,24 @@ export function DataThemesListView() {
             items={sortItems}
             onItemClick={onSortItemClick}
           />
-          <ViewAgendaIcon />
+          <IconButton size="small" onClick={handleViewClick}>
+            <AgendaIcon htmlColor="#262C34" />
+          </IconButton>
+          <DataThemesToolbarPopover
+            anchorEl={anchorEl2}
+            handleClose={handleViewClose}
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "left",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "center",
+            }}
+            selected={view}
+            items={viewItems}
+            onItemClick={onViewItemClick}
+          />
           <button
             css={styles.createNewButton}
             onClick={() => history.push("/data-themes/new")}
@@ -326,23 +379,26 @@ export function DataThemesListView() {
             Create
           </button>
         </Box>
-        <Grid container spacing={2}>
-          {loadedDataThemes.map((item) => (
-            <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
-              <DataThemesListViewItem {...item} />
-            </Grid>
-          ))}
-          {loadedDataThemes.length === 0 && (
-            <Grid item xs={12} sm={6} md={4} lg={4}>
-              <div css={styles.gridItemCreateNew}>
-                <Link to="/data-themes/new">
-                  <AddIcon />
-                  <div>Create new data theme</div>
-                </Link>
-              </div>
-            </Grid>
-          )}
-        </Grid>
+        {view === "list" && (
+          <Grid container spacing={2}>
+            {loadedDataThemes.map((item) => (
+              <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
+                <DataThemesListViewItem {...item} />
+              </Grid>
+            ))}
+            {loadedDataThemes.length === 0 && (
+              <Grid item xs={12} sm={6} md={4} lg={4}>
+                <div css={styles.gridItemCreateNew}>
+                  <Link to="/data-themes/new">
+                    <AddIcon />
+                    <div>Create new data theme</div>
+                  </Link>
+                </div>
+              </Grid>
+            )}
+          </Grid>
+        )}
+        {view === "table" && <DataThemesTableView />}
       </div>
     </div>
   );

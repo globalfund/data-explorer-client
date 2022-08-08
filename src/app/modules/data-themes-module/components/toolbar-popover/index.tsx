@@ -49,6 +49,12 @@ export function DataThemesToolbarPopover(props: Props) {
             `
               color: #fff;
               background: #262c34;
+
+              svg {
+                > path {
+                  fill: #fff;
+                }
+              }
             `}
 
             &:not(:last-child) {
@@ -58,6 +64,19 @@ export function DataThemesToolbarPopover(props: Props) {
             &:hover {
               color: #fff;
               background: #262c34;
+
+              svg {
+                > path {
+                  fill: #fff;
+                }
+              }
+            }
+
+            > div {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
             }
           `}
         >

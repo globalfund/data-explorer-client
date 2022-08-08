@@ -35,6 +35,7 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
     <div
       css={`
         width: 100%;
+        height: 100%;
         display: flex;
         overflow-y: auto;
         flex-direction: column;
@@ -97,6 +98,7 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
       {expandedGroup && (
         <div
           css={`
+            height: 100%;
             padding: 16px;
           `}
         >
