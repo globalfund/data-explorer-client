@@ -135,6 +135,11 @@ export function DataThemesTableView() {
                 background-color: #dfe3e6 !important;
               }
             }
+
+            td,
+            th {
+              padding: 12px;
+            }
           `}
         >
           {loadedDataThemes.map((dt) => {
