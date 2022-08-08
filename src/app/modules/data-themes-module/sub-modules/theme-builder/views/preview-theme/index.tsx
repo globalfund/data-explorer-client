@@ -2,6 +2,10 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
+import LockIcon from "@material-ui/icons/Lock";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
+import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
@@ -30,6 +34,9 @@ export function DataThemesBuilderPreviewTheme(
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setActiveVizIndex = useStoreActions(
     (state) => state.dataThemes.activeVizIndex.setValue
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
   );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
@@ -100,9 +107,15 @@ export function DataThemesBuilderPreviewTheme(
         const loader = document.getElementById(
           `chart-placeholder-${props.tabIndex}-${props.vizIndex}`
         );
+        const lockBtn = document.getElementById(
+          `lock-button-${props.tabIndex}-${props.vizIndex}`
+        );
 
         new Promise((resolve, reject) => {
           try {
+            if (lockBtn) {
+              lockBtn.style.visibility = "hidden";
+            }
             if (loader) {
               loader.style.display = "flex";
             }
@@ -118,6 +131,9 @@ export function DataThemesBuilderPreviewTheme(
           .then(() => {
             if (loader) {
               loader.style.display = "none";
+            }
+            if (lockBtn) {
+              lockBtn.style.visibility = "visible";
             }
           })
           .catch(() => {
@@ -154,10 +170,8 @@ export function DataThemesBuilderPreviewTheme(
     <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
       {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
         <div
+          onClick={handleTextClick}
           css={commonStyles.previewInnercontainer(props.editable)}
-          onClick={() => {
-            handleTextClick();
-          }}
         >
           {props.editable && <div onClick={handleClick} />}
           <RichEditor
@@ -211,14 +225,47 @@ export function DataThemesBuilderPreviewTheme(
             <div
               ref={containerRef}
               css={`
+                position: relative;
                 width: calc(100% - 24px);
               `}
             >
+              <Tooltip
+                title={
+                  props.vizIndex !== activeVizIndex
+                    ? "Enable filters for this visualisation"
+                    : ""
+                }
+              >
+                <IconButton
+                  id={`lock-button-${props.tabIndex}-${props.vizIndex}`}
+                  onClick={() => {
+                    setActiveVizIndex(props.vizIndex);
+                  }}
+                  css={`
+                    top: 10px;
+                    right: 10px;
+                    padding: 5px;
+                    visibility: hidden;
+                    position: absolute;
+                    background: #262c34;
+
+                    &:hover {
+                      background: #262c34;
+                    }
+                  `}
+                  disableTouchRipple
+                  disableRipple
+                >
+                  {props.vizIndex === activeVizIndex ? (
+                    <LockIcon htmlColor="#fff" />
+                  ) : (
+                    <LockOpenIcon htmlColor="#fff" />
+                  )}
+                </IconButton>
+              </Tooltip>
               <div
-                onClick={() => {
-                  handleVizClick();
-                }}
                 ref={domRef}
+                onClick={handleVizClick}
                 css={`
                   overflow-x: auto;
 

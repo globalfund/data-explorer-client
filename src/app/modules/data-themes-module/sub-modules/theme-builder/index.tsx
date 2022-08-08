@@ -824,13 +824,14 @@ export function DataThemesBuilder() {
                       <DataThemesToolBox
                         filtersView
                         tabIndex={activeTabIndex}
-                        vizIndex={0}
-                        data={rawData[activeTabIndex][0].data}
+                        vizIndex={activeVizIndex}
+                        data={rawData[activeTabIndex][activeVizIndex].data}
                         loading={loading}
                         visualOptions={visualOptions}
                         loadDataset={loadDataset}
                         filterOptionGroups={
-                          rawData[activeTabIndex][0].filterOptionGroups
+                          rawData[activeTabIndex][activeVizIndex]
+                            .filterOptionGroups
                         }
                         themeData={rawData}
                       />
