@@ -2,12 +2,12 @@
 import React from "react";
 import isEmpty from "lodash/isEmpty";
 import { convertToRaw } from "draft-js";
-import { useParams } from "react-router-dom";
 import MuiButton from "@material-ui/core/Button";
 import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import BarChartIcon from "@material-ui/icons/BarChart";
 import DashboardIcon from "@material-ui/icons/Dashboard";
+import { useLocation, useParams } from "react-router-dom";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -49,6 +49,7 @@ const Button = withStyles(() => ({
 }))(MuiButton);
 
 export function DataThemesToolBox(props: DataThemesToolBoxProps) {
+  const location = useLocation();
   const { page } = useParams<{ page: string }>();
   const { onChartPress, onTextPress } = useDataThemesAddSection({
     addVizToLocalStates: props.addVizToLocalStates,
@@ -209,7 +210,8 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   ]);
 
   React.useEffect(() => {
-    setIsEditMode(page !== "new");
+    const locationStateSet: boolean = typeof location.state !== "undefined";
+    setIsEditMode(page !== "new" && locationStateSet);
   }, [page]);
 
   return (
@@ -276,7 +278,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
             vizIndex={props.vizIndex}
             filterOptionGroups={props.filterOptionGroups}
           />
-          {isSavedEnabled && (
+          {isSavedEnabled && isEditMode && (
             <div
               css={`
                 bottom: 0;
