@@ -1,4 +1,5 @@
 import filter from "lodash/filter";
+import { mergeObjects } from "app/hooks/useDataThemesRawData";
 
 export function filterDataThemesData(
   rawData: {
@@ -6,9 +7,20 @@ export function filterDataThemesData(
   }[],
   appliedFilters: {
     [key: string]: any[];
-  }
+  },
+  currentUrlParams: URLSearchParams
 ) {
-  const filterKeys = Object.keys(appliedFilters || {});
+  let currentUrlParamsObj: { [key: string]: string[] } = {};
+  currentUrlParams.forEach((value: string, key: string) => {
+    currentUrlParamsObj = {
+      ...currentUrlParamsObj,
+      [key]: value.split(","),
+    };
+  });
+  let localAppliedFilters = mergeObjects(appliedFilters, currentUrlParamsObj);
+  const filterKeys = Object.keys(
+    mergeObjects(localAppliedFilters || {}, currentUrlParamsObj)
+  );
 
   if (filterKeys.length === 0) {
     return rawData;
@@ -19,10 +31,13 @@ export function filterDataThemesData(
     (item: { [key: string]: number | string | null }) => {
       let valid = true;
       filterKeys.forEach((filterKey: string) => {
-        if (!valid) {
+        if (!valid || item[filterKey] === undefined) {
           return;
         }
-        valid = appliedFilters[filterKey].indexOf(item[filterKey]) > -1;
+        valid =
+          localAppliedFilters[filterKey].indexOf(item[filterKey]) > -1 ||
+          localAppliedFilters[filterKey].indexOf(item[filterKey]?.toString()) >
+            -1;
       });
       return valid;
     }

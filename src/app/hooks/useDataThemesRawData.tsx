@@ -1,20 +1,41 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useParams } from "react-router-dom";
+import uniq from "lodash/uniq";
 import { useSessionStorage } from "react-use";
 import { useIndexedDB } from "react-indexed-db";
+import { convertFromRaw, EditorState } from "draft-js";
 import axios, { AxiosResponse, AxiosError } from "axios";
+import { useLocation, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   parseDataset,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
-import { convertFromRaw, EditorState } from "draft-js";
 /* project */
-import { filterDataThemesData } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/utils";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { charts } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { filterDataThemesData } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/utils";
+
+export function mergeObjects(
+  obj1: { [key: string]: any },
+  obj2: { [key: string]: any }
+) {
+  let updatedObject: { [key: string]: any } = { ...obj1 };
+
+  Object.keys(obj2).forEach((key: string) => {
+    if (updatedObject[key]) {
+      updatedObject[key] = uniq([...updatedObject[key], ...obj2[key]]);
+    } else {
+      updatedObject = {
+        ...updatedObject,
+        [key]: obj2[key],
+      };
+    }
+  });
+
+  return updatedObject;
+}
 
 export function useDataThemesRawData(props: {
   setVisualOptions: (value: any) => void;
@@ -34,7 +55,9 @@ export function useDataThemesRawData(props: {
     setCurrentChartData,
   } = props;
 
+  const location = useLocation();
   const { page } = useParams<{ page: string }>();
+  const currentUrlParams = new URLSearchParams(location.search);
 
   const indexedDB = useIndexedDB("data-themes-raw-data");
 
@@ -228,7 +251,8 @@ export function useDataThemesRawData(props: {
       let tmpFilteredData = [...filteredData];
       tmpFilteredData[activeTabIndex][activeVizIndex] = filterDataThemesData(
         rawData[activeTabIndex][activeVizIndex].data,
-        appliedFilters[activeTabIndex][activeVizIndex]
+        appliedFilters[activeTabIndex][activeVizIndex],
+        currentUrlParams
       );
       setFilteredData(tmpFilteredData);
     }
@@ -355,8 +379,10 @@ export function useDataThemesRawData(props: {
                         setAllAppliedFilters({
                           tab: tabIndex,
                           viz: vizIndex,
-                          value:
-                            tabs[tabIndex].content[vizIndex].appliedFilters,
+                          value: mergeObjects(
+                            appliedFilters[activeTabIndex][activeVizIndex],
+                            tabs[tabIndex].content[vizIndex].appliedFilters
+                          ),
                         });
 
                         tmpVisualOptions[tabIndex][vizIndex] =
@@ -395,7 +421,8 @@ export function useDataThemesRawData(props: {
                         tmpFilteredData[tabIndex][vizIndex] =
                           filterDataThemesData(
                             dataToIndex[tabIndex][vizIndex].data,
-                            tabs[tabIndex].content[vizIndex].appliedFilters
+                            tabs[tabIndex].content[vizIndex].appliedFilters,
+                            currentUrlParams
                           );
                         setFilteredData(tmpFilteredData);
 

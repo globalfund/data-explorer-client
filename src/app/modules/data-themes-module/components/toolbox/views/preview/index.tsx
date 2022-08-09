@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import filter from "lodash/filter";
+import { useLocation } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions } from "app/state/store/hooks";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
@@ -17,9 +18,11 @@ import {
 } from "app/modules/data-themes-module/components/toolbox/views/steps";
 
 export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
+  const location = useLocation();
   const { filterOptionGroups } = props;
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupModel | null>(null);
+  const currentUrlParams = new URLSearchParams(location.search);
 
   /** TODO: Is this the correct action here? or should it only reset for the current active tab/vizualisation */
   const resetAppliedFilters = useStoreActions(
@@ -29,6 +32,41 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
   function onReset(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
     resetAppliedFilters();
+  }
+
+  function defaultFiltersMessage() {
+    const urlFilters: { group: string; values: string[] }[] = [];
+    currentUrlParams.forEach((value: string, key: string) => {
+      urlFilters.push({
+        group: key,
+        values: value.split(","),
+      });
+    });
+
+    return (
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          padding: 0 24px;
+          margin-top: 14px;
+          flex-direction: column;
+        `}
+      >
+        <b>Default applied filters from URL parameters</b>
+        <ul
+          css={`
+            padding-left: 14px;
+          `}
+        >
+          {urlFilters.map((item) => (
+            <li key={item.group}>
+              <b>{item.group}</b>: {item.values.join(", ")}
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   return (
@@ -45,6 +83,7 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
         }
       `}
     >
+      {location.search.length > 0 && defaultFiltersMessage()}
       {!expandedGroup && (
         <Accordion square defaultExpanded>
           <AccordionSummary
@@ -98,8 +137,10 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
       {expandedGroup && (
         <div
           css={`
-            height: 100%;
             padding: 16px;
+            height: ${location.search.length === 0
+              ? "100%"
+              : "calc(100% - 90px)"};
           `}
         >
           <ExpandedFilterGroup
