@@ -43,7 +43,7 @@ export function LocationDetailEligibilityWrapper(props: Props) {
   }, [props.code, appliedFilters]);
 
   if (isLoading) {
-    <PageLoader />;
+    return <PageLoader />;
   }
 
   return <ScatterPlot data={data} />;

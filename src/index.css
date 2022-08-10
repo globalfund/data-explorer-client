@@ -88,9 +88,6 @@ body::-webkit-scrollbar {
 body::-webkit-scrollbar-track {
   background: #495057;
 }
-body::webkit-scrollbar-thumb {
-  background: #495057;
-}
 
 #root {
   /* height: 100vh; */
