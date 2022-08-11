@@ -224,16 +224,11 @@ export function useDataThemesRawData(props: {
   }, []);
 
   React.useEffect(() => {
-    if (
-      !loading &&
-      filteredData &&
-      filteredData[activeTabIndex] &&
-      filteredData[activeTabIndex][activeVizIndex]
-    ) {
+    if (!loading) {
       let tmpFilteredData = [...filteredData];
       tmpFilteredData[activeTabIndex][activeVizIndex] = filterDataThemesData(
-        get(rawData, `[${activeTabIndex}][${activeVizIndex}].data`, []),
-        get(appliedFilters, `[${activeTabIndex}][${activeVizIndex}]`, {})
+        rawData[activeTabIndex][activeVizIndex].data,
+        appliedFilters[activeTabIndex][activeVizIndex]
       );
       setFilteredData(tmpFilteredData);
     }
@@ -268,18 +263,16 @@ export function useDataThemesRawData(props: {
               let incr: number = 0;
               for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
                 // prepare the tabbed state
-                if (tabIndex !== 0) {
-                  if (tabIds.length < tabs.length) {
-                    addTabId();
-                    addTabActivePanel();
-                    addTabChartType();
-                    addTabLiveData();
-                    addTabMapping();
-                    addTabStepSelections();
-                    addTabAppliedFilters();
-                    addTabTitles();
-                    addTabTextContent();
-                  }
+                if (tabIndex !== 0 && tabIds.length < tabs.length) {
+                  addTabId();
+                  addTabActivePanel();
+                  addTabChartType();
+                  addTabLiveData();
+                  addTabMapping();
+                  addTabStepSelections();
+                  addTabAppliedFilters();
+                  addTabTitles();
+                  addTabTextContent();
                   tmpVisualOptions.push([{}]);
                   tmpCurrentChart.push([{}]);
                   tmpCurrentChartData.push([{}]);
@@ -337,9 +330,11 @@ export function useDataThemesRawData(props: {
                 (event) => {
                   setIsInSession(1);
                   setRawData(dataToIndex);
-                  for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+                  let tabIndex: number = 0;
+                  for (tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+                    let vizIndex: number = 0;
                     for (
-                      let vizIndex = 0;
+                      vizIndex = 0;
                       vizIndex < tabs[tabIndex].content.length;
                       vizIndex++
                     ) {
@@ -366,6 +361,7 @@ export function useDataThemesRawData(props: {
 
                         tmpVisualOptions[tabIndex][vizIndex] =
                           tabs[tabIndex].content[vizIndex].vizOptions;
+                        setVisualOptions(tmpVisualOptions);
                         setMapping({
                           tab: tabIndex,
                           viz: vizIndex,
@@ -393,6 +389,7 @@ export function useDataThemesRawData(props: {
                           selectedChartTypeValue,
                           null
                         );
+                        setCurrentChart(tmpCurrentChart);
 
                         // Before, this was done through a hook on the appliedFilters.
                         tmpFilteredData[tabIndex][vizIndex] =
@@ -400,13 +397,10 @@ export function useDataThemesRawData(props: {
                             dataToIndex[tabIndex][vizIndex].data,
                             tabs[tabIndex].content[vizIndex].appliedFilters
                           );
+                        setFilteredData(tmpFilteredData);
 
                         tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
-                          get(
-                            tmpFilteredData,
-                            `[${activeTabIndex}][${activeVizIndex}]`,
-                            []
-                          ),
+                          tmpFilteredData[tabIndex][vizIndex],
                           null,
                           {
                             locale: navigator.language || "en-US",
@@ -414,6 +408,7 @@ export function useDataThemesRawData(props: {
                             group: ",",
                           }
                         );
+                        setCurrentChartData(tmpCurrentChartData);
                         stepSelectionsActions.setStep1({
                           tab: tabIndex,
                           viz: vizIndex,
@@ -424,10 +419,6 @@ export function useDataThemesRawData(props: {
                       }
                     }
                   }
-                  setVisualOptions(tmpVisualOptions);
-                  setCurrentChart(tmpCurrentChart);
-                  setFilteredData(tmpFilteredData);
-                  setCurrentChartData(tmpCurrentChartData);
                   setLoading(false);
                 },
                 (error) => {
