@@ -1,6 +1,5 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import LockIcon from "@material-ui/icons/Lock";
@@ -75,7 +74,7 @@ export function DataThemesBuilderPreviewTheme(
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      get(visualOptions, `[${props.tabIndex}][${props.vizIndex}].width`, 0) ===
+      visualOptions[props.tabIndex][props.vizIndex].width ===
         CHART_DEFAULT_WIDTH
     ) {
       let tmpVisualOptions = [...visualOptions];
@@ -194,11 +193,7 @@ export function DataThemesBuilderPreviewTheme(
               align-self: flex-start;
               justify-content: center;
               width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
-              height: ${get(
-                visualOptions,
-                `[${props.tabIndex}][${props.vizIndex}].height`,
-                300
-              )}px;
+              height: ${visualOptions[props.tabIndex][props.vizIndex].height}px;
 
               @media (max-width: 1280px) {
                 width: calc(100vw - 400px);

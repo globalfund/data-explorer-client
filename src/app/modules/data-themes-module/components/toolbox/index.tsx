@@ -179,7 +179,6 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   React.useEffect(() => {
     const newValue =
       (!props.loading &&
-        props.data &&
         props.data.length > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
