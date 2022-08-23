@@ -236,7 +236,7 @@ export default function GrantDetail() {
               implementationPeriod={params.period}
             />
           </Route>
-          <Route
+          {/* <Route
             path={`/grant/${params.code}/${params.period}/signed/time-cycle`}
           >
             <GrantDetailInvestmentsTimeCycleWrapper
@@ -245,7 +245,7 @@ export default function GrantDetail() {
               toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
-          </Route>
+          </Route> */}
           {/* Commitmeent */}
           <Route
             path={`/grant/${params.code}/${params.period}/commitment/treemap`}

@@ -180,13 +180,13 @@ export default function PartnerDetail() {
           <Route path={`/partner/${params.code}/signed/table`}>
             <PartnerInvestmentsTableWrapper type="Signed" code={paramCode} />
           </Route>
-          <Route path={`/partner/${params.code}/signed/time-cycle`}>
+          {/* <Route path={`/partner/${params.code}/signed/time-cycle`}>
             <PartnerDetailInvestmentsTimeCycleWrapper
               type="Signed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
-          </Route>
+          </Route> */}
           <Route path={`/partner/${params.code}/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"
