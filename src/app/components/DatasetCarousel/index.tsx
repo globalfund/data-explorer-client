@@ -1,8 +1,10 @@
 import React from "react";
+import get from "lodash/get";
 import { Link } from "react-router-dom";
 // @ts-ignore
 import Carousel from "react-grid-carousel";
 import { useMediaQuery } from "@material-ui/core";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { BudgetFlowPreview } from "app/assets/dataset-preview/budgetFlow";
 import { GrantsListPreview } from "app/assets/dataset-preview/grantsList";
@@ -11,8 +13,6 @@ import { DocumentsTablePreview } from "app/assets/dataset-preview/documentsTable
 import { EligibilityDotsPreview } from "app/assets/dataset-preview/eligibilityDots";
 import { AllocationsRadialPreview } from "app/assets/dataset-preview/allocationsRadial";
 import { InvestmentsTreemapPreview } from "app/assets/dataset-preview/investmentsTreemap";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 const griditem = (content: React.ReactElement, link: string) => (
   <Link to={link} css="text-decoration: none;">
@@ -54,13 +54,31 @@ export function DatasetCarousel() {
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const cmsData = useCMSData({ returnData: true });
 
-  const fpText = {__html: (get(cmsData, "componentsDatasetCarousel.financePledgesContributions", ""))};
-  const fsText = {__html: (get(cmsData, "componentsDatasetCarousel.financeSignedAmounts", ""))};
-  const fcText = {__html: (get(cmsData, "componentsDatasetCarousel.financeCommitments", ""))};
-  const fdText = {__html: (get(cmsData, "componentsDatasetCarousel.financeDisbursements", ""))};
-  const fbText = {__html: (get(cmsData, "componentsDatasetCarousel.financeBudgets", ""))};
-  const aeText = {__html: (get(cmsData, "componentsDatasetCarousel.accessEligibility", ""))};
-  const aaText = {__html: (get(cmsData, "componentsDatasetCarousel.accessAllocations", ""))};
+  const fpText = {
+    __html: get(
+      cmsData,
+      "componentsDatasetCarousel.financePledgesContributions",
+      ""
+    ),
+  };
+  const fsText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeSignedAmounts", ""),
+  };
+  const fcText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeCommitments", ""),
+  };
+  const fdText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeDisbursements", ""),
+  };
+  const fbText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeBudgets", ""),
+  };
+  const aeText = {
+    __html: get(cmsData, "componentsDatasetCarousel.accessEligibility", ""),
+  };
+  const aaText = {
+    __html: get(cmsData, "componentsDatasetCarousel.accessAllocations", ""),
+  };
 
   return (
     <div
