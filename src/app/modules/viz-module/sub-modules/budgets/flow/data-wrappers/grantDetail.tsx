@@ -17,19 +17,10 @@ interface Props {
 export function GrantDetailBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Grant Budgets Flow");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
     id: string | undefined;
     filterStr: string | undefined;
   }>({ id: undefined, filterStr: undefined });
-  const [vizCompData, setVizCompData] = React.useState([]);
 
   // api call & data
   const fetchData = useStoreActions(
@@ -97,6 +88,12 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
     (actions) =>
       actions.ToolBoxPanelBudgetFlowDrilldownSelectors.setSelectedLevelValue
   );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   React.useEffect(() => {
     if (props.code) {
@@ -137,28 +134,53 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
     setDrilldownLevelSelectors(getDrilldownPanelOptions(links));
   }, [links]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (
+        dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        dataPathActiveStep.vizSelected &&
+        dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(2);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        setDrilldownVizSelected(dataPathActiveStep.drilldownVizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        !dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected &&
+        vizSelected &&
+        drilldownVizSelected
+      ) {
+        setVizLevel(0);
+        setVizSelected({ id: undefined, filterStr: undefined });
+        setDrilldownVizSelected({ id: undefined, filterStr: undefined });
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <BudgetsFlowModule
       nodes={nodes}
       links={links}
+      isGrantDetail
       isLoading={isLoading}
       isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
+      codeParam={props.code}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       vizSelected={vizSelected}
       setVizSelected={setVizSelected}
-      vizCompData={vizCompData}
-      setVizCompData={setVizCompData}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
-      setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel2={dataDrilldownLevel2}
-      drilldownVizSelected={drilldownVizSelected.id}
+      drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
     />
   );

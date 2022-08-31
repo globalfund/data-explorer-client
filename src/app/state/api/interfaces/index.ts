@@ -44,6 +44,11 @@ import {
   CMSApiCountrySummary,
   CMSApiNotesAndDisclaimers,
 } from "app/state/api/interfaces/cms";
+import {
+  DataPathActiveStepStateModel,
+  DataPathPanelVisibilityStateModel,
+  DataPathStepsStateModel,
+} from "../action-reducers/sync/dataPath";
 
 export interface RequestValues<T> {
   values?: T;
@@ -243,6 +248,10 @@ export interface StoreModel {
   ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
+  // sync data path vars
+  DataPathPanelVisibilityState: DataPathPanelVisibilityStateModel;
+  DataPathSteps: DataPathStepsStateModel;
+  DataPathActiveStep: DataPathActiveStepStateModel;
   // CMS
   cms: {
     componentsAppBar: CMSApiCallModel;

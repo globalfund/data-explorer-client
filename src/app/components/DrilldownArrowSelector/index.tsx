@@ -66,6 +66,7 @@ export function DrillDownArrowSelector(props: DrillDownArrowSelectorProps) {
     <div css={styles.container}>
       <span
         onClick={onPrevClick}
+        id="drilldown-arrow-selector-prev"
         data-cy="drilldown-arrow-selector-prev"
         css={selIndex === 0 ? styles.disableArrow : ""}
       >
@@ -76,6 +77,7 @@ export function DrillDownArrowSelector(props: DrillDownArrowSelectorProps) {
       </div>
       <span
         onClick={onNextClick}
+        id="drilldown-arrow-selector-next"
         data-cy="drilldown-arrow-selector-next"
         css={selIndex === props.options.length - 1 ? styles.disableArrow : ""}
       >

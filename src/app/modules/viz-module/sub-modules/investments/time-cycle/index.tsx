@@ -1,14 +1,16 @@
 /* third-party */
 import React from "react";
-import { useUnmount } from "react-use";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
+import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
@@ -20,40 +22,101 @@ interface InvestmentsTimeCycleModuleProps {
   isDrilldownLoading: boolean;
   vizLevel: number;
   setVizLevel: (vizLevel: number) => void;
-  vizTranslation: { x: number; y: number };
-  setVizTranslation: (obj: { x: number; y: number }) => void;
   vizSelected: string | undefined;
   setVizSelected: (vizSelected: string | undefined) => void;
-  vizPrevSelected: string | undefined;
-  setVizPrevSelected: (vizPrevSelected: string | undefined) => void;
-  vizPrevTranslation: { x: number; y: number };
-  setVizPrevTranslation: (obj: { x: number; y: number }) => void;
   type?: string;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
+  codeParam?: string;
+  isGrantDetail?: boolean;
+  isPartnerDetail?: boolean;
+  isLocationDetail?: boolean;
 }
 
 export function InvestmentsTimeCycleModule(
   props: InvestmentsTimeCycleModuleProps
 ) {
+  const history = useHistory();
+
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
-  const setVizDrilldowns = useStoreActions(
-    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
   );
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Budget-time cycle" })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Budget-time cycle",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isGrantDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam || "Grant",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isLocationDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/location/") > -1)
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam
+              ? getNameFromIso3(props.codeParam)
+              : "Location",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isPartnerDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam || "Partner",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      }
     }
     if (props.vizLevel > 0 && props.vizSelected) {
-      setVizDrilldowns([
-        { name: "Dataset" },
-        { name: props.vizSelected.split("-")[0] },
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: props.vizSelected,
+          path: `${history.location.pathname}${history.location.search}`,
+          vizSelected: {
+            id: props.vizSelected,
+            filterStr: props.vizSelected,
+          },
+        },
       ]);
     }
   }, [props.vizLevel, props.vizSelected]);
 
-  useUnmount(() => setVizDrilldowns([]));
+  let clickthroughPath = "signed/treemap";
+  if (props.type === "Commitment") {
+    clickthroughPath = "commitment/treemap";
+  } else if (props.type === "Disbursed") {
+    clickthroughPath = "disbursements/treemap";
+  }
 
   let vizComponent = <React.Fragment />;
 
@@ -69,7 +132,6 @@ export function InvestmentsTimeCycleModule(
           onNodeClick={(node: string, x: number, y: number) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
-            props.setVizTranslation({ x: x * -1, y: 0 });
           }}
         />
       );
@@ -82,10 +144,19 @@ export function InvestmentsTimeCycleModule(
           setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string, x: number, y: number) => {
             // props.setVizLevel(2);
-            // props.setVizPrevSelected(props.vizSelected);
             // props.setVizSelected(node);
-            // props.setVizPrevTranslation(props.vizTranslation);
-            // props.setVizTranslation({ x: x * -1, y: 0 });
+            const idSplits = node.split("-");
+            const code = getIso3FromName(idSplits[0]);
+            addDataPathSteps([
+              {
+                id: uniqueId(),
+                name: `${idSplits[0]} - ${idSplits[1]}`,
+                path: `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`,
+              },
+            ]);
+            history.push(
+              `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`
+            );
           }}
         />
       );
@@ -111,11 +182,12 @@ export function InvestmentsTimeCycleModule(
         }
       `}
     >
-      <div css="margin-bottom: 10px;">
-        <DrilldownPath />
-      </div>
       {props.vizLevel > 0 && (
-        <VizBackBtn vizLevel={props.vizLevel} setVizLevel={props.setVizLevel} />
+        <VizBackBtn
+          vizLevel={props.vizLevel}
+          setVizLevel={props.setVizLevel}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
+        />
       )}
       {vizComponent}
     </div>
