@@ -11,18 +11,18 @@ import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
 interface Props {
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function PledgesContributionsTimeCycleModule(props: Props) {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizScale, setVizScale] = React.useState(1);
+  // const [vizScale, setVizScale] = React.useState(1);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
@@ -62,10 +62,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
@@ -78,7 +74,7 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
       const splits = vizSelected.split("-");
       if (splits.length > 1) {
         setVizDrilldowns([
-          { name: "Dataset" },
+          { name: "Pledges & Contributions-treemap" },
           { name: `${splits[0]}-${splits[1]}` },
         ]);
       }
@@ -251,9 +247,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
         }
       `}
     >
-      <div css="margin-bottom: 10px;">
-        <DrilldownPath />
-      </div>
       {vizLevel > 0 && (
         <VizBackBtn
           vizLevel={vizLevel}
@@ -263,6 +256,7 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
             }
             setVizLevel(value);
           }}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
         />
       )}
       {vizComponent}

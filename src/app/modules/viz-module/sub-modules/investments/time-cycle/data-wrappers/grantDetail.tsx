@@ -15,17 +15,9 @@ interface Props {
 export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Grant Investments/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -78,20 +70,16 @@ export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
   return (
     <InvestmentsTimeCycleModule
       data={data}
+      isGrantDetail
       type={props.type}
       isDrilldownLoading={false}
+      codeParam={props.code}
       drilldownData={[]}
       isLoading={isLoading}
       vizLevel={0}
       setVizLevel={setVizLevel}
       vizSelected={undefined}
-      vizTranslation={{ x: 0, y: 0 }}
-      setVizTranslation={setVizTranslation}
       setVizSelected={setVizSelected}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
-      setVizPrevTranslation={setVizPrevTranslation}
       toolboxOpen={props.toolboxOpen}
     />
   );

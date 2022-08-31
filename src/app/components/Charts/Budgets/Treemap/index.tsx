@@ -63,20 +63,26 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
           innerPadding={props.isChildTreemap ? 2 : 1}
           outerPadding={props.isChildTreemap ? 0 : 1}
           // @ts-ignore
-          nodeComponent={(nodeProps: TreeMapNodeDatum) => (
-            <TreeemapNode
-              {...nodeProps}
-              onNodeClick={props.onNodeClick}
-              invertColors={props.invertColors}
-              xsTooltipData={props.xsTooltipData}
-              selectedNodeId={props.selectedNodeId}
-              isChildTreemap={props.isChildTreemap}
-              tooltipKeyLabel={props.tooltipKeyLabel}
-              setXsTooltipData={props.setXsTooltipData}
-              parentNodeCoords={props.parentNodeCoords}
-              tooltipValueLabel={props.tooltipValueLabel}
-            />
-          )}
+          nodeComponent={(nodeProps: TreeMapNodeDatum) => {
+            // @ts-ignore
+            if (!nodeProps.node.data.value) {
+              return <React.Fragment />;
+            }
+            return (
+              <TreeemapNode
+                {...nodeProps}
+                onNodeClick={props.onNodeClick}
+                invertColors={props.invertColors}
+                xsTooltipData={props.xsTooltipData}
+                selectedNodeId={props.selectedNodeId}
+                isChildTreemap={props.isChildTreemap}
+                tooltipKeyLabel={props.tooltipKeyLabel}
+                setXsTooltipData={props.setXsTooltipData}
+                parentNodeCoords={props.parentNodeCoords}
+                tooltipValueLabel={props.tooltipValueLabel}
+              />
+            );
+          }}
           // @ts-ignore
           tooltip={(tProps: any) => (
             <TreemapTooltip

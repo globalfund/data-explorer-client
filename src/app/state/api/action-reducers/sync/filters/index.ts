@@ -46,44 +46,54 @@ export interface AppliedFiltersStateModel {
   setDonorCategories: Action<AppliedFiltersStateModel, string[]>;
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
+  appliedFiltersCount: number;
 }
 
 export const AppliedFiltersState: AppliedFiltersStateModel = {
   locations: [],
   setLocations: action((state, payload: string[]) => {
     state.locations = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   components: [],
   setComponents: action((state, payload: string[]) => {
     state.components = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   partnerTypes: [],
   setPartnerTypes: action((state, payload: string[]) => {
     state.partnerTypes = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   partnerSubTypes: [],
   setPartnerSubTypes: action((state, payload: string[]) => {
     state.partnerSubTypes = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   partners: [],
   setPartners: action((state, payload: string[]) => {
     state.partners = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   status: [],
   setStatus: action((state, payload: string[]) => {
     state.status = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   replenishmentPeriods: [],
   setReplenishmentPeriods: action((state, payload: string[]) => {
     state.replenishmentPeriods = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   donors: [],
   setDonors: action((state, payload: string[]) => {
     state.donors = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   donorCategories: [],
   setDonorCategories: action((state, payload: string[]) => {
     state.donorCategories = payload;
+    state.appliedFiltersCount += payload.length;
   }),
   setAll: action((state, payload: AppliedFiltersModel) => {
     state.locations = payload.locations;
@@ -95,8 +105,19 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.replenishmentPeriods = payload.replenishmentPeriods;
     state.donors = payload.donors;
     state.donorCategories = payload.donorCategories;
+    state.appliedFiltersCount =
+      payload.locations.length +
+      payload.components.length +
+      payload.partnerTypes.length +
+      payload.partnerSubTypes.length +
+      payload.partners.length +
+      payload.status.length +
+      payload.replenishmentPeriods.length +
+      payload.donors.length +
+      payload.donorCategories.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");
   }),
+  appliedFiltersCount: 0,
 };
