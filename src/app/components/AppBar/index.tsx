@@ -170,7 +170,14 @@ export function AppBar() {
         flex-direction: row;
       `}
     >
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        css={`
+          @media (max-width: 1300px) {
+            padding-right: 42px;
+          }
+        `}
+      >
         <Toolbar
           disableGutters
           variant="dense"
@@ -311,9 +318,13 @@ export function AppBar() {
         </Toolbar>
       </Container>
       <IconButton
+        target="_blank"
         id="github-linkbtn"
         href="https://github.com/globalfund/data-explorer-client"
-        target="_blank"
+        css={`
+          right: 0;
+          position: absolute;
+        `}
       >
         <GitHubIcon />
       </IconButton>
