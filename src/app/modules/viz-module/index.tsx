@@ -171,12 +171,12 @@ export default function VizModule() {
           <Route path="/viz/signed/table">
             <GenericInvestmentsTableWrapper />
           </Route>
-          <Route path="/viz/signed/time-cycle">
+          {/* <Route path="/viz/signed/time-cycle">
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               toolboxOpen={openToolboxPanel}
             />
-          </Route>
+          </Route> */}
           <Route path="/viz/signed/map">
             <InvestmentsGeoMap type="Signed" />
           </Route>

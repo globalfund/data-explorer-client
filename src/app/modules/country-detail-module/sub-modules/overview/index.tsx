@@ -5,6 +5,7 @@ import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { useStoreState } from "app/state/store/hooks";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
 import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -16,6 +17,7 @@ interface Props {
 
 export function LocationDetailOverviewModule(props: Props) {
   const cmsData = useCMSData({ returnData: true });
+  const isSmallScreen = useMediaQuery("(max-width: 1279px)");
 
   const isLoading = useStoreState(
     (state) =>
@@ -54,6 +56,148 @@ export function LocationDetailOverviewModule(props: Props) {
     return <PageLoader />;
   }
 
+  const detailsBlock = (
+    <Grid
+      item
+      xs={12}
+      md={countrySummaryCMSData ? 12 : 4}
+      css={`
+        hr {
+          opacity: 0.3;
+          margin: 20px 0;
+          margin-left: -24px;
+          border-color: #dfe3e6;
+          width: calc(100% + 48px);
+        }
+      `}
+    >
+      <div>
+        {(locationInfoData.portfolioManager ||
+          locationInfoData.portfolioManagerEmail) && (
+          <React.Fragment>
+            <div
+              css={`
+                font-size: 14px;
+                font-weight: bold;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              `}
+            >
+              {get(cmsData, "modulesCountryDetail.fundManager", "")}
+            </div>
+            <div
+              css={`
+                font-size: 14px;
+              `}
+            >
+              {locationInfoData.portfolioManager}
+            </div>
+            <a
+              target="_blank"
+              href={`mailto:${locationInfoData.portfolioManagerEmail}`}
+              css={`
+                font-size: 14px;
+                text-decoration: none;
+
+                &:hover {
+                  text-decoration: underline;
+                }
+              `}
+            >
+              {locationInfoData.portfolioManagerEmail}
+            </a>
+            <hr />
+          </React.Fragment>
+        )}
+        <div
+          css={`
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          `}
+        >
+          {locationInfoData.multicountries.length > 0 &&
+            `Multicountries with ${locationInfoData.locationName}`}
+          {locationInfoData.countries.length > 0 &&
+            `Countries in ${locationInfoData.locationName}`}
+        </div>
+        <div
+          css={`
+            display: ${locationInfoData.countries.length > 0
+              ? "inline-block"
+              : "flex"};
+            margin-bottom: 20px;
+            flex-direction: column;
+
+            > a {
+              width: fit-content;
+              text-decoration: none;
+
+              &:hover {
+                text-decoration: underline;
+              }
+            }
+          `}
+        >
+          {locationInfoData.multicountries.map(
+            (mc: { name: string; code: string }) => (
+              <Link to={`/location/${mc.code}/overview`} key={mc.name}>
+                {mc.name}
+              </Link>
+            )
+          )}
+          {locationInfoData.countries.map(
+            (c: { name: string; code: string }, index: number) => (
+              <React.Fragment key={c.name}>
+                <Link to={`/location/${c.code}/overview`}>{c.name}</Link>
+                {index < locationInfoData.countries.length - 1 && ", "}
+              </React.Fragment>
+            )
+          )}
+        </div>
+        {locationInfoData.principalRecipients &&
+          locationInfoData.principalRecipients.length > 0 && (
+            <div>
+              <hr />
+              <div
+                css={`
+                  font-size: 14px;
+                  font-weight: bold;
+                  margin-bottom: 8px;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                `}
+              >
+                Principal Recipients in {locationInfoData.locationName}
+              </div>
+              <div
+                css={`
+                  display: flex;
+                  flex-direction: column;
+
+                  > a {
+                    width: fit-content;
+                    text-decoration: none;
+
+                    &:hover {
+                      text-decoration: underline;
+                    }
+                  }
+                `}
+              >
+                {locationInfoData.principalRecipients.map(
+                  (pr: { name: string; code: string }) => (
+                    <Link to={`/partner/${pr.code}/investments`} key={pr.name}>
+                      {pr.name}
+                    </Link>
+                  )
+                )}
+              </div>
+            </div>
+          )}
+      </div>
+    </Grid>
+  );
+
   return (
     <Grid
       container
@@ -67,107 +211,46 @@ export function LocationDetailOverviewModule(props: Props) {
           > div {
             padding: 24px;
             background: #fff;
-
-            @media (max-width: 600px) {
-              margin-bottom: 20px;
-            }
-
-            ${countrySummaryCMSData
-              ? `
-              @media (min-height: 650px) {
-                overflow-y: auto;
-                max-height: calc(100vh - 150px);
-
-                &::-webkit-scrollbar {
-                  width: 6px;
-                  background: #ededf6;
-                }
-                &::-webkit-scrollbar-track {
-                  border-radius: 4px;
-                  background: #fff;
-                }
-                &::-webkit-scrollbar-thumb {
-                  border-radius: 4px;
-                  background: #495057;
-                }
-              }
-            `
-              : ""}
+            margin-bottom: ${!countrySummaryCMSData ? "20px" : 0};
           }
-          ${countrySummaryCMSData
-            ? `
-            @media (min-height: 650px) {
-              &:nth-of-type(2) {
-                > div:first-of-type {
-                  max-height: calc(100vh - 150px - 20px - 532px);
-                }
-                > div:nth-of-type(2) {
-                  max-height: 532px;
-                }
-              }
-            }
-          `
-            : `
-            @media (min-height: 650px) {
-              &:first-of-type {
-                > div:first-of-type {
-                  overflow-y: auto;
-                  max-height: calc(100vh - 150px);
-
-                  &::-webkit-scrollbar {
-                    width: 6px;
-                    background: #ededf6;
-                  }
-                  &::-webkit-scrollbar-track {
-                    border-radius: 4px;
-                    background: #fff;
-                  }
-                  &::-webkit-scrollbar-thumb {
-                    border-radius: 4px;
-                    background: #495057;
-                  }
-                }
-                > div:nth-of-type(2) {
-                  max-height: 532px;
-                }
-              }
-            }
-          `}
         }
       `}
     >
       {countrySummaryCMSData && (
-        <Grid
-          item
-          xs={12}
-          lg={props.openToolboxPanel ? 7 : 8}
-          css={`
-            > div {
-              h3 {
-                margin-top: 0px;
-                font-size: 14px;
-                font-weight: 700;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              }
+        <React.Fragment>
+          {isSmallScreen && detailsBlock}
+          <Grid
+            item
+            xs={12}
+            lg={props.openToolboxPanel ? 7 : 8}
+            css={`
+              > div {
+                h3 {
+                  margin-top: 0px;
+                  font-size: 14px;
+                  font-weight: 700;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                }
 
-              h4 {
-                font-size: 12px;
-                font-weight: 700;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              }
+                h4 {
+                  font-size: 12px;
+                  font-weight: 700;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                }
 
-              p {
-                font-size: 14px;
+                p {
+                  font-size: 14px;
+                }
               }
-            }
-          `}
-        >
-          <div>
-            <h3>Country overview description</h3>
-            {parse(countrySummaryCMSData)}
-            {notesDisclaimersCMSData && parse(notesDisclaimersCMSData)}
-          </div>
-        </Grid>
+            `}
+          >
+            <div>
+              <h3>Country overview description</h3>
+              {parse(countrySummaryCMSData)}
+              {notesDisclaimersCMSData && parse(notesDisclaimersCMSData)}
+            </div>
+          </Grid>
+        </React.Fragment>
       )}
       <Grid
         item
@@ -176,151 +259,7 @@ export function LocationDetailOverviewModule(props: Props) {
         lg={countrySummaryCMSData ? (props.openToolboxPanel ? 5 : 4) : 12}
         justifyContent={countrySummaryCMSData ? undefined : "space-between"}
       >
-        <Grid
-          item
-          xs={12}
-          md={countrySummaryCMSData ? 12 : 4}
-          css={`
-            margin-bottom: ${countrySummaryCMSData ? "20px" : 0};
-
-            hr {
-              opacity: 0.3;
-              margin: 20px 0;
-              margin-left: -24px;
-              border-color: #dfe3e6;
-              width: calc(100% + 48px);
-            }
-          `}
-        >
-          <div>
-            {(locationInfoData.portfolioManager ||
-              locationInfoData.portfolioManagerEmail) && (
-              <React.Fragment>
-                <div
-                  css={`
-                    font-size: 14px;
-                    font-weight: bold;
-                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                      sans-serif;
-                  `}
-                >
-                  {get(cmsData, "modulesCountryDetail.fundManager", "")}
-                </div>
-                <div
-                  css={`
-                    font-size: 14px;
-                  `}
-                >
-                  {locationInfoData.portfolioManager}
-                </div>
-                <a
-                  href={`mailto:${locationInfoData.portfolioManagerEmail}`}
-                  css={`
-                    font-size: 14px;
-                    text-decoration: none;
-
-                    &:hover {
-                      text-decoration: underline;
-                    }
-                  `}
-                >
-                  {locationInfoData.portfolioManagerEmail}
-                </a>
-                <hr />
-              </React.Fragment>
-            )}
-            <div
-              css={`
-                font-size: 14px;
-                font-weight: bold;
-                margin-bottom: 8px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              `}
-            >
-              {locationInfoData.multicountries.length > 0 &&
-                `Multicountries with ${locationInfoData.locationName}`}
-              {locationInfoData.countries.length > 0 &&
-                `Countries in ${locationInfoData.locationName}`}
-            </div>
-            <div
-              css={`
-                display: ${locationInfoData.countries.length > 0
-                  ? "inline-block"
-                  : "flex"};
-                margin-bottom: 20px;
-                flex-direction: column;
-
-                > a {
-                  width: fit-content;
-                  text-decoration: none;
-
-                  &:hover {
-                    text-decoration: underline;
-                  }
-                }
-              `}
-            >
-              {locationInfoData.multicountries.map(
-                (mc: { name: string; code: string }) => (
-                  <Link to={`/location/${mc.code}/overview`} key={mc.name}>
-                    {mc.name}
-                  </Link>
-                )
-              )}
-              {locationInfoData.countries.map(
-                (c: { name: string; code: string }, index: number) => (
-                  <React.Fragment key={c.name}>
-                    <Link to={`/location/${c.code}/overview`}>{c.name}</Link>
-                    {index < locationInfoData.countries.length - 1 && ", "}
-                  </React.Fragment>
-                )
-              )}
-            </div>
-            {locationInfoData.principalRecipients &&
-              locationInfoData.principalRecipients.length > 0 && (
-                <div>
-                  <hr />
-                  <div
-                    css={`
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-bottom: 8px;
-                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                        sans-serif;
-                    `}
-                  >
-                    Principal Recipients in {locationInfoData.locationName}
-                  </div>
-                  <div
-                    css={`
-                      display: flex;
-                      flex-direction: column;
-
-                      > a {
-                        width: fit-content;
-                        text-decoration: none;
-
-                        &:hover {
-                          text-decoration: underline;
-                        }
-                      }
-                    `}
-                  >
-                    {locationInfoData.principalRecipients.map(
-                      (pr: { name: string; code: string }) => (
-                        <Link
-                          to={`/partner/${pr.code}/investments`}
-                          key={pr.name}
-                        >
-                          {pr.name}
-                        </Link>
-                      )
-                    )}
-                  </div>
-                </div>
-              )}
-          </div>
-        </Grid>
+        {(!countrySummaryCMSData || !isSmallScreen) && detailsBlock}
         <Grid
           item
           xs={12}
@@ -333,7 +272,11 @@ export function LocationDetailOverviewModule(props: Props) {
               flex-basis: 65%;
             }
           `
-              : ""
+              : `
+                @media (min-width: 1280px) {
+                  margin-top: 20px;
+                }
+              `
           }
         >
           <div>

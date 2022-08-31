@@ -32,6 +32,16 @@ export function TreeemapNode(props: any) {
     color = "#fff";
   }
 
+  let extraProps = {};
+
+  if (!hasChildren) {
+    extraProps = {
+      onMouseMove: node.onMouseMove,
+      onMouseEnter: node.onMouseEnter,
+      onMouseLeave: node.onMouseLeave,
+    };
+  }
+
   return (
     <div
       tabIndex={0}
@@ -56,9 +66,7 @@ export function TreeemapNode(props: any) {
         !hasChildren,
         props.selectedNodeId === `${node.id}-${node.data.tooltip.header}`
       )}
-      onMouseMove={!hasChildren ? node.onMouseMove : undefined}
-      onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
-      onMouseLeave={!hasChildren ? node.onMouseLeave : undefined}
+      {...extraProps}
       onClick={(e: React.MouseEvent<HTMLDivElement>) => {
         if (isTouchDevice() && props.setXsTooltipData) {
           e.stopPropagation();
@@ -74,14 +82,10 @@ export function TreeemapNode(props: any) {
           );
         }
       }}
-      //   onKeyPress={node.onClick}
-      //   onFocus={node.onMouseEnter}
     >
       {((node.width > 60 && node.height > 60) || hasChildren) && (
         <div
-          onMouseMove={hasChildren ? node.onMouseMove : undefined}
-          onMouseEnter={hasChildren ? node.onMouseEnter : undefined}
-          onMouseLeave={hasChildren ? node.onMouseLeave : undefined}
+          {...extraProps}
           ref={(el) => {
             if (el) {
               el.style.setProperty("overflow", "hidden", "important");

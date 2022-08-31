@@ -262,13 +262,13 @@ export default function CountryDetail() {
           <Route path={`/location/:code/signed/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          <Route path={`/location/:code/signed/time-cycle`}>
+          {/* <Route path={`/location/:code/signed/time-cycle`}>
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
             />
-          </Route>
+          </Route> */}
           <Route path={`/location/:code/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"

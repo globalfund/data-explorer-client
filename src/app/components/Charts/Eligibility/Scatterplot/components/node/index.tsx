@@ -5,6 +5,9 @@ import {
   EligibilityScatterplotHoveredNode,
   EligibilityScatterplotDataItemModel,
   incomeLevels,
+  EligibilityType,
+  DiseaseBurdenType,
+  IncomeLevelType,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 
 interface ScatterplotNodeProps {
@@ -16,30 +19,9 @@ interface ScatterplotNodeProps {
   invisible: boolean;
   hovered: EligibilityScatterplotHoveredNode | null;
   onHover: (value: EligibilityScatterplotHoveredNode | null) => void;
-  hoveredEligibilityLegend:
-    | "Eligible"
-    | "Not Eligible"
-    | "Transition Funding"
-    | null;
-  hoveredBurdenLegend:
-    | "Extreme"
-    | "Severe"
-    | "High"
-    | "Not High"
-    | "Moderate"
-    | "Low"
-    | "None"
-    | null;
-  hoveredIncomeLegend:
-    | "None"
-    | "Low"
-    | "Low income"
-    | "Lower-Lower middle income"
-    | "Lower middle income"
-    | "Upper-Lower middle income"
-    | "Upper middle income"
-    | "High income"
-    | null;
+  hoveredEligibilityLegend: EligibilityType | null;
+  hoveredBurdenLegend: DiseaseBurdenType | null;
+  hoveredIncomeLegend: IncomeLevelType | null;
 }
 
 const nodeBorderStyle = {

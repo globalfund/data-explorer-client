@@ -63,7 +63,7 @@ export const grantDetailTabs: TabProps[] = [
   },
   {
     name: "Signed",
-    url: "/grant/<code>/<period>/signed/time-cycle",
+    url: "/grant/<code>/<period>/signed/treemap",
   },
   {
     name: "Commitment",

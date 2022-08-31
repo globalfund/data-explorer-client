@@ -75,7 +75,7 @@ const styles = {
     margin-right: 1px;
     align-items: center;
     transition: background 0.2s ease-in-out;
-    background: ${active ? "#495057" : "#C7CDD1"};
+    background: ${active ? "#262C34" : "#C7CDD1"};
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -93,8 +93,7 @@ const styles = {
         div {
           color: #fff;
           cursor: pointer;
-          font-weight: bold;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          text-shadow: 0 0 0.9px #fff, 0 0 0.9px #fff, 0 0 0.9px #fff;
         }
       }
     }
@@ -106,9 +105,9 @@ const styles = {
       white-space: nowrap;
       text-decoration: none;
       color: ${active ? "#fff" : "#13183F"};
-      font-weight: ${active ? "bold" : "normal"};
-      font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
-        sans-serif;
+      text-shadow: ${active
+        ? "0 0 0.9px #fff, 0 0 0.9px #fff, 0 0 0.9px #fff"
+        : "none"};
     }
 
     div {
