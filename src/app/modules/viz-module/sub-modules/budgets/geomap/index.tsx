@@ -115,6 +115,7 @@ export function BudgetsGeoMap(props: Props) {
     props.grantPeriod,
     appliedFilters,
     geomapView,
+    history.location.search,
   ]);
 
   if (isLoading) {

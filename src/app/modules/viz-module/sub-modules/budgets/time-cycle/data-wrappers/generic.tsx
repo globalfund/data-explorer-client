@@ -95,7 +95,7 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
       const filterString = getAPIFormattedFilters(appliedFilters);
       fetchData({ filterString });
     }
-  }, [appliedFilters]);
+  }, [appliedFilters, history.location.search]);
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined) {

@@ -124,7 +124,13 @@ export function InvestmentsGeoMap(props: Props) {
         });
       }
     }
-  }, [props.code, appliedFilters, geomapView, props.type]);
+  }, [
+    props.code,
+    appliedFilters,
+    geomapView,
+    props.type,
+    history.location.search,
+  ]);
 
   let clickthroughPath = "signed/treemap";
   if (props.type === "Committed") {
