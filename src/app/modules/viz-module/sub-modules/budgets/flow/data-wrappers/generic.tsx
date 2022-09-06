@@ -107,7 +107,7 @@ export function GenericBudgetsFlowWrapper(props: Props) {
       const filterString = getAPIFormattedFilters(appliedFilters);
       fetchData({ filterString });
     }
-  }, [appliedFilters]);
+  }, [appliedFilters, history.location.search]);
 
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined) {
