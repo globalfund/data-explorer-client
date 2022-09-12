@@ -45,7 +45,11 @@ export function SearchResults(props: SearchResultsProps) {
         {props.results.map((result: SearchResultModel) => {
           if (result.link.indexOf("http") > -1) {
             return (
-              <a href={result.link} css={resultcss} key={result.value}>
+              <a
+                css={resultcss}
+                key={result.value}
+                onClick={() => window.open(result.link, "_blank")}
+              >
                 {result.type && result.type.length > 0 && getIcon(result.type)}
                 <div>{result.label}</div>
               </a>

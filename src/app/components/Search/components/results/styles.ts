@@ -88,6 +88,7 @@ export const results = css`
 export const result = css`
   width: 100%;
   display: flex;
+  cursor: pointer;
   padding: 12px 37px;
   flex-direction: row;
   text-decoration: none;
