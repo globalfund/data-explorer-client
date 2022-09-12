@@ -288,7 +288,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     const newValue =
       (!loading &&
-        data.length > 0 &&
+        (data && data.length) > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
@@ -323,7 +323,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     const newValue =
       (!loading &&
-        data.length > 0 &&
+        (data && data.length) > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&

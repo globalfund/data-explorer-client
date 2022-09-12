@@ -55,6 +55,13 @@ export const RichEditor = (props: {
     editor.current?.focus();
   };
 
+  if (
+    textContent[props.tabIndex][props.vizIndex].isInCompositionMode ===
+    undefined
+  ) {
+    return <React.Fragment />;
+  }
+
   return (
     <div
       className={

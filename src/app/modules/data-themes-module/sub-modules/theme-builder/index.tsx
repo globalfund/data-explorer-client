@@ -464,7 +464,7 @@ export function DataThemesBuilder() {
     if (!loading) {
       let tmpCurrentChartData: any = [...currentChartData];
       tmpCurrentChartData[activeTabIndex][activeVizIndex] = parseDataset(
-        filteredData[activeTabIndex][activeVizIndex],
+        get(filteredData, `[${activeTabIndex}][${activeVizIndex}]`, []),
         null,
         {
           locale: navigator.language || "en-US",
