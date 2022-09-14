@@ -11,6 +11,7 @@ import {
   container,
   subtitle,
   datasetstitle,
+  containerCss,
 } from "app/modules/landing-module/styles";
 
 export const LandingLayout = () => {
@@ -19,7 +20,7 @@ export const LandingLayout = () => {
 
   return (
     <div css={container}>
-      <div css={container}>
+      <div css={containerCss}>
         <BigLogo />
         <div css={subtitle}>
           {get(
