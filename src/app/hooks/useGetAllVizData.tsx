@@ -386,7 +386,7 @@ export function useGetAllVizData() {
     // Location Documents
     "/location/<code>/documents": locationDetailDocuments,
     // Location Allocation
-    "/location/<code>/allocation": allocations,
+    "/location/<code>/allocations": allocations,
     // Location Grants
     "/location/<code>/grants": grantsList,
     "/location/<code>/grants/list": grantsList,

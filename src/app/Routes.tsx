@@ -16,6 +16,7 @@ import {
   useHistory,
   RouteComponentProps,
 } from "react-router-dom";
+import { useClearDataPathStepsOnDatasetChange } from "./hooks/useClearDataPathStepsOnDatasetChange";
 // import BigLogo from "app/assets/BigLogo";
 // import useCookie from "@devhammed/use-cookie";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -46,7 +47,17 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
       .then((response: AxiosResponse) => {
         if (response.data.data && response.data.data.length > 0) {
           history.replace(
-            `/grant/${props.match.params.code}/${response.data.data[0].number}/overview`
+            `/grant/${props.match.params.code}/${
+              response.data.data[0].number
+            }/${
+              props.match.params.vizType
+                ? `${props.match.params.vizType}${
+                    props.match.params.subType
+                      ? `/${props.match.params.subType}`
+                      : ""
+                  }`
+                : "overview"
+            }`
           );
         } else {
           history.replace(`/grant/${props.match.params.code}/1/overview`);
@@ -61,6 +72,7 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 
 export function MainRoutes() {
   // const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
+  useClearDataPathStepsOnDatasetChange();
   useFilterOptions({});
   useScrollToTop();
   useUrlFilters();
@@ -188,6 +200,14 @@ export function MainRoutes() {
         <Route
           exact
           path="/grant/:code"
+          render={(props: RouteComponentProps<any>) => (
+            <GrantPeriodRedirect {...props} />
+          )}
+        />
+
+        <Route
+          exact
+          path="/grant/:code/period/:vizType/:subType?"
           render={(props: RouteComponentProps<any>) => (
             <GrantPeriodRedirect {...props} />
           )}

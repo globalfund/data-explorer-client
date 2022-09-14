@@ -1,9 +1,12 @@
 import React from "react";
+import get from "lodash/get";
 import { Search } from "app/components/Search";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
 import CloseIcon from "@material-ui/icons/Close";
 import MenuItem from "@material-ui/core/MenuItem";
+import { useCMSData } from "app/hooks/useCMSData";
+import GitHubIcon from "@material-ui/icons/GitHub";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
@@ -13,8 +16,6 @@ import IconChevronLeft from "@material-ui/icons/ChevronLeft";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 const TextHeader = (label: string) => (
   <h2
@@ -161,8 +162,22 @@ export function AppBar() {
   }
 
   return (
-    <MUIAppBar position="fixed" color="primary">
-      <Container maxWidth="lg">
+    <MUIAppBar
+      position="fixed"
+      color="primary"
+      css={`
+        display: flex;
+        flex-direction: row;
+      `}
+    >
+      <Container
+        maxWidth="lg"
+        css={`
+          @media (max-width: 1300px) {
+            padding-right: 42px;
+          }
+        `}
+      >
         <Toolbar
           disableGutters
           variant="dense"
@@ -178,6 +193,7 @@ export function AppBar() {
             @media (min-width: 768px) {
               #search-container {
                 padding: 3px 20px;
+                align-items: center;
               }
 
               #search-results-container {
@@ -363,6 +379,17 @@ export function AppBar() {
           )}
         </Toolbar>
       </Container>
+      <IconButton
+        target="_blank"
+        id="github-linkbtn"
+        href="https://github.com/globalfund/data-explorer-client"
+        css={`
+          right: 0;
+          position: absolute;
+        `}
+      >
+        <GitHubIcon />
+      </IconButton>
     </MUIAppBar>
   );
 }

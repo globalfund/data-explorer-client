@@ -128,10 +128,16 @@ export default function VizModule() {
         <Switch>
           {/* Budgets */}
           <Route path="/viz/budgets/flow">
-            <GenericBudgetsFlowWrapper toolboxOpen={openToolboxPanel} />
+            <GenericBudgetsFlowWrapper
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path="/viz/budgets/time-cycle">
-            <GenericBudgetsTimeCycleWrapper toolboxOpen={openToolboxPanel} />
+            <GenericBudgetsTimeCycleWrapper
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path="/viz/budgets/map">
             <BudgetsGeoMap />
@@ -165,12 +171,12 @@ export default function VizModule() {
           <Route path="/viz/signed/table">
             <GenericInvestmentsTableWrapper />
           </Route>
-          <Route path="/viz/signed/time-cycle">
+          {/* <Route path="/viz/signed/time-cycle">
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               toolboxOpen={openToolboxPanel}
             />
-          </Route>
+          </Route> */}
           <Route path="/viz/signed/map">
             <InvestmentsGeoMap type="Signed" />
           </Route>
@@ -198,12 +204,16 @@ export default function VizModule() {
             <AllocationsGeoMap />
           </Route>
           <Route path="/viz/allocations">
-            <AllocationsModule toolboxOpen={openToolboxPanel} />
+            <AllocationsModule
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           {/* Pledges & Contributions */}
           <Route path="/viz/pledges-contributions/time-cycle">
             <PledgesContributionsTimeCycleModule
               toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
           <Route path="/viz/pledges-contributions/table">

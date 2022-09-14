@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useHistory } from "react-router-dom";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -10,25 +11,20 @@ import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/da
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
 
 interface Props {
-  toolboxOpen?: boolean;
+  toolboxOpen: boolean;
+  setOpenToolboxPanel: (value: boolean) => void;
 }
 
 export function GenericBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Budgets Flow");
+
+  const history = useHistory();
+
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
     id: string | undefined;
     filterStr: string | undefined;
   }>({ id: undefined, filterStr: undefined });
-  const [vizCompData, setVizCompData] = React.useState([]);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.BudgetsFlow.fetch);
@@ -92,13 +88,26 @@ export function GenericBudgetsFlowWrapper(props: Props) {
     (actions) =>
       actions.ToolBoxPanelBudgetFlowDrilldownSelectors.setSelectedLevelValue
   );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
-    fetchData({ filterString });
-  }, [appliedFilters]);
+    if (
+      (history.location.search.length > 0 &&
+        appliedFilters.appliedFiltersCount > 0) ||
+      (history.location.search.length === 0 &&
+        appliedFilters.appliedFiltersCount === 0)
+    ) {
+      const filterString = getAPIFormattedFilters(appliedFilters);
+      fetchData({ filterString });
+    }
+  }, [appliedFilters, history.location.search]);
 
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined) {
@@ -142,6 +151,37 @@ export function GenericBudgetsFlowWrapper(props: Props) {
     setDrilldownLevelSelectors(getDrilldownPanelOptions(links));
   }, [links]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (
+        dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        dataPathActiveStep.vizSelected &&
+        dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(2);
+        setVizSelected(dataPathActiveStep.vizSelected);
+        setDrilldownVizSelected(dataPathActiveStep.drilldownVizSelected);
+        clearDataPathActiveStep();
+      } else if (
+        !dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected &&
+        vizSelected &&
+        drilldownVizSelected
+      ) {
+        setVizLevel(0);
+        setVizSelected({ id: undefined, filterStr: undefined });
+        setDrilldownVizSelected({ id: undefined, filterStr: undefined });
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <BudgetsFlowModule
       nodes={nodes}
@@ -150,21 +190,14 @@ export function GenericBudgetsFlowWrapper(props: Props) {
       isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       vizSelected={vizSelected}
       setVizSelected={setVizSelected}
-      vizCompData={vizCompData}
-      setVizCompData={setVizCompData}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       setDrilldownVizSelected={setDrilldownVizSelected}
-      setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel2={dataDrilldownLevel2}
-      drilldownVizSelected={drilldownVizSelected.id}
+      drilldownVizSelected={drilldownVizSelected}
       toolboxOpen={props.toolboxOpen}
+      setOpenToolboxPanel={props.setOpenToolboxPanel}
     />
   );
 }

@@ -36,11 +36,11 @@ const views = {
       value: "Treemap",
       link: "/viz/signed/treemap",
     },
-    {
-      label: "Time cycle",
-      value: "Time cycle",
-      link: "/viz/signed/time-cycle",
-    },
+    // {
+    //   label: "Time cycle",
+    //   value: "Time cycle",
+    //   link: "/viz/signed/time-cycle",
+    // },
     {
       label: "Map",
       value: "Map",

@@ -36,7 +36,7 @@ export const countryDetailTabs: TabProps[] = [
   },
   {
     name: "Allocation",
-    url: "/location/<code>/allocation",
+    url: "/location/<code>/allocations",
   },
   {
     name: "Eligibility",
@@ -63,7 +63,7 @@ export const grantDetailTabs: TabProps[] = [
   },
   {
     name: "Signed",
-    url: "/grant/<code>/<period>/signed/time-cycle",
+    url: "/grant/<code>/<period>/signed/treemap",
   },
   {
     name: "Commitment",
