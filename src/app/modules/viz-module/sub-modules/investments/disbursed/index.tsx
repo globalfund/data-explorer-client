@@ -4,16 +4,18 @@ import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
+import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
+import { useHistory } from "react-router-dom";
+import { useTitle, useUpdateEffect } from "react-use";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useUnmount, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
+import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 
@@ -24,14 +26,17 @@ interface InvestmentsDisbursedModuleProps {
   isDrilldownLoading: boolean;
   vizLevel: number;
   setVizLevel: (vizLevel: number) => void;
-  vizTranslation: { x: number; y: number };
-  setVizTranslation: (obj: { x: number; y: number }) => void;
   vizSelected: string | undefined;
   setVizSelected: (vizSelected: string | undefined) => void;
   allowDrilldown: boolean;
   onNodeClick?: (code: string) => void;
   type?: string;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
+  codeParam?: string;
+  isGrantDetail?: boolean;
+  isPartnerDetail?: boolean;
+  isLocationDetail?: boolean;
 }
 
 function filterDisbursements(
@@ -67,17 +72,66 @@ export function InvestmentsDisbursedModule(
   const isMobile = useMediaQuery("(max-width: 767px)");
   const totalValue = sumBy(props.data, "value");
 
+  const history = useHistory();
+
   const [treemapData, setTreemapData] = React.useState<
     DisbursementsTreemapDataItem[]
   >(props.data);
 
-  const setVizDrilldowns = useStoreActions(
-    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
   );
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: `${props.type}-treemap` })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: `${props.type}-treemap`,
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isGrantDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam || "Grant",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isLocationDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/location/") > -1)
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam
+              ? getNameFromIso3(props.codeParam)
+              : "Location",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isPartnerDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: props.codeParam || "Partner",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      }
     }
     if (props.vizLevel > 0 && props.vizSelected) {
       const code = props.vizSelected.split("-")[0];
@@ -90,11 +144,19 @@ export function InvestmentsDisbursedModule(
           }
         }
       });
-      setVizDrilldowns([{ name: "Dataset" }, { name: name || code }]);
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: name || code,
+          path: `${history.location.pathname}${history.location.search}`,
+          vizSelected: {
+            id: props.vizSelected || "",
+            filterStr: props.vizSelected || "",
+          },
+        },
+      ]);
     }
   }, [props.vizLevel, props.vizSelected]);
-
-  useUnmount(() => setVizDrilldowns([]));
 
   const setToolboxPanelDisbursementsSliderMaxValue = useStoreActions(
     (store) => store.ToolBoxPanelDisbursementsSliderValues.setMax
@@ -129,6 +191,13 @@ export function InvestmentsDisbursedModule(
     );
   }, [props.data, toolboxPanelDisbursementsSliderValues]);
 
+  let clickthroughPath = "signed/treemap";
+  if (props.type === "Commitment") {
+    clickthroughPath = "commitment/treemap";
+  } else if (props.type === "Disbursed") {
+    clickthroughPath = "disbursements/treemap";
+  }
+
   let vizComponent = <React.Fragment />;
 
   if (props.isLoading || props.isDrilldownLoading) {
@@ -143,7 +212,6 @@ export function InvestmentsDisbursedModule(
             if (props.allowDrilldown) {
               props.setVizLevel(1);
               props.setVizSelected(node);
-              props.setVizTranslation({ x: x * -1, y: y * -1 });
             } else if (props.onNodeClick && code) {
               props.onNodeClick(code);
             }
@@ -155,7 +223,20 @@ export function InvestmentsDisbursedModule(
         <DisbursementsTreemap
           isDrilldownTreemap
           data={props.drilldownData}
-          onNodeClick={(node: string, x: number, y: number) => {}}
+          onNodeClick={(node: string, x: number, y: number) => {
+            const idSplits = node.split("-");
+            const code = getIso3FromName(idSplits[1]);
+            addDataPathSteps([
+              {
+                id: uniqueId(),
+                name: `${idSplits[1]} - ${idSplits[0]}`,
+                path: `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`,
+              },
+            ]);
+            history.push(
+              `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`
+            );
+          }}
         />
       );
     }
@@ -206,9 +287,6 @@ export function InvestmentsDisbursedModule(
             <b>Total amount: {formatFinancialValue(totalValue)}</b>
           </Grid>
         )}
-        <Grid item xs={12}>
-          <DrilldownPath />
-        </Grid>
       </Grid>
       <div
         css={`
@@ -223,6 +301,7 @@ export function InvestmentsDisbursedModule(
           <VizBackBtn
             vizLevel={props.vizLevel}
             setVizLevel={props.setVizLevel}
+            setOpenToolboxPanel={props.setOpenToolboxPanel}
           />
         )}
         {vizComponent}

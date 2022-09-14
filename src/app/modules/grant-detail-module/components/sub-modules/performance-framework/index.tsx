@@ -9,7 +9,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { NetworkViz } from "app/components/Charts/Network";
 import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
 import {
   PFIndicator,
@@ -20,6 +19,7 @@ interface Props {
   code: string;
   toolboxOpen?: boolean;
   implementationPeriod: string;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function PerformanceFrameworkModule(props: Props) {
@@ -109,10 +109,13 @@ export function PerformanceFrameworkModule(props: Props) {
 
   React.useEffect(() => {
     if (vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      setVizDrilldowns([{ name: "Performance Framework-network" }]);
     }
     if (vizLevel === 1 && vizSelected) {
-      setVizDrilldowns([{ name: "Dataset" }, { name: vizSelected }]);
+      setVizDrilldowns([
+        { name: "Performance Framework-network" },
+        { name: vizSelected },
+      ]);
     }
   }, [vizLevel, vizSelected]);
 
@@ -161,9 +164,6 @@ export function PerformanceFrameworkModule(props: Props) {
         }
       `}
     >
-      <div css="margin-bottom: 10px;">
-        <DrilldownPath />
-      </div>
       {vizLevel > 0 && (
         <VizBackBtn
           vizLevel={vizLevel}
@@ -173,6 +173,7 @@ export function PerformanceFrameworkModule(props: Props) {
             }
             setVizLevel(value);
           }}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
         />
       )}
       {vizComponent}

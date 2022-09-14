@@ -4,15 +4,14 @@ export const container = css`
   width: 100%;
   height: 100vh;
   display: flex;
+  padding-top: 15vh;
   align-items: center;
   flex-direction: column;
-  justify-content: center;
-  padding-top: 2rem;
+  justify-content: flex-start;
 
   @media (max-width: 767px) {
     padding-top: 20vh;
     position: relative;
-    justify-content: flex-start;
   }
 `;
 

@@ -66,6 +66,7 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
+    document.body.style.background = "#fff";
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
@@ -236,7 +237,7 @@ export default function GrantDetail() {
               implementationPeriod={params.period}
             />
           </Route>
-          <Route
+          {/* <Route
             path={`/grant/${params.code}/${params.period}/signed/time-cycle`}
           >
             <GrantDetailInvestmentsTimeCycleWrapper
@@ -245,7 +246,7 @@ export default function GrantDetail() {
               toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
-          </Route>
+          </Route> */}
           {/* Commitmeent */}
           <Route
             path={`/grant/${params.code}/${params.period}/commitment/treemap`}
@@ -287,6 +288,7 @@ export default function GrantDetail() {
               code={params.code}
               toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
+              setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
         </Switch>

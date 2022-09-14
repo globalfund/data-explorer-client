@@ -1,19 +1,16 @@
 /* third-party */
 import React from "react";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
+import get from "lodash/get";
 import useTitle from "react-use/lib/useTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import get from "lodash/get";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageHeader } from "app/components/PageHeader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useCMSData } from "app/hooks/useCMSData";
-import { DatasetItemModel, datasets } from "app/modules/datasets-module/data";
+import { LandingDatasetGrid } from "app/modules/landing-module/components/dataset-grid";
 import {
-  datasetsBottomCss,
   dataSetsCss,
-  dataSetsGridCss,
+  datasetsBottomCss,
 } from "app/modules/datasets-module/style";
 
 export default function Datasets() {
@@ -39,21 +36,7 @@ export default function Datasets() {
         />
       )}
       <PageTopSpacer />
-      <Grid container spacing={2}>
-        {datasets.map((dataset: DatasetItemModel) => (
-          <Grid item xs={12} sm={6} md={6} key={dataset.link}>
-            <Link to={dataset.link} css="text-decoration: none;">
-              <div css={dataSetsGridCss}>
-                <div>
-                  {dataset.group} {dataset.name.length > 0 ? "·" : ""}{" "}
-                  {dataset.name}
-                </div>
-                {dataset.preview}
-              </div>
-            </Link>
-          </Grid>
-        ))}
-      </Grid>
+      <LandingDatasetGrid />
       <div css={datasetsBottomCss} />
     </div>
   );

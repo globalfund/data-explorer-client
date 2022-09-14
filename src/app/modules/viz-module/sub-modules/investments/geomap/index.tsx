@@ -1,8 +1,11 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
+import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { GeoMap } from "app/components/Charts/GeoMap";
@@ -22,6 +25,9 @@ interface Props {
 
 export function InvestmentsGeoMap(props: Props) {
   useTitle("The Data Explorer - Investments/Map");
+
+  const history = useHistory();
+
   // api call & data
   const fetchData = useStoreActions((store) => store.DisbursementsGeomap.fetch);
   const data = useStoreState(
@@ -48,6 +54,10 @@ export function InvestmentsGeoMap(props: Props) {
   const geomapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
   );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   const isLoading = useStoreState(
     (state) =>
@@ -58,41 +68,76 @@ export function InvestmentsGeoMap(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
-      props.code && props.detailFilterType
-        ? {
-            ...appliedFilters,
-            [props.detailFilterType]: [
-              ...get(appliedFilters, props.detailFilterType, []),
-              props.code,
-            ],
-          }
-        : appliedFilters
-    );
-    if (geomapView === "countries") {
-      fetchData({
-        filterString:
-          filterString.length > 0
-            ? `${filterString}&aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`
-            : `aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`,
-      });
-    } else if (geomapView === "multicountries") {
-      fetchMCData({
-        filterString:
-          filterString.length > 0
-            ? `${filterString}&aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`
-            : `aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`,
-      });
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: `${props.type}-map` })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: `${props.type}-map`,
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
     }
-  }, [props.code, appliedFilters, geomapView, props.type]);
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      (history.location.search.length > 0 &&
+        appliedFilters.appliedFiltersCount > 0) ||
+      (history.location.search.length === 0 &&
+        appliedFilters.appliedFiltersCount === 0)
+    ) {
+      const filterString = getAPIFormattedFilters(
+        props.code && props.detailFilterType
+          ? {
+              ...appliedFilters,
+              [props.detailFilterType]: [
+                ...get(appliedFilters, props.detailFilterType, []),
+                props.code,
+              ],
+            }
+          : appliedFilters
+      );
+      if (geomapView === "countries") {
+        fetchData({
+          filterString:
+            filterString.length > 0
+              ? `${filterString}&aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`
+              : `aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`,
+        });
+      } else if (geomapView === "multicountries") {
+        fetchMCData({
+          filterString:
+            filterString.length > 0
+              ? `${filterString}&aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`
+              : `aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`,
+        });
+      }
+    }
+  }, [
+    props.code,
+    appliedFilters,
+    geomapView,
+    props.type,
+    history.location.search,
+  ]);
+
+  let clickthroughPath = "signed/treemap";
+  if (props.type === "Committed") {
+    clickthroughPath = "commitment/treemap";
+  } else if (props.type === "Disbursed") {
+    clickthroughPath = "disbursements/treemap";
+  }
 
   if (isLoading) {
     return <PageLoader />;
@@ -109,6 +154,7 @@ export function InvestmentsGeoMap(props: Props) {
     >
       <GeoMap
         allowClickthrough
+        clickthroughPath={clickthroughPath}
         type="investments"
         data={
           geomapView === "countries"

@@ -2,14 +2,18 @@
 import React from "react";
 import get from "lodash/get";
 import sum from "lodash/sum";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
+import { useHistory } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useMeasure, useUnmount } from "react-use";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
 import { isTouchDevice } from "app/utils/isTouchDevice";
+import { getIso3FromName } from "app/utils/getIso3FromName";
 import { PageLoader } from "app/modules/common/page-loader";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { XsContainer } from "app/components/Charts/common/styles";
@@ -19,7 +23,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { DrilldownPath } from "app/components/PageHeader/components/drilldownpath";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
 import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
@@ -31,13 +34,29 @@ import {
 interface AllocationsModuleProps {
   code?: string;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function AllocationsModule(props: AllocationsModuleProps) {
   useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
 
+  const history = useHistory();
+
   const selectedPeriod = useStoreState(
     (state) => state.ToolBoxPanelAllocationsPeriodState.value
+  );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
+  );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
   );
 
   // api call & data
@@ -76,9 +95,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const fetchPeriodOptionsData = useStoreActions(
     (store) => store.AllocationsPeriods.fetch
   );
-  const setVizDrilldowns = useStoreActions(
-    (actions) => actions.PageHeaderVizDrilldownsState.setValue
-  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -89,8 +105,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     colors: string[];
   }>(getKeysPercentages(total, values));
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizScale, setVizScale] = React.useState(1);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -196,7 +210,17 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         if (keySelected === "true") {
           setVizLevel(1);
           setVizSelected(key);
-          setVizTranslation({ x: -300, y: 0 });
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: key,
+              path: `${history.location.pathname}${history.location.search}`,
+              vizSelected: {
+                id: key,
+                filterStr: key,
+              },
+            },
+          ]);
         } else if (isMobile || isTouchDevice()) {
           setXsTooltipData({
             label: key,
@@ -213,7 +237,17 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         } else {
           setVizLevel(1);
           setVizSelected("Total");
-          setVizTranslation({ x: -300, y: 0 });
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: "Total",
+              path: `${history.location.pathname}${history.location.search}`,
+              vizSelected: {
+                id: "Total",
+                filterStr: "Total",
+              },
+            },
+          ]);
         }
       }
     }
@@ -242,11 +276,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   React.useEffect(() => {
     const items = document.getElementsByClassName("apexcharts-radial-series");
     if (vizSelected) {
-      setVizDrilldowns([
-        { name: "Dataset" },
-        { name: selectedPeriod },
-        { name: vizSelected },
-      ]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
@@ -279,7 +308,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         }`,
       });
     } else {
-      setVizDrilldowns([{ name: "Dataset" }]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
@@ -291,7 +319,23 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }, [vizSelected, selectedPeriod]);
 
   React.useEffect(() => {
-    setVizDrilldowns([{ name: "Dataset" }]);
+    if (vizLevel === 0) {
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Allocation-radial" })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Allocation-radial",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      }
+    }
+  }, [vizSelected]);
+
+  React.useEffect(() => {
     fetchPeriodOptionsData({});
 
     // setTimeout(() => {
@@ -336,7 +380,23 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     };
   }, []);
 
-  useUnmount(() => setVizDrilldowns([]));
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (dataPathActiveStep.vizSelected) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        clearDataPathActiveStep();
+        addDataPathSteps([dataPathActiveStep]);
+      } else if (!dataPathActiveStep.vizSelected && vizSelected) {
+        setVizLevel(0);
+        setVizSelected(undefined);
+        clearDataPathActiveStep();
+        if (dataPathSteps.length > 0) {
+          addDataPathSteps([dataPathActiveStep]);
+        }
+      }
+    }
+  }, [dataPathActiveStep]);
 
   let vizComponent = <React.Fragment />;
 
@@ -395,7 +455,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
                   drilldown={() => {
                     setVizLevel(1);
                     setVizSelected(xsTooltipData.label);
-                    setVizTranslation({ x: -300, y: 0 });
                   }}
                 />
               </div>
@@ -427,13 +486,45 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             <DrillDownArrowSelector
               options={[...keys, "Total"]}
               selected={vizSelected || ""}
-              onChange={(value: string) => setVizSelected(value)}
+              onChange={(value: string) => {
+                setVizSelected(value);
+                const fItemIndex = findIndex(dataPathSteps, {
+                  name: value,
+                  path: `${history.location.pathname}${history.location.search}`,
+                });
+                if (fItemIndex > -1) {
+                  setDataPathSteps(dataPathSteps.slice(0, fItemIndex + 1));
+                } else {
+                  addDataPathSteps([
+                    {
+                      id: uniqueId(),
+                      name: value,
+                      path: `${history.location.pathname}${history.location.search}`,
+                      vizSelected: {
+                        id: value,
+                        filterStr: value,
+                      },
+                    },
+                  ]);
+                }
+              }}
             />
           </span>
           <BudgetsTreemap
             data={dataDrilldownLevel}
             tooltipValueLabel="Allocation"
-            onNodeClick={(node: string, x: number, y: number) => {}}
+            onNodeClick={(node: string, x: number, y: number) => {
+              const name = node.split("-")[0];
+              const code = getIso3FromName(name);
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: name,
+                  path: `/location/${code}/allocations`,
+                },
+              ]);
+              history.push(`/location/${code}/allocations`);
+            }}
           />
         </React.Fragment>
       );
@@ -476,9 +567,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         Allocations | {selectedPeriod} <InfoIcon />
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-      <div css="margin-top: 5px;">
-        <DrilldownPath />
-      </div>
       {vizLevel > 0 && (
         <VizBackBtn
           vizLevel={vizLevel}
@@ -488,6 +576,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             }
             setVizLevel(value);
           }}
+          setOpenToolboxPanel={props.setOpenToolboxPanel}
         />
       )}
       {vizComponent}

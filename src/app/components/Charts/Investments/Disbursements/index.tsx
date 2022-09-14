@@ -23,10 +23,8 @@ import { useCMSData } from "app/hooks/useCMSData";
 export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<TreeMapNodeDatum | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<TreeMapNodeDatum | null>(null);
 
   function closeXsTooltip() {
     if (props.isChildTreemap && props.setXsTooltipData) {
@@ -50,6 +48,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
           width: 100%;
           height: 600px;
           overflow: hidden;
+          position: relative;
 
           ${!props.isChildTreemap
             ? `
@@ -206,7 +205,11 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                         );
                       }}
                     >
-                      {get(cmsData, "componentsChartsInvestments.drilldown", "")}
+                      {get(
+                        cmsData,
+                        "componentsChartsInvestments.drilldown",
+                        ""
+                      )}
                     </TooltipButton>
                   </div>
                 )}

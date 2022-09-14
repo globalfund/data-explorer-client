@@ -291,7 +291,11 @@ export function GeoMap(props: GeoMapProps) {
         hoveredFeature.properties.iso_a3 &&
         hoveredFeature.properties.value > 0
       ) {
-        history.push(`/location/${hoveredFeature.properties.iso_a3}/overview`);
+        history.push(
+          `/location/${hoveredFeature.properties.iso_a3}/${
+            props.clickthroughPath || "overview"
+          }`
+        );
       }
     }
   }, []);

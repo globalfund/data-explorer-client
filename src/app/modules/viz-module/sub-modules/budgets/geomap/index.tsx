@@ -1,8 +1,11 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
+import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -24,6 +27,9 @@ interface Props {
 
 export function BudgetsGeoMap(props: Props) {
   useTitle(`The Data Explorer -${props.code ? ` ${props.code}` : ""} Budgets`);
+
+  const history = useHistory();
+
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   // api call & data
@@ -50,6 +56,10 @@ export function BudgetsGeoMap(props: Props) {
   const geomapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
   );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   const isLoading = useStoreState(
     (state) => state.BudgetsGeomap.loading || state.BudgetsMCGeomap.loading
@@ -58,24 +68,46 @@ export function BudgetsGeoMap(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    let filterString = getAPIFormattedFilters(
-      props.code && props.detailFilterType
-        ? {
-            ...appliedFilters,
-            [props.detailFilterType]: [
-              ...get(appliedFilters, props.detailFilterType, []),
-              props.code,
-            ],
-          }
-        : appliedFilters
-    );
-    if (props.grantCode && props.grantPeriod) {
-      filterString = `grantId='${props.grantCode}'&IPnumber=${props.grantPeriod}`;
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: "Budget-map" })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Budget-map",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
     }
-    if (geomapView === "countries") {
-      fetchData({ filterString });
-    } else if (geomapView === "multicountries") {
-      fetchMCData({ filterString });
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      (history.location.search.length > 0 &&
+        appliedFilters.appliedFiltersCount > 0) ||
+      (history.location.search.length === 0 &&
+        appliedFilters.appliedFiltersCount === 0)
+    ) {
+      let filterString = getAPIFormattedFilters(
+        props.code && props.detailFilterType
+          ? {
+              ...appliedFilters,
+              [props.detailFilterType]: [
+                ...get(appliedFilters, props.detailFilterType, []),
+                props.code,
+              ],
+            }
+          : appliedFilters
+      );
+      if (props.grantCode && props.grantPeriod) {
+        filterString = `grantId='${props.grantCode}'&IPnumber=${props.grantPeriod}`;
+      }
+      if (geomapView === "countries") {
+        fetchData({ filterString });
+      } else if (geomapView === "multicountries") {
+        fetchMCData({ filterString });
+      }
     }
   }, [
     props.code,
@@ -83,6 +115,7 @@ export function BudgetsGeoMap(props: Props) {
     props.grantPeriod,
     appliedFilters,
     geomapView,
+    history.location.search,
   ]);
 
   if (isLoading) {
@@ -100,6 +133,7 @@ export function BudgetsGeoMap(props: Props) {
     >
       <GeoMap
         allowClickthrough
+        clickthroughPath="budgets/flow"
         type="budgets"
         data={
           geomapView === "countries"

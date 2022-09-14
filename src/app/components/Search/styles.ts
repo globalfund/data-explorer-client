@@ -1,13 +1,13 @@
 import { css } from "styled-components/macro";
 
-export const container = (focused: boolean) => css`
-  width: 100%;
+export const container = (focused: boolean, withCatMenu: boolean) => css`
   display: flex;
   background: #fff;
   position: relative;
   padding: 10px 20px;
-  border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+  width: ${withCatMenu ? "calc(100% - 200px)" : "100%"};
+  border-radius: ${withCatMenu ? "0 20px 20px 0" : "20px"};
 
   @media (max-width: 767px) {
     ${focused
@@ -23,7 +23,11 @@ export const container = (focused: boolean) => css`
 export const mobilecontainer = (focused: boolean) => css`
   width: 100%;
   background: transparent;
-  // transition: background 0.1s ease-in-out;
+
+  @media (min-width: 768px) {
+    display: flex;
+    flex-direction: row;
+  }
 
   @media (max-width: 767px) {
     &:focus-within {
