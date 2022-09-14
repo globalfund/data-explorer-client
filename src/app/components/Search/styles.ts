@@ -81,7 +81,7 @@ export const input = css`
   background: #fff;
   font-weight: bold;
   border-style: none;
-  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
 
   &:focus::placeholder {
     opacity: 0.3;

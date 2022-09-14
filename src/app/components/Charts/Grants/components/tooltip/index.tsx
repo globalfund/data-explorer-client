@@ -24,7 +24,7 @@ const rowcss = css`
 
   > div:first-of-type {
     font-weight: bold;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
   }
 `;
 
@@ -38,7 +38,7 @@ export function GrantsRadialTooltip(props: Props) {
           color: #262c34;
           font-size: 18px;
           font-weight: bold;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -61,7 +61,9 @@ export function GrantsRadialTooltip(props: Props) {
         </div>
       </div>
       <div css={rowcss}>
-        <div>{get(cmsData, "componentsChartsGrants.tooltipDisbursements", "")}</div>
+        <div>
+          {get(cmsData, "componentsChartsGrants.tooltipDisbursements", "")}
+        </div>
         <div>{formatFinancialValue(props.value)}</div>
       </div>
       <div css={rowcss}>
@@ -74,7 +76,10 @@ export function GrantsRadialTooltip(props: Props) {
       </div>
       <div css={rowcss}>
         <div>{get(cmsData, "componentsChartsGrants.tooltipRating", "")}</div>
-        <div>{props.rating || get(cmsData, "componentsChartsGrants.tooltipRatingDefault", "")}</div>
+        <div>
+          {props.rating ||
+            get(cmsData, "componentsChartsGrants.tooltipRatingDefault", "")}
+        </div>
       </div>
     </React.Fragment>
   );

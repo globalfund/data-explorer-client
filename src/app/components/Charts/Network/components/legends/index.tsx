@@ -14,7 +14,7 @@ export function NetworkLegends() {
           font-size: 12px;
           font-weight: bold;
           margin-bottom: 10px;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "componentsChartsNetwork.achievementRate", "")}
@@ -216,7 +216,7 @@ const styles = {
     color: #262c34;
     font-size: 12px;
     font-weight: bold;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
   `,
   noData: (reported: boolean) => css`
     color: #495057;
@@ -287,7 +287,9 @@ export function AchievementRateLegend() {
     <div css={styles.container}>
       <div css={styles.legendContainer}>
         <div css={styles.top}>
-          <div css={styles.title}>{get(cmsData, "componentsChartsNetwork.achievementRate", "")}</div>
+          <div css={styles.title}>
+            {get(cmsData, "componentsChartsNetwork.achievementRate", "")}
+          </div>
         </div>
         <div css={styles.spacer} />
         <div css={styles.legends}>
@@ -313,9 +315,13 @@ export function AchievementRateLegend() {
         </div>
       </div>
       <div css={styles.noDataLegendContainer}>
-        <div css={styles.noData(true)}>{get(cmsData, "componentsChartsNetwork.notAvailable", "")}</div>
+        <div css={styles.noData(true)}>
+          {get(cmsData, "componentsChartsNetwork.notAvailable", "")}
+        </div>
         <div css={styles.spacer} />
-        <div css={styles.noData(false)}>{get(cmsData, "componentsChartsNetwork.notReported", "")}</div>
+        <div css={styles.noData(false)}>
+          {get(cmsData, "componentsChartsNetwork.notReported", "")}
+        </div>
       </div>
     </div>
   );

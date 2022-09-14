@@ -79,7 +79,7 @@ export function LocationDetailOverviewModule(props: Props) {
               css={`
                 font-size: 14px;
                 font-weight: bold;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               `}
             >
               {get(cmsData, "modulesCountryDetail.fundManager", "")}
@@ -113,7 +113,7 @@ export function LocationDetailOverviewModule(props: Props) {
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 8px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-family: "Inter", "Helvetica Neue", sans-serif;
           `}
         >
           {locationInfoData.multicountries.length > 0 &&
@@ -164,7 +164,7 @@ export function LocationDetailOverviewModule(props: Props) {
                   font-size: 14px;
                   font-weight: bold;
                   margin-bottom: 8px;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
                 `}
               >
                 Principal Recipients in {locationInfoData.locationName}
@@ -229,13 +229,13 @@ export function LocationDetailOverviewModule(props: Props) {
                   margin-top: 0px;
                   font-size: 14px;
                   font-weight: 700;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
                 }
 
                 h4 {
                   font-size: 12px;
                   font-weight: 700;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
                 }
 
                 p {
@@ -284,7 +284,7 @@ export function LocationDetailOverviewModule(props: Props) {
               css={`
                 font-size: 18px;
                 font-weight: bold;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               `}
             >
               Investment

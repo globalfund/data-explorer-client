@@ -62,7 +62,7 @@ function ResultsListItem(props: ResultListItemModel) {
                   font-weight: bold;
                   flex-direction: row;
                   align-items: center;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
 
                   > * {
                     @supports (-webkit-touch-callout: none) and

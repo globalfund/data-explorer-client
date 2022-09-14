@@ -29,7 +29,7 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "componentsChartsBudgets.timeCycleTooltipBudgets", "")}{" "}
@@ -61,7 +61,7 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
           <div
             css={`
               font-weight: bold;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
             `}
           >
             Total amount
@@ -80,7 +80,7 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
             <div
               css={`
                 font-weight: bold;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               `}
             >
               {key}

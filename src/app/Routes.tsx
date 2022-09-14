@@ -22,6 +22,7 @@ import { useClearDataPathStepsOnDatasetChange } from "./hooks/useClearDataPathSt
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const VizModule = lazy(() => import("app/modules/viz-module"));
+const HomeModule = lazy(() => import("app/modules/home-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const ResultsModule = lazy(() => import("app/modules/results-module"));
@@ -143,7 +144,7 @@ export function MainRoutes() {
     <Suspense fallback={<PageLoader />}>
       <Switch>
         <Route exact path="/">
-          <LandingModule />
+          <HomeModule />
         </Route>
 
         <Route exact path="/about">

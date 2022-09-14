@@ -76,12 +76,12 @@ const header = css`
     color: #262c34;
     font-size: 14px;
     font-weight: bold;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
 
     @media (max-width: 767px) {
       font-size: 10px;
       font-weight: normal;
-      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+      font-family: "Inter", "Helvetica Neue", sans-serif;
     }
   }
 `;

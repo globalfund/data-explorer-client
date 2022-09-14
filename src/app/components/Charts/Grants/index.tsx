@@ -133,7 +133,7 @@ export function GrantsViz(props: GrantsVizProps) {
                   font-size: 14px;
                   font-weight: bold;
                   text-transform: none;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
                 }
               `}
             >
@@ -328,7 +328,7 @@ export function ComponentRadarThingies(props: any) {
               border-top-right-radius: ${itemwidth * 2}px;
               border-style: ${showGrid ? "solid" : "none"};
               border-bottom-style: none;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
               left: ${(((props.width - 120) / props.datayears.length) * index) /
               2}px;
 
@@ -579,7 +579,7 @@ export function ComponentDividers(props: any) {
                 right: 70px;
                 transform: rotate(-115deg);
                 top: ${(width - 240) / components.length}px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               }
             `}
           />
@@ -598,7 +598,7 @@ export const RadialChartLegend = (props: any) => {
     line-height: 15px;
     letter-spacing: 0.5px;
     margin-bottom: 16px;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
   `;
 
   const body = css`
@@ -740,7 +740,9 @@ export const RadialChartLegend = (props: any) => {
           justify-content: center;
         `}
       >
-        <div css={header}>{get(cmsData, "componentsChartsGrants.implementationPeriod", "")}</div>
+        <div css={header}>
+          {get(cmsData, "componentsChartsGrants.implementationPeriod", "")}
+        </div>
         <div css={implementationPeriodContainer}>
           <div css={implementationPeriod}>
             <div css={end} />
@@ -764,7 +766,10 @@ export const RadialChartLegend = (props: any) => {
                   line-height: normal;
                 `}
               >
-                {get(cmsData, "componentsChartsGrants.circleSize", "")} {`\n`} {get(cmsData, "componentsChartsGrants.circleContent", "")} {`\n`} ({get(cmsData, "componentsChartsGrants.circleMaxValue", "")}{" "}
+                {get(cmsData, "componentsChartsGrants.circleSize", "")} {`\n`}{" "}
+                {get(cmsData, "componentsChartsGrants.circleContent", "")}{" "}
+                {`\n`} (
+                {get(cmsData, "componentsChartsGrants.circleMaxValue", "")}{" "}
                 {formatFinancialValue(props.maxValue)})
               </div>
             </div>
@@ -777,9 +782,7 @@ export const RadialChartLegend = (props: any) => {
             </div>
           </div>
         </div>
-        <div css={note}>
-          {get(cmsData, "componentsChartsGrants.note", "")}
-        </div>
+        <div css={note}>{get(cmsData, "componentsChartsGrants.note", "")}</div>
       </div>
       <div
         css={`
@@ -800,7 +803,9 @@ export const RadialChartLegend = (props: any) => {
             justify-content: center;
           `}
         >
-          <div css={header}>L{get(cmsData, "componentsChartsGrants.latestRatingColor", "")}</div>
+          <div css={header}>
+            L{get(cmsData, "componentsChartsGrants.latestRatingColor", "")}
+          </div>
           <div
             css={`
               width: 100%;
@@ -901,13 +906,21 @@ export const RadialChartLegend = (props: any) => {
           `}
         >
           <div css="width: 100%;height: 15px;" />
-          <div css={header}>{get(cmsData, "componentsChartsGrants.grantStatus", "")}</div>
+          <div css={header}>
+            {get(cmsData, "componentsChartsGrants.grantStatus", "")}
+          </div>
           <hr css={solid} />
-          <div css={body}>{get(cmsData, "componentsChartsGrants.active", "")}</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.active", "")}
+          </div>
           <hr css={dashed} />
-          <div css={body}>{get(cmsData, "componentsChartsGrants.closure", "")}</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.closure", "")}
+          </div>
           <hr css={dotted} />
-          <div css={body}>{get(cmsData, "componentsChartsGrants.closed", "")}</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.closed", "")}
+          </div>
         </div>
       </div>
     </div>

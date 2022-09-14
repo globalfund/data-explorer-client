@@ -232,7 +232,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                         css={`
                           font-size: 18px;
                           font-weight: bold;
-                          font-family: GothamNarrow-Bold;
+                          font-family: Inter;
                         `}
                       >
                         Toolbox

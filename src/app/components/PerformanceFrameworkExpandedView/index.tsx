@@ -98,7 +98,7 @@ const styles = {
       color: #fff;
       font-weight: bold;
       background: #495057;
-      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+      font-family: "Inter", "Helvetica Neue", sans-serif;
     }
 
     @media (max-width: 767px) {

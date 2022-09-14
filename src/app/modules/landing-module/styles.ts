@@ -34,7 +34,7 @@ export const datasetstitle = css`
   font-weight: bold;
   text-align: center;
   margin-bottom: 16px;
-  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
 `;
 
 export const datasetslink = css`

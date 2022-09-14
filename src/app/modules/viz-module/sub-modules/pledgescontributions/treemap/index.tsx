@@ -183,7 +183,7 @@ export function PledgesContributionsTreemap() {
               display: flex;
               font-weight: bold;
               align-items: center;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
 
               > svg {
                 margin-left: 10px;

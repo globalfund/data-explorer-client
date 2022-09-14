@@ -39,7 +39,7 @@ function GridItem(props: {
             font-weight: bold;
             line-height: 16px;
             margin-bottom: 4px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-family: "Inter", "Helvetica Neue", sans-serif;
 
             &:nth-of-type(2) {
               font-size: 10px;

@@ -235,13 +235,13 @@ export function BudgetsGeoMap(props: Props) {
                 border-radius: 20px;
                 border: 0.5px solid #c7cdd1;
                 background: ${NO_DATA_COLOR};
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               `}
             />
             <div
               css={`
                 font-weight: bold;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               `}
             >
               N/A

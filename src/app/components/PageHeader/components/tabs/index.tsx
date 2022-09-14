@@ -265,8 +265,7 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
                       font-weight: bold;
                       background: #495057;
                       transition: background 0.2s ease-in-out;
-                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                        sans-serif;
+                      font-family: "Inter", "Helvetica Neue", sans-serif;
                     }
                   }
                 }
