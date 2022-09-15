@@ -20,7 +20,7 @@ interface Props {
 }
 
 export function PledgesContributionsTimeCycleModule(props: Props) {
-  useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
+  useTitle("Dataxplorer - Pledges & Contributions/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   // const [vizScale, setVizScale] = React.useState(1);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });

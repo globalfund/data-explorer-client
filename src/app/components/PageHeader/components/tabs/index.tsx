@@ -75,7 +75,7 @@ const styles = {
     margin-right: 1px;
     align-items: center;
     transition: background 0.2s ease-in-out;
-    background: ${active ? "#262C34" : "#C7CDD1"};
+    background: ${active ? "#231d2c" : "#e4e4e4"};
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -88,12 +88,12 @@ const styles = {
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
-        background: #495057;
+        background: #231d2c;
+
         a,
         div {
           color: #fff;
           cursor: pointer;
-          text-shadow: 0 0 0.9px #fff, 0 0 0.9px #fff, 0 0 0.9px #fff;
         }
       }
     }
@@ -104,10 +104,7 @@ const styles = {
       padding: 10px 15px;
       white-space: nowrap;
       text-decoration: none;
-      color: ${active ? "#fff" : "#13183F"};
-      text-shadow: ${active
-        ? "0 0 0.9px #fff, 0 0 0.9px #fff, 0 0 0.9px #fff"
-        : "none"};
+      color: ${active ? "#fff" : "#231d2c"};
     }
 
     div {
@@ -141,6 +138,7 @@ function formatTabUrlWithParams(
     vizType: string;
   }
 ) {
+  let isActive = false;
   const link = `${tab.url
     .replace("<code>", params.code)
     .replace("<period>", params.period)}${search}`;
@@ -151,7 +149,11 @@ function formatTabUrlWithParams(
     index = 2;
     indexParam = "tab";
   }
-  const isActive = urlsplits[index] === params[indexParam];
+  isActive = urlsplits[index] === params[indexParam];
+
+  if (urlsplits[1] === "viz") {
+    isActive = urlsplits[2] === params.vizType;
+  }
 
   return {
     ...tab,
@@ -257,15 +259,14 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
                 border-bottom-style: none;
 
                 > a {
-                  background: #c7cdd1;
+                  font-weight: 500;
+                  background: #e4e4e4;
 
                   @media (min-width: 768px) {
                     &:hover {
                       color: #fff;
-                      font-weight: bold;
-                      background: #495057;
+                      background: #231d2c;
                       transition: background 0.2s ease-in-out;
-                      font-family: "Inter", "Helvetica Neue", sans-serif;
                     }
                   }
                 }

@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Investments/Time cycle");
+  useTitle("Dataxplorer - Investments/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined

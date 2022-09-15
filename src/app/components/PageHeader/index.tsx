@@ -28,7 +28,7 @@ const styles = {
     display: flex;
     position: sticky;
     padding-top: 10px;
-    background: #dfe3e6;
+    background: #f4f4f4;
     flex-direction: column;
 
     @media (min-width: 768px) {
@@ -106,7 +106,7 @@ export function PageHeader(props: PageHeaderProps) {
             > div {
               @media (min-width: 768px) {
                 height: 64px;
-                padding-bottom: ${isVizModule ? 8 : "0 !important"};
+                padding-bottom: 0 !important;
 
                 &:nth-of-type(2) {
                   height: 62px;

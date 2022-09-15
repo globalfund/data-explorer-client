@@ -33,7 +33,7 @@ import {
 } from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function PartnerDetail() {
-  useTitle("The Data Explorer - Partner");
+  useTitle("Dataxplorer - Partner");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();

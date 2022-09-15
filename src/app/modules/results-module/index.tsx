@@ -19,7 +19,7 @@ import {
 } from "app/modules/results-module/data";
 
 export default function ResultsModule() {
-  useTitle("The Data Explorer - Results");
+  useTitle("Dataxplorer - Results");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();

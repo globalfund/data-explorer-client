@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function GenericBudgetsFlowWrapper(props: Props) {
-  useTitle("The Data Explorer - Budgets Flow");
+  useTitle("Dataxplorer - Budgets Flow");
 
   const history = useHistory();
 

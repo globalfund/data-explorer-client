@@ -17,7 +17,7 @@ import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 
 export default function DocumentsModule() {
-  useTitle("The Data Explorer - Documents");
+  useTitle("Dataxplorer - Documents");
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");

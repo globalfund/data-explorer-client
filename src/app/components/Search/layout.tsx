@@ -46,7 +46,7 @@ const StyledMenu = withStyles({
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 2,
-      background: "#262c34",
+      background: "#231d2c",
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 2,
@@ -54,7 +54,7 @@ const StyledMenu = withStyles({
     },
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 2,
-      background: "#262c34",
+      background: "#231d2c",
     },
   },
   list: {
@@ -66,7 +66,7 @@ const StyledMenu = withStyles({
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: 53,
+      vertical: 40,
       horizontal: "left",
     }}
     transformOrigin={{
@@ -82,7 +82,7 @@ const StyledMenuItem = withStyles(() => ({
   root: {
     height: 40,
     width: "100%",
-    color: "#262c34",
+    color: "#231d2c",
     fontSize: "14px",
     padding: "0 12px",
     "& svg": {
@@ -90,7 +90,7 @@ const StyledMenuItem = withStyles(() => ({
     },
     "&:hover": {
       color: "#fff",
-      background: "#262c34",
+      background: "#231d2c",
     },
   },
 }))(MenuItem);
@@ -169,7 +169,7 @@ export function SearchLayout(props: SearchLayoutProps) {
 
               &:hover {
                 color: #fff;
-                background: #262c34;
+                background: #231d2c;
 
                 svg {
                   > path {
@@ -187,7 +187,7 @@ export function SearchLayout(props: SearchLayoutProps) {
                 transform: rotate(${anchorEl ? "180" : "0"}deg);
 
                 > path {
-                  fill: #262c34;
+                  fill: #231d2c;
                 }
               }
             `}
@@ -217,10 +217,11 @@ export function SearchLayout(props: SearchLayoutProps) {
                 key={category.label}
                 onClick={handleItemClick(category.label)}
                 css={`
+                  font-weight: 500;
                   ${props.category === category.label &&
                   `
                     color: #fff;
-                    background: #262c34;
+                    background: #231d2c;
                   `}
                 `}
               >

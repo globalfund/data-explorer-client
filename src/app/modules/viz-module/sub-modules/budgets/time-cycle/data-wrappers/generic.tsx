@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function GenericBudgetsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Budgets Time cycle");
+  useTitle("Dataxplorer - Budgets Time cycle");
 
   const history = useHistory();
 

@@ -50,7 +50,7 @@ function getTableData(
 }
 
 export function PledgesContributionsTable() {
-  useTitle("The Data Explorer - Pledges & Contributions Table");
+  useTitle("Dataxplorer - Pledges & Contributions Table");
 
   const layers = useStoreState(
     (state) =>

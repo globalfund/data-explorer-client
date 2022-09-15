@@ -51,7 +51,7 @@ interface Props {
 }
 
 export function LocationEligibilityTableWrapper(props: Props) {
-  useTitle("The Data Explorer - Location Eligibility");
+  useTitle("Dataxplorer - Location Eligibility");
 
   const data = useStoreState(
     (state) =>

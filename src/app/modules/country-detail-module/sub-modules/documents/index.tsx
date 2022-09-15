@@ -20,7 +20,7 @@ interface LocationDetailDocumentsModuleProps {
 export function LocationDetailDocumentsModule(
   props: LocationDetailDocumentsModuleProps
 ) {
-  useTitle("The Data Explorer - Location Documents");
+  useTitle("Dataxplorer - Location Documents");
   const [search, setSearch] = React.useState("");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const [page, setPage] = React.useState(1);

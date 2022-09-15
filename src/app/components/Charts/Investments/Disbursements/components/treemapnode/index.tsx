@@ -105,9 +105,6 @@ export function TreeemapNode(props: any) {
               font-weight: ${hasChildren || node.data._children
                 ? "bold"
                 : "normal"};
-              font-family: "GothamNarrow-${hasChildren || node.data._children
-                  ? "Bold"
-                  : "Book"}", "Helvetica Neue", sans-serif;
             `}
           >
             {node.data.name}

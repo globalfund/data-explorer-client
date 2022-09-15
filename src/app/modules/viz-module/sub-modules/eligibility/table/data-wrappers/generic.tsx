@@ -27,7 +27,7 @@ function getTableData(data: DotChartModel[]): SimpleTableRow[] {
 }
 
 export function GenericEligibilityWrapper() {
-  useTitle("The Data Explorer - Eligibility");
+  useTitle("Dataxplorer - Eligibility");
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelEligibilityYearState.value

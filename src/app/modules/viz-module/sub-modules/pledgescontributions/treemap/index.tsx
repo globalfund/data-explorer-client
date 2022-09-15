@@ -20,7 +20,7 @@ import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/da
 // import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
 export function PledgesContributionsTreemap() {
-  useTitle("The Data Explorer - Pledges & Contributions/Treemap");
+  useTitle("Dataxplorer - Pledges & Contributions/Treemap");
   // const [vizLevel, setVizLevel] = React.useState(0);
   // const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(

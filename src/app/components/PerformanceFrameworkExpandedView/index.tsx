@@ -82,8 +82,6 @@ const styles = {
     transition: background 0.2s ease-in-out;
     font-weight: ${active ? "bold" : "normal"};
     background: ${active ? "#495057" : "#C7CDD1"};
-    font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
-      sans-serif;
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;

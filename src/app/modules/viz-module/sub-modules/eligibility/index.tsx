@@ -10,7 +10,7 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 
 export function EligibilityModule() {
-  useTitle("The Data Explorer - Eligibility");
+  useTitle("Dataxplorer - Eligibility");
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelEligibilityYearState.value

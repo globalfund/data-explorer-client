@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function PartnerDetailBudgetsFlowWrapper(props: Props) {
-  useTitle("The Data Explorer - Partner Budgets Flow");
+  useTitle("Dataxplorer - Partner Budgets Flow");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
     id: string | undefined;

@@ -25,7 +25,7 @@ import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/s
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
 
 export default function GrantDetail() {
-  useTitle("The Data Explorer - Grant");
+  useTitle("Dataxplorer - Grant");
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");

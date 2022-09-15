@@ -36,7 +36,7 @@ import {
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export default function CountryDetail() {
-  useTitle("The Data Explorer - Location");
+  useTitle("Dataxplorer - Location");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();

@@ -47,25 +47,25 @@ export const tabs = css`
 `;
 
 export const tab = (active: boolean) => css`
-  color: #262c34;
+  color: #231d2c;
   padding: 5px 0;
   font-size: 14px;
   font-weight: bold;
   white-space: nowrap;
   font-family: "Inter", "Helvetica Neue", sans-serif;
-  border-bottom: 2px solid ${active ? "#262c34" : "transparent"};
+  border-bottom: 2px solid ${active ? "#231d2c" : "transparent"};
 
   &:hover {
     cursor: pointer;
-    border-color: #262c34;
+    border-color: #231d2c;
   }
 
   @media (max-width: 767px) {
     padding: 2px 10px;
     border-radius: 16px;
     border-bottom-style: none;
-    color: ${active ? "#fff" : "#262c34"};
-    background: ${active ? "#262c34" : "#dfe3e6"};
+    color: ${active ? "#fff" : "#231d2c"};
+    background: ${active ? "#231d2c" : "#dfe3e6"};
   }
 `;
 
@@ -92,18 +92,14 @@ export const result = css`
   padding: 12px 37px;
   flex-direction: row;
   text-decoration: none;
-  border-top: 1px solid #dfe3e6;
+  border-top: 1px solid #e4e4e4;
 
   @media (max-width: 767px) {
     padding: 12px;
   }
 
   &:hover {
-    background: #262c34;
-
-    > div {
-      color: #fff;
-    }
+    background: #f2f7fd;
   }
 
   &:first-of-type {
@@ -116,7 +112,7 @@ export const result = css`
   }
 
   > div {
-    color: #262c34;
+    color: #231d2c;
     font-size: 14px;
     width: calc(100% - 37px - 24px - 40px);
   }

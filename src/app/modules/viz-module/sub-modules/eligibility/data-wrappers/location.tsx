@@ -14,7 +14,7 @@ interface Props {
 }
 
 export function LocationDetailEligibilityWrapper(props: Props) {
-  useTitle("The Data Explorer - Location Eligibility");
+  useTitle("Dataxplorer - Location Eligibility");
 
   // api call & data
   const fetchData = useStoreActions((store) => store.EligibilityCountry.fetch);

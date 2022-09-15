@@ -19,8 +19,6 @@ export const row = (size: number, style: string) => css`
   font-size: ${size}px;
   font-weight: ${style};
   justify-content: space-between;
-  font-family: "GothamNarrow-${style === "bold" ? "Bold" : "Book"}",
-    "Helvetica Neue", sans-serif;
 `;
 
 export const buttonrow = (position: "up" | "down") => css`

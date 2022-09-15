@@ -16,7 +16,7 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export function PledgesContributionsGeoMap() {
-  useTitle("The Data Explorer - Pledges & Contributions GeoMap");
+  useTitle("Dataxplorer - Pledges & Contributions GeoMap");
   const valueType = useStoreState(
     (state) => state.ToolBoxPanelDonorMapTypeState.value
   );

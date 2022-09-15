@@ -1,30 +1,28 @@
+/* base */
 import React from "react";
-import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
+import get from "lodash/get";
+// import { Link } from "react-router-dom";
+// import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { useMediaQuery } from "@material-ui/core";
-import LinkList from "app/modules/about-module/links";
+/* project */
+import { useCMSData } from "app/hooks/useCMSData";
+// import LinkList from "app/modules/about-module/links";
 import { PageHeader } from "app/components/PageHeader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export default function About() {
   const cmsData = useCMSData({ returnData: true });
 
-  useTitle(get(cmsData, "modulesAbout.title", ""));
-
-  React.useEffect(() => {
-    document.body.style.background = "#F5F5F7";
-  }, []);
+  useTitle("Dataxplorer - About");
 
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  // const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
-  const deContent = { __html: get(cmsData, "modulesAbout.deContent", "") };
-  const crContent = { __html: get(cmsData, "modulesAbout.crContent", "") };
-  const diContent = { __html: get(cmsData, "modulesAbout.diContent", "") };
-  const doContent = { __html: get(cmsData, "modulesAbout.doContent", "") };
+  // const deContent = { __html: get(cmsData, "modulesAbout.deContent", "") };
+  // const crContent = { __html: get(cmsData, "modulesAbout.crContent", "") };
+  // const diContent = { __html: get(cmsData, "modulesAbout.diContent", "") };
+  // const doContent = { __html: get(cmsData, "modulesAbout.doContent", "") };
 
   return (
     <div
@@ -52,7 +50,7 @@ export default function About() {
         />
       )}
       <PageTopSpacer />
-      <Grid container spacing={!isSmallScreen ? 6 : undefined}>
+      {/* <Grid container spacing={!isSmallScreen ? 6 : undefined}>
         {!isSmallScreen && (
           <Grid item md={3}>
             <LinkList />
@@ -113,7 +111,7 @@ export default function About() {
             <LinkList />
           </Grid>
         )}
-      </Grid>
+      </Grid> */}
       <div
         css={`
           width: 100%;

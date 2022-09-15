@@ -13,7 +13,7 @@ interface Props {
 }
 
 export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
-  useTitle("The Data Explorer - Grant Investments/Time cycle");
+  useTitle("Dataxplorer - Grant Investments/Time cycle");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined

@@ -15,7 +15,7 @@ interface Props {
 }
 
 export function GrantDetailBudgetsFlowWrapper(props: Props) {
-  useTitle("The Data Explorer - Grant Budgets Flow");
+  useTitle("Dataxplorer - Grant Budgets Flow");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
     id: string | undefined;

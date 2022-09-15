@@ -25,7 +25,7 @@ function Providers(props: ProviderProps) {
             <AppContainer>
               {/* react router */}
               <Router>
-                <AppBar {...props} />
+                <AppBar />
                 <Container
                   maxWidth="lg"
                   css={`

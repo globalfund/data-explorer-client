@@ -38,7 +38,7 @@ interface AllocationsModuleProps {
 }
 
 export function AllocationsModule(props: AllocationsModuleProps) {
-  useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
+  useTitle(`Dataxplorer -${props.code ? " Location" : ""} Allocations`);
 
   const history = useHistory();
 

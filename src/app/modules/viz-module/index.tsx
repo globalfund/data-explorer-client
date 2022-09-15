@@ -10,6 +10,7 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
+import { exploreTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
@@ -80,8 +81,8 @@ export default function VizModule() {
       `}
     >
       <PageHeader
-        title="Finance"
-        partialTitle={params.vizType.replace("-", " & ")}
+        title="GF Dataset"
+        // partialTitle={params.vizType.replace("-", " & ")}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {
@@ -102,6 +103,7 @@ export default function VizModule() {
             }`,
           },
         ]}
+        tabs={exploreTabs}
       />
       <PageTopSpacer />
       {isMobile && (

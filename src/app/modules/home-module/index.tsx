@@ -88,7 +88,13 @@ export default function HomeModule() {
               TRY DATA SAMPLE
             </Button>
           </Link>
-          <Link to="/map-data">
+          <Link
+            to="/map-data"
+            css={`
+              opacity: 0.5;
+              pointer-events: none;
+            `}
+          >
             <Button
               startIcon={<UploadIcon />}
               css={`
@@ -116,10 +122,11 @@ export default function HomeModule() {
             justify-content: space-between;
             background-image: url(${linesAsset});
 
-            > div {
+            > a {
               width: 350px;
               height: 216px;
               display: flex;
+              text-decoration: none;
               flex-direction: column;
 
               > div {
@@ -155,27 +162,27 @@ export default function HomeModule() {
             }
           `}
         >
-          <div>
+          <Link to="/datasets">
             <div>
               <div>1</div>
               <h6>Select Dataset</h6>
             </div>
             <img src={SelectDatasetImage} alt="select-dataset" />
-          </div>
-          <div>
+          </Link>
+          <Link to="">
             <div>
               <div>2</div>
               <h6>Map Data</h6>
             </div>
             <img src={MapDataImage} alt="map-data" />
-          </div>
-          <div>
+          </Link>
+          <Link to="">
             <div>
               <div>3</div>
               <h6>Explore</h6>
             </div>
             <img src={ExploreImage} alt="explore" />
-          </div>
+          </Link>
         </div>
       </div>
       <div

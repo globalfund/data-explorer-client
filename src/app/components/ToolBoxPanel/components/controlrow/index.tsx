@@ -75,8 +75,8 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
 
                   path {
                     fill: ${props.selected === option.value
-                      ? "#13183F"
-                      : "#868A9D"};
+                      ? "#6061e5"
+                      : "#13183f"};
                   }
 
                   &:hover {
@@ -84,7 +84,7 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                     cursor: pointer;
 
                     path {
-                      fill: #13183f;
+                      fill: #6061e5;
                     }
                   }
                 `}

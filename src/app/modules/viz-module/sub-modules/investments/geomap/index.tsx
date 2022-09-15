@@ -24,7 +24,7 @@ interface Props {
 }
 
 export function InvestmentsGeoMap(props: Props) {
-  useTitle("The Data Explorer - Investments/Map");
+  useTitle("Dataxplorer - Investments/Map");
 
   const history = useHistory();
 

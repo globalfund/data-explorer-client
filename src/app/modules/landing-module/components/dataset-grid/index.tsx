@@ -30,6 +30,8 @@ function GridItem(props: {
           background: #fff;
           position: relative;
           border: 2px solid #fff;
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+            0 1px 2px rgba(206, 168, 188, 0.24);
 
           @media (max-width: 767px) {
             height: 125px;
@@ -37,14 +39,15 @@ function GridItem(props: {
 
           > div {
             font-weight: bold;
-            line-height: 16px;
+            line-height: 18px;
             margin-bottom: 4px;
             font-family: "Inter", "Helvetica Neue", sans-serif;
 
             &:nth-of-type(2) {
               font-size: 10px;
               line-height: 12px;
-              font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
+              font-weight: normal;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
             }
           }
 
@@ -75,19 +78,19 @@ function GridItem(props: {
 
                 > svg {
                   > path {
-                    fill: #868a9d;
+                    fill: #231d2c;
                   }
 
                   &:hover {
                     > path {
-                      fill: #13183f;
+                      fill: #6061e5;
                     }
                   }
                 }
               }
             `}
           >
-            {props.iconLinks.map((iconLink, index) => (
+            {props.iconLinks.map((iconLink) => (
               <Link to={iconLink.link} key={iconLink.link}>
                 {iconLink.icon}
               </Link>
@@ -100,105 +103,239 @@ function GridItem(props: {
 }
 
 export function LandingDatasetGrid() {
-  const cmsData = useCMSData({ returnData: true });
+  // const cmsData = useCMSData({ returnData: true });
 
-  const fpText = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.financePledgesContributions",
-      ""
-    ),
-  };
-  const fsText = {
-    __html: get(cmsData, "componentsDatasetCarousel.financeSignedAmounts", ""),
-  };
-  const fcText = {
-    __html: get(cmsData, "componentsDatasetCarousel.financeCommitments", ""),
-  };
-  const fdText = {
-    __html: get(cmsData, "componentsDatasetCarousel.financeDisbursements", ""),
-  };
-  const fbText = {
-    __html: get(cmsData, "componentsDatasetCarousel.financeBudgets", ""),
-  };
-  const aeText = {
-    __html: get(cmsData, "componentsDatasetCarousel.accessEligibility", ""),
-  };
-  const aaText = {
-    __html: get(cmsData, "componentsDatasetCarousel.accessAllocations", ""),
-  };
-  const grText = {
-    __html: get(cmsData, "componentsDatasetCarousel.grants", ""),
-  };
-  const reText = {
-    __html: get(cmsData, "componentsDatasetCarousel.results", ""),
-  };
-  const doText = {
-    __html: get(cmsData, "componentsDatasetCarousel.documents", ""),
-  };
+  // const fpText = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.financePledgesContributions",
+  //     ""
+  //   ),
+  // };
+  // const fsText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.financeSignedAmounts", ""),
+  // };
+  // const fcText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.financeCommitments", ""),
+  // };
+  // const fdText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.financeDisbursements", ""),
+  // };
+  // const fbText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.financeBudgets", ""),
+  // };
+  // const aeText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.accessEligibility", ""),
+  // };
+  // const aaText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.accessAllocations", ""),
+  // };
+  // const grText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.grants", ""),
+  // };
+  // const reText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.results", ""),
+  // };
+  // const doText = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.documents", ""),
+  // };
 
-  const fpDescription = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.financePledgesContributionsDescription",
-      ""
-    ),
-  };
-  const fsDescription = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.financeSignedAmountsDescription",
-      ""
-    ),
-  };
-  const fcDescription = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.financeCommitmentsDescription",
-      ""
-    ),
-  };
-  const fdDescription = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.financeDisbursementsDescription",
-      ""
-    ),
-  };
-  const fbDescription = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.financeBudgetsDescription",
-      ""
-    ),
-  };
-  const aeDescription = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.accessEligibilityDescription",
-      ""
-    ),
-  };
-  const aaDescription = {
-    __html: get(
-      cmsData,
-      "componentsDatasetCarousel.accessAllocationsDescription",
-      ""
-    ),
-  };
-  const grDescription = {
-    __html: get(cmsData, "componentsDatasetCarousel.grantsDescription", ""),
-  };
-  const reDescription = {
-    __html: get(cmsData, "componentsDatasetCarousel.resultsDescription", ""),
-  };
-  const doDescription = {
-    __html: get(cmsData, "componentsDatasetCarousel.documentsDescription", ""),
-  };
+  // const fpDescription = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.financePledgesContributionsDescription",
+  //     ""
+  //   ),
+  // };
+  // const fsDescription = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.financeSignedAmountsDescription",
+  //     ""
+  //   ),
+  // };
+  // const fcDescription = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.financeCommitmentsDescription",
+  //     ""
+  //   ),
+  // };
+  // const fdDescription = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.financeDisbursementsDescription",
+  //     ""
+  //   ),
+  // };
+  // const fbDescription = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.financeBudgetsDescription",
+  //     ""
+  //   ),
+  // };
+  // const aeDescription = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.accessEligibilityDescription",
+  //     ""
+  //   ),
+  // };
+  // const aaDescription = {
+  //   __html: get(
+  //     cmsData,
+  //     "componentsDatasetCarousel.accessAllocationsDescription",
+  //     ""
+  //   ),
+  // };
+  // const grDescription = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.grantsDescription", ""),
+  // };
+  // const reDescription = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.resultsDescription", ""),
+  // };
+  // const doDescription = {
+  //   __html: get(cmsData, "componentsDatasetCarousel.documentsDescription", ""),
+  // };
+
+  const dummyDatasets = [0, 1, 2, 3, 4, 5, 6];
 
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={{ __html: "GF Dataset" }}
+          link=""
+          description={{
+            __html:
+              "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
+          }}
+          iconLinks={[
+            {
+              icon: <SankeyIcon />,
+              link: "",
+            },
+            {
+              icon: <BarIcon />,
+              link: "",
+            },
+            {
+              icon: <MapIcon />,
+              link: "",
+            },
+            {
+              icon: <TableIcon />,
+              link: "",
+            },
+          ]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={{ __html: "IATI Dataset" }}
+          link=""
+          description={{
+            __html:
+              "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
+          }}
+          iconLinks={[
+            {
+              icon: <SankeyIcon />,
+              link: "",
+            },
+            {
+              icon: <BarIcon />,
+              link: "",
+            },
+            {
+              icon: <MapIcon />,
+              link: "",
+            },
+            {
+              icon: <TableIcon />,
+              link: "",
+            },
+          ]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={{ __html: "HXL Dataset" }}
+          link=""
+          description={{
+            __html:
+              "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
+          }}
+          iconLinks={[
+            {
+              icon: <SankeyIcon />,
+              link: "",
+            },
+            {
+              icon: <BarIcon />,
+              link: "",
+            },
+            {
+              icon: <MapIcon />,
+              link: "",
+            },
+            {
+              icon: <TableIcon />,
+              link: "",
+            },
+          ]}
+        />
+      </Grid>
+      {dummyDatasets.map((item) => (
+        <Grid
+          item
+          key={item}
+          xs={12}
+          sm={6}
+          md={6}
+          lg={3}
+          css={`
+            pointer-events: none;
+
+            > a {
+              > div {
+                box-shadow: none;
+                background: #f4f4f4;
+                border-color: #f4f4f4;
+              }
+            }
+          `}
+        >
+          <GridItem
+            title={{ __html: "Dataset" }}
+            link=""
+            description={{
+              __html:
+                "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
+            }}
+            iconLinks={[
+              {
+                icon: <SankeyIcon />,
+                link: "",
+              },
+              {
+                icon: <BarIcon />,
+                link: "",
+              },
+              {
+                icon: <MapIcon />,
+                link: "",
+              },
+              {
+                icon: <TableIcon />,
+                link: "",
+              },
+            ]}
+          />
+        </Grid>
+      ))}
+      {/* <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={fbText}
           link="/viz/budgets/flow"
@@ -365,7 +502,7 @@ export function LandingDatasetGrid() {
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem title={grText} link="/grants" description={grDescription} />
-      </Grid>
+      </Grid> */}
     </Grid>
   );
 }

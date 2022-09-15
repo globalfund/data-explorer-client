@@ -1,11 +1,7 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import useTitle from "react-use/lib/useTitle";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
-import { useCMSData } from "app/hooks/useCMSData";
-import { PageHeader } from "app/components/PageHeader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { LandingDatasetGrid } from "app/modules/landing-module/components/dataset-grid";
 import {
@@ -14,28 +10,30 @@ import {
 } from "app/modules/datasets-module/style";
 
 export default function Datasets() {
-  const cmsData = useCMSData({ returnData: true });
-  useTitle(get(cmsData, "modulesDatasets.title", ""));
-  const isMobile = useMediaQuery("(max-width: 767px)");
-
-  React.useEffect(() => {
-    document.body.style.background = "#DFE3E5";
-  }, []);
+  useTitle("Dataxplorer - Datasets");
 
   return (
     <div css={dataSetsCss}>
-      {!isMobile && (
-        <PageHeader
-          title={get(cmsData, "modulesDatasets.titleShort", "")}
-          breadcrumbs={[
-            { name: get(cmsData, "modulesDatasets.home", ""), link: "/" },
-            {
-              name: get(cmsData, "modulesDatasets.titleShort", ""),
-            },
-          ]}
-        />
-      )}
       <PageTopSpacer />
+      <img
+        src="/logo.svg"
+        width={244}
+        height={44}
+        alt="dataxplorer logo"
+        css={`
+          margin-top: 72px;
+          transform: scale(2);
+        `}
+      />
+      <h6
+        css={`
+          font-size: 24px;
+          margin-top: 32px;
+          font-weight: 400;
+        `}
+      >
+        Data exploration solution that boosts your performance
+      </h6>
       <LandingDatasetGrid />
       <div css={datasetsBottomCss} />
     </div>

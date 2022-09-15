@@ -17,7 +17,7 @@ interface GrantDetailDocumentsModuleProps {
 export function GrantDetailDocumentsModule(
   props: GrantDetailDocumentsModuleProps
 ) {
-  useTitle("The Data Explorer - Grant Documents");
+  useTitle("Dataxplorer - Grant Documents");
   const [search, setSearch] = React.useState("");
 
   // api call & data

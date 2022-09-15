@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function PerformanceFrameworkModule(props: Props) {
-  useTitle("The Data Explorer - Grant Performance Framework");
+  useTitle("Dataxplorer - Grant Performance Framework");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(

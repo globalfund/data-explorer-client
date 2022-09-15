@@ -26,7 +26,7 @@ interface Props {
 }
 
 export function BudgetsGeoMap(props: Props) {
-  useTitle(`The Data Explorer -${props.code ? ` ${props.code}` : ""} Budgets`);
+  useTitle(`Dataxplorer -${props.code ? ` ${props.code}` : ""} Budgets`);
 
   const history = useHistory();
 
