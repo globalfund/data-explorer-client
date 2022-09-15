@@ -319,6 +319,7 @@ export default function CountryDetail() {
           {/* Grants */}
           <Route path={`/location/:code/grants/list`}>
             <GrantsModule
+              hideHeader
               search={search}
               code={paramCode}
               setSearch={setSearch}

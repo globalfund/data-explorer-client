@@ -35,7 +35,7 @@ export function GrantsRadialTooltip(props: Props) {
     <React.Fragment>
       <div
         css={`
-          color: #262c34;
+          color: #231d2c;
           font-size: 18px;
           font-weight: bold;
           font-family: "Inter", "Helvetica Neue", sans-serif;

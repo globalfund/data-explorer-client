@@ -13,13 +13,13 @@ export const container = css`
 export const input = css`
   width: 100%;
   outline: none;
-  color: #262c34;
+  color: #231d2c;
   font-size: 14px;
   border-style: none;
   background: #dfe3e6;
 
   ::placeholder {
-    color: #262c34;
+    color: #231d2c;
     font-weight: bold;
   }
 

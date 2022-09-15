@@ -26,7 +26,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -34,7 +34,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -42,7 +42,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -50,7 +50,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -58,7 +58,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -66,7 +66,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -74,7 +74,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -82,7 +82,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -90,7 +90,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -98,7 +98,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -106,7 +106,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -114,7 +114,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="169.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -122,7 +122,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -130,7 +130,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -138,7 +138,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -146,7 +146,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -154,7 +154,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -162,7 +162,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -170,7 +170,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -178,7 +178,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -186,7 +186,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -194,7 +194,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -202,7 +202,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -210,7 +210,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -218,7 +218,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -226,7 +226,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -234,7 +234,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -242,7 +242,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="229.827"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -250,7 +250,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -258,7 +258,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -266,7 +266,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -274,7 +274,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="230.831"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -282,7 +282,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -290,7 +290,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -298,7 +298,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -306,7 +306,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -314,7 +314,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -322,7 +322,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -330,7 +330,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -338,7 +338,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -346,7 +346,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -354,7 +354,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -362,7 +362,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -370,7 +370,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="193.776"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -378,7 +378,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -386,7 +386,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -394,7 +394,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -402,7 +402,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="193.276"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -410,7 +410,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -418,7 +418,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -426,7 +426,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -434,7 +434,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -442,7 +442,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -450,7 +450,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -458,7 +458,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -466,7 +466,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -474,7 +474,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -482,7 +482,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -490,7 +490,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -498,7 +498,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -506,7 +506,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -514,7 +514,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -522,7 +522,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -530,7 +530,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="253.862"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -538,7 +538,7 @@ export const EligibilityDotsPreview = () => (
       cx="136.945"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -546,7 +546,7 @@ export const EligibilityDotsPreview = () => (
       cx="152.968"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -554,7 +554,7 @@ export const EligibilityDotsPreview = () => (
       cx="168.991"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -562,7 +562,7 @@ export const EligibilityDotsPreview = () => (
       cx="185.014"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -570,7 +570,7 @@ export const EligibilityDotsPreview = () => (
       cx="411.837"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -578,7 +578,7 @@ export const EligibilityDotsPreview = () => (
       cx="427.86"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -586,7 +586,7 @@ export const EligibilityDotsPreview = () => (
       cx="443.883"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -594,7 +594,7 @@ export const EligibilityDotsPreview = () => (
       cx="459.906"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -602,7 +602,7 @@ export const EligibilityDotsPreview = () => (
       cx="201.037"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -610,7 +610,7 @@ export const EligibilityDotsPreview = () => (
       cx="217.06"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -618,7 +618,7 @@ export const EligibilityDotsPreview = () => (
       cx="233.082"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -626,7 +626,7 @@ export const EligibilityDotsPreview = () => (
       cx="249.105"
       cy="168.741"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -634,7 +634,7 @@ export const EligibilityDotsPreview = () => (
       cx="475.929"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -642,7 +642,7 @@ export const EligibilityDotsPreview = () => (
       cx="491.951"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -650,7 +650,7 @@ export const EligibilityDotsPreview = () => (
       cx="507.974"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -658,7 +658,7 @@ export const EligibilityDotsPreview = () => (
       cx="523.997"
       cy="169.241"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -666,7 +666,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -674,7 +674,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -682,7 +682,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -690,7 +690,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -698,7 +698,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -706,7 +706,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -714,7 +714,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -722,7 +722,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -730,7 +730,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -738,7 +738,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -746,7 +746,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -754,7 +754,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="181.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -762,7 +762,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -770,7 +770,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -778,7 +778,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -786,7 +786,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -794,7 +794,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -802,7 +802,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -810,7 +810,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -818,7 +818,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -826,7 +826,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -834,7 +834,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -842,7 +842,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -850,7 +850,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -858,7 +858,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -866,7 +866,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -874,7 +874,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -882,7 +882,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -890,7 +890,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -898,7 +898,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -906,7 +906,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -914,7 +914,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="241.847"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -922,7 +922,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -930,7 +930,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -938,7 +938,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -946,7 +946,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -954,7 +954,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -962,7 +962,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -970,7 +970,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -978,7 +978,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -986,7 +986,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -994,7 +994,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1002,7 +1002,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1010,7 +1010,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1018,7 +1018,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1026,7 +1026,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1034,7 +1034,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1042,7 +1042,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="205.792"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1050,7 +1050,7 @@ export const EligibilityDotsPreview = () => (
       cx="8.76311"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1058,7 +1058,7 @@ export const EligibilityDotsPreview = () => (
       cx="24.7859"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1066,7 +1066,7 @@ export const EligibilityDotsPreview = () => (
       cx="40.8088"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1074,7 +1074,7 @@ export const EligibilityDotsPreview = () => (
       cx="56.8316"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1082,7 +1082,7 @@ export const EligibilityDotsPreview = () => (
       cx="283.655"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1090,7 +1090,7 @@ export const EligibilityDotsPreview = () => (
       cx="299.678"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1098,7 +1098,7 @@ export const EligibilityDotsPreview = () => (
       cx="315.7"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1106,7 +1106,7 @@ export const EligibilityDotsPreview = () => (
       cx="331.723"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1114,7 +1114,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1122,7 +1122,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8772"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1130,7 +1130,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1138,7 +1138,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1146,7 +1146,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1154,7 +1154,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1162,7 +1162,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1170,7 +1170,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1178,7 +1178,7 @@ export const EligibilityDotsPreview = () => (
       cx="136.945"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1186,7 +1186,7 @@ export const EligibilityDotsPreview = () => (
       cx="152.968"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1194,7 +1194,7 @@ export const EligibilityDotsPreview = () => (
       cx="168.991"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1202,7 +1202,7 @@ export const EligibilityDotsPreview = () => (
       cx="185.014"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1210,7 +1210,7 @@ export const EligibilityDotsPreview = () => (
       cx="411.837"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1218,7 +1218,7 @@ export const EligibilityDotsPreview = () => (
       cx="427.86"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1226,7 +1226,7 @@ export const EligibilityDotsPreview = () => (
       cx="443.883"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1234,7 +1234,7 @@ export const EligibilityDotsPreview = () => (
       cx="459.906"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1242,7 +1242,7 @@ export const EligibilityDotsPreview = () => (
       cx="201.037"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1250,7 +1250,7 @@ export const EligibilityDotsPreview = () => (
       cx="217.06"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1258,7 +1258,7 @@ export const EligibilityDotsPreview = () => (
       cx="233.082"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1266,7 +1266,7 @@ export const EligibilityDotsPreview = () => (
       cx="249.105"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1274,7 +1274,7 @@ export const EligibilityDotsPreview = () => (
       cx="475.929"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1282,7 +1282,7 @@ export const EligibilityDotsPreview = () => (
       cx="491.951"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1290,7 +1290,7 @@ export const EligibilityDotsPreview = () => (
       cx="507.974"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1298,7 +1298,7 @@ export const EligibilityDotsPreview = () => (
       cx="523.997"
       cy="265.882"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1306,7 +1306,7 @@ export const EligibilityDotsPreview = () => (
       cx="72.8544"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1314,7 +1314,7 @@ export const EligibilityDotsPreview = () => (
       cx="88.8773"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1322,7 +1322,7 @@ export const EligibilityDotsPreview = () => (
       cx="104.9"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1330,7 +1330,7 @@ export const EligibilityDotsPreview = () => (
       cx="120.923"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1338,7 +1338,7 @@ export const EligibilityDotsPreview = () => (
       cx="347.746"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1346,7 +1346,7 @@ export const EligibilityDotsPreview = () => (
       cx="363.769"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1354,7 +1354,7 @@ export const EligibilityDotsPreview = () => (
       cx="379.792"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1362,7 +1362,7 @@ export const EligibilityDotsPreview = () => (
       cx="395.815"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1370,7 +1370,7 @@ export const EligibilityDotsPreview = () => (
       cx="136.945"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1378,7 +1378,7 @@ export const EligibilityDotsPreview = () => (
       cx="152.968"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1386,7 +1386,7 @@ export const EligibilityDotsPreview = () => (
       cx="168.991"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1394,7 +1394,7 @@ export const EligibilityDotsPreview = () => (
       cx="185.014"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1402,7 +1402,7 @@ export const EligibilityDotsPreview = () => (
       cx="411.837"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1410,7 +1410,7 @@ export const EligibilityDotsPreview = () => (
       cx="427.86"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1418,7 +1418,7 @@ export const EligibilityDotsPreview = () => (
       cx="443.883"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1426,7 +1426,7 @@ export const EligibilityDotsPreview = () => (
       cx="459.906"
       cy="277.897"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1434,7 +1434,7 @@ export const EligibilityDotsPreview = () => (
       cx="136.945"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1442,7 +1442,7 @@ export const EligibilityDotsPreview = () => (
       cx="152.968"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1450,7 +1450,7 @@ export const EligibilityDotsPreview = () => (
       cx="168.991"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1458,7 +1458,7 @@ export const EligibilityDotsPreview = () => (
       cx="185.014"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1466,7 +1466,7 @@ export const EligibilityDotsPreview = () => (
       cx="411.837"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1474,7 +1474,7 @@ export const EligibilityDotsPreview = () => (
       cx="427.86"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1482,7 +1482,7 @@ export const EligibilityDotsPreview = () => (
       cx="443.883"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1490,7 +1490,7 @@ export const EligibilityDotsPreview = () => (
       cx="459.906"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1498,7 +1498,7 @@ export const EligibilityDotsPreview = () => (
       cx="201.037"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1506,7 +1506,7 @@ export const EligibilityDotsPreview = () => (
       cx="217.06"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1514,7 +1514,7 @@ export const EligibilityDotsPreview = () => (
       cx="233.082"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1522,7 +1522,7 @@ export const EligibilityDotsPreview = () => (
       cx="249.105"
       cy="180.757"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1530,7 +1530,7 @@ export const EligibilityDotsPreview = () => (
       cx="475.929"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1538,7 +1538,7 @@ export const EligibilityDotsPreview = () => (
       cx="491.951"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1546,7 +1546,7 @@ export const EligibilityDotsPreview = () => (
       cx="507.974"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1554,7 +1554,7 @@ export const EligibilityDotsPreview = () => (
       cx="523.997"
       cy="181.257"
       r="2.25321"
-      fill="#262C34"
+      fill="#231d2c"
       stroke="#ADB5BD"
       strokeWidth="0.500714"
     />
@@ -1563,7 +1563,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1571,7 +1571,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1580,7 +1580,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1588,7 +1588,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1596,7 +1596,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1604,7 +1604,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1613,7 +1613,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1621,7 +1621,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1629,7 +1629,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1637,7 +1637,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1646,7 +1646,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1654,7 +1654,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1662,7 +1662,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1670,7 +1670,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1679,7 +1679,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1687,7 +1687,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1695,7 +1695,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1703,7 +1703,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1712,7 +1712,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1720,7 +1720,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1728,7 +1728,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1736,7 +1736,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1745,7 +1745,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1753,7 +1753,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1761,7 +1761,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1769,7 +1769,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1778,7 +1778,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1786,7 +1786,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1794,7 +1794,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1802,7 +1802,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1811,7 +1811,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1819,7 +1819,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1827,7 +1827,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1835,7 +1835,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1844,7 +1844,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1852,7 +1852,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1860,7 +1860,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1868,7 +1868,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1877,7 +1877,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1885,7 +1885,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1893,7 +1893,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1901,7 +1901,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1910,7 +1910,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1918,7 +1918,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1926,7 +1926,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1934,7 +1934,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1943,7 +1943,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1951,7 +1951,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1959,7 +1959,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1967,7 +1967,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -1976,7 +1976,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1984,7 +1984,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -1992,7 +1992,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2000,7 +2000,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2009,7 +2009,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2017,7 +2017,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2025,7 +2025,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2033,7 +2033,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2042,7 +2042,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2050,7 +2050,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2058,7 +2058,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2066,7 +2066,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2075,7 +2075,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2083,7 +2083,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2091,7 +2091,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2099,7 +2099,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2108,7 +2108,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2116,7 +2116,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2124,7 +2124,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2132,7 +2132,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2141,7 +2141,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2149,7 +2149,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2157,7 +2157,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2165,7 +2165,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2174,7 +2174,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2182,7 +2182,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2190,7 +2190,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2198,7 +2198,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2207,7 +2207,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2215,7 +2215,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2223,7 +2223,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2231,7 +2231,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2240,7 +2240,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2248,7 +2248,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2256,7 +2256,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2264,7 +2264,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2273,7 +2273,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2281,7 +2281,7 @@ export const EligibilityDotsPreview = () => (
       cy="277.897"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2289,7 +2289,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2297,7 +2297,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2306,7 +2306,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2314,7 +2314,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2322,7 +2322,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2330,7 +2330,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2339,7 +2339,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2347,7 +2347,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2355,7 +2355,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2363,7 +2363,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2372,7 +2372,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2380,7 +2380,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2388,7 +2388,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2396,7 +2396,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2405,7 +2405,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2413,7 +2413,7 @@ export const EligibilityDotsPreview = () => (
       cy="205.792"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2421,7 +2421,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2429,7 +2429,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2438,7 +2438,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2446,7 +2446,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2454,7 +2454,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2462,7 +2462,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2471,7 +2471,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2479,7 +2479,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2487,7 +2487,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2495,7 +2495,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2504,7 +2504,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2512,7 +2512,7 @@ export const EligibilityDotsPreview = () => (
       cy="192.776"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2520,7 +2520,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2528,7 +2528,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2537,7 +2537,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2545,7 +2545,7 @@ export const EligibilityDotsPreview = () => (
       cy="193.276"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2553,7 +2553,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2561,7 +2561,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2570,7 +2570,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2578,7 +2578,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2586,7 +2586,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2594,7 +2594,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2603,7 +2603,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2611,7 +2611,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2619,7 +2619,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2627,7 +2627,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2636,7 +2636,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2644,7 +2644,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2652,7 +2652,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2660,7 +2660,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2669,7 +2669,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2677,7 +2677,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2685,7 +2685,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2693,7 +2693,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2702,7 +2702,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2710,7 +2710,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2718,7 +2718,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2726,7 +2726,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2735,7 +2735,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2743,7 +2743,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2751,7 +2751,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2759,7 +2759,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2768,7 +2768,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2776,7 +2776,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2784,7 +2784,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2792,7 +2792,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2801,7 +2801,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2809,7 +2809,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2817,7 +2817,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2825,7 +2825,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2834,7 +2834,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2842,7 +2842,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2850,7 +2850,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2858,7 +2858,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2867,7 +2867,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2875,7 +2875,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2883,7 +2883,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2891,7 +2891,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2900,7 +2900,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2908,7 +2908,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2916,7 +2916,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2924,7 +2924,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2933,7 +2933,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2941,7 +2941,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2949,7 +2949,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2957,7 +2957,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2966,7 +2966,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2974,7 +2974,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2982,7 +2982,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -2990,7 +2990,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -2999,7 +2999,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3007,7 +3007,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3015,7 +3015,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3023,7 +3023,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3032,7 +3032,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3040,7 +3040,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3048,7 +3048,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3056,7 +3056,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3065,7 +3065,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3073,7 +3073,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3081,7 +3081,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3089,7 +3089,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3098,7 +3098,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3106,7 +3106,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3114,7 +3114,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3122,7 +3122,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3131,7 +3131,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3139,7 +3139,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3147,7 +3147,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3155,7 +3155,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3164,7 +3164,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3172,7 +3172,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3180,7 +3180,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3188,7 +3188,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3197,7 +3197,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3205,7 +3205,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3213,7 +3213,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3221,7 +3221,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3230,7 +3230,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3238,7 +3238,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3246,7 +3246,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3254,7 +3254,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3263,7 +3263,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3271,7 +3271,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3279,7 +3279,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3287,7 +3287,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3296,7 +3296,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3304,7 +3304,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3312,7 +3312,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3320,7 +3320,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3329,7 +3329,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3337,7 +3337,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3345,7 +3345,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3353,7 +3353,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3362,7 +3362,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3370,7 +3370,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3378,7 +3378,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3386,7 +3386,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3395,7 +3395,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3403,7 +3403,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3411,7 +3411,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3419,7 +3419,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3428,7 +3428,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3436,7 +3436,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3444,7 +3444,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3452,7 +3452,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3461,7 +3461,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3469,7 +3469,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3477,7 +3477,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3485,7 +3485,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3494,7 +3494,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3502,7 +3502,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3510,7 +3510,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3518,7 +3518,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3527,7 +3527,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3535,7 +3535,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3543,7 +3543,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3551,7 +3551,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3560,7 +3560,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3568,7 +3568,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3576,7 +3576,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3584,7 +3584,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3593,7 +3593,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3601,7 +3601,7 @@ export const EligibilityDotsPreview = () => (
       cy="130.183"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3609,7 +3609,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3617,7 +3617,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3626,7 +3626,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3634,7 +3634,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3642,7 +3642,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3650,7 +3650,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3659,7 +3659,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3667,7 +3667,7 @@ export const EligibilityDotsPreview = () => (
       cy="18.0263"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3675,7 +3675,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3683,7 +3683,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3692,7 +3692,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3700,7 +3700,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3708,7 +3708,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3716,7 +3716,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3725,7 +3725,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3733,7 +3733,7 @@ export const EligibilityDotsPreview = () => (
       cy="82.12"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3741,7 +3741,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3749,7 +3749,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3758,7 +3758,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3766,7 +3766,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3774,7 +3774,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3782,7 +3782,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3791,7 +3791,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3799,7 +3799,7 @@ export const EligibilityDotsPreview = () => (
       cy="50.0732"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3807,7 +3807,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3815,7 +3815,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3824,7 +3824,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3832,7 +3832,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3840,7 +3840,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3848,7 +3848,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3857,7 +3857,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3865,7 +3865,7 @@ export const EligibilityDotsPreview = () => (
       cy="114.163"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3873,7 +3873,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3881,7 +3881,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3890,7 +3890,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3898,7 +3898,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3906,7 +3906,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3914,7 +3914,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3923,7 +3923,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3931,7 +3931,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3939,7 +3939,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3947,7 +3947,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3956,7 +3956,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3964,7 +3964,7 @@ export const EligibilityDotsPreview = () => (
       cy="233.835"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3972,7 +3972,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3980,7 +3980,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -3989,7 +3989,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -3997,7 +3997,7 @@ export const EligibilityDotsPreview = () => (
       cy="230.831"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4005,7 +4005,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4013,7 +4013,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4022,7 +4022,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4030,7 +4030,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4038,7 +4038,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4046,7 +4046,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4055,7 +4055,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4063,7 +4063,7 @@ export const EligibilityDotsPreview = () => (
       cy="34.0497"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4071,7 +4071,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4079,7 +4079,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4088,7 +4088,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4096,7 +4096,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4104,7 +4104,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4112,7 +4112,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4121,7 +4121,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4129,7 +4129,7 @@ export const EligibilityDotsPreview = () => (
       cy="98.1396"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4137,7 +4137,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4145,7 +4145,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4154,7 +4154,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4162,7 +4162,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4170,7 +4170,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4178,7 +4178,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4187,7 +4187,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4195,7 +4195,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4203,7 +4203,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4211,7 +4211,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4220,7 +4220,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4228,7 +4228,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4236,7 +4236,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4244,7 +4244,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4253,7 +4253,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4261,7 +4261,7 @@ export const EligibilityDotsPreview = () => (
       cy="217.811"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4269,7 +4269,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4277,7 +4277,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4286,7 +4286,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4294,7 +4294,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4302,7 +4302,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4310,7 +4310,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4319,7 +4319,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4327,7 +4327,7 @@ export const EligibilityDotsPreview = () => (
       cy="66.0966"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4335,7 +4335,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4343,7 +4343,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4352,7 +4352,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4360,7 +4360,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4368,7 +4368,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4376,7 +4376,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4385,7 +4385,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4393,7 +4393,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4401,7 +4401,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4409,7 +4409,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4418,7 +4418,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4426,7 +4426,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4434,7 +4434,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4442,7 +4442,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4451,7 +4451,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4459,7 +4459,7 @@ export const EligibilityDotsPreview = () => (
       cy="249.858"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4467,7 +4467,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4475,7 +4475,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4484,7 +4484,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4492,7 +4492,7 @@ export const EligibilityDotsPreview = () => (
       cy="241.847"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4500,7 +4500,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4508,7 +4508,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="white"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
       strokeDasharray="1 1"
     />
@@ -4517,7 +4517,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <circle
@@ -4525,7 +4525,7 @@ export const EligibilityDotsPreview = () => (
       cy="253.862"
       r="2.25321"
       fill="#ADB5BD"
-      stroke="#262C34"
+      stroke="#231d2c"
       strokeWidth="0.500714"
     />
     <path
@@ -4538,11 +4538,11 @@ export const EligibilityDotsPreview = () => (
     />
     <path
       d="M0.546756 155.211H1.39396V152.537L2.37937 154.262H2.39739L3.38881 152.525V155.211H4.24202V151.005H3.32271L2.39739 152.711L1.46006 151.005H0.546756V155.211ZM6.04188 155.271C6.42042 155.271 6.6848 155.115 6.87707 154.862V155.211H7.71226V153.258C7.71226 152.844 7.60411 152.507 7.38179 152.285C7.17149 152.074 6.84102 151.954 6.4024 151.954C5.93974 151.954 5.61528 152.056 5.30283 152.213L5.53716 152.88C5.73545 152.795 5.97579 152.699 6.27622 152.699C6.66077 152.699 6.88308 152.892 6.88308 153.264V153.36C6.6848 153.282 6.48051 153.228 6.21012 153.228C5.54918 153.228 5.08652 153.547 5.08652 154.256V154.292C5.08652 154.917 5.51313 155.271 6.04188 155.271ZM6.32429 154.646C6.07793 154.64 5.9097 154.508 5.9097 154.244V154.232C5.9097 153.937 6.10798 153.781 6.42042 153.781C6.59467 153.781 6.76892 153.823 6.8951 153.883V154.153C6.8951 154.448 6.65476 154.652 6.32429 154.646ZM8.64506 155.211H9.49828V150.873H8.64506V155.211ZM11.2544 155.271C11.6329 155.271 11.8973 155.115 12.0896 154.862V155.211H12.9248V153.258C12.9248 152.844 12.8166 152.507 12.5943 152.285C12.384 152.074 12.0535 151.954 11.6149 151.954C11.1522 151.954 10.8278 152.056 10.5153 152.213L10.7497 152.88C10.948 152.795 11.1883 152.699 11.4887 152.699C11.8733 152.699 12.0956 152.892 12.0956 153.264V153.36C11.8973 153.282 11.693 153.228 11.4226 153.228C10.7617 153.228 10.299 153.547 10.299 154.256V154.292C10.299 154.917 10.7256 155.271 11.2544 155.271ZM11.5368 154.646C11.2904 154.64 11.1222 154.508 11.1222 154.244V154.232C11.1222 153.937 11.3205 153.781 11.6329 153.781C11.8072 153.781 11.9814 153.823 12.1076 153.883V154.153C12.1076 154.448 11.8673 154.652 11.5368 154.646ZM13.8275 155.211H14.6807V153.859C14.6807 153.186 14.9932 152.862 15.5159 152.862H15.552V151.936C15.0953 151.912 14.837 152.171 14.6807 152.561V151.99H13.8275V155.211ZM16.2962 151.648H17.1854V150.873H16.2962V151.648ZM16.3142 155.211H17.1674V151.99H16.3142V155.211ZM18.9235 155.271C19.3021 155.271 19.5664 155.115 19.7587 154.862V155.211H20.5939V153.258C20.5939 152.844 20.4857 152.507 20.2634 152.285C20.0531 152.074 19.7227 151.954 19.284 151.954C18.8214 151.954 18.4969 152.056 18.1845 152.213L18.4188 152.88C18.6171 152.795 18.8574 152.699 19.1579 152.699C19.5424 152.699 19.7647 152.892 19.7647 153.264V153.36C19.5664 153.282 19.3621 153.228 19.0918 153.228C18.4308 153.228 17.9682 153.547 17.9682 154.256V154.292C17.9682 154.917 18.3948 155.271 18.9235 155.271ZM19.2059 154.646C18.9596 154.64 18.7913 154.508 18.7913 154.244V154.232C18.7913 153.937 18.9896 153.781 19.3021 153.781C19.4763 153.781 19.6506 153.823 19.7767 153.883V154.153C19.7767 154.448 19.5364 154.652 19.2059 154.646Z"
-      fill="#262C34"
+      fill="#231d2c"
     />
     <path
       d="M276.549 155.711H277.421V154.329H277.967L278.742 155.711H279.74L278.845 154.149C279.307 153.944 279.626 153.542 279.626 152.905V152.881C279.626 152.466 279.5 152.136 279.271 151.908C279.007 151.643 278.616 151.505 278.13 151.505H276.549V155.711ZM277.421 153.56V152.292H278.045C278.49 152.292 278.748 152.502 278.748 152.923V152.929C278.748 153.308 278.508 153.56 278.064 153.56H277.421ZM281.817 155.765C282.634 155.765 283.229 155.284 283.229 154.503V154.491C283.229 153.836 282.832 153.524 282.099 153.235C281.444 152.965 281.3 152.851 281.3 152.611V152.605C281.3 152.388 281.486 152.238 281.787 152.238C282.111 152.238 282.417 152.412 282.682 152.629L283.169 151.968C282.784 151.619 282.303 151.451 281.811 151.451C280.999 151.451 280.435 151.95 280.435 152.683V152.695C280.435 153.416 280.897 153.698 281.642 153.986C282.243 154.215 282.363 154.347 282.363 154.557V154.563C282.363 154.81 282.159 154.978 281.823 154.978C281.402 154.978 281.059 154.75 280.777 154.503L280.26 155.146C280.723 155.579 281.282 155.765 281.817 155.765ZM285.329 155.765C286.147 155.765 286.741 155.284 286.741 154.503V154.491C286.741 153.836 286.345 153.524 285.612 153.235C284.957 152.965 284.813 152.851 284.813 152.611V152.605C284.813 152.388 284.999 152.238 285.299 152.238C285.624 152.238 285.93 152.412 286.195 152.629L286.681 151.968C286.297 151.619 285.816 151.451 285.323 151.451C284.512 151.451 283.947 151.95 283.947 152.683V152.695C283.947 153.416 284.41 153.698 285.155 153.986C285.756 154.215 285.876 154.347 285.876 154.557V154.563C285.876 154.81 285.672 154.978 285.335 154.978C284.915 154.978 284.572 154.75 284.29 154.503L283.773 155.146C284.236 155.579 284.795 155.765 285.329 155.765ZM287.634 155.711H288.505V153.998H289.887V155.711H290.758V151.505H289.887V153.193H288.505V151.505H287.634V155.711Z"
-      fill="#262C34"
+      fill="#231d2c"
     />
   </svg>
 );

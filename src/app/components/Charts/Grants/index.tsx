@@ -74,7 +74,7 @@ export function GrantsViz(props: GrantsVizProps) {
             z-index: 101;
             width: 320px;
             padding: 20px;
-            color: #262c34;
+            color: #231d2c;
             top: ${y + 12}px;
             left: ${x + 12}px;
             position: absolute;
@@ -129,7 +129,7 @@ export function GrantsViz(props: GrantsVizProps) {
                 }
 
                 > span {
-                  color: #262c34;
+                  color: #231d2c;
                   font-size: 14px;
                   font-weight: bold;
                   text-transform: none;
@@ -336,7 +336,7 @@ export function ComponentRadarThingies(props: any) {
               &:before {
                 right: -12px;
                 bottom: -35px;
-                color: #262c34;
+                color: #231d2c;
                 font-size: 10px;
                 position: absolute;
                 content: ${showLabel ? `"${year}"` : ""};
@@ -346,7 +346,7 @@ export function ComponentRadarThingies(props: any) {
               &:after {
                 left: -12px;
                 bottom: -35px;
-                color: #262c34;
+                color: #231d2c;
                 font-size: 10px;
                 position: absolute;
                 content: ${showLabel ? `"${year}"` : ""};
@@ -467,7 +467,7 @@ export function ComponentRadarThingies(props: any) {
                               height: 4px;
                               border-radius: 50%;
                               position: absolute;
-                              background: #495057;
+                              background: #231d2c;
                               bottom: ${startHeight}px;
                             `}
                           />
@@ -514,7 +514,7 @@ export function ComponentRadarThingies(props: any) {
                               border-radius: 50%;
                               position: absolute;
                               left: -${size / 2}px;
-                              border: 1px solid #495057;
+                              border: 1px solid #231d2c;
                               background: ${get(
                                 ratingColor,
                                 subItem.rating,
@@ -652,7 +652,7 @@ export const RadialChartLegend = (props: any) => {
       content: " ";
       display: block;
       height: 0.5px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid #231d2c;
       transform: translate(17px, -1px);
       opacity: 0.2;
     }
@@ -661,7 +661,7 @@ export const RadialChartLegend = (props: any) => {
       content: " ";
       display: block;
       height: 0.5px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid #231d2c;
       transform: translate(-5px, 17px);
       width: 59px;
       opacity: 0.3;
@@ -669,7 +669,7 @@ export const RadialChartLegend = (props: any) => {
   `;
 
   const line = css`
-    border: 1px solid #262c34;
+    border: 1px solid #231d2c;
     margin: 0;
     height: calc(100% - 38px);
   `;
@@ -686,7 +686,7 @@ export const RadialChartLegend = (props: any) => {
       display: block;
       height: 0.5px;
       width: 35px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid #231d2c;
       opacity: 0.2;
     }
   `;
@@ -694,21 +694,21 @@ export const RadialChartLegend = (props: any) => {
   const solid = css`
     max-width: 83px;
     margin: 0;
-    border: 1px solid #262c34;
+    border: 1px solid #231d2c;
     margin-bottom: 7px;
   `;
 
   const dashed = css`
     max-width: 83px;
     margin: 0;
-    border: 1px dashed #262c34;
+    border: 1px dashed #231d2c;
     margin-bottom: 7px;
   `;
 
   const dotted = css`
     max-width: 83px;
     margin: 0;
-    border: 1px dotted #262c34;
+    border: 1px dotted #231d2c;
     margin-bottom: 7px;
   `;
 
@@ -834,13 +834,13 @@ export const RadialChartLegend = (props: any) => {
                 height: 10px;
                 position: relative;
                 border-radius: 50%;
-                border: 0.5px solid #262c34;
+                border: 0.5px solid #231d2c;
 
                 &:before {
                   width: 40px;
                   left: -16px;
                   bottom: -25px;
-                  color: #495057;
+                  color: #231d2c;
                   font-size: 12px;
                   position: absolute;
                   text-align: center;

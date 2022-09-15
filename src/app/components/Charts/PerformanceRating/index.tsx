@@ -97,7 +97,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
                 strokeOpacity: 0.3,
               },
               text: {
-                fill: "#262c34",
+                fill: "#231d2c",
                 fontSize: 12,
               },
             },

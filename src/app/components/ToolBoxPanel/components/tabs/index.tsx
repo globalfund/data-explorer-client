@@ -39,7 +39,7 @@ export function ToolBoxPanelTabs(props: ToolBoxPanelTabsProps) {
           type="button"
           onClick={() => props.onSelect(option)}
           css={`
-            background: ${props.selected === option ? "#495057" : "#98a1aa"};
+            background: ${props.selected === option ? "#231d2c" : "#98a1aa"};
           `}
         >
           {option}

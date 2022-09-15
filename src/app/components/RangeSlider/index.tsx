@@ -49,7 +49,7 @@ const ThumbLabel = (props: any) => {
         borderRadius: "3px",
         whiteSpace: "nowrap",
         position: "absolute",
-        backgroundColor: "#495057",
+        backgroundColor: "#231d2c",
         ...(style as React.CSSProperties),
       }}
     >
@@ -90,10 +90,10 @@ export function RangeSlider(props: RangeSliderProps) {
   const rangeRef = React.useRef();
   const [localValues, setLocalValues] = React.useState([props.min, props.max]);
 
-  React.useEffect(() => setLocalValues([props.min, props.max]), [
-    props.min,
-    props.max,
-  ]);
+  React.useEffect(
+    () => setLocalValues([props.min, props.max]),
+    [props.min, props.max]
+  );
 
   return (
     <Container>

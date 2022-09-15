@@ -27,7 +27,7 @@ export function NoDataTreemap() {
       />
       <path
         d="M538.496 309.16H561.285V309.979H538.496V309.16Z"
-        fill="#262C34"
+        fill="#231d2c"
       />
     </svg>
   );

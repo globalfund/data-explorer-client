@@ -24,7 +24,7 @@ function Expandable(props: ExpandableProps) {
         css={`
           width: 100%;
           display: flex;
-          color: #262c34;
+          color: #231d2c;
           font-size: 14px;
           padding: 10px 12px;
           align-items: center;
@@ -42,7 +42,7 @@ function Expandable(props: ExpandableProps) {
           @media (min-width: 768px) {
             &:hover {
               color: #fff;
-              background: #262c34;
+              background: #231d2c;
               transition: background 0.2s ease-in-out;
 
               > svg {
@@ -67,7 +67,7 @@ function Expandable(props: ExpandableProps) {
 
           a {
             width: 100%;
-            color: #495057;
+            color: #231d2c;
             font-size: 14px;
             padding: 10px 15px;
             text-decoration: none;
@@ -76,7 +76,7 @@ function Expandable(props: ExpandableProps) {
               &:hover {
                 color: #fff;
                 font-weight: bold;
-                background: #262c34;
+                background: #231d2c;
                 transition: background 0.2s ease-in-out;
               }
             }
@@ -97,7 +97,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     //   css={`
     //     width: 100%;
     //     display: flex;
-    //     color: #262c34;
+    //     color: #231d2c;
     //     font-size: 14px;
     //     padding: 6px 12px;
     //     align-items: center;
@@ -115,7 +115,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     //     @media (min-width: 768px) {
     //       &:hover {
     //         color: #fff;
-    //         background: #262C34;
+    //         background: #231d2c;
     //         transition: background 0.2s ease-in-out;
 
     //         > svg {
@@ -150,7 +150,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         @media (min-width: 768px) {
           &:hover {
             color: #fff;
-            background: #262c34;
+            background: #231d2c;
             transition: background 0.2s ease-in-out;
           }
         }
@@ -164,7 +164,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         @media (min-width: 768px) {
           &:hover {
             color: #fff;
-            background: #262c34;
+            background: #231d2c;
             transition: background 0.2s ease-in-out;
           }
         }
@@ -178,7 +178,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         @media (min-width: 768px) {
           &:hover {
             color: #fff;
-            background: #262c34;
+            background: #231d2c;
             transition: background 0.2s ease-in-out;
           }
         }

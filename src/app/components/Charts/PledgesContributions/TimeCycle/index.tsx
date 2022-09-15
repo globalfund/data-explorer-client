@@ -92,7 +92,7 @@ export function PledgesContributionsTimeCycle(
             <div
               css={`
                 display: flex;
-                color: #262c34;
+                color: #231d2c;
                 font-size: 14px;
                 font-weight: bold;
                 align-items: center;
@@ -221,7 +221,7 @@ export function PledgesContributionsTimeCycle(
                     strokeOpacity: 0.3,
                   },
                   text: {
-                    fill: "#262c34",
+                    fill: "#231d2c",
                     fontSize: 12,
                   },
                 },
@@ -263,7 +263,7 @@ export function PledgesContributionsTimeCycle(
 
                 @media (max-width: 767px) {
                   padding: 25px;
-                  color: #262c34;
+                  color: #231d2c;
                   background: #fff;
                   border-radius: 20px;
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);

@@ -11,7 +11,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
         min-width: 350px;
         background: #f5f5f7;
 

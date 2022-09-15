@@ -3,7 +3,7 @@ import { css } from "styled-components/macro";
 export const listitem = css`
   height: 100%;
   display: flex;
-  color: #262c34;
+  color: #231d2c;
   padding: 12px 20px;
   background: #f5f5f7;
   border-radius: 20px;

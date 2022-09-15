@@ -91,7 +91,7 @@ const StyledMenuItem = withStyles(() => ({
     "& a": {
       width: "100%",
       fontSize: "14px",
-      color: "#262c34",
+      color: "#231d2c",
       padding: "6px 12px",
       textDecoration: "none",
     },

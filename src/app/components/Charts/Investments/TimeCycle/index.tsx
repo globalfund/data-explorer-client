@@ -192,7 +192,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
           spacing={!isMobile ? 4 : 2}
           css={`
             > div {
-              color: #262c34;
+              color: #231d2c;
               font-size: 14px;
             }
           `}
@@ -331,13 +331,13 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
 
                 &::-webkit-scrollbar {
                   height: 5px;
-                  background: #262c34;
+                  background: #231d2c;
                 }
                 &::-webkit-scrollbar-track {
                   background: #dfe3e6;
                 }
                 &::-webkit-scrollbar-thumb {
-                  background: #262c34;
+                  background: #231d2c;
                 }
               }
             `}
@@ -421,7 +421,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                         strokeOpacity: 0.3,
                       },
                       text: {
-                        fill: "#262c34",
+                        fill: "#231d2c",
                         fontSize: 12,
                       },
                     },
@@ -465,7 +465,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
 
                 @media (max-width: 767px) {
                   padding: 25px;
-                  color: #262c34;
+                  color: #231d2c;
                   background: #fff;
                   border-radius: 20px;
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);

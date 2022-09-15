@@ -209,7 +209,7 @@ export function ScatterplotLegends(props: Props) {
                 bottom: 0;
                 position: absolute;
                 border-radius: 50%;
-                border: 1px solid #262c34;
+                border: 1px solid #231d2c;
 
                 &:nth-of-type(1) {
                   width: ${backCircleRadius[6]}px;
@@ -228,7 +228,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -15px;
                     position: absolute;
-                    background: #262c34;
+                    background: #231d2c;
                   }
                 }
                 &:nth-of-type(2) {
@@ -248,7 +248,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -22px;
                     position: absolute;
-                    background: #262c34;
+                    background: #231d2c;
                   }
                 }
                 &:nth-of-type(3) {
@@ -268,7 +268,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -29px;
                     position: absolute;
-                    background: #262c34;
+                    background: #231d2c;
                   }
                 }
                 &:nth-of-type(4) {
@@ -288,7 +288,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -37px;
                     position: absolute;
-                    background: #262c34;
+                    background: #231d2c;
                   }
                 }
                 &:nth-of-type(5) {
@@ -308,7 +308,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -44px;
                     position: absolute;
-                    background: #262c34;
+                    background: #231d2c;
                   }
                 }
                 &:nth-of-type(6) {
@@ -328,7 +328,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -52px;
                     position: absolute;
-                    background: #262c34;
+                    background: #231d2c;
                   }
                 }
                 &:nth-of-type(7) {
@@ -348,7 +348,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -59px;
                     position: absolute;
-                    background: #262c34;
+                    background: #231d2c;
                   }
                 }
               }
@@ -418,8 +418,8 @@ export function ScatterplotLegends(props: Props) {
                   width: calc(100% / 6);
 
                   &:nth-of-type(1) {
-                    background: #262c34;
-                    border: 0.5px solid #262c34;
+                    background: #231d2c;
+                    border: 0.5px solid #231d2c;
                     border-radius: 20px 0 0 20px;
 
                     &:after {
@@ -435,7 +435,7 @@ export function ScatterplotLegends(props: Props) {
                   }
                   &:nth-of-type(2) {
                     background: #70777e;
-                    border: 0.5px solid #262c34;
+                    border: 0.5px solid #231d2c;
 
                     &:after {
                       bottom: -45px;
@@ -450,7 +450,7 @@ export function ScatterplotLegends(props: Props) {
                   }
                   &:nth-of-type(3) {
                     background: #98a1aa;
-                    border: 0.5px solid #495057;
+                    border: 0.5px solid #231d2c;
                   }
                   &:nth-of-type(4) {
                     background: #c7cdd1;

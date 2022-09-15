@@ -108,9 +108,9 @@ export function MainRoutes() {
   //           padding: 9px 16px;
   //           font-weight: bold;
   //           line-height: 20px;
-  //           background: #495057;
+  //           background: #231d2c;
   //           border-radius: 20px;
-  //           border-color: #495057;
+  //           border-color: #231d2c;
   //           text-transform: unset;
   //         }
   //       `}

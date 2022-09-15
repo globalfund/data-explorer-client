@@ -73,7 +73,7 @@ const container = css`
 
 const header = css`
   > div {
-    color: #262c34;
+    color: #231d2c;
     font-size: 14px;
     font-weight: bold;
     font-family: "Inter", "Helvetica Neue", sans-serif;

@@ -16,7 +16,11 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
 
-export default function DocumentsModule() {
+interface DocumentsModuleProps {
+  hideHeader?: boolean;
+}
+
+export default function DocumentsModule(props: DocumentsModuleProps) {
   useTitle("Dataxplorer - Documents");
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
@@ -94,37 +98,45 @@ export default function DocumentsModule() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="Documents"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          { name: "Documents" },
-        ]}
-      />
-      <ToolBoxPanel
-        open={openToolboxPanel}
-        vizWrapperRef={vizWrapperRef}
-        filterGroups={pathnameToFilterGroups.documents}
-        onCloseBtnClick={(value?: boolean) => {
-          if (value !== undefined) {
-            setOpenToolboxPanel(value);
-          } else {
-            setOpenToolboxPanel(!openToolboxPanel);
-          }
-        }}
-      />
-      <PageTopSpacer />
+      {!props.hideHeader && (
+        <React.Fragment>
+          <PageHeader
+            title="Documents"
+            breadcrumbs={[
+              { name: "Home", link: "/" },
+              {
+                name: "Datasets",
+                menuitems: datasetMenuItems,
+              },
+              { name: "Documents" },
+            ]}
+          />
+          <ToolBoxPanel
+            open={openToolboxPanel}
+            vizWrapperRef={vizWrapperRef}
+            filterGroups={pathnameToFilterGroups.documents}
+            onCloseBtnClick={(value?: boolean) => {
+              if (value !== undefined) {
+                setOpenToolboxPanel(value);
+              } else {
+                setOpenToolboxPanel(!openToolboxPanel);
+              }
+            }}
+          />
+          <PageTopSpacer />
+        </React.Fragment>
+      )}
       {isLoading && <PageLoader />}
       <div
         css={`
           height: 100%;
           align-self: flex-start;
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+          ${!props.hideHeader
+            ? `width: ${
+                openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"
+              };`
+            : "width: 100%"}
         `}
         ref={vizWrapperRef}
       >
@@ -168,23 +180,23 @@ export default function DocumentsModule() {
           />
         )}
       </div>
-      <div
-        css={`
-          left: 0;
-          top: 48px;
-          z-index: 15;
-          width: 100%;
-          height: 100%;
-          position: fixed;
-          background: rgba(35, 35, 35, 0.5);
-          opacity: ${isToolboxOvervlayVisible()};
-          visibility: ${isToolboxOvervlayVisible() === 1
-            ? "visible"
-            : "hidden"};
-          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
-            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
-        `}
-      />
+      {!props.hideHeader && (
+        <div
+          css={`
+            left: 0;
+            top: 48px;
+            z-index: 15;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(35, 35, 35, 0.5);
+            opacity: ${isToolboxOvervlayVisible()};
+            visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
+            transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
+              opacity 225ms cubic-bezier(0, 0, 0.2, 1);
+          `}
+        />
+      )}
     </div>
   );
 }

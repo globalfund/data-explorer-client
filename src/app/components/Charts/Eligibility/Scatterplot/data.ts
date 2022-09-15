@@ -550,7 +550,7 @@ export const incomeLevels: IncomeLevelType[] = [
 ];
 
 export const incomeLevelColors = [
-  "#262C34",
+  "#231d2c",
   "#70777E",
   "#98A1AA",
   "#C7CDD1",

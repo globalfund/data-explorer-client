@@ -204,7 +204,7 @@ export function LocationDetailOverviewModule(props: Props) {
       spacing={2}
       css={`
         * {
-          color: #262c34;
+          color: #231d2c;
         }
 
         > div {

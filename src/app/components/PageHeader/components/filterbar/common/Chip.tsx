@@ -8,7 +8,7 @@ import { ChipModel } from "app/components/PageHeader/components/filterbar/data";
 const chipstyle = css`
   && {
     height: unset;
-    color: #495057;
+    color: #231d2c;
     font-size: 14px;
     min-height: 32px;
     line-height: 17px;
@@ -22,7 +22,7 @@ const chipstyle = css`
     }
 
     .MuiChip-deleteIcon {
-      color: #495057;
+      color: #231d2c;
     }
 
     .MuiChip-label {

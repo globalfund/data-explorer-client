@@ -91,7 +91,7 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
           }
           css={`
             z-index: 1;
-            stroke: #262c34;
+            stroke: #231d2c;
             stroke-width: 0.5px;
           `}
         />

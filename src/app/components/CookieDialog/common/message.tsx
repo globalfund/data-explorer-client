@@ -10,7 +10,7 @@ const Button = styled((props) => <button type="button" {...props} />)`
   line-height: 17px;
   font-weight: bold;
   border-radius: 20px;
-  background: #495057;
+  background: #231d2c;
   text-transform: unset;
 
   &:hover {
@@ -44,13 +44,15 @@ type MessageProps = {
 export const Message = (props: MessageProps) => {
   const isSmallScreen = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
-  const cookieMessage = {__html: (get(cmsData, "componentsCookieDialog.message", ""))};
+  const cookieMessage = {
+    __html: get(cmsData, "componentsCookieDialog.message", ""),
+  };
 
   return (
     <Box display="flex" flexDirection="column">
       <div
         css={`
-          color: #495057;
+          color: #231d2c;
           font-size: 14px;
           font-weight: bold;
           line-height: 20px;
@@ -62,12 +64,12 @@ export const Message = (props: MessageProps) => {
       <Box display="flex" flexDirection={!isSmallScreen ? "row" : "column"}>
         <div
           css={`
-            color: #495057;
+            color: #231d2c;
             font-size: 14px;
             line-height: 20px;
 
             > a {
-              color: #495057;
+              color: #231d2c;
             }
 
             @media (min-width: 960px) {

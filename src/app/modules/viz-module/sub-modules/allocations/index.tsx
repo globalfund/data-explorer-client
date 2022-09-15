@@ -125,17 +125,17 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         track: {
           show: true,
           strokeWidth: "1px",
-          background: "#262C34",
+          background: "#231d2c",
         },
         dataLabels: {
           name: {
             show: true,
-            color: "#262c34",
-            fontFamily: "Inter",
+            color: "#231d2c",
+            fontFamily: '"Inter", "Helvetica Neue", sans-serif',
           },
           value: {
             show: true,
-            fontFamily: "Inter",
+            fontFamily: '"Inter", "Helvetica Neue", sans-serif',
             formatter: (value: number) => {
               const fkeyIndex = findIndex(
                 keysPercentagesColors.percentages,
@@ -149,8 +149,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           },
           total: {
             show: true,
-            fontFamily: "Inter",
             formatter: () => formatFinancialValue(total),
+            fontFamily: '"Inter", "Helvetica Neue", sans-serif',
           },
         },
       },
@@ -161,7 +161,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       show: true,
       floating: true,
       fontSize: !isMobile ? "14px" : "10px",
-      fontFamily: "Inter",
+      fontFamily: '"Inter", "Helvetica Neue", sans-serif',
       fontWeight: "bold",
       position: "right",
       offsetX: width / 2,
@@ -553,7 +553,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       <div
         css={`
           display: flex;
-          color: #262c34;
+          color: #231d2c;
           font-size: 14px;
           font-weight: bold;
           align-items: center;

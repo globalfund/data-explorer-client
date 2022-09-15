@@ -1,25 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import get from "lodash/get";
+import { Link } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 
 // cc:refactor this component, inline css need to be moved to proper styled components
 
 export const NoMatchPage = () => {
-  const isLoading = document.getElementById("general-loader");
   const cmsData = useCMSData({ returnData: true });
+  const isLoading = document.getElementById("general-loader");
 
   return (
     <div
       css={`
-        position: relative;
         width: 100%;
         height: 100%;
-        padding: 50px;
-        display: ${isLoading ? "none" : "flex"};
-        justify-content: center;
+        position: relative;
         align-items: center;
         flex-direction: column;
+        justify-content: center;
+        padding: 100px 50px 50px 50px;
+        display: ${isLoading ? "none" : "flex"};
       `}
     >
       <div
@@ -31,7 +31,7 @@ export const NoMatchPage = () => {
           font-stretch: normal;
           line-height: 1.71;
           letter-spacing: 0.1px;
-          color: #525252;
+          color: #231d2c;
         `}
       >
         <div>{get(cmsData, "modulesCommon.noMatchOops", "")}</div>
@@ -44,7 +44,7 @@ export const NoMatchPage = () => {
           font-stretch: normal;
           line-height: normal;
           letter-spacing: 2.15px;
-          color: #525252;
+          color: #231d2c;
           font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
@@ -60,7 +60,7 @@ export const NoMatchPage = () => {
           line-height: 1.71;
           letter-spacing: 1.25px;
           text-align: center;
-          color: #525252;
+          color: #231d2c;
           margin-bottom: 50px;
         `}
       >
@@ -79,7 +79,7 @@ export const NoMatchPage = () => {
             align-items: center;
             width: 204px;
             height: 46px;
-            background: #495057;
+            background: #231d2c;
             border-radius: 20px;
           `}
         >

@@ -35,7 +35,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
         padding: 30px 50px;
         flex-direction: column;
         * {
-          color: #262c34;
+          color: #231d2c;
         }
       `}
     >

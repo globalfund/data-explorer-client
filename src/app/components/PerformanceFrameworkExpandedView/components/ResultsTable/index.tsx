@@ -203,7 +203,7 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 background: ${props.color === "#E2E2E2"
                   ? `repeating-linear-gradient(
                     -45deg,
-                    #262c34 0 0.5px,
+                    #231d2c 0 0.5px,
                     #fff 1.5px 2px
                     )`
                   : props.color};
@@ -289,7 +289,7 @@ function MobileResultsTable(props: PFIndicator) {
       css={`
         font-size: 12px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #495057;
+        border-bottom: 1px solid #231d2c;
       `}
     >
       <b>Indicator: {props.name}</b>
@@ -428,7 +428,7 @@ function MobileResultsTable(props: PFIndicator) {
                   background: ${selectedItem.color === "#E2E2E2"
                     ? `repeating-linear-gradient(
                     -45deg,
-                    #262c34 0 0.5px,
+                    #231d2c 0 0.5px,
                     #fff 1.5px 2px
                     )`
                     : selectedItem.color};
@@ -456,7 +456,7 @@ function MobileResultsTable(props: PFIndicator) {
             }
 
             > span {
-              color: #262c34;
+              color: #231d2c;
               font-size: 14px;
               font-weight: bold;
               text-transform: none;

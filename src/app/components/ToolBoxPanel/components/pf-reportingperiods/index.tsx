@@ -61,7 +61,7 @@ export function PerformanceFrameworkReportingPeriods(
           margin-top: 50px;
           position: relative;
           flex-direction: row;
-          background: #495057;
+          background: #231d2c;
           border-radius: 20px;
 
           > div:not(:first-child) {

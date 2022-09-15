@@ -168,7 +168,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
                     }
 
                     > span {
-                      color: #262c34;
+                      color: #231d2c;
                       font-size: 14px;
                       font-weight: bold;
                       text-transform: none;

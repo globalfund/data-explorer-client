@@ -3,7 +3,7 @@ import { css } from "styled-components/macro";
 export const listitem = (outline: boolean) => css`
   height: 210px;
   display: flex;
-  color: #262c34;
+  color: #231d2c;
   background: #f5f5f7;
   border-radius: 20px;
   flex-direction: column;
@@ -30,8 +30,8 @@ export const buttonrow = (position: "up" | "down") => css`
   flex-direction: row;
   align-items: center;
   transition: background 0.2s ease-in-out;
-  color: ${position === "up" ? "#fff" : "#495057"};
-  background: ${position === "up" ? "#495057" : "transparent"};
+  color: ${position === "up" ? "#fff" : "#231d2c"};
+  background: ${position === "up" ? "#231d2c" : "transparent"};
   font-family: "Inter", "Helvetica Neue", sans-serif;
   border-${position === "up" ? "bottom" : "top"}: 1px solid #c7cdd1;
   border-radius: ${position === "up" ? "20px 20px 0 0" : "0 0 20px 20px"};
@@ -48,17 +48,17 @@ export const buttonrow = (position: "up" | "down") => css`
     transform: rotate(${position === "up" ? "180deg" : "0deg"});
     
     path {
-      fill: ${position === "up" ? "#fff" : "#495057"};
+      fill: ${position === "up" ? "#fff" : "#231d2c"};
     }
   }
 
   &:hover {
     cursor: pointer;
-    color: ${position === "down" ? "#fff" : "#495057"};
+    color: ${position === "down" ? "#fff" : "#231d2c"};
     background: ${position === "down" ? "#13183F" : "transparent"};
 
     path {
-      fill: ${position === "down" ? "#fff" : "#495057"};
+      fill: ${position === "down" ? "#fff" : "#231d2c"};
     }
   }
 `;
@@ -71,7 +71,7 @@ export const locationlist = css`
   max-height: 150px;
   min-height: 150px;
   padding: 14px 20px;
-  background: #495057;
+  background: #231d2c;
   flex-direction: column;
   border-radius: 0 0 20px 20px;
 

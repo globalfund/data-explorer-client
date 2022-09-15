@@ -15,7 +15,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
       `}
     >
       <div
@@ -241,7 +241,7 @@ export function GeomapPinTooltip(props: {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
       `}
     >
       <div
@@ -356,7 +356,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
       `}
     >
       <div

@@ -228,6 +228,12 @@ export function getControlItems(
       aggregates: get(aggregates, vizType, []),
     };
   }
+  if (pathname.indexOf("/viz/grants") > -1) {
+    return {
+      views: [],
+      aggregates: [],
+    };
+  }
   return {
     views: get(views, vizType, []),
     aggregates: get(aggregates, vizType, []),

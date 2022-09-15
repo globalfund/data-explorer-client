@@ -13,7 +13,7 @@ export const dataSetsGridCss = css`
   width: 100%;
   height: 28vh;
   padding: 20px;
-  color: #262c34;
+  color: #231d2c;
   background: #fff;
   border-radius: 20px;
   border: 2px solid #fff;

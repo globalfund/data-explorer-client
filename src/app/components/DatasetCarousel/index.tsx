@@ -20,7 +20,7 @@ const griditem = (content: React.ReactElement, link: string) => (
       css={`
         padding: 20px;
         height: 260px;
-        color: #262c34;
+        color: #231d2c;
         background: #fff;
         border-radius: 20px;
         border: 2px solid #fff;

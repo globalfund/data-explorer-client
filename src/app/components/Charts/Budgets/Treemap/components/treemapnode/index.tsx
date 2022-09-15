@@ -27,7 +27,7 @@ export function TreeemapNode(props: any) {
   const bigDevice = useMediaQuery("(min-width: 768px)");
   const hasChildren = node.data._children && node.data._children.length > 0;
 
-  let color = "#262C34";
+  let color = "#231d2c";
   if (props.isChildTreemap || (props.invertColors && !bigDevice)) {
     color = "#fff";
   }

@@ -74,7 +74,7 @@ export function InvestmentsRadialViz() {
         dataLabels: {
           name: {
             show: true,
-            color: "#262c34",
+            color: "#231d2c",
             fontFamily: "Inter",
           },
           value: {

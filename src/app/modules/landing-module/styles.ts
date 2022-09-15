@@ -16,7 +16,7 @@ export const container = css`
 `;
 
 export const subtitle = css`
-  color: #262c34;
+  color: #231d2c;
   font-size: 18px;
   margin: 12px 0 24px 0;
 
@@ -28,7 +28,7 @@ export const subtitle = css`
 
 export const datasetstitle = css`
   width: 100%;
-  color: #262c34;
+  color: #231d2c;
   font-size: 14px;
   margin-top: 24px;
   font-weight: bold;

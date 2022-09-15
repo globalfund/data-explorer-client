@@ -54,7 +54,7 @@ export const StyledMenu = withStyles({
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 10,
-      background: "#262c34",
+      background: "#231d2c",
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 10,
@@ -62,7 +62,7 @@ export const StyledMenu = withStyles({
     },
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 10,
-      background: "#262c34",
+      background: "#231d2c",
     },
   },
   list: {
@@ -94,21 +94,21 @@ export const StyledMenuItem = withStyles(() => ({
     "& a": {
       width: "100%",
       fontSize: "14px",
-      color: "#262c34",
+      color: "#231d2c",
       padding: "10px 12px",
       textDecoration: "none",
     },
     // "& li": {
     //   width: "100%",
     //   fontSize: "14px",
-    //   color: "#262c34",
+    //   color: "#231d2c",
     //   padding: "6px 12px",
     //   textDecoration: "none",
     // },
     // "& div": {
     //   width: "100%",
     //   fontSize: "14px",
-    //   color: "#262c34",
+    //   color: "#231d2c",
     //   padding: "0 12px",
     //   textDecoration: "none",
     // },
@@ -260,7 +260,7 @@ export function AppBar() {
                             <svg width="24" height="24" viewBox="0 0 24 24">
                               <circle cx="12" cy="12" r="12" fill="#DFE3E6" />
                               <path
-                                fill="#262C34"
+                                fill="#231d2c"
                                 d="M14.472 13.4131H13.9143L13.7167 13.2226C14.4084 12.4178 14.8249 11.3731 14.8249 10.2367C14.8249 7.70256 12.7708 5.64844 10.2367 5.64844C7.70256 5.64844 5.64844 7.70256 5.64844 10.2367C5.64844 12.7708 7.70256 14.8249 10.2367 14.8249C11.3731 14.8249 12.4178 14.4084 13.2226 13.7167L13.4131 13.9143V14.472L16.9426 17.9943L17.9943 16.9426L14.472 13.4131ZM10.2367 13.4131C8.47903 13.4131 7.0602 11.9943 7.0602 10.2367C7.0602 8.47903 8.47903 7.0602 10.2367 7.0602C11.9943 7.0602 13.4131 8.47903 13.4131 10.2367C13.4131 11.9943 11.9943 13.4131 10.2367 13.4131Z"
                               />
                             </svg>

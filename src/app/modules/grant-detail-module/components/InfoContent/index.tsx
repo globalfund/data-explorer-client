@@ -52,17 +52,17 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
 
         &::-webkit-scrollbar {
           width: 5px;
-          background: #262c34;
+          background: #231d2c;
         }
         &::-webkit-scrollbar-track {
           background: #dfe3e6;
         }
         &::-webkit-scrollbar-thumb {
-          background: #262c34;
+          background: #231d2c;
         }
 
         * {
-          color: #262c34;
+          color: #231d2c;
         }
       `}
     >
@@ -170,7 +170,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
               border-radius: 50%;
               align-items: center;
               justify-content: center;
-              border: 2px solid #262c34;
+              border: 2px solid #231d2c;
               opacity: ${(props.rating || ratingValues[0]) === value ? 1 : 0.3};
             `}
           >

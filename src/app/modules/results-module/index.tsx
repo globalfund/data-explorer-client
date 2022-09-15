@@ -11,15 +11,17 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { ResultListItemModel } from "app/modules/results-module/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import {
-  ResultListItemModel,
-  ResultsInfoContentStatsProps,
-} from "app/modules/results-module/data";
 
-export default function ResultsModule() {
+interface ResultsModuleProps {
+  hideHeader?: boolean;
+}
+
+export default function ResultsModule(props: ResultsModuleProps) {
   useTitle("Dataxplorer - Results");
+
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
@@ -127,30 +129,34 @@ export default function ResultsModule() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="Results"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          { name: "Results" },
-        ]}
-      />
-      <ToolBoxPanel
-        open={openToolboxPanel}
-        vizWrapperRef={vizWrapperRef}
-        filterGroups={pathnameToFilterGroups.results}
-        onCloseBtnClick={(value?: boolean) => {
-          if (value !== undefined) {
-            setOpenToolboxPanel(value);
-          } else {
-            setOpenToolboxPanel(!openToolboxPanel);
-          }
-        }}
-      />
-      <PageTopSpacer />
+      {!props.hideHeader && (
+        <React.Fragment>
+          <PageHeader
+            title="Results"
+            breadcrumbs={[
+              { name: "Home", link: "/" },
+              {
+                name: "Datasets",
+                menuitems: datasetMenuItems,
+              },
+              { name: "Results" },
+            ]}
+          />
+          <ToolBoxPanel
+            open={openToolboxPanel}
+            vizWrapperRef={vizWrapperRef}
+            filterGroups={pathnameToFilterGroups.results}
+            onCloseBtnClick={(value?: boolean) => {
+              if (value !== undefined) {
+                setOpenToolboxPanel(value);
+              } else {
+                setOpenToolboxPanel(!openToolboxPanel);
+              }
+            }}
+          />
+          <PageTopSpacer />
+        </React.Fragment>
+      )}
       <div
         ref={vizWrapperRef}
         css={`
@@ -165,6 +171,7 @@ export default function ResultsModule() {
           data={data}
           openToolboxPanel={openToolboxPanel}
           pushValue={pushValue}
+          hideHeader={props.hideHeader}
         />
       </div>
       <div
@@ -177,23 +184,23 @@ export default function ResultsModule() {
           }
         `}
       />
-      <div
-        css={`
-          left: 0;
-          top: 48px;
-          z-index: 15;
-          width: 100%;
-          height: 100%;
-          position: fixed;
-          background: rgba(35, 35, 35, 0.5);
-          opacity: ${isToolboxOvervlayVisible()};
-          visibility: ${isToolboxOvervlayVisible() === 1
-            ? "visible"
-            : "hidden"};
-          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
-            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
-        `}
-      />
+      {!props.hideHeader && (
+        <div
+          css={`
+            left: 0;
+            top: 48px;
+            z-index: 15;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(35, 35, 35, 0.5);
+            opacity: ${isToolboxOvervlayVisible()};
+            visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
+            transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
+              opacity 225ms cubic-bezier(0, 0, 0.2, 1);
+          `}
+        />
+      )}
     </div>
   );
 }

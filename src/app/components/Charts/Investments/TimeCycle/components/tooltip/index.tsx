@@ -9,7 +9,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
         min-width: 250px;
         padding: 16px 25px;
         position: relative;

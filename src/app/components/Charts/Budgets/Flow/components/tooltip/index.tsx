@@ -15,7 +15,7 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
         background: #f5f5f7;
         border-radius: 20px;
       `}
@@ -52,7 +52,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
     <div
       css={`
         padding: 25px;
-        color: #262c34;
+        color: #231d2c;
         background: #fff;
         border-radius: 20px;
         box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
@@ -214,7 +214,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             }
 
             > span > div {
-              color: #262c34;
+              color: #231d2c;
               font-size: 14px;
               font-weight: bold;
               text-transform: none;

@@ -47,7 +47,7 @@ export function DotChart(props: DotChartProps) {
         <div
           css={`
             padding: 12px;
-            color: #262c34;
+            color: #231d2c;
             position: fixed;
             top: ${y + 12}px;
             left: ${x + 12}px;

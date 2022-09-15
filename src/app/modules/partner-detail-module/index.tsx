@@ -240,7 +240,11 @@ export default function PartnerDetail() {
           </Route>
           {/* Grants */}
           <Route path={`/partner/${params.code}/grants/list`}>
-            <GrantsModule code={paramCode} detailFilterType="partners" />
+            <GrantsModule
+              hideHeader
+              code={paramCode}
+              detailFilterType="partners"
+            />
           </Route>
           <Route path={`/partner/${params.code}/grants`}>
             <LocationGrants code={paramCode} detailFilterType="partners" />

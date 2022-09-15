@@ -278,6 +278,21 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
+  "/viz/grants": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
+  ),
+  "/viz/documents": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
+  "/viz/results": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
   // location detail page
   "/location/<code>/overview": filter(
     filtergroups,

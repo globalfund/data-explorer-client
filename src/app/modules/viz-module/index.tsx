@@ -5,8 +5,11 @@ import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
+import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
+import ResultsModule from "app/modules/results-module";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import DocumentsModule from "app/modules/documents-module";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
@@ -233,6 +236,18 @@ export default function VizModule() {
           </Route>
           <Route path="/viz/eligibility">
             <EligibilityModule />
+          </Route>
+          {/* Grants */}
+          <Route exact path="/viz/grants">
+            <GrantsModule hideHeader />
+          </Route>
+          {/* Results */}
+          <Route exact path="/viz/results">
+            <ResultsModule hideHeader />
+          </Route>
+          {/* Documents */}
+          <Route exact path="/viz/documents">
+            <DocumentsModule hideHeader />
           </Route>
         </Switch>
       </div>

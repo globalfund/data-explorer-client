@@ -15,7 +15,7 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
         min-width: 260px;
         padding: 16px 25px;
         position: relative;

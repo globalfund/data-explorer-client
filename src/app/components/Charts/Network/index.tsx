@@ -24,7 +24,7 @@ export function NetworkViz(props: NetworkVizProps) {
             "path"
           );
           pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#262c34");
+          pathElement.setAttribute("stroke", "#231d2c");
           pathElement.setAttribute("strokeWidth", "0.5");
 
           const patternElement = document.createElementNS(
@@ -158,7 +158,7 @@ export function NetworkViz(props: NetworkVizProps) {
         strokeLinecap="round"
         stroke={
           props.selectedNodeId && props.selectedNodeId === link.source.id
-            ? "#495057"
+            ? "#231d2c"
             : "#DFE3E6"
         }
       />
@@ -171,7 +171,7 @@ export function NetworkViz(props: NetworkVizProps) {
         <Grid item xs={12}>
           <div
             css={`
-              color: #262c34;
+              color: #231d2c;
               font-weight: bold;
               font-family: "Inter", "Helvetica Neue", sans-serif;
             `}

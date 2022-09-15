@@ -107,9 +107,9 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${props.selected === option.value ? "#fff" : "#495057"};
+                color: ${props.selected === option.value ? "#fff" : "#231d2c"};
                 background: ${props.selected === option.value
-                  ? "#495057"
+                  ? "#231d2c"
                   : "#fff"};
 
                 > * {
@@ -125,7 +125,7 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                   color: #fff;
                   cursor: pointer;
                   background: ${props.selected === option.value
-                    ? "#495057"
+                    ? "#231d2c"
                     : "#13183F"};
                 }
               `}

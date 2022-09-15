@@ -23,7 +23,7 @@ const containercss = (
   align-items: flex-start;
   transition: background 0.2s ease-in-out;
   overflow: ${!hover ? "visible" : "hidden"};
-  color: ${isChildTreemap ? "#fff" : "#262C34"};
+  color: ${isChildTreemap ? "#fff" : "#231d2c"};
   cursor: ${isChildTreemap ? "pointer" : "default"};
 
   > div {

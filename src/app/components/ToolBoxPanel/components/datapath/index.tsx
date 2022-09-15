@@ -97,7 +97,7 @@ export function DataPathPanel() {
                 .MuiTimelineDot-root {
                   margin: 0;
                   padding: 3px;
-                  background: #262c34;
+                  background: #231d2c;
                 }
 
                 .MuiTimelineContent-root {

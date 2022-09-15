@@ -14,6 +14,7 @@ export const DataList = (props: {
   data: ResultListItemModel[];
   openToolboxPanel: boolean;
   pushValue: number;
+  hideHeader?: boolean;
 }) => {
   return (
     <>
@@ -22,9 +23,13 @@ export const DataList = (props: {
         css={`
           align-self: flex-start;
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${props.openToolboxPanel
-            ? `calc(100% - ${props.pushValue}px)`
-            : "100%"};
+          ${!props.hideHeader
+            ? `width: ${
+                props.openToolboxPanel
+                  ? `calc(100% - ${props.pushValue}px)`
+                  : "100%"
+              };`
+            : "width: 100%"}
         `}
       >
         <Search value={props.search} setValue={props.setSearch} />

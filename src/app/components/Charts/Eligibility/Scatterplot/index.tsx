@@ -109,7 +109,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
           css={`
             z-index: 100;
             padding: 12px;
-            color: #262c34;
+            color: #231d2c;
             position: absolute;
             background: #f5f5f7;
             border-radius: 20px;
@@ -257,13 +257,13 @@ export function ScatterPlot(props: ScatterPlotProps) {
 
               &::-webkit-scrollbar {
                 height: 5px;
-                background: #262c34;
+                background: #231d2c;
               }
               &::-webkit-scrollbar-track {
                 background: #dfe3e6;
               }
               &::-webkit-scrollbar-thumb {
-                background: #262c34;
+                background: #231d2c;
               }
             `}
           >
@@ -343,7 +343,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                       ticks: {
                         text: {
                           fontSize: 12,
-                          fill: "#262C34",
+                          fill: "#231d2c",
                           fontWeight: "bold",
                         },
                       },

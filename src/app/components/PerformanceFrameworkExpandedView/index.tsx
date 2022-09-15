@@ -81,7 +81,7 @@ const styles = {
     color: ${active ? "#fff" : "#13183F"};
     transition: background 0.2s ease-in-out;
     font-weight: ${active ? "bold" : "normal"};
-    background: ${active ? "#495057" : "#C7CDD1"};
+    background: ${active ? "#231d2c" : "#C7CDD1"};
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -95,7 +95,7 @@ const styles = {
     &:hover {
       color: #fff;
       font-weight: bold;
-      background: #495057;
+      background: #231d2c;
       font-family: "Inter", "Helvetica Neue", sans-serif;
     }
 

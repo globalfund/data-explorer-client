@@ -16,7 +16,7 @@ export function NoDataLabel(props: Props) {
         left: 0;
         width: 100%;
         display: flex;
-        color: #262c34;
+        color: #231d2c;
         font-size: 12px;
         font-weight: 500;
         position: absolute;
@@ -27,7 +27,7 @@ export function NoDataLabel(props: Props) {
         height: ${props.height ? props.height : "50%"};
 
         a {
-          color: #262c34;
+          color: #231d2c;
         }
 
         > div {
@@ -44,7 +44,10 @@ export function NoDataLabel(props: Props) {
       <div>
         <div>{get(cmsData, "componentsChartsCommon.noData", "")}</div>
         <div>
-        {get(cmsData, "componentsChartsCommon.moreInfo", "")} <Link to="/faq">{get(cmsData, "componentsChartsCommon.moreInfoLink", "")}</Link>
+          {get(cmsData, "componentsChartsCommon.moreInfo", "")}{" "}
+          <Link to="/faq">
+            {get(cmsData, "componentsChartsCommon.moreInfoLink", "")}
+          </Link>
         </div>
       </div>
     </div>

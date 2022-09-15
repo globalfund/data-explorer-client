@@ -102,6 +102,25 @@ function GridItem(props: {
   );
 }
 
+const iconLinks = [
+  {
+    icon: <SankeyIcon />,
+    link: "/viz/budgets/flow",
+  },
+  {
+    icon: <BarIcon />,
+    link: "/viz/disbursement/time-cycle",
+  },
+  {
+    icon: <MapIcon />,
+    link: "/viz/allocations/map",
+  },
+  {
+    icon: <TableIcon />,
+    link: "/viz/eligibility/table",
+  },
+];
+
 export function LandingDatasetGrid() {
   // const cmsData = useCMSData({ returnData: true });
 
@@ -206,85 +225,34 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={{ __html: "GF Dataset" }}
-          link=""
+          link="/viz/signed/time-cycle"
           description={{
             __html:
               "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
           }}
-          iconLinks={[
-            {
-              icon: <SankeyIcon />,
-              link: "",
-            },
-            {
-              icon: <BarIcon />,
-              link: "",
-            },
-            {
-              icon: <MapIcon />,
-              link: "",
-            },
-            {
-              icon: <TableIcon />,
-              link: "",
-            },
-          ]}
+          iconLinks={iconLinks}
         />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={{ __html: "IATI Dataset" }}
-          link=""
+          link="/viz/signed/time-cycle"
           description={{
             __html:
               "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
           }}
-          iconLinks={[
-            {
-              icon: <SankeyIcon />,
-              link: "",
-            },
-            {
-              icon: <BarIcon />,
-              link: "",
-            },
-            {
-              icon: <MapIcon />,
-              link: "",
-            },
-            {
-              icon: <TableIcon />,
-              link: "",
-            },
-          ]}
+          iconLinks={iconLinks}
         />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={{ __html: "HXL Dataset" }}
-          link=""
+          link="/viz/signed/time-cycle"
           description={{
             __html:
               "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
           }}
-          iconLinks={[
-            {
-              icon: <SankeyIcon />,
-              link: "",
-            },
-            {
-              icon: <BarIcon />,
-              link: "",
-            },
-            {
-              icon: <MapIcon />,
-              link: "",
-            },
-            {
-              icon: <TableIcon />,
-              link: "",
-            },
-          ]}
+          iconLinks={iconLinks}
         />
       </Grid>
       {dummyDatasets.map((item) => (
@@ -309,29 +277,12 @@ export function LandingDatasetGrid() {
         >
           <GridItem
             title={{ __html: "Dataset" }}
-            link=""
+            link="/viz/signed/time-cycle"
             description={{
               __html:
                 "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
             }}
-            iconLinks={[
-              {
-                icon: <SankeyIcon />,
-                link: "",
-              },
-              {
-                icon: <BarIcon />,
-                link: "",
-              },
-              {
-                icon: <MapIcon />,
-                link: "",
-              },
-              {
-                icon: <TableIcon />,
-                link: "",
-              },
-            ]}
+            iconLinks={iconLinks}
           />
         </Grid>
       ))}

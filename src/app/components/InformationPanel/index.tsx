@@ -63,7 +63,7 @@ export function InformationPanel(props: InformationPanelProps) {
                 font-weight: bold;
                 position: absolute;
                 text-align: center;
-                background: #495057;
+                background: #231d2c;
                 transform: rotate(-90deg);
                 border-radius: 0px 0px 20px 20px;
                 transition: background 0.2s ease-in-out;

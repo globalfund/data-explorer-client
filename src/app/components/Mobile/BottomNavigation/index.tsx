@@ -97,10 +97,10 @@ export function MobileBottomNavigation() {
             label={btn.label}
             css={`
               && {
-                color: ${isActive ? "#262C34" : "#70777e"};
+                color: ${isActive ? "#231d2c" : "#70777e"};
 
                 svg {
-                  fill: ${isActive ? "#262C34" : "#70777e"};
+                  fill: ${isActive ? "#231d2c" : "#70777e"};
                 }
               }
             `}

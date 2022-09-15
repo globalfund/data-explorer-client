@@ -252,7 +252,7 @@ export function InvestmentsDisbursedModule(
           margin-bottom: 20px;
 
           > div {
-            color: #262c34;
+            color: #231d2c;
             font-size: 14px;
           }
 

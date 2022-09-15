@@ -8,7 +8,7 @@ import IconChevronRight from "app/assets/icons/IconChevronRight";
 export const styles = {
   container: css`
     display: flex;
-    color: #262c34;
+    color: #231d2c;
     font-size: 12px;
     font-weight: 400;
     text-align: center;
@@ -23,7 +23,7 @@ export const styles = {
 
       svg {
         path {
-          fill: #262c34;
+          fill: #231d2c;
         }
       }
 

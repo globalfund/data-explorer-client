@@ -146,7 +146,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         spacing={!isMobile ? 4 : 2}
         css={`
           > div {
-            color: #262c34;
+            color: #231d2c;
           }
         `}
       >
@@ -321,7 +321,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
                   strokeOpacity: 0.3,
                 },
                 text: {
-                  fill: "#262c34",
+                  fill: "#231d2c",
                   fontSize: 12,
                 },
               },

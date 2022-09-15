@@ -14,7 +14,7 @@ export const container = (focused: boolean, withCatMenu: boolean) => css`
       ? `
       padding: 5px;
       border-radius: 0;
-      border-bottom: 1px solid #262c34;
+      border-bottom: 1px solid #231d2c;
     `
       : ""}
   }
@@ -42,7 +42,7 @@ export const mobilecontainer = (focused: boolean) => css`
       > div {
         padding: 5px;
         border-radius: 0;
-        border-bottom: 1px solid #262c34;
+        border-bottom: 1px solid #231d2c;
 
         > span {
           display: block !important;
@@ -62,7 +62,7 @@ export const mobilecontainer = (focused: boolean) => css`
       > div {
         padding: 5px;
         border-radius: 0;
-        border-bottom: 1px solid #262c34;
+        border-bottom: 1px solid #231d2c;
 
         > span {
           display: block !important;
@@ -76,7 +76,7 @@ export const mobilecontainer = (focused: boolean) => css`
 export const input = css`
   width: 100%;
   outline: none;
-  color: #262c34;
+  color: #231d2c;
   font-size: 14px;
   background: #fff;
   font-weight: bold;

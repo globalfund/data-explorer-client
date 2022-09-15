@@ -110,7 +110,7 @@ export function GrantDetailOverviewModule() {
                 border-radius: 50%;
                 align-items: center;
                 justify-content: center;
-                border: 2px solid #262c34;
+                border: 2px solid #231d2c;
                 opacity: ${(grantInfoData.rating || ratingValues[0]) === value
                   ? 1
                   : 0.3};

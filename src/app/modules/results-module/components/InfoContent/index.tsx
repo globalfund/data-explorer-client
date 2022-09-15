@@ -97,7 +97,7 @@ export function ResultsInfoContent(props: ResultsInfoContentProps) {
     >
       <div
         css={`
-          color: #262c34;
+          color: #231d2c;
           font-size: 14px;
           line-height: 20px;
           letter-spacing: 0.5px;
@@ -120,7 +120,7 @@ function StatItem(props: ResultsInfoContentStatsProps) {
       css={`
         gap: 12px;
         display: flex;
-        color: #262c34;
+        color: #231d2c;
         font-size: 14px;
         flex-direction: column;
 

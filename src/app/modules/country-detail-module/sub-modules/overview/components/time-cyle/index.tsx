@@ -59,7 +59,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: #231d2c;
         min-width: 300px;
         padding: 16px 25px;
         position: relative;
@@ -173,13 +173,13 @@ export function InvestmentsTimeCycleViz(props: Props) {
 
         &::-webkit-scrollbar {
           height: 5px;
-          background: #262c34;
+          background: #231d2c;
         }
         &::-webkit-scrollbar-track {
           background: #dfe3e6;
         }
         &::-webkit-scrollbar-thumb {
-          background: #262c34;
+          background: #231d2c;
         }
 
         @media (max-width: 767px) {
@@ -280,7 +280,7 @@ export function InvestmentsTimeCycleViz(props: Props) {
                 },
                 text: {
                   fontSize: 10,
-                  fill: "#262c34",
+                  fill: "#231d2c",
                   fontFamily: '"Inter", "Helvetica Neue", sans-serif',
                 },
               },

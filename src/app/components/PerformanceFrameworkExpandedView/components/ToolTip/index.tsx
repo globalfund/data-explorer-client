@@ -19,12 +19,12 @@ const styles = {
     width: 267px;
     display: flex;
     padding: 15px;
-    color: #262c34;
+    color: #231d2c;
     font-size: 12px;
     position: relative;
     border-radius: 20px;
     flex-direction: column;
-    background: ${showAggrs ? "#495057" : "#fff"};
+    background: ${showAggrs ? "#231d2c" : "#fff"};
 
     > * {
       @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -52,7 +52,7 @@ const styles = {
     padding: 10px 15px;
     flex-direction: row;
     align-items: center;
-    background: #495057;
+    background: #231d2c;
     border-bottom: 1px solid #fff;
     ${showAggrs ? "top" : "bottom"}: 0;
     border-bottom-style: ${showAggrs ? "solid" : "none"};

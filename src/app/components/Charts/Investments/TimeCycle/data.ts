@@ -47,7 +47,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 49499456,
       },
       {
@@ -69,7 +69,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 49499456,
       },
       {
@@ -96,7 +96,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 135534537,
       },
       {
@@ -123,7 +123,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 185033993,
       },
       {
@@ -155,7 +155,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 308168894,
       },
       {
@@ -182,7 +182,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 493202887,
       },
       {
@@ -214,7 +214,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 407778996,
       },
       {
@@ -241,7 +241,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 900981883,
       },
       {
@@ -273,7 +273,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 350932605,
       },
       {
@@ -300,7 +300,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1251914488,
       },
       {
@@ -332,7 +332,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 518707176,
       },
       {
@@ -359,7 +359,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1770621664,
       },
       {
@@ -391,7 +391,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1014012166,
       },
       {
@@ -418,7 +418,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 2784633830,
       },
       {
@@ -450,7 +450,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 927976947,
       },
       {
@@ -477,7 +477,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 3712610777,
       },
       {
@@ -509,7 +509,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 620913962,
       },
       {
@@ -536,7 +536,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 4333524739,
       },
       {
@@ -568,7 +568,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 962553004,
       },
       {
@@ -595,7 +595,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 5296077743,
       },
       {
@@ -627,7 +627,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1043369627,
       },
       {
@@ -649,7 +649,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 6339447370,
       },
       {
@@ -676,7 +676,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 825130452,
       },
       {
@@ -703,7 +703,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 7164577822,
       },
       {
@@ -735,7 +735,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 910560104,
       },
       {
@@ -762,7 +762,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 8075137926,
       },
       {
@@ -794,7 +794,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1054855326,
       },
       {
@@ -826,7 +826,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 9129993252,
       },
       {
@@ -863,7 +863,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1335906418,
       },
       {
@@ -895,7 +895,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 10465899670,
       },
       {
@@ -932,7 +932,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 957773885,
       },
       {
@@ -964,7 +964,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 11423673555,
       },
       {
@@ -1001,7 +1001,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1178274992,
       },
       {
@@ -1033,7 +1033,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 12601948547,
       },
       {
@@ -1070,7 +1070,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 1369764711,
       },
       {
@@ -1102,7 +1102,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 13971713258,
       },
       {
@@ -1139,7 +1139,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 521289190,
       },
       {
@@ -1171,7 +1171,7 @@ export const mockdata: Record<string, unknown>[] = [
       },
       {
         name: "Malaria",
-        color: "#495057",
+        color: "#231d2c",
         value: 14493002448,
       },
       {

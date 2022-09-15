@@ -28,7 +28,7 @@ const StyledMenu = withStyles({
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 10,
-      background: "#262c34",
+      background: "#231d2c",
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 10,
@@ -36,7 +36,7 @@ const StyledMenu = withStyles({
     },
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 10,
-      background: "#262c34",
+      background: "#231d2c",
     },
   },
   list: {
@@ -69,7 +69,7 @@ export const StyledMenuItem = withStyles(() => ({
     "& a": {
       width: "100%",
       fontSize: "14px",
-      color: "#262c34",
+      color: "#231d2c",
       padding: "10px 12px",
       textDecoration: "none",
     },
@@ -183,7 +183,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
               transition: all 0.2s ease-in-out;
               transform: rotate(${anchorEl ? "180" : "0"}deg);
               > path {
-                fill: #262c34;
+                fill: #231d2c;
               }
             }
           `}
@@ -250,7 +250,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#495057"
+                  ? "#231d2c"
                   : "#dfe3e6"};
 
                 path {
@@ -275,13 +275,13 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${selectedView === option.value ? "#fff" : "#495057"};
+                color: ${selectedView === option.value ? "#fff" : "#231d2c"};
                 ${index === 0 ? "border-radius: 20px 0 0 20px;" : ""}
                 ${index === controlItems.views.length - 1
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#495057"
+                  ? "#231d2c"
                   : "#dfe3e6"};
               `}
             >

@@ -28,6 +28,7 @@ import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/f
 interface GrantsModuleProps {
   code?: string;
   search?: string;
+  hideHeader?: boolean;
   detailFilterType?: string;
   setSearch?: (search: string) => void;
 }
@@ -164,7 +165,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
       `}
     >
       {(isLoading || loading) && <PageLoader />}
-      {!props.code && (
+      {!props.hideHeader && (
         <>
           <PageHeader
             title={get(cmsData, "modulesGrants.titleShort", "")}
@@ -199,7 +200,11 @@ export default function GrantsModule(props: GrantsModuleProps) {
         css={`
           align-self: flex-start;
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+          ${!props.hideHeader
+            ? `width: ${
+                openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"
+              };`
+            : ""}
         `}
         ref={vizWrapperRef}
       >
@@ -225,21 +230,23 @@ export default function GrantsModule(props: GrantsModuleProps) {
         )}
       </div>
       <div css="width: 100%;height: 56px;" />
-      <div
-        css={`
-          left: 0;
-          top: 48px;
-          z-index: 15;
-          width: 100%;
-          height: 100%;
-          position: fixed;
-          background: rgba(35, 35, 35, 0.5);
-          opacity: ${isToolboxOvervlayVisible()};
-          visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
-          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
-            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
-        `}
-      />
+      {!props.hideHeader && (
+        <div
+          css={`
+            left: 0;
+            top: 48px;
+            z-index: 15;
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            background: rgba(35, 35, 35, 0.5);
+            opacity: ${isToolboxOvervlayVisible()};
+            visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
+            transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
+              opacity 225ms cubic-bezier(0, 0, 0.2, 1);
+          `}
+        />
+      )}
     </div>
   );
 }
