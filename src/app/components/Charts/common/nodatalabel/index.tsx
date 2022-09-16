@@ -42,7 +42,7 @@ export function NoDataLabel(props: Props) {
       `}
     >
       <div>
-        <div>{get(cmsData, "componentsChartsCommon.noData", "")}</div>
+        <div>No data mapped for this visualisation.</div>
         <div>
           {get(cmsData, "componentsChartsCommon.moreInfo", "")}{" "}
           <Link to="/faq">

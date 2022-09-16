@@ -97,6 +97,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [ref, { width }] = useMeasure<HTMLDivElement>();
@@ -260,7 +261,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({
       filterString: `periods=${selectedPeriod}${
@@ -293,7 +295,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               ...appliedFilters,
               locations: [...appliedFilters.locations, props.code],
             }
-          : appliedFilters
+          : appliedFilters,
+        { datasource }
       );
       fetchDrilldownLevelData({
         filterString: `levelParam=component/componentName in (${(vizSelected ===
@@ -336,7 +339,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }, [vizSelected]);
 
   React.useEffect(() => {
-    fetchPeriodOptionsData({});
+    fetchPeriodOptionsData({ filterString: `datasource=${datasource}` });
 
     // setTimeout(() => {
     //   const viz = document.getElementById("allocations-radial-bar");

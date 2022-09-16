@@ -59,11 +59,12 @@ export function GrantDetailInvestmentsDisbursedWrapper(props: Props) {
         return state.GrantDetailDisbursementsTreemap.loading;
     }
   });
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (props.code) {
       fetchData({
-        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}&datasource=${datasource}`,
       });
     }
   }, [props.code, props.implementationPeriod, props.type]);

@@ -65,6 +65,7 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (vizLevel === 0) {
@@ -82,7 +83,7 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
   }, [vizLevel, vizSelected]);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
+    const filterString = getAPIFormattedFilters(appliedFilters, { datasource });
     fetchData({ filterString });
   }, [appliedFilters]);
 
@@ -126,7 +127,9 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
     if (vizSelected) {
       const splits = vizSelected.split("-");
       const param = `'${splits[0]}-${splits[1]}'-${splits[2]}`;
-      const filterString = getAPIFormattedFilters(appliedFilters);
+      const filterString = getAPIFormattedFilters(appliedFilters, {
+        datasource,
+      });
       fetchDrilldownLevelData({
         filterString: `levelParam=replenishmentPeriod/replenishmentPeriodName eq ${param}${
           filterString.length > 0 ? `&${filterString}` : ""

@@ -66,6 +66,7 @@ export function InvestmentsGeoMap(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (
@@ -98,7 +99,8 @@ export function InvestmentsGeoMap(props: Props) {
                 props.code,
               ],
             }
-          : appliedFilters
+          : appliedFilters,
+        { datasource }
       );
       if (geomapView === "countries") {
         fetchData({

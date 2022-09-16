@@ -91,8 +91,8 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
             }}
             leavesOnly
             labelSkipSize={12}
-            innerPadding={props.isChildTreemap ? 2 : 1}
-            outerPadding={props.isChildTreemap ? 0 : 1}
+            innerPadding={0}
+            outerPadding={0}
             // @ts-ignore
             nodeComponent={(nodeProps: TreeMapNodeDatum) => (
               <TreeemapNode

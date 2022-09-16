@@ -71,6 +71,7 @@ export function LocationEligibilityTableWrapper(props: Props) {
   const isLoading = useStoreState((state) => state.EligibilityCountry.loading);
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -79,7 +80,8 @@ export function LocationEligibilityTableWrapper(props: Props) {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters]);

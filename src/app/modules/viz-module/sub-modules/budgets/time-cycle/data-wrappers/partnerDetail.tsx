@@ -87,6 +87,7 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -95,7 +96,8 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
             ...appliedFilters,
             partners: [...appliedFilters.partners, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters]);
@@ -108,7 +110,8 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
               ...appliedFilters,
               partners: [...appliedFilters.partners, props.code],
             }
-          : appliedFilters
+          : appliedFilters,
+        { datasource }
       );
       fetchDrilldownLevel1Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&${filterString}`,
@@ -128,11 +131,14 @@ export function PartnerDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-      const filterString = getAPIFormattedFilters({
-        ...appliedFilters,
-        components: [...appliedFilters.components, componentFilter],
-        partners: [...appliedFilters.partners, props.code],
-      });
+      const filterString = getAPIFormattedFilters(
+        {
+          ...appliedFilters,
+          components: [...appliedFilters.components, componentFilter],
+          partners: [...appliedFilters.partners, props.code],
+        },
+        { datasource }
+      );
       fetchDrilldownLevel2Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&activityAreaName=${activityAreaNameFilter}${
           filterString.length > 0 ? `&${filterString}` : ""

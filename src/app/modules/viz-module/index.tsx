@@ -1,6 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
+import findIndex from "lodash/findIndex";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
@@ -13,7 +15,7 @@ import DocumentsModule from "app/modules/documents-module";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
-import { exploreTabs } from "app/components/PageHeader/components/tabs/data";
+import { useDatasourcesDatasets } from "app/hooks/useDatasourcesDatasets";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
@@ -30,6 +32,10 @@ import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modul
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import {
+  exploreTabs,
+  TabProps,
+} from "app/components/PageHeader/components/tabs/data";
+import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
@@ -38,6 +44,7 @@ export default function VizModule() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
+  const { mappedDatasets } = useDatasourcesDatasets();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
@@ -53,6 +60,11 @@ export default function VizModule() {
   }, [location.pathname]);
 
   useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
+
+  const enabledTabs = filter(
+    exploreTabs,
+    (tab) => findIndex(mappedDatasets, (dt: string) => dt === tab.name) > -1
+  ) as TabProps[];
 
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
@@ -106,7 +118,7 @@ export default function VizModule() {
             }`,
           },
         ]}
-        tabs={exploreTabs}
+        tabs={enabledTabs}
       />
       <PageTopSpacer />
       {isMobile && (

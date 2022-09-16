@@ -54,13 +54,14 @@ export default function PartnerDetail() {
       partnerName: "",
     })
   );
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   const paramCode = params.code.replace(/\|/g, "/");
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
     fetchPartnerInfoData({
-      filterString: `partners=${paramCode}`,
+      filterString: `partners=${paramCode}&datasource=${datasource}`,
     });
   }, [paramCode]);
 

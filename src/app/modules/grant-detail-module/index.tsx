@@ -35,6 +35,7 @@ export default function GrantDetail() {
   );
 
   // api call & data
+  const datasource = useStoreState((state) => state.DataSourceState.value);
   const fetchGrantInfoData = useStoreActions(
     (store) => store.GrantDetailInfo.fetch
   );
@@ -68,16 +69,16 @@ export default function GrantDetail() {
   React.useEffect(() => {
     document.body.style.background = "#fff";
     fetchGrantInfoData({
-      filterString: `grantNumber=${params.code}`,
+      filterString: `grantNumber=${params.code}&datasource=${datasource}`,
     });
     fetchGrantPeriodsData({
-      filterString: `grantNumber=${params.code}`,
+      filterString: `grantNumber=${params.code}&datasource=${datasource}`,
     });
   }, []);
 
   React.useEffect(() => {
     fetchGrantPeriodInfoData({
-      filterString: `grantNumber=${params.code}&IPnumber=${params.period}`,
+      filterString: `grantNumber=${params.code}&IPnumber=${params.period}&datasource=${datasource}`,
     });
   }, [params.period]);
 

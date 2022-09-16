@@ -30,10 +30,11 @@ export function LocationResults(props: Props) {
   );
   const isLoading = useStoreState((state) => state.ResultsList.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
-    fetchYearOptionsData({});
+    fetchYearOptionsData({ filterString: `datasource=${datasource}` });
   }, []);
 
   React.useEffect(() => {
@@ -47,7 +48,7 @@ export function LocationResults(props: Props) {
             ],
           }
         : appliedFilters,
-      { search }
+      { search, datasource }
     );
     if (search.length === 0) {
       fetchData({
@@ -70,7 +71,7 @@ export function LocationResults(props: Props) {
               ],
             }
           : appliedFilters,
-        { search }
+        { search, datasource }
       );
       fetchData({
         filterString: `${filterString}${
@@ -93,7 +94,7 @@ export function LocationResults(props: Props) {
                 ],
               }
             : appliedFilters,
-          { search }
+          { search, datasource }
         );
         fetchData({
           filterString: `${filterString}${

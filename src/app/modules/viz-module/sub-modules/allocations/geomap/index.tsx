@@ -62,6 +62,7 @@ export function AllocationsGeoMap(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     fetchPeriodOptionsData({});
@@ -74,7 +75,8 @@ export function AllocationsGeoMap(props: Props) {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     if (geomapView === "countries") {
       fetchData({

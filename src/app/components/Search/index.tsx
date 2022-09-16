@@ -27,12 +27,13 @@ export function Search() {
       get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[]
   );
   const isLoading = useStoreState((state) => state.GlobalSearch.loading);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   useUpdateEffect(() => {
     setStoredValue(value);
     // if (value.length === 0) {
     //   fetchData({
-    //     filterString: `q=${value}`,
+    //     filterString: `q=${value}&datasource=${datasource}`,
     //   });
     // }
   }, [value]);
@@ -41,7 +42,7 @@ export function Search() {
     () => {
       if (value.length > 0) {
         fetchData({
-          filterString: `q=${value}`,
+          filterString: `q=${value}&datasource=${datasource}`,
         });
       } else {
         clearData();

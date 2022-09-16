@@ -12,6 +12,8 @@ export function useGetAllAvailableGrants(
   const [loading, setLoading] = React.useState(false);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  const datasource = useStoreState((state) => state.DataSourceState.value);
+
   async function getAllAvailableGrants() {
     setLoading(true);
     const filterString = getAPIFormattedFilters(
@@ -26,6 +28,7 @@ export function useGetAllAvailableGrants(
         : appliedFilters,
       {
         search: search.length > 0 ? search : undefined,
+        datasource,
       }
     );
     return await axios

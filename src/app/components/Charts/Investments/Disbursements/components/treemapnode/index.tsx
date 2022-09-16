@@ -15,15 +15,16 @@ const containercss = (
   isChildTreemap: boolean
 ) => css`
   display: flex;
+  color: #231d2c;
   font-size: 12px;
   position: absolute;
   box-sizing: border-box;
   flex-direction: column;
   background: ${bgcolor};
   align-items: flex-start;
+  border: 1px solid #231d2c;
   transition: background 0.2s ease-in-out;
   overflow: ${!hover ? "visible" : "hidden"};
-  color: ${isChildTreemap ? "#fff" : "#231d2c"};
   cursor: ${isChildTreemap ? "pointer" : "default"};
 
   > div {

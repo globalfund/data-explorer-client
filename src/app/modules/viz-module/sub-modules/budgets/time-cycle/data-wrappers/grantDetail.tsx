@@ -88,11 +88,12 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (props.code) {
       fetchData({
-        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}&datasource=${datasource}`,
       });
     }
   }, [props.code, props.implementationPeriod]);
@@ -100,7 +101,7 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   useUpdateEffect(() => {
     if (vizSelected !== undefined && props.code) {
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}&datasource=${datasource}`,
       });
     } else {
       clearDrilldownLevel1Data();
@@ -117,10 +118,13 @@ export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-      const filterString = getAPIFormattedFilters({
-        ...appliedFilters,
-        components: [...appliedFilters.components, componentFilter],
-      });
+      const filterString = getAPIFormattedFilters(
+        {
+          ...appliedFilters,
+          components: [...appliedFilters.components, componentFilter],
+        },
+        { datasource }
+      );
       fetchDrilldownLevel2Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&grantId='${
           props.code

@@ -19,11 +19,11 @@ export const exploreTabs: TabProps[] = [
     url: "/viz/signed/treemap",
   },
   {
-    name: "Commitment",
+    name: "Commitments",
     url: "/viz/commitment/treemap",
   },
   {
-    name: "Disbursement",
+    name: "Disbursements",
     url: "/viz/disbursements/treemap",
   },
   {
@@ -31,7 +31,7 @@ export const exploreTabs: TabProps[] = [
     url: "/viz/budgets/flow",
   },
   {
-    name: "Allocation",
+    name: "Allocations",
     url: "/viz/allocations",
   },
   {

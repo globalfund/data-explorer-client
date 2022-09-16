@@ -62,6 +62,7 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   function goToGrantDetail(code: string) {
     let clickthroughPath = "signed/treemap";
@@ -80,7 +81,8 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters, props.type]);

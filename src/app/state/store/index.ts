@@ -3,6 +3,7 @@ import { StoreModel } from "app/state/api/interfaces";
 
 import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
 import {
+  DataSourceState,
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
@@ -165,6 +166,10 @@ import {
   DataPathPanelVisibilityState,
   DataPathStepsState,
 } from "../api/action-reducers/sync/dataPath";
+import {
+  AvailableDatasources,
+  MappedDatasets,
+} from "../api/action-reducers/viz/datasourcesNdatasets";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -320,10 +325,13 @@ const storeContent: StoreModel = {
   ),
   ToolBoxPanelBudgetFlowDrilldownSelectors,
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
+  DataSourceState: persist(DataSourceState),
   // sync data path vars
   DataPathPanelVisibilityState,
   DataPathSteps: persist(DataPathStepsState),
   DataPathActiveStep: DataPathActiveStep,
+  AvailableDatasources: persist(AvailableDatasources),
+  MappedDatasets: persist(MappedDatasets),
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),

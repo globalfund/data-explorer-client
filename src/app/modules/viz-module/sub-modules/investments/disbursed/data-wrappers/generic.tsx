@@ -108,6 +108,7 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -116,7 +117,8 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters, props.type]);
@@ -132,10 +134,13 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
             locations.push(props.code);
           }
           locations.push(splits[0]);
-          filterString = getAPIFormattedFilters({
-            ...appliedFilters,
-            locations,
-          });
+          filterString = getAPIFormattedFilters(
+            {
+              ...appliedFilters,
+              locations,
+            },
+            { datasource }
+          );
         } else {
           const locations = [...appliedFilters.locations];
           const components = [...appliedFilters.components];
@@ -143,11 +148,14 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
             locations.push(props.code);
           }
           components.push(splits[0]);
-          filterString = getAPIFormattedFilters({
-            ...appliedFilters,
-            locations,
-            components,
-          });
+          filterString = getAPIFormattedFilters(
+            {
+              ...appliedFilters,
+              locations,
+              components,
+            },
+            { datasource }
+          );
         }
         fetchDrilldownData({ filterString });
       }

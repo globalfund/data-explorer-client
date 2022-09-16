@@ -13,6 +13,7 @@ interface PerformanceRatingModuleProps {
 
 export function PerformanceRatingModule(props: PerformanceRatingModuleProps) {
   // api call & data
+  const datasource = useStoreState((state) => state.DataSourceState.value);
   const fetchData = useStoreActions(
     (store) => store.GrantDetailPerformanceRating.fetch
   );
@@ -30,7 +31,7 @@ export function PerformanceRatingModule(props: PerformanceRatingModuleProps) {
   React.useEffect(() => {
     if (props.code) {
       fetchData({
-        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}&datasource=${datasource}`,
       });
     }
   }, [props.code, props.implementationPeriod]);

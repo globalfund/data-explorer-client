@@ -58,13 +58,14 @@ export function GenericEligibilityWrapper() {
   const isLoading = useStoreState((state) => state.Eligibility.loading);
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     fetchYearOptionsData({});
   }, []);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
+    const filterString = getAPIFormattedFilters(appliedFilters, { datasource });
     fetchData({
       filterString: `aggregateBy=${aggregateBy}&periods=${selectedYear}${
         filterString.length > 0 ? `&${filterString}` : ""

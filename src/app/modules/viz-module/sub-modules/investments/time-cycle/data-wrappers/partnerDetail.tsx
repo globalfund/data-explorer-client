@@ -101,6 +101,7 @@ export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
   });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -109,7 +110,8 @@ export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
             ...appliedFilters,
             partners: [...appliedFilters.partners, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters, props.type]);
@@ -122,7 +124,8 @@ export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
               ...appliedFilters,
               partners: [...appliedFilters.partners, props.code],
             }
-          : appliedFilters
+          : appliedFilters,
+        { datasource }
       );
       if (filterString) {
         filterString += `&barPeriod=${vizSelected}`;

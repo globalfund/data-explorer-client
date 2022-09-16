@@ -32,6 +32,7 @@ export function MobileAppbarSearch() {
       get(state.GlobalSearch.data, "data", []) as SearchResultsTabModel[]
   );
   const isLoading = useStoreState((state) => state.GlobalSearch.loading);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     history.listen(() => {
@@ -68,7 +69,7 @@ export function MobileAppbarSearch() {
     () => {
       if (value.length > 0) {
         fetchData({
-          filterString: `q=${value}`,
+          filterString: `q=${value}&datasource=${datasource}`,
         });
       } else {
         clearData();

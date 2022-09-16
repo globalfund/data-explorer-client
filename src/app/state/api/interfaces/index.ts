@@ -1,5 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
 import {
+  DataSourceStateModel,
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelAllocationsPeriodStateModel,
@@ -248,6 +249,10 @@ export interface StoreModel {
   ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
+  // datasource selector
+  DataSourceState: DataSourceStateModel;
+  AvailableDatasources: ApiCallModel;
+  MappedDatasets: ApiCallModel;
   // sync data path vars
   DataPathPanelVisibilityState: DataPathPanelVisibilityStateModel;
   DataPathSteps: DataPathStepsStateModel;

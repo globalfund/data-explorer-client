@@ -108,6 +108,7 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -116,7 +117,8 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters, props.type]);
@@ -129,7 +131,8 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
               ...appliedFilters,
               locations: [...appliedFilters.locations, props.code],
             }
-          : appliedFilters
+          : appliedFilters,
+        { datasource }
       );
       if (filterString) {
         filterString += `&barPeriod=${vizSelected}`;

@@ -84,6 +84,7 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (
@@ -92,14 +93,18 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
       (history.location.search.length === 0 &&
         appliedFilters.appliedFiltersCount === 0)
     ) {
-      const filterString = getAPIFormattedFilters(appliedFilters);
+      const filterString = getAPIFormattedFilters(appliedFilters, {
+        datasource,
+      });
       fetchData({ filterString });
     }
   }, [appliedFilters, history.location.search]);
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined) {
-      const filterString = getAPIFormattedFilters(appliedFilters);
+      const filterString = getAPIFormattedFilters(appliedFilters, {
+        datasource,
+      });
       fetchDrilldownLevel1Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}${
           filterString.length > 0 ? `&${filterString}` : ""
@@ -116,10 +121,13 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-      const filterString = getAPIFormattedFilters({
-        ...appliedFilters,
-        components: [...appliedFilters.components, componentFilter],
-      });
+      const filterString = getAPIFormattedFilters(
+        {
+          ...appliedFilters,
+          components: [...appliedFilters.components, componentFilter],
+        },
+        { datasource }
+      );
       fetchDrilldownLevel2Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&activityAreaName=${activityAreaNameFilter}${
           filterString.length > 0 ? `&${filterString}` : ""

@@ -29,6 +29,7 @@ export function LocationGrants(props: Props) {
     });
   });
   const isLoading = useStoreState((state) => state.LocationGrants.loading);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -40,7 +41,8 @@ export function LocationGrants(props: Props) {
               props.code,
             ],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters]);

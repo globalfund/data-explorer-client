@@ -86,6 +86,7 @@ export default function CountryDetail() {
     (actions) => actions.cms.notesAndDisclaimers.post
   );
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   const paramCode = params.code.replace(/\|/g, "/");
 
@@ -117,10 +118,15 @@ export default function CountryDetail() {
   }, [params.vizType]);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters({
-      ...appliedFilters,
-      locations: [paramCode],
-    });
+    const filterString = getAPIFormattedFilters(
+      {
+        ...appliedFilters,
+        locations: [paramCode],
+      },
+      {
+        datasource,
+      }
+    );
     fetchLocationInfoData({ filterString });
   }, [paramCode, appliedFilters]);
 

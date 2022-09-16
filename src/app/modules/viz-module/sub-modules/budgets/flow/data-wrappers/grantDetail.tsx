@@ -94,11 +94,12 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
   const clearDataPathActiveStep = useStoreActions(
     (actions) => actions.DataPathActiveStep.clear
   );
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (props.code) {
       fetchData({
-        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}&datasource=${datasource}`,
       });
     }
   }, [props.code, props.implementationPeriod]);
@@ -106,7 +107,7 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined && props.code) {
       fetchDrilldownLevel1Data({
-        filterString: `levelParam=${vizSelected.filterStr}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
+        filterString: `levelParam=${vizSelected.filterStr}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}&datasource=${datasource}`,
       });
     } else {
       clearDrilldownLevel1Data();
@@ -123,7 +124,7 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
       fetchDrilldownLevel2Data({
-        filterString: `levelParam=${vizSelected.filterStr}&activityAreaName=${activityAreaNameFilter}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}&components=${componentFilter}`,
+        filterString: `levelParam=${vizSelected.filterStr}&activityAreaName=${activityAreaNameFilter}&grantId='${props.code}'&IPnumber=${props.implementationPeriod}&components=${componentFilter}&datasource=${datasource}`,
       });
     } else {
       clearDrilldownLevel2Data();

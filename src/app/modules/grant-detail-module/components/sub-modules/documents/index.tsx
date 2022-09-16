@@ -35,22 +35,29 @@ export function GrantDetailDocumentsModule(
   const isLoading = useStoreState(
     (state) => state.GrantDetailDocuments.loading
   );
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (props.code) {
-      fetchData({ filterString: `grantId='${props.code}'` });
+      fetchData({
+        filterString: `grantId='${props.code}'&datasource=${datasource}`,
+      });
     }
   }, [props.code]);
 
   useUpdateEffect(() => {
     if (search.length === 0)
-      fetchData({ filterString: `grantId='${props.code}'` });
+      fetchData({
+        filterString: `grantId='${props.code}'&datasource=${datasource}`,
+      });
   }, [search]);
 
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
-        fetchData({ filterString: `q=${search}&grantId='${props.code}'` });
+        fetchData({
+          filterString: `q=${search}&grantId='${props.code}'&datasource=${datasource}`,
+        });
       }
     },
     500,

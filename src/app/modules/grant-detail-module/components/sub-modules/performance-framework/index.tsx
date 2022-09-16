@@ -84,11 +84,12 @@ export function PerformanceFrameworkModule(props: Props) {
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (props.code) {
       fetchData({
-        filterString: `grantId=${props.code}&IPnumber=${props.implementationPeriod}&timeframeIndex=${selectedPeriod}`,
+        filterString: `grantId=${props.code}&IPnumber=${props.implementationPeriod}&timeframeIndex=${selectedPeriod}&datasource=${datasource}`,
       });
     }
   }, [props.code, props.implementationPeriod, selectedPeriod]);
@@ -100,7 +101,7 @@ export function PerformanceFrameworkModule(props: Props) {
           props.implementationPeriod
         }&indicatorSet=${vizSelected.split("|")[1]}&moduleName=${
           vizSelected.split("|")[0]
-        }`,
+        }&datasource=${datasource}`,
       });
     } else {
       clearExpandData();

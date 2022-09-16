@@ -64,24 +64,26 @@ export function useFilterOptions(
     (state) => state.ToolBoxPanelDonorMapViewState.value
   );
 
+  const datasource = useStoreState((state) => state.DataSourceState.value);
+
   React.useEffect(() => {
     if (locations.length === 0) {
-      getLocations({});
+      getLocations({ filterString: `datasource=${datasource}` });
     }
     if (components.length === 0) {
-      getComponents({});
+      getComponents({ filterString: `datasource=${datasource}` });
     }
     if (partnerTypes.length === 0) {
-      getPartnerTypes({});
+      getPartnerTypes({ filterString: `datasource=${datasource}` });
     }
     if (status.length === 0) {
-      getStatus({});
+      getStatus({ filterString: `datasource=${datasource}` });
     }
     if (replenishmentPeriods.length === 0) {
-      getReplenishmentPeriods({});
+      getReplenishmentPeriods({ filterString: `datasource=${datasource}` });
     }
     if (donors.length === 0) {
-      getDonors({});
+      getDonors({ filterString: `datasource=${datasource}` });
     }
   }, []);
 

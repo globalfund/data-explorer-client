@@ -37,13 +37,17 @@ export default function DocumentsModule(props: DocumentsModuleProps) {
   const [page, setPage] = React.useState(1);
   const isLoading = useStoreState((state) => state.Documents.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
   }, []);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters, { search });
+    const filterString = getAPIFormattedFilters(appliedFilters, {
+      search,
+      datasource,
+    });
     if (search.length === 0) {
       fetchData({ filterString });
     }
@@ -51,7 +55,9 @@ export default function DocumentsModule(props: DocumentsModuleProps) {
 
   useUpdateEffect(() => {
     if (search.length === 0) {
-      const filterString = getAPIFormattedFilters(appliedFilters);
+      const filterString = getAPIFormattedFilters(appliedFilters, {
+        datasource,
+      });
       fetchData({ filterString });
     }
   }, [search]);
@@ -61,7 +67,10 @@ export default function DocumentsModule(props: DocumentsModuleProps) {
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
-        const filterString = getAPIFormattedFilters(appliedFilters, { search });
+        const filterString = getAPIFormattedFilters(appliedFilters, {
+          search,
+          datasource,
+        });
         fetchData({ filterString });
       }
     },

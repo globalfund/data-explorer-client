@@ -96,6 +96,7 @@ export function GenericBudgetsFlowWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (
@@ -104,14 +105,18 @@ export function GenericBudgetsFlowWrapper(props: Props) {
       (history.location.search.length === 0 &&
         appliedFilters.appliedFiltersCount === 0)
     ) {
-      const filterString = getAPIFormattedFilters(appliedFilters);
+      const filterString = getAPIFormattedFilters(appliedFilters, {
+        datasource,
+      });
       fetchData({ filterString });
     }
   }, [appliedFilters, history.location.search]);
 
   useUpdateEffect(() => {
     if (vizSelected.filterStr !== undefined) {
-      const filterString = getAPIFormattedFilters(appliedFilters);
+      const filterString = getAPIFormattedFilters(appliedFilters, {
+        datasource,
+      });
       fetchDrilldownLevel1Data({
         filterString: `levelParam=${vizSelected.filterStr}${
           filterString.length > 0 ? `&${filterString}` : ""
@@ -131,10 +136,13 @@ export function GenericBudgetsFlowWrapper(props: Props) {
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-      const filterString = getAPIFormattedFilters({
-        ...appliedFilters,
-        components: [...appliedFilters.components, componentFilter],
-      });
+      const filterString = getAPIFormattedFilters(
+        {
+          ...appliedFilters,
+          components: [...appliedFilters.components, componentFilter],
+        },
+        { datasource }
+      );
       fetchDrilldownLevel2Data({
         filterString: `levelParam=${
           vizSelected.filterStr

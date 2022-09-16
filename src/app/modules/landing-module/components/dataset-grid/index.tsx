@@ -6,13 +6,16 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { BarIcon } from "app/assets/icons/charts/Bar";
 import { MapIcon } from "app/assets/icons/charts/Map";
 import { DotIcon } from "app/assets/icons/charts/Dot";
+import { useStoreActions } from "app/state/store/hooks";
 import { TableIcon } from "app/assets/icons/charts/Table";
 import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import { AllocationIcon } from "app/assets/icons/charts/Allocation";
+import { useDatasourcesDatasets } from "app/hooks/useDatasourcesDatasets";
 
 function GridItem(props: {
   link: string;
+  value: string;
   title: { __html: any };
   description: { __html: any };
   iconLinks?: {
@@ -20,8 +23,13 @@ function GridItem(props: {
     icon: React.ReactElement;
   }[];
 }) {
+  const changeDatasource = useStoreActions(
+    (store) => store.DataSourceState.setValue
+  );
+  const onClickHandler = () => changeDatasource(props.value);
+
   return (
-    <Link to={props.link} css="text-decoration: none;">
+    <Link to={props.link} css="text-decoration: none;" onClick={onClickHandler}>
       <div
         css={`
           padding: 16px;
@@ -109,7 +117,7 @@ const iconLinks = [
   },
   {
     icon: <BarIcon />,
-    link: "/viz/disbursement/time-cycle",
+    link: "/viz/disbursements/time-cycle",
   },
   {
     icon: <MapIcon />,
@@ -220,41 +228,24 @@ export function LandingDatasetGrid() {
 
   const dummyDatasets = [0, 1, 2, 3, 4, 5, 6];
 
+  const { availableDatasets } = useDatasourcesDatasets();
+
   return (
     <Grid container spacing={2}>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem
-          title={{ __html: "GF Dataset" }}
-          link="/viz/signed/time-cycle"
-          description={{
-            __html:
-              "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
-          }}
-          iconLinks={iconLinks}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem
-          title={{ __html: "IATI Dataset" }}
-          link="/viz/signed/time-cycle"
-          description={{
-            __html:
-              "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
-          }}
-          iconLinks={iconLinks}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem
-          title={{ __html: "HXL Dataset" }}
-          link="/viz/signed/time-cycle"
-          description={{
-            __html:
-              "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
-          }}
-          iconLinks={iconLinks}
-        />
-      </Grid>
+      {availableDatasets.map((dt: any) => (
+        <Grid item xs={12} sm={6} md={6} lg={3} key={dt.name}>
+          <GridItem
+            value={dt.value}
+            title={{ __html: dt.name }}
+            link="/viz/signed/treemap"
+            description={{
+              __html:
+                "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
+            }}
+            iconLinks={iconLinks}
+          />
+        </Grid>
+      ))}
       {dummyDatasets.map((item) => (
         <Grid
           item
@@ -276,8 +267,9 @@ export function LandingDatasetGrid() {
           `}
         >
           <GridItem
+            value=""
             title={{ __html: "Dataset" }}
-            link="/viz/signed/time-cycle"
+            link="/viz/signed/treemap"
             description={{
               __html:
                 "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",

@@ -89,9 +89,10 @@ export function PledgesContributionsTable() {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
+    const filterString = getAPIFormattedFilters(appliedFilters, { datasource });
     fetchData({
       filterString: `valueType=${valueType}${
         filterString.length > 0 ? `&${filterString}` : ""

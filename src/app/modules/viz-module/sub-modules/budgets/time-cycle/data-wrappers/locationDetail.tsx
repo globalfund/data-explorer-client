@@ -87,6 +87,7 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -95,17 +96,21 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters]);
 
   useUpdateEffect(() => {
     if (vizSelected !== undefined && props.code) {
-      const filterString = getAPIFormattedFilters({
-        ...appliedFilters,
-        locations: [...appliedFilters.locations, props.code],
-      });
+      const filterString = getAPIFormattedFilters(
+        {
+          ...appliedFilters,
+          locations: [...appliedFilters.locations, props.code],
+        },
+        { datasource }
+      );
       fetchDrilldownLevel1Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&${filterString}`,
       });
@@ -124,11 +129,14 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-      const filterString = getAPIFormattedFilters({
-        ...appliedFilters,
-        components: [...appliedFilters.components, componentFilter],
-        locations: [...appliedFilters.locations, props.code],
-      });
+      const filterString = getAPIFormattedFilters(
+        {
+          ...appliedFilters,
+          components: [...appliedFilters.components, componentFilter],
+          locations: [...appliedFilters.locations, props.code],
+        },
+        { datasource }
+      );
       fetchDrilldownLevel2Data({
         filterString: `levelParam=budgetPeriodStartYear eq ${vizSelected}&activityAreaName=${activityAreaNameFilter}${
           filterString.length > 0 ? `&${filterString}` : ""

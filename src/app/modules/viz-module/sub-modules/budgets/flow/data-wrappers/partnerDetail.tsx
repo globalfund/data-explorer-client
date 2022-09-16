@@ -96,6 +96,7 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -104,7 +105,8 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
             ...appliedFilters,
             partners: [...appliedFilters.partners, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { datasource }
     );
     fetchData({ filterString });
   }, [props.code, appliedFilters]);
@@ -117,7 +119,8 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
               ...appliedFilters,
               partners: [...appliedFilters.partners, props.code],
             }
-          : appliedFilters
+          : appliedFilters,
+        { datasource }
       );
       fetchDrilldownLevel1Data({
         filterString: `levelParam=${vizSelected.filterStr}&${filterString}`,
@@ -136,11 +139,14 @@ export function PartnerDetailBudgetsFlowWrapper(props: Props) {
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-      const filterString = getAPIFormattedFilters({
-        ...appliedFilters,
-        partners: [...appliedFilters.partners, props.code],
-        components: [...appliedFilters.components, componentFilter],
-      });
+      const filterString = getAPIFormattedFilters(
+        {
+          ...appliedFilters,
+          partners: [...appliedFilters.partners, props.code],
+          components: [...appliedFilters.components, componentFilter],
+        },
+        { datasource }
+      );
       fetchDrilldownLevel2Data({
         filterString: `levelParam=${
           vizSelected.filterStr

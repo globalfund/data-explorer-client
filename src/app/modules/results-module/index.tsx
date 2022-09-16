@@ -44,6 +44,7 @@ export default function ResultsModule(props: ResultsModuleProps) {
   );
   const isLoading = useStoreState((state) => state.ResultsList.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -57,7 +58,10 @@ export default function ResultsModule(props: ResultsModuleProps) {
   }, [location.pathname]);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters, { search });
+    const filterString = getAPIFormattedFilters(appliedFilters, {
+      search,
+      datasource,
+    });
     if (search.length === 0) {
       fetchData({
         filterString: `${filterString}${
@@ -74,7 +78,9 @@ export default function ResultsModule(props: ResultsModuleProps) {
 
   useUpdateEffect(() => {
     if (search.length === 0) {
-      const filterString = getAPIFormattedFilters(appliedFilters);
+      const filterString = getAPIFormattedFilters(appliedFilters, {
+        datasource,
+      });
       fetchData({
         filterString: `${filterString}${
           filterString.length > 0 ? "&" : ""
@@ -88,7 +94,10 @@ export default function ResultsModule(props: ResultsModuleProps) {
   const [,] = useDebounce(
     () => {
       if (search.length > 0) {
-        const filterString = getAPIFormattedFilters(appliedFilters, { search });
+        const filterString = getAPIFormattedFilters(appliedFilters, {
+          search,
+          datasource,
+        });
         fetchData({
           filterString: `${filterString}${
             filterString.length > 0 ? "&" : ""

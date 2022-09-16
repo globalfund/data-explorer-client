@@ -247,6 +247,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
                   css={`
                     width: 12px;
                     height: 12px;
+                    border: 1px solid #231d2c;
                     background: ${legend.color};
                   `}
                 />

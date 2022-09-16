@@ -9,6 +9,8 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
+import { useDatasourcesDatasets } from "app/hooks/useDatasourcesDatasets";
+import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
 import {
   Route,
   Switch,
@@ -16,7 +18,6 @@ import {
   useHistory,
   RouteComponentProps,
 } from "react-router-dom";
-import { useClearDataPathStepsOnDatasetChange } from "./hooks/useClearDataPathStepsOnDatasetChange";
 // import BigLogo from "app/assets/BigLogo";
 // import useCookie from "@devhammed/use-cookie";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -73,6 +74,7 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 export function MainRoutes() {
   // const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
   useClearDataPathStepsOnDatasetChange();
+  useDatasourcesDatasets();
   useFilterOptions({});
   useScrollToTop();
   useUrlFilters();

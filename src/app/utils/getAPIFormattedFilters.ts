@@ -5,6 +5,7 @@ export function getAPIFormattedFilters(
   extraParams?: {
     page?: number;
     search?: string;
+    datasource?: string;
   }
 ): string {
   const filterArray: string[] = [];
@@ -15,6 +16,9 @@ export function getAPIFormattedFilters(
     }
     if (extraParams.search && extraParams.search.length > 0) {
       filterArray.push(`q=${extraParams.search}`);
+    }
+    if (extraParams.datasource) {
+      filterArray.push(`datasource=${extraParams.datasource}`);
     }
   }
 

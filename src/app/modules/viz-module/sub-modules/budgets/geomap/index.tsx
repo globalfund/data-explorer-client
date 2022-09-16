@@ -66,6 +66,7 @@ export function BudgetsGeoMap(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
     if (
@@ -98,7 +99,8 @@ export function BudgetsGeoMap(props: Props) {
                 props.code,
               ],
             }
-          : appliedFilters
+          : appliedFilters,
+        { datasource }
       );
       if (props.grantCode && props.grantPeriod) {
         filterString = `grantId='${props.grantCode}'&IPnumber=${props.grantPeriod}`;
