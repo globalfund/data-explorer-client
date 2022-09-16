@@ -39,7 +39,9 @@ export function EligibilityModule() {
   const datasource = useStoreState((state) => state.DataSourceState.value);
 
   React.useEffect(() => {
-    fetchYearOptionsData({});
+    fetchYearOptionsData({
+      filterString: `datasource=${datasource}`,
+    });
   }, []);
 
   React.useEffect(() => {
