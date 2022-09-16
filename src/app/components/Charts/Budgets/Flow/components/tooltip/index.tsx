@@ -16,7 +16,7 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
     <div
       css={`
         color: #231d2c;
-        background: #f5f5f7;
+        background: #f4f4f4;
         border-radius: 20px;
       `}
     >

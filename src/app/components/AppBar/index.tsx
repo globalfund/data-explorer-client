@@ -270,8 +270,9 @@ export function AppBar() {
                     )}
                   {(location.pathname === "/" || !openSearch) && (
                     <React.Fragment>
-                      <NavLink
-                        to="/datasets"
+                      <a
+                        href="https://dataxplorer.org/examples"
+                        target="_blank"
                         css={`
                           color: #231d2c;
                           font-size: 16px;
@@ -290,9 +291,10 @@ export function AppBar() {
                         `}
                       >
                         Examples
-                      </NavLink>
-                      <NavLink
-                        to="/about"
+                      </a>
+                      <a
+                        href="https://dataxplorer.org/about"
+                        target="_blank"
                         css={`
                           color: #231d2c;
                           font-size: 16px;
@@ -311,9 +313,10 @@ export function AppBar() {
                         `}
                       >
                         About
-                      </NavLink>
-                      <NavLink
-                        to="/demo"
+                      </a>
+                      <a
+                        href="https://dataxplorer.org/demo"
+                        target="_blank"
                         css={`
                           color: #fff;
                           font-size: 14px;
@@ -328,7 +331,7 @@ export function AppBar() {
                         `}
                       >
                         SCHEDULE A DEMO
-                      </NavLink>
+                      </a>
                     </React.Fragment>
                   )}
                 </div>

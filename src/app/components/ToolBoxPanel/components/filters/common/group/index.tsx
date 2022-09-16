@@ -135,7 +135,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
             }
             &::-webkit-scrollbar-track {
               border-radius: 4px;
-              background: #f5f5f7;
+              background: #f4f4f4;
             }
             &::-webkit-scrollbar-thumb {
               border-radius: 4px;

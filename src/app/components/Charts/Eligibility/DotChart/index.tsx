@@ -17,16 +17,16 @@ import {
 
 const styles = {
   Eligible: css`
-    background: #11ad6b;
-    border: 1px solid #1b2127;
+    background: #6061e5;
+    border: 1px solid #231d2c;
   `,
   "Not Eligible": css`
-    background: #fa7355;
-    border: 1px dotted #1b2127;
+    background: #e75656;
+    border: 1px dotted #231d2c;
   `,
   "Transition Funding": css`
-    background: #ffd646;
-    border: 1px dashed #1b2127;
+    background: #73d3cd;
+    border: 1px dashed #231d2c;
   `,
 };
 
@@ -51,7 +51,7 @@ export function DotChart(props: DotChartProps) {
             position: fixed;
             top: ${y + 12}px;
             left: ${x + 12}px;
-            background: #f5f5f7;
+            background: #f4f4f4;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
 

@@ -224,18 +224,18 @@ export function InvestmentsDisbursedModule(
           isDrilldownTreemap
           data={props.drilldownData}
           onNodeClick={(node: string, x: number, y: number) => {
-            const idSplits = node.split("-");
-            const code = getIso3FromName(idSplits[1]);
-            addDataPathSteps([
-              {
-                id: uniqueId(),
-                name: `${idSplits[1]} - ${idSplits[0]}`,
-                path: `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`,
-              },
-            ]);
-            history.push(
-              `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`
-            );
+            // const idSplits = node.split("-");
+            // const code = getIso3FromName(idSplits[1]);
+            // addDataPathSteps([
+            //   {
+            //     id: uniqueId(),
+            //     name: `${idSplits[1]} - ${idSplits[0]}`,
+            //     path: `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`,
+            //   },
+            // ]);
+            // history.push(
+            //   `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`
+            // );
           }}
         />
       );
@@ -287,6 +287,74 @@ export function InvestmentsDisbursedModule(
             <b>Total amount: {formatFinancialValue(totalValue)}</b>
           </Grid>
         )}
+        <Grid item xs={12} sm={9}>
+          <div
+            css={`
+              gap: 24px;
+              display: flex;
+              flex-direction: row;
+              justify-content: flex-end;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 24px;
+                  }
+                }
+              }
+
+              @media (max-width: 767px) {
+                gap: 12px;
+                flex-wrap: wrap;
+                justify-content: flex-start;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 12px;
+                    }
+                  }
+                }
+              }
+            `}
+          >
+            {props.data.map((item) => (
+              <div
+                key={item.name}
+                css={`
+                  gap: 6px;
+                  display: flex;
+                  font-size: 12px;
+                  cursor: pointer;
+                  align-items: center;
+                  flex-direction: row;
+                  transition: opacity 0.2s ease-in-out;
+
+                  > * {
+                    @supports (-webkit-touch-callout: none) and
+                      (not (translate: none)) {
+                      &:not(:last-child) {
+                        margin-right: 6px;
+                      }
+                    }
+                  }
+                `}
+              >
+                <div
+                  css={`
+                    width: 12px;
+                    height: 12px;
+                    border: 1px solid #231d2c;
+                    background: ${item.color};
+                  `}
+                />
+                <div>{item.name}</div>
+              </div>
+            ))}
+          </div>
+        </Grid>
       </Grid>
       <div
         css={`

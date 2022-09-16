@@ -1,6 +1,7 @@
 // cc:application base#;application routes
 
 import React, { Suspense, lazy } from "react";
+import get from "lodash/get";
 import { useGA } from "app/hooks/useGA";
 import axios, { AxiosResponse } from "axios";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
@@ -71,10 +72,35 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
   return <PageLoader />;
 }
 
+function VizModuleRedirect() {
+  const history = useHistory();
+  const { mappedDatasets, mappedDatasetsLoading } = useDatasourcesDatasets();
+
+  const datasetToPath = {
+    Signed: "/viz/signed/treemap",
+    Commitments: "/viz/commitment/treemap",
+    Disbursements: "/viz/disbursements/treemap",
+    Budgets: "/viz/budgets/flow",
+    Eligibility: "/viz/eligibility",
+    Allocations: "/viz/allocations",
+    Grants: "/viz/grants",
+    Results: "/viz/results",
+    Documents: "/viz/documents",
+  };
+
+  const pathToPush = get(datasetToPath, `[${mappedDatasets[0]}]`, undefined);
+
+  if (pathToPush && !mappedDatasetsLoading) {
+    history.replace(pathToPush);
+  }
+
+  return <PageLoader />;
+}
+
 export function MainRoutes() {
   // const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
   useClearDataPathStepsOnDatasetChange();
-  useDatasourcesDatasets();
+  useDatasourcesDatasets(true);
   useFilterOptions({});
   useScrollToTop();
   useUrlFilters();
@@ -229,9 +255,7 @@ export function MainRoutes() {
           <GrantDetailModule />
         </Route>
 
-        <Route exact path="/viz">
-          <Redirect to="/datasets" />
-        </Route>
+        <Route exact path="/viz" render={() => <VizModuleRedirect />} />
 
         <V1RouteRedirections />
       </Switch>

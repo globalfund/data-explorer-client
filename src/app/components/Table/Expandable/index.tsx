@@ -48,7 +48,7 @@ function Row(props: {
           }
         }}
         css={`
-          background: #f5f5f7;
+          background: #f4f4f4;
           transition: background 0.2s ease-in-out;
 
           ${row.link || props.row.docCategories || props.row.docs

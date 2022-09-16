@@ -517,16 +517,16 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             data={dataDrilldownLevel}
             tooltipValueLabel="Allocation"
             onNodeClick={(node: string, x: number, y: number) => {
-              const name = node.split("-")[0];
-              const code = getIso3FromName(name);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: name,
-                  path: `/location/${code}/allocations`,
-                },
-              ]);
-              history.push(`/location/${code}/allocations`);
+              // const name = node.split("-")[0];
+              // const code = getIso3FromName(name);
+              // addDataPathSteps([
+              //   {
+              //     id: uniqueId(),
+              //     name: name,
+              //     path: `/location/${code}/allocations`,
+              //   },
+              // ]);
+              // history.push(`/location/${code}/allocations`);
             }}
           />
         </React.Fragment>

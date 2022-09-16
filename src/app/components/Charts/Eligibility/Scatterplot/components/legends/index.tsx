@@ -461,7 +461,7 @@ export function ScatterplotLegends(props: Props) {
                     border: 0.5px solid #adb5bd;
                   }
                   &:nth-of-type(6) {
-                    background: #f5f5f7;
+                    background: #f4f4f4;
                     border: 0.5px solid #dfe3e6;
                   }
                   &:nth-of-type(7) {

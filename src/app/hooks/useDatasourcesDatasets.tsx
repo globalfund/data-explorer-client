@@ -3,7 +3,7 @@ import get from "lodash/get";
 import { useMount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
-export function useDatasourcesDatasets() {
+export function useDatasourcesDatasets(load?: boolean) {
   const availableDatasets = useStoreState((state) =>
     get(state.AvailableDatasources, "data.data", [])
   );
@@ -13,23 +13,30 @@ export function useDatasourcesDatasets() {
   const mappedDatasets = useStoreState((state) =>
     get(state.MappedDatasets, "data.data", [])
   );
+  const mappedDatasetsLoading = useStoreState(
+    (state) => state.MappedDatasets.loading
+  );
   const fetchMappedDatasets = useStoreActions(
     (actions) => actions.MappedDatasets.fetch
   );
   const datasource = useStoreState((state) => state.DataSourceState.value);
 
   useMount(() => {
-    fetchAvailableDatasets({});
-    fetchMappedDatasets({
-      filterString: `datasource=${datasource}`,
-    });
+    if (load) {
+      fetchAvailableDatasets({});
+      fetchMappedDatasets({
+        filterString: `datasource=${datasource}`,
+      });
+    }
   });
 
   useUpdateEffect(() => {
-    fetchMappedDatasets({
-      filterString: `datasource=${datasource}`,
-    });
+    if (load) {
+      fetchMappedDatasets({
+        filterString: `datasource=${datasource}`,
+      });
+    }
   }, [datasource]);
 
-  return { availableDatasets, mappedDatasets };
+  return { availableDatasets, mappedDatasets, mappedDatasetsLoading };
 }

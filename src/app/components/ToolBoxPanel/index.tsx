@@ -155,7 +155,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               width: 400px;
               top: ${top}px;
               position: fixed;
-              background: #f5f5f7;
+              background: #f4f4f4;
               height: calc(100vh - ${top}px);
               visibility: visible !important;
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
@@ -232,7 +232,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                         css={`
                           font-size: 18px;
                           font-weight: bold;
-                          font-family: Inter;
+                          font-family: "Inter", "Helvetica Neue", sans-serif;
                         `}
                       >
                         Toolbox

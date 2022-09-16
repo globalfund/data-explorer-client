@@ -279,25 +279,25 @@ export function GeoMap(props: GeoMapProps) {
   };
 
   const onClick = React.useCallback((event: any) => {
-    if (isMobile || isTouchDevice()) {
-      // disabled cause was causing a double click on touch devices
-      // onHover(event);
-    } else if (props.allowClickthrough) {
-      const { features } = event;
-      const hoveredFeature = features && features[0];
-      if (
-        hoveredFeature &&
-        hoveredFeature.properties &&
-        hoveredFeature.properties.iso_a3 &&
-        hoveredFeature.properties.value > 0
-      ) {
-        history.push(
-          `/location/${hoveredFeature.properties.iso_a3}/${
-            props.clickthroughPath || "overview"
-          }`
-        );
-      }
-    }
+    // if (isMobile || isTouchDevice()) {
+    //   // disabled cause was causing a double click on touch devices
+    //   // onHover(event);
+    // } else if (props.allowClickthrough) {
+    //   const { features } = event;
+    //   const hoveredFeature = features && features[0];
+    //   if (
+    //     hoveredFeature &&
+    //     hoveredFeature.properties &&
+    //     hoveredFeature.properties.iso_a3 &&
+    //     hoveredFeature.properties.value > 0
+    //   ) {
+    //     history.push(
+    //       `/location/${hoveredFeature.properties.iso_a3}/${
+    //         props.clickthroughPath || "overview"
+    //       }`
+    //     );
+    //   }
+    // }
   }, []);
 
   function zoomIn() {
@@ -420,7 +420,7 @@ export function GeoMap(props: GeoMapProps) {
                 width: 350px;
                 padding: 20px;
                 position: absolute;
-                background: #f5f5f7;
+                background: #f4f4f4;
                 border-radius: 20px;
 
                 @media (max-width: 767px) {
@@ -464,7 +464,7 @@ export function GeoMap(props: GeoMapProps) {
                 }}
                 investmentSubType={props.investmentSubType}
               />
-              {(isMobile || isTouchDevice()) && (
+              {/* {(isMobile || isTouchDevice()) && (
                 <div
                   css={`
                     display: flex;
@@ -484,7 +484,7 @@ export function GeoMap(props: GeoMapProps) {
                     {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
                   </TooltipButton>
                 </div>
-              )}
+              )} */}
             </div>
           </Popup>
         )}
@@ -495,7 +495,9 @@ export function GeoMap(props: GeoMapProps) {
               key={pin.id}
               marker={pin}
               setMarkerInfo={setAllocationsPinMarkerHoverInfo}
-              onClick={() => history.push(`/location/${pin.code}/overview`)}
+              onClick={() => {
+                // history.push(`/location/${pin.code}/overview`);
+              }}
               {...icons}
             />
           );
@@ -523,7 +525,7 @@ export function GeoMap(props: GeoMapProps) {
                 width: 350px;
                 padding: 20px;
                 position: absolute;
-                background: #f5f5f7;
+                background: #f4f4f4;
                 border-radius: 20px;
 
                 @media (max-width: 767px) {
@@ -577,9 +579,9 @@ export function GeoMap(props: GeoMapProps) {
                   <TooltipButton
                     type="button"
                     onTouchStart={() => {
-                      history.push(
-                        `/location/${allocationsPinMarkerHoverInfo.code}/overview`
-                      );
+                      // history.push(
+                      //   `/location/${allocationsPinMarkerHoverInfo.code}/overview`
+                      // );
                     }}
                   >
                     {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
@@ -624,7 +626,7 @@ export function GeoMap(props: GeoMapProps) {
                 width: 350px;
                 padding: 20px;
                 position: absolute;
-                background: #f5f5f7;
+                background: #f4f4f4;
                 border-radius: 20px;
 
                 @media (max-width: 767px) {
@@ -679,7 +681,7 @@ export function GeoMap(props: GeoMapProps) {
               width: 350px;
               padding: 20px;
               position: absolute;
-              background: #f5f5f7;
+              background: #f4f4f4;
               border-radius: 20px;
               top: ${hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
@@ -734,9 +736,9 @@ export function GeoMap(props: GeoMapProps) {
                 <TooltipButton
                   type="button"
                   onTouchStart={() => {
-                    history.push(
-                      `/location/${hoverInfo.properties.iso_a3}/overview`
-                    );
+                    // history.push(
+                    //   `/location/${hoverInfo.properties.iso_a3}/overview`
+                    // );
                   }}
                 >
                   {get(cmsData, "componentsChartsGeomap.locationDetail", "")}
@@ -754,7 +756,7 @@ export function GeoMap(props: GeoMapProps) {
               width: 350px;
               padding: 20px;
               position: absolute;
-              background: #f5f5f7;
+              background: #f4f4f4;
               border-radius: 20px;
               top: ${hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
@@ -809,9 +811,9 @@ export function GeoMap(props: GeoMapProps) {
                 <TooltipButton
                   type="button"
                   onTouchStart={() => {
-                    history.push(
-                      `/location/${hoverInfo.properties.iso_a3}/overview`
-                    );
+                    // history.push(
+                    //   `/location/${hoverInfo.properties.iso_a3}/overview`
+                    // );
                   }}
                 >
                   {/* {get(cmsData, "componentsChartsGeomap.locationDetail", "")} */}
@@ -830,7 +832,7 @@ export function GeoMap(props: GeoMapProps) {
               width: 350px;
               padding: 20px;
               position: absolute;
-              background: #f5f5f7;
+              background: #f4f4f4;
               border-radius: 20px;
               top: ${hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;

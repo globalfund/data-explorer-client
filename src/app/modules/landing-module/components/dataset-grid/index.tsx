@@ -1,6 +1,6 @@
 import React from "react";
 import get from "lodash/get";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { useCMSData } from "app/hooks/useCMSData";
 import { BarIcon } from "app/assets/icons/charts/Bar";
@@ -23,90 +23,98 @@ function GridItem(props: {
     icon: React.ReactElement;
   }[];
 }) {
+  const history = useHistory();
   const changeDatasource = useStoreActions(
     (store) => store.DataSourceState.setValue
   );
-  const onClickHandler = () => changeDatasource(props.value);
+
+  const onClickHandler = () => {
+    changeDatasource(props.value);
+    setTimeout(() => {
+      history.push(props.link);
+    }, 500);
+  };
 
   return (
-    <Link to={props.link} css="text-decoration: none;" onClick={onClickHandler}>
-      <div
-        css={`
-          padding: 16px;
+    <div
+      onClick={onClickHandler}
+      css={`
+        padding: 16px;
+        height: 125px;
+        color: #262c34;
+        cursor: pointer;
+        background: #fff;
+        position: relative;
+        border: 2px solid #fff;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+          0 1px 2px rgba(206, 168, 188, 0.24);
+
+        @media (max-width: 767px) {
           height: 125px;
-          color: #262c34;
-          background: #fff;
-          position: relative;
-          border: 2px solid #fff;
-          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
-            0 1px 2px rgba(206, 168, 188, 0.24);
+        }
 
-          @media (max-width: 767px) {
-            height: 125px;
-          }
+        > div {
+          font-weight: bold;
+          line-height: 18px;
+          margin-bottom: 4px;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
 
-          > div {
-            font-weight: bold;
-            line-height: 18px;
-            margin-bottom: 4px;
+          &:nth-of-type(2) {
+            font-size: 10px;
+            line-height: 12px;
+            font-weight: normal;
             font-family: "Inter", "Helvetica Neue", sans-serif;
-
-            &:nth-of-type(2) {
-              font-size: 10px;
-              line-height: 12px;
-              font-weight: normal;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
-            }
           }
+        }
 
-          &:hover {
-            border-color: #13183f;
-          }
-        `}
-      >
-        <div dangerouslySetInnerHTML={props.title} />
-        <div dangerouslySetInnerHTML={props.description} />
-        {props.iconLinks && (
-          <div
-            css={`
-              gap: 20px;
-              bottom: 16px;
-              display: flex;
-              position: absolute;
-              flex-direction: row;
+        &:hover {
+          border-color: #13183f;
+        }
+      `}
+    >
+      <div dangerouslySetInnerHTML={props.title} />
+      <div dangerouslySetInnerHTML={props.description} />
+      {props.iconLinks && (
+        <div
+          css={`
+            gap: 20px;
+            bottom: 16px;
+            display: flex;
+            position: absolute;
+            flex-direction: row;
+            pointer-events: none;
 
-              > a {
-                padding-right: 10px;
-                display: inline-flex;
-                transform: scale(1.2);
+            > a {
+              padding-right: 10px;
+              display: inline-flex;
+              transform: scale(1.2);
 
-                &:not(:last-child) {
-                  border-right: 1px solid #868a9d;
+              &:not(:last-child) {
+                border-right: 1px solid #868a9d;
+              }
+
+              > svg {
+                > path {
+                  fill: #231d2c;
                 }
 
-                > svg {
+                &:hover {
                   > path {
-                    fill: #231d2c;
-                  }
-
-                  &:hover {
-                    > path {
-                      fill: #6061e5;
-                    }
+                    fill: #6061e5;
                   }
                 }
               }
-            `}
-          >
-            {props.iconLinks.map((iconLink) => (
-              <Link to={iconLink.link} key={iconLink.link}>
-                {iconLink.icon}
-              </Link>
-            ))}
-          </div>
-        )}
-      </div>
-    </Link>
+            }
+          `}
+        >
+          {props.iconLinks.map((iconLink) => (
+            <Link to={iconLink.link} key={iconLink.link}>
+              {iconLink.icon}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -237,7 +245,7 @@ export function LandingDatasetGrid() {
           <GridItem
             value={dt.value}
             title={{ __html: dt.name }}
-            link="/viz/signed/treemap"
+            link="/viz"
             description={{
               __html:
                 "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
@@ -257,13 +265,13 @@ export function LandingDatasetGrid() {
           css={`
             pointer-events: none;
 
-            > a {
-              > div {
-                box-shadow: none;
-                background: #f4f4f4;
-                border-color: #f4f4f4;
-              }
+            // > a {
+            > div {
+              box-shadow: none;
+              background: #f4f4f4;
+              border-color: #f4f4f4;
             }
+            // }
           `}
         >
           <GridItem

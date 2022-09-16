@@ -196,19 +196,19 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected.id}
           onNodeClick={(node: string, x: number, y: number) => {
-            if (props.drilldownVizSelected.id) {
-              const idSplits = props.drilldownVizSelected.id.split("-");
-              let code = node.replace(idSplits[0], "");
-              code = code.slice(0, code.length - 1);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: code,
-                  path: `/grant/${code}/period/budgets/flow`,
-                },
-              ]);
-              history.push(`/grant/${code}/period/budgets/flow`);
-            }
+            // if (props.drilldownVizSelected.id) {
+            //   const idSplits = props.drilldownVizSelected.id.split("-");
+            //   let code = node.replace(idSplits[0], "");
+            //   code = code.slice(0, code.length - 1);
+            //   addDataPathSteps([
+            //     {
+            //       id: uniqueId(),
+            //       name: code,
+            //       path: `/grant/${code}/period/budgets/flow`,
+            //     },
+            //   ]);
+            //   history.push(`/grant/${code}/period/budgets/flow`);
+            // }
           }}
         />
       );

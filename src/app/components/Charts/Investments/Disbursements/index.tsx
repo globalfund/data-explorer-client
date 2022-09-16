@@ -147,7 +147,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                 css={`
                   padding: 16px 25px;
                   position: relative;
-                  background: #f5f5f7;
+                  background: #f4f4f4;
                   border-radius: 20px;
 
                   > div {

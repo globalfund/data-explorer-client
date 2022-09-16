@@ -170,19 +170,19 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected}
           onNodeClick={(node: string, x: number, y: number) => {
-            if (props.drilldownVizSelected) {
-              const idSplits = props.drilldownVizSelected.split("-");
-              let code = node.replace(idSplits[0], "");
-              code = code.slice(0, code.length - 1);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: code,
-                  path: `/grant/${code}/period/budgets/time-cycle`,
-                },
-              ]);
-              history.push(`/grant/${code}/period/budgets/time-cycle`);
-            }
+            // if (props.drilldownVizSelected) {
+            //   const idSplits = props.drilldownVizSelected.split("-");
+            //   let code = node.replace(idSplits[0], "");
+            //   code = code.slice(0, code.length - 1);
+            //   addDataPathSteps([
+            //     {
+            //       id: uniqueId(),
+            //       name: code,
+            //       path: `/grant/${code}/period/budgets/time-cycle`,
+            //     },
+            //   ]);
+            //   history.push(`/grant/${code}/period/budgets/time-cycle`);
+            // }
           }}
         />
       );

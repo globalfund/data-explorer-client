@@ -4,7 +4,7 @@ export const listitem = (outline: boolean) => css`
   height: 210px;
   display: flex;
   color: #231d2c;
-  background: #f5f5f7;
+  background: #f4f4f4;
   border-radius: 20px;
   flex-direction: column;
   justify-content: space-between;

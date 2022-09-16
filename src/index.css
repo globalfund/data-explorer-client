@@ -13,7 +13,7 @@ body {
 body::-webkit-scrollbar {
   width: 6px;
   border-radius: 4px;
-  background: #f5f5f7;
+  background: #f4f4f4;
 }
 body::-webkit-scrollbar-track {
   background: #231d2c;

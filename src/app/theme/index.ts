@@ -235,7 +235,7 @@ export default createTheme({
     MuiBottomNavigationAction: {
       label: {
         fontSize: 12,
-        fontFamily: "Inter",
+        fontFamily: '"Inter", "Helvetica Neue", sans-serif',
         "&.Mui-selected": {
           fontSize: 12,
         },

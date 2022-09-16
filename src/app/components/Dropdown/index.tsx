@@ -14,6 +14,7 @@ const BootstrapInput = withStyles((theme: Theme) =>
     },
     input: {
       fontSize: 16,
+      fontWeight: 400,
       outline: "none",
       position: "relative",
       borderRadius: "20px",
@@ -21,7 +22,7 @@ const BootstrapInput = withStyles((theme: Theme) =>
       textTransform: "capitalize",
       border: "1px solid #ced4da",
       padding: "10px 26px 10px 12px",
-      fontFamily: "Inter",
+      fontFamily: '"Inter", "Helvetica Neue", sans-serif',
       transition: theme.transitions.create(["border-color", "box-shadow"]),
       "&:focus": {
         outline: "none",

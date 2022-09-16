@@ -145,18 +145,18 @@ export function InvestmentsTimeCycleModule(
           onNodeClick={(node: string, x: number, y: number) => {
             // props.setVizLevel(2);
             // props.setVizSelected(node);
-            const idSplits = node.split("-");
-            const code = getIso3FromName(idSplits[0]);
-            addDataPathSteps([
-              {
-                id: uniqueId(),
-                name: `${idSplits[0]} - ${idSplits[1]}`,
-                path: `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`,
-              },
-            ]);
-            history.push(
-              `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`
-            );
+            // const idSplits = node.split("-");
+            // const code = getIso3FromName(idSplits[0]);
+            // addDataPathSteps([
+            //   {
+            //     id: uniqueId(),
+            //     name: `${idSplits[0]} - ${idSplits[1]}`,
+            //     path: `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`,
+            //   },
+            // ]);
+            // history.push(
+            //   `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`
+            // );
           }}
         />
       );

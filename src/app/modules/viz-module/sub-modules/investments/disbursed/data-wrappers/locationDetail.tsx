@@ -65,13 +65,13 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   const datasource = useStoreState((state) => state.DataSourceState.value);
 
   function goToGrantDetail(code: string) {
-    let clickthroughPath = "signed/treemap";
-    if (props.type === "Commitment") {
-      clickthroughPath = "commitment/treemap";
-    } else if (props.type === "Disbursed") {
-      clickthroughPath = "disbursements/treemap";
-    }
-    history.push(`/grant/${code}/period/${clickthroughPath}`);
+    // let clickthroughPath = "signed/treemap";
+    // if (props.type === "Commitment") {
+    //   clickthroughPath = "commitment/treemap";
+    // } else if (props.type === "Disbursed") {
+    //   clickthroughPath = "disbursements/treemap";
+    // }
+    // history.push(`/grant/${code}/period/${clickthroughPath}`);
   }
 
   React.useEffect(() => {

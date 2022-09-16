@@ -5,8 +5,9 @@ export const listitem = css`
   display: flex;
   color: #231d2c;
   padding: 12px 20px;
-  background: #f5f5f7;
+  background: #f4f4f4;
   border-radius: 20px;
+  pointer-events: none;
   text-decoration: none;
   flex-direction: column;
   justify-content: space-between;

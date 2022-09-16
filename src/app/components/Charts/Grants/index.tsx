@@ -78,7 +78,7 @@ export function GrantsViz(props: GrantsVizProps) {
             top: ${y + 12}px;
             left: ${x + 12}px;
             position: absolute;
-            background: #f5f5f7;
+            background: #f4f4f4;
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
@@ -111,7 +111,7 @@ export function GrantsViz(props: GrantsVizProps) {
             </div>
           )}
           <GrantsRadialTooltip {...hoveredNode} />
-          {(isMobile || isTouchDevice()) && (
+          {/* {(isMobile || isTouchDevice()) && (
             <Button
               onTouchStart={() => {
                 history.push(
@@ -139,7 +139,7 @@ export function GrantsViz(props: GrantsVizProps) {
             >
               {get(cmsData, "componentsChartsGrants.grantsDetailPage", "")}
             </Button>
-          )}
+          )} */}
         </div>
       )}
       <div
@@ -473,11 +473,11 @@ export function ComponentRadarThingies(props: any) {
                           />
                           <div
                             onClick={() => {
-                              if (!isMobile && !isTouchDevice()) {
-                                history.push(
-                                  `/grant/${item.name}/${subItem.name}/overview`
-                                );
-                              }
+                              // if (!isMobile && !isTouchDevice()) {
+                              //   history.push(
+                              //     `/grant/${item.name}/${subItem.name}/overview`
+                              //   );
+                              // }
                             }}
                             onMouseLeave={() => {
                               if (!isMobile && !isTouchDevice()) {

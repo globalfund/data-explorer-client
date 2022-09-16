@@ -31,7 +31,7 @@ export function InformationPanel(props: InformationPanelProps) {
             z-index: 2;
             width: 500px;
             position: fixed;
-            background: #f5f5f7;
+            background: #f4f4f4;
             height: calc(100% - 133px);
             visibility: visible !important;
 

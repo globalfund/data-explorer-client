@@ -13,7 +13,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
         min-width: 250px;
         padding: 16px 25px;
         position: relative;
-        background: #f5f5f7;
+        background: #f4f4f4;
         border-radius: 20px;
       `}
     >

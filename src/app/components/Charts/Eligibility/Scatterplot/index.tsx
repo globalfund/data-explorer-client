@@ -111,7 +111,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
             padding: 12px;
             color: #231d2c;
             position: absolute;
-            background: #f5f5f7;
+            background: #f4f4f4;
             border-radius: 20px;
             top: ${hoveredNode.yPosition + 12}px;
             left: ${hoveredNode.xPosition + 12}px;
