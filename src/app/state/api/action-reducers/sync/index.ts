@@ -226,3 +226,16 @@ export const DataSourceState: DataSourceStateModel = {
     state.value = payload;
   }),
 };
+
+export interface DataSourceSnackbarVisibilityStateModel {
+  value: boolean;
+  setValue: Action<DataSourceSnackbarVisibilityStateModel, boolean>;
+}
+
+export const DataSourceSnackbarVisibilityState: DataSourceSnackbarVisibilityStateModel =
+  {
+    value: false,
+    setValue: action((state, payload: boolean) => {
+      state.value = payload;
+    }),
+  };

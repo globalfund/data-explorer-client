@@ -27,9 +27,13 @@ function GridItem(props: {
   const changeDatasource = useStoreActions(
     (store) => store.DataSourceState.setValue
   );
+  const setShowDatasourceSnackbar = useStoreActions(
+    (store) => store.DataSourceSnackbarVisibility.setValue
+  );
 
   const onClickHandler = () => {
     changeDatasource(props.value);
+    setShowDatasourceSnackbar(true);
     setTimeout(() => {
       history.push(props.link);
     }, 500);

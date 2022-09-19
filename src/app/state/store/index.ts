@@ -3,6 +3,7 @@ import { StoreModel } from "app/state/api/interfaces";
 
 import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
 import {
+  DataSourceSnackbarVisibilityState,
   DataSourceState,
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
@@ -332,6 +333,7 @@ const storeContent: StoreModel = {
   DataPathActiveStep: DataPathActiveStep,
   AvailableDatasources: persist(AvailableDatasources),
   MappedDatasets: persist(MappedDatasets),
+  DataSourceSnackbarVisibility: persist(DataSourceSnackbarVisibilityState),
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),

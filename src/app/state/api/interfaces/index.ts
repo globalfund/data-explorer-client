@@ -1,5 +1,6 @@
 import { Action, Thunk } from "easy-peasy";
 import {
+  DataSourceSnackbarVisibilityStateModel,
   DataSourceStateModel,
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
@@ -253,6 +254,7 @@ export interface StoreModel {
   DataSourceState: DataSourceStateModel;
   AvailableDatasources: ApiCallModel;
   MappedDatasets: ApiCallModel;
+  DataSourceSnackbarVisibility: DataSourceSnackbarVisibilityStateModel;
   // sync data path vars
   DataPathPanelVisibilityState: DataPathPanelVisibilityStateModel;
   DataPathSteps: DataPathStepsStateModel;
