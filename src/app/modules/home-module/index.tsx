@@ -169,14 +169,14 @@ export default function HomeModule() {
             </div>
             <img src={SelectDatasetImage} alt="select-dataset" />
           </Link>
-          <Link to="">
+          <Link to="/map-data" css="pointer-events: none;">
             <div>
               <div>2</div>
               <h6>Map Data</h6>
             </div>
             <img src={MapDataImage} alt="map-data" />
           </Link>
-          <Link to="">
+          <Link to="/viz">
             <div>
               <div>3</div>
               <h6>Explore</h6>
