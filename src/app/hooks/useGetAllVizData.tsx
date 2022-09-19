@@ -279,50 +279,50 @@ export function useGetAllVizData() {
 
   return {
     // Allocations
-    "/viz/allocations": allocations,
-    "/viz/allocations/map": {
+    "/explore/allocations": allocations,
+    "/explore/allocations/map": {
       countries: allocationsGeomap,
       multicountries: allocationsMCGeomap,
     },
     // Budgets
-    "/viz/budgets/flow": budgetsFlow,
-    "/viz/budgets/time-cycle": budgetsTimeCycle,
-    "/viz/budgets/map": {
+    "/explore/budgets/flow": budgetsFlow,
+    "/explore/budgets/time-cycle": budgetsTimeCycle,
+    "/explore/budgets/map": {
       countries: budgetsGeomap,
       multicountries: budgetsMCGeomap,
     },
     // Disbursements
-    "/viz/disbursements/map": {
+    "/explore/disbursements/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
-    "/viz/disbursements/time-cycle": disbursementsTimeCycle,
-    "/viz/disbursements/treemap": disbursementsTreemap,
-    "/viz/disbursements/table": disbursementsTreemap,
+    "/explore/disbursements/time-cycle": disbursementsTimeCycle,
+    "/explore/disbursements/treemap": disbursementsTreemap,
+    "/explore/disbursements/table": disbursementsTreemap,
     // Signed
-    "/viz/signed/map": {
+    "/explore/signed/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
-    "/viz/signed/time-cycle": signedTimeCycle,
-    "/viz/signed/treemap": signedTreemap,
-    "/viz/signed/table": signedTreemap,
+    "/explore/signed/time-cycle": signedTimeCycle,
+    "/explore/signed/treemap": signedTreemap,
+    "/explore/signed/table": signedTreemap,
     // Commitment
-    "/viz/commitment/map": {
+    "/explore/commitment/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
     },
-    "/viz/commitment/time-cycle": commitmentTimeCycle,
-    "/viz/commitment/treemap": commitmentTreemap,
-    "/viz/commitment/table": commitmentTreemap,
+    "/explore/commitment/time-cycle": commitmentTimeCycle,
+    "/explore/commitment/treemap": commitmentTreemap,
+    "/explore/commitment/table": commitmentTreemap,
     // Eligibility
-    "/viz/eligibility": eligibility,
-    "/viz/eligibility/table": eligibility,
+    "/explore/eligibility": eligibility,
+    "/explore/eligibility/table": eligibility,
     // Pledges & Contributions
-    "/viz/pledges-contributions/map": pledgesContributionsGeomap,
-    "/viz/pledges-contributions/table": pledgesContributionsGeomap,
-    "/viz/pledges-contributions/treemap": pledgesContributionsTreemap,
-    "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
+    "/explore/pledges-contributions/map": pledgesContributionsGeomap,
+    "/explore/pledges-contributions/table": pledgesContributionsGeomap,
+    "/explore/pledges-contributions/treemap": pledgesContributionsTreemap,
+    "/explore/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
     // Grant Budgets
     "/grant/<code>/budgets/flow": grantDetailBudgetsFlow,
     "/grant/<code>/budgets/time-cycle": grantDetailBudgetsTimeCycle,

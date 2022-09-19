@@ -69,7 +69,7 @@ export function PageHeader(props: PageHeaderProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 1280px)");
 
-  const isVizModule = history.location.pathname.indexOf("/viz/") > -1;
+  const isVizModule = history.location.pathname.indexOf("/explore/") > -1;
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
   const isPartnerDetail = history.location.pathname.indexOf("/partner/") > -1;
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;

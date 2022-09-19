@@ -176,7 +176,7 @@ export default function HomeModule() {
             </div>
             <img src={MapDataImage} alt="map-data" />
           </Link>
-          <Link to="/viz">
+          <Link to="/explore">
             <div>
               <div>3</div>
               <h6>Explore</h6>

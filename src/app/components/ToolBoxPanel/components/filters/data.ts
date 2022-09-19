@@ -173,122 +173,122 @@ export const pathnameToFilterGroups = {
       fg.name === "Locations" || fg.name === "Components"
   ),
   // viz data pages
-  "/viz/disbursements/treemap": filter(
+  "/explore/disbursements/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/disbursements/time-cycle": filter(
+  "/explore/disbursements/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/disbursements/map": filter(
+  "/explore/disbursements/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/disbursements/table": filter(
+  "/explore/disbursements/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/signed/treemap": filter(
+  "/explore/signed/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/signed/time-cycle": filter(
+  "/explore/signed/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/signed/map": filter(
+  "/explore/signed/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/signed/table": filter(
+  "/explore/signed/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/commitment/treemap": filter(
+  "/explore/commitment/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/commitment/time-cycle": filter(
+  "/explore/commitment/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/commitment/map": filter(
+  "/explore/commitment/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/commitment/table": filter(
+  "/explore/commitment/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/budgets/flow": filter(
+  "/explore/budgets/flow": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/budgets/time-cycle": filter(
+  "/explore/budgets/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/budgets/map": filter(
+  "/explore/budgets/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/allocations": filter(
+  "/explore/allocations": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
-  "/viz/allocations/map": filter(
+  "/explore/allocations/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
-  "/viz/eligibility": filter(
+  "/explore/eligibility": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
-  "/viz/pledges-contributions/time-cycle": filter(
+  "/explore/pledges-contributions/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
-  "/viz/pledges-contributions/treemap": filter(
+  "/explore/pledges-contributions/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
-  "/viz/pledges-contributions/map": filter(
+  "/explore/pledges-contributions/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
-  "/viz/grants": filter(
+  "/explore/grants": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" && fg.name !== "Replenishment Periods"
   ),
-  "/viz/documents": filter(
+  "/explore/documents": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
-  "/viz/results": filter(
+  "/explore/results": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"

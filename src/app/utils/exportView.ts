@@ -13,38 +13,38 @@ function getFileName(
 ): string {
   const isComponent = options.selectedAggregation === "componentName";
   switch (pathname) {
-    case "/viz/disbursements/treemap":
+    case "/explore/disbursements/treemap":
       return "disbursements-treemap";
-    case "/viz/disbursements/time-cycle":
+    case "/explore/disbursements/time-cycle":
       return "disbursements-bar";
-    case "/viz/disbursements/map":
+    case "/explore/disbursements/map":
       return `disbursements-${options.investmentsMapView}`;
-    case "/viz/budgets/flow":
+    case "/explore/budgets/flow":
       return "budgets-flow";
-    case "/viz/budgets/time-cycle":
+    case "/explore/budgets/time-cycle":
       return "budgets-time-cycle";
-    case "/viz/budgets/map":
+    case "/explore/budgets/map":
       return `budgets-${options.investmentsMapView}`;
-    case "/viz/allocations":
+    case "/explore/allocations":
       return "allocations";
-    case "/viz/allocations/map":
+    case "/explore/allocations/map":
       return `allocations-${options.investmentsMapView}`;
-    case "/viz/allocations":
+    case "/explore/allocations":
       return "allocations";
-    case "/viz/eligibility":
+    case "/explore/eligibility":
       if (options.isDetail) {
         return "location-eligibility";
       }
       return `eligibility-by-${isComponent ? "component" : "location"}`;
-    case "/viz/pledges-contributions/time-cycle":
+    case "/explore/pledges-contributions/time-cycle":
       return "pledges-contributions-time-cycle";
-    case "/viz/pledges-contributions/map":
+    case "/explore/pledges-contributions/map":
       return `pledges-contributions-${options.donorMapView
         .toLowerCase()
         .replace(/ /g, "-")}`;
     case "/grants":
       return "grants";
-    case "/viz/grants":
+    case "/explore/grants":
       return "grants";
     case "/results":
       return "results";

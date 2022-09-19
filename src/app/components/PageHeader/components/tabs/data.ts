@@ -16,39 +16,39 @@ export interface RouteTabProps extends TabProps {
 export const exploreTabs: TabProps[] = [
   {
     name: "Signed",
-    url: "/viz/signed/treemap",
+    url: "/explore/signed/treemap",
   },
   {
     name: "Commitments",
-    url: "/viz/commitment/treemap",
+    url: "/explore/commitment/treemap",
   },
   {
     name: "Disbursements",
-    url: "/viz/disbursements/treemap",
+    url: "/explore/disbursements/treemap",
   },
   {
     name: "Budgets",
-    url: "/viz/budgets/flow",
+    url: "/explore/budgets/flow",
   },
   {
     name: "Allocations",
-    url: "/viz/allocations",
+    url: "/explore/allocations",
   },
   {
     name: "Eligibility",
-    url: "/viz/eligibility",
+    url: "/explore/eligibility",
   },
   {
     name: "Documents",
-    url: "/viz/documents",
+    url: "/explore/documents",
   },
   {
     name: "Grants",
-    url: "/viz/grants",
+    url: "/explore/grants",
   },
   {
     name: "Results",
-    url: "/viz/results",
+    url: "/explore/results",
   },
 ];
 

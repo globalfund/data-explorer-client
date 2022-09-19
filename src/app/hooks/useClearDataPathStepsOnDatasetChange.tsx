@@ -36,7 +36,7 @@ export function useClearDataPathStepsOnDatasetChange() {
     const splits = location.pathname.split("/");
     if (splits.length > 1) {
       switch (splits[1]) {
-        case "viz":
+        case "explore":
           newLocation.type = splits[2];
           break;
         case "location":

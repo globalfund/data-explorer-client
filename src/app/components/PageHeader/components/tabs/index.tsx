@@ -151,7 +151,7 @@ function formatTabUrlWithParams(
   }
   isActive = urlsplits[index] === params[indexParam];
 
-  if (urlsplits[1] === "viz") {
+  if (urlsplits[1] === "explore") {
     isActive = urlsplits[2] === params.vizType;
   }
 

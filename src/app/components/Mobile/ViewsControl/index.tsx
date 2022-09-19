@@ -105,7 +105,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
       view = find(
         controlItems.views,
         (v: ViewModel) =>
-          v.link?.replace("viz", `location/${params.code}`) ===
+          v.link?.replace("explore", `location/${params.code}`) ===
           history.location.pathname
       );
     } else {

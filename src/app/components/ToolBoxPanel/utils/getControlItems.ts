@@ -12,141 +12,141 @@ const views = {
     {
       label: "Treemap",
       value: "Treemap",
-      link: "/viz/disbursements/treemap",
+      link: "/explore/disbursements/treemap",
     },
     {
       label: "Time cycle",
       value: "Time cycle",
-      link: "/viz/disbursements/time-cycle",
+      link: "/explore/disbursements/time-cycle",
     },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/disbursements/map",
+      link: "/explore/disbursements/map",
     },
     {
       label: "Table",
       value: "Table",
-      link: "/viz/disbursements/table",
+      link: "/explore/disbursements/table",
     },
   ],
   signed: [
     {
       label: "Treemap",
       value: "Treemap",
-      link: "/viz/signed/treemap",
+      link: "/explore/signed/treemap",
     },
     // {
     //   label: "Time cycle",
     //   value: "Time cycle",
-    //   link: "/viz/signed/time-cycle",
+    //   link: "/explore/signed/time-cycle",
     // },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/signed/map",
+      link: "/explore/signed/map",
     },
     {
       label: "Table",
       value: "Table",
-      link: "/viz/signed/table",
+      link: "/explore/signed/table",
     },
   ],
   commitment: [
     {
       label: "Treemap",
       value: "Treemap",
-      link: "/viz/commitment/treemap",
+      link: "/explore/commitment/treemap",
     },
     {
       label: "Time cycle",
       value: "Time cycle",
-      link: "/viz/commitment/time-cycle",
+      link: "/explore/commitment/time-cycle",
     },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/commitment/map",
+      link: "/explore/commitment/map",
     },
     {
       label: "Table",
       value: "Table",
-      link: "/viz/commitment/table",
+      link: "/explore/commitment/table",
     },
   ],
   budgets: [
     {
       label: "Flow",
       value: "Flow",
-      link: "/viz/budgets/flow",
+      link: "/explore/budgets/flow",
     },
     {
       label: "Time cycle",
       value: "Time cycle",
-      link: "/viz/budgets/time-cycle",
+      link: "/explore/budgets/time-cycle",
     },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/budgets/map",
+      link: "/explore/budgets/map",
     },
   ],
   eligibility: [
     {
       label: "Chart",
       value: "Chart",
-      link: "/viz/eligibility",
+      link: "/explore/eligibility",
     },
     {
       label: "Table",
       value: "Table",
-      link: "/viz/eligibility/table",
+      link: "/explore/eligibility/table",
     },
   ],
   allocations: [
     {
       label: "Radial",
       value: "Radial",
-      link: "/viz/allocations",
+      link: "/explore/allocations",
     },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/allocations/map",
+      link: "/explore/allocations/map",
     },
   ],
   grants: [
     {
       label: "Chart",
       value: "Chart",
-      link: "/viz/grants",
+      link: "/explore/grants",
     },
     {
       label: "List",
       value: "List",
-      link: "/viz/grants/list",
+      link: "/explore/grants/list",
     },
   ],
   "pledges-contributions": [
     {
       label: "Treemap",
       value: "Treemap",
-      link: "/viz/pledges-contributions/treemap",
+      link: "/explore/pledges-contributions/treemap",
     },
     {
       label: "Replenishment Periods",
       value: "Replenishment Periods",
-      link: "/viz/pledges-contributions/time-cycle",
+      link: "/explore/pledges-contributions/time-cycle",
     },
     {
       label: "Map",
       value: "Map",
-      link: "/viz/pledges-contributions/map",
+      link: "/explore/pledges-contributions/map",
     },
     {
       label: "Table",
       value: "Table",
-      link: "/viz/pledges-contributions/table",
+      link: "/explore/pledges-contributions/table",
     },
   ],
 };
@@ -207,7 +207,7 @@ export function getControlItems(
       ...view,
       link: view.link
         ? view.link.replace(
-            "viz",
+            "explore",
             `${detailPageParam}/${detailPageCode}${
               grantDetailPeriod ? `/${grantDetailPeriod}` : ""
             }`
@@ -228,7 +228,7 @@ export function getControlItems(
       aggregates: get(aggregates, vizType, []),
     };
   }
-  if (pathname.indexOf("/viz/grants") > -1) {
+  if (pathname.indexOf("/explore/grants") > -1) {
     return {
       views: [],
       aggregates: [],

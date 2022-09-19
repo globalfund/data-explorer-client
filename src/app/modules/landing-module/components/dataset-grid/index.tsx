@@ -125,19 +125,19 @@ function GridItem(props: {
 const iconLinks = [
   {
     icon: <SankeyIcon />,
-    link: "/viz/budgets/flow",
+    link: "/explore/budgets/flow",
   },
   {
     icon: <BarIcon />,
-    link: "/viz/disbursements/time-cycle",
+    link: "/explore/disbursements/time-cycle",
   },
   {
     icon: <MapIcon />,
-    link: "/viz/allocations/map",
+    link: "/explore/allocations/map",
   },
   {
     icon: <TableIcon />,
-    link: "/viz/eligibility/table",
+    link: "/explore/eligibility/table",
   },
 ];
 
@@ -249,7 +249,7 @@ export function LandingDatasetGrid() {
           <GridItem
             value={dt.value}
             title={{ __html: dt.name }}
-            link="/viz"
+            link="/explore"
             description={{
               __html:
                 "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
@@ -281,7 +281,7 @@ export function LandingDatasetGrid() {
           <GridItem
             value=""
             title={{ __html: "Dataset" }}
-            link="/viz/signed/treemap"
+            link="/explore/signed/treemap"
             description={{
               __html:
                 "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
@@ -293,20 +293,20 @@ export function LandingDatasetGrid() {
       {/* <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={fbText}
-          link="/viz/budgets/flow"
+          link="/explore/budgets/flow"
           description={fbDescription}
           iconLinks={[
             {
               icon: <SankeyIcon />,
-              link: "/viz/budgets/flow",
+              link: "/explore/budgets/flow",
             },
             {
               icon: <BarIcon />,
-              link: "/viz/budgets/time-cycle",
+              link: "/explore/budgets/time-cycle",
             },
             {
               icon: <MapIcon />,
-              link: "/viz/budgets/map",
+              link: "/explore/budgets/map",
             },
           ]}
         />
@@ -314,24 +314,24 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={fpText}
-          link="/viz/pledges-contributions/treemap"
+          link="/explore/pledges-contributions/treemap"
           description={fpDescription}
           iconLinks={[
             {
               icon: <TreemapIcon />,
-              link: "/viz/pledges-contributions/treemap",
+              link: "/explore/pledges-contributions/treemap",
             },
             {
               icon: <BarIcon />,
-              link: "/viz/pledges-contributions/time-cycle",
+              link: "/explore/pledges-contributions/time-cycle",
             },
             {
               icon: <MapIcon />,
-              link: "/viz/pledges-contributions/map",
+              link: "/explore/pledges-contributions/map",
             },
             {
               icon: <TableIcon />,
-              link: "/viz/pledges-contributions/table",
+              link: "/explore/pledges-contributions/table",
             },
           ]}
         />
@@ -339,24 +339,24 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={fsText}
-          link="/viz/signed/treemap"
+          link="/explore/signed/treemap"
           description={fsDescription}
           iconLinks={[
             {
               icon: <TreemapIcon />,
-              link: "/viz/signed/treemap",
+              link: "/explore/signed/treemap",
             },
             {
               icon: <BarIcon />,
-              link: "/viz/signed/time-cycle",
+              link: "/explore/signed/time-cycle",
             },
             {
               icon: <MapIcon />,
-              link: "/viz/signed/map",
+              link: "/explore/signed/map",
             },
             {
               icon: <TableIcon />,
-              link: "/viz/signed/table",
+              link: "/explore/signed/table",
             },
           ]}
         />
@@ -364,24 +364,24 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={fdText}
-          link="/viz/disbursements/treemap"
+          link="/explore/disbursements/treemap"
           description={fdDescription}
           iconLinks={[
             {
               icon: <TreemapIcon />,
-              link: "/viz/disbursements/treemap",
+              link: "/explore/disbursements/treemap",
             },
             {
               icon: <BarIcon />,
-              link: "/viz/disbursements/time-cycle",
+              link: "/explore/disbursements/time-cycle",
             },
             {
               icon: <MapIcon />,
-              link: "/viz/disbursements/map",
+              link: "/explore/disbursements/map",
             },
             {
               icon: <TableIcon />,
-              link: "/viz/disbursements/table",
+              link: "/explore/disbursements/table",
             },
           ]}
         />
@@ -389,24 +389,24 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={fcText}
-          link="/viz/commitment/treemap"
+          link="/explore/commitment/treemap"
           description={fcDescription}
           iconLinks={[
             {
               icon: <TreemapIcon />,
-              link: "/viz/commitment/treemap",
+              link: "/explore/commitment/treemap",
             },
             {
               icon: <BarIcon />,
-              link: "/viz/commitment/time-cycle",
+              link: "/explore/commitment/time-cycle",
             },
             {
               icon: <MapIcon />,
-              link: "/viz/commitment/map",
+              link: "/explore/commitment/map",
             },
             {
               icon: <TableIcon />,
-              link: "/viz/commitment/table",
+              link: "/explore/commitment/table",
             },
           ]}
         />
@@ -414,16 +414,16 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={aeText}
-          link="/viz/eligibility"
+          link="/explore/eligibility"
           description={aeDescription}
           iconLinks={[
             {
               icon: <DotIcon />,
-              link: "/viz/eligibility",
+              link: "/explore/eligibility",
             },
             {
               icon: <TableIcon />,
-              link: "/viz/eligibility/table",
+              link: "/explore/eligibility/table",
             },
           ]}
         />
@@ -431,16 +431,16 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={aaText}
-          link="/viz/allocations"
+          link="/explore/allocations"
           description={aaDescription}
           iconLinks={[
             {
               icon: <AllocationIcon />,
-              link: "/viz/allocations",
+              link: "/explore/allocations",
             },
             {
               icon: <MapIcon />,
-              link: "/viz/allocations/map",
+              link: "/explore/allocations/map",
             },
           ]}
         />

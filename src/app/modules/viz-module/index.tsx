@@ -161,121 +161,121 @@ export default function VizModule() {
       >
         <Switch>
           {/* Budgets */}
-          <Route path="/viz/budgets/flow">
+          <Route path="/explore/budgets/flow">
             <GenericBudgetsFlowWrapper
               toolboxOpen={openToolboxPanel}
               setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
-          <Route path="/viz/budgets/time-cycle">
+          <Route path="/explore/budgets/time-cycle">
             <GenericBudgetsTimeCycleWrapper
               toolboxOpen={openToolboxPanel}
               setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
-          <Route path="/viz/budgets/map">
+          <Route path="/explore/budgets/map">
             <BudgetsGeoMap />
           </Route>
           {/* Disbursements */}
-          <Route path="/viz/disbursements/treemap">
+          <Route path="/explore/disbursements/treemap">
             <GenericInvestmentsDisbursedWrapper
               type="Disbursed"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/disbursements/table">
+          <Route path="/explore/disbursements/table">
             <GenericInvestmentsTableWrapper />
           </Route>
-          <Route path="/viz/disbursements/time-cycle">
+          <Route path="/explore/disbursements/time-cycle">
             <GenericInvestmentsTimeCycleWrapper
               type="Disbursed"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/disbursements/map">
+          <Route path="/explore/disbursements/map">
             <InvestmentsGeoMap type="Disbursed" />
           </Route>
           {/* Signed */}
-          <Route path="/viz/signed/treemap">
+          <Route path="/explore/signed/treemap">
             <GenericInvestmentsDisbursedWrapper
               type="Signed"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/signed/table">
+          <Route path="/explore/signed/table">
             <GenericInvestmentsTableWrapper />
           </Route>
-          {/* <Route path="/viz/signed/time-cycle">
+          {/* <Route path="/explore/signed/time-cycle">
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               toolboxOpen={openToolboxPanel}
             />
           </Route> */}
-          <Route path="/viz/signed/map">
+          <Route path="/explore/signed/map">
             <InvestmentsGeoMap type="Signed" />
           </Route>
           {/* Commitment */}
-          <Route path="/viz/commitment/treemap">
+          <Route path="/explore/commitment/treemap">
             <GenericInvestmentsDisbursedWrapper
               type="Commitment"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/commitment/table">
+          <Route path="/explore/commitment/table">
             <GenericInvestmentsTableWrapper />
           </Route>
-          <Route path="/viz/commitment/time-cycle">
+          <Route path="/explore/commitment/time-cycle">
             <GenericInvestmentsTimeCycleWrapper
               type="Commitment"
               toolboxOpen={openToolboxPanel}
             />
           </Route>
-          <Route path="/viz/commitment/map">
+          <Route path="/explore/commitment/map">
             <InvestmentsGeoMap type="Committed" />
           </Route>
           {/* Allocations */}
-          <Route path="/viz/allocations/map">
+          <Route path="/explore/allocations/map">
             <AllocationsGeoMap />
           </Route>
-          <Route path="/viz/allocations">
+          <Route path="/explore/allocations">
             <AllocationsModule
               toolboxOpen={openToolboxPanel}
               setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
           {/* Pledges & Contributions */}
-          <Route path="/viz/pledges-contributions/time-cycle">
+          <Route path="/explore/pledges-contributions/time-cycle">
             <PledgesContributionsTimeCycleModule
               toolboxOpen={openToolboxPanel}
               setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
-          <Route path="/viz/pledges-contributions/table">
+          <Route path="/explore/pledges-contributions/table">
             <PledgesContributionsTable />
           </Route>
-          <Route path="/viz/pledges-contributions/map">
+          <Route path="/explore/pledges-contributions/map">
             <PledgesContributionsGeoMap />
           </Route>
-          <Route path="/viz/pledges-contributions/treemap">
+          <Route path="/explore/pledges-contributions/treemap">
             <PledgesContributionsTreemap />
           </Route>
           {/* Eligibility */}
-          <Route path="/viz/eligibility/table">
+          <Route path="/explore/eligibility/table">
             <GenericEligibilityWrapper />
           </Route>
-          <Route path="/viz/eligibility">
+          <Route path="/explore/eligibility">
             <EligibilityModule />
           </Route>
           {/* Grants */}
-          <Route exact path="/viz/grants">
+          <Route exact path="/explore/grants">
             <GrantsModule hideHeader />
           </Route>
           {/* Results */}
-          <Route exact path="/viz/results">
+          <Route exact path="/explore/results">
             <ResultsModule hideHeader />
           </Route>
           {/* Documents */}
-          <Route exact path="/viz/documents">
+          <Route exact path="/explore/documents">
             <DocumentsModule hideHeader />
           </Route>
         </Switch>

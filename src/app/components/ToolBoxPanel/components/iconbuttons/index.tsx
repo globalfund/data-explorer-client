@@ -18,9 +18,9 @@ import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 
 const locationsToNotShowImageExport = [
-  "/viz/disbursements/map",
-  "/viz/signed/map",
-  "/viz/commitment/map",
+  "/explore/disbursements/map",
+  "/explore/signed/map",
+  "/explore/commitment/map",
   "/location/<code>/disbursements/map",
   "/location/<code>/signed/map",
   "/location/<code>/commitment/map",
@@ -29,10 +29,10 @@ const locationsToNotShowImageExport = [
   "/partner/<code>/commitment/map",
   "/location/<code>/budgets/map",
   "/partner/<code>/budgets/map",
-  "/viz/disbursements/table",
-  "/viz/signed/table",
-  "/viz/commitment/table",
-  "/viz/eligibility/table",
+  "/explore/disbursements/table",
+  "/explore/signed/table",
+  "/explore/commitment/table",
+  "/explore/eligibility/table",
   "/location/<code>/disbursements/table",
   "/location/<code>/signed/table",
   "/location/<code>/commitment/table",
@@ -43,18 +43,18 @@ const locationsToNotShowImageExport = [
   "/grant/<code>/disbursements/table",
   "/grant/<code>/signed/table",
   "/grant/<code>/commitment/table",
-  "/viz/pledges-contributions/map",
-  "/viz/pledges-contributions/table",
-  "/viz/budgets/map",
-  "/viz/allocations/map",
+  "/explore/pledges-contributions/map",
+  "/explore/pledges-contributions/table",
+  "/explore/budgets/map",
+  "/explore/allocations/map",
   "/grants",
-  "/viz/grants",
+  "/explore/grants",
   "/location/<code>/grants",
   "/results",
 ];
 
 const locationsToNotShowExport = [
-  "/viz/documents",
+  "/explore/documents",
   "/location/<code>/documents",
 ];
 
@@ -150,8 +150,8 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
           id="download-csv"
           {...exportCSV(
             location.pathname
-              .replace("/location/", "/viz/")
-              .replace("/grant/", "/viz/")
+              .replace("/location/", "/explore/")
+              .replace("/grant/", "/explore/")
               .replace(`/${params.code}`, ""),
             get(
               vizData,
@@ -232,8 +232,8 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
             "export-view-div",
             "png",
             location.pathname
-              .replace("/location/", "/viz/")
-              .replace("/grant/", "/viz/")
+              .replace("/location/", "/explore/")
+              .replace("/grant/", "/explore/")
               .replace(`/${params.code}`, ""),
             {
               selectedAggregation,
@@ -263,8 +263,8 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
             "export-view-div",
             "svg",
             location.pathname
-              .replace("/location/", "/viz/")
-              .replace("/grant/", "/viz/")
+              .replace("/location/", "/explore/")
+              .replace("/grant/", "/explore/")
               .replace(`/${params.code}`, ""),
             {
               selectedAggregation,
