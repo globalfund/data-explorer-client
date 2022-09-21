@@ -158,7 +158,7 @@ export function NetworkViz(props: NetworkVizProps) {
         strokeLinecap="round"
         stroke={
           props.selectedNodeId && props.selectedNodeId === link.source.id
-            ? "#495057"
+            ? "#262C34"
             : "#DFE3E6"
         }
       />

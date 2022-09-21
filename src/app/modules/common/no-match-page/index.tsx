@@ -79,7 +79,7 @@ export const NoMatchPage = () => {
             align-items: center;
             width: 204px;
             height: 46px;
-            background: #495057;
+            background: #262c34;
             border-radius: 20px;
           `}
         >

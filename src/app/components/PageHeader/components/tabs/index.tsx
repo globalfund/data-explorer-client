@@ -88,7 +88,7 @@ const styles = {
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
-        background: #495057;
+        background: #262c34;
         a,
         div {
           color: #fff;
@@ -263,7 +263,7 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
                     &:hover {
                       color: #fff;
                       font-weight: bold;
-                      background: #495057;
+                      background: #262c34;
                       transition: background 0.2s ease-in-out;
                       font-family: "GothamNarrow-Bold", "Helvetica Neue",
                         sans-serif;

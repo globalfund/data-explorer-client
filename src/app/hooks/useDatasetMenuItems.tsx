@@ -67,7 +67,7 @@ function Expandable(props: ExpandableProps) {
 
           a {
             width: 100%;
-            color: #495057;
+            color: #262c34;
             font-size: 14px;
             padding: 10px 15px;
             text-decoration: none;

@@ -467,7 +467,7 @@ export function ComponentRadarThingies(props: any) {
                               height: 4px;
                               border-radius: 50%;
                               position: absolute;
-                              background: #495057;
+                              background: #262c34;
                               bottom: ${startHeight}px;
                             `}
                           />
@@ -514,7 +514,7 @@ export function ComponentRadarThingies(props: any) {
                               border-radius: 50%;
                               position: absolute;
                               left: -${size / 2}px;
-                              border: 1px solid #495057;
+                              border: 1px solid #262c34;
                               background: ${get(
                                 ratingColor,
                                 subItem.rating,
@@ -740,7 +740,9 @@ export const RadialChartLegend = (props: any) => {
           justify-content: center;
         `}
       >
-        <div css={header}>{get(cmsData, "componentsChartsGrants.implementationPeriod", "")}</div>
+        <div css={header}>
+          {get(cmsData, "componentsChartsGrants.implementationPeriod", "")}
+        </div>
         <div css={implementationPeriodContainer}>
           <div css={implementationPeriod}>
             <div css={end} />
@@ -764,7 +766,10 @@ export const RadialChartLegend = (props: any) => {
                   line-height: normal;
                 `}
               >
-                {get(cmsData, "componentsChartsGrants.circleSize", "")} {`\n`} {get(cmsData, "componentsChartsGrants.circleContent", "")} {`\n`} ({get(cmsData, "componentsChartsGrants.circleMaxValue", "")}{" "}
+                {get(cmsData, "componentsChartsGrants.circleSize", "")} {`\n`}{" "}
+                {get(cmsData, "componentsChartsGrants.circleContent", "")}{" "}
+                {`\n`} (
+                {get(cmsData, "componentsChartsGrants.circleMaxValue", "")}{" "}
                 {formatFinancialValue(props.maxValue)})
               </div>
             </div>
@@ -777,9 +782,7 @@ export const RadialChartLegend = (props: any) => {
             </div>
           </div>
         </div>
-        <div css={note}>
-          {get(cmsData, "componentsChartsGrants.note", "")}
-        </div>
+        <div css={note}>{get(cmsData, "componentsChartsGrants.note", "")}</div>
       </div>
       <div
         css={`
@@ -800,7 +803,9 @@ export const RadialChartLegend = (props: any) => {
             justify-content: center;
           `}
         >
-          <div css={header}>L{get(cmsData, "componentsChartsGrants.latestRatingColor", "")}</div>
+          <div css={header}>
+            L{get(cmsData, "componentsChartsGrants.latestRatingColor", "")}
+          </div>
           <div
             css={`
               width: 100%;
@@ -835,7 +840,7 @@ export const RadialChartLegend = (props: any) => {
                   width: 40px;
                   left: -16px;
                   bottom: -25px;
-                  color: #495057;
+                  color: #262c34;
                   font-size: 12px;
                   position: absolute;
                   text-align: center;
@@ -901,13 +906,21 @@ export const RadialChartLegend = (props: any) => {
           `}
         >
           <div css="width: 100%;height: 15px;" />
-          <div css={header}>{get(cmsData, "componentsChartsGrants.grantStatus", "")}</div>
+          <div css={header}>
+            {get(cmsData, "componentsChartsGrants.grantStatus", "")}
+          </div>
           <hr css={solid} />
-          <div css={body}>{get(cmsData, "componentsChartsGrants.active", "")}</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.active", "")}
+          </div>
           <hr css={dashed} />
-          <div css={body}>{get(cmsData, "componentsChartsGrants.closure", "")}</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.closure", "")}
+          </div>
           <hr css={dotted} />
-          <div css={body}>{get(cmsData, "componentsChartsGrants.closed", "")}</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.closed", "")}
+          </div>
         </div>
       </div>
     </div>

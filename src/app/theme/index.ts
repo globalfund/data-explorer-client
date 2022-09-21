@@ -64,7 +64,7 @@ export const ProjectPalette: ProjectPalette = {
   },
   divider: "rgba(0, 0, 0, 0.12)",
   primary: {
-    main: "#495057",
+    main: "#262C34",
     light: "#2f3b52",
     dark: "rgb(25, 32, 46)",
     contrastText: "#fff",

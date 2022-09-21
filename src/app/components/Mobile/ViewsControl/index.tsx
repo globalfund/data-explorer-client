@@ -250,7 +250,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#495057"
+                  ? "#262C34"
                   : "#dfe3e6"};
 
                 path {
@@ -275,13 +275,13 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${selectedView === option.value ? "#fff" : "#495057"};
+                color: ${selectedView === option.value ? "#fff" : "#262C34"};
                 ${index === 0 ? "border-radius: 20px 0 0 20px;" : ""}
                 ${index === controlItems.views.length - 1
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#495057"
+                  ? "#262C34"
                   : "#dfe3e6"};
               `}
             >
