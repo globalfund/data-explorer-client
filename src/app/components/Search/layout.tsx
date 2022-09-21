@@ -120,6 +120,20 @@ export function SearchLayout(props: SearchLayoutProps) {
     }
   };
 
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape" && (open || anchorEl)) {
+      handleClose();
+      setOpen(false);
+      props.setValue("");
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
+
   React.useEffect(() => {
     if (!props.forceFocus) {
       const newOpen = props.value.length > 0;
