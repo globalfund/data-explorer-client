@@ -215,86 +215,88 @@ export function AppBar() {
                 justify-content: space-between;
               `}
             >
-              {(location.pathname === "/" || !openSearch) && (
-                <div
-                  css={`
-                    height: 100%;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                  `}
-                >
-                  <NavLink to="/" css="display: flex;margin-right: 52px;">
-                    <img
-                      src="/gflogo.png"
-                      width={295}
-                      height={24}
-                      alt={get(cmsData, "componentsAppBar.logoAlt", "")}
-                    />
-                  </NavLink>
-                  <div
-                    id="appbar-datasets"
-                    onClick={handleClick}
-                    css={`
-                      height: 100%;
-                      display: flex;
-                      color: ${anchorEl ? "#fff" : "#dfe3e6"};
-                      cursor: pointer;
-                      font-size: 14px;
-                      font-weight: bold;
-                      margin-right: 32px;
-                      align-items: center;
-                      letter-spacing: 0.5px;
-                      text-decoration: none;
+              <div
+                css={`
+                  height: 100%;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                `}
+              >
+                <NavLink to="/" css="display: flex;margin-right: 52px;">
+                  <img
+                    src="/gflogo.png"
+                    width={295}
+                    height={24}
+                    alt={get(cmsData, "componentsAppBar.logoAlt", "")}
+                  />
+                </NavLink>
+                {(location.pathname === "/" || !openSearch) && (
+                  <React.Fragment>
+                    <div
+                      id="appbar-datasets"
+                      onClick={handleClick}
+                      css={`
+                        height: 100%;
+                        display: flex;
+                        color: ${anchorEl ? "#fff" : "#dfe3e6"};
+                        cursor: pointer;
+                        font-size: 14px;
+                        font-weight: bold;
+                        margin-right: 32px;
+                        align-items: center;
+                        letter-spacing: 0.5px;
+                        text-decoration: none;
 
-                      &:hover {
-                        color: #fff;
-                      }
-                    `}
-                  >
-                    Datasets
-                  </div>
-                  <StyledMenu
-                    keepMounted
-                    anchorEl={anchorEl}
-                    onClose={handleClose}
-                    open={Boolean(anchorEl)}
-                    id="appbar-datasets-menu"
-                  >
-                    {datasetMenuItems.map(
-                      (item: React.ReactChild, itemIndex: number) => (
-                        <StyledMenuItem
-                          disableRipple
-                          key={itemIndex}
-                          disableTouchRipple
-                        >
-                          {item}
-                        </StyledMenuItem>
-                      )
-                    )}
-                  </StyledMenu>
-                  <NavLink
-                    to="/about"
-                    css={`
-                      color: #dfe3e6;
-                      font-size: 14px;
-                      font-weight: bold;
-                      letter-spacing: 0.5px;
-                      text-decoration: none;
+                        &:hover {
+                          color: #fff;
+                        }
+                      `}
+                    >
+                      Datasets
+                    </div>
+                    <StyledMenu
+                      keepMounted
+                      anchorEl={anchorEl}
+                      onClose={handleClose}
+                      open={Boolean(anchorEl)}
+                      id="appbar-datasets-menu"
+                    >
+                      {datasetMenuItems.map(
+                        (item: React.ReactChild, itemIndex: number) => (
+                          <StyledMenuItem
+                            disableRipple
+                            key={itemIndex}
+                            disableTouchRipple
+                          >
+                            {item}
+                          </StyledMenuItem>
+                        )
+                      )}
+                    </StyledMenu>
+                    <NavLink
+                      to="/about"
+                      css={`
+                        color: #dfe3e6;
+                        font-size: 14px;
+                        font-weight: bold;
+                        letter-spacing: 0.5px;
+                        text-decoration: none;
 
-                      &:hover {
-                        color: #fff;
-                      }
+                        &:hover {
+                          color: #fff;
+                        }
 
-                      &.active {
-                        color: #fff;
-                      }
-                    `}
-                  >
-                    {get(cmsData, "componentsAppBar.about", "")}
-                  </NavLink>
-                </div>
-              )}
+                        &.active {
+                          color: #fff;
+                        }
+                      `}
+                    >
+                      {get(cmsData, "componentsAppBar.about", "")}
+                    </NavLink>
+                  </React.Fragment>
+                )}
+              </div>
               {location.pathname !== "/" && (
                 <React.Fragment>
                   {openSearch && <Search />}

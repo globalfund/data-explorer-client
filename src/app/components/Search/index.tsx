@@ -61,7 +61,11 @@ export function Search() {
         }
       }}
       css={`
-        width: 100%;
+        width: 80%;
+
+        @media (max-width: 767px) {
+          width: 100%;
+        }
       `}
     >
       <SearchLayout
