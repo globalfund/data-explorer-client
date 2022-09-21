@@ -6,12 +6,14 @@ import { useCMSData } from "app/hooks/useCMSData";
 
 const Button = styled((props) => <button type="button" {...props} />)`
   color: #fff;
-  padding: 9px 16px;
+  padding: 5px 16px;
   line-height: 17px;
   font-weight: bold;
+  border-style: none;
   border-radius: 20px;
   background: #262c34;
   text-transform: unset;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
   &:hover {
     cursor: pointer;
@@ -57,15 +59,16 @@ export const Message = (props: MessageProps) => {
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 15px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        {get(cmsData, "componentsCookieDialog.cookies", "")}
+        {get(cmsData, "componentsCookieDialog.title", "")}
       </div>
       <Box display="flex" flexDirection={!isSmallScreen ? "row" : "column"}>
         <div
           css={`
             color: #262c34;
-            font-size: 14px;
+            font-size: 12px;
             line-height: 20px;
 
             > a {
