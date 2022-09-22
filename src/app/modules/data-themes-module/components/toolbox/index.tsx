@@ -233,7 +233,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
               </div>
               Rich Text
             </div>
-            <div>
+            {/* <div>
               <div>
                 <SearchIcon htmlColor="#262C34" />
               </div>
@@ -244,7 +244,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
                 <DashboardIcon htmlColor="#262C34" />
               </div>
               Data theme templates
-            </div>
+            </div> */}
           </div>
         </section>
       )}
