@@ -282,7 +282,7 @@ export default function GrantDetail() {
           </Route>
           {/* Performance Framework */}
           <Route
-            path={`/grant/${params.code}/${params.period}/performance-framework`}
+            path={`/grant/${params.code}/${params.period}/targets-results`}
           >
             <PerformanceFrameworkModule
               code={params.code}

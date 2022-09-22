@@ -92,7 +92,7 @@ export function MobileBottomNavigation() {
 
         return (
           <BottomNavigationAction
-            key={btn.label}
+            key={btn.path}
             icon={btn.icon}
             label={btn.label}
             css={`

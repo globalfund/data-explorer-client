@@ -189,7 +189,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     display: flex;
                     cursor: pointer;
                     position: absolute;
-                    background: #495057;
+                    background: #262c34;
                     align-items: center;
                     flex-direction: column;
                     justify-content: center;

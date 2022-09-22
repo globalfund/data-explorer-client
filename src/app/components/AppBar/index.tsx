@@ -215,33 +215,24 @@ export function AppBar() {
                 justify-content: space-between;
               `}
             >
-              {(location.pathname === "/" || !openSearch) && (
-                <div
-                  css={`
-                    width: 100%;
-                    height: 100%;
-                    display: flex;
-                    flex-direction: row;
-                    align-items: center;
-                    justify-content: space-between;
-                  `}
-                >
-                  <div
-                    css={`
-                      height: 100%;
-                      display: flex;
-                      flex-direction: row;
-                      align-items: center;
-                    `}
-                  >
-                    <NavLink to="/" css="display: flex;margin-right: 52px;">
-                      <img
-                        src="/gflogo.png"
-                        width={295}
-                        height={24}
-                        alt={get(cmsData, "componentsAppBar.logoAlt", "")}
-                      />
-                    </NavLink>
+              <div
+                css={`
+                  height: 100%;
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
+                `}
+              >
+                <NavLink to="/" css="display: flex;margin-right: 52px;">
+                  <img
+                    src="/gflogo.png"
+                    width={295}
+                    height={24}
+                    alt={get(cmsData, "componentsAppBar.logoAlt", "")}
+                  />
+                </NavLink>
+                {(location.pathname === "/" || !openSearch) && (
+                  <React.Fragment>
                     <div
                       id="appbar-datasets"
                       onClick={handleClick}
@@ -324,42 +315,14 @@ export function AppBar() {
                     >
                       Themes
                     </NavLink>
-                  </div>
-                  {/* <div
-                    css={`
-                      height: 100%;
-                      display: flex;
-                      flex-direction: row;
-                      align-items: center;
-                    `}
-                  >
-                    <NavLink
-                      to="/data-themes"
-                      css={`
-                        font-weight: 700;
-                        color: #262c34;
-                        font-size: 14px;
-                        letter-spacing: 0.5px;
-                        text-decoration: none;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        background: #cfd4da;
-                        height: 33px;
-                        width: 33px;
-                        border-radius: 100%;
-                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                          sans-serif;
-                      `}
-                    >
-                      DL
-                    </NavLink>
-                  </div> */}
-                </div>
-              )}
+                  </React.Fragment>
+                )}
+              </div>
               {location.pathname !== "/" && (
                 <React.Fragment>
-                  {openSearch && <Search />}
+                  {openSearch && (
+                    <Search hocClose={() => setOpenSearch(false)} />
+                  )}
                   <IconButton onClick={() => setOpenSearch(!openSearch)}>
                     {openSearch ? (
                       <CloseIcon htmlColor="#fff" />

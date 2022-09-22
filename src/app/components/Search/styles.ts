@@ -79,9 +79,9 @@ export const input = css`
   color: #262c34;
   font-size: 14px;
   background: #fff;
-  font-weight: bold;
+  font-weight: 400;
   border-style: none;
-  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
 
   &:focus::placeholder {
     opacity: 0.3;

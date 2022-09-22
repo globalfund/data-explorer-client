@@ -24,7 +24,7 @@ const styles = {
     position: relative;
     border-radius: 20px;
     flex-direction: column;
-    background: ${showAggrs ? "#495057" : "#fff"};
+    background: ${showAggrs ? "#262C34" : "#fff"};
 
     > * {
       @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -52,7 +52,7 @@ const styles = {
     padding: 10px 15px;
     flex-direction: row;
     align-items: center;
-    background: #495057;
+    background: #262c34;
     border-bottom: 1px solid #fff;
     ${showAggrs ? "top" : "bottom"}: 0;
     border-bottom-style: ${showAggrs ? "solid" : "none"};
@@ -174,7 +174,11 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
               <div css={styles.header}>
                 <div>
                   <b>
-                    {get(cmsData, "componentsPerformanceFrameworkComponents.toolTipPeriod", "")}
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipPeriod",
+                      ""
+                    )}
                     <br />
                     {props.data.period}
                   </b>
@@ -184,13 +188,34 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
                 </IconButton>
               </div>
               <div>
-                <b>{get(cmsData, "componentsPerformanceFrameworkComponents.toolTipIndicator", "")}</b>: {props.data.isReversed}
+                <b>
+                  {get(
+                    cmsData,
+                    "componentsPerformanceFrameworkComponents.toolTipIndicator",
+                    ""
+                  )}
+                </b>
+                : {props.data.isReversed}
               </div>
               <div>
-                <b>{get(cmsData, "componentsPerformanceFrameworkComponents.toolTipAggregationType", "")}</b>: {props.data.aggregationType}
+                <b>
+                  {get(
+                    cmsData,
+                    "componentsPerformanceFrameworkComponents.toolTipAggregationType",
+                    ""
+                  )}
+                </b>
+                : {props.data.aggregationType}
               </div>
               <div>
-                <b>{get(cmsData, "componentsPerformanceFrameworkComponents.toolTipCoverage", "")}</b>: {props.data.coverage}
+                <b>
+                  {get(
+                    cmsData,
+                    "componentsPerformanceFrameworkComponents.toolTipCoverage",
+                    ""
+                  )}
+                </b>
+                : {props.data.coverage}
               </div>
               <div
                 css={`
@@ -223,7 +248,19 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
               onClick={() => setShowAggrs(!showAggrs)}
             >
               <TriangleXSIcon />
-              <div>{showAggrs ? get(cmsData, "componentsPerformanceFrameworkComponents.toolTipBack", "") : get(cmsData, "componentsPerformanceFrameworkComponents.toolTipSeeDisaggregations", "")}</div>
+              <div>
+                {showAggrs
+                  ? get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipBack",
+                      ""
+                    )
+                  : get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipSeeDisaggregations",
+                      ""
+                    )}
+              </div>
               {showAggrs && (
                 <IconButton size="small" onClick={() => props.close()}>
                   <CloseIcon />
@@ -264,12 +301,24 @@ function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
             <React.Fragment key={value.category}>
               <div>
                 <div>
-                  <div>{get(cmsData, "componentsPerformanceFrameworkComponents.toolTipCategory", "")}</div>
+                  <div>
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipCategory",
+                      ""
+                    )}
+                  </div>
                   <br />
                   <div>{value.category}</div>
                 </div>
                 <div>
-                  <div>{get(cmsData, "componentsPerformanceFrameworkComponents.toolTipBaseline", "")}</div>
+                  <div>
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipBaseline",
+                      ""
+                    )}
+                  </div>
                   <br />
                   <div css="width: fit-content;">
                     {value.baseline.numerator || value.baseline.denominator ? (
@@ -284,7 +333,13 @@ function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
                   </div>
                 </div>
                 <div>
-                  <div>{get(cmsData, "componentsPerformanceFrameworkComponents.toolTipReported", "")}</div>
+                  <div>
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipReported",
+                      ""
+                    )}
+                  </div>
                   <br />
                   <div css="width: fit-content;">
                     {value.reported.numerator || value.reported.denominator ? (

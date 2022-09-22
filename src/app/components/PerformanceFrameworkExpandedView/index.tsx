@@ -81,7 +81,7 @@ const styles = {
     color: ${active ? "#fff" : "#13183F"};
     transition: background 0.2s ease-in-out;
     font-weight: ${active ? "bold" : "normal"};
-    background: ${active ? "#495057" : "#C7CDD1"};
+    background: ${active ? "#262C34" : "#C7CDD1"};
     font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
       sans-serif;
 
@@ -97,7 +97,7 @@ const styles = {
     &:hover {
       color: #fff;
       font-weight: bold;
-      background: #495057;
+      background: #262c34;
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
 

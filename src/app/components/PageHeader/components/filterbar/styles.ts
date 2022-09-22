@@ -7,7 +7,7 @@ export const styles = {
     display: flex;
     min-height: 52px;
     padding: 10px 20px;
-    background: #495057;
+    background: #262c34;
     align-items: center;
 
     > * {
@@ -51,7 +51,7 @@ export const styles = {
       }
       &::-webkit-scrollbar-thumb {
         border-radius: 4px;
-        background: #495057;
+        background: #262c34;
       }
     }
   `,

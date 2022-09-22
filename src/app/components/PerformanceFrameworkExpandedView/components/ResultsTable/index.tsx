@@ -289,7 +289,7 @@ function MobileResultsTable(props: PFIndicator) {
       css={`
         font-size: 12px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #495057;
+        border-bottom: 1px solid #262c34;
       `}
     >
       <b>Indicator: {props.name}</b>
