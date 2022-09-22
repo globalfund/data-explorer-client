@@ -132,6 +132,13 @@ export const styles = {
     display: flex;
     margin-top: -10px;
     flex-direction: row;
+
+    > a,
+    button {
+      width: 42px;
+      height: 42px;
+      padding: 9px;
+    }
   `,
   secondrow: css`
     display: flex;

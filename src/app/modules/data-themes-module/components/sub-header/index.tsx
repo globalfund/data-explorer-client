@@ -501,7 +501,13 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                   opacity: ${isPreviewEnabled ? 1 : 0.5};
                 `}
               >
-                <PlayCircleFilledIcon htmlColor="#262c34" />
+                <svg width="20" height="19" viewBox="0 0 20 19">
+                  <rect width="20" height="19" rx="3" fill="#262C34" />
+                  <path
+                    fill="#EFEFEF"
+                    d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
+                  />
+                </svg>
               </IconButton>
               <IconButton
                 onClick={onSave}
