@@ -250,13 +250,11 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
       {params.code && params.vizType === "eligibility" && (
         <ToolBoxPanelEligibilityAdvanced />
       )}
-      {params.code &&
-        params.period &&
-        params.vizType === "performance-framework" && (
-          <PerformanceFrameworkReportingPeriods
-            periods={performanceFrameworkPeriods}
-          />
-        )}
+      {params.code && params.period && params.vizType === "targets-results" && (
+        <PerformanceFrameworkReportingPeriods
+          periods={performanceFrameworkPeriods}
+        />
+      )}
       {(params.vizType === "commitment" ||
         params.vizType === "disbursements" ||
         params.vizType === "signed" ||
