@@ -89,12 +89,34 @@ export const RichEditor = (props: {
           position: absolute;
         }
 
+        #bold-button {
+          > svg {
+            transform: scale(1.2);
+          }
+        }
+
+        #italic-button {
+          > svg {
+            transform: scale(1.2);
+          }
+        }
+
         #headline-one-button {
-          font-size: 20px;
+          font-size: 22px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         }
 
         #headline-two-button {
           font-size: 14px;
+          margin-bottom: -5px;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+        }
+
+        #quotes-button {
+          > svg {
+            margin-bottom: -10px;
+            transform: rotate(180deg) scale(1.5);
+          }
         }
       `}
     >
@@ -123,8 +145,18 @@ export const RichEditor = (props: {
       <InlineToolbar>
         {(externalProps) => (
           <React.Fragment>
-            <BoldButton {...externalProps} />
-            <ItalicButton {...externalProps} />
+            <BoldButton
+              {...externalProps}
+              buttonProps={{
+                id: "bold-button",
+              }}
+            />
+            <ItalicButton
+              {...externalProps}
+              buttonProps={{
+                id: "italic-button",
+              }}
+            />
             <UnderlineButton {...externalProps} />
             <linkPlugin.LinkButton {...externalProps} />
             <Separator />
@@ -140,7 +172,12 @@ export const RichEditor = (props: {
                 id: "headline-two-button",
               }}
             />
-            <BlockquoteButton {...externalProps} />
+            <BlockquoteButton
+              {...externalProps}
+              buttonProps={{
+                id: "quotes-button",
+              }}
+            />
           </React.Fragment>
         )}
       </InlineToolbar>
