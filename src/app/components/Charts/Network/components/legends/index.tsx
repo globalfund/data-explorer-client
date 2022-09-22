@@ -39,7 +39,7 @@ export function NetworkLegends() {
               width: 40px;
               left: -15px;
               bottom: -25px;
-              color: #495057;
+              color: #262c34;
               font-size: 12px;
               position: absolute;
               text-align: center;
@@ -139,7 +139,7 @@ export function NetworkLegends() {
               width: 40px;
               left: -15px;
               bottom: -25px;
-              color: #495057;
+              color: #262c34;
               font-size: 12px;
               position: absolute;
               text-align: center;
@@ -219,7 +219,7 @@ const styles = {
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   noData: (reported: boolean) => css`
-    color: #495057;
+    color: #262c34;
     font-size: 12px;
     padding-left: 20px;
     position: relative;
@@ -287,7 +287,9 @@ export function AchievementRateLegend() {
     <div css={styles.container}>
       <div css={styles.legendContainer}>
         <div css={styles.top}>
-          <div css={styles.title}>{get(cmsData, "componentsChartsNetwork.achievementRate", "")}</div>
+          <div css={styles.title}>
+            {get(cmsData, "componentsChartsNetwork.achievementRate", "")}
+          </div>
         </div>
         <div css={styles.spacer} />
         <div css={styles.legends}>
@@ -304,7 +306,7 @@ export function AchievementRateLegend() {
                   top: 20px;
                   left: -5px;
                   position: relative;
-                  color: color: #495057;
+                  color: color: #262C34;
                   content: "${item.label}";
                 }
               `}
@@ -313,9 +315,13 @@ export function AchievementRateLegend() {
         </div>
       </div>
       <div css={styles.noDataLegendContainer}>
-        <div css={styles.noData(true)}>{get(cmsData, "componentsChartsNetwork.notAvailable", "")}</div>
+        <div css={styles.noData(true)}>
+          {get(cmsData, "componentsChartsNetwork.notAvailable", "")}
+        </div>
         <div css={styles.spacer} />
-        <div css={styles.noData(false)}>{get(cmsData, "componentsChartsNetwork.notReported", "")}</div>
+        <div css={styles.noData(false)}>
+          {get(cmsData, "componentsChartsNetwork.notReported", "")}
+        </div>
       </div>
     </div>
   );

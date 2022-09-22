@@ -23,7 +23,7 @@ interface Props {
 }
 
 export function PerformanceFrameworkModule(props: Props) {
-  useTitle("The Data Explorer - Grant Performance Framework");
+  useTitle("The Data Explorer - Grant Targets and Results");
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
@@ -109,11 +109,11 @@ export function PerformanceFrameworkModule(props: Props) {
 
   React.useEffect(() => {
     if (vizLevel === 0) {
-      setVizDrilldowns([{ name: "Performance Framework-network" }]);
+      setVizDrilldowns([{ name: "Targets and Results-network" }]);
     }
     if (vizLevel === 1 && vizSelected) {
       setVizDrilldowns([
-        { name: "Performance Framework-network" },
+        { name: "Targets and Results-network" },
         { name: vizSelected },
       ]);
     }

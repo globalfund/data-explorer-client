@@ -56,12 +56,12 @@ export function DataThemesAddSectionButton(
             <IconButton onClick={onTextPress}>
               <TextFieldsIcon htmlColor="#373D43" />
             </IconButton>
-            <IconButton>
+            {/* <IconButton>
               <SearchIcon htmlColor="#373D43" />
             </IconButton>
             <IconButton>
               <DashboardIcon htmlColor="#373D43" />
-            </IconButton>
+            </IconButton> */}
           </div>
         )}
         {!open && props.showCreateYourStoryText && "Create your story"}

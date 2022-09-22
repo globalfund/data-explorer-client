@@ -45,7 +45,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
 
         &::-webkit-scrollbar {
           width: 4px;
-          background: #495057;
+          background: #262c34;
         }
         &::-webkit-scrollbar-track {
           border-radius: 4px;
@@ -53,7 +53,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
         }
         &::-webkit-scrollbar-thumb {
           border-radius: 4px;
-          background: #495057;
+          background: #262c34;
         }
 
         @media (max-width: 767px) {

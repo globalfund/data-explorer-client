@@ -49,7 +49,7 @@ export const ThumbLabel = (props: any) => {
         borderRadius: "3px",
         whiteSpace: "nowrap",
         position: "absolute",
-        backgroundColor: "#495057",
+        backgroundColor: "#262C34",
         ...(style as React.CSSProperties),
       }}
     >

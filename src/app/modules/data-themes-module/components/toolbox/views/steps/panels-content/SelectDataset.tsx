@@ -367,8 +367,8 @@ export function DataThemesToolBoxSelectDataset(
               }
 
               &:after {
-                right: 0;
                 top: -10px;
+                right: -20px;
                 font-size: 10px;
                 position: absolute;
                 content: "${props.totalAvailable || 0} (Max)";

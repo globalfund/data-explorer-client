@@ -1,10 +1,15 @@
 /* third-party */
 import React from "react";
+import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import Popover from "@material-ui/core/Popover";
 import DeleteIcon from "@material-ui/icons/Delete";
 import IconButton from "@material-ui/core/IconButton";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { useHistory, useParams } from "react-router-dom";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 /* project */
@@ -12,7 +17,14 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { styles } from "app/modules/data-themes-module/components/tabs/styles";
 
 function DataThemesTabItem(props: any) {
-  const { index, updateLocalStates, disabled, previewMode, deleteTab } = props;
+  const {
+    index,
+    disabled,
+    deleteTab,
+    previewMode,
+    handleOpenDialog,
+    updateLocalStates,
+  } = props;
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -63,22 +75,6 @@ function DataThemesTabItem(props: any) {
     (actions) => actions.dataThemes.titles.removeTab
   );
 
-  function onDelete(id: number) {
-    setActiveVizIndex(0); // default select the fist viz.
-    setActiveTabIndex(0);
-    removeTabId({ tabIndex: id });
-    removeTabActivePanel({ tabIndex: id });
-    removeTabChartType({ tabIndex: id });
-    removeTabLiveData({ tabIndex: id });
-    removeTabMapping({ tabIndex: id });
-    removeTabStepSelections({ tabIndex: id });
-    removeTabAppliedFilters({ tabIndex: id });
-    removeTabTitles({ tabIndex: id });
-    removeTabTextContent({ tabIndex: id });
-    deleteTab(id);
-    updateLocalStates(true);
-  }
-
   function onTabClick(tab: number) {
     if (activeTabIndex !== tab) {
       // only change when necessary
@@ -93,6 +89,27 @@ function DataThemesTabItem(props: any) {
 
   function handleClose() {
     setAnchorEl(null);
+  }
+
+  function onDelete(id: number) {
+    if (tabIds.length > 1) {
+      setActiveVizIndex(0); // default select the fist viz.
+      setActiveTabIndex(0);
+      removeTabId({ tabIndex: id });
+      removeTabActivePanel({ tabIndex: id });
+      removeTabChartType({ tabIndex: id });
+      removeTabLiveData({ tabIndex: id });
+      removeTabMapping({ tabIndex: id });
+      removeTabStepSelections({ tabIndex: id });
+      removeTabAppliedFilters({ tabIndex: id });
+      removeTabTitles({ tabIndex: id });
+      removeTabTextContent({ tabIndex: id });
+      deleteTab(id);
+      updateLocalStates(true);
+    } else {
+      handleOpenDialog();
+      handleClose();
+    }
   }
 
   const open = Boolean(anchorEl);
@@ -167,6 +184,7 @@ function DataThemesTabItem(props: any) {
 export function DataThemesTabs(props: any) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   const tabIds = useStoreState((state) => state.dataThemes.ids.value);
   const setActiveTabIndex = useStoreActions(
@@ -201,7 +219,18 @@ export function DataThemesTabs(props: any) {
     (state) => state.dataThemes.textContent.addTab
   );
 
+  function handleOpenDialog() {
+    setOpenDialog(true);
+  }
+
+  function handleCloseDialog() {
+    setOpenDialog(false);
+  }
+
   function onAdd() {
+    if (openDialog) {
+      handleOpenDialog();
+    }
     setActiveVizIndex(0); // default select the fist viz.
     setActiveTabIndex(tabIds.length);
     addTabId();
@@ -228,6 +257,7 @@ export function DataThemesTabs(props: any) {
             updateLocalStates={props.updateLocalStates}
             disabled={props.tabsDisabled}
             previewMode={props.previewMode}
+            handleOpenDialog={handleOpenDialog}
           />
         ))}
       </div>
@@ -239,6 +269,44 @@ export function DataThemesTabs(props: any) {
           <AddCircleOutlineIcon htmlColor="#262c34" />
         </div>
       )}
+      <Dialog
+        open={openDialog}
+        onClose={handleCloseDialog}
+        css={`
+          .MuiPaper-root {
+            background: #f1f3f5;
+
+            h2,
+            p {
+              color: #000;
+            }
+
+            button {
+              color: #fff;
+              font-weight: bold;
+              background: #262c34;
+              border-radius: 20px;
+              text-transform: none;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            }
+          }
+        `}
+      >
+        <DialogTitle>Info</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            You cannot delete a single tab in a data theme
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary" autoFocus>
+            OK
+          </Button>
+          <Button onClick={onAdd} color="primary" autoFocus>
+            Add new tab
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }

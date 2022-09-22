@@ -358,7 +358,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           css={`
             width: 100%;
             outline: none;
-            color: #495057;
+            color: #262c34;
             font-size: 14px;
             border-style: none;
             background: #dfe3e6;
@@ -391,7 +391,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           &::-webkit-scrollbar {
             width: 4px;
             border-radius: 4px;
-            background: #495057;
+            background: #262c34;
           }
           &::-webkit-scrollbar-track {
             border-radius: 4px;
@@ -399,7 +399,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           }
           &::-webkit-scrollbar-thumb {
             border-radius: 4px;
-            background: #495057;
+            background: #262c34;
           }
         `}
       >
@@ -437,7 +437,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
           padding: 10px 20px;
           border-style: none;
           border-radius: 20px;
-          background: #495057;
+          background: #262c34;
           box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
