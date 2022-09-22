@@ -30,6 +30,8 @@ In order to be able to successfully run or build the app you need to create an e
 REACT_APP_API=<data middleware api url>
 REACT_APP_MAPBOX_TOKEN=<mapbox account token>
 REACT_APP_GOOGLE_ANALYTICS_ID=<google analytics app id>
+REACT_APP_CMS_API=<cockpit cms api url>
+REACT_APP_CMS_TOKEN=<cockpit cms api token>
 ```
 
 `REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/globalfund/data-explorer-server/) locally then you can use `http://localhost:4200`.
@@ -37,6 +39,10 @@ REACT_APP_GOOGLE_ANALYTICS_ID=<google analytics app id>
 `REACT_APP_MAPBOX_TOKEN`: to get a mapbox token you will need to register on their [website](https://www.mapbox.com).The token will be used to identify you and start serving up map tiles. The service is free until a certain level of traffic is exceeded.
 
 `REACT_APP_GOOGLE_ANALYTICS_ID`(optional): Google Analytics ID in order to be able to make use of Google Analytics services.
+
+`REACT_APP_CMS_API`: is the url where the [Cockpit CMS API](https://github.com/zimmerman-team/the-data-explorer-cms/) runs on.
+
+`REACT_APP_CMS_TOKEN`: is the API token retrieved from the Cockpit CMS interface.
 
 ---
 
@@ -89,3 +95,7 @@ chore: Changes to the build process or auxiliary tools and libraries such as doc
 - Avoid huge code commits where the difference can not even be rendered by browser based web apps (Github for example). Smaller commits make it much easier to understand why and how the changes were made, why (if) it results in certain bugs and etc.
 - If there's a reason to commit code that is commented out (there usually should be none), always leave a "FIXME" or "TODO" comment so it's clear for other developers why this was done.
 - Automatic code quality / testing checks (continuous integration tools) are implemented to check all these things automatically when pushing / merging new branches. Quality is the key!
+
+# Synchronisation with Jira
+Checkout a new branch in your repo, using the issue key in the branch name. For example, `git checkout -b DE-59-sync-data-explorer-client-to-jira`
+When committing changes to your branch, use the issue key in your commit message to link those commits to the development panel in your Jira issue. For example, `git commit -m "DE-59 <summary of commit>"`
