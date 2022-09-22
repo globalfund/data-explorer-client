@@ -9,7 +9,7 @@ import { categories } from "app/components/Search/data";
 import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
 
-export function Search() {
+export function Search(props: { hocClose?: () => void }) {
   const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [category, setCategory] = React.useState(categories[0].label);
@@ -51,6 +51,13 @@ export function Search() {
     [value]
   );
 
+  function onClose() {
+    setOpen(false);
+    if (props.hocClose) {
+      props.hocClose();
+    }
+  }
+
   return (
     <div
       onClick={(e: any) => {
@@ -71,12 +78,13 @@ export function Search() {
       <SearchLayout
         value={value}
         results={data}
+        onClose={onClose}
         loading={isLoading}
         setValue={setValue}
         category={category}
         setCategory={setCategory}
         forceFocus={isMobile && open}
-        onClose={() => setOpen(false)}
+        setStoredValue={setStoredValue}
       />
     </div>
   );

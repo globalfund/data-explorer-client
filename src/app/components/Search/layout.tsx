@@ -35,6 +35,7 @@ interface SearchLayoutProps {
   results: SearchResultsTabModel[];
   setValue: (value: string) => void;
   setCategory?: (value: string) => void;
+  setStoredValue: (value: string) => void;
 }
 
 const StyledMenu = withStyles({
@@ -121,10 +122,14 @@ export function SearchLayout(props: SearchLayoutProps) {
   };
 
   const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === "Escape" && (open || anchorEl)) {
-      handleClose();
-      setOpen(false);
+    if (e.key === "Escape") {
+      props.setStoredValue("");
       props.setValue("");
+      setOpen(false);
+      handleClose();
+      if (props.onClose) {
+        props.onClose();
+      }
     }
   };
 

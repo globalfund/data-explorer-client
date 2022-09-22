@@ -299,7 +299,9 @@ export function AppBar() {
               </div>
               {location.pathname !== "/" && (
                 <React.Fragment>
-                  {openSearch && <Search />}
+                  {openSearch && (
+                    <Search hocClose={() => setOpenSearch(false)} />
+                  )}
                   <IconButton onClick={() => setOpenSearch(!openSearch)}>
                     {openSearch ? (
                       <CloseIcon htmlColor="#fff" />
