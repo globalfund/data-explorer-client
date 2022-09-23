@@ -248,12 +248,24 @@ export function useDataThemesRawData(props: {
 
   React.useEffect(() => {
     if (!loading) {
-      let tmpFilteredData = [...filteredData];
+      let tmpFilteredData: {
+        [key: string]: number | string | null;
+      }[][][] = [];
+      rawData.forEach((tab) => {
+        const tabData: {
+          [key: string]: string | number | null;
+        }[][] = [];
+        tab.forEach((viz) => {
+          tabData.push(viz.data);
+        });
+        tmpFilteredData.push(tabData);
+      });
       tmpFilteredData[activeTabIndex][activeVizIndex] = filterDataThemesData(
         rawData[activeTabIndex][activeVizIndex].data,
         appliedFilters[activeTabIndex][activeVizIndex],
         currentUrlParams
       );
+      console.log("tmpFilteredData", tmpFilteredData);
       setFilteredData(tmpFilteredData);
     }
   }, [rawData, appliedFilters, activeTabIndex, loading]);

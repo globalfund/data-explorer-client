@@ -125,6 +125,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const { page } = useParams<{ page: string }>();
   const { data, loading, loadDataset, filterOptionGroups } = props;
 
+  const [collapsed, setCollapsed] = React.useState(false);
   const [expanded] = React.useState<number>(props.openPanel || 0);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
@@ -166,8 +167,12 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
 
   const handleChange =
     (panel: number) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
-      // setExpanded(isExpanded ? panel : 0);
-      history.push(stepPaths[panel]);
+      if (props.openPanel === panel - 1 && !collapsed) {
+        setCollapsed(true);
+      } else {
+        setCollapsed(false);
+        history.push(stepPaths[panel]);
+      }
     };
 
   const onNavBtnClick =
@@ -202,7 +207,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       />
       <Accordion
         square
-        expanded={expanded === 1}
+        expanded={expanded === 1 && !collapsed}
         onChange={handleChange(data ? 2 : 1)}
         disabled={props.openPanel !== undefined && props.openPanel < 1}
       >
@@ -223,7 +228,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       </Accordion>
       <Accordion
         square
-        expanded={expanded === 2}
+        expanded={expanded === 2 && !collapsed}
         onChange={handleChange(3)}
         disabled={data.length === 0 && !loading}
       >
@@ -331,7 +336,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       </Accordion>
       <Accordion
         square
-        expanded={expanded === 5}
+        expanded={expanded === 5 && !collapsed}
         onChange={handleChange(6)}
         disabled={
           (data.length === 0 && !loading) ||
@@ -358,7 +363,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       </Accordion>
       <Accordion
         square
-        expanded={expanded === 6}
+        expanded={expanded === 6 && !collapsed}
         onChange={handleChange(7)}
         disabled={
           (data.length === 0 && !loading) ||
@@ -386,7 +391,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       </Accordion>
       <Accordion
         square
-        expanded={expanded === 7}
+        expanded={expanded === 7 && !collapsed}
         onChange={handleChange(8)}
         disabled={
           (data.length === 0 && !loading) ||
