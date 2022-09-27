@@ -32,6 +32,8 @@ REACT_APP_MAPBOX_TOKEN=<mapbox account token>
 REACT_APP_GOOGLE_ANALYTICS_ID=<google analytics app id>
 REACT_APP_CMS_API=<cockpit cms api url>
 REACT_APP_CMS_TOKEN=<cockpit cms api token>
+REACT_APP_AUTH0_DOMAIN=<auth0 domain url>
+REACT_APP_AUTH0_CLIENT=<auth0 app client id>
 ```
 
 `REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/globalfund/data-explorer-server/) locally then you can use `http://localhost:4200`.
@@ -44,6 +46,9 @@ REACT_APP_CMS_TOKEN=<cockpit cms api token>
 
 `REACT_APP_CMS_TOKEN`: is the API token retrieved from the Cockpit CMS interface.
 
+`REACT_APP_AUTH0_DOMAIN`: is the AUTH0 access domain
+
+`REACT_APP_AUTH0_CLIENT`: is the AUTH0 access client
 ---
 
 In the project directory, you can run:
