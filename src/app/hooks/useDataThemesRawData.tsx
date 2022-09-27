@@ -265,7 +265,6 @@ export function useDataThemesRawData(props: {
         appliedFilters[activeTabIndex][activeVizIndex],
         currentUrlParams
       );
-      console.log("tmpFilteredData", tmpFilteredData);
       setFilteredData(tmpFilteredData);
     }
   }, [rawData, appliedFilters, activeTabIndex, loading]);

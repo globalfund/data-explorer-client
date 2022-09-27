@@ -1,23 +1,272 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import LockIcon from "@material-ui/icons/Lock";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
-import { useHistory, useParams } from "react-router-dom";
+import { Redirect, useHistory, useParams } from "react-router-dom";
 // @ts-ignore
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import Skeleton from "@material-ui/lab/Skeleton";
+import { PageLoader } from "app/modules/common/page-loader";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
+import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
+import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
+import { DataThemesTabOrderViz } from "app/modules/data-themes-module/components/order-tab-viz";
 import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
-import { DataThemesBuilderPreviewThemeProps } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
+import {
+  DataThemesBuilderPreviewThemePageProps,
+  DataThemesBuilderPreviewThemeProps,
+} from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
+
+export function DataThemesBuilderPreviewThemePage(
+  props: DataThemesBuilderPreviewThemePageProps
+) {
+  const history = useHistory();
+  const { page } = useParams<{ page: string }>();
+
+  const activePanels = useStoreState(
+    (state) => state.dataThemes.activePanels.value
+  );
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
+
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const setActiveVizIndex = useStoreActions(
+    (actions) => actions.dataThemes.activeVizIndex.setValue
+  );
+
+  const copyVizId = useStoreActions((state) => state.dataThemes.ids.addViz);
+  const copyVizActivePanel = useStoreActions(
+    (state) => state.dataThemes.activePanels.addViz
+  );
+  const copyVizChartType = useStoreActions(
+    (state) => state.dataThemes.sync.chartType.copyViz
+  );
+  const copyVizLiveData = useStoreActions(
+    (state) => state.dataThemes.sync.liveData.copyViz
+  );
+  const copyVizMapping = useStoreActions(
+    (state) => state.dataThemes.sync.mapping.copyViz
+  );
+  const copyVizStepSelections = useStoreActions(
+    (state) => state.dataThemes.sync.stepSelections.copyViz
+  );
+  const copyVizAppliedFilters = useStoreActions(
+    (state) => state.dataThemes.appliedFilters.copyViz
+  );
+  const copyVizTextContent = useStoreActions(
+    (state) => state.dataThemes.textContent.copyViz
+  );
+  const setVizDuplicated = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizDuplicated.setValue
+  );
+
+  const removeVizId = useStoreActions(
+    (state) => state.dataThemes.ids.removeViz
+  );
+  const removeVizMapping = useStoreActions(
+    (actions) => actions.dataThemes.sync.mapping.removeViz
+  );
+  const removeVizActivePanel = useStoreActions(
+    (state) => state.dataThemes.activePanels.removeViz
+  );
+  const removeVizChartType = useStoreActions(
+    (state) => state.dataThemes.sync.chartType.removeViz
+  );
+  const removeVizLiveData = useStoreActions(
+    (state) => state.dataThemes.sync.liveData.removeViz
+  );
+  const removeVizStepSelections = useStoreActions(
+    (state) => state.dataThemes.sync.stepSelections.removeViz
+  );
+  const removeVizAppliedFilters = useStoreActions(
+    (state) => state.dataThemes.appliedFilters.removeViz
+  );
+  const removeVizTextContent = useStoreActions(
+    (state) => state.dataThemes.textContent.removeViz
+  );
+  const setVizDeleted = useStoreActions(
+    (actions) => actions.dataThemes.sync.vizDeleted.setValue
+  );
+
+  function duplicateViz(tabIndex: number, vizIndex: number) {
+    copyVizId({ tabIndex });
+    copyVizActivePanel({ tabIndex });
+    copyVizChartType({ tabIndex, vizIndex });
+    copyVizLiveData({ tabIndex, vizIndex });
+    copyVizMapping({ tabIndex, vizIndex });
+    copyVizStepSelections({ tabIndex, vizIndex });
+    copyVizAppliedFilters({ tabIndex, vizIndex });
+    copyVizTextContent({ tabIndex, vizIndex });
+
+    let tmpVisualOptions: any = [...props.visualOptions];
+    tmpVisualOptions[tabIndex].push(tmpVisualOptions[tabIndex][vizIndex]);
+    props.setVisualOptions(tmpVisualOptions);
+
+    let tmpCurrentChart: any = [...props.currentChart];
+    tmpCurrentChart[tabIndex].push(tmpCurrentChart[tabIndex][vizIndex]);
+    props.setCurrentChart(tmpCurrentChart);
+
+    let tmpCurrentChartData: any = [...props.currentChartData];
+    tmpCurrentChartData[tabIndex].push(tmpCurrentChartData[tabIndex][vizIndex]);
+    props.setCurrentChartData(tmpCurrentChartData);
+    let tmpRawData = [...props.rawData];
+    tmpRawData[tabIndex].push(tmpRawData[tabIndex][vizIndex]);
+    props.setRawData(tmpRawData);
+    setVizDuplicated(true);
+  }
+
+  function deleteViz(tabIndex: number, vizIndex: number) {
+    let tmpRawData = [...props.rawData];
+    let tmpVisualOptions: any = [...props.visualOptions];
+    let tmpCurrentChartData: any = [...props.currentChartData];
+    if (
+      tmpRawData[tabIndex] &&
+      tmpRawData[tabIndex][vizIndex] &&
+      tmpVisualOptions[tabIndex] &&
+      tmpVisualOptions[tabIndex][vizIndex] &&
+      tmpCurrentChartData[tabIndex] &&
+      tmpCurrentChartData[tabIndex][vizIndex]
+    ) {
+      tmpRawData[tabIndex].splice(vizIndex, 1);
+      props.setRawData(tmpRawData);
+      tmpVisualOptions[tabIndex].splice(vizIndex, 1);
+      props.setVisualOptions(tmpVisualOptions);
+      tmpCurrentChartData[tabIndex].splice(vizIndex, 1);
+      props.setCurrentChartData(tmpCurrentChartData);
+      removeVizId({ tabIndex, vizIndex });
+      removeVizActivePanel({ tabIndex, vizIndex });
+      removeVizChartType({ tabIndex, vizIndex });
+      removeVizLiveData({ tabIndex, vizIndex });
+      removeVizMapping({ tabIndex, vizIndex });
+      removeVizStepSelections({ tabIndex, vizIndex });
+      removeVizAppliedFilters({ tabIndex, vizIndex });
+      removeVizTextContent({ tabIndex, vizIndex });
+    }
+    if (tmpRawData[tabIndex].length === 0) {
+      props.addVizToLocalStates();
+      history.push(`/data-themes/${page}/initial`);
+    } else {
+      setVizDeleted(true);
+    }
+  }
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      if (
+        !props.loading &&
+        !props.isEditMode &&
+        vizIsTextContent[activeTabIndex][0] &&
+        activeVizIndex === 0
+      ) {
+        let pass = false;
+        let nextVizIndex = activeVizIndex + 1;
+        while (!pass) {
+          const cond = vizIsTextContent[activeTabIndex][nextVizIndex];
+          if (cond === undefined) {
+            pass = true;
+          } else if (cond === false) {
+            setActiveVizIndex(nextVizIndex);
+            pass = true;
+          }
+          nextVizIndex += 1;
+        }
+      }
+    }, 500);
+  }, [vizIsTextContent, activeTabIndex]);
+
+  let renderingKey = 0;
+
+  if (
+    page === "new" &&
+    activePanels[activeTabIndex][activeVizIndex] < 4 &&
+    !vizIsTextContent[activeTabIndex][activeVizIndex]
+  ) {
+    return <Redirect to="/data-themes/new/initial" />;
+  }
+  return (
+    <React.Fragment>
+      {props.loading ? (
+        <PageLoader />
+      ) : (
+        <React.Fragment>
+          <DataThemesPageSubHeader
+            previewMode={!props.isEditMode && page !== "new"}
+            data={props.rawData[activeTabIndex][0].data}
+            loading={props.loading}
+            visualOptions={props.visualOptions}
+            filterOptionGroups={
+              props.rawData[activeTabIndex][0].filterOptionGroups
+            }
+            updateLocalStates={props.updateLocalStates}
+            tabsDisabled={page !== "new" && !props.isEditMode}
+            themeData={props.rawData}
+            deleteTab={props.deleteTab}
+          />
+          <DataThemesToolBox
+            filtersView
+            tabIndex={activeTabIndex}
+            vizIndex={activeVizIndex}
+            data={props.rawData[activeTabIndex][activeVizIndex].data}
+            loading={props.loading}
+            visualOptions={props.visualOptions}
+            loadDataset={props.loadDataset}
+            filterOptionGroups={
+              props.rawData[activeTabIndex][activeVizIndex].filterOptionGroups
+            }
+            themeData={props.rawData}
+          />
+          <DataThemesTabOrderViz enabled={props.isEditMode}>
+            {props.rawData[activeTabIndex].map((_, vizIndex) => (
+              <DataThemesBuilderPreviewTheme
+                key={renderingKey++}
+                editable={props.isEditMode}
+                tabIndex={activeTabIndex}
+                vizIndex={vizIndex}
+                data={props.rawData[activeTabIndex][vizIndex].data}
+                loading={props.loading}
+                loadDataset={props.loadDataset}
+                currentChart={props.currentChart[activeTabIndex][vizIndex]}
+                visualOptions={props.visualOptions}
+                setVisualOptions={props.setVisualOptions}
+                currentChartData={
+                  props.currentChartData[activeTabIndex][vizIndex]
+                }
+                filterOptionGroups={
+                  props.rawData[activeTabIndex][vizIndex].filterOptionGroups
+                }
+                dimensions={get(
+                  props.currentChart[activeTabIndex][vizIndex],
+                  "dimensions",
+                  []
+                )}
+                updateLocalStates={props.updateLocalStates}
+                themeData={props.rawData}
+                deleteViz={deleteViz}
+                duplicateViz={duplicateViz}
+              />
+            ))}
+          </DataThemesTabOrderViz>
+        </React.Fragment>
+      )}
+    </React.Fragment>
+  );
+}
 
 export function DataThemesBuilderPreviewTheme(
   props: DataThemesBuilderPreviewThemeProps
