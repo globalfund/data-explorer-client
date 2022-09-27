@@ -23,3 +23,38 @@ export interface DataThemesBuilderPreviewThemeProps {
   deleteViz: (tabIndex: number, vizIndex: number) => void;
   duplicateViz: (tabIndex: number, vizIndex: number) => void;
 }
+
+export interface DataThemesBuilderPreviewThemePageProps {
+  loading: boolean;
+  isEditMode: boolean;
+  rawData: {
+    id: number;
+    count: number;
+    data: {
+      [key: string]: string | number | null;
+    }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
+  visualOptions: any;
+  updateLocalStates: (param?: boolean) => void;
+  deleteTab: (value: number) => void;
+  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
+  currentChart: any;
+  setVisualOptions: (value: any) => void;
+  currentChartData: any;
+  setCurrentChart: (value: any) => void;
+  setCurrentChartData: (value: any) => void;
+  setRawData: React.Dispatch<
+    React.SetStateAction<
+      {
+        id: number;
+        count: number;
+        data: {
+          [key: string]: string | number | null;
+        }[];
+        filterOptionGroups: FilterGroupModel[];
+      }[][]
+    >
+  >;
+  addVizToLocalStates: () => void;
+}
