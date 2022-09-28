@@ -1,8 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import { Search } from "app/components/Search";
+import Avatar from "@material-ui/core/Avatar";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
+import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
@@ -14,6 +16,7 @@ import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronLeft from "@material-ui/icons/ChevronLeft";
 import { NavLink, useLocation, useHistory } from "react-router-dom";
+import { useAuth0 } from '@auth0/auth0-react';
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
 
@@ -123,6 +126,12 @@ export function AppBar() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openSearch, setOpenSearch] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const {
+    isAuthenticated,
+    user,
+    loginWithRedirect,
+    logout,
+  } = useAuth0();
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
@@ -342,17 +351,27 @@ export function AppBar() {
           )}
         </Toolbar>
       </Container>
-      <IconButton
-        target="_blank"
-        id="github-linkbtn"
-        href="https://github.com/globalfund/data-explorer-client"
-        css={`
-          right: 0;
-          position: absolute;
-        `}
-      >
-        <GitHubIcon />
-      </IconButton>
+      <div css='display: flex;'>
+        { isAuthenticated ? (
+          <Avatar css='top: 50%-12px;height:24px; width:24px; background: #DFE3E6; color:#262C34;' onClick={() => logout({returnTo: window.location.origin})}>
+            { user?.name?.match(/\b(\w)/g)?.join('') || 'Sign out' }
+          </Avatar>
+        ) : (
+          <Button css='right:-30; color:white' onClick={loginWithRedirect}>
+            Sign in!
+          </Button>
+        ) }
+        <IconButton
+          target="_blank"
+          id="github-linkbtn"
+          href="https://github.com/globalfund/data-explorer-client"
+          css={`
+            right: 0;
+          `}
+        >
+          <GitHubIcon />
+        </IconButton>
+      </div>
     </MUIAppBar>
   );
 }

@@ -12,6 +12,7 @@ import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import AgendaIcon from "@material-ui/icons/ViewAgenda";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useAuth0 } from '@auth0/auth0-react';
 /* project */
 import { AddIcon } from "app/assets/icons/Add";
 import { TableIcon } from "app/assets/icons/charts/Table";
@@ -151,14 +152,15 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
       clearDuplicateDataTheme();
     };
   }, [duplicateDataThemeSuccess]);
+  const { isAuthenticated } = useAuth0();
 
   return (
     <div css={styles.gridItem}>
       <div css={styles.gridItemTitle}>
         {props.title}
-        <IconButton id="menu-button" size="small" onClick={handleClick}>
+        { isAuthenticated && <IconButton id="menu-button" size="small" onClick={handleClick}>
           <MoreVertIcon htmlColor="#262c34" />
-        </IconButton>
+        </IconButton> }
         <DataThemesUtilsPopover
           anchorEl={anchorEl}
           deleteItem={deleteItem}
@@ -296,6 +298,7 @@ export function DataThemesListView() {
     }
     loadDataThemes(params);
   }, [searchDebounced, order]);
+  const { isAuthenticated } = useAuth0();
 
   return (
     <div css={styles.container}>
@@ -372,12 +375,14 @@ export function DataThemesListView() {
             items={viewItems}
             onItemClick={onViewItemClick}
           />
-          <button
-            css={styles.createNewButton}
-            onClick={() => history.push("/data-themes/new")}
-          >
-            Create
-          </button>
+          { isAuthenticated && 
+            <button
+              css={styles.createNewButton}
+              onClick={() => history.push("/data-themes/new")}
+            >
+              Create
+            </button>
+          }
         </Box>
         {view === "list" && (
           <Grid container spacing={2}>
