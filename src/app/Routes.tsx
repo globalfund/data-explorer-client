@@ -1,14 +1,8 @@
 // cc:application base#;application routes
 
+// base
 import React, { Suspense, lazy } from "react";
-import { useGA } from "app/hooks/useGA";
 import axios, { AxiosResponse } from "axios";
-import { useUrlFilters } from "app/hooks/useUrlFilters";
-import { V1RouteRedirections } from "app/utils/v1Routes";
-import { useCMSData } from "app/hooks/useCMSData";
-import { useScrollToTop } from "app/hooks/useScrollToTop";
-import { PageLoader } from "app/modules/common/page-loader";
-import { useFilterOptions } from "app/hooks/useFilterOptions";
 import {
   Route,
   Switch,
@@ -16,17 +10,22 @@ import {
   useHistory,
   RouteComponentProps,
 } from "react-router-dom";
-import { useClearDataPathStepsOnDatasetChange } from "./hooks/useClearDataPathStepsOnDatasetChange";
-// import BigLogo from "app/assets/BigLogo";
-// import useCookie from "@devhammed/use-cookie";
-// import useMediaQuery from "@material-ui/core/useMediaQuery";
+// project
+import { useGA } from "app/hooks/useGA";
+import { useCMSData } from "app/hooks/useCMSData";
+import { useUrlFilters } from "app/hooks/useUrlFilters";
+import { V1RouteRedirections } from "app/utils/v1Routes";
+import { useScrollToTop } from "app/hooks/useScrollToTop";
+import { PageLoader } from "app/modules/common/page-loader";
+import { useFilterOptions } from "app/hooks/useFilterOptions";
+import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
 
+// modules
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const ResultsModule = lazy(() => import("app/modules/results-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
-const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
@@ -70,7 +69,6 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 }
 
 export function MainRoutes() {
-  // const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
   useClearDataPathStepsOnDatasetChange();
   useFilterOptions({});
   useScrollToTop();
@@ -80,64 +78,6 @@ export function MainRoutes() {
   useCMSData({
     loadData: true,
   });
-
-  // const isMobile = useMediaQuery("(max-width: 767px)");
-
-  // if (isMobile && showSMNotice) {
-  //   return (
-  //     <div
-  //       css={`
-  //         width: 100vw;
-  //         height: 100vh;
-  //         display: flex;
-  //         font-size: 16px;
-  //         text-align: center;
-  //         align-items: center;
-  //         flex-direction: column;
-  //         justify-content: center;
-
-  //         > svg {
-  //           width: 90%;
-  //         }
-
-  //         > button {
-  //           color: #fff;
-  //           font-size: 14px;
-  //           appearance: none;
-  //           padding: 9px 16px;
-  //           font-weight: bold;
-  //           line-height: 20px;
-  //           background: #495057;
-  //           border-radius: 20px;
-  //           border-color: #495057;
-  //           text-transform: unset;
-  //         }
-  //       `}
-  //     >
-  //       <BigLogo />
-  //       <br />
-  //       App is not yet optimised for smaller screens.
-  //       <br />
-  //       <br />
-  //       <button
-  //         type="button"
-  //         onClick={() =>
-  //           setShowSMNotice(false, {
-  //             expires: 31556926, // 12 months
-  //             domain: "",
-  //             path: "",
-  //             secure: false,
-  //             httpOnly: false,
-  //             maxAge: 0,
-  //             sameSite: "",
-  //           })
-  //         }
-  //       >
-  //         Continue
-  //       </button>
-  //     </div>
-  //   );
-  // }
 
   return (
     <Suspense fallback={<PageLoader />}>
@@ -151,7 +91,7 @@ export function MainRoutes() {
         </Route>
 
         <Route exact path="/datasets">
-          <DatasetsModule />
+          <Redirect to="/" />
         </Route>
 
         <Route exact path="/grants">
