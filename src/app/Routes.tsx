@@ -26,6 +26,7 @@ const AboutModule = lazy(() => import("app/modules/about-module"));
 const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const ResultsModule = lazy(() => import("app/modules/results-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
+const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
@@ -91,7 +92,7 @@ export function MainRoutes() {
         </Route>
 
         <Route exact path="/datasets">
-          <Redirect to="/" />
+          <DatasetsModule />
         </Route>
 
         <Route exact path="/grants">
