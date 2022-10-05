@@ -20,6 +20,12 @@ interface DataThemesBuilderDataViewProps {
   deleteTab: (value: number) => void;
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
+  themeData: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
 }
 
 export function DataThemesBuilderDataView(
@@ -54,6 +60,7 @@ export function DataThemesBuilderDataView(
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
+        themeData={props.themeData}
         tabsDisabled={true}
         deleteTab={props.deleteTab}
       />

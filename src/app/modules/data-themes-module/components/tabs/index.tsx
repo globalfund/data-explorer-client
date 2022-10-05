@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import Dialog from "@material-ui/core/Dialog";
 import Button from "@material-ui/core/Button";
 import Popover from "@material-ui/core/Popover";
@@ -17,6 +18,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { styles } from "app/modules/data-themes-module/components/tabs/styles";
 
 function DataThemesTabItem(props: any) {
+  const history = useHistory();
   const {
     index,
     disabled,
@@ -75,11 +77,31 @@ function DataThemesTabItem(props: any) {
     (actions) => actions.dataThemes.titles.removeTab
   );
 
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
+  const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
+  const selectedChartType = useStoreState(
+    (state) => state.dataThemes.sync.chartType.value
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
+  );
+  const appliedFilters = useStoreState(
+    (state) => state.dataThemes.appliedFilters.value
+  );
+  const isLiveData = useStoreState(
+    (state) => state.dataThemes.sync.liveData.value
+  );
+
   function onTabClick(tab: number) {
     if (activeTabIndex !== tab) {
       // only change when necessary
       setActiveTabIndex(tab);
       setActiveVizIndex(0); // default select the fist viz.
+      if (!props.previewMode) {
+        onTabChange(tab);
+      }
     }
   }
 
@@ -89,6 +111,32 @@ function DataThemesTabItem(props: any) {
 
   function handleClose() {
     setAnchorEl(null);
+  }
+
+  function onTabChange(tabIndex: number) {
+    let goToInitialView = true;
+    if (tabIds[tabIndex]) {
+      tabIds[tabIndex].forEach((_, vizIndex) => {
+        if (get(vizIsTextContent, `[${tabIndex}][${vizIndex}]`, null)) {
+          goToInitialView = false;
+        } else {
+          if (
+            get(mapping, `[${tabIndex}][${vizIndex}]`, null) &&
+            get(selectedChartType, `[${tabIndex}][${vizIndex}]`, null) &&
+            get(stepSelectionsData.step1, `[${tabIndex}][${vizIndex}]`, null) &&
+            get(props.themeData, `[${tabIndex}][${vizIndex}]`, null) &&
+            get(props.visualOptions, `[${tabIndex}][${vizIndex}]`, null) &&
+            get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null) &&
+            get(isLiveData, `[${tabIndex}][${vizIndex}]`, null) !== null
+          ) {
+            goToInitialView = false;
+          }
+        }
+      });
+    }
+    history.push(
+      `/data-themes/${props.page}${goToInitialView ? "/initial" : ""}`
+    );
   }
 
   function onDelete(id: number) {
@@ -106,10 +154,11 @@ function DataThemesTabItem(props: any) {
       removeTabTextContent({ tabIndex: id });
       deleteTab(id);
       updateLocalStates(true);
+      onTabChange(0);
     } else {
       handleOpenDialog();
-      handleClose();
     }
+    handleClose();
   }
 
   const open = Boolean(anchorEl);
@@ -252,12 +301,15 @@ export function DataThemesTabs(props: any) {
         {tabIds.map((_: number[], index: number) => (
           <DataThemesTabItem
             key={index}
+            page={page}
             index={index}
             deleteTab={props.deleteTab}
             updateLocalStates={props.updateLocalStates}
             disabled={props.tabsDisabled}
             previewMode={props.previewMode}
             handleOpenDialog={handleOpenDialog}
+            visualOptions={props.visualOptions}
+            themeData={props.themeData}
           />
         ))}
       </div>

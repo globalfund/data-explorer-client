@@ -80,6 +80,7 @@ export function DataThemesBuilderChartType(
       <DataThemesPageSubHeader
         data={props.data}
         loading={props.loading}
+        themeData={props.themeData}
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}

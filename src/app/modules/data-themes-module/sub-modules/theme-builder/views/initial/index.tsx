@@ -19,6 +19,12 @@ interface DataThemesBuilderInitialViewProps {
   updateLocalStates: any;
   addVizToLocalStates: () => void;
   deleteTab: (value: number) => void;
+  themeData: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
 }
 
 export function DataThemesBuilderInitialView(
@@ -53,6 +59,7 @@ export function DataThemesBuilderInitialView(
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
+        themeData={props.themeData}
         tabsDisabled={true}
         deleteTab={props.deleteTab}
       />

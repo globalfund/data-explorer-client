@@ -134,6 +134,7 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
+        themeData={props.themeData}
         tabsDisabled={true}
         deleteTab={props.deleteTab}
       />

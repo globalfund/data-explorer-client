@@ -190,8 +190,6 @@ export function DataThemesBuilderPreviewThemePage(
     }, 500);
   }, [vizIsTextContent, activeTabIndex]);
 
-  let renderingKey = 0;
-
   if (
     page === "new" &&
     activePanels[activeTabIndex][activeVizIndex] < 4 &&
@@ -234,7 +232,7 @@ export function DataThemesBuilderPreviewThemePage(
           <DataThemesTabOrderViz enabled={props.isEditMode}>
             {props.rawData[activeTabIndex].map((_, vizIndex) => (
               <DataThemesBuilderPreviewTheme
-                key={renderingKey++}
+                key={Math.random().toString(36).substring(7)}
                 editable={props.isEditMode}
                 tabIndex={activeTabIndex}
                 vizIndex={vizIndex}
@@ -323,8 +321,11 @@ export function DataThemesBuilderPreviewTheme(
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&
-      visualOptions[props.tabIndex][props.vizIndex].width ===
-        CHART_DEFAULT_WIDTH
+      get(
+        visualOptions,
+        `[${props.tabIndex}][${props.vizIndex}].width`,
+        100
+      ) === CHART_DEFAULT_WIDTH
     ) {
       let tmpVisualOptions = [...visualOptions];
       tmpVisualOptions[props.tabIndex][props.vizIndex] = {
@@ -373,8 +374,12 @@ export function DataThemesBuilderPreviewTheme(
           } catch (e) {
             if (process.env.NODE_ENV === "development") {
               console.log("chart error", e);
-              reject(0);
             }
+
+            if (loader) {
+              loader.style.display = "none";
+            }
+            reject(0);
           }
         })
           .then(() => {
@@ -399,7 +404,21 @@ export function DataThemesBuilderPreviewTheme(
         }
       }
     }
-  }, [props.currentChart, props.currentChartData, mapping, visualOptions]);
+    // else if (props.data.length === 0) {
+    //   const loader = document.getElementById(
+    //     `chart-placeholder-${props.tabIndex}-${props.vizIndex}`
+    //   );
+    //   if (loader) {
+    //     loader.style.display = "none";
+    //   }
+    // }
+  }, [
+    // props.data,
+    props.currentChart,
+    props.currentChartData,
+    mapping,
+    visualOptions,
+  ]);
 
   const handleVizClick = () => {
     if (page === "new" || props.editable) {
@@ -442,7 +461,11 @@ export function DataThemesBuilderPreviewTheme(
               align-self: flex-start;
               justify-content: center;
               width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
-              height: ${visualOptions[props.tabIndex][props.vizIndex].height}px;
+              height: ${get(
+                visualOptions,
+                `[${props.tabIndex}][${props.vizIndex}].height`,
+                100
+              )}px;
 
               @media (max-width: 1280px) {
                 width: calc(100vw - 400px);

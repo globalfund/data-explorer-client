@@ -6,6 +6,7 @@ import { DataThemesToolBox } from "app/modules/data-themes-module/components/too
 import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { styles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { RichEditor } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text/RichEditor";
+import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 const emptyPromise = (v: string) =>
   new Promise<boolean>((resolve) => resolve(true));
@@ -17,6 +18,12 @@ interface DataThemesBuilderTextViewProps {
   data: any;
   updateLocalStates: any;
   deleteTab: (value: number) => void;
+  themeData: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
 }
 
 export function DataThemesBuilderTextView(
@@ -39,6 +46,7 @@ export function DataThemesBuilderTextView(
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
+        themeData={props.themeData}
         tabsDisabled={true}
         deleteTab={props.deleteTab}
       />

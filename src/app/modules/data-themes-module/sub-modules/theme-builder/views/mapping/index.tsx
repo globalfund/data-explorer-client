@@ -187,6 +187,7 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
         visualOptions={props.visualOptions}
         filterOptionGroups={props.filterOptionGroups}
         updateLocalStates={props.updateLocalStates}
+        themeData={props.themeData}
         tabsDisabled={true}
         deleteTab={props.deleteTab}
       />

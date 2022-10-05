@@ -42,6 +42,12 @@ export interface DataThemesBuilderChartTypeProps {
   loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
   updateLocalStates: any;
   deleteTab: (value: number) => void;
+  themeData: {
+    id: number;
+    count: number;
+    data: { [key: string]: string | number | null }[];
+    filterOptionGroups: FilterGroupModel[];
+  }[][];
 }
 
 export interface ChartTypeModel {
