@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { convertToRaw } from "draft-js";
 import styled from "styled-components/macro";
@@ -17,7 +18,6 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import PlayCircleFilledIcon from "@material-ui/icons/PlayCircleFilled";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -59,14 +59,15 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   }
 
   & [class*="MuiSnackbarContent-action"] {
-    > a {
+    > button {
       color: #fff;
       padding: 10px;
+      cursor: pointer;
       font-size: 14px;
       font-weight: 700;
+      border-style: none;
       background: #262c34;
       border-radius: 20px;
-      text-decoration: none;
       box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
@@ -286,22 +287,50 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   }
 
   React.useEffect(() => {
+    let allTabsOK = true;
+    if (tabIds.length > 0 && !props.previewMode) {
+      tabIds.forEach((content, tabIndex) => {
+        content.forEach((contentViz, vizIndex) => {
+          if (!get(vizIsTextContent, `[${tabIndex}][${vizIndex}]`, null)) {
+            if (
+              !get(mapping, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(selectedChartType, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(
+                stepSelectionsData.step1,
+                `[${tabIndex}][${vizIndex}]`,
+                null
+              ) ||
+              !get(props.themeData, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(visualOptions, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null) ||
+              get(isLiveData, `[${tabIndex}][${vizIndex}]`, null) === null
+            ) {
+              allTabsOK = false;
+            }
+          }
+        });
+      });
+    } else {
+      allTabsOK = false;
+    }
     const newValue =
       (!loading &&
         (data && data.length) > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-        activePanels[activeTabIndex][activeVizIndex] > 3) ||
+        activePanels[activeTabIndex][activeVizIndex] > 2 &&
+        props.validMapping) ||
       vizIsTextContent[activeTabIndex][activeVizIndex] ||
       orderData.hasChanged ||
       vizDeleted ||
       tabDeleted ||
       vizDuplicated ||
-      title !== loadedDataTheme.title ||
-      subTitle !== loadedDataTheme.subTitle;
+      (isEditMode &&
+        (title !== loadedDataTheme.title ||
+          subTitle !== loadedDataTheme.subTitle));
     if (newValue !== isSavedEnabled) {
-      setIsSavedEnabled(newValue);
+      setIsSavedEnabled(newValue && allTabsOK);
     }
   }, [
     data,
@@ -318,6 +347,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     vizDuplicated,
     title,
     subTitle,
+    props.validMapping,
   ]);
 
   React.useEffect(() => {
@@ -327,7 +357,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-        activePanels[activeTabIndex][activeVizIndex] > 3) ||
+        activePanels[activeTabIndex][activeVizIndex] > 2 &&
+        props.validMapping) ||
       vizIsTextContent[activeTabIndex][activeVizIndex];
     if (newValue !== isPreviewEnabled) {
       setIsPreviewEnabled(newValue);
@@ -341,10 +372,17 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     activePanels,
     activeTabIndex,
     activeVizIndex,
+    props.validMapping,
   ]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");
+
+    return () => {
+      if (page !== "new") {
+        setShowSnackbar(null);
+      }
+    };
   }, [page]);
 
   React.useEffect(() => {
@@ -356,9 +394,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       setVizDuplicated(false);
     }
     return () => {
-      if (isEditMode) {
-        createDataThemeClear();
-      }
+      createDataThemeClear();
       editDataThemeClear();
     };
   }, [createDataThemeSuccess, editDataThemeSuccess]);
@@ -389,7 +425,16 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         <SnackbarContent
           message={showSnackbar}
           aria-describedby="data-theme-snackbar-content"
-          action={<Link to="/data-themes">Go to my themes</Link>}
+          action={
+            <button
+              onClick={() => {
+                setShowSnackbar(null);
+                history.push("/data-themes");
+              }}
+            >
+              Go to my themes
+            </button>
+          }
         />
       </InfoSnackbar>
       <Snackbar
@@ -527,6 +572,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             disabled={props.tabsDisabled}
             previewMode={props.previewMode}
             deleteTab={props.deleteTab}
+            visualOptions={props.visualOptions}
+            themeData={props.themeData}
           />
         </div>
       </div>

@@ -299,7 +299,7 @@ export function useDataThemesRawData(props: {
               for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
                 // prepare the tabbed state
                 if (tabIndex !== 0 && tabIds.length < tabs.length) {
-                  addTabId();
+                  addTabId({ addPlaceholder: true });
                   addTabActivePanel();
                   addTabChartType();
                   addTabLiveData();
@@ -307,7 +307,7 @@ export function useDataThemesRawData(props: {
                   addTabStepSelections();
                   addTabAppliedFilters();
                   addTabTitles();
-                  addTabTextContent();
+                  addTabTextContent({ addPlaceholder: true });
                   tmpVisualOptions.push([{}]);
                   tmpCurrentChart.push([{}]);
                   tmpCurrentChartData.push([{}]);

@@ -27,21 +27,12 @@ import SunburstChartIcon from "app/assets/icons/data-themes-chart-types/sunburst
 import TreeMapIcon from "app/assets/icons/data-themes-chart-types/treemap";
 import ViolinPlotIcon from "app/assets/icons/data-themes-chart-types/violinplot";
 import VoronoiDiagramIcon from "app/assets/icons/data-themes-chart-types/voronoidiagram";
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 export interface DataThemesBuilderChartTypeProps {
-  tabIndex: number;
-  vizIndex: number;
-  data: { [key: string]: string | number | null }[];
   loading: boolean;
-  visualOptions: any;
   currentChart: any;
   setCurrentChart: (chart: any) => void;
-  filterOptionGroups: FilterGroupModel[];
-  setVisualOptions: (value: any) => void;
-  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
-  updateLocalStates: any;
-  deleteTab: (value: number) => void;
+  data: { [key: string]: string | number | null }[];
 }
 
 export interface ChartTypeModel {
