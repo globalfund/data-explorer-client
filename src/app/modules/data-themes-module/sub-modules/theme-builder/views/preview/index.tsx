@@ -1,31 +1,19 @@
 /* third-party */
 import React from "react";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import useTitle from "react-use/lib/useTitle";
+import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import { DataThemesDataTable } from "app/modules/data-themes-module/components/data-table";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
-import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
+import { DataThemesDataTable } from "app/modules/data-themes-module/components/data-table";
+import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 
 interface DataThemesBuilderPreviewProps {
-  tabIndex: number;
-  vizIndex: number;
   loading: boolean;
   data: {
     [key: string]: string | number | null;
   }[];
-  allData: {
-    [key: string]: string | number | null;
-  }[];
-  visualOptions: any;
-  totalAvailable: number;
   filterOptionGroups: FilterGroupModel[];
-  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
-  updateLocalStates: any;
-  deleteTab: (value: number) => void;
 }
 
 export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
@@ -53,25 +41,6 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
   return (
     <div css={commonStyles.container}>
       {props.loading && <PageLoader />}
-      <DataThemesPageSubHeader
-        data={props.allData}
-        loading={props.loading}
-        visualOptions={props.visualOptions}
-        filterOptionGroups={props.filterOptionGroups}
-        updateLocalStates={props.updateLocalStates}
-        tabsDisabled={true}
-        deleteTab={props.deleteTab}
-      />
-      <DataThemesToolBox
-        dataSteps
-        openPanel={1}
-        data={props.data}
-        loading={props.loading}
-        loadDataset={props.loadDataset}
-        totalAvailable={props.totalAvailable}
-        forceNextEnabled={props.data.length > 0}
-        filterOptionGroups={props.filterOptionGroups}
-      />
       <div css={commonStyles.innercontainer}>
         <DataThemesDataTable data={props.data} />
       </div>

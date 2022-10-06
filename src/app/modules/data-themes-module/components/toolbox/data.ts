@@ -15,6 +15,7 @@ export interface DataThemesToolBoxProps {
   tabIndex?: number;
   vizIndex?: number;
   rawViz?: any;
+  previewMode: boolean;
   currentChartData?: any;
   totalAvailable?: number;
   forceNextEnabled?: boolean;

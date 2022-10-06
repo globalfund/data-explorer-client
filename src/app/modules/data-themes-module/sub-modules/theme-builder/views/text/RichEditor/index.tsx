@@ -1,4 +1,5 @@
 import React, { ReactElement, useMemo, useRef } from "react";
+import get from "lodash/get";
 import { EditorState } from "draft-js";
 import Editor from "@draft-js-plugins/editor";
 import createLinkPlugin from "@draft-js-plugins/anchor";
@@ -56,7 +57,7 @@ export const RichEditor = (props: {
   };
 
   if (
-    textContent[props.tabIndex][props.vizIndex].isInCompositionMode ===
+    get(textContent, `[${props.tabIndex}][${props.vizIndex}]`, undefined) ===
     undefined
   ) {
     return <React.Fragment />;

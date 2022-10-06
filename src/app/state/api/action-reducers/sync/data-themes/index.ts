@@ -290,7 +290,7 @@ export const DataThemesVizIndexState: DataThemesIndexStateModel = {
 export interface DataThemesIdsStateModel {
   value: number[][];
   // setValue: Action<DataThemesIdsStateModel, {tabIndex: number, vizIndex: number}>; // TODO: unused
-  addTab: Action<DataThemesIdsStateModel>;
+  addTab: Action<DataThemesIdsStateModel, { addPlaceholder?: boolean }>;
   addViz: Action<DataThemesIdsStateModel, { tabIndex: number }>;
   removeViz: Action<
     DataThemesIdsStateModel,
@@ -305,9 +305,9 @@ export const DataThemesIdsState: DataThemesIdsStateModel = {
   // setValue: action((state, payload: {tabIndex: number, vizIndex: number}) => {  // TODO: unused
   //   state.value[payload.tabIndex][payload.vizIndex] = payload.vizIndex;
   // }),
-  addTab: action((state) => {
+  addTab: action((state, payload: { addPlaceholder?: boolean }) => {
     // Add a new array of visualisations starting at id 0.
-    state.value.push([0]);
+    state.value.push(payload.addPlaceholder ? [0] : []);
   }),
   addViz: action((state, payload: { tabIndex: number }) => {
     // Add a new value to the array of visualisations, with the length + 1 as the ID (length is 0 indexed so +1 is implicit)
@@ -423,7 +423,7 @@ export interface DataThemesTextContentStateModel {
     DataThemesTextContentStateModel,
     { tab: number; viz: number; value: EditorState }
   >;
-  addTab: Action<DataThemesTextContentStateModel>;
+  addTab: Action<DataThemesTextContentStateModel, { addPlaceholder?: boolean }>;
   addViz: Action<DataThemesTextContentStateModel, { tabIndex: number }>;
   copyViz: Action<
     DataThemesTextContentStateModel,
@@ -446,9 +446,9 @@ export const DataThemesTextContentState: DataThemesTextContentStateModel = {
       state.vizIsTextContent[payload.tab][payload.viz] = true;
     }
   ),
-  addTab: action((state) => {
-    state.value.push([EditorState.createEmpty()]);
-    state.vizIsTextContent.push([false]);
+  addTab: action((state, payload: { addPlaceholder?: boolean }) => {
+    state.value.push(payload.addPlaceholder ? [EditorState.createEmpty()] : []);
+    state.vizIsTextContent.push(payload.addPlaceholder ? [false] : []);
   }),
   addViz: action((state, payload: { tabIndex: number }) => {
     state.value[payload.tabIndex].push(EditorState.createEmpty());
@@ -474,6 +474,7 @@ export const DataThemesTextContentState: DataThemesTextContentStateModel = {
   }),
   removeTab: action((state, payload: { tabIndex: number }) => {
     state.value.splice(payload.tabIndex, 1);
+    state.vizIsTextContent.splice(payload.tabIndex, 1);
   }),
 };
 

@@ -1,29 +1,11 @@
 /* third-party */
 import React from "react";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import useTitle from "react-use/lib/useTitle";
+import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { styles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 
-const emptyPromise = (v: string) =>
-  new Promise<boolean>((resolve) => resolve(true));
-
-interface DataThemesBuilderInitialViewProps {
-  loading: boolean;
-  visualOptions: any;
-  filterOptionGroups: FilterGroupModel[];
-  data: { [key: string]: string | number | null }[];
-  updateLocalStates: any;
-  addVizToLocalStates: () => void;
-  deleteTab: (value: number) => void;
-}
-
-export function DataThemesBuilderInitialView(
-  props: DataThemesBuilderInitialViewProps
-) {
+export function DataThemesBuilderInitialView() {
   useTitle("Data Themes - Create");
 
   const activeTabIndex = useStoreState(
@@ -47,23 +29,6 @@ export function DataThemesBuilderInitialView(
 
   return (
     <div css={styles.container}>
-      <DataThemesPageSubHeader
-        data={props.data}
-        loading={props.loading}
-        visualOptions={props.visualOptions}
-        filterOptionGroups={props.filterOptionGroups}
-        updateLocalStates={props.updateLocalStates}
-        tabsDisabled={true}
-        deleteTab={props.deleteTab}
-      />
-      <DataThemesToolBox
-        guideView
-        data={[]}
-        loading={false}
-        filterOptionGroups={[]}
-        loadDataset={emptyPromise}
-        addVizToLocalStates={props.addVizToLocalStates}
-      />
       <div css={styles.innercontainer}></div>
     </div>
   );

@@ -8,8 +8,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 /* project */
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { getRequiredFieldsAndErrors } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping/utils";
@@ -128,29 +126,6 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader
-        data={props.data}
-        loading={props.loading}
-        visualOptions={props.visualOptions}
-        filterOptionGroups={props.filterOptionGroups}
-        updateLocalStates={props.updateLocalStates}
-        tabsDisabled={true}
-        deleteTab={props.deleteTab}
-      />
-      <DataThemesToolBox
-        dataSteps
-        openPanel={4}
-        forceNextEnabled
-        data={props.data}
-        loading={props.loading}
-        mappedData={mappedData}
-        currentChart={props.currentChart}
-        visualOptions={props.visualOptions}
-        loadDataset={props.loadDataset}
-        setVisualOptions={props.setVisualOptions}
-        currentChartData={props.currentChartData}
-        filterOptionGroups={props.filterOptionGroups}
-      />
       <div css={commonStyles.innercontainer}>
         <div
           ref={containerRef}

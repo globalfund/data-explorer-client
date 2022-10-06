@@ -9,6 +9,7 @@ import { withStyles } from "@material-ui/core/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
 import { useHistory, useParams } from "react-router-dom";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 /* project */
@@ -126,7 +127,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const { data, loading, loadDataset, filterOptionGroups } = props;
 
   const [collapsed, setCollapsed] = React.useState(false);
-  const [expanded] = React.useState<number>(props.openPanel || 0);
+  const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const selectedChartType = useStoreState(
@@ -196,6 +197,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         history.push(stepPaths[newStepPathIndex]);
       }
     };
+
+  useUpdateEffect(() => setExpanded(props.openPanel || 0), [props.openPanel]);
 
   return (
     <div>
