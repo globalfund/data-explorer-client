@@ -59,14 +59,15 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   }
 
   & [class*="MuiSnackbarContent-action"] {
-    > a {
+    > button {
       color: #fff;
       padding: 10px;
+      cursor: pointer;
       font-size: 14px;
       font-weight: 700;
+      border-style: none;
       background: #262c34;
       border-radius: 20px;
-      text-decoration: none;
       box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
@@ -290,15 +291,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     if (tabIds.length > 0 && !props.previewMode) {
       tabIds.forEach((content, tabIndex) => {
         content.forEach((contentViz, vizIndex) => {
-          console.log(
-            get(mapping, `[${tabIndex}][${vizIndex}]`, null),
-            get(selectedChartType, `[${tabIndex}][${vizIndex}]`, null),
-            get(stepSelectionsData.step1, `[${tabIndex}][${vizIndex}]`, null),
-            get(props.themeData, `[${tabIndex}][${vizIndex}]`, null),
-            get(props.visualOptions, `[${tabIndex}][${vizIndex}]`, null),
-            get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null),
-            get(isLiveData, `[${tabIndex}][${vizIndex}]`, null)
-          );
           if (!get(vizIsTextContent, `[${tabIndex}][${vizIndex}]`, null)) {
             if (
               !get(mapping, `[${tabIndex}][${vizIndex}]`, null) ||
@@ -327,7 +319,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-        activePanels[activeTabIndex][activeVizIndex] > 3) ||
+        activePanels[activeTabIndex][activeVizIndex] > 2 &&
+        props.validMapping) ||
       vizIsTextContent[activeTabIndex][activeVizIndex] ||
       orderData.hasChanged ||
       vizDeleted ||
@@ -354,6 +347,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     vizDuplicated,
     title,
     subTitle,
+    props.validMapping,
   ]);
 
   React.useEffect(() => {
@@ -363,7 +357,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
-        activePanels[activeTabIndex][activeVizIndex] > 3) ||
+        activePanels[activeTabIndex][activeVizIndex] > 2 &&
+        props.validMapping) ||
       vizIsTextContent[activeTabIndex][activeVizIndex];
     if (newValue !== isPreviewEnabled) {
       setIsPreviewEnabled(newValue);
@@ -377,10 +372,17 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     activePanels,
     activeTabIndex,
     activeVizIndex,
+    props.validMapping,
   ]);
 
   React.useEffect(() => {
     setIsEditMode(page !== "new");
+
+    return () => {
+      if (page !== "new") {
+        setShowSnackbar(null);
+      }
+    };
   }, [page]);
 
   React.useEffect(() => {
@@ -392,9 +394,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       setVizDuplicated(false);
     }
     return () => {
-      if (isEditMode) {
-        createDataThemeClear();
-      }
+      createDataThemeClear();
       editDataThemeClear();
     };
   }, [createDataThemeSuccess, editDataThemeSuccess]);
@@ -425,7 +425,16 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         <SnackbarContent
           message={showSnackbar}
           aria-describedby="data-theme-snackbar-content"
-          action={<Link to="/data-themes">Go to my themes</Link>}
+          action={
+            <button
+              onClick={() => {
+                setShowSnackbar(null);
+                history.push("/data-themes");
+              }}
+            >
+              Go to my themes
+            </button>
+          }
         />
       </InfoSnackbar>
       <Snackbar

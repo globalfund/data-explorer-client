@@ -15,8 +15,6 @@ import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { DataThemesTabOrderViz } from "app/modules/data-themes-module/components/order-tab-viz";
 import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
@@ -192,7 +190,10 @@ export function DataThemesBuilderPreviewThemePage(
 
   if (
     page === "new" &&
-    activePanels[activeTabIndex][activeVizIndex] < 4 &&
+    activePanels[activeTabIndex][activeVizIndex] < 3 &&
+    (activePanels[activeTabIndex][activeVizIndex] > 1
+      ? !props.validMapping
+      : true) &&
     !vizIsTextContent[activeTabIndex][activeVizIndex]
   ) {
     return <Redirect to="/data-themes/new/initial" />;
@@ -203,32 +204,6 @@ export function DataThemesBuilderPreviewThemePage(
         <PageLoader />
       ) : (
         <React.Fragment>
-          <DataThemesPageSubHeader
-            previewMode={!props.isEditMode && page !== "new"}
-            data={props.rawData[activeTabIndex][0].data}
-            loading={props.loading}
-            visualOptions={props.visualOptions}
-            filterOptionGroups={
-              props.rawData[activeTabIndex][0].filterOptionGroups
-            }
-            updateLocalStates={props.updateLocalStates}
-            tabsDisabled={page !== "new" && !props.isEditMode}
-            themeData={props.rawData}
-            deleteTab={props.deleteTab}
-          />
-          <DataThemesToolBox
-            filtersView
-            tabIndex={activeTabIndex}
-            vizIndex={activeVizIndex}
-            data={props.rawData[activeTabIndex][activeVizIndex].data}
-            loading={props.loading}
-            visualOptions={props.visualOptions}
-            loadDataset={props.loadDataset}
-            filterOptionGroups={
-              props.rawData[activeTabIndex][activeVizIndex].filterOptionGroups
-            }
-            themeData={props.rawData}
-          />
           <DataThemesTabOrderViz enabled={props.isEditMode}>
             {props.rawData[activeTabIndex].map((_, vizIndex) => (
               <DataThemesBuilderPreviewTheme
@@ -238,23 +213,12 @@ export function DataThemesBuilderPreviewThemePage(
                 vizIndex={vizIndex}
                 data={props.rawData[activeTabIndex][vizIndex].data}
                 loading={props.loading}
-                loadDataset={props.loadDataset}
                 currentChart={props.currentChart[activeTabIndex][vizIndex]}
                 visualOptions={props.visualOptions}
                 setVisualOptions={props.setVisualOptions}
                 currentChartData={
                   props.currentChartData[activeTabIndex][vizIndex]
                 }
-                filterOptionGroups={
-                  props.rawData[activeTabIndex][vizIndex].filterOptionGroups
-                }
-                dimensions={get(
-                  props.currentChart[activeTabIndex][vizIndex],
-                  "dimensions",
-                  []
-                )}
-                updateLocalStates={props.updateLocalStates}
-                themeData={props.rawData}
                 deleteViz={deleteViz}
                 duplicateViz={duplicateViz}
               />

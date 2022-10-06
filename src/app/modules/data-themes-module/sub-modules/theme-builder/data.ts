@@ -1164,3 +1164,122 @@ export const emptyDataThemeAPI: DataThemeAPIModel = {
     },
   ],
 };
+
+interface DataThemeRoutesConfigModel {
+  [key: string]: {
+    textView: boolean;
+    guideView: boolean;
+    dataSteps: boolean;
+    openPanel?: number;
+    exportView: boolean;
+    filtersView: boolean;
+    tabsDisabled: boolean;
+  };
+}
+
+export const routeToConfig: DataThemeRoutesConfigModel = {
+  initial: {
+    textView: false,
+    guideView: true,
+    dataSteps: false,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  data: {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 1,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  preview: {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 1,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  "chart-type": {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 2,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  mapping: {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 3,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  filters: {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 4,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  lock: {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 5,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  customize: {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 6,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  export: {
+    textView: false,
+    guideView: false,
+    dataSteps: true,
+    openPanel: 7,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  text: {
+    textView: true,
+    guideView: false,
+    dataSteps: false,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  new: {
+    textView: false,
+    guideView: false,
+    dataSteps: false,
+    exportView: false,
+    filtersView: false,
+    tabsDisabled: true,
+  },
+  "preview-theme": {
+    textView: false,
+    guideView: false,
+    dataSteps: false,
+    exportView: false,
+    filtersView: true,
+    tabsDisabled: false,
+  },
+};

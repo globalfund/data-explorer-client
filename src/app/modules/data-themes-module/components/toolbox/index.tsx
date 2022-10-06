@@ -1,12 +1,11 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { convertToRaw } from "draft-js";
 import MuiButton from "@material-ui/core/Button";
-import SearchIcon from "@material-ui/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
 import BarChartIcon from "@material-ui/icons/BarChart";
-import DashboardIcon from "@material-ui/icons/Dashboard";
 import { useLocation, useParams } from "react-router-dom";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -105,6 +104,9 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       (state.dataThemes.DataThemeGet.crudData ??
         emptyDataThemeAPI) as DataThemeAPIModel
   );
+  const tabDeleted = useStoreState(
+    (state) => state.dataThemes.sync.tabDeleted.value
+  );
 
   const createDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeCreate.post
@@ -177,6 +179,32 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   }
 
   React.useEffect(() => {
+    let allTabsOK = true;
+    if (tabIds.length > 0 && !props.previewMode) {
+      tabIds.forEach((content, tabIndex) => {
+        content.forEach((contentViz, vizIndex) => {
+          if (!get(vizIsTextContent, `[${tabIndex}][${vizIndex}]`, null)) {
+            if (
+              !get(mapping, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(selectedChartType, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(
+                stepSelectionsData.step1,
+                `[${tabIndex}][${vizIndex}]`,
+                null
+              ) ||
+              !get(props.themeData, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(props.visualOptions, `[${tabIndex}][${vizIndex}]`, null) ||
+              !get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null) ||
+              get(isLiveData, `[${tabIndex}][${vizIndex}]`, null) === null
+            ) {
+              allTabsOK = false;
+            }
+          }
+        });
+      });
+    } else {
+      allTabsOK = false;
+    }
     const newValue =
       (!props.loading &&
         (props.data && props.data.length) > 0 &&
@@ -187,11 +215,13 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       vizIsTextContent[activeTabIndex][activeVizIndex] ||
       orderData.hasChanged ||
       vizDeleted ||
+      tabDeleted ||
       vizDuplicated ||
-      title !== loadedDataTheme.title ||
-      subTitle !== loadedDataTheme.subTitle;
+      (isEditMode &&
+        (title !== loadedDataTheme.title ||
+          subTitle !== loadedDataTheme.subTitle));
     if (newValue !== isSavedEnabled) {
-      setIsSavedEnabled(newValue);
+      setIsSavedEnabled(newValue && allTabsOK);
     }
   }, [
     props.data,
@@ -203,6 +233,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
     activeTabIndex,
     activeVizIndex,
     orderData.hasChanged,
+    tabDeleted,
     vizDeleted,
     vizDuplicated,
     title,

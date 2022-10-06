@@ -17,8 +17,6 @@ import {
 } from "@rawgraphs/rawgraphs-core";
 /* project */
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { DataThemesToolBoxMappingItem } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
@@ -181,26 +179,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader
-        data={props.data}
-        loading={props.loading}
-        visualOptions={props.visualOptions}
-        filterOptionGroups={props.filterOptionGroups}
-        updateLocalStates={props.updateLocalStates}
-        themeData={props.themeData}
-        tabsDisabled={true}
-        deleteTab={props.deleteTab}
-      />
-      <DataThemesToolBox
-        dataSteps
-        openPanel={3}
-        data={props.data}
-        loading={props.loading}
-        forceNextEnabled={nextEnabled}
-        loadDataset={props.loadDataset}
-        currentChartData={props.currentChartData}
-        filterOptionGroups={props.filterOptionGroups}
-      />
       <div css={commonStyles.innercontainer}>
         <div
           ref={containerRef}

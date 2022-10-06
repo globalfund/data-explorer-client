@@ -8,8 +8,6 @@ import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { getRequiredFieldsAndErrors } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping/utils";
@@ -24,7 +22,6 @@ export function DataThemesBuilderExport(props: DataThemesBuilderExportProps) {
   const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [rawViz, setRawViz] = React.useState(null);
   const [mappedData, setMappedData] = React.useState(null);
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
@@ -90,7 +87,7 @@ export function DataThemesBuilderExport(props: DataThemesBuilderExportProps) {
         setMappedData(vizData);
         try {
           const newRawViz = viz.renderToDOM(domRef.current, vizData);
-          setRawViz(newRawViz);
+          props.setRawViz(newRawViz);
         } catch (e) {
           setMappedData(null);
           if (process.env.NODE_ENV === "development") {
@@ -108,7 +105,7 @@ export function DataThemesBuilderExport(props: DataThemesBuilderExportProps) {
       }
     } else if (!nextEnabled && domRef && domRef.current) {
       while (domRef.current.firstChild) {
-        setRawViz(null);
+        props.setRawViz(null);
         domRef.current.removeChild(domRef.current.firstChild);
       }
     }
@@ -129,31 +126,6 @@ export function DataThemesBuilderExport(props: DataThemesBuilderExportProps) {
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader
-        data={props.data}
-        loading={props.loading}
-        themeData={props.themeData}
-        visualOptions={props.visualOptions}
-        filterOptionGroups={props.filterOptionGroups}
-        updateLocalStates={props.updateLocalStates}
-        tabsDisabled={true}
-        deleteTab={props.deleteTab}
-      />
-      <DataThemesToolBox
-        dataSteps
-        openPanel={7}
-        rawViz={rawViz}
-        data={props.data}
-        loading={props.loading}
-        mappedData={mappedData}
-        forceNextEnabled={nextEnabled}
-        loadDataset={props.loadDataset}
-        currentChart={props.currentChart}
-        visualOptions={props.visualOptions}
-        setVisualOptions={props.setVisualOptions}
-        currentChartData={props.currentChartData}
-        filterOptionGroups={props.filterOptionGroups}
-      />
       <div css={commonStyles.innercontainer}>
         <div
           ref={containerRef}

@@ -6,9 +6,7 @@ import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
-import { DataThemesToolBox } from "app/modules/data-themes-module/components/toolbox";
 import { charts } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
-import { DataThemesPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import {
   chartTypes,
@@ -77,27 +75,6 @@ export function DataThemesBuilderChartType(
 
   return (
     <div css={commonStyles.container}>
-      <DataThemesPageSubHeader
-        data={props.data}
-        loading={props.loading}
-        themeData={props.themeData}
-        visualOptions={props.visualOptions}
-        filterOptionGroups={props.filterOptionGroups}
-        updateLocalStates={props.updateLocalStates}
-        tabsDisabled={true}
-        deleteTab={props.deleteTab}
-      />
-      <DataThemesToolBox
-        dataSteps
-        openPanel={2}
-        data={props.data}
-        loading={props.loading}
-        loadDataset={props.loadDataset}
-        filterOptionGroups={props.filterOptionGroups}
-        forceNextEnabled={
-          selectedChartType[activeTabIndex][activeVizIndex] !== null
-        }
-      />
       <div css={commonStyles.innercontainer}>
         <div
           css={`
