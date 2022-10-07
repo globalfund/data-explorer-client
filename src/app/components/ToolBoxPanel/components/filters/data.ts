@@ -147,7 +147,7 @@ export const filtergroups: FilterGroupProps[] = [
   },
   {
     name: "Donors",
-    addSubOptionFilters: false,
+    addSubOptionFilters: true,
   },
   {
     name: "Replenishment Periods",
