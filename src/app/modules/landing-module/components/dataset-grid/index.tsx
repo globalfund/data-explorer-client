@@ -59,7 +59,7 @@ function GridItem(props: {
           <div
             css={`
               gap: 20px;
-              bottom: 16px;
+              bottom: 8px;
               display: flex;
               position: absolute;
               flex-direction: row;

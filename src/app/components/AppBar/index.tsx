@@ -328,6 +328,10 @@ export function AppBar() {
         css={`
           right: 0;
           position: absolute;
+
+          path {
+            fill: #fff;
+          }
         `}
       >
         <GitHubIcon />
