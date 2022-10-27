@@ -38,8 +38,21 @@ export function getAPIFormattedFilters(
   if (appliedFilters.partners.length > 0) {
     filterArray.push(`partners=${appliedFilters.partners.join(",")}`);
   }
-  if (appliedFilters.donors.length > 0) {
-    filterArray.push(`donors=${appliedFilters.donors.join(",")}`);
+  if (
+    appliedFilters.donors.length > 0 ||
+    appliedFilters.donorSubCategories.length > 0
+  ) {
+    filterArray.push(
+      `donors=${[
+        ...appliedFilters.donors,
+        ...appliedFilters.donorSubCategories,
+      ].join(",")}`
+    );
+  }
+  if (appliedFilters.donorSubCategories.length > 0) {
+    filterArray.push(
+      `donorSubCategories=${appliedFilters.donorSubCategories.join(",")}`
+    );
   }
   if (appliedFilters.donorCategories.length > 0) {
     filterArray.push(

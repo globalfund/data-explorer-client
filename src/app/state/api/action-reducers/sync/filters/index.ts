@@ -11,6 +11,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   replenishmentPeriods: [] as string[],
   donors: [] as string[],
   donorCategories: [] as string[],
+  donorSubCategories: [] as string[],
 };
 
 export interface AppliedFiltersModel {
@@ -23,6 +24,7 @@ export interface AppliedFiltersModel {
   replenishmentPeriods: string[];
   donors: string[];
   donorCategories: string[];
+  donorSubCategories: string[];
 }
 
 export interface AppliedFiltersStateModel {
@@ -44,6 +46,8 @@ export interface AppliedFiltersStateModel {
   setDonors: Action<AppliedFiltersStateModel, string[]>;
   donorCategories: string[];
   setDonorCategories: Action<AppliedFiltersStateModel, string[]>;
+  donorSubCategories: string[];
+  setDonorSubCategories: Action<AppliedFiltersStateModel, string[]>;
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
   appliedFiltersCount: number;
@@ -95,6 +99,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donorCategories = payload;
     state.appliedFiltersCount += payload.length;
   }),
+  donorSubCategories: [],
+  setDonorSubCategories: action((state, payload: string[]) => {
+    state.donorSubCategories = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   setAll: action((state, payload: AppliedFiltersModel) => {
     state.locations = payload.locations;
     state.components = payload.components;
@@ -105,6 +114,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.replenishmentPeriods = payload.replenishmentPeriods;
     state.donors = payload.donors;
     state.donorCategories = payload.donorCategories;
+    state.donorSubCategories = payload.donorSubCategories;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +

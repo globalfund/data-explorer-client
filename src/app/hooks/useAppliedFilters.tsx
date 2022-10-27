@@ -7,9 +7,7 @@ interface UseAppliedFiltersProps {
   type: string;
 }
 
-export function useAppliedFilters(
-  props: UseAppliedFiltersProps
-): {
+export function useAppliedFilters(props: UseAppliedFiltersProps): {
   setAppliedFilters: ActionCreator<string[]>;
   appliedFilters: string[];
   setAppliedFiltersChildren?: ActionCreator<string[]>;
@@ -59,8 +57,10 @@ export function useAppliedFilters(
         return {
           setAppliedFilters: actions.setDonorCategories,
           appliedFilters: data.donorCategories,
-          setAppliedFiltersChildren: actions.setDonors,
-          appliedFiltersChildren: data.donors,
+          setAppliedFiltersChildren: actions.setDonorSubCategories,
+          appliedFiltersChildren: data.donorSubCategories,
+          setAppliedFiltersGrandChildren: actions.setDonors,
+          appliedFiltersGrandChildren: data.donors,
         };
       }
       return {
