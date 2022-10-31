@@ -129,7 +129,6 @@ function DataThemesTabItem(props: any) {
             get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null) &&
             get(isLiveData, `[${tabIndex}][${vizIndex}]`, null) !== null
           ) {
-            console.log("viz 2");
             goToInitialView = false;
           }
         }
@@ -283,7 +282,7 @@ export function DataThemesTabs(props: any) {
     }
     setActiveVizIndex(0); // default select the fist viz.
     setActiveTabIndex(tabIds.length);
-    addTabId({});
+    addTabId({ addPlaceholder: !props.isEditMode });
     addTabActivePanel();
     addTabChartType();
     addTabLiveData();
@@ -291,7 +290,7 @@ export function DataThemesTabs(props: any) {
     addTabStepSelections();
     addTabAppliedFilters();
     addTabTitles();
-    addTabTextContent({});
+    addTabTextContent({ addPlaceholder: !props.isEditMode });
     props.updateLocalStates(true);
     history.push(`/data-themes/${page}/initial`);
   }

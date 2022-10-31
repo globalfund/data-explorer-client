@@ -175,18 +175,17 @@ export function DataThemesToolBoxSelectDataset(
   };
 
   const handleItemClick =
-    (endpoint: string, name: string) =>
+    (endpoint: string, id: string) =>
     (event: React.MouseEvent<HTMLElement>) => {
       if (
-        name ===
-        stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset
+        id === stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset
       ) {
         return;
       }
       stepSelectionsActions.setStep1({
         tab: activeTabIndex,
         viz: activeVizIndex,
-        dataset: name,
+        dataset: id,
         dataPoints: sliderValues[0],
       });
       clearMapping({ tab: activeTabIndex, viz: activeVizIndex });
@@ -281,11 +280,11 @@ export function DataThemesToolBoxSelectDataset(
             disableTouchRipple
             onClick={handleItemClick(
               `data-themes/raw-data/${dataset.id}`,
-              dataset.name
+              dataset.id
             )}
             selected={
               stepSelectionsData.step1[activeTabIndex][activeVizIndex]
-                .dataset === dataset.name
+                .dataset === dataset.id
             }
           >
             {dataset.name}
@@ -402,7 +401,7 @@ export function DataThemesToolBoxSelectDataset(
                       .dataset !== null
                   ) {
                     const dataset = find(datasets, {
-                      name: stepSelectionsData.step1[activeTabIndex][
+                      id: stepSelectionsData.step1[activeTabIndex][
                         activeVizIndex
                       ].dataset,
                     }) as { name: string; id: string } | undefined;

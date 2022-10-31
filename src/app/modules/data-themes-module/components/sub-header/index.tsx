@@ -224,11 +224,12 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   function onSave() {
     if (isSavedEnabled) {
       const tabs: any[] = [];
+      console.log(tabIds);
       tabIds.length > 0 &&
-        tabIds.map((content, tabIndex) => {
+        tabIds.forEach((content, tabIndex) => {
           // Add an empty tab for each tab in the list
           tabs.push({ title: tabTitles[tabIndex], content: [] });
-          content.map((index, vizIndex) => {
+          content.forEach((index, vizIndex) => {
             // add a viz object for every viz in the current tab.
             let vizObject: any = {};
             if (vizIsTextContent[tabIndex][vizIndex]) {
@@ -243,12 +244,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                 mapping: mapping[tabIndex][vizIndex],
                 vizType: selectedChartType[tabIndex][vizIndex],
                 datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-                data:
-                  props.themeData &&
-                  props.themeData[tabIndex] &&
-                  props.themeData[tabIndex][vizIndex]
-                    ? props.themeData[tabIndex][vizIndex].data
-                    : data,
+                rows: stepSelectionsData.step1[tabIndex][vizIndex].dataPoints,
                 vizOptions: visualOptions[tabIndex][vizIndex],
                 filterOptionGroups:
                   props.themeData &&
@@ -268,6 +264,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
           (order: number) => tabs[activeTabIndex].content[order]
         );
       }
+      console.log(tabs);
       const dataTheme = {
         title,
         subTitle,
@@ -574,6 +571,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             deleteTab={props.deleteTab}
             visualOptions={props.visualOptions}
             themeData={props.themeData}
+            isEditMode={isEditMode}
           />
         </div>
       </div>

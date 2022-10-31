@@ -136,12 +136,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
               mapping: mapping[tabIndex][vizIndex],
               vizType: selectedChartType[tabIndex][vizIndex],
               datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-              data:
-                props.themeData &&
-                props.themeData[tabIndex] &&
-                props.themeData[tabIndex][vizIndex]
-                  ? props.themeData[tabIndex][vizIndex].data
-                  : props.data,
+              rows: stepSelectionsData.step1[tabIndex][vizIndex].dataPoints,
               vizOptions: props.visualOptions[tabIndex][vizIndex],
               filterOptionGroups:
                 props.themeData &&

@@ -238,8 +238,8 @@ export function useDataThemesRawData(props: {
         tmpFilteredData.push(tabData);
       });
       tmpFilteredData[activeTabIndex][activeVizIndex] = filterDataThemesData(
-        rawData[activeTabIndex][activeVizIndex].data,
-        appliedFilters[activeTabIndex][activeVizIndex]
+        get(rawData, `[${activeTabIndex}][${activeVizIndex}].data`, []),
+        get(appliedFilters, `[${activeTabIndex}][${activeVizIndex}].data`, [])
       );
       setFilteredData(tmpFilteredData);
     }
@@ -253,14 +253,11 @@ export function useDataThemesRawData(props: {
     if (isEditMode) {
       setLoading(true);
       axios
-        .get(
-          `${process.env.REACT_APP_API}/data-themes/${page}?filter={"fields":{"id":false,"title":false,"subTitle":false,"public":false,"tabs":true,"createdDate":false}}`,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
+        .get(`${process.env.REACT_APP_API}/data-themes/${page}/content`, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((response) => {
           clearStore().then(async () => {
             const tabs = get(response.data, "tabs", []);
@@ -330,7 +327,7 @@ export function useDataThemesRawData(props: {
                       : tabs[tabIndex].content[vizIndex].data,
                     count: tabs[tabIndex].content[vizIndex].content
                       ? 0
-                      : tabs[tabIndex].content[vizIndex].data.length,
+                      : tabs[tabIndex].content[vizIndex].totalCount,
                     filterOptionGroups: tabs[tabIndex].content[vizIndex].content
                       ? []
                       : tabs[tabIndex].content[vizIndex].filterOptionGroups,
