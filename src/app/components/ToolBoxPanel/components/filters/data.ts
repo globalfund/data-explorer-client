@@ -306,6 +306,10 @@ export const pathnameToFilterGroups = {
     filtergroups,
     (fg: FilterGroupProps) => fg.name === "Components"
   ),
+  "/location/<code>/allocations/map": filter(
+    filtergroups,
+    (fg: FilterGroupProps) => fg.name === "Components"
+  ),
   "/location/<code>/eligibility": filter(
     filtergroups,
     (fg: FilterGroupProps) => fg.name === "Components"
