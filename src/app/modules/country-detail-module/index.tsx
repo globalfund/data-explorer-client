@@ -13,12 +13,14 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
 import { LocationResults } from "app/modules/country-detail-module/sub-modules/results";
+import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { LocationDetailOverviewModule } from "app/modules/country-detail-module/sub-modules/overview";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
@@ -33,7 +35,6 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -302,6 +303,9 @@ export default function CountryDetail() {
             />
           </Route>
           {/* Allocations */}
+          <Route path={`/location/:code/allocations/map`}>
+            <AllocationsGeoMap code={paramCode} />
+          </Route>
           <Route path={`/location/:code/allocations`}>
             <AllocationsModule
               code={paramCode}

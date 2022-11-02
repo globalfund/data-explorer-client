@@ -348,6 +348,11 @@ export function useGetAllVizData() {
     "/grant/<code>/targets-results": grantDetailPerformanceFramework,
     // Grant Performance Rating
     "/grant/<code>/performance-rating": grantDetailPerformanceRating,
+    // Location Allocations
+    "/location/<code>/allocations/map": {
+      countries: allocationsGeomap,
+      multicountries: allocationsMCGeomap,
+    },
     // Location Eligibility
     "/location/<code>/eligibility": eligibilityCountry,
     "/location/<code>/eligibility/table": eligibilityCountry,
