@@ -109,16 +109,14 @@ interface DataThemesToolBoxStepsProps {
   loading: boolean;
   mappedData?: any;
   openPanel?: number;
-  currentChart?: any;
+  dataTypes: any;
   visualOptions?: any;
-  currentChartData?: any;
   forceNextEnabled?: boolean;
   rawViz?: any;
-  totalAvailable?: number;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
+  loadDataset: (endpoint: string) => Promise<boolean>;
   setFilterOptionGroups?: (key: string, value: boolean) => void;
-  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
 }
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
@@ -146,6 +144,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const activePanels = useStoreState(
     (state) => state.dataThemes.activePanels.value
   );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
+  );
 
   Object.keys(appliedFilters[activeTabIndex][activeVizIndex] || {}).forEach(
     (key) => {
@@ -155,9 +156,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   );
 
   const stepPaths = [
-    `/data-themes/${page}`,
-    `/data-themes/${page}/data`,
     `/data-themes/${page}/preview`,
+    `/data-themes/${page}/data`,
+    `/data-themes/${page}/preview-data`,
     `/data-themes/${page}/chart-type`,
     `/data-themes/${page}/mapping`,
     `/data-themes/${page}/filters`,
@@ -225,7 +226,6 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxSelectDataset
             loadDataset={loadDataset}
             expanded={expanded === 1}
-            totalAvailable={props.totalAvailable}
           />
         </AccordionDetails>
       </Accordion>
@@ -233,7 +233,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 2 && !collapsed}
         onChange={handleChange(3)}
-        disabled={data.length === 0 && !loading}
+        disabled={
+          stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
+            null && !loading
+        }
       >
         <AccordionSummary
           id="step2-header"
@@ -251,7 +254,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         expanded={expanded === 3}
         onChange={handleChange(4)}
         disabled={
-          (data.length === 0 && !loading) ||
+          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
+            null &&
+            !loading) ||
           !selectedChartType[activeTabIndex][activeVizIndex]
         }
       >
@@ -263,7 +268,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>3</div> Mapping
         </AccordionSummary>
         <AccordionDetails>
-          <DataThemesToolBoxMapping currentChartData={props.currentChartData} />
+          <DataThemesToolBoxMapping dataTypes={props.dataTypes} />
         </AccordionDetails>
       </Accordion>
       <Accordion
@@ -271,7 +276,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         expanded={expanded === 4}
         onChange={handleChange(5)}
         disabled={
-          (data.length === 0 && !loading) ||
+          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
+            null &&
+            !loading) ||
           isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
           !selectedChartType[activeTabIndex][activeVizIndex] ||
           (!props.forceNextEnabled && expanded !== 6)
@@ -342,7 +349,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         expanded={expanded === 5 && !collapsed}
         onChange={handleChange(6)}
         disabled={
-          (data.length === 0 && !loading) ||
+          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
+            null &&
+            !loading) ||
           isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
           !selectedChartType[activeTabIndex][activeVizIndex] ||
           !props.forceNextEnabled
@@ -369,7 +378,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         expanded={expanded === 6 && !collapsed}
         onChange={handleChange(7)}
         disabled={
-          (data.length === 0 && !loading) ||
+          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
+            null &&
+            !loading) ||
           isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
           !selectedChartType[activeTabIndex][activeVizIndex] ||
           !props.forceNextEnabled
@@ -384,11 +395,10 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         </AccordionSummary>
         <AccordionDetails>
           <DataThemesToolBoxCustomize
+            dataTypes={props.dataTypes}
             mappedData={props.mappedData}
-            currentChart={props.currentChart}
             visualOptions={props.visualOptions}
             setVisualOptions={props.setVisualOptions}
-            currentChartData={props.currentChartData}
           />
         </AccordionDetails>
       </Accordion>
@@ -397,7 +407,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         expanded={expanded === 7 && !collapsed}
         onChange={handleChange(8)}
         disabled={
-          (data.length === 0 && !loading) ||
+          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
+            null &&
+            !loading) ||
           isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
           !selectedChartType[activeTabIndex][activeVizIndex] ||
           !props.forceNextEnabled

@@ -90,6 +90,7 @@ export const styles = {
     font-weight: 700;
     border-style: none;
     text-align: center;
+    border-radius: 20px;
     align-items: center;
     justify-content: center;
     background: transparent;

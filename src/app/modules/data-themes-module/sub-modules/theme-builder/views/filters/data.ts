@@ -1,9 +1,7 @@
 export interface DataThemesBuilderFiltersProps {
-  data: { [key: string]: string | number | null }[];
   loading: boolean;
-  currentChart: any;
   dimensions: any[];
   visualOptions: any;
-  currentChartData: any;
+  renderedChart: string;
   setVisualOptions: (value: any) => void;
 }

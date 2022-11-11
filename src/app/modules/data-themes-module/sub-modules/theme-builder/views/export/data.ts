@@ -1,12 +1,9 @@
 import React from "react";
 
 export interface DataThemesBuilderExportProps {
-  data: { [key: string]: string | number | null }[];
   loading: boolean;
-  currentChart: any;
-  dimensions: any[];
+  renderedChart: string;
   visualOptions: any;
-  currentChartData: any;
   setRawViz: React.Dispatch<any>;
   setVisualOptions: (value: any) => void;
 }

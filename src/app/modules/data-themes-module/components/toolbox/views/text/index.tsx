@@ -60,7 +60,7 @@ export function DataThemesToolBoxText() {
         `}
       >
         <Button
-          onClick={() => history.push(`/data-themes/${page}`)}
+          onClick={() => history.push(`/data-themes/${page}/preview`)}
           disabled={
             // if text content is empty, disabled. Otherwise enabled
             false

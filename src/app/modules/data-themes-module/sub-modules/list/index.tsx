@@ -30,6 +30,7 @@ export interface DataThemeListItemAPIModel {
   createdDate: Date;
   tabs: any;
   vizCount: number;
+  loadData: () => void;
 }
 
 const sortItems = [
@@ -100,9 +101,6 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const duplicateDataThemeSuccess = useStoreState(
     (state) => state.dataThemes.DataThemeDuplicate.success
   );
-  const loadDataThemes = useStoreActions(
-    (actions) => actions.dataThemes.DataThemeGetList.fetch
-  );
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -130,9 +128,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
 
   React.useEffect(() => {
     if (deleteDataThemeSuccess) {
-      loadDataThemes({
-        storeInCrudData: true,
-      });
+      props.loadData();
     }
 
     return () => {
@@ -142,9 +138,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
 
   React.useEffect(() => {
     if (duplicateDataThemeSuccess) {
-      loadDataThemes({
-        storeInCrudData: true,
-      });
+      props.loadData();
     }
 
     return () => {
@@ -165,7 +159,7 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
           handleClose={handleClose}
           duplicateItem={duplicateItem}
           onEdit={() => {
-            history.push(`/data-themes/${props.id}`, { editMode: true });
+            history.push(`/data-themes/${props.id}/preview`);
           }}
           anchorOrigin={{
             vertical: "bottom",
@@ -263,11 +257,7 @@ export function DataThemesListView() {
     [search]
   );
 
-  React.useEffect(() => {
-    document.body.style.background = "#F0F3F5";
-  }, []);
-
-  React.useEffect(() => {
+  function doLoadDataThemes() {
     let params: {
       order?: string;
       storeInCrudData: boolean;
@@ -295,6 +285,14 @@ export function DataThemesListView() {
       }
     }
     loadDataThemes(params);
+  }
+
+  React.useEffect(() => {
+    document.body.style.background = "#F0F3F5";
+  }, []);
+
+  React.useEffect(() => {
+    doLoadDataThemes();
   }, [searchDebounced, order]);
 
   return (
@@ -383,7 +381,7 @@ export function DataThemesListView() {
           <Grid container spacing={2}>
             {loadedDataThemes.map((item) => (
               <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
-                <DataThemesListViewItem {...item} />
+                <DataThemesListViewItem {...item} loadData={doLoadDataThemes} />
               </Grid>
             ))}
             {loadedDataThemes.length === 0 && (
@@ -398,7 +396,9 @@ export function DataThemesListView() {
             )}
           </Grid>
         )}
-        {view === "table" && <DataThemesTableView />}
+        {view === "table" && (
+          <DataThemesTableView loadData={doLoadDataThemes} />
+        )}
       </div>
     </div>
   );

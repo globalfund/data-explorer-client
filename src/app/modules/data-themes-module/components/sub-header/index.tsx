@@ -81,7 +81,7 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
 export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
-  const { data, loading, visualOptions, filterOptionGroups } = props;
+  const { loading, visualOptions } = props;
 
   const title = useStoreState((state) => state.dataThemes.titles.title);
   const setTitle = useStoreActions(
@@ -94,7 +94,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
   const [isPreviewEnabled, setIsPreviewEnabled] = React.useState(false);
-  const [isEditMode, setIsEditMode] = React.useState(page !== "new");
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
@@ -142,9 +141,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   );
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
-  );
-  const isLiveData = useStoreState(
-    (state) => state.dataThemes.sync.liveData.value
   );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
@@ -244,16 +240,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                 mapping: mapping[tabIndex][vizIndex],
                 vizType: selectedChartType[tabIndex][vizIndex],
                 datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-                rows: stepSelectionsData.step1[tabIndex][vizIndex].dataPoints,
                 vizOptions: visualOptions[tabIndex][vizIndex],
-                filterOptionGroups:
-                  props.themeData &&
-                  props.themeData[tabIndex] &&
-                  props.themeData[tabIndex][vizIndex]
-                    ? props.themeData[tabIndex][vizIndex].filterOptionGroups
-                    : filterOptionGroups,
                 appliedFilters: appliedFilters[tabIndex][vizIndex],
-                liveData: isLiveData[tabIndex][vizIndex],
               };
             }
             tabs[tabIndex].content.push(vizObject);
@@ -270,7 +258,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         subTitle,
         tabs,
       };
-      if (!isEditMode) {
+      if (page === "new") {
         createDataTheme({
           values: dataTheme,
         });
@@ -297,10 +285,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                 `[${tabIndex}][${vizIndex}]`,
                 null
               ) ||
-              !get(props.themeData, `[${tabIndex}][${vizIndex}]`, null) ||
               !get(visualOptions, `[${tabIndex}][${vizIndex}]`, null) ||
-              !get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null) ||
-              get(isLiveData, `[${tabIndex}][${vizIndex}]`, null) === null
+              !get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null)
             ) {
               allTabsOK = false;
             }
@@ -312,7 +298,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     }
     const newValue =
       (!loading &&
-        (data && data.length) > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
@@ -323,14 +308,13 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       vizDeleted ||
       tabDeleted ||
       vizDuplicated ||
-      (isEditMode &&
+      (props.isEditMode &&
         (title !== loadedDataTheme.title ||
           subTitle !== loadedDataTheme.subTitle));
     if (newValue !== isSavedEnabled) {
       setIsSavedEnabled(newValue && allTabsOK);
     }
   }, [
-    data,
     loading,
     selectedChartType,
     mapping,
@@ -350,7 +334,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   React.useEffect(() => {
     const newValue =
       (!loading &&
-        (data && data.length) > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&
@@ -361,7 +344,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
       setIsPreviewEnabled(newValue);
     }
   }, [
-    data,
     loading,
     selectedChartType,
     mapping,
@@ -371,16 +353,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     activeVizIndex,
     props.validMapping,
   ]);
-
-  React.useEffect(() => {
-    setIsEditMode(page !== "new");
-
-    return () => {
-      if (page !== "new") {
-        setShowSnackbar(null);
-      }
-    };
-  }, [page]);
 
   React.useEffect(() => {
     if (createDataThemeSuccess || editDataThemeSuccess) {
@@ -398,7 +370,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
 
   React.useEffect(() => {
     if (
-      !isEditMode &&
+      !props.isEditMode &&
       createDataThemeData.id.length > 0 &&
       createDataThemeData.id !== page
     ) {
@@ -537,7 +509,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               </Popover>
               <IconButton
                 component={Link}
-                to={`/data-themes/${page}`}
+                to={`/data-themes/${page}/preview`}
                 disabled={!isPreviewEnabled}
                 css={`
                   opacity: ${isPreviewEnabled ? 1 : 0.5};
@@ -570,8 +542,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             previewMode={props.previewMode}
             deleteTab={props.deleteTab}
             visualOptions={props.visualOptions}
-            themeData={props.themeData}
-            isEditMode={isEditMode}
+            isEditMode={props.isEditMode}
           />
         </div>
       </div>

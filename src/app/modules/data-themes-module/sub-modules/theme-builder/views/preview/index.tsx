@@ -14,6 +14,7 @@ interface DataThemesBuilderPreviewProps {
     [key: string]: string | number | null;
   }[];
   filterOptionGroups: FilterGroupModel[];
+  loadDataset: (endpoint: string) => Promise<boolean>;
 }
 
 export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
@@ -24,6 +25,9 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
   );
   const activeVizIndex = useStoreState(
     (state) => state.dataThemes.activeVizIndex.value
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
   );
   const setActivePanels = useStoreActions(
     (state) => state.dataThemes.activePanels.setValue
@@ -36,6 +40,11 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
       vizIndex: activeVizIndex,
       panel: 1,
     });
+    if (props.data.length === 0) {
+      props.loadDataset(
+        `data-themes/sample-data/${stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset}`
+      );
+    }
   }, []);
 
   return (

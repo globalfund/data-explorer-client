@@ -6,7 +6,7 @@ import Close from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 
 interface DataThemesToolBoxMappingProps {
-  currentChartData: any;
+  dataTypes: any;
 }
 
 const typeIcon = {
@@ -67,13 +67,11 @@ export function DataThemesToolBoxMapping(props: DataThemesToolBoxMappingProps) {
           }
         `}
       >
-        {Object.keys(get(props.currentChartData, "dataTypes", {})).map(
+        {Object.keys(props.dataTypes).map(
           (dataTypeName: string, index: number) => {
-            let type = props.currentChartData.dataTypes[dataTypeName];
-            if (
-              typeof props.currentChartData.dataTypes[dataTypeName] === "object"
-            ) {
-              type = props.currentChartData.dataTypes[dataTypeName].type;
+            let type = props.dataTypes[dataTypeName];
+            if (typeof props.dataTypes[dataTypeName] === "object") {
+              type = props.dataTypes[dataTypeName].type;
             }
             return (
               <DataThemesToolBoxMappingItem

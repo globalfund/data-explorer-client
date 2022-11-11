@@ -8,8 +8,6 @@ import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import { Redirect, useHistory, useParams } from "react-router-dom";
-// @ts-ignore
-import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import Skeleton from "@material-ui/lab/Skeleton";
@@ -28,7 +26,6 @@ import {
 export function DataThemesBuilderPreviewThemePage(
   props: DataThemesBuilderPreviewThemePageProps
 ) {
-  const history = useHistory();
   const { page } = useParams<{ page: string }>();
 
   const activePanels = useStoreState(
@@ -54,9 +51,6 @@ export function DataThemesBuilderPreviewThemePage(
   );
   const copyVizChartType = useStoreActions(
     (state) => state.dataThemes.sync.chartType.copyViz
-  );
-  const copyVizLiveData = useStoreActions(
-    (state) => state.dataThemes.sync.liveData.copyViz
   );
   const copyVizMapping = useStoreActions(
     (state) => state.dataThemes.sync.mapping.copyViz
@@ -86,9 +80,6 @@ export function DataThemesBuilderPreviewThemePage(
   const removeVizChartType = useStoreActions(
     (state) => state.dataThemes.sync.chartType.removeViz
   );
-  const removeVizLiveData = useStoreActions(
-    (state) => state.dataThemes.sync.liveData.removeViz
-  );
   const removeVizStepSelections = useStoreActions(
     (state) => state.dataThemes.sync.stepSelections.removeViz
   );
@@ -106,7 +97,6 @@ export function DataThemesBuilderPreviewThemePage(
     copyVizId({ tabIndex });
     copyVizActivePanel({ tabIndex });
     copyVizChartType({ tabIndex, vizIndex });
-    copyVizLiveData({ tabIndex, vizIndex });
     copyVizMapping({ tabIndex, vizIndex });
     copyVizStepSelections({ tabIndex, vizIndex });
     copyVizAppliedFilters({ tabIndex, vizIndex });
@@ -116,49 +106,21 @@ export function DataThemesBuilderPreviewThemePage(
     tmpVisualOptions[tabIndex].push(tmpVisualOptions[tabIndex][vizIndex]);
     props.setVisualOptions(tmpVisualOptions);
 
-    let tmpCurrentChart: any = [...props.currentChart];
-    tmpCurrentChart[tabIndex].push(tmpCurrentChart[tabIndex][vizIndex]);
-    props.setCurrentChart(tmpCurrentChart);
-
-    let tmpCurrentChartData: any = [...props.currentChartData];
-    tmpCurrentChartData[tabIndex].push(tmpCurrentChartData[tabIndex][vizIndex]);
-    props.setCurrentChartData(tmpCurrentChartData);
-    let tmpRawData = [...props.rawData];
-    tmpRawData[tabIndex].push(tmpRawData[tabIndex][vizIndex]);
-    props.setRawData(tmpRawData);
     setVizDuplicated(true);
   }
 
   function deleteViz(tabIndex: number, vizIndex: number) {
-    let tmpRawData = [...props.rawData];
     let tmpVisualOptions: any = [...props.visualOptions];
-    let tmpCurrentChartData: any = [...props.currentChartData];
-    if (
-      tmpRawData[tabIndex] &&
-      tmpRawData[tabIndex][vizIndex] &&
-      tmpVisualOptions[tabIndex] &&
-      tmpVisualOptions[tabIndex][vizIndex] &&
-      tmpCurrentChartData[tabIndex] &&
-      tmpCurrentChartData[tabIndex][vizIndex]
-    ) {
-      tmpRawData[tabIndex].splice(vizIndex, 1);
-      props.setRawData(tmpRawData);
+    if (tmpVisualOptions[tabIndex] && tmpVisualOptions[tabIndex][vizIndex]) {
       tmpVisualOptions[tabIndex].splice(vizIndex, 1);
       props.setVisualOptions(tmpVisualOptions);
-      tmpCurrentChartData[tabIndex].splice(vizIndex, 1);
-      props.setCurrentChartData(tmpCurrentChartData);
       removeVizId({ tabIndex, vizIndex });
       removeVizActivePanel({ tabIndex, vizIndex });
       removeVizChartType({ tabIndex, vizIndex });
-      removeVizLiveData({ tabIndex, vizIndex });
       removeVizMapping({ tabIndex, vizIndex });
       removeVizStepSelections({ tabIndex, vizIndex });
       removeVizAppliedFilters({ tabIndex, vizIndex });
       removeVizTextContent({ tabIndex, vizIndex });
-    }
-    if (tmpRawData[tabIndex].length === 0) {
-      props.addVizToLocalStates();
-      history.push(`/data-themes/${page}/initial`);
     } else {
       setVizDeleted(true);
     }
@@ -205,22 +167,18 @@ export function DataThemesBuilderPreviewThemePage(
       ) : (
         <React.Fragment>
           <DataThemesTabOrderViz enabled={props.isEditMode}>
-            {props.rawData[activeTabIndex].map((_, vizIndex) => (
+            {props.renderedCharts[activeTabIndex].map((_, vizIndex) => (
               <DataThemesBuilderPreviewTheme
                 key={Math.random().toString(36).substring(7)}
                 editable={props.isEditMode}
                 tabIndex={activeTabIndex}
                 vizIndex={vizIndex}
-                data={props.rawData[activeTabIndex][vizIndex].data}
                 loading={props.loading}
-                currentChart={props.currentChart[activeTabIndex][vizIndex]}
                 visualOptions={props.visualOptions}
                 setVisualOptions={props.setVisualOptions}
-                currentChartData={
-                  props.currentChartData[activeTabIndex][vizIndex]
-                }
                 deleteViz={deleteViz}
                 duplicateViz={duplicateViz}
+                renderedChart={props.renderedCharts[activeTabIndex][vizIndex]}
               />
             ))}
           </DataThemesTabOrderViz>
@@ -302,22 +260,13 @@ export function DataThemesBuilderPreviewTheme(
 
   React.useEffect(() => {
     if (
-      !vizIsTextContent[props.tabIndex][props.vizIndex] &&
+      !get(vizIsTextContent, `[${props.tabIndex}][${props.vizIndex}]`, false) &&
       domRef &&
       domRef.current &&
-      !isEmpty(mapping[props.tabIndex][props.vizIndex]) &&
-      !isEmpty(visualOptions[props.tabIndex][props.vizIndex])
+      !isEmpty(get(mapping, `[${props.tabIndex}][${props.vizIndex}]`, {})) &&
+      !isEmpty(get(visualOptions, `[${props.tabIndex}][${props.vizIndex}]`, {}))
     ) {
       try {
-        const viz = rawChart(props.currentChart, {
-          data: props.currentChartData.dataset,
-          mapping: mapping[props.tabIndex][props.vizIndex],
-          visualOptions: visualOptions[props.tabIndex][props.vizIndex],
-          dataTypes: props.currentChartData.dataTypes,
-        });
-
-        const vizData = viz._getVizData();
-
         const loader = document.getElementById(
           `chart-placeholder-${props.tabIndex}-${props.vizIndex}`
         );
@@ -333,7 +282,10 @@ export function DataThemesBuilderPreviewTheme(
             if (loader) {
               loader.style.display = "flex";
             }
-            const rawViz = viz.renderToDOM(domRef.current, vizData);
+            const element = document.createElement("div");
+            element.innerHTML = props.renderedChart.trim();
+            // @ts-ignore
+            domRef.current.appendChild(element.firstChild || element);
             resolve(1);
           } catch (e) {
             if (process.env.NODE_ENV === "development") {
@@ -368,21 +320,7 @@ export function DataThemesBuilderPreviewTheme(
         }
       }
     }
-    // else if (props.data.length === 0) {
-    //   const loader = document.getElementById(
-    //     `chart-placeholder-${props.tabIndex}-${props.vizIndex}`
-    //   );
-    //   if (loader) {
-    //     loader.style.display = "none";
-    //   }
-    // }
-  }, [
-    // props.data,
-    props.currentChart,
-    props.currentChartData,
-    mapping,
-    visualOptions,
-  ]);
+  }, [mapping, visualOptions, props.renderedChart]);
 
   const handleVizClick = () => {
     if (page === "new" || props.editable) {
@@ -400,7 +338,11 @@ export function DataThemesBuilderPreviewTheme(
 
   return (
     <div css={props.vizIndex === 0 ? commonStyles.container : ""}>
-      {vizIsTextContent[props.tabIndex][props.vizIndex] ? (
+      {get(
+        vizIsTextContent,
+        `[${props.tabIndex}][${props.vizIndex}]`,
+        false
+      ) ? (
         <div
           onClick={handleTextClick}
           css={commonStyles.previewInnercontainer(props.editable)}

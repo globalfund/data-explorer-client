@@ -3,31 +3,33 @@ import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters
 export interface DataThemesToolBoxProps {
   data: { [key: string]: string | number | null }[];
   loading: boolean;
-  mappedData?: any;
+  mappedData: any;
+  isEditMode: boolean;
   openPanel?: number;
-  currentChart?: any;
-  dataSteps?: boolean;
-  guideView?: boolean;
-  textView?: boolean;
-  visualOptions?: any;
-  filtersView?: boolean;
-  exportView?: boolean;
-  tabIndex?: number;
-  vizIndex?: number;
-  rawViz?: any;
+  dataSteps: boolean;
+  guideView: boolean;
+  textView: boolean;
+  visualOptions: any;
+  filtersView: boolean;
+  loadDataFromAPI: (
+    customAppliedFilters?: [
+      [
+        {
+          [key: string]: any[];
+        }
+      ]
+    ]
+  ) => void;
+  exportView: boolean;
+  tabIndex: number;
+  vizIndex: number;
+  rawViz: any;
+  dataTypes: any;
   previewMode: boolean;
-  currentChartData?: any;
-  totalAvailable?: number;
-  forceNextEnabled?: boolean;
-  addVizToLocalStates?: () => void;
+  forceNextEnabled: boolean;
+  addVizToLocalStates: () => void;
   filterOptionGroups: FilterGroupModel[];
-  setVisualOptions?: (value: any) => void;
-  setFilterOptionGroups?: (key: string, value: boolean) => void;
-  themeData?: {
-    id: number;
-    count: number;
-    data: { [key: string]: string | number | null }[];
-    filterOptionGroups: FilterGroupModel[];
-  }[][];
-  loadDataset: (endpoint: string, rows: number) => Promise<boolean>;
+  setVisualOptions: (value: any) => void;
+  setFilterOptionGroups: (key: string, value: boolean) => void;
+  loadDataset: (endpoint: string) => Promise<boolean>;
 }

@@ -30,9 +30,6 @@ import VoronoiDiagramIcon from "app/assets/icons/data-themes-chart-types/voronoi
 
 export interface DataThemesBuilderChartTypeProps {
   loading: boolean;
-  currentChart: any;
-  setCurrentChart: (chart: any) => void;
-  data: { [key: string]: string | number | null }[];
 }
 
 export interface ChartTypeModel {

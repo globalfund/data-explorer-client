@@ -1,17 +1,17 @@
 /* eslint-disable no-param-reassign */
-import { action, Action } from "easy-peasy";
-import { EditorState } from "draft-js";
 import filter from "lodash/filter";
+import isEmpty from "lodash/isEmpty";
+import { EditorState } from "draft-js";
+import { action, Action } from "easy-peasy";
 
 export interface DataThemesStepSelectionsStateModel {
-  step1: [[{ dataset: string | null; dataPoints: number }]];
+  step1: [[{ dataset: string | null }]];
   setStep1: Action<
     DataThemesStepSelectionsStateModel,
     {
       tab: number;
       viz: number;
       dataset: string | null;
-      dataPoints: number;
     }
   >;
   activeStep: number[][];
@@ -35,7 +35,7 @@ export interface DataThemesStepSelectionsStateModel {
 
 export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
   {
-    step1: [[{ dataset: null, dataPoints: 100 }]],
+    step1: [[{ dataset: null }]],
     setStep1: action(
       (
         state,
@@ -43,12 +43,10 @@ export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
           tab: number;
           viz: number;
           dataset: string | null;
-          dataPoints: number;
         }
       ) => {
         state.step1[payload.tab][payload.viz] = {
           dataset: payload.dataset,
-          dataPoints: payload.dataPoints,
         };
       }
     ),
@@ -59,13 +57,13 @@ export const DataThemesStepSelectionsState: DataThemesStepSelectionsStateModel =
       }
     ),
     reset: action((state) => {
-      state.step1 = [[{ dataset: null, dataPoints: 100 }]];
+      state.step1 = [[{ dataset: null }]];
     }),
     addTab: action((state) => {
-      state.step1.push([{ dataset: null, dataPoints: 100 }]);
+      state.step1.push([{ dataset: null }]);
     }),
     addViz: action((state, payload: { tabIndex: number }) => {
-      state.step1[payload.tabIndex].push({ dataset: null, dataPoints: 100 });
+      state.step1[payload.tabIndex].push({ dataset: null });
     }),
     copyViz: action(
       (state, payload: { tabIndex: number; vizIndex: number }) => {
@@ -118,7 +116,13 @@ export const DataThemesStepChartTypeState: DataThemesStepChartTypeStateModel = {
     state.value.push([null]);
   }),
   addViz: action((state, payload: { tabIndex: number }) => {
-    state.value[payload.tabIndex].push(null);
+    if (
+      state.value[payload.tabIndex][
+        state.value[payload.tabIndex].length - 1
+      ] !== null
+    ) {
+      state.value[payload.tabIndex].push(null);
+    }
   }),
   copyViz: action((state, payload: { tabIndex: number; vizIndex: number }) => {
     state.value[payload.tabIndex].push(
@@ -187,7 +191,13 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
     state.value.push([{}]);
   }),
   addViz: action((state, payload: { tabIndex: number }) => {
-    state.value[payload.tabIndex].push({});
+    if (
+      !isEmpty(
+        state.value[payload.tabIndex][state.value[payload.tabIndex].length - 1]
+      )
+    ) {
+      state.value[payload.tabIndex].push({});
+    }
   }),
   copyViz: action((state, payload: { tabIndex: number; vizIndex: number }) => {
     state.value[payload.tabIndex].push(
@@ -203,63 +213,6 @@ export const DataThemesMappingState: DataThemesMappingStateModel = {
     state.value.splice(payload.tabIndex, 1);
   }),
 };
-
-export interface DataThemesStepSelectDataLiveStateModel {
-  value: boolean[][];
-  setValue: Action<
-    DataThemesStepSelectDataLiveStateModel,
-    { tab: number; viz: number; value: boolean }
-  >;
-  reset: Action<DataThemesStepSelectDataLiveStateModel>;
-  addTab: Action<DataThemesStepSelectDataLiveStateModel>;
-  addViz: Action<DataThemesStepSelectDataLiveStateModel, { tabIndex: number }>;
-  copyViz: Action<
-    DataThemesStepSelectDataLiveStateModel,
-    { tabIndex: number; vizIndex: number }
-  >;
-  removeViz: Action<
-    DataThemesStepSelectDataLiveStateModel,
-    { tabIndex: number; vizIndex: number }
-  >;
-  removeTab: Action<
-    DataThemesStepSelectDataLiveStateModel,
-    { tabIndex: number }
-  >;
-}
-
-export const DataThemesStepSelectDataLiveState: DataThemesStepSelectDataLiveStateModel =
-  {
-    value: [[false]],
-    setValue: action(
-      (state, payload: { tab: number; viz: number; value: boolean }) => {
-        state.value[payload.tab][payload.viz] = payload.value;
-      }
-    ),
-    reset: action((state) => {
-      state.value = [[false]];
-    }),
-    addTab: action((state) => {
-      state.value.push([false]);
-    }),
-    addViz: action((state, payload: { tabIndex: number }) => {
-      state.value[payload.tabIndex].push(false);
-    }),
-    copyViz: action(
-      (state, payload: { tabIndex: number; vizIndex: number }) => {
-        state.value[payload.tabIndex].push(
-          state.value[payload.tabIndex][payload.vizIndex]
-        );
-      }
-    ),
-    removeViz: action(
-      (state, payload: { tabIndex: number; vizIndex: number }) => {
-        state.value[payload.tabIndex].splice(payload.vizIndex, 1);
-      }
-    ),
-    removeTab: action((state, payload: { tabIndex: number }) => {
-      state.value.splice(payload.tabIndex, 1);
-    }),
-  };
 
 export interface DataThemesIndexStateModel {
   value: number;

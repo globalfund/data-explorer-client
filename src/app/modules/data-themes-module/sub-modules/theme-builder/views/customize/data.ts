@@ -1,9 +1,8 @@
 export interface DataThemesBuilderCustomizeProps {
-  data: { [key: string]: string | number | null }[];
   loading: boolean;
-  currentChart: any;
   dimensions: any[];
+  mappedData: any[];
   visualOptions: any;
-  currentChartData: any;
+  renderedChart: string;
   setVisualOptions: (value: any) => void;
 }

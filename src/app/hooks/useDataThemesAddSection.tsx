@@ -1,16 +1,7 @@
 /* third-party */
 import React from "react";
+import { useHistory, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { AddIcon } from "app/assets/icons/Add";
-import SearchIcon from "@material-ui/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
-import BarChartIcon from "@material-ui/icons/BarChart";
-import TextFieldsIcon from "@material-ui/icons/TextFields";
-import DashboardIcon from "@material-ui/icons/Dashboard";
-import { Link, useHistory, useParams } from "react-router-dom";
-/* project */
-import { styles } from "app/modules/data-themes-module/components/add-section-button/styles";
-import { DataThemesAddSectionButtonProps } from "app/modules/data-themes-module/components/add-section-button/data";
 
 export function useDataThemesAddSection(props: { addVizToLocalStates: any }) {
   const history = useHistory();
@@ -31,9 +22,6 @@ export function useDataThemesAddSection(props: { addVizToLocalStates: any }) {
   const addVizChartType = useStoreActions(
     (state) => state.dataThemes.sync.chartType.addViz
   );
-  const addVizLiveData = useStoreActions(
-    (state) => state.dataThemes.sync.liveData.addViz
-  );
   const addVizMapping = useStoreActions(
     (state) => state.dataThemes.sync.mapping.addViz
   );
@@ -53,7 +41,6 @@ export function useDataThemesAddSection(props: { addVizToLocalStates: any }) {
       addVizId({ tabIndex: activeTabIndex });
       addVizActivePanel({ tabIndex: activeTabIndex });
       addVizChartType({ tabIndex: activeTabIndex });
-      addVizLiveData({ tabIndex: activeTabIndex });
       addVizMapping({ tabIndex: activeTabIndex });
       addVizStepSelections({ tabIndex: activeTabIndex });
       addVizAppliedFilters({ tabIndex: activeTabIndex });
@@ -69,7 +56,6 @@ export function useDataThemesAddSection(props: { addVizToLocalStates: any }) {
       addVizId({ tabIndex: activeTabIndex });
       addVizActivePanel({ tabIndex: activeTabIndex });
       addVizChartType({ tabIndex: activeTabIndex });
-      addVizLiveData({ tabIndex: activeTabIndex });
       addVizMapping({ tabIndex: activeTabIndex });
       addVizStepSelections({ tabIndex: activeTabIndex });
       addVizAppliedFilters({ tabIndex: activeTabIndex });

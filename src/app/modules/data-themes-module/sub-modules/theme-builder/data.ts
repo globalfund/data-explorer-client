@@ -1105,12 +1105,9 @@ export interface DataThemeTabVizAPIModel {
     | "allocations"
     | "grants"
     | "eligibility";
-  data: { [key: string]: string | number | null }[];
   mapping: any;
   vizOptions: any;
-  filterOptionGroups: FilterGroupModel[];
   appliedFilters: { [key: string]: any[] };
-  liveData: boolean;
   createdDate: Date;
 }
 
@@ -1136,6 +1133,15 @@ export interface DataThemeAPIModel {
   createdDate: Date;
 }
 
+export interface DataThemeRenderedTabItem {
+  renderedContent: string;
+  appliedFilters: { [key: string]: any[] };
+  filterOptionGroups: FilterGroupModel[];
+  dataTypes: any;
+  mappedData: any;
+  dimensions: any;
+}
+
 export const emptyDataThemeAPI: DataThemeAPIModel = {
   id: "",
   title: "",
@@ -1151,11 +1157,8 @@ export const emptyDataThemeAPI: DataThemeAPIModel = {
           id: "",
           mapping: {},
           vizOptions: {},
-          liveData: false,
           createdDate: new Date(),
-          filterOptionGroups: [],
           appliedFilters: {},
-          data: [],
           vizType: "barchart",
           datasetId: "investment-signed",
         },
@@ -1195,7 +1198,7 @@ export const routeToConfig: DataThemeRoutesConfigModel = {
     filtersView: false,
     tabsDisabled: true,
   },
-  preview: {
+  "preview-data": {
     textView: false,
     guideView: false,
     dataSteps: true,
@@ -1274,7 +1277,7 @@ export const routeToConfig: DataThemeRoutesConfigModel = {
     filtersView: false,
     tabsDisabled: true,
   },
-  "preview-theme": {
+  preview: {
     textView: false,
     guideView: false,
     dataSteps: false,

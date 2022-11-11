@@ -58,9 +58,6 @@ function DataThemesTabItem(props: any) {
   const removeTabChartType = useStoreActions(
     (state) => state.dataThemes.sync.chartType.removeTab
   );
-  const removeTabLiveData = useStoreActions(
-    (state) => state.dataThemes.sync.liveData.removeTab
-  );
   const removeTabMapping = useStoreActions(
     (state) => state.dataThemes.sync.mapping.removeTab
   );
@@ -89,9 +86,6 @@ function DataThemesTabItem(props: any) {
   );
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
-  );
-  const isLiveData = useStoreState(
-    (state) => state.dataThemes.sync.liveData.value
   );
 
   function onTabClick(tab: number) {
@@ -124,10 +118,8 @@ function DataThemesTabItem(props: any) {
             get(mapping, `[${tabIndex}][${vizIndex}]`, null) &&
             get(selectedChartType, `[${tabIndex}][${vizIndex}]`, null) &&
             get(stepSelectionsData.step1, `[${tabIndex}][${vizIndex}]`, null) &&
-            get(props.themeData, `[${tabIndex}][${vizIndex}]`, null) &&
             get(props.visualOptions, `[${tabIndex}][${vizIndex}]`, null) &&
-            get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null) &&
-            get(isLiveData, `[${tabIndex}][${vizIndex}]`, null) !== null
+            get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null)
           ) {
             goToInitialView = false;
           }
@@ -135,7 +127,7 @@ function DataThemesTabItem(props: any) {
       });
     }
     history.push(
-      `/data-themes/${props.page}${goToInitialView ? "/initial" : ""}`
+      `/data-themes/${props.page}${goToInitialView ? "/initial" : "/preview"}`
     );
   }
 
@@ -146,7 +138,6 @@ function DataThemesTabItem(props: any) {
       removeTabId({ tabIndex: id });
       removeTabActivePanel({ tabIndex: id });
       removeTabChartType({ tabIndex: id });
-      removeTabLiveData({ tabIndex: id });
       removeTabMapping({ tabIndex: id });
       removeTabStepSelections({ tabIndex: id });
       removeTabAppliedFilters({ tabIndex: id });
@@ -252,9 +243,6 @@ export function DataThemesTabs(props: any) {
   const addTabChartType = useStoreActions(
     (state) => state.dataThemes.sync.chartType.addTab
   );
-  const addTabLiveData = useStoreActions(
-    (state) => state.dataThemes.sync.liveData.addTab
-  );
   const addTabMapping = useStoreActions(
     (state) => state.dataThemes.sync.mapping.addTab
   );
@@ -285,7 +273,6 @@ export function DataThemesTabs(props: any) {
     addTabId({ addPlaceholder: !props.isEditMode });
     addTabActivePanel();
     addTabChartType();
-    addTabLiveData();
     addTabMapping();
     addTabStepSelections();
     addTabAppliedFilters();
@@ -309,7 +296,6 @@ export function DataThemesTabs(props: any) {
             previewMode={props.previewMode}
             handleOpenDialog={handleOpenDialog}
             visualOptions={props.visualOptions}
-            themeData={props.themeData}
           />
         ))}
       </div>

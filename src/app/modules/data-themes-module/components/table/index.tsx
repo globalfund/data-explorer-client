@@ -16,7 +16,7 @@ import TableContainer from "@material-ui/core/TableContainer";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DataThemeListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 
-export function DataThemesTableView() {
+export function DataThemesTableView(props: { loadData: () => void }) {
   useTitle("Data Themes - Table");
   const history = useHistory();
 
@@ -42,9 +42,6 @@ export function DataThemesTableView() {
   );
   const duplicateDataThemeSuccess = useStoreState(
     (state) => state.dataThemes.DataThemeDuplicate.success
-  );
-  const loadDataThemes = useStoreActions(
-    (actions) => actions.dataThemes.DataThemeGetList.fetch
   );
 
   const viewItem = (id: string) => () => {
@@ -72,9 +69,7 @@ export function DataThemesTableView() {
 
   React.useEffect(() => {
     if (deleteDataThemeSuccess) {
-      loadDataThemes({
-        storeInCrudData: true,
-      });
+      props.loadData();
     }
 
     return () => {
@@ -84,9 +79,7 @@ export function DataThemesTableView() {
 
   React.useEffect(() => {
     if (duplicateDataThemeSuccess) {
-      loadDataThemes({
-        storeInCrudData: true,
-      });
+      props.loadData();
     }
 
     return () => {

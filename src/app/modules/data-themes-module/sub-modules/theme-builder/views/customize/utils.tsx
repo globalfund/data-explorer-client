@@ -56,6 +56,7 @@ export function WrapControlComponent({
   optionId,
   allVisualOptions, // Introduced to be able to maintain both customized visual options and complete set of vizoptions for setVisualOptions function.
   setVisualOptions,
+  setLocalVisualOptions,
   label,
   repeatIndex,
   ...props
@@ -151,7 +152,7 @@ export function WrapControlComponent({
 
   const handleControlChange = React.useCallback(
     (nextValue) => {
-      setVisualOptions((visualOptions) => {
+      setLocalVisualOptions((visualOptions) => {
         let newValue = nextValue;
         if (repeatIndex !== undefined) {
           newValue = visualOptions[optionId] || [];
@@ -166,7 +167,7 @@ export function WrapControlComponent({
         return tmpVisualOptions;
       });
     },
-    [optionId, repeatIndex, setVisualOptions]
+    [optionId, repeatIndex, setVisualOptions, setLocalVisualOptions]
   );
 
   return (

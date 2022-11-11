@@ -16,16 +16,36 @@ import {
 
 interface FilterGroupCompProps extends FilterGroupModel {
   expandGroup: () => void;
+  loadDataFromAPI?: (
+    customAppliedFilters?: [
+      [
+        {
+          [key: string]: any[];
+        }
+      ]
+    ]
+  ) => void;
 }
 
 export function FilterGroup(props: FilterGroupCompProps) {
   const [flattenOptions, setFlattenOptions] = React.useState<
     FilterGroupOptionModel[]
   >([]);
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const allAppliedFilters = useStoreState(
+    (state) => state.dataThemes.appliedFilters.value
+  );
   const appliedFilters = useStoreState((state) =>
-    get(state.dataThemes.appliedFilters, `value[${activeTabIndex}][${activeVizIndex}].${props.name}`, [])
+    get(
+      state.dataThemes.appliedFilters,
+      `value[${activeTabIndex}][${activeVizIndex}].${props.name}`,
+      []
+    )
   );
   const setAppliedFilters = useStoreActions(
     (actions) => actions.dataThemes.appliedFilters.setValue
@@ -38,6 +58,17 @@ export function FilterGroup(props: FilterGroupCompProps) {
       key: props.name,
       value: filter(appliedFilters, (af: string) => af !== option),
     });
+    if (props.loadDataFromAPI) {
+      const temp = allAppliedFilters;
+      temp[activeTabIndex][activeVizIndex][props.name] = filter(
+        appliedFilters,
+        (af: string) => af !== option
+      );
+      if (temp[activeTabIndex][activeVizIndex][props.name].length === 0) {
+        delete temp[activeTabIndex][activeVizIndex][props.name];
+      }
+      props.loadDataFromAPI(temp);
+    }
   }
 
   function traverseOptions(

@@ -46,16 +46,16 @@ import {
   DataThemeAPIModel,
   defaultChartOptions,
   routeToConfig,
+  DataThemeRenderedTabItem,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
 export function DataThemesBuilder() {
   const history = useHistory();
-  const location = useLocation();
   const { page, view } = useParams<{ page: string; view?: string }>();
 
-  const [currentChart, setCurrentChart] = React.useState([[{}]]);
-  const [isEditMode, setIsEditMode] = React.useState(page !== "new");
-  const [currentChartData, setCurrentChartData] = React.useState([[{}]]);
+  const [tabsFromAPI, setTabsFromAPI] = React.useState<
+    DataThemeRenderedTabItem[][]
+  >([[]]);
   const [visualOptions, setVisualOptions] = useSessionStorage<any>(
     "visualOptions",
     [[{}]]
@@ -72,22 +72,15 @@ export function DataThemesBuilder() {
 
   const {
     loading,
-    clearStore,
-    loadingData,
+    dataTypes,
+    sampleData,
+    isEditMode,
     loadDataset,
-    filteredData,
-    rawData,
-    setIsInSession,
-    setRawData,
-    setFilteredData,
+    loadDataFromAPI,
   } = useDataThemesRawData({
     visualOptions,
     setVisualOptions,
-    currentChart,
-    setCurrentChart,
-    currentChartData,
-    setCurrentChartData,
-    updateLocalStates,
+    setTabsFromAPI,
   });
 
   const selectedChartType = useStoreState(
@@ -99,6 +92,9 @@ export function DataThemesBuilder() {
   );
   const isDataThemeLoading = useStoreState(
     (state) => state.dataThemes.DataThemeGet.loading
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
   );
 
   const loadDataTheme = useStoreActions(
@@ -117,9 +113,6 @@ export function DataThemesBuilder() {
   );
   const resetMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.reset
-  );
-  const resetIsLiveData = useStoreActions(
-    (actions) => actions.dataThemes.sync.liveData.reset
   );
   const resetSelectedChartType = useStoreActions(
     (actions) => actions.dataThemes.sync.chartType.reset
@@ -163,15 +156,71 @@ export function DataThemesBuilder() {
   const setVizDuplicated = useStoreActions(
     (actions) => actions.dataThemes.sync.vizDuplicated.setValue
   );
+  const setTabTitle = useStoreActions(
+    (actions) => actions.dataThemes.titles.setTabTitle
+  );
+
+  const config = get(routeToConfig, `["${view}"]`, routeToConfig.preview);
+
+  const content = React.useMemo(
+    () =>
+      get(
+        tabsFromAPI,
+        `[${activeTabIndex}][${activeVizIndex}].renderedContent`,
+        ""
+      ),
+    [tabsFromAPI, activeTabIndex, activeVizIndex]
+  );
+
+  const dataTypes2 = React.useMemo(
+    () =>
+      get(
+        tabsFromAPI,
+        `[${activeTabIndex}][${activeVizIndex}].dataTypes`,
+        dataTypes
+      ),
+    [tabsFromAPI, activeTabIndex, activeVizIndex]
+  );
+
+  const dimensions = React.useMemo(
+    () =>
+      get(
+        tabsFromAPI,
+        `[${activeTabIndex}][${activeVizIndex}].dimensions`,
+        get(
+          charts,
+          `${selectedChartType[activeTabIndex][activeVizIndex]}.dimensions`,
+          []
+        )
+      ),
+    [tabsFromAPI, activeTabIndex, activeVizIndex]
+  );
+
+  const mappedData = React.useMemo(
+    () =>
+      get(tabsFromAPI, `[${activeTabIndex}][${activeVizIndex}].mappedData`, ""),
+    [activeTabIndex, activeVizIndex]
+  );
+
+  const filterOptionGroups = React.useMemo(
+    () =>
+      get(
+        tabsFromAPI,
+        `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
+        []
+      ),
+    [tabsFromAPI, activeTabIndex, activeVizIndex]
+  );
+
+  const renderedCharts = React.useMemo(() => {
+    return tabsFromAPI.map((item) => {
+      return item.map(
+        (itemitem) => itemitem.renderedContent || get(itemitem, "content", "")
+      );
+    });
+  }, [tabsFromAPI]);
 
   function setVisualOptionsOnChange() {
-    let tmpCurrentChart: any = [...currentChart];
-    tmpCurrentChart[activeTabIndex][activeVizIndex] = get(
-      charts,
-      selectedChartType[activeTabIndex][activeVizIndex] || "barchart",
-      null
-    );
-    setCurrentChart(tmpCurrentChart);
     const options = {
       ...getOptionsConfig(
         get(
@@ -213,98 +262,35 @@ export function DataThemesBuilder() {
       tmpVisualOptions.push([{}]);
       setVisualOptions(tmpVisualOptions);
     }
-    setCurrentChart((prev) => [...prev, []]);
-    setCurrentChartData((prev) => [...prev, []]);
-    setFilteredData((prev) => [...prev, [[]]]);
-    setRawData((prev) => [
-      ...prev,
-      [
-        {
-          id: 0,
-          count: 0,
-          data: [],
-          filterOptionGroups: [],
-        },
-      ],
-    ]);
   }
 
   function addVizToLocalStates() {
     let tmpVisualOptions: any = [...visualOptions];
     tmpVisualOptions[activeTabIndex].push({});
     setVisualOptions(tmpVisualOptions);
-
-    let tmpCurrentChart: any = [...currentChart];
-    tmpCurrentChart[activeTabIndex].push(null);
-    setCurrentChart(tmpCurrentChart);
-
-    let tmpCurrentChartData: any = [...currentChartData];
-    tmpCurrentChartData[activeTabIndex].push(null);
-    setCurrentChartData(tmpCurrentChartData);
-
-    let tmpRawData = [...rawData];
-    if (
-      tmpRawData[activeTabIndex].length === 0 ||
-      tmpRawData[activeTabIndex][tmpRawData[activeTabIndex].length - 1].data
-        .length > 0
-    ) {
-      tmpRawData[activeTabIndex].push({
-        id: 0,
-        count: 0,
-        data: [],
-        filterOptionGroups: [],
-      });
-      setRawData(tmpRawData);
-    }
   }
 
   function deleteTab(tabIndex: number) {
-    let tmpRawData = [...rawData];
     let tmpVisualOptions: any = [...visualOptions];
-    let tmpCurrentChartData: any = [...currentChartData];
-    if (
-      tmpRawData[tabIndex] &&
-      tmpVisualOptions[tabIndex] &&
-      tmpCurrentChartData[tabIndex]
-    ) {
-      tmpRawData.splice(tabIndex, 1);
-      setRawData(tmpRawData);
+    if (tmpVisualOptions[tabIndex]) {
       tmpVisualOptions.splice(tabIndex, 1);
       setVisualOptions(tmpVisualOptions);
-      tmpCurrentChartData.splice(tabIndex, 1);
-      setCurrentChartData(tmpCurrentChartData);
       setTabDeleted(true);
     }
   }
 
   async function clear() {
     sessionStorage.setItem("visualOptions", JSON.stringify([[{}]]));
-    setRawData([
-      [
-        {
-          id: 0,
-          count: 0,
-          data: [],
-          filterOptionGroups: [],
-        },
-      ],
-    ]);
-    setFilteredData([[[]]]);
-    setCurrentChart([[]]);
-    setCurrentChartData([[]]);
     resetActiveTabIndex();
     resetActiveVizIndex();
     resetActivePanels();
     resetThemeIds();
     resetMapping();
-    resetIsLiveData();
     resetSelectedChartType();
     resetTitles();
     resetTextContent();
     stepSelectionsActions.reset();
     resetAppliedFilters();
-    clearStore();
-    setIsInSession(0);
   }
 
   function clearDataThemeBuilder() {
@@ -315,10 +301,6 @@ export function DataThemesBuilder() {
         activeTabIndex,
         "--themeIds",
         themeIds,
-        "--CurrentChart",
-        currentChart,
-        "--currentChartData",
-        currentChartData,
         "--visualOptions",
         visualOptions
       );
@@ -326,17 +308,17 @@ export function DataThemesBuilder() {
   }
 
   function setFilterOptionGroups(key: string, value: boolean) {
-    const fOptionGroupsIndex = findIndex(
-      rawData[activeTabIndex][activeVizIndex].filterOptionGroups,
-      { name: key }
-    );
-    if (fOptionGroupsIndex > -1) {
-      const updRawData = [...rawData];
-      updRawData[activeTabIndex][activeVizIndex].filterOptionGroups[
-        fOptionGroupsIndex
-      ].enabled = value;
-      setRawData(updRawData);
-    }
+    // const fOptionGroupsIndex = findIndex(
+    //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups,
+    //   { name: key }
+    // );
+    // if (fOptionGroupsIndex > -1) {
+    //   const updRawData = [...rawData];
+    //   updRawData[activeTabIndex][activeVizIndex].filterOptionGroups[
+    //     fOptionGroupsIndex
+    //   ].enabled = value;
+    //   setRawData(updRawData);
+    // }
   }
 
   function getForceNextEnabledValue(param?: string) {
@@ -345,13 +327,13 @@ export function DataThemesBuilder() {
         return false;
       case "data":
         return (
-          get(rawData, `[${activeTabIndex}][${activeVizIndex}].data`, [])
-            .length > 0
+          stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset !==
+          null
         );
-      case "preview":
+      case "preview-data":
         return (
-          get(rawData, `[${activeTabIndex}][${activeVizIndex}].data`, [])
-            .length > 0
+          stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset !==
+          null
         );
       case "chart-type":
         return selectedChartType[activeTabIndex][activeVizIndex] !== null;
@@ -362,7 +344,7 @@ export function DataThemesBuilder() {
         const { updRequiredFields, updErrors, updMinValuesFields } =
           getRequiredFieldsAndErrors(
             mapping[activeTabIndex][activeVizIndex],
-            get(currentChart[activeTabIndex][activeVizIndex], "dimensions", [])
+            dimensions
           );
         return (
           updRequiredFields.length === 0 &&
@@ -373,35 +355,6 @@ export function DataThemesBuilder() {
         return true;
       default:
         return false;
-    }
-  }
-
-  function getMappedData() {
-    try {
-      const viz = rawChart(
-        get(currentChart, `[${activeTabIndex}][${activeVizIndex}]`, {}),
-        {
-          data: get(
-            currentChartData,
-            `[${activeTabIndex}][${activeVizIndex}].dataset`,
-            []
-          ),
-          mapping: get(mapping, `[${activeTabIndex}][${activeVizIndex}]`, {}),
-          visualOptions: get(
-            visualOptions,
-            `[${activeTabIndex}][${activeVizIndex}]`,
-            {}
-          ),
-          dataTypes: get(
-            currentChartData,
-            `[${activeTabIndex}][${activeVizIndex}].dataTypes`,
-            {}
-          ),
-        }
-      );
-      return viz._getVizData();
-    } catch (e) {
-      return null;
     }
   }
 
@@ -423,112 +376,28 @@ export function DataThemesBuilder() {
   }, [selectedChartType, loading]);
 
   React.useEffect(() => {
-    if (!loading) {
-      let tmpCurrentChartData: any = [...currentChartData];
-      let tmpCurrentChart: any = [...currentChart];
-
-      filteredData.forEach((tab, tabIndex) => {
-        tab.forEach((viz, vizIndex) => {
-          if (
-            tmpCurrentChartData[tabIndex] &&
-            tmpCurrentChartData[tabIndex][vizIndex] !== undefined
-          ) {
-            tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
-              get(filteredData, `[${tabIndex}][${vizIndex}]`, []),
-              null,
-              {
-                locale: navigator.language || "en-US",
-                decimal: ".",
-                group: ",",
-              }
-            );
-          } else if (tmpCurrentChartData[tabIndex]) {
-            tmpCurrentChartData[tabIndex].push(
-              parseDataset(
-                get(filteredData, `[${tabIndex}][${vizIndex}]`, []),
-                null,
-                {
-                  locale: navigator.language || "en-US",
-                  decimal: ".",
-                  group: ",",
-                }
-              )
-            );
-          } else {
-            tmpCurrentChartData.push([
-              parseDataset(
-                get(filteredData, `[${tabIndex}][${vizIndex}]`, []),
-                null,
-                {
-                  locale: navigator.language || "en-US",
-                  decimal: ".",
-                  group: ",",
-                }
-              ),
-            ]);
-          }
-          if (
-            tmpCurrentChart[tabIndex] &&
-            tmpCurrentChart[tabIndex][vizIndex] !== undefined
-          ) {
-            tmpCurrentChart[tabIndex][vizIndex] = get(
-              charts,
-              get(selectedChartType, `[${tabIndex}][${vizIndex}]`, "barchart"),
-              null
-            );
-          } else if (tmpCurrentChart[tabIndex]) {
-            tmpCurrentChart[tabIndex].push(
-              get(
-                charts,
-                get(
-                  selectedChartType,
-                  `[${tabIndex}][${vizIndex}]`,
-                  "barchart"
-                ),
-                null
-              )
-            );
-          } else {
-            tmpCurrentChart.push([
-              get(
-                charts,
-                selectedChartType[tabIndex][vizIndex] || "barchart",
-                null
-              ),
-            ]);
-          }
-        });
-      });
-
-      setCurrentChartData(tmpCurrentChartData);
-      setCurrentChart(tmpCurrentChart);
-    }
-  }, [filteredData, loading]);
-
-  React.useEffect(() => {
-    const locationStateSet: boolean = typeof location.state !== "undefined";
-    setIsEditMode(page !== "new" && locationStateSet);
-  }, [page]);
-
-  React.useEffect(() => {
-    if (isEditMode) {
-      loadDataTheme({
-        getId: page,
-        filterString:
-          'filter={"fields":{"id":true,"title":true,"subTitle":true,"public":true,"tabs":false,"createdDate":true}}',
-      });
+    if (page !== "new") {
+      loadDataTheme({ getId: page });
     } else {
       clearDataTheme();
     }
-  }, [isEditMode]);
+  }, [page]);
 
   React.useEffect(() => {
-    if (loadedDataTheme) {
+    if (loadedDataTheme && loadedDataTheme.id !== "") {
       if (loadedDataTheme.title.length > 0) {
         setTitle({ title: loadedDataTheme.title });
       }
       if (loadedDataTheme.subTitle.length > 0) {
         setSubTitle({ subTitle: loadedDataTheme.subTitle });
+      }
+      if (loadedDataTheme.tabs.length > 0) {
+        loadedDataTheme.tabs.forEach((tab, tabIndex) => {
+          setTabTitle({
+            tabIndex: tabIndex,
+            tabTitle: loadedDataTheme.tabs[tabIndex].title,
+          });
+        });
       }
     }
   }, [loadedDataTheme]);
@@ -540,35 +409,26 @@ export function DataThemesBuilder() {
     setVizDuplicated(false);
   }, [activeTabIndex]);
 
-  const config = get(
-    routeToConfig,
-    `["${view}"]`,
-    routeToConfig["preview-theme"]
-  );
-
   return (
     <React.Fragment>
       <DataThemesAlertDialog />
       <DndProvider backend={HTML5Backend}>
         <DataThemesPageSubHeader
-          themeData={rawData}
           deleteTab={deleteTab}
+          isEditMode={isEditMode}
           visualOptions={visualOptions}
+          previewMode={!view && page !== "new"}
           updateLocalStates={updateLocalStates}
           loading={loading || isDataThemeLoading}
-          previewMode={!isEditMode && page !== "new"}
           validMapping={getForceNextEnabledValue("mapping")}
           tabsDisabled={config.tabsDisabled && page !== "new" && !isEditMode}
-          data={get(rawData, `[${activeTabIndex}][${activeVizIndex}].data`, [])}
-          filterOptionGroups={get(
-            rawData,
-            `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
-            []
-          )}
         />
         <DataThemesToolBox
           rawViz={rawViz}
-          themeData={rawData}
+          data={sampleData}
+          dataTypes={dataTypes2}
+          isEditMode={isEditMode}
+          mappedData={mappedData}
           tabIndex={activeTabIndex}
           vizIndex={activeVizIndex}
           loadDataset={loadDataset}
@@ -576,170 +436,77 @@ export function DataThemesBuilder() {
           dataSteps={config.dataSteps}
           guideView={config.guideView}
           openPanel={config.openPanel}
-          mappedData={getMappedData()}
           visualOptions={visualOptions}
           exportView={config.exportView}
           filtersView={config.filtersView}
+          loadDataFromAPI={loadDataFromAPI}
           setVisualOptions={setVisualOptions}
           loading={loading || isDataThemeLoading}
+          filterOptionGroups={filterOptionGroups}
           addVizToLocalStates={addVizToLocalStates}
           previewMode={!isEditMode && page !== "new"}
           setFilterOptionGroups={setFilterOptionGroups}
           forceNextEnabled={getForceNextEnabledValue(view)}
-          data={get(rawData, `[${activeTabIndex}][${activeVizIndex}].data`, [])}
-          currentChart={get(
-            currentChart,
-            `[${activeTabIndex}][${activeVizIndex}]`,
-            {}
-          )}
-          currentChartData={get(
-            currentChartData,
-            `[${activeTabIndex}][${activeVizIndex}]`,
-            []
-          )}
-          totalAvailable={get(
-            rawData,
-            `[${activeTabIndex}][${activeVizIndex}].count`,
-            0
-          )}
-          filterOptionGroups={get(
-            rawData,
-            `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
-            []
-          )}
         />
         <Switch>
-          {(loadingData || isSaveLoading || isDataThemeLoading) && (
-            <PageLoader />
-          )}
+          {(isSaveLoading || isDataThemeLoading) && <PageLoader />}
           <Route path={`/data-themes/:page/export`}>
             <DataThemesBuilderExport
-              data={get(
-                rawData,
-                `[${activeTabIndex}][${activeVizIndex}].data`,
-                []
-              )}
               loading={loading}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
+              setRawViz={setRawViz}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={
-                currentChartData[activeTabIndex][activeVizIndex]
-              }
-              dimensions={get(
-                currentChart[activeTabIndex][activeVizIndex],
-                "dimensions",
-                []
-              )}
-              setRawViz={setRawViz}
+              renderedChart={content}
             />
           </Route>
           <Route path={`/data-themes/:page/customize`}>
             <DataThemesBuilderCustomize
-              data={get(
-                rawData,
-                `[${activeTabIndex}][${activeVizIndex}].data`,
-                []
-              )}
               loading={loading}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
+              dimensions={dimensions}
+              mappedData={mappedData}
+              renderedChart={content}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={
-                currentChartData[activeTabIndex][activeVizIndex]
-              }
-              dimensions={get(
-                currentChart[activeTabIndex][activeVizIndex],
-                "dimensions",
-                []
-              )}
             />
           </Route>
           <Route path={`/data-themes/:page/lock`}>
             <DataThemesBuilderLock
-              data={get(
-                rawData,
-                `[${activeTabIndex}][${activeVizIndex}].data`,
-                []
-              )}
               loading={loading}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
+              setRawViz={setRawViz}
+              renderedChart={content}
+              dimensions={dimensions}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={
-                currentChartData[activeTabIndex][activeVizIndex]
-              }
-              setRawViz={setRawViz}
-              dimensions={get(
-                currentChart[activeTabIndex][activeVizIndex],
-                "dimensions",
-                []
-              )}
             />
           </Route>
           <Route path={`/data-themes/:page/filters`}>
             <DataThemesBuilderFilters
-              data={get(
-                rawData,
-                `[${activeTabIndex}][${activeVizIndex}].data`,
-                []
-              )}
               loading={loading}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
+              renderedChart={content}
+              dimensions={dimensions}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={
-                currentChartData[activeTabIndex][activeVizIndex]
-              }
-              dimensions={get(
-                currentChart[activeTabIndex][activeVizIndex],
-                "dimensions",
-                []
-              )}
             />
           </Route>
           <Route path={`/data-themes/:page/mapping`}>
             <DataThemesBuilderMapping
-              data={get(
-                rawData,
-                `[${activeTabIndex}][${activeVizIndex}].data`,
-                []
-              )}
               loading={loading}
-              currentChart={currentChart[activeTabIndex][activeVizIndex]}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={
-                currentChartData[activeTabIndex][activeVizIndex]
-              }
-              dimensions={get(
-                currentChart[activeTabIndex][activeVizIndex],
-                "dimensions",
-                []
-              )}
+              dataTypes={dataTypes2}
+              dimensions={dimensions}
+              renderedChart={content}
             />
           </Route>
           <Route path={`/data-themes/:page/chart-type`}>
-            <DataThemesBuilderChartType
-              data={get(
-                rawData,
-                `[${activeTabIndex}][${activeVizIndex}].data`,
-                []
-              )}
-              loading={loading}
-              currentChart={currentChart}
-              setCurrentChart={setCurrentChart}
-            />
+            <DataThemesBuilderChartType loading={loading} />
           </Route>
-          <Route path={`/data-themes/:page/preview`}>
+          <Route path={`/data-themes/:page/preview-data`}>
             <DataThemesBuilderPreview
               loading={loading}
-              data={filteredData[activeTabIndex][activeVizIndex]}
-              filterOptionGroups={get(
-                rawData,
-                `[${activeTabIndex}][${activeVizIndex}].filterOptionGroups`,
-                []
-              )}
+              data={sampleData}
+              loadDataset={loadDataset}
+              filterOptionGroups={filterOptionGroups}
             />
           </Route>
           <Route path={`/data-themes/:page/data`}>
@@ -751,20 +518,26 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/text`}>
             <DataThemesBuilderTextView />
           </Route>
+          <Route path={`/data-themes/:page/preview`}>
+            <DataThemesBuilderPreviewThemePage
+              loading={loading || isDataThemeLoading}
+              visualOptions={visualOptions}
+              setVisualOptions={setVisualOptions}
+              isEditMode={isEditMode || (page === "new" && !view)}
+              addVizToLocalStates={addVizToLocalStates}
+              validMapping={getForceNextEnabledValue("mapping")}
+              renderedCharts={renderedCharts}
+            />
+          </Route>
           <Route path={`/data-themes/:page`}>
             <DataThemesBuilderPreviewThemePage
               loading={loading || isDataThemeLoading}
-              currentChart={currentChart}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              currentChartData={currentChartData}
-              rawData={rawData}
               isEditMode={isEditMode || (page === "new" && !view)}
-              setRawData={setRawData}
-              setCurrentChart={setCurrentChart}
               addVizToLocalStates={addVizToLocalStates}
-              setCurrentChartData={setCurrentChartData}
               validMapping={getForceNextEnabledValue("mapping")}
+              renderedCharts={renderedCharts}
             />
           </Route>
           <Route path="*">
@@ -772,14 +545,15 @@ export function DataThemesBuilder() {
           </Route>
         </Switch>
       </DndProvider>
-      {(page === "new" || isEditMode) && (!view || view === "initial") && (
-        <DataThemesAddSectionButton
-          showCreateYourStoryText={
-            history.location.pathname === `/data-themes/new/initial`
-          }
-          addVizToLocalStates={addVizToLocalStates}
-        />
-      )}
+      {(page === "new" || isEditMode) &&
+        (view === "preview" || view === "initial") && (
+          <DataThemesAddSectionButton
+            showCreateYourStoryText={
+              history.location.pathname === `/data-themes/new/initial`
+            }
+            addVizToLocalStates={addVizToLocalStates}
+          />
+        )}
     </React.Fragment>
   );
 }

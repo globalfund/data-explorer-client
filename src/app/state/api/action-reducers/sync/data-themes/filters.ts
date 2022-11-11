@@ -37,6 +37,10 @@ export interface DataThemesAppliedFiltersStateModel {
     { tabIndex: number; vizIndex: number }
   >;
   removeTab: Action<DataThemesAppliedFiltersStateModel, { tabIndex: number }>;
+  resetTabViz: Action<
+    DataThemesAppliedFiltersStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
 }
 
 export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
@@ -102,4 +106,9 @@ export const DataThemesAppliedFiltersState: DataThemesAppliedFiltersStateModel =
     removeTab: action((state, payload: { tabIndex: number }) => {
       state.value.splice(payload.tabIndex, 1);
     }),
+    resetTabViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.value[payload.tabIndex][payload.vizIndex] = {};
+      }
+    ),
   };

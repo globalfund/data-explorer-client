@@ -48,7 +48,6 @@ const Button = withStyles(() => ({
 }))(MuiButton);
 
 export function DataThemesToolBox(props: DataThemesToolBoxProps) {
-  const location = useLocation();
   const { page } = useParams<{ page: string }>();
   const { onChartPress, onTextPress } = useDataThemesAddSection({
     addVizToLocalStates: props.addVizToLocalStates,
@@ -58,7 +57,6 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   const subTitle = useStoreState((state) => state.dataThemes.titles.subTitle);
   const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
-  const [isEditMode, setIsEditMode] = React.useState(page !== "new");
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const activeTabIndex = useStoreState(
@@ -86,9 +84,6 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
   );
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
-  );
-  const isLiveData = useStoreState(
-    (state) => state.dataThemes.sync.liveData.value
   );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
@@ -136,16 +131,8 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
               mapping: mapping[tabIndex][vizIndex],
               vizType: selectedChartType[tabIndex][vizIndex],
               datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
-              rows: stepSelectionsData.step1[tabIndex][vizIndex].dataPoints,
               vizOptions: props.visualOptions[tabIndex][vizIndex],
-              filterOptionGroups:
-                props.themeData &&
-                props.themeData[tabIndex] &&
-                props.themeData[tabIndex][vizIndex]
-                  ? props.themeData[tabIndex][vizIndex].filterOptionGroups
-                  : props.filterOptionGroups,
               appliedFilters: appliedFilters[tabIndex][vizIndex],
-              liveData: isLiveData[tabIndex][vizIndex],
             };
           }
           tabs[tabIndex].content.push(vizObject);
@@ -161,7 +148,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       subTitle,
       tabs,
     };
-    if (!isEditMode) {
+    if (!props.isEditMode) {
       createDataTheme({
         values: dataTheme,
       });
@@ -187,10 +174,8 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
                 `[${tabIndex}][${vizIndex}]`,
                 null
               ) ||
-              !get(props.themeData, `[${tabIndex}][${vizIndex}]`, null) ||
               !get(props.visualOptions, `[${tabIndex}][${vizIndex}]`, null) ||
-              !get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null) ||
-              get(isLiveData, `[${tabIndex}][${vizIndex}]`, null) === null
+              !get(appliedFilters, `[${tabIndex}][${vizIndex}]`, null)
             ) {
               allTabsOK = false;
             }
@@ -212,7 +197,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       vizDeleted ||
       tabDeleted ||
       vizDuplicated ||
-      (isEditMode &&
+      (props.isEditMode &&
         (title !== loadedDataTheme.title ||
           subTitle !== loadedDataTheme.subTitle));
     if (newValue !== isSavedEnabled) {
@@ -235,11 +220,6 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
     subTitle,
   ]);
 
-  React.useEffect(() => {
-    const locationStateSet: boolean = typeof location.state !== "undefined";
-    setIsEditMode(page !== "new" && locationStateSet);
-  }, [page]);
-
   return (
     <div css={styles.container(props.filtersView)}>
       {props.guideView && (
@@ -253,7 +233,13 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
               </div>
               Data visualisation
             </div>
-            <div onClick={onTextPress}>
+            <div
+              onClick={onTextPress}
+              css={`
+                opacity: 0.5;
+                pointer-events: none;
+              `}
+            >
               <div>
                 <TextFieldsIcon htmlColor="#262C34" />
               </div>
@@ -279,14 +265,12 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           data={props.data}
           rawViz={props.rawViz}
           loading={props.loading}
+          dataTypes={props.dataTypes}
           openPanel={props.openPanel}
           mappedData={props.mappedData}
           loadDataset={props.loadDataset}
-          currentChart={props.currentChart}
           visualOptions={props.visualOptions}
-          totalAvailable={props.totalAvailable}
           forceNextEnabled={props.forceNextEnabled}
-          currentChartData={props.currentChartData}
           setVisualOptions={props.setVisualOptions}
           filterOptionGroups={props.filterOptionGroups}
           setFilterOptionGroups={props.setFilterOptionGroups}
@@ -302,9 +286,10 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           <DataThemesToolBoxPreview
             tabIndex={props.tabIndex}
             vizIndex={props.vizIndex}
+            loadDataFromAPI={props.loadDataFromAPI}
             filterOptionGroups={props.filterOptionGroups}
           />
-          {isSavedEnabled && isEditMode && (
+          {isSavedEnabled && props.isEditMode && (
             <div
               css={`
                 bottom: 0;

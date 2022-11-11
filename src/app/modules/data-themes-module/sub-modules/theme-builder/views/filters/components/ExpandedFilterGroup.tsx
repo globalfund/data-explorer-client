@@ -27,6 +27,15 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
   tabIndex?: number;
   vizIndex?: number;
+  loadDataFromAPI?: (
+    customAppliedFilters?: [
+      [
+        {
+          [key: string]: any[];
+        }
+      ]
+    ]
+  ) => void;
 }
 
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
@@ -40,6 +49,9 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const activeVizIndex =
     props.vizIndex ||
     useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const allAppliedFilters = useStoreState(
+    (state) => state.dataThemes.appliedFilters.value
+  );
   const appliedFilters = useStoreState((state) =>
     get(
       state.dataThemes.appliedFilters,
@@ -175,6 +187,14 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
         key: props.name,
         value: tmpAppliedFilters,
       });
+      if (props.loadDataFromAPI) {
+        const temp = allAppliedFilters;
+        temp[activeTabIndex][activeVizIndex][props.name] = [
+          ...get(temp[activeTabIndex][activeVizIndex], `["${props.name}"]`, []),
+          ...tmpAppliedFilters,
+        ];
+        props.loadDataFromAPI(temp);
+      }
     }
     props.goBack();
   }
@@ -201,6 +221,11 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
         key: props.name,
         value: [],
       });
+      if (props.loadDataFromAPI) {
+        const temp = allAppliedFilters;
+        temp[activeTabIndex][activeVizIndex][props.name] = [];
+        props.loadDataFromAPI(temp);
+      }
       setTmpAppliedFilters([]);
     }
   }

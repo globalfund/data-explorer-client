@@ -1,12 +1,10 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
-import { charts } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import {
   chartTypes,
@@ -30,6 +28,9 @@ export function DataThemesBuilderChartType(
   );
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
   );
   const setChartType = useStoreActions(
     (actions) => actions.dataThemes.sync.chartType.setValue
@@ -61,15 +62,12 @@ export function DataThemesBuilderChartType(
             ? null
             : chartTypeId,
       });
-      let tmpCurrentChart = [...props.currentChart];
-      tmpCurrentChart[activeTabIndex][activeVizIndex] =
-        selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
-          ? null
-          : get(charts, chartTypeId, null);
-      props.setCurrentChart(tmpCurrentChart);
     };
 
-  if (props.data.length === 0 && !props.loading) {
+  if (
+    stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset === null &&
+    !props.loading
+  ) {
     history.push(`/data-themes/${page}/data`);
   }
 

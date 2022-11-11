@@ -1,98 +1,88 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
+import isEmpty from "lodash/isEmpty";
 import { useParams } from "react-router-dom";
-import { useSessionStorage } from "react-use";
-import { useIndexedDB } from "react-indexed-db";
-import axios, { AxiosResponse, AxiosError } from "axios";
+import { useMount, useUpdateEffect } from "react-use";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import {
-  parseDataset,
-  // @ts-ignore
-} from "@rawgraphs/rawgraphs-core";
-import { convertFromRaw, EditorState } from "draft-js";
 /* project */
-import { filterDataThemesData } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/utils";
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { charts } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { DataThemeRenderedTabItem } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
-export function useDataThemesRawData(props: {
-  setVisualOptions: (value: any) => void;
-  visualOptions: any;
-  setCurrentChart: (value: any) => void;
-  currentChart: any;
-  setCurrentChartData: (value: any) => void;
-  currentChartData: any;
-  updateLocalStates: any;
-}) {
-  const {
-    visualOptions,
-    setVisualOptions,
-    currentChart,
-    setCurrentChart,
-    currentChartData,
-    setCurrentChartData,
-  } = props;
+function checkIfIsEditMode(view?: string): boolean {
+  if (view) return true;
+  return false;
+}
 
-  const { page } = useParams<{ page: string }>();
-
-  const indexedDB = useIndexedDB("data-themes-raw-data");
-
-  const [loading, setLoading] = React.useState(true);
-  const [loadingData, setLoadingData] = React.useState(false);
-  const [isEditMode, setIsEditMode] = React.useState(page !== "new");
-  const [rawData, setRawData] = React.useState<
-    {
-      id: number;
-      count: number;
-      data: { [key: string]: string | number | null }[];
-      filterOptionGroups: FilterGroupModel[];
-    }[][]
-  >([
+function checkMappingAndDatasetIdNotEmpty(
+  tabmappings: [
     [
       {
-        id: 0,
-        count: 0,
-        data: [],
-        filterOptionGroups: [],
-      },
-    ],
-  ]);
-  const [filteredData, setFilteredData] = React.useState<
-    {
-      [key: string]: number | string | null;
-    }[][][]
-  >([[[]]]);
-  const [isInSession, setIsInSession] = useSessionStorage<number>(
-    "isInSession",
-    0
-  );
+        [key: string]: any;
+      }
+    ]
+  ],
+  tabdatasetIds: [
+    [
+      {
+        dataset: string | null;
+      }
+    ]
+  ]
+): boolean {
+  let mappingsCheck = true;
+  tabmappings.forEach((tabmapping) => {
+    tabmapping.forEach((contentmapping) => {
+      mappingsCheck = mappingsCheck && !isEmpty(contentmapping);
+    });
+  });
+  let datasetIdsCheck = true;
+  tabdatasetIds.forEach((tabdatasetId) => {
+    tabdatasetId.forEach((contentdatasetId) => {
+      datasetIdsCheck = datasetIdsCheck && !isEmpty(contentdatasetId);
+    });
+  });
 
-  const activeTabIndex = useStoreState(
-    (state) => state.dataThemes.activeTabIndex.value
-  );
-  const activeVizIndex = useStoreState(
-    (state) => state.dataThemes.activeVizIndex.value
-  );
-  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
+  return mappingsCheck && datasetIdsCheck;
+}
+
+export function useDataThemesRawData(props: {
+  visualOptions: any;
+  setVisualOptions: (value: any) => void;
+  setTabsFromAPI: (value: DataThemeRenderedTabItem[][]) => void;
+}) {
+  const { visualOptions, setVisualOptions, setTabsFromAPI } = props;
+
+  const { page, view } = useParams<{ page: string; view?: string }>();
+
+  const [dataTypes, setDataTypes] = React.useState([]);
+  const [sampleData, setSampleData] = React.useState([]);
+  const [loading, setLoading] = React.useState(page !== "new");
+  const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
+
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
-  const stepSelectionsData = useStoreState(
-    (state) => state.dataThemes.sync.stepSelections
-  );
-
-  const setAppliedFilters = useStoreActions(
-    (actions) => actions.dataThemes.appliedFilters.setValue
-  );
+  const tabIds = useStoreState((state) => state.dataThemes.ids.value);
+  const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const setAllAppliedFilters = useStoreActions(
     (actions) => actions.dataThemes.appliedFilters.setAll
   );
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
+  );
+  const textContent = useStoreState(
+    (state) => state.dataThemes.textContent.value
+  );
+  const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.setValue
   );
-  const setIsLiveData = useStoreActions(
-    (actions) => actions.dataThemes.sync.liveData.setValue
+  const selectedChartType = useStoreState(
+    (state) => state.dataThemes.sync.chartType.value
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
   );
   const setSelectedChartType = useStoreActions(
     (actions) => actions.dataThemes.sync.chartType.setValue
@@ -107,9 +97,6 @@ export function useDataThemesRawData(props: {
   );
   const addTabChartType = useStoreActions(
     (state) => state.dataThemes.sync.chartType.addTab
-  );
-  const addTabLiveData = useStoreActions(
-    (state) => state.dataThemes.sync.liveData.addTab
   );
   const addTabMapping = useStoreActions(
     (state) => state.dataThemes.sync.mapping.addTab
@@ -133,9 +120,6 @@ export function useDataThemesRawData(props: {
   const addVizChartType = useStoreActions(
     (state) => state.dataThemes.sync.chartType.addViz
   );
-  const addVizLiveData = useStoreActions(
-    (state) => state.dataThemes.sync.liveData.addViz
-  );
   const addVizMapping = useStoreActions(
     (state) => state.dataThemes.sync.mapping.addViz
   );
@@ -151,309 +135,225 @@ export function useDataThemesRawData(props: {
   const setTextContent = useStoreActions(
     (state) => state.dataThemes.textContent.setValue
   );
-  const setTabTitle = useStoreActions(
-    (actions) => actions.dataThemes.titles.setTabTitle
-  );
 
-  async function clearStore() {
-    return await indexedDB.clear();
-  }
-
-  async function loadDataset(endpoint: string, rows: number) {
-    setLoadingData(true);
+  async function loadDataset(endpoint: string) {
+    setLoading(true);
     return await axios
-      .get(`${process.env.REACT_APP_API}/${endpoint}?rows=${rows}`, {
+      .get(`${process.env.REACT_APP_API}/${endpoint}`, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then(async (response: AxiosResponse) => {
-        return await clearStore().then(async () => {
-          const tmpRawData = [...rawData];
-          tmpRawData[activeTabIndex][activeVizIndex] = response.data;
-          return await indexedDB.add(tmpRawData).then(
-            (event) => {
-              setIsInSession(1);
-              // console.log("ID Generated: ", event);
-              setRawData(tmpRawData);
-              setLoadingData(false);
-              return true;
-            },
-            (error) => {
-              console.log("IndexedDB add error: ", error);
-              setLoadingData(false);
-              return true;
-            }
-          );
-        });
+      .then((response: AxiosResponse) => {
+        setSampleData(response.data.sample);
+        setDataTypes(response.data.dataTypes);
+        setLoading(false);
+        return response.data.sample;
       })
       .catch((error: AxiosError) => {
-        console.log("API call error: " + error.message);
-        setLoadingData(false);
-        return true;
+        console.log(error);
+        setSampleData([]);
+        setLoading(false);
+        return [];
       });
   }
 
-  React.useEffect(() => {
-    if (isInSession === 1) {
-      indexedDB.getAll().then(
-        (data) => {
-          if (data.length > 0) {
-            setRawData(data);
-          } else {
-            setRawData([
-              [
-                {
-                  id: 0,
-                  count: 0,
-                  data: [],
-                  filterOptionGroups: [],
-                },
-              ],
-            ]);
+  function loadDataFromAPI(
+    customAppliedFilters?: [
+      [
+        {
+          [key: string]: any[];
+        }
+      ]
+    ]
+  ) {
+    const body = {
+      previewAppliedFilters: customAppliedFilters
+        ? customAppliedFilters
+        : appliedFilters,
+    };
+    setLoading(true);
+    axios
+      .post(`${process.env.REACT_APP_API}/data-themes/${page}/render`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        const tabs = response.data || [];
+        let tmpVisualOptions: any = [...visualOptions];
+
+        setTabsFromAPI(tabs);
+
+        if (tabs.length > 0 && tabs[0].length > 0) {
+          for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+            // prepare the tabbed state
+            if (tabIndex !== 0 && tabIds.length < tabs.length) {
+              addTabId({ addPlaceholder: true });
+              addTabActivePanel();
+              addTabChartType();
+              addTabMapping();
+              addTabStepSelections();
+              addTabAppliedFilters();
+              addTabTitles();
+              addTabTextContent({ addPlaceholder: true });
+              tmpVisualOptions.push([{}]);
+            }
+
+            for (
+              let vizIndex = 1;
+              vizIndex < tabs[tabIndex].length;
+              vizIndex++
+            ) {
+              addVizId({ tabIndex: tabIndex });
+              addVizActivePanel({ tabIndex: tabIndex });
+              addVizChartType({ tabIndex: tabIndex });
+              addVizMapping({ tabIndex: tabIndex });
+              addVizStepSelections({ tabIndex: tabIndex });
+              addVizAppliedFilters({ tabIndex: tabIndex });
+              addVizTextContent({ tabIndex: tabIndex });
+              tmpVisualOptions[tabIndex].push({});
+            }
+          }
+          let tabIndex: number = 0;
+          for (tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+            let vizIndex: number = 0;
+            for (vizIndex = 0; vizIndex < tabs[tabIndex].length; vizIndex++) {
+              if ("content" in tabs[tabIndex][vizIndex]) {
+                const rawContent = tabs[tabIndex][vizIndex].content;
+                const contentState = convertFromRaw(JSON.parse(rawContent));
+                const editorState = EditorState.createWithContent(contentState);
+                setTextContent({
+                  tab: tabIndex,
+                  viz: vizIndex,
+                  value: editorState,
+                });
+              } else {
+                setAllAppliedFilters({
+                  tab: tabIndex,
+                  viz: vizIndex,
+                  value: tabs[tabIndex][vizIndex].appliedFilters,
+                });
+
+                tmpVisualOptions[tabIndex][vizIndex] =
+                  tabs[tabIndex][vizIndex].vizOptions;
+                setVisualOptions(tmpVisualOptions);
+                setMapping({
+                  tab: tabIndex,
+                  viz: vizIndex,
+                  mapping: tabs[tabIndex][vizIndex].mapping || {},
+                });
+
+                const selectedChartTypeValue =
+                  tabs[tabIndex][vizIndex].vizType || "barchart";
+                setSelectedChartType({
+                  tab: tabIndex,
+                  viz: vizIndex,
+                  value: selectedChartTypeValue,
+                });
+
+                stepSelectionsActions.setStep1({
+                  tab: tabIndex,
+                  viz: vizIndex,
+                  dataset: tabs[tabIndex][vizIndex].datasetId,
+                });
+              }
+            }
           }
           setLoading(false);
-        },
-        (error) => {
-          setLoading(false);
         }
-      );
-    } else {
-      setLoading(false);
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (!loading) {
-      let tmpFilteredData: {
-        [key: string]: number | string | null;
-      }[][][] = [];
-      rawData.forEach((tab) => {
-        const tabData: {
-          [key: string]: string | number | null;
-        }[][] = [];
-        tab.forEach((viz) => {
-          tabData.push(viz.data);
-        });
-        tmpFilteredData.push(tabData);
+      })
+      .catch((error) => {
+        console.log("API call error: " + error.message);
+        setLoading(false);
       });
-      tmpFilteredData[activeTabIndex][activeVizIndex] = filterDataThemesData(
-        get(rawData, `[${activeTabIndex}][${activeVizIndex}].data`, []),
-        get(appliedFilters, `[${activeTabIndex}][${activeVizIndex}].data`, [])
-      );
-      setFilteredData(tmpFilteredData);
+  }
+
+  useMount(() => {
+    if (isEditMode && page !== "new") {
+      loadDataFromAPI();
     }
-  }, [rawData, appliedFilters, activeTabIndex, loading]);
+  });
 
   React.useEffect(() => {
-    setIsEditMode(page !== "new");
-  }, [page]);
+    const newValue = checkIfIsEditMode(view);
+    if (newValue !== isEditMode) {
+      setIsEditMode(newValue);
+    }
+  }, [view]);
 
   React.useEffect(() => {
-    if (isEditMode) {
-      setLoading(true);
+    if (page !== "new" && !isEditMode) {
+      loadDataFromAPI();
+    }
+  }, [page, isEditMode]);
+
+  useUpdateEffect(() => {
+    if (
+      !loading &&
+      (page === "new" || isEditMode) &&
+      checkMappingAndDatasetIdNotEmpty(mapping, stepSelectionsData.step1)
+    ) {
+      const tabs: any[] = [];
+      tabIds.forEach((content, tabIndex) => {
+        // Add an empty tab for each tab in the list
+        tabs.push({ title: tabTitles[tabIndex], content: [] });
+        content.forEach((index, vizIndex) => {
+          // add a viz object for every viz in the current tab.
+          let vizObject: any = {};
+          if (vizIsTextContent[tabIndex][vizIndex]) {
+            const contentState =
+              textContent[tabIndex][vizIndex].getCurrentContent();
+            const rawContent = JSON.stringify(convertToRaw(contentState));
+            vizObject = {
+              content: rawContent,
+            };
+          } else {
+            vizObject = {
+              mapping: mapping[tabIndex][vizIndex],
+              vizType: selectedChartType[tabIndex][vizIndex],
+              datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
+              vizOptions: visualOptions[tabIndex][vizIndex],
+              appliedFilters: appliedFilters[tabIndex][vizIndex],
+            };
+          }
+          tabs[tabIndex].content.push(vizObject);
+        });
+      });
+      const body = { tabs };
       axios
-        .get(`${process.env.REACT_APP_API}/data-themes/${page}/content`, {
+        .post(`${process.env.REACT_APP_API}/data-themes/${page}/render`, body, {
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then((response) => {
-          clearStore().then(async () => {
-            const tabs = get(response.data, "tabs", []);
-            let tmpVisualOptions: any = [...visualOptions];
-            let tmpCurrentChart: any = [...currentChart];
-            let tmpCurrentChartData: any = [...currentChartData];
-            let tmpFilteredData: any = [...filteredData];
-
-            if (tabs.length > 0 && tabs[0].content.length > 0) {
-              let dataToIndex: any[][] = [];
-              let incr: number = 0;
-              for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
-                // prepare the tabbed state
-                if (tabIndex !== 0 && tabIds.length < tabs.length) {
-                  addTabId({ addPlaceholder: true });
-                  addTabActivePanel();
-                  addTabChartType();
-                  addTabLiveData();
-                  addTabMapping();
-                  addTabStepSelections();
-                  addTabAppliedFilters();
-                  addTabTitles();
-                  addTabTextContent({ addPlaceholder: true });
-                  tmpVisualOptions.push([{}]);
-                  tmpCurrentChart.push([{}]);
-                  tmpCurrentChartData.push([{}]);
-                  tmpFilteredData.push([[]]);
-                }
-
-                // set the tab title
-                setTabTitle({
-                  tabIndex: tabIndex,
-                  tabTitle: tabs[tabIndex].title,
-                });
-
-                for (
-                  let vizIndex = 1;
-                  vizIndex < tabs[tabIndex].content.length;
-                  vizIndex++
-                ) {
-                  addVizId({ tabIndex: tabIndex });
-                  addVizActivePanel({ tabIndex: tabIndex });
-                  addVizChartType({ tabIndex: tabIndex });
-                  addVizLiveData({ tabIndex: tabIndex });
-                  addVizMapping({ tabIndex: tabIndex });
-                  addVizStepSelections({ tabIndex: tabIndex });
-                  addVizAppliedFilters({ tabIndex: tabIndex });
-                  addVizTextContent({ tabIndex: tabIndex });
-                  tmpVisualOptions[tabIndex].push({});
-                  tmpCurrentChart[tabIndex].push({});
-                  tmpCurrentChartData[tabIndex].push({});
-                  tmpFilteredData[tabIndex].push([]);
-                }
-
-                // add an empty list for
-                dataToIndex.push([]);
-                for (
-                  let vizIndex = 0;
-                  vizIndex < tabs[tabIndex].content.length;
-                  vizIndex++
-                ) {
-                  // prepare the data to index index
-                  dataToIndex[tabIndex].push({
-                    id: incr++,
-                    data: tabs[tabIndex].content[vizIndex].content
-                      ? []
-                      : tabs[tabIndex].content[vizIndex].data,
-                    count: tabs[tabIndex].content[vizIndex].content
-                      ? 0
-                      : tabs[tabIndex].content[vizIndex].totalCount,
-                    filterOptionGroups: tabs[tabIndex].content[vizIndex].content
-                      ? []
-                      : tabs[tabIndex].content[vizIndex].filterOptionGroups,
-                  });
-                }
-              }
-              indexedDB.add(dataToIndex).then(
-                (event) => {
-                  setIsInSession(1);
-                  setRawData(dataToIndex);
-                  let tabIndex: number = 0;
-                  for (tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
-                    let vizIndex: number = 0;
-                    for (
-                      vizIndex = 0;
-                      vizIndex < tabs[tabIndex].content.length;
-                      vizIndex++
-                    ) {
-                      if ("content" in tabs[tabIndex].content[vizIndex]) {
-                        const rawContent =
-                          tabs[tabIndex].content[vizIndex].content;
-                        const contentState = convertFromRaw(
-                          JSON.parse(rawContent)
-                        );
-                        const editorState =
-                          EditorState.createWithContent(contentState);
-                        setTextContent({
-                          tab: tabIndex,
-                          viz: vizIndex,
-                          value: editorState,
-                        });
-                      } else {
-                        setAllAppliedFilters({
-                          tab: tabIndex,
-                          viz: vizIndex,
-                          value:
-                            tabs[tabIndex].content[vizIndex].appliedFilters,
-                        });
-
-                        tmpVisualOptions[tabIndex][vizIndex] =
-                          tabs[tabIndex].content[vizIndex].vizOptions;
-                        setVisualOptions(tmpVisualOptions);
-                        setMapping({
-                          tab: tabIndex,
-                          viz: vizIndex,
-                          mapping:
-                            tabs[tabIndex].content[vizIndex].mapping || {},
-                        });
-                        setIsLiveData({
-                          tab: tabIndex,
-                          viz: vizIndex,
-                          value:
-                            tabs[tabIndex].content[vizIndex].liveData || false,
-                        });
-
-                        const selectedChartTypeValue =
-                          tabs[tabIndex].content[vizIndex].vizType ||
-                          "barchart";
-                        setSelectedChartType({
-                          tab: tabIndex,
-                          viz: vizIndex,
-                          value: selectedChartTypeValue,
-                        });
-
-                        tmpCurrentChart[tabIndex][vizIndex] = get(
-                          charts,
-                          selectedChartTypeValue,
-                          null
-                        );
-                        setCurrentChart(tmpCurrentChart);
-
-                        // Before, this was done through a hook on the appliedFilters.
-                        tmpFilteredData[tabIndex][vizIndex] =
-                          filterDataThemesData(
-                            dataToIndex[tabIndex][vizIndex].data,
-                            tabs[tabIndex].content[vizIndex].appliedFilters
-                          );
-                        setFilteredData(tmpFilteredData);
-
-                        tmpCurrentChartData[tabIndex][vizIndex] = parseDataset(
-                          tmpFilteredData[tabIndex][vizIndex],
-                          null,
-                          {
-                            locale: navigator.language || "en-US",
-                            decimal: ".",
-                            group: ",",
-                          }
-                        );
-                        setCurrentChartData(tmpCurrentChartData);
-                        stepSelectionsActions.setStep1({
-                          tab: tabIndex,
-                          viz: vizIndex,
-                          dataset: tabs[tabIndex].content[vizIndex].datasetId,
-                          dataPoints:
-                            tabs[tabIndex].content[vizIndex].data.length,
-                        });
-                      }
-                    }
-                  }
-                  setLoading(false);
-                },
-                (error) => {
-                  console.log("IndexedDB add error: ", error);
-                  setLoading(false);
-                }
-              );
-            }
-          });
+          const tabs = response.data || [];
+          setTabsFromAPI(tabs);
+          setLoading(false);
         })
         .catch((error) => {
           console.log("API call error: " + error.message);
           setLoading(false);
         });
     }
-  }, [isEditMode]);
+  }, [
+    page,
+    isEditMode,
+    tabIds,
+    mapping,
+    selectedChartType,
+    stepSelectionsData,
+    visualOptions,
+    appliedFilters,
+  ]);
 
   return {
-    clearStore,
+    loading,
+    dataTypes,
+    sampleData,
+    isEditMode,
     loadDataset,
-    loadingData,
-    filteredData,
-    loading: loading || loadingData,
-    setLoading,
-    rawData: [...rawData],
-    setIsInSession,
-    setRawData,
-    setFilteredData,
+    loadDataFromAPI,
   };
 }

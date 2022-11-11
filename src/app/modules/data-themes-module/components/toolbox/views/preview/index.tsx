@@ -2,7 +2,7 @@
 import React from "react";
 import filter from "lodash/filter";
 import IconButton from "@material-ui/core/IconButton";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 /* project */
 import { ResetIcon } from "app/assets/icons/Reset";
@@ -21,14 +21,22 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupModel | null>(null);
 
-  /** TODO: Is this the correct action here? or should it only reset for the current active tab/vizualisation */
+  const appliedFilters = useStoreState(
+    (state) => state.dataThemes.appliedFilters.value
+  );
   const resetAppliedFilters = useStoreActions(
-    (actions) => actions.dataThemes.appliedFilters.reset
+    (actions) => actions.dataThemes.appliedFilters.resetTabViz
   );
 
   function onReset(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
-    resetAppliedFilters();
+    resetAppliedFilters({
+      tabIndex: props.tabIndex,
+      vizIndex: props.vizIndex,
+    });
+    const temp = appliedFilters;
+    temp[props.tabIndex][props.vizIndex] = {};
+    props.loadDataFromAPI(temp);
   }
 
   return (
@@ -87,6 +95,7 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
                     key={group.name}
                     name={group.name}
                     options={group.options}
+                    loadDataFromAPI={props.loadDataFromAPI}
                     expandGroup={() => setExpandedGroup(group)}
                   />
                 )
@@ -104,10 +113,11 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
         >
           <ExpandedFilterGroup
             name={expandedGroup.name}
-            options={expandedGroup.options}
-            goBack={() => setExpandedGroup(null)}
             tabIndex={props.tabIndex}
             vizIndex={props.vizIndex}
+            options={expandedGroup.options}
+            goBack={() => setExpandedGroup(null)}
+            loadDataFromAPI={props.loadDataFromAPI}
           />
         </div>
       )}

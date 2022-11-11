@@ -3,11 +3,9 @@ import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters
 export interface DataThemesBuilderPreviewThemeProps {
   tabIndex: number;
   vizIndex: number;
-  data: { [key: string]: string | number | null }[];
   loading: boolean;
-  currentChart: any;
   visualOptions: any;
-  currentChartData: any;
+  renderedChart: string;
   setVisualOptions: (value: any) => void;
   editable: any;
   deleteViz: (tabIndex: number, vizIndex: number) => void;
@@ -17,32 +15,9 @@ export interface DataThemesBuilderPreviewThemeProps {
 export interface DataThemesBuilderPreviewThemePageProps {
   loading: boolean;
   isEditMode: boolean;
-  rawData: {
-    id: number;
-    count: number;
-    data: {
-      [key: string]: string | number | null;
-    }[];
-    filterOptionGroups: FilterGroupModel[];
-  }[][];
+  renderedCharts: string[][];
   visualOptions: any;
-  currentChart: any;
   setVisualOptions: (value: any) => void;
-  currentChartData: any;
-  setCurrentChart: (value: any) => void;
-  setCurrentChartData: (value: any) => void;
   addVizToLocalStates: () => void;
   validMapping: boolean;
-  setRawData: React.Dispatch<
-    React.SetStateAction<
-      {
-        id: number;
-        count: number;
-        data: {
-          [key: string]: string | number | null;
-        }[];
-        filterOptionGroups: FilterGroupModel[];
-      }[][]
-    >
-  >;
 }

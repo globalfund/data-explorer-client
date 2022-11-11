@@ -3,11 +3,10 @@ import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
-// @ts-ignore
-import { chart as rawChart } from "@rawgraphs/rawgraphs-core";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
+import { DataThemesCommonChart } from "app/modules/data-themes-module/components/common-chart";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { getRequiredFieldsAndErrors } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping/utils";
@@ -21,10 +20,8 @@ export function DataThemesBuilderCustomize(
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
 
-  const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [mappedData, setMappedData] = React.useState(null);
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
@@ -33,6 +30,9 @@ export function DataThemesBuilderCustomize(
   );
   const activeVizIndex = useStoreState(
     (state) => state.dataThemes.activeVizIndex.value
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
   );
   const setActivePanels = useStoreActions(
     (state) => state.dataThemes.activePanels.setValue
@@ -76,49 +76,10 @@ export function DataThemesBuilderCustomize(
     );
   }, [mapping, props.dimensions]);
 
-  React.useEffect(() => {
-    if (nextEnabled && domRef && domRef.current) {
-      try {
-        const viz = rawChart(props.currentChart, {
-          data: props.currentChartData.dataset,
-          mapping: mapping[activeTabIndex][activeVizIndex],
-          visualOptions: props.visualOptions[activeTabIndex][activeVizIndex],
-          dataTypes: props.currentChartData.dataTypes,
-        });
-        const vizData = viz._getVizData();
-        setMappedData(vizData);
-        try {
-          const rawViz = viz.renderToDOM(domRef.current, vizData);
-        } catch (e) {
-          setMappedData(null);
-          if (process.env.NODE_ENV === "development") {
-            console.log("chart error", e);
-          }
-        }
-      } catch (e) {
-        setMappedData(null);
-        while (domRef.current.firstChild) {
-          domRef.current.removeChild(domRef.current.firstChild);
-        }
-        if (process.env.NODE_ENV === "development") {
-          console.log("chart error", e);
-        }
-      }
-    } else if (!nextEnabled && domRef && domRef.current) {
-      while (domRef.current.firstChild) {
-        domRef.current.removeChild(domRef.current.firstChild);
-      }
-    }
-  }, [
-    nextEnabled,
-    props.currentChart,
-    props.currentChartData,
-    mapping,
-    props.visualOptions,
-  ]);
-
   if (
-    (props.data.length === 0 && !props.loading) ||
+    (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
+      null &&
+      !props.loading) ||
     isEmpty(mapping[activeTabIndex][activeVizIndex])
   ) {
     history.push(`/data-themes/${page}/data`);
@@ -134,16 +95,11 @@ export function DataThemesBuilderCustomize(
             height: calc(100vh - 225px);
           `}
         >
-          <div
-            ref={domRef}
-            css={`
-              overflow-x: auto;
-              margin-top: 40px;
-
-              * {
-                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-              }
-            `}
+          <DataThemesCommonChart
+            containerRef={containerRef}
+            renderedChart={props.renderedChart}
+            visualOptions={props.visualOptions}
+            setVisualOptions={props.setVisualOptions}
           />
         </div>
       </div>

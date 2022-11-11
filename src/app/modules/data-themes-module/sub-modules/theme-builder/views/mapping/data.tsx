@@ -1,16 +1,15 @@
 export interface DataThemesBuilderMappingProps {
-  data: { [key: string]: string | number | null }[];
   loading: boolean;
-  currentChart: any;
+  dataTypes: any[];
   dimensions: any[];
   visualOptions: any;
-  currentChartData: any;
+  renderedChart: string;
   setVisualOptions: (value: any) => void;
 }
 
 export interface DataThemesBuilderMappingDimensionProps {
   dimension: any;
-  currentChartData: any;
+  dataTypes: any;
   replaceDimension: (
     fromDimension: string,
     toDimension: string,

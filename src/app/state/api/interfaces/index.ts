@@ -4,7 +4,6 @@ import { DataThemesAppliedFiltersStateModel } from "app/state/api/action-reducer
 import {
   DataThemesMappingStateModel,
   DataThemesStepChartTypeStateModel,
-  DataThemesStepSelectDataLiveStateModel,
   DataThemesStepSelectionsStateModel,
   DataThemesIndexStateModel,
   DataThemesIdsStateModel,
@@ -325,7 +324,6 @@ export interface StoreModel {
     textContent: DataThemesTextContentStateModel;
     sync: {
       stepSelections: DataThemesStepSelectionsStateModel;
-      liveData: DataThemesStepSelectDataLiveStateModel;
       chartType: DataThemesStepChartTypeStateModel;
       mapping: DataThemesMappingStateModel;
       public: DataThemesPublicStateModel;

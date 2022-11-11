@@ -69,9 +69,7 @@ export function DataThemesExporter(props: { rawViz: any }) {
   );
 
   const downloadSvg = React.useCallback(() => {
-    const svgString = new XMLSerializer().serializeToString(
-      props.rawViz._node.firstChild
-    );
+    const svgString = new XMLSerializer().serializeToString(props.rawViz);
     const DOMURL = window.URL || window.webkitURL || window;
     const svg = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
     const url = DOMURL.createObjectURL(svg);
@@ -81,17 +79,15 @@ export function DataThemesExporter(props: { rawViz: any }) {
 
   const downloadImage = React.useCallback(
     (format: "image/png" | "image/jpeg") => {
-      const svgString = new XMLSerializer().serializeToString(
-        props.rawViz._node.firstChild
-      );
+      const svgString = new XMLSerializer().serializeToString(props.rawViz);
       const DOMURL = window.URL || window.webkitURL || window;
       const svg = new Blob([svgString], {
         type: "image/svg+xml;charset=utf-8",
       });
       const url = DOMURL.createObjectURL(svg);
       const canvas = document.createElement("canvas");
-      canvas.height = props.rawViz._node.firstChild.clientHeight;
-      canvas.width = props.rawViz._node.firstChild.clientWidth;
+      canvas.height = props.rawViz.clientHeight;
+      canvas.width = props.rawViz.clientWidth;
       const ctx = canvas.getContext("2d");
       const img = new Image();
       img.onload = function () {

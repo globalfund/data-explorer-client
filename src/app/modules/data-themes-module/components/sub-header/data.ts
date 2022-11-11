@@ -3,17 +3,10 @@ import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters
 export interface DataThemesPageSubHeaderProps {
   loading: boolean;
   visualOptions: any;
+  isEditMode: boolean;
   previewMode?: boolean;
-  filterOptionGroups: FilterGroupModel[];
-  data: { [key: string]: string | number | null }[];
   updateLocalStates: any;
   tabsDisabled?: boolean;
   validMapping: boolean;
   deleteTab: (value: number) => void;
-  themeData?: {
-    id: number;
-    count: number;
-    data: { [key: string]: string | number | null }[];
-    filterOptionGroups: FilterGroupModel[];
-  }[][];
 }

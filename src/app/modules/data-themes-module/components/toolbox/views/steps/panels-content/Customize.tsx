@@ -2,16 +2,13 @@
 import React from "react";
 import get from "lodash/get";
 import map from "lodash/map";
-import find from "lodash/find";
+import useDebounce from "react-use/lib/useDebounce";
 import { useStoreState } from "app/state/store/hooks";
 // @ts-ignore
 import { getOptionsConfig, getEnabledOptions } from "@rawgraphs/rawgraphs-core";
 /* project */
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import {
-  chartTypes,
-  ChartTypeModel,
-} from "app/modules/data-themes-module/sub-modules/theme-builder/views/chart-type/data";
+import { charts } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import {
   getDefaultForRepeat,
   getPartialMappedData,
@@ -20,6 +17,7 @@ import {
 } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/utils";
 
 interface DataThemesToolBoxCustomizeProps {
+  dataTypes?: any;
   mappedData?: any;
   currentChart?: any;
   visualOptions?: any;
@@ -40,15 +38,17 @@ export function DataThemesToolBoxCustomize(
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
-  const fChartType = find(
-    chartTypes,
-    (chartType: ChartTypeModel) =>
-      chartType.id === selectedChartType[activeTabIndex][activeVizIndex]
+  const fChart = get(
+    charts,
+    `["${selectedChartType[activeTabIndex][activeVizIndex]}"]`,
+    charts.alluvialdiagram
   );
 
+  const [visualOptions, setVisualOptions] = React.useState(props.visualOptions);
+
   const optionsConfig = React.useMemo(() => {
-    return getOptionsConfig(props.currentChart?.visualOptions);
-  }, [props.currentChart]);
+    return getOptionsConfig(fChart.visualOptions);
+  }, [visualOptions, activeTabIndex, activeVizIndex]);
 
   const [collapseStatus, setCollapseStatus] = React.useState(() => {
     const groups = {};
@@ -65,12 +65,10 @@ export function DataThemesToolBoxCustomize(
   const enabledOptions = React.useMemo(() => {
     return getEnabledOptions(
       optionsConfig,
-      props.visualOptions
-        ? props.visualOptions[activeTabIndex][activeVizIndex]
-        : {},
+      visualOptions ? visualOptions[activeTabIndex][activeVizIndex] : {},
       mapping[activeTabIndex][activeVizIndex]
     );
-  }, [optionsConfig, props.visualOptions, mapping]);
+  }, [optionsConfig, visualOptions, mapping]);
 
   const optionsDefinitionsByGroup = React.useMemo(() => {
     let index = 0;
@@ -97,6 +95,14 @@ export function DataThemesToolBoxCustomize(
       return acc;
     }, {});
   }, [optionsConfig]);
+
+  const [,] = useDebounce(
+    () => {
+      props.setVisualOptions && props.setVisualOptions(visualOptions);
+    },
+    500,
+    [visualOptions]
+  );
 
   return (
     <div
@@ -183,7 +189,7 @@ export function DataThemesToolBoxCustomize(
                         optionId={optionId}
                         // error={error?.errors?.[optionId + repeatIndex]}
                         value={
-                          props.visualOptions[activeTabIndex][activeVizIndex]?.[
+                          visualOptions[activeTabIndex][activeVizIndex]?.[
                             optionId
                           ]?.[repeatIndex] ??
                           getDefaultForRepeat(def, repeatIndex)
@@ -209,14 +215,12 @@ export function DataThemesToolBoxCustomize(
                         }
                         dataTypes={
                           def.type === "colorScale"
-                            ? props.currentChartData?.dataTypes
+                            ? props.dataTypes
                             : undefined
                         }
                         visualOptions={
                           def.type === "colorScale"
-                            ? props.visualOptions[activeTabIndex][
-                                activeVizIndex
-                              ]
+                            ? visualOptions[activeTabIndex][activeVizIndex]
                             : undefined
                         }
                         mappedData={getPartialMappedData(
@@ -224,8 +228,9 @@ export function DataThemesToolBoxCustomize(
                           def.repeatFor,
                           repeatIndex
                         )}
-                        allVisualOptions={props.visualOptions}
+                        allVisualOptions={visualOptions}
                         setVisualOptions={props.setVisualOptions}
+                        setLocalVisualOptions={setVisualOptions}
                         isEnabled={enabledOptions[optionId]}
                       />
                     ))
@@ -237,10 +242,10 @@ export function DataThemesToolBoxCustomize(
                       optionId={optionId}
                       // error={error?.errors?.[optionId]}
                       value={
-                        props.visualOptions
-                          ? props.visualOptions[activeTabIndex][
-                              activeVizIndex
-                            ]?.[optionId]
+                        visualOptions
+                          ? visualOptions[activeTabIndex][activeVizIndex]?.[
+                              optionId
+                            ]
                           : undefined
                       }
                       mapping={
@@ -259,18 +264,17 @@ export function DataThemesToolBoxCustomize(
                           : undefined
                       }
                       dataTypes={
-                        def.type === "colorScale"
-                          ? props.currentChartData?.dataTypes
-                          : undefined
+                        def.type === "colorScale" ? props.dataTypes : undefined
                       }
                       visualOptions={
                         def.type === "colorScale"
-                          ? props.visualOptions[activeTabIndex][activeVizIndex]
+                          ? visualOptions[activeTabIndex][activeVizIndex]
                           : undefined
                       }
                       mappedData={props.mappedData}
-                      allVisualOptions={props.visualOptions}
+                      allVisualOptions={visualOptions}
                       setVisualOptions={props.setVisualOptions}
+                      setLocalVisualOptions={setVisualOptions}
                       isEnabled={enabledOptions[optionId]}
                     />
                   );

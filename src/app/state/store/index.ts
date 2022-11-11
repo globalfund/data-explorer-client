@@ -161,7 +161,6 @@ import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
 import {
   DataThemesMappingState,
   DataThemesStepChartTypeState,
-  DataThemesStepSelectDataLiveState,
   DataThemesStepSelectionsState,
   DataThemesIndexState,
   DataThemesVizIndexState,
@@ -393,7 +392,6 @@ const storeContent: StoreModel = {
     textContent: persist(DataThemesTextContentState),
     sync: {
       stepSelections: persist(DataThemesStepSelectionsState),
-      liveData: persist(DataThemesStepSelectDataLiveState),
       chartType: persist(DataThemesStepChartTypeState),
       mapping: persist(DataThemesMappingState),
       public: persist(DataThemesPublicState),

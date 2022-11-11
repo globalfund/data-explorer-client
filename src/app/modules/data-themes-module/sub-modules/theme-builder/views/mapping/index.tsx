@@ -31,6 +31,7 @@ import {
   DataThemesBuilderMappingProps,
   typeIcon,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping/data";
+import { DataThemesCommonChart } from "app/modules/data-themes-module/components/common-chart";
 
 export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   useTitle("Data Themes - Mapping");
@@ -38,7 +39,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
 
-  const domRef = React.useRef<HTMLDivElement>(null);
   const containerRef = React.useRef<HTMLDivElement>(null);
 
   const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
@@ -49,6 +49,9 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
   );
   const activeVizIndex = useStoreState(
     (state) => state.dataThemes.activeVizIndex.value
+  );
+  const stepSelectionsData = useStoreState(
+    (state) => state.dataThemes.sync.stepSelections
   );
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const setMapping = useStoreActions(
@@ -101,32 +104,12 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
           fromIndex,
           toIndex,
           props.dimensions,
-          props.currentChartData.dataTypes
+          props.dataTypes
         ),
       });
     },
-    [
-      mapping,
-      get(props.currentChartData, "dataTypes", []),
-      props.dimensions,
-      setMapping,
-    ]
+    [mapping, props.dataTypes, props.dimensions, setMapping]
   );
-
-  useUpdateEffectOnce(() => {
-    if (
-      containerRef.current &&
-      props.visualOptions[activeTabIndex][activeVizIndex].width ===
-        CHART_DEFAULT_WIDTH
-    ) {
-      let tmpVisualOptions = [...props.visualOptions];
-      tmpVisualOptions[activeTabIndex][activeVizIndex] = {
-        ...props.visualOptions[activeTabIndex][activeVizIndex],
-        width: containerRef.current.clientWidth,
-      };
-      props.setVisualOptions(tmpVisualOptions);
-    }
-  }, [containerRef]);
 
   React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
@@ -142,38 +125,10 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
     );
   }, [mapping, props.dimensions]);
 
-  React.useEffect(() => {
-    if (nextEnabled && domRef && domRef.current) {
-      try {
-        const viz = rawChart(props.currentChart, {
-          data: props.currentChartData.dataset,
-          mapping: mapping[activeTabIndex][activeVizIndex],
-          visualOptions: props.visualOptions[activeTabIndex][activeVizIndex],
-          dataTypes: props.currentChartData.dataTypes,
-        });
-        try {
-          const rawViz = viz.renderToDOM(domRef.current, viz._getVizData());
-        } catch (e) {
-          if (process.env.NODE_ENV === "development") {
-            console.log("chart error", e);
-          }
-        }
-      } catch (e) {
-        while (domRef.current.firstChild) {
-          domRef.current.removeChild(domRef.current.firstChild);
-        }
-        if (process.env.NODE_ENV === "development") {
-          console.log("chart error", e);
-        }
-      }
-    } else if (!nextEnabled && domRef && domRef.current) {
-      while (domRef.current.firstChild) {
-        domRef.current.removeChild(domRef.current.firstChild);
-      }
-    }
-  }, [nextEnabled, props.currentChart, props.currentChartData, mapping]);
-
-  if (props.data.length === 0 && !props.loading) {
+  if (
+    stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset === null &&
+    !props.loading
+  ) {
     history.push(`/data-themes/${page}/data`);
   }
 
@@ -201,22 +156,17 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
               <DataThemesBuilderMappingDimension
                 key={dimension.id}
                 dimension={dimension}
+                dataTypes={props.dataTypes}
                 replaceDimension={replaceDimension}
-                currentChartData={props.currentChartData}
               />
             ))}
           </Grid>
           <DataThemesBuilderMappingMessage dimensions={props.dimensions} />
-          <div
-            ref={domRef}
-            css={`
-              overflow-x: auto;
-              margin-top: 40px;
-
-              * {
-                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-              }
-            `}
+          <DataThemesCommonChart
+            containerRef={containerRef}
+            renderedChart={props.renderedChart}
+            visualOptions={props.visualOptions}
+            setVisualOptions={props.setVisualOptions}
           />
         </div>
       </div>
@@ -227,7 +177,7 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
 function DataThemesBuilderMappingDimension(
   props: DataThemesBuilderMappingDimensionProps
 ) {
-  const { dimension, currentChartData, replaceDimension } = props;
+  const { dimension, dataTypes, replaceDimension } = props;
 
   const activeTabIndex = useStoreState(
     (state) => state.dataThemes.activeTabIndex.value
@@ -271,12 +221,9 @@ function DataThemesBuilderMappingDimension(
       );
       if (item.type === "column") {
         const defaulAggregation = dimension.aggregation
-          ? getDefaultDimensionAggregation(
-              dimension,
-              currentChartData.dataTypes[item.id]
-            )
+          ? getDefaultDimensionAggregation(dimension, dataTypes[item.id])
           : null;
-        const columnDataType = getTypeName(currentChartData.dataTypes[item.id]);
+        const columnDataType = getTypeName(dataTypes[item.id]);
         const isValid =
           dimension.validTypes?.length === 0 ||
           dimension.validTypes?.includes(columnDataType);
@@ -411,12 +358,9 @@ function DataThemesBuilderMappingDimension(
     (i: number, newCol: any) => {
       // console.log("onChangeDimension");
       const defaulAggregation = dimension.aggregation
-        ? getDefaultDimensionAggregation(
-            dimension,
-            currentChartData.dataTypes[newCol.id]
-          )
+        ? getDefaultDimensionAggregation(dimension, dataTypes[newCol.id])
         : null;
-      const columnDataType = getTypeName(currentChartData.dataTypes[newCol.id]);
+      const columnDataType = getTypeName(dataTypes[newCol.id]);
       const isValid =
         dimension.validTypes?.length === 0 ||
         dimension.validTypes?.includes(columnDataType);
@@ -523,7 +467,7 @@ function DataThemesBuilderMappingDimension(
         {dimensionMapping.ids &&
           dimensionMapping.ids.map((id: string, index: number) => {
             const columnId = dimensionMapping.value[index];
-            let type = props.currentChartData.dataTypes[columnId];
+            let type = props.dataTypes[columnId];
             const columnDataType = getTypeName(type);
             const relatedAggregation = dimension.aggregation
               ? dimensionMapping.config.aggregation[index] ||
@@ -533,10 +477,8 @@ function DataThemesBuilderMappingDimension(
               dimension.validTypes?.length === 0 ||
               dimension.validTypes?.includes(columnDataType);
 
-            if (
-              typeof props.currentChartData.dataTypes[columnId] === "object"
-            ) {
-              type = props.currentChartData.dataTypes[columnId].type;
+            if (typeof props.dataTypes[columnId] === "object") {
+              type = props.dataTypes[columnId].type;
             }
 
             return (
