@@ -179,7 +179,7 @@ export function DataThemesBuilder() {
         `[${activeTabIndex}][${activeVizIndex}].dataTypes`,
         dataTypes
       ),
-    [tabsFromAPI, activeTabIndex, activeVizIndex]
+    [tabsFromAPI, activeTabIndex, activeVizIndex, dataTypes]
   );
 
   const dimensions = React.useMemo(
@@ -193,7 +193,7 @@ export function DataThemesBuilder() {
           []
         )
       ),
-    [tabsFromAPI, activeTabIndex, activeVizIndex]
+    [tabsFromAPI, activeTabIndex, activeVizIndex, selectedChartType]
   );
 
   const mappedData = React.useMemo(
