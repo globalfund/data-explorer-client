@@ -30,6 +30,5 @@ export interface DataThemesToolBoxProps {
   addVizToLocalStates: () => void;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions: (value: any) => void;
-  setFilterOptionGroups: (key: string, value: boolean) => void;
   loadDataset: (endpoint: string) => Promise<boolean>;
 }

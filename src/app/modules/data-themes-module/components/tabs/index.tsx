@@ -67,6 +67,9 @@ function DataThemesTabItem(props: any) {
   const removeTabAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.removeTab
   );
+  const removeEnabledFilterOptionGroups = useStoreActions(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.removeTab
+  );
   const removeTabTextContent = useStoreActions(
     (state) => state.dataThemes.textContent.removeTab
   );
@@ -141,6 +144,7 @@ function DataThemesTabItem(props: any) {
       removeTabMapping({ tabIndex: id });
       removeTabStepSelections({ tabIndex: id });
       removeTabAppliedFilters({ tabIndex: id });
+      removeEnabledFilterOptionGroups({ tabIndex: id });
       removeTabTitles({ tabIndex: id });
       removeTabTextContent({ tabIndex: id });
       deleteTab(id);

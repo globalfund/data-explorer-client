@@ -273,7 +273,6 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
           forceNextEnabled={props.forceNextEnabled}
           setVisualOptions={props.setVisualOptions}
           filterOptionGroups={props.filterOptionGroups}
-          setFilterOptionGroups={props.setFilterOptionGroups}
         />
       )}
       {props.exportView && props.rawViz && (

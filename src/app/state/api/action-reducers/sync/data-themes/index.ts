@@ -517,3 +517,69 @@ export const DataThemesVizDuplicatedState: DataThemesVizDuplicatedStateModel = {
     state.value = payload;
   }),
 };
+
+export interface DataThemesEnabledFilterOptionGroupsStateModel {
+  value: [[string[]]];
+  setValue: Action<
+    DataThemesEnabledFilterOptionGroupsStateModel,
+    { tab: number; viz: number; value: string[] }
+  >;
+  addTab: Action<DataThemesEnabledFilterOptionGroupsStateModel>;
+  addViz: Action<
+    DataThemesEnabledFilterOptionGroupsStateModel,
+    { tabIndex: number }
+  >;
+  copyViz: Action<
+    DataThemesEnabledFilterOptionGroupsStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeViz: Action<
+    DataThemesEnabledFilterOptionGroupsStateModel,
+    { tabIndex: number; vizIndex: number }
+  >;
+  removeTab: Action<
+    DataThemesEnabledFilterOptionGroupsStateModel,
+    { tabIndex: number }
+  >;
+  clear: Action<DataThemesEnabledFilterOptionGroupsStateModel>;
+}
+
+export const DataThemesEnabledFilterOptionGroupsState: DataThemesEnabledFilterOptionGroupsStateModel =
+  {
+    value: [[[]]],
+    setValue: action(
+      (state, payload: { tab: number; viz: number; value: string[] }) => {
+        state.value[payload.tab][payload.viz] = payload.value;
+      }
+    ),
+    addTab: action((state) => {
+      state.value.push([[]]);
+    }),
+    addViz: action((state, payload: { tabIndex: number }) => {
+      if (
+        state.value[payload.tabIndex][
+          state.value[payload.tabIndex].length - 1
+        ] !== null
+      ) {
+        state.value[payload.tabIndex].push([]);
+      }
+    }),
+    copyViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.value[payload.tabIndex].push(
+          state.value[payload.tabIndex][payload.vizIndex]
+        );
+      }
+    ),
+    removeViz: action(
+      (state, payload: { tabIndex: number; vizIndex: number }) => {
+        state.value[payload.tabIndex].splice(payload.vizIndex, 1);
+      }
+    ),
+    removeTab: action((state, payload: { tabIndex: number }) => {
+      state.value.splice(payload.tabIndex, 1);
+    }),
+    clear: action((state) => {
+      state.value = [[[]]];
+    }),
+  };

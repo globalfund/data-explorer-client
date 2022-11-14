@@ -116,7 +116,6 @@ interface DataThemesToolBoxStepsProps {
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
   loadDataset: (endpoint: string) => Promise<boolean>;
-  setFilterOptionGroups?: (key: string, value: boolean) => void;
 }
 
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
@@ -365,12 +364,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <div>5</div> Lock
         </AccordionSummary>
         <AccordionDetails>
-          {props.setFilterOptionGroups && (
-            <DataThemesToolBoxLock
-              filterOptionGroups={props.filterOptionGroups}
-              setFilterOptionGroups={props.setFilterOptionGroups}
-            />
-          )}
+          <DataThemesToolBoxLock
+            filterOptionGroups={props.filterOptionGroups}
+          />
         </AccordionDetails>
       </Accordion>
       <Accordion

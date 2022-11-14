@@ -8,7 +8,6 @@ export interface FilterGroupOptionModel {
 
 export interface FilterGroupModel {
   name: string;
-  enabled?: boolean;
   options: FilterGroupOptionModel[];
 }
 

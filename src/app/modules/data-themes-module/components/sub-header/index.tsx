@@ -142,6 +142,9 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
+  const enabledFilterOptionGroups = useStoreState(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.value
+  );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
   );
@@ -242,6 +245,8 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                 datasetId: stepSelectionsData.step1[tabIndex][vizIndex].dataset,
                 vizOptions: visualOptions[tabIndex][vizIndex],
                 appliedFilters: appliedFilters[tabIndex][vizIndex],
+                enabledFilterOptionGroups:
+                  enabledFilterOptionGroups[tabIndex][vizIndex],
               };
             }
             tabs[tabIndex].content.push(vizObject);

@@ -1,29 +1,55 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import filter from "lodash/filter";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
 
 interface DataThemesToolBoxLockProps {
   filterOptionGroups: FilterGroupModel[];
-  setFilterOptionGroups: (key: string, value: boolean) => void;
 }
 
 export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
-  const [state, setState] = React.useState(
-    props.filterOptionGroups.reduce(
-      (a, v) => ({ ...a, [v.name]: v.enabled || false }),
-      {}
-    )
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const enabledFilterOptionGroups = useStoreState(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.value
+  );
+  const setEnabledFilterOptionGroups = useStoreActions(
+    (actions) => actions.dataThemes.sync.enabledFilterOptionGroups.setValue
+  );
+
+  const tabVizEnabledFilterOptionGroups = get(
+    enabledFilterOptionGroups,
+    `[${activeTabIndex}][${activeVizIndex}]`,
+    []
   );
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    props.setFilterOptionGroups(event.target.name, event.target.checked);
-    setState({ ...state, [event.target.name]: event.target.checked });
+    const key = event.target.name;
+    const value = event.target.checked;
+    let temp = [...tabVizEnabledFilterOptionGroups];
+    const isIn = find(temp, (item: string) => key === item);
+    if (value && !isIn) {
+      temp.push(key);
+    } else if (!value && isIn) {
+      temp = filter(temp, (group: string) => group !== key);
+    }
+    setEnabledFilterOptionGroups({
+      tab: activeTabIndex,
+      viz: activeVizIndex,
+      value: temp,
+    });
   };
 
   return (
@@ -47,7 +73,12 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
             key={optionGroup.name}
             control={
               <Checkbox
-                checked={get(state, optionGroup.name, false)}
+                checked={
+                  find(
+                    tabVizEnabledFilterOptionGroups,
+                    (item: string) => optionGroup.name === item
+                  ) !== undefined
+                }
                 onChange={handleChange}
                 name={optionGroup.name}
                 color="primary"

@@ -61,6 +61,9 @@ export function DataThemesBuilderPreviewThemePage(
   const copyVizAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.copyViz
   );
+  const copyEnabledFilterOptionGroups = useStoreActions(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.copyViz
+  );
   const copyVizTextContent = useStoreActions(
     (state) => state.dataThemes.textContent.copyViz
   );
@@ -86,6 +89,9 @@ export function DataThemesBuilderPreviewThemePage(
   const removeVizAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.removeViz
   );
+  const removeEnabledFilterOptionGroups = useStoreActions(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.removeViz
+  );
   const removeVizTextContent = useStoreActions(
     (state) => state.dataThemes.textContent.removeViz
   );
@@ -100,6 +106,7 @@ export function DataThemesBuilderPreviewThemePage(
     copyVizMapping({ tabIndex, vizIndex });
     copyVizStepSelections({ tabIndex, vizIndex });
     copyVizAppliedFilters({ tabIndex, vizIndex });
+    copyEnabledFilterOptionGroups({ tabIndex, vizIndex });
     copyVizTextContent({ tabIndex, vizIndex });
 
     let tmpVisualOptions: any = [...props.visualOptions];
@@ -120,6 +127,7 @@ export function DataThemesBuilderPreviewThemePage(
       removeVizMapping({ tabIndex, vizIndex });
       removeVizStepSelections({ tabIndex, vizIndex });
       removeVizAppliedFilters({ tabIndex, vizIndex });
+      removeEnabledFilterOptionGroups({ tabIndex, vizIndex });
       removeVizTextContent({ tabIndex, vizIndex });
     } else {
       setVizDeleted(true);

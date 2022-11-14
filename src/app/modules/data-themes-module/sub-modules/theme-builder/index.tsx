@@ -2,21 +2,12 @@
 import React from "react";
 import get from "lodash/get";
 import { DndProvider } from "react-dnd";
-import findIndex from "lodash/findIndex";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useSessionStorage, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { Switch, Route, useHistory, useParams } from "react-router-dom";
 import {
-  Switch,
-  Route,
-  useHistory,
-  useLocation,
-  useParams,
-} from "react-router-dom";
-import {
-  parseDataset,
   getOptionsConfig,
-  chart as rawChart,
   getDefaultOptionsValues,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
@@ -159,6 +150,9 @@ export function DataThemesBuilder() {
   const setTabTitle = useStoreActions(
     (actions) => actions.dataThemes.titles.setTabTitle
   );
+  const resetEnabledFilterOptionGroups = useStoreActions(
+    (actions) => actions.dataThemes.sync.enabledFilterOptionGroups.clear
+  );
 
   const config = get(routeToConfig, `["${view}"]`, routeToConfig.preview);
 
@@ -291,6 +285,7 @@ export function DataThemesBuilder() {
     resetTextContent();
     stepSelectionsActions.reset();
     resetAppliedFilters();
+    resetEnabledFilterOptionGroups();
   }
 
   function clearDataThemeBuilder() {
@@ -305,20 +300,6 @@ export function DataThemesBuilder() {
         visualOptions
       );
     });
-  }
-
-  function setFilterOptionGroups(key: string, value: boolean) {
-    // const fOptionGroupsIndex = findIndex(
-    //   rawData[activeTabIndex][activeVizIndex].filterOptionGroups,
-    //   { name: key }
-    // );
-    // if (fOptionGroupsIndex > -1) {
-    //   const updRawData = [...rawData];
-    //   updRawData[activeTabIndex][activeVizIndex].filterOptionGroups[
-    //     fOptionGroupsIndex
-    //   ].enabled = value;
-    //   setRawData(updRawData);
-    // }
   }
 
   function getForceNextEnabledValue(param?: string) {
@@ -445,7 +426,6 @@ export function DataThemesBuilder() {
           filterOptionGroups={filterOptionGroups}
           addVizToLocalStates={addVizToLocalStates}
           previewMode={!isEditMode && page !== "new"}
-          setFilterOptionGroups={setFilterOptionGroups}
           forceNextEnabled={getForceNextEnabledValue(view)}
         />
         <Switch>

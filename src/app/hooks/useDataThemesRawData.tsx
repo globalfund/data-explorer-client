@@ -60,6 +60,12 @@ export function useDataThemesRawData(props: {
   const [loading, setLoading] = React.useState(page !== "new");
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
 
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
@@ -67,6 +73,9 @@ export function useDataThemesRawData(props: {
   const tabTitles = useStoreState((state) => state.dataThemes.titles.tabTitles);
   const setAllAppliedFilters = useStoreActions(
     (actions) => actions.dataThemes.appliedFilters.setAll
+  );
+  const setEnabledFilterOptionGroups = useStoreActions(
+    (actions) => actions.dataThemes.sync.enabledFilterOptionGroups.setValue
   );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
@@ -107,6 +116,9 @@ export function useDataThemesRawData(props: {
   const addTabAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.addTab
   );
+  const addTabEnabledFilterOptionGroups = useStoreActions(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.addTab
+  );
   const addTabTitles = useStoreActions(
     (state) => state.dataThemes.titles.addTab
   );
@@ -129,6 +141,9 @@ export function useDataThemesRawData(props: {
   const addVizAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.addViz
   );
+  const addVizEnabledFilterOptionGroups = useStoreActions(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.addViz
+  );
   const addVizTextContent = useStoreActions(
     (state) => state.dataThemes.textContent.addViz
   );
@@ -147,6 +162,11 @@ export function useDataThemesRawData(props: {
       .then((response: AxiosResponse) => {
         setSampleData(response.data.sample);
         setDataTypes(response.data.dataTypes);
+        setEnabledFilterOptionGroups({
+          tab: activeTabIndex,
+          viz: activeVizIndex,
+          value: response.data.filterOptionGroups,
+        });
         setLoading(false);
         return response.data.sample;
       })
@@ -195,6 +215,7 @@ export function useDataThemesRawData(props: {
               addTabMapping();
               addTabStepSelections();
               addTabAppliedFilters();
+              addTabEnabledFilterOptionGroups();
               addTabTitles();
               addTabTextContent({ addPlaceholder: true });
               tmpVisualOptions.push([{}]);
@@ -211,6 +232,7 @@ export function useDataThemesRawData(props: {
               addVizMapping({ tabIndex: tabIndex });
               addVizStepSelections({ tabIndex: tabIndex });
               addVizAppliedFilters({ tabIndex: tabIndex });
+              addVizEnabledFilterOptionGroups({ tabIndex: tabIndex });
               addVizTextContent({ tabIndex: tabIndex });
               tmpVisualOptions[tabIndex].push({});
             }
@@ -233,6 +255,12 @@ export function useDataThemesRawData(props: {
                   tab: tabIndex,
                   viz: vizIndex,
                   value: tabs[tabIndex][vizIndex].appliedFilters,
+                });
+
+                setEnabledFilterOptionGroups({
+                  tab: tabIndex,
+                  viz: vizIndex,
+                  value: tabs[tabIndex][vizIndex].enabledFilterOptionGroups,
                 });
 
                 tmpVisualOptions[tabIndex][vizIndex] =

@@ -1,5 +1,7 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
+import find from "lodash/find";
 import filter from "lodash/filter";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -21,12 +23,41 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupModel | null>(null);
 
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const enabledFilterOptionGroups = useStoreState(
+    (state) => state.dataThemes.sync.enabledFilterOptionGroups.value
+  );
+
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
   const resetAppliedFilters = useStoreActions(
     (actions) => actions.dataThemes.appliedFilters.resetTabViz
   );
+
+  const tabVizEnabledFilterOptionGroups = React.useMemo(() => {
+    return get(
+      enabledFilterOptionGroups,
+      `[${activeTabIndex}][${activeVizIndex}]`,
+      []
+    );
+  }, [activeTabIndex, activeVizIndex, enabledFilterOptionGroups]);
+
+  const shownFilterOptionGroups: FilterGroupModel[] = React.useMemo(() => {
+    return filter(
+      filterOptionGroups || [],
+      (group: FilterGroupModel) =>
+        find(
+          tabVizEnabledFilterOptionGroups,
+          (item: string) => group.name === item
+        ) !== undefined
+    );
+  }, [filterOptionGroups, tabVizEnabledFilterOptionGroups]);
 
   function onReset(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
@@ -89,17 +120,15 @@ export function DataThemesToolBoxPreview(props: DataThemesToolBoxPreviewProps) {
                 flex-direction: column;
               `}
             >
-              {filter(filterOptionGroups || [], { enabled: true }).map(
-                (group: FilterGroupModel) => (
-                  <FilterGroup
-                    key={group.name}
-                    name={group.name}
-                    options={group.options}
-                    loadDataFromAPI={props.loadDataFromAPI}
-                    expandGroup={() => setExpandedGroup(group)}
-                  />
-                )
-              )}
+              {shownFilterOptionGroups.map((group: FilterGroupModel) => (
+                <FilterGroup
+                  key={group.name}
+                  name={group.name}
+                  options={group.options}
+                  loadDataFromAPI={props.loadDataFromAPI}
+                  expandGroup={() => setExpandedGroup(group)}
+                />
+              ))}
             </div>
           </AccordionDetails>
         </Accordion>
