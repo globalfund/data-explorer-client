@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -7,6 +8,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 
 const StyledMenu = withStyles({
   paper: {
@@ -69,7 +71,7 @@ const StyledMenuItem = withStyles(() => ({
   },
 }))(MenuItem);
 
-const datasets = [
+const DEFAULT_DATASETS = [
   {
     name: "Investment - Signed",
     id: "investment-signed",
@@ -131,6 +133,10 @@ export function DataThemesToolBoxSelectDataset(
   );
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
+  );
+  const datasets = process.env.REACT_APP_USE_DEFAULT_DATASETS === 'true' ? DEFAULT_DATASETS : useStoreState(
+    (state) =>
+      get(state, "dataThemes.DatasetGetList.crudData", DEFAULT_DATASETS) as DatasetListItemAPIModel[]
   );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
