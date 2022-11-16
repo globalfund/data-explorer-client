@@ -72,6 +72,7 @@ export function DataThemesBuilder() {
     visualOptions,
     setVisualOptions,
     setTabsFromAPI,
+    tabsFromAPI,
   });
 
   const selectedChartType = useStoreState(
@@ -330,7 +331,7 @@ export function DataThemesBuilder() {
         }
         const { updRequiredFields, updErrors, updMinValuesFields } =
           getRequiredFieldsAndErrors(
-            mapping[activeTabIndex][activeVizIndex],
+            get(mapping, `[${activeTabIndex}][${activeVizIndex}]`, {}),
             dimensions
           );
         return (

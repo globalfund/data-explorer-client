@@ -28,20 +28,26 @@ function checkMappingAndDatasetIdNotEmpty(
         dataset: string | null;
       }
     ]
-  ]
+  ],
+  activeTabIndex: number,
+  vizIsTextContent: boolean[][]
 ): boolean {
   let mappingsCheck = true;
-  tabmappings.forEach((tabmapping) => {
-    tabmapping.forEach((contentmapping) => {
+  // tabmappings.forEach((tabmapping) => {
+  tabmappings[activeTabIndex].forEach((contentmapping, index) => {
+    if (!vizIsTextContent[activeTabIndex][index]) {
       mappingsCheck = mappingsCheck && !isEmpty(contentmapping);
-    });
+    }
   });
+  // });
   let datasetIdsCheck = true;
-  tabdatasetIds.forEach((tabdatasetId) => {
-    tabdatasetId.forEach((contentdatasetId) => {
+  // tabdatasetIds.forEach((tabdatasetId) => {
+  tabdatasetIds[activeTabIndex].forEach((contentdatasetId, index) => {
+    if (!vizIsTextContent[activeTabIndex][index]) {
       datasetIdsCheck = datasetIdsCheck && !isEmpty(contentdatasetId);
-    });
+    }
   });
+  // });
 
   return mappingsCheck && datasetIdsCheck;
 }
@@ -49,9 +55,11 @@ function checkMappingAndDatasetIdNotEmpty(
 export function useDataThemesRawData(props: {
   visualOptions: any;
   setVisualOptions: (value: any) => void;
+  tabsFromAPI: DataThemeRenderedTabItem[][];
   setTabsFromAPI: (value: DataThemeRenderedTabItem[][]) => void;
 }) {
-  const { visualOptions, setVisualOptions, setTabsFromAPI } = props;
+  const { visualOptions, tabsFromAPI, setVisualOptions, setTabsFromAPI } =
+    props;
 
   const { page, view } = useParams<{ page: string; view?: string }>();
 
@@ -320,7 +328,12 @@ export function useDataThemesRawData(props: {
     if (
       !loading &&
       (page === "new" || isEditMode) &&
-      checkMappingAndDatasetIdNotEmpty(mapping, stepSelectionsData.step1)
+      checkMappingAndDatasetIdNotEmpty(
+        mapping,
+        stepSelectionsData.step1,
+        activeTabIndex,
+        vizIsTextContent
+      )
     ) {
       const tabs: any[] = [];
       tabIds.forEach((content, tabIndex) => {
@@ -375,6 +388,35 @@ export function useDataThemesRawData(props: {
     visualOptions,
     appliedFilters,
   ]);
+
+  useUpdateEffect(() => {
+    if (vizIsTextContent[activeTabIndex][activeVizIndex]) {
+      const newTabsFromAPI = [...tabsFromAPI];
+      if (!newTabsFromAPI[activeTabIndex]) {
+        newTabsFromAPI.push([
+          // @ts-ignore
+          [
+            {
+              content: textContent[activeTabIndex][activeVizIndex],
+            },
+          ],
+        ]);
+      } else if (!newTabsFromAPI[activeTabIndex][activeVizIndex]) {
+        // @ts-ignore
+        newTabsFromAPI[activeTabIndex].push([
+          {
+            content: textContent[activeTabIndex][activeVizIndex],
+          },
+        ]);
+      } else {
+        newTabsFromAPI[activeTabIndex][activeVizIndex] = {
+          // @ts-ignore
+          content: textContent[activeTabIndex][activeVizIndex],
+        };
+      }
+      setTabsFromAPI(newTabsFromAPI);
+    }
+  }, [textContent, activeTabIndex, activeVizIndex]);
 
   return {
     loading,

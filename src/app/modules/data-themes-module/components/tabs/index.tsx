@@ -67,7 +67,7 @@ function DataThemesTabItem(props: any) {
   const removeTabAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.removeTab
   );
-  const removeEnabledFilterOptionGroups = useStoreActions(
+  const removeTabEnabledFilterOptionGroups = useStoreActions(
     (state) => state.dataThemes.sync.enabledFilterOptionGroups.removeTab
   );
   const removeTabTextContent = useStoreActions(
@@ -144,7 +144,7 @@ function DataThemesTabItem(props: any) {
       removeTabMapping({ tabIndex: id });
       removeTabStepSelections({ tabIndex: id });
       removeTabAppliedFilters({ tabIndex: id });
-      removeEnabledFilterOptionGroups({ tabIndex: id });
+      removeTabEnabledFilterOptionGroups({ tabIndex: id });
       removeTabTitles({ tabIndex: id });
       removeTabTextContent({ tabIndex: id });
       deleteTab(id);
@@ -259,6 +259,9 @@ export function DataThemesTabs(props: any) {
   const addTabTextContent = useStoreActions(
     (state) => state.dataThemes.textContent.addTab
   );
+  const addTabEnabledFilterOptionGroups = useStoreActions(
+    (actions) => actions.dataThemes.sync.enabledFilterOptionGroups.addTab
+  );
 
   function handleOpenDialog() {
     setOpenDialog(true);
@@ -281,6 +284,7 @@ export function DataThemesTabs(props: any) {
     addTabStepSelections();
     addTabAppliedFilters();
     addTabTitles();
+    addTabEnabledFilterOptionGroups();
     addTabTextContent({ addPlaceholder: !props.isEditMode });
     props.updateLocalStates(true);
     history.push(`/data-themes/${page}/initial`);
