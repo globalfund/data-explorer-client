@@ -24,3 +24,7 @@ export const DataThemeDuplicate: ApiCallModel = {
 export const DataThemeGetList: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/data-themes-with-viz-count`),
 };
+
+export const DatasetGetList: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/datasets`),
+};

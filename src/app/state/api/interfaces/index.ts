@@ -341,5 +341,6 @@ export interface StoreModel {
     DataThemeDelete: ApiCallModel;
     DataThemeDuplicate: ApiCallModel;
     DataThemeGetList: ApiCallModel;
+    DatasetGetList: ApiCallModel;
   };
 }

@@ -33,6 +33,15 @@ export interface DataThemeListItemAPIModel {
   loadData: () => void;
 }
 
+export interface DatasetListItemAPIModel {
+  id: string;
+  name: string;
+  description: string;
+  public: boolean;
+  category: string;
+  createdDate: Date;
+}
+
 const sortItems = [
   {
     content: "Date (asc)",
