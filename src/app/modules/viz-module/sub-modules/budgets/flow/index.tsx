@@ -198,7 +198,9 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           onNodeClick={(node: string, x: number, y: number) => {
             if (props.drilldownVizSelected.id) {
               const idSplits = props.drilldownVizSelected.id.split("-");
-              let code = node.replace(idSplits[0], "");
+              let code = node
+                .replace(idSplits[0], "")
+                .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
               addDataPathSteps([
                 {
