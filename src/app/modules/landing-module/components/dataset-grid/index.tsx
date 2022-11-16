@@ -10,6 +10,7 @@ import { TableIcon } from "app/assets/icons/charts/Table";
 import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import { AllocationIcon } from "app/assets/icons/charts/Allocation";
+import ControlPointIcon from "@material-ui/icons/ControlPoint";
 
 function GridItem(props: {
   link: string;
@@ -365,6 +366,13 @@ export function LandingDatasetGrid() {
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem title={grText} link="/grants" description={grDescription} />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={{__html: "Add your dataset"}}
+          link="/dataset-upload" 
+          description={{__html: "Upload your own dataset and view it with the Data Theme feature"}}
+          iconLinks={[{icon: <ControlPointIcon />, link: "/dataset-upload"}]}/>
       </Grid>
     </Grid>
   );
