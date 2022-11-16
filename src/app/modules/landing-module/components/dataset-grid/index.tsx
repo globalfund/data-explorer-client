@@ -200,27 +200,6 @@ export function LandingDatasetGrid() {
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
-          title={fbText}
-          link="/viz/budgets/flow"
-          description={fbDescription}
-          iconLinks={[
-            {
-              icon: <SankeyIcon />,
-              link: "/viz/budgets/flow",
-            },
-            {
-              icon: <BarIcon />,
-              link: "/viz/budgets/time-cycle",
-            },
-            {
-              icon: <MapIcon />,
-              link: "/viz/budgets/map",
-            },
-          ]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem
           title={fpText}
           link="/viz/pledges-contributions/treemap"
           description={fpDescription}
@@ -240,81 +219,6 @@ export function LandingDatasetGrid() {
             {
               icon: <TableIcon />,
               link: "/viz/pledges-contributions/table",
-            },
-          ]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem
-          title={fsText}
-          link="/viz/signed/treemap"
-          description={fsDescription}
-          iconLinks={[
-            {
-              icon: <TreemapIcon />,
-              link: "/viz/signed/treemap",
-            },
-            {
-              icon: <BarIcon />,
-              link: "/viz/signed/time-cycle",
-            },
-            {
-              icon: <MapIcon />,
-              link: "/viz/signed/map",
-            },
-            {
-              icon: <TableIcon />,
-              link: "/viz/signed/table",
-            },
-          ]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem
-          title={fdText}
-          link="/viz/disbursements/treemap"
-          description={fdDescription}
-          iconLinks={[
-            {
-              icon: <TreemapIcon />,
-              link: "/viz/disbursements/treemap",
-            },
-            {
-              icon: <BarIcon />,
-              link: "/viz/disbursements/time-cycle",
-            },
-            {
-              icon: <MapIcon />,
-              link: "/viz/disbursements/map",
-            },
-            {
-              icon: <TableIcon />,
-              link: "/viz/disbursements/table",
-            },
-          ]}
-        />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem
-          title={fcText}
-          link="/viz/commitment/treemap"
-          description={fcDescription}
-          iconLinks={[
-            {
-              icon: <TreemapIcon />,
-              link: "/viz/commitment/treemap",
-            },
-            {
-              icon: <BarIcon />,
-              link: "/viz/commitment/time-cycle",
-            },
-            {
-              icon: <MapIcon />,
-              link: "/viz/commitment/map",
-            },
-            {
-              icon: <TableIcon />,
-              link: "/viz/commitment/table",
             },
           ]}
         />
@@ -354,6 +258,105 @@ export function LandingDatasetGrid() {
         />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem title={grText} link="/grants" description={grDescription} />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={fsText}
+          link="/viz/signed/treemap"
+          description={fsDescription}
+          iconLinks={[
+            {
+              icon: <TreemapIcon />,
+              link: "/viz/signed/treemap",
+            },
+            {
+              icon: <BarIcon />,
+              link: "/viz/signed/time-cycle",
+            },
+            {
+              icon: <MapIcon />,
+              link: "/viz/signed/map",
+            },
+            {
+              icon: <TableIcon />,
+              link: "/viz/signed/table",
+            },
+          ]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={fcText}
+          link="/viz/commitment/treemap"
+          description={fcDescription}
+          iconLinks={[
+            {
+              icon: <TreemapIcon />,
+              link: "/viz/commitment/treemap",
+            },
+            {
+              icon: <BarIcon />,
+              link: "/viz/commitment/time-cycle",
+            },
+            {
+              icon: <MapIcon />,
+              link: "/viz/commitment/map",
+            },
+            {
+              icon: <TableIcon />,
+              link: "/viz/commitment/table",
+            },
+          ]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={fdText}
+          link="/viz/disbursements/treemap"
+          description={fdDescription}
+          iconLinks={[
+            {
+              icon: <TreemapIcon />,
+              link: "/viz/disbursements/treemap",
+            },
+            {
+              icon: <BarIcon />,
+              link: "/viz/disbursements/time-cycle",
+            },
+            {
+              icon: <MapIcon />,
+              link: "/viz/disbursements/map",
+            },
+            {
+              icon: <TableIcon />,
+              link: "/viz/disbursements/table",
+            },
+          ]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={fbText}
+          link="/viz/budgets/flow"
+          description={fbDescription}
+          iconLinks={[
+            {
+              icon: <SankeyIcon />,
+              link: "/viz/budgets/flow",
+            },
+            {
+              icon: <BarIcon />,
+              link: "/viz/budgets/time-cycle",
+            },
+            {
+              icon: <MapIcon />,
+              link: "/viz/budgets/map",
+            },
+          ]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem title={reText} link="/results" description={reDescription} />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
@@ -362,9 +365,6 @@ export function LandingDatasetGrid() {
           link="/documents"
           description={doDescription}
         />
-      </Grid>
-      <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem title={grText} link="/grants" description={grDescription} />
       </Grid>
     </Grid>
   );
