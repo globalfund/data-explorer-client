@@ -36,6 +36,7 @@ const PartnerDetailModule = lazy(
   () => import("app/modules/partner-detail-module")
 );
 const DataThemesModule = lazy(() => import("app/modules/data-themes-module"));
+const DatasetUploadModule = lazy(() => import("app/modules/dataset-upload-module"));
 
 function GrantPeriodRedirect(props: RouteComponentProps<any>) {
   const history = useHistory();
@@ -174,6 +175,10 @@ export function MainRoutes() {
 
         <Route path="/data-themes">
           <DataThemesModule />
+        </Route>
+
+        <Route path="/dataset-upload">
+          <DatasetUploadModule />
         </Route>
 
         <V1RouteRedirections />
