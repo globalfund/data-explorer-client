@@ -160,6 +160,10 @@ export function useDataThemesRawData(props: {
   );
 
   async function loadDataset(endpoint: string) {
+    const extraLoader = document.getElementById("extra-loader");
+    if (extraLoader) {
+      extraLoader.style.display = "block";
+    }
     setLoading(true);
     return await axios
       .get(`${process.env.REACT_APP_API}/${endpoint}`, {
@@ -175,12 +179,18 @@ export function useDataThemesRawData(props: {
           viz: activeVizIndex,
           value: response.data.filterOptionGroups,
         });
+        if (extraLoader) {
+          extraLoader.style.display = "none";
+        }
         setLoading(false);
         return response.data.sample;
       })
       .catch((error: AxiosError) => {
         console.log(error);
         setSampleData([]);
+        if (extraLoader) {
+          extraLoader.style.display = "none";
+        }
         setLoading(false);
         return [];
       });
@@ -335,6 +345,10 @@ export function useDataThemesRawData(props: {
         vizIsTextContent
       )
     ) {
+      const extraLoader = document.getElementById("extra-loader");
+      if (extraLoader) {
+        extraLoader.style.display = "block";
+      }
       const tabs: any[] = [];
       tabIds.forEach((content, tabIndex) => {
         // Add an empty tab for each tab in the list
@@ -372,10 +386,16 @@ export function useDataThemesRawData(props: {
           const tabs = response.data || [];
           setTabsFromAPI(tabs);
           setLoading(false);
+          if (extraLoader) {
+            extraLoader.style.display = "none";
+          }
         })
         .catch((error) => {
           console.log("API call error: " + error.message);
           setLoading(false);
+          if (extraLoader) {
+            extraLoader.style.display = "none";
+          }
         });
     }
   }, [

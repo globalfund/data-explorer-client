@@ -93,9 +93,8 @@ function DataThemesTabItem(props: any) {
 
   function onTabClick(tab: number) {
     if (activeTabIndex !== tab) {
-      // only change when necessary
       setActiveTabIndex(tab);
-      setActiveVizIndex(0); // default select the fist viz.
+      setActiveVizIndex(0);
       if (!props.previewMode) {
         onTabChange(tab);
       }
@@ -275,9 +274,9 @@ export function DataThemesTabs(props: any) {
     if (openDialog) {
       handleCloseDialog();
     }
-    setActiveVizIndex(0); // default select the fist viz.
+    setActiveVizIndex(0);
     setActiveTabIndex(tabIds.length);
-    addTabId({ addPlaceholder: !props.isEditMode });
+    addTabId({ addPlaceholder: true });
     addTabActivePanel();
     addTabChartType();
     addTabMapping();
@@ -285,7 +284,7 @@ export function DataThemesTabs(props: any) {
     addTabAppliedFilters();
     addTabTitles();
     addTabEnabledFilterOptionGroups();
-    addTabTextContent({ addPlaceholder: !props.isEditMode });
+    addTabTextContent({ addPlaceholder: true });
     props.updateLocalStates(true);
     history.push(`/data-themes/${page}/initial`);
   }

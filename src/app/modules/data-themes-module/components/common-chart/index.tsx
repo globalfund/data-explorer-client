@@ -1,5 +1,6 @@
 import React from "react";
 import { useStoreState } from "app/state/store/hooks";
+import { PageLoader } from "app/modules/common/page-loader";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
@@ -62,16 +63,26 @@ export function DataThemesCommonChart(props: Props) {
   }, [props.renderedChart]);
 
   return (
-    <div
-      ref={domRef}
-      css={`
-        overflow-x: auto;
-        margin-top: 40px;
+    <>
+      <div
+        id="extra-loader"
+        css={`
+          display: none;
+        `}
+      >
+        <PageLoader />
+      </div>
+      <div
+        ref={domRef}
+        css={`
+          overflow-x: auto;
+          margin-top: 40px;
 
-        * {
-          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-        }
-      `}
-    />
+          * {
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
+          }
+        `}
+      />
+    </>
   );
 }
