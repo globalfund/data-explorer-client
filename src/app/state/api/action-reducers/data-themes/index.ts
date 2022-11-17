@@ -28,3 +28,7 @@ export const DataThemeGetList: ApiCallModel = {
 export const DatasetGetList: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/datasets`),
 };
+
+export const DatasetCreate: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/datasets`),
+};
