@@ -1168,6 +1168,24 @@ export const emptyDataThemeAPI: DataThemeAPIModel = {
   ],
 };
 
+export interface DatasetAPIModel {
+  id: string;
+  name: string;
+  description: string;
+  public: boolean;
+  category: string;
+  createdDate: Date;
+}
+
+export const emptyDatasetAPI: DatasetAPIModel = {
+  id: "",
+  name: "",
+  description: "",
+  public: false,
+  category: "",
+  createdDate: new Date(),
+}
+
 interface DataThemeRoutesConfigModel {
   [key: string]: {
     textView: boolean;
