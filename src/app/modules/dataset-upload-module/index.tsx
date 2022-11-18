@@ -31,7 +31,7 @@ export default function DatasetUploadModule() {
   useTitle("DataXplorer - Dataset Upload");
 
   const [uploading, setUploading] = React.useState(false);
-  const [uploadSuccess, setUploadSuccess] = React.useState(true);
+  const [uploadSuccess, setUploadSuccess] = React.useState(false);
 
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
