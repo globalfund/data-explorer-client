@@ -89,7 +89,7 @@ export function DataThemesBuilderPreviewThemePage(
   const removeVizAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.removeViz
   );
-  const removeEnabledFilterOptionGroups = useStoreActions(
+  const removeVizEnabledFilterOptionGroups = useStoreActions(
     (state) => state.dataThemes.sync.enabledFilterOptionGroups.removeViz
   );
   const removeVizTextContent = useStoreActions(
@@ -127,7 +127,7 @@ export function DataThemesBuilderPreviewThemePage(
       removeVizMapping({ tabIndex, vizIndex });
       removeVizStepSelections({ tabIndex, vizIndex });
       removeVizAppliedFilters({ tabIndex, vizIndex });
-      removeEnabledFilterOptionGroups({ tabIndex, vizIndex });
+      removeVizEnabledFilterOptionGroups({ tabIndex, vizIndex });
       removeVizTextContent({ tabIndex, vizIndex });
     } else {
       setVizDeleted(true);

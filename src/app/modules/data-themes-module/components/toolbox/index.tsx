@@ -233,13 +233,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
               </div>
               Data visualisation
             </div>
-            <div
-              onClick={onTextPress}
-              css={`
-                opacity: 0.5;
-                pointer-events: none;
-              `}
-            >
+            <div onClick={onTextPress}>
               <div>
                 <TextFieldsIcon htmlColor="#262C34" />
               </div>

@@ -1,8 +1,10 @@
-import React, { ReactElement, useMemo, useRef } from "react";
+import React, { ReactElement, useMemo, useRef, useState } from "react";
 import get from "lodash/get";
-import { EditorState } from "draft-js";
+import isEqual from "lodash/isEqual";
 import Editor from "@draft-js-plugins/editor";
 import createLinkPlugin from "@draft-js-plugins/anchor";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
+import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import createInlineToolbarPlugin, {
   Separator,
@@ -48,13 +50,36 @@ export const RichEditor = (props: {
 
   const editor = useRef<Editor | null>(null);
 
-  const onChange = (value: EditorState): void => {
-    setTextContent({ tab: props.tabIndex, viz: props.vizIndex, value: value });
-  };
+  const [localTextContent, setLocalTextContent] = useState(
+    textContent[props.tabIndex][props.vizIndex]
+  );
 
   const focus = (): void => {
     editor.current?.focus();
   };
+
+  useUpdateEffect(() => {
+    if (
+      !isEqual(
+        localTextContent.getCurrentContent(),
+        textContent[props.tabIndex][props.vizIndex].getCurrentContent()
+      )
+    ) {
+      setTextContent({
+        tab: props.tabIndex,
+        viz: props.vizIndex,
+        value: localTextContent,
+      });
+    }
+  }, [localTextContent]);
+
+  useUpdateEffectOnce(() => {
+    setTextContent({
+      tab: props.tabIndex,
+      viz: props.vizIndex,
+      value: textContent[props.tabIndex][props.vizIndex],
+    });
+  }, [textContent]);
 
   if (
     get(textContent, `[${props.tabIndex}][${props.vizIndex}]`, undefined) ===
@@ -122,12 +147,12 @@ export const RichEditor = (props: {
       `}
     >
       <Editor
-        readOnly={!props.editMode}
-        editorKey="RichEditor"
-        placeholder="Add your story..."
-        editorState={textContent[props.tabIndex][props.vizIndex]}
-        onChange={onChange}
         plugins={plugins}
+        editorKey="RichEditor"
+        readOnly={!props.editMode}
+        editorState={localTextContent}
+        onChange={setLocalTextContent}
+        placeholder="Add your story..."
         ref={(element) => {
           editor.current = element;
         }}

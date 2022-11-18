@@ -562,9 +562,6 @@ export function DataThemesGenericPageSubHeader(props: { title: string }) {
         <div css={styles.firstrow}>
           <h1>{props.title}</h1>
         </div>
-        {/* <div css={styles.secondrow}>
-          <DataThemesTabs />
-        </div> */}
       </div>
     </div>
   );

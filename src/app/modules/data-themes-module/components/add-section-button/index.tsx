@@ -53,13 +53,7 @@ export function DataThemesAddSectionButton(
             <IconButton onClick={onChartPress}>
               <BarChartIcon htmlColor="#373D43" />
             </IconButton>
-            <IconButton
-              onClick={onTextPress}
-              disabled
-              css={`
-                opacity: 0.5;
-              `}
-            >
+            <IconButton onClick={onTextPress}>
               <TextFieldsIcon htmlColor="#373D43" />
             </IconButton>
             {/* <IconButton>

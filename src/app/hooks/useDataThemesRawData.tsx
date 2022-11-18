@@ -28,20 +28,26 @@ function checkMappingAndDatasetIdNotEmpty(
         dataset: string | null;
       }
     ]
-  ]
+  ],
+  activeTabIndex: number,
+  vizIsTextContent: boolean[][]
 ): boolean {
   let mappingsCheck = true;
-  tabmappings.forEach((tabmapping) => {
-    tabmapping.forEach((contentmapping) => {
+  // tabmappings.forEach((tabmapping) => {
+  tabmappings[activeTabIndex].forEach((contentmapping, index) => {
+    if (!vizIsTextContent[activeTabIndex][index]) {
       mappingsCheck = mappingsCheck && !isEmpty(contentmapping);
-    });
+    }
   });
+  // });
   let datasetIdsCheck = true;
-  tabdatasetIds.forEach((tabdatasetId) => {
-    tabdatasetId.forEach((contentdatasetId) => {
+  // tabdatasetIds.forEach((tabdatasetId) => {
+  tabdatasetIds[activeTabIndex].forEach((contentdatasetId, index) => {
+    if (!vizIsTextContent[activeTabIndex][index]) {
       datasetIdsCheck = datasetIdsCheck && !isEmpty(contentdatasetId);
-    });
+    }
   });
+  // });
 
   return mappingsCheck && datasetIdsCheck;
 }
@@ -49,9 +55,11 @@ function checkMappingAndDatasetIdNotEmpty(
 export function useDataThemesRawData(props: {
   visualOptions: any;
   setVisualOptions: (value: any) => void;
+  tabsFromAPI: DataThemeRenderedTabItem[][];
   setTabsFromAPI: (value: DataThemeRenderedTabItem[][]) => void;
 }) {
-  const { visualOptions, setVisualOptions, setTabsFromAPI } = props;
+  const { visualOptions, tabsFromAPI, setVisualOptions, setTabsFromAPI } =
+    props;
 
   const { page, view } = useParams<{ page: string; view?: string }>();
 
@@ -152,6 +160,10 @@ export function useDataThemesRawData(props: {
   );
 
   async function loadDataset(endpoint: string) {
+    const extraLoader = document.getElementById("extra-loader");
+    if (extraLoader) {
+      extraLoader.style.display = "block";
+    }
     setLoading(true);
     return await axios
       .get(`${process.env.REACT_APP_API}/${endpoint}`, {
@@ -167,12 +179,18 @@ export function useDataThemesRawData(props: {
           viz: activeVizIndex,
           value: response.data.filterOptionGroups,
         });
+        if (extraLoader) {
+          extraLoader.style.display = "none";
+        }
         setLoading(false);
         return response.data.sample;
       })
       .catch((error: AxiosError) => {
         console.log(error);
         setSampleData([]);
+        if (extraLoader) {
+          extraLoader.style.display = "none";
+        }
         setLoading(false);
         return [];
       });
@@ -320,8 +338,17 @@ export function useDataThemesRawData(props: {
     if (
       !loading &&
       (page === "new" || isEditMode) &&
-      checkMappingAndDatasetIdNotEmpty(mapping, stepSelectionsData.step1)
+      checkMappingAndDatasetIdNotEmpty(
+        mapping,
+        stepSelectionsData.step1,
+        activeTabIndex,
+        vizIsTextContent
+      )
     ) {
+      const extraLoader = document.getElementById("extra-loader");
+      if (extraLoader) {
+        extraLoader.style.display = "block";
+      }
       const tabs: any[] = [];
       tabIds.forEach((content, tabIndex) => {
         // Add an empty tab for each tab in the list
@@ -359,10 +386,16 @@ export function useDataThemesRawData(props: {
           const tabs = response.data || [];
           setTabsFromAPI(tabs);
           setLoading(false);
+          if (extraLoader) {
+            extraLoader.style.display = "none";
+          }
         })
         .catch((error) => {
           console.log("API call error: " + error.message);
           setLoading(false);
+          if (extraLoader) {
+            extraLoader.style.display = "none";
+          }
         });
     }
   }, [
@@ -375,6 +408,35 @@ export function useDataThemesRawData(props: {
     visualOptions,
     appliedFilters,
   ]);
+
+  useUpdateEffect(() => {
+    if (vizIsTextContent[activeTabIndex][activeVizIndex]) {
+      const newTabsFromAPI = [...tabsFromAPI];
+      if (!newTabsFromAPI[activeTabIndex]) {
+        newTabsFromAPI.push([
+          // @ts-ignore
+          [
+            {
+              content: textContent[activeTabIndex][activeVizIndex],
+            },
+          ],
+        ]);
+      } else if (!newTabsFromAPI[activeTabIndex][activeVizIndex]) {
+        // @ts-ignore
+        newTabsFromAPI[activeTabIndex].push([
+          {
+            content: textContent[activeTabIndex][activeVizIndex],
+          },
+        ]);
+      } else {
+        newTabsFromAPI[activeTabIndex][activeVizIndex] = {
+          // @ts-ignore
+          content: textContent[activeTabIndex][activeVizIndex],
+        };
+      }
+      setTabsFromAPI(newTabsFromAPI);
+    }
+  }, [textContent, activeTabIndex, activeVizIndex]);
 
   return {
     loading,

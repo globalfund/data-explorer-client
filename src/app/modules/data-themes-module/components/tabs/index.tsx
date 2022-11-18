@@ -67,7 +67,7 @@ function DataThemesTabItem(props: any) {
   const removeTabAppliedFilters = useStoreActions(
     (state) => state.dataThemes.appliedFilters.removeTab
   );
-  const removeEnabledFilterOptionGroups = useStoreActions(
+  const removeTabEnabledFilterOptionGroups = useStoreActions(
     (state) => state.dataThemes.sync.enabledFilterOptionGroups.removeTab
   );
   const removeTabTextContent = useStoreActions(
@@ -93,9 +93,8 @@ function DataThemesTabItem(props: any) {
 
   function onTabClick(tab: number) {
     if (activeTabIndex !== tab) {
-      // only change when necessary
       setActiveTabIndex(tab);
-      setActiveVizIndex(0); // default select the fist viz.
+      setActiveVizIndex(0);
       if (!props.previewMode) {
         onTabChange(tab);
       }
@@ -144,7 +143,7 @@ function DataThemesTabItem(props: any) {
       removeTabMapping({ tabIndex: id });
       removeTabStepSelections({ tabIndex: id });
       removeTabAppliedFilters({ tabIndex: id });
-      removeEnabledFilterOptionGroups({ tabIndex: id });
+      removeTabEnabledFilterOptionGroups({ tabIndex: id });
       removeTabTitles({ tabIndex: id });
       removeTabTextContent({ tabIndex: id });
       deleteTab(id);
@@ -259,6 +258,9 @@ export function DataThemesTabs(props: any) {
   const addTabTextContent = useStoreActions(
     (state) => state.dataThemes.textContent.addTab
   );
+  const addTabEnabledFilterOptionGroups = useStoreActions(
+    (actions) => actions.dataThemes.sync.enabledFilterOptionGroups.addTab
+  );
 
   function handleOpenDialog() {
     setOpenDialog(true);
@@ -272,16 +274,17 @@ export function DataThemesTabs(props: any) {
     if (openDialog) {
       handleCloseDialog();
     }
-    setActiveVizIndex(0); // default select the fist viz.
+    setActiveVizIndex(0);
     setActiveTabIndex(tabIds.length);
-    addTabId({ addPlaceholder: !props.isEditMode });
+    addTabId({ addPlaceholder: true });
     addTabActivePanel();
     addTabChartType();
     addTabMapping();
     addTabStepSelections();
     addTabAppliedFilters();
     addTabTitles();
-    addTabTextContent({ addPlaceholder: !props.isEditMode });
+    addTabEnabledFilterOptionGroups();
+    addTabTextContent({ addPlaceholder: true });
     props.updateLocalStates(true);
     history.push(`/data-themes/${page}/initial`);
   }

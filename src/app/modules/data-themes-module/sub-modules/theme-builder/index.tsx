@@ -72,6 +72,7 @@ export function DataThemesBuilder() {
     visualOptions,
     setVisualOptions,
     setTabsFromAPI,
+    tabsFromAPI,
   });
 
   const selectedChartType = useStoreState(
@@ -86,6 +87,9 @@ export function DataThemesBuilder() {
   );
   const stepSelectionsData = useStoreState(
     (state) => state.dataThemes.sync.stepSelections
+  );
+  const vizIsTextContent = useStoreState(
+    (state) => state.dataThemes.textContent.vizIsTextContent
   );
 
   const loadDataTheme = useStoreActions(
@@ -325,9 +329,12 @@ export function DataThemesBuilder() {
       case "lock":
       case "customize":
       case "mapping":
+        if (vizIsTextContent[activeTabIndex][activeVizIndex]) {
+          return true;
+        }
         const { updRequiredFields, updErrors, updMinValuesFields } =
           getRequiredFieldsAndErrors(
-            mapping[activeTabIndex][activeVizIndex],
+            get(mapping, `[${activeTabIndex}][${activeVizIndex}]`, {}),
             dimensions
           );
         return (
