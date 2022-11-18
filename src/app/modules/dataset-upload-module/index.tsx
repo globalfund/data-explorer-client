@@ -1,8 +1,10 @@
 import React from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import Button from "@material-ui/core/Button";
 import Select from "@material-ui/core/Select";
+import CheckIcon from "@material-ui/icons/Check";
 import Checkbox from "@material-ui/core/Checkbox";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
@@ -14,7 +16,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -30,58 +31,79 @@ const useStyles = makeStyles((theme) => ({
 export default function DatasetUploadModule() {
   useTitle("DataXplorer - Dataset Upload");
 
+  const [name, setName] = React.useState("");
+  const [isPublic, setIsPublic] = React.useState(false);
   const [uploading, setUploading] = React.useState(false);
+  const [description, setDescription] = React.useState("");
+  const [category, setCategory] = React.useState("General");
   const [uploadSuccess, setUploadSuccess] = React.useState(false);
+  const [submitEnabled, setSubmitEnabled] = React.useState(false);
+  const [selectedFile, setSelectedFile] = React.useState<FileList | null>(null);
 
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
   );
 
   const onSubmit: any = async (event: any) => {
-    event.preventDefault();
-    const datasetValues = {
-      name: event.target.name.value,
-      description: event.target.description.value,
-      public: event.target.public.checked,
-      category: event.target.datasetCategory.value,
-    };
-    // Post the dataset
-    setUploading(true);
-    axios
-      .post(`${process.env.REACT_APP_API}/datasets`, datasetValues, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        // if the dataset was created successfully, post the file to the server
-        const formData = new FormData();
-        let file = event.target.fileUpload.files[0];
-        let filename = "dx" + response.data.id;
-        formData.append(filename, file);
-        axios
-          .post(`${process.env.REACT_APP_API}/files`, formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((_) => {
-            setUploading(false);
-            setUploadSuccess(true);
-            loadDatasets({ storeInCrudData: true });
-          })
-          .catch((error) => {
-            console.debug("Dataset upload error", error);
-            setUploading(false);
-            setUploadSuccess(false);
-          });
-      })
-      .catch((error) => {
-        console.debug("Dataset creation error", error);
-        setUploading(false);
-        setUploadSuccess(false);
-      });
+    if (
+      name.length > 0 &&
+      description.length > 0 &&
+      category.length > 0 &&
+      selectedFile
+    ) {
+      const datasetValues = {
+        name,
+        description,
+        public: isPublic,
+        category,
+      };
+      // Post the dataset
+      setUploading(true);
+      axios
+        .post(`${process.env.REACT_APP_API}/datasets`, datasetValues, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+        .then((response) => {
+          // if the dataset was created successfully, post the file to the server
+          const formData = new FormData();
+          let file = selectedFile[0];
+          let filename = "dx" + response.data.id;
+          formData.append(filename, file);
+          axios
+            .post(`${process.env.REACT_APP_API}/files`, formData, {
+              headers: {
+                "Content-Type": "multipart/form-data",
+              },
+            })
+            .then((_) => {
+              setUploading(false);
+              setUploadSuccess(true);
+              loadDatasets({ storeInCrudData: true });
+            })
+            .catch((error) => {
+              console.debug("Dataset upload error", error);
+              setUploading(false);
+              setUploadSuccess(false);
+            });
+        })
+        .catch((error) => {
+          console.debug("Dataset creation error", error);
+          setUploading(false);
+          setUploadSuccess(false);
+        });
+    }
   };
+
+  React.useEffect(() => {
+    setSubmitEnabled(
+      name.length > 0 &&
+        description.length > 0 &&
+        category.length > 0 &&
+        selectedFile !== null
+    );
+  }, [name, description, category, selectedFile]);
 
   const classes = useStyles();
 
@@ -115,10 +137,8 @@ export default function DatasetUploadModule() {
             Your dataset will become available after being processed, which will
             roughly take around half a minute.
           </p>
-          <form
-            autoComplete="off"
+          <div
             className={classes.root}
-            onSubmit={(event) => onSubmit(event)}
             css={`
               width: 100%;
               display: flex;
@@ -126,28 +146,33 @@ export default function DatasetUploadModule() {
             `}
           >
             <TextField
-              id="name"
-              name="name"
+              required
+              fullWidth
+              value={name}
               label="Name"
               variant="outlined"
-              required
-              fullWidth
+              onChange={(e) => setName(e.target.value)}
             />
             <TextField
-              id="description"
-              name="description"
-              label="Description"
-              variant="outlined"
               required
               fullWidth
+              variant="outlined"
+              label="Description"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
             />
             <div>
-              <FormControl variant="outlined" className={classes.formControl}>
+              <FormControl
+                required
+                variant="outlined"
+                className={classes.formControl}
+              >
                 <InputLabel id="datasetCategory">Dataset category</InputLabel>
                 <Select
+                  value={category}
                   label="Dataset category"
-                  name="datasetCategory"
                   labelId="datasetCategory"
+                  onChange={(e) => setCategory(e.target.value as string)}
                 >
                   <MenuItem value="general">General</MenuItem>
                   <MenuItem value="other">Other</MenuItem>
@@ -155,9 +180,11 @@ export default function DatasetUploadModule() {
               </FormControl>
             </div>
             <FormControlLabel
+              value={isPublic}
               labelPlacement="start"
               label="Publicly visible"
-              control={<Checkbox name="public" color="primary" />}
+              onChange={(e, v) => setIsPublic(v)}
+              control={<Checkbox color="primary" />}
               css={`
                 justify-content: start;
 
@@ -171,10 +198,10 @@ export default function DatasetUploadModule() {
                 <Button
                   color="primary"
                   component="span"
-                  variant="outlined"
-                  startIcon={<CloudUploadIcon />}
+                  variant={selectedFile ? "contained" : "outlined"}
+                  startIcon={selectedFile ? <CheckIcon /> : <CloudUploadIcon />}
                 >
-                  Upload
+                  {selectedFile ? "Done" : "Upload"}
                 </Button>
               </label>
               <input
@@ -182,7 +209,8 @@ export default function DatasetUploadModule() {
                 type="file"
                 id="fileUpload"
                 name="fileUpload"
-                accept=".json,.csv"
+                accept=".json,.csv,.xlsx"
+                onChange={(e) => setSelectedFile(e.target.files)}
                 css={`
                   display: none;
                 `}
@@ -194,11 +222,16 @@ export default function DatasetUploadModule() {
                 justify-content: flex-end;
               `}
             >
-              <Button type="submit" variant="contained" color="primary">
+              <Button
+                color="primary"
+                onClick={onSubmit}
+                variant="contained"
+                disabled={!submitEnabled}
+              >
                 Submit
               </Button>
             </div>
-          </form>
+          </div>
         </React.Fragment>
       )}
       {uploadSuccess && (
