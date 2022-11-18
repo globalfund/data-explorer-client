@@ -19,8 +19,7 @@ export const row = (size: number, style: string) => css`
   font-size: ${size}px;
   font-weight: ${style};
   justify-content: space-between;
-  font-family: "GothamNarrow-${style === "bold" ? "Bold" : "Book"}",
-    "Helvetica Neue", sans-serif;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
 `;
 
 export const buttonrow = (position: "up" | "down") => css`
@@ -34,7 +33,7 @@ export const buttonrow = (position: "up" | "down") => css`
   transition: background 0.2s ease-in-out;
   color: ${position === "up" ? "#fff" : "#262C34"};
   background: ${position === "up" ? "#262C34" : "transparent"};
-  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
   border-${position === "up" ? "bottom" : "top"}: 1px solid #c7cdd1;
   border-radius: ${position === "up" ? "20px 20px 0 0" : "0 0 20px 20px"};
 

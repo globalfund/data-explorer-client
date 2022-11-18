@@ -49,7 +49,7 @@ export const styles = {
     color: ${active ? "#fff" : "#495057"};
     opacity: ${active ? "100%" : disabled && "50%"};
     background-color: ${active ? "#495057" : "#c7cdd1"};
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
 
     svg {
       path {
@@ -95,7 +95,7 @@ export const styles = {
     justify-content: center;
     background: transparent;
     transition: background 0.2s ease-in-out;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
 
     &:focus {
       background: #495057;

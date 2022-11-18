@@ -1,6 +1,6 @@
 {
-  "short_name": "The Data Explorer",
-  "name": "The Global Fund Data Explorer",
+  "short_name": "Dataxplorer",
+  "name": "Dataxplorer",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#262C34",
+  "theme_color": "#231d2c",
   "background_color": "#dfe3e6"
 }

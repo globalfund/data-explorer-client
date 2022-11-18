@@ -144,7 +144,7 @@ export function DotChart(props: DotChartProps) {
                 flex-direction: column;
                 align-self: flex-start;
                 margin-right: 30px;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               `}
             >
               <div
@@ -199,8 +199,8 @@ export function DotChart(props: DotChartProps) {
                   font-size: 14px;
                   font-weight: bold;
                   margin-bottom: 5px;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
                 `}
               >
                 {get(cmsData, "componentsChartsEligibility.eligibility", "")}
@@ -337,8 +337,7 @@ export function DotChart(props: DotChartProps) {
                     font-size: 14px;
                     font-weight: bold;
                     margin-bottom: 24px;
-                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                      sans-serif;
+                    font-family: "Inter", "Helvetica Neue", sans-serif;
                   `}
                 >
                   {get(cmsData, "componentsChartsEligibility.countryName", "")}
@@ -482,8 +481,7 @@ export function DotChart(props: DotChartProps) {
                         font-size: 14px;
                         font-weight: bold;
                         margin-bottom: 12px;
-                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                          sans-serif;
+                        font-family: "Inter", "Helvetica Neue", sans-serif;
                       `}
                     >
                       {group.name}
@@ -560,8 +558,7 @@ export function DotChart(props: DotChartProps) {
                         font-size: 14px;
                         font-weight: bold;
                         margin-bottom: 12px;
-                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                          sans-serif;
+                        font-family: "Inter", "Helvetica Neue", sans-serif;
                       `}
                     >
                       {group.name}

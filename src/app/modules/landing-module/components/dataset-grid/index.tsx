@@ -40,12 +40,12 @@ function GridItem(props: {
             font-weight: bold;
             line-height: 16px;
             margin-bottom: 4px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-family: "Inter", "Helvetica Neue", sans-serif;
 
             &:nth-of-type(2) {
               font-size: 10px;
               line-height: 12px;
-              font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
             }
           }
 
@@ -369,10 +369,14 @@ export function LandingDatasetGrid() {
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
-          title={{__html: "Add your dataset"}}
-          link="/dataset-upload" 
-          description={{__html: "Upload your own dataset and view it with the Data Theme feature"}}
-          iconLinks={[{icon: <ControlPointIcon />, link: "/dataset-upload"}]}/>
+          title={{ __html: "Add your dataset" }}
+          link="/dataset-upload"
+          description={{
+            __html:
+              "Upload your own dataset and view it with the Data Theme feature",
+          }}
+          iconLinks={[{ icon: <ControlPointIcon />, link: "/dataset-upload" }]}
+        />
       </Grid>
     </Grid>
   );

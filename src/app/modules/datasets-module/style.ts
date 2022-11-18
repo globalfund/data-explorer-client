@@ -30,7 +30,7 @@ export const dataSetsGridCss = css`
   > div {
     font-weight: bold;
     margin-bottom: 10px;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
   }
 
   > svg {

@@ -41,7 +41,7 @@ export interface GrantDetailPeriodInformation {
 
 export function GrantInfoContent(props: GrantInfoContentProps) {
   const cmsData = useCMSData({ returnData: true });
-  
+
   return (
     <div
       css={`
@@ -79,7 +79,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -104,7 +104,8 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
       >
         <LocationIcon />
         <div>
-        {get(cmsData, "modulesGrantDetail.location", "")} <b>{props.location}</b>
+          {get(cmsData, "modulesGrantDetail.location", "")}{" "}
+          <b>{props.location}</b>
         </div>
       </div>
       <div
@@ -127,7 +128,8 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
       >
         <ComponentIcon />
         <div>
-        {get(cmsData, "modulesGrantDetail.component", "")} <b>{props.component}</b>
+          {get(cmsData, "modulesGrantDetail.component", "")}{" "}
+          <b>{props.component}</b>
         </div>
       </div>
       <div
@@ -135,7 +137,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 5px;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "modulesGrantDetail.rating", "")}
@@ -213,7 +215,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
         css={`
           font-size: 14px;
           font-weight: bold;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "modulesGrantDetail.fundManager", "")}

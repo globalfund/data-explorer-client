@@ -33,8 +33,14 @@ export function PledgesContributionsTimeCycle(
     "pledgesContributionsBar"
   );
   const legends = [
-    { name: get(cmsData, "componentsChartsPledges.pledge", ""), color: "#BFCFEE" },
-    { name: get(cmsData, "componentsChartsPledges.contribution", ""), color: "#252C34" },
+    {
+      name: get(cmsData, "componentsChartsPledges.pledge", ""),
+      color: "#BFCFEE",
+    },
+    {
+      name: get(cmsData, "componentsChartsPledges.contribution", ""),
+      color: "#252C34",
+    },
   ];
 
   const Bars = (bprops: any) => {
@@ -90,14 +96,15 @@ export function PledgesContributionsTimeCycle(
                 font-size: 14px;
                 font-weight: bold;
                 align-items: center;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
 
                 > svg {
                   margin-left: 10px;
                 }
               `}
             >
-              {get(cmsData, "componentsChartsPledges.replenishmentPeriods", "")} <InfoIcon />
+              {get(cmsData, "componentsChartsPledges.replenishmentPeriods", "")}{" "}
+              <InfoIcon />
             </div>
           </Grid>
           <Grid item xs={12} sm={12} md={9}>

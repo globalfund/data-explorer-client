@@ -32,6 +32,5 @@ export const row = (size: number, style: string, lineHeight?: number) => css`
   align-items: flex-end;
   justify-content: space-between;
   line-height: ${lineHeight ?? 16}px;
-  font-family: "GothamNarrow-${style === "bold" ? "Bold" : "Book"}",
-    "Helvetica Neue", sans-serif;
+  font-family: "Inter", "Helvetica Neue", sans-serif;
 `;

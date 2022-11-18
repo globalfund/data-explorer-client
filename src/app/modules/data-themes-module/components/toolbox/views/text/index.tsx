@@ -13,7 +13,7 @@ const Button = withStyles(() => ({
     height: "48px",
     borderRadius: "0px",
     backgroundColor: "#262C34",
-    fontFamily: "GothamNarrow-Bold, sans-serif",
+    fontFamily: "Inter, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
     },
@@ -25,7 +25,7 @@ const Button = withStyles(() => ({
     color: "#fff",
     fontSize: "14px",
     textTransform: "none",
-    fontFamily: "GothamNarrow-Bold, sans-serif",
+    fontFamily: "Inter, sans-serif",
   },
   disabled: {
     backgroundColor: "#ADB5BD",

@@ -134,10 +134,17 @@ export function DataThemesToolBoxSelectDataset(
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
   );
-  const datasets = process.env.REACT_APP_USE_DEFAULT_DATASETS === 'true' ? DEFAULT_DATASETS : useStoreState(
-    (state) =>
-      get(state, "dataThemes.DatasetGetList.crudData", DEFAULT_DATASETS) as DatasetListItemAPIModel[]
-  );
+  const datasets =
+    process.env.REACT_APP_USE_DEFAULT_DATASETS === "true"
+      ? DEFAULT_DATASETS
+      : useStoreState(
+          (state) =>
+            get(
+              state,
+              "dataThemes.DatasetGetList.crudData",
+              DEFAULT_DATASETS
+            ) as DatasetListItemAPIModel[]
+        );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -224,7 +231,7 @@ export function DataThemesToolBoxSelectDataset(
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            font-family: "Inter", "Helvetica Neue", sans-serif;
           `}
         >
           {stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ||

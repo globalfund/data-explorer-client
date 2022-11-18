@@ -12,12 +12,17 @@ export function DataThemesToolBoxChartType() {
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
-  const activeTabIndex = useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex = useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndex = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndex = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
 
   const fChartType = find(
     chartTypes,
-    (chartType: ChartTypeModel) => chartType.id === selectedChartType[activeTabIndex][activeVizIndex]
+    (chartType: ChartTypeModel) =>
+      chartType.id === selectedChartType[activeTabIndex][activeVizIndex]
   );
 
   return (
@@ -27,10 +32,12 @@ export function DataThemesToolBoxChartType() {
         height: 340px;
         display: flex;
         flex-direction: column;
-        align-items: ${selectedChartType[activeTabIndex][activeVizIndex] && fChartType
+        align-items: ${selectedChartType[activeTabIndex][activeVizIndex] &&
+        fChartType
           ? "flex-start"
           : "center"};
-        justify-content: ${selectedChartType[activeTabIndex][activeVizIndex] && fChartType
+        justify-content: ${selectedChartType[activeTabIndex][activeVizIndex] &&
+        fChartType
           ? "flex-start"
           : "center"};
       `}
@@ -40,7 +47,7 @@ export function DataThemesToolBoxChartType() {
           css={`
             color: #262c34;
             font-size: 14px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-family: "Inter", "Helvetica Neue", sans-serif;
           `}
         >
           Please select a chart type
@@ -67,7 +74,7 @@ export function DataThemesToolBoxChartType() {
             css={`
               font-size: 14px;
               margin-bottom: 20px;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
             `}
           >
             {fChartType.label}

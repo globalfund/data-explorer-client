@@ -114,7 +114,7 @@ function Row(props: {
               <div
                 css={`
                   font-weight: bold;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
                 `}
               >
                 {row.name}

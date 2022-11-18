@@ -172,8 +172,7 @@ export function SlideInContainer(props: SlideInContainerProps) {
                       font-size: 14px;
                       font-weight: bold;
                       text-transform: none;
-                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                        sans-serif;
+                      font-family: "Inter", "Helvetica Neue", sans-serif;
                     }
                   `}
                 >

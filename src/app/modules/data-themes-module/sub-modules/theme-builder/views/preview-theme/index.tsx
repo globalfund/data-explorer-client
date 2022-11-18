@@ -456,8 +456,7 @@ export function DataThemesBuilderPreviewTheme(
                   overflow-x: auto;
 
                   * {
-                    font-family: "GothamNarrow-Book", "Helvetica Neue",
-                      sans-serif !important;
+                    font-family: "Inter", "Helvetica Neue", sans-serif !important;
                   }
                 `}
               />
