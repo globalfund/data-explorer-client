@@ -37,9 +37,9 @@ export const styles = {
   ) => css`
     gap: 14px;
     color: #fff;
-    width: 200px;
     height: 34px;
     display: flex;
+    // width: 200px;
     font-size: 14px;
     font-weight: 700;
     min-width: 200px;

@@ -40,6 +40,9 @@ const DataThemesModule = lazy(() => import("app/modules/data-themes-module"));
 const DatasetUploadModule = lazy(
   () => import("app/modules/dataset-upload-module")
 );
+const DatasetListModule = lazy(
+  () => import("app/modules/datasets-module/list")
+);
 
 // function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 //   const history = useHistory();
@@ -182,6 +185,10 @@ export function MainRoutes() {
 
         <Route path="/dataset-upload">
           <DatasetUploadModule />
+        </Route>
+
+        <Route path="/datasets">
+          <DatasetListModule />
         </Route>
 
         {/* <V1RouteRedirections /> */}

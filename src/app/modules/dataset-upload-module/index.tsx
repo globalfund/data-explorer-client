@@ -44,7 +44,7 @@ export default function DatasetUploadModule() {
     (actions) => actions.dataThemes.DatasetGetList.fetch
   );
 
-  const onSubmit: any = async (event: any) => {
+  const onSubmit: any = async () => {
     if (
       name.length > 0 &&
       description.length > 0 &&
