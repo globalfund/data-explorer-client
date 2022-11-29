@@ -228,6 +228,7 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
       {moreTabs.length > 0 && (
         <StyledMenu
           keepMounted
+          disableScrollLock
           anchorEl={anchorEl}
           onClose={handleClose}
           open={Boolean(anchorEl)}

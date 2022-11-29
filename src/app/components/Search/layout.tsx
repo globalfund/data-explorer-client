@@ -225,6 +225,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           <StyledMenu
             keepMounted
             id="search-menu"
+            disableScrollLock
             anchorEl={anchorEl}
             onClose={handleClose}
             open={Boolean(anchorEl)}

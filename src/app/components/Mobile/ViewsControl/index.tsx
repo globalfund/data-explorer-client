@@ -202,6 +202,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
         </Button>
         <StyledMenu
           keepMounted
+          disableScrollLock
           anchorEl={anchorEl}
           id="breadcrumb-menu"
           onClose={handleClose}

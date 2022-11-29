@@ -257,6 +257,7 @@ export function AppBar() {
                     </div>
                     <StyledMenu
                       keepMounted
+                      disableScrollLock
                       anchorEl={anchorEl}
                       onClose={handleClose}
                       open={Boolean(anchorEl)}

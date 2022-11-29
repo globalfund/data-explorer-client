@@ -328,6 +328,7 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
       <StyledMenu
         keepMounted
         id="export-menu"
+        disableScrollLock
         anchorEl={anchorEl}
         onClose={handleClose}
         open={Boolean(anchorEl)}
