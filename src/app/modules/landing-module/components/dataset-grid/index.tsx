@@ -271,10 +271,6 @@ export function LandingDatasetGrid() {
               link: "/viz/signed/treemap",
             },
             {
-              icon: <BarIcon />,
-              link: "/viz/signed/time-cycle",
-            },
-            {
               icon: <MapIcon />,
               link: "/viz/signed/map",
             },
