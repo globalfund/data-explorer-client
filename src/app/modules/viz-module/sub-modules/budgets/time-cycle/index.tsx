@@ -172,7 +172,9 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           onNodeClick={(node: string, x: number, y: number) => {
             if (props.drilldownVizSelected) {
               const idSplits = props.drilldownVizSelected.split("-");
-              let code = node.replace(idSplits[0], "");
+              let code = node
+                .replace(idSplits[0], "")
+                .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
               addDataPathSteps([
                 {
