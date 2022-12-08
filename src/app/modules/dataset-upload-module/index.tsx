@@ -39,6 +39,7 @@ export default function DatasetUploadModule() {
   const [uploadSuccess, setUploadSuccess] = React.useState(false);
   const [submitEnabled, setSubmitEnabled] = React.useState(false);
   const [selectedFile, setSelectedFile] = React.useState<FileList | null>(null);
+  const [errorMessage, setErrorMessage] = React.useState("");
 
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
@@ -86,6 +87,14 @@ export default function DatasetUploadModule() {
               console.debug("Dataset upload error", error);
               setUploading(false);
               setUploadSuccess(false);
+              setSelectedFile(null);
+              setErrorMessage("The file could not be uploaded, make sure it is less than 40MB, and of type XLSX, CSV, JSON or XML.");
+              axios
+                .delete(`${process.env.REACT_APP_API}/datasets/${response.data.id}`)
+                .then(() => {
+                  loadDatasets({ storeInCrudData: true });
+                })
+                .catch((error) => console.log(error));
             });
         })
         .catch((error) => {
@@ -232,6 +241,7 @@ export default function DatasetUploadModule() {
               </Button>
             </div>
           </div>
+          <div>{errorMessage}</div>
         </React.Fragment>
       )}
       {uploadSuccess && (
