@@ -218,7 +218,7 @@ export default function DatasetUploadModule() {
                 type="file"
                 id="fileUpload"
                 name="fileUpload"
-                accept=".json,.csv,.xlsx"
+                accept=".json,.csv,.xlsx,.xml"
                 onChange={(e) => setSelectedFile(e.target.files)}
                 css={`
                   display: none;
