@@ -53,7 +53,7 @@ export function DataThemesToolBoxCustomize(
       delete newOptionsConfig.width;
     }
     return newOptionsConfig;
-  }, [visualOptions, activeTabIndex, activeVizIndex]);
+  }, [selectedChartType, visualOptions, activeTabIndex, activeVizIndex]);
 
   const [collapseStatus, setCollapseStatus] = React.useState(() => {
     const groups = {};
