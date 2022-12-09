@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { useParams } from "react-router-dom";
 import { useMount, useUpdateEffect } from "react-use";
@@ -405,7 +406,9 @@ export function useDataThemesRawData(props: {
     mapping,
     selectedChartType,
     stepSelectionsData,
-    visualOptions,
+    get(tabsFromAPI, `[${activeTabIndex}][${activeVizIndex}].ssr`, false)
+      ? visualOptions
+      : undefined,
     appliedFilters,
   ]);
 

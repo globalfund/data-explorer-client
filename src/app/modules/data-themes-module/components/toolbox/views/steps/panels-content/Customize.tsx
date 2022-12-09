@@ -38,16 +38,21 @@ export function DataThemesToolBoxCustomize(
   const selectedChartType = useStoreState(
     (state) => state.dataThemes.sync.chartType.value
   );
-  const fChart = get(
-    charts,
-    `["${selectedChartType[activeTabIndex][activeVizIndex]}"]`,
-    charts.alluvialdiagram
-  );
 
+  const [firstRendered, setFirstRendered] = React.useState(false);
   const [visualOptions, setVisualOptions] = React.useState(props.visualOptions);
 
   const optionsConfig = React.useMemo(() => {
-    return getOptionsConfig(fChart.visualOptions);
+    const fChart = get(
+      charts,
+      `["${selectedChartType[activeTabIndex][activeVizIndex]}"]`,
+      charts.alluvialdiagram
+    );
+    const newOptionsConfig = getOptionsConfig(fChart.visualOptions);
+    if (!fChart.visualOptions.width) {
+      delete newOptionsConfig.width;
+    }
+    return newOptionsConfig;
   }, [visualOptions, activeTabIndex, activeVizIndex]);
 
   const [collapseStatus, setCollapseStatus] = React.useState(() => {
@@ -71,17 +76,20 @@ export function DataThemesToolBoxCustomize(
   }, [optionsConfig, visualOptions, mapping]);
 
   const optionsDefinitionsByGroup = React.useMemo(() => {
-    let index = 0;
-    const groups = {};
-    for (const option in optionsConfig) {
-      const group = optionsConfig[option].group;
-      if (!groups.hasOwnProperty(group) && index === 0) {
-        // @ts-ignore
-        groups[group] = true;
+    if (!firstRendered) {
+      let index = 0;
+      const groups = {};
+      for (const option in optionsConfig) {
+        const group = optionsConfig[option].group;
+        if (!groups.hasOwnProperty(group) && index === 0) {
+          // @ts-ignore
+          groups[group] = true;
+        }
+        index += 1;
       }
-      index += 1;
+      setCollapseStatus(groups);
+      setFirstRendered(true);
     }
-    setCollapseStatus(groups);
     return Object.keys(optionsConfig).reduce((acc, optionId) => {
       const option = optionsConfig[optionId];
       const group = option?.group || "";

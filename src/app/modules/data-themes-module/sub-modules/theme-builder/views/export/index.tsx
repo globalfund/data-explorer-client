@@ -65,6 +65,8 @@ export function DataThemesBuilderExport(props: DataThemesBuilderExportProps) {
             setRawViz={props.setRawViz}
             visualOptions={props.visualOptions}
             setVisualOptions={props.setVisualOptions}
+            renderedChartSsr={props.renderedChartSsr}
+            renderedChartMappedData={props.renderedChartMappedData}
           />
         </div>
       </div>

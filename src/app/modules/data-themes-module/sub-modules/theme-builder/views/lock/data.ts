@@ -5,6 +5,8 @@ export interface DataThemesBuilderLockProps {
   dimensions: any[];
   visualOptions: any;
   renderedChart: string;
+  renderedChartSsr: boolean;
+  renderedChartMappedData: any;
   setRawViz: React.Dispatch<any>;
   setVisualOptions: (value: any) => void;
 }

@@ -1,23 +1,25 @@
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-
 export interface DataThemesBuilderPreviewThemeProps {
+  editable: any;
   tabIndex: number;
   vizIndex: number;
   loading: boolean;
   visualOptions: any;
   renderedChart: string;
+  renderedChartSsr: boolean;
+  renderedChartMappedData: any;
   setVisualOptions: (value: any) => void;
-  editable: any;
   deleteViz: (tabIndex: number, vizIndex: number) => void;
   duplicateViz: (tabIndex: number, vizIndex: number) => void;
 }
 
 export interface DataThemesBuilderPreviewThemePageProps {
   loading: boolean;
-  isEditMode: boolean;
-  renderedCharts: string[][];
   visualOptions: any;
-  setVisualOptions: (value: any) => void;
-  addVizToLocalStates: () => void;
+  isEditMode: boolean;
   validMapping: boolean;
+  renderedCharts: string[][];
+  renderedChartsMappedData: any;
+  renderedChartsSsr: boolean[][];
+  addVizToLocalStates: () => void;
+  setVisualOptions: (value: any) => void;
 }

@@ -12,6 +12,7 @@ import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import Skeleton from "@material-ui/lab/Skeleton";
 import { PageLoader } from "app/modules/common/page-loader";
+import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { DataThemesTabOrderViz } from "app/modules/data-themes-module/components/order-tab-viz";
 import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
@@ -187,6 +188,12 @@ export function DataThemesBuilderPreviewThemePage(
                 deleteViz={deleteViz}
                 duplicateViz={duplicateViz}
                 renderedChart={props.renderedCharts[activeTabIndex][vizIndex]}
+                renderedChartSsr={
+                  props.renderedChartsSsr[activeTabIndex][vizIndex]
+                }
+                renderedChartMappedData={
+                  props.renderedChartsMappedData[activeTabIndex][vizIndex]
+                }
               />
             ))}
           </DataThemesTabOrderViz>
@@ -205,6 +212,7 @@ export function DataThemesBuilderPreviewTheme(
   const containerRef = React.useRef<HTMLDivElement>(null);
   const { page } = useParams<{ page: string }>();
   const history = useHistory();
+  const { render } = useDataThemesEchart();
 
   const { visualOptions, setVisualOptions } = props;
 
@@ -217,6 +225,9 @@ export function DataThemesBuilderPreviewTheme(
   );
   const vizIsTextContent = useStoreState(
     (state) => state.dataThemes.textContent.vizIsTextContent
+  );
+  const selectedChartType = useStoreState(
+    (state) => state.dataThemes.sync.chartType.value
   );
 
   const [anchorEl, setAnchorEl] = React.useState<HTMLElement | null>(null);
@@ -290,10 +301,24 @@ export function DataThemesBuilderPreviewTheme(
             if (loader) {
               loader.style.display = "flex";
             }
-            const element = document.createElement("div");
-            element.innerHTML = props.renderedChart.trim();
-            // @ts-ignore
-            domRef.current.appendChild(element.firstChild || element);
+            if (props.renderedChartSsr) {
+              const element = document.createElement("div");
+              element.innerHTML = props.renderedChart.trim();
+              // @ts-ignore
+              domRef.current.appendChild(element.firstChild || element);
+            } else {
+              render(
+                props.renderedChartMappedData,
+                // @ts-ignore
+                domRef.current,
+                get(
+                  selectedChartType,
+                  `[${props.tabIndex}][${props.vizIndex}]`,
+                  ""
+                ),
+                get(visualOptions, `[${props.tabIndex}][${props.vizIndex}]`, {})
+              );
+            }
             resolve(1);
           } catch (e) {
             if (process.env.NODE_ENV === "development") {
@@ -328,7 +353,13 @@ export function DataThemesBuilderPreviewTheme(
         }
       }
     }
-  }, [mapping, visualOptions, props.renderedChart]);
+  }, [
+    mapping,
+    visualOptions,
+    props.renderedChart,
+    props.renderedChartSsr,
+    props.renderedChartMappedData,
+  ]);
 
   const handleVizClick = () => {
     if (page === "new" || props.editable) {
@@ -452,8 +483,17 @@ export function DataThemesBuilderPreviewTheme(
               <div
                 ref={domRef}
                 onClick={handleVizClick}
+                id="common-chart-render-container"
                 css={`
-                  overflow-x: auto;
+                  ${props.renderedChartSsr &&
+                  `
+                    overflow-x: auto;
+                  `}
+                  height: ${get(
+                    visualOptions,
+                    `[${props.tabIndex}][${props.vizIndex}].height`,
+                    500
+                  )}px;
 
                   * {
                     font-family: "GothamNarrow-Book", "Helvetica Neue",

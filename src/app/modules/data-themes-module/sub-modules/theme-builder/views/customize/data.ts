@@ -4,5 +4,7 @@ export interface DataThemesBuilderCustomizeProps {
   mappedData: any[];
   visualOptions: any;
   renderedChart: string;
+  renderedChartSsr: boolean;
+  renderedChartMappedData: any;
   setVisualOptions: (value: any) => void;
 }

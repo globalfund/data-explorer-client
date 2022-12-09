@@ -98,6 +98,8 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
             renderedChart={props.renderedChart}
             visualOptions={props.visualOptions}
             setVisualOptions={props.setVisualOptions}
+            renderedChartSsr={props.renderedChartSsr}
+            renderedChartMappedData={props.renderedChartMappedData}
           />
         </div>
       </div>

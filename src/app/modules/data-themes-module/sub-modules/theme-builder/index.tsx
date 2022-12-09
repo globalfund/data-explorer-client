@@ -218,6 +218,46 @@ export function DataThemesBuilder() {
     });
   }, [tabsFromAPI]);
 
+  const renderedChartsMappedData = React.useMemo(() => {
+    return tabsFromAPI.map((item) => {
+      return item.map((itemitem) => itemitem.mappedData);
+    });
+  }, [tabsFromAPI]);
+
+  const renderedChartsSsr = React.useMemo(() => {
+    return tabsFromAPI.map((item) => {
+      return item.map((itemitem) => itemitem.ssr);
+    });
+  }, [tabsFromAPI]);
+
+  const activeRenderedChartMappedData = React.useMemo(
+    () =>
+      get(
+        renderedChartsMappedData,
+        `[${activeTabIndex}][${activeVizIndex}]`,
+        []
+      ),
+    [renderedChartsMappedData, activeTabIndex, activeVizIndex]
+  );
+
+  const activeRenderedChartSsr = React.useMemo(
+    () =>
+      get(renderedChartsSsr, `[${activeTabIndex}][${activeVizIndex}]`, true),
+    [renderedChartsSsr, activeTabIndex, activeVizIndex]
+  );
+
+  const toolboxVisualOptions = React.useMemo(() => {
+    let tmpVisualOptions: any = [...visualOptions];
+    tmpVisualOptions.forEach((tab: any, tIndex: number) => {
+      tab.forEach((viz: any, vIndex: number) => {
+        if (!renderedChartsSsr[tIndex][vIndex]) {
+          delete tmpVisualOptions[tIndex][vIndex].width;
+        }
+      });
+    });
+    return tmpVisualOptions;
+  }, [visualOptions]);
+
   function setVisualOptionsOnChange() {
     const options = {
       ...getOptionsConfig(
@@ -242,8 +282,8 @@ export function DataThemesBuilder() {
       };
     }
     tmpVisualOptions[activeTabIndex][activeVizIndex] = {
-      ...defaultOptionsValues,
       ...visualOptions[activeTabIndex][activeVizIndex],
+      ...defaultOptionsValues,
       width:
         !visualOptions[activeTabIndex][activeVizIndex].width ||
         visualOptions[activeTabIndex][activeVizIndex].width ===
@@ -360,7 +400,9 @@ export function DataThemesBuilder() {
   }, []);
 
   React.useEffect(() => {
-    !loading && setVisualOptionsOnChange();
+    if (!loading && selectedChartType) {
+      setVisualOptionsOnChange();
+    }
   }, [selectedChartType, loading]);
 
   React.useEffect(() => {
@@ -424,11 +466,11 @@ export function DataThemesBuilder() {
           dataSteps={config.dataSteps}
           guideView={config.guideView}
           openPanel={config.openPanel}
-          visualOptions={visualOptions}
           exportView={config.exportView}
           filtersView={config.filtersView}
           loadDataFromAPI={loadDataFromAPI}
           setVisualOptions={setVisualOptions}
+          visualOptions={toolboxVisualOptions}
           loading={loading || isDataThemeLoading}
           filterOptionGroups={filterOptionGroups}
           addVizToLocalStates={addVizToLocalStates}
@@ -441,9 +483,11 @@ export function DataThemesBuilder() {
             <DataThemesBuilderExport
               loading={loading}
               setRawViz={setRawViz}
+              renderedChart={content}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
-              renderedChart={content}
+              renderedChartSsr={activeRenderedChartSsr}
+              renderedChartMappedData={activeRenderedChartMappedData}
             />
           </Route>
           <Route path={`/data-themes/:page/customize`}>
@@ -454,6 +498,8 @@ export function DataThemesBuilder() {
               renderedChart={content}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
+              renderedChartSsr={activeRenderedChartSsr}
+              renderedChartMappedData={activeRenderedChartMappedData}
             />
           </Route>
           <Route path={`/data-themes/:page/lock`}>
@@ -464,6 +510,8 @@ export function DataThemesBuilder() {
               dimensions={dimensions}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
+              renderedChartSsr={activeRenderedChartSsr}
+              renderedChartMappedData={activeRenderedChartMappedData}
             />
           </Route>
           <Route path={`/data-themes/:page/filters`}>
@@ -473,6 +521,8 @@ export function DataThemesBuilder() {
               dimensions={dimensions}
               visualOptions={visualOptions}
               setVisualOptions={setVisualOptions}
+              renderedChartSsr={activeRenderedChartSsr}
+              renderedChartMappedData={activeRenderedChartMappedData}
             />
           </Route>
           <Route path={`/data-themes/:page/mapping`}>
@@ -483,6 +533,8 @@ export function DataThemesBuilder() {
               dataTypes={dataTypes2}
               dimensions={dimensions}
               renderedChart={content}
+              renderedChartSsr={activeRenderedChartSsr}
+              renderedChartMappedData={activeRenderedChartMappedData}
             />
           </Route>
           <Route path={`/data-themes/:page/chart-type`}>
@@ -514,6 +566,8 @@ export function DataThemesBuilder() {
               addVizToLocalStates={addVizToLocalStates}
               validMapping={getForceNextEnabledValue("mapping")}
               renderedCharts={renderedCharts}
+              renderedChartsSsr={renderedChartsSsr}
+              renderedChartsMappedData={renderedChartsMappedData}
             />
           </Route>
           <Route path={`/data-themes/:page`}>
@@ -525,6 +579,8 @@ export function DataThemesBuilder() {
               addVizToLocalStates={addVizToLocalStates}
               validMapping={getForceNextEnabledValue("mapping")}
               renderedCharts={renderedCharts}
+              renderedChartsSsr={renderedChartsSsr}
+              renderedChartsMappedData={renderedChartsMappedData}
             />
           </Route>
           <Route path="*">

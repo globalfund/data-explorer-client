@@ -3,5 +3,7 @@ export interface DataThemesBuilderFiltersProps {
   dimensions: any[];
   visualOptions: any;
   renderedChart: string;
+  renderedChartSsr: boolean;
+  renderedChartMappedData: any;
   setVisualOptions: (value: any) => void;
 }
