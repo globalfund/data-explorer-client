@@ -52,6 +52,14 @@ export const echartTypes: ChartTypeModel[] = [
       "It displays a categorical dimension and related amounts. Each bar represents a category, width is proportional to the quantitative dimension.",
   },
   {
+    id: "echartsGeomap",
+    label: "Echarts Geomap",
+    icon: <BarChartIcon />,
+    categories: ["Correllations"],
+    ssr: false,
+    description: "Geo map",
+  },
+  {
     id: "echartsLinechart",
     label: "Echarts Linechart",
     icon: <LineChartIcon />,

@@ -3,19 +3,28 @@ import uniqBy from "lodash/uniqBy";
 import * as echarts from "echarts/core";
 import { SVGRenderer } from "echarts/renderers";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { BarChart, LineChart, SankeyChart, TreemapChart } from "echarts/charts";
+import {
+  BarChart,
+  LineChart,
+  MapChart,
+  SankeyChart,
+  TreemapChart,
+} from "echarts/charts";
 import {
   TooltipComponent,
   GridComponent,
   LegendComponent,
+  VisualMapComponent,
 } from "echarts/components";
 
 echarts.use([
   TooltipComponent,
+  VisualMapComponent,
   GridComponent,
   LegendComponent,
   BarChart,
   LineChart,
+  MapChart,
   SankeyChart,
   TreemapChart,
   SVGRenderer,
@@ -80,6 +89,92 @@ export function useDataThemesEchart() {
           }`;
         },
       },
+    };
+
+    return option;
+  }
+
+  function echartsGeomap(data: any, visualOptions: any) {
+    const {
+      // artboard
+      height,
+      background,
+      // margins
+      marginTop,
+      marginRight,
+      marginBottom,
+      marginLeft,
+      // Tooltip
+      showTooltip,
+      isMonetaryValue,
+    } = visualOptions;
+
+    echarts.registerMap("World", data.geoJSON);
+
+    const sizes = data.results.map((d: any) => d.value);
+
+    const option = {
+      tooltip: {
+        trigger: showTooltip ? "item" : "none",
+        showDelay: 0,
+        transitionDuration: 0.2,
+        confine: true,
+        formatter: (params: any) => {
+          if (params.value) {
+            return `${params.name}: ${
+              isMonetaryValue
+                ? formatFinancialValue(params.value)
+                : params.value
+            }`;
+          }
+        },
+      },
+      visualMap: {
+        left: "right",
+        min: Math.min(...sizes),
+        max: Math.max(...sizes),
+        inRange: {
+          color: [
+            "#313695",
+            "#4575b4",
+            "#74add1",
+            "#abd9e9",
+            "#e0f3f8",
+            "#ffffbf",
+            "#fee090",
+            "#fdae61",
+            "#f46d43",
+            "#d73027",
+            "#a50026",
+          ],
+        },
+        text: ["High", "Low"],
+        calculable: true,
+      },
+      series: [
+        {
+          type: "map",
+          height,
+          roam: true,
+          map: "World",
+          data: data.results,
+          top: marginTop,
+          left: marginLeft,
+          right: marginRight,
+          bottom: marginBottom,
+          emphasis: {
+            label: {
+              show: false,
+            },
+            itemStyle: {
+              areaColor: "#cdd4df",
+            },
+          },
+          select: {
+            disabled: true,
+          },
+        },
+      ],
     };
 
     return option;
@@ -322,6 +417,7 @@ export function useDataThemesEchart() {
     node: HTMLElement,
     chartType:
       | "echartsBarchart"
+      | "echartsGeomap"
       | "echartsLinechart"
       | "echartsSankey"
       | "echartsTreemap",
@@ -338,6 +434,7 @@ export function useDataThemesEchart() {
 
     const CHART_TYPE_TO_COMPONENT = {
       echartsBarchart: () => echartsBarchart(data, visualOptions),
+      echartsGeomap: () => echartsGeomap(data, visualOptions),
       echartsLinechart: () => echartsLinechart(data, visualOptions),
       echartsSankey: () => echartsSankey(data, visualOptions),
       echartsTreemap: () => echartsTreemap(data, visualOptions),

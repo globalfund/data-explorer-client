@@ -32,6 +32,7 @@ import {
   voronoidiagram,
   voronoitreemap,
   echartsBarchart,
+  echartsGeomap,
   echartsLinechart,
   echartsSankey,
   echartsTreemap,
@@ -72,6 +73,7 @@ export const charts = {
   voronoidiagram,
   voronoitreemap,
   echartsBarchart,
+  echartsGeomap,
   echartsLinechart,
   echartsSankey,
   echartsTreemap,
@@ -1104,6 +1106,18 @@ export const defaultChartOptions = {
       default: CHART_DEFAULT_HEIGHT,
     },
     ...echartsBarchart.visualOptions,
+  },
+  echartsGeomap: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...echartsGeomap.visualOptions,
   },
   echartsLinechart: {
     ...baseOptions,
