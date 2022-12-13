@@ -148,7 +148,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       subTitle,
       tabs,
     };
-    if (!props.isEditMode) {
+    if (page === "new") {
       createDataTheme({
         values: dataTheme,
       });

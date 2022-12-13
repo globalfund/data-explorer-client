@@ -460,6 +460,7 @@ export function DataThemesBuilderPreviewTheme(
                   }}
                   css={`
                     top: 10px;
+                    z-index: 1;
                     right: 10px;
                     padding: 5px;
                     visibility: hidden;
