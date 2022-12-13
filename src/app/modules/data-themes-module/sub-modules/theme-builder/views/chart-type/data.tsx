@@ -12,6 +12,7 @@ import CircularDendogramChartIcon from "app/assets/icons/data-themes-chart-types
 import ContourPlotChartIcon from "app/assets/icons/data-themes-chart-types/contourplot";
 import ConvexHullChartIcon from "app/assets/icons/data-themes-chart-types/convexhull";
 import LinearDendogramChartIcon from "app/assets/icons/data-themes-chart-types/lineardendrogram";
+import GeomapChartIcon from "app/assets/icons/data-themes-chart-types/geomap";
 import GanttChartIcon from "app/assets/icons/data-themes-chart-types/gantt";
 import HexagonalBinningChartIcon from "app/assets/icons/data-themes-chart-types/hexagonalbinning";
 import HorizonGraphChartIcon from "app/assets/icons/data-themes-chart-types/horizongraph";
@@ -54,7 +55,7 @@ export const echartTypes: ChartTypeModel[] = [
   {
     id: "echartsGeomap",
     label: "Echarts Geomap",
-    icon: <BarChartIcon />,
+    icon: <GeomapChartIcon />,
     categories: ["Correllations"],
     ssr: false,
     description: "Geo map",
