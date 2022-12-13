@@ -485,15 +485,15 @@ export function DataThemesBuilderPreviewTheme(
                 onClick={handleVizClick}
                 id="common-chart-render-container"
                 css={`
-                  ${props.renderedChartSsr &&
-                  `
-                    overflow-x: auto;
-                  `}
-                  height: ${get(
-                    visualOptions,
-                    `[${props.tabIndex}][${props.vizIndex}].height`,
-                    500
-                  )}px;
+                  ${props.renderedChartSsr
+                    ? `
+                      overflow-x: auto;
+                    `
+                    : `height: ${get(
+                        visualOptions,
+                        `[${props.tabIndex}][${props.vizIndex}].height`,
+                        500
+                      )}px;`}
 
                   * {
                     font-family: "GothamNarrow-Book", "Helvetica Neue",

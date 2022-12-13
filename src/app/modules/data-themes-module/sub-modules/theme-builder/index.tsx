@@ -250,7 +250,7 @@ export function DataThemesBuilder() {
     let tmpVisualOptions: any = [...visualOptions];
     tmpVisualOptions.forEach((tab: any, tIndex: number) => {
       tab.forEach((viz: any, vIndex: number) => {
-        if (!renderedChartsSsr[tIndex][vIndex]) {
+        if (!renderedChartsSsr[tIndex] || !renderedChartsSsr[tIndex][vIndex]) {
           delete tmpVisualOptions[tIndex][vIndex].width;
         }
       });
