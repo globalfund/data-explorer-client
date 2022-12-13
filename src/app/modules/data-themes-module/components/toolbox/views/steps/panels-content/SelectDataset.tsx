@@ -1,6 +1,5 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import Tooltip from "@material-ui/core/Tooltip";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
@@ -71,6 +70,22 @@ const StyledMenuItem = withStyles(() => ({
 
 const datasets = [
   {
+    name: "Pledges & Contributions",
+    id: "pledges-contributions",
+  },
+  {
+    name: "Eligibility",
+    id: "eligibility",
+  },
+  {
+    name: "Allocations",
+    id: "allocations",
+  },
+  {
+    name: "Grants",
+    id: "grants",
+  },
+  {
     name: "Investment - Signed",
     id: "investment-signed",
   },
@@ -85,22 +100,6 @@ const datasets = [
   {
     name: "Budgets",
     id: "budgets",
-  },
-  {
-    name: "Pledges & Contributions",
-    id: "pledges-contributions",
-  },
-  {
-    name: "Allocations",
-    id: "allocations",
-  },
-  {
-    name: "Grants",
-    id: "grants",
-  },
-  {
-    name: "Eligibility",
-    id: "eligibility",
   },
 ];
 
