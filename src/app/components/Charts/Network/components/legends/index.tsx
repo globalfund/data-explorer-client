@@ -14,7 +14,7 @@ export function NetworkLegends() {
           font-size: 12px;
           font-weight: bold;
           margin-bottom: 10px;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "componentsChartsNetwork.achievementRate", "")}
@@ -216,7 +216,7 @@ const styles = {
     color: #262c34;
     font-size: 12px;
     font-weight: bold;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
   `,
   noData: (reported: boolean) => css`
     color: #262c34;

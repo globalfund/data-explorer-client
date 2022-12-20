@@ -29,14 +29,19 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           display: flex;
           font-weight: bold;
           align-items: center;
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          font-family: "Inter", "Helvetica Neue", sans-serif;
 
           > svg {
             margin-left: 10px;
           }
         `}
       >
-        {get(cmsData, "componentsChartsPerformanceRating.performanceRating", "")} <InfoIcon />
+        {get(
+          cmsData,
+          "componentsChartsPerformanceRating.performanceRating",
+          ""
+        )}{" "}
+        <InfoIcon />
       </div>
       <ResponsiveBar
         animate

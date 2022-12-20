@@ -49,7 +49,7 @@ export const DataList = (props: {
             css={`
               font-weight: bold;
               margin-right: 10px;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
             `}
           >
             Year {props.selectedYear}

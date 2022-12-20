@@ -17,7 +17,7 @@ interface ProjectPalette extends Palette {
 }
 
 export const TextStyle: FontStyle = {
-  fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
+  fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
   fontSize: 14,
   fontWeightLight: 300,
   fontWeightRegular: 400,
@@ -56,23 +56,22 @@ export const ProjectPalette: ProjectPalette = {
     A200: "#aaaaaa",
   },
   text: {
-    primary: "#222222",
-    // secondary: '#fff',
-    secondary: "#6f7173",
+    primary: "#231d2c",
+    secondary: "#231d2c",
     disabled: "rgba(0, 0, 0, 0.38)",
     hint: "rgba(0, 0, 0, 0.38)",
   },
   divider: "rgba(0, 0, 0, 0.12)",
   primary: {
-    main: "#262C34",
-    light: "#2f3b52",
-    dark: "rgb(25, 32, 46)",
+    main: "#6061e5",
+    light: "#6061e5",
+    dark: "#6061e5",
     contrastText: "#fff",
   },
   secondary: {
-    main: "#25baa4",
-    light: "rgb(80,199,182)",
-    dark: "rgb(25, 130, 114)",
+    main: "#f2f7fd",
+    light: "#f2f7fd",
+    dark: "#f2f7fd",
     contrastText: "#ffffff",
   },
   common: { black: "#000", white: "#fff" },
@@ -219,27 +218,24 @@ export default createTheme({
     MuiListItem: {
       button: {
         "&:hover": {
-          color: "#262c34",
+          color: "#231d2c",
           backgroundColor: "#fff",
           transition: "background 0.2s ease-in-out",
         },
       },
     },
     MuiTooltip: {
-      arrow: {
-        color: "#DFE3E6",
-      },
       tooltip: {
         fontSize: 12,
         color: "#fff",
         backgroundColor: "#373d43",
-        fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
       },
     },
     MuiBottomNavigationAction: {
       label: {
         fontSize: 12,
-        fontFamily: "GothamNarrow-Book",
+        fontFamily: '"Inter", "Helvetica Neue", sans-serif',
         "&.Mui-selected": {
           fontSize: 12,
         },

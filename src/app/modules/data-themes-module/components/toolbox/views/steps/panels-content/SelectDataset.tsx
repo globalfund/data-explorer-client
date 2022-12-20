@@ -1,4 +1,5 @@
 import React from "react";
+import get from "lodash/get";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
@@ -6,6 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 
 const StyledMenu = withStyles({
   paper: {
@@ -68,7 +70,7 @@ const StyledMenuItem = withStyles(() => ({
   },
 }))(MenuItem);
 
-const datasets = [
+const DEFAULT_DATASETS = [
   {
     name: "Pledges & Contributions",
     id: "pledges-contributions",
@@ -131,6 +133,17 @@ export function DataThemesToolBoxSelectDataset(
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
   );
+  const datasets =
+    process.env.REACT_APP_USE_DEFAULT_DATASETS === "true"
+      ? DEFAULT_DATASETS
+      : useStoreState(
+          (state) =>
+            get(
+              state,
+              "dataThemes.DatasetGetList.crudData",
+              DEFAULT_DATASETS
+            ) as DatasetListItemAPIModel[]
+        );
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -217,7 +230,7 @@ export function DataThemesToolBoxSelectDataset(
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            font-family: "Inter", "Helvetica Neue", sans-serif;
           `}
         >
           {stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ||

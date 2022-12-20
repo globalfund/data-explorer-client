@@ -10,6 +10,6 @@ export const styles = {
     align-items: center;
     justify-content: center;
     height: calc(100vh - 225px);
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+    font-family: "Inter", "Helvetica Neue", sans-serif;
   `,
 };

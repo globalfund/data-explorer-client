@@ -75,7 +75,7 @@ export function GrantsList(props: GrantsListProps) {
                 font-weight: bold;
                 flex-direction: row;
                 align-items: center;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
 
                 > * {
                   @supports (-webkit-touch-callout: none) and
@@ -187,8 +187,7 @@ export function GrantsList(props: GrantsListProps) {
                       font-weight: bold;
                       flex-direction: row;
                       align-items: center;
-                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                        sans-serif;
+                      font-family: "Inter", "Helvetica Neue", sans-serif;
 
                       > * {
                         @supports (-webkit-touch-callout: none) and
@@ -275,8 +274,7 @@ export function GrantsList(props: GrantsListProps) {
                       <div
                         css={`
                           font-weight: bold;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
+                          font-family: "Inter", "Helvetica Neue", sans-serif;
                         `}
                       >
                         Disbursed ·{" "}
@@ -312,8 +310,7 @@ export function GrantsList(props: GrantsListProps) {
                       <div
                         css={`
                           font-weight: bold;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
+                          font-family: "Inter", "Helvetica Neue", sans-serif;
                         `}
                       >
                         Committed
@@ -331,8 +328,7 @@ export function GrantsList(props: GrantsListProps) {
                       <div
                         css={`
                           font-weight: bold;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
+                          font-family: "Inter", "Helvetica Neue", sans-serif;
                         `}
                       >
                         Signed

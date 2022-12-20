@@ -21,10 +21,10 @@ export default function About() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
-  const deContent = {__html: (get(cmsData, "modulesAbout.deContent", ""))};
-  const crContent = {__html: (get(cmsData, "modulesAbout.crContent", ""))};
-  const diContent = {__html: (get(cmsData, "modulesAbout.diContent", ""))};
-  const doContent = {__html: (get(cmsData, "modulesAbout.doContent", ""))};
+  const deContent = { __html: get(cmsData, "modulesAbout.deContent", "") };
+  const crContent = { __html: get(cmsData, "modulesAbout.crContent", "") };
+  const diContent = { __html: get(cmsData, "modulesAbout.diContent", "") };
+  const doContent = { __html: get(cmsData, "modulesAbout.doContent", "") };
 
   return (
     <div
@@ -41,7 +41,10 @@ export default function About() {
         <PageHeader
           title={get(cmsData, "modulesAbout.titleShort", "")}
           breadcrumbs={[
-            { name: get(cmsData, "modulesAbout.breadcrumbHome", ""), link: "/" },
+            {
+              name: get(cmsData, "modulesAbout.breadcrumbHome", ""),
+              link: "/",
+            },
             {
               name: get(cmsData, "modulesAbout.titleShort", ""),
             },
@@ -66,7 +69,7 @@ export default function About() {
               > div {
                 font-size: 24px;
                 font-weight: bold;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                font-family: "Inter", "Helvetica Neue", sans-serif;
               }
               > p {
                 > a {
@@ -83,27 +86,25 @@ export default function About() {
             </p>
           </div>
           <div>
-          <div>{get(cmsData, "modulesAbout.gfTitle", "")}</div>
-            <p>
-              {get(cmsData, "modulesAbout.gfContent", "")}
-            </p>
+            <div>{get(cmsData, "modulesAbout.gfTitle", "")}</div>
+            <p>{get(cmsData, "modulesAbout.gfContent", "")}</p>
           </div>
           <div>
-          <div>{get(cmsData, "modulesAbout.crTitle", "")}</div>
+            <div>{get(cmsData, "modulesAbout.crTitle", "")}</div>
             <p>
               <div dangerouslySetInnerHTML={crContent} />
             </p>
           </div>
           <div>
-          <div>{get(cmsData, "modulesAbout.diTitle", "")}</div>
+            <div>{get(cmsData, "modulesAbout.diTitle", "")}</div>
             <p>
               <div dangerouslySetInnerHTML={diContent} />
             </p>
           </div>
           <div>
-          <div>{get(cmsData, "modulesAbout.doTitle", "")}</div>
+            <div>{get(cmsData, "modulesAbout.doTitle", "")}</div>
             <p>
-            <div dangerouslySetInnerHTML={doContent} />
+              <div dangerouslySetInnerHTML={doContent} />
             </p>
           </div>
         </Grid>

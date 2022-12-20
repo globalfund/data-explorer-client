@@ -48,7 +48,7 @@ export function DataThemesToolBoxChartType() {
           css={`
             color: #262c34;
             font-size: 14px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            font-family: "Inter", "Helvetica Neue", sans-serif;
           `}
         >
           Please select a chart type
@@ -75,7 +75,7 @@ export function DataThemesToolBoxChartType() {
             css={`
               font-size: 14px;
               margin-bottom: 20px;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
             `}
           >
             {fChartType.label}

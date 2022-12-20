@@ -20,7 +20,7 @@ export function DataThemesToolBoxExport(props: DataThemesToolBoxExportProps) {
 
         * {
           font-size: 14px;
-          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
+          font-family: "Inter", "Helvetica Neue", sans-serif !important;
         }
       `}
     >

@@ -183,6 +183,8 @@ import {
   DataThemeGet,
   DataThemeGetList,
   DataThemeUpdate,
+  DatasetGetList,
+  DatasetCreate,
 } from "app/state/api/action-reducers/data-themes";
 import countrySummary from "../api/action-reducers/cms/countrySummary";
 import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
@@ -411,6 +413,8 @@ const storeContent: StoreModel = {
     DataThemeDelete: persist(DataThemeDelete),
     DataThemeDuplicate: persist(DataThemeDuplicate),
     DataThemeGetList: persist(DataThemeGetList),
+    DatasetGetList: persist(DatasetGetList),
+    DatasetCreate: persist(DatasetCreate),
   },
 };
 

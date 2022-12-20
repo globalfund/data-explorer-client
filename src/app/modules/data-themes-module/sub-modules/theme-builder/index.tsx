@@ -95,6 +95,9 @@ export function DataThemesBuilder() {
   const loadDataTheme = useStoreActions(
     (actions) => actions.dataThemes.DataThemeGet.fetch
   );
+  const loadDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.fetch
+  );
   const loadedDataTheme = useStoreState(
     (state) =>
       (state.dataThemes.DataThemeGet.crudData ??
@@ -406,6 +409,7 @@ export function DataThemesBuilder() {
   }, [selectedChartType, loading]);
 
   React.useEffect(() => {
+    loadDatasets({storeInCrudData: true});
     if (page !== "new") {
       loadDataTheme({ getId: page });
     } else {
