@@ -212,6 +212,12 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     setOpenSnackbar(false);
   }
 
+  function handleKeyUp(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Enter") {
+      onSave();
+    }
+  }
+
   function handleTitleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setTitle({ title: event.target.value });
   }
@@ -437,6 +443,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               <input
                 type="text"
                 value={title}
+                onKeyUp={handleKeyUp}
                 css={styles.titleInput}
                 onChange={handleTitleChange}
                 style={
@@ -454,6 +461,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
             <input
               type="text"
               value={subTitle}
+              onKeyUp={handleKeyUp}
               css={styles.subTitleInput}
               onChange={handleSubTitleChange}
               style={
