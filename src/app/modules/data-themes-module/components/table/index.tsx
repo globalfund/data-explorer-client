@@ -113,7 +113,8 @@ export function DataThemesTableView(props: { loadData: () => void }) {
           <TableRow>
             <TableCell width="30%">Theme</TableCell>
             <TableCell>Label</TableCell>
-            <TableCell>Creation date</TableCell>
+            <TableCell>Created at</TableCell>
+            <TableCell>Updated at</TableCell>
             <TableCell>Created by</TableCell>
             <TableCell>Visualizations</TableCell>
             <TableCell></TableCell>
@@ -140,6 +141,10 @@ export function DataThemesTableView(props: { loadData: () => void }) {
             const creationDate = `${date.getDate()}-${
               date.getMonth() + 1
             }-${date.getFullYear()}`;
+            const date2 = dt.updatedDate ? new Date(dt.updatedDate) : date;
+            const updatedAt = `${date2.getDate()}-${
+              date2.getMonth() + 1
+            }-${date2.getFullYear()}`;
             return (
               <TableRow hover key={dt.id} onClick={viewItem(dt.id)}>
                 <TableCell component="th" scope="row">
@@ -147,6 +152,7 @@ export function DataThemesTableView(props: { loadData: () => void }) {
                 </TableCell>
                 <TableCell>{dt.subTitle}</TableCell>
                 <TableCell>{creationDate}</TableCell>
+                <TableCell>{updatedAt}</TableCell>
                 <TableCell>-</TableCell>
                 <TableCell>{dt.vizCount}</TableCell>
                 <TableCell>

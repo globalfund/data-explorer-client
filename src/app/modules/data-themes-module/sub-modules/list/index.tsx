@@ -23,23 +23,32 @@ import { DataThemesToolbarPopover } from "app/modules/data-themes-module/compone
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
 
 export interface DataThemeListItemAPIModel {
+  tabs: any;
   id: string;
   title: string;
   public: boolean;
+  vizCount: number;
   subTitle: string;
   createdDate: Date;
-  tabs: any;
-  vizCount: number;
+  updatedDate?: Date;
   loadData: () => void;
 }
 
 const sortItems = [
   {
-    content: "Date (asc)",
+    content: "Date updated (asc)",
+    value: "updatedDate",
+  },
+  {
+    content: "Date updated (desc)",
+    value: "updatedDate DESC",
+  },
+  {
+    content: "Date created (asc)",
     value: "createdDate",
   },
   {
-    content: "Date (desc)",
+    content: "Date created (desc)",
     value: "createdDate DESC",
   },
   {
@@ -81,6 +90,7 @@ const viewItems = [
 
 function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
   const date = new Date(props.createdDate);
+  const updatedAt = props.updatedDate ? new Date(props.updatedDate) : date;
   const history = useHistory();
 
   const deleteDataTheme = useStoreActions(
@@ -174,9 +184,16 @@ function DataThemesListViewItem(props: DataThemeListItemAPIModel) {
       <div css={styles.gridItemLabel}>{props.subTitle}</div>
       <div css={styles.gridItemDetails}>
         <div>
-          <div>Creation date</div>
+          <div>Created at</div>
           <div>
             {date.getDate()}-{date.getMonth() + 1}-{date.getFullYear()}
+          </div>
+        </div>
+        <div>
+          <div>Updated at</div>
+          <div>
+            {updatedAt.getDate()}-{updatedAt.getMonth() + 1}-
+            {updatedAt.getFullYear()}
           </div>
         </div>
         <div>

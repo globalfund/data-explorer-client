@@ -27,7 +27,7 @@ export function DataThemesToolbarPopover(props: Props) {
       transformOrigin={props.transformOrigin}
       css={`
         .MuiPaper-root {
-          width: 125px;
+          width: 200px;
           background: #fff;
           border-radius: 7px;
           box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
