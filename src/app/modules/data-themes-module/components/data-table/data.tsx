@@ -103,7 +103,7 @@ export function getColumnsFromData(
   containerWidth?: number
 ) {
   const columns: { [key: string]: string } = {};
-  data.forEach((row) => {
+  data?.forEach((row) => {
     Object.keys(row).forEach((key) => {
       if (!columns[key]) {
         columns[key] = key;

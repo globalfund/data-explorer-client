@@ -67,23 +67,24 @@ export function DataThemesToolBoxMapping(props: DataThemesToolBoxMappingProps) {
           }
         `}
       >
-        {Object.keys(props.dataTypes).map(
-          (dataTypeName: string, index: number) => {
-            let type = props.dataTypes[dataTypeName];
-            if (typeof props.dataTypes[dataTypeName] === "object") {
-              type = props.dataTypes[dataTypeName].type;
+        {props.dataTypes &&
+          Object.keys(props.dataTypes).map(
+            (dataTypeName: string, index: number) => {
+              let type = props.dataTypes[dataTypeName];
+              if (typeof props.dataTypes[dataTypeName] === "object") {
+                type = props.dataTypes[dataTypeName].type;
+              }
+              return (
+                <DataThemesToolBoxMappingItem
+                  type={type}
+                  index={index}
+                  key={dataTypeName}
+                  marginBottom="16px"
+                  dataTypeName={dataTypeName}
+                />
+              );
             }
-            return (
-              <DataThemesToolBoxMappingItem
-                type={type}
-                index={index}
-                key={dataTypeName}
-                marginBottom="16px"
-                dataTypeName={dataTypeName}
-              />
-            );
-          }
-        )}
+          )}
       </div>
     </div>
   );

@@ -54,6 +54,11 @@ export function useDataThemesEchart() {
       // Tooltip
       showTooltip,
       isMonetaryValue,
+      label,
+      legend,
+      legendHoverLink,
+      barWidth,
+      // stack,
     } = visualOptions;
 
     const bars = data.map((d: any) => d.bars);
@@ -66,6 +71,9 @@ export function useDataThemesEchart() {
         right: marginRight,
         bottom: marginBottom,
       },
+      legend: {
+        show: legend,
+      },
       xAxis: { data: bars },
       yAxis: { type: "value" },
       // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
@@ -73,11 +81,25 @@ export function useDataThemesEchart() {
       backgroundColor: background,
       series: [
         {
-          name: "",
+          name: "legend",
           // height,
           type: "bar",
+
           data: sizes,
           realtimeSort: true,
+          legendHoverLink: legendHoverLink,
+          // stack: stack,
+          barWidth: barWidth,
+          label: {
+            show: label,
+            formatter: (params: any) => {
+              return `${params.name}: ${
+                isMonetaryValue
+                  ? formatFinancialValue(params.value)
+                  : params.value
+              }`;
+            },
+          },
         },
       ],
       tooltip: {
@@ -192,9 +214,14 @@ export function useDataThemesEchart() {
       // chart options
       stack,
       showLegend,
+      label,
+      showArea,
+      lineStyle,
+      lineWidth,
       // Tooltip
       showTooltip,
       isMonetaryValue,
+      legendHoverLink,
     } = visualOptions;
 
     const option = {
@@ -215,12 +242,29 @@ export function useDataThemesEchart() {
         show: showLegend,
         data: data.lines.map((d: any) => d[0]),
       },
+
+      label: {
+        show: label,
+        // formatter: (params: any) => {
+        //   return `${params.name}: ${
+        //     isMonetaryValue ? formatFinancialValue(params.value) : params.value
+        //   }`;
+        // },
+      },
       backgroundColor: background,
       series: data.lines.map((d: any) => ({
         type: "line",
         name: d[0],
         data: d[1].map((l: any) => l.y),
         stack: stack ? "Total" : undefined,
+        legendHoverLink: legendHoverLink,
+        areaStyle: {
+          color: showArea ? null : "",
+        },
+        lineStyle: {
+          type: lineStyle,
+          width: lineWidth,
+        },
       })),
       tooltip: {
         trigger: showTooltip ? "axis" : "none",

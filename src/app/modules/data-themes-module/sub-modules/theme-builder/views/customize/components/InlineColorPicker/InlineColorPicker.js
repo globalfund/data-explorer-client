@@ -17,7 +17,7 @@ export default function InlineColorPicker({
         onClick={() => setDisplayColorPicker(true)}
       >
         <div className={styles.color} style={{ background: color }} />
-        {color.toUpperCase()}
+        {String(color).toUpperCase()}
       </div>
       {displayColorPicker && (
         <div className={styles.popover}>

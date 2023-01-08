@@ -32,7 +32,7 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
 
   React.useEffect(() => {
     setData(
-      props.data.map(
+      props.data?.map(
         (item: { [key: string]: number | string | null }, index: number) => ({
           ...item,
           _id: index + 1,
@@ -67,7 +67,7 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
       `}
     >
       <DataGrid
-        rows={data}
+        rows={data || [{ ["key"]: "" }]}
         rowHeight={48}
         headerRowHeight={88}
         sortColumns={[sort]}

@@ -40,7 +40,7 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
       vizIndex: activeVizIndex,
       panel: 1,
     });
-    if (props.data.length === 0) {
+    if (props.data?.length === 0) {
       props.loadDataset(
         `data-themes/sample-data/${stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset}`
       );
