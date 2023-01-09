@@ -58,11 +58,12 @@ export function useDataThemesEchart() {
       legend,
       legendHoverLink,
       barWidth,
-      // stack,
+      stack,
     } = visualOptions;
 
     const bars = data.map((d: any) => d.bars);
     const sizes = data.map((d: any) => d.size);
+    console.log(bars, "bars");
 
     const option = {
       grid: {
@@ -88,7 +89,8 @@ export function useDataThemesEchart() {
           data: sizes,
           realtimeSort: true,
           legendHoverLink: legendHoverLink,
-          // stack: stack,
+          stack: stack ? "Total" : undefined,
+
           barWidth: barWidth,
           label: {
             show: label,
