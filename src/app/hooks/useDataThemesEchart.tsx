@@ -55,8 +55,8 @@ export function useDataThemesEchart() {
       showTooltip,
       isMonetaryValue,
       label,
-      legend,
-      legendHoverLink,
+      // legend,
+      // legendHoverLink,
       barWidth,
       stack,
     } = visualOptions;
@@ -72,9 +72,10 @@ export function useDataThemesEchart() {
         right: marginRight,
         bottom: marginBottom,
       },
-      legend: {
-        show: legend,
-      },
+      // legend: {
+      //   show: legend,
+
+      // },
       xAxis: { data: bars },
       yAxis: { type: "value" },
       // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
@@ -82,13 +83,13 @@ export function useDataThemesEchart() {
       backgroundColor: background,
       series: [
         {
-          name: "legend",
+          // name: "legend",
           // height,
           type: "bar",
 
           data: sizes,
           realtimeSort: true,
-          legendHoverLink: legendHoverLink,
+          // legendHoverLink: legendHoverLink,
           stack: stack ? "Total" : undefined,
 
           barWidth: barWidth,
@@ -218,7 +219,7 @@ export function useDataThemesEchart() {
       showLegend,
       label,
       showArea,
-      lineStyle,
+      lineType,
       lineWidth,
       // Tooltip
       showTooltip,
@@ -264,7 +265,7 @@ export function useDataThemesEchart() {
           color: showArea ? null : "",
         },
         lineStyle: {
-          type: lineStyle,
+          type: lineType,
           width: lineWidth,
         },
       })),
