@@ -23,6 +23,7 @@ export function LocationDetailOverviewModule(props: Props) {
     (state) =>
       state.LocationDetailInfo.loading || state.cms.countrySummary.loading
   );
+
   const locationInfoData = useStoreState((state) =>
     get(state.LocationDetailInfo.data, "data[0]", {
       id: "",
@@ -140,11 +141,13 @@ export function LocationDetailOverviewModule(props: Props) {
           `}
         >
           {locationInfoData.multicountries.map(
-            (mc: { name: string; code: string }) => (
-              <Link to={`/location/${mc.code}/overview`} key={mc.name}>
-                {mc.name}
-              </Link>
-            )
+            (mc: { name: string; code: string }) => {
+              return (
+                <Link to={`/location/${mc.code}/overview`} key={mc.name}>
+                  {mc.name}
+                </Link>
+              );
+            }
           )}
           {locationInfoData.countries.map(
             (c: { name: string; code: string }, index: number) => (
