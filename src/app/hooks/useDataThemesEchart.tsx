@@ -129,11 +129,14 @@ export function useDataThemesEchart() {
       marginRight,
       marginBottom,
       marginLeft,
+      roam,
+      scaleLimitMin,
+      scaleLimitMax,
       // Tooltip
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
-
+    //random
     echarts.registerMap("World", data.geoJSON);
 
     const sizes = data.results.map((d: any) => d.value);
@@ -180,13 +183,18 @@ export function useDataThemesEchart() {
         {
           type: "map",
           height,
-          roam: true,
+          roam,
           map: "World",
+
           data: data.results,
           top: marginTop,
           left: marginLeft,
           right: marginRight,
           bottom: marginBottom,
+          scaleLimit: {
+            min: scaleLimitMin,
+            max: scaleLimitMax,
+          },
           emphasis: {
             label: {
               show: false,
