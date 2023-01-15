@@ -306,6 +306,8 @@ export function useDataThemesEchart() {
       linksOpacity,
       nodeAlign,
       orient,
+      draggable,
+      showEdgeLabels,
       // Labels
       showLabels,
       labelRotate,
@@ -315,7 +317,7 @@ export function useDataThemesEchart() {
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
-
+    //ex
     let nodes: { name: string }[] = [];
     data.forEach((d: any) => {
       nodes.push({ name: d.source });
@@ -333,12 +335,16 @@ export function useDataThemesEchart() {
           height,
           orient,
           nodeAlign,
+          draggable,
           top: marginTop,
           left: marginLeft,
           right: marginRight,
           bottom: marginBottom,
           nodeGap: nodesPadding,
           nodeWidth: nodesWidth,
+          edgeLabel: {
+            show: showEdgeLabels,
+          },
           emphasis: {
             focus: "adjacency",
           },
@@ -347,6 +353,7 @@ export function useDataThemesEchart() {
             color: "source",
             opacity: linksOpacity,
           },
+
           label: {
             show: showLabels,
             rotate: labelRotate,
@@ -421,28 +428,41 @@ export function useDataThemesEchart() {
       showLabels,
       labelFontSize,
       showBreadcrumbs,
+      upperLabel,
       // tooltip
       showTooltip,
       isMonetaryValue,
+      nodeClick,
     } = visualOptions;
-
+    const newdata = data.map(
+      (item: { name: string; path: string; value: number; link: string }) => {
+        return { ...item, link: "https://peaktrades.org" };
+      }
+    );
+    console.log(data, "treemap");
     const option = {
       backgroundColor: background,
       series: [
         {
           name: "All",
           type: "treemap",
-          data,
+
+          data: newdata,
           width,
           height,
+
           top: marginTop,
           left: marginLeft,
           right: marginRight,
           bottom: marginBottom,
           leafDepth: 1,
+          nodeClick,
           label: {
             show: showLabels,
             fontSize: labelFontSize,
+          },
+          upperLabel: {
+            show: upperLabel,
           },
           breadcrumb: {
             show: showBreadcrumbs,
