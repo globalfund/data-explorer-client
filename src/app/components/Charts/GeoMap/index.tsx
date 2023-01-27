@@ -360,9 +360,14 @@ export function GeoMap(props: GeoMapProps) {
         {...settings}
         width="100%"
         height="100%"
-        onHover={onHover}
+        onHover={(e) => {
+          setTimeout(() => {
+            onHover(e);
+          }, 1000);
+        }}
         onClick={onClick}
         mapStyle={uMapStyle}
+        getCursor={(state) => (state.isDragging ? "grabbing" : "pointer")}
         ref={(ref: MapRef) => {
           if (ref) mapRef.current = ref.getMap();
         }}

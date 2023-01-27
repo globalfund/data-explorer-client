@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-cycle */
 /* third-party */
-import React from "react";
+import React, { useState } from "react";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -21,6 +21,8 @@ import get from "lodash/get";
 import { useCMSData } from "app/hooks/useCMSData";
 
 export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
+  const [showHoverDetails, setShowHoverDetails] = useState(false);
+
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [xsTooltipData, setXsTooltipData] =
@@ -40,6 +42,13 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
   const actualSetXsTooltipData = props.isChildTreemap
     ? props.setXsTooltipData
     : setXsTooltipData;
+
+  // const delayfn = () => {
+  //   setTimeout(() => {
+  //     setShowHoverDetails(true);
+  //   }, 1000);
+  // };
+  // console.log(showHoverDetails);
 
   return (
     <React.Fragment>
@@ -74,6 +83,10 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
             <NoDataLabel height="600px" />
           </React.Fragment>
         ) : (
+          // <div
+          //   onMouseEnter={() => delayfn()}
+          //   onMouseLeave={() => setShowHoverDetails(false)}
+          // >
           <ResponsiveTreeMapHtml
             value="value"
             tile="binary"
@@ -91,6 +104,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
             }}
             leavesOnly
             labelSkipSize={12}
+            isInteractive={true}
             innerPadding={props.isChildTreemap ? 2 : 1}
             outerPadding={props.isChildTreemap ? 0 : 1}
             // @ts-ignore
@@ -105,6 +119,8 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                 parentNodeCoords={props.parentNodeCoords}
               />
             )}
+            // onMouseEnter={() => delayfn()}
+            // onMouseLeave={() => setShowHoverDetails(false)}
             // @ts-ignore
             tooltip={TreemapTooltip}
             colors={(node: any) => node.data.color}
@@ -121,6 +137,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
               },
             }}
           />
+          // </div>
         )}
       </div>
       {(isMobile || isTouchDevice()) &&

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import filter from "lodash/filter";
 import { BudgetsTimeCycleTooltip } from "app/components/Charts/Budgets/TimeCycle/components/tooltip";
 
@@ -34,8 +34,11 @@ export function BarComponent(props: any) {
       (props.selected || { indexValue: "" }).indexValue !==
       props.data.indexValue
     ) {
-      props.showTooltip(<BudgetsTimeCycleTooltip {...props.data.data} />, e);
-      props.setHoveredXIndex(props.data.indexValue);
+      // return ''
+      setTimeout(() => {
+        props.showTooltip(<BudgetsTimeCycleTooltip {...props.data.data} />, e);
+        props.setHoveredXIndex(props.data.indexValue);
+      }, 500);
     }
   }
 
@@ -45,8 +48,10 @@ export function BarComponent(props: any) {
       onMouseMove={onMouseMoveOrEnter}
       onMouseEnter={onMouseMoveOrEnter}
       onMouseLeave={() => {
-        props.hideTooltip();
-        props.setHoveredXIndex(null);
+        setTimeout(() => {
+          props.hideTooltip();
+          props.setHoveredXIndex(null);
+        }, 500);
       }}
       onTouchStart={(e: React.TouchEvent<SVGGElement>) => {
         if (props.data.indexValue !== props.selected) {

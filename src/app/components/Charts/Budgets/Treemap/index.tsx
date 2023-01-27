@@ -16,7 +16,7 @@ import { TreeemapNode } from "app/components/Charts/Budgets/Treemap/components/t
 
 export function BudgetsTreemap(props: BudgetsTreemapProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
-
+  // console.log("hey");
   return (
     <React.Fragment>
       <div
@@ -108,6 +108,7 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
           }}
         />
       </div>
+
       {(isMobile || isTouchDevice()) &&
         props.xsTooltipData &&
         !props.selectedNodeId &&
