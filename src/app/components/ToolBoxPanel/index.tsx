@@ -16,6 +16,8 @@ import { DataPathPanel } from "app/components/ToolBoxPanel/components/datapath";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
 
 export interface ToolBoxPanelProps {
   open: boolean;
@@ -30,6 +32,9 @@ export interface ToolBoxPanelProps {
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
   const fabBtnRef = React.useRef(null);
+
+  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
+
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
   );
@@ -251,9 +256,11 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                       </IconButton>
                     </div>
                   )}
-                  <ToolBoxPanelIconButtons
-                    getAllAvailableGrants={props.getAllAvailableGrants}
-                  />
+                  {!expandedGroup && (
+                    <ToolBoxPanelIconButtons
+                      getAllAvailableGrants={props.getAllAvailableGrants}
+                    />
+                  )}
                   <SubToolBoxPanel
                     filterGroups={props.filterGroups}
                     closePanel={props.onCloseBtnClick}

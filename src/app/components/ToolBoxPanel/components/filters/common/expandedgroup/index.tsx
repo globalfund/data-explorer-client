@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React from "react";
+import React, { useEffect } from "react";
 import find from "lodash/find";
 import remove from "lodash/remove";
 import isEqual from "lodash/isEqual";
@@ -18,6 +18,8 @@ import {
   FilterGroupProps,
   FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { useRecoilState } from "recoil";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
@@ -26,7 +28,9 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
+
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
+  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
   const {
     appliedFilters,
     setAppliedFilters,
@@ -154,6 +158,10 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       setOptionsToShow(options);
     }
   }, [value]);
+
+  useEffect(() => {
+    setOptionsToShow(props.options);
+  }, [props.options]);
 
   function handleChangeAll(event: React.ChangeEvent<HTMLInputElement>) {
     const tmp = [...tmpAppliedFilters];
@@ -296,155 +304,170 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   }
 
   return (
-    <React.Fragment>
+    <>
       <div
         css={`
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
+          /* background: blue; */
+          height: ${expandedGroup ? "100vh" : "0vh"};
+          transition: height 2s ease;
+          overflow: auto;
         `}
       >
-        <div
-          css={`
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+        {expandedGroup && (
+          <>
+            <div
+              css={`
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+              `}
+            >
+              <div
+                css={`
+                  display: flex;
+                  flex-direction: row;
+                  align-items: center;
 
-            > button {
-              transform: rotate(-90deg);
-            }
-          `}
-        >
-          <IconButton onClick={props.goBack}>
-            <TriangleXSIcon />
-          </IconButton>
-          {props.name}
-        </div>
-        <div>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                checked={allSelected}
-                onChange={handleChangeAll}
-                disabled={value.length > 0}
+                  > button {
+                    transform: rotate(-90deg);
+                  }
+                `}
+              >
+                <IconButton onClick={props.goBack}>
+                  <TriangleXSIcon />
+                </IconButton>
+                {props.name}
+              </div>
+              <div>
+                <FormControlLabel
+                  control={
+                    <Checkbox
+                      color="primary"
+                      checked={allSelected}
+                      onChange={handleChangeAll}
+                      disabled={value.length > 0}
+                    />
+                  }
+                  label="Select all"
+                />
+                <IconButton onClick={resetFilters}>
+                  <ResetIcon />
+                </IconButton>
+              </div>
+            </div>
+            <div
+              css={`
+                width: 100%;
+                display: flex;
+                position: relative;
+                padding: 10px 20px;
+                border-radius: 20px;
+                background: #dfe3e6;
+                box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+
+                path {
+                  fill: #98a1aa;
+                }
+              `}
+            >
+              <input
+                type="text"
+                css={`
+                  width: 100%;
+                  outline: none;
+                  color: #262c34;
+                  font-size: 14px;
+                  border-style: none;
+                  background: #dfe3e6;
+                `}
+                tabIndex={0}
+                value={value}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setValue(e.target.value)
+                }
               />
-            }
-            label="Select all"
-          />
-          <IconButton onClick={resetFilters}>
-            <ResetIcon />
-          </IconButton>
-        </div>
-      </div>
-      <div
-        css={`
-          width: 100%;
-          display: flex;
-          position: relative;
-          padding: 10px 20px;
-          border-radius: 20px;
-          background: #dfe3e6;
-          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+              <SearchIcon />
+            </div>
+            <div
+              css={`
+                width: 100%;
+                height: 25px;
 
-          path {
-            fill: #98a1aa;
-          }
-        `}
-      >
-        <input
-          type="text"
-          css={`
-            width: 100%;
-            outline: none;
-            color: #262c34;
-            font-size: 14px;
-            border-style: none;
-            background: #dfe3e6;
-          `}
-          tabIndex={0}
-          value={value}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setValue(e.target.value)
-          }
-        />
-        <SearchIcon />
-      </div>
-      <div
-        css={`
-          width: 100%;
-          height: 25px;
-          border-bottom: 1px solid #dfe3e6;
-        `}
-      />
-      <div
-        css={`
-          overflow-y: auto;
-          max-height: calc(100% - 190px);
+                border-bottom: 1px solid #dfe3e6;
+              `}
+            />
 
-          @media (max-width: 767px) {
-            max-height: unset;
-            overflow-y: unset;
-          }
+            <div
+              css={`
+                overflow-y: auto;
+                max-height: calc(100% - 190px);
 
-          &::-webkit-scrollbar {
-            width: 4px;
-            border-radius: 4px;
-            background: #262c34;
-          }
-          &::-webkit-scrollbar-track {
-            border-radius: 4px;
-            background: #f5f5f7;
-          }
-          &::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            background: #262c34;
-          }
-        `}
-      >
-        {optionsToShow.map((option: FilterGroupOptionModel) => (
-          <FilterOption
-            {...option}
-            level={1}
-            key={option.value}
-            forceExpand={value.length > 0}
-            onOptionChange={onOptionChange}
-            selectedOptions={[
-              ...tmpAppliedFilters,
-              ...tmpAppliedFiltersChildren,
-              ...tmpAppliedFiltersGrandChildren,
-            ]}
-            selected={
-              find(
-                [...tmpAppliedFilters, ...tmpAppliedFiltersChildren],
-                (o: string) => o === option.value
-              ) !== undefined
-            }
-          />
-        ))}
+                @media (max-width: 767px) {
+                  max-height: unset;
+                  overflow-y: unset;
+                }
+
+                &::-webkit-scrollbar {
+                  width: 4px;
+                  border-radius: 4px;
+                  background: #262c34;
+                }
+                &::-webkit-scrollbar-track {
+                  border-radius: 4px;
+                  background: #f5f5f7;
+                }
+                &::-webkit-scrollbar-thumb {
+                  border-radius: 4px;
+                  background: #262c34;
+                }
+              `}
+            >
+              {optionsToShow.map((option: FilterGroupOptionModel) => (
+                <FilterOption
+                  {...option}
+                  level={1}
+                  key={option.value}
+                  forceExpand={value.length > 0}
+                  onOptionChange={onOptionChange}
+                  selectedOptions={[
+                    ...tmpAppliedFilters,
+                    ...tmpAppliedFiltersChildren,
+                    ...tmpAppliedFiltersGrandChildren,
+                  ]}
+                  selected={
+                    find(
+                      [...tmpAppliedFilters, ...tmpAppliedFiltersChildren],
+                      (o: string) => o === option.value
+                    ) !== undefined
+                  }
+                />
+              ))}
+            </div>
+            <button
+              type="button"
+              onClick={handleApply}
+              css={`
+                color: #fff;
+                margin: 30px 0;
+                font-size: 14px;
+                cursor: pointer;
+                font-weight: bold;
+                width: fit-content;
+                padding: 10px 20px;
+                border-style: none;
+                border-radius: 20px;
+                background: #262c34;
+                box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              `}
+            >
+              Apply
+            </button>
+          </>
+        )}
       </div>
-      <button
-        type="button"
-        onClick={handleApply}
-        css={`
-          color: #fff;
-          margin: 30px 0;
-          font-size: 14px;
-          cursor: pointer;
-          font-weight: bold;
-          width: fit-content;
-          padding: 10px 20px;
-          border-style: none;
-          border-radius: 20px;
-          background: #262c34;
-          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-        `}
-      >
-        Apply
-      </button>
-    </React.Fragment>
+    </>
   );
 }
 

@@ -1,3 +1,4 @@
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { atom, RecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
@@ -33,4 +34,9 @@ export const cmsDataAtom = atom({
     modulesGrants: {},
   },
   effects_UNSTABLE: [persistAtom],
+});
+
+export const filterExpandedGroup = atom<FilterGroupProps | null>({
+  key: "filterExpandedGroup",
+  default: null,
 });

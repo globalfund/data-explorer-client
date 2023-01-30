@@ -9,6 +9,8 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
 import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
+import { useRecoilState } from "recoil";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
@@ -16,9 +18,10 @@ interface ToolBoxPanelFiltersProps {
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
-  const [expandedGroup, setExpandedGroup] =
-    React.useState<FilterGroupProps | null>(null);
+  // const [expandedGroup, setExpandedGroup] =
+  //   React.useState<FilterGroupProps | null>(null);
 
+  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
 
@@ -69,7 +72,14 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       `}
     >
       {!expandedGroup && (
-        <React.Fragment>
+        <div
+          css={`
+            /* height: ${expandedGroup ? "0vh" : "100vh"};
+            transition: height 0.3s ease-out;
+            overflow: hidden; */
+            /* background: yellow; */
+          `}
+        >
           <div
             css={`
               display: flex;
@@ -96,15 +106,16 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               expandGroup={() => setExpandedGroup(group)}
             />
           ))}
-        </React.Fragment>
+        </div>
       )}
-      {expandedGroup && (
-        <ExpandedFilterGroup
-          {...expandedGroup}
-          goBack={() => setExpandedGroup(null)}
-          options={get(filterOptions, expandedGroup.name, [])}
-        />
-      )}
+      <ExpandedFilterGroup
+        {...(expandedGroup as FilterGroupProps)}
+        goBack={() => setExpandedGroup(null)}
+        options={get(filterOptions, expandedGroup?.name as string, [])}
+      />
+      {/* {expandedGroup && (
+      )} */}
+      {/* //h */}
     </div>
   );
 }
