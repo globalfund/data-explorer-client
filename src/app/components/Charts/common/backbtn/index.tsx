@@ -40,7 +40,10 @@ export function VizBackBtn(props: Props) {
       ) {
         history.push(prevActiveStep.path);
       }
+    } else {
+      props.setVizLevel(props.vizLevel - 1);
     }
+    // console.log(dataPathSteps, "path");
   }
 
   return (

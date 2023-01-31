@@ -4,6 +4,12 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
+export interface BreadCrumbItem {
+  name: string;
+  path: string;
+  id: string;
+}
+
 export const cmsDataAtom = atom({
   key: "cmsDataAtom",
   default: {
@@ -39,4 +45,9 @@ export const cmsDataAtom = atom({
 export const filterExpandedGroup = atom<FilterGroupProps | null>({
   key: "filterExpandedGroup",
   default: null,
+});
+
+export const breadCrumbItems = atom<BreadCrumbItem[]>({
+  key: "breadCrumbItems",
+  default: [],
 });
