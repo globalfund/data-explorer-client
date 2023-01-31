@@ -3,6 +3,11 @@ import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
 
+export interface BreadCrumbItem {
+  name: string;
+  path: string;
+  id: string;
+}
 export const cmsDataAtom = atom({
   key: "cmsDataAtom",
   default: {
