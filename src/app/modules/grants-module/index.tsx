@@ -1,5 +1,5 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
 import get from "lodash/get";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
@@ -24,6 +24,10 @@ import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
+import { useLocation } from "react-router-dom";
 
 interface GrantsModuleProps {
   code?: string;
@@ -33,7 +37,10 @@ interface GrantsModuleProps {
 }
 
 export default function GrantsModule(props: GrantsModuleProps) {
+  const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
+  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+
   useTitle(
     `${get(cmsData, "modulesGrants.titleStart", "")}${
       props.detailFilterType
@@ -152,6 +159,10 @@ export default function GrantsModule(props: GrantsModuleProps) {
     return 0;
   }
 
+  useEffect(() => {
+    setBreadCrumList([{ name: "Grants", path: location.pathname, id: "" }]);
+  }, []);
+
   return (
     <div
       css={`
@@ -163,6 +174,13 @@ export default function GrantsModule(props: GrantsModuleProps) {
         justify-content: center;
       `}
     >
+      <div
+        css={`
+          margin-top: 3rem;
+        `}
+      >
+        <BreadCrumbs />
+      </div>
       {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
