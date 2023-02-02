@@ -60,7 +60,9 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          {get(cmsData, "modulesCountryDetail.seeResultsStart", "")} {props.title}{get(cmsData, "modulesCountryDetail.seeResultsEnd", "")}
+          {get(cmsData, "modulesCountryDetail.seeResultsStart", "")}{" "}
+          {props.title}
+          {get(cmsData, "modulesCountryDetail.seeResultsEnd", "")}
         </Link>
       )}
       <div
