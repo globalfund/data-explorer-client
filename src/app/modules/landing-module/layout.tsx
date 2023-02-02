@@ -16,7 +16,6 @@ import {
 export const LandingLayout = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
-
   return (
     <div css={container}>
       <div
