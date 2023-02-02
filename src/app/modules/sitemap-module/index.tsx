@@ -1,7 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { countryDetailsPaths, grantsPath, partnersPaths } from "./dynamicPaths";
+import React from "react";
+import {
+  grantsPath,
+  partnersPaths,
+  countryDetailsPaths,
+} from "app/modules/sitemap-module/dynamicPaths";
 
-export default function index() {
+export default function SitemapModule() {
   const baseUrl = "https://data.theglobalfund.org/";
   const staticPaths = [
     baseUrl,
@@ -18,9 +22,9 @@ export default function index() {
     baseUrl + "viz/disbursements/treemap",
     baseUrl + "viz/budgets/flow",
   ];
-  const [allPaths, setAllPaths] = useState([...staticPaths]);
+  const [allPaths, setAllPaths] = React.useState([...staticPaths]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     (async () => {
       const countryDetails = await countryDetailsPaths();
       const partners = await partnersPaths();
