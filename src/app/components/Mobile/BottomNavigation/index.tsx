@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-export function createActionButtons() {
+export function useCreateActionButtons() {
   const cmsData = useCMSData({ returnData: true });
 
   return [
@@ -47,7 +47,7 @@ export function MobileBottomNavigation() {
   const history = useHistory();
   const classes = useStyles();
   const [value, setValue] = React.useState(0);
-  const actionButtons = createActionButtons();
+  const actionButtons = useCreateActionButtons();
 
   function getIsActive(path: string) {
     switch (path) {
