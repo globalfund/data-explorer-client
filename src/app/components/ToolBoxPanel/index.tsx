@@ -33,7 +33,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
   const fabBtnRef = React.useRef(null);
 
-  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
+  const [expandedGroup] = useRecoilState(filterExpandedGroup);
 
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight

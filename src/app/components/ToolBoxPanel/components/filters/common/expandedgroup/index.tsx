@@ -30,7 +30,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [allSelected, setAllSelected] = React.useState(false);
 
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
-  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
+  const [expandedGroup] = useRecoilState(filterExpandedGroup);
   const {
     appliedFilters,
     setAppliedFilters,
