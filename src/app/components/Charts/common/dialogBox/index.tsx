@@ -18,10 +18,11 @@ interface Props {
 }
 export default function ReRouteDialogBox(props: Props) {
   return (
-    <div
-      onClick={() => props.setDisplay({ ...props.display, display: false })}
-      css={overlaycss}
-    >
+    <div>
+      <div
+        onClick={() => props.setDisplay({ ...props.display, display: false })}
+        css={overlaycss}
+      ></div>
       <div css={modalContainercss}>
         <p
           css={`

@@ -17,6 +17,7 @@ export const modalContainercss = css`
   text-align: center;
   font-family: "Gotham Narrow";
   font-size: 14px;
+  z-index: 12;
 
   position: absolute;
   width: 40vw;
@@ -24,6 +25,16 @@ export const modalContainercss = css`
   left: 30vw;
 
   color: #495057;
+  @media (max-width: 768px) {
+    width: 60vw;
+    left: 20vw;
+    top: 47vw;
+  }
+  @media (max-width: 500px) {
+    width: 88vw;
+    left: 6vw;
+    top: 67vw;
+  }
 
   button {
     border: none;
@@ -32,9 +43,15 @@ export const modalContainercss = css`
     background: #495057;
     border-radius: 55px;
     text-align: center;
-    padding: 0 60px;
+    padding: 11px 60px;
+    @media (max-width: 500px) {
+      padding: 11px 47px;
+    }
     font-size: 14px;
     color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     cursor: pointer;
   }
 `;
