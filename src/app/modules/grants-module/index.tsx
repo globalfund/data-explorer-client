@@ -1,5 +1,6 @@
 /* third-party */
 import React, { useEffect } from "react";
+import { v4 } from "uuid";
 import get from "lodash/get";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
@@ -160,7 +161,14 @@ export default function GrantsModule(props: GrantsModuleProps) {
   }
 
   useEffect(() => {
-    setBreadCrumList([{ name: "Grants", path: location.pathname, id: "" }]);
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: "Grant Implementation: Grants",
+        path: location.pathname,
+        id: "",
+      },
+    ]);
   }, []);
 
   return (

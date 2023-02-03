@@ -1,5 +1,5 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
 import get from "lodash/get";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
@@ -29,6 +29,10 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
+import { v4 } from "uuid";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 export default function VizModule() {
   const location = useLocation();
@@ -37,6 +41,7 @@ export default function VizModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -67,6 +72,28 @@ export default function VizModule() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+  const vizType = `${params.vizType
+    .slice(0, 1)
+    .toUpperCase()}${params.vizType.slice(1)}${params.subType ? "" : ""}`;
+
+  useEffect(() => {
+    if (!breadCrumbList.find((item) => item.path === location.pathname)) {
+      setBreadCrumList([
+        { name: "Datasets", path: "/", id: v4() },
+
+        {
+          name:
+            vizType === "Pledges-contributions"
+              ? `Resource Mobilization: ${vizType} `
+              : vizType === "Eligibility" || "Allocations"
+              ? `Access to funding: ${vizType}`
+              : `Grant Implementation: ${vizType} `,
+          path: location.pathname,
+          id: v4(),
+        },
+      ]);
+    }
+  }, [vizType]);
 
   return (
     <div
@@ -79,6 +106,13 @@ export default function VizModule() {
         justify-content: center;
       `}
     >
+      <div
+        css={`
+          margin-top: 3rem;
+        `}
+      >
+        <BreadCrumbs />
+      </div>
       <PageHeader
         title={params.vizType.replace("-", " & ")}
         breadcrumbs={[
@@ -88,11 +122,7 @@ export default function VizModule() {
             menuitems: datasetMenuItems,
           },
           {
-            name: `${params.vizType
-              .slice(0, 1)
-              .toUpperCase()}${params.vizType.slice(1)}${
-              params.subType ? " · " : ""
-            }${
+            name: `${vizType}${
               params.subType
                 ? `${params.subType
                     .slice(0, 1)

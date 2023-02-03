@@ -1,6 +1,8 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
 import get from "lodash/get";
+import { useRecoilState } from "recoil";
+import { v4 } from "uuid";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -35,6 +37,8 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -42,6 +46,8 @@ export default function CountryDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
+  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
     code: string;
@@ -144,6 +150,16 @@ export default function CountryDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+  useEffect(() => {
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: locationInfoData.locationName,
+        path: location.pathname,
+        id: v4(),
+      },
+    ]);
+  }, [locationInfoData]);
 
   return (
     <div
@@ -156,6 +172,13 @@ export default function CountryDetail() {
         justify-content: center;
       `}
     >
+      <div
+        css={`
+          margin-top: 3rem;
+        `}
+      >
+        <BreadCrumbs />
+      </div>
       {loading && <PageLoader />}
       <PageHeader
         isDetail

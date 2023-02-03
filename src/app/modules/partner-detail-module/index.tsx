@@ -1,6 +1,8 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
+import { v4 } from "uuid";
 import get from "lodash/get";
+import { useRecoilState } from "recoil";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -12,6 +14,7 @@ import {
   useLocation,
 } from "react-router-dom";
 /* project */
+
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
@@ -31,6 +34,8 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 export default function PartnerDetail() {
   useTitle("The Data Explorer - Partner");
@@ -39,6 +44,8 @@ export default function PartnerDetail() {
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+
   const params = useParams<{
     code: string;
     vizType: string;
@@ -90,6 +97,20 @@ export default function PartnerDetail() {
     return 0;
   }
 
+  //breadcrumbs setter
+  useEffect(() => {
+    if (!breadCrumbList.find((item) => item.path === location.pathname)) {
+      setBreadCrumList([
+        { name: "Datasets", path: "/", id: v4() },
+        {
+          name: partnerInfoData.partnerName,
+          path: location.pathname,
+          id: v4(),
+        },
+      ]);
+    }
+  }, [partnerInfoData]);
+
   return (
     <div
       css={`
@@ -101,6 +122,13 @@ export default function PartnerDetail() {
         justify-content: center;
       `}
     >
+      <div
+        css={`
+          margin-top: 3rem;
+        `}
+      >
+        <BreadCrumbs />
+      </div>
       <PageHeader
         isDetail
         title={partnerInfoData.partnerName}

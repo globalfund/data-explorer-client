@@ -1,11 +1,16 @@
 import React from "react";
 import RightIcon from "@material-ui/icons/ChevronRight";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
+import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
+import { BreadCrumbItem, breadCrumbItems } from "app/state/recoil/atoms";
 import { useHistory } from "react-router-dom";
 
+interface Props {
+  breadCrumbList: BreadCrumbItem[];
+  setBreadCrumbList: SetterOrUpdater<BreadCrumbItem[]>;
+}
 export default function BreadCrumbs() {
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+
   const history = useHistory();
   return (
     <div

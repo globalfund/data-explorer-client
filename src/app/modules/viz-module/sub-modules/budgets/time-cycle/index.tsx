@@ -1,5 +1,5 @@
 /* third-party */
-import React from "react";
+import React, { useState } from "react";
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
@@ -13,6 +13,7 @@ import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 
 interface BudgetsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -44,6 +45,11 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
+
+  const [reRouteDialog, setReRouteDialog] = useState({
+    display: false,
+    code: "",
+  });
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
@@ -183,7 +189,10 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
                   path: `/grant/${code}/period/budgets/time-cycle`,
                 },
               ]);
-              history.push(`/grant/${code}/period/budgets/time-cycle`);
+              setReRouteDialog({
+                display: true,
+                code,
+              });
             }
           }}
         />
@@ -202,6 +211,17 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         }
       `}
     >
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(
+              `/grant/${reRouteDialog.code}/period/budgets/time-cycle`
+            )
+          }
+        />
+      )}
       {(props.vizLevel > 0 || dataPathSteps.length > 1) && (
         <VizBackBtn
           vizLevel={props.vizLevel}

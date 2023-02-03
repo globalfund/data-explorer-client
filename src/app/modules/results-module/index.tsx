@@ -1,5 +1,6 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
+import { v4 } from "uuid";
 import get from "lodash/get";
 import { useLocation } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -17,6 +18,9 @@ import {
   ResultListItemModel,
   ResultsInfoContentStatsProps,
 } from "app/modules/results-module/data";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
+import { breadCrumbItems } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -26,6 +30,7 @@ export default function ResultsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelResultsYearState.value
@@ -116,6 +121,17 @@ export default function ResultsModule() {
     return 0;
   }
 
+  useEffect(() => {
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: "Annual results",
+        path: location.pathname,
+        id: v4(),
+      },
+    ]);
+  }, []);
+
   return (
     <div
       css={`
@@ -127,6 +143,13 @@ export default function ResultsModule() {
         justify-content: center;
       `}
     >
+      <div
+        css={`
+          margin-top: 3rem;
+        `}
+      >
+        <BreadCrumbs />
+      </div>
       <PageHeader
         title="Results"
         breadcrumbs={[

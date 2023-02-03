@@ -1,5 +1,5 @@
 /* third-party */
-import React from "react";
+import React, { useState } from "react";
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
@@ -13,6 +13,7 @@ import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
 import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -56,6 +57,11 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
 
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
+
+  const [reRouteDialog, setReRouteDialog] = useState({
+    display: false,
+    code: "",
+  });
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
@@ -209,7 +215,10 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
                   path: `/grant/${code}/period/budgets/flow`,
                 },
               ]);
-              history.push(`/grant/${code}/period/budgets/flow`);
+              setReRouteDialog({
+                display: true,
+                code,
+              });
             }
           }}
         />
@@ -227,6 +236,15 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         }
       `}
     >
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(`/grant/${reRouteDialog.code}/period/budgets/flow`)
+          }
+        />
+      )}
       {(props.vizLevel > 0 || dataPathSteps.length > 1) && (
         <VizBackBtn
           vizLevel={props.vizLevel}

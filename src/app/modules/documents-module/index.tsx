@@ -1,5 +1,7 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
+import { v4 } from "uuid";
+
 import get from "lodash/get";
 import { Pagination } from "@material-ui/lab";
 import { useMediaQuery } from "@material-ui/core";
@@ -15,6 +17,9 @@ import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { breadCrumbItems } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
@@ -23,6 +28,7 @@ export default function DocumentsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -83,6 +89,17 @@ export default function DocumentsModule() {
     return 0;
   }
 
+  useEffect(() => {
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: "Documents",
+        path: location.pathname,
+        id: v4(),
+      },
+    ]);
+  }, []);
+
   return (
     <div
       css={`
@@ -94,6 +111,13 @@ export default function DocumentsModule() {
         justify-content: center;
       `}
     >
+      <div
+        css={`
+          margin-top: 3rem;
+        `}
+      >
+        <BreadCrumbs />
+      </div>
       <PageHeader
         title="Documents"
         breadcrumbs={[
