@@ -54,7 +54,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
     )
   );
 
-  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
+  const [expandedGroup] = useRecoilState(filterExpandedGroup);
 
   // aggregateBy control const
   const setSelectedAggregation = useStoreActions(
