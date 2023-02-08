@@ -44,6 +44,7 @@ export const modalContainercss = css`
     border-radius: 55px;
     text-align: center;
     padding: 11px 60px;
+    width: 113px;
     @media (max-width: 500px) {
       padding: 11px 47px;
     }

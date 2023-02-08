@@ -1,5 +1,5 @@
 /* third-party */
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import get from "lodash/get";
 import { useRecoilState } from "recoil";
 import { v4 } from "uuid";
@@ -47,6 +47,7 @@ export default function CountryDetail() {
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const breadCrumbId = useMemo(() => v4(), []);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
@@ -152,11 +153,14 @@ export default function CountryDetail() {
   }
   useEffect(() => {
     setBreadCrumList([
-      { name: "Datasets", path: "/", id: v4() },
+      ...breadCrumbList.filter(
+        (item) => item.id !== breadCrumbId && item.path !== location.pathname
+      ),
+
       {
         name: locationInfoData.locationName,
         path: location.pathname,
-        id: v4(),
+        id: breadCrumbId,
       },
     ]);
   }, [locationInfoData]);

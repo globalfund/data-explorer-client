@@ -43,4 +43,5 @@ export const cmsDataAtom = atom({
 export const breadCrumbItems = atom<BreadCrumbItem[]>({
   key: "breadCrumbItems",
   default: [],
+  effects_UNSTABLE: [persistAtom],
 });

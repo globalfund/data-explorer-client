@@ -12,7 +12,6 @@ import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { DataPathPanel } from "app/components/ToolBoxPanel/components/datapath";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
@@ -57,8 +56,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   React.useEffect(() => {
     if (dataPathSteps.length < 2 && showDataPath) {
       setShowDataPath(false);
-    } else if (!showDataPath && dataPathSteps.length > 1) {
-      setShowDataPath(true);
     }
   }, [dataPathSteps]);
 
@@ -260,7 +257,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   />
                 </React.Fragment>
               ) : (
-                <DataPathPanel />
+                ""
+                // <DataPathPanel />
               )}
             </div>
           </div>

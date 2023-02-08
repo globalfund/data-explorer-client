@@ -81,31 +81,6 @@ export function VizBackBtn(props: Props) {
           <TriangleXSIcon /> Back
         </button>
       )}
-      <button
-        id="show-data-path-btn"
-        onClick={() => {
-          if (props.setOpenToolboxPanel) {
-            props.setOpenToolboxPanel(true);
-          }
-          setShowDataPath(true);
-        }}
-        css={`
-          padding: 0;
-          display: flex;
-          outline: none;
-          margin: 10px 0;
-          font-size: 12px;
-          cursor: pointer;
-          border-style: none;
-          flex-direction: row;
-          align-items: center;
-          justify-content: center;
-          background: transparent;
-          text-decoration: underline;
-        `}
-      >
-        Your data path
-      </button>
     </div>
   );
 }

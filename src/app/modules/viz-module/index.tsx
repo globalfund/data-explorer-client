@@ -85,7 +85,7 @@ export default function VizModule() {
           name:
             vizType === "Pledges-contributions"
               ? `Resource Mobilization: ${vizType} `
-              : vizType === "Eligibility" || "Allocations"
+              : vizType === ("Eligibility" || "Allocations")
               ? `Access to funding: ${vizType}`
               : `Grant Implementation: ${vizType} `,
           path: location.pathname,

@@ -4,10 +4,6 @@ import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
 import { BreadCrumbItem, breadCrumbItems } from "app/state/recoil/atoms";
 import { useHistory } from "react-router-dom";
 
-interface Props {
-  breadCrumbList: BreadCrumbItem[];
-  setBreadCrumbList: SetterOrUpdater<BreadCrumbItem[]>;
-}
 export default function BreadCrumbs() {
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
@@ -35,8 +31,7 @@ export default function BreadCrumbs() {
           border: 1px solid white;
         }
         width: 100vw;
-        /* padding-left: 16px;
-        padding-right: 16px; */
+
         @media (min-width: 1280px) {
           max-width: 1280px;
         }
@@ -53,6 +48,7 @@ export default function BreadCrumbs() {
             gap: 12px;
             align-items: center;
           `}
+          key={item.id}
         >
           <button
             css={`
@@ -60,15 +56,18 @@ export default function BreadCrumbs() {
                 ? "#495057"
                 : "#868e96"};
               height: 32px;
+              padding: 13px 12px;
               border-radius: 20px;
               font-size: 14px;
               font-weight: 700;
               color: #fff;
               text-align: center;
+              display: flex;
+              align-items: center;
               border: none;
               outline: none;
               width: max-content;
-              padding: 0 2rem;
+              /* padding: 0 2rem; */
               cursor: pointer;
               :hover,
               :active,

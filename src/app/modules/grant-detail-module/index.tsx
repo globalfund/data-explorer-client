@@ -124,15 +124,9 @@ export default function GrantDetail() {
   React.useEffect(() => {
     if (grantInfoData) {
       setBreadCrumList([
-        // ...breadCrumbList.filter(
-        //   (item) => item.id !== breadCrumbId && item.path !== location.pathname
-        // ),
-        { name: "Datasets", path: "/", id: breadCrumbId },
-        {
-          name: "Grant Implementation: Grants",
-          path: "/grants",
-          id: breadCrumbId,
-        },
+        ...breadCrumbList.filter(
+          (item) => item.id !== breadCrumbId && item.path !== location.pathname
+        ),
 
         {
           name: grantInfoData.title,
@@ -142,6 +136,7 @@ export default function GrantDetail() {
       ]);
     }
   }, [grantInfoData]);
+  console.log(breadCrumbList, "list");
 
   return (
     <div
