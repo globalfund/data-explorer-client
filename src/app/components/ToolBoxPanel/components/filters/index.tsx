@@ -33,6 +33,13 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
     return <React.Fragment />;
   }
 
+  const options = React.useMemo(() => {
+    if (expandedGroup) {
+      return get(filterOptions, expandedGroup.name, []);
+    }
+    return [];
+  }, [filterOptions, expandedGroup]);
+
   return (
     <div
       css={`
@@ -70,14 +77,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       `}
     >
       {!expandedGroup && (
-        <div
-          css={`
-            /* height: ${expandedGroup ? "0vh" : "100vh"};
-            transition: height 0.3s ease-out;
-            overflow: hidden; */
-            /* background: yellow; */
-          `}
-        >
+        <div>
           <div
             css={`
               display: flex;
@@ -106,14 +106,25 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
           ))}
         </div>
       )}
-      <ExpandedFilterGroup
-        {...(expandedGroup as FilterGroupProps)}
-        goBack={() => setExpandedGroup(null)}
-        options={get(filterOptions, expandedGroup?.name as string, [])}
-      />
-      {/* {expandedGroup && (
-      )} */}
-      {/* //h */}
+
+      <div
+        css={`
+          /* background: blue; */
+          height: ${expandedGroup ? "100vh" : "0vh"};
+          transition: height 2s ease;
+          overflow: auto;
+        `}
+      >
+        {expandedGroup ? (
+          <ExpandedFilterGroup
+            {...expandedGroup}
+            goBack={() => setExpandedGroup(null)}
+            options={options}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }
