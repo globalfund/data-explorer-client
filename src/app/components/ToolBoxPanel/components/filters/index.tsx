@@ -9,6 +9,8 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
 import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
+import { useRecoilState } from "recoil";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
@@ -16,9 +18,8 @@ interface ToolBoxPanelFiltersProps {
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
-  const [expandedGroup, setExpandedGroup] =
-    React.useState<FilterGroupProps | null>(null);
 
+  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
 
@@ -27,6 +28,13 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       actions.setAll(defaultAppliedFilters);
     }
   }
+
+  const options = React.useMemo(() => {
+    if (expandedGroup) {
+      return get(filterOptions, expandedGroup.name, []);
+    }
+    return [];
+  }, [filterOptions, expandedGroup]);
 
   if (props.groups.length === 0) {
     return <React.Fragment />;
@@ -69,7 +77,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       `}
     >
       {!expandedGroup && (
-        <React.Fragment>
+        <div>
           <div
             css={`
               display: flex;
@@ -96,15 +104,24 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               expandGroup={() => setExpandedGroup(group)}
             />
           ))}
-        </React.Fragment>
+        </div>
       )}
-      {expandedGroup && (
-        <ExpandedFilterGroup
-          {...expandedGroup}
-          goBack={() => setExpandedGroup(null)}
-          options={get(filterOptions, expandedGroup.name, [])}
-        />
-      )}
+      <div
+        css={`
+          transition: height 2s ease;
+          height: ${expandedGroup ? "calc(100% - 8px)" : "0"};
+        `}
+      >
+        {expandedGroup ? (
+          <ExpandedFilterGroup
+            {...expandedGroup}
+            goBack={() => setExpandedGroup(null)}
+            options={options}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }
