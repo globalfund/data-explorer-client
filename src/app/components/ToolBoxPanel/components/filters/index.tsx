@@ -106,13 +106,10 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
           ))}
         </div>
       )}
-
       <div
         css={`
-          /* background: blue; */
-          height: ${expandedGroup ? "100vh" : "0vh"};
           transition: height 2s ease;
-          overflow: auto;
+          height: ${expandedGroup ? "calc(100% - 8px)" : "0"};
         `}
       >
         {expandedGroup ? (

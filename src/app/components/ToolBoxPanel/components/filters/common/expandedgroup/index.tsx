@@ -1,16 +1,17 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
-import React, { useEffect } from "react";
+import React from "react";
 import find from "lodash/find";
 import remove from "lodash/remove";
-import { isEmpty } from "lodash";
 import isEqual from "lodash/isEqual";
+import { useRecoilState } from "recoil";
 import findIndex from "lodash/findIndex";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
@@ -19,8 +20,6 @@ import {
   FilterGroupProps,
   FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { useRecoilState } from "recoil";
-import { filterExpandedGroup } from "app/state/recoil/atoms";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;

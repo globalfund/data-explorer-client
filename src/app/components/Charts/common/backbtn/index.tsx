@@ -43,7 +43,6 @@ export function VizBackBtn(props: Props) {
     } else {
       props.setVizLevel(props.vizLevel - 1);
     }
-    // console.log(dataPathSteps, "path");
   }
 
   return (
