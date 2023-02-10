@@ -34,9 +34,8 @@ export function VizBackBtn(props: Props) {
       }
       setActiveStep(prevActiveStep);
       if (
-        prevActiveStep &&
         prevActiveStep.path !==
-          `${history.location.pathname}${history.location.search}`
+        `${history.location.pathname}${history.location.search}`
       ) {
         history.push(prevActiveStep.path);
       }

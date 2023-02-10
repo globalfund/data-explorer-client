@@ -1,6 +1,6 @@
-import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
-import { atom, RecoilState } from "recoil";
+import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 
 const { persistAtom } = recoilPersist();
 

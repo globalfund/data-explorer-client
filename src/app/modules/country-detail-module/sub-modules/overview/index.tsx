@@ -3,8 +3,8 @@ import React from "react";
 import get from "lodash/get";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
-import Grid from "@material-ui/core/Grid";
 import { useStoreState } from "app/state/store/hooks";
+import Grid, { GridSize } from "@material-ui/core/Grid";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
 import { useCMSData } from "app/hooks/useCMSData";
@@ -45,6 +45,16 @@ export function LocationDetailOverviewModule(props: Props) {
   const notesDisclaimersCMSData = useStoreState((state) =>
     get(state.cms.notesAndDisclaimers, "data.entries[0].content", null)
   );
+
+  let investmentLgValue: GridSize = 12;
+
+  if (countrySummaryCMSData) {
+    if (props.openToolboxPanel) {
+      investmentLgValue = 5;
+    } else {
+      investmentLgValue = 4;
+    }
+  }
 
   React.useEffect(() => {
     document.body.style.background = "#F5F5F7";
@@ -259,7 +269,7 @@ export function LocationDetailOverviewModule(props: Props) {
         item
         container
         xs={12}
-        lg={countrySummaryCMSData ? (props.openToolboxPanel ? 5 : 4) : 12}
+        lg={investmentLgValue}
         justifyContent={countrySummaryCMSData ? undefined : "space-between"}
       >
         {(!countrySummaryCMSData || !isSmallScreen) && detailsBlock}

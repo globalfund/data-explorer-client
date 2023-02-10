@@ -5,7 +5,6 @@ import Button from "@material-ui/core/Button";
 import { useLocation } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
 import { useCMSData } from "app/hooks/useCMSData";
-import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
 import { PageLoader } from "app/modules/common/page-loader";
 import useMediaQuery from "@material-ui/core/useMediaQuery";

@@ -39,12 +39,12 @@ export function useGetAllAvailableGrants(
           },
         }
       )
-      .then(async (response) => {
+      .then((response) => {
         const data = get(response.data, "data", []);
         setLoading(false);
         return data;
       })
-      .catch(async (error) => {
+      .catch((error) => {
         console.log("getAllAvailableGrants error: " + error);
         return [];
       });

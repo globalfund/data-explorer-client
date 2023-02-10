@@ -31,7 +31,7 @@ export interface ToolBoxPanelProps {
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
-  const fabBtnRef = React.useRef(null);
+  const fabBtnRef = React.useRef<any>(null);
 
   const [expandedGroup] = useRecoilState(filterExpandedGroup);
 
@@ -94,8 +94,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
       if (isMobile) {
         top = 148;
       }
-    } else {
-      top = 112;
     }
   }
   if (isSmallScreen) {
@@ -140,7 +138,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 if (
                   fabBtnRef &&
                   fabBtnRef.current &&
-                  (fabBtnRef.current as any).contains(event.target)
+                  fabBtnRef.current.contains(event.target)
                 ) {
                   return;
                 }

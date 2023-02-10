@@ -814,7 +814,6 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  {/* {get(cmsData, "componentsChartsGeomap.locationDetail", "")} */}
                   Country Detail Page
                 </TooltipButton>
               </div>

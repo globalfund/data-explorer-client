@@ -615,21 +615,6 @@ export function exportCSV(
           { label: "Budget (USD)", key: "budget" },
         ],
       };
-    case "/viz/allocations":
-      data.keys.forEach((key: string, index: number) => {
-        csvData.push({
-          component: key,
-          value: data.values[index],
-        });
-      });
-      return {
-        data: csvData,
-        filename: "allocations.csv",
-        headers: [
-          { label: "Component", key: "component" },
-          { label: "Allocation (USD)", key: "value" },
-        ],
-      };
     case "/viz/eligibility":
       if (options.isDetail) {
         filter(data, (comp: any) => comp.id.trim().length > 0).forEach(

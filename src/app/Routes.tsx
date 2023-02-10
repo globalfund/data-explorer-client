@@ -47,18 +47,16 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
       )
       .then((response: AxiosResponse) => {
         if (response.data.data && response.data.data.length > 0) {
+          let param = "overview";
+          if (props.match.params.vizType) {
+            if (props.match.params.subType) {
+              param = `${props.match.params.vizType}/${props.match.params.subType}`;
+            } else {
+              param = props.match.params.vizType;
+            }
+          }
           history.replace(
-            `/grant/${props.match.params.code}/${
-              response.data.data[0].number
-            }/${
-              props.match.params.vizType
-                ? `${props.match.params.vizType}${
-                    props.match.params.subType
-                      ? `/${props.match.params.subType}`
-                      : ""
-                  }`
-                : "overview"
-            }`
+            `/grant/${props.match.params.code}/${response.data.data[0].number}/${param}`
           );
         } else {
           history.replace(`/grant/${props.match.params.code}/1/overview`);

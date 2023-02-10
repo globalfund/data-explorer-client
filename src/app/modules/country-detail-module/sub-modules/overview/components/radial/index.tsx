@@ -6,14 +6,12 @@ import { ApexOptions } from "apexcharts";
 import ReactApexCharts from "react-apexcharts";
 import useMeasure from "react-use/lib/useMeasure";
 import { useStoreState } from "app/state/store/hooks";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getKeysPercentages } from "app/modules/viz-module/sub-modules/allocations/data";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 
 export function InvestmentsRadialViz() {
-  // const isMobile = useMediaQuery("(max-width: 767px)");
   const [ref, { width }] = useMeasure<HTMLDivElement>();
 
   const locationInfoData = useStoreState((state) =>

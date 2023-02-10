@@ -5,7 +5,6 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useParams, useHistory, Link } from "react-router-dom";
-import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { RouteTab } from "app/components/PageHeader/components/tabs";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";

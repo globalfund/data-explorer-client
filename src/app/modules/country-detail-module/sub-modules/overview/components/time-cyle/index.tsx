@@ -25,30 +25,30 @@ function formatData(rawData: {
   const data: Record<string, unknown>[] = [];
 
   committed.forEach((item: any) => {
-    const { year, disbursed } = item;
+    const { year } = item;
     const fYearIndex = findIndex(data, { year });
     if (fYearIndex > -1) {
-      data[fYearIndex].committed = disbursed;
+      data[fYearIndex].committed = item.disbursed;
     } else {
-      data.push({ year, committed: disbursed });
+      data.push({ year, committed: item.disbursed });
     }
   });
   signed.forEach((item: any) => {
-    const { year, disbursed } = item;
+    const { year } = item;
     const fYearIndex = findIndex(data, { year });
     if (fYearIndex > -1) {
-      data[fYearIndex].signed = disbursed;
+      data[fYearIndex].signed = item.disbursed;
     } else {
-      data.push({ year, signed: disbursed });
+      data.push({ year, signed: item.disbursed });
     }
   });
   disbursed.forEach((item: any) => {
-    const { year, disbursed } = item;
+    const { year } = item;
     const fYearIndex = findIndex(data, { year });
     if (fYearIndex > -1) {
-      data[fYearIndex].disbursed = disbursed;
+      data[fYearIndex].disbursed = item.disbursed;
     } else {
-      data.push({ year, disbursed: disbursed });
+      data.push({ year, disbursed: item.disbursed });
     }
   });
 
