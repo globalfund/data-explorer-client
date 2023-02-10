@@ -29,16 +29,16 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
     }
   }
 
-  if (props.groups.length === 0) {
-    return <React.Fragment />;
-  }
-
   const options = React.useMemo(() => {
     if (expandedGroup) {
       return get(filterOptions, expandedGroup.name, []);
     }
     return [];
   }, [filterOptions, expandedGroup]);
+
+  if (props.groups.length === 0) {
+    return <React.Fragment />;
+  }
 
   return (
     <div
