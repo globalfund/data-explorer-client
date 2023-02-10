@@ -1,12 +1,10 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useRecoilState } from "recoil";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   useTitle,
@@ -18,7 +16,6 @@ import {
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { GrantListItemModel } from "app/modules/grants-module/data";
@@ -39,7 +36,6 @@ interface GrantsModuleProps {
 export default function GrantsModule(props: GrantsModuleProps) {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
-  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   useTitle(
     `${get(cmsData, "modulesGrants.titleStart", "")}${
@@ -159,10 +155,6 @@ export default function GrantsModule(props: GrantsModuleProps) {
     return 0;
   }
 
-  React.useEffect(() => {
-    setBreadCrumList([{ name: "Grants", path: location.pathname, id: "" }]);
-  }, []);
-
   return (
     <div
       css={`
@@ -174,13 +166,6 @@ export default function GrantsModule(props: GrantsModuleProps) {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
       {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>

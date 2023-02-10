@@ -3,7 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
-import { Switch, Route, useParams, useLocation } from "react-router-dom";
+import { Switch, Route, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
@@ -23,21 +23,17 @@ import { GrantDetailInvestmentsTableWrapper } from "app/modules/viz-module/sub-m
 import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
-  const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
   );
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
@@ -111,17 +107,6 @@ export default function GrantDetail() {
     return 0;
   }
 
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
-
-  React.useEffect(() => {
-    if (!breadCrumbList.find((item) => item.name === grantInfoData.location))
-      setBreadCrumList([
-        ...breadCrumbList,
-        { name: grantInfoData.location, path: location.pathname, id: "" },
-      ]);
-  }, []);
-  console.log(grantInfoData.location, "location");
-
   return (
     <div
       css={`
@@ -133,13 +118,6 @@ export default function GrantDetail() {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
       <PageHeader
         isDetail
         title={grantInfoData.title}
