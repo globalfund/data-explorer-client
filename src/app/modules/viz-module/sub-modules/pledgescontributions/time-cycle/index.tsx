@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -85,42 +84,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
     fetchData({ filterString });
   }, [appliedFilters]);
 
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const viz = document.getElementById("pledges-contributions-time-cycle");
-  //     if (viz) {
-  //       const svgs = viz.getElementsByTagName("svg");
-  //       if (svgs.length > 1) {
-  //         const pathElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "path"
-  //         );
-  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-  //         pathElement.setAttribute("stroke", "#13183F");
-  //         pathElement.setAttribute("strokeWidth", "1");
-
-  //         const patternElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "pattern"
-  //         );
-  //         patternElement.setAttribute("id", "diagonalHatch");
-  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-  //         patternElement.setAttribute("width", "4");
-  //         patternElement.setAttribute("height", "4");
-  //         patternElement.appendChild(pathElement);
-
-  //         const defsElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "defs"
-  //         );
-  //         defsElement.appendChild(patternElement);
-
-  //         svgs[1].appendChild(defsElement);
-  //       }
-  //     }
-  //   }, 1000);
-  // }, []);
-
   useUpdateEffect(() => {
     if (vizSelected) {
       const splits = vizSelected.split("-");
@@ -149,7 +112,7 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
           data={data}
           vizCompData={vizCompData}
           setVizCompData={setVizCompData}
-          onNodeClick={(node: string, x: number) => {
+          onNodeClick={(node: string) => {
             setVizLevel(1);
             setVizSelected(node);
           }}

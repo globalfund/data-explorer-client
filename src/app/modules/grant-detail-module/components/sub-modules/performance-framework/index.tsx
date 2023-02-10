@@ -129,7 +129,7 @@ export function PerformanceFrameworkModule(props: Props) {
       vizComponent = (
         <NetworkViz
           data={{ nodes, links }}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             setVizLevel(1);
             setVizSelected(node);
           }}

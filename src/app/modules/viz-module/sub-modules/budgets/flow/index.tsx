@@ -159,12 +159,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             nodes: props.nodes,
             links: props.links,
           }}
-          // selectedNodeId={props.vizSelected.id}
-          onNodeClick={(
-            node: { id: string; filterStr: string },
-            x: number,
-            y: number
-          ) => {
+          onNodeClick={(node: { id: string; filterStr: string }) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
           }}
