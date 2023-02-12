@@ -166,7 +166,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
       {
         name: "Grant Implementation: Grants",
         path: location.pathname,
-        id: "",
+        id: v4(),
       },
     ]);
   }, []);

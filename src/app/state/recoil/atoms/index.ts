@@ -7,6 +7,13 @@ export interface BreadCrumbItem {
   name: string;
   path: string;
   id: string;
+  vizLevel?: number;
+  vizSelected?:
+    | string
+    | {
+        id: string | undefined;
+        filterStr: string | undefined;
+      };
 }
 export const cmsDataAtom = atom({
   key: "cmsDataAtom",

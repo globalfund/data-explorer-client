@@ -42,6 +42,7 @@ export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const breadcrumbID = v4();
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -77,22 +78,49 @@ export default function VizModule() {
     .toUpperCase()}${params.vizType.slice(1)}${params.subType ? "" : ""}`;
 
   useEffect(() => {
-    if (!breadCrumbList.find((item) => item.path === location.pathname)) {
-      setBreadCrumList([
-        { name: "Datasets", path: "/", id: v4() },
+    setBreadCrumList((list) => {
+      if (list[list.length - 1]?.vizSelected) {
+        return [
+          { name: "Datasets", path: "/", id: v4() },
 
-        {
-          name:
-            vizType === "Pledges-contributions"
-              ? `Resource Mobilization: ${vizType} `
-              : vizType === ("Eligibility" || "Allocations")
-              ? `Access to funding: ${vizType}`
-              : `Grant Implementation: ${vizType} `,
-          path: location.pathname,
-          id: v4(),
-        },
-      ]);
-    }
+          {
+            name:
+              vizType === "Pledges-contributions"
+                ? `Resource Mobilization: ${vizType} `
+                : vizType === ("Eligibility" || "Allocations")
+                ? `Access to funding: ${vizType}`
+                : `Grant Implementation: ${vizType} `,
+            path: list[list.length - 2].path,
+            id: v4(),
+          },
+
+          {
+            name: list[list.length - 1]?.name || "",
+            path: "#",
+            id: v4(),
+            vizLevel: list[list.length - 1]?.vizLevel,
+            vizSelected: list[list.length - 1]?.vizSelected,
+          },
+        ];
+      } else {
+        return [
+          { name: "Datasets", path: "/", id: v4() },
+
+          {
+            name:
+              vizType === "Pledges-contributions"
+                ? `Resource Mobilization: ${vizType} `
+                : vizType === ("Eligibility" || "Allocations")
+                ? `Access to funding: ${vizType}`
+                : `Grant Implementation: ${vizType} `,
+            path: location.pathname,
+            id: v4(),
+            vizSelected: undefined,
+            vizLevel: 0,
+          },
+        ];
+      }
+    });
   }, [vizType]);
 
   return (

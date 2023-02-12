@@ -6,24 +6,27 @@ import { useHistory } from "react-router-dom";
 
 export default function BreadCrumbs() {
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+  console.log(breadCrumbList, "ll");
 
   const history = useHistory();
   return (
     <div
       css={`
         display: flex;
-        gap: 12px;
+        gap: 5px;
         align-items: center;
         justify-content: flex-start;
         padding-top: 12px;
         padding-bottom: 12px;
+        height: 56px;
         font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-        overflow-x: scroll;
         &::-webkit-scrollbar {
           width: 0.1em;
+          visibility: hidden;
         }
         &::-webkit-scrollbar-track {
           box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3);
+          visibility: hidden;
         }
         &::-webkit-scrollbar-thumb {
           background-color: white;
@@ -45,7 +48,7 @@ export default function BreadCrumbs() {
         <div
           css={`
             display: flex;
-            gap: 12px;
+            gap: 5px;
             align-items: center;
           `}
           key={item.id}
@@ -77,7 +80,9 @@ export default function BreadCrumbs() {
             `}
             type="button"
             onClick={() => {
-              history.push(item.path);
+              if (item.path !== "#") {
+                history.push(item.path);
+              }
               setBreadCrumbList([...breadCrumbList.slice(0, index + 1)]);
             }}
           >

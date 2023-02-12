@@ -78,7 +78,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 112;
+  let top = 168;
 
   if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {
@@ -87,24 +87,24 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         top = 148;
       }
     } else {
-      top = 112;
+      top = 168;
     }
   }
   if (isSmallScreen) {
     if (props.isGrantDetail) {
-      top = 113;
+      top = 168;
       if (isMobile) {
-        top = 92;
+        top = 149;
       }
     }
     if (props.isLocationDetail || isPartnerDetail) {
-      top = 113;
+      top = 168;
       if (isMobile) {
         top = 148;
       }
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
-    top = 112;
+    top = 168;
   }
 
   return (

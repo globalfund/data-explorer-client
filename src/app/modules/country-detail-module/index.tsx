@@ -39,6 +39,7 @@ import {
 } from "app/components/ToolBoxPanel/components/filters/data";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { breadCrumbItems } from "app/state/recoil/atoms";
+import queryString from "query-string";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -49,12 +50,16 @@ export default function CountryDetail() {
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
   const breadCrumbId = useMemo(() => v4(), []);
 
+  const { search: searchQuery } = useLocation();
+  const searchParam = queryString.parse(searchQuery);
+
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
     code: string;
     vizType: string;
     subType?: string;
   }>();
+
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
   );
@@ -151,19 +156,33 @@ export default function CountryDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-  useEffect(() => {
-    setBreadCrumList([
-      ...breadCrumbList.filter(
-        (item) => item.id !== breadCrumbId && item.path !== location.pathname
-      ),
 
-      {
-        name: locationInfoData.locationName,
-        path: location.pathname,
-        id: breadCrumbId,
-      },
-    ]);
+  useEffect(() => {
+    if (breadCrumbList.length < 1) {
+      setBreadCrumList([
+        { name: "Datasets", path: "/", id: v4() },
+
+        {
+          name: locationInfoData.locationName,
+          path: location.pathname,
+          id: v4(),
+        },
+      ]);
+    } else {
+      setBreadCrumList([
+        ...breadCrumbList.filter(
+          (item) => item.id !== breadCrumbId && item.path !== location.pathname
+        ),
+
+        {
+          name: searchParam.components || locationInfoData.locationName,
+          path: location.pathname,
+          id: breadCrumbId,
+        },
+      ]);
+    }
   }, [locationInfoData]);
+  console.log(locationInfoData.locationName, "loc");
 
   return (
     <div

@@ -47,7 +47,7 @@ const styles = {
   title: (bigPadding: boolean) => css`
     width: 100%;
     color: #262c34;
-    font-size: 24px;
+    font-size: 18px;
     overflow: hidden;
     line-height: 24px;
     align-items: center;

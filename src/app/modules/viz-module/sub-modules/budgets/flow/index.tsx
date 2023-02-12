@@ -1,6 +1,8 @@
 /* third-party */
 import React, { useState } from "react";
 import find from "lodash/find";
+import { v4 } from "uuid";
+
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
@@ -14,6 +16,8 @@ import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -54,6 +58,7 @@ interface BudgetsFlowModuleProps {
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
@@ -171,6 +176,16 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             x: number,
             y: number
           ) => {
+            setBreadCrumbList([
+              ...breadCrumbList,
+              {
+                name: node.id as string,
+                path: location.pathname,
+                id: v4(),
+                vizLevel: 1,
+                vizSelected: node,
+              },
+            ]);
             props.setVizLevel(1);
             props.setVizSelected(node);
           }}
@@ -185,6 +200,19 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string, x: number, y: number) => {
+            setBreadCrumbList([
+              ...breadCrumbList,
+              {
+                name: node as string,
+                path: location.pathname,
+                id: v4(),
+                vizLevel: 2,
+                vizSelected: {
+                  id: node,
+                  filterStr: undefined,
+                },
+              },
+            ]);
             props.setVizLevel(2);
             props.setDrilldownVizSelected({
               id: node,

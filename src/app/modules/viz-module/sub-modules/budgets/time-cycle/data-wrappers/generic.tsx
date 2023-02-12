@@ -8,6 +8,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
+import { breadCrumbItems } from "app/state/recoil/atoms";
+import { useRecoilValue } from "recoil";
 
 interface Props {
   toolboxOpen?: boolean;
@@ -19,10 +21,14 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
 
   const history = useHistory();
 
-  const [vizLevel, setVizLevel] = React.useState(0);
+  const breadcrumbList = useRecoilValue(breadCrumbItems);
+
+  const [vizLevel, setVizLevel] = React.useState(
+    breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0
+  );
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
     string | undefined
-  >(undefined);
+  >(breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.BudgetsTimeCycle.fetch);

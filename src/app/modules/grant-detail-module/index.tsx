@@ -125,7 +125,10 @@ export default function GrantDetail() {
     if (grantInfoData) {
       setBreadCrumList([
         ...breadCrumbList.filter(
-          (item) => item.id !== breadCrumbId && item.path !== location.pathname
+          (item) =>
+            item.id !== breadCrumbId &&
+            item.path !== location.pathname &&
+            item.name !== grantInfoData.title
         ),
 
         {
@@ -136,7 +139,6 @@ export default function GrantDetail() {
       ]);
     }
   }, [grantInfoData]);
-  console.log(breadCrumbList, "list");
 
   return (
     <div

@@ -4,6 +4,8 @@ import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
+import { v4 } from "uuid";
+
 import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
@@ -18,6 +20,8 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -77,6 +81,9 @@ export function InvestmentsDisbursedModule(
   const [treemapData, setTreemapData] = React.useState<
     DisbursementsTreemapDataItem[]
   >(props.data);
+
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+  const breadcrumbID = v4();
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
@@ -208,10 +215,26 @@ export function InvestmentsDisbursedModule(
         <DisbursementsTreemap
           data={treemapData}
           selectedNodeId={props.vizSelected}
-          onNodeClick={(node: string, x: number, y: number, code?: string) => {
+          onNodeClick={(
+            node: string,
+            x: number,
+            y: number,
+            code?: string,
+            name?: string
+          ) => {
             if (props.allowDrilldown) {
               props.setVizLevel(1);
               props.setVizSelected(node);
+              setBreadCrumbList([
+                ...breadCrumbList,
+                {
+                  name: name as string,
+                  path: location.pathname,
+                  id: breadcrumbID,
+                  vizLevel: 1,
+                  vizSelected: node,
+                },
+              ]);
             } else if (props.onNodeClick && code) {
               props.onNodeClick(code);
             }
