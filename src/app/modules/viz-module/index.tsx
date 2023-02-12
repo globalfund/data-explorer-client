@@ -42,7 +42,6 @@ export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
-  const breadcrumbID = v4();
 
   React.useEffect(() => {
     document.body.style.background = "#fff";

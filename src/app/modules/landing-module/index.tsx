@@ -13,7 +13,6 @@ export default function Landing() {
 
   useTitle(get(cmsData, "modulesLanding.title", ""));
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
-  console.log(breadCrumbList, "list");
   React.useEffect(() => {
     document.body.style.background = "#dfe3e6";
     setBreadCrumList([]);

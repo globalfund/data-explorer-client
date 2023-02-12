@@ -29,7 +29,6 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string
   );
-  console.log(vizLevel, vizSelected);
 
   React.useEffect(() => {
     setVizSelected(

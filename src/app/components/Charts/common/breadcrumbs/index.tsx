@@ -6,7 +6,6 @@ import { useHistory } from "react-router-dom";
 
 export default function BreadCrumbs() {
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-  console.log(breadCrumbList, "ll");
 
   const history = useHistory();
   return (

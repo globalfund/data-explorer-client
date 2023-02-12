@@ -182,7 +182,6 @@ export default function CountryDetail() {
       ]);
     }
   }, [locationInfoData]);
-  console.log(locationInfoData.locationName, "loc");
 
   return (
     <div
