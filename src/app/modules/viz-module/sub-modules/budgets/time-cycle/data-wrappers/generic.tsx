@@ -29,6 +29,12 @@ export function GenericBudgetsTimeCycleWrapper(props: Props) {
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
     string | undefined
   >(breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string);
+  React.useEffect(() => {
+    setDrilldownVizSelected(
+      breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string
+    );
+    setVizLevel(breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0);
+  }, [breadcrumbList]);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.BudgetsTimeCycle.fetch);

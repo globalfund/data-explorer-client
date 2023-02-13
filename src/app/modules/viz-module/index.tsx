@@ -120,7 +120,7 @@ export default function VizModule() {
         ];
       }
     });
-  }, [vizType]);
+  }, [vizType, location.pathname]);
 
   return (
     <div

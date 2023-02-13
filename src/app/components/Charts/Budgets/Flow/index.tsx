@@ -137,14 +137,26 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
       `}
     >
       <Grid
+        item
+        xs={12}
+        sm={2}
+        css="font-size: 12px !important; color: #262C34;"
+      >
+        <b>Budget</b>
+        <p
+          css={`
+            margin-top: -6px;
+          `}
+        >
+          {formatFinancialValue(totalBudget)}
+        </p>
+      </Grid>
+      <Grid
         container
         css={header}
         alignItems="baseline"
         spacing={!isMobile ? 4 : undefined}
       >
-        <Grid item xs={12} sm={2} css="font-size: 14px !important;">
-          <b>{formatFinancialValue(totalBudget)}</b>
-        </Grid>
         {!isMobile && (
           <Grid item xs={12} sm={10}>
             <div

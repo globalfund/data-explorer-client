@@ -141,7 +141,7 @@ export function InvestmentsDisbursedModule(
       }
     }
     if (props.vizLevel > 0 && props.vizSelected) {
-      const code = props.vizSelected.split("-")[0];
+      const code = (props.vizSelected as string)?.split("-")[0];
       let name = "";
       props.data.forEach((item: DisbursementsTreemapDataItem) => {
         if (name.length === 0) {

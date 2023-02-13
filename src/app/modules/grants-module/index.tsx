@@ -182,13 +182,15 @@ export default function GrantsModule(props: GrantsModuleProps) {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
+      {props.detailFilterType !== "partners" && (
+        <div
+          css={`
+            margin-top: 3rem;
+          `}
+        >
+          <BreadCrumbs />
+        </div>
+      )}
       {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
