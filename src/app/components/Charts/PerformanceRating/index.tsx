@@ -36,7 +36,12 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           }
         `}
       >
-        {get(cmsData, "componentsChartsPerformanceRating.performanceRating", "")} <InfoIcon />
+        {get(
+          cmsData,
+          "componentsChartsPerformanceRating.performanceRating",
+          ""
+        )}{" "}
+        <InfoIcon />
       </div>
       <ResponsiveBar
         animate
@@ -56,7 +61,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
         gridYValues={[0, 1, 2, 3, 4, 5]}
         margin={{
           top: !isMobile ? 60 : 20,
-          right: 30,
+          right: !isMobile ? 0 : 30,
           bottom: props.data.length > 5 ? 120 : 80,
           left: 70,
         }}

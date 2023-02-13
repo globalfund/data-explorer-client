@@ -2,7 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import isEqual from "lodash/isEqual";
 import { ResetIcon } from "app/assets/icons/Reset";
-import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
@@ -92,9 +92,15 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
             `}
           >
             <b>Filters</b>
-            <IconButton onClick={resetAllFilters}>
-              <ResetIcon />
-            </IconButton>
+            <Button
+              endIcon={<ResetIcon />}
+              onClick={resetAllFilters}
+              css={`
+                text-transform: capitalize;
+              `}
+            >
+              Reset filters
+            </Button>
           </div>
           {props.groups.map((group: FilterGroupProps) => (
             <FilterGroup
