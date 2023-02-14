@@ -3,11 +3,13 @@
 import React from "react";
 import get from "lodash/get";
 import Fab from "@material-ui/core/Fab";
+import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
 import { FiltersIcon } from "app/assets/icons/Filters";
 import { useUnmount, useUpdateEffect } from "react-use";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
@@ -16,8 +18,6 @@ import { DataPathPanel } from "app/components/ToolBoxPanel/components/datapath";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
-import { filterExpandedGroup } from "app/state/recoil/atoms";
-import { useRecoilState } from "recoil";
 
 export interface ToolBoxPanelProps {
   open: boolean;

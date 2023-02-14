@@ -9,6 +9,11 @@ export interface SimpleTableColumn {
 }
 
 export interface SimpleTableProps {
+  title: string;
+  search: string;
+  sortBy: string;
   rows: SimpleTableRow[];
   columns: SimpleTableColumn[];
+  onSearchChange: (value: string) => void;
+  onSortByChange: (value: string) => void;
 }

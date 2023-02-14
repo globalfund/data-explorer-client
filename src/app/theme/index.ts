@@ -242,6 +242,9 @@ export default createTheme({
         },
       },
     },
+    MuiCheckbox: {
+      colorPrimary: "#252c34",
+    },
   },
   breakpoints: {
     keys: ["xs", "sm", "md", "lg", "xl"],

@@ -9,9 +9,13 @@ import {
 } from "app/components/Table/Simple/data";
 
 interface EligibilityTableProps {
+  search: string;
+  sortBy: string;
   isLoading: boolean;
   data: SimpleTableRow[];
   columns: SimpleTableColumn[];
+  setSearch: (value: string) => void;
+  setSortBy: (value: string) => void;
 }
 
 export function EligibilityTable(props: EligibilityTableProps) {
@@ -19,5 +23,15 @@ export function EligibilityTable(props: EligibilityTableProps) {
     return <PageLoader />;
   }
 
-  return <SimpleTable rows={props.data} columns={props.columns} />;
+  return (
+    <SimpleTable
+      search={props.search}
+      sortBy={props.sortBy}
+      rows={props.data}
+      title="Eligibility"
+      columns={props.columns}
+      onSearchChange={props.setSearch}
+      onSortByChange={props.setSortBy}
+    />
+  );
 }

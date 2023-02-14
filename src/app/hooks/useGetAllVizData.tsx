@@ -306,7 +306,7 @@ export function useGetAllVizData() {
     },
     "/viz/signed/time-cycle": signedTimeCycle,
     "/viz/signed/treemap": signedTreemap,
-    "/viz/signed/table": signedTreemap,
+    "/viz/signed/table": disbursementsTreemap,
     // Commitment
     "/viz/commitment/map": {
       countries: disbursementsGeomap,
@@ -314,7 +314,7 @@ export function useGetAllVizData() {
     },
     "/viz/commitment/time-cycle": commitmentTimeCycle,
     "/viz/commitment/treemap": commitmentTreemap,
-    "/viz/commitment/table": commitmentTreemap,
+    "/viz/commitment/table": disbursementsTreemap,
     // Eligibility
     "/viz/eligibility": eligibility,
     "/viz/eligibility/table": eligibility,
@@ -359,7 +359,7 @@ export function useGetAllVizData() {
     // Location Disbursements
     "/location/<code>/disbursements/treemap":
       locationDetailDisbursementsTreemap,
-    "/location/<code>/disbursements/table": locationDetailDisbursementsTreemap,
+    "/location/<code>/disbursements/table": disbursementsTreemap,
     "/location/<code>/disbursements/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
@@ -367,7 +367,7 @@ export function useGetAllVizData() {
     "/location/<code>/disbursements/time-cycle": disbursementsTimeCycle,
     // Location Signed
     "/location/<code>/signed/treemap": locationDetailSignedTreemap,
-    "/location/<code>/signed/table": locationDetailSignedTreemap,
+    "/location/<code>/signed/table": disbursementsTreemap,
     "/location/<code>/signed/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
@@ -375,7 +375,7 @@ export function useGetAllVizData() {
     "/location/<code>/signed/time-cycle": disbursementsTimeCycle,
     // Location Commitment
     "/location/<code>/commitment/treemap": locationDetailCommitmentTreemap,
-    "/location/<code>/commitment/table": locationDetailCommitmentTreemap,
+    "/location/<code>/commitment/table": disbursementsTreemap,
     "/location/<code>/commitment/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
