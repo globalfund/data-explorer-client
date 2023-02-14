@@ -1,7 +1,6 @@
 import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
-import findIndex from "lodash/findIndex";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
@@ -41,6 +40,12 @@ function Row(props: {
   const classes = useRowStyles();
   const [open, setOpen] = React.useState(false);
 
+  const firstColumnWidth = props.columns.length > 3 ? "30%" : "";
+  const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;
+  const columnWidthCalc = `${props.columns.length > 3 ? "70%" : "100%"} / ${
+    props.columns.length
+  }`;
+
   return (
     <React.Fragment>
       <TableRow
@@ -74,18 +79,15 @@ function Row(props: {
       >
         {filter(
           props.columns,
-          (c, index) => props.visibleColumnsIndexes.indexOf(index) > -1
+          (_c, index) => props.visibleColumnsIndexes.indexOf(index) > -1
         ).map((column: SimpleTableColumn, index: number) => (
           <TableCell
             key={column.key}
             css={`
               ${tablecell}
-              width: calc(${props.columns.length > 3 ? "70%" : "100%"} / ${props
-                .columns.length});
+              width: calc(${columnWidthCalc});
               ${index === 0
-                ? `padding-left: ${props.paddingLeft || 40}px;width: ${
-                    props.columns.length > 3 ? "30%" : ""
-                  }`
+                ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth}`
                 : ""}
             `}
           >
@@ -220,7 +222,7 @@ export function SimpleTable(props: SimpleTableProps) {
             <TableRow>
               {filter(
                 props.columns,
-                (c, index) => visibleColumnsIndexes.indexOf(index) > -1
+                (_c, index) => visibleColumnsIndexes.indexOf(index) > -1
               ).map((column: SimpleTableColumn, index: number) => {
                 let icon = undefined;
                 if (sortBySplits.length > 1 && sortBySplits[0] === column.key) {

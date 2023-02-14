@@ -2,7 +2,6 @@
 import React from "react";
 import get from "lodash/get";
 import { useTitle, useDebounce } from "react-use";
-import Pagination from "@material-ui/lab/Pagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";

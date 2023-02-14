@@ -34,7 +34,6 @@ interface GrantsModuleProps {
 }
 
 export default function GrantsModule(props: GrantsModuleProps) {
-  const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
 
   useTitle(

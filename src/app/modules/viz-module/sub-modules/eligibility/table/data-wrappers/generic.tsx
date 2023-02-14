@@ -91,7 +91,7 @@ export function GenericEligibilityWrapper() {
   const [,] = useDebounce(() => reloadData(), 500, [search]);
 
   const handleChangePage = (
-    event: React.MouseEvent<HTMLButtonElement> | null,
+    _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
     setPage(newPage);
