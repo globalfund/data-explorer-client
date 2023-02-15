@@ -617,27 +617,29 @@ export function exportCSV(
       };
     case "/viz/eligibility":
       if (options.isDetail) {
-        filter(data, (comp: any) => comp.id.trim().length > 0).forEach(
-          (comp: any) => {
-            comp.data.forEach((item: any) => {
-              csvData.push({
-                year: item.x,
-                component: item.y,
-                incomeLevel: get(
-                  incomeLevels,
-                  `[${item.incomeLevel}]`,
-                  item.incomeLevel
-                ),
-                diseaseBurden: get(
-                  diseaseBurdens,
-                  `[${item.diseaseBurden}]`,
-                  item.diseaseBurden
-                ),
-                eligibility: item.eligibility,
-              });
+        filter(
+          data,
+          (comp: any) =>
+            comp.id.toString() !== "dummy1" && comp.id.toString() !== "dummy2"
+        ).forEach((comp: any) => {
+          comp.data.forEach((item: any) => {
+            csvData.push({
+              year: item.x,
+              component: item.y,
+              incomeLevel: get(
+                incomeLevels,
+                `[${item.incomeLevel}]`,
+                item.incomeLevel
+              ),
+              diseaseBurden: get(
+                diseaseBurdens,
+                `[${item.diseaseBurden}]`,
+                item.diseaseBurden
+              ),
+              eligibility: item.eligibility,
             });
-          }
-        );
+          });
+        });
         return {
           data: csvData,
           filename: "location-eligibility.csv",
@@ -672,27 +674,19 @@ export function exportCSV(
       };
     case "/viz/eligibility/table":
       if (options.isDetail) {
-        filter(data, (comp: any) => comp.id.trim().length > 0).forEach(
-          (comp: any) => {
-            comp.data.forEach((item: any) => {
-              csvData.push({
-                year: item.x,
-                component: item.y,
-                incomeLevel: get(
-                  incomeLevels,
-                  `[${item.incomeLevel}]`,
-                  item.incomeLevel
-                ),
-                diseaseBurden: get(
-                  diseaseBurdens,
-                  `[${item.diseaseBurden}]`,
-                  item.diseaseBurden
-                ),
-                eligibility: item.eligibility,
-              });
-            });
-          }
-        );
+        data.forEach((item: any) => {
+          csvData.push({
+            year: item.x,
+            component: item.y,
+            incomeLevel: get(
+              incomeLevels,
+              `[${item.incomeLevel}]`,
+              item.incomeLevel
+            ),
+            diseaseBurden: get(diseaseBurdens, `[${item.diseaseBurden}]`, ""),
+            eligibility: item.eligibility,
+          });
+        });
         return {
           data: csvData,
           filename: "location-eligibility.csv",
