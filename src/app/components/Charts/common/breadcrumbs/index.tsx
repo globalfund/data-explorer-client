@@ -7,7 +7,7 @@ import { breadCrumbItems } from "app/state/recoil/atoms";
 export default function BreadCrumbs() {
   const history = useHistory();
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-  console.log(breadCrumbList, "list");
+
   return (
     <div
       css={`

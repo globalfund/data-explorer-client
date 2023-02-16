@@ -112,7 +112,7 @@ export default function GrantDetail() {
   } else {
     pushValue = 500 - widthThreshold;
   }
-  console.log(pushValue, "pushvalue");
+
   function isToolboxOvervlayVisible() {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
@@ -159,7 +159,6 @@ export default function GrantDetail() {
       }
     }
   }, [grantInfoData]);
-  console.log(grantInfoData, "info");
 
   return (
     <div
