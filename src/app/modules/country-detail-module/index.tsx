@@ -182,6 +182,11 @@ export default function CountryDetail() {
       ]);
     }
   }, [locationInfoData]);
+  const tabs = countryDetailTabs;
+
+  if (params.code.length > 3) {
+    tabs[3].tabs = tabs[3].tabs?.slice(0, 1);
+  }
 
   return (
     <div
@@ -198,6 +203,7 @@ export default function CountryDetail() {
       {loading && <PageLoader />}
       <PageHeader
         isDetail
+        tabs={tabs}
         title={locationInfoData.locationName}
         breadcrumbs={[
           { name: "Home", link: "/" },
@@ -209,11 +215,6 @@ export default function CountryDetail() {
             name: locationInfoData.locationName,
           },
         ]}
-        tabs={
-          params.code.length === 3
-            ? countryDetailTabs
-            : countryDetailTabs.slice(0, countryDetailTabs.length - 1)
-        }
       />
       <PageTopSpacer />
       {isMobile && (
