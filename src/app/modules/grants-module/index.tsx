@@ -1,11 +1,13 @@
 /* third-party */
-import React, { useEffect } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
+import { useRecoilState } from "recoil";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   useTitle,
@@ -17,6 +19,7 @@ import {
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { GrantListItemModel } from "app/modules/grants-module/data";
@@ -26,10 +29,6 @@ import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { useLocation } from "react-router-dom";
 
 interface GrantsModuleProps {
   code?: string;
@@ -110,6 +109,17 @@ export default function GrantsModule(props: GrantsModuleProps) {
     }
   };
 
+  React.useEffect(() => {
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: "Grant Implementation: Grants",
+        path: location.pathname,
+        id: v4(),
+      },
+    ]);
+  }, []);
+
   useEffectOnce(() => {
     reloadData();
     document.body.style.background = "#fff";
@@ -160,17 +170,6 @@ export default function GrantsModule(props: GrantsModuleProps) {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-
-  useEffect(() => {
-    setBreadCrumList([
-      { name: "Datasets", path: "/", id: v4() },
-      {
-        name: "Grant Implementation: Grants",
-        path: location.pathname,
-        id: v4(),
-      },
-    ]);
-  }, []);
 
   return (
     <div
