@@ -1,6 +1,6 @@
 import React from "react";
 import find from "lodash/find";
-import remove from "lodash/remove";
+import filter from "lodash/filter";
 import { ProjectPalette } from "app/theme";
 import { css } from "styled-components/macro";
 import { NavLink, useLocation, useParams } from "react-router-dom";
@@ -86,6 +86,10 @@ const styles = {
       border-radius: 0px 15px 0px 0px;
     }
 
+    :first-of-type:last-of-type {
+      border-radius: 15px 15px 0px 0px;
+    }
+
     @media (hover: hover) and (pointer: fine) {
       &:hover {
         background: #262c34;
@@ -121,12 +125,12 @@ const styles = {
 
 export function RouteTab(props: RouteTabProps) {
   if (props.onlyLink) {
-    return <NavLink to={props.url}>{props.name}</NavLink>;
+    return <NavLink to={props.url || ""}>{props.name}</NavLink>;
   }
 
   return (
     <li css={styles.tabcss(props.isActive)}>
-      <NavLink to={props.url}>{props.name}</NavLink>
+      <NavLink to={props.url || ""}>{props.name}</NavLink>
     </li>
   );
 }
@@ -140,23 +144,29 @@ function formatTabUrlWithParams(
     period: string;
     vizType: string;
   }
-) {
-  const link = `${tab.url
+): TabProps {
+  const tabs = tab.tabs?.map((t: TabProps) =>
+    formatTabUrlWithParams(t, search, params)
+  );
+  const link = `${(tab.url || "")
     .replace("<code>", params.code)
     .replace("<period>", params.period)}${search}`;
-  const urlsplits = tab.url.split("/");
+  const urlsplits = (tab.url || "").split("/");
   let index = params.period ? 4 : 3;
   let indexParam: "vizType" | "tab" = "vizType";
   if (urlsplits[1] === "results") {
     index = 2;
     indexParam = "tab";
   }
-  const isActive = urlsplits[index] === params[indexParam];
+  const isActive =
+    urlsplits[index] === params[indexParam] ||
+    Boolean(find(tabs || [], { isActive: true }));
 
   return {
     ...tab,
     url: link,
     isActive,
+    tabs,
   };
 }
 
@@ -173,8 +183,31 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
       formatTabUrlWithParams(tab, location.search, params)
     )
   );
-  const [shownTabs, setShownTabs] = React.useState(tabsWithParams.slice(0, 5));
-  const [moreTabs, setMoreTabs] = React.useState(tabsWithParams.slice(5));
+
+  React.useEffect(() => {
+    setTabsWithParams(
+      props.tabs.map((tab: TabProps) =>
+        formatTabUrlWithParams(tab, location.search, params)
+      )
+    );
+  }, [props.tabs, location.search, params]);
+
+  return (
+    <div css={styles.container(location.pathname)}>
+      <ul css={styles.tabsList}>
+        {tabsWithParams.map((tab: TabProps) =>
+          tab.tabs ? (
+            <PageHeaderTabWDropdown key={tab.name} {...tab} />
+          ) : (
+            <RouteTab key={tab.name} {...tab} />
+          )
+        )}
+      </ul>
+    </div>
+  );
+}
+
+function PageHeaderTabWDropdown(props: TabProps) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
@@ -185,71 +218,41 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
     setAnchorEl(null);
   }
 
-  React.useEffect(() => {
-    setTabsWithParams(
-      props.tabs.map((tab: TabProps) =>
-        formatTabUrlWithParams(tab, location.search, params)
-      )
-    );
-  }, [props.tabs, location.search, params]);
-
-  React.useEffect(() => {
-    const updShownTabs = tabsWithParams.slice(0, 5);
-    const updMoreTabs = tabsWithParams.slice(5);
-
-    const fMoreTabToMove = find(updMoreTabs, { url: location.pathname });
-    if (fMoreTabToMove) {
-      const shownTabToMove = updShownTabs.pop();
-      remove(updMoreTabs, { url: location.pathname });
-      updShownTabs.push(fMoreTabToMove);
-      if (shownTabToMove) {
-        updMoreTabs.unshift(shownTabToMove);
-      }
-    }
-
-    setShownTabs(updShownTabs);
-    setMoreTabs(updMoreTabs);
-  }, [location.pathname, tabsWithParams]);
-
   return (
-    <div css={styles.container(location.pathname)}>
-      <ul css={styles.tabsList}>
-        {shownTabs.map((tab: TabProps) => (
-          <RouteTab key={tab.name} {...tab} />
-        ))}
-        {moreTabs.length > 0 && (
-          <li css={styles.tabcss(Boolean(anchorEl))} onClick={handleClick}>
-            <div>
-              More <KeyboardArrowDownIcon />
-            </div>
-          </li>
-        )}
-      </ul>
-      {moreTabs.length > 0 && (
-        <StyledMenu
-          keepMounted
-          disableScrollLock
-          anchorEl={anchorEl}
-          onClose={handleClose}
-          open={Boolean(anchorEl)}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          css={`
-            && {
-              .MuiMenu-paper {
-                min-width: 120px;
-              }
+    <React.Fragment>
+      <li
+        css={styles.tabcss(Boolean(anchorEl) || props.isActive)}
+        onClick={handleClick}
+      >
+        <div>
+          {props.name} <KeyboardArrowDownIcon />
+        </div>
+      </li>
+      <StyledMenu
+        keepMounted
+        disableScrollLock
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        open={Boolean(anchorEl)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        css={`
+          && {
+            .MuiMenu-paper {
+              min-width: 120px;
             }
-          `}
-          id="page-header-more-tabs"
-        >
-          {moreTabs.map((tab: TabProps) => (
+          }
+        `}
+        id="page-header-more-tabs"
+      >
+        {(filter(props.tabs || [], (t: TabProps) => t.url) as TabProps[]).map(
+          (tab: TabProps) => (
             <StyledMenuItem
               disableRipple
               key={tab.name}
@@ -259,6 +262,16 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
 
                 > a {
                   background: #c7cdd1;
+
+                  ${tab.isActive &&
+                  `
+                  color: #fff;
+                  font-weight: bold;
+                  background: #262c34;
+                  transition: background 0.2s ease-in-out;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                    sans-serif;
+                  `}
 
                   @media (min-width: 768px) {
                     &:hover {
@@ -275,9 +288,9 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
             >
               <RouteTab key={tab.name} onlyLink {...tab} />
             </StyledMenuItem>
-          ))}
-        </StyledMenu>
-      )}
-    </div>
+          )
+        )}
+      </StyledMenu>
+    </React.Fragment>
   );
 }
