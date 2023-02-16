@@ -127,13 +127,7 @@ export default function DocumentsModule() {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
+      <BreadCrumbs />
       <PageHeader
         title="Documents"
         breadcrumbs={[

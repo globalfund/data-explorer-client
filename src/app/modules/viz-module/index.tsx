@@ -133,13 +133,7 @@ export default function VizModule() {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
+      <BreadCrumbs />
       <PageHeader
         title={params.vizType.replace("-", " & ")}
         breadcrumbs={[

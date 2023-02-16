@@ -22,7 +22,7 @@ interface PageHeaderProps {
 const styles = {
   container: css`
     left: 0;
-    top: 48px;
+    top: 104px;
     z-index: 10;
     width: 100vw;
     display: flex;

@@ -143,13 +143,7 @@ export default function ResultsModule() {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
+      <BreadCrumbs />
       <PageHeader
         title="Results"
         breadcrumbs={[

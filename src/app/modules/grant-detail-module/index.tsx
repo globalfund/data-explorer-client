@@ -165,13 +165,7 @@ export default function GrantDetail() {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
+      <BreadCrumbs />
       <PageHeader
         isDetail
         title={grantInfoData.title}

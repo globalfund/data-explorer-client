@@ -194,13 +194,7 @@ export default function CountryDetail() {
         justify-content: center;
       `}
     >
-      <div
-        css={`
-          margin-top: 3rem;
-        `}
-      >
-        <BreadCrumbs />
-      </div>
+      <BreadCrumbs />
       {loading && <PageLoader />}
       <PageHeader
         isDetail
