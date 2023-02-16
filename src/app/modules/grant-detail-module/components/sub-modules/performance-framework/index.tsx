@@ -25,7 +25,6 @@ interface Props {
 export function PerformanceFrameworkModule(props: Props) {
   useTitle("The Data Explorer - Grant Targets and Results");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -130,11 +129,9 @@ export function PerformanceFrameworkModule(props: Props) {
       vizComponent = (
         <NetworkViz
           data={{ nodes, links }}
-          // selectedNodeId={vizSelected}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             setVizLevel(1);
             setVizSelected(node);
-            setVizTranslation({ x: x * -1, y: y * -1 });
           }}
         />
       );

@@ -2,13 +2,15 @@ import React from "react";
 import get from "lodash/get";
 import isEqual from "lodash/isEqual";
 import { ResetIcon } from "app/assets/icons/Reset";
-import IconButton from "@material-ui/core/IconButton";
+import Button from "@material-ui/core/Button";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
 import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
+import { useRecoilState } from "recoil";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
@@ -16,9 +18,8 @@ interface ToolBoxPanelFiltersProps {
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
-  const [expandedGroup, setExpandedGroup] =
-    React.useState<FilterGroupProps | null>(null);
 
+  const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
 
@@ -27,6 +28,13 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       actions.setAll(defaultAppliedFilters);
     }
   }
+
+  const options = React.useMemo(() => {
+    if (expandedGroup) {
+      return get(filterOptions, expandedGroup.name, []);
+    }
+    return [];
+  }, [filterOptions, expandedGroup]);
 
   if (props.groups.length === 0) {
     return <React.Fragment />;
@@ -69,7 +77,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       `}
     >
       {!expandedGroup && (
-        <React.Fragment>
+        <div>
           <div
             css={`
               display: flex;
@@ -84,9 +92,15 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
             `}
           >
             <b>Filters</b>
-            <IconButton onClick={resetAllFilters}>
-              <ResetIcon />
-            </IconButton>
+            <Button
+              endIcon={<ResetIcon />}
+              onClick={resetAllFilters}
+              css={`
+                text-transform: capitalize;
+              `}
+            >
+              Reset filters
+            </Button>
           </div>
           {props.groups.map((group: FilterGroupProps) => (
             <FilterGroup
@@ -96,15 +110,24 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               expandGroup={() => setExpandedGroup(group)}
             />
           ))}
-        </React.Fragment>
+        </div>
       )}
-      {expandedGroup && (
-        <ExpandedFilterGroup
-          {...expandedGroup}
-          goBack={() => setExpandedGroup(null)}
-          options={get(filterOptions, expandedGroup.name, [])}
-        />
-      )}
+      <div
+        css={`
+          transition: height 2s ease;
+          height: ${expandedGroup ? "calc(100% - 8px)" : "0"};
+        `}
+      >
+        {expandedGroup ? (
+          <ExpandedFilterGroup
+            {...expandedGroup}
+            goBack={() => setExpandedGroup(null)}
+            options={options}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
     </div>
   );
 }

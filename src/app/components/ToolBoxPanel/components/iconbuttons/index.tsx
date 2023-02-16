@@ -53,8 +53,8 @@ const locationsToNotShowImageExport = [
   "/results",
 ];
 
-const locationsToNotShowExport = [
-  "/viz/documents",
+export const locationsToNotShowExport = [
+  "/documents",
   "/location/<code>/documents",
 ];
 

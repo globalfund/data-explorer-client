@@ -5,12 +5,12 @@ import { useUpdateEffect } from "react-use";
 import { cmsDataAtom } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
-interface useCMSDataProps {
+interface UseCMSDataProps {
   loadData?: boolean;
   returnData?: boolean;
 }
 
-export function useCMSData(props: useCMSDataProps) {
+export function useCMSData(props: UseCMSDataProps) {
   const [cmsData, setCMSData] = useRecoilState(cmsDataAtom);
 
   // COMPONENTS
@@ -308,15 +308,11 @@ export function useCMSData(props: useCMSDataProps) {
     items.forEach((item) => {
       let filteredData = {};
       Object.keys(item.data).forEach((key: string) => {
-        if (currentLanguage === "en" && key.indexOf("_") === -1) {
+        const currentLanguageWUnderscore = `_${currentLanguage}`;
+        if (key.indexOf(currentLanguageWUnderscore) > -1) {
           filteredData = {
             ...filteredData,
-            [key]: get(item.data, `${key}`, ""),
-          };
-        } else if (key.indexOf(`_${currentLanguage}`) > -1) {
-          filteredData = {
-            ...filteredData,
-            [`${key.replace(`_${currentLanguage}`, "")}`]: get(
+            [`${key.replace(currentLanguageWUnderscore, "")}`]: get(
               item.data,
               `${key}`,
               ""

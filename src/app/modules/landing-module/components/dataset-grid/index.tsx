@@ -87,7 +87,7 @@ function GridItem(props: {
               }
             `}
           >
-            {props.iconLinks.map((iconLink, index) => (
+            {props.iconLinks.map((iconLink) => (
               <Link to={iconLink.link} key={iconLink.link}>
                 {iconLink.icon}
               </Link>

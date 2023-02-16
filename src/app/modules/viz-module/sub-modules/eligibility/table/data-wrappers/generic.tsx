@@ -1,7 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle, useUpdateEffect } from "react-use";
+import TablePagination from "@material-ui/core/TablePagination";
+import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
@@ -29,6 +30,9 @@ function getTableData(data: DotChartModel[]): SimpleTableRow[] {
 export function GenericEligibilityWrapper() {
   useTitle("The Data Explorer - Eligibility");
 
+  const [search, setSearch] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("");
+
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelEligibilityYearState.value
   );
@@ -41,6 +45,8 @@ export function GenericEligibilityWrapper() {
     (state) => get(state.Eligibility.data, "data", []) as DotChartModel[]
   );
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = React.useState<SimpleTableRow[]>(
     getTableData(data)
   );
@@ -63,16 +69,40 @@ export function GenericEligibilityWrapper() {
     fetchYearOptionsData({});
   }, []);
 
-  React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
+  function reloadData() {
+    const filterString = getAPIFormattedFilters(appliedFilters, {
+      search,
+      sortBy,
+    });
     fetchData({
       filterString: `aggregateBy=${aggregateBy}&periods=${selectedYear}${
         filterString.length > 0 ? `&${filterString}` : ""
       }`,
     });
-  }, [aggregateBy, appliedFilters, selectedYear]);
+  }
+
+  React.useEffect(
+    () => reloadData(),
+    [aggregateBy, appliedFilters, selectedYear, sortBy]
+  );
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
+
+  const [,] = useDebounce(() => reloadData(), 500, [search]);
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   if (isLoading) {
     return <PageLoader />;
@@ -115,8 +145,12 @@ export function GenericEligibilityWrapper() {
       </div>
       <div css="width: 100%;height: 25px;" />
       <EligibilityTable
-        data={tableData}
+        search={search}
+        sortBy={sortBy}
+        data={tableData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
         isLoading={isLoading}
+        setSearch={setSearch}
+        setSortBy={setSortBy}
         columns={[
           {
             name:
@@ -127,6 +161,24 @@ export function GenericEligibilityWrapper() {
           },
           { name: "Status", key: "status" },
         ]}
+      />
+      <TablePagination
+        page={page}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        css={`
+          @media (min-width: 768px) {
+            .MuiTablePagination-toolbar {
+              padding-left: 40px;
+            }
+            .MuiTablePagination-spacer {
+              display: none;
+            }
+          }
+        `}
       />
     </React.Fragment>
   );

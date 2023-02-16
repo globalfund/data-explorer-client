@@ -303,7 +303,12 @@ export function AppBar() {
                   {openSearch && (
                     <Search hocClose={() => setOpenSearch(false)} />
                   )}
-                  <IconButton onClick={() => setOpenSearch(!openSearch)}>
+                  <IconButton
+                    onClick={() => setOpenSearch(!openSearch)}
+                    css={`
+                      margin-right: -12px;
+                    `}
+                  >
                     {openSearch ? (
                       <CloseIcon htmlColor="#fff" />
                     ) : (

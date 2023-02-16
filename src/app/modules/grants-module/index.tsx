@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
+import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
@@ -40,7 +41,7 @@ interface GrantsModuleProps {
 export default function GrantsModule(props: GrantsModuleProps) {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   useTitle(
     `${get(cmsData, "modulesGrants.titleStart", "")}${

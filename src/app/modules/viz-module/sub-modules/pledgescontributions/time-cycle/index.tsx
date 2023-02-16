@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -21,9 +20,8 @@ interface Props {
 
 export function PledgesContributionsTimeCycleModule(props: Props) {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
+
   const [vizLevel, setVizLevel] = React.useState(0);
-  // const [vizScale, setVizScale] = React.useState(1);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -86,42 +84,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
     fetchData({ filterString });
   }, [appliedFilters]);
 
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const viz = document.getElementById("pledges-contributions-time-cycle");
-  //     if (viz) {
-  //       const svgs = viz.getElementsByTagName("svg");
-  //       if (svgs.length > 1) {
-  //         const pathElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "path"
-  //         );
-  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-  //         pathElement.setAttribute("stroke", "#13183F");
-  //         pathElement.setAttribute("strokeWidth", "1");
-
-  //         const patternElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "pattern"
-  //         );
-  //         patternElement.setAttribute("id", "diagonalHatch");
-  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-  //         patternElement.setAttribute("width", "4");
-  //         patternElement.setAttribute("height", "4");
-  //         patternElement.appendChild(pathElement);
-
-  //         const defsElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "defs"
-  //         );
-  //         defsElement.appendChild(patternElement);
-
-  //         svgs[1].appendChild(defsElement);
-  //       }
-  //     }
-  //   }, 1000);
-  // }, []);
-
   useUpdateEffect(() => {
     if (vizSelected) {
       const splits = vizSelected.split("-");
@@ -149,12 +111,10 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
         <PledgesContributionsTimeCycle
           data={data}
           vizCompData={vizCompData}
-          // selectedNodeId={vizSelected}
           setVizCompData={setVizCompData}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             setVizLevel(1);
             setVizSelected(node);
-            setVizTranslation({ x: x * -1, y: 0 });
           }}
         />
       );
@@ -189,17 +149,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
                 if (splits.length > 2) {
                   const newSelected = `${value}-${splits[2]}`;
                   setVizSelected(newSelected);
-                  const fVizNodeComp = find(
-                    vizCompData,
-                    (item: any) =>
-                      `${item.data.indexValue}-${item.data.id}` === newSelected
-                  ) as any;
-                  if (fVizNodeComp) {
-                    setVizTranslation({
-                      x: (fVizNodeComp.x - 100) * -1,
-                      y: 0,
-                    });
-                  }
                 }
               }}
             />
@@ -211,17 +160,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
                 if (splits.length > 2) {
                   const newSelected = `${splits[0]}-${splits[1]}-${value}`;
                   setVizSelected(newSelected);
-                  const fVizNodeComp = find(
-                    vizCompData,
-                    (item: any) =>
-                      `${item.data.indexValue}-${item.data.id}` === newSelected
-                  ) as any;
-                  if (fVizNodeComp) {
-                    setVizTranslation({
-                      x: (fVizNodeComp.x - 100) * -1,
-                      y: 0,
-                    });
-                  }
                 }
               }}
             />

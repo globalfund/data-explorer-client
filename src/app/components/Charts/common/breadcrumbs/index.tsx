@@ -1,12 +1,11 @@
 import React from "react";
-import RightIcon from "@material-ui/icons/ChevronRight";
-import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
-import { BreadCrumbItem, breadCrumbItems } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
+import RightIcon from "@material-ui/icons/ChevronRight";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 export default function BreadCrumbs() {
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-
   const history = useHistory();
   return (
     <div
@@ -33,7 +32,6 @@ export default function BreadCrumbs() {
           border: 1px solid white;
         }
         width: 100vw;
-
         @media (min-width: 1280px) {
           max-width: 1280px;
         }

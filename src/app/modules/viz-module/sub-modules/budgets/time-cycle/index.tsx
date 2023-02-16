@@ -151,8 +151,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       vizComponent = (
         <BudgetsTimeCycle
           data={props.data}
-          // selectedNodeId={props.vizSelected}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             setBreadCrumbList([
               ...breadCrumbList,
               {
@@ -177,7 +176,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
             xsTooltipData={xsTooltipData}
             data={props.dataDrilldownLevel1}
             setXsTooltipData={setXsTooltipData}
-            onNodeClick={(node: string, x: number, y: number) => {
+            onNodeClick={(node: string) => {
               setBreadCrumbList([
                 ...breadCrumbList,
                 {
@@ -201,7 +200,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           tooltipValueLabel="Budget"
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             if (props.drilldownVizSelected) {
               const idSplits = props.drilldownVizSelected.split("-");
               let code = node

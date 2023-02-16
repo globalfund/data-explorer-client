@@ -35,6 +35,7 @@ export default function GrantDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
@@ -117,8 +118,6 @@ export default function GrantDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const breadCrumbId = useMemo(() => v4(), []);
 
   React.useEffect(() => {

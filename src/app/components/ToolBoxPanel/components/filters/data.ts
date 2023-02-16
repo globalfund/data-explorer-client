@@ -263,6 +263,11 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
+  "/viz/eligibility/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
   "/viz/pledges-contributions/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
@@ -406,6 +411,10 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) => fg.name === "Components"
   ),
   "/location/<code>/eligibility": filter(
+    filtergroups,
+    (fg: FilterGroupProps) => fg.name === "Components"
+  ),
+  "/location/<code>/eligibility/table": filter(
     filtergroups,
     (fg: FilterGroupProps) => fg.name === "Components"
   ),

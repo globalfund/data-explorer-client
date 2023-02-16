@@ -2,7 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
-import { useUpdateEffect } from "react-use";
+import { useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -53,6 +53,9 @@ function getTableData(data: DisbursementsTreemapDataItem[]): SimpleTableRow[] {
 }
 
 export function GrantDetailInvestmentsTableWrapper(props: Props) {
+  const [search, setSearch] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("");
+
   const data = useStoreState(
     (state) =>
       get(
@@ -73,19 +76,40 @@ export function GrantDetailInvestmentsTableWrapper(props: Props) {
     (state) => state.GrantDetailDisbursementsTreemap.loading
   );
 
-  React.useEffect(() => {
+  function reloadData() {
     if (props.code) {
-      fetchData({
-        filterString: `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`,
-      });
+      let filterString = `grantId='${props.code}'&IPnumber=${props.implementationPeriod}`;
+      if (search) {
+        filterString += `&q=${search}`;
+      }
+      if (sortBy) {
+        filterString += `&sortBy=${sortBy}`;
+      }
+      fetchData({ filterString });
     }
-  }, [props.code, props.implementationPeriod]);
+  }
+
+  React.useEffect(
+    () => reloadData(),
+    [props.code, props.implementationPeriod, sortBy]
+  );
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
+
+  const [,] = useDebounce(() => reloadData(), 500, [search]);
 
   if (isLoading) {
     return <PageLoader />;
   }
 
-  return <InvestmentsTable data={tableData} isLoading={isLoading} />;
+  return (
+    <InvestmentsTable
+      data={tableData}
+      search={search}
+      sortBy={sortBy}
+      isLoading={isLoading}
+      setSearch={setSearch}
+      setSortBy={setSortBy}
+    />
+  );
 }

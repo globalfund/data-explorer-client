@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 import { v4 } from "uuid";
 
 import get from "lodash/get";
-import { Pagination } from "@material-ui/lab";
-import { useMediaQuery } from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import TablePagination from "@material-ui/core/TablePagination";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -36,7 +36,9 @@ export default function DocumentsModule() {
     (state) =>
       get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
   );
-  const [page, setPage] = React.useState(1);
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const isLoading = useStoreState((state) => state.Documents.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -70,6 +72,20 @@ export default function DocumentsModule() {
     500,
     [search]
   );
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
@@ -152,43 +168,40 @@ export default function DocumentsModule() {
         `}
         ref={vizWrapperRef}
       >
-        {isSmallScreen ? (
-          <>
-            <DocumentsSubModule
-              data={data.slice((page - 1) * 9, page * 9)}
-              search={search}
-              setSearch={setSearch}
-              columns={["Location", "Documents"]}
-            />
-            <div>
-              <Pagination
-                css={`
-                  display: flex;
-                  justify-content: center;
-                `}
-                count={Math.ceil(data.length / 9)}
-                boundaryCount={Math.ceil(data.length / 18)}
-                page={page}
-                onChange={(event, val) => setPage(val)}
-              />
-            </div>
-            <div
-              css={`
-                width: 100%;
-                height: 25px;
+        <DocumentsSubModule
+          data={data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+          search={search}
+          setSearch={setSearch}
+          columns={["Location", "Documents"]}
+        />
+        <TablePagination
+          page={page}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          css={`
+            @media (min-width: 768px) {
+              .MuiTablePagination-toolbar {
+                padding-left: 40px;
+              }
+              .MuiTablePagination-spacer {
+                display: none;
+              }
+            }
+          `}
+        />
+        {isSmallScreen && (
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
 
-                @media (max-width: 767px) {
-                  height: 150px;
-                }
-              `}
-            />
-          </>
-        ) : (
-          <DocumentsSubModule
-            data={data}
-            search={search}
-            setSearch={setSearch}
-            columns={["Location", "Documents"]}
+              @media (max-width: 767px) {
+                height: 150px;
+              }
+            `}
           />
         )}
       </div>

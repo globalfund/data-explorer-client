@@ -108,42 +108,6 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     }, 1000);
   }, [props.data]);
 
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const viz = document.getElementById("investments-time-cycle");
-  //     if (viz) {
-  //       const svgs = viz.getElementsByTagName("svg");
-  //       if (svgs.length > 1) {
-  //         const pathElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "path"
-  //         );
-  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-  //         pathElement.setAttribute("stroke", "#13183F");
-  //         pathElement.setAttribute("strokeWidth", "1");
-
-  //         const patternElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "pattern"
-  //         );
-  //         patternElement.setAttribute("id", "diagonalHatch");
-  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-  //         patternElement.setAttribute("width", "4");
-  //         patternElement.setAttribute("height", "4");
-  //         patternElement.appendChild(pathElement);
-
-  //         const defsElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "defs"
-  //         );
-  //         defsElement.appendChild(patternElement);
-
-  //         svgs[1].appendChild(defsElement);
-  //       }
-  //     }
-  //   }, 100);
-  // }, []);
-
   const Bars = (bprops: any) => {
     return bprops.bars.map((bar: any) => (
       <BarComponent
@@ -189,7 +153,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
         <Grid
           container
           alignItems="center"
-          spacing={!isMobile ? 4 : 2}
+          spacing={!isMobile ? 0 : 2}
           css={`
             > div {
               color: #262c34;
@@ -374,7 +338,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 indexBy="year"
                 margin={{
                   top: !isMobile ? 60 : 20,
-                  right: !isMobile ? 30 : 70,
+                  right: !isMobile ? 0 : 70,
                   bottom: 50,
                   left: 70,
                 }}
