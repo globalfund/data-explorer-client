@@ -208,7 +208,12 @@ export function InvestmentsDisbursedModule(
         <DisbursementsTreemap
           data={treemapData}
           selectedNodeId={props.vizSelected}
-          onNodeClick={(node: string, x: number, y: number, code?: string) => {
+          onNodeClick={(
+            node: string,
+            _x: number,
+            _y: number,
+            code?: string
+          ) => {
             if (props.allowDrilldown) {
               props.setVizLevel(1);
               props.setVizSelected(node);
@@ -223,7 +228,7 @@ export function InvestmentsDisbursedModule(
         <DisbursementsTreemap
           isDrilldownTreemap
           data={props.drilldownData}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             const idSplits = node.split("-");
             const code = getIso3FromName(idSplits[1]);
             addDataPathSteps([

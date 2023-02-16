@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
@@ -34,6 +35,7 @@ interface GrantsModuleProps {
 
 export default function GrantsModule(props: GrantsModuleProps) {
   const cmsData = useCMSData({ returnData: true });
+
   useTitle(
     `${get(cmsData, "modulesGrants.titleStart", "")}${
       props.detailFilterType

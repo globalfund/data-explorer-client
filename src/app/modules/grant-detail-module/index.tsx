@@ -29,6 +29,7 @@ export default function GrantDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
@@ -106,8 +107,6 @@ export default function GrantDetail() {
     return 0;
   }
 
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
-
   return (
     <div
       css={`
@@ -134,6 +133,7 @@ export default function GrantDetail() {
         ]}
         tabs={grantDetailTabs}
       />
+
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>

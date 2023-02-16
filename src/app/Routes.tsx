@@ -25,9 +25,11 @@ const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const ResultsModule = lazy(() => import("app/modules/results-module"));
+const SitemapModule = lazy(() => import("app/modules/sitemap-module"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
+
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
   () => import("app/modules/country-detail-module")
@@ -45,18 +47,16 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
       )
       .then((response: AxiosResponse) => {
         if (response.data.data && response.data.data.length > 0) {
+          let param = "overview";
+          if (props.match.params.vizType) {
+            if (props.match.params.subType) {
+              param = `${props.match.params.vizType}/${props.match.params.subType}`;
+            } else {
+              param = props.match.params.vizType;
+            }
+          }
           history.replace(
-            `/grant/${props.match.params.code}/${
-              response.data.data[0].number
-            }/${
-              props.match.params.vizType
-                ? `${props.match.params.vizType}${
-                    props.match.params.subType
-                      ? `/${props.match.params.subType}`
-                      : ""
-                  }`
-                : "overview"
-            }`
+            `/grant/${props.match.params.code}/${response.data.data[0].number}/${param}`
           );
         } else {
           history.replace(`/grant/${props.match.params.code}/1/overview`);
@@ -107,6 +107,9 @@ export function MainRoutes() {
           <DocumentsModule />
         </Route>
 
+        <Route exact path="/get-sitemap">
+          <SitemapModule />
+        </Route>
         <Route exact path="/viz/:vizType/:subType?">
           <VizModule />
         </Route>

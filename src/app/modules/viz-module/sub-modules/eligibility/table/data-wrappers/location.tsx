@@ -1,8 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import filter from "lodash/filter";
-import { useTitle, useUpdateEffect } from "react-use";
+import TablePagination from "@material-ui/core/TablePagination";
+import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -12,38 +12,19 @@ import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility
 import {
   diseaseBurdens,
   EligibilityScatterplotDataItemModel,
-  EligibilityScatterplotDataModel,
   incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 
 function getTableData(
-  data: EligibilityScatterplotDataModel[]
+  data: EligibilityScatterplotDataItemModel[]
 ): SimpleTableRow[] {
-  const updatedTableData: SimpleTableRow[] = [];
-  filter(
-    data,
-    (item: EligibilityScatterplotDataModel) =>
-      item.id.toString() !== "dummy1" && item.id.toString() !== "dummy2"
-  ).forEach((item: EligibilityScatterplotDataModel) => {
-    item.data.forEach((subItem: EligibilityScatterplotDataItemModel) => {
-      updatedTableData.push({
-        year: subItem.x,
-        component: item.id,
-        incomeLevel: get(
-          incomeLevels,
-          `[${subItem.incomeLevel}]`,
-          subItem.incomeLevel
-        ),
-        diseaseBurden: get(
-          diseaseBurdens,
-          `[${subItem.diseaseBurden}]`,
-          subItem.diseaseBurden
-        ),
-        status: subItem.eligibility,
-      });
-    });
-  });
-  return updatedTableData;
+  return data.map((item: EligibilityScatterplotDataItemModel) => ({
+    year: item.x,
+    component: item.y,
+    incomeLevel: get(incomeLevels, `[${item.incomeLevel}]`, item.incomeLevel),
+    diseaseBurden: get(diseaseBurdens, `[${item.diseaseBurden}]`, ""),
+    status: item.eligibility,
+  }));
 }
 
 interface Props {
@@ -53,15 +34,20 @@ interface Props {
 export function LocationEligibilityTableWrapper(props: Props) {
   useTitle("The Data Explorer - Location Eligibility");
 
+  const [search, setSearch] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("");
+
   const data = useStoreState(
     (state) =>
       get(
         state.EligibilityCountry.data,
         "data",
         []
-      ) as EligibilityScatterplotDataModel[]
+      ) as EligibilityScatterplotDataItemModel[]
   );
 
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = React.useState<SimpleTableRow[]>(
     getTableData(data)
   );
@@ -72,35 +58,83 @@ export function LocationEligibilityTableWrapper(props: Props) {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
-  React.useEffect(() => {
+  function reloadData() {
     const filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
             locations: [...appliedFilters.locations, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { search, sortBy }
     );
-    fetchData({ filterString });
-  }, [props.code, appliedFilters]);
+    fetchData({
+      filterString: `${filterString}${
+        filterString.length > 0 ? "&" : ""
+      }view=table`,
+    });
+  }
+
+  React.useEffect(() => reloadData(), [props.code, appliedFilters, sortBy]);
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
+
+  const [,] = useDebounce(() => reloadData(), 500, [search]);
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   if (isLoading) {
     return <PageLoader />;
   }
 
   return (
-    <EligibilityTable
-      data={tableData}
-      isLoading={isLoading}
-      columns={[
-        { name: "Year", key: "year" },
-        { name: "Component", key: "component" },
-        { name: "Income Level", key: "incomeLevel" },
-        { name: "Disease Burden", key: "diseaseBurden" },
-        { name: "Status", key: "status" },
-      ]}
-    />
+    <>
+      <EligibilityTable
+        search={search}
+        sortBy={sortBy}
+        data={tableData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+        isLoading={isLoading}
+        setSearch={setSearch}
+        setSortBy={setSortBy}
+        columns={[
+          { name: "Year", key: "year" },
+          { name: "Component", key: "component" },
+          { name: "Income Level", key: "incomeLevel" },
+          { name: "Disease Burden", key: "diseaseBurden" },
+          { name: "Status", key: "status" },
+        ]}
+      />
+
+      <TablePagination
+        page={page}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        css={`
+          @media (min-width: 768px) {
+            .MuiTablePagination-toolbar {
+              padding-left: 40px;
+            }
+            .MuiTablePagination-spacer {
+              display: none;
+            }
+          }
+        `}
+      />
+    </>
   );
 }

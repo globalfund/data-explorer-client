@@ -2,9 +2,9 @@
 import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
-import orderBy from "lodash/orderBy";
+import { useDebounce, useTitle } from "react-use";
 import { Feature, FeatureCollection } from "geojson";
-import { useTitle, useUpdateEffect } from "react-use";
+import TablePagination from "@material-ui/core/TablePagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { SimpleTable } from "app/components/Table/Simple";
@@ -46,7 +46,7 @@ function getTableData(
       });
     });
   }
-  return orderBy(updatedTableData, "name", "asc");
+  return updatedTableData;
 }
 
 export function PledgesContributionsTable() {
@@ -76,6 +76,10 @@ export function PledgesContributionsTable() {
     (state) => state.ToolBoxPanelDonorMapViewState.value
   );
 
+  const [page, setPage] = React.useState(0);
+  const [search, setSearch] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [tableData, setTableData] = React.useState<SimpleTableRow[]>([]);
 
   const fetchData = useStoreActions(
@@ -90,30 +94,76 @@ export function PledgesContributionsTable() {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
-  React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
+  function reloadData() {
+    const filterString = getAPIFormattedFilters(appliedFilters, {
+      search,
+      sortBy,
+    });
     fetchData({
       filterString: `valueType=${valueType}${
         filterString.length > 0 ? `&${filterString}` : ""
       }`,
     });
-  }, [valueType, appliedFilters]);
+  }
+
+  React.useEffect(() => reloadData(), [valueType, appliedFilters, sortBy]);
 
   React.useEffect(() => {
     setTableData(getTableData({ layers, pins }, view));
   }, [data, view]);
+
+  const [,] = useDebounce(() => reloadData(), 500, [search]);
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   if (isLoading) {
     return <PageLoader />;
   }
 
   return (
-    <SimpleTable
-      rows={tableData}
-      columns={[
-        { name: "Donor", key: "name" },
-        { name: `${valueType} (USD)`, key: "value" },
-      ]}
-    />
+    <>
+      <SimpleTable
+        title="Pledges & Contributions"
+        search={search}
+        sortBy={sortBy}
+        rows={tableData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+        onSearchChange={setSearch}
+        onSortByChange={setSortBy}
+        columns={[
+          { name: "Donor", key: "name" },
+          { name: `${valueType} (USD)`, key: "value" },
+        ]}
+      />
+      <TablePagination
+        page={page}
+        component="div"
+        count={tableData.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        css={`
+          @media (min-width: 768px) {
+            .MuiTablePagination-toolbar {
+              padding-left: 40px;
+            }
+            .MuiTablePagination-spacer {
+              display: none;
+            }
+          }
+        `}
+      />
+    </>
   );
 }

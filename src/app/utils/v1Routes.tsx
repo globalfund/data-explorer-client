@@ -133,13 +133,8 @@ export function V1RouteRedirections() {
 function PartnerRedirect(props: any) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
   const [partnerId, setPartnerId] = React.useState<string | null>(null);
-  const {
-    location,
-    component,
-    partnerName,
-    grant_status,
-    partner_type,
-  } = props.match.params;
+  const { location, component, partnerName, grant_status, partner_type } =
+    props.match.params;
 
   React.useEffect(() => {
     const options = filterOptions?.["Partner Types"];
@@ -256,12 +251,8 @@ function DonorRedirect(props: any) {
 function InvestmentsRedirect(props: any) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
   const [partnerTypes, setPartnerTypes] = React.useState<string | null>(null);
-  const {
-    location,
-    component,
-    grant_status,
-    partner_type,
-  } = props.match.params;
+  const { location, component, grant_status, partner_type } =
+    props.match.params;
 
   React.useEffect(() => {
     const options = filterOptions?.["Partner Types"];
@@ -308,12 +299,8 @@ function InvestmentsRedirect(props: any) {
 function InvestmentsLocationRedirect(props: any) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
   const [partnerTypes, setPartnerTypes] = React.useState<string | null>(null);
-  const {
-    location,
-    component,
-    grant_status,
-    partner_type,
-  } = props.match.params;
+  const { location, component, grant_status, partner_type } =
+    props.match.params;
 
   React.useEffect(() => {
     const options = filterOptions?.["Partner Types"];

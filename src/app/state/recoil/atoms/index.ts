@@ -1,7 +1,14 @@
-import { atom, RecoilState } from "recoil";
+import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 
 const { persistAtom } = recoilPersist();
+
+export interface BreadCrumbItem {
+  name: string;
+  path: string;
+  id: string;
+}
 
 export const cmsDataAtom = atom({
   key: "cmsDataAtom",
@@ -33,4 +40,14 @@ export const cmsDataAtom = atom({
     modulesGrants: {},
   },
   effects_UNSTABLE: [persistAtom],
+});
+
+export const filterExpandedGroup = atom<FilterGroupProps | null>({
+  key: "filterExpandedGroup",
+  default: null,
+});
+
+export const breadCrumbItems = atom<BreadCrumbItem[]>({
+  key: "breadCrumbItems",
+  default: [],
 });

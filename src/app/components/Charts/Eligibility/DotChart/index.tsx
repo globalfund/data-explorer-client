@@ -7,7 +7,6 @@ import CloseIcon from "@material-ui/icons/Close";
 import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
 import useMousePosition from "app/hooks/useMousePosition";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { EligibilityType } from "app/components/Charts/Eligibility/Scatterplot/data";
 import {
@@ -33,7 +32,6 @@ const styles = {
 export function DotChart(props: DotChartProps) {
   const cmsData = useCMSData({ returnData: true });
   const { x, y } = useMousePosition();
-  const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: string;
     status: EligibilityType;
@@ -94,7 +92,7 @@ export function DotChart(props: DotChartProps) {
           </div>
         </div>
       )}
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid
           item
           container
@@ -458,16 +456,7 @@ export function DotChart(props: DotChartProps) {
             }
           `}
         />
-        <Grid
-          item
-          container
-          sm={12}
-          md={10}
-          spacing={!isMobile ? 4 : 2}
-          css={`
-            padding-bottom: 50px !important;
-          `}
-        >
+        <Grid item container sm={12} md={10} spacing={2}>
           {props.data.length === 0 ? (
             <React.Fragment>
               <NoDataLabel />
@@ -490,10 +479,11 @@ export function DotChart(props: DotChartProps) {
                     </div>
                     <div
                       css={`
-                        gap: 24px;
+                        row-gap: 24px;
                         display: flex;
                         flex-wrap: wrap;
-                        padding-left: 5px;
+                        column-gap: 12px;
+                        padding-left: 20px;
                         border-left: 1px solid #acafbc;
 
                         > * {

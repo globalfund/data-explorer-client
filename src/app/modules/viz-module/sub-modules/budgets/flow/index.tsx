@@ -159,12 +159,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             nodes: props.nodes,
             links: props.links,
           }}
-          // selectedNodeId={props.vizSelected.id}
-          onNodeClick={(
-            node: { id: string; filterStr: string },
-            x: number,
-            y: number
-          ) => {
+          onNodeClick={(node: { id: string; filterStr: string }) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
           }}
@@ -178,7 +173,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           xsTooltipData={xsTooltipData}
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             props.setVizLevel(2);
             props.setDrilldownVizSelected({
               id: node,
@@ -195,7 +190,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           tooltipValueLabel="Budget"
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected.id}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             if (props.drilldownVizSelected.id) {
               const idSplits = props.drilldownVizSelected.id.split("-");
               let code = node
