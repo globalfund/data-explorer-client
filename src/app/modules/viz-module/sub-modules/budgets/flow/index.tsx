@@ -2,7 +2,9 @@
 import React, { useState } from "react";
 import find from "lodash/find";
 import { v4 } from "uuid";
+import sumBy from "lodash/sumBy";
 
+import filter from "lodash/filter";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
@@ -18,6 +20,8 @@ import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/da
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { useRecoilState } from "recoil";
 import { breadCrumbItems } from "app/state/recoil/atoms";
+import { Grid } from "@material-ui/core";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -71,6 +75,11 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+
+  const totalBudget = sumBy(
+    filter(props.links, { source: "Budgets" }),
+    "value"
   );
 
   React.useEffect(() => {
@@ -268,13 +277,21 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           }
         />
       )}
-      {(props.vizLevel > 0 || dataPathSteps.length > 1) && (
-        <VizBackBtn
-          vizLevel={props.vizLevel}
-          setVizLevel={props.setVizLevel}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
-        />
-      )}
+      <Grid
+        item
+        xs={12}
+        sm={2}
+        css="font-size: 12px !important; color: #262C34; margin-top: -9px;"
+      >
+        <b>Budget</b>
+        <p
+          css={`
+            margin-top: -6px;
+          `}
+        >
+          {formatFinancialValue(totalBudget)}
+        </p>
+      </Grid>
       {vizComponent}
     </div>
   );

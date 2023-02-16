@@ -113,6 +113,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   const legends = getLegendItems(props.data.nodes);
   const [xsTooltipData, setXsTooltipData] =
     React.useState<MobileBudgetsFlowTooltipProps | null>(null);
+
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
     "value"
@@ -136,21 +137,6 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         position: relative;
       `}
     >
-      <Grid
-        item
-        xs={12}
-        sm={2}
-        css="font-size: 12px !important; color: #262C34; margin-top: -9px;"
-      >
-        <b>Budget</b>
-        <p
-          css={`
-            margin-top: -6px;
-          `}
-        >
-          {formatFinancialValue(totalBudget)}
-        </p>
-      </Grid>
       <Grid
         container
         css={header}
