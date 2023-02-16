@@ -247,13 +247,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           }
         />
       )}
-      {(props.vizLevel > 0 || dataPathSteps.length > 1) && (
-        <VizBackBtn
-          vizLevel={props.vizLevel}
-          setVizLevel={props.setVizLevel}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
-        />
-      )}
+
       {vizComponent}
     </div>
   );

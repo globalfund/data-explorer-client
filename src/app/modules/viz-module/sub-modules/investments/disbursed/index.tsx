@@ -320,13 +320,6 @@ export function InvestmentsDisbursedModule(
           }
         `}
       >
-        {props.vizLevel > 0 && (
-          <VizBackBtn
-            vizLevel={props.vizLevel}
-            setVizLevel={props.setVizLevel}
-            setOpenToolboxPanel={props.setOpenToolboxPanel}
-          />
-        )}
         {vizComponent}
       </div>
     </React.Fragment>
