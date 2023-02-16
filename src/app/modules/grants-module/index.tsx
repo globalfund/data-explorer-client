@@ -160,7 +160,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
     } else if (widthThreshold < 0) {
       pushValue = 0;
     } else {
-      pushValue = 400 - widthThreshold;
+      pushValue = 500 - widthThreshold;
     }
   }
 

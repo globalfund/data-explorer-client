@@ -7,7 +7,7 @@ import { breadCrumbItems } from "app/state/recoil/atoms";
 export default function BreadCrumbs() {
   const history = useHistory();
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-
+  console.log(breadCrumbList, "list");
   return (
     <div
       css={`
@@ -29,18 +29,19 @@ export default function BreadCrumbs() {
           padding-bottom: 12px;
           height: 56px;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+          overflow-y: auto;
           &::-webkit-scrollbar {
-            width: 0.1em;
-            visibility: hidden;
+            width: 0em !important;
+            display: none;
           }
           &::-webkit-scrollbar-track {
             box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.3);
-            visibility: hidden;
+            visibility: hidden !important;
           }
           &::-webkit-scrollbar-thumb {
             background-color: white;
             border-radius: 0px;
-            border: 1px solid white;
+            border: 0;
           }
           width: 100vw;
           @media (min-width: 1280px) {

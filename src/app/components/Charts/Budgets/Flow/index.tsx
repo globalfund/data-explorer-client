@@ -140,7 +140,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         item
         xs={12}
         sm={2}
-        css="font-size: 12px !important; color: #262C34;"
+        css="font-size: 12px !important; color: #262C34; margin-top: -9px;"
       >
         <b>Budget</b>
         <p
@@ -158,7 +158,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         spacing={!isMobile ? 4 : undefined}
       >
         {!isMobile && (
-          <Grid item xs={12} sm={10}>
+          <Grid item xs={12} sm={10} md={12}>
             <div
               css={`
                 gap: 24px;
@@ -186,7 +186,6 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                     align-items: center;
                     flex-direction: row;
                     font-weight: normal;
-
                     > * {
                       @supports (-webkit-touch-callout: none) and
                         (not (translate: none)) {

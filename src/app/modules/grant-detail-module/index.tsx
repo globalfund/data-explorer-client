@@ -110,9 +110,9 @@ export default function GrantDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 500 - widthThreshold;
   }
-
+  console.log(pushValue, "pushvalue");
   function isToolboxOvervlayVisible() {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
@@ -122,37 +122,44 @@ export default function GrantDetail() {
 
   React.useEffect(() => {
     if (grantInfoData) {
-      if (breadCrumbList.find((list) => list.name == "Datasets")) {
-        setBreadCrumList([
-          ...breadCrumbList.filter(
-            (item) =>
-              item.id !== breadCrumbId &&
-              item.path !== location.pathname &&
-              item.name !== grantInfoData.title
-          ),
-
-          {
-            name: grantInfoData.title,
-            path: location.pathname,
-            id: breadCrumbId,
-          },
-        ]);
-      } else {
+      if (breadCrumbList.length === 0) {
         setBreadCrumList([
           {
             name: "Datasets",
             path: "/",
-            id: v4(),
+            id: breadCrumbId,
           },
+
           {
             name: grantInfoData.title,
             path: location.pathname,
             id: v4(),
           },
         ]);
+      } else {
+        if (!breadCrumbList.find((list) => list.id === breadCrumbId)) {
+          setBreadCrumList([
+            {
+              name: "Datasets",
+              path: "/",
+              id: v4(),
+            },
+            {
+              name: "Grant Implementation: Grants",
+              path: "/grants",
+              id: v4(),
+            },
+            {
+              name: grantInfoData.title,
+              path: location.pathname,
+              id: v4(),
+            },
+          ]);
+        }
       }
     }
   }, [grantInfoData]);
+  console.log(grantInfoData, "info");
 
   return (
     <div

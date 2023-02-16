@@ -111,7 +111,7 @@ export default function ResultsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 500 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
