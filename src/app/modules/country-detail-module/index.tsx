@@ -182,6 +182,7 @@ export default function CountryDetail() {
       ]);
     }
   }, [locationInfoData]);
+
   const tabs = countryDetailTabs;
 
   if (params.code.length > 3) {

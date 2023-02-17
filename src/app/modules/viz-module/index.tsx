@@ -120,8 +120,26 @@ export default function VizModule() {
         ];
       }
     });
-  }, [vizType, location.pathname]);
+  }, [vizType]);
 
+  useEffect(() => {
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+
+      {
+        name:
+          vizType === "Pledges-contributions"
+            ? `Resource Mobilization: ${vizType} `
+            : vizType === ("Eligibility" || "Allocations")
+            ? `Access to funding: ${vizType}`
+            : `Grant Implementation: ${vizType} `,
+        path: location.pathname,
+        id: v4(),
+        vizSelected: undefined,
+        vizLevel: 0,
+      },
+    ]);
+  }, [params.subType]);
   return (
     <div
       css={`

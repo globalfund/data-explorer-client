@@ -292,7 +292,8 @@ export function InvestmentsDisbursedModule(
                 font-weight: bold;
                 align-items: center;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
+                font-size: 12px;
+                margin-top: -10px;
                 > svg {
                   margin-left: 10px;
                 }
@@ -300,7 +301,7 @@ export function InvestmentsDisbursedModule(
             >
               Investments - {props.type || "Disbursement"} <InfoIcon />
             </div>
-            <div css="font-weight: normal;">
+            <div css="font-weight: normal; margin-top: -6px;">
               {formatFinancialValue(totalValue)}
             </div>
           </Grid>
