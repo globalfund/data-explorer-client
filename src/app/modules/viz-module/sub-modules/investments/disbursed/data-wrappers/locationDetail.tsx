@@ -57,6 +57,7 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
       default:
         compData = state.LocationDetailDisbursementsTreemap.data;
     }
+
     return get(compData, "data", []) as DisbursementsTreemapDataItem[];
   });
   const isLoading = useStoreState((state) => {
@@ -73,6 +74,7 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   });
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const [appliedFiltersCopy, setAppliedFiltersCopy] = useState(appliedFilters);
 
   function goToGrantDetail(code: string) {
     let clickthroughPath = "signed/treemap";
@@ -89,15 +91,18 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   }
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
-      props.code
-        ? {
-            ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
-          }
-        : appliedFilters
-    );
-    fetchData({ filterString });
+    if (appliedFiltersCopy !== appliedFilters) {
+      const filterString = getAPIFormattedFilters(
+        props.code
+          ? {
+              ...appliedFilters,
+              locations: [...appliedFilters.locations, props.code],
+            }
+          : appliedFilters
+      );
+      fetchData({ filterString });
+      setAppliedFiltersCopy(appliedFilters);
+    }
   }, [props.code, appliedFilters, props.type]);
 
   return (

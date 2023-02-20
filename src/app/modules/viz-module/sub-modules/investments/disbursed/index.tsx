@@ -192,7 +192,7 @@ export function InvestmentsDisbursedModule(
     }
   }, [props.data]);
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
     setTreemapData(
       filterDisbursements(props.data, toolboxPanelDisbursementsSliderValues)
     );

@@ -57,11 +57,10 @@ export const APIModel = <QueryModel, ResponseModel>(
           },
         }
       )
-      .then(
-        (resp: AxiosResponse) =>
-          actions.onSuccess({ ...resp.data, addOnData: false }),
-        (error: any) => actions.onError(error.response)
-      );
+      .then((resp: AxiosResponse) => {
+        actions.onSuccess({ ...resp.data, addOnData: false }),
+          (error: any) => actions.onError(error.response);
+      });
   }),
   setData: action((state, payload: any) => {
     state.data = payload;

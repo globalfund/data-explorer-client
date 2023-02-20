@@ -1,5 +1,5 @@
 /* third-party */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import get from "lodash/get";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
@@ -42,6 +42,7 @@ export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [subTypeCopy, setSubTypeCopy] = useState(params.subType);
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
@@ -95,7 +96,7 @@ export default function VizModule() {
 
           {
             name: list[list.length - 1]?.name || "",
-            path: "#",
+            path: location.pathname,
             id: v4(),
             vizLevel: list[list.length - 1]?.vizLevel,
             vizSelected: list[list.length - 1]?.vizSelected,
@@ -122,24 +123,30 @@ export default function VizModule() {
     });
   }, [vizType]);
 
-  useEffect(() => {
-    setBreadCrumList([
-      { name: "Datasets", path: "/", id: v4() },
+  React.useEffect(() => {
+    if (params.subType !== subTypeCopy) {
+      setBreadCrumList((list) => {
+        return [
+          { name: "Datasets", path: "/", id: v4() },
 
-      {
-        name:
-          vizType === "Pledges-contributions"
-            ? `Resource Mobilization: ${vizType} `
-            : vizType === ("Eligibility" || "Allocations")
-            ? `Access to funding: ${vizType}`
-            : `Grant Implementation: ${vizType} `,
-        path: location.pathname,
-        id: v4(),
-        vizSelected: undefined,
-        vizLevel: 0,
-      },
-    ]);
+          {
+            name:
+              vizType === "Pledges-contributions"
+                ? `Resource Mobilization: ${vizType} `
+                : vizType === ("Eligibility" || "Allocations")
+                ? `Access to funding: ${vizType}`
+                : `Grant Implementation: ${vizType} `,
+            path: location.pathname,
+            id: v4(),
+            vizSelected: undefined,
+            vizLevel: 0,
+          },
+        ];
+      });
+      setSubTypeCopy(params.subType);
+    }
   }, [params.subType]);
+
   return (
     <div
       css={`
