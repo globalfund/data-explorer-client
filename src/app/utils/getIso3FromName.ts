@@ -1087,7 +1087,7 @@ export const countryList = [
     iso3: "TJK",
   },
   {
-    name: "Tanzania, United Republic of",
+    name: "Tanzania (United Republic)",
     iso2: "TZ",
     iso3: "TZA",
   },
