@@ -7,7 +7,6 @@ import { breadCrumbItems } from "app/state/recoil/atoms";
 export default function BreadCrumbs() {
   const history = useHistory();
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-
   return (
     <div
       css={`
@@ -53,63 +52,64 @@ export default function BreadCrumbs() {
           }
         `}
       >
-        {breadCrumbList.map((item, index) => (
-          <div
-            css={`
-              display: flex;
-              gap: 5px;
-              align-items: center;
-            `}
-            key={item.id}
-          >
-            <button
+        {breadCrumbList &&
+          breadCrumbList.map((item, index) => (
+            <div
               css={`
-                background: ${index === breadCrumbList.length - 1
-                  ? "#495057"
-                  : "#868e96"};
-                height: 32px;
-                padding: 13px 12px;
-                border-radius: 20px;
-                font-size: 14px;
-                font-weight: 700;
-                color: #fff;
-                text-align: center;
                 display: flex;
+                gap: 5px;
                 align-items: center;
-                border: none;
-                outline: none;
-                width: max-content;
-                /* padding: 0 2rem; */
-                cursor: pointer;
-                :hover,
-                :active,
-                :focus {
-                  background: #495057;
-                }
               `}
-              type="button"
-              onClick={() => {
-                if (item.path !== "#") {
-                  history.push(item.path);
-                }
-                setBreadCrumbList([...breadCrumbList.slice(0, index + 1)]);
-              }}
+              key={item?.id}
             >
-              <b>{item.name}</b>
-            </button>
-            {index === breadCrumbList.length - 1 ? null : (
-              <div
+              <button
                 css={`
-                  color: #495057;
+                  background: ${index === breadCrumbList.length - 1
+                    ? "#495057"
+                    : "#868e96"};
+                  height: 32px;
+                  padding: 13px 12px;
+                  border-radius: 20px;
+                  font-size: 14px;
+                  font-weight: 700;
+                  color: #fff;
+                  text-align: center;
                   display: flex;
                   align-items: center;
+                  border: none;
+                  outline: none;
+                  width: max-content;
+                  /* padding: 0 2rem; */
+                  cursor: pointer;
+                  :hover,
+                  :active,
+                  :focus {
+                    background: #495057;
+                  }
                 `}
+                type="button"
+                onClick={() => {
+                  if (item?.path !== "#") {
+                    history.push(item.path);
+                  }
+                  setBreadCrumbList([...breadCrumbList.slice(0, index + 1)]);
+                }}
               >
-                <RightIcon color="inherit" />
-              </div>
-            )}
-          </div>
-        ))}
+                <b>{item?.name}</b>
+              </button>
+              {index === breadCrumbList.length - 1 ? null : (
+                <div
+                  css={`
+                    color: #495057;
+                    display: flex;
+                    align-items: center;
+                  `}
+                >
+                  <RightIcon color="inherit" />
+                </div>
+              )}
+            </div>
+          ))}
       </div>
     </div>
   );

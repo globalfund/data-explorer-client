@@ -48,10 +48,6 @@ export default function CountryDetail() {
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
-  const breadCrumbId = useMemo(() => v4(), []);
-
-  const { search: searchQuery } = useLocation();
-  const searchParam = queryString.parse(searchQuery);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
@@ -156,9 +152,13 @@ export default function CountryDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-
+  const prevViz = useMemo(() => breadCrumbList[1], []);
   useEffect(() => {
-    if (breadCrumbList.length < 1) {
+    if (
+      breadCrumbList.length < 1 ||
+      prevViz === undefined ||
+      location.pathname == `/location/${params.code}/overview`
+    ) {
       setBreadCrumList([
         { name: "Datasets", path: "/", id: v4() },
 
@@ -170,15 +170,14 @@ export default function CountryDetail() {
       ]);
     } else {
       setBreadCrumList([
-        ...breadCrumbList.filter(
-          (item) => item.id !== breadCrumbId && item.path !== location.pathname
-        ),
+        { name: "Datasets", path: "/", id: v4() },
 
         {
-          name: searchParam.components || locationInfoData.locationName,
-          path: location.pathname,
-          id: breadCrumbId,
+          name: locationInfoData.locationName,
+          path: `/location/${params.code}/overview`,
+          id: v4(),
         },
+        prevViz,
       ]);
     }
   }, [locationInfoData]);

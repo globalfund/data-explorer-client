@@ -58,3 +58,9 @@ export const filterExpandedGroup = atom<FilterGroupProps | null>({
   key: "filterExpandedGroup",
   default: null,
 });
+
+export const selectedViewAtom = atom<string>({
+  key: "selectedViewAtom",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
+});
