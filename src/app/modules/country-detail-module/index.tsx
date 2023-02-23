@@ -1,6 +1,7 @@
 /* third-party */
 import React, { useEffect, useMemo } from "react";
 import get from "lodash/get";
+import { startCase } from "lodash";
 import { useRecoilState } from "recoil";
 import { v4 } from "uuid";
 import { useMediaQuery } from "@material-ui/core";
@@ -152,7 +153,39 @@ export default function CountryDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-  const prevViz = useMemo(() => breadCrumbList[1], []);
+  const vizTypePretext = (vizType: string) => {
+    vizType = startCase(vizType);
+
+    return vizType === "Pledges-contributions"
+      ? `Resource Mobilization: ${vizType} `
+      : vizType === "Allocations"
+      ? `Access to funding: ${vizType}`
+      : vizType === "Eligibility"
+      ? `Access to funding: ${vizType}`
+      : vizType === "Documents"
+      ? vizType
+      : vizType === "Results"
+      ? vizType
+      : `Grant Implementation: ${vizType} `;
+  };
+
+  const [prevVizState, setPrevVizState] = React.useState(breadCrumbList[1]);
+  const prevViz = useMemo(() => {
+    if (prevVizState !== breadCrumbList[1]) {
+      setPrevVizState({
+        name: vizTypePretext(params.vizType),
+        path: location.pathname,
+        id: v4(),
+      });
+      return {
+        name: vizTypePretext(params.vizType),
+        path: location.pathname,
+        id: v4(),
+      };
+    }
+    return prevVizState;
+  }, [location.pathname]);
+
   useEffect(() => {
     if (
       breadCrumbList.length < 1 ||
@@ -180,7 +213,7 @@ export default function CountryDetail() {
         prevViz,
       ]);
     }
-  }, [locationInfoData]);
+  }, [locationInfoData, prevViz]);
 
   const tabs = countryDetailTabs;
 

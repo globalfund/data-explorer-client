@@ -91,18 +91,18 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   }
 
   React.useEffect(() => {
-    if (appliedFiltersCopy !== appliedFilters) {
-      const filterString = getAPIFormattedFilters(
-        props.code
-          ? {
-              ...appliedFilters,
-              locations: [...appliedFilters.locations, props.code],
-            }
-          : appliedFilters
-      );
-      fetchData({ filterString });
-      setAppliedFiltersCopy(appliedFilters);
-    }
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({ filterString });
+    setAppliedFiltersCopy(appliedFilters);
+    // if (appliedFiltersCopy !== appliedFilters) {
+    // }
   }, [props.code, appliedFilters, props.type]);
 
   return (
