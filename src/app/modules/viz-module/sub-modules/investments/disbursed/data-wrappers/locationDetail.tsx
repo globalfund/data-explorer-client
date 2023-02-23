@@ -101,8 +101,6 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
     );
     fetchData({ filterString });
     setAppliedFiltersCopy(appliedFilters);
-    // if (appliedFiltersCopy !== appliedFilters) {
-    // }
   }, [props.code, appliedFilters, props.type]);
 
   return (
