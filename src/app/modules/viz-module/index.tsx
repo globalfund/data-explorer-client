@@ -80,22 +80,22 @@ export default function VizModule() {
     .slice(0, 1)
     .toUpperCase()}${params.vizType.slice(1)}`;
 
-  const vizTypePretext = (vizType: string) => {
-    vizType = startCase(vizType);
+  const vizTypePretext = (value: string) => {
+    const localVizType = startCase(value);
 
-    switch (vizType) {
+    switch (localVizType) {
       case "Pledges-contributions":
-        return `Resource Mobilization: ${vizType} `;
+        return `Resource Mobilization: ${localVizType} `;
       case "Allocations":
-        return `Access to funding: ${vizType}`;
+        return `Access to funding: ${localVizType}`;
       case "Eligibility":
-        return `Access to funding: ${vizType}`;
+        return `Access to funding: ${localVizType}`;
       case "Documents":
         return "Documents";
       case "Results":
         return "Results";
       default:
-        return `Grant Implementation: ${vizType} `;
+        return `Grant Implementation: ${localVizType} `;
     }
   };
 
@@ -134,24 +134,16 @@ export default function VizModule() {
 
   React.useEffect(() => {
     if (params.subType !== subTypeCopy) {
-      setBreadCrumList((list) => {
-        return [
-          { name: "Datasets", path: "/", id: v4() },
-
-          {
-            name:
-              vizType === "Pledges-contributions"
-                ? `Resource Mobilization: ${vizType} `
-                : vizType === ("Eligibility" || "Allocations")
-                ? `Access to funding: ${vizType}`
-                : `Grant Implementation: ${vizType} `,
-            path: location.pathname,
-            id: v4(),
-            vizSelected: undefined,
-            vizLevel: 0,
-          },
-        ];
-      });
+      setBreadCrumList([
+        { name: "Datasets", path: "/", id: v4() },
+        {
+          name: vizTypePretext(vizType),
+          path: location.pathname,
+          id: v4(),
+          vizSelected: undefined,
+          vizLevel: 0,
+        },
+      ]);
       setSubTypeCopy(params.subType);
     }
   }, [params.subType]);
