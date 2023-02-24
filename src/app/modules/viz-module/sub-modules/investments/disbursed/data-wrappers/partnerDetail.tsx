@@ -1,5 +1,5 @@
 /* third-party */
-import React from "react";
+import React, { useState } from "react";
 import get from "lodash/get";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -7,6 +7,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 
 interface Props {
   code: string;
@@ -20,6 +21,16 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
+
+  const [reRouteDialog, setReRouteDialog] = useState<{
+    display: boolean;
+    code: string;
+    clickthroughPath?: string;
+  }>({
+    display: false,
+    code: "",
+    clickthroughPath: "",
+  });
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -70,6 +81,11 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
     } else if (props.type === "Disbursed") {
       clickthroughPath = "disbursements/treemap";
     }
+    setReRouteDialog({
+      display: true,
+      code,
+      clickthroughPath,
+    });
     history.push(`/grant/${code}/period/${clickthroughPath}`);
   }
 
@@ -86,21 +102,34 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   }, [props.code, appliedFilters, props.type]);
 
   return (
-    <InvestmentsDisbursedModule
-      data={data}
-      isPartnerDetail
-      type={props.type}
-      drilldownData={[]}
-      vizLevel={vizLevel}
-      isLoading={isLoading}
-      codeParam={props.code}
-      allowDrilldown={false}
-      setVizLevel={setVizLevel}
-      vizSelected={vizSelected}
-      isDrilldownLoading={false}
-      onNodeClick={goToGrantDetail}
-      setVizSelected={setVizSelected}
-      toolboxOpen={props.toolboxOpen}
-    />
+    <>
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(
+              `/grant/${reRouteDialog.code}/period/${reRouteDialog.clickthroughPath}`
+            )
+          }
+        />
+      )}
+      <InvestmentsDisbursedModule
+        data={data}
+        isPartnerDetail
+        type={props.type}
+        drilldownData={[]}
+        vizLevel={vizLevel}
+        isLoading={isLoading}
+        codeParam={props.code}
+        allowDrilldown={false}
+        setVizLevel={setVizLevel}
+        vizSelected={vizSelected}
+        isDrilldownLoading={false}
+        onNodeClick={goToGrantDetail}
+        setVizSelected={setVizSelected}
+        toolboxOpen={props.toolboxOpen}
+      />
+    </>
   );
 }

@@ -1,13 +1,18 @@
 /* third-party */
-import React from "react";
+import React, { useMemo } from "react";
+import { v4 } from "uuid";
 import get from "lodash/get";
+import { useRecoilState } from "recoil";
+
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
-import { Switch, Route, useParams } from "react-router-dom";
+import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
@@ -26,6 +31,7 @@ import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/s
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
+  const location = useLocation();
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -34,11 +40,13 @@ export default function GrantDetail() {
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
   );
+  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
     (store) => store.GrantDetailInfo.fetch
   );
+
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
       title: "",
@@ -68,6 +76,7 @@ export default function GrantDetail() {
 
   React.useEffect(() => {
     document.body.style.background = "#fff";
+
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
@@ -98,7 +107,7 @@ export default function GrantDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 500 - widthThreshold;
   }
 
   function isToolboxOvervlayVisible() {
@@ -106,6 +115,47 @@ export default function GrantDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+  const breadCrumbId = useMemo(() => v4(), []);
+
+  React.useEffect(() => {
+    if (grantInfoData) {
+      if (breadCrumbList.length === 0) {
+        setBreadCrumList([
+          {
+            name: "Datasets",
+            path: "/",
+            id: breadCrumbId,
+          },
+
+          {
+            name: grantInfoData.title,
+            path: location.pathname,
+            id: v4(),
+          },
+        ]);
+      } else {
+        if (!breadCrumbList.find((list) => list.id === breadCrumbId)) {
+          setBreadCrumList([
+            {
+              name: "Datasets",
+              path: "/",
+              id: v4(),
+            },
+            {
+              name: "Grant Implementation: Grants",
+              path: "/grants",
+              id: v4(),
+            },
+            {
+              name: grantInfoData.title,
+              path: location.pathname,
+              id: v4(),
+            },
+          ]);
+        }
+      }
+    }
+  }, [grantInfoData]);
 
   return (
     <div
@@ -118,6 +168,7 @@ export default function GrantDetail() {
         justify-content: center;
       `}
     >
+      <BreadCrumbs />
       <PageHeader
         isDetail
         title={grantInfoData.title}

@@ -1,6 +1,10 @@
 /* third-party */
-import React from "react";
+import React, { useState } from "react";
 import find from "lodash/find";
+import { v4 } from "uuid";
+import sumBy from "lodash/sumBy";
+
+import filter from "lodash/filter";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
@@ -10,9 +14,13 @@ import { DrilldownModelUpdated } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
+import { Grid } from "@material-ui/core";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -53,13 +61,24 @@ interface BudgetsFlowModuleProps {
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
+  const [reRouteDialog, setReRouteDialog] = useState({
+    display: false,
+    code: "",
+  });
+
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+
+  const totalBudget = sumBy(
+    filter(props.links, { source: "Budgets" }),
+    "value"
   );
 
   React.useEffect(() => {
@@ -160,6 +179,16 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             links: props.links,
           }}
           onNodeClick={(node: { id: string; filterStr: string }) => {
+            setBreadCrumbList([
+              ...breadCrumbList,
+              {
+                name: node.id,
+                path: location.pathname,
+                id: v4(),
+                vizLevel: 1,
+                vizSelected: node,
+              },
+            ]);
             props.setVizLevel(1);
             props.setVizSelected(node);
           }}
@@ -174,6 +203,19 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string) => {
+            setBreadCrumbList([
+              ...breadCrumbList,
+              {
+                name: node,
+                path: location.pathname,
+                id: v4(),
+                vizLevel: 2,
+                vizSelected: {
+                  id: node,
+                  filterStr: undefined,
+                },
+              },
+            ]);
             props.setVizLevel(2);
             props.setDrilldownVizSelected({
               id: node,
@@ -204,7 +246,10 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
                   path: `/grant/${code}/period/budgets/flow`,
                 },
               ]);
-              history.push(`/grant/${code}/period/budgets/flow`);
+              setReRouteDialog({
+                display: true,
+                code,
+              });
             }
           }}
         />
@@ -222,13 +267,30 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         }
       `}
     >
-      {(props.vizLevel > 0 || dataPathSteps.length > 1) && (
-        <VizBackBtn
-          vizLevel={props.vizLevel}
-          setVizLevel={props.setVizLevel}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(`/grant/${reRouteDialog.code}/period/budgets/flow`)
+          }
         />
       )}
+      <Grid
+        item
+        xs={12}
+        sm={2}
+        css="font-size: 12px !important; color: #262C34; margin-top: -9px;"
+      >
+        <b>Budget</b>
+        <p
+          css={`
+            margin-top: -6px;
+          `}
+        >
+          {formatFinancialValue(totalBudget)}
+        </p>
+      </Grid>
       {vizComponent}
     </div>
   );

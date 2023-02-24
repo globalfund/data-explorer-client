@@ -74,7 +74,8 @@ export function TreeemapNode(props: any) {
             `${node.data.code || node.id}-${node.data.tooltip.header}`,
             node.x + props.parentNodeCoords.x,
             node.y + props.parentNodeCoords.y,
-            node.data.code
+            node.data.code,
+            node.data.name
           );
         }
       }}
@@ -107,7 +108,8 @@ export function TreeemapNode(props: any) {
                 : "normal"};
               font-family: "GothamNarrow-${hasChildren || node.data._children
                   ? "Bold"
-                  : "Book"}", "Helvetica Neue", sans-serif;
+                  : "Book"}",
+                "Helvetica Neue", sans-serif;
             `}
           >
             {node.data.name}

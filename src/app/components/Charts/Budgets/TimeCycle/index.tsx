@@ -151,29 +151,6 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         `}
       >
         <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-          {!isMobile && (
-            <React.Fragment>
-              <div
-                css={`
-                  display: flex;
-                  font-size: 14px;
-                  font-weight: bold;
-                  align-items: center;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
-                  > svg {
-                    margin-left: 10px;
-                  }
-                `}
-              >
-                {get(cmsData, "componentsChartsBudgets.budget", "")}{" "}
-                <InfoIcon />
-              </div>
-              <div css="font-weight: normal;">
-                {formatFinancialValue(totalBudget)}
-              </div>
-            </React.Fragment>
-          )}
           {isMobile && (
             <Grid item xs={12} css="font-size: 12px !important;">
               <b>

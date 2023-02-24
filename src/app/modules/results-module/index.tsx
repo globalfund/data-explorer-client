@@ -1,22 +1,23 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
+import { v4 } from "uuid";
 import get from "lodash/get";
 import { useLocation } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { ResultListItemModel } from "app/modules/results-module/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import {
-  ResultListItemModel,
-  ResultsInfoContentStatsProps,
-} from "app/modules/results-module/data";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -26,6 +27,7 @@ export default function ResultsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelResultsYearState.value
@@ -106,7 +108,7 @@ export default function ResultsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 500 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -115,6 +117,17 @@ export default function ResultsModule() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+
+  useEffect(() => {
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: "Annual results",
+        path: location.pathname,
+        id: v4(),
+      },
+    ]);
+  }, []);
 
   return (
     <div
@@ -127,6 +140,7 @@ export default function ResultsModule() {
         justify-content: center;
       `}
     >
+      <BreadCrumbs />
       <PageHeader
         title="Results"
         breadcrumbs={[
