@@ -3,6 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import sum from "lodash/sum";
 import find from "lodash/find";
+import { appColors } from "app/theme";
 import uniqueId from "lodash/uniqueId";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
@@ -125,12 +126,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         track: {
           show: true,
           strokeWidth: "1px",
-          background: "#262C34",
+          background: appColors.ALLOCATIONS.RADIAL_TRACK_BACKGROUND_COLOR,
         },
         dataLabels: {
           name: {
             show: true,
-            color: "#262c34",
+            color: appColors.ALLOCATIONS.RADIAL_DATA_LABELS_COLOR,
             fontFamily: "GothamNarrow-Book",
           },
           value: {
@@ -508,10 +509,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           z-index: 1;
           cursor: pointer;
           transition: fill 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          fill: ${vizSelected === "Total" ? "#cfd4da" : "transparent"};
+          fill: ${vizSelected === "Total"
+            ? appColors.ALLOCATIONS.RADIAL_CENTER_LABEL_HOVER_COLOR
+            : "transparent"};
 
           &:hover {
-            fill: #cfd4da;
+            fill: ${appColors.ALLOCATIONS.RADIAL_CENTER_LABEL_HOVER_COLOR};
           }
         }
       `}
@@ -519,7 +522,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       <div
         css={`
           display: flex;
-          color: #262c34;
+          color: ${appColors.ALLOCATIONS.TEXT_COLOR};
           font-size: 14px;
           font-weight: bold;
           align-items: center;

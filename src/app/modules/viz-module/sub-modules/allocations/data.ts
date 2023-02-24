@@ -1,4 +1,5 @@
 import max from "lodash/max";
+import { appColors } from "app/theme";
 import { hexToRGBA } from "app/utils/hexToRGBA";
 
 export interface AllocationsProps {
@@ -31,13 +32,6 @@ export interface AllocationsRadialMobileTooltipProps {
   drilldown: () => void;
 }
 
-export const allocationmockdata: AllocationsProps = {
-  total: 37633989374.46,
-  values: [19273674061.22, 11694379284.57, 6665936028.67],
-  keys: ["HIV", "Malaria", "Tuberculosis"],
-  colors: ["#DFE3E6", "#868E96", "#ADB5BD"],
-};
-
 export function getKeysPercentages(
   total: number,
   values: number[]
@@ -48,7 +42,7 @@ export function getKeysPercentages(
     (value: number) => (value * 100) / (maxVal || total)
   );
   const colors = colorpercentages.map((value: number) =>
-    hexToRGBA("#1B2127", value / 100)
+    hexToRGBA(appColors.COMMON.SECONDARY_COLOR_17, value / 100)
   );
 
   return { percentages, colors };

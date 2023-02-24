@@ -7,6 +7,7 @@ import { useMediaQuery, Tooltip } from "@material-ui/core";
 import { NetworkVizProps } from "app/components/Charts/Network/data";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { AchievementRateLegend } from "app/components/Charts/Network/components/legends";
+import { appColors } from "app/theme";
 
 export function NetworkViz(props: NetworkVizProps) {
   const cmsData = useCMSData({ returnData: true });
@@ -24,7 +25,7 @@ export function NetworkViz(props: NetworkVizProps) {
             "path"
           );
           pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#262c34");
+          pathElement.setAttribute("stroke", appColors.COMMON.PRIMARY_COLOR_1);
           pathElement.setAttribute("strokeWidth", "0.5");
 
           const patternElement = document.createElementNS(
@@ -158,8 +159,8 @@ export function NetworkViz(props: NetworkVizProps) {
         strokeLinecap="round"
         stroke={
           props.selectedNodeId && props.selectedNodeId === link.source.id
-            ? "#262C34"
-            : "#DFE3E6"
+            ? appColors.COMMON.PRIMARY_COLOR_1
+            : appColors.COMMON.SECONDARY_COLOR_7
         }
       />
     ));
@@ -171,7 +172,7 @@ export function NetworkViz(props: NetworkVizProps) {
         <Grid item xs={12}>
           <div
             css={`
-              color: #262c34;
+              color: ${appColors.COMMON.PRIMARY_COLOR_1};
               font-weight: bold;
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
@@ -212,7 +213,7 @@ export function NetworkViz(props: NetworkVizProps) {
             iterations={150}
             linkThickness={1}
             motionDamping={12}
-            linkColor="#DFE3E6"
+            linkColor={appColors.NETWORK.GRAPH_LINK_COLOR}
             nodeBorderWidth={1}
             motionStiffness={160}
             nodes={props.data.nodes.length > 0 ? props.data.nodes : []}

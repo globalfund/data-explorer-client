@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 import { backCircleRadius } from "app/components/Charts/Eligibility/Scatterplot/components/node";
 import {
@@ -21,16 +22,16 @@ interface Props {
 
 const styles = {
   Eligible: css`
-    background: #11ad6b;
-    border: 1px solid #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_23};
+    border: 1px solid ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
   "Not Eligible": css`
-    background: #fa7355;
-    border: 1px dotted #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_15};
+    border: 1px dotted ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
   "Transition Funding": css`
-    background: #ffd646;
-    border: 1px dashed #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_18};
+    border: 1px dashed ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
 };
 
@@ -209,7 +210,7 @@ export function ScatterplotLegends(props: Props) {
                 bottom: 0;
                 position: absolute;
                 border-radius: 50%;
-                border: 1px solid #262c34;
+                border: 1px solid ${appColors.COMMON.PRIMARY_COLOR_1};
 
                 &:nth-of-type(1) {
                   width: ${backCircleRadius[6]}px;
@@ -228,7 +229,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -15px;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 }
                 &:nth-of-type(2) {
@@ -248,7 +249,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -22px;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 }
                 &:nth-of-type(3) {
@@ -268,7 +269,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -29px;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 }
                 &:nth-of-type(4) {
@@ -288,7 +289,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -37px;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 }
                 &:nth-of-type(5) {
@@ -308,7 +309,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -44px;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 }
                 &:nth-of-type(6) {
@@ -328,7 +329,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -52px;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 }
                 &:nth-of-type(7) {
@@ -348,7 +349,7 @@ export function ScatterplotLegends(props: Props) {
                     opacity: 0.2;
                     right: -59px;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 }
               }
@@ -418,8 +419,8 @@ export function ScatterplotLegends(props: Props) {
                   width: calc(100% / 6);
 
                   &:nth-of-type(1) {
-                    background: #262c34;
-                    border: 0.5px solid #262c34;
+                    background: ${appColors.COMMON.PRIMARY_COLOR_1};
+                    border: 0.5px solid ${appColors.COMMON.PRIMARY_COLOR_1};
                     border-radius: 20px 0 0 20px;
 
                     &:after {
@@ -434,8 +435,8 @@ export function ScatterplotLegends(props: Props) {
                     }
                   }
                   &:nth-of-type(2) {
-                    background: #70777e;
-                    border: 0.5px solid #262c34;
+                    background: ${appColors.COMMON.SECONDARY_COLOR_2};
+                    border: 0.5px solid ${appColors.COMMON.PRIMARY_COLOR_1};
 
                     &:after {
                       bottom: -45px;
@@ -449,23 +450,23 @@ export function ScatterplotLegends(props: Props) {
                     }
                   }
                   &:nth-of-type(3) {
-                    background: #98a1aa;
-                    border: 0.5px solid #262C34;
+                    background: ${appColors.COMMON.SECONDARY_COLOR_4};
+                    border: 0.5px solid ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                   &:nth-of-type(4) {
-                    background: #c7cdd1;
-                    border: 0.5px solid #868e96;
+                    background: ${appColors.COMMON.SECONDARY_COLOR_11};
+                    border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_3};
                   }
                   &:nth-of-type(5) {
-                    background: #dfe3e6;
-                    border: 0.5px solid #adb5bd;
+                    background: ${appColors.COMMON.SECONDARY_COLOR_7};
+                    border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_5};
                   }
                   &:nth-of-type(6) {
-                    background: #f5f5f7;
-                    border: 0.5px solid #dfe3e6;
+                    background: ${appColors.COMMON.SECONDARY_COLOR_10};
+                    border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
                   }
                   &:nth-of-type(7) {
-                    border: 0.5px solid #dfe3e6;
+                    border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
                     border-radius: 0 20px 20px 0;
 
                     &:after {

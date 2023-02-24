@@ -6,6 +6,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "../..";
 import { isTouchDevice } from "app/utils/isTouchDevice";
+import { appColors } from "app/theme";
 
 const containercss = (hover: boolean, selected: boolean) => css`
   display: flex;
@@ -27,9 +28,9 @@ export function TreeemapNode(props: any) {
   const bigDevice = useMediaQuery("(min-width: 768px)");
   const hasChildren = node.data._children && node.data._children.length > 0;
 
-  let color = "#262C34";
+  let color = appColors.COMMON.PRIMARY_COLOR_1;
   if (props.isChildTreemap || (props.invertColors && !bigDevice)) {
-    color = "#fff";
+    color = appColors.COMMON.WHITE;
   }
 
   let extraProps = {};
@@ -60,7 +61,9 @@ export function TreeemapNode(props: any) {
         cursor: props.isChildTreemap ? "pointer" : "default",
         color,
         background:
-          bigDevice || !props.invertColors ? node.data.color : "#595C70",
+          bigDevice || !props.invertColors
+            ? node.data.color
+            : appColors.COMMON.SECONDARY_COLOR_12,
       }}
       css={containercss(
         !hasChildren,

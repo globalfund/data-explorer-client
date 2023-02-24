@@ -10,6 +10,7 @@ import { TableIcon } from "app/assets/icons/charts/Table";
 import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import { AllocationIcon } from "app/assets/icons/charts/Allocation";
+import { appColors } from "app/theme";
 
 function GridItem(props: {
   link: string;
@@ -26,10 +27,10 @@ function GridItem(props: {
         css={`
           padding: 16px;
           height: 125px;
-          color: #262c34;
-          background: #fff;
+          color: ${appColors.DATASETS_GRID.ITEM_TEXT_COLOR};
+          background: ${appColors.DATASETS_GRID.ITEM_BACKGROUND_COLOR};
           position: relative;
-          border: 2px solid #fff;
+          border: 2px solid ${appColors.COMMON.WHITE};
 
           @media (max-width: 767px) {
             height: 125px;
@@ -49,7 +50,7 @@ function GridItem(props: {
           }
 
           &:hover {
-            border-color: #13183f;
+            border-color: ${appColors.DATASETS_GRID.ITEM_BORDER_HOVER_COLOR};
           }
         `}
       >
@@ -70,17 +71,18 @@ function GridItem(props: {
                 transform: scale(1.2);
 
                 &:not(:last-child) {
-                  border-right: 1px solid #868a9d;
+                  border-right: 1px solid
+                    ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
                 }
 
                 > svg {
                   > path {
-                    fill: #868a9d;
+                    fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
                   }
 
                   &:hover {
                     > path {
-                      fill: #13183f;
+                      fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
                     }
                   }
                 }

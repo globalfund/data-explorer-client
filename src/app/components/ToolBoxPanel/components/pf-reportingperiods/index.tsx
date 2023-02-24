@@ -4,6 +4,7 @@ import React from "react";
 import useMeasure from "react-use/lib/useMeasure";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
+import { appColors } from "app/theme";
 
 export interface PerformanceFrameworkReportingPeriodsProps {
   periods: string[][];
@@ -36,7 +37,8 @@ export function PerformanceFrameworkReportingPeriods(
         display: flex;
         padding: 15px 25px;
         flex-direction: column;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -61,7 +63,7 @@ export function PerformanceFrameworkReportingPeriods(
           margin-top: 50px;
           position: relative;
           flex-direction: row;
-          background: #262c34;
+          background: ${appColors.TOOLBOX.REPORTING_PERIODS_BACKGROUND_COLOR};
           border-radius: 20px;
 
           > div:not(:first-child) {
@@ -76,7 +78,7 @@ export function PerformanceFrameworkReportingPeriods(
                 height: 4px;
                 content: "";
                 position: absolute;
-                background: #c7cdd1;
+                background: ${appColors.COMMON.SECONDARY_COLOR_11};
               }
             }
 
@@ -87,7 +89,7 @@ export function PerformanceFrameworkReportingPeriods(
               height: 4px;
               content: "";
               position: absolute;
-              background: #c7cdd1;
+              background: ${appColors.COMMON.SECONDARY_COLOR_11};
             }
 
             > div {
@@ -120,8 +122,8 @@ export function PerformanceFrameworkReportingPeriods(
             css={`
               top: -2px;
               z-index: 15;
-              background: #fff;
               cursor: ew-resize;
+              background: ${appColors.COMMON.WHITE};
               border-radius: 4px;
               position: absolute;
               height: calc(100% + 4px);

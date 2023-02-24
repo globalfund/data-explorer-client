@@ -3,6 +3,7 @@ import get from "lodash/get";
 import minBy from "lodash/minBy";
 import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import CloseIcon from "@material-ui/icons/Close";
 import { useCMSData } from "app/hooks/useCMSData";
@@ -109,9 +110,9 @@ export function ScatterPlot(props: ScatterPlotProps) {
           css={`
             z-index: 100;
             padding: 12px;
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             position: absolute;
-            background: #f5f5f7;
+            background: ${appColors.COMMON.SECONDARY_COLOR_10};
             border-radius: 20px;
             top: ${hoveredNode.yPosition + 12}px;
             left: ${hoveredNode.xPosition + 12}px;
@@ -120,7 +121,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
             @media (max-width: 767px) {
               top: 40vh;
               left: 16px;
-              background: #fff;
+              background: ${appColors.COMMON.WHITE};
               width: calc(100vw - 32px);
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
             }
@@ -136,7 +137,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               path {
-                fill: #2e4063;
+                fill: ${appColors.COMMON.PRIMARY_COLOR_1};
               }
             `}
           >
@@ -257,13 +258,13 @@ export function ScatterPlot(props: ScatterPlotProps) {
 
               &::-webkit-scrollbar {
                 height: 5px;
-                background: #262c34;
+                background: ${appColors.COMMON.PRIMARY_COLOR_1};
               }
               &::-webkit-scrollbar-track {
-                background: #dfe3e6;
+                background: ${appColors.COMMON.SECONDARY_COLOR_7};
               }
               &::-webkit-scrollbar-thumb {
-                background: #262c34;
+                background: ${appColors.COMMON.PRIMARY_COLOR_1};
               }
             `}
           >
@@ -343,14 +344,14 @@ export function ScatterPlot(props: ScatterPlotProps) {
                       ticks: {
                         text: {
                           fontSize: 12,
-                          fill: "#262C34",
+                          fill: appColors.ELIGIBILITY.AXIS_TEXT_COLOR,
                           fontWeight: "bold",
                         },
                       },
                     },
                     grid: {
                       line: {
-                        fill: "#ADB5BD",
+                        fill: appColors.ELIGIBILITY.AXIS_GRID_COLOR,
                       },
                     },
                   }}

@@ -1,9 +1,10 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursements/data";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function TreemapTooltip(props: TreemapTooltipProps) {
   const { data } = props.node;
@@ -21,9 +22,9 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.TREEMAP.TOOLTIP_COLOR};
         min-width: 350px;
-        background: #f5f5f7;
+        background: ${appColors.TREEMAP.BACKGROUND_COLOR};
 
         @media (max-width: 767px) {
           min-width: 0;
@@ -36,8 +37,8 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
-          border-bottom: 1px solid #dfe3e6;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          border-bottom: 1px solid ${appColors.TREEMAP.TOOLTIP_BORDER_COLOR};
         `}
       >
         {data.tooltip.header}
@@ -49,7 +50,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.TREEMAP.TOOLTIP_BORDER_COLOR};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -168,15 +169,16 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             width: 100%;
             height: 5px;
             border-radius: 20px;
-            background: #c7cdd1;
+            background: ${appColors.TREEMAP
+              .TOOLTIP_PROGRESS_BAR_BACKGROUND_COLOR};
           `}
         >
           <div
             css={`
               height: 5px;
               border-radius: 20px;
-              background: #373d43;
               width: ${data.tooltip.percValue}%;
+              background: ${appColors.TREEMAP.TOOLTIP_PROGRESS_BAR_COLOR};
             `}
           />
         </div>

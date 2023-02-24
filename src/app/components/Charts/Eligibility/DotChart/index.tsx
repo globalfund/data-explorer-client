@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { InfoIcon } from "app/assets/icons/Info";
@@ -16,16 +17,16 @@ import {
 
 const styles = {
   Eligible: css`
-    background: #11ad6b;
-    border: 1px solid #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_23};
+    border: 1px solid ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
   "Not Eligible": css`
-    background: #fa7355;
-    border: 1px dotted #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_15};
+    border: 1px dotted ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
   "Transition Funding": css`
-    background: #ffd646;
-    border: 1px dashed #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_18};
+    border: 1px dashed ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
 };
 
@@ -45,18 +46,18 @@ export function DotChart(props: DotChartProps) {
         <div
           css={`
             padding: 12px;
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             position: fixed;
             top: ${y + 12}px;
             left: ${x + 12}px;
-            background: #f5f5f7;
+            background: ${appColors.COMMON.SECONDARY_COLOR_10};
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
 
             @media (max-width: 767px) {
               left: 16px;
               z-index: 1;
-              background: #fff;
+              background: ${appColors.COMMON.WHITE};
               width: calc(100vw - 32px);
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
             }
@@ -69,7 +70,7 @@ export function DotChart(props: DotChartProps) {
               justify-content: space-between;
 
               path {
-                fill: #2e4063;
+                fill: ${appColors.COMMON.PRIMARY_COLOR_1};
               }
             `}
           >
@@ -484,7 +485,8 @@ export function DotChart(props: DotChartProps) {
                         flex-wrap: wrap;
                         column-gap: 12px;
                         padding-left: 20px;
-                        border-left: 1px solid #acafbc;
+                        border-left: 1px solid
+                          ${appColors.ELIGIBILITY.DOT_CHART_BORDER_COLOR};
 
                         > * {
                           @supports (-webkit-touch-callout: none) and
@@ -562,7 +564,8 @@ export function DotChart(props: DotChartProps) {
                         display: flex;
                         flex-wrap: wrap;
                         padding: 5px 0 5px 5px;
-                        border-left: 1px solid #acafbc;
+                        border-left: 1px solid
+                          ${appColors.ELIGIBILITY.DOT_CHART_BORDER_COLOR};
 
                         > * {
                           @supports (-webkit-touch-callout: none) and

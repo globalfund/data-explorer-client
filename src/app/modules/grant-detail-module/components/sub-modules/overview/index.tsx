@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { Link } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { Grid, useMediaQuery } from "@material-ui/core";
@@ -110,7 +111,7 @@ export function GrantDetailOverviewModule() {
                 border-radius: 50%;
                 align-items: center;
                 justify-content: center;
-                border: 2px solid #262c34;
+                border: 2px solid ${appColors.COMMON.PRIMARY_COLOR_1};
                 opacity: ${(grantInfoData.rating || ratingValues[0]) === value
                   ? 1
                   : 0.3};

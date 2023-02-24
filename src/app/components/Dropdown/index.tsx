@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 import InputBase from "@material-ui/core/InputBase";
@@ -17,9 +18,9 @@ const BootstrapInput = withStyles((theme: Theme) =>
       outline: "none",
       position: "relative",
       borderRadius: "20px",
-      backgroundColor: "#DFE3E6",
+      backgroundColor: appColors.COMMON.SECONDARY_COLOR_7,
       textTransform: "capitalize",
-      border: "1px solid #ced4da",
+      border: `1px solid ${appColors.COMMON.SECONDARY_COLOR_10}`,
       padding: "10px 26px 10px 12px",
       fontFamily: "GothamNarrow-Book",
       transition: theme.transitions.create(["border-color", "box-shadow"]),

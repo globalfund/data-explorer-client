@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import useTitle from "react-use/lib/useTitle";
 /* project */
 import { useCMSData } from "app/hooks/useCMSData";
@@ -12,7 +13,7 @@ export default function Landing() {
   useTitle(get(cmsData, "modulesLanding.title", ""));
 
   React.useEffect(() => {
-    document.body.style.background = "#dfe3e6";
+    document.body.style.background = appColors.COMMON.SECONDARY_COLOR_7;
   }, []);
 
   return <LandingLayout />;

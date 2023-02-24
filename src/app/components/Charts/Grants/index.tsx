@@ -7,11 +7,13 @@ import uniq from "lodash/uniq";
 import minBy from "lodash/minBy";
 import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import { useMeasure } from "react-use";
 import { useHistory } from "react-router-dom";
 import { css } from "styled-components/macro";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMousePosition from "app/hooks/useMousePosition";
@@ -24,7 +26,6 @@ import {
   ratingColor,
   statusBorderStyle,
 } from "app/components/Charts/Grants/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 // TODO: clean up component
 // TODO: discuss with Dafei what should happen when only 1 component is in the data.
@@ -74,11 +75,11 @@ export function GrantsViz(props: GrantsVizProps) {
             z-index: 101;
             width: 320px;
             padding: 20px;
-            color: #262c34;
+            color: ${appColors.GRANTS.TOOLTIP_COLOR};
             top: ${y + 12}px;
             left: ${x + 12}px;
             position: absolute;
-            background: #f5f5f7;
+            background: ${appColors.GRANTS.TOOLTIP_BACKGROUND_COLOR};
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
@@ -86,8 +87,8 @@ export function GrantsViz(props: GrantsVizProps) {
               top: 30vh;
               left: 16px;
               position: fixed;
-              background: #fff;
               width: calc(100vw - 32px);
+              background: ${appColors.GRANTS.MOBILE_TOOLTIP_BACKGROUND_COLOR};
             }
           `}
         >
@@ -121,18 +122,20 @@ export function GrantsViz(props: GrantsVizProps) {
               css={`
                 width: 100%;
                 margin-top: 20px;
-                background: #dfe3e6;
                 border-radius: 22px;
+                background: ${appColors.GRANTS
+                  .MOBILE_TOOLTIP_BUTTON_BACKGROUND_COLOR};
 
                 &:hover {
-                  background: #dfe3e6;
+                  background: ${appColors.GRANTS
+                    .MOBILE_TOOLTIP_BUTTON_BACKGROUND_HOVER_COLOR};
                 }
 
                 > span {
-                  color: #262c34;
                   font-size: 14px;
                   font-weight: bold;
                   text-transform: none;
+                  color: ${appColors.GRANTS.MOBILE_TOOLTIP_BUTTON_COLOR};
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 }
               `}
@@ -150,7 +153,6 @@ export function GrantsViz(props: GrantsVizProps) {
           height: ${width / 2}px;
           margin-top: 100px;
           position: relative;
-          //border-bottom: 1px solid #c7cdd1;
           border-top-left-radius: ${width * 2}px;
           border-top-right-radius: ${width * 2}px;
 
@@ -162,15 +164,11 @@ export function GrantsViz(props: GrantsVizProps) {
         <div
           id="rc-outline"
           css={`
-            //top: -60px;
-            //left: -60px;
             position: absolute;
             width: ${width}px;
-            //width: ${width + 120}px;
-            border: 1px solid #60647e;
+            border: 1px solid ${appColors.GRANTS.OUTLINE_COLOR};
             border-bottom-style: none;
             border-bottom: none;
-            // height: ${(width + 120) / 2}px;
             height: ${width / 2}px;
             border-top-left-radius: ${width * 2}px;
             border-top-right-radius: ${width * 2}px;
@@ -220,7 +218,7 @@ export function GrantsViz(props: GrantsVizProps) {
               width: 100%;
               z-index: 15;
               position: absolute;
-              background-color: #c7cdd1;
+              background-color: ${appColors.COMMON.SECONDARY_COLOR_11};
             `}
           />
         </div>
@@ -294,7 +292,8 @@ export function ComponentRadarThingies(props: any) {
         border-top-left-radius: ${props.width * 2}px;
         border-top-right-radius: ${props.width * 2}px;
         transform: rotate(${props.index * props.rotateDeg}deg);
-        border-bottom: 1px ${props.index === 0 ? "solid" : "none"} #c7cdd1;
+        border-bottom: 1px ${props.index === 0 ? "solid" : "none"}
+          ${appColors.GRANTS.COMPONENT_DIVIDER_COLOR};
       `}
     >
       {props.datayears.map((year: number, index: number) => {
@@ -322,7 +321,7 @@ export function ComponentRadarThingies(props: any) {
               align-items: baseline;
               width: ${itemwidth}px;
               justify-content: center;
-              border: 1px solid #c7cdd1;
+              border: 1px solid ${appColors.GRANTS.COMPONENT_DIVIDER_COLOR};
               height: ${itemwidth / 2}px;
               border-top-left-radius: ${itemwidth * 2}px;
               border-top-right-radius: ${itemwidth * 2}px;
@@ -336,7 +335,7 @@ export function ComponentRadarThingies(props: any) {
               &:before {
                 right: -12px;
                 bottom: -35px;
-                color: #262c34;
+                color: ${appColors.GRANTS.TEXT_COLOR};
                 font-size: 10px;
                 position: absolute;
                 content: ${showLabel ? `"${year}"` : ""};
@@ -346,7 +345,7 @@ export function ComponentRadarThingies(props: any) {
               &:after {
                 left: -12px;
                 bottom: -35px;
-                color: #262c34;
+                color: ${appColors.GRANTS.TEXT_COLOR};
                 font-size: 10px;
                 position: absolute;
                 content: ${showLabel ? `"${year}"` : ""};
@@ -354,9 +353,8 @@ export function ComponentRadarThingies(props: any) {
 
               ${index + 1 === props.datayears.length
                 ? `
-              // bottom: -1px;
-              background: #fff;
-              border-bottom: 1px solid #fff;
+              background: ${appColors.COMMON.WHITE};
+              border-bottom: 1px solid ${appColors.COMMON.WHITE};
               border-style: ${showGrid ? "solid" : "none"};
               `
                 : ""}
@@ -438,7 +436,7 @@ export function ComponentRadarThingies(props: any) {
                             height: 100%;
                             border-width: 1px;
                             position: absolute;
-                            border-color: #13183f;
+                            border-color: ${appColors.GRANTS.ITEM_LINE_COLOR};
                             border-style: none none none
                               ${get(
                                 statusBorderStyle,
@@ -467,7 +465,7 @@ export function ComponentRadarThingies(props: any) {
                               height: 4px;
                               border-radius: 50%;
                               position: absolute;
-                              background: #262c34;
+                              color: ${appColors.GRANTS.TEXT_COLOR};
                               bottom: ${startHeight}px;
                             `}
                           />
@@ -514,7 +512,8 @@ export function ComponentRadarThingies(props: any) {
                               border-radius: 50%;
                               position: absolute;
                               left: -${size / 2}px;
-                              border: 1px solid #262c34;
+                              border: 1px solid
+                                ${appColors.GRANTS.ITEM_LINE_COLOR};
                               background: ${get(
                                 ratingColor,
                                 subItem.rating,
@@ -567,7 +566,7 @@ export function ComponentDividers(props: any) {
               border-style: solid none none none;
               border-color: ${index + 1 === components.length
                 ? "transparent"
-                : "#c7cdd1"};
+                : appColors.GRANTS.COMPONENT_DIVIDER_COLOR};
 
               &:after {
                 //left: ${width / 2}px;
@@ -645,14 +644,14 @@ export const RadialChartLegend = (props: any) => {
     height: 38px;
     width: 38px;
     border-radius: 50%;
-    border: 1px solid #000;
-    background-color: #ffc107;
+    border: 1px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
+    background-color: ${appColors.GRANTS.LATEST_RATING_COLOR_3};
 
     ::after {
       content: " ";
       display: block;
       height: 0.5px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
       transform: translate(17px, -1px);
       opacity: 0.2;
     }
@@ -661,7 +660,7 @@ export const RadialChartLegend = (props: any) => {
       content: " ";
       display: block;
       height: 0.5px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
       transform: translate(-5px, 17px);
       width: 59px;
       opacity: 0.3;
@@ -669,7 +668,7 @@ export const RadialChartLegend = (props: any) => {
   `;
 
   const line = css`
-    border: 1px solid #262c34;
+    border: 1px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin: 0;
     height: calc(100% - 38px);
   `;
@@ -686,7 +685,7 @@ export const RadialChartLegend = (props: any) => {
       display: block;
       height: 0.5px;
       width: 35px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
       opacity: 0.2;
     }
   `;
@@ -694,21 +693,21 @@ export const RadialChartLegend = (props: any) => {
   const solid = css`
     max-width: 83px;
     margin: 0;
-    border: 1px solid #262c34;
+    border: 1px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin-bottom: 7px;
   `;
 
   const dashed = css`
     max-width: 83px;
     margin: 0;
-    border: 1px dashed #262c34;
+    border: 1px dashed ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin-bottom: 7px;
   `;
 
   const dotted = css`
     max-width: 83px;
     margin: 0;
-    border: 1px dotted #262c34;
+    border: 1px dotted ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin-bottom: 7px;
   `;
 
@@ -834,13 +833,13 @@ export const RadialChartLegend = (props: any) => {
                 height: 10px;
                 position: relative;
                 border-radius: 50%;
-                border: 0.5px solid #262c34;
+                border: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
 
                 &:before {
                   width: 40px;
                   left: -16px;
                   bottom: -25px;
-                  color: #262c34;
+                  color: ${appColors.GRANTS.TEXT_COLOR};
                   font-size: 12px;
                   position: absolute;
                   text-align: center;
@@ -850,7 +849,7 @@ export const RadialChartLegend = (props: any) => {
           >
             <div
               css={`
-                background: #fff;
+                background: ${appColors.COMMON.WHITE};
                 &:before {
                   content: "None";
                 }
@@ -858,7 +857,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #3b873e;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_1};
                 &:before {
                   content: "A1";
                 }
@@ -866,7 +865,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #7bc67e;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_2};
                 &:before {
                   content: "A2";
                 }
@@ -874,7 +873,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #ffab00;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_3};
                 &:before {
                   content: "B1";
                 }
@@ -882,7 +881,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #ff6d00;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_4};
                 &:before {
                   content: "B2";
                 }
@@ -890,7 +889,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #e57373;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_5};
                 &:before {
                   content: "C";
                 }

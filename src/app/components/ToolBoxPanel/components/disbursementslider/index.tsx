@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import { RangeSlider } from "app/components/RangeSlider";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
@@ -16,7 +17,8 @@ export function ToolBoxPanelDisbursementsSlider(props: { label: string }) {
         width: 100%;
         padding: 15px 25px;
         text-transform: capitalize;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
       `}
     >
       <b>{props.label}</b>

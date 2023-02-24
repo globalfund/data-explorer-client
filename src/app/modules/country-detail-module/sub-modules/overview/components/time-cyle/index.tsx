@@ -1,5 +1,6 @@
 import React from "react";
 import orderBy from "lodash/orderBy";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import useMeasure from "react-use/lib/useMeasure";
 import { BarTooltipDatum, ResponsiveBar } from "@nivo/bar";
@@ -59,11 +60,11 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.TIME_CYCLE.TOOLTIP_COLOR};
         min-width: 300px;
         padding: 16px 25px;
         position: relative;
-        background: #f5f5f7;
+        background: ${appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
       `}
     >
@@ -74,7 +75,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
           line-height: 20px;
           padding-bottom: 16px;
           text-transform: capitalize;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
@@ -87,7 +88,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -138,7 +139,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
 }
 
 export function InvestmentsTimeCycleViz(props: Props) {
-  const colors = ["#727F95", "#21262B", "#595C70"];
+  const colors = appColors.LOCATION.OVERVIEW_VISUALISATION_COLORS;
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [ref, { height }] = useMeasure<HTMLDivElement>();
   const [data, setData] = React.useState(formatData(props.rawData));
@@ -173,13 +174,13 @@ export function InvestmentsTimeCycleViz(props: Props) {
 
         &::-webkit-scrollbar {
           height: 5px;
-          background: #262c34;
+          background: ${appColors.COMMON.PRIMARY_COLOR_1};
         }
         &::-webkit-scrollbar-track {
-          background: #dfe3e6;
+          background: ${appColors.COMMON.SECONDARY_COLOR_7};
         }
         &::-webkit-scrollbar-thumb {
-          background: #262c34;
+          background: ${appColors.COMMON.PRIMARY_COLOR_1};
         }
 
         @media (max-width: 767px) {
@@ -275,12 +276,12 @@ export function InvestmentsTimeCycleViz(props: Props) {
               ticks: {
                 line: {
                   strokeWidth: 1,
-                  stroke: "#868E96",
+                  stroke: appColors.TIME_CYCLE.AXIS_COLOR,
                   strokeOpacity: 0.1,
                 },
                 text: {
                   fontSize: 10,
-                  fill: "#262c34",
+                  fill: appColors.TIME_CYCLE.AXIS_GRID_COLOR,
                   fontFamily:
                     '"GothamNarrow-Book", "Helvetica Neue", sans-serif',
                 },
@@ -303,7 +304,7 @@ export function InvestmentsTimeCycleViz(props: Props) {
             grid: {
               line: {
                 strokeWidth: 1,
-                stroke: "#868E96",
+                stroke: appColors.TIME_CYCLE.AXIS_GRID_COLOR,
                 strokeOpacity: 0.1,
               },
             },
@@ -311,7 +312,7 @@ export function InvestmentsTimeCycleViz(props: Props) {
               container: {
                 padding: 0,
                 borderRadius: 20,
-                background: "#f5f5f7",
+                background: appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR,
               },
             },
           }}

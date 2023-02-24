@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { Switch, Route, useParams } from "react-router-dom";
@@ -67,7 +68,7 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });

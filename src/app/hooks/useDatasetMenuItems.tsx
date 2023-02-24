@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import { appColors } from "app/theme";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 
@@ -24,7 +25,7 @@ function Expandable(props: ExpandableProps) {
         css={`
           width: 100%;
           display: flex;
-          color: #262c34;
+          color: ${appColors.APPBAR.DATASETS_MENU_ITEM_COLOR};
           font-size: 14px;
           padding: 10px 12px;
           align-items: center;
@@ -35,19 +36,19 @@ function Expandable(props: ExpandableProps) {
             transform: rotate(${expanded ? "-" : ""}90deg) scale(0.5);
 
             > path {
-              fill: #13183f;
+              fill: ${appColors.COMMON.SECONDARY_COLOR_10};
             }
           }
 
           @media (min-width: 768px) {
             &:hover {
-              color: #fff;
-              background: #262c34;
+              color: ${appColors.COMMON.WHITE};
+              background: ${appColors.COMMON.PRIMARY_COLOR_1};
               transition: background 0.2s ease-in-out;
 
               > svg {
                 > path {
-                  fill: #fff;
+                  fill: ${appColors.COMMON.WHITE};
                 }
               }
             }
@@ -67,16 +68,16 @@ function Expandable(props: ExpandableProps) {
 
           a {
             width: 100%;
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             font-size: 14px;
             padding: 10px 15px;
             text-decoration: none;
 
             @media (min-width: 768px) {
               &:hover {
-                color: #fff;
+                color: ${appColors.COMMON.WHITE};
                 font-weight: bold;
-                background: #262c34;
+                background: ${appColors.COMMON.PRIMARY_COLOR_1};
                 transition: background 0.2s ease-in-out;
               }
             }
@@ -92,44 +93,6 @@ function Expandable(props: ExpandableProps) {
 export function useDatasetMenuItems(): React.ReactChild[] {
   const location = useLocation();
   return [
-    // <Link
-    //   to="/datasets"
-    //   css={`
-    //     width: 100%;
-    //     display: flex;
-    //     color: #262c34;
-    //     font-size: 14px;
-    //     padding: 6px 12px;
-    //     align-items: center;
-    //     text-decoration: none;
-
-    //     > svg {
-    //       margin-right: 16px;
-    //       transform: rotate(-180deg) scale(0.5);
-
-    //       > path {
-    //         fill: #13183f;
-    //       }
-    //     }
-
-    //     @media (min-width: 768px) {
-    //       &:hover {
-    //         color: #fff;
-    //         background: #262C34;
-    //         transition: background 0.2s ease-in-out;
-
-    //         > svg {
-    //           > path {
-    //             fill: #fff;
-    //           }
-    //         }
-    //       }
-    //     }
-    //   `}
-    // >
-    //   <ArrowForwardIcon />
-    //   <b>Datasets</b>
-    // </Link>,
     <Expandable label="Resource Mobilization">
       <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
         Pledges & Contributions
@@ -144,8 +107,8 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         css={`
           @media (min-width: 768px) {
             &:hover {
-              color: #fff;
-              background: #262c34;
+              color: ${appColors.COMMON.WHITE};
+              background: ${appColors.COMMON.PRIMARY_COLOR_1};
               transition: background 0.2s ease-in-out;
             }
           }
@@ -165,8 +128,8 @@ export function useDatasetMenuItems(): React.ReactChild[] {
       css={`
         @media (min-width: 768px) {
           &:hover {
-            color: #fff;
-            background: #262c34;
+            color: ${appColors.COMMON.WHITE};
+            background: ${appColors.COMMON.PRIMARY_COLOR_1};
             transition: background 0.2s ease-in-out;
           }
         }
@@ -179,8 +142,8 @@ export function useDatasetMenuItems(): React.ReactChild[] {
       css={`
         @media (min-width: 768px) {
           &:hover {
-            color: #fff;
-            background: #262c34;
+            color: ${appColors.COMMON.WHITE};
+            background: ${appColors.COMMON.PRIMARY_COLOR_1};
             transition: background 0.2s ease-in-out;
           }
         }

@@ -14,6 +14,7 @@ import {
 /* project */
 import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
+import { appColors } from "app/theme";
 
 export function MobileAppbarSearch() {
   const history = useHistory();
@@ -87,7 +88,7 @@ export function MobileAppbarSearch() {
           `}
           onClick={() => setOpen(!open)}
         >
-          <SearchIcon htmlColor="#fff" />
+          <SearchIcon htmlColor={appColors.COMMON.COMMON_ICON_COLOR} />
         </IconButton>
       )}
       {open && (

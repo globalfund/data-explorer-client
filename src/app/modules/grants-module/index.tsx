@@ -25,6 +25,7 @@ import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { appColors } from "app/theme";
 
 interface GrantsModuleProps {
   code?: string;
@@ -105,7 +106,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
 
   useEffectOnce(() => {
     reloadData();
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   });
 
   useUpdateEffect(() => {

@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -92,7 +93,7 @@ export default function CountryDetail() {
 
   React.useEffect(() => {
     if (location.pathname.indexOf("/overview") === -1) {
-      document.body.style.background = "#fff";
+      document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     }
     countrySummaryCMSAction({
       values: {

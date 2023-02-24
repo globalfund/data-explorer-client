@@ -18,6 +18,7 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { appColors } from "app/theme";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -257,7 +258,7 @@ export function InvestmentsDisbursedModule(
           margin-bottom: 20px;
 
           > div {
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             font-size: 14px;
           }
 

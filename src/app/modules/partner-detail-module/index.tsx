@@ -31,6 +31,7 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { appColors } from "app/theme";
 
 export default function PartnerDetail() {
   useTitle("The Data Explorer - Partner");
@@ -58,7 +59,7 @@ export default function PartnerDetail() {
   const paramCode = params.code.replace(/\|/g, "/");
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchPartnerInfoData({
       filterString: `partners=${paramCode}`,
     });

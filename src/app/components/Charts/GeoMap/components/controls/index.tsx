@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 import ZoomInIcon from "app/assets/icons/IconZoomIn";
 import ZoomOutIcon from "app/assets/icons/IconZoomOut";
@@ -13,7 +14,7 @@ const buttoncss = css`
   padding: 3px;
   display: flex;
   cursor: pointer;
-  background: #fff;
+  background: ${appColors.COMMON.WHITE};
   border-radius: 5px;
   align-items: center;
   justify-content: center;

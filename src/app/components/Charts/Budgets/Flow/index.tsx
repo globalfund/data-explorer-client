@@ -3,15 +3,11 @@ import get from "lodash/get";
 import sumBy from "lodash/sumBy";
 import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import {
-  ResponsiveSankey,
-  SankeyLinkDatum,
-  SankeyNodeDatum,
-} from "@nivo/sankey";
 import { InfoIcon } from "app/assets/icons/Info";
-// import { isTouchDevice } from "app/utils/isTouchDevice";
+import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -26,7 +22,11 @@ import {
   BudgetsFlowTooltip,
   MobileBudgetsFlowTooltip,
 } from "app/components/Charts/Budgets/Flow/components/tooltip";
-import { useCMSData } from "app/hooks/useCMSData";
+import {
+  ResponsiveSankey,
+  SankeyLinkDatum,
+  SankeyNodeDatum,
+} from "@nivo/sankey";
 
 const container = css`
   width: 100%;
@@ -73,7 +73,7 @@ const container = css`
 
 const header = css`
   > div {
-    color: #262c34;
+    color: ${appColors.COMMON.PRIMARY_COLOR_1};
     font-size: 14px;
 
     @media (max-width: 767px) {
@@ -231,7 +231,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         <div css={container} id="sankeyviz">
           <ResponsiveSankey
             data={props.data}
-            colors={["#373D43"]}
+            colors={[appColors.COMMON.SECONDARY_COLOR_1]}
             // @ts-ignore
             layers={["links", Nodes, "labels"]}
             margin={{ top: 0, right: 0, bottom: 10, left: 0 }}
@@ -287,8 +287,9 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                   borderRadius: 20,
                   padding: "16px 25px",
                   position: "relative",
-                  backgroundColor: "#f5f5f7",
                   display: isMobile ? "none" : "inherit",
+                  backgroundColor:
+                    appColors.BUDGETS_FLOW.TOOLTIP_BACKGROUND_COLOR,
                 },
               },
               labels: {

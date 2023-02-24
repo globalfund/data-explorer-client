@@ -1,3 +1,4 @@
+import { appColors } from "app/theme";
 import styled from "styled-components/macro";
 
 export const XsContainer = styled.div`
@@ -21,11 +22,11 @@ export const XsContainer = styled.div`
 export const TooltipButton = styled.button`
   width: 100%;
   padding: 12px;
-  color: #262c34;
+  color: ${appColors.COMMON.PRIMARY_COLOR_1};
   font-size: 14px;
   border-width: 0px;
   border-radius: 20px;
   font-weight: 700;
-  background: #dfe3e6;
+  background: ${appColors.COMMON.SECONDARY_COLOR_7};
   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 `;

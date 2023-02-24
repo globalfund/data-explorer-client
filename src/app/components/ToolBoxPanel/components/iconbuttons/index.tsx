@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import { CSVLink } from "react-csv";
+import { appColors } from "app/theme";
 import Snackbar from "@material-ui/core/Snackbar";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useStoreState } from "app/state/store/hooks";
@@ -61,7 +62,7 @@ export const locationsToNotShowExport = [
 const StyledMenu = withStyles({
   paper: {
     borderRadius: 10,
-    border: "1px solid #d3d4d5",
+    border: `1px solid ${appColors.TOOLBOX.MENU_EXPORT_BORDER_COLOR}`,
   },
   list: {
     padding: 0,
@@ -87,11 +88,11 @@ const StyledMenuItem = withStyles(() => ({
   root: {
     padding: 0,
     width: "100%",
-    borderBottom: "1px solid #DFE3E6",
+    borderBottom: `1px solid ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR}`,
     "& a": {
       width: "100%",
       fontSize: "14px",
-      color: "#262c34",
+      color: appColors.TOOLBOX.MENU_EXPORT_TEXT_COLOR,
       padding: "6px 12px",
       textDecoration: "none",
     },
@@ -296,7 +297,8 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
         padding: 0 25px;
         flex-direction: row;
         justify-content: flex-end;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         @media (max-width: 767px) {
           padding: 0 16px;

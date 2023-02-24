@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
@@ -25,7 +26,8 @@ export function ToolBoxPanelEligibilityAdvanced() {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {
