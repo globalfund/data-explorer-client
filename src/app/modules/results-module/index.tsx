@@ -3,24 +3,21 @@ import React, { useEffect } from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import { useLocation } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { ResultListItemModel } from "app/modules/results-module/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import {
-  ResultListItemModel,
-  ResultsInfoContentStatsProps,
-} from "app/modules/results-module/data";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { useRecoilState } from "recoil";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
@@ -30,7 +27,7 @@ export default function ResultsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelResultsYearState.value

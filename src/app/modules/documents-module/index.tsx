@@ -28,7 +28,7 @@ export default function DocumentsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);

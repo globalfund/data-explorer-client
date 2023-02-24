@@ -11,9 +11,11 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -38,9 +40,6 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import queryString from "query-string";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -148,28 +147,34 @@ export default function CountryDetail() {
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   function isToolboxOvervlayVisible() {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+
   const vizTypePretext = (vizType: string) => {
     vizType = startCase(vizType);
 
-    return vizType === "Pledges-contributions"
-      ? `Resource Mobilization: ${vizType} `
-      : vizType === "Allocations"
-      ? `Access to funding: ${vizType}`
-      : vizType === "Eligibility"
-      ? `Access to funding: ${vizType}`
-      : vizType === "Documents"
-      ? vizType
-      : vizType === "Results"
-      ? vizType
-      : `Grant Implementation: ${vizType} `;
+    switch (vizType) {
+      case "Pledges-contributions":
+        return `Resource Mobilization: ${vizType} `;
+      case "Allocations":
+        return `Access to funding: ${vizType}`;
+      case "Eligibility":
+        return `Access to funding: ${vizType}`;
+      case "Documents":
+        return "Documents";
+      case "Results":
+        return "Results";
+      default:
+        return `Grant Implementation: ${vizType} `;
+    }
   };
 
   const [prevVizState, setPrevVizState] = React.useState(breadCrumbList[1]);
+
   const prevViz = useMemo(() => {
     if (prevVizState !== breadCrumbList[1]) {
       setPrevVizState({

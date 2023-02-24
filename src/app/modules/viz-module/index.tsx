@@ -1,6 +1,7 @@
 /* third-party */
 import React, { useEffect, useState } from "react";
 import get from "lodash/get";
+import startCase from "lodash/startCase";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
@@ -41,7 +42,7 @@ export default function VizModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
   const [subTypeCopy, setSubTypeCopy] = useState(params.subType);
 
   React.useEffect(() => {
@@ -68,32 +69,46 @@ export default function VizModule() {
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   function isToolboxOvervlayVisible() {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+
   const vizType = `${params.vizType
     .slice(0, 1)
-    .toUpperCase()}${params.vizType.slice(1)}${params.subType ? "" : ""}`;
+    .toUpperCase()}${params.vizType.slice(1)}`;
+
+  const vizTypePretext = (vizType: string) => {
+    vizType = startCase(vizType);
+
+    switch (vizType) {
+      case "Pledges-contributions":
+        return `Resource Mobilization: ${vizType} `;
+      case "Allocations":
+        return `Access to funding: ${vizType}`;
+      case "Eligibility":
+        return `Access to funding: ${vizType}`;
+      case "Documents":
+        return "Documents";
+      case "Results":
+        return "Results";
+      default:
+        return `Grant Implementation: ${vizType} `;
+    }
+  };
 
   useEffect(() => {
     setBreadCrumList((list) => {
       if (list[list.length - 1]?.vizSelected) {
         return [
           { name: "Datasets", path: "/", id: v4() },
-
           {
-            name:
-              vizType === "Pledges-contributions"
-                ? `Resource Mobilization: ${vizType} `
-                : vizType === ("Eligibility" || "Allocations")
-                ? `Access to funding: ${vizType}`
-                : `Grant Implementation: ${vizType} `,
+            name: vizTypePretext(vizType),
             path: list[list.length - 2].path,
             id: v4(),
           },
-
           {
             name: list[list.length - 1]?.name || "",
             path: location.pathname,
@@ -105,14 +120,8 @@ export default function VizModule() {
       } else {
         return [
           { name: "Datasets", path: "/", id: v4() },
-
           {
-            name:
-              vizType === "Pledges-contributions"
-                ? `Resource Mobilization: ${vizType} `
-                : vizType === ("Eligibility" || "Allocations")
-                ? `Access to funding: ${vizType}`
-                : `Grant Implementation: ${vizType} `,
+            name: vizTypePretext(vizType),
             path: location.pathname,
             id: v4(),
             vizSelected: undefined,

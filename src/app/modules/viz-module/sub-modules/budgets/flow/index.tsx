@@ -14,7 +14,6 @@ import { DrilldownModelUpdated } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
@@ -183,7 +182,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             setBreadCrumbList([
               ...breadCrumbList,
               {
-                name: node.id as string,
+                name: node.id,
                 path: location.pathname,
                 id: v4(),
                 vizLevel: 1,
@@ -207,7 +206,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             setBreadCrumbList([
               ...breadCrumbList,
               {
-                name: node as string,
+                name: node,
                 path: location.pathname,
                 id: v4(),
                 vizLevel: 2,

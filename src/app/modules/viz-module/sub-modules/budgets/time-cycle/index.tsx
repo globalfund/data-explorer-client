@@ -163,7 +163,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
             setBreadCrumbList([
               ...breadCrumbList,
               {
-                name: node as string,
+                name: node,
                 path: location.pathname,
                 id: v4(),
                 vizLevel: 1,
@@ -188,7 +188,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
               setBreadCrumbList([
                 ...breadCrumbList,
                 {
-                  name: node as string,
+                  name: node,
                   path: location.pathname,
                   id: v4(),
                   vizLevel: 2,

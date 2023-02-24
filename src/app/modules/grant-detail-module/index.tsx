@@ -46,9 +46,6 @@ export default function GrantDetail() {
   const fetchGrantInfoData = useStoreActions(
     (store) => store.GrantDetailInfo.fetch
   );
-  const mainGrantInfoData = useStoreState(
-    (state) => state.GrantDetailInfo.data
-  );
 
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
