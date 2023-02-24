@@ -1,8 +1,10 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import groupBy from "lodash/groupBy";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
+import Collapse from "@material-ui/core/Collapse";
 import { useStoreState } from "app/state/store/hooks";
 import Grid, { GridSize } from "@material-ui/core/Grid";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -10,6 +12,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { InvestmentsRadialViz } from "app/modules/country-detail-module/sub-modules/overview/components/radial";
+import ChevronRight from "@material-ui/icons/ChevronRight";
 
 interface Props {
   openToolboxPanel: boolean;
@@ -18,6 +21,8 @@ interface Props {
 export function LocationDetailOverviewModule(props: Props) {
   const cmsData = useCMSData({ returnData: true });
   const isSmallScreen = useMediaQuery("(max-width: 1279px)");
+
+  const [contactsExpanded, setContactsExpanded] = React.useState(false);
 
   const isLoading = useStoreState(
     (state) =>
@@ -37,6 +42,7 @@ export function LocationDetailOverviewModule(props: Props) {
       portfolioManager: "",
       portfolioManagerEmail: "",
       principalRecipients: [],
+      coordinatingMechanismContacts: [],
     })
   );
   const countrySummaryCMSData = useStoreState((state) =>
@@ -119,6 +125,98 @@ export function LocationDetailOverviewModule(props: Props) {
             <hr />
           </React.Fragment>
         )}
+        <div
+          css={`
+            font-size: 14px;
+            margin-bottom: 8px;
+          `}
+        >
+          {locationInfoData.coordinatingMechanismContacts.length > 0 && (
+            <React.Fragment>
+              <button
+                onClick={() => setContactsExpanded(!contactsExpanded)}
+                css={`
+                  padding: 0;
+                  width: 100%;
+                  display: flex;
+                  cursor: pointer;
+                  font-size: 14px;
+                  text-align: start;
+                  border-style: none;
+                  align-items: center;
+                  background: transparent;
+                  flex-direction: space-between;
+
+                  > svg {
+                    transition: all 0.2s ease-in-out;
+                    transform: rotate(${contactsExpanded ? -90 : 90}deg);
+                  }
+                `}
+              >
+                <b>Coordinating Mechanism Contacts</b>
+                <ChevronRight />
+              </button>
+              <Collapse in={contactsExpanded}>
+                <div
+                  css={`
+                    height: 20px;
+                  `}
+                />
+                {locationInfoData.coordinatingMechanismContacts.map(
+                  (c: any) => {
+                    const groupedByRole = groupBy(c.items, "role");
+                    return (
+                      <div key={c.name}>
+                        <div
+                          css={`
+                            margin-bottom: 8px;
+                          `}
+                        >
+                          <b>{c.name}</b>
+                        </div>
+                        <div
+                          css={`
+                            padding-left: 20px;
+                          `}
+                        >
+                          {Object.keys(groupedByRole).map((r: any) => (
+                            <div
+                              key={r}
+                              css={`
+                                margin-bottom: 8px;
+                              `}
+                            >
+                              <b>
+                                {r}
+                                {groupedByRole[r].length > 1 && "s"}
+                              </b>
+                              <br />
+                              {groupedByRole[r].map((i: any) => (
+                                <div
+                                  key={i.surname}
+                                  css={`
+                                    margin-bottom: 8px;
+                                  `}
+                                >
+                                  {i.salutation} {i.name} {i.surname}
+                                  <br />
+                                  {i.position}
+                                  {i.position && <br />}
+                                  <a href={`mailto:${i.email}`}>{i.email}</a>
+                                </div>
+                              ))}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  }
+                )}
+              </Collapse>
+              <hr />
+            </React.Fragment>
+          )}
+        </div>
         <div
           css={`
             font-size: 14px;
