@@ -7,7 +7,6 @@ import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
-import { InfoIcon } from "app/assets/icons/Info";
 import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";

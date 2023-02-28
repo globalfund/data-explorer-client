@@ -252,14 +252,7 @@ export function GrantsViz(props: GrantsVizProps) {
 }
 
 export function ComponentRadarThingies(props: any) {
-  const history = useHistory();
   const isMobile = useMediaQuery("(max-width: 767px)");
-
-  // let nOfImplementationPeriodsInComponent = 0;
-  // for (let i = 0; i < props.items.length; i++) {
-  //   nOfImplementationPeriodsInComponent +=
-  //     props.items[i].implementationPeriods.length;
-  // }
 
   /*
      These are the degrees we take into consideration with upcoming calculations.

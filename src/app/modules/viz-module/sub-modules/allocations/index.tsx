@@ -12,11 +12,9 @@ import ReactApexCharts from "react-apexcharts";
 import { useTitle, useMeasure } from "react-use";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
-import { InfoIcon } from "app/assets/icons/Info";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { getIso3FromName } from "app/utils/getIso3FromName";
 import { PageLoader } from "app/modules/common/page-loader";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
@@ -533,7 +531,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         `}
       >
-        Allocations | {selectedPeriod} <InfoIcon />
+        Allocations | {selectedPeriod}
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
 

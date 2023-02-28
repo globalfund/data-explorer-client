@@ -5,7 +5,6 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -133,14 +132,6 @@ export function GenericEligibilityWrapper() {
           `}
         >
           Year {selectedYear}
-        </div>
-        <div
-          css={`
-            display: flex;
-            margin-left: 10px;
-          `}
-        >
-          <InfoIcon />
         </div>
       </div>
       <div css="width: 100%;height: 25px;" />

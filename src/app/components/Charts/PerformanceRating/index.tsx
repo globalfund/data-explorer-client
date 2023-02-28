@@ -2,7 +2,6 @@ import React from "react";
 import get from "lodash/get";
 import { appColors } from "app/theme";
 import { ResponsiveBar } from "@nivo/bar";
-import { InfoIcon } from "app/assets/icons/Info";
 import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
@@ -41,8 +40,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           cmsData,
           "componentsChartsPerformanceRating.performanceRating",
           ""
-        )}{" "}
-        <InfoIcon />
+        )}
       </div>
       <ResponsiveBar
         animate

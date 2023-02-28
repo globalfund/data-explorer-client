@@ -3,7 +3,6 @@ import get from "lodash/get";
 import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import { InfoIcon } from "app/assets/icons/Info";
 import CloseIcon from "@material-ui/icons/Close";
 import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
@@ -171,15 +170,6 @@ export function DotChart(props: DotChartProps) {
                 {get(cmsData, "componentsChartsEligibility.year", "")}{" "}
                 {props.selectedYear}
               </div>
-            </div>
-            <div
-              css={`
-                display: flex;
-                margin-left: 0px;
-                margin-right: 10px;
-              `}
-            >
-              <InfoIcon />
             </div>
           </div>
           <div

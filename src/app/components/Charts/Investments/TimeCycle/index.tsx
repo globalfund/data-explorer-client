@@ -5,7 +5,6 @@ import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
 import CloseIcon from "@material-ui/icons/Close";
-import { InfoIcon } from "app/assets/icons/Info";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import { isTouchDevice } from "app/utils/isTouchDevice";
@@ -186,7 +185,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   `}
                 >
-                  Investments - {props.type || "Disbursement"} <InfoIcon />
+                  Investments - {props.type || "Disbursement"}
                 </div>
                 <div css="font-weight: normal;">
                   {formatFinancialValue(totalInvestmentValue)}

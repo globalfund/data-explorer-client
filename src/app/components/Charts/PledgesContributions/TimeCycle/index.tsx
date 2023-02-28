@@ -3,7 +3,6 @@ import get from "lodash/get";
 import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
-import { InfoIcon } from "app/assets/icons/Info";
 import CloseIcon from "@material-ui/icons/Close";
 import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
@@ -104,8 +103,7 @@ export function PledgesContributionsTimeCycle(
                 }
               `}
             >
-              {get(cmsData, "componentsChartsPledges.replenishmentPeriods", "")}{" "}
-              <InfoIcon />
+              {get(cmsData, "componentsChartsPledges.replenishmentPeriods", "")}
             </div>
           </Grid>
           <Grid item xs={12} sm={12} md={9}>

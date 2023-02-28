@@ -14,7 +14,6 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];

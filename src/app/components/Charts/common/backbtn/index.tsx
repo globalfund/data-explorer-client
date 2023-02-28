@@ -17,9 +17,6 @@ export function VizBackBtn(props: Props) {
   const setDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.setSteps
   );
-  const setShowDataPath = useStoreActions(
-    (state) => state.DataPathPanelVisibilityState.setValue
-  );
   const setActiveStep = useStoreActions(
     (actions) => actions.DataPathActiveStep.setStep
   );

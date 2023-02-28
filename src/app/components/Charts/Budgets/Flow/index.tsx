@@ -6,11 +6,9 @@ import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import { InfoIcon } from "app/assets/icons/Info";
 import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { XsContainer } from "app/components/Charts/common/styles";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { getNodes } from "app/components/Charts/Budgets/Flow/components/node";
 import { NoDataBudgetsFlow } from "app/components/Charts/Budgets/Flow/components/nodata";
@@ -114,10 +112,6 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   const [xsTooltipData, setXsTooltipData] =
     React.useState<MobileBudgetsFlowTooltipProps | null>(null);
 
-  const totalBudget = sumBy(
-    filter(props.data.links, { source: "Budgets" }),
-    "value"
-  );
   const cmsData = useCMSData({ returnData: true });
 
   const Nodes = (nProps: any) => {
@@ -206,7 +200,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
               }
             `}
           >
-            {get(cmsData, "componentsChartsBudgets.budget", "")} <InfoIcon />
+            {get(cmsData, "componentsChartsBudgets.budget", "")}
           </div>
         </Grid>
         <Grid item xs={3}>

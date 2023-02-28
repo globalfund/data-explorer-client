@@ -9,7 +9,6 @@ import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
@@ -133,7 +132,7 @@ export function PledgesContributionsTreemap() {
               }
             `}
           >
-            Donors {valueType}s <InfoIcon />
+            Donors {valueType}s
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalBudget)}
@@ -159,10 +158,10 @@ export function PledgesContributionsTreemap() {
           xsTooltipData={xsTooltipData}
           setXsTooltipData={setXsTooltipData}
           onNodeClick={(
-            node: string,
-            x: number,
-            y: number,
-            code?: string
+            _node: string,
+            _x: number,
+            _y: number,
+            _code?: string
           ) => {}}
         />
       </div>

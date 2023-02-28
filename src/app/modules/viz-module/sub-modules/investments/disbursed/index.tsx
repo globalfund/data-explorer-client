@@ -15,7 +15,6 @@ import { breadCrumbItems } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
@@ -298,7 +297,7 @@ export function InvestmentsDisbursedModule(
                 }
               `}
             >
-              Investments - {props.type || "Disbursement"} <InfoIcon />
+              Investments - {props.type || "Disbursement"}
             </div>
             <div css="font-weight: normal; margin-top: -6px;">
               {formatFinancialValue(totalValue)}
