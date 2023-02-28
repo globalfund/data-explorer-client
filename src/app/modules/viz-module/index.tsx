@@ -34,6 +34,7 @@ import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { v4 } from "uuid";
 import { useRecoilState } from "recoil";
 import { breadCrumbItems } from "app/state/recoil/atoms";
+import { GenericFundingRequestWrapper } from "./sub-modules/fundingRequests/table/data-wrappers/generic";
 
 export default function VizModule() {
   const location = useLocation();
@@ -307,6 +308,10 @@ export default function VizModule() {
           </Route>
           <Route path="/viz/eligibility">
             <EligibilityModule />
+          </Route>
+          {/* Funding Request */}
+          <Route path="/viz/funding-request/table">
+            <GenericFundingRequestWrapper />
           </Route>
         </Switch>
       </div>

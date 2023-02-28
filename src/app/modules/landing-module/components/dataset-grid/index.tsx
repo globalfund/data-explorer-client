@@ -127,6 +127,9 @@ export function LandingDatasetGrid() {
   const aaText = {
     __html: get(cmsData, "componentsDatasetCarousel.accessAllocations", ""),
   };
+  const frText = {
+    __html: "Access to Funding · Funding Requests",
+  };
   const grText = {
     __html: get(cmsData, "componentsDatasetCarousel.grants", ""),
   };
@@ -135,6 +138,10 @@ export function LandingDatasetGrid() {
   };
   const doText = {
     __html: get(cmsData, "componentsDatasetCarousel.documents", ""),
+  };
+
+  const frDescription = {
+    __html: "Funding requests applications by countries",
   };
 
   const fpDescription = {
@@ -196,6 +203,7 @@ export function LandingDatasetGrid() {
     __html: get(cmsData, "componentsDatasetCarousel.documentsDescription", ""),
   };
 
+  console.log(cmsData, "cmsData");
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={6} lg={3}>
@@ -253,6 +261,20 @@ export function LandingDatasetGrid() {
             {
               icon: <MapIcon />,
               link: "/viz/allocations/map",
+            },
+          ]}
+        />
+      </Grid>
+
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={frText}
+          link="/viz/funding-request/table"
+          description={frDescription}
+          iconLinks={[
+            {
+              icon: <TableIcon />,
+              link: "/viz/funding-request/table",
             },
           ]}
         />

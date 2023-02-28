@@ -133,6 +133,7 @@ function Row(props: {
           </TableCell>
         ))}
       </TableRow>
+
       <TableRow
         css={`
           border-bottom: unset;
