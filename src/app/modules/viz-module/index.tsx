@@ -83,7 +83,7 @@ export default function VizModule() {
   const vizTypePretext = (value: string) => {
     const localVizType = startCase(value);
 
-    switch (localVizType) {
+    switch (vizType) {
       case "Pledges-contributions":
         return `Resource Mobilization: ${localVizType} `;
       case "Allocations":
