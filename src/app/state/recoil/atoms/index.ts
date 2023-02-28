@@ -8,8 +8,14 @@ export interface BreadCrumbItem {
   name: string;
   path: string;
   id: string;
+  vizLevel?: number;
+  vizSelected?:
+    | string
+    | {
+        id: string | undefined;
+        filterStr: string | undefined;
+      };
 }
-
 export const cmsDataAtom = atom({
   key: "cmsDataAtom",
   default: {
@@ -42,12 +48,19 @@ export const cmsDataAtom = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const breadCrumbItems = atom<BreadCrumbItem[]>({
+  key: "breadCrumbItems",
+  default: [],
+  effects_UNSTABLE: [persistAtom],
+});
+
 export const filterExpandedGroup = atom<FilterGroupProps | null>({
   key: "filterExpandedGroup",
   default: null,
 });
 
-export const breadCrumbItems = atom<BreadCrumbItem[]>({
-  key: "breadCrumbItems",
-  default: [],
+export const selectedViewAtom = atom<string>({
+  key: "selectedViewAtom",
+  default: "",
+  effects_UNSTABLE: [persistAtom],
 });

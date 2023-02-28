@@ -212,7 +212,7 @@ export const countryList = [
     iso3: "CYM",
   },
   {
-    name: "Central African Republic (the)",
+    name: "Central African Republic",
     iso2: "CF",
     iso3: "CAF",
   },
@@ -247,7 +247,7 @@ export const countryList = [
     iso3: "COL",
   },
   {
-    name: "Comoros (the)",
+    name: "Comoros",
     iso2: "KM",
     iso3: "COM",
   },
@@ -1087,7 +1087,7 @@ export const countryList = [
     iso3: "TJK",
   },
   {
-    name: "Tanzania, United Republic of",
+    name: "Tanzania (United Republic)",
     iso2: "TZ",
     iso3: "TZA",
   },

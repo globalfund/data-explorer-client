@@ -1,7 +1,8 @@
 /* third-party */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import get from "lodash/get";
 import { appColors } from "app/theme";
+import startCase from "lodash/startCase";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
@@ -30,6 +31,10 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
+import { v4 } from "uuid";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 export default function VizModule() {
   const location = useLocation();
@@ -38,6 +43,8 @@ export default function VizModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [subTypeCopy, setSubTypeCopy] = useState(params.subType);
 
   React.useEffect(() => {
     document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
@@ -59,15 +66,88 @@ export default function VizModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 420 - widthThreshold;
+    pushValue = 500 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   function isToolboxOvervlayVisible() {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+
+  const vizType = `${params.vizType
+    .slice(0, 1)
+    .toUpperCase()}${params.vizType.slice(1)}`;
+
+  const vizTypePretext = (value: string) => {
+    const localVizType = startCase(value);
+
+    switch (localVizType) {
+      case "Pledges-contributions":
+        return `Resource Mobilization: ${localVizType} `;
+      case "Allocations":
+        return `Access to funding: ${localVizType}`;
+      case "Eligibility":
+        return `Access to funding: ${localVizType}`;
+      case "Documents":
+        return "Documents";
+      case "Results":
+        return "Results";
+      default:
+        return `Grant Implementation: ${localVizType} `;
+    }
+  };
+
+  useEffect(() => {
+    setBreadCrumList((list) => {
+      if (list[list.length - 1]?.vizSelected) {
+        return [
+          { name: "Datasets", path: "/", id: v4() },
+          {
+            name: vizTypePretext(vizType),
+            path: list[list.length - 2].path,
+            id: v4(),
+          },
+          {
+            name: list[list.length - 1]?.name || "",
+            path: location.pathname,
+            id: v4(),
+            vizLevel: list[list.length - 1]?.vizLevel,
+            vizSelected: list[list.length - 1]?.vizSelected,
+          },
+        ];
+      } else {
+        return [
+          { name: "Datasets", path: "/", id: v4() },
+          {
+            name: vizTypePretext(vizType),
+            path: location.pathname,
+            id: v4(),
+            vizSelected: undefined,
+            vizLevel: 0,
+          },
+        ];
+      }
+    });
+  }, [vizType]);
+
+  React.useEffect(() => {
+    if (params.subType !== subTypeCopy) {
+      setBreadCrumList([
+        { name: "Datasets", path: "/", id: v4() },
+        {
+          name: vizTypePretext(vizType),
+          path: location.pathname,
+          id: v4(),
+          vizSelected: undefined,
+          vizLevel: 0,
+        },
+      ]);
+      setSubTypeCopy(params.subType);
+    }
+  }, [params.subType]);
 
   return (
     <div
@@ -80,6 +160,7 @@ export default function VizModule() {
         justify-content: center;
       `}
     >
+      <BreadCrumbs />
       <PageHeader
         title={params.vizType.replace("-", " & ")}
         breadcrumbs={[
@@ -89,11 +170,7 @@ export default function VizModule() {
             menuitems: datasetMenuItems,
           },
           {
-            name: `${params.vizType
-              .slice(0, 1)
-              .toUpperCase()}${params.vizType.slice(1)}${
-              params.subType ? " · " : ""
-            }${
+            name: `${vizType}${
               params.subType
                 ? `${params.subType
                     .slice(0, 1)

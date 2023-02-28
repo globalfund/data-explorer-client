@@ -23,7 +23,7 @@ interface PageHeaderProps {
 const styles = {
   container: css`
     left: 0;
-    top: 48px;
+    top: 104px;
     z-index: 10;
     width: 100vw;
     display: flex;
@@ -48,7 +48,8 @@ const styles = {
   title: (bigPadding: boolean) => css`
     width: 100%;
     color: ${appColors.PAGE_HEADER.TITLE_COLOR};
-    font-size: 24px;
+    color: #262c34;
+    font-size: 18px;
     overflow: hidden;
     line-height: 24px;
     align-items: center;

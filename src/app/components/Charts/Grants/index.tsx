@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from "react";
+import React, { useState } from "react";
 import get from "lodash/get";
 import max from "lodash/max";
 import uniq from "lodash/uniq";
@@ -18,6 +18,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMousePosition from "app/hooks/useMousePosition";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { GrantsRadialTooltip } from "app/components/Charts/Grants/components/tooltip";
 import {
@@ -43,6 +44,15 @@ export function GrantsViz(props: GrantsVizProps) {
   for (let i = hYear; i >= lYear; i--) {
     datayears.push(i);
   }
+  const [reRouteDialog, setReRouteDialog] = useState<{
+    display: boolean;
+    code: string;
+    clickthroughPath?: string;
+  }>({
+    display: false,
+    code: "",
+    clickthroughPath: "",
+  });
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: number;
     title: string;
@@ -69,6 +79,17 @@ export function GrantsViz(props: GrantsVizProps) {
 
   return (
     <React.Fragment>
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(
+              `/grant/${reRouteDialog.code}/${reRouteDialog.clickthroughPath}/overview`
+            )
+          }
+        />
+      )}
       {hoveredNode && (
         <div
           css={`
@@ -115,9 +136,11 @@ export function GrantsViz(props: GrantsVizProps) {
           {(isMobile || isTouchDevice()) && (
             <Button
               onTouchStart={() => {
-                history.push(
-                  `/grant/${hoveredNode.number}/${hoveredNode.name}/overview`
-                );
+                setReRouteDialog({
+                  ...reRouteDialog,
+                  code: `${hoveredNode.number}`,
+                  clickthroughPath: `${hoveredNode.name}`,
+                });
               }}
               css={`
                 width: 100%;
@@ -208,6 +231,7 @@ export function GrantsViz(props: GrantsVizProps) {
                 setHoveredNode={setHoveredNode}
                 rotateDeg={180 / components.length}
                 maxDisbursementValue={maxDisbursementValue}
+                setReRouteDialog={setReRouteDialog}
               />
             );
           })}
@@ -392,139 +416,144 @@ export function ComponentRadarThingies(props: any) {
                 const points = pointsOnCircle(radius, angle);
 
                 return (
-                  <div
-                    key={subItem.name}
-                    id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}`}
-                    css={`
-                      width: 100%;
-                      height: 100%;
-                      position: absolute;
-                      //bottom: ${(props.datayears.length - index - 1) * 10}px;
-                      opacity: ${props.hoveredNode &&
-                      props.hoveredNode.title !== item.title
-                        ? 0.4
-                        : 1};
-                    `}
-                  >
+                  <>
                     <div
+                      key={subItem.name}
+                      id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}`}
                       css={`
                         width: 100%;
                         height: 100%;
-                        position: relative;
-                        top: ${points.y}px;
-                        left: ${radius + points.x}px;
+                        position: absolute;
+                        /* bottom: ${(props.datayears.length - index - 1) *
+                        10}px; */
+                        opacity: ${props.hoveredNode &&
+                        props.hoveredNode.title !== item.title
+                          ? 0.4
+                          : 1};
                       `}
                     >
                       <div
                         css={`
-                          bottom: 0;
-                          // left: -3px;
-                          position: absolute;
-                          height: ${itemHeight}px;
-                          transform-origin: bottom;
-                          // Without default 90deg addition, we would have our starting point on top of the circle.
-                          // This is not what we want, see angleRange comment.
-                          transform: rotate(${90 + angle}deg);
+                          width: 100%;
+                          height: 100%;
+                          position: relative;
+                          top: ${points.y}px;
+                          left: ${radius + points.x}px;
                         `}
                       >
-                        <hr
-                          id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-line`}
-                          css={`
-                            margin: 0;
-                            z-index: 1;
-                            left: -1px;
-                            height: 100%;
-                            border-width: 1px;
-                            position: absolute;
-                            border-color: ${appColors.GRANTS.ITEM_LINE_COLOR};
-                            border-style: none none none
-                              ${get(
-                                statusBorderStyle,
-                                subItem.status,
-                                statusBorderStyle["Administratively Closed"]
-                              )};
-                          `}
-                        />
                         <div
-                          id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation`}
                           css={`
-                            z-index: 2;
-                            height: 100%;
-                            position: relative;
-
-                            * {
-                              z-index: 2;
-                            }
+                            bottom: 0;
+                            // left: -3px;
+                            position: absolute;
+                            height: ${itemHeight}px;
+                            transform-origin: bottom;
+                            // Without default 90deg addition, we would have our starting point on top of the circle.
+                            // This is not what we want, see angleRange comment.
+                            transform: rotate(${90 + angle}deg);
                           `}
                         >
-                          <div
-                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-start`}
+                          <hr
+                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-line`}
                             css={`
-                              left: -2px;
-                              width: 4px;
-                              height: 4px;
-                              border-radius: 50%;
+                              margin: 0;
+                              z-index: 1;
+                              left: -1px;
+                              height: 100%;
+                              border-width: 1px;
                               position: absolute;
-                              color: ${appColors.GRANTS.TEXT_COLOR};
-                              bottom: ${startHeight}px;
+                              border-color: ${appColors.GRANTS.ITEM_LINE_COLOR};
+                              border-style: none none none
+                                ${get(
+                                  statusBorderStyle,
+                                  subItem.status,
+                                  statusBorderStyle["Administratively Closed"]
+                                )};
                             `}
                           />
                           <div
-                            onClick={() => {
-                              if (!isMobile && !isTouchDevice()) {
-                                history.push(
-                                  `/grant/${item.name}/${subItem.name}/overview`
-                                );
+                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation`}
+                            css={`
+                              z-index: 2;
+                              height: 100%;
+                              position: relative;
+
+                              * {
+                                z-index: 2;
                               }
-                            }}
-                            onMouseLeave={() => {
-                              if (!isMobile && !isTouchDevice()) {
-                                props.setHoveredNode(null);
-                              }
-                            }}
-                            onMouseEnter={() => {
-                              if (!isMobile && !isTouchDevice()) {
+                            `}
+                          >
+                            <div
+                              id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-start`}
+                              css={`
+                                left: -2px;
+                                width: 4px;
+                                height: 4px;
+                                border-radius: 50%;
+                                position: absolute;
+                                background: ${appColors.GRANTS.ITEM_LINE_COLOR};
+                                bottom: ${startHeight}px;
+                              `}
+                            />
+                            <div
+                              onClick={() => {
+                                if (!isMobile && !isTouchDevice()) {
+                                  props.setReRouteDialog({
+                                    display: true,
+                                    code: item.name,
+                                    clickthroughPath: subItem.name,
+                                  });
+                                }
+                              }}
+                              onMouseLeave={() => {
+                                if (!isMobile && !isTouchDevice()) {
+                                  props.setHoveredNode(null);
+                                }
+                              }}
+                              onMouseEnter={() => {
+                                if (!isMobile && !isTouchDevice()) {
+                                  props.setHoveredNode({
+                                    ...subItem,
+                                    component: item.component,
+                                    title: item.title || item.name,
+                                    number: item.name,
+                                  });
+                                }
+                              }}
+                              onTouchStart={(
+                                e: React.TouchEvent<HTMLDivElement>
+                              ) => {
+                                e.stopPropagation();
                                 props.setHoveredNode({
                                   ...subItem,
                                   component: item.component,
                                   title: item.title || item.name,
                                   number: item.name,
                                 });
-                              }
-                            }}
-                            onTouchStart={(
-                              e: React.TouchEvent<HTMLDivElement>
-                            ) => {
-                              e.stopPropagation();
-                              props.setHoveredNode({
-                                ...subItem,
-                                component: item.component,
-                                title: item.title || item.name,
-                                number: item.name,
-                              });
-                            }}
-                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-end`}
-                            css={`
-                              top: 0;
-                              cursor: pointer;
-                              width: ${size}px;
-                              height: ${size}px;
-                              border-radius: 50%;
-                              position: absolute;
-                              left: -${size / 2}px;
-                              border: 1px solid
-                                ${appColors.GRANTS.ITEM_LINE_COLOR};
-                              background: ${get(
-                                ratingColor,
-                                subItem.rating,
-                                ratingColor.None
-                              )};
-                            `}
-                          />
+                              }}
+                              id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-end`}
+                              css={`
+                                top: 0;
+                                cursor: pointer;
+                                width: ${size}px;
+                                height: ${size}px;
+                                border-radius: 50%;
+                                position: absolute;
+                                left: -${size / 2}px;
+                                border: 1px solid
+                                  ${appColors.GRANTS.ITEM_LINE_COLOR};
+                                background: ${get(
+                                  ratingColor,
+                                  subItem.rating,
+                                  ratingColor.None
+                                )};
+                              `}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 );
               });
             })}

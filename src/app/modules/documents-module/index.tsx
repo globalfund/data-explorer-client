@@ -1,5 +1,7 @@
 /* third-party */
-import React from "react";
+import React, { useEffect } from "react";
+import { v4 } from "uuid";
+
 import get from "lodash/get";
 import { appColors } from "app/theme";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -16,6 +18,9 @@ import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { breadCrumbItems } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
@@ -24,6 +29,7 @@ export default function DocumentsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -90,7 +96,7 @@ export default function DocumentsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 500 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -99,6 +105,17 @@ export default function DocumentsModule() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+
+  useEffect(() => {
+    setBreadCrumList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: "Documents",
+        path: location.pathname,
+        id: v4(),
+      },
+    ]);
+  }, []);
 
   return (
     <div
@@ -111,6 +128,7 @@ export default function DocumentsModule() {
         justify-content: center;
       `}
     >
+      <BreadCrumbs />
       <PageHeader
         title="Documents"
         breadcrumbs={[

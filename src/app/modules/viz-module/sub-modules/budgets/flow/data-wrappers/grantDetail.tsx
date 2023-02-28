@@ -115,10 +115,10 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
 
   useUpdateEffect(() => {
     if (
-      drilldownVizSelected.id !== undefined &&
+      drilldownVizSelected?.id !== undefined &&
       vizSelected.filterStr !== undefined
     ) {
-      const idSplits = drilldownVizSelected.id.split("-");
+      const idSplits = drilldownVizSelected?.id.split("-");
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];

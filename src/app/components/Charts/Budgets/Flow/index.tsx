@@ -113,6 +113,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   const legends = getLegendItems(props.data.nodes);
   const [xsTooltipData, setXsTooltipData] =
     React.useState<MobileBudgetsFlowTooltipProps | null>(null);
+
   const totalBudget = sumBy(
     filter(props.data.links, { source: "Budgets" }),
     "value"
@@ -142,11 +143,8 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         alignItems="baseline"
         spacing={!isMobile ? 4 : undefined}
       >
-        <Grid item xs={12} sm={2} css="font-size: 14px !important;">
-          <b>{formatFinancialValue(totalBudget)}</b>
-        </Grid>
         {!isMobile && (
-          <Grid item xs={12} sm={10}>
+          <Grid item xs={12} sm={10} md={12}>
             <div
               css={`
                 gap: 24px;
@@ -174,7 +172,6 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                     align-items: center;
                     flex-direction: row;
                     font-weight: normal;
-
                     > * {
                       @supports (-webkit-touch-callout: none) and
                         (not (translate: none)) {

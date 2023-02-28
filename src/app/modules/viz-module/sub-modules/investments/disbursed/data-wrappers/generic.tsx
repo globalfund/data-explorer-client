@@ -8,6 +8,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
+import { useRecoilValue } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface Props {
   code?: string;
@@ -17,11 +19,23 @@ interface Props {
 }
 
 export function GenericInvestmentsDisbursedWrapper(props: Props) {
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
+  const breadcrumbList = useRecoilValue(breadCrumbItems);
+
+  const [vizLevel, setVizLevel] = React.useState(
+    breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0
   );
+  const isMobile = useMediaQuery("(max-width: 767px)");
+
+  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
+    breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string
+  );
+
+  React.useEffect(() => {
+    setVizSelected(
+      breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string
+    );
+    setVizLevel(breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0);
+  }, [breadcrumbList]);
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -173,7 +187,7 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
       data={data}
       allowDrilldown
       type={props.type}
-      vizLevel={vizLevel}
+      vizLevel={vizLevel as number}
       isLoading={isLoading}
       setVizLevel={setVizLevel}
       vizSelected={vizSelected}

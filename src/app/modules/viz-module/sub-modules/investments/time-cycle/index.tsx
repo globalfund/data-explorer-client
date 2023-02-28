@@ -1,17 +1,20 @@
 /* third-party */
 import React from "react";
+import { v4 } from "uuid";
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
+import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -43,6 +46,8 @@ export function InvestmentsTimeCycleModule(
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
+
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
@@ -128,6 +133,16 @@ export function InvestmentsTimeCycleModule(
           type={props.type}
           // selectedNodeId={props.vizSelected}
           onNodeClick={(node: string, x: number, y: number) => {
+            setBreadCrumbList([
+              ...breadCrumbList,
+              {
+                name: node,
+                path: location.pathname,
+                id: v4(),
+                vizLevel: 1,
+                vizSelected: node,
+              },
+            ]);
             props.setVizLevel(1);
             props.setVizSelected(node);
           }}
@@ -180,13 +195,6 @@ export function InvestmentsTimeCycleModule(
         }
       `}
     >
-      {props.vizLevel > 0 && (
-        <VizBackBtn
-          vizLevel={props.vizLevel}
-          setVizLevel={props.setVizLevel}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
-        />
-      )}
       {vizComponent}
     </div>
   );

@@ -536,18 +536,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         Allocations | {selectedPeriod} <InfoIcon />
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-      {vizLevel > 0 && (
-        <VizBackBtn
-          vizLevel={vizLevel}
-          setVizLevel={(value: number) => {
-            if (value === 0) {
-              setVizSelected(undefined);
-            }
-            setVizLevel(value);
-          }}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
-        />
-      )}
+
       {vizComponent}
     </div>
   );

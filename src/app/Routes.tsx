@@ -25,7 +25,7 @@ const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const ResultsModule = lazy(() => import("app/modules/results-module"));
-const SitemapModule = lazy(() => import("app/modules/sitemap-module"));
+const SitemapModule = lazy(() => import("app/modules/sitemap-module/index"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));

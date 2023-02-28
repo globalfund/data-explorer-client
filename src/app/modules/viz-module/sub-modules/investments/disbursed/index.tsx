@@ -1,24 +1,26 @@
 /* third-party */
 import React from "react";
+import { v4 } from "uuid";
 import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
+import { useTitle } from "react-use";
+import { appColors } from "app/theme";
 import uniqueId from "lodash/uniqueId";
+import { useRecoilState } from "recoil";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-import { useTitle, useUpdateEffect } from "react-use";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import { appColors } from "app/theme";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -78,6 +80,9 @@ export function InvestmentsDisbursedModule(
   const [treemapData, setTreemapData] = React.useState<
     DisbursementsTreemapDataItem[]
   >(props.data);
+
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+  const breadcrumbID = v4();
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
@@ -186,7 +191,7 @@ export function InvestmentsDisbursedModule(
     }
   }, [props.data]);
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
     setTreemapData(
       filterDisbursements(props.data, toolboxPanelDisbursementsSliderValues)
     );
@@ -213,11 +218,22 @@ export function InvestmentsDisbursedModule(
             node: string,
             _x: number,
             _y: number,
-            code?: string
+            code?: string,
+            name?: string
           ) => {
             if (props.allowDrilldown) {
               props.setVizLevel(1);
               props.setVizSelected(node);
+              setBreadCrumbList([
+                ...breadCrumbList,
+                {
+                  name: name as string,
+                  path: location.pathname,
+                  id: breadcrumbID,
+                  vizLevel: 1,
+                  vizSelected: node,
+                },
+              ]);
             } else if (props.onNodeClick && code) {
               props.onNodeClick(code);
             }
@@ -275,7 +291,8 @@ export function InvestmentsDisbursedModule(
                 font-weight: bold;
                 align-items: center;
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
+                font-size: 12px;
+                margin-top: -10px;
                 > svg {
                   margin-left: 10px;
                 }
@@ -283,7 +300,7 @@ export function InvestmentsDisbursedModule(
             >
               Investments - {props.type || "Disbursement"} <InfoIcon />
             </div>
-            <div css="font-weight: normal;">
+            <div css="font-weight: normal; margin-top: -6px;">
               {formatFinancialValue(totalValue)}
             </div>
           </Grid>
@@ -303,13 +320,6 @@ export function InvestmentsDisbursedModule(
           }
         `}
       >
-        {props.vizLevel > 0 && (
-          <VizBackBtn
-            vizLevel={props.vizLevel}
-            setVizLevel={props.setVizLevel}
-            setOpenToolboxPanel={props.setOpenToolboxPanel}
-          />
-        )}
         {vizComponent}
       </div>
     </React.Fragment>

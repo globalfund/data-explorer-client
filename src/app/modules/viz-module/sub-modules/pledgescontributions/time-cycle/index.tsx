@@ -185,18 +185,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
         }
       `}
     >
-      {vizLevel > 0 && (
-        <VizBackBtn
-          vizLevel={vizLevel}
-          setVizLevel={(value: number) => {
-            if (value === 0) {
-              setVizSelected(undefined);
-            }
-            setVizLevel(value);
-          }}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
-        />
-      )}
       {vizComponent}
     </div>
   );

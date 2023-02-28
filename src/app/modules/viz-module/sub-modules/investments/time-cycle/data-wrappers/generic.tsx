@@ -8,6 +8,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
+import { useRecoilValue } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface Props {
   code?: string;
@@ -18,10 +20,20 @@ interface Props {
 
 export function GenericInvestmentsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Investments/Time cycle");
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
+  const breadcrumbList = useRecoilValue(breadCrumbItems);
+
+  const [vizLevel, setVizLevel] = React.useState(
+    breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0
   );
+  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
+    breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string
+  );
+  React.useEffect(() => {
+    setVizSelected(
+      breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string
+    );
+    setVizLevel(breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0);
+  }, [breadcrumbList]);
 
   // api call & data
   const fetchData = useStoreActions((store) => {

@@ -161,18 +161,6 @@ export function PerformanceFrameworkModule(props: Props) {
         }
       `}
     >
-      {vizLevel > 0 && (
-        <VizBackBtn
-          vizLevel={vizLevel}
-          setVizLevel={(value: number) => {
-            if (value === 0) {
-              setVizSelected(undefined);
-            }
-            setVizLevel(value);
-          }}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
-        />
-      )}
       {vizComponent}
     </div>
   );

@@ -14,7 +14,6 @@ import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { DataPathPanel } from "app/components/ToolBoxPanel/components/datapath";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
@@ -63,8 +62,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   React.useEffect(() => {
     if (dataPathSteps.length < 2 && showDataPath) {
       setShowDataPath(false);
-    } else if (!showDataPath && dataPathSteps.length > 1) {
-      setShowDataPath(true);
     }
   }, [dataPathSteps]);
 
@@ -87,7 +84,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 112;
+  let top = 168;
 
   if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {
@@ -99,19 +96,19 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   }
   if (isSmallScreen) {
     if (props.isGrantDetail) {
-      top = 113;
+      top = 168;
       if (isMobile) {
-        top = 92;
+        top = 149;
       }
     }
     if (props.isLocationDetail || isPartnerDetail) {
-      top = 113;
+      top = 168;
       if (isMobile) {
         top = 148;
       }
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
-    top = 112;
+    top = 168;
   }
 
   return (
@@ -268,7 +265,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   />
                 </React.Fragment>
               ) : (
-                <DataPathPanel />
+                ""
+                // <DataPathPanel />
               )}
             </div>
           </div>

@@ -129,7 +129,7 @@ export function LocationDetailBudgetsFlowWrapper(props: Props) {
 
   useUpdateEffect(() => {
     if (
-      drilldownVizSelected.id !== undefined &&
+      drilldownVizSelected?.id !== undefined &&
       vizSelected.filterStr !== undefined
     ) {
       const idSplits = drilldownVizSelected.id.split("-");

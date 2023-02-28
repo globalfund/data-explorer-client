@@ -9,10 +9,16 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
+import { useRecoilValue } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface Props {
   toolboxOpen: boolean;
   setOpenToolboxPanel: (value: boolean) => void;
+}
+interface DrilldownVizSelectedType {
+  id: string | undefined;
+  filterStr: string | undefined;
 }
 
 export function GenericBudgetsFlowWrapper(props: Props) {
@@ -20,11 +26,25 @@ export function GenericBudgetsFlowWrapper(props: Props) {
 
   const history = useHistory();
 
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
-    id: string | undefined;
-    filterStr: string | undefined;
-  }>({ id: undefined, filterStr: undefined });
+  const breadcrumbList = useRecoilValue(breadCrumbItems);
+
+  const [vizLevel, setVizLevel] = React.useState(
+    breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0
+  );
+
+  const [drilldownVizSelected, setDrilldownVizSelected] =
+    React.useState<DrilldownVizSelectedType>(
+      breadcrumbList[breadcrumbList.length - 1]
+        ?.vizSelected as DrilldownVizSelectedType
+    );
+
+  React.useEffect(() => {
+    setDrilldownVizSelected(
+      breadcrumbList[breadcrumbList.length - 1]
+        ?.vizSelected as DrilldownVizSelectedType
+    );
+    setVizLevel(breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0);
+  }, [breadcrumbList]);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.BudgetsFlow.fetch);
@@ -124,10 +144,10 @@ export function GenericBudgetsFlowWrapper(props: Props) {
 
   useUpdateEffect(() => {
     if (
-      drilldownVizSelected.id !== undefined &&
+      drilldownVizSelected?.id !== undefined &&
       vizSelected.filterStr !== undefined
     ) {
-      const idSplits = drilldownVizSelected.id.split("-");
+      const idSplits = drilldownVizSelected?.id.split("-");
       const componentFilter = idSplits.length > 2 ? idSplits[2] : idSplits[1];
       const activityAreaNameFilter =
         idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
@@ -145,7 +165,7 @@ export function GenericBudgetsFlowWrapper(props: Props) {
     } else {
       clearDrilldownLevel2Data();
     }
-  }, [drilldownVizSelected.id]);
+  }, [drilldownVizSelected?.id]);
 
   useUpdateEffect(() => {
     setDrilldownLevelSelectors(getDrilldownPanelOptions(links));

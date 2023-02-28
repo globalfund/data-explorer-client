@@ -1,6 +1,8 @@
 /* third-party */
-import React from "react";
+import React, { useState } from "react";
 import find from "lodash/find";
+import { v4 } from "uuid";
+
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
@@ -13,6 +15,14 @@ import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
+import { get, sumBy } from "lodash";
+import { useCMSData } from "app/hooks/useCMSData";
+import { Grid, useMediaQuery } from "@material-ui/core";
+import { InfoIcon } from "app/assets/icons/Info";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 interface BudgetsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -36,14 +46,24 @@ interface BudgetsTimeCycleModuleProps {
 
 export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const history = useHistory();
+  const totalBudget = sumBy(props.data, "amount");
+  const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
+
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
+
+  const [reRouteDialog, setReRouteDialog] = useState({
+    display: false,
+    code: "",
+  });
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
@@ -140,6 +160,16 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         <BudgetsTimeCycle
           data={props.data}
           onNodeClick={(node: string) => {
+            setBreadCrumbList([
+              ...breadCrumbList,
+              {
+                name: node,
+                path: location.pathname,
+                id: v4(),
+                vizLevel: 1,
+                vizSelected: node,
+              },
+            ]);
             props.setVizLevel(1);
             props.setVizSelected(node);
           }}
@@ -155,6 +185,16 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
             data={props.dataDrilldownLevel1}
             setXsTooltipData={setXsTooltipData}
             onNodeClick={(node: string) => {
+              setBreadCrumbList([
+                ...breadCrumbList,
+                {
+                  name: node,
+                  path: location.pathname,
+                  id: v4(),
+                  vizLevel: 2,
+                  vizSelected: node,
+                },
+              ]);
               props.setVizLevel(2);
               props.setDrilldownVizSelected(node);
             }}
@@ -182,7 +222,10 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
                   path: `/grant/${code}/period/budgets/time-cycle`,
                 },
               ]);
-              history.push(`/grant/${code}/period/budgets/time-cycle`);
+              setReRouteDialog({
+                display: true,
+                code,
+              });
             }
           }}
         />
@@ -201,13 +244,50 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         }
       `}
     >
-      {(props.vizLevel > 0 || dataPathSteps.length > 1) && (
-        <VizBackBtn
-          vizLevel={props.vizLevel}
-          setVizLevel={props.setVizLevel}
-          setOpenToolboxPanel={props.setOpenToolboxPanel}
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(
+              `/grant/${reRouteDialog.code}/period/budgets/time-cycle`
+            )
+          }
         />
       )}
+
+      <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
+        {!isMobile && (
+          <React.Fragment>
+            <div
+              css={`
+                /* display: flex; */
+                font-size: 12px;
+                /* font-weight: bold; */
+                align-items: center;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+                margin-top: -9px;
+                > svg {
+                  margin-left: 10px;
+                }
+              `}
+            >
+              <b>
+                {get(cmsData, "componentsChartsBudgets.budget", "")}{" "}
+                <InfoIcon />
+              </b>
+              <p
+                css={`
+                  margin-top: -6px;
+                `}
+              >
+                {formatFinancialValue(totalBudget)}
+              </p>
+            </div>
+          </React.Fragment>
+        )}
+      </Grid>
+
       {vizComponent}
     </div>
   );
