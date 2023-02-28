@@ -85,7 +85,7 @@ export default function VizModule() {
 
     switch (vizType) {
       case "Pledges-contributions":
-        return `Resource Mobilization: ${localVizType} `;
+        return `Resource Mobilization: ${localVizType}`;
       case "Allocations":
         return `Access to funding: ${localVizType}`;
       case "Eligibility":
