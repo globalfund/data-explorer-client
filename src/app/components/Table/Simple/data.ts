@@ -10,6 +10,7 @@ export interface SimpleTableColumn {
 
 export interface SimpleTableProps {
   title: string;
+  light?: boolean;
   search: string;
   sortBy: string;
   rows: SimpleTableRow[];

@@ -11,7 +11,9 @@ import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility/table";
+import { tab } from "app/components/Search/components/results/styles";
 import { FundingRequestTable } from "..";
+import { fundingRequestColumns, fundingRequestData } from "./data";
 
 function getTableData(data: DotChartModel[]): SimpleTableRow[] {
   const updatedTableData: SimpleTableRow[] = [];
@@ -128,15 +130,6 @@ export function GenericFundingRequestWrapper() {
       >
         <div
           css={`
-            font-weight: bold;
-            margin-right: 10px;
-            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-          `}
-        >
-          Year {selectedYear}
-        </div>
-        <div
-          css={`
             display: flex;
             margin-left: 10px;
           `}
@@ -148,20 +141,11 @@ export function GenericFundingRequestWrapper() {
       <FundingRequestTable
         search={search}
         sortBy={sortBy}
-        data={tableData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+        data={fundingRequestData}
         isLoading={isLoading}
         setSearch={setSearch}
         setSortBy={setSortBy}
-        columns={[
-          {
-            name:
-              aggregateBy === "componentName"
-                ? "Component/Location"
-                : "Location/Component",
-            key: "name",
-          },
-          { name: "Status", key: "status" },
-        ]}
+        columns={fundingRequestColumns}
       />
       <TablePagination
         page={page}

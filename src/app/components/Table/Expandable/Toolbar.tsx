@@ -18,6 +18,7 @@ import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
 import { locationsToNotShowExport } from "app/components/ToolBoxPanel/components/iconbuttons";
 
 interface TableToolbarProps {
+  light?: boolean;
   title: string;
   search: string;
   columns: TableToolbarCols[];
@@ -66,7 +67,7 @@ export function TableToolbar(props: TableToolbarProps) {
       css={`
         display: flex;
         padding: 0 40px;
-        background: #dfe3e5;
+        background: ${props.light ? "#F5F5F7" : "#dfe3e5"};
         flex-direction: row;
         justify-content: space-between;
         border-radius: 20px 20px 0px 0px;

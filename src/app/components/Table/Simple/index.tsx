@@ -212,6 +212,7 @@ export function SimpleTable(props: SimpleTableProps) {
     <React.Fragment>
       <TableToolbar
         title={props.title}
+        light={props.light}
         search={props.search}
         columns={toolbarCols}
         onSearchChange={props.onSearchChange}
