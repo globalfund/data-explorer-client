@@ -21,16 +21,7 @@ export const countryDetailTabs: TabProps[] = [
   },
   {
     name: "Access to Funding",
-    tabs: [
-      {
-        name: "Eligibility",
-        url: "/location/<code>/eligibility",
-      },
-      {
-        name: "Allocation",
-        url: "/location/<code>/allocations",
-      },
-    ],
+    url: "/location/<code>/access-to-funding",
   },
   {
     name: "Grant Implementation",
