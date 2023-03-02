@@ -38,8 +38,10 @@ import { LocationDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-mo
 import { LocationDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/locationDetail";
 import {
   filtergroups,
+  fundingRequestFilterGroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import LocationAccessToFundingWrapper from "../viz-module/sub-modules/accessToFunding/location";
 
 export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
@@ -120,8 +122,15 @@ export default function CountryDetail() {
   }, [paramCode]);
 
   React.useEffect(() => {
-    if (!isMobile && !openToolboxPanel && params.vizType !== "overview") {
+    if (
+      !isMobile &&
+      !openToolboxPanel &&
+      params.vizType !== "overview" &&
+      !(location.pathname.indexOf("access-to-funding") > -1)
+    ) {
       setOpenToolboxPanel(true);
+    } else {
+      setOpenToolboxPanel(false);
     }
   }, [params.vizType]);
 
@@ -391,6 +400,14 @@ export default function CountryDetail() {
               setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
+          {/*Access to Funding*/}
+          <Route path={`/location/:code/access-to-funding`}>
+            <LocationAccessToFundingWrapper
+              code={paramCode}
+              codeParam={params.code}
+              filterGroups={fundingRequestFilterGroups}
+            />
+          </Route>
           {/* Eligibility */}
           <Route path={`/location/:code/eligibility/table`}>
             <LocationEligibilityTableWrapper code={paramCode} />
@@ -432,24 +449,26 @@ export default function CountryDetail() {
           }
         `}
       />
-      <ToolBoxPanel
-        isLocationDetail
-        open={openToolboxPanel}
-        vizWrapperRef={vizWrapperRef}
-        filterGroups={get(
-          pathnameToFilterGroups,
-          location.pathname.replace(params.code, "<code>"),
-          filtergroups
-        )}
-        onCloseBtnClick={(value?: boolean) =>
-          setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
-        }
-        getAllAvailableGrants={
-          params.vizType === "grants" && params.subType === "list"
-            ? getAllAvailableGrants
-            : undefined
-        }
-      />
+      {!(location.pathname.indexOf("access-to-funding") > -1) && (
+        <ToolBoxPanel
+          isLocationDetail
+          open={openToolboxPanel}
+          vizWrapperRef={vizWrapperRef}
+          filterGroups={get(
+            pathnameToFilterGroups,
+            location.pathname.replace(params.code, "<code>"),
+            filtergroups
+          )}
+          onCloseBtnClick={(value?: boolean) =>
+            setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
+          }
+          getAllAvailableGrants={
+            params.vizType === "grants" && params.subType === "list"
+              ? getAllAvailableGrants
+              : undefined
+          }
+        />
+      )}
       <div
         css={`
           left: 0;
