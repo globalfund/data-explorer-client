@@ -14,6 +14,8 @@ import {
   EligibilityScatterplotDataItemModel,
   incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
+import { FundingRequestTable } from "..";
+import { fundingRequestColumns, fundingRequestData } from "./data";
 
 function getTableData(
   data: EligibilityScatterplotDataItemModel[]
@@ -31,7 +33,7 @@ interface Props {
   code: string;
 }
 
-export function LocationEligibilityTableWrapper(props: Props) {
+export function LocationFundingRequestTableWrapper(props: Props) {
   useTitle("The Data Explorer - Location Eligibility");
 
   const [search, setSearch] = React.useState("");
@@ -101,20 +103,14 @@ export function LocationEligibilityTableWrapper(props: Props) {
 
   return (
     <>
-      <EligibilityTable
+      <FundingRequestTable
         search={search}
         sortBy={sortBy}
-        data={tableData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+        data={fundingRequestData}
         isLoading={isLoading}
         setSearch={setSearch}
         setSortBy={setSortBy}
-        columns={[
-          { name: "Year", key: "year" },
-          { name: "Component", key: "component" },
-          { name: "Income Level", key: "incomeLevel" },
-          { name: "Disease Burden", key: "diseaseBurden" },
-          { name: "Status", key: "status" },
-        ]}
+        columns={fundingRequestColumns}
       />
 
       <TablePagination

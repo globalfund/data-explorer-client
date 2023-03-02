@@ -154,6 +154,43 @@ export const filtergroups: FilterGroupProps[] = [
     addSubOptionFilters: false,
   },
 ];
+export const fundingRequestFilterGroups: FilterGroupProps[] = [
+  {
+    name: "Components",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "Locations",
+    addSubOptionFilters: true,
+  },
+  {
+    name: "Portfolio categorization",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "TRP Window",
+    addSubOptionFilters: true,
+  },
+];
+export const accessToFundingEligibilityFilterGroups: FilterGroupProps[] = [
+  {
+    name: "Year",
+    addSubOptionFilters: true,
+  },
+  {
+    name: "Components",
+    addSubOptionFilters: false,
+  },
+
+  {
+    name: "Eligibility Status",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "TRP Window",
+    addSubOptionFilters: true,
+  },
+];
 
 export const pathnameToFilterGroups = {
   // independent data pages
@@ -402,6 +439,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods"
   ),
+
   "/location/<code>/allocations": filter(
     filtergroups,
     (fg: FilterGroupProps) => fg.name === "Components"

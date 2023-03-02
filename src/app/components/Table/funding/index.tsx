@@ -308,7 +308,11 @@ export function FundingTable(props: FundingTableProps) {
   );
 
   return (
-    <React.Fragment>
+    <React.Fragment
+      css={`
+        display: relative;
+      `}
+    >
       <TableToolbar
         title={props.title}
         light={props.light}
@@ -380,6 +384,7 @@ export function FundingTable(props: FundingTableProps) {
           </TableBody>
         </Table>
       </TableContainer>
+
       <div css="width: 100%;height: 25px;" />
     </React.Fragment>
   );
