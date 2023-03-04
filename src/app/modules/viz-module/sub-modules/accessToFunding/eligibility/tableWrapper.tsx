@@ -8,34 +8,22 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility/table";
 import {
   diseaseBurdens,
   EligibilityScatterplotDataItemModel,
   incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
-import {
-  fundingRequestData,
-  fundingRequestColumns,
-} from "../../../fundingRequests/table/data-wrappers/data";
-import { FundingRequestTable } from "./fundingRequestTable";
-import {
-  FilterGroupProps,
-  filtergroups,
-  fundingRequestFilterGroups,
-  pathnameToFilterGroups,
-} from "app/components/ToolBoxPanel/components/filters/data";
+import { EligibilityTable } from "./eligibilityTable";
 import { ClickAwayListener, Slide } from "@material-ui/core";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { ToolBoxPanelBudgetFlowLevelSelectors } from "app/components/ToolBoxPanel/components/budgetflowlevelselectors";
 import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
-import {
-  ViewModel,
-  getControlItems,
-} from "app/components/ToolBoxPanel/utils/getControlItems";
-import { useHistory, useParams } from "react-router-dom";
-import { ToolBoxPanelDonorMapTypes } from "app/components/ToolBoxPanel/components/donormaptypes";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
+import {
+  accessToFundingEligibilityFilterGroups,
+  FilterGroupProps,
+} from "app/components/ToolBoxPanel/components/filters/data";
+import { ViewModel } from "app/components/ToolBoxPanel/utils/getControlItems";
+import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 
 function getTableData(
   data: EligibilityScatterplotDataItemModel[]
@@ -52,14 +40,14 @@ function getTableData(
 interface Props {
   code: string;
   codeParam: string;
-  filterGroups: FilterGroupProps[];
 }
 
-export function AccessToFundingRequestTableWrapper(props: Props) {
+export function AccessToFundingEligibilityTableWrapper(props: Props) {
   useTitle("The Data Explorer - Location Eligibility");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState("");
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
 
   const data = useStoreState(
     (state) =>
@@ -106,13 +94,17 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
   const [,] = useDebounce(() => reloadData(), 500, [search]);
 
   const [selectedView, setSelectedView] = React.useState("Table");
+  const [selectedAggregates, setSelectedAggregates] = React.useState("Year");
 
   const [controlItems, setControlItems] = React.useState<{
     views: ViewModel[];
     aggregates: ViewModel[];
   }>({
     views: [{ label: "Table", value: "Table", link: location.pathname }],
-    aggregates: [{} as ViewModel],
+    aggregates: [
+      { label: "Year", value: "yearName" },
+      { label: "Components", value: "componentName" },
+    ],
   });
 
   if (isLoading) {
@@ -182,6 +174,9 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
                   height: 93%;
                   visibility: visible !important;
                   overflow-y: auto;
+                  ::-webkit-scrollbar {
+                    display: none;
+                  }
 
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
                   border-radius: 20px;
@@ -190,16 +185,15 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
                     width: 100vw;
                     box-shadow: none;
                     overflow-y: auto;
-                    /* height: 100%; */
                   }
                 `}
               >
                 <div
                   css={`
                     width: 100%;
-                    /* height: 100%; */
+
                     display: flex;
-                    /* position: relative; */
+
                     flex-direction: column;
                   `}
                 >
@@ -211,23 +205,35 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
                       options={controlItems.views}
                       setSelected={setSelectedView}
                     />
-
-                    <ToolBoxPanelFilters groups={fundingRequestFilterGroups} />
+                    <ToolBoxPanelAggregateBy
+                      title="Aggregate by"
+                      selected={selectedAggregates}
+                      options={controlItems.aggregates}
+                      setSelected={setSelectedAggregates}
+                    />
+                    <ToolBoxPanelFilters
+                      groups={accessToFundingEligibilityFilterGroups}
+                    />
                   </React.Fragment>
                 </div>
               </div>
             </Slide>
           </>
         </ClickAwayListener>
-
-        <FundingRequestTable
+        <EligibilityTable
           search={search}
           sortBy={sortBy}
-          data={fundingRequestData}
+          data={tableData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
           isLoading={isLoading}
           setSearch={setSearch}
           setSortBy={setSortBy}
-          columns={fundingRequestColumns}
+          columns={[
+            { name: "Year", key: "year" },
+            { name: "Component", key: "component" },
+            { name: "Income Level", key: "incomeLevel" },
+            { name: "Disease Burden", key: "diseaseBurden" },
+            { name: "Status", key: "status" },
+          ]}
           title="2023-2025"
         />
       </div>

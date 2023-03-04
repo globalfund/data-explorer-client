@@ -14,8 +14,9 @@ import {
   EligibilityScatterplotDataItemModel,
   incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
-import { FundingRequestTable } from "..";
+
 import { fundingRequestColumns, fundingRequestData } from "./data";
+import { Table } from "..";
 
 function getTableData(
   data: EligibilityScatterplotDataItemModel[]
@@ -103,7 +104,7 @@ export function LocationFundingRequestTableWrapper(props: Props) {
 
   return (
     <>
-      <FundingRequestTable
+      <Table
         search={search}
         sortBy={sortBy}
         data={fundingRequestData}

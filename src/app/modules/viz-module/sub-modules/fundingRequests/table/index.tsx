@@ -7,7 +7,10 @@ import {
   SimpleTableRow,
   SimpleTableColumn,
 } from "app/components/Table/Simple/data";
-import { FundingTable, FundingTableColumn } from "app/components/Table/funding";
+import {
+  FundingRequestTable,
+  FundingTableColumn,
+} from "app/components/Table/funding";
 
 interface FundingRequestTableProps {
   search: string;
@@ -19,13 +22,13 @@ interface FundingRequestTableProps {
   setSortBy: (value: string) => void;
 }
 
-export function FundingRequestTable(props: FundingRequestTableProps) {
+export function Table(props: FundingRequestTableProps) {
   if (props.isLoading) {
     return <PageLoader />;
   }
 
   return (
-    <FundingTable
+    <FundingRequestTable
       search={props.search}
       sortBy={props.sortBy}
       light

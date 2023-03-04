@@ -1,11 +1,15 @@
 import { Box } from "@material-ui/core";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
-import React from "react";
+import React, { useState } from "react";
 import { AllocationsModule } from "../allocations";
 
-import { chipcss, descriptioncss } from "./style";
-import { AccessToFundingEligibilityTableWrapper } from "./table/eligibility/tableWrapper";
-import { AccessToFundingRequestTableWrapper } from "./table/fundingRequest/tableWrapper";
+import { chipcss, descriptioncss, vizcss } from "./style";
+import { AccessToFundingEligibilityTableWrapper } from "./eligibility/tableWrapper";
+import { AccessToFundingRequestTableWrapper } from "./fundingRequest/tableWrapper";
+import RadialChart from "./allocations/radialChart";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { get } from "lodash";
+import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 interface Props {
   code: string;
@@ -14,7 +18,43 @@ interface Props {
 }
 
 export default function LocationAccessToFundingWrapper(props: Props) {
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const fetchData = useStoreActions((store) => store.Allocations.fetch);
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  const selectedPeriod = useStoreState(
+    (state) => state.ToolBoxPanelAllocationsPeriodState.value
+  );
+  console.log(selectedPeriod, "period");
+
+  const total = useStoreState(
+    (state) => get(state.Allocations.data, "total", []) as number
+  );
+  const keys = useStoreState(
+    (state) => get(state.Allocations.data, "keys", []) as string[]
+  );
+
+  const values = useStoreState(
+    (state) => get(state.Allocations.data, "values", []) as number[]
+  );
+  console.log(values, "val");
+
+  const colors = ["#E4EBF8", "#C9CAD4", "#F1ECEC"];
+
+  React.useEffect(() => {
+    const filterString = getAPIFormattedFilters(
+      props.code
+        ? {
+            ...appliedFilters,
+            locations: [...appliedFilters.locations, props.code],
+          }
+        : appliedFilters
+    );
+    fetchData({
+      filterString: `periods=${selectedPeriod}${
+        filterString.length > 0 ? `&${filterString}` : ""
+      }`,
+    });
+  }, [props.code, appliedFilters, selectedPeriod]);
   return (
     <>
       <div css={descriptioncss}>
@@ -57,82 +97,109 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           <div css={chipcss}>2023/2025</div>
         </div>
       </div>
+      <div css={vizcss}>
+        <div>
+          <h4>
+            <b>Eligibility </b>
+          </h4>
+          <hr />
+          <AccessToFundingEligibilityTableWrapper
+            code={props.code}
+            codeParam={props.codeParam}
+          />
+        </div>
 
-      <div>
-        <h4
-          css={`
-            font-size: 18px;
-            color: #252c34;
-            margin-bottom: 0;
-            font-family: "Gotham Narrow";
-          `}
-        >
-          <b>Eligibility </b>
-        </h4>
-        <hr
-          css={`
-            border: 0.5px solid #000000;
-            width: 100%;
-            height: 0px;
-            margin-bottom: 3rem;
-          `}
-        />
-        <AccessToFundingEligibilityTableWrapper
-          code={props.code}
-          codeParam={props.codeParam}
-        />
-      </div>
+        <div>
+          <h4>
+            <b> Allocation</b>
+          </h4>
+          <hr />
+          <div
+            css={`
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+            `}
+          >
+            <RadialChart total={total} values={values} keys={keys} />
+            <div>
+              <div>
+                <p
+                  css={`
+                    font-size: 24px;
+                    color: #252c34;
+                    text-align: center;
+                    margin-bottom: 0px;
+                  `}
+                >
+                  <b>{total} USD</b>
+                </p>
+                <p
+                  css={`
+                    font-size: 14px;
+                    color: #252c34;
+                    text-align: center;
+                    margin-top: 5px;
+                  `}
+                >
+                  Total funds allocated in Kenya for<b>2023/2025</b>{" "}
+                </p>
+              </div>
+              <div
+                css={`
+                  display: flex;
+                  justify-content: center;
+                  margin-top: 3rem;
+                  align-items: center;
+                  text-align: center;
+                `}
+              >
+                {values.map((val, index) => (
+                  <div
+                    css={`
+                      display: flex;
+                      align-items: center;
 
-      <div>
-        <h4
-          css={`
-            font-size: 18px;
-            color: #252c34;
-            margin-bottom: 0;
-            font-family: "Gotham Narrow";
-          `}
-        >
-          <b> Allocation</b>
-        </h4>
-        <hr
-          css={`
-            border: 0.5px solid #000000;
-            width: 100%;
-            height: 0px;
-            margin-bottom: 3rem;
-          `}
-        />
-        <AllocationsModule
-          code={props.code}
-          toolboxOpen={openToolboxPanel}
-          setOpenToolboxPanel={setOpenToolboxPanel}
-        />
-      </div>
+                      flex-direction: column;
+                      justify-content: center;
+                    `}
+                  >
+                    <div
+                      css={`
+                        width: 31px;
+                        height: 31px;
+                        border-radius: 50%;
+                        background: ${colors[index]};
+                      `}
+                    />
+                    <p
+                      css={`
+                        width: 63%;
+                        font-size: 18px;
+                      `}
+                    >
+                      <b>
+                        {val} million {keys[index]} funds
+                      </b>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <div>
-        <h4
-          css={`
-            font-size: 18px;
-            color: #252c34;
-            margin-bottom: 0;
-            font-family: "Gotham Narrow";
-          `}
-        >
-          <b>Funding Requests</b>
-        </h4>
-        <hr
-          css={`
-            border: 0.5px solid #000000;
-            width: 100%;
-            height: 0px;
-            margin-bottom: 3rem;
-          `}
-        />
-        <AccessToFundingRequestTableWrapper
-          code={props.code}
-          codeParam={props.codeParam}
-          filterGroups={props.filterGroups}
-        />
+        <div>
+          <h4>
+            <b>Funding Requests</b>
+          </h4>
+          <hr />
+          <AccessToFundingRequestTableWrapper
+            code={props.code}
+            codeParam={props.codeParam}
+            filterGroups={props.filterGroups}
+          />
+        </div>
       </div>
 
       <Box height={26} />

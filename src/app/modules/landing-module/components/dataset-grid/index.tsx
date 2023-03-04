@@ -203,7 +203,6 @@ export function LandingDatasetGrid() {
     __html: get(cmsData, "componentsDatasetCarousel.documentsDescription", ""),
   };
 
-  console.log(cmsData, "cmsData");
   return (
     <Grid container spacing={2}>
       <Grid item xs={12} sm={6} md={6} lg={3}>

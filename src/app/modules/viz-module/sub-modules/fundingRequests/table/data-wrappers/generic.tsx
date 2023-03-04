@@ -10,10 +10,9 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
-import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility/table";
-import { tab } from "app/components/Search/components/results/styles";
-import { FundingRequestTable } from "..";
+
 import { fundingRequestColumns, fundingRequestData } from "./data";
+import { Table } from "..";
 
 function getTableData(data: DotChartModel[]): SimpleTableRow[] {
   const updatedTableData: SimpleTableRow[] = [];
@@ -138,7 +137,7 @@ export function GenericFundingRequestWrapper() {
         </div>
       </div>
       <div css="width: 100%;height: 25px;" />
-      <FundingRequestTable
+      <Table
         search={search}
         sortBy={sortBy}
         data={fundingRequestData}

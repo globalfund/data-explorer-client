@@ -41,3 +41,18 @@ export const descriptioncss = css`
     margin-top: 3px;
   }
 `;
+
+export const vizcss = css`
+  h4 {
+    font-size: 18px;
+    color: #252c34;
+    margin-bottom: 0;
+    font-family: "Gotham Narrow";
+  }
+  hr {
+    border: 0.5px solid #000000;
+    width: 100%;
+    height: 0px;
+    margin-bottom: 3rem;
+  }
+`;

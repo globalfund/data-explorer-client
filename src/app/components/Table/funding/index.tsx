@@ -267,7 +267,7 @@ function Row(props: {
   );
 }
 
-export function FundingTable(props: FundingTableProps) {
+export function FundingRequestTable(props: FundingTableProps) {
   const sortBySplits = props.sortBy.split(" ");
 
   const [toolbarCols, setToolbarCols] = React.useState<TableToolbarCols[]>([]);
@@ -308,7 +308,7 @@ export function FundingTable(props: FundingTableProps) {
   );
 
   return (
-    <React.Fragment
+    <div
       css={`
         display: relative;
       `}
@@ -386,6 +386,6 @@ export function FundingTable(props: FundingTableProps) {
       </TableContainer>
 
       <div css="width: 100%;height: 25px;" />
-    </React.Fragment>
+    </div>
   );
 }
