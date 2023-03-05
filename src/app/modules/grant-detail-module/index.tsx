@@ -28,6 +28,9 @@ import { GrantDetailInvestmentsTableWrapper } from "app/modules/viz-module/sub-m
 import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
+import find from "lodash/find";
+
+import { GrantDetailPeriod } from "./components/InfoContent";
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
@@ -46,6 +49,21 @@ export default function GrantDetail() {
   const fetchGrantInfoData = useStoreActions(
     (store) => store.GrantDetailInfo.fetch
   );
+
+  const periods = useStoreState(
+    (state) =>
+      get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
+  );
+
+  const selectedPeriod = find(
+    periods,
+    (p: GrantDetailPeriod) => p.number.toString() === params.period
+  ) || { startDate: "", endDate: "" };
+
+  const formatPeriod = (date: string) => {
+    return date.split("-")[0];
+  };
+  console.log(formatPeriod(selectedPeriod.startDate), "start year");
 
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
@@ -147,7 +165,11 @@ export default function GrantDetail() {
               id: v4(),
             },
             {
-              name: grantInfoData.code,
+              name: `${grantInfoData.code} ${
+                selectedPeriod ? "-" : ""
+              } ${formatPeriod(selectedPeriod.startDate)} - ${formatPeriod(
+                selectedPeriod.endDate
+              )}`,
               path: location.pathname,
               id: v4(),
               vizLevel: breadCrumbList[breadCrumbList.length - 1]?.vizLevel,
@@ -158,7 +180,7 @@ export default function GrantDetail() {
         }
       }
     }
-  }, [grantInfoData]);
+  }, [grantInfoData, selectedPeriod]);
 
   return (
     <div
