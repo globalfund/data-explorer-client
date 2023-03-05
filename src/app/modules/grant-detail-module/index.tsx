@@ -128,7 +128,7 @@ export default function GrantDetail() {
           },
 
           {
-            name: grantInfoData.title,
+            name: grantInfoData.code,
             path: location.pathname,
             id: v4(),
           },
@@ -147,9 +147,12 @@ export default function GrantDetail() {
               id: v4(),
             },
             {
-              name: grantInfoData.title,
+              name: grantInfoData.code,
               path: location.pathname,
               id: v4(),
+              vizLevel: breadCrumbList[breadCrumbList.length - 1]?.vizLevel,
+              vizSelected:
+                breadCrumbList[breadCrumbList.length - 1]?.vizSelected,
             },
           ]);
         }
