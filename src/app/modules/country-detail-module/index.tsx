@@ -4,6 +4,7 @@ import get from "lodash/get";
 import { startCase } from "lodash";
 import { useRecoilState } from "recoil";
 import { v4 } from "uuid";
+import queryString from "query-string";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -48,7 +49,7 @@ export default function CountryDetail() {
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
-
+  const { components } = queryString.parse(location.search);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
     code: string;
@@ -154,49 +155,9 @@ export default function CountryDetail() {
     return 0;
   }
 
-  const vizTypePretext = (vizType: string) => {
-    vizType = startCase(vizType);
-
-    switch (vizType) {
-      case "Pledges-contributions":
-        return `Resource Mobilization: ${vizType} `;
-      case "Allocations":
-        return `Access to funding: ${vizType}`;
-      case "Eligibility":
-        return `Access to funding: ${vizType}`;
-      case "Documents":
-        return "Documents";
-      case "Results":
-        return "Results";
-      default:
-        return `Grant Implementation: ${vizType} `;
-    }
-  };
-
-  const [prevVizState, setPrevVizState] = React.useState(breadCrumbList[1]);
-
-  const prevViz = useMemo(() => {
-    if (prevVizState !== breadCrumbList[1]) {
-      setPrevVizState({
-        name: vizTypePretext(params.vizType),
-        path: location.pathname,
-        id: v4(),
-      });
-      return {
-        name: vizTypePretext(params.vizType),
-        path: location.pathname,
-        id: v4(),
-      };
-    }
-    return prevVizState;
-  }, [location.pathname]);
-
+  const breadcrumbID = useMemo(() => v4(), []);
   useEffect(() => {
-    if (
-      breadCrumbList.length < 1 ||
-      prevViz === undefined ||
-      location.pathname == `/location/${params.code}/overview`
-    ) {
+    if (breadCrumbList.length < 1) {
       setBreadCrumList([
         { name: "Datasets", path: "/", id: v4() },
 
@@ -207,18 +168,22 @@ export default function CountryDetail() {
         },
       ]);
     } else {
-      setBreadCrumList([
-        { name: "Datasets", path: "/", id: v4() },
+      if (!breadCrumbList.find((item) => item.id === breadcrumbID))
+        setBreadCrumList([
+          ...breadCrumbList,
 
-        {
-          name: locationInfoData.locationName,
-          path: `/location/${params.code}/overview`,
-          id: v4(),
-        },
-        prevViz,
-      ]);
+          {
+            name: components || locationInfoData.locationName,
+            path: location.pathname,
+            id: breadcrumbID,
+            // vizSelected:
+          },
+          // prevViz,
+        ]);
     }
-  }, [locationInfoData, prevViz]);
+  }, [locationInfoData]);
+
+  console.log(locationInfoData, "loc");
 
   const tabs = countryDetailTabs;
 
