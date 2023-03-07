@@ -195,6 +195,16 @@ const aggregates = {
       value: "componentName",
     },
   ],
+  allocations: [
+    {
+      label: "Locations",
+      value: "geographicArea.geographicAreaName",
+    },
+    {
+      label: "Components",
+      value: "component.componentName",
+    },
+  ],
 };
 
 export function getControlItems(

@@ -27,6 +27,9 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
   const data = useStoreState(
     (state) => get(state.AllocationsTable.data, "data", []) as SimpleTableRow[]
   );
+  const selectedAggregation = useStoreState(
+    (state) => state.ToolBoxPanelAggregateByState.value
+  );
 
   function reloadData() {
     const filterString = getAPIFormattedFilters(
@@ -38,10 +41,17 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
         : appliedFilters,
       { search, sortBy }
     );
-    fetchData({ filterString });
+    fetchData({
+      filterString: `${filterString}${
+        filterString.length > 0 ? "&" : ""
+      }aggregateBy=${selectedAggregation}`,
+    });
   }
 
-  React.useEffect(() => reloadData(), [props.code, sortBy, appliedFilters]);
+  React.useEffect(
+    () => reloadData(),
+    [props.code, sortBy, appliedFilters, selectedAggregation]
+  );
 
   const [,] = useDebounce(() => reloadData(), 500, [search]);
 

@@ -148,7 +148,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
           params.period
         )
       ),
-    [params.vizType]
+    [params.vizType, history.location.pathname, params.code, params.period]
   );
 
   React.useEffect(
