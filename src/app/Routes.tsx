@@ -19,6 +19,7 @@ import {
   useHistory,
   RouteComponentProps,
 } from "react-router-dom";
+import DataSetDetailModule from "./modules/dataset-detail-module";
 // import BigLogo from "app/assets/BigLogo";
 // import useCookie from "@devhammed/use-cookie";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -197,6 +198,17 @@ export function MainRoutes() {
 
         <Route exact path="/explore/:vizType/:subType?">
           <VizModule />
+        </Route>
+
+        <Route
+          exact
+          path="/dataset/:name"
+          render={(props: RouteComponentProps<any>) => (
+            <Redirect to={`/dataset/${props.match.params.name}/overview`} />
+          )}
+        />
+        <Route exact path="/dataset/:name/overview">
+          <DataSetDetailModule />
         </Route>
 
         <Route

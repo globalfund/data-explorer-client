@@ -152,7 +152,7 @@ export function AppBar() {
       handleClose();
     }
     if (openSearch) {
-      setOpenSearch(false);
+      setOpenSearch(false);∏
     }
   }, [location.pathname]);
 
@@ -213,9 +213,8 @@ export function AppBar() {
                   width: 100%;
                   height: 100%;
                   display: flex;
-                  flex-direction: row;
-                  align-items: center;
-                  justify-content: space-between;
+                  justify-content: center;
+                  gap: 2.5rem;
                 `}
               >
                 <NavLink

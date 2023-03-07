@@ -1,12 +1,16 @@
 import { css } from "styled-components/macro";
 
 export const dataSetsCss = css`
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
+  /* overflow: auto; */
+  a {
+    text-decoration: none;
+  }
 `;
 
 export const dataSetsGridCss = css`

@@ -16,7 +16,7 @@ interface PageHeaderProps {
   tabs?: TabProps[];
   isDetail?: boolean;
   partialTitle?: string;
-  breadcrumbs: BreadcrumbModel[];
+  breadcrumbs?: BreadcrumbModel[];
 }
 
 const styles = {
@@ -32,7 +32,7 @@ const styles = {
     flex-direction: column;
 
     @media (min-width: 768px) {
-      height: 64px;
+      height: 50px;
     }
   `,
   innercontainer: css`
@@ -102,10 +102,11 @@ export function PageHeader(props: PageHeaderProps) {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            align-items: center;
 
             > div {
               @media (min-width: 768px) {
-                height: 64px;
+                height: 50px;
                 padding-bottom: 0 !important;
 
                 &:nth-of-type(2) {
@@ -115,7 +116,7 @@ export function PageHeader(props: PageHeaderProps) {
             }
 
             @media (min-width: 768px) {
-              height: 64px;
+              height: 50px;
             }
           `}
         >

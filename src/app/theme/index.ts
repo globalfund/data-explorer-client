@@ -188,6 +188,38 @@ export default createTheme({
     //     },
     //   },
     // },
+    MuiToggleButtonGroup: {
+      root: {
+        height: "34px",
+        width: "267px",
+
+        borderRadius: "35px",
+      },
+      groupedHorizontal: {
+        "&:last-child": {
+          borderRadius: "0px 20px 20px 0px",
+          padding: "8px 22px",
+          background: "#CFD4DA",
+          color: "#373D43",
+        },
+      },
+    },
+    MuiToggleButton: {
+      root: {
+        borderRadius: "20px 0px 0px 20px",
+        padding: "8px 22px",
+        background: "#CFD4DA",
+        color: "#373D43",
+        "&:hover": {
+          backgroundColor: "#231D2C !important",
+          color: "#fff !important",
+        },
+        "&.Mui-selected": {
+          background: "#231D2C",
+          color: "#fff",
+        },
+      },
+    },
     MuiTabs: {
       indicator: {
         height: "4px",
