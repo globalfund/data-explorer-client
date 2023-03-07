@@ -145,6 +145,7 @@ export interface StoreModel {
   AllocationsDrilldown: ApiCallModel;
   AllocationsGeomap: ApiCallModel;
   AllocationsMCGeomap: ApiCallModel;
+  AllocationsTable: ApiCallModel;
   Eligibility: ApiCallModel;
   EligibilityYears: ApiCallModel;
   BudgetsFlow: ApiCallModel;

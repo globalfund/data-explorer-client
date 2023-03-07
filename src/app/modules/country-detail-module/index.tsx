@@ -27,6 +27,7 @@ import { LocationGrants } from "app/modules/country-detail-module/sub-modules/gr
 import { LocationResults } from "app/modules/country-detail-module/sub-modules/results";
 import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
+import { AllocationsTableModule } from "app/modules/viz-module/sub-modules/allocations/table";
 import { LocationDetailOverviewModule } from "app/modules/country-detail-module/sub-modules/overview";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
 import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/data-wrappers/location";
@@ -383,6 +384,13 @@ export default function CountryDetail() {
           {/* Allocations */}
           <Route path={`/location/:code/allocations/map`}>
             <AllocationsGeoMap code={paramCode} />
+          </Route>
+          <Route path={`/location/:code/allocations/table`}>
+            <AllocationsTableModule
+              code={paramCode}
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path={`/location/:code/allocations`}>
             <AllocationsModule

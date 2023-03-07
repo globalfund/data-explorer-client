@@ -258,6 +258,11 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Locations" || fg.name === "Components"
   ),
+  "/viz/allocations/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name === "Locations" || fg.name === "Components"
+  ),
   "/viz/eligibility": filter(
     filtergroups,
     (fg: FilterGroupProps) =>

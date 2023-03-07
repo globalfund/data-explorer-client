@@ -13,6 +13,7 @@ import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityScatterplotDataModel } from "app/components/Charts/Eligibility/Scatterplot/data";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { SimpleTableRow } from "app/components/Table/Simple/data";
 
 export function useGetAllVizData() {
   const allocations = useStoreState((state) => ({
@@ -25,6 +26,9 @@ export function useGetAllVizData() {
         type: "FeatureCollection",
         features: get(state.AllocationsGeomap.data, "data", []),
       } as FeatureCollection)
+  );
+  const allocationsTable = useStoreState(
+    (state) => get(state.AllocationsTable.data, "data", []) as SimpleTableRow[]
   );
   const allocationsMCGeomap = useStoreState(
     (state) =>
@@ -284,6 +288,7 @@ export function useGetAllVizData() {
       countries: allocationsGeomap,
       multicountries: allocationsMCGeomap,
     },
+    "/viz/allocations/table": allocationsTable,
     // Budgets
     "/viz/budgets/flow": budgetsFlow,
     "/viz/budgets/time-cycle": budgetsTimeCycle,
