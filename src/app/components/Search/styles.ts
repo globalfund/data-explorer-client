@@ -2,7 +2,7 @@ import { css } from "styled-components/macro";
 
 export const container = (focused: boolean, withCatMenu: boolean) => css`
   display: flex;
-  background: #fff;
+  background: #f2f7fd;
   position: relative;
   padding: 10px 20px;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
@@ -78,7 +78,7 @@ export const input = css`
   outline: none;
   color: #231d2c;
   font-size: 14px;
-  background: #fff;
+  background: inherit;
   font-weight: bold;
   border-style: none;
   font-family: "Inter", "Helvetica Neue", sans-serif;

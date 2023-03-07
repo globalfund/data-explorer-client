@@ -1,7 +1,15 @@
 import React from "react";
 
-export const TreemapIcon = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24">
+interface Props {
+  width?: string;
+  height?: string;
+}
+export const TreemapIcon = (props: Props) => (
+  <svg
+    width={props.width || "24"}
+    height={props.height || "24"}
+    viewBox="0 0 24 24"
+  >
     <path
       d="M3 6.25C3 5.38805 3.34241 4.5614 3.9519 3.9519C4.5614 3.34241 5.38805 3 6.25 3H9V21H6.25C5.38805 21 4.5614 20.6576 3.9519 20.0481C3.34241 19.4386 3 18.612 3 17.75V6.25Z"
       fill="#13183F"

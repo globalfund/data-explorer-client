@@ -12,7 +12,7 @@ import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronRight from "app/assets/icons/IconChevronRight";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import ArrowDownward from "@material-ui/icons/ArrowDropDown";
 import { SearchResults } from "app/components/Search/components/results";
 import {
   SearchResultModel,
@@ -160,8 +160,11 @@ export function SearchLayout(props: SearchLayoutProps) {
             onClick={handleClick}
             css={`
               width: 200px;
+              font-weight: 325;
               font-size: 14px;
               padding: 6px 16px;
+              font-family: "Gotham Narrow";
+              color: #000000;
               background: #cfd4da;
               text-transform: capitalize;
               max-width: calc(50vw - 32px);
@@ -201,7 +204,7 @@ export function SearchLayout(props: SearchLayoutProps) {
             >
               {props.category}
             </span>
-            <KeyboardArrowDownIcon />
+            <ArrowDownward />
           </Button>
           <StyledMenu
             keepMounted
