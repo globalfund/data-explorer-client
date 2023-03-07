@@ -46,6 +46,15 @@ function Row(props: {
     props.columns.length
   }`;
 
+  console.log(
+    filter(
+      props.columns,
+      (_c, index) => props.visibleColumnsIndexes.indexOf(index) > -1
+    ).map((column: SimpleTableColumn, index: number) =>
+      get(props.row, column.key, "")
+    ),
+    "tabledata"
+  );
   return (
     <React.Fragment>
       <TableRow
