@@ -24,7 +24,7 @@ export const countryDetailTabs: TabProps[] = [
     tabs: [
       {
         name: "Eligibility",
-        url: "/location/<code>/eligibility",
+        url: "/location/<code>/eligibility/table",
       },
       {
         name: "Allocation",
@@ -58,17 +58,12 @@ export const countryDetailTabs: TabProps[] = [
     ],
   },
   {
-    name: "More",
-    tabs: [
-      {
-        name: "Results",
-        url: "/location/<code>/results",
-      },
-      {
-        name: "Documents",
-        url: "/location/<code>/documents",
-      },
-    ],
+    name: "Results",
+    url: "/location/<code>/results",
+  },
+  {
+    name: "Documents",
+    url: "/location/<code>/documents",
   },
 ];
 
@@ -99,21 +94,16 @@ export const grantDetailTabs: TabProps[] = [
     ],
   },
   {
-    name: "More",
-    tabs: [
-      {
-        name: "Performance Rating",
-        url: "/grant/<code>/<period>/performance-rating",
-      },
-      {
-        name: "Targets and Results",
-        url: "/grant/<code>/<period>/targets-results",
-      },
-      {
-        name: "Documents",
-        url: "/grant/<code>/<period>/documents",
-      },
-    ],
+    name: "Performance Rating",
+    url: "/grant/<code>/<period>/performance-rating",
+  },
+  {
+    name: "Targets and Results",
+    url: "/grant/<code>/<period>/targets-results",
+  },
+  {
+    name: "Documents",
+    url: "/grant/<code>/<period>/documents",
   },
 ];
 

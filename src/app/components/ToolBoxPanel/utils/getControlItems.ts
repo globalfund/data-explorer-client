@@ -114,6 +114,11 @@ const views = {
       value: "Map",
       link: "/viz/allocations/map",
     },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/allocations/table",
+    },
   ],
   grants: [
     {
@@ -182,12 +187,12 @@ const aggregates = {
   // ],
   eligibility: [
     {
-      label: "Components",
-      value: "componentName",
-    },
-    {
       label: "Locations",
       value: "geographicAreaName",
+    },
+    {
+      label: "Components",
+      value: "componentName",
     },
   ],
 };
