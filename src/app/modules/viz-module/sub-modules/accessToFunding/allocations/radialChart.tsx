@@ -69,7 +69,7 @@ export default function RadialChart(props: Props) {
             },
           },
           total: {
-            show: true,
+            show: false,
             fontFamily: "GothamNarrow-Bold",
             formatter: () => formatFinancialValue(props.total),
           },
@@ -95,7 +95,7 @@ export default function RadialChart(props: Props) {
         if (isMobile) {
           return seriesName;
         }
-        console.log(keysPercentagesColors.percentages, "values");
+
         return `${seriesName}: ${Math.floor(
           keysPercentagesColors.percentages[opts.seriesIndex]
         )}%`;
@@ -156,24 +156,6 @@ export default function RadialChart(props: Props) {
             />
           )}
         </div>
-        {/* {(isMobile || isTouchDevice()) && xsTooltipData && (
-            <XsContainer id="mobile-tooltip-container">
-              <div
-                css={`
-                  width: 95%;
-                `}
-              >
-                <AllocationsRadialMobileTooltip
-                  {...xsTooltipData}
-                  close={() => setXsTooltipData(null)}
-                  drilldown={() => {
-                    setVizLevel(1);
-                    setVizSelected(xsTooltipData.label);
-                  }}
-                />
-              </div>
-            </XsContainer>
-          )} */}
       </div>
     </>
   );

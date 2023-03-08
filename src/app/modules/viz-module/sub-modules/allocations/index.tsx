@@ -263,6 +263,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         : appliedFilters
     );
+
     fetchData({
       filterString: `periods=${selectedPeriod}${
         filterString.length > 0 ? `&${filterString}` : ""

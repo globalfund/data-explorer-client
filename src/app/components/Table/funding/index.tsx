@@ -74,7 +74,7 @@ function Row(props: {
   }`;
 
   const [rowSelected, setRowSelected] = React.useState("parent");
-  console.log(props.paddingLeft, "row");
+
   return (
     <React.Fragment>
       <TableRow

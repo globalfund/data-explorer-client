@@ -69,7 +69,6 @@ export function LocationEligibilityTableWrapper(props: Props) {
       }view=table`,
     });
   }
-  console.log(data, "data");
 
   React.useEffect(() => reloadData(), [props.code, appliedFilters, sortBy]);
 

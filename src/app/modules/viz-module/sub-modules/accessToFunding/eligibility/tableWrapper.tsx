@@ -11,6 +11,7 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import {
   diseaseBurdens,
   EligibilityScatterplotDataItemModel,
+  EligibilityScatterplotDataModel,
   incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 import { EligibilityTable } from "./eligibilityTable";
@@ -26,15 +27,21 @@ import { ViewModel } from "app/components/ToolBoxPanel/utils/getControlItems";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 
 function getTableData(
-  data: EligibilityScatterplotDataItemModel[]
+  data: EligibilityScatterplotDataModel[]
 ): SimpleTableRow[] {
-  return data.map((item: EligibilityScatterplotDataItemModel) => ({
-    year: item.x,
-    component: item.y,
-    incomeLevel: get(incomeLevels, `[${item.incomeLevel}]`, item.incomeLevel),
-    diseaseBurden: get(diseaseBurdens, `[${item.diseaseBurden}]`, ""),
-    status: item.eligibility,
-  }));
+  return data.map((item: EligibilityScatterplotDataModel) =>
+    item.data.map((itemData) => ({
+      year: itemData.x,
+      component: itemData.y,
+      incomeLevel: get(
+        incomeLevels,
+        `[${itemData.incomeLevel}]`,
+        itemData.incomeLevel
+      ),
+      diseaseBurden: get(diseaseBurdens, `[${itemData.diseaseBurden}]`, ""),
+      status: itemData.eligibility,
+    }))
+  );
 }
 
 interface Props {
@@ -55,7 +62,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
         state.EligibilityCountry.data,
         "data",
         []
-      ) as EligibilityScatterplotDataItemModel[]
+      ) as EligibilityScatterplotDataModel[]
   );
 
   const [page, setPage] = React.useState(0);
@@ -63,7 +70,6 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
   const [tableData, setTableData] = React.useState<SimpleTableRow[]>(
     getTableData(data)
   );
-
   const fetchData = useStoreActions((store) => store.EligibilityCountry.fetch);
 
   const isLoading = useStoreState((state) => state.EligibilityCountry.loading);
@@ -171,7 +177,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
                   /* top: ${top}px; */
                   position: absolute;
                   background: #f5f5f7;
-                  height: 93%;
+                  height: 98%;
                   visibility: visible !important;
                   overflow-y: auto;
                   ::-webkit-scrollbar {
@@ -223,7 +229,10 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
         <EligibilityTable
           search={search}
           sortBy={sortBy}
-          data={tableData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+          data={tableData[2]?.slice(
+            page * rowsPerPage,
+            (page + 1) * rowsPerPage
+          )}
           isLoading={isLoading}
           setSearch={setSearch}
           setSortBy={setSortBy}

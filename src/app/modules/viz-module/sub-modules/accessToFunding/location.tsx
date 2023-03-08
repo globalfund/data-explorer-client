@@ -24,7 +24,6 @@ export default function LocationAccessToFundingWrapper(props: Props) {
   const selectedPeriod = useStoreState(
     (state) => state.ToolBoxPanelAllocationsPeriodState.value
   );
-  console.log(selectedPeriod, "period");
 
   const total = useStoreState(
     (state) => get(state.Allocations.data, "total", []) as number
@@ -36,23 +35,12 @@ export default function LocationAccessToFundingWrapper(props: Props) {
   const values = useStoreState(
     (state) => get(state.Allocations.data, "values", []) as number[]
   );
-  console.log(values, "val");
 
   const colors = ["#E4EBF8", "#C9CAD4", "#F1ECEC"];
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
-      props.code
-        ? {
-            ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
-          }
-        : appliedFilters
-    );
     fetchData({
-      filterString: `periods=${selectedPeriod}${
-        filterString.length > 0 ? `&${filterString}` : ""
-      }`,
+      filterString: "periods=2023 - 2025",
     });
   }, [props.code, appliedFilters, selectedPeriod]);
   return (
