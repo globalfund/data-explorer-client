@@ -1,3 +1,4 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const overlaycss = css`
@@ -10,8 +11,9 @@ export const overlaycss = css`
   background-color: rgb(0, 0, 0); /* Fallback color */
   background-color: rgba(0, 0, 0, 0.4);
 `;
+
 export const modalContainercss = css`
-  background: #f5f5f7;
+  background: ${appColors.COMMON.SECONDARY_COLOR_10};
   border-radius: 21px;
   padding: 2rem;
   text-align: center;
@@ -24,7 +26,7 @@ export const modalContainercss = css`
   top: 23vw;
   left: 30vw;
 
-  color: #495057;
+  color: ${appColors.COMMON.PRIMARY_COLOR_2};
   @media (max-width: 768px) {
     width: 60vw;
     left: 20vw;
@@ -40,7 +42,7 @@ export const modalContainercss = css`
     border: none;
     outline: none;
     height: 100%;
-    background: #495057;
+    background: ${appColors.COMMON.PRIMARY_COLOR_2};
     border-radius: 55px;
     text-align: center;
     padding: 11px 60px;

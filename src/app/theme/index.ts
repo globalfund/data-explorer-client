@@ -369,6 +369,7 @@ export const appColors = {
   COMMON: {
     WHITE,
     PRIMARY_COLOR_1,
+    PRIMARY_COLOR_2,
     SECONDARY_COLOR_1,
     SECONDARY_COLOR_2,
     SECONDARY_COLOR_3,
