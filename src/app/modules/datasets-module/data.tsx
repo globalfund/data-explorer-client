@@ -46,7 +46,7 @@ export const datasets: DatasetItemModel[] = [
   },
   {
     name: "Eligibility",
-    link: "/viz/eligibility",
+    link: "/viz/eligibility/table",
     group: "Access to Funding",
     preview: <EligibilityDotsPreview />,
   },

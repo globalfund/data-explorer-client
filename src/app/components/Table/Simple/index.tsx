@@ -14,6 +14,7 @@ import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Simple/styles";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TableToolbar } from "app/components/Table/Expandable/Toolbar";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import {
@@ -36,9 +37,11 @@ function Row(props: {
   columns: SimpleTableColumn[];
   paddingLeft?: number;
   visibleColumnsIndexes: number[];
+  formatNumbers?: boolean;
+  forceExpand?: boolean;
 }) {
   const classes = useRowStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(Boolean(props.forceExpand));
 
   const firstColumnWidth = props.columns.length > 3 ? "30%" : "";
   const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;
@@ -80,58 +83,65 @@ function Row(props: {
         {filter(
           props.columns,
           (_c, index) => props.visibleColumnsIndexes.indexOf(index) > -1
-        ).map((column: SimpleTableColumn, index: number) => (
-          <TableCell
-            key={column.key}
-            css={`
-              ${tablecell}
-              width: calc(${columnWidthCalc});
-              ${index === 0
-                ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth}`
-                : ""}
-            `}
-          >
-            <div
+        ).map((column: SimpleTableColumn, index: number) => {
+          const value = get(props.row, column.key, "");
+          let formattedValue =
+            props.formatNumbers && !Number.isNaN(value)
+              ? formatFinancialValue(value, true)
+              : value;
+          return (
+            <TableCell
+              key={column.key}
               css={`
-                width: 100%;
-                display: flex;
-                align-items: center;
-                flex-direction: row;
-                justify-content: space-between;
+                ${tablecell}
+                width: calc(${columnWidthCalc});
+                ${index === 0
+                  ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth}`
+                  : ""}
               `}
             >
               <div
                 css={`
-                  gap: 12px;
                   width: 100%;
                   display: flex;
                   align-items: center;
                   flex-direction: row;
-                  font-weight: ${index === 0 ? "bold" : "normal"};
-                  font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
-                    "Helvetica Neue", sans-serif;
-
-                  > * {
-                    @supports (-webkit-touch-callout: none) and
-                      (not (translate: none)) {
-                      &:not(:last-child) {
-                        margin-right: 12px;
-                      }
-                    }
-                  }
-
-                  > svg {
-                    transition: transform 0.1s ease-in-out;
-                    transform: rotate(${open ? "0deg" : "-180deg"});
-                  }
+                  justify-content: space-between;
                 `}
               >
-                {index === 0 && props.row.children && <TriangleXSIcon />}
-                {get(props.row, column.key, "")}
+                <div
+                  css={`
+                    gap: 12px;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    font-weight: ${index === 0 ? "bold" : "normal"};
+                    font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
+                      "Helvetica Neue", sans-serif;
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 12px;
+                        }
+                      }
+                    }
+
+                    > svg {
+                      transition: transform 0.1s ease-in-out;
+                      transform: rotate(${open ? "0deg" : "-180deg"});
+                    }
+                  `}
+                >
+                  {index === 0 && props.row.children && <TriangleXSIcon />}
+                  {formattedValue}
+                </div>
               </div>
-            </div>
-          </TableCell>
-        ))}
+            </TableCell>
+          );
+        })}
       </TableRow>
 
       <TableRow
@@ -156,6 +166,8 @@ function Row(props: {
                       key={child.name}
                       paddingLeft={40}
                       columns={props.columns}
+                      forceExpand={props.forceExpand}
+                      formatNumbers={props.formatNumbers}
                       visibleColumnsIndexes={props.visibleColumnsIndexes}
                     />
                   ))}
@@ -272,6 +284,8 @@ export function SimpleTable(props: SimpleTableProps) {
                 key={row.name}
                 row={row}
                 columns={props.columns}
+                forceExpand={props.forceExpand}
+                formatNumbers={props.formatNumbers}
                 visibleColumnsIndexes={visibleColumnsIndexes}
               />
             ))}

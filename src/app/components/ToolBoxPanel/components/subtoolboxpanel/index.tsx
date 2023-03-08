@@ -148,7 +148,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
           params.period
         )
       ),
-    [params.vizType]
+    [params.vizType, history.location.pathname, params.code, params.period]
   );
 
   React.useEffect(
@@ -220,7 +220,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             />
           )}
           {(params.vizType === "allocations" ||
-            params.vizType === "allocation") && <AllocationsPeriods />}
+            params.vizType === "allocation") &&
+            params.subType !== "table" && <AllocationsPeriods />}
           {params.vizType === "eligibility" && !isLocationDetail && (
             <EligibilityYear />
           )}

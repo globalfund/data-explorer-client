@@ -615,6 +615,36 @@ export function exportCSV(
           { label: "Budget (USD)", key: "budget" },
         ],
       };
+    case "/viz/allocations/table":
+      data.forEach((item: any) => {
+        item.children.forEach((subItem: any) => {
+          const { name, ...otherProps } = subItem;
+          csvData.push({
+            component: item.name,
+            location: name,
+            ...otherProps,
+          });
+        });
+      });
+      let extraHeaders: { label: string; key: string }[] = [];
+      if (csvData.length > 0) {
+        extraHeaders = filter(
+          Object.keys(csvData[0]),
+          (key) => key !== "component" && key !== "location"
+        ).map((key) => ({
+          label: `${key[0].toUpperCase()}${key.slice(1)}`,
+          key,
+        }));
+      }
+      return {
+        data: csvData,
+        filename: "allocations.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Location", key: "location" },
+          ...extraHeaders,
+        ],
+      };
     case "/viz/eligibility":
       if (options.isDetail) {
         filter(

@@ -24,6 +24,7 @@ export function useUrlFilters(): null {
       const partnerSubTypes = currentUrlParams.get("partnerSubTypes");
       const partners = currentUrlParams.get("partners");
       const status = currentUrlParams.get("status");
+      const documentTypes = currentUrlParams.get("documentTypes");
       const donors = currentUrlParams.get("donors");
       const donorSubCategories = currentUrlParams.get("donorSubCategories");
       const donorCategories = currentUrlParams.get("donorCategories");
@@ -46,6 +47,9 @@ export function useUrlFilters(): null {
       }
       if (status) {
         updatedAppliedFilters.status = status.split(",");
+      }
+      if (documentTypes) {
+        updatedAppliedFilters.documentTypes = documentTypes.split(",");
       }
       if (donors) {
         updatedAppliedFilters.donors = donors.split(",");
@@ -103,6 +107,11 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("status");
     }
+    if (data.documentTypes.length > 0) {
+      currentUrlParams.set("documentTypes", data.documentTypes.join(","));
+    } else {
+      currentUrlParams.delete("documentTypes");
+    }
     if (data.donors.length > 0) {
       currentUrlParams.set("donors", data.donors.join(","));
     } else {
@@ -147,6 +156,7 @@ export function useUrlFilters(): null {
     const partnerSubTypes = currentUrlParams.get("partnerSubTypes");
     const partners = currentUrlParams.get("partners");
     const status = currentUrlParams.get("status");
+    const documentTypes = currentUrlParams.get("documentTypes");
     const donors = currentUrlParams.get("donors");
     const donorSubCategories = currentUrlParams.get("donorSubCategories");
     const donorCategories = currentUrlParams.get("donorCategories");
@@ -181,6 +191,11 @@ export function useUrlFilters(): null {
       updatedAppliedFilters.status = status.split(",");
     } else if (updatedAppliedFilters.status.length > 0) {
       updatedAppliedFilters.status = [];
+    }
+    if (documentTypes) {
+      updatedAppliedFilters.documentTypes = documentTypes.split(",");
+    } else if (updatedAppliedFilters.documentTypes.length > 0) {
+      updatedAppliedFilters.documentTypes = [];
     }
     if (donors) {
       updatedAppliedFilters.donors = donors.split(",");

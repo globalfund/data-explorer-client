@@ -16,6 +16,7 @@ import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocation
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
+import { AllocationsTableModule } from "app/modules/viz-module/sub-modules/allocations/table";
 import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
@@ -279,6 +280,12 @@ export default function VizModule() {
           {/* Allocations */}
           <Route path="/viz/allocations/map">
             <AllocationsGeoMap />
+          </Route>
+          <Route path="/viz/allocations/table">
+            <AllocationsTableModule
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path="/viz/allocations">
             <AllocationsModule

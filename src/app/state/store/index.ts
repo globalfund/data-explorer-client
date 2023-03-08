@@ -24,6 +24,7 @@ import Allocations, {
   AllocationsGeomap,
   AllocationsMCGeomap,
   AllocationsPeriods,
+  AllocationsTable,
 } from "app/state/api/action-reducers/viz/allocations";
 import BudgetsFlow, {
   BudgetsFlowDrilldownLevel1,
@@ -178,6 +179,7 @@ const storeContent: StoreModel = {
   AllocationsDrilldown: persist(AllocationsDrilldown),
   AllocationsGeomap: persist(AllocationsGeomap),
   AllocationsMCGeomap: persist(AllocationsMCGeomap),
+  AllocationsTable: persist(AllocationsTable),
   Eligibility: persist(Eligibility),
   EligibilityYears: persist(EligibilityYears),
   BudgetsGeomap: persist(BudgetsGeomap),
