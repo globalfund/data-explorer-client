@@ -42,6 +42,9 @@ export function getAPIFormattedFilters(
   if (appliedFilters.partners.length > 0) {
     filterArray.push(`partners=${appliedFilters.partners.join(",")}`);
   }
+  if (appliedFilters.documentTypes.length > 0) {
+    filterArray.push(`documentTypes=${appliedFilters.documentTypes.join(",")}`);
+  }
   if (
     appliedFilters.donors.length > 0 ||
     appliedFilters.donorSubCategories.length > 0

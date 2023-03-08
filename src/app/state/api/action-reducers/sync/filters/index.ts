@@ -8,6 +8,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   partnerSubTypes: [] as string[],
   partners: [] as string[],
   status: [] as string[],
+  documentTypes: [] as string[],
   replenishmentPeriods: [] as string[],
   donors: [] as string[],
   donorCategories: [] as string[],
@@ -21,6 +22,7 @@ export interface AppliedFiltersModel {
   partnerSubTypes: string[];
   partners: string[];
   status: string[];
+  documentTypes: string[];
   replenishmentPeriods: string[];
   donors: string[];
   donorCategories: string[];
@@ -40,6 +42,8 @@ export interface AppliedFiltersStateModel {
   setPartners: Action<AppliedFiltersStateModel, string[]>;
   status: string[];
   setStatus: Action<AppliedFiltersStateModel, string[]>;
+  documentTypes: string[];
+  setDocumentTypes: Action<AppliedFiltersStateModel, string[]>;
   replenishmentPeriods: string[];
   setReplenishmentPeriods: Action<AppliedFiltersStateModel, string[]>;
   donors: string[];
@@ -82,6 +86,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
   status: [],
   setStatus: action((state, payload: string[]) => {
     state.status = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  documentTypes: [],
+  setDocumentTypes: action((state, payload: string[]) => {
+    state.documentTypes = payload;
     state.appliedFiltersCount += payload.length;
   }),
   replenishmentPeriods: [],
