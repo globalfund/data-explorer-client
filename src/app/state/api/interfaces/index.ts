@@ -145,6 +145,7 @@ export interface StoreModel {
   AllocationsDrilldown: ApiCallModel;
   AllocationsGeomap: ApiCallModel;
   AllocationsMCGeomap: ApiCallModel;
+  AllocationsTable: ApiCallModel;
   Eligibility: ApiCallModel;
   EligibilityYears: ApiCallModel;
   BudgetsFlow: ApiCallModel;
@@ -173,6 +174,7 @@ export interface StoreModel {
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
   PledgesContributionsTreemap: ApiCallModel;
+  PledgesContributionsTable: ApiCallModel;
   ResultsList: ApiCallModel;
   ResultsStats: ApiCallModel;
   ResultsYears: ApiCallModel;

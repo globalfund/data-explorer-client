@@ -615,6 +615,36 @@ export function exportCSV(
           { label: "Budget (USD)", key: "budget" },
         ],
       };
+    case "/viz/allocations/table":
+      data.forEach((item: any) => {
+        item.children.forEach((subItem: any) => {
+          const { name, ...otherProps } = subItem;
+          csvData.push({
+            component: item.name,
+            location: name,
+            ...otherProps,
+          });
+        });
+      });
+      let extraHeaders: { label: string; key: string }[] = [];
+      if (csvData.length > 0) {
+        extraHeaders = filter(
+          Object.keys(csvData[0]),
+          (key) => key !== "component" && key !== "location"
+        ).map((key) => ({
+          label: `${key[0].toUpperCase()}${key.slice(1)}`,
+          key,
+        }));
+      }
+      return {
+        data: csvData,
+        filename: "allocations.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Location", key: "location" },
+          ...extraHeaders,
+        ],
+      };
     case "/viz/eligibility":
       if (options.isDetail) {
         filter(
@@ -785,35 +815,20 @@ export function exportCSV(
         ],
       };
     case "/viz/pledges-contributions/table":
-      if (options.donorMapView === "Public Sector") {
-        data.layers.features.forEach((item: any) => {
-          if (item.properties && !isEmpty(item.properties.data)) {
-            csvData.push({
-              location: item.properties.name,
-              type: item.properties.data.amounts[0].label,
-              value: item.properties.data.amounts[0].value,
-            });
-          }
-        });
-      } else {
-        data.pins.map((pin: any) => {
-          csvData.push({
-            location: pin.geoName,
-            type: pin.amounts[0].label,
-            value: pin.amounts[0].value,
-          });
-        });
-      }
+      const headers =
+        data.length > 0
+          ? filter(Object.keys(data[0]), (key) => key !== "children").map(
+              (key) => ({
+                label:
+                  key === "name" ? options.selectedAggregation : `${key} (USD)`,
+                key,
+              })
+            )
+          : [];
       return {
-        data: csvData,
-        filename: `pledges-contributions-${options.donorMapView
-          .toLowerCase()
-          .replace(/ /g, "-")}.csv`,
-        headers: [
-          { label: "Donor", key: "location" },
-          { label: "Type", key: "type" },
-          { label: "Amount (USD)", key: "value" },
-        ],
+        data,
+        filename: `pledges-contributions-${options.selectedAggregation.toLowerCase()}.csv`,
+        headers,
       };
     case "/grants":
       return {

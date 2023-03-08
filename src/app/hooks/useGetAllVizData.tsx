@@ -13,6 +13,7 @@ import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityScatterplotDataModel } from "app/components/Charts/Eligibility/Scatterplot/data";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { SimpleTableRow } from "app/components/Table/Simple/data";
 
 export function useGetAllVizData() {
   const allocations = useStoreState((state) => ({
@@ -25,6 +26,9 @@ export function useGetAllVizData() {
         type: "FeatureCollection",
         features: get(state.AllocationsGeomap.data, "data", []),
       } as FeatureCollection)
+  );
+  const allocationsTable = useStoreState(
+    (state) => get(state.AllocationsTable.data, "data", []) as SimpleTableRow[]
   );
   const allocationsMCGeomap = useStoreState(
     (state) =>
@@ -234,6 +238,10 @@ export function useGetAllVizData() {
         []
       ) as BudgetsTreemapDataItem[]
   );
+  const pledgesContributionsTable = useStoreState(
+    (state) =>
+      get(state.PledgesContributionsTable, "data.data", []) as SimpleTableRow[]
+  );
   const resultsList = useStoreState(
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
   );
@@ -284,6 +292,7 @@ export function useGetAllVizData() {
       countries: allocationsGeomap,
       multicountries: allocationsMCGeomap,
     },
+    "/viz/allocations/table": allocationsTable,
     // Budgets
     "/viz/budgets/flow": budgetsFlow,
     "/viz/budgets/time-cycle": budgetsTimeCycle,
@@ -320,7 +329,7 @@ export function useGetAllVizData() {
     "/viz/eligibility/table": eligibility,
     // Pledges & Contributions
     "/viz/pledges-contributions/map": pledgesContributionsGeomap,
-    "/viz/pledges-contributions/table": pledgesContributionsGeomap,
+    "/viz/pledges-contributions/table": pledgesContributionsTable,
     "/viz/pledges-contributions/treemap": pledgesContributionsTreemap,
     "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
     // Grant Budgets

@@ -251,8 +251,10 @@ export function TableToolbar(props: TableToolbarProps) {
           <FormGroup>
             {props.columns.map((c, index) => (
               <FormControlLabel
+                key={c.name}
                 control={
                   <Checkbox
+                    key={c.name}
                     value={index}
                     color="primary"
                     checked={c.checked}

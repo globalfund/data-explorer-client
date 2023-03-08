@@ -15,6 +15,7 @@ export interface UseFilterOptionsReturn {
   "Partner Types": FilterGroupOptionModel[];
   "Grant Status": FilterGroupOptionModel[];
   "Replenishment Periods": FilterGroupOptionModel[];
+  "Document Types": FilterGroupOptionModel[];
   Donors: FilterGroupOptionModel[];
 }
 
@@ -64,6 +65,17 @@ export function useFilterOptions(
     (state) => state.ToolBoxPanelDonorMapViewState.value
   );
 
+  const documentTypes = [
+    {
+      label: "Application",
+      value: "Application",
+    },
+    {
+      label: "Country Profiles",
+      value: "Country Profiles",
+    },
+  ];
+
   React.useEffect(() => {
     if (locations.length === 0) {
       getLocations({});
@@ -92,6 +104,7 @@ export function useFilterOptions(
       "Partner Types": partnerTypes,
       "Grant Status": status,
       "Replenishment Periods": replenishmentPeriods,
+      "Document Types": documentTypes,
       Donors:
         location.pathname === "/viz/pledges-contributions/map"
           ? get(find(donors, { label: donorsMapView }), "subOptions", donors)
