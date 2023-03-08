@@ -46,6 +46,7 @@ const locationsToNotShowImageExport = [
   "/grant/<code>/commitment/table",
   "/viz/pledges-contributions/map",
   "/viz/pledges-contributions/table",
+  "/viz/allocations/table",
   "/viz/budgets/map",
   "/viz/allocations/map",
   "/grants",

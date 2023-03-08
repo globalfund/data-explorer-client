@@ -228,7 +228,7 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={aeText}
-          link="/viz/eligibility"
+          link="/viz/eligibility/table"
           description={aeDescription}
           iconLinks={[
             {
@@ -255,6 +255,10 @@ export function LandingDatasetGrid() {
             {
               icon: <MapIcon />,
               link: "/viz/allocations/map",
+            },
+            {
+              icon: <TableIcon />,
+              link: "viz/allocations/table",
             },
           ]}
         />

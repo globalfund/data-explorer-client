@@ -132,7 +132,7 @@ export function LocationDetailOverviewModule(props: Props) {
             margin-bottom: 8px;
           `}
         >
-          {locationInfoData.coordinatingMechanismContacts.length > 0 && (
+          {locationInfoData.coordinatingMechanismContacts?.length > 0 && (
             <React.Fragment>
               <button
                 onClick={() => setContactsExpanded(!contactsExpanded)}

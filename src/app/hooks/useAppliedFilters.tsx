@@ -44,6 +44,11 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
         setAppliedFilters: actions.setStatus,
         appliedFilters: data.status,
       };
+    case "Document Types":
+      return {
+        setAppliedFilters: actions.setDocumentTypes,
+        appliedFilters: data.documentTypes,
+      };
     case "Replenishment Periods":
       return {
         setAppliedFilters: actions.setReplenishmentPeriods,

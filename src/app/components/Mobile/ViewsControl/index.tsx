@@ -95,6 +95,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
   }>(
     getControlItems(
       params.vizType,
+      params.subType,
       history.location.pathname,
       params.code,
       params.period
@@ -125,6 +126,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
       setControlItems(
         getControlItems(
           params.vizType,
+          params.subType,
           history.location.pathname,
           params.code,
           params.period

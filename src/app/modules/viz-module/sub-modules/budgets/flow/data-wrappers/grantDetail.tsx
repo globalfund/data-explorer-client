@@ -7,6 +7,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
+import { useRecoilValue } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface Props {
   code: string;
@@ -14,13 +16,32 @@ interface Props {
   implementationPeriod: string;
 }
 
+interface DrilldownVizSelectedType {
+  id: string | undefined;
+  filterStr: string | undefined;
+}
 export function GrantDetailBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Grant Budgets Flow");
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
-    id: string | undefined;
-    filterStr: string | undefined;
-  }>({ id: undefined, filterStr: undefined });
+
+  const breadcrumbList = useRecoilValue(breadCrumbItems);
+
+  const [vizLevel, setVizLevel] = React.useState(
+    breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0
+  );
+
+  const [drilldownVizSelected, setDrilldownVizSelected] =
+    React.useState<DrilldownVizSelectedType>(
+      breadcrumbList[breadcrumbList.length - 1]
+        ?.vizSelected as DrilldownVizSelectedType
+    );
+
+  React.useEffect(() => {
+    setDrilldownVizSelected(
+      breadcrumbList[breadcrumbList.length - 1]
+        ?.vizSelected as DrilldownVizSelectedType
+    );
+    setVizLevel(breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0);
+  }, [breadcrumbList]);
 
   // api call & data
   const fetchData = useStoreActions(
@@ -128,7 +149,7 @@ export function GrantDetailBudgetsFlowWrapper(props: Props) {
     } else {
       clearDrilldownLevel2Data();
     }
-  }, [drilldownVizSelected.id]);
+  }, [drilldownVizSelected?.id]);
 
   useUpdateEffect(() => {
     setDrilldownLevelSelectors(getDrilldownPanelOptions(links));

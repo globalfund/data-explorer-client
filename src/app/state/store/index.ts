@@ -24,6 +24,7 @@ import Allocations, {
   AllocationsGeomap,
   AllocationsMCGeomap,
   AllocationsPeriods,
+  AllocationsTable,
 } from "app/state/api/action-reducers/viz/allocations";
 import BudgetsFlow, {
   BudgetsFlowDrilldownLevel1,
@@ -165,6 +166,7 @@ import {
   DataPathPanelVisibilityState,
   DataPathStepsState,
 } from "../api/action-reducers/sync/dataPath";
+import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -178,6 +180,7 @@ const storeContent: StoreModel = {
   AllocationsDrilldown: persist(AllocationsDrilldown),
   AllocationsGeomap: persist(AllocationsGeomap),
   AllocationsMCGeomap: persist(AllocationsMCGeomap),
+  AllocationsTable: persist(AllocationsTable),
   Eligibility: persist(Eligibility),
   EligibilityYears: persist(EligibilityYears),
   BudgetsGeomap: persist(BudgetsGeomap),
@@ -205,6 +208,7 @@ const storeContent: StoreModel = {
     PledgesContributionsTimeCycleDrilldown
   ),
   PledgesContributionsTreemap: persist(PledgesContributionsTreemap),
+  PledgesContributionsTable: persist(PledgesContributionsTable),
   ResultsList: persist(ResultsList),
   ResultsStats: persist(ResultsStats),
   ResultsYears: persist(ResultsYears),
