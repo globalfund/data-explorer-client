@@ -105,12 +105,17 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           <div
             css={`
               display: flex;
-              justify-content: space-around;
+              justify-content: space-between;
               align-items: center;
+              gap: 3rem;
             `}
           >
             <RadialChart total={total} values={values} keys={keys} />
-            <div>
+            <div
+              css={`
+                /* background: pink; */
+              `}
+            >
               <div>
                 <p
                   css={`
@@ -137,9 +142,12 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                 css={`
                   display: flex;
                   justify-content: center;
-                  margin-top: 3rem;
                   align-items: center;
                   text-align: center;
+                  width: 90%;
+                  /* background: yellow; */
+                  margin: auto;
+                  margin-top: 3rem;
                 `}
               >
                 {values.map((val, index) => (

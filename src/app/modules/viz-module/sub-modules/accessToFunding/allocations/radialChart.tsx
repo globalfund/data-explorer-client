@@ -152,7 +152,7 @@ export default function RadialChart(props: Props) {
               options={options}
               height={isMobile ? 400 : 580}
               series={keysPercentagesColors.percentages}
-              width={500}
+              width={480}
             />
           )}
         </div>
