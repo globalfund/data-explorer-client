@@ -61,7 +61,7 @@ export function NetworkViz(props: NetworkVizProps) {
           stroke={node.borderColor}
           transform={`translate(${node.x}, ${node.y}) scale(1)`}
           css={
-            node.color === "#E2E2E2"
+            node.color === appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
               ? `fill: url(#diagonalHatch);`
               : `fill: ${node.color};`
           }

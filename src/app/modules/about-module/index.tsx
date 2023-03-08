@@ -73,7 +73,7 @@ export default function About() {
               }
               > p {
                 > a {
-                  color: #000;
+                  color: ${appColors.ABOUT_PAGE.LINK_COLOR};
                 }
               }
             }

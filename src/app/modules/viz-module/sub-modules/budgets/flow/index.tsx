@@ -21,6 +21,7 @@ import { useRecoilState } from "recoil";
 import { breadCrumbItems } from "app/state/recoil/atoms";
 import { Grid } from "@material-ui/core";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { appColors } from "app/theme";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -280,7 +281,11 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
         item
         xs={12}
         sm={2}
-        css="font-size: 12px !important; color: #262C34; margin-top: -9px;"
+        css={`
+          font-size: 12px !important;
+          color: ${appColors.COMMON.PRIMARY_COLOR_1};
+          margin-top: -9px;
+        `}
       >
         <b>Budget</b>
         <p

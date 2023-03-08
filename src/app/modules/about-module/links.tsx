@@ -5,6 +5,7 @@ import useTitle from "react-use/lib/useTitle";
 import { PageHeader } from "app/components/PageHeader";
 import get from "lodash/get";
 import { useCMSData } from "app/hooks/useCMSData";
+import { appColors } from "app/theme";
 
 export default function LinkList() {
   const cmsData = useCMSData({ returnData: true });
@@ -43,15 +44,15 @@ export default function LinkList() {
 
           > a {
             width: 100%;
-            color: #000;
+            color: ${appColors.ABOUT_PAGE.LINK_COLOR};
             font-size: 14px;
             padding: 10px 0;
             font-weight: bold;
             text-align: center;
-            background: #dfe3e6;
+            background: ${appColors.ABOUT_PAGE.LINK_BACKGROUND_COLOR};
             border-radius: 20px;
             text-decoration: none;
-            border: 1px solid #dfe3e6;
+            border: 1px solid ${appColors.ABOUT_PAGE.LINK_BORDER_COLOR};
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           }

@@ -48,7 +48,6 @@ const styles = {
   title: (bigPadding: boolean) => css`
     width: 100%;
     color: ${appColors.PAGE_HEADER.TITLE_COLOR};
-    color: #262c34;
     font-size: 18px;
     overflow: hidden;
     line-height: 24px;

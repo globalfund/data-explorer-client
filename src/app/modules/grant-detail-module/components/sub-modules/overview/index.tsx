@@ -209,7 +209,7 @@ export function GrantDetailOverviewModule() {
               <Link
                 to={`/partner/${grantInfoData.principalRecipient.code}/investments`}
                 css={`
-                  color: #000;
+                  color: ${appColors.GRANTS.DETAIL_LINK_COLOR};
                   font-size: 12px;
                 `}
               >
@@ -328,7 +328,7 @@ export function GrantDetailOverviewModule() {
         <a
           href={`mailto:${grantInfoData.manager.email}`}
           css={`
-            color: #000;
+            color: ${appColors.GRANTS.DETAIL_LINK_COLOR};
             font-size: 12px;
           `}
         >

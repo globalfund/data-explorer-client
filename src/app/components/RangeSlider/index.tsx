@@ -74,7 +74,7 @@ const Track = (params: {
       ...params.props.style,
       height: "6px",
       width: "calc(100% - 50px)",
-      background: `linear-gradient(to right, ${appColors.COMMON.WHITE},#7e8a96,#0a0b0c)`,
+      background: appColors.RANGE_SLIDER.TRACK_BACKGROUND_COLOR,
     }}
   >
     {params.children}
@@ -127,7 +127,7 @@ export function RangeSlider(props: RangeSliderProps) {
                 outline: "none",
                 justifyContent: "center",
                 alignItems: "center",
-                boxShadow: "0px 2px 6px #AAA",
+                boxShadow: `0px 2px 6px ${appColors.RANGE_SLIDER.THUMB_BOX_SHADOW_COLOR}`,
               }}
             >
               <ThumbLabel

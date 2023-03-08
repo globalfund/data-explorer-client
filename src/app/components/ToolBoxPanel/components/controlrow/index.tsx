@@ -82,11 +82,11 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                   }
 
                   &:hover {
-                    color: #fff;
+                    color: ${appColors.COMMON.WHITE};
                     cursor: pointer;
 
                     path {
-                      fill: #13183f;
+                      fill: ${appColors.TOOLBOX.VIEWS_ICON_ACTIVE_COLOR};
                     }
                   }
                 `}
@@ -109,10 +109,12 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${props.selected === option.value ? "#fff" : "#262C34"};
+                color: ${props.selected === option.value
+                  ? appColors.COMMON.WHITE
+                  : appColors.COMMON.PRIMARY_COLOR_1};
                 background: ${props.selected === option.value
-                  ? "#262C34"
-                  : "#fff"};
+                  ? appColors.COMMON.PRIMARY_COLOR_1
+                  : appColors.COMMON.WHITE};
 
                 > * {
                   @supports (-webkit-touch-callout: none) and
@@ -124,11 +126,11 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 }
 
                 &:hover {
-                  color: #fff;
+                  color: ${appColors.COMMON.WHITE};
                   cursor: pointer;
                   background: ${props.selected === option.value
-                    ? "#262C34"
-                    : "#13183F"};
+                    ? appColors.COMMON.PRIMARY_COLOR_1
+                    : appColors.COMMON.SECONDARY_COLOR_13};
                 }
               `}
             >

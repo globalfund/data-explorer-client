@@ -11,6 +11,7 @@ import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
 import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { appColors } from "app/theme";
 
 export function DataPathPanel() {
   const history = useHistory();
@@ -57,7 +58,7 @@ export function DataPathPanel() {
           flex-direction: row;
           align-items: center;
           justify-content: space-between;
-          border-bottom: 1px solid #cfd4da;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_6};
 
           @media (max-width: 767px) {
             padding: 16px;
@@ -72,7 +73,7 @@ export function DataPathPanel() {
           `}
           onClick={() => setShowDataPath(false)}
         >
-          <CloseOutlinedIcon htmlColor="#2E4063" />
+          <CloseOutlinedIcon htmlColor={appColors.COMMON.SECONDARY_COLOR_18} />
         </IconButton>
       </div>
       {dataPathSteps.length > 0 && (
@@ -97,7 +98,7 @@ export function DataPathPanel() {
                 .MuiTimelineDot-root {
                   margin: 0;
                   padding: 3px;
-                  background: #262c34;
+                  background: ${appColors.COMMON.PRIMARY_COLOR_1};
                 }
 
                 .MuiTimelineContent-root {
@@ -106,7 +107,7 @@ export function DataPathPanel() {
                 }
 
                 .MuiTimelineConnector-root {
-                  background: #adb5bd;
+                  background: ${appColors.COMMON.SECONDARY_COLOR_5};
                 }
               }
             `}
@@ -132,18 +133,6 @@ export function DataPathPanel() {
                         ? drilldown.name.split("-")[1]
                         : drilldown.name}
                     </div>
-                    {/* <div
-                      css={`
-                        color: #fff;
-                        margin-top: 8px;
-                        padding: 2px 8px;
-                        width: fit-content;
-                        background: #98a1aa;
-                        border-radius: 26px;
-                      `}
-                    >
-                      By Components
-                    </div> */}
                   </TimelineContent>
                 </TimelineItem>
               ))}

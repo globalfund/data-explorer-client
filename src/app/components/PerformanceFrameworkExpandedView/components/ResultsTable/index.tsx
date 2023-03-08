@@ -203,7 +203,8 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                background: ${props.color === "#E2E2E2"
+                background: ${props.color ===
+                appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
                   ? appColors.NETWORK.TABLE_CIRCLE_INDICATOR_BACKGROUND_COLOR
                   : props.color};
               `}
@@ -424,7 +425,8 @@ function MobileResultsTable(props: PFIndicator) {
                   width: 12px;
                   height: 12px;
                   border-radius: 50%;
-                  background: ${selectedItem.color === "#E2E2E2"
+                  background: ${selectedItem.color ===
+                  appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
                     ? appColors.NETWORK.TABLE_CIRCLE_INDICATOR_BACKGROUND_COLOR
                     : selectedItem.color};
                 `}
