@@ -70,18 +70,16 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
       : [];
 
   return (
-    <>
-      <SimpleTable
-        title="Allocations"
-        search={search}
-        sortBy={sortBy}
-        rows={data}
-        onSearchChange={setSearch}
-        onSortByChange={setSortBy}
-        formatNumbers
-        columns={columns}
-        forceExpand={Boolean(props.code)}
-      />
-    </>
+    <SimpleTable
+      title="Allocations"
+      search={search}
+      sortBy={sortBy}
+      rows={data}
+      onSearchChange={setSearch}
+      onSortByChange={setSortBy}
+      formatNumbers
+      columns={columns}
+      forceExpand={Boolean(props.code)}
+    />
   );
 }

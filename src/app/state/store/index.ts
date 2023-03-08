@@ -166,6 +166,7 @@ import {
   DataPathPanelVisibilityState,
   DataPathStepsState,
 } from "../api/action-reducers/sync/dataPath";
+import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -207,6 +208,7 @@ const storeContent: StoreModel = {
     PledgesContributionsTimeCycleDrilldown
   ),
   PledgesContributionsTreemap: persist(PledgesContributionsTreemap),
+  PledgesContributionsTable: persist(PledgesContributionsTable),
   ResultsList: persist(ResultsList),
   ResultsStats: persist(ResultsStats),
   ResultsYears: persist(ResultsYears),

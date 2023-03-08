@@ -174,6 +174,7 @@ export interface StoreModel {
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
   PledgesContributionsTreemap: ApiCallModel;
+  PledgesContributionsTable: ApiCallModel;
   ResultsList: ApiCallModel;
   ResultsStats: ApiCallModel;
   ResultsYears: ApiCallModel;

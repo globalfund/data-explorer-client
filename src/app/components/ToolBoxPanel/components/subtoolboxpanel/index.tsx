@@ -48,6 +48,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
   }>(
     getControlItems(
       params.vizType,
+      params.subType,
       history.location.pathname,
       params.code,
       params.period
@@ -143,6 +144,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
       setControlItems(
         getControlItems(
           params.vizType,
+          params.subType,
           history.location.pathname,
           params.code,
           params.period
@@ -244,15 +246,13 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             />
           )}
           {params.vizType === "pledges-contributions" &&
-            (params.subType === "map" || params.subType === "table") && (
+            params.subType === "map" && (
               <React.Fragment>
                 <ToolBoxPanelDonorViews />
               </React.Fragment>
             )}
           {params.vizType === "pledges-contributions" &&
-            (params.subType === "map" ||
-              params.subType === "table" ||
-              params.subType === "treemap") && (
+            (params.subType === "map" || params.subType === "treemap") && (
               <React.Fragment>
                 <ToolBoxPanelDonorMapTypes />
               </React.Fragment>
@@ -272,7 +272,6 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             params.vizType === "signed" ||
             params.vizType === "pledges-contributions") &&
             params.subType === "treemap" && (
-              // ""
               <ToolBoxPanelDisbursementsSlider label={params.vizType} />
             )}
         </>

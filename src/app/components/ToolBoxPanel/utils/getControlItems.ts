@@ -156,6 +156,17 @@ const views = {
   ],
 };
 
+const eligibilityAggregates = [
+  {
+    label: "Locations",
+    value: "geographicAreaName",
+  },
+  {
+    label: "Components",
+    value: "componentName",
+  },
+];
+
 const aggregates = {
   // investments: [
   //   {
@@ -185,17 +196,9 @@ const aggregates = {
   //     value: "Locations",
   //   },
   // ],
-  eligibility: [
-    {
-      label: "Locations",
-      value: "geographicAreaName",
-    },
-    {
-      label: "Components",
-      value: "componentName",
-    },
-  ],
-  allocations: [
+  eligibility: eligibilityAggregates,
+  "eligibility-table": eligibilityAggregates,
+  "allocations-table": [
     {
       label: "Locations",
       value: "geographicArea.geographicAreaName",
@@ -205,10 +208,21 @@ const aggregates = {
       value: "component.componentName",
     },
   ],
+  "pledges-contributions-table": [
+    {
+      label: "Donor",
+      value: "Donor",
+    },
+    {
+      label: "Period",
+      value: "Period",
+    },
+  ],
 };
 
 export function getControlItems(
   vizType: string,
+  subType: string | undefined,
   pathname: string,
   detailPageCode?: string,
   grantDetailPeriod?: string
@@ -240,11 +254,19 @@ export function getControlItems(
     }
     return {
       views: alteredViews,
-      aggregates: get(aggregates, vizType, []),
+      aggregates: get(
+        aggregates,
+        `${vizType}${subType ? "-" : ""}${subType}`,
+        []
+      ),
     };
   }
   return {
     views: get(views, vizType, []),
-    aggregates: get(aggregates, vizType, []),
+    aggregates: get(
+      aggregates,
+      `${vizType}${subType ? "-" : ""}${subType}`,
+      []
+    ),
   };
 }
