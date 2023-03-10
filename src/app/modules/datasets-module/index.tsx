@@ -12,10 +12,44 @@ import { PageHeader } from "app/components/PageHeader";
 import { Box, Grid } from "@material-ui/core";
 import { dummyDatasetsData } from "../home-module/components/Datasets/data";
 import GridItem from "../home-module/components/Datasets/gridItem";
-import DatasetAddnewCard from "./addNewDataset";
+import DatasetAddnewCard from "./datasetAddNewCard";
+import { v4 } from "uuid";
+import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 
 export default function Datasets() {
   useTitle("Dataxplorer - Datasets");
+
+  const [cardId, setCardId] = React.useState<string>("");
+  const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
+  const [inputValue, setInputValue] = React.useState<string>("");
+  const [enableButton, setEnableButton] = React.useState<boolean>(false);
+
+  const [data, setData] = React.useState(
+    dummyDatasetsData.map((data) => ({ ...data, id: v4() }))
+  );
+  const handleDelete = (id: string) => {
+    const newData = data.filter((data, i) => data.id !== id);
+    setData(newData);
+    setModalDisplay(false);
+    setEnableButton(false);
+    console.log(enableButton, "btn");
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+
+    if (e.target.value === "DELETE") {
+      setEnableButton(true);
+    } else {
+      setEnableButton(false);
+    }
+  };
+  console.log(enableButton, "btn");
+
+  const handleModal = (id: string) => {
+    setCardId(id);
+    setModalDisplay(true);
+  };
 
   return (
     <div css={dataSetsCss}>
@@ -31,7 +65,6 @@ export default function Datasets() {
         `}
       >
         <p>Datasets</p>
-        {/* <Box height={4} /> */}
         <p
           css={`
             margin-top: -8px;
@@ -47,7 +80,7 @@ export default function Datasets() {
 
       <Grid container spacing={2}>
         <DatasetAddnewCard />
-        {dummyDatasetsData.map((data, index) => (
+        {data.map((data, index) => (
           <Grid item xs={12} sm={6} md={6} lg={3}>
             <GridItem
               key={index}
@@ -56,10 +89,19 @@ export default function Datasets() {
               path={"#"}
               title={data.title}
               showMenu
+              handleDelete={() => handleModal(data.id)}
             />
           </Grid>
         ))}
       </Grid>
+      <DeleteDatasetDialog
+        cardId={cardId}
+        enableButton={enableButton}
+        handleDelete={handleDelete}
+        handleInputChange={handleInputChange}
+        modalDisplay={modalDisplay}
+        setModalDisplay={setModalDisplay}
+      />
     </div>
   );
 }

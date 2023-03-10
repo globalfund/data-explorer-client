@@ -225,7 +225,7 @@ export function AppBar() {
                 css={`
                   display: flex;
                   justify-content: center;
-                  gap: 1rem;
+                  gap: 2.5rem;
                 `}
               >
                 <div>
