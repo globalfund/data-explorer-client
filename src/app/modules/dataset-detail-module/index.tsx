@@ -4,7 +4,7 @@ import React from "react";
 import { useTitle } from "react-use";
 import { PageTopSpacer } from "../common/page-top-spacer";
 import { dataSetsCss } from "../datasets-module/style";
-import Table from "./component/table";
+import DatasetTableOverview from "./component/table/datasetTableOverview";
 
 export default function DataSetDetailModule() {
   useTitle("Dataxplorer - Datasets");
@@ -37,7 +37,7 @@ export default function DataSetDetailModule() {
           aliquip ex ea commodo consequat.
         </p>
 
-        <Table />
+        <DatasetTableOverview />
       </div>
     </div>
   );

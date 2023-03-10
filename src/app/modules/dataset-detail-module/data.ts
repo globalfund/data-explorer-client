@@ -1,14 +1,21 @@
 import { CheckBox } from "@material-ui/icons";
 
 export const tHeadData = [
-  <CheckBox />,
-  "Transaction Ref",
-  "Transaction Sector Narrative",
-  "Transaction Sector Code",
-  "Transaction Value",
-  "IATI Identifier",
-  "Reporting Org Ref",
-  "Contact Info Email",
+  {
+    type: "char",
+    name: "checkbox",
+  },
+  {
+    name: "Transaction Ref",
+    type: "pound",
+  },
+
+  { name: "Transaction Sector Narrative", type: "char" },
+  { name: "Transaction Sector Code", type: "pound" },
+  { name: "Transaction Value", type: "pound" },
+  { name: "IATI Identifier", type: "char" },
+  { name: "Reporting Org Ref", type: "char" },
+  { name: "Contact Info Email", type: "char" },
 ];
 
 export const dummyDatasetData = [

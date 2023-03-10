@@ -11,6 +11,8 @@ interface Props {
   descr: string;
   date: string;
   showMenu?: boolean;
+  handleDelete?: (id: string) => void;
+  id?: string;
 }
 export default function GridItem(props: Props) {
   const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
@@ -152,6 +154,7 @@ export default function GridItem(props: Props) {
                 css={`
                   padding: 0;
                 `}
+                onClick={() => props.handleDelete?.(props.id as string)}
               >
                 <DeleteIcon
                   css={`

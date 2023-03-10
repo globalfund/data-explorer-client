@@ -12,16 +12,86 @@ import {
   Container,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { ReactComponent as EditIcon } from "../asset/edit.svg";
-import { ReactComponent as SaveIcon } from "../asset/save.svg";
-import { ReactComponent as DeleteIcon } from "../asset/delete.svg";
-import { ReactComponent as SearchIcon } from "../asset/search.svg";
-import { ReactComponent as SortIcon } from "../asset/sort.svg";
+import { ReactComponent as EditIcon } from "../../asset/edit.svg";
+import { ReactComponent as SaveIcon } from "../../asset/save.svg";
+import { ReactComponent as DeleteIcon } from "../../asset/delete.svg";
+import { ReactComponent as SearchIcon } from "../../asset/search.svg";
+import { ReactComponent as SortIcon } from "../../asset/sort.svg";
 import { v4 } from "uuid";
-import { dummyDatasetData, tHeadData } from "./data";
+import { dummyDatasetData, tHeadData } from "../../data";
 import { tablecss } from "./style";
 
-export default function DataSetTable() {
+interface DatasetTableProps {
+  showCharType?: boolean;
+}
+export const TableTop = () => {
+  return (
+    <Grid
+      container
+      lg={12}
+      css={`
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        background: rgba(218, 218, 248, 0.3);
+        height: 55px;
+        /* border-bottom: 1px solid #e4e4e4; */
+        padding: 0 1rem;
+      `}
+    >
+      <div
+        css={`
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 20%;
+        `}
+      >
+        <IconButton
+          css={`
+            padding: 0;
+          `}
+        >
+          <SearchIcon />
+        </IconButton>
+        <IconButton
+          css={`
+            padding: 0;
+          `}
+        >
+          <EditIcon />
+        </IconButton>{" "}
+        <IconButton
+          css={`
+            padding: 0;
+          `}
+        >
+          <DeleteIcon />
+        </IconButton>
+        <button
+          css={`
+            border: none;
+            outline: none;
+            background: none;
+          `}
+        >
+          <p
+            css={`
+              color: #262c34;
+              font-weight: 500;
+              font-size: 14px;
+              font-family: "Inter";
+            `}
+          >
+            More actions
+          </p>
+        </button>
+      </div>
+    </Grid>
+  );
+};
+
+export default function DatasetTable(props: DatasetTableProps) {
   const [checkedAll, setCheckedAll] = useState(false);
   const [tableData, setTableData] = useState(
     dummyDatasetData.map((data) => ({ ...data, checked: false, id: v4() }))
@@ -49,75 +119,25 @@ export default function DataSetTable() {
 
   return (
     <>
-      <Grid
-        container
-        lg={12}
-        css={`
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          background: rgba(218, 218, 248, 0.3);
-          height: 55px;
-          /* border-bottom: 1px solid #e4e4e4; */
-          padding: 0 1rem;
-        `}
-      >
-        <div
-          css={`
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 20%;
-          `}
-        >
-          <IconButton
-            css={`
-              padding: 0;
-            `}
-          >
-            <SearchIcon />
-          </IconButton>
-          <IconButton
-            css={`
-              padding: 0;
-            `}
-          >
-            <EditIcon />
-          </IconButton>{" "}
-          <IconButton
-            css={`
-              padding: 0;
-            `}
-          >
-            <DeleteIcon />
-          </IconButton>
-          <button
-            css={`
-              border: none;
-              outline: none;
-              background: none;
-            `}
-          >
-            <p
-              css={`
-                color: #262c34;
-                font-weight: 500;
-                font-size: 14px;
-                font-family: "Inter";
-              `}
-            >
-              More actions
-            </p>
-          </button>
-        </div>
-      </Grid>
-
       <div>
         <TableContainer
           css={`
             width: inherit;
             height: 480px;
-            overflow: scroll;
+            overflow: auto;
+            &::-webkit-scrollbar {
+              height: 5px;
+              border-radius: 23px;
+
+              background: #231d2c;
+            }
+            &::-webkit-scrollbar-track {
+              background: #dfe3e6;
+            }
+            &::-webkit-scrollbar-thumb {
+              background: #231d2c;
+              border-radius: 23px;
+            }
           `}
         >
           <Table css={tablecss}>
@@ -149,15 +169,32 @@ export default function DataSetTable() {
                             display: flex;
                             justify-content: space-between;
                             align-items: center;
+                            gap: 1rem;
                           `}
                         >
+                          {props.showCharType && (
+                            <div
+                              css={`
+                                width: 25px;
+                                height: 25px;
+                                border-radius: 50%;
+                                padding: 3px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                background: #ffffff;
+                              `}
+                            >
+                              <p>{val.type === "char" ? "Aa" : "#"}</p>
+                            </div>
+                          )}
                           <p
                             css={`
                               text-align: left;
                               line-height: 17px;
                             `}
                           >
-                            {val}
+                            {val.name}
                           </p>
                           <IconButton>
                             <SortIcon />
@@ -189,13 +226,22 @@ export default function DataSetTable() {
                       />
                     </TableCell>
                     <TableCell width={80}>{data.Ref}</TableCell>
-                    <TableCell width={210}>{data.SectorCode}</TableCell>
-                    <TableCell width={210}>{data.SectorNarrative}</TableCell>
+                    <TableCell width={"20vw"}>{data.SectorNarrative}</TableCell>
+                    <TableCell width={"20vw"}>{data.SectorCode}</TableCell>
                     {/* <TableCell>{data.SectorCode}</TableCell> */}
-                    <TableCell width={210}>{data.TransactionValue}</TableCell>
-                    <TableCell width={300}>{data.IATIIdentifier}</TableCell>
-                    <TableCell width={210}>{data.OrgRef}</TableCell>
-                    <TableCell width={210}>{data.email}</TableCell>
+                    <TableCell width={"20vw"}>
+                      {data.TransactionValue}
+                    </TableCell>
+                    <TableCell
+                      css={`
+                        width: 15vw;
+                      `}
+                      // width={"20vw"}
+                    >
+                      {data.IATIIdentifier}
+                    </TableCell>
+                    <TableCell width={"20vw"}>{data.OrgRef}</TableCell>
+                    <TableCell width={"20vw"}>{data.email}</TableCell>
                   </>
                 </TableRow>
               ))}
