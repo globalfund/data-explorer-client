@@ -10,10 +10,6 @@ export const tablecss = css`
     height: 42px;
   }
   td {
-    /* display: flex;
-    justify-content: space-between;
-    align-items: center; */
-    /* background: rgba(218, 218, 248, 0.3); */
     border-bottom: 1px solid #e4e4e4;
     border-right: 1px solid #e4e4e4;
     padding: 0.1rem 0.7rem;

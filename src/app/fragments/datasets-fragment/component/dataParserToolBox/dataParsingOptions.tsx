@@ -16,8 +16,6 @@ const optionscss = css`
 
     border: none;
     outline: none;
-    /* border: 1px solid #231d2c;
-    border-radius: 10px; */
   }
   button {
     background: #e4e4e4;

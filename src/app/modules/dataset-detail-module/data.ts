@@ -1,5 +1,3 @@
-import { CheckBox } from "@material-ui/icons";
-
 export const tHeadData = [
   {
     type: "char",

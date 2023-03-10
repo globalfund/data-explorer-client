@@ -7,14 +7,11 @@ import { Box } from "@material-ui/core";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 
 interface Props {
-  // activeStep: number
-  // setActiveStep: React.Dispatch<React.SetStateAction<number>>
   handleNext: () => void;
 }
 export default function AddDatasetFragment(props: Props) {
   return (
     <>
-      {/* <PageTopSpacer /> */}
       <div css={uploadDatasetcss}>
         <div>
           <p>Add your file</p>

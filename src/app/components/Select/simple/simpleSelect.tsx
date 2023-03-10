@@ -18,16 +18,6 @@ interface Props {
   ) => void;
 }
 export default function SimpleSelect(prop: Props) {
-  // const [value, setValue] = React.useState("");
-  // const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-  //   setValue(event.target.value as string);
-  // };
-  console.log(prop.value, "value");
-  // const menuItems = [
-  //   { value: "1", label: "One" },
-  //   { value: "2", label: "Two" },
-  //   { value: "3", label: "Three" },
-  // ];
   return (
     <div>
       <StyledSelect

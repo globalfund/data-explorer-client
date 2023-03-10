@@ -25,7 +25,6 @@ export default function DataSetDetailModule() {
         `}
       >
         <p>Uploaded datasets</p>
-        {/* <Box height={4} /> */}
         <p
           css={`
             margin-top: -8px;

@@ -3,7 +3,6 @@ import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import DatasetAddnewCard from "app/modules/datasets-module/datasetAddNewCard";
 
 import React from "react";
-import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { dummyDatasetsData } from "./data";
 import GridItem from "./gridItem";

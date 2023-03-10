@@ -32,17 +32,14 @@ export default function GridItem(props: Props) {
         height: 125px;
         padding: 0rem 1rem;
         position: relative;
-        /* padding-top: 0.2rem; */
         color: #262c34;
         font-family: "Gotham Narrow";
-        /* overflow: auto; */
       `}
     >
       <div
         css={`
           display: flex;
           justify-content: space-between;
-          /* align-items: start: */
         `}
       >
         <div>
@@ -67,14 +64,6 @@ export default function GridItem(props: Props) {
           </p>
         </div>
         {props.showMenu && (
-          // <IconButton
-
-          //   css={`
-          //     padding: 0;
-          //   `}
-          // >
-
-          // </IconButton>
           <MenuIcon
             onClick={showMenuOptions}
             css={`
@@ -109,7 +98,6 @@ export default function GridItem(props: Props) {
               right: 0;
 
               z-index: 1;
-              /* background: lightpink; */
             `}
             onClick={showMenuOptions}
           />
@@ -117,7 +105,6 @@ export default function GridItem(props: Props) {
             css={`
               background: #f4f4f4;
               border-radius: 13px;
-              /* height: 45px; */
               z-index: 2;
               width: 128px;
               display: flex;
@@ -142,8 +129,6 @@ export default function GridItem(props: Props) {
                     cursor: pointer;
                     :hover {
                       opacity: 0.5;
-                      /* fill: #98a1aa; */
-                      /* stroke: #98a1aa; */
                     }
                   `}
                 />
@@ -161,8 +146,6 @@ export default function GridItem(props: Props) {
                     cursor: pointer;
                     :hover {
                       opacity: 0.5;
-                      /* fill: #98a1aa; */
-                      /* stroke: #98a1aa; */
                     }
                   `}
                 />

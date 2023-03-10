@@ -28,7 +28,6 @@ export default function DatasetUploadSteps() {
       setActiveStep(0);
       return;
     }
-    // history.push(steps[newActiveStep].path);
   };
 
   const handleMetaForm = () => {
@@ -110,13 +109,7 @@ export default function DatasetUploadSteps() {
       </div>
       <PageTopSpacer />
 
-      <div
-        css={`
-          /* background: yellow; */
-        `}
-      >
-        {currentStep()}
-      </div>
+      <div>{currentStep()}</div>
     </div>
   );
 }

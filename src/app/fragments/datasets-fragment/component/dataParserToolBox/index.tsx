@@ -12,11 +12,7 @@ import DataParsingOptions from "./dataParsingOptions";
 
 interface Props {
   open: boolean;
-  // vizWrapperRef: any;
-  // isGrantDetail?: boolean;
-  // isLocationDetail?: boolean;
-  // filterGroups: FilterGroupProps[];
-  // getAllAvailableGrants?: () => Promise<any>;
+
   onCloseBtnClick: (value?: boolean) => void;
 }
 export default function DataParserToolBox(props: Props) {
@@ -37,13 +33,12 @@ export default function DataParserToolBox(props: Props) {
           <div
             css={`
               right: 0;
-              /* z-index: 20; */
+
               width: 400px;
               top: 100px;
               position: fixed;
               background: #f4f4f4;
 
-              /* height: calc(100vh - 98px); */
               visibility: visible !important;
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
@@ -51,7 +46,6 @@ export default function DataParserToolBox(props: Props) {
                 width: 100vw;
                 box-shadow: none;
                 overflow-y: auto;
-                /* height: calc(100vh - 168px); */
               }
             `}
           >

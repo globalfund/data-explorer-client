@@ -13,7 +13,6 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 import { ReactComponent as EditIcon } from "../../asset/edit.svg";
-import { ReactComponent as SaveIcon } from "../../asset/save.svg";
 import { ReactComponent as DeleteIcon } from "../../asset/delete.svg";
 import { ReactComponent as SearchIcon } from "../../asset/search.svg";
 import { ReactComponent as SortIcon } from "../../asset/sort.svg";
@@ -35,7 +34,6 @@ export const TableTop = () => {
         align-items: center;
         background: rgba(218, 218, 248, 0.3);
         height: 55px;
-        /* border-bottom: 1px solid #e4e4e4; */
         padding: 0 1rem;
       `}
     >
@@ -228,7 +226,6 @@ export default function DatasetTable(props: DatasetTableProps) {
                     <TableCell width={80}>{data.Ref}</TableCell>
                     <TableCell width={"20vw"}>{data.SectorNarrative}</TableCell>
                     <TableCell width={"20vw"}>{data.SectorCode}</TableCell>
-                    {/* <TableCell>{data.SectorCode}</TableCell> */}
                     <TableCell width={"20vw"}>
                       {data.TransactionValue}
                     </TableCell>
@@ -236,7 +233,6 @@ export default function DatasetTable(props: DatasetTableProps) {
                       css={`
                         width: 15vw;
                       `}
-                      // width={"20vw"}
                     >
                       {data.IATIIdentifier}
                     </TableCell>

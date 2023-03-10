@@ -44,11 +44,9 @@ const CssTextField = withStyles({
       },
       "&:hover fieldset": {
         borderColor: "#231D2C",
-        // borderRadius: "10px",
       },
       "&.Mui-focused fieldset": {
         borderColor: "#231D2C",
-        // borderRadius: "10px",
       },
     },
   },
@@ -60,7 +58,6 @@ export default function MetaData(props: Props) {
       <div
         css={`
           width: 100%;
-          /* background: pink; */
         `}
       >
         <form css={``}>
@@ -75,7 +72,6 @@ export default function MetaData(props: Props) {
           </Grid>
           <Box height={50} />
           <Grid lg={12} xs={12} md={12}>
-            {/* <TextareaAutosize var */}
             <CssTextField
               id="outlined-basic"
               label="Brief Description"
@@ -99,7 +95,7 @@ export default function MetaData(props: Props) {
                   text-transform: uppercase;
                 `}
               >
-                prevıous
+                previous
               </p>
             </button>
             <button
