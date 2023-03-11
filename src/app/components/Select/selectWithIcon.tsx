@@ -1,14 +1,14 @@
-import { InputBase, MenuItem } from "@material-ui/core";
-import React from "react";
-
+import { MenuItem } from "@material-ui/core";
 import { StyledSelect, StyledInput } from "./style";
 
 interface Props {
   value: string;
+  width: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
   menuItems: {
     value: string;
     label: string;
+    icon: React.ReactNode;
   }[];
 
   handleChange: (
@@ -17,18 +17,28 @@ interface Props {
     }>
   ) => void;
 }
-export default function SimpleSelect(prop: Props) {
+export function SelectWithIcon(props: Props) {
   return (
     <div>
       <StyledSelect
         labelId="demo-customized-select-label"
         id="demo-customized-select"
-        value={prop.value}
-        onChange={prop.handleChange}
+        value={props.value}
+        onChange={props.handleChange}
         input={<StyledInput />}
+        width={props.width}
       >
-        {prop.menuItems.map((item) => (
-          <MenuItem value={item.value}>{item.label}</MenuItem>
+        {props.menuItems.map((item) => (
+          <MenuItem
+            value={item.value}
+            css={`
+              display: flex;
+              gap: 4px;
+              align-items: center;
+            `}
+          >
+            {item.icon} {item.label}
+          </MenuItem>
         ))}
       </StyledSelect>
     </div>

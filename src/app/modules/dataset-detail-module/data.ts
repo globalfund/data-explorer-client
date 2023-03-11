@@ -89,4 +89,22 @@ export const dummyDatasetData = [
     OrgRef: "US-GOV-1",
     email: "aidtransparency@usaid.gov",
   },
+  {
+    Ref: "17455ECC1D1C",
+    SectorNarrative: "Direct Administrative Costs",
+    SectorCode: "8001",
+    TransactionValue: "62527.7",
+    IATIIdentifier: "US-GOV-1-720202151689",
+    OrgRef: "US-GOV-1",
+    email: "aidtransparency@usaid.gov",
+  },
+  {
+    Ref: "483452385C90",
+    SectorNarrative: "Direct Administrative Costs",
+    SectorCode: "8001",
+    TransactionValue: "113552.12",
+    IATIIdentifier: "US-GOV-1-720202151689",
+    OrgRef: "US-GOV-1",
+    email: "aidtransparency@usaid.gov",
+  },
 ];

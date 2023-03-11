@@ -1,71 +1,10 @@
 import { Box } from "@material-ui/core";
-import SimpleSelect from "app/components/Select/simple/simpleSelect";
+import { SelectWithIcon } from "app/components/Select/selectWithIcon";
+import SimpleSelect from "app/components/Select/simpleSelect";
 import { setConfig } from "next/config";
 import React from "react";
 import { css } from "styled-components/macro";
-
-const optionscss = css`
-  p {
-    font-size: 24px;
-    color: #231d2c;
-    font-family: "Inter";
-  }
-  input {
-    background: #ffffff;
-    width: 10px;
-
-    border: none;
-    outline: none;
-  }
-  button {
-    background: #e4e4e4;
-    border-radius: 30px;
-    padding: 12px 27px;
-    height: 41px;
-    font-weight: 500;
-    font-size: 14px;
-    border: none;
-    outline: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 125px;
-    cursor: pointer;
-    color: #231d2c;
-    text-transform: uppercase;
-    :hover {
-      background: #231d2c;
-      color: #fff;
-    }
-  }
-`;
-const optionFlexcss = css`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
-  p {
-    font-weight: 500;
-    font-size: 14px;
-    color: #231d2c;
-  }
-`;
-const buttonFlexcss = css`
-  display: flex;
-  justify-content: flex-end;
-  /* margin-top: 18rem; */
-  gap: 1rem;
-`;
-const inputBoxcss = css`
-  background: #ffffff;
-  width: 43px;
-  height: 43px;
-  border: 1px solid #231d2c;
-  border-radius: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import { optionscss, optionFlexcss, inputBoxcss, buttonFlexcss } from "./style";
 
 export default function DataParsingOptions() {
   const [columnSeparatorValue, setColumnSeparatorValue] = React.useState("tab");
@@ -74,7 +13,30 @@ export default function DataParsingOptions() {
   ) => {
     setColumnSeparatorValue(event.target.value as string);
   };
-  const columnSeparatorMenu = [{ value: "tab", label: "Tab" }];
+  const columnSeparatorMenu = [
+    {
+      value: "tab",
+      label: "Tab",
+      icon: (
+        <span
+          css={`
+            width: 24px;
+            height: 25px;
+            background: #dadaf8;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-weight: 500;
+          `}
+        >
+          {" "}
+          \t
+        </span>
+      ),
+    },
+  ];
 
   const [dateLocaleValue, setDateLocaleValue] = React.useState("en");
   const handleDateLocaleChange = (
@@ -105,11 +67,12 @@ export default function DataParsingOptions() {
           <p>Column separator</p>
         </div>
         <div>
-          <SimpleSelect
+          <SelectWithIcon
             handleChange={handleColumnSeparatorChange}
             menuItems={columnSeparatorMenu}
             setValue={setColumnSeparatorValue}
             value={columnSeparatorValue}
+            width="141px"
           />
         </div>
       </div>
@@ -139,6 +102,7 @@ export default function DataParsingOptions() {
             menuItems={dateLocaleMenu}
             setValue={setDateLocaleValue}
             value={dateLocaleValue}
+            width="121px"
           />
         </div>
       </div>
@@ -162,12 +126,12 @@ export default function DataParsingOptions() {
             menuItems={stackOnMenu}
             setValue={setStackOnValue}
             value={stackOnValue}
+            width="121px"
           />
         </div>
       </div>
       <Box height={155} />
       <div css={buttonFlexcss}>
-        <button type="button">Skip</button>
         <button type="button">Save</button>
       </div>
       <Box height={85} />

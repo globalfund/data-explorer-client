@@ -44,7 +44,8 @@ export const uploadAreacss = css`
     text-align: center;
   }
   background: #ffffff;
-  button {
+  button,
+  label {
     border: none;
     outline: none;
     background: #231d2c;
@@ -63,6 +64,9 @@ export const uploadAreacss = css`
       font-size: 14px;
       font-family: "Inter";
       text-transform: uppercase;
+    }
+    :hover {
+      opacity: 0.9;
     }
   }
 `;

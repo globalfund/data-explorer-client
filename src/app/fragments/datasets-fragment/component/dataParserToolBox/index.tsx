@@ -5,7 +5,7 @@ import {
   useMediaQuery,
 } from "@material-ui/core";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import SimpleSelect from "app/components/Select/simple/simpleSelect";
+
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import React from "react";
 import DataParsingOptions from "./dataParsingOptions";

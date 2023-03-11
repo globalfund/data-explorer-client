@@ -22,6 +22,7 @@ import { tablecss } from "./style";
 
 interface DatasetTableProps {
   showCharType?: boolean;
+  showCheckBox?: boolean;
 }
 export const TableTop = () => {
   return (
@@ -126,11 +127,12 @@ export default function DatasetTable(props: DatasetTableProps) {
             &::-webkit-scrollbar {
               height: 5px;
               border-radius: 23px;
-
+              width: 5.64px;
               background: #231d2c;
             }
             &::-webkit-scrollbar-track {
               background: #dfe3e6;
+              width: 7.64px;
             }
             &::-webkit-scrollbar-thumb {
               background: #231d2c;
@@ -155,12 +157,14 @@ export default function DatasetTable(props: DatasetTableProps) {
                   return (
                     <TableCell>
                       {index === 0 ? (
-                        <Checkbox
-                          onChange={handleCheckAllBox}
-                          checked={checkedAll}
-                          color="primary"
-                          inputProps={{ "aria-label": "primary checkbox" }}
-                        />
+                        props.showCheckBox && (
+                          <Checkbox
+                            onChange={handleCheckAllBox}
+                            checked={checkedAll}
+                            color="primary"
+                            inputProps={{ "aria-label": "primary checkbox" }}
+                          />
+                        )
                       ) : (
                         <div
                           css={`
@@ -215,13 +219,21 @@ export default function DatasetTable(props: DatasetTableProps) {
                     <TableCell
                       css={`
                         background: rgba(218, 218, 248, 0.3);
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
                       `}
+                      width={47}
                     >
-                      <Checkbox
-                        color="primary"
-                        checked={data.checked}
-                        onChange={(e) => handleCheckBox(e, data.id)}
-                      />
+                      {props.showCheckBox ? (
+                        <Checkbox
+                          color="primary"
+                          checked={data.checked}
+                          onChange={(e) => handleCheckBox(e, data.id)}
+                        />
+                      ) : (
+                        <p>{index + 1}</p>
+                      )}
                     </TableCell>
                     <TableCell width={80}>{data.Ref}</TableCell>
                     <TableCell width={"20vw"}>{data.SectorNarrative}</TableCell>

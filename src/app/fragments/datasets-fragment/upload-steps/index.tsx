@@ -29,6 +29,12 @@ export default function DatasetUploadSteps() {
       return;
     }
   };
+  const handleBack = () => {
+    if (activeStep > 0) {
+      const newActiveStep = activeStep - 1;
+      setActiveStep(newActiveStep);
+    }
+  };
 
   const handleMetaForm = () => {
     handleNext();
@@ -55,7 +61,7 @@ export default function DatasetUploadSteps() {
       case 0:
         return <AddDatasetFragment handleNext={handleNext} />;
       case 1:
-        return <MetaData handleNext={handleMetaForm} />;
+        return <MetaData handleNext={handleMetaForm} handleBack={handleBack} />;
       case 2:
         return <Processing />;
       case 3:

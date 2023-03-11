@@ -54,10 +54,16 @@ export default function AddDatasetFragment(props: Props) {
               gap: 1rem;
             `}
           >
-            <button onClick={props.handleNext}>
+            <input
+              id="local-upload"
+              type="file"
+              hidden
+              onChange={props.handleNext}
+            />
+            <label htmlFor="local-upload">
               <LocalUploadIcon /> <p>Local upload</p>
-            </button>
-            <button>
+            </label>
+            <button type="button">
               <GoogleDriveIcon /> <p>Connect to google drive</p>
             </button>
           </div>
