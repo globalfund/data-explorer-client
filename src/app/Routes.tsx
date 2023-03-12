@@ -22,6 +22,7 @@ import {
 import DataSetDetailModule from "./modules/dataset-detail-module";
 import AddDatasetFragment from "./fragments/datasets-fragment/upload-steps/addDatasetFragment";
 import DatasetUploadSteps from "./fragments/datasets-fragment/upload-steps";
+import EditMetaData from "./modules/datasets-module/editMetaData";
 // import BigLogo from "app/assets/BigLogo";
 // import useCookie from "@devhammed/use-cookie";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -184,6 +185,9 @@ export function MainRoutes() {
 
         <Route exact path="/datasets">
           <DatasetsModule />
+        </Route>
+        <Route exact path="/dataset/:id/edit">
+          <EditMetaData />
         </Route>
 
         <Route exact path="/grants">

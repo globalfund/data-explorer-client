@@ -1,8 +1,9 @@
-import { Grid, IconButton } from "@material-ui/core";
+import { Grid, IconButton, Box } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { ReactComponent as AddNewImage } from "./asset/add-img.svg";
-export default function DatasetAddnewCard() {
+import { ReactComponent as AddNewImage } from "../../assets/add-img.svg";
+
+export default function ChartAddnewCard() {
   const history = useHistory();
   const goToDatasetUpload = () => {
     history.push("/dataset-upload");
@@ -14,29 +15,43 @@ export default function DatasetAddnewCard() {
           background: #ffffff;
           width: 296px;
           height: 125px;
-          padding: 0rem 0.5rem;
-          padding-top: 0.2rem;
+          padding-left: 0.8rem;
           font-family: "Gotham Narrow";
         `}
       >
-        <h4>Add new dataset</h4>
+        <Box height={9} />
+
+        <h4
+          css={`
+            margin: 0;
+          `}
+        >
+          Create new chart
+        </h4>
+        <Box height={9} />
+
         <div
           css={`
             display: flex;
             justify-content: start;
             align-items: center;
             cursor: pointer;
+            gap: 0.7rem;
           `}
         >
-          <IconButton onClick={goToDatasetUpload}>
+          <IconButton
+            onClick={goToDatasetUpload}
+            css={`
+              padding: 2px;
+            `}
+          >
             <AddNewImage />
           </IconButton>
           <p
             css={`
               border: 1px solid #231d2c;
-              width: 49px;
-              height: 0px;
-              transform: rotate(90deg);
+              height: 49px;
+              width: 0px;
             `}
           />
           <p
@@ -47,7 +62,7 @@ export default function DatasetAddnewCard() {
               line-height: 15px;
             `}
           >
-            Upload your data and start exploring your data now
+            Create a new chart in your library
           </p>
         </div>
       </div>

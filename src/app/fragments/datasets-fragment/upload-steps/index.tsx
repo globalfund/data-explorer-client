@@ -7,7 +7,8 @@ import { stepcss } from "../style";
 import AddDatasetFragment from "./addDatasetFragment";
 import MetaData from "./metaData";
 import Processing from "./processing";
-import ResultFragment from "./resultFragment";
+import PreviewFragment from "./previewFragment";
+import FinishedFragment from "./finishedFragment";
 
 export default function DatasetUploadSteps() {
   const [activeStep, setActiveStep] = useState(0);
@@ -15,7 +16,7 @@ export default function DatasetUploadSteps() {
     "Upload",
     "Description",
     "Processing Data",
-    "Result",
+    "Preview",
     "Finished",
   ];
   const handleNext = () => {
@@ -65,7 +66,11 @@ export default function DatasetUploadSteps() {
       case 2:
         return <Processing />;
       case 3:
-        return <ResultFragment />;
+        return <PreviewFragment handleNext={handleNext} />;
+      case 4:
+        return <FinishedFragment />;
+      default:
+        return <AddDatasetFragment handleNext={handleNext} />;
     }
   };
 

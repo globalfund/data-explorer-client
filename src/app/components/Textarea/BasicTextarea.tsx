@@ -44,7 +44,7 @@ export default function BasicTextarea({ label, ...rest }: Props) {
 
             padding: 0 1%;
             font-size: 12px;
-
+            font-family: "Inter";
             background: inherit;
             font-weight: 400;
             transition: top 0.2s ease-in;

@@ -12,7 +12,7 @@ import { PageHeader } from "app/components/PageHeader";
 import { Box, Grid } from "@material-ui/core";
 import { dummyDatasetsData } from "../home-module/components/Datasets/data";
 import GridItem from "../home-module/components/Datasets/gridItem";
-import DatasetAddnewCard from "./datasetAddNewCard";
+import DatasetAddnewCard from "../home-module/components/Datasets/datasetAddNewCard";
 import { v4 } from "uuid";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 

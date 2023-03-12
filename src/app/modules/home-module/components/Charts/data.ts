@@ -7,6 +7,7 @@ interface DataType {
   desc: string;
   date: string;
   viz: "bar" | "sankey" | "map" | "table";
+  id?: string;
 }
 export const datasetsData: DataType[] = [
   {

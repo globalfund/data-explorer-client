@@ -1,13 +1,4 @@
-import {
-  Box,
-  createStyles,
-  Grid,
-  makeStyles,
-  TextareaAutosize,
-  TextField,
-  Theme,
-  withStyles,
-} from "@material-ui/core";
+import { Box, Grid, TextField, withStyles } from "@material-ui/core";
 import { PageHeader } from "app/components/PageHeader";
 import BasicTextarea from "app/components/Textarea/BasicTextarea";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
@@ -18,12 +9,17 @@ interface Props {
   handleNext: () => void;
   handleBack: () => void;
 }
-const CssTextField = withStyles({
+export const CssTextField = withStyles({
   root: {
     "& label.Mui-focused": {
       color: "#231D2C",
     },
 
+    ".MuiInputLabel-outlined": {
+      fontSize: "12px",
+      fontFamily: "'Inter', sans-serif",
+      color: "#231D2C",
+    },
     "& .MuiOutlinedInput-input": {
       padding: "2px 14px",
       height: "48px",
@@ -43,7 +39,6 @@ const CssTextField = withStyles({
         borderColor: "#231D2C",
         borderRadius: "10px",
         paddingBottom: "4px",
-        fontSize: "16px",
       },
       "&:hover fieldset": {
         borderColor: "#231D2C",
@@ -80,7 +75,7 @@ export default function MetaData(props: Props) {
             <BasicTextarea
               value={textareaValue}
               setValue={setTextareaValue}
-              label="Brief Description"
+              label="Data description"
             />
           </Grid>
 

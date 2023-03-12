@@ -4,13 +4,7 @@ import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import Button from "@material-ui/core/Button";
 /* project */
-import { GiftIcon } from "app/assets/icons/Gift";
-import { UploadIcon } from "app/assets/icons/Upload";
-import linesAsset from "app/modules/home-module/lines.svg";
-import ExploreImage from "app/assets/home-images/explore.png";
-import MapDataImage from "app/assets/home-images/mapdata.png";
-import backgroundAsset from "app/modules/home-module/background.svg";
-import SelectDatasetImage from "app/assets/home-images/selectdataset.png";
+
 import { Search } from "app/components/Search";
 import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
 import DatasetsGrid from "./components/Datasets/datasetsGrid";

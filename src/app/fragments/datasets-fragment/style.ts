@@ -82,7 +82,6 @@ export const metaDatacss = css`
     margin-bottom: 4.5rem;
   }
   button {
-    background: #e4e4e4;
     border-radius: 30px;
     padding: 12px 27px;
     height: 41px;
@@ -93,7 +92,6 @@ export const metaDatacss = css`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 125px;
     cursor: pointer;
   }
 `;

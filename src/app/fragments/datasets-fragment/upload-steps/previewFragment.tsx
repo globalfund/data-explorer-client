@@ -2,9 +2,12 @@ import { Box } from "@material-ui/core";
 import DatasetTable from "app/modules/dataset-detail-module/component/table/datasetTable";
 import React, { useState } from "react";
 import DataParserToolBox from "../component/dataParserToolBox";
+import PreviewTable from "../component/table";
 
-export default function ResultFragment() {
-  const [showCharType, setShowCharType] = useState(true);
+interface Props {
+  handleNext: () => void;
+}
+export default function PreviewFragment(props: Props) {
   const [openToolboxPanel, setOpenToolboxPanel] = useState(false);
   const onCloseBtnClick = () => {
     setOpenToolboxPanel(!openToolboxPanel);
@@ -19,7 +22,7 @@ export default function ResultFragment() {
           margin-top: 5.5rem;
         `}
       >
-        Result
+        Preview
       </h1>
       <Box height={27} />
       <div
@@ -28,11 +31,12 @@ export default function ResultFragment() {
           width: ${openToolboxPanel ? `calc(100% - 217px)` : "100%"};
         `}
       >
-        <DatasetTable showCharType={showCharType} />
+        <PreviewTable />
       </div>
       <DataParserToolBox
         onCloseBtnClick={onCloseBtnClick}
         open={openToolboxPanel}
+        handleNext={props.handleNext}
       />
     </div>
   );

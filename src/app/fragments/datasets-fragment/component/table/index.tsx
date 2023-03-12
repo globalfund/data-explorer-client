@@ -12,109 +12,21 @@ import {
   Container,
 } from "@material-ui/core";
 import React, { useState } from "react";
-import { ReactComponent as EditIcon } from "../../asset/edit.svg";
-import { ReactComponent as DeleteIcon } from "../../asset/delete.svg";
-import { ReactComponent as SearchIcon } from "../../asset/search.svg";
-import { ReactComponent as SortIcon } from "../../asset/sort.svg";
+
+import { ReactComponent as SortIcon } from "../../assets/sort.svg";
 import { v4 } from "uuid";
-import { dummyDatasetData, tHeadData } from "../../data";
-import { tablecss } from "./style";
+import { tablecss } from "app/modules/dataset-detail-module/component/table/style";
+import {
+  dummyDatasetData,
+  tHeadData,
+} from "app/modules/dataset-detail-module/data";
+import { previewTablecss } from "./style";
 
-interface DatasetTableProps {
-  showCharType?: boolean;
-  showCheckBox?: boolean;
-}
-export const TableTop = () => {
-  return (
-    <Grid
-      container
-      lg={12}
-      css={`
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        background: rgba(218, 218, 248, 0.3);
-        height: 55px;
-        padding: 0 1rem;
-      `}
-    >
-      <div
-        css={`
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          width: 20%;
-        `}
-      >
-        <IconButton
-          css={`
-            padding: 0;
-          `}
-        >
-          <SearchIcon />
-        </IconButton>
-        <IconButton
-          css={`
-            padding: 0;
-          `}
-        >
-          <EditIcon />
-        </IconButton>{" "}
-        <IconButton
-          css={`
-            padding: 0;
-          `}
-        >
-          <DeleteIcon />
-        </IconButton>
-        <button
-          css={`
-            border: none;
-            outline: none;
-            background: none;
-          `}
-        >
-          <p
-            css={`
-              color: #262c34;
-              font-weight: 500;
-              font-size: 14px;
-              font-family: "Inter";
-            `}
-          >
-            More actions
-          </p>
-        </button>
-      </div>
-    </Grid>
-  );
-};
-
-export default function DatasetTable(props: DatasetTableProps) {
+export default function PreviewTable() {
   const [checkedAll, setCheckedAll] = useState(false);
   const [tableData, setTableData] = useState(
     dummyDatasetData.map((data) => ({ ...data, checked: false, id: v4() }))
   );
-  const handleCheckAllBox = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setCheckedAll(event.target.checked);
-    setTableData(
-      tableData.map((data) => ({ ...data, checked: event.target.checked }))
-    );
-  };
-
-  const handleCheckBox = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    id: string
-  ) => {
-    const transformedData = tableData.map((data) => {
-      if (data.id === id) {
-        return { ...data, checked: e.target.checked };
-      } else {
-        return data;
-      }
-    });
-    setTableData(transformedData);
-  };
 
   return (
     <>
@@ -140,7 +52,7 @@ export default function DatasetTable(props: DatasetTableProps) {
             }
           `}
         >
-          <Table css={tablecss}>
+          <Table css={previewTablecss}>
             <TableHead
               css={`
                 background: rgba(218, 218, 248, 0.3);
@@ -153,18 +65,7 @@ export default function DatasetTable(props: DatasetTableProps) {
                   height: 42px;
                 `}
               >
-                <TableCell>
-                  {props.showCheckBox ? (
-                    <Checkbox
-                      onChange={handleCheckAllBox}
-                      checked={checkedAll}
-                      color="primary"
-                      inputProps={{ "aria-label": "primary checkbox" }}
-                    />
-                  ) : (
-                    ""
-                  )}
-                </TableCell>
+                <TableCell></TableCell>
                 {tHeadData.map((val, index) => {
                   return (
                     <>
@@ -172,6 +73,9 @@ export default function DatasetTable(props: DatasetTableProps) {
                         <div
                           css={`
                             display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            gap: 1rem;
                           `}
                         >
                           <div
@@ -185,7 +89,9 @@ export default function DatasetTable(props: DatasetTableProps) {
                               align-items: center;
                               background: #ffffff;
                             `}
-                          ></div>
+                          >
+                            <p>{val.type === "char" ? "Aa" : "#"}</p>
+                          </div>
 
                           <p
                             css={`

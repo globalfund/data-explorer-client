@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
-import { ReactComponent as MenuIcon } from "../../components/assets/menu.svg";
-import { ReactComponent as DeleteIcon } from "../../components/assets/delete.svg";
-import { ReactComponent as EditIcon } from "../../components/assets/edit.svg";
+import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
+import { ReactComponent as EditIcon } from "../../assets/edit.svg";
 import IconButton from "@material-ui/core/IconButton";
 
 interface Props {
@@ -114,25 +114,21 @@ export default function GridItem(props: Props) {
               position: absolute;
               right: 3%;
               top: 46%;
-              padding: 12px 0;
+              padding: 7px 0;
             `}
           >
             <div>
-              <IconButton
-                css={`
-                  padding: 0;
-                `}
-                onClick={() => onEdit(props)}
-              >
+              <Link to={`/dataset/${props.title}/edit`}>
                 <EditIcon
                   css={`
                     cursor: pointer;
+                    margin-top: 6px;
                     :hover {
                       opacity: 0.5;
                     }
                   `}
                 />
-              </IconButton>
+              </Link>
             </div>
             <div>
               <IconButton

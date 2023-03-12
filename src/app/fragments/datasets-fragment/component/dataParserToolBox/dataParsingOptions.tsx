@@ -6,7 +6,11 @@ import React from "react";
 import { css } from "styled-components/macro";
 import { optionscss, optionFlexcss, inputBoxcss, buttonFlexcss } from "./style";
 
-export default function DataParsingOptions() {
+interface Props {
+  handleNext: () => void;
+}
+
+export default function DataParsingOptions(props: Props) {
   const [columnSeparatorValue, setColumnSeparatorValue] = React.useState("tab");
   const handleColumnSeparatorChange = (
     event: React.ChangeEvent<{ value: unknown }>
@@ -132,7 +136,9 @@ export default function DataParsingOptions() {
       </div>
       <Box height={155} />
       <div css={buttonFlexcss}>
-        <button type="button">Save</button>
+        <button type="button" onClick={props.handleNext}>
+          Save
+        </button>
       </div>
       <Box height={85} />
     </div>

@@ -1,9 +1,5 @@
 export const tHeadData = [
   {
-    type: "char",
-    name: "checkbox",
-  },
-  {
     name: "Transaction Ref",
     type: "pound",
   },

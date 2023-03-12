@@ -1,10 +1,10 @@
 import Grid from "@material-ui/core/Grid";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-import DatasetAddnewCard from "app/modules/datasets-module/datasetAddNewCard";
 
 import React from "react";
 import { v4 } from "uuid";
 import { dummyDatasetsData } from "./data";
+import DatasetAddnewCard from "./datasetAddNewCard";
 import GridItem from "./gridItem";
 
 export default function DatasetsGrid() {

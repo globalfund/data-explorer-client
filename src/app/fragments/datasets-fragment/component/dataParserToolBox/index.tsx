@@ -12,7 +12,7 @@ import DataParsingOptions from "./dataParsingOptions";
 
 interface Props {
   open: boolean;
-
+  handleNext: () => void;
   onCloseBtnClick: (value?: boolean) => void;
 }
 export default function DataParserToolBox(props: Props) {
@@ -103,7 +103,7 @@ export default function DataParserToolBox(props: Props) {
                 padding-left: 7%;
               `}
             >
-              <DataParsingOptions />
+              <DataParsingOptions handleNext={props.handleNext} />
             </div>
           </div>
         </Slide>
