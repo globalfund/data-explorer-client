@@ -174,19 +174,6 @@ export default function DatasetTable(props: DatasetTableProps) {
                             display: flex;
                           `}
                         >
-                          {/* <div
-                            css={`
-                              width: 25px;
-                              height: 25px;
-                              border-radius: 50%;
-                              padding: 3px;
-                              display: flex;
-                              justify-content: center;
-                              align-items: center;
-                              background: #ffffff;
-                            `}
-                          ></div> */}
-
                           <p
                             css={`
                               text-align: left;
