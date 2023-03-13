@@ -174,7 +174,7 @@ export default function DatasetTable(props: DatasetTableProps) {
                             display: flex;
                           `}
                         >
-                          <div
+                          {/* <div
                             css={`
                               width: 25px;
                               height: 25px;
@@ -185,7 +185,7 @@ export default function DatasetTable(props: DatasetTableProps) {
                               align-items: center;
                               background: #ffffff;
                             `}
-                          ></div>
+                          ></div> */}
 
                           <p
                             css={`

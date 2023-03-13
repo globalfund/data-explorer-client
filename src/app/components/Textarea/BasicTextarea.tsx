@@ -5,6 +5,7 @@ interface Props {
   label: string;
   value: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
+  placeholder: string;
 }
 
 export default function BasicTextarea({ label, ...rest }: Props) {
@@ -70,7 +71,7 @@ export default function BasicTextarea({ label, ...rest }: Props) {
               color: #231d2c;
             }
           `}
-          placeholder={labelDisplay ? "" : label}
+          placeholder={labelDisplay ? "" : rest.placeholder}
           onChange={(e) => rest.setValue(e.target.value)}
           maxLength={150}
           rows={4}

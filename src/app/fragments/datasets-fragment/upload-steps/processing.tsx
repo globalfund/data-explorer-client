@@ -1,5 +1,6 @@
 import React from "react";
 import { RotatingLines } from "react-loader-spinner";
+import { ReactComponent as ProcessingIcon } from "../assets/spin.svg";
 export default function Processing() {
   return (
     <div
@@ -11,12 +12,18 @@ export default function Processing() {
         flex-direction: column;
       `}
     >
-      <RotatingLines
-        strokeColor="grey"
-        strokeWidth="2"
-        animationDuration="0.75"
-        width="96"
-        visible={true}
+      <ProcessingIcon
+        css={`
+          animation: spin 3s linear infinite;
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}
       />
       <div>
         <p

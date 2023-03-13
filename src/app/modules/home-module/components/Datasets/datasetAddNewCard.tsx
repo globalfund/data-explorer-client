@@ -14,29 +14,40 @@ export default function DatasetAddnewCard() {
           background: #ffffff;
           width: 296px;
           height: 125px;
-          padding: 0rem 0.5rem;
+          padding-left: 0.8rem;
           padding-top: 0.2rem;
           font-family: "Gotham Narrow";
         `}
       >
-        <h4>Add new dataset</h4>
+        <h4
+          css={`
+            margin-top: 4px;
+            margin-bottom: 1px;
+          `}
+        >
+          Add new dataset
+        </h4>
         <div
           css={`
             display: flex;
             justify-content: start;
             align-items: center;
-            cursor: pointer;
+            /* cursor: pointer; */
+            gap: 0.8rem;
           `}
         >
-          <IconButton onClick={goToDatasetUpload}>
+          <IconButton
+            onClick={goToDatasetUpload}
+            css={`
+              padding: 2px;
+            `}
+          >
             <AddNewImage />
           </IconButton>
           <p
             css={`
               border: 1px solid #231d2c;
-              width: 49px;
-              height: 0px;
-              transform: rotate(90deg);
+              height: 49px;
             `}
           />
           <p

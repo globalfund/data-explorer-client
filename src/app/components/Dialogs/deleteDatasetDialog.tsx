@@ -15,6 +15,7 @@ interface Props {
   handleDelete: (id: string) => void;
   cardId: string;
   enableButton: boolean;
+  title: string;
 }
 
 function rand() {
@@ -91,7 +92,7 @@ export default function DeleteDatasetDialog(props: Props) {
                 margin-top: 3px;
               `}
             >
-              Absolutely sure you want to delete the dataset(s)? <br />{" "}
+              Absolutely sure you want to delete the {props.title}? <br />{" "}
               <b>This action is irreversible!</b>
             </p>
             <div

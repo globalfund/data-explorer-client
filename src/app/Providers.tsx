@@ -26,19 +26,19 @@ function Providers(props: ProviderProps) {
               {/* react router */}
               <Router>
                 <AppBar />
-                <Container
-                  maxWidth="lg"
+                <div
+                  // maxWidth="lg"
                   css={`
-                    padding: 0 24px;
+                    /* padding: 0 24px; */
                     min-height: calc(100vh - 48px);
 
                     @media (max-width: 767px) {
-                      padding: 0 16px;
+                      /* padding: 0 16px; */
                     }
                   `}
                 >
                   {props.children}
-                </Container>
+                </div>
               </Router>
             </AppContainer>
           </StoreProvider>

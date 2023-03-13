@@ -41,10 +41,12 @@ export default function PreviewTable() {
               border-radius: 23px;
               width: 5.64px;
               background: #231d2c;
+              padding: 0 0.5rem;
             }
             &::-webkit-scrollbar-track {
               background: #dfe3e6;
               width: 7.64px;
+              padding: 0 0.5rem;
             }
             &::-webkit-scrollbar-thumb {
               background: #231d2c;
@@ -78,19 +80,21 @@ export default function PreviewTable() {
                             gap: 1rem;
                           `}
                         >
-                          <div
-                            css={`
-                              width: 25px;
-                              height: 25px;
-                              border-radius: 50%;
-                              padding: 3px;
-                              display: flex;
-                              justify-content: center;
-                              align-items: center;
-                              background: #ffffff;
-                            `}
-                          >
-                            <p>{val.type === "char" ? "Aa" : "#"}</p>
+                          <div>
+                            <div
+                              css={`
+                                width: 25px;
+                                height: 25px;
+                                border-radius: 50%;
+                                padding: 3px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                background: #ffffff;
+                              `}
+                            >
+                              <p>{val.type === "char" ? "Aa" : "#"}</p>
+                            </div>
                           </div>
 
                           <p

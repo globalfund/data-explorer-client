@@ -64,6 +64,7 @@ export default function DatasetsGrid() {
         handleInputChange={handleInputChange}
         modalDisplay={modalDisplay}
         setModalDisplay={setModalDisplay}
+        title="dataset(s)"
       />
     </>
   );

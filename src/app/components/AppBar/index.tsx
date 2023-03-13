@@ -230,7 +230,7 @@ export function AppBar() {
               >
                 <div>
                   <Link to="/datasets">
-                    <b>Datasets</b>
+                    <b>Data</b>
                   </Link>{" "}
                 </div>
                 <div>

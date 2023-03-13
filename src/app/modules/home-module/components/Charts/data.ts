@@ -59,7 +59,7 @@ export const datasetsData: DataType[] = [
 
   {
     path: "#",
-    title: "BGeomap",
+    title: "Geomap",
     desc: "Detailed budgets for each implementation period from the 2017-2019 Allocation Period onwards",
     date: "11-11-2021",
     viz: "map",

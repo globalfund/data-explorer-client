@@ -1,3 +1,7 @@
+import { BarIcon } from "app/assets/icons/charts/Bar";
+import { SankeyIcon } from "app/assets/icons/charts/Sankey";
+import { TableIcon } from "app/assets/icons/charts/Table";
+import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import {
   AllCategoriesIcon,
   DocumentsIcon,
@@ -9,11 +13,7 @@ import {
 } from "app/components/Search/icons";
 
 export const categories = [
-  { label: "All Categories", icon: <AllCategoriesIcon /> },
-  { label: "Locations", icon: <LocationsIcon /> },
-  { label: "Partners", icon: <PartnersIcon /> },
-  { label: "Donors", icon: <DonorsIcon /> },
-  { label: "Grants", icon: <GrantsIcon /> },
-  { label: "Results", icon: <ResultsIcon /> },
-  { label: "Documents", icon: <DocumentsIcon /> },
+  { label: "Datasets", icon: <BarIcon fill="#868A9D" /> },
+  { label: "Charts", icon: <SankeyIcon fill="#868A9D" /> },
+  { label: "Reports", icon: <TreemapIcon fill="#868A9D" /> },
 ];

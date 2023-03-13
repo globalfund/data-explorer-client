@@ -9,6 +9,7 @@ import MetaData from "./metaData";
 import Processing from "./processing";
 import PreviewFragment from "./previewFragment";
 import FinishedFragment from "./finishedFragment";
+import { Container } from "@material-ui/core";
 
 export default function DatasetUploadSteps() {
   const [activeStep, setActiveStep] = useState(0);
@@ -75,7 +76,7 @@ export default function DatasetUploadSteps() {
   };
 
   return (
-    <div>
+    <Container maxWidth="lg">
       {/* <PageHeader title="" /> */}
       <div css={stepcss}>
         {steps.map((tab, index) => (
@@ -121,6 +122,6 @@ export default function DatasetUploadSteps() {
       <PageTopSpacer />
 
       <div>{currentStep()}</div>
-    </div>
+    </Container>
   );
 }

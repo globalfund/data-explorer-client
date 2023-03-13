@@ -80,6 +80,7 @@ export default function ChartsGrid() {
         handleInputChange={handleInputChange}
         modalDisplay={modalDisplay}
         setModalDisplay={setModalDisplay}
+        title="chart(s)"
       />
     </>
   );

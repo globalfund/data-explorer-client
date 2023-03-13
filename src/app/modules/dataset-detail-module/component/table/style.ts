@@ -16,6 +16,7 @@ export const tablecss = css`
     height: 52px;
     font-weight: 325;
     font-size: 14px;
+
     font-family: "Gotham Narrow";
   }
 `;

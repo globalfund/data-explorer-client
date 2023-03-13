@@ -14,6 +14,9 @@ export const headercss = css`
     color: #231d2c;
     font-size: 14px;
     font-family: "Gotham Narrow";
+    :hover {
+      color: #cea8bc;
+    }
   }
   button {
     height: 33.58px;

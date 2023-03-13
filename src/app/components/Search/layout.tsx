@@ -228,7 +228,14 @@ export function SearchLayout(props: SearchLayoutProps) {
                   `}
                 `}
               >
-                {category.icon} <span>{category.label}</span>
+                {category.icon}{" "}
+                <span
+                  css={`
+                    color: #262c34;
+                  `}
+                >
+                  {category.label}
+                </span>
               </StyledMenuItem>
             ))}
           </StyledMenu>
