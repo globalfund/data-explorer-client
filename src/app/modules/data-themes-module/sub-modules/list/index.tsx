@@ -21,6 +21,7 @@ import { DataThemesTableView } from "app/modules/data-themes-module/components/t
 import { DataThemesUtilsPopover } from "app/modules/data-themes-module/components/utils-popover";
 import { DataThemesToolbarPopover } from "app/modules/data-themes-module/components/toolbar-popover";
 import { DataThemesGenericPageSubHeader } from "app/modules/data-themes-module/components/sub-header";
+import { Container } from "@material-ui/core";
 
 export interface DataThemeListItemAPIModel {
   id: string;
@@ -308,107 +309,112 @@ export function DataThemesListView() {
     <div css={styles.container}>
       {isLoadingDataThemes && <PageLoader />}
       <DataThemesGenericPageSubHeader title="Themes" />
-      <div css={styles.innercontainer}>
-        <Box css={styles.toolbar}>
-          <div css={styles.toolbarSearch(searchOpen)}>
-            <input
-              type="text"
-              tabIndex={0}
-              value={search}
-              placeholder="Search..."
-              id="data-themes-search-input"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                setSearch(e.target.value)
-              }
-            />
-            <CloseIcon
+      <Container maxWidth="lg">
+        <div css={styles.innercontainer}>
+          <Box css={styles.toolbar}>
+            <div css={styles.toolbarSearch(searchOpen)}>
+              <input
+                type="text"
+                tabIndex={0}
+                value={search}
+                placeholder="Search..."
+                id="data-themes-search-input"
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setSearch(e.target.value)
+                }
+              />
+              <CloseIcon
+                onClick={() => {
+                  setSearch("");
+                  setSearchOpen(false);
+                }}
+              />
+            </div>
+            <SearchIcon
               onClick={() => {
-                setSearch("");
-                setSearchOpen(false);
+                if (!searchOpen) {
+                  setSearchOpen(true);
+                  setTimeout(() => {
+                    const input = document.getElementById(
+                      "data-themes-search-input"
+                    );
+                    if (input) {
+                      input.focus();
+                    }
+                  }, 100);
+                }
               }}
             />
-          </div>
-          <SearchIcon
-            onClick={() => {
-              if (!searchOpen) {
-                setSearchOpen(true);
-                setTimeout(() => {
-                  const input = document.getElementById(
-                    "data-themes-search-input"
-                  );
-                  if (input) {
-                    input.focus();
-                  }
-                }, 100);
-              }
-            }}
-          />
-          <IconButton size="small" onClick={handleSortClick}>
-            <SortIcon htmlColor="#262C34" />
-          </IconButton>
-          <DataThemesToolbarPopover
-            anchorEl={anchorEl}
-            handleClose={handleSortClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            selected={order}
-            items={sortItems}
-            onItemClick={onSortItemClick}
-          />
-          <IconButton size="small" onClick={handleViewClick}>
-            <AgendaIcon htmlColor="#262C34" />
-          </IconButton>
-          <DataThemesToolbarPopover
-            anchorEl={anchorEl2}
-            handleClose={handleViewClose}
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "left",
-            }}
-            transformOrigin={{
-              vertical: "top",
-              horizontal: "center",
-            }}
-            selected={view}
-            items={viewItems}
-            onItemClick={onViewItemClick}
-          />
-          <button
-            css={styles.createNewButton}
-            onClick={() => history.push("/data-themes/new")}
-          >
-            Create
-          </button>
-        </Box>
-        {view === "list" && (
-          <Grid container spacing={2}>
-            {loadedDataThemes.map((item) => (
-              <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
-                <DataThemesListViewItem {...item} loadData={doLoadDataThemes} />
-              </Grid>
-            ))}
-            {loadedDataThemes.length === 0 && (
-              <Grid item xs={12} sm={6} md={4} lg={4}>
-                <div css={styles.gridItemCreateNew}>
-                  <Link to="/data-themes/new">
-                    <AddIcon />
-                    <div>Create new data theme</div>
-                  </Link>
-                </div>
-              </Grid>
-            )}
-          </Grid>
-        )}
-        {view === "table" && (
-          <DataThemesTableView loadData={doLoadDataThemes} />
-        )}
-      </div>
+            <IconButton size="small" onClick={handleSortClick}>
+              <SortIcon htmlColor="#262C34" />
+            </IconButton>
+            <DataThemesToolbarPopover
+              anchorEl={anchorEl}
+              handleClose={handleSortClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              selected={order}
+              items={sortItems}
+              onItemClick={onSortItemClick}
+            />
+            <IconButton size="small" onClick={handleViewClick}>
+              <AgendaIcon htmlColor="#262C34" />
+            </IconButton>
+            <DataThemesToolbarPopover
+              anchorEl={anchorEl2}
+              handleClose={handleViewClose}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "left",
+              }}
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "center",
+              }}
+              selected={view}
+              items={viewItems}
+              onItemClick={onViewItemClick}
+            />
+            <button
+              css={styles.createNewButton}
+              onClick={() => history.push("/data-themes/new")}
+            >
+              Create
+            </button>
+          </Box>
+          {view === "list" && (
+            <Grid container spacing={2}>
+              {loadedDataThemes.map((item) => (
+                <Grid item key={item.id} xs={12} sm={6} md={4} lg={4}>
+                  <DataThemesListViewItem
+                    {...item}
+                    loadData={doLoadDataThemes}
+                  />
+                </Grid>
+              ))}
+              {loadedDataThemes.length === 0 && (
+                <Grid item xs={12} sm={6} md={4} lg={4}>
+                  <div css={styles.gridItemCreateNew}>
+                    <Link to="/data-themes/new">
+                      <AddIcon />
+                      <div>Create new data theme</div>
+                    </Link>
+                  </div>
+                </Grid>
+              )}
+            </Grid>
+          )}
+          {view === "table" && (
+            <DataThemesTableView loadData={doLoadDataThemes} />
+          )}
+        </div>
+      </Container>
     </div>
   );
 }

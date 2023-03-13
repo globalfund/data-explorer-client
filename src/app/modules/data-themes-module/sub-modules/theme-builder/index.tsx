@@ -409,7 +409,7 @@ export function DataThemesBuilder() {
   }, [selectedChartType, loading]);
 
   React.useEffect(() => {
-    loadDatasets({storeInCrudData: true});
+    loadDatasets({ storeInCrudData: true });
     if (page !== "new") {
       loadDataTheme({ getId: page });
     } else {
@@ -443,6 +443,7 @@ export function DataThemesBuilder() {
     setVizDuplicated(false);
   }, [activeTabIndex]);
 
+  console.log(page, view);
   return (
     <React.Fragment>
       <DataThemesAlertDialog />

@@ -1,6 +1,5 @@
 // cc:application base#;application routes
 
-// base
 import React, { Suspense, lazy } from "react";
 import get from "lodash/get";
 import { useGA } from "app/hooks/useGA";
@@ -8,21 +7,21 @@ import axios, { AxiosResponse } from "axios";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { V1RouteRedirections } from "app/utils/v1Routes";
 import { useCMSData } from "app/hooks/useCMSData";
+import { useScrollToTop } from "app/hooks/useScrollToTop";
+import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { useDatasourcesDatasets } from "app/hooks/useDatasourcesDatasets";
 import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
 import {
   Route,
   Switch,
+  Redirect,
   useHistory,
-  // Redirect,
-  // useHistory,
-  // RouteComponentProps,
+  RouteComponentProps,
 } from "react-router-dom";
-import DataSetDetailModule from "./modules/dataset-detail-module";
-import AddDatasetFragment from "./fragments/datasets-fragment/upload-steps/addDatasetFragment";
-import DatasetUploadSteps from "./fragments/datasets-fragment/upload-steps";
-import EditMetaData from "./modules/datasets-module/editMetaData";
+// import DataSetDetailModule from "./modules/dataset-detail-module";
+// import DatasetUploadSteps from "./fragments/datasets-fragment/upload-steps";
+// import EditMetaData from "./modules/datasets-module/editMetaData";
 // import BigLogo from "app/assets/BigLogo";
 // import useCookie from "@devhammed/use-cookie";
 // import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -36,40 +35,22 @@ const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
+const DataThemesModule = lazy(() => import("app/modules/data-themes-module"));
+const DataSetDetailModule = lazy(
+  () => import("app/modules/dataset-detail-module")
+);
+const DatasetUploadSteps = lazy(
+  () => import("app/fragments/datasets-fragment/upload-steps")
+);
+
+const EditMetaData = lazy(
+  () => import("app/modules/datasets-module/editMetaData")
+);
 const CountryDetailModule = lazy(
   () => import("app/modules/country-detail-module")
 );
-// project
-// import { useGA } from "app/hooks/useGA";
-// import { useCMSData } from "app/hooks/useCMSData";
-// import { useUrlFilters } from "app/hooks/useUrlFilters";
-// import { V1RouteRedirections } from "app/utils/v1Routes";
-import { useScrollToTop } from "app/hooks/useScrollToTop";
-import { PageLoader } from "app/modules/common/page-loader";
-// import { useFilterOptions } from "app/hooks/useFilterOptions";
-// import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
-
-// modules
-// const VizModule = lazy(() => import("app/modules/viz-module"));
-// const AboutModule = lazy(() => import("app/modules/about-module"));
-// const GrantsModule = lazy(() => import("app/modules/grants-module"));
-// const ResultsModule = lazy(() => import("app/modules/results-module"));
-// const LandingModule = lazy(() => import("app/modules/landing-module"));
-// const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
-// const DocumentsModule = lazy(() => import("app/modules/documents-module"));
-// const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
-// const CountryDetailModule = lazy(
-//   () => import("app/modules/country-detail-module")
-// );
-// const PartnerDetailModule = lazy(
-//   () => import("app/modules/partner-detail-module")
-// );
-const DataThemesModule = lazy(() => import("app/modules/data-themes-module"));
-const DatasetUploadModule = lazy(
-  () => import("app/modules/dataset-upload-module")
-);
-const DatasetListModule = lazy(
-  () => import("app/modules/datasets-module/list")
+const PartnerDetailModule = lazy(
+  () => import("app/modules/partner-detail-module")
 );
 
 // function GrantPeriodRedirect(props: RouteComponentProps<any>) {
@@ -105,43 +86,18 @@ const DatasetListModule = lazy(
 //   return <PageLoader />;
 // }
 
-function VizModuleRedirect() {
-  const history = useHistory();
-  const { mappedDatasets, mappedDatasetsLoading } = useDatasourcesDatasets();
-
-  const datasetToPath = {
-    Signed: "/explore/signed/treemap",
-    Commitments: "/explore/commitment/treemap",
-    Disbursements: "/explore/disbursements/treemap",
-    Budgets: "/explore/budgets/flow",
-    Eligibility: "/explore/eligibility",
-    Allocations: "/explore/allocations",
-    Grants: "/explore/grants",
-    Results: "/explore/results",
-    Documents: "/explore/documents",
-  };
-
-  const pathToPush = get(datasetToPath, `[${mappedDatasets[0]}]`, undefined);
-
-  if (pathToPush && !mappedDatasetsLoading) {
-    history.replace(pathToPush);
-  }
-
-  return <PageLoader />;
-}
-
 export function MainRoutes() {
   // const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
-  useClearDataPathStepsOnDatasetChange();
-  useDatasourcesDatasets(true);
-  useFilterOptions({});
+  // useClearDataPathStepsOnDatasetChange();
+  // useDatasourcesDatasets(true);
+  // useFilterOptions({});
+  // useUrlFilters();
+  // useGA();
   useScrollToTop();
-  useUrlFilters();
-  useGA();
 
-  useCMSData({
-    loadData: true,
-  });
+  // useCMSData({
+  //   loadData: true,
+  // });
 
   // const isMobile = useMediaQuery("(max-width: 767px)");
 
@@ -200,15 +156,6 @@ export function MainRoutes() {
   //     </div>
   //   );
   // }
-  // useClearDataPathStepsOnDatasetChange();
-  // useFilterOptions({});
-  useScrollToTop();
-  // useUrlFilters();
-  // useGA();
-
-  // useCMSData({
-  //   loadData: true,
-  // });
 
   return (
     <Suspense fallback={<PageLoader />}>
@@ -217,7 +164,7 @@ export function MainRoutes() {
           <HomeModule />
         </Route>
 
-        {/* <Route exact path="/about">
+        <Route exact path="/about">
           <AboutModule />
         </Route>
 
@@ -227,7 +174,7 @@ export function MainRoutes() {
         <Route exact path="/dataset/:id/edit">
           <EditMetaData />
         </Route>
-
+        {/* 
         <Route exact path="/grants">
           <GrantsModule />
         </Route>
@@ -242,7 +189,7 @@ export function MainRoutes() {
 
         <Route exact path="/explore/:vizType/:subType?">
           <VizModule />
-        </Route>
+        </Route> */}
 
         <Route
           exact
@@ -254,12 +201,14 @@ export function MainRoutes() {
         <Route exact path="/dataset/:name/overview">
           <DataSetDetailModule />
         </Route>
-
+        <Route exact path="/data-themes">
+          <DataThemesModule />
+        </Route>
         <Route exact path="/dataset-upload">
           <DatasetUploadSteps />
         </Route>
 
-        <Route
+        {/* <Route
           exact
           path="/location/:code"
           render={(props: RouteComponentProps<any>) => (
@@ -269,9 +218,9 @@ export function MainRoutes() {
 
         <Route exact path="/location/:code/:vizType/:subType?">
           <CountryDetailModule />
-        </Route>
+        </Route> */}
 
-        <Route
+        {/* <Route
           exact
           path="/partner/:code"
           render={(props: RouteComponentProps<any>) => (
@@ -291,9 +240,9 @@ export function MainRoutes() {
           render={(props: RouteComponentProps<any>) => (
             <GrantPeriodRedirect {...props} />
           )}
-        />
+        /> */}
 
-        <Route
+        {/* <Route
           exact
           path="/grant/:code/period/:vizType/:subType?"
           render={(props: RouteComponentProps<any>) => (
@@ -309,29 +258,15 @@ export function MainRoutes() {
               to={`/grant/${props.match.params.code}/${props.match.params.period}/overview`}
             />
           )}
-        />
+        /> */}
 
-        <Route exact path="/grant/:code/:period/:vizType/:subType?">
-          <GrantDetailModule />
-        </Route>
-
-        <Route exact path="/viz">
-          <Redirect to="/datasets" />
+        {/* <Route exact path="/grant/:code/:period/:vizType/:subType?">
+        <GrantDetailModule />
         </Route> */}
 
-        <Route path="/data-themes">
-          <DataThemesModule />
-        </Route>
+        {/* <Route exact path="/explore" render={() => <VizModuleRedirect />} /> */}
 
-        <Route path="/dataset-upload">
-          <DatasetUploadModule />
-        </Route>
-
-        <Route path="/datasets">
-          <DatasetListModule />
-        </Route>
-
-        {/* <V1RouteRedirections /> */}
+        <V1RouteRedirections />
       </Switch>
     </Suspense>
   );

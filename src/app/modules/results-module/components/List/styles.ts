@@ -34,7 +34,7 @@ export const buttonrow = (position: "up" | "down") => css`
   color: ${position === "up" ? "#fff" : "#262C34"};
   background: ${position === "up" ? "#262C34" : "transparent"};
   font-family: "Inter", "Helvetica Neue", sans-serif;
-  border-${position === "up" ? "bottom" : "top"}: 1px solid #c7cdd1;
+  /* border-${position === "up" ? "bottom" : "top"}: 1px solid #c7cdd1; */
   border-radius: ${position === "up" ? "20px 20px 0 0" : "0 0 20px 20px"};
 
   > * {
@@ -47,7 +47,7 @@ export const buttonrow = (position: "up" | "down") => css`
 
   svg {
     transform: rotate(${position === "up" ? "180deg" : "0deg"});
-    
+
     path {
       fill: ${position === "up" ? "#fff" : "#262C34"};
     }
