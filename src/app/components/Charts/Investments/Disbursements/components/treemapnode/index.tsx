@@ -103,6 +103,7 @@ export function TreeemapNode(props: any) {
               width: 100%;
               white-space: nowrap;
               text-overflow: ellipsis;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
               font-weight: ${hasChildren || node.data._children
                 ? "bold"
                 : "normal"};

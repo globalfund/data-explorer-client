@@ -146,8 +146,11 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         alignItems="baseline"
         spacing={!isMobile ? 4 : undefined}
       >
+        <Grid item xs={12} sm={2} css="font-size: 14px !important;">
+          <b>{formatFinancialValue(totalBudget)}</b>
+        </Grid>
         {!isMobile && (
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={10}>
             <div
               css={`
                 gap: 24px;
@@ -200,14 +203,6 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             </div>
           </Grid>
         )}
-        {isMobile && (
-          <Grid item xs={12} css="font-size: 12px !important;">
-            <b>
-              {get(cmsData, "componentsChartsBudgets.totalAmount", "")}{" "}
-              {formatFinancialValue(totalBudget)}
-            </b>
-          </Grid>
-        )}
         <Grid item xs={3}>
           <div
             css={`
@@ -221,19 +216,14 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
           >
             {get(cmsData, "componentsChartsBudgets.budget", "")} <InfoIcon />
           </div>
-          {!isMobile && (
-            <div css="font-weight: normal;">
-              {formatFinancialValue(totalBudget)}
-            </div>
-          )}
         </Grid>
         <Grid item xs={3}>
           {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel1", "")}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3} css="text-align: center;">
           {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel2", "")}
         </Grid>
-        <Grid item xs={3}>
+        <Grid item xs={3} css="text-align: right;">
           {get(cmsData, "componentsChartsBudgets.flowCostCategory", "")}
         </Grid>
       </Grid>

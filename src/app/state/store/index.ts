@@ -160,6 +160,34 @@ import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCount
 import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
+import {
+  DataThemesMappingState,
+  DataThemesStepChartTypeState,
+  DataThemesStepSelectionsState,
+  DataThemesIndexState,
+  DataThemesVizIndexState,
+  DataThemesIdsState,
+  DataThemesActivePanelsState,
+  DataThemesTitlesState,
+  DataThemesTextContentState,
+  DataThemesPublicState,
+  DataThemesVizOrderState,
+  DataThemesVizDeletedState,
+  DataThemesVizDuplicatedState,
+  DataThemesTabDeletedState,
+  DataThemesEnabledFilterOptionGroupsState,
+} from "app/state/api/action-reducers/sync/data-themes";
+import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
+import {
+  DataThemeCreate,
+  DataThemeDelete,
+  DataThemeDuplicate,
+  DataThemeGet,
+  DataThemeGetList,
+  DataThemeUpdate,
+  DatasetGetList,
+  DatasetCreate,
+} from "app/state/api/action-reducers/data-themes";
 import countrySummary from "../api/action-reducers/cms/countrySummary";
 import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
 import {
@@ -367,6 +395,36 @@ const storeContent: StoreModel = {
     modulesGrants: persist(modulesGrants),
     countrySummary: persist(countrySummary),
     notesAndDisclaimers: persist(notesAndDisclaimers),
+  },
+  dataThemes: {
+    activeTabIndex: persist(DataThemesIndexState),
+    activeVizIndex: persist(DataThemesVizIndexState),
+    ids: persist(DataThemesIdsState),
+    activePanels: persist(DataThemesActivePanelsState),
+    titles: persist(DataThemesTitlesState),
+    textContent: persist(DataThemesTextContentState),
+    sync: {
+      stepSelections: persist(DataThemesStepSelectionsState),
+      chartType: persist(DataThemesStepChartTypeState),
+      mapping: persist(DataThemesMappingState),
+      public: persist(DataThemesPublicState),
+      vizOrderData: persist(DataThemesVizOrderState),
+      vizDeleted: persist(DataThemesVizDeletedState),
+      vizDuplicated: persist(DataThemesVizDuplicatedState),
+      tabDeleted: persist(DataThemesTabDeletedState),
+      enabledFilterOptionGroups: persist(
+        DataThemesEnabledFilterOptionGroupsState
+      ),
+    },
+    appliedFilters: persist(DataThemesAppliedFiltersState),
+    DataThemeGet: persist(DataThemeGet),
+    DataThemeCreate: persist(DataThemeCreate),
+    DataThemeUpdate: persist(DataThemeUpdate),
+    DataThemeDelete: persist(DataThemeDelete),
+    DataThemeDuplicate: persist(DataThemeDuplicate),
+    DataThemeGetList: persist(DataThemeGetList),
+    DatasetGetList: persist(DatasetGetList),
+    DatasetCreate: persist(DatasetCreate),
   },
 };
 

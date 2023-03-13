@@ -107,7 +107,7 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
         fill={nodeColor[props.data.eligibility]}
         css={`
           z-index: 2;
-          stroke-width: 1px;
+          strokewidth: 1px;
           stroke: ${nodeBorder[props.data.eligibility]};
           stroke-dasharray: ${nodeBorderStyle[props.data.eligibility]};
         `}

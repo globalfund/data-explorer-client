@@ -78,8 +78,8 @@ export const input = css`
   outline: none;
   color: #231d2c;
   font-size: 14px;
-  background: inherit;
-  font-weight: bold;
+  background: #fff;
+  font-weight: 400;
   border-style: none;
   font-family: "Inter", "Helvetica Neue", sans-serif;
 

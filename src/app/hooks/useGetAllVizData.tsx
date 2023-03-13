@@ -345,9 +345,14 @@ export function useGetAllVizData() {
     // Grant Documents
     "/grant/<code>/documents": grantDetailDocuments,
     // Grant Performance Framework
-    "/grant/<code>/performance-framework": grantDetailPerformanceFramework,
+    "/grant/<code>/targets-results": grantDetailPerformanceFramework,
     // Grant Performance Rating
     "/grant/<code>/performance-rating": grantDetailPerformanceRating,
+    // Location Allocations
+    "/location/<code>/allocations/map": {
+      countries: allocationsGeomap,
+      multicountries: allocationsMCGeomap,
+    },
     // Location Eligibility
     "/location/<code>/eligibility": eligibilityCountry,
     "/location/<code>/eligibility/table": eligibilityCountry,

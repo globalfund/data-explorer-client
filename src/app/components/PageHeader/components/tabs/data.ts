@@ -58,6 +58,18 @@ export const countryDetailTabs: TabProps[] = [
     url: "/location/<code>/overview",
   },
   {
+    name: "Eligibility",
+    url: "/location/<code>/eligibility",
+  },
+  {
+    name: "Allocation",
+    url: "/location/<code>/allocations",
+  },
+  {
+    name: "Grants",
+    url: "/location/<code>/grants",
+  },
+  {
     name: "Signed",
     url: "/location/<code>/signed/treemap",
   },
@@ -74,24 +86,12 @@ export const countryDetailTabs: TabProps[] = [
     url: "/location/<code>/budgets/flow",
   },
   {
-    name: "Allocation",
-    url: "/location/<code>/allocations",
-  },
-  {
-    name: "Eligibility",
-    url: "/location/<code>/eligibility",
+    name: "Results",
+    url: "/location/<code>/results",
   },
   {
     name: "Documents",
     url: "/location/<code>/documents",
-  },
-  {
-    name: "Grants",
-    url: "/location/<code>/grants",
-  },
-  {
-    name: "Results",
-    url: "/location/<code>/results",
   },
 ];
 
@@ -121,8 +121,8 @@ export const grantDetailTabs: TabProps[] = [
     url: "/grant/<code>/<period>/performance-rating",
   },
   {
-    name: "Performance Framework",
-    url: "/grant/<code>/<period>/performance-framework",
+    name: "Targets and Results",
+    url: "/grant/<code>/<period>/targets-results",
   },
   {
     name: "Documents",
@@ -131,6 +131,10 @@ export const grantDetailTabs: TabProps[] = [
 ];
 
 export const partnerDetailTabs: TabProps[] = [
+  {
+    name: "Grants",
+    url: "/partner/<code>/grants",
+  },
   {
     name: "Signed",
     url: "/partner/<code>/signed/treemap",
@@ -146,9 +150,5 @@ export const partnerDetailTabs: TabProps[] = [
   {
     name: "Budgets",
     url: "/partner/<code>/budgets/flow",
-  },
-  {
-    name: "Grants",
-    url: "/partner/<code>/grants",
   },
 ];

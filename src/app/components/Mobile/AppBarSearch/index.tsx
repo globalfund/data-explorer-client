@@ -114,6 +114,7 @@ export function MobileAppbarSearch() {
             loading={isLoading}
             setValue={setValue}
             onClose={() => setOpen(false)}
+            setStoredValue={setStoredValue}
           />
         </div>
       )}

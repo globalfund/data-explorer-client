@@ -107,9 +107,9 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${props.selected === option.value ? "#fff" : "#231d2c"};
+                color: ${props.selected === option.value ? "#fff" : "#262C34"};
                 background: ${props.selected === option.value
-                  ? "#231d2c"
+                  ? "#262C34"
                   : "#fff"};
 
                 > * {

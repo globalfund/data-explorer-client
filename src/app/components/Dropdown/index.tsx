@@ -22,7 +22,7 @@ const BootstrapInput = withStyles((theme: Theme) =>
       textTransform: "capitalize",
       border: "1px solid #ced4da",
       padding: "10px 26px 10px 12px",
-      fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+      fontFamily: "Inter",
       transition: theme.transitions.create(["border-color", "box-shadow"]),
       "&:focus": {
         outline: "none",

@@ -94,6 +94,7 @@ function Row(props: {
                   align-items: center;
                   flex-direction: row;
                   font-weight: ${index === 0 ? "bold" : "normal"};
+                  font-family: "Inter", "Helvetica Neue", sans-serif;
 
                   > * {
                     @supports (-webkit-touch-callout: none) and

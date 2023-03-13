@@ -44,7 +44,7 @@ export const NoMatchPage = () => {
           font-stretch: normal;
           line-height: normal;
           letter-spacing: 2.15px;
-          color: #231d2c;
+          color: #525252;
           font-family: "Inter", "Helvetica Neue", sans-serif;
         `}
       >
@@ -79,7 +79,11 @@ export const NoMatchPage = () => {
             align-items: center;
             width: 204px;
             height: 46px;
+<<<<<<< HEAD
             background: #231d2c;
+=======
+            background: #262c34;
+>>>>>>> 26f3485bf722b77cb35efc4928b6bc98505ccb74
             border-radius: 20px;
           `}
         >

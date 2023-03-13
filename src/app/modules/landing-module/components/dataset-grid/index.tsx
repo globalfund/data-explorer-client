@@ -11,7 +11,7 @@ import { TableIcon } from "app/assets/icons/charts/Table";
 import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import { AllocationIcon } from "app/assets/icons/charts/Allocation";
-import { useDatasourcesDatasets } from "app/hooks/useDatasourcesDatasets";
+import ControlPointIcon from "@material-ui/icons/ControlPoint";
 
 function GridItem(props: {
   link: string;
@@ -57,36 +57,35 @@ function GridItem(props: {
           height: 125px;
         }
 
-        > div {
-          font-weight: bold;
-          line-height: 18px;
-          margin-bottom: 4px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
-
-          &:nth-of-type(2) {
-            font-size: 10px;
-            line-height: 12px;
-            font-weight: normal;
+          > div {
+            font-weight: bold;
+            line-height: 16px;
+            margin-bottom: 4px;
             font-family: "Inter", "Helvetica Neue", sans-serif;
+
+            &:nth-of-type(2) {
+              font-size: 10px;
+              line-height: 12px;
+              font-family: "Inter", "Helvetica Neue", sans-serif;
+            }
           }
         }
 
-        &:hover {
-          border-color: #13183f;
-        }
-      `}
-    >
-      <div dangerouslySetInnerHTML={props.title} />
-      <div dangerouslySetInnerHTML={props.description} />
-      {props.iconLinks && (
-        <div
-          css={`
-            gap: 20px;
-            bottom: 16px;
-            display: flex;
-            position: absolute;
-            flex-direction: row;
-            pointer-events: none;
+          &:hover {
+            border-color: #13183f;
+          }
+        `}
+      >
+        <div dangerouslySetInnerHTML={props.title} />
+        <div dangerouslySetInnerHTML={props.description} />
+        {props.iconLinks && (
+          <div
+            css={`
+              gap: 20px;
+              bottom: 8px;
+              display: flex;
+              position: absolute;
+              flex-direction: row;
 
             > a {
               padding-right: 10px;
@@ -457,7 +456,18 @@ export function LandingDatasetGrid() {
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem title={grText} link="/grants" description={grDescription} />
-      </Grid> */}
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={{ __html: "Add your dataset" }}
+          link="/dataset-upload"
+          description={{
+            __html:
+              "Upload your own dataset and view it with the Data Theme feature",
+          }}
+          iconLinks={[{ icon: <ControlPointIcon />, link: "/dataset-upload" }]}
+        />
+      </Grid>
     </Grid>
   );
 }

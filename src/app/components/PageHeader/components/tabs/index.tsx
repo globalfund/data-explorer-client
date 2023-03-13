@@ -265,8 +265,10 @@ export function PageHeaderTabs(props: PageHeaderTabProps) {
                   @media (min-width: 768px) {
                     &:hover {
                       color: #fff;
-                      background: #231d2c;
+                      font-weight: bold;
+                      background: #262c34;
                       transition: background 0.2s ease-in-out;
+                      font-family: "Inter", "Helvetica Neue", sans-serif;
                     }
                   }
                 }

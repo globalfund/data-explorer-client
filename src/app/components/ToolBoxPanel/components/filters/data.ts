@@ -11,102 +11,6 @@ export interface FilterGroupModel {
   options: FilterGroupOptionModel[];
 }
 
-export const componentsMockFilterOptions: FilterGroupModel = {
-  name: "Partner types",
-  options: [
-    {
-      label: "Community Sector",
-      value: "Community Sector",
-      subOptions: [
-        {
-          label: "Community Based Organization",
-          value: "CBO",
-        },
-        {
-          label: "Faith Based Organization",
-          value: "FBO",
-        },
-        {
-          label: "International Faith Based Organization",
-          value: "INTFBO",
-        },
-        {
-          label: "International NGO",
-          value: "INTNGO",
-        },
-        {
-          label: "Local Faith Based Organization",
-          value: "LOCFBO",
-        },
-        {
-          label: "Local NGO",
-          value: "LOCNGO",
-        },
-        {
-          label: "NGO/CBO/Academic",
-          value: "NGO",
-        },
-        {
-          label: "Other Community Sector Entity",
-          value: "OTH",
-        },
-      ],
-    },
-    {
-      label: "Governmental",
-      value: "Governmental",
-      subOptions: [
-        {
-          label: "Ministry of Finance",
-          value: "MOF",
-        },
-        {
-          label: "Ministry of Health",
-          value: "MOH",
-        },
-        {
-          label: "Other Governmental",
-          value: "OTH",
-        },
-      ],
-    },
-    {
-      label: "Multilateral",
-      value: "Multilateral",
-      subOptions: [
-        {
-          label: "Other Multilateral Organization",
-          value: "OTH",
-        },
-        {
-          label: "UN Agency",
-          value: "UN",
-        },
-      ],
-    },
-    {
-      label: "Other",
-      value: "Other",
-      subOptions: [
-        {
-          label: "Other Entity",
-          value: "OTH",
-        },
-      ],
-    },
-    {
-      label: "Private Sector",
-      value: "Private Sector",
-      subOptions: [
-        {
-          label: "Private Sector Entity",
-          value: "PS",
-        },
-      ],
-    },
-  ],
-};
-
 export interface FilterGroupProps {
   name: string;
   addSubOptionFilters?: boolean;
@@ -147,7 +51,7 @@ export const filtergroups: FilterGroupProps[] = [
   },
   {
     name: "Donors",
-    addSubOptionFilters: false,
+    addSubOptionFilters: true,
   },
   {
     name: "Replenishment Periods",
@@ -278,20 +182,10 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
-  "/explore/grants": filter(
+  "/viz/pledges-contributions/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
-      fg.name !== "Donors" && fg.name !== "Replenishment Periods"
-  ),
-  "/explore/documents": filter(
-    filtergroups,
-    (fg: FilterGroupProps) =>
-      fg.name === "Locations" || fg.name === "Components"
-  ),
-  "/explore/results": filter(
-    filtergroups,
-    (fg: FilterGroupProps) =>
-      fg.name === "Locations" || fg.name === "Components"
+      fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
   // location detail page
   "/location/<code>/overview": filter(
@@ -408,6 +302,10 @@ export const pathnameToFilterGroups = {
       fg.name !== "Replenishment Periods"
   ),
   "/location/<code>/allocations": filter(
+    filtergroups,
+    (fg: FilterGroupProps) => fg.name === "Components"
+  ),
+  "/location/<code>/allocations/map": filter(
     filtergroups,
     (fg: FilterGroupProps) => fg.name === "Components"
   ),

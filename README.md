@@ -26,6 +26,7 @@ REACT_APP_MAPBOX_TOKEN=<mapbox account token>
 REACT_APP_GOOGLE_ANALYTICS_ID=<google analytics app id>
 REACT_APP_CMS_API=<cockpit cms api url>
 REACT_APP_CMS_TOKEN=<cockpit cms api token>
+REACT_APP_USE_DEFAULT_DATASETS=<boolean true or false>
 ```
 
 `REACT_APP_API`: is the url where the data middleware API runs on. If running [Data API Middleware](https://github.com/globalfund/data-explorer-server/) locally then you can use `http://localhost:4200`.
@@ -37,6 +38,8 @@ REACT_APP_CMS_TOKEN=<cockpit cms api token>
 `REACT_APP_CMS_API`: is the url where the [Cockpit CMS API](https://github.com/zimmerman-team/the-data-explorer-cms/) runs on.
 
 `REACT_APP_CMS_TOKEN`: is the API token retrieved from the Cockpit CMS interface.
+
+`REACT_APP_USE_DEFAULT_DATASETS`: is the setting to determine whether or not we use the Global Fund default datasets, or external datasets.
 
 ---
 

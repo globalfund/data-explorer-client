@@ -2,6 +2,7 @@
 
 import React from "react";
 import ReactDOM from "react-dom";
+import "./app/theme/rawgraphs.css";
 import "./index.css";
 import { App } from "app";
 

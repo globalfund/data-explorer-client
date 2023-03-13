@@ -1,5 +1,6 @@
 // cc:application base#;application routes
 
+// base
 import React, { Suspense, lazy } from "react";
 import get from "lodash/get";
 import { useGA } from "app/hooks/useGA";
@@ -7,17 +8,16 @@ import axios, { AxiosResponse } from "axios";
 import { useUrlFilters } from "app/hooks/useUrlFilters";
 import { V1RouteRedirections } from "app/utils/v1Routes";
 import { useCMSData } from "app/hooks/useCMSData";
-import { useScrollToTop } from "app/hooks/useScrollToTop";
-import { PageLoader } from "app/modules/common/page-loader";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { useDatasourcesDatasets } from "app/hooks/useDatasourcesDatasets";
 import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
 import {
   Route,
   Switch,
-  Redirect,
   useHistory,
-  RouteComponentProps,
+  // Redirect,
+  // useHistory,
+  // RouteComponentProps,
 } from "react-router-dom";
 import DataSetDetailModule from "./modules/dataset-detail-module";
 import AddDatasetFragment from "./fragments/datasets-fragment/upload-steps/addDatasetFragment";
@@ -39,42 +39,71 @@ const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
   () => import("app/modules/country-detail-module")
 );
-const PartnerDetailModule = lazy(
-  () => import("app/modules/partner-detail-module")
+// project
+// import { useGA } from "app/hooks/useGA";
+// import { useCMSData } from "app/hooks/useCMSData";
+// import { useUrlFilters } from "app/hooks/useUrlFilters";
+// import { V1RouteRedirections } from "app/utils/v1Routes";
+import { useScrollToTop } from "app/hooks/useScrollToTop";
+import { PageLoader } from "app/modules/common/page-loader";
+// import { useFilterOptions } from "app/hooks/useFilterOptions";
+// import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
+
+// modules
+// const VizModule = lazy(() => import("app/modules/viz-module"));
+// const AboutModule = lazy(() => import("app/modules/about-module"));
+// const GrantsModule = lazy(() => import("app/modules/grants-module"));
+// const ResultsModule = lazy(() => import("app/modules/results-module"));
+// const LandingModule = lazy(() => import("app/modules/landing-module"));
+// const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
+// const DocumentsModule = lazy(() => import("app/modules/documents-module"));
+// const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
+// const CountryDetailModule = lazy(
+//   () => import("app/modules/country-detail-module")
+// );
+// const PartnerDetailModule = lazy(
+//   () => import("app/modules/partner-detail-module")
+// );
+const DataThemesModule = lazy(() => import("app/modules/data-themes-module"));
+const DatasetUploadModule = lazy(
+  () => import("app/modules/dataset-upload-module")
+);
+const DatasetListModule = lazy(
+  () => import("app/modules/datasets-module/list")
 );
 
-function GrantPeriodRedirect(props: RouteComponentProps<any>) {
-  const history = useHistory();
-  React.useEffect(() => {
-    axios
-      .get(
-        `${process.env.REACT_APP_API}/grant/periods/?grantNumber=${props.match.params.code}`
-      )
-      .then((response: AxiosResponse) => {
-        if (response.data.data && response.data.data.length > 0) {
-          history.replace(
-            `/grant/${props.match.params.code}/${
-              response.data.data[0].number
-            }/${
-              props.match.params.vizType
-                ? `${props.match.params.vizType}${
-                    props.match.params.subType
-                      ? `/${props.match.params.subType}`
-                      : ""
-                  }`
-                : "overview"
-            }`
-          );
-        } else {
-          history.replace(`/grant/${props.match.params.code}/1/overview`);
-        }
-      })
-      .catch(() => {
-        history.replace(`/grant/${props.match.params.code}/1/overview`);
-      });
-  }, []);
-  return <PageLoader />;
-}
+// function GrantPeriodRedirect(props: RouteComponentProps<any>) {
+//   const history = useHistory();
+//   React.useEffect(() => {
+//     axios
+//       .get(
+//         `${process.env.REACT_APP_API}/grant/periods/?grantNumber=${props.match.params.code}`
+//       )
+//       .then((response: AxiosResponse) => {
+//         if (response.data.data && response.data.data.length > 0) {
+//           history.replace(
+//             `/grant/${props.match.params.code}/${
+//               response.data.data[0].number
+//             }/${
+//               props.match.params.vizType
+//                 ? `${props.match.params.vizType}${
+//                     props.match.params.subType
+//                       ? `/${props.match.params.subType}`
+//                       : ""
+//                   }`
+//                 : "overview"
+//             }`
+//           );
+//         } else {
+//           history.replace(`/grant/${props.match.params.code}/1/overview`);
+//         }
+//       })
+//       .catch(() => {
+//         history.replace(`/grant/${props.match.params.code}/1/overview`);
+//       });
+//   }, []);
+//   return <PageLoader />;
+// }
 
 function VizModuleRedirect() {
   const history = useHistory();
@@ -171,6 +200,15 @@ export function MainRoutes() {
   //     </div>
   //   );
   // }
+  // useClearDataPathStepsOnDatasetChange();
+  // useFilterOptions({});
+  useScrollToTop();
+  // useUrlFilters();
+  // useGA();
+
+  // useCMSData({
+  //   loadData: true,
+  // });
 
   return (
     <Suspense fallback={<PageLoader />}>
@@ -179,7 +217,7 @@ export function MainRoutes() {
           <HomeModule />
         </Route>
 
-        <Route exact path="/about">
+        {/* <Route exact path="/about">
           <AboutModule />
         </Route>
 
@@ -277,9 +315,23 @@ export function MainRoutes() {
           <GrantDetailModule />
         </Route>
 
-        <Route exact path="/explore" render={() => <VizModuleRedirect />} />
+        <Route exact path="/viz">
+          <Redirect to="/datasets" />
+        </Route> */}
 
-        <V1RouteRedirections />
+        <Route path="/data-themes">
+          <DataThemesModule />
+        </Route>
+
+        <Route path="/dataset-upload">
+          <DatasetUploadModule />
+        </Route>
+
+        <Route path="/datasets">
+          <DatasetListModule />
+        </Route>
+
+        {/* <V1RouteRedirections /> */}
       </Switch>
     </Suspense>
   );

@@ -113,8 +113,7 @@ export default function VizModule() {
       `}
     >
       <PageHeader
-        title="GF Dataset"
-        // partialTitle={params.vizType.replace("-", " & ")}
+        title={params.vizType.replace("-", " & ")}
         breadcrumbs={[
           { name: "Home", link: "/" },
           {

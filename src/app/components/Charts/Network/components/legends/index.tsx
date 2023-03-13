@@ -139,7 +139,11 @@ export function NetworkLegends() {
               width: 40px;
               left: -15px;
               bottom: -25px;
+<<<<<<< HEAD
               color: #231d2c;
+=======
+              color: #262c34;
+>>>>>>> 26f3485bf722b77cb35efc4928b6bc98505ccb74
               font-size: 12px;
               position: absolute;
               text-align: center;

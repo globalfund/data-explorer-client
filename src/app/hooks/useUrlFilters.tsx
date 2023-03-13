@@ -25,6 +25,7 @@ export function useUrlFilters(): null {
       const partners = currentUrlParams.get("partners");
       const status = currentUrlParams.get("status");
       const donors = currentUrlParams.get("donors");
+      const donorSubCategories = currentUrlParams.get("donorSubCategories");
       const donorCategories = currentUrlParams.get("donorCategories");
       const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
 
@@ -49,13 +50,16 @@ export function useUrlFilters(): null {
       if (donors) {
         updatedAppliedFilters.donors = donors.split(",");
       }
+      if (donorSubCategories) {
+        updatedAppliedFilters.donorSubCategories =
+          donorSubCategories.split(",");
+      }
       if (donorCategories) {
         updatedAppliedFilters.donorCategories = donorCategories.split(",");
       }
       if (replenishmentPeriods) {
-        updatedAppliedFilters.replenishmentPeriods = replenishmentPeriods.split(
-          ","
-        );
+        updatedAppliedFilters.replenishmentPeriods =
+          replenishmentPeriods.split(",");
       }
 
       actions.setAll(updatedAppliedFilters);
@@ -104,6 +108,14 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("donors");
     }
+    if (data.donorSubCategories.length > 0) {
+      currentUrlParams.set(
+        "donorSubCategories",
+        data.donorSubCategories.join(",")
+      );
+    } else {
+      currentUrlParams.delete("donorSubCategories");
+    }
     if (data.donorCategories.length > 0) {
       currentUrlParams.set("donorCategories", data.donorCategories.join(","));
     } else {
@@ -136,6 +148,7 @@ export function useUrlFilters(): null {
     const partners = currentUrlParams.get("partners");
     const status = currentUrlParams.get("status");
     const donors = currentUrlParams.get("donors");
+    const donorSubCategories = currentUrlParams.get("donorSubCategories");
     const donorCategories = currentUrlParams.get("donorCategories");
     const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
 
@@ -174,15 +187,19 @@ export function useUrlFilters(): null {
     } else if (updatedAppliedFilters.donors.length > 0) {
       updatedAppliedFilters.donors = [];
     }
+    if (donorSubCategories) {
+      updatedAppliedFilters.donorSubCategories = donorSubCategories.split(",");
+    } else if (updatedAppliedFilters.donorSubCategories.length > 0) {
+      updatedAppliedFilters.donorSubCategories = [];
+    }
     if (donorCategories) {
       updatedAppliedFilters.donorCategories = donorCategories.split(",");
     } else if (updatedAppliedFilters.donorCategories.length > 0) {
       updatedAppliedFilters.donorCategories = [];
     }
     if (replenishmentPeriods) {
-      updatedAppliedFilters.replenishmentPeriods = replenishmentPeriods.split(
-        ","
-      );
+      updatedAppliedFilters.replenishmentPeriods =
+        replenishmentPeriods.split(",");
     } else if (updatedAppliedFilters.replenishmentPeriods.length > 0) {
       updatedAppliedFilters.replenishmentPeriods = [];
     }

@@ -35,6 +35,7 @@ interface SearchLayoutProps {
   results: SearchResultsTabModel[];
   setValue: (value: string) => void;
   setCategory?: (value: string) => void;
+  setStoredValue: (value: string) => void;
 }
 
 const StyledMenu = withStyles({
@@ -119,6 +120,24 @@ export function SearchLayout(props: SearchLayoutProps) {
       props.setCategory(value);
     }
   };
+
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (e.key === "Escape") {
+      props.setStoredValue("");
+      props.setValue("");
+      setOpen(false);
+      handleClose();
+      if (props.onClose) {
+        props.onClose();
+      }
+    }
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("keydown", onKeyDown);
+
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, []);
 
   React.useEffect(() => {
     if (!props.forceFocus) {

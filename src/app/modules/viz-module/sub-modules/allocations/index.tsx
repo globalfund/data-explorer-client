@@ -131,12 +131,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         dataLabels: {
           name: {
             show: true,
-            color: "#231d2c",
-            fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+            color: "#262c34",
+            fontFamily: "Inter",
           },
           value: {
             show: true,
-            fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+            fontFamily: "Inter",
             formatter: (value: number) => {
               const fkeyIndex = findIndex(
                 keysPercentagesColors.percentages,
@@ -150,6 +150,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           },
           total: {
             show: true,
+            fontFamily: "Inter",
             formatter: () => formatFinancialValue(total),
             fontFamily: '"Inter", "Helvetica Neue", sans-serif',
           },
@@ -162,7 +163,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       show: true,
       floating: true,
       fontSize: !isMobile ? "14px" : "10px",
-      fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+      fontFamily: "Inter",
       fontWeight: "bold",
       position: "right",
       offsetX: width / 2,

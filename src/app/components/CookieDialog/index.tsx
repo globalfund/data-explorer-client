@@ -85,7 +85,7 @@ export const CookieDialog = () => {
           css={`
             width: 90%;
             @media (min-width: 1280px) {
-              max-width: 1100px;
+              max-width: 1000px;
             }
             @media (max-width: 767px) {
               width: calc(100% - 16px);

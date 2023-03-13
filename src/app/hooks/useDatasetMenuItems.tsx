@@ -130,17 +130,38 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     //   <ArrowForwardIcon />
     //   <b>Datasets</b>
     // </Link>,
-    <Expandable label="Finance">
+    <Expandable label="Resource Mobilization">
       <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
         Pledges & Contributions
       </Link>
+    </Expandable>,
+    <Expandable label="Access to Funding">
+      <Link to={`/viz/eligibility${location.search}`}>Eligibility</Link>
+      <Link to={`/viz/allocations${location.search}`}>Allocations</Link>
+    </Expandable>,
+    <Expandable label="Grant Implementation">
+      <Link
+        css={`
+          @media (min-width: 768px) {
+            &:hover {
+              color: #fff;
+              background: #262c34;
+              transition: background 0.2s ease-in-out;
+            }
+          }
+        `}
+        to={`/grants${location.search}`}
+      >
+        Grants
+      </Link>
       <Link to={`/viz/signed/treemap${location.search}`}>Signed Amounts</Link>
       <Link to={`/viz/commitment/treemap${location.search}`}>Commitments</Link>
-      <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
       <Link to={`/viz/disbursements/treemap${location.search}`}>
         Disbursements
       </Link>
+      <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
     </Expandable>,
+<<<<<<< HEAD
     <Expandable label="Access to Funding">
       <Link to={`/viz/eligibility${location.search}`}>Eligibility</Link>
       <Link to={`/viz/allocations${location.search}`}>Allocation</Link>
@@ -159,6 +180,8 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     >
       <b>Grants</b>
     </Link>,
+=======
+>>>>>>> 26f3485bf722b77cb35efc4928b6bc98505ccb74
     <Link
       css={`
         @media (min-width: 768px) {
@@ -171,7 +194,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
       `}
       to={`/results${location.search}`}
     >
-      <b>Results</b>
+      <b>Annual Results</b>
     </Link>,
     <Link
       css={`

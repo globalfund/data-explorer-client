@@ -280,7 +280,7 @@ export function InvestmentsTimeCycleViz(props: Props) {
                 },
                 text: {
                   fontSize: 10,
-                  fill: "#231d2c",
+                  fill: "#262c34",
                   fontFamily: '"Inter", "Helvetica Neue", sans-serif',
                 },
               },

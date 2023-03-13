@@ -19,10 +19,10 @@ export default function About() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   // const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
-  // const deContent = { __html: get(cmsData, "modulesAbout.deContent", "") };
-  // const crContent = { __html: get(cmsData, "modulesAbout.crContent", "") };
-  // const diContent = { __html: get(cmsData, "modulesAbout.diContent", "") };
-  // const doContent = { __html: get(cmsData, "modulesAbout.doContent", "") };
+  const deContent = { __html: get(cmsData, "modulesAbout.deContent", "") };
+  const crContent = { __html: get(cmsData, "modulesAbout.crContent", "") };
+  const diContent = { __html: get(cmsData, "modulesAbout.diContent", "") };
+  const doContent = { __html: get(cmsData, "modulesAbout.doContent", "") };
 
   return (
     <div
