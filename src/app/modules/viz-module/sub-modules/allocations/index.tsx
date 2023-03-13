@@ -152,7 +152,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             show: true,
             fontFamily: "Inter",
             formatter: () => formatFinancialValue(total),
-            fontFamily: '"Inter", "Helvetica Neue", sans-serif',
           },
         },
       },

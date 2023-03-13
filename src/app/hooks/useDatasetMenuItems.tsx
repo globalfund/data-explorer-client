@@ -161,27 +161,24 @@ export function useDatasetMenuItems(): React.ReactChild[] {
       </Link>
       <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
     </Expandable>,
-<<<<<<< HEAD
-    <Expandable label="Access to Funding">
-      <Link to={`/viz/eligibility${location.search}`}>Eligibility</Link>
-      <Link to={`/viz/allocations${location.search}`}>Allocation</Link>
-    </Expandable>,
-    <Link
-      css={`
-        @media (min-width: 768px) {
-          &:hover {
-            color: #fff;
-            background: #231d2c;
-            transition: background 0.2s ease-in-out;
-          }
-        }
-      `}
-      to={`/grants${location.search}`}
-    >
-      <b>Grants</b>
-    </Link>,
-=======
->>>>>>> 26f3485bf722b77cb35efc4928b6bc98505ccb74
+    // <Expandable label="Access to Funding">
+    //   <Link to={`/viz/eligibility${location.search}`}>Eligibility</Link>
+    //   <Link to={`/viz/allocations${location.search}`}>Allocation</Link>
+    // </Expandable>,
+    // <Link
+    //   css={`
+    //     @media (min-width: 768px) {
+    //       &:hover {
+    //         color: #fff;
+    //         background: #231d2c;
+    //         transition: background 0.2s ease-in-out;
+    //       }
+    //     }
+    //   `}
+    //   to={`/grants${location.search}`}
+    // >
+    //   <b>Grants</b>
+    // </Link>,
     <Link
       css={`
         @media (min-width: 768px) {

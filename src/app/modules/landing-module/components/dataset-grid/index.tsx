@@ -12,6 +12,7 @@ import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import { AllocationIcon } from "app/assets/icons/charts/Allocation";
 import ControlPointIcon from "@material-ui/icons/ControlPoint";
+import { useDatasourcesDatasets } from "app/hooks/useDatasourcesDatasets";
 
 function GridItem(props: {
   link: string;
@@ -75,17 +76,17 @@ function GridItem(props: {
             border-color: #13183f;
           }
         `}
-      >
-        <div dangerouslySetInnerHTML={props.title} />
-        <div dangerouslySetInnerHTML={props.description} />
-        {props.iconLinks && (
-          <div
-            css={`
-              gap: 20px;
-              bottom: 8px;
-              display: flex;
-              position: absolute;
-              flex-direction: row;
+    >
+      <div dangerouslySetInnerHTML={props.title} />
+      <div dangerouslySetInnerHTML={props.description} />
+      {props.iconLinks && (
+        <div
+          css={`
+            gap: 20px;
+            bottom: 8px;
+            display: flex;
+            position: absolute;
+            flex-direction: row;
 
             > a {
               padding-right: 10px;
@@ -467,7 +468,7 @@ export function LandingDatasetGrid() {
           }}
           iconLinks={[{ icon: <ControlPointIcon />, link: "/dataset-upload" }]}
         />
-      </Grid>
+        </Grid>*/}
     </Grid>
   );
 }
