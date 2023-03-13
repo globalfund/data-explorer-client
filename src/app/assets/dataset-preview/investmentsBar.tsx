@@ -416,11 +416,7 @@ export const InvestmentsBarPreview = () => (
       y="185.235"
       width="7.15716"
       height="25.5575"
-<<<<<<< HEAD
       fill="#231d2c"
-=======
-      fill="#262C34"
->>>>>>> 26f3485bf722b77cb35efc4928b6bc98505ccb74
       stroke="white"
       strokeWidth="0.136761"
     />

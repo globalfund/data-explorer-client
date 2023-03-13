@@ -11,11 +11,7 @@ const Button = styled((props) => <button type="button" {...props} />)`
   font-weight: bold;
   border-style: none;
   border-radius: 20px;
-<<<<<<< HEAD
   background: #231d2c;
-=======
-  background: #262c34;
->>>>>>> 26f3485bf722b77cb35efc4928b6bc98505ccb74
   text-transform: unset;
   font-family: "Inter", "Helvetica Neue", sans-serif;
 
