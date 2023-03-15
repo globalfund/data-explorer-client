@@ -447,23 +447,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                     : {}
                 }
               />
-              {!props.previewMode && (
-                <KeyboardArrowDownIcon htmlColor="#262c34" />
-              )}
             </div>
-            <input
-              type="text"
-              value={subTitle}
-              css={styles.subTitleInput}
-              onChange={handleSubTitleChange}
-              style={
-                props.previewMode
-                  ? {
-                      width: "fit-content",
-                    }
-                  : {}
-              }
-            />
           </div>
           {!props.previewMode && (
             <div css={styles.iconbtns}>
@@ -539,16 +523,6 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
               </IconButton>
             </div>
           )}
-        </div>
-        <div css={styles.secondrow}>
-          <DataThemesTabs
-            updateLocalStates={props.updateLocalStates}
-            disabled={props.tabsDisabled}
-            previewMode={props.previewMode}
-            deleteTab={props.deleteTab}
-            visualOptions={props.visualOptions}
-            isEditMode={props.isEditMode}
-          />
         </div>
       </div>
     </div>

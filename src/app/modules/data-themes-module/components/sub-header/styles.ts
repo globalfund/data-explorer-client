@@ -4,23 +4,23 @@ export const styles = {
   container: css`
     left: 0;
     top: 48px;
-    z-index: 10;
+    z-index: 100;
     width: 100vw;
-    height: 96px;
+    height: 50px;
     display: flex;
     position: fixed;
-    background: #dfe3e6;
+    background: #f4f4f4;
+    justify-content: center;
+
     flex-direction: column;
   `,
   innercontainer: css`
     height: 100%;
     display: flex;
-    max-width: 1280px;
+
     position: relative;
     flex-direction: column;
-    padding: 13px 24px 0 24px;
-    margin-left: calc((100vw - 1280px) / 2);
-    width: calc(100vw - ((100vw - 1280px) / 2) - 400px);
+    padding: 13px 24px 0 13.8rem;
 
     @media (max-width: 1280px) {
       margin-left: 0;

@@ -6,6 +6,7 @@ import { Switch, Route } from "react-router-dom";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { DataThemesListView } from "app/modules/data-themes-module/sub-modules/list";
 import { DataThemesBuilder } from "app/modules/data-themes-module/sub-modules/theme-builder";
+import { Container } from "@material-ui/core";
 
 export default function DataThemes() {
   useTitle("The Data Explorer - Data Themes");
@@ -18,7 +19,9 @@ export default function DataThemes() {
             padding-top: 144px;
           `}
         >
-          <DataThemesBuilder />
+          <Container maxWidth="lg">
+            <DataThemesBuilder />
+          </Container>
         </div>
       </Route>
       <Route exact path={`/data-themes`}>

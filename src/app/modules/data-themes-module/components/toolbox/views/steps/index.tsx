@@ -8,7 +8,7 @@ import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
 import { useHistory, useParams } from "react-router-dom";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import { ArrowDropDownSharp } from "@material-ui/icons";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import MuiAccordionSummary from "@material-ui/core/AccordionSummary";
 import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
@@ -22,6 +22,8 @@ import { DataThemesToolBoxFilters } from "app/modules/data-themes-module/compone
 import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
 import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Customize";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
+import { GreyedButton, PrimaryButton } from "app/components/Styled/button";
+import { Switch } from "@material-ui/core";
 
 export const Accordion = withStyles({
   root: {
@@ -65,6 +67,7 @@ export const AccordionSummary = withStyles({
     "&$expanded": {
       margin: "12px 0",
       fontFamily: "Inter, sans-serif",
+      fontWeight: 700,
       "& > div": {
         backgroundColor: "#262C34",
       },
@@ -76,6 +79,7 @@ export const AccordionSummary = withStyles({
 export const AccordionDetails = withStyles(() => ({
   root: {
     padding: "16px 24px",
+    flexDirection: "column",
   },
 }))(MuiAccordionDetails);
 
@@ -123,6 +127,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const { page } = useParams<{ page: string }>();
   const { data, loading, loadDataset, filterOptionGroups } = props;
 
+  const [liveDataSwitch, setLiveDataSwitch] = React.useState(false);
   const [collapsed, setCollapsed] = React.useState(false);
   const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
 
@@ -217,30 +222,84 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         <AccordionSummary
           id="step1-header"
           aria-controls="step1-content"
-          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
         >
           <div>1</div> Select data
         </AccordionSummary>
+        <p
+          css={`
+            font-weight: 325;
+            font-size: 14px;
+            margin-top: 0;
+            font-family: "Gotham Narrow";
+            margin-left: 28px;
+            color: #262c34;
+          `}
+        >
+          Choose from the DX library
+        </p>
         <AccordionDetails>
           <DataThemesToolBoxSelectDataset
             loadDataset={loadDataset}
             expanded={expanded === 1}
           />
+          <div>
+            <div
+              css={`
+                padding-left: 18px;
+              `}
+            >
+              <p>OR</p>
+              <div
+                css={`
+                  width: 187px;
+                  color: #ffffff;
+                `}
+              >
+                <PrimaryButton dark>ADD new dataset</PrimaryButton>
+              </div>
+            </div>
+
+            <hr
+              css={`
+                border: 1px solid #c0c7d2;
+                width: 352px;
+                margin: auto;
+                margin-top: 1.8rem;
+                margin-bottom: 0.8rem;
+              `}
+            />
+            <div
+              css={`
+                display: flex;
+                justify-content: space-between;
+                font-size: 14px;
+                color: #262c34;
+                margin-top: 0;
+                font-family: "Gotham Narrow";
+
+                font-weight: 325;
+              `}
+            >
+              <p>Use Live data for the visualization </p>
+              <Switch
+                checked={liveDataSwitch}
+                onChange={(e) => setLiveDataSwitch(e.target.checked)}
+                inputProps={{ "aria-label": "primary checkbox" }}
+              />
+            </div>
+          </div>
         </AccordionDetails>
       </Accordion>
       <Accordion
         square
         expanded={expanded === 2 && !collapsed}
         onChange={handleChange(3)}
-        disabled={
-          stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
-            null && !loading
-        }
       >
         <AccordionSummary
           id="step2-header"
           aria-controls="step2-content"
-          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
         >
           <div>2</div> Chart Type
         </AccordionSummary>
@@ -248,21 +307,11 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxChartType />
         </AccordionDetails>
       </Accordion>
-      <Accordion
-        square
-        expanded={expanded === 3}
-        onChange={handleChange(4)}
-        disabled={
-          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
-            null &&
-            !loading) ||
-          !selectedChartType[activeTabIndex][activeVizIndex]
-        }
-      >
+      <Accordion square expanded={expanded === 3} onChange={handleChange(4)}>
         <AccordionSummary
           id="step3-header"
           aria-controls="step3-content"
-          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
         >
           <div>3</div> Mapping
         </AccordionSummary>
@@ -270,23 +319,11 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxMapping dataTypes={props.dataTypes} />
         </AccordionDetails>
       </Accordion>
-      <Accordion
-        square
-        expanded={expanded === 4}
-        onChange={handleChange(5)}
-        disabled={
-          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
-            null &&
-            !loading) ||
-          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
-          !selectedChartType[activeTabIndex][activeVizIndex] ||
-          (!props.forceNextEnabled && expanded !== 6)
-        }
-      >
+      <Accordion square expanded={expanded === 4} onChange={handleChange(5)}>
         <AccordionSummary
           id="step4-header"
           aria-controls="step4-content"
-          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
           css={`
             && {
               > .MuiAccordionSummary-content {
@@ -347,19 +384,11 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 5 && !collapsed}
         onChange={handleChange(6)}
-        disabled={
-          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
-            null &&
-            !loading) ||
-          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
-          !selectedChartType[activeTabIndex][activeVizIndex] ||
-          !props.forceNextEnabled
-        }
       >
         <AccordionSummary
           id="step5-header"
           aria-controls="step5-content"
-          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
         >
           <div>5</div> Lock
         </AccordionSummary>
@@ -373,19 +402,11 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 6 && !collapsed}
         onChange={handleChange(7)}
-        disabled={
-          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
-            null &&
-            !loading) ||
-          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
-          !selectedChartType[activeTabIndex][activeVizIndex] ||
-          !props.forceNextEnabled
-        }
       >
         <AccordionSummary
           id="step6-header"
           aria-controls="step6-content"
-          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
         >
           <div>6</div> Customize
         </AccordionSummary>
@@ -402,14 +423,6 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 7 && !collapsed}
         onChange={handleChange(8)}
-        disabled={
-          (stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ===
-            null &&
-            !loading) ||
-          isEmpty(mapping[activeTabIndex][activeVizIndex]) ||
-          !selectedChartType[activeTabIndex][activeVizIndex] ||
-          !props.forceNextEnabled
-        }
         css={`
           border-bottom: 1px solid #c0c7d2;
         `}
@@ -417,7 +430,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         <AccordionSummary
           id="step7-header"
           aria-controls="step7-content"
-          expandIcon={<ExpandMoreIcon htmlColor="#262C34" />}
+          expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
         >
           <div>7</div> Export
         </AccordionSummary>

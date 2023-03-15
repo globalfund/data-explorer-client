@@ -42,10 +42,6 @@ export function MainRoutes() {
           <DataThemesModule />
         </Route>
 
-        <Route path="/dataset-upload">
-          <DatasetUploadModule />
-        </Route>
-
         <Route path="/datasets">
           <DatasetListModule />
         </Route>

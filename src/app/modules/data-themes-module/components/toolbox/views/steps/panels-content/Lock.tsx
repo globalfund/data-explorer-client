@@ -10,6 +10,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
+import { Grid } from "@material-ui/core";
 
 interface DataThemesToolBoxLockProps {
   filterOptionGroups: FilterGroupModel[];
@@ -55,44 +56,57 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
   return (
     <div
       css={`
-        width: 100%;
-        display: flex;
-        overflow-y: auto;
-        padding-right: 15px;
-        flex-direction: column;
-
-        .MuiFormControlLabel-label {
-          font-size: 14px;
-        }
+        height: 350px;
       `}
     >
-      <div>Filters</div>
-      <FormGroup row>
-        {props.filterOptionGroups.map((optionGroup: FilterGroupModel) => (
-          <FormControlLabel
-            key={optionGroup.name}
-            control={
-              <Checkbox
-                checked={
-                  find(
-                    tabVizEnabledFilterOptionGroups,
-                    (item: string) => optionGroup.name === item
-                  ) !== undefined
-                }
-                onChange={handleChange}
-                name={optionGroup.name}
-                color="primary"
-                disableRipple
-                disableTouchRipple
-                disableFocusRipple
-              />
-            }
-            label={splitStrBasedOnCapitalLetters(
-              `${optionGroup.name[0].toUpperCase()}${optionGroup.name.slice(1)}`
-            ).replace(/_/g, "")}
-          />
-        ))}
-      </FormGroup>
+      <div
+        css={`
+          width: 100%;
+          height: 100%;
+          display: flex;
+          overflow-y: auto;
+          padding-right: 15px;
+          flex-direction: column;
+
+          .MuiFormControlLabel-label {
+            font-size: 14px;
+          }
+        `}
+      >
+        <div>Filters</div>
+        <FormGroup row>
+          <Grid container>
+            {props.filterOptionGroups.map((optionGroup: FilterGroupModel) => (
+              <Grid lg={6} item>
+                <FormControlLabel
+                  key={optionGroup.name}
+                  control={
+                    <Checkbox
+                      checked={
+                        find(
+                          tabVizEnabledFilterOptionGroups,
+                          (item: string) => optionGroup.name === item
+                        ) !== undefined
+                      }
+                      onChange={handleChange}
+                      name={optionGroup.name}
+                      color="primary"
+                      disableRipple
+                      disableTouchRipple
+                      disableFocusRipple
+                    />
+                  }
+                  label={splitStrBasedOnCapitalLetters(
+                    `${optionGroup.name[0].toUpperCase()}${optionGroup.name.slice(
+                      1
+                    )}`
+                  ).replace(/_/g, "")}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </FormGroup>
+      </div>
     </div>
   );
 }

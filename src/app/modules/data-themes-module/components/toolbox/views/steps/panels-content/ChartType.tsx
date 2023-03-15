@@ -51,7 +51,7 @@ export function DataThemesToolBoxChartType() {
             font-family: "Inter", "Helvetica Neue", sans-serif;
           `}
         >
-          Please select a chart type
+          <b>Please select a chart type</b>
         </div>
       )}
       {selectedChartType[activeTabIndex][activeVizIndex] && fChartType && (

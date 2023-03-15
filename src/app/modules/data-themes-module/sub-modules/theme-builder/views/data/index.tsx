@@ -30,7 +30,12 @@ export function DataThemesBuilderDataView() {
   }, []);
 
   return (
-    <div css={commonStyles.container}>
+    <div
+      css={`
+        ${commonStyles.container};
+        position: relative;
+      `}
+    >
       <div
         id="extra-loader"
         css={`
@@ -39,11 +44,27 @@ export function DataThemesBuilderDataView() {
       >
         <PageLoader />
       </div>
-      <div css={commonStyles.innercontainer}>
+      <div
+        css={`
+          left: 1rem;
+          top: 5rem;
+          width: 921px;
+          height: 362.6px;
+
+          background: #dfe3e6;
+          max-width: 1280px;
+          position: absolute;
+          align-self: center;
+          display: flex;
+          justify-content: center;
+        `}
+      >
         <div css={styles.placeholder}>
-          Start to build a data visualization
-          <br />
-          Please select a dataset in the right side panel
+          <b>
+            Build your interactive chart
+            <br />
+            Please select a dataset in the right side panel
+          </b>
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ export const styles = {
     position: fixed;
     background: #f1f3f5;
     flex-direction: column;
-    top: ${!placeUnderSubHeader ? 48 : 144}px;
+    top: ${!placeUnderSubHeader ? 40 : 144}px;
     height: calc(100vh - ${!placeUnderSubHeader ? 48 : 144}px);
 
     > section {

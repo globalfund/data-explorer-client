@@ -149,7 +149,7 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
               font-family: "Inter", "Helvetica Neue", sans-serif;
             `}
           >
-            Chart variables
+            <b> Chart variables</b>
           </div>
           <Grid container spacing={2}>
             {props.dimensions.map((dimension: any) => (
@@ -565,6 +565,7 @@ function DataThemesBuilderMappingMessage(
       css={`
         width: 100%;
         font-size: 14px;
+        font-weight: 400;
         min-height: 40px;
         margin-top: 72px;
         padding: 10px 20px;
