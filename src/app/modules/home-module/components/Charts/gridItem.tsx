@@ -39,6 +39,10 @@ export default function GridItem(props: Props) {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          a {
+            text-decoration: none;
+            color: inherit;
+          }
         `}
       >
         <div
@@ -46,16 +50,18 @@ export default function GridItem(props: Props) {
             width: 60%;
           `}
         >
-          <p
-            css={`
-              font-size: 14px;
-              margin-top: 8px;
+          <Link to={`/chart/${props.id}`}>
+            <p
+              css={`
+                font-size: 14px;
+                margin-top: 8px;
 
-              margin-bottom: 0;
-            `}
-          >
-            <b>{props.title}</b>
-          </p>
+                margin-bottom: 0;
+              `}
+            >
+              <b>{props.title}</b>
+            </p>
+          </Link>
 
           <p
             css={`

@@ -471,7 +471,7 @@ function DataThemesBuilderMappingDimension(
             const columnId = dimensionMapping.value[index];
             let type = props.dataTypes[columnId];
             const columnDataType = getTypeName(type);
-            const relatedAggregation = dimension.aggregation
+            const relatedAggregation = dimension?.aggregation
               ? dimensionMapping.config.aggregation[index] ||
                 getDefaultDimensionAggregation(dimension, columnDataType)
               : undefined;

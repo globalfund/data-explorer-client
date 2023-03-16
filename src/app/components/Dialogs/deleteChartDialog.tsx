@@ -12,8 +12,8 @@ interface Props {
   modalDisplay: boolean;
   setModalDisplay: (value: boolean) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDelete: (id: string) => void;
-  cardId: string;
+  handleDelete: (id: number) => void;
+  cardId: number;
   enableButton: boolean;
 }
 
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme: Theme) =>
       position: "absolute",
       width: 544,
       backgroundColor: "#fff",
-      // border: '2px solid #000',
+
       borderRadius: "10px",
       outline: 0,
       boxShadow:
@@ -46,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-export default function DeleteDatasetDialog(props: Props) {
+export default function DeleteChartDialog(props: Props) {
   const [modalStyle] = React.useState(getModalStyle);
   const classes = useStyles();
   return (
@@ -84,14 +84,14 @@ export default function DeleteDatasetDialog(props: Props) {
                 margin-bottom: 0px;
               `}
             >
-              Delete dataset
+              Delete chart
             </p>
             <p
               css={`
                 margin-top: 3px;
               `}
             >
-              Absolutely sure you want to delete the dataset(s)? <br />{" "}
+              Absolutely sure you want to delete the chart(s)? <br />{" "}
               <b>This action is irreversible!</b>
             </p>
             <div

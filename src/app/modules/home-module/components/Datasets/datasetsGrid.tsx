@@ -44,7 +44,7 @@ export default function DatasetsGrid() {
       <Grid container spacing={2}>
         <DatasetAddnewCard />
         {data.map((data, index) => (
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <GridItem
               key={index}
               date={data.date}
@@ -64,7 +64,6 @@ export default function DatasetsGrid() {
         handleInputChange={handleInputChange}
         modalDisplay={modalDisplay}
         setModalDisplay={setModalDisplay}
-        title="dataset(s)"
       />
     </>
   );

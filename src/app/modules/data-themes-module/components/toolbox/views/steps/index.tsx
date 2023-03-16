@@ -24,6 +24,7 @@ import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/compo
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
 import { GreyedButton, PrimaryButton } from "app/components/Styled/button";
 import { Switch } from "@material-ui/core";
+import { Direction } from "react-range";
 
 export const Accordion = withStyles({
   root: {
@@ -52,7 +53,7 @@ export const AccordionSummary = withStyles({
   },
   content: {
     fontSize: "14px",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "Gotham Narrow, sans-serif",
     "& > div": {
       width: 23,
       height: 23,
@@ -62,7 +63,7 @@ export const AccordionSummary = withStyles({
       borderRadius: "50%",
       textAlign: "center",
       backgroundColor: "#727F95",
-      fontFamily: "Inter, sans-serif",
+      fontFamily: "Gotham Narrow, sans-serif",
     },
     "&$expanded": {
       margin: "12px 0",
@@ -218,6 +219,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         expanded={expanded === 1 && !collapsed}
         onChange={handleChange(data ? 2 : 1)}
         disabled={props.openPanel !== undefined && props.openPanel < 1}
+        hidden={expanded !== 1}
       >
         <AccordionSummary
           id="step1-header"
@@ -295,6 +297,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 2 && !collapsed}
         onChange={handleChange(3)}
+        hidden={expanded !== 1 && expanded !== 2}
       >
         <AccordionSummary
           id="step2-header"
@@ -307,7 +310,12 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxChartType />
         </AccordionDetails>
       </Accordion>
-      <Accordion square expanded={expanded === 3} onChange={handleChange(4)}>
+      <Accordion
+        square
+        expanded={expanded === 3}
+        onChange={handleChange(4)}
+        hidden={expanded !== 1 && expanded !== 2 && expanded !== 3}
+      >
         <AccordionSummary
           id="step3-header"
           aria-controls="step3-content"
@@ -319,7 +327,12 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           <DataThemesToolBoxMapping dataTypes={props.dataTypes} />
         </AccordionDetails>
       </Accordion>
-      <Accordion square expanded={expanded === 4} onChange={handleChange(5)}>
+      <Accordion
+        hidden={expanded !== 1 && expanded !== 2 && expanded !== 4}
+        square
+        expanded={expanded === 4}
+        onChange={handleChange(5)}
+      >
         <AccordionSummary
           id="step4-header"
           aria-controls="step4-content"
@@ -339,6 +352,8 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
                 <div
                   css={`
                     text-transform: capitalize;
+                    max-height: calc(100vh - 240px);
+                    background: pink;
                   `}
                 >
                   {Object.keys(appliedFilters[activeTabIndex][activeVizIndex])
@@ -382,6 +397,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       </Accordion>
       <Accordion
         square
+        hidden={expanded !== 1 && expanded !== 2 && expanded !== 5}
         expanded={expanded === 5 && !collapsed}
         onChange={handleChange(6)}
       >
@@ -389,10 +405,22 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           id="step5-header"
           aria-controls="step5-content"
           expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
+          css={`
+            min-height: 10px !important;
+          `}
         >
-          <div>5</div> Lock
+          <div>5</div> Lock <br />
         </AccordionSummary>
         <AccordionDetails>
+          <hr
+            css={`
+              border: 1px solid #cfd4da;
+              margin: auto;
+              width: 350px;
+              margin-top: -1rem;
+              margin-bottom: 1rem;
+            `}
+          />
           <DataThemesToolBoxLock
             filterOptionGroups={props.filterOptionGroups}
           />
@@ -402,6 +430,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         square
         expanded={expanded === 6 && !collapsed}
         onChange={handleChange(7)}
+        hidden={
+          expanded !== 1 && expanded !== 2 && expanded !== 5 && expanded !== 6
+        }
       >
         <AccordionSummary
           id="step6-header"
@@ -421,6 +452,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
       </Accordion>
       <Accordion
         square
+        hidden={
+          expanded !== 1 && expanded !== 2 && expanded !== 5 && expanded !== 7
+        }
         expanded={expanded === 7 && !collapsed}
         onChange={handleChange(8)}
         css={`
@@ -461,9 +495,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             !props.forceNextEnabled
           }
         >
-          {activePanels[activeTabIndex][activeVizIndex] === 7
-            ? "Preview"
-            : "Next"}
+          {activePanels[activeTabIndex][activeVizIndex] === 7 ? "Save" : "Next"}
         </Button>
       </div>
     </div>

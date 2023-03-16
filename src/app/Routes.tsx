@@ -7,6 +7,7 @@ import { Route, Switch } from "react-router-dom";
 
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
+import ChartDetailModule from "./modules/chart-detail-module";
 
 const HomeModule = lazy(() => import("app/modules/home-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -50,6 +51,9 @@ export function MainRoutes() {
           <AboutModule />
         </Route>
 
+        <Route exact path="/chart/:page">
+          <ChartDetailModule />
+        </Route>
         <Route exact path="/datasets">
           <DatasetsModule />
         </Route>

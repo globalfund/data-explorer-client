@@ -121,7 +121,7 @@ export function DataThemesToolBoxCustomize(
         overflow-y: auto;
         padding-right: 15px;
         flex-direction: column;
-        max-height: calc(100vh - 573px);
+        max-height: calc(100vh - 273px);
 
         * {
           font-size: 14px;

@@ -437,6 +437,7 @@ export function DataThemesBuilderPreviewTheme(
               height="100%"
             />
           </div>
+
           <div css={commonStyles.previewInnercontainer(props.editable)}>
             {props.editable && <div onClick={handleClick} />}
             <div
@@ -494,7 +495,7 @@ export function DataThemesBuilderPreviewTheme(
                         visualOptions,
                         `[${props.tabIndex}][${props.vizIndex}].height`,
                         500
-                      )}px;`}
+                      )}px; `}
 
                   * {
                     font-family: "Inter", "Helvetica Neue", sans-serif !important;

@@ -25,8 +25,9 @@ export const styles = {
   `,
   previewInnercontainer: (isEditMode: boolean) => css`
     left: 0;
-    // top: 144px;
-    margin-top: 20px;
+
+    margin-top: 10rem;
+
     max-width: 1280px;
     position: relative;
     align-self: flex-start;

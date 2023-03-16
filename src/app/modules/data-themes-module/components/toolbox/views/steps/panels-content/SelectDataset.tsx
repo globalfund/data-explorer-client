@@ -245,7 +245,7 @@ export function DataThemesToolBoxSelectDataset(
         onClose={handleClose}
         open={Boolean(anchorEl)}
       >
-        {datasets.map((dataset) => (
+        {datasets?.map((dataset) => (
           <StyledMenuItem
             disableRipple
             key={dataset.id}

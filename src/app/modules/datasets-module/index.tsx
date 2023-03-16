@@ -102,7 +102,6 @@ export default function Datasets() {
           handleInputChange={handleInputChange}
           modalDisplay={modalDisplay}
           setModalDisplay={setModalDisplay}
-          title="dataset(s)"
         />
       </Container>
     </div>

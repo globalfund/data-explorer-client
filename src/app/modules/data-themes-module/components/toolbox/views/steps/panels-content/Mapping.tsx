@@ -32,7 +32,6 @@ export function DataThemesToolBoxMapping(props: DataThemesToolBoxMappingProps) {
     <div
       css={`
         width: 100%;
-        height: 350px;
         display: flex;
         flex-direction: column;
       `}
@@ -52,7 +51,7 @@ export function DataThemesToolBoxMapping(props: DataThemesToolBoxMappingProps) {
           overflow-y: auto;
           padding-right: 10px;
           flex-direction: column;
-          height: calc(100% - 24px);
+          max-height: calc(100vh - 340px);
 
           &::-webkit-scrollbar {
             width: 4px;

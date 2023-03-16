@@ -8,7 +8,7 @@ export default function DatasetAddnewCard() {
     history.push("/dataset-upload");
   };
   return (
-    <Grid item xs={12} sm={6} md={6} lg={3}>
+    <Grid item xs={12} sm={6} md={4} lg={3}>
       <div
         css={`
           background: #ffffff;

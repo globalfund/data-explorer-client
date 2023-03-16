@@ -1,4 +1,5 @@
 import Grid from "@material-ui/core/Grid";
+import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 
 import React from "react";
@@ -9,16 +10,17 @@ import GridItem from "./gridItem";
 import { BarIcon, MapIcon, SankeyIcon, TableIcon } from "./vizIcons";
 
 export default function ChartsGrid() {
-  const [cardId, setCardId] = React.useState<string>("");
+  const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
   const [data, setData] = React.useState(
-    datasetsData.map((data) => ({ ...data, id: v4() }))
+    datasetsData.map((data) => ({ ...data, id: "63dd016c20ff974becd6330b" }))
   );
-  const handleDelete = (id: string) => {
-    const newData = data.filter((data, i) => data.id !== id);
+
+  const handleDelete = (id: number) => {
+    const newData = data.filter((data, i) => i !== id);
     setData(newData);
     setModalDisplay(false);
     setEnableButton(false);
@@ -34,7 +36,7 @@ export default function ChartsGrid() {
     }
   };
 
-  const handleModal = (id: string) => {
+  const handleModal = (id: number) => {
     setCardId(id);
     setModalDisplay(true);
   };
@@ -59,8 +61,8 @@ export default function ChartsGrid() {
     <>
       <Grid container spacing={2}>
         <ChartAddnewCard />
-        {datasetsData.map((data, index) => (
-          <Grid item xs={12} sm={6} md={6} lg={3}>
+        {data.map((data, index) => (
+          <Grid item xs={12} sm={6} md={4} lg={3}>
             <GridItem
               key={index}
               date={data.date}
@@ -68,19 +70,19 @@ export default function ChartsGrid() {
               path={data.path}
               title={data.title}
               viz={setViz(data.viz)}
-              handleDelete={() => handleModal(data.id as string)}
+              handleDelete={() => handleModal(index as number)}
+              id={data.id}
             />
           </Grid>
         ))}
       </Grid>
-      <DeleteDatasetDialog
+      <DeleteChartDialog
         cardId={cardId}
         enableButton={enableButton}
         handleDelete={handleDelete}
         handleInputChange={handleInputChange}
         modalDisplay={modalDisplay}
         setModalDisplay={setModalDisplay}
-        title="chart(s)"
       />
     </>
   );

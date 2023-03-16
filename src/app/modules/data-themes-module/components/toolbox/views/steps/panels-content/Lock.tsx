@@ -10,7 +10,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
-import { Grid } from "@material-ui/core";
+import { Grid, Switch } from "@material-ui/core";
 
 interface DataThemesToolBoxLockProps {
   filterOptionGroups: FilterGroupModel[];
@@ -36,6 +36,15 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
     []
   );
 
+  const [drillDownSwitch, setDrillDownSwitch] = React.useState(false);
+
+  const aggregationTypes = [
+    "Locations",
+    "Components",
+    " Partner types ",
+    "Grant status",
+  ];
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const key = event.target.name;
     const value = event.target.checked;
@@ -54,15 +63,12 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
   };
 
   return (
-    <div
-      css={`
-        height: 350px;
-      `}
-    >
+    <div css={``}>
       <div
         css={`
           width: 100%;
-          height: 100%;
+          max-height: calc(100vh - 540px);
+
           display: flex;
           overflow-y: auto;
           padding-right: 15px;
@@ -90,7 +96,7 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
                       }
                       onChange={handleChange}
                       name={optionGroup.name}
-                      color="primary"
+                      color="default"
                       disableRipple
                       disableTouchRipple
                       disableFocusRipple
@@ -106,6 +112,73 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
             ))}
           </Grid>
         </FormGroup>
+        <hr
+          css={`
+            border: 0.6px solid #cfd4da;
+            margin: auto;
+            width: 350px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          `}
+        />
+        <div
+          css={`
+            font-family: "Gotham Narrow";
+            font-weight: 325;
+            color: #262c34;
+          `}
+        >
+          Aggregation Types
+        </div>
+        <FormGroup row>
+          <Grid container>
+            {aggregationTypes.map((name, index) => (
+              <Grid lg={6} item>
+                <FormControlLabel
+                  key={index}
+                  control={
+                    <Checkbox
+                      checked={true}
+                      // onChange={handleChange}
+                      // name={optionGroup.name}
+                      color="default"
+                      disableRipple
+                      disableTouchRipple
+                      disableFocusRipple
+                    />
+                  }
+                  label={name}
+                />
+              </Grid>
+            ))}
+          </Grid>
+        </FormGroup>
+        <hr
+          css={`
+            border: 1px solid #cfd4da;
+            margin: auto;
+            width: 350px;
+            margin-top: 1rem;
+            margin-bottom: 1rem;
+          `}
+        />
+        <div
+          css={`
+            display: flex;
+            gap: 3rem;
+            align-items: center;
+            font-family: "Gotham Narrow";
+            font-weight: 325;
+            color: #262c34;
+          `}
+        >
+          <p>Drill down function</p>
+          <Switch
+            checked={drillDownSwitch}
+            onChange={(e) => setDrillDownSwitch(e.target.checked)}
+            inputProps={{ "aria-label": "primary checkbox" }}
+          />
+        </div>
       </div>
     </div>
   );

@@ -7,10 +7,10 @@ export const styles = {
     width: 400px;
     display: flex;
     position: fixed;
-    background: #f1f3f5;
+    background: #f2f7fd;
     flex-direction: column;
-    top: ${!placeUnderSubHeader ? 40 : 144}px;
-    height: calc(100vh - ${!placeUnderSubHeader ? 48 : 144}px);
+    top: ${!placeUnderSubHeader ? 40 : 97}px;
+    height: calc(100vh - ${!placeUnderSubHeader ? 48 : 97}px);
 
     > section {
       padding: 0 31px 25px 31px;

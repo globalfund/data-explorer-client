@@ -46,7 +46,7 @@ export function DataThemesBuilderDataView() {
       </div>
       <div
         css={`
-          left: 1rem;
+          left: 0rem;
           top: 5rem;
           width: 921px;
           height: 362.6px;

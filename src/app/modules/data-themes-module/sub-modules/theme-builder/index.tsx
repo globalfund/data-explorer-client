@@ -39,10 +39,16 @@ import {
   routeToConfig,
   DataThemeRenderedTabItem,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+import { useMediaQuery } from "@material-ui/core";
+import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 
 export function DataThemesBuilder() {
   const history = useHistory();
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const vizWrapperRef = React.useRef(null);
+
   const { page, view } = useParams<{ page: string; view?: string }>();
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   const [tabsFromAPI, setTabsFromAPI] = React.useState<
     DataThemeRenderedTabItem[][]
@@ -60,7 +66,7 @@ export function DataThemesBuilder() {
     (state) => state.dataThemes.activeVizIndex.value
   );
   const themeIds = useStoreState((state) => state.dataThemes.ids.value);
-
+  console.log(activeTabIndex, "tabindex");
   const {
     loading,
     dataTypes,
@@ -443,7 +449,6 @@ export function DataThemesBuilder() {
     setVizDuplicated(false);
   }, [activeTabIndex]);
 
-  console.log(page, view);
   return (
     <React.Fragment>
       <DataThemesAlertDialog />
@@ -458,30 +463,47 @@ export function DataThemesBuilder() {
           validMapping={getForceNextEnabledValue("mapping")}
           tabsDisabled={config.tabsDisabled && page !== "new" && !isEditMode}
         />
-        <DataThemesToolBox
-          rawViz={rawViz}
-          data={sampleData}
-          dataTypes={dataTypes2}
-          isEditMode={isEditMode}
-          mappedData={mappedData}
-          tabIndex={activeTabIndex}
-          vizIndex={activeVizIndex}
-          loadDataset={loadDataset}
-          textView={config.textView}
-          dataSteps={config.dataSteps}
-          guideView={config.guideView}
-          openPanel={config.openPanel}
-          exportView={config.exportView}
-          filtersView={config.filtersView}
-          loadDataFromAPI={loadDataFromAPI}
-          setVisualOptions={setVisualOptions}
-          visualOptions={toolboxVisualOptions}
-          loading={loading || isDataThemeLoading}
-          filterOptionGroups={filterOptionGroups}
-          addVizToLocalStates={addVizToLocalStates}
-          previewMode={!isEditMode && page !== "new"}
-          forceNextEnabled={getForceNextEnabledValue(view)}
-        />
+
+        {location.pathname == "data-themes/new/preview" ? (
+          <ToolBoxPanel
+            open={openToolboxPanel}
+            vizWrapperRef={vizWrapperRef}
+            onCloseBtnClick={(value?: boolean) =>
+              setOpenToolboxPanel(
+                value !== undefined ? value : !openToolboxPanel
+              )
+            }
+            filterGroups={filterOptionGroups}
+            css={`
+              z-index: 1;
+            `}
+          />
+        ) : (
+          <DataThemesToolBox
+            rawViz={rawViz}
+            data={sampleData}
+            dataTypes={dataTypes2}
+            isEditMode={isEditMode}
+            mappedData={mappedData}
+            tabIndex={activeTabIndex}
+            vizIndex={activeVizIndex}
+            loadDataset={loadDataset}
+            textView={config.textView}
+            dataSteps={config.dataSteps}
+            guideView={config.guideView}
+            openPanel={config.openPanel}
+            exportView={config.exportView}
+            filtersView={config.filtersView}
+            loadDataFromAPI={loadDataFromAPI}
+            setVisualOptions={setVisualOptions}
+            visualOptions={toolboxVisualOptions}
+            loading={loading || isDataThemeLoading}
+            filterOptionGroups={filterOptionGroups}
+            addVizToLocalStates={addVizToLocalStates}
+            previewMode={!isEditMode && page !== "new"}
+            forceNextEnabled={getForceNextEnabledValue(view)}
+          />
+        )}
         <Switch>
           {(isSaveLoading || isDataThemeLoading) && <PageLoader />}
           <Route path={`/data-themes/:page/export`}>

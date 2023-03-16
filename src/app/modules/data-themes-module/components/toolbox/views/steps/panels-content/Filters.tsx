@@ -30,7 +30,7 @@ export function DataThemesToolBoxFilters(props: DataThemesToolBoxFiltersProps) {
         display: flex;
         overflow-y: auto;
         flex-direction: column;
-        max-height: calc(100vh - 460px);
+        max-height: calc(100vh - 260px);
       `}
     >
       {!expandedGroup && (
