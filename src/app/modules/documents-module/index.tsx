@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { v4 } from "uuid";
 
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
@@ -43,7 +44,7 @@ export default function DocumentsModule() {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   }, []);
 
   React.useEffect(() => {

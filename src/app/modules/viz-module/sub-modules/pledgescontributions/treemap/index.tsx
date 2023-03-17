@@ -9,20 +9,15 @@ import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
-// import { SlideInContainer } from "app/components/SlideInPanel";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-// import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-// import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
+import { appColors } from "app/theme";
 
 export function PledgesContributionsTreemap() {
   useTitle("The Data Explorer - Pledges & Contributions/Treemap");
-  // const [vizLevel, setVizLevel] = React.useState(0);
-  // const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -44,20 +39,6 @@ export function PledgesContributionsTreemap() {
   const isLoading = useStoreState(
     (state) => state.PledgesContributionsTreemap.loading
   );
-  // const fetchDrilldownData = useStoreActions(
-  //   (store) => store.DisbursementsTreemapDrilldown.fetch
-  // );
-  // const drilldownData = useStoreState(
-  //   (state) =>
-  //     get(
-  //       state.DisbursementsTreemapDrilldown.data,
-  //       "data",
-  //       []
-  //     ) as DisbursementsTreemapDataItem[]
-  // );
-  // const isDrilldownLoading = useStoreState(
-  //   (state) => state.DisbursementsTreemapDrilldown.loading
-  // );
 
   const [treemapData, setTreemapData] =
     React.useState<BudgetsTreemapDataItem[]>(data);
@@ -109,46 +90,7 @@ export function PledgesContributionsTreemap() {
     );
   }, [data, toolboxPanelDisbursementsSliderValues]);
 
-  // useUpdateEffect(() => {
-  //   if (vizSelected) {
-  //     const splits = vizSelected.split("-");
-  //     if (splits.length > 0) {
-  //       const locations = [...appliedFilters.locations];
-  //       if (props.code) {
-  //         locations.push(props.code);
-  //       }
-  //       locations.push(splits[0]);
-  //       const filterString = getAPIFormattedFilters({
-  //         ...appliedFilters,
-  //         locations,
-  //       });
-  //       fetchDrilldownData({ filterString });
-  //     }
-  //   }
-  // }, [vizSelected]);
-
   const totalBudget = sumBy(treemapData, "value");
-
-  // const vizDrilldowns = useStoreState(
-  //   (state) => state.PageHeaderVizDrilldownsState.value
-  // );
-  // const setVizDrilldowns = useStoreActions(
-  //   (actions) => actions.PageHeaderVizDrilldownsState.setValue
-  // );
-
-  // React.useEffect(() => {
-  //   if (props.vizLevel === 0) {
-  //     setVizDrilldowns([]);
-  //   }
-  //   if (props.vizLevel > 0 && props.vizSelected) {
-  //     setVizDrilldowns([
-  //       { name: "Dataset" },
-  //       { name: props.vizSelected.split("-")[0] },
-  //     ]);
-  //   }
-  // }, [vizLevel, vizSelected]);
-
-  // useUnmount(() => setVizDrilldowns([]));
 
   if (isLoading) {
     return <PageLoader />;
@@ -164,7 +106,7 @@ export function PledgesContributionsTreemap() {
           margin-bottom: 20px;
 
           > div {
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             font-size: 14px;
           }
 
@@ -190,7 +132,7 @@ export function PledgesContributionsTreemap() {
               }
             `}
           >
-            Donors {valueType}s <InfoIcon />
+            Donors {valueType}s
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalBudget)}
@@ -208,7 +150,6 @@ export function PledgesContributionsTreemap() {
             : ""}
         `}
       >
-        {/* <TransitionContainer vizScale={1} vizTranslation={vizTranslation}> */}
         <BudgetsTreemap
           data={treemapData}
           invertColors
@@ -216,32 +157,13 @@ export function PledgesContributionsTreemap() {
           tooltipValueLabel={valueType}
           xsTooltipData={xsTooltipData}
           setXsTooltipData={setXsTooltipData}
-          onNodeClick={(node: string, x: number, y: number, code?: string) => {
-            // if (props.allowDrilldown) {
-            //   props.setVizLevel(1);
-            //   props.setVizSelected(node);
-            //   props.setVizTranslation({ x: x * -1, y: y * -1 });
-            // } else if (props.onNodeClick && code) {
-            //   props.onNodeClick(code);
-            // }
-          }}
+          onNodeClick={(
+            _node: string,
+            _x: number,
+            _y: number,
+            _code?: string
+          ) => {}}
         />
-        {/* </TransitionContainer>
-        <SlideInContainer
-          vizLevel={vizLevel}
-          selected={vizSelected}
-          loading={isDrilldownLoading}
-          close={() => {
-            setVizLevel(0);
-            setVizSelected(undefined);
-            setVizTranslation({ x: 0, y: 0 });
-          }}
-        >
-          <DisbursementsTreemap
-            data={drilldownData}
-            onNodeClick={(node: string, x: number, y: number) => {}}
-          />
-        </SlideInContainer> */}
       </div>
     </React.Fragment>
   );

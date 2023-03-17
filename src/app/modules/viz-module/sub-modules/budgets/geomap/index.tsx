@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { appColors } from "app/theme";
 import uniqueId from "lodash/uniqueId";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
@@ -13,10 +14,7 @@ import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import {
-  AllocationsGeoMapPinMarker,
-  NO_DATA_COLOR,
-} from "app/components/Charts/GeoMap/data";
+import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -193,7 +191,11 @@ export function BudgetsGeoMap(props: Props) {
                 width: 100%;
                 height: 6px;
                 border-radius: 20px;
-                background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
+                background: linear-gradient(
+                  90deg,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_1} 0%,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_12} 100%
+                );
               `}
             />
             <div
@@ -233,8 +235,8 @@ export function BudgetsGeoMap(props: Props) {
                 height: 6px;
                 font-weight: bold;
                 border-radius: 20px;
-                border: 0.5px solid #c7cdd1;
-                background: ${NO_DATA_COLOR};
+                border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
+                background: ${appColors.GEOMAP.NO_DATA_LAYER_COLOR};
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             />

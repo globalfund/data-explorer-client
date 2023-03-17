@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { Search } from "app/components/Search";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
@@ -40,7 +41,9 @@ function MobileHeader() {
           padding-left: 0;
         `}
       >
-        <IconChevronLeft htmlColor="#fff" />
+        <IconChevronLeft
+          htmlColor={appColors.APPBAR.MOBILE_HEADER_CHEVRON_ICON_COLOR}
+        />
       </IconButton>
       <MobileAppbarSearch />
     </React.Fragment>
@@ -55,15 +58,17 @@ export const StyledMenu = withStyles({
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 10,
-      background: "#262c34",
+      background: appColors.APPBAR.DATASETS_MENU_SCROLLBAR_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 10,
-      background: "#dfe3e6",
+      background:
+        appColors.APPBAR.DATASETS_MENU_SCROLLBAR_TRACK_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 10,
-      background: "#262c34",
+      background:
+        appColors.APPBAR.DATASETS_MENU_SCROLLBAR_THUMB_BACKGROUND_COLOR,
     },
   },
   list: {
@@ -91,28 +96,14 @@ export const StyledMenuItem = withStyles(() => ({
   root: {
     padding: 0,
     width: "100%",
-    borderBottom: "1px solid #DFE3E6",
+    borderBottom: `1px solid ${appColors.APPBAR.DATASETS_MENU_ITEM_BORDER_BOTTOM_COLOR}`,
     "& a": {
       width: "100%",
       fontSize: "14px",
-      color: "#262c34",
+      color: appColors.APPBAR.DATASETS_MENU_ITEM_COLOR,
       padding: "10px 12px",
       textDecoration: "none",
     },
-    // "& li": {
-    //   width: "100%",
-    //   fontSize: "14px",
-    //   color: "#262c34",
-    //   padding: "6px 12px",
-    //   textDecoration: "none",
-    // },
-    // "& div": {
-    //   width: "100%",
-    //   fontSize: "14px",
-    //   color: "#262c34",
-    //   padding: "0 12px",
-    //   textDecoration: "none",
-    // },
   },
 }))(MenuItem);
 
@@ -239,7 +230,9 @@ export function AppBar() {
                       css={`
                         height: 100%;
                         display: flex;
-                        color: ${anchorEl ? "#fff" : "#dfe3e6"};
+                        color: ${anchorEl
+                          ? appColors.APPBAR.LINK_ACTIVE_COLOR
+                          : appColors.APPBAR.LINK_COLOR};
                         cursor: pointer;
                         font-size: 14px;
                         font-weight: bold;
@@ -249,7 +242,7 @@ export function AppBar() {
                         text-decoration: none;
 
                         &:hover {
-                          color: #fff;
+                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
                         }
                       `}
                     >
@@ -278,18 +271,18 @@ export function AppBar() {
                     <NavLink
                       to="/about"
                       css={`
-                        color: #dfe3e6;
+                        color: ${appColors.APPBAR.LINK_COLOR};
                         font-size: 14px;
                         font-weight: bold;
                         letter-spacing: 0.5px;
                         text-decoration: none;
 
                         &:hover {
-                          color: #fff;
+                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
                         }
 
                         &.active {
-                          color: #fff;
+                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
                         }
                       `}
                     >
@@ -310,12 +303,19 @@ export function AppBar() {
                     `}
                   >
                     {openSearch ? (
-                      <CloseIcon htmlColor="#fff" />
+                      <CloseIcon
+                        htmlColor={appColors.APPBAR.SEARCH_CLOSE_ICON_COLOR}
+                      />
                     ) : (
                       <svg width="24" height="24" viewBox="0 0 24 24">
-                        <circle cx="12" cy="12" r="12" fill="#DFE3E6" />
+                        <circle
+                          cx="12"
+                          cy="12"
+                          r="12"
+                          fill={appColors.APPBAR.SEARCH_ICON_BACKGROUND_COLOR}
+                        />
                         <path
-                          fill="#262C34"
+                          fill={appColors.APPBAR.SEARCH_ICON_COLOR}
                           d="M14.472 13.4131H13.9143L13.7167 13.2226C14.4084 12.4178 14.8249 11.3731 14.8249 10.2367C14.8249 7.70256 12.7708 5.64844 10.2367 5.64844C7.70256 5.64844 5.64844 7.70256 5.64844 10.2367C5.64844 12.7708 7.70256 14.8249 10.2367 14.8249C11.3731 14.8249 12.4178 14.4084 13.2226 13.7167L13.4131 13.9143V14.472L16.9426 17.9943L17.9943 16.9426L14.472 13.4131ZM10.2367 13.4131C8.47903 13.4131 7.0602 11.9943 7.0602 10.2367C7.0602 8.47903 8.47903 7.0602 10.2367 7.0602C11.9943 7.0602 13.4131 8.47903 13.4131 10.2367C13.4131 11.9943 11.9943 13.4131 10.2367 13.4131Z"
                         />
                       </svg>
@@ -336,7 +336,7 @@ export function AppBar() {
           position: absolute;
 
           path {
-            fill: #fff;
+            fill: ${appColors.COMMON.WHITE};
           }
         `}
       >

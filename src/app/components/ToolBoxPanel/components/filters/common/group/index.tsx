@@ -9,6 +9,7 @@ import {
   FilterGroupModel,
   FilterGroupOptionModel,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { appColors } from "app/theme";
 
 interface FilterGroupCompProps extends FilterGroupModel {
   expandGroup: () => void;
@@ -72,7 +73,8 @@ export function FilterGroup(props: FilterGroupCompProps) {
         display: flex;
         padding: 15px 0;
         flex-direction: column;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -131,15 +133,18 @@ export function FilterGroup(props: FilterGroupCompProps) {
 
             &::-webkit-scrollbar {
               height: 4px;
-              background: #262c34;
+              background: ${appColors.TOOLBOX
+                .FILTERS_SCROLLBAR_BACKGROUND_COLOR};
             }
             &::-webkit-scrollbar-track {
               border-radius: 4px;
-              background: #f5f5f7;
+              background: ${appColors.TOOLBOX
+                .FILTERS_SCROLLBAR_TRACK_BACKGROUND_COLOR};
             }
             &::-webkit-scrollbar-thumb {
               border-radius: 4px;
-              background: #262c34;
+              background: ${appColors.TOOLBOX
+                .FILTERS_SCROLLBAR_THUMB_BACKGROUND_COLOR};
             }
           `}
         >
@@ -155,9 +160,9 @@ export function FilterGroup(props: FilterGroupCompProps) {
                 css={`
                   gap: 6px;
                   display: flex;
-                  color: #262c34;
+                  color: ${appColors.TOOLBOX.FILTER_PILL_TEXT_COLOR};
                   font-size: 10px;
-                  background: #fff;
+                  background: ${appColors.TOOLBOX.FILTER_PILL_BACKGROUND_COLOR};
                   padding: 5px 10px;
                   border-radius: 20px;
                   flex-direction: row;

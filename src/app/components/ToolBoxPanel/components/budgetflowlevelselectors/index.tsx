@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { appColors } from "app/theme";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
@@ -35,7 +36,8 @@ export function ToolBoxPanelBudgetFlowLevelSelectors() {
         flex-direction: row;
         align-items: center;
         padding: 15px 35px 15px 25px;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {

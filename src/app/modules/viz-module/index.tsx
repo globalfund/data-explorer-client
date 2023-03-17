@@ -1,6 +1,7 @@
 /* third-party */
-import React, { useEffect, useState } from "react";
+import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import startCase from "lodash/startCase";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
@@ -44,10 +45,10 @@ export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
-  const [subTypeCopy, setSubTypeCopy] = useState(params.subType);
+  const [subTypeCopy, setSubTypeCopy] = React.useState(params.subType);
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   }, []);
 
   React.useEffect(() => {
@@ -100,7 +101,7 @@ export default function VizModule() {
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     setBreadCrumList((list) => {
       if (list[list.length - 1]?.vizSelected) {
         return [
@@ -294,10 +295,7 @@ export default function VizModule() {
           </Route>
           {/* Pledges & Contributions */}
           <Route path="/viz/pledges-contributions/time-cycle">
-            <PledgesContributionsTimeCycleModule
-              toolboxOpen={openToolboxPanel}
-              setOpenToolboxPanel={setOpenToolboxPanel}
-            />
+            <PledgesContributionsTimeCycleModule />
           </Route>
           <Route path="/viz/pledges-contributions/table">
             <PledgesContributionsTable />

@@ -20,6 +20,7 @@ import {
   FilterGroupProps,
   FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { appColors } from "app/theme";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
@@ -351,11 +352,13 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               position: relative;
               padding: 10px 20px;
               border-radius: 20px;
-              background: #dfe3e6;
+              background: ${appColors.TOOLBOX
+                .FILTERS_EXPANDED_GROUP_SEARCH_BACKGROUND_COLOR};
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
 
               path {
-                fill: #98a1aa;
+                fill: ${appColors.TOOLBOX
+                  .FILTERS_EXPANDED_GROUP_SEARCH_ICON_COLOR};
               }
             `}
           >
@@ -364,10 +367,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               css={`
                 width: 100%;
                 outline: none;
-                color: #262c34;
+                color: ${appColors.TOOLBOX
+                  .FILTERS_EXPANDED_GROUP_SEARCH_TEXT_COLOR};
                 font-size: 14px;
                 border-style: none;
-                background: #dfe3e6;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_EXPANDED_GROUP_SEARCH_BACKGROUND_COLOR};
               `}
               tabIndex={0}
               value={value}
@@ -382,7 +387,8 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               width: 100%;
               height: 25px;
 
-              border-bottom: 1px solid #dfe3e6;
+              border-bottom: 1px solid
+                ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
             `}
           />
 
@@ -399,15 +405,18 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               &::-webkit-scrollbar {
                 width: 4px;
                 border-radius: 4px;
-                background: #262c34;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_SCROLLBAR_BACKGROUND_COLOR};
               }
               &::-webkit-scrollbar-track {
                 border-radius: 4px;
-                background: #f5f5f7;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_SCROLLBAR_TRACK_BACKGROUND_COLOR};
               }
               &::-webkit-scrollbar-thumb {
                 border-radius: 4px;
-                background: #262c34;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_SCROLLBAR_THUMB_BACKGROUND_COLOR};
               }
             `}
           >
@@ -436,7 +445,8 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
             type="button"
             onClick={handleApply}
             css={`
-              color: #fff;
+              color: ${appColors.TOOLBOX
+                .FILTERS_EXPANDED_GROUP_APPLY_BUTTON_TEXT_COLOR};
               margin: 30px 0;
               font-size: 14px;
               cursor: pointer;
@@ -445,7 +455,8 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               padding: 10px 20px;
               border-style: none;
               border-radius: 20px;
-              background: #262c34;
+              background: ${appColors.TOOLBOX
+                .FILTERS_EXPANDED_GROUP_APPLY_BUTTON_BACKGROUND_COLOR};
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
@@ -475,7 +486,8 @@ function FilterOption(props: FilterOptionProps) {
         width: 100%;
         display: flex;
         flex-direction: column;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
         border-bottom-style: ${props.subOptions ? "solid" : "none"};
       `}
     >

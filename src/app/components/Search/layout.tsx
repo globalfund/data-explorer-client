@@ -2,12 +2,14 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
 import { SearchIcon } from "app/assets/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
+import { categories } from "app/components/Search/data";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronRight from "app/assets/icons/IconChevronRight";
@@ -24,7 +26,6 @@ import {
   mobilecontainer,
   mobilebackbutton,
 } from "app/components/Search/styles";
-import { categories } from "app/components/Search/data";
 
 interface SearchLayoutProps {
   value: string;
@@ -42,20 +43,20 @@ const StyledMenu = withStyles({
   paper: {
     width: 200,
     borderRadius: 10,
-    background: "#dfe3e6",
+    background: appColors.SEARCH.DROPDOWN_BACKGROUND_COLOR,
     boxShadow: "0px 0px 10px rgba(152, 161, 170, 0.6)",
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 2,
-      background: "#262c34",
+      background: appColors.SEARCH.DROPDOWN_SCROLLBAR_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 2,
-      background: "#dfe3e6",
+      background: appColors.SEARCH.DROPDOWN_SCROLLBAR_TRACK_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 2,
-      background: "#262c34",
+      background: appColors.SEARCH.DROPDOWN_SCROLLBAR_THUMB_BACKGROUND_COLOR,
     },
   },
   list: {
@@ -83,15 +84,15 @@ const StyledMenuItem = withStyles(() => ({
   root: {
     height: 40,
     width: "100%",
-    color: "#262c34",
+    color: appColors.SEARCH.DROPDOWN_ITEM_BACKGROUND_COLOR,
     fontSize: "14px",
     padding: "0 12px",
     "& svg": {
       marginRight: "14px",
     },
     "&:hover": {
-      color: "#fff",
-      background: "#262c34",
+      color: appColors.SEARCH.DROPDOWN_ITEM_HOVER_COLOR,
+      background: appColors.SEARCH.DROPDOWN_ITEM_HOVER_BACKGROUND_COLOR,
     },
   },
 }))(MenuItem);
@@ -181,18 +182,19 @@ export function SearchLayout(props: SearchLayoutProps) {
               width: 200px;
               font-size: 14px;
               padding: 6px 16px;
-              background: #cfd4da;
+              background: ${appColors.SEARCH.DROPDOWN_BUTTON_BACKGROUND_COLOR};
               text-transform: capitalize;
               max-width: calc(50vw - 32px);
               border-radius: 20px 0 0 20px;
 
               &:hover {
-                color: #fff;
-                background: #262c34;
+                color: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR};
+                background: ${appColors.SEARCH
+                  .DROPDOWN_BUTTON_BACKGROUND_HOVER_COLOR};
 
                 svg {
                   > path {
-                    fill: #fff;
+                    fill: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_HOVER_COLOR};
                   }
                 }
               }
@@ -206,7 +208,7 @@ export function SearchLayout(props: SearchLayoutProps) {
                 transform: rotate(${anchorEl ? "180" : "0"}deg);
 
                 > path {
-                  fill: #262c34;
+                  fill: ${appColors.SEARCH.DROPDOWN_BUTTON_TEXT_COLOR};
                 }
               }
             `}
@@ -239,8 +241,8 @@ export function SearchLayout(props: SearchLayoutProps) {
                 css={`
                   ${props.category === category.label &&
                   `
-                    color: #fff;
-                    background: #262c34;
+                    color: ${appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_COLOR};
+                    background: ${appColors.SEARCH.DROPDOWN_ITEM_ACTIVE_BACKGROUND_COLOR};
                   `}
                 `}
               >

@@ -1,661 +1,697 @@
 import React from "react";
+import { appColors } from "app/theme";
 
 export const BudgetFlowPreview = () => (
   <svg width="554" height="283" viewBox="0 0 554 283">
-    <rect y="47.5832" width="3.11236" height="28.2468" fill="#373D43" />
-    <rect y="75.8307" width="3.11236" height="41.1733" fill="#373D43" />
-    <rect y="117.004" width="3.11236" height="78.9952" fill="#373D43" />
-    <rect y="127.538" width="3.11236" height="78.9952" fill="#373D43" />
-    <rect y="195.999" width="3.11236" height="55.0573" fill="#373D43" />
-    <rect y="232.243" width="3.11236" height="18.6751" fill="#373D43" />
+    <rect
+      y="47.5832"
+      width="3.11236"
+      height="28.2468"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
+    />
+    <rect
+      y="75.8307"
+      width="3.11236"
+      height="41.1733"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
+    />
+    <rect
+      y="117.004"
+      width="3.11236"
+      height="78.9952"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
+    />
+    <rect
+      y="127.538"
+      width="3.11236"
+      height="78.9952"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
+    />
+    <rect
+      y="195.999"
+      width="3.11236"
+      height="55.0573"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
+    />
+    <rect
+      y="232.243"
+      width="3.11236"
+      height="18.6751"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
+    />
     <rect
       x="147.526"
       y="211.798"
       width="3.11236"
       height="7.66015"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="219.458"
       width="3.11236"
       height="10.0539"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="229.512"
       width="3.11236"
       height="21.5442"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="251.056"
       width="3.11236"
       height="15.799"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="0.18602"
       width="3.11236"
       height="3.35131"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="3.53729"
       width="3.11236"
       height="4.30883"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="7.84576"
       width="3.11236"
       height="7.66015"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="15.5061"
       width="3.11236"
       height="10.5327"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="40.8806"
       width="3.11236"
       height="10.5327"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="51.4131"
       width="3.11236"
       height="8.61766"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="60.0312"
       width="3.11236"
       height="7.66015"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="67.691"
       width="3.11236"
       height="11.969"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="97.852"
       width="3.11236"
       height="2.87255"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="100.725"
       width="3.11236"
       height="3.35131"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="104.076"
       width="3.11236"
       height="1.43655"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="105.513"
       width="3.11236"
       height="2.39425"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="120.833"
       width="3.11236"
       height="12.4477"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="133.28"
       width="3.11236"
       height="13.884"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="147.165"
       width="3.11236"
       height="11.969"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="159.134"
       width="3.11236"
       height="4.30883"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="263.025"
       width="3.11236"
       height="3.35131"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="211.798"
       width="3.11236"
       height="5.74511"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="175.411"
       width="3.11236"
       height="2.87255"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="266.376"
       width="3.11236"
       height="5.74511"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="217.542"
       width="3.11236"
       height="18.6716"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="178.284"
       width="3.11236"
       height="6.70263"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="272.121"
       width="3.11236"
       height="4.78759"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="184.987"
       width="3.11236"
       height="11.0115"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="236.214"
       width="3.11236"
       height="4.78759"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="276.909"
       width="3.11236"
       height="3.83007"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="241.002"
       width="3.11236"
       height="11.969"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="249.001"
       width="3.11236"
       height="3.8308"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="349.207"
       y="195.998"
       width="3.11236"
       height="2.39425"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="36.3856"
       width="3.11236"
       height="0.957699"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="49.7907"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="194.377"
       width="3.11236"
       height="1.43655"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="61.2816"
       width="3.11236"
       height="5.74511"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="84.262"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="175.225"
       width="3.11236"
       height="0.957699"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="91.4432"
       width="3.11236"
       height="0.957699"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="102.455"
       width="3.11236"
       height="1.43655"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="112.987"
       width="3.11236"
       height="0.957699"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="263.318"
       width="3.11236"
       height="3.35131"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="211.612"
       width="3.11236"
       height="5.74511"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="120.648"
       width="3.11236"
       height="12.4477"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="37.3434"
       width="3.11236"
       height="4.78759"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="50.2693"
       width="3.11236"
       height="3.35131"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="195.812"
       width="3.11236"
       height="1.43655"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="67.0264"
       width="3.11236"
       height="2.87255"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="176.184"
       width="3.11236"
       height="3.83007"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="92.4003"
       width="3.11236"
       height="1.43655"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="103.892"
       width="3.11236"
       height="1.43655"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="113.944"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="266.669"
       width="3.11236"
       height="6.22387"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="217.358"
       width="3.11236"
       height="18.6716"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="133.096"
       width="3.11236"
       height="13.884"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="41.6524"
       width="3.11236"
       height="2.39425"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="53.6218"
       width="3.11236"
       height="1.43655"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="196.77"
       width="3.11236"
       height="2.39425"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="69.8991"
       width="3.11236"
       height="6.22387"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="84.74"
       width="3.11236"
       height="0.957699"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="178.578"
       width="3.11236"
       height="9.09642"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="93.8373"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="105.327"
       width="3.11236"
       height="0.957699"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="114.424"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="272.893"
       width="3.11236"
       height="4.78759"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="146.979"
       width="3.11236"
       height="11.969"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="236.029"
       width="3.11236"
       height="4.78759"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="44.0459"
       width="3.11236"
       height="3.35131"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="55.057"
       width="3.11236"
       height="2.39425"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="199.164"
       width="3.11236"
       height="2.39425"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="76.1231"
       width="3.11236"
       height="2.87255"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="77.0944"
       width="3.11236"
       height="1.9154"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="187.674"
       width="3.11236"
       height="0.957699"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="94.3159"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="106.285"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="114.902"
       width="3.11236"
       height="0.478849"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="277.68"
       width="3.11236"
       height="3.83007"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="240.816"
       width="3.11236"
       height="11.969"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="246.129"
       width="3.11236"
       height="6.70389"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="158.948"
       width="3.11236"
       height="4.30883"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
-    <rect x="550.888" width="3.11236" height="4.30883" fill="#373D43" />
+    <rect
+      x="550.888"
+      width="3.11236"
+      height="4.30883"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
+    />
     <rect
       x="550.887"
       y="4.30905"
       width="3.11236"
       height="6.22387"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="10.5331"
       width="3.11236"
       height="4.30883"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="550.887"
       y="14.8421"
       width="3.11236"
       height="11.0115"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <path
       d="M147.526 68.7914H150.638V79.7354H147.526V68.7914Z"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="19.2824"
       width="3.11236"
       height="6.70263"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="25.5366"
       width="3.11236"
       height="18.6716"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="43.7765"
       width="3.11236"
       height="8.33826"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="52.1144"
       width="3.11236"
       height="16.6765"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="107.428"
       width="3.11236"
       height="7.18139"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="114.61"
       width="3.11236"
       height="11.969"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="126.579"
       width="3.11236"
       height="37.3432"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <rect
       x="147.526"
       y="163.922"
       width="3.11236"
       height="24.4167"
-      fill="#373D43"
+      fill={appColors.COMMON.SECONDARY_COLOR_1}
     />
     <path
       d="M144.098 79.7948V19.3289C77.0427 51.3249 30.3468 47.7246 6.84711 47.7246V250.858C112.039 250.858 118.427 259.831 144.119 266.892V211.878C127.963 199.368 40.2952 189.562 40.2952 189.562C40.2952 189.562 116.329 188.284 144.119 188.284L144.647 107.321C133.56 107.321 71.3195 107.655 40.2952 107.655C133.853 99.2068 140.992 81.7366 144.098 79.7948Z"
@@ -726,7 +762,7 @@ export const BudgetFlowPreview = () => (
         y2="172.07"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -737,7 +773,7 @@ export const BudgetFlowPreview = () => (
         y2="157.459"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -748,7 +784,7 @@ export const BudgetFlowPreview = () => (
         y2="46.1098"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -759,7 +795,7 @@ export const BudgetFlowPreview = () => (
         y2="252.29"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -770,7 +806,7 @@ export const BudgetFlowPreview = () => (
         y2="6.3085"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -781,7 +817,7 @@ export const BudgetFlowPreview = () => (
         y2="260.657"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -792,7 +828,7 @@ export const BudgetFlowPreview = () => (
         y2="231.037"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -803,7 +839,7 @@ export const BudgetFlowPreview = () => (
         y2="164.876"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -814,7 +850,7 @@ export const BudgetFlowPreview = () => (
         y2="49.7052"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -825,7 +861,7 @@ export const BudgetFlowPreview = () => (
         y2="82.0504"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -836,7 +872,7 @@ export const BudgetFlowPreview = () => (
         y2="58.7671"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -847,7 +883,7 @@ export const BudgetFlowPreview = () => (
         y2="141.17"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -858,7 +894,7 @@ export const BudgetFlowPreview = () => (
         y2="81.7481"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -869,7 +905,7 @@ export const BudgetFlowPreview = () => (
         y2="41.7272"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
       <linearGradient
@@ -880,7 +916,7 @@ export const BudgetFlowPreview = () => (
         y2="178.485"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#C7CDD1" />
+        <stop stopColor={appColors.COMMON.SECONDARY_COLOR_11} />
         <stop offset="0.734375" stopColor="white" />
       </linearGradient>
     </defs>

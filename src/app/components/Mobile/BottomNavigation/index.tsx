@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import HomeIcon from "@material-ui/icons/Home";
@@ -17,7 +18,7 @@ const useStyles = makeStyles({
     zIndex: 100,
     width: "100%",
     position: "fixed",
-    borderTop: "1px solid #dfe3e6",
+    borderTop: `1px solid ${appColors.COMMON.SECONDARY_COLOR_7}`,
   },
 });
 
@@ -97,10 +98,14 @@ export function MobileBottomNavigation() {
             label={btn.label}
             css={`
               && {
-                color: ${isActive ? "#262C34" : "#70777e"};
+                color: ${isActive
+                  ? appColors.COMMON.PRIMARY_COLOR_1
+                  : appColors.COMMON.SECONDARY_COLOR_2};
 
                 svg {
-                  fill: ${isActive ? "#262C34" : "#70777e"};
+                  fill: ${isActive
+                    ? appColors.COMMON.PRIMARY_COLOR_1
+                    : appColors.COMMON.SECONDARY_COLOR_2};
                 }
               }
             `}

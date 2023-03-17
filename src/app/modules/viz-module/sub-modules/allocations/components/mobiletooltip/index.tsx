@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
@@ -12,8 +13,8 @@ export function AllocationsRadialMobileTooltip(
     <div
       css={`
         padding: 25px;
-        color: #262c34;
-        background: #fff;
+        color: ${appColors.ALLOCATIONS.MOBILE_TOOLTIP_COLOR};
+        background: ${appColors.ALLOCATIONS.MOBILE_TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
         box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
       `}
@@ -25,7 +26,7 @@ export function AllocationsRadialMobileTooltip(
             justify-content flex-end;
 
             path {
-              fill: #2E4063;
+              fill: ${appColors.ALLOCATIONS.MOBILE_TOOLTIP_CLOSE_ICON_COLOR};
             }
           `}
       >
@@ -47,7 +48,8 @@ export function AllocationsRadialMobileTooltip(
           padding-bottom: 16px;
           align-items: flex-end;
           justify-content: space-between;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid
+            ${appColors.ALLOCATIONS.MOBILE_TOOLTIP_BORDER_COLOR};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -68,15 +70,17 @@ export function AllocationsRadialMobileTooltip(
         css={`
           width: 100%;
           margin-top: 20px;
-          background: #dfe3e6;
+          background: ${appColors.ALLOCATIONS
+            .MOBILE_TOOLTIP_DRILLDOWN_BACKGROUND_COLOR};
           border-radius: 22px;
 
           &:hover {
-            background: #dfe3e6;
+            background: ${appColors.ALLOCATIONS
+              .MOBILE_TOOLTIP_DRILLDOWN_BACKGROUND_HOVER_COLOR};
           }
 
           > span {
-            color: #262c34;
+            color: ${appColors.ALLOCATIONS.MOBILE_TOOLTIP_DRILLDOWN_COLOR};
             font-size: 14px;
             font-weight: bold;
             text-transform: none;

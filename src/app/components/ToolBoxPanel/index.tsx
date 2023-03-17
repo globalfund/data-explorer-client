@@ -17,6 +17,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
+import { appColors } from "app/theme";
 
 export interface ToolBoxPanelProps {
   open: boolean;
@@ -155,7 +156,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               width: 400px;
               top: ${top}px;
               position: fixed;
-              background: #f5f5f7;
+              background: ${appColors.TOOLBOX.BACKGROUND_COLOR};
               height: calc(100vh - ${top}px);
               visibility: visible !important;
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
@@ -183,13 +184,13 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                   tabIndex={-1}
                   css={`
                     top: 38%;
-                    color: #fff;
+                    color: ${appColors.TOOLBOX.BUTTON_COLOR};
                     width: 16px;
                     height: 133px;
                     display: flex;
                     cursor: pointer;
                     position: absolute;
-                    background: #262c34;
+                    background: ${appColors.TOOLBOX.BUTTON_BACKGROUND_COLOR};
                     align-items: center;
                     flex-direction: column;
                     justify-content: center;
@@ -200,13 +201,14 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     left: -16px;
 
                     &:hover {
-                      background: #13183f;
+                      background: ${appColors.TOOLBOX
+                        .BUTTON_BACKGROUND_HOVER_COLOR};
                     }
 
                     > svg {
                       transform: rotate(${!props.open ? "-" : ""}90deg);
                       > path {
-                        fill: #fff;
+                        fill: ${appColors.COMMON.WHITE};
                       }
                     }
                   `}
@@ -225,7 +227,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                         display: flex;
                         flex-direction: row;
                         justify-content: space-between;
-                        border-bottom: 1px solid #dfe3e6;
+                        border-bottom: 1px solid
+                          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
                       `}
                     >
                       <div
@@ -245,7 +248,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                         onClick={() => props.onCloseBtnClick()}
                       >
                         <CloseOutlinedIcon
-                          htmlColor="#2E4063"
+                          htmlColor={appColors.COMMON.PRIMARY_COLOR_1}
                           viewBox=" -4 -4 30 30"
                         />
                       </IconButton>

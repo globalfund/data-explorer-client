@@ -1,8 +1,9 @@
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useCMSData } from "app/hooks/useCMSData";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 interface Props {
   name: number;
@@ -35,7 +36,7 @@ export function GrantsRadialTooltip(props: Props) {
     <React.Fragment>
       <div
         css={`
-          color: #262c34;
+          color: ${appColors.COMMON.PRIMARY_COLOR_1};
           font-size: 18px;
           font-weight: bold;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
@@ -47,7 +48,7 @@ export function GrantsRadialTooltip(props: Props) {
         css={`
           margin: 15px 0;
           border-radius: 20px;
-          border: 1px solid #dfe3e6;
+          border: 1px solid ${appColors.GRANTS.TOOLTIP_BORDER_COLOR};
         `}
       />
       <div css={rowcss}>
@@ -61,7 +62,9 @@ export function GrantsRadialTooltip(props: Props) {
         </div>
       </div>
       <div css={rowcss}>
-        <div>{get(cmsData, "componentsChartsGrants.tooltipDisbursements", "")}</div>
+        <div>
+          {get(cmsData, "componentsChartsGrants.tooltipDisbursements", "")}
+        </div>
         <div>{formatFinancialValue(props.value)}</div>
       </div>
       <div css={rowcss}>
@@ -74,7 +77,10 @@ export function GrantsRadialTooltip(props: Props) {
       </div>
       <div css={rowcss}>
         <div>{get(cmsData, "componentsChartsGrants.tooltipRating", "")}</div>
-        <div>{props.rating || get(cmsData, "componentsChartsGrants.tooltipRatingDefault", "")}</div>
+        <div>
+          {props.rating ||
+            get(cmsData, "componentsChartsGrants.tooltipRatingDefault", "")}
+        </div>
       </div>
     </React.Fragment>
   );

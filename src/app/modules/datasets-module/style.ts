@@ -1,3 +1,4 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const dataSetsCss = css`
@@ -13,10 +14,10 @@ export const dataSetsGridCss = css`
   width: 100%;
   height: 28vh;
   padding: 20px;
-  color: #262c34;
-  background: #fff;
+  color: ${appColors.COMMON.PRIMARY_COLOR_1};
+  background: ${appColors.COMMON.WHITE};
   border-radius: 20px;
-  border: 2px solid #fff;
+  border: 2px solid ${appColors.COMMON.WHITE};
 
   @media screen and (min-width: 900px) {
     height: 370px;
@@ -39,7 +40,7 @@ export const dataSetsGridCss = css`
   }
 
   &:hover {
-    border-color: #13183f;
+    border-color: ${appColors.COMMON.SECONDARY_COLOR_13};
   }
 `;
 

@@ -1,12 +1,13 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { useMediaQuery } from "@material-ui/core";
+import { useCMSData } from "app/hooks/useCMSData";
 import LinkList from "app/modules/about-module/links";
 import { PageHeader } from "app/components/PageHeader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export default function About() {
   const cmsData = useCMSData({ returnData: true });
@@ -14,7 +15,7 @@ export default function About() {
   useTitle(get(cmsData, "modulesAbout.title", ""));
 
   React.useEffect(() => {
-    document.body.style.background = "#F5F5F7";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_2;
   }, []);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -72,7 +73,7 @@ export default function About() {
               }
               > p {
                 > a {
-                  color: #000;
+                  color: ${appColors.ABOUT_PAGE.LINK_COLOR};
                 }
               }
             }

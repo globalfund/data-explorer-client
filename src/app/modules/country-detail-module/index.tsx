@@ -1,10 +1,10 @@
 /* third-party */
-import React, { useEffect, useMemo } from "react";
-import get from "lodash/get";
-import { startCase } from "lodash";
-import { useRecoilState } from "recoil";
+import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import queryString from "query-string";
+import { useRecoilState } from "recoil";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -102,7 +102,7 @@ export default function CountryDetail() {
 
   React.useEffect(() => {
     if (location.pathname.indexOf("/overview") === -1) {
-      document.body.style.background = "#fff";
+      document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     }
     countrySummaryCMSAction({
       values: {
@@ -156,8 +156,9 @@ export default function CountryDetail() {
     return 0;
   }
 
-  const breadcrumbID = useMemo(() => v4(), []);
-  useEffect(() => {
+  const breadcrumbID = React.useMemo(() => v4(), []);
+
+  React.useEffect(() => {
     if (breadCrumbList.length < 1) {
       setBreadCrumList([
         { name: "Datasets", path: "/", id: v4() },
@@ -177,14 +178,10 @@ export default function CountryDetail() {
             name: components || locationInfoData.locationName,
             path: location.pathname,
             id: breadcrumbID,
-            // vizSelected:
           },
-          // prevViz,
         ]);
     }
   }, [locationInfoData]);
-
-  console.log(locationInfoData, "loc");
 
   const tabs = countryDetailTabs;
 

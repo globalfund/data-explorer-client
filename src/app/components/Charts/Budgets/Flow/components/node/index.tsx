@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const styles = {
@@ -13,7 +14,7 @@ export const styles = {
   nodeStyle: css`
     cursor: pointer;
     &:hover {
-      stroke: #13183f;
+      stroke: ${appColors.BUDGETS_FLOW.NODE_STROKE_HOVER_COLOR};
       stroke-width: 3px;
     }
   `,
@@ -38,7 +39,7 @@ function getInnerNodes(
         y={localPrevY}
         height={height}
         strokeWidth={1}
-        stroke="#252C34"
+        stroke={appColors.COMMON.PRIMARY_COLOR_1}
         fill={item.color}
         width={node.width}
         css={_selectedNode && !selectedNode ? "opacity: 0.3;" : ""}

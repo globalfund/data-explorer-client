@@ -1,23 +1,19 @@
 /* third-party */
 import React from "react";
 import { v4 } from "uuid";
-
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
+import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
-import { mockdata2 } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -177,13 +173,13 @@ export function InvestmentsTimeCycleModule(
         />
       );
     } else if (props.vizLevel === 2) {
-      vizComponent = (
-        <DisbursementsTreemap
-          data={mockdata2}
-          selectedNodeId={props.vizSelected}
-          onNodeClick={(node: string, x: number, y: number) => {}}
-        />
-      );
+      // vizComponent = (
+      //   <DisbursementsTreemap
+      //     data={}
+      //     selectedNodeId={props.vizSelected}
+      //     onNodeClick={(node: string, x: number, y: number) => {}}
+      //   />
+      // );
     }
   }
 

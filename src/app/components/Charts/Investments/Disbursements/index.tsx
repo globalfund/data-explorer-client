@@ -2,11 +2,14 @@
 /* eslint-disable import/no-cycle */
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ResponsiveTreeMapHtml, TreeMapNodeDatum } from "@nivo/treemap";
 /* project */
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import {
   TooltipButton,
@@ -17,8 +20,6 @@ import { DisbursementsTreemapProps } from "app/components/Charts/Investments/Dis
 import { NoDataTreemap } from "app/components/Charts/Investments/Disbursements/components/nodata";
 import { TreemapTooltip } from "app/components/Charts/Investments/Disbursements/components/tooltip";
 import { TreeemapNode } from "app/components/Charts/Investments/Disbursements/components/treemapnode";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
   const cmsData = useCMSData({ returnData: true });
@@ -55,10 +56,10 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
         > div {
           > div {
             > div:first-of-type {
-              background: #373d43;
+              background: ${appColors.TREEMAP.BACKGROUND_COLOR};
 
               @media (max-width: 767px) {
-                background: #fff;
+                background: ${appColors.COMMON.WHITE};
               }
             }
           }
@@ -115,8 +116,8 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                   borderRadius: 20,
                   padding: "16px 25px",
                   position: "relative",
-                  backgroundColor: "#f5f5f7",
                   display: isMobile || isTouchDevice() ? "none" : "inherit",
+                  backgroundColor: appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR,
                 },
               },
             }}
@@ -147,20 +148,21 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
                 css={`
                   padding: 16px 25px;
                   position: relative;
-                  background: #f5f5f7;
+                  background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
                   border-radius: 20px;
 
                   > div {
-                    background: #f5f5f7 !important;
+                    background: ${appColors.TREEMAP
+                      .TOOLTIP_BACKGROUND_COLOR} !important;
                   }
 
                   @media (max-width: 767px) {
                     padding: 16px;
-                    background: #fff;
+                    background: ${appColors.COMMON.WHITE};
                     box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
 
                     > div {
-                      background: #fff !important;
+                      background: ${appColors.COMMON.WHITE} !important;
                     }
                   }
                 `}

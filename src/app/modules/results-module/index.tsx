@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -46,7 +47,7 @@ export default function ResultsModule() {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchYearOptionsData({});
   }, []);
 

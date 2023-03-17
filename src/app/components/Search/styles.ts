@@ -1,8 +1,9 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const container = (focused: boolean, withCatMenu: boolean) => css`
   display: flex;
-  background: #fff;
+  background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
   position: relative;
   padding: 10px 20px;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
@@ -14,7 +15,7 @@ export const container = (focused: boolean, withCatMenu: boolean) => css`
       ? `
       padding: 5px;
       border-radius: 0;
-      border-bottom: 1px solid #262c34;
+      border-bottom: 1px solid ${appColors.SEARCH.CONTAINER_BORDER_COLOR};
     `
       : ""}
   }
@@ -35,14 +36,14 @@ export const mobilecontainer = (focused: boolean) => css`
       left: -16px;
       width: 100vw;
       height: 100vh;
-      background: #fff;
+      background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
       position: absolute;
       padding: 20px 12px 0 12px;
 
       > div {
         padding: 5px;
         border-radius: 0;
-        border-bottom: 1px solid #262c34;
+        border-bottom: 1px solid ${appColors.SEARCH.CONTAINER_BORDER_COLOR};
 
         > span {
           display: block !important;
@@ -55,14 +56,14 @@ export const mobilecontainer = (focused: boolean) => css`
       left: -16px;
       width: 100vw;
       height: 100vh;
-      background: #fff;
+      background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
       position: absolute;
       padding: 20px 12px 0 12px;
 
       > div {
         padding: 5px;
         border-radius: 0;
-        border-bottom: 1px solid #262c34;
+        border-bottom: 1px solid ${appColors.SEARCH.CONTAINER_BORDER_COLOR};
 
         > span {
           display: block !important;
@@ -76,9 +77,9 @@ export const mobilecontainer = (focused: boolean) => css`
 export const input = css`
   width: 100%;
   outline: none;
-  color: #262c34;
+  color: ${appColors.SEARCH.INPUT_COLOR};
   font-size: 14px;
-  background: #fff;
+  background: ${appColors.SEARCH.INPUT_BACKGROUND_COLOR};
   font-weight: 400;
   border-style: none;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
@@ -96,7 +97,7 @@ export const mobilebackbutton = css`
   > svg {
     transform: rotate(180deg) scale(1.5);
     > path {
-      fill: #000;
+      fill: ${appColors.COMMON.PRIMARY_COLOR_1};
     }
   }
 `;

@@ -1,5 +1,6 @@
 import React from "react";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Table from "@material-ui/core/Table";
 import Collapse from "@material-ui/core/Collapse";
@@ -25,7 +26,7 @@ const useRowStyles = makeStyles({
   root: {
     "& > *": {
       userSelect: "none",
-      borderBottom: "1px solid #DFE3E6",
+      borderBottom: `1px solid ${appColors.TABLE.BORDER_BOTTOM_COLOR}`,
     },
   },
 });
@@ -53,20 +54,22 @@ function Row(props: {
         }}
         css={`
           transition: background 0.2s ease-in-out;
-          background: ${props.paddingLeft ? "#fff" : "#f5f5f7"};
+          background: ${props.paddingLeft
+            ? appColors.TABLE.ROW_BACKGROUND_COLOR_1
+            : appColors.TABLE.ROW_BACKGROUND_COLOR_2};
 
           ${row.link || props.row.docCategories || props.row.docs
             ? `
           :hover {
             cursor: pointer;
-            background: #262C34;
+            background: ${appColors.TABLE.ROW_BACKGROUND_HOVER_COLOR};
 
             > td {
-              color: #fff;
+              color: ${appColors.TABLE.ROW_TEXT_HOVER_COLOR};
             }
             
             path {
-              fill: #fff;
+              fill: ${appColors.TABLE.ROW_TEXT_HOVER_COLOR};
             }
           }
           `
@@ -141,7 +144,11 @@ function Row(props: {
             }
           `}
         >
-          {row.link ? <DownloadIcon htmlColor="#495057" /> : row.count}
+          {row.link ? (
+            <DownloadIcon htmlColor={appColors.TABLE.DOWNLOAD_ICON_COLOR} />
+          ) : (
+            row.count
+          )}
         </TableCell>
       </TableRow>
       <TableRow

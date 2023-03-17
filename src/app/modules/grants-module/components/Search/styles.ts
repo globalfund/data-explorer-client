@@ -1,3 +1,4 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const container = css`
@@ -6,20 +7,20 @@ export const container = css`
   position: relative;
   padding: 10px 20px;
   border-radius: 20px;
-  background: #dfe3e6;
+  background: ${appColors.GRANT_LIST.SEARCH_CONTAINER_BACKGROUND_COLOR};
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
 `;
 
 export const input = css`
   width: 100%;
   outline: none;
-  color: #262c34;
+  color: ${appColors.GRANT_LIST.SEARCH_INPUT_COLOR};
   font-size: 14px;
   border-style: none;
-  background: #dfe3e6;
+  background: ${appColors.GRANT_LIST.SEARCH_INPUT_BACKGROUND_COLOR};
 
   ::placeholder {
-    color: #262c34;
+    color: ${appColors.GRANT_LIST.SEARCH_INPUT_COLOR};
     font-weight: bold;
   }
 

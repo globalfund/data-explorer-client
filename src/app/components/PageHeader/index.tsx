@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { useHistory } from "react-router-dom";
@@ -28,7 +29,7 @@ const styles = {
     display: flex;
     position: sticky;
     padding-top: 10px;
-    background: #dfe3e6;
+    background: ${appColors.PAGE_HEADER.CONTAINER_BACKGROUND_COLOR};
     flex-direction: column;
 
     @media (min-width: 768px) {
@@ -46,7 +47,7 @@ const styles = {
   `,
   title: (bigPadding: boolean) => css`
     width: 100%;
-    color: #262c34;
+    color: ${appColors.PAGE_HEADER.TITLE_COLOR};
     font-size: 18px;
     overflow: hidden;
     line-height: 24px;

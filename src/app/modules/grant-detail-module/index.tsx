@@ -1,9 +1,9 @@
 /* third-party */
-import React, { useMemo } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
-
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
@@ -93,8 +93,7 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
-
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
@@ -133,7 +132,7 @@ export default function GrantDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-  const breadCrumbId = useMemo(() => v4(), []);
+  const breadCrumbId = React.useMemo(() => v4(), []);
 
   React.useEffect(() => {
     if (grantInfoData) {

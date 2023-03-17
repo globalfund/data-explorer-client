@@ -1,18 +1,19 @@
 import React from "react";
-import styled from "styled-components/macro";
-import { useMediaQuery, Box } from "@material-ui/core";
 import get from "lodash/get";
+import { appColors } from "app/theme";
+import styled from "styled-components/macro";
 import { useCMSData } from "app/hooks/useCMSData";
+import { useMediaQuery, Box } from "@material-ui/core";
 
 const Button = styled((props) => <button type="button" {...props} />)`
-  color: #fff;
+  color: ${appColors.COMMON.WHITE};
   padding: 5px 16px;
   line-height: 17px;
   font-weight: bold;
   border-style: none;
   border-radius: 20px;
-  background: #262c34;
   text-transform: unset;
+  background: ${appColors.COMMON.PRIMARY_COLOR_1};
   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
   &:hover {
@@ -54,7 +55,7 @@ export const Message = (props: MessageProps) => {
     <Box display="flex" flexDirection="column">
       <div
         css={`
-          color: #262c34;
+          color: ${appColors.COMMON.PRIMARY_COLOR_1};
           font-size: 14px;
           font-weight: bold;
           line-height: 20px;
@@ -67,12 +68,12 @@ export const Message = (props: MessageProps) => {
       <Box display="flex" flexDirection={!isSmallScreen ? "row" : "column"}>
         <div
           css={`
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             font-size: 12px;
             line-height: 20px;
 
             > a {
-              color: #262c34;
+              color: ${appColors.COMMON.PRIMARY_COLOR_1};
             }
 
             @media (min-width: 960px) {

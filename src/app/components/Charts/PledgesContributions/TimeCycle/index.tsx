@@ -1,8 +1,10 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
-import { InfoIcon } from "app/assets/icons/Info";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -17,8 +19,6 @@ import {
   TooltipButton,
   XsContainer,
 } from "app/components/Charts/common/styles";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTimeCycle(
   props: PledgesContributionsProps
@@ -33,8 +33,14 @@ export function PledgesContributionsTimeCycle(
     "pledgesContributionsBar"
   );
   const legends = [
-    { name: get(cmsData, "componentsChartsPledges.pledge", ""), color: "#BFCFEE" },
-    { name: get(cmsData, "componentsChartsPledges.contribution", ""), color: "#252C34" },
+    {
+      name: get(cmsData, "componentsChartsPledges.pledge", ""),
+      color: appColors.TIME_CYCLE.PLEDGE_COLOR,
+    },
+    {
+      name: get(cmsData, "componentsChartsPledges.contribution", ""),
+      color: appColors.TIME_CYCLE.CONTRIBUTION_COLOR,
+    },
   ];
 
   const Bars = (bprops: any) => {
@@ -86,7 +92,7 @@ export function PledgesContributionsTimeCycle(
             <div
               css={`
                 display: flex;
-                color: #262c34;
+                color: ${appColors.COMMON.PRIMARY_COLOR_1};
                 font-size: 14px;
                 font-weight: bold;
                 align-items: center;
@@ -97,7 +103,7 @@ export function PledgesContributionsTimeCycle(
                 }
               `}
             >
-              {get(cmsData, "componentsChartsPledges.replenishmentPeriods", "")} <InfoIcon />
+              {get(cmsData, "componentsChartsPledges.replenishmentPeriods", "")}
             </div>
           </Grid>
           <Grid item xs={12} sm={12} md={9}>
@@ -210,11 +216,11 @@ export function PledgesContributionsTimeCycle(
                 ticks: {
                   line: {
                     strokeWidth: 1,
-                    stroke: "#868E96",
+                    stroke: appColors.TIME_CYCLE.AXIS_COLOR,
                     strokeOpacity: 0.3,
                   },
                   text: {
-                    fill: "#262c34",
+                    stroke: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
                     fontSize: 12,
                   },
                 },
@@ -232,7 +238,7 @@ export function PledgesContributionsTimeCycle(
               grid: {
                 line: {
                   strokeWidth: 1,
-                  stroke: "#868E96",
+                  stroke: appColors.TIME_CYCLE.AXIS_GRID_COLOR,
                   strokeOpacity: 0.3,
                 },
               },
@@ -251,19 +257,21 @@ export function PledgesContributionsTimeCycle(
               css={`
                 padding: 16px 25px;
                 position: relative;
-                background: #f5f5f7;
+                background: ${appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR};
                 border-radius: 20px;
 
                 @media (max-width: 767px) {
                   padding: 25px;
-                  color: #262c34;
-                  background: #fff;
+                  color: ${appColors.TIME_CYCLE.MOBILE_TOOLTIP_COLOR};
+                  background: ${appColors.TIME_CYCLE
+                    .MOBILE_TOOLTIP_BACKGROUND_COLOR};
                   border-radius: 20px;
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
 
                   > div {
                     padding: 0;
-                    background: #fff !important;
+                    background: ${appColors.TIME_CYCLE
+                      .MOBILE_TOOLTIP_BACKGROUND_COLOR} !important;
                   }
                 }
               `}
@@ -275,7 +283,7 @@ export function PledgesContributionsTimeCycle(
                   justify-content flex-end;
 
                   path {
-                    fill: #2E4063;
+                    fill: ${appColors.TIME_CYCLE.MOBILE_TOOLTIP_CLOSE_ICON_COLOR};
                   }
                 `}
               >

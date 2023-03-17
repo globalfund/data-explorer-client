@@ -6,19 +6,13 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
-interface Props {
-  toolboxOpen?: boolean;
-  setOpenToolboxPanel?: (value: boolean) => void;
-}
-
-export function PledgesContributionsTimeCycleModule(props: Props) {
+export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
 
   const [vizLevel, setVizLevel] = React.useState(0);

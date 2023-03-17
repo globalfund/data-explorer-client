@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import useTitle from "react-use/lib/useTitle";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
@@ -19,7 +20,7 @@ export default function Datasets() {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   React.useEffect(() => {
-    document.body.style.background = "#DFE3E5";
+    document.body.style.background = appColors.COMMON.SECONDARY_COLOR_7;
   }, []);
 
   return (

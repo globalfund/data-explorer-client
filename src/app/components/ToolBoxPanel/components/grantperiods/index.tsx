@@ -3,8 +3,13 @@ import get from "lodash/get";
 import find from "lodash/find";
 import { useStoreState } from "app/state/store/hooks";
 import { useParams, useHistory } from "react-router-dom";
-import { GrantDetailPeriod } from "app/modules/grant-detail-module/components/InfoContent";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
+
+interface GrantDetailPeriod {
+  number: number;
+  endDate: string;
+  startDate: string;
+}
 
 export function GrantImplementationPeriods() {
   const history = useHistory();
