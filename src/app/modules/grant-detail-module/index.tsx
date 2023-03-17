@@ -2,12 +2,13 @@
 import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
+import find from "lodash/find";
 import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
-import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { breadCrumbItems } from "app/state/recoil/atoms";
 import { PageHeader } from "app/components/PageHeader";
@@ -28,9 +29,12 @@ import { GrantDetailInvestmentsTableWrapper } from "app/modules/viz-module/sub-m
 import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
-import find from "lodash/find";
 
-import { GrantDetailPeriod } from "./components/InfoContent";
+interface GrantDetailPeriod {
+  number: number;
+  endDate: string;
+  startDate: string;
+}
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
