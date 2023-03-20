@@ -1,4 +1,4 @@
-import { atom, RecoilState } from "recoil";
+import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 const { persistAtom } = recoilPersist();
@@ -32,5 +32,11 @@ export const cmsDataAtom = atom({
     modulesGrantDetail: {},
     modulesGrants: {},
   },
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const homeTabStateAtom = atom({
+  key: "homeTabStateAtom",
+  default: "data",
   effects_UNSTABLE: [persistAtom],
 });

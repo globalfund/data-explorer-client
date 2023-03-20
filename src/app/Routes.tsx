@@ -1,8 +1,6 @@
 // cc:application base#;application routes
-
 // base
 import React, { Suspense, lazy } from "react";
-// import axios, { AxiosResponse } from "axios";
 import { Route, Switch } from "react-router-dom";
 
 import { useScrollToTop } from "app/hooks/useScrollToTop";
@@ -11,9 +9,6 @@ import ChartDetailModule from "./modules/chart-detail-module";
 
 const HomeModule = lazy(() => import("app/modules/home-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
-const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
-const ChartsModule = lazy(() => import("app/modules/charts-module"));
-
 const DatasetUploadSteps = lazy(
   () => import("app/fragments/datasets-fragment/upload-steps")
 );
@@ -40,27 +35,17 @@ export function MainRoutes() {
         <Route exact path="/">
           <HomeModule />
         </Route>
-
         <Route path="/data-themes">
           <DataThemesModule />
         </Route>
-
-        {/* <Route path="/datasets">
+        <Route path="/datasets">
           <DatasetListModule />
-        </Route> */}
-
+        </Route>
         <Route exact path="/about">
           <AboutModule />
         </Route>
-
         <Route exact path="/chart/:page">
           <ChartDetailModule />
-        </Route>
-        <Route exact path="/datasets">
-          <DatasetsModule />
-        </Route>
-        <Route exact path="/charts">
-          <ChartsModule />
         </Route>
         <Route exact path="/dataset/:id/edit">
           <EditMetaData />
@@ -68,8 +53,6 @@ export function MainRoutes() {
         <Route exact path="/dataset-upload">
           <DatasetUploadSteps />
         </Route>
-
-        {/* <V1RouteRedirections /> */}
       </Switch>
     </Suspense>
   );

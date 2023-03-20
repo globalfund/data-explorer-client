@@ -1,5 +1,6 @@
-import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import React from "react";
+import ToggleButton from "@material-ui/lab/ToggleButton";
+import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
 interface Props {
   alignment: "data" | "charts" | "report";
@@ -17,20 +18,19 @@ export default function ToggleButtons(props: Props) {
 
   return (
     <ToggleButtonGroup
-      value={props.alignment}
       exclusive
+      value={props.alignment}
       onChange={handleAlignment}
-      aria-label="text alignment"
+      css={`
+        button {
+          font-weight: 500;
+          text-transform: none;
+        }
+      `}
     >
-      <ToggleButton value="data" aria-label="left aligned">
-        <p>Datasets</p>
-      </ToggleButton>
-      <ToggleButton value="charts" aria-label="centered">
-        <p>Charts</p>
-      </ToggleButton>
-      <ToggleButton value="report" aria-label="right aligned">
-        <p>Reports</p>
-      </ToggleButton>
+      <ToggleButton value="data">Data</ToggleButton>
+      <ToggleButton value="charts">Charts</ToggleButton>
+      <ToggleButton value="report">Reports</ToggleButton>
     </ToggleButtonGroup>
   );
 }

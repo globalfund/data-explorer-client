@@ -1,21 +1,20 @@
 import React from "react";
 import get from "lodash/get";
-import { Search } from "app/components/Search";
+import { useRecoilState } from "recoil";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
-import CloseIcon from "@material-ui/icons/Close";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
+import { headercss } from "app/components/AppBar/style";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
+import { homeTabStateAtom } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronLeft from "@material-ui/icons/ChevronLeft";
-import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
-import { headercss } from "./style";
+import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
 
 const TextHeader = (label: string) => (
   <h2
@@ -104,17 +103,14 @@ export const StyledMenuItem = withStyles(() => ({
 
 export function AppBar() {
   const location = useLocation();
-  const datasetMenuItems = useDatasetMenuItems();
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openSearch, setOpenSearch] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
-  const [activeNav, setActiveNav] = React.useState<boolean>(false);
-  console.log(activeNav, "activeNav");
-  function handleClick(event: React.MouseEvent<HTMLElement>) {
-    setAnchorEl(event.currentTarget);
-  }
+  const [tabState, setTabState] = useRecoilState<"data" | "charts" | "report">(
+    homeTabStateAtom
+  );
 
   function handleClose() {
     setAnchorEl(null);
@@ -153,114 +149,98 @@ export function AppBar() {
     <MUIAppBar
       elevation={0}
       position="fixed"
-      color={location.pathname !== "/" ? "secondary" : "transparent"}
+      color="secondary"
       css={`
         display: flex;
       `}
     >
-      <Toolbar
-        disableGutters
-        variant="dense"
-        css={`
-          gap: 32px;
-          width: 100%;
-          height: 48px;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-          @media (min-width: 768px) {
-            #search-container {
-              padding: 3px 20px;
-              align-items: center;
-            }
-
-            #search-results-container {
-              top: 40px;
-              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-            }
-          }
-        `}
-      >
-        {isMobile && getMobilePageHeader()}
-        {!isMobile && (
-          <div css={headercss}>
-            <div
-              css={`
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 50%;
-              `}
-            >
-              <NavLink
-                to="/"
-                css={`
-                  display: flex;
-                  justify-content: center;
-                  gap: 2.5rem;
-                  padding-top: 5px;
-                  margin-right: 64px;
-                `}
-              >
-                <img
-                  src="/logo.svg"
-                  alt={get(cmsData, "componentsAppBar.logoAlt", "")}
-                />
-              </NavLink>
-
+      <Container maxWidth="lg">
+        <Toolbar
+          disableGutters
+          variant="dense"
+          css={`
+            gap: 32px;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+          `}
+        >
+          {isMobile && getMobilePageHeader()}
+          {!isMobile && (
+            <div css={headercss}>
               <div
                 css={`
                   display: flex;
-                  justify-content: center;
-                  gap: 2.5rem;
+                  align-items: center;
+                  justify-content: space-between;
                 `}
               >
-                <div>
-                  <NavLink
-                    to="/datasets"
-                    activeClassName="app-link-active"
+                <NavLink
+                  to="/"
+                  css={`
+                    gap: 2.5rem;
+                    display: flex;
+                    padding-top: 5px;
+                    margin-right: 180px;
+                    justify-content: center;
+                  `}
+                >
+                  <img
+                    src="/logo.svg"
+                    alt={get(cmsData, "componentsAppBar.logoAlt", "")}
+                  />
+                </NavLink>
+                <div
+                  css={`
+                    gap: 2.5rem;
+                    display: flex;
+                    justify-content: center;
+
+                    > div {
+                      font-size: 14px;
+                      font-weight: 700;
+
+                      &:hover {
+                        color: #cea8bc;
+                        cursor: pointer;
+                      }
+                    }
+                  `}
+                >
+                  <div
                     css={`
-                      color: ${location.pathname === "/datasets"
-                        ? "#CEA8BC !important"
-                        : "#231D2C"};
+                      color: ${tabState === "data" ? "#cea8bc" : "#231d2c"};
                     `}
+                    onClick={() => setTabState("data")}
                   >
-                    <b>Data</b>
-                  </NavLink>{" "}
-                </div>
-                <div>
-                  <NavLink
-                    to="/charts"
+                    Data
+                  </div>
+                  <div
                     css={`
-                      color: ${location.pathname === "/charts"
-                        ? "#CEA8BC !important"
-                        : "#231D2C"};
+                      color: ${tabState === "charts" ? "#cea8bc" : "#231d2c"};
                     `}
+                    onClick={() => setTabState("charts")}
                   >
-                    <b>Charts</b>
-                  </NavLink>
-                </div>
-                <div>
-                  <Link
-                    to="/reports"
+                    Charts
+                  </div>
+                  <div
                     css={`
-                      color: ${location.pathname === "/reports"
-                        ? "#CEA8BC !important"
-                        : "#231D2C"};
+                      color: ${tabState === "report" ? "#cea8bc" : "#231d2c"};
                     `}
+                    onClick={() => setTabState("report")}
                   >
-                    <b>Reports</b>
-                  </Link>
+                    Reports
+                  </div>
                 </div>
               </div>
-            </div>
-            <div>
               <button>Log in</button>
             </div>
-          </div>
-        )}
-      </Toolbar>
+          )}
+        </Toolbar>
+      </Container>
     </MUIAppBar>
   );
 }

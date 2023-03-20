@@ -8,7 +8,7 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter as Router } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { StoreProvider, useStoreRehydrated } from "easy-peasy";
-import { Container, StylesProvider, CssBaseline } from "@material-ui/core";
+import { StylesProvider, CssBaseline } from "@material-ui/core";
 
 type ProviderProps = {
   children: any;
@@ -27,14 +27,8 @@ function Providers(props: ProviderProps) {
               <Router>
                 <AppBar />
                 <div
-                  // maxWidth="lg"
                   css={`
-                    /* padding: 0 24px; */
                     min-height: calc(100vh - 48px);
-
-                    @media (max-width: 767px) {
-                      /* padding: 0 16px; */
-                    }
                   `}
                 >
                   {props.children}

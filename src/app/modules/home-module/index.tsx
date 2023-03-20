@@ -1,30 +1,29 @@
 /* third-party */
 import React from "react";
-import { Link } from "react-router-dom";
+import { useRecoilState } from "recoil";
 import useTitle from "react-use/lib/useTitle";
-import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
 /* project */
-
 import { Search } from "app/components/Search";
+import { homeTabStateAtom } from "app/state/recoil/atoms";
 import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
-import DatasetsGrid from "./components/Datasets/datasetsGrid";
-import ChartsGrid from "./components/Charts/chartsGrid";
-import ReportsGrid from "./components/Reports/reportsGrid";
-import { Container } from "@material-ui/core";
+import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
+import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
+import DatasetsGrid from "app/modules/home-module/components/Datasets/datasetsGrid";
 
 export default function HomeModule() {
   useTitle("Dataxplorer - Home");
-  const [alignment, setAlignment] = React.useState<
-    "data" | "charts" | "report"
-  >("data");
+
+  const [tabState, setTabState] = useRecoilState<"data" | "charts" | "report">(
+    homeTabStateAtom
+  );
 
   const displayGrid = () => {
-    switch (alignment) {
+    switch (tabState) {
       case "data":
         return <DatasetsGrid />;
       case "charts":
         return <ChartsGrid />;
-
       case "report":
         return <ReportsGrid />;
       default:
@@ -78,7 +77,7 @@ export default function HomeModule() {
               margin: 2rem 0;
             `}
           >
-            <ToggleButtons alignment={alignment} setAlignment={setAlignment} />
+            <ToggleButtons alignment={tabState} setAlignment={setTabState} />
           </div>
 
           {displayGrid()}
