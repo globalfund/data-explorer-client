@@ -7,6 +7,9 @@ import styled from "styled-components/macro";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import SaveIcon from "@material-ui/icons/Save";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+
 import Divider from "@material-ui/core/Divider";
 import Popover from "@material-ui/core/Popover";
 import { LinkIcon } from "app/assets/icons/Link";
@@ -520,6 +523,75 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                 `}
               >
                 <SaveIcon htmlColor="#262c34" />
+              </IconButton>
+            </div>
+          )}
+
+          {props.detailMode && (
+            <div css={styles.iconbtns}>
+              <IconButton onClick={handleClick}>
+                <ShareIcon htmlColor="#262c34" />
+              </IconButton>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                css={`
+                  .MuiPaper-root {
+                    border-radius: 10px;
+                    background: #495057;
+                  }
+                `}
+              >
+                <div css={styles.sharePopup}>
+                  <FormControlLabel
+                    value="public-theme"
+                    label="Public theme"
+                    labelPlacement="start"
+                    control={
+                      <Switch
+                        color="primary"
+                        checked={isPublicTheme}
+                        onChange={() => setIsPublicTheme(!isPublicTheme)}
+                      />
+                    }
+                  />
+                  <Divider />
+                  <CopyToClipboard
+                    text={window.location.href}
+                    onCopy={handleCopy}
+                  >
+                    <Button startIcon={<LinkIcon />}>Copy link</Button>
+                  </CopyToClipboard>
+                </div>
+              </Popover>
+              <IconButton
+                component={Link}
+                to={`/data-themes/${page}/preview`}
+                disabled={!isPreviewEnabled}
+              >
+                <svg width="20" height="19" viewBox="0 0 20 19">
+                  <rect width="20" height="19" rx="3" fill="#262C34" />
+                  <path
+                    fill="#EFEFEF"
+                    d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
+                  />
+                </svg>
+              </IconButton>
+              <IconButton onClick={onSave} disabled={!isSavedEnabled}>
+                <EditIcon htmlColor="#262c34" />
+              </IconButton>
+              <IconButton onClick={onSave} disabled={!isSavedEnabled}>
+                <DeleteIcon htmlColor="#262c34" />
               </IconButton>
             </div>
           )}

@@ -99,20 +99,6 @@ export const StyledMenuItem = withStyles(() => ({
       padding: "10px 12px",
       textDecoration: "none",
     },
-    // "& li": {
-    //   width: "100%",
-    //   fontSize: "14px",
-    //   color: "#231d2c",
-    //   padding: "6px 12px",
-    //   textDecoration: "none",
-    // },
-    // "& div": {
-    //   width: "100%",
-    //   fontSize: "14px",
-    //   color: "#231d2c",
-    //   padding: "0 12px",
-    //   textDecoration: "none",
-    // },
   },
 }))(MenuItem);
 
@@ -124,6 +110,8 @@ export function AppBar() {
   const [openSearch, setOpenSearch] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
+  const [activeNav, setActiveNav] = React.useState<boolean>(false);
+  console.log(activeNav, "activeNav");
   function handleClick(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
   }
@@ -229,17 +217,39 @@ export function AppBar() {
                 `}
               >
                 <div>
-                  <Link to="/datasets">
+                  <NavLink
+                    to="/datasets"
+                    activeClassName="app-link-active"
+                    css={`
+                      color: ${location.pathname === "/datasets"
+                        ? "#CEA8BC !important"
+                        : "#231D2C"};
+                    `}
+                  >
                     <b>Data</b>
-                  </Link>{" "}
+                  </NavLink>{" "}
                 </div>
                 <div>
-                  <Link to="/charts">
+                  <NavLink
+                    to="/charts"
+                    css={`
+                      color: ${location.pathname === "/charts"
+                        ? "#CEA8BC !important"
+                        : "#231D2C"};
+                    `}
+                  >
                     <b>Charts</b>
-                  </Link>
+                  </NavLink>
                 </div>
                 <div>
-                  <Link to="/reports">
+                  <Link
+                    to="/reports"
+                    css={`
+                      color: ${location.pathname === "/reports"
+                        ? "#CEA8BC !important"
+                        : "#231D2C"};
+                    `}
+                  >
                     <b>Reports</b>
                   </Link>
                 </div>

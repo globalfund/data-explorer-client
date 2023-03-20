@@ -161,7 +161,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   );
 
   const stepPaths = [
-    `/data-themes/${page}/preview`,
+    `/chart/${"63dd016c20ff974becd6330b"}`,
     `/data-themes/${page}/data`,
     `/data-themes/${page}/preview-data`,
     `/data-themes/${page}/chart-type`,
@@ -457,9 +457,9 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         }
         expanded={expanded === 7 && !collapsed}
         onChange={handleChange(8)}
-        css={`
-          border-bottom: 1px solid #c0c7d2;
-        `}
+        // css={`
+        //   border-bottom: 1px solid #c0c7d2;
+        // `}
       >
         <AccordionSummary
           id="step7-header"

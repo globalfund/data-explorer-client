@@ -109,6 +109,7 @@ export default function ChartDetailModule() {
             isEditMode={isEditMode}
             visualOptions={visualOptions}
             previewMode={true}
+            detailMode={true}
             updateLocalStates={() => {}}
             loading={loading || isDataThemeLoading}
             validMapping={getForceNextEnabledValue("mapping")}

@@ -14,18 +14,18 @@ import { Container } from "@material-ui/core";
 
 export default function HomeModule() {
   useTitle("Dataxplorer - Home");
-  const [alignment, setAlignment] = React.useState<"left" | "center" | "right">(
-    "left"
-  );
+  const [alignment, setAlignment] = React.useState<
+    "data" | "charts" | "report"
+  >("data");
 
   const displayGrid = () => {
     switch (alignment) {
-      case "left":
+      case "data":
         return <DatasetsGrid />;
-      case "center":
+      case "charts":
         return <ChartsGrid />;
 
-      case "right":
+      case "report":
         return <ReportsGrid />;
       default:
         break;

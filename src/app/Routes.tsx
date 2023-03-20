@@ -12,6 +12,8 @@ import ChartDetailModule from "./modules/chart-detail-module";
 const HomeModule = lazy(() => import("app/modules/home-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
+const ChartsModule = lazy(() => import("app/modules/charts-module"));
+
 const DatasetUploadSteps = lazy(
   () => import("app/fragments/datasets-fragment/upload-steps")
 );
@@ -43,9 +45,9 @@ export function MainRoutes() {
           <DataThemesModule />
         </Route>
 
-        <Route path="/datasets">
+        {/* <Route path="/datasets">
           <DatasetListModule />
-        </Route>
+        </Route> */}
 
         <Route exact path="/about">
           <AboutModule />
@@ -56,6 +58,9 @@ export function MainRoutes() {
         </Route>
         <Route exact path="/datasets">
           <DatasetsModule />
+        </Route>
+        <Route exact path="/charts">
+          <ChartsModule />
         </Route>
         <Route exact path="/dataset/:id/edit">
           <EditMetaData />

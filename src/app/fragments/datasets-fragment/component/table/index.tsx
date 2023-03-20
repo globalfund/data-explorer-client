@@ -22,12 +22,15 @@ import {
 } from "app/modules/dataset-detail-module/data";
 import { previewTablecss } from "./style";
 
-export default function PreviewTable() {
-  const [checkedAll, setCheckedAll] = useState(false);
-  const [tableData, setTableData] = useState(
-    dummyDatasetData.map((data) => ({ ...data, checked: false, id: v4() }))
-  );
+interface PreviewTableProps {
+  columns: { [key: string]: string }[];
+  tableData: { [key: string]: number | string | null | boolean }[];
+  setTableData: React.Dispatch<
+    React.SetStateAction<{ [key: string]: number | string | null | boolean }[]>
+  >;
+}
 
+export default function PreviewTable(props: PreviewTableProps) {
   return (
     <>
       <div>
@@ -67,48 +70,55 @@ export default function PreviewTable() {
                   height: 42px;
                 `}
               >
-                <TableCell></TableCell>
-                {tHeadData.map((val, index) => {
+                {props.columns.map((val, index) => {
                   return (
                     <>
-                      <TableCell>
-                        <div
-                          css={`
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            gap: 1rem;
-                          `}
-                        >
-                          <div>
+                      <TableCell
+                        css={`
+                          border-left: ${index == 0 ? "none" : "auto"};
+                        `}
+                      >
+                        {index !== 0 && (
+                          <div
+                            css={`
+                              display: flex;
+                              justify-content: space-between;
+                              align-items: center;
+                              gap: 1rem;
+                            `}
+                          >
                             <div
                               css={`
                                 width: 25px;
                                 height: 25px;
                                 border-radius: 50%;
                                 padding: 3px;
-                                display: flex;
+                                display: none;
                                 justify-content: center;
                                 align-items: center;
                                 background: #ffffff;
                               `}
                             >
-                              <p>{val.type === "char" ? "Aa" : "#"}</p>
+                              <p>{val.type === "string" ? "Aa" : "#"}</p>
                             </div>
-                          </div>
 
-                          <p
-                            css={`
-                              text-align: left;
-                              line-height: 17px;
-                            `}
-                          >
-                            {val.name}
-                          </p>
-                          <IconButton>
-                            <SortIcon />
-                          </IconButton>
-                        </div>
+                            <p
+                              css={`
+                                text-align: left;
+                                line-height: 17px;
+                                text-overflow: ellipsis;
+                                white-space: nowrap;
+                                overflow: clip;
+                                max-width: 220px;
+                              `}
+                            >
+                              {val.key}
+                            </p>
+                            <IconButton>
+                              <SortIcon />
+                            </IconButton>
+                          </div>
+                        )}
                       </TableCell>
                     </>
                   );
@@ -116,39 +126,38 @@ export default function PreviewTable() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableData.map((data, index) => (
+              {props.tableData?.map((data, index) => (
                 <TableRow
                   css={`
                     background: #fff;
                   `}
                 >
                   <>
-                    <TableCell
-                      css={`
-                        background: rgba(218, 218, 248, 0.3);
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                      `}
-                      width={47}
-                    >
-                      <p>{index + 1}</p>
-                    </TableCell>
-                    <TableCell width={80}>{data.Ref}</TableCell>
-                    <TableCell width={"25vw"}>{data.SectorNarrative}</TableCell>
-                    <TableCell width={"20vw"}>{data.SectorCode}</TableCell>
-                    <TableCell width={"20vw"}>
-                      {data.TransactionValue}
-                    </TableCell>
-                    <TableCell
-                      css={`
-                        width: 15vw;
-                      `}
-                    >
-                      {data.IATIIdentifier}
-                    </TableCell>
-                    <TableCell width={"20vw"}>{data.OrgRef}</TableCell>
-                    <TableCell width={"20vw"}>{data.email}</TableCell>
+                    {props.columns.map((val, index) => (
+                      <TableCell
+                        css={`
+                          background: ${index === 0
+                            ? "rgba(218, 218, 248, 0.3)"
+                            : "#fff"};
+
+                          /* max-width: 80px; */
+                        `}
+                        key={val.key}
+                      >
+                        <p
+                          css={`
+                            text-overflow: ellipsis;
+                            white-space: nowrap;
+                            overflow: clip;
+                            max-width: 220px;
+                            min-width: ${index === 0 ? "30px" : "auto"};
+                            text-align: ${index === 0 ? "center" : "left"};
+                          `}
+                        >
+                          {data[val.key]}
+                        </p>
+                      </TableCell>
+                    ))}
                   </>
                 </TableRow>
               ))}

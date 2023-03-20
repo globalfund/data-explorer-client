@@ -32,7 +32,6 @@ export default function Datasets() {
     setData(newData);
     setModalDisplay(false);
     setEnableButton(false);
-    console.log(enableButton, "btn");
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -44,7 +43,6 @@ export default function Datasets() {
       setEnableButton(false);
     }
   };
-  console.log(enableButton, "btn");
 
   const handleModal = (id: string) => {
     setCardId(id);

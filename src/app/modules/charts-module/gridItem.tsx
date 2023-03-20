@@ -1,9 +1,9 @@
 import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
-import { ReactComponent as EditIcon } from "../../assets/edit.svg";
+import { ReactComponent as MenuIcon } from "../home-module/assets/menu.svg";
+import { ReactComponent as DeleteIcon } from "../home-module/assets/delete.svg";
+import { ReactComponent as EditIcon } from "../home-module/assets/edit.svg";
 import IconButton from "@material-ui/core/IconButton";
 
 interface Props {

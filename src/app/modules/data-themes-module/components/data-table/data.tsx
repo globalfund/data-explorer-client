@@ -110,10 +110,10 @@ export function getColumnsFromData(
       }
     });
   });
-  const equalDinstribution =
+  const equalDistribution =
     ((containerWidth || 0) - 32 - 1) / Object.keys(columns).length;
-  const columnWidth = equalDinstribution
-    ? Math.max(equalDinstribution, 170)
+  const columnWidth = equalDistribution
+    ? Math.max(equalDistribution, 170)
     : 170;
   return [
     {

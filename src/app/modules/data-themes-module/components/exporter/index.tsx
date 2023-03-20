@@ -183,9 +183,6 @@ export function DataThemesExporter(props: { rawViz: any }) {
           </StyledMenuItem>
         </StyledMenu>
       </div>
-      <button css={styles.downloadBtn} onClick={handleDownload}>
-        Download
-      </button>
     </div>
   );
 }

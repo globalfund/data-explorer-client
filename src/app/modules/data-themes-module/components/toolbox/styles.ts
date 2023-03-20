@@ -10,7 +10,7 @@ export const styles = {
     background: #f2f7fd;
     flex-direction: column;
     top: ${!placeUnderSubHeader ? 40 : 97}px;
-    height: calc(100vh - ${!placeUnderSubHeader ? 48 : 97}px);
+    height: calc(100vh - ${!placeUnderSubHeader ? 40 : 97}px);
 
     > section {
       padding: 0 31px 25px 31px;

@@ -66,7 +66,7 @@ export function DataThemesToolBoxMapping(props: DataThemesToolBoxMappingProps) {
           }
         `}
       >
-        {Object.keys(props.dataTypes).map(
+        {Object.keys(props.dataTypes)?.map(
           (dataTypeName: string, index: number) => {
             let type = props.dataTypes[dataTypeName];
             if (typeof props.dataTypes[dataTypeName] === "object") {

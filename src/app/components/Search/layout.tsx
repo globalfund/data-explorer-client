@@ -83,7 +83,7 @@ const StyledMenuItem = withStyles(() => ({
   root: {
     height: 40,
     width: "100%",
-    color: "#231d2c",
+    color: "#262C34",
     fontSize: "14px",
     padding: "0 12px",
     "& svg": {
@@ -247,14 +247,7 @@ export function SearchLayout(props: SearchLayoutProps) {
                   `}
                 `}
               >
-                {category.icon}{" "}
-                <span
-                  css={`
-                    color: #262c34;
-                  `}
-                >
-                  {category.label}
-                </span>
+                {category.icon} <span>{category.label}</span>
               </StyledMenuItem>
             ))}
           </StyledMenu>
@@ -285,7 +278,11 @@ export function SearchLayout(props: SearchLayoutProps) {
           css={input}
           tabIndex={0}
           value={props.value}
-          placeholder={get(cmsData, "componentsSearch.placeholder", "")}
+          placeholder={get(
+            cmsData,
+            "componentsSearch.placeholder",
+            "eg. Kenya"
+          )}
           autoFocus={props.forceFocus}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             props.setValue(e.target.value)

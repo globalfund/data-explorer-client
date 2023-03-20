@@ -1,6 +1,6 @@
 import { css } from "styled-components/macro";
 
-export const headercss = css`
+export const headercss =  css`
   width: 100%;
   height: 100%;
   display: flex;
@@ -11,7 +11,7 @@ export const headercss = css`
 
   a {
     text-decoration: none;
-    color: #231d2c;
+    color:   #231d2c ;
     font-size: 14px;
     font-family: "Gotham Narrow";
     :hover {

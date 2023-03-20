@@ -81,7 +81,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 112;
+  let top = 98;
 
   if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {
@@ -90,7 +90,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
         top = 148;
       }
     } else {
-      top = 112;
+      top = 98;
     }
   }
   if (isSmallScreen) {
@@ -107,7 +107,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
       }
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
-    top = 112;
+    top = 98;
   }
 
   return (
@@ -155,9 +155,10 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
               width: 400px;
               top: ${top}px;
               position: fixed;
-              background: #f4f4f4;
               height: calc(100vh - ${top}px);
               visibility: visible !important;
+              background: #f2f7fd;
+
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
               @media (max-width: 767px) {

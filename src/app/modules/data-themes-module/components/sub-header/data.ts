@@ -9,4 +9,5 @@ export interface DataThemesPageSubHeaderProps {
   tabsDisabled?: boolean;
   validMapping: boolean;
   deleteTab: (value: number) => void;
+  detailMode?: boolean
 }
