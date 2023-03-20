@@ -15,6 +15,10 @@ import GridItem from "../home-module/components/Datasets/gridItem";
 import DatasetAddnewCard from "../home-module/components/Datasets/datasetAddNewCard";
 import { v4 } from "uuid";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import axios from "axios";
+import { get } from "lodash";
+import { DatasetListItemAPIModel } from "../data-themes-module/sub-modules/list";
 
 export default function Datasets() {
   useTitle("Dataxplorer - Datasets");
@@ -49,6 +53,32 @@ export default function Datasets() {
     setModalDisplay(true);
   };
 
+  const loadDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.fetch
+  );
+
+  const datasets = useStoreState(
+    (state) =>
+      get(
+        state,
+        "dataThemes.DatasetGetList.crudData",
+        []
+      ) as DatasetListItemAPIModel[]
+  );
+
+  function deleteDataset(id: string) {
+    axios
+      .delete(`${process.env.REACT_APP_API}/datasets/${id}`)
+      .then(() => {
+        loadDatasets({ storeInCrudData: true });
+      })
+      .catch((error) => console.log(error));
+  }
+
+  React.useEffect(() => {
+    loadDatasets({ storeInCrudData: true });
+  }, []);
+
   return (
     <div css={dataSetsCss}>
       <PageHeader title="My Datasets" />
@@ -79,14 +109,14 @@ export default function Datasets() {
 
         <Grid container spacing={2}>
           <DatasetAddnewCard />
-          {data.map((data, index) => (
+          {datasets.map((data, index) => (
             <Grid item xs={12} sm={6} md={6} lg={3}>
               <GridItem
                 key={index}
-                date={data.date}
-                descr={data.desc}
+                date={data.createdDate}
+                descr={data.description}
                 path={"#"}
-                title={data.title}
+                title={data.name}
                 showMenu
                 handleDelete={() => handleModal(data.id)}
               />

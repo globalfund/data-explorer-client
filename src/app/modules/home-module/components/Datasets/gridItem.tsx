@@ -4,12 +4,13 @@ import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
 import { ReactComponent as EditIcon } from "../../assets/edit.svg";
 import IconButton from "@material-ui/core/IconButton";
+import moment from "moment";
 
 interface Props {
   path: string;
   title: string;
   descr: string;
-  date: string;
+  date: Date;
   showMenu?: boolean;
   handleDelete?: (id: string) => void;
   id?: string;
@@ -42,12 +43,20 @@ export default function GridItem(props: Props) {
           justify-content: space-between;
         `}
       >
-        <div>
+        <div
+          css={`
+            width: 90%;
+            height: 80px;
+
+            word-wrap: break-word;
+          `}
+        >
           <p
             css={`
               font-size: 14px;
-              margin-top: 10px;
-              margin-bottom: 0;
+              line-height: 16px;
+
+              margin-bottom: 6px;
             `}
           >
             <b>{props.title}</b>
@@ -63,27 +72,29 @@ export default function GridItem(props: Props) {
             {props.descr}
           </p>
         </div>
-        {props.showMenu && (
-          <MenuIcon
-            onClick={showMenuOptions}
-            css={`
-              margin-top: 17px;
-              cursor: pointer;
-            `}
-          />
-        )}
+        <div>
+          {props.showMenu && (
+            <MenuIcon
+              onClick={showMenuOptions}
+              css={`
+                margin-top: 17px;
+                cursor: pointer;
+              `}
+            />
+          )}
+        </div>
       </div>
 
       <div
         css={`
           display: flex;
           justify-content: space-between;
-          margin-top: 0.9rem;
+          /* margin-top: 0.9rem; */
           font-size: 12px;
         `}
       >
         <p>Creation date</p>
-        <p>{props.date}</p>
+        <p>{moment(props.date).format("l")}</p>
       </div>
       {menuOptionsDisplay ? (
         <div>

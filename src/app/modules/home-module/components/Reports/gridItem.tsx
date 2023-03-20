@@ -1,117 +1,173 @@
-import { useStoreActions } from "app/state/store/hooks";
-import { Link, useHistory } from "react-router-dom";
+import { SankeyIcon } from "app/assets/icons/charts/Sankey";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
+import { ReactComponent as EditIcon } from "../../assets/edit.svg";
+import IconButton from "@material-ui/core/IconButton";
+import moment from "moment";
 
 interface Props {
-  path: string;
-  value: string;
   title: string;
-  description: string;
-  date: string;
-  iconLinks?: {
-    link: string;
-    icon: React.ReactElement;
-  }[];
+  descr: string;
+  date: Date;
+  viz: JSX.Element;
+  handleDelete?: (id: string) => void;
+  id?: string;
 }
-export function GridItem(props: Props) {
-  const history = useHistory();
-  const changeDatasource = useStoreActions(
-    (store) => store.DataSourceState.setValue
-  );
-  const setShowDatasourceSnackbar = useStoreActions(
-    (store) => store.DataSourceSnackbarVisibility.setValue
-  );
-
-  const onClickHandler = () => {
-    changeDatasource(props.value);
-    setShowDatasourceSnackbar(true);
-    setTimeout(() => {
-      history.push(props.path);
-    }, 500);
+export default function GridItem(props: Props) {
+  const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
+  const showMenuOptions = () => {
+    setMenuOptionsDisplay(!menuOptionsDisplay);
   };
-
   return (
     <div
-      onClick={onClickHandler}
       css={`
-        padding: 16px;
-        height: 125px;
-        cursor: pointer;
-        background: #fff;
+        background: #ffffff;
+        width: 296px;
         position: relative;
-        @media (max-width: 767px) {
-          height: 125px;
-        }
 
-        > div {
-          font-weight: bold;
-          line-height: 18px;
-          margin-bottom: 4px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+        padding: 0rem 1.2rem;
+        padding-bottom: 0.2rem;
+        padding-top: 0.2rem;
 
-          &:nth-of-type(2) {
-            font-size: 10px;
-            line-height: 12px;
-            color: #495057;
-            font-weight: normal;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
-          }
-        }
-
-        &:hover {
-          border-color: #13183f;
-        }
+        color: #262c34;
+        font-family: "Gotham Narrow";
+        height: 125px;
       `}
     >
-      <div>{props.title} </div>
-      <div>{props.description} </div>
-      {props.iconLinks && (
-        <div
-          css={`
-            gap: 20px;
-            bottom: 33px;
-            display: flex;
-            position: absolute;
-            flex-direction: row;
-            pointer-events: none;
-
-            > a {
-              padding-right: 10px;
-              display: inline-flex;
-              transform: scale(1.2);
-
-              &:not(:last-child) {
-                border-right: 1px solid #868a9d;
-              }
-
-              > svg {
-                > path {
-                  fill: #868a9d;
-                }
-              }
-            }
-          `}
-        >
-          {props.iconLinks.map((iconLink) => (
-            <Link to={iconLink.link} key={iconLink.link}>
-              {iconLink.icon}
-            </Link>
-          ))}
-        </div>
-      )}
       <div
         css={`
           display: flex;
           justify-content: space-between;
-          margin-top: 2.5rem;
+          align-items: center;
+
+          height: 100px;
+          a {
+            text-decoration: none;
+            color: inherit;
+          }
+        `}
+      >
+        <div
+          css={`
+            width: 60%;
+            align-self: flex-start;
+          `}
+        >
+          <Link to={`/chart/${props.id}`}>
+            <p
+              css={`
+                font-size: 14px;
+                margin-top: 8px;
+                line-height: 16.8px;
+                margin-bottom: 0;
+              `}
+            >
+              <b>{props.title}</b>
+            </p>
+          </Link>
+
+          <p
+            css={`
+              font-size: 10px;
+              line-height: 12px;
+              margin-top: 3px;
+            `}
+          >
+            {props.descr}
+          </p>
+        </div>
+        <div>{props.viz}</div>
+
+        <MenuIcon
+          onClick={showMenuOptions}
+          css={`
+            margin-top: 13px;
+            cursor: pointer;
+            align-self: flex-start;
+          `}
+        />
+      </div>
+
+      <div
+        css={`
+          display: flex;
+          justify-content: space-between;
+          margin-top: -1.2rem;
           font-size: 12px;
-          color: #262c34;
-          font-weight: 500;
-          font-family: "Inter";
         `}
       >
         <p>Creation date</p>
-        <p>{props.date}</p>
+        <p>{moment(props.date).format("l")}</p>
       </div>
+      {menuOptionsDisplay ? (
+        <div>
+          <div
+            css={`
+              position: fixed;
+              height: 100vh;
+              width: 100vw;
+              top: 0;
+              bottom: 0;
+              left: 0;
+              right: 0;
+
+              z-index: 1;
+            `}
+            onClick={showMenuOptions}
+          />
+          <div
+            css={`
+              background: #f4f4f4;
+              border-radius: 13px;
+              z-index: 2;
+              width: 128px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              gap: 1rem;
+              position: absolute;
+              right: 3%;
+              top: 30%;
+              padding: 7px 0;
+            `}
+          >
+            <div>
+              <Link to={`/data-themes/${props.id}/customize`}>
+                <EditIcon
+                  css={`
+                    cursor: pointer;
+                    margin-top: 6px;
+                    :hover {
+                      opacity: 0.5;
+                    }
+                  `}
+                />
+              </Link>
+            </div>
+            <div>
+              <IconButton
+                css={`
+                  padding: 0;
+                `}
+                onClick={() => props.handleDelete?.(props.id as string)}
+              >
+                <DeleteIcon
+                  css={`
+                    cursor: pointer;
+                    :hover {
+                      opacity: 0.5;
+                    }
+                  `}
+                />
+              </IconButton>
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
