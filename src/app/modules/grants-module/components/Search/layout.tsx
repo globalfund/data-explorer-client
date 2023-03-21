@@ -1,11 +1,13 @@
 import React from "react";
 import get from "lodash/get";
+import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import { SearchIcon } from "app/assets/icons/Search";
+import IconButton from "@material-ui/core/IconButton";
 import {
   container,
   input,
 } from "app/modules/grants-module/components/Search/styles";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface SearchLayoutProps {
   value: string;
@@ -26,7 +28,18 @@ export function SearchLayout(props: SearchLayoutProps) {
           props.setValue(e.target.value)
         }
       />
-      <SearchIcon />
+      {props.value.length === 0 ? (
+        <SearchIcon />
+      ) : (
+        <IconButton
+          onClick={() => props.setValue("")}
+          css={`
+            padding: 0;
+          `}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
     </div>
   );
 }

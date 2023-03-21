@@ -31,11 +31,6 @@ export function FilterGroup(props: FilterGroupCompProps) {
   });
 
   function onFilterRemove(option: string) {
-    console.log(
-      appliedFilters,
-      appliedFiltersChildren,
-      appliedFiltersGrandChildren
-    );
     let fAppliedFilterOption: FilterGroupOptionModel | undefined;
     props.options.every((o) => {
       if (o.value === option) {
