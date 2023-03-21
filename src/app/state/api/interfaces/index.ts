@@ -147,6 +147,7 @@ export interface StoreModel {
   AllocationsMCGeomap: ApiCallModel;
   AllocationsTable: ApiCallModel;
   Eligibility: ApiCallModel;
+  EligibilityTable: ApiCallModel;
   EligibilityYears: ApiCallModel;
   BudgetsFlow: ApiCallModel;
   BudgetsFlowDrilldownLevel1: ApiCallModel;

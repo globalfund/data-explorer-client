@@ -31,6 +31,7 @@ import BudgetsFlow, {
   BudgetsFlowDrilldownLevel2,
 } from "app/state/api/action-reducers/viz/budgetsFlow";
 import Eligibility, {
+  EligibilityTable,
   EligibilityYears,
 } from "app/state/api/action-reducers/viz/eligibility";
 import BudgetsTimeCycle, {
@@ -182,6 +183,7 @@ const storeContent: StoreModel = {
   AllocationsMCGeomap: persist(AllocationsMCGeomap),
   AllocationsTable: persist(AllocationsTable),
   Eligibility: persist(Eligibility),
+  EligibilityTable: persist(EligibilityTable),
   EligibilityYears: persist(EligibilityYears),
   BudgetsGeomap: persist(BudgetsGeomap),
   BudgetsMCGeomap: persist(BudgetsMCGeomap),

@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle, useDebounce } from "react-use";
+import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -62,7 +62,21 @@ export function LocationDetailDocumentsModule(
 
   React.useEffect(() => reloadData(), [props.code, appliedFilters]);
 
-  const [,] = useDebounce(() => reloadData(), 500, [search]);
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
   if (isLoading) {
     return <PageLoader />;

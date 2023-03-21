@@ -35,7 +35,7 @@ export function LocationEligibilityTableWrapper(props: Props) {
   useTitle("The Data Explorer - Location Eligibility");
 
   const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("year ASC");
 
   const data = useStoreState(
     (state) =>
@@ -79,7 +79,21 @@ export function LocationEligibilityTableWrapper(props: Props) {
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
 
-  const [,] = useDebounce(() => reloadData(), 500, [search]);
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,

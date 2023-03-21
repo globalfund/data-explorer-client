@@ -2,7 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
-import { useDebounce, useTitle } from "react-use";
+import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -16,7 +16,7 @@ export function PledgesContributionsTable() {
 
   const [page, setPage] = React.useState(0);
   const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("name ASC");
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const fetchData = useStoreActions(
@@ -40,7 +40,7 @@ export function PledgesContributionsTable() {
       sortBy,
     });
     fetchData({
-      filterString: `aggregateBy=${selectedAggregation}${
+      filterString: `aggregateBy=${selectedAggregation || "Donor"}${
         filterString.length > 0 ? `&${filterString}` : ""
       }`,
     });
@@ -51,7 +51,21 @@ export function PledgesContributionsTable() {
     [selectedAggregation, appliedFilters, sortBy]
   );
 
-  const [,] = useDebounce(() => reloadData(), 500, [search]);
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,

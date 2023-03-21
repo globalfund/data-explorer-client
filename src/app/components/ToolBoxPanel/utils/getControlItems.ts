@@ -156,17 +156,6 @@ const views = {
   ],
 };
 
-const eligibilityAggregates = [
-  {
-    label: "Locations",
-    value: "geographicAreaName",
-  },
-  {
-    label: "Components",
-    value: "componentName",
-  },
-];
-
 const aggregates = {
   // investments: [
   //   {
@@ -196,8 +185,6 @@ const aggregates = {
   //     value: "Locations",
   //   },
   // ],
-  eligibility: eligibilityAggregates,
-  "eligibility-table": eligibilityAggregates,
   "allocations-table": [
     {
       label: "Locations",

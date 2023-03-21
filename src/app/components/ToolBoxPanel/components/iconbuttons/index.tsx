@@ -30,6 +30,18 @@ const locationsToNotShowImageExport = [
   "/partner/<code>/commitment/map",
   "/location/<code>/budgets/map",
   "/partner/<code>/budgets/map",
+  "/viz/pledges-contributions/map",
+  "/viz/budgets/map",
+  "/viz/allocations/map",
+  "/grants",
+  "/viz/grants",
+  "/location/<code>/grants",
+  "/results",
+];
+
+const locationsToNotShowExport = [
+  "/documents",
+  "/location/<code>/documents",
   "/viz/disbursements/table",
   "/viz/signed/table",
   "/viz/commitment/table",
@@ -44,20 +56,8 @@ const locationsToNotShowImageExport = [
   "/grant/<code>/disbursements/table",
   "/grant/<code>/signed/table",
   "/grant/<code>/commitment/table",
-  "/viz/pledges-contributions/map",
   "/viz/pledges-contributions/table",
   "/viz/allocations/table",
-  "/viz/budgets/map",
-  "/viz/allocations/map",
-  "/grants",
-  "/viz/grants",
-  "/location/<code>/grants",
-  "/results",
-];
-
-export const locationsToNotShowExport = [
-  "/documents",
-  "/location/<code>/documents",
 ];
 
 const StyledMenu = withStyles({

@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -14,14 +15,16 @@ import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility
 function getTableData(data: DotChartModel[]): SimpleTableRow[] {
   const updatedTableData: SimpleTableRow[] = [];
   data.forEach((item: DotChartModel) => {
-    updatedTableData.push({
+    let instance = {
       name: item.name,
-      status: "",
-      children: item.items.map((subItem: any) => ({
-        name: subItem.name,
-        status: subItem.status,
-      })),
+    };
+    item.items.forEach((subItem: any) => {
+      instance = {
+        ...instance,
+        [subItem.name]: subItem.status,
+      };
     });
+    updatedTableData.push(instance);
   });
   return updatedTableData;
 }
@@ -30,7 +33,7 @@ export function GenericEligibilityWrapper() {
   useTitle("The Data Explorer - Eligibility");
 
   const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("name ASC");
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelEligibilityYearState.value
@@ -41,7 +44,7 @@ export function GenericEligibilityWrapper() {
   );
 
   const data = useStoreState(
-    (state) => get(state.Eligibility.data, "data", []) as DotChartModel[]
+    (state) => get(state.EligibilityTable.data, "data", []) as DotChartModel[]
   );
 
   const [page, setPage] = React.useState(0);
@@ -50,17 +53,9 @@ export function GenericEligibilityWrapper() {
     getTableData(data)
   );
 
-  // aggregateBy control const
-  const aggregateBy = useStoreState(
-    (state) =>
-      (state.ToolBoxPanelAggregateByState.value.length > 0
-        ? state.ToolBoxPanelAggregateByState.value
-        : "componentName") as "componentName" | "geographicAreaName"
-  );
+  const fetchData = useStoreActions((store) => store.EligibilityTable.fetch);
 
-  const fetchData = useStoreActions((store) => store.Eligibility.fetch);
-
-  const isLoading = useStoreState((state) => state.Eligibility.loading);
+  const isLoading = useStoreState((state) => state.EligibilityTable.loading);
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -74,20 +69,31 @@ export function GenericEligibilityWrapper() {
       sortBy,
     });
     fetchData({
-      filterString: `aggregateBy=${aggregateBy}&periods=${selectedYear}${
+      filterString: `aggregateBy=geographicAreaName&periods=${selectedYear}${
         filterString.length > 0 ? `&${filterString}` : ""
       }`,
     });
   }
 
-  React.useEffect(
-    () => reloadData(),
-    [aggregateBy, appliedFilters, selectedYear, sortBy]
-  );
+  React.useEffect(() => reloadData(), [appliedFilters, selectedYear, sortBy]);
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
 
-  const [,] = useDebounce(() => reloadData(), 500, [search]);
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
   const handleChangePage = (
     _event: React.MouseEvent<HTMLButtonElement> | null,
@@ -106,6 +112,17 @@ export function GenericEligibilityWrapper() {
   if (isLoading) {
     return <PageLoader />;
   }
+
+  const columns =
+    data.length > 0
+      ? filter(
+          Object.keys(tableData.length > 0 ? tableData[0] : {}),
+          (key) => key !== "children"
+        ).map((key) => ({
+          name: key === "name" ? "Location" : key,
+          key,
+        }))
+      : [];
 
   return (
     <React.Fragment>
@@ -142,16 +159,7 @@ export function GenericEligibilityWrapper() {
         isLoading={isLoading}
         setSearch={setSearch}
         setSortBy={setSortBy}
-        columns={[
-          {
-            name:
-              aggregateBy === "componentName"
-                ? "Component/Location"
-                : "Location/Component",
-            key: "name",
-          },
-          { name: "Status", key: "status" },
-        ]}
+        columns={columns}
       />
       <TablePagination
         page={page}

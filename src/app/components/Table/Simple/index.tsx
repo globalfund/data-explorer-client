@@ -89,7 +89,9 @@ function Row(props: {
         ).map((column: SimpleTableColumn, index: number) => {
           const value = get(props.row, column.key, "");
           let formattedValue =
-            props.formatNumbers && !Number.isNaN(parseInt(value))
+            props.formatNumbers &&
+            !Number.isNaN(parseInt(value)) &&
+            column.name.indexOf("(USD)") > -1
               ? formatFinancialValue(value, true)
               : value;
           return (
@@ -109,7 +111,8 @@ function Row(props: {
                   display: flex;
                   align-items: center;
                   flex-direction: row;
-                  justify-content: ${!Number.isNaN(parseInt(value))
+                  justify-content: ${!Number.isNaN(parseInt(value)) &&
+                  column.name.indexOf("(USD)") > -1
                     ? "flex-end"
                     : "flex-start"};
                 `}

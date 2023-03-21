@@ -16,7 +16,6 @@ import ViewColumnIcon from "@material-ui/icons/ViewColumnOutlined";
 import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
-import { locationsToNotShowExport } from "app/components/ToolBoxPanel/components/iconbuttons";
 
 interface TableToolbarProps {
   title: string;
@@ -157,7 +156,7 @@ export function TableToolbar(props: TableToolbarProps) {
             <CloseIcon htmlColor={appColors.TABLE.TOOLBAR_ICON_COLOR} />
           )}
         </IconButton>
-        {locationsToNotShowExport.indexOf(
+        {["/documents", "/location/<code>/documents"].indexOf(
           location.pathname.replace(`/${params.code}`, "/<code>")
         ) === -1 && (
           <IconButton

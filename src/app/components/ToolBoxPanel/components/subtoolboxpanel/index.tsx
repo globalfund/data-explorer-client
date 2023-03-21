@@ -276,7 +276,6 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             )}
         </>
       )}
-
       {!isGrantDetail && <ToolBoxPanelFilters groups={props.filterGroups} />}
     </>
   );
