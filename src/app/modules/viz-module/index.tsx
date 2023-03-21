@@ -44,7 +44,7 @@ export default function VizModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
   const [subTypeCopy, setSubTypeCopy] = React.useState(params.subType);
 
   React.useEffect(() => {
@@ -67,7 +67,7 @@ export default function VizModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -102,7 +102,7 @@ export default function VizModule() {
   };
 
   React.useEffect(() => {
-    setBreadCrumList((list) => {
+    setBreadCrumbList((list) => {
       if (list[list.length - 1]?.vizSelected) {
         return [
           { name: "Datasets", path: "/", id: v4() },
@@ -136,7 +136,7 @@ export default function VizModule() {
 
   React.useEffect(() => {
     if (params.subType !== subTypeCopy) {
-      setBreadCrumList([
+      setBreadCrumbList([
         { name: "Datasets", path: "/", id: v4() },
         {
           name: vizTypePretext(vizType),

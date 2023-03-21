@@ -1,5 +1,5 @@
 /* third-party */
-import React, { useEffect } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import { appColors } from "app/theme";
@@ -28,7 +28,7 @@ export default function ResultsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelResultsYearState.value
@@ -49,6 +49,14 @@ export default function ResultsModule() {
   React.useEffect(() => {
     document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchYearOptionsData({});
+    setBreadCrumbList([
+      { name: "Datasets", path: "/", id: v4() },
+      {
+        name: "Annual results",
+        path: location.pathname,
+        id: v4(),
+      },
+    ]);
   }, []);
 
   React.useEffect(() => {
@@ -109,7 +117,7 @@ export default function ResultsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -118,17 +126,6 @@ export default function ResultsModule() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-
-  useEffect(() => {
-    setBreadCrumList([
-      { name: "Datasets", path: "/", id: v4() },
-      {
-        name: "Annual results",
-        path: location.pathname,
-        id: v4(),
-      },
-    ]);
-  }, []);
 
   return (
     <div

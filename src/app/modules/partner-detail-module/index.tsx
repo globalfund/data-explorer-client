@@ -44,7 +44,7 @@ export default function PartnerDetail() {
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const params = useParams<{
     code: string;
@@ -87,7 +87,7 @@ export default function PartnerDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -97,9 +97,9 @@ export default function PartnerDetail() {
     return 0;
   }
 
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     if (!breadCrumbList.find((item) => item.path === location.pathname)) {
-      setBreadCrumList([
+      setBreadCrumbList([
         { name: "Datasets", path: "/", id: v4() },
         {
           name: partnerInfoData.partnerName,

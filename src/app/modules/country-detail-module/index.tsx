@@ -49,7 +49,7 @@ export default function CountryDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
   const { components } = queryString.parse(location.search);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
@@ -145,7 +145,7 @@ export default function CountryDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -158,28 +158,28 @@ export default function CountryDetail() {
 
   const breadcrumbID = React.useMemo(() => v4(), []);
 
-  React.useEffect(() => {
-    if (breadCrumbList.length < 1) {
-      setBreadCrumList([
+  useUpdateEffect(() => {
+    if (breadCrumbList.length === 0) {
+      setBreadCrumbList([
         { name: "Datasets", path: "/", id: v4() },
-
         {
           name: locationInfoData.locationName,
           path: location.pathname,
           id: v4(),
         },
       ]);
-    } else {
-      if (!breadCrumbList.find((item) => item.id === breadcrumbID))
-        setBreadCrumList([
-          ...breadCrumbList,
-
-          {
-            name: components || locationInfoData.locationName,
-            path: location.pathname,
-            id: breadcrumbID,
-          },
-        ]);
+    } else if (
+      !breadCrumbList.find((item) => item.id === breadcrumbID) &&
+      components
+    ) {
+      setBreadCrumbList([
+        ...breadCrumbList,
+        {
+          name: components.toString(),
+          path: location.pathname,
+          id: breadcrumbID,
+        },
+      ]);
     }
   }, [locationInfoData]);
 

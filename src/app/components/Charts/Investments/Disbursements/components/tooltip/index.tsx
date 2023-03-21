@@ -24,7 +24,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
       css={`
         color: ${appColors.TREEMAP.TOOLTIP_COLOR};
         min-width: 350px;
-        background: ${appColors.TREEMAP.BACKGROUND_COLOR};
+        background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
 
         @media (max-width: 767px) {
           min-width: 0;

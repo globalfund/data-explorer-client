@@ -47,7 +47,7 @@ export default function GrantDetail() {
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
   );
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
@@ -128,7 +128,7 @@ export default function GrantDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   function isToolboxOvervlayVisible() {
@@ -138,10 +138,10 @@ export default function GrantDetail() {
   }
   const breadCrumbId = React.useMemo(() => v4(), []);
 
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     if (grantInfoData) {
       if (breadCrumbList.length === 0) {
-        setBreadCrumList([
+        setBreadCrumbList([
           {
             name: "Datasets",
             path: "/",
@@ -156,7 +156,7 @@ export default function GrantDetail() {
         ]);
       } else {
         if (!breadCrumbList.find((list) => list.id === breadCrumbId)) {
-          setBreadCrumList([
+          setBreadCrumbList([
             {
               name: "Datasets",
               path: "/",
