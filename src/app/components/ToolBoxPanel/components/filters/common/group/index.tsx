@@ -31,16 +31,85 @@ export function FilterGroup(props: FilterGroupCompProps) {
   });
 
   function onFilterRemove(option: string) {
-    setAppliedFilters(filter(appliedFilters, (af: string) => af !== option));
-    if (setAppliedFiltersChildren && appliedFiltersChildren) {
-      setAppliedFiltersChildren(
-        filter(appliedFiltersChildren, (af: string) => af !== option)
+    console.log(
+      appliedFilters,
+      appliedFiltersChildren,
+      appliedFiltersGrandChildren
+    );
+    let fAppliedFilterOption: FilterGroupOptionModel | undefined;
+    props.options.every((o) => {
+      if (o.value === option) {
+        fAppliedFilterOption = o;
+        return false;
+      } else if (o.subOptions) {
+        o.subOptions.every((so) => {
+          if (so.value === option) {
+            fAppliedFilterOption = so;
+            return false;
+          } else if (so.subOptions) {
+            so.subOptions.every((sso) => {
+              if (sso.value === option) {
+                fAppliedFilterOption = sso;
+                return false;
+              }
+            });
+          }
+        });
+        if (fAppliedFilterOption) {
+          return false;
+        }
+      }
+    });
+    const allOptionSubOptions: FilterGroupOptionModel[] = [];
+    if (fAppliedFilterOption && fAppliedFilterOption.subOptions) {
+      allOptionSubOptions.push(fAppliedFilterOption);
+      fAppliedFilterOption.subOptions.forEach((so) => {
+        allOptionSubOptions.push(so);
+        if (so.subOptions) {
+          so.subOptions.forEach((sso) => {
+            allOptionSubOptions.push(sso);
+          });
+        }
+      });
+    }
+    let newAppliedFilters = filter(
+      appliedFilters,
+      (af: string) => af !== option
+    );
+    if (allOptionSubOptions.length > 0) {
+      newAppliedFilters = filter(
+        newAppliedFilters,
+        (af: string) => !find(allOptionSubOptions, (so) => so.value === af)
       );
     }
-    if (setAppliedFiltersGrandChildren && appliedFiltersGrandChildren) {
-      setAppliedFiltersGrandChildren(
-        filter(appliedFiltersGrandChildren, (af: string) => af !== option)
+    setAppliedFilters(newAppliedFilters);
+    if (setAppliedFiltersChildren && appliedFiltersChildren) {
+      let newAppliedFiltersChildren = [...appliedFiltersChildren];
+      newAppliedFiltersChildren = filter(
+        newAppliedFiltersChildren,
+        (af: string) => af !== option
       );
+      if (allOptionSubOptions.length > 0) {
+        newAppliedFiltersChildren = filter(
+          newAppliedFiltersChildren,
+          (af: string) => !find(allOptionSubOptions, (so) => so.value === af)
+        );
+      }
+      setAppliedFiltersChildren(newAppliedFiltersChildren);
+    }
+    if (setAppliedFiltersGrandChildren && appliedFiltersGrandChildren) {
+      let newAppliedFilterGrandChildren = [...appliedFiltersGrandChildren];
+      newAppliedFilterGrandChildren = filter(
+        newAppliedFilterGrandChildren,
+        (af: string) => af !== option
+      );
+      if (allOptionSubOptions.length > 0) {
+        newAppliedFilterGrandChildren = filter(
+          newAppliedFilterGrandChildren,
+          (af: string) => !find(allOptionSubOptions, (so) => so.value === af)
+        );
+      }
+      setAppliedFiltersGrandChildren(newAppliedFilterGrandChildren);
     }
   }
 
