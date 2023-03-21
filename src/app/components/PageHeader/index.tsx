@@ -125,7 +125,7 @@ export function PageHeader(props: PageHeaderProps) {
             xs={12}
             sm={props.tabs && props.tabs.length > 0 && !isMobile ? 4 : 12}
             lg={props.tabs && props.tabs.length > 0 ? 5 : 12}
-            xl={props.tabs && props.tabs.length > 0 ? 6 : 12}
+            xl={props.tabs && props.tabs.length > 0 ? 5 : 12}
             css={`
               ${isVizModule
                 ? `
@@ -161,7 +161,7 @@ export function PageHeader(props: PageHeaderProps) {
               xs={12}
               sm={8}
               lg={7}
-              xl={6}
+              xl={7}
               css={`
                 display: flex;
                 align-items: flex-end;

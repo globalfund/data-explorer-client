@@ -77,7 +77,7 @@ const styles = {
     transition: background 0.2s ease-in-out;
     background: ${active
       ? appColors.TABS.ITEM_BACKGROUND_ACTIVE_COLOR
-      : appColors.TABS.ITEM_BACKGROUND_HOVER_COLOR};
+      : appColors.TABS.ITEM_BACKGROUND_COLOR};
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -97,7 +97,7 @@ const styles = {
         background: ${appColors.TABS.ITEM_BACKGROUND_HOVER_COLOR};
         a,
         div {
-          color: ${appColors.TABS.LINK_COLOR};
+          color: ${appColors.TABS.LINK_ACTIVE_COLOR};
           cursor: pointer;
           text-shadow: 0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR},
             0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR},
