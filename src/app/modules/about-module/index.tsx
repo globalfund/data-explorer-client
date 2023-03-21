@@ -7,7 +7,6 @@ import { useMediaQuery } from "@material-ui/core";
 import { useCMSData } from "app/hooks/useCMSData";
 import LinkList from "app/modules/about-module/links";
 import { PageHeader } from "app/components/PageHeader";
-import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 
 export default function About() {
   const cmsData = useCMSData({ returnData: true });
@@ -51,7 +50,12 @@ export default function About() {
           ]}
         />
       )}
-      <PageTopSpacer />
+      <div
+        css={`
+          width: 100%;
+          height: 70px;
+        `}
+      />
       <Grid container spacing={!isSmallScreen ? 6 : undefined}>
         {!isSmallScreen && (
           <Grid item md={3}>

@@ -36,7 +36,7 @@ function Expandable(props: ExpandableProps) {
             transform: rotate(${expanded ? "-" : ""}90deg) scale(0.5);
 
             > path {
-              fill: ${appColors.COMMON.SECONDARY_COLOR_10};
+              fill: ${appColors.APPBAR.DATASETS_MENU_ITEM_COLOR};
             }
           }
 

@@ -21,11 +21,11 @@ interface PageHeaderProps {
 }
 
 const styles = {
-  container: css`
+  container: (top: number) => css`
     left: 0;
-    top: 104px;
     z-index: 10;
     width: 100vw;
+    top: ${top}px;
     display: flex;
     position: sticky;
     padding-top: 10px;
@@ -74,6 +74,7 @@ export function PageHeader(props: PageHeaderProps) {
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
   const isPartnerDetail = history.location.pathname.indexOf("/partner/") > -1;
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
+  const isAboutPage = history.location.pathname.indexOf("/about") > -1;
 
   let titleExtraStyle = {};
   if (
@@ -94,7 +95,7 @@ export function PageHeader(props: PageHeaderProps) {
   }
 
   return (
-    <div css={styles.container}>
+    <div css={styles.container(isAboutPage ? 48 : 104)}>
       <Container maxWidth="lg" css={styles.innercontainer}>
         <Grid
           container

@@ -89,7 +89,7 @@ function Row(props: {
         ).map((column: SimpleTableColumn, index: number) => {
           const value = get(props.row, column.key, "");
           let formattedValue =
-            props.formatNumbers && !Number.isNaN(value)
+            props.formatNumbers && !Number.isNaN(parseInt(value))
               ? formatFinancialValue(value, true)
               : value;
           return (
@@ -109,13 +109,14 @@ function Row(props: {
                   display: flex;
                   align-items: center;
                   flex-direction: row;
-                  justify-content: space-between;
+                  justify-content: ${!Number.isNaN(parseInt(value))
+                    ? "flex-end"
+                    : "flex-start"};
                 `}
               >
                 <div
                   css={`
                     gap: 12px;
-                    width: 100%;
                     display: flex;
                     align-items: center;
                     flex-direction: row;
@@ -240,6 +241,7 @@ export function SimpleTable(props: SimpleTableProps) {
                 (_c, index) => visibleColumnsIndexes.indexOf(index) > -1
               ).map((column: SimpleTableColumn, index: number) => {
                 let icon = undefined;
+                const monetaryColumn = column.name.indexOf("(USD)") > -1;
                 if (sortBySplits.length > 1 && sortBySplits[0] === column.key) {
                   if (sortBySplits[1] === "DESC") {
                     icon = <ArrowDownward />;
@@ -252,11 +254,12 @@ export function SimpleTable(props: SimpleTableProps) {
                     key={column.key}
                     css={`
                       ${index === 0 ? "padding-left: 40px;" : ""}
+                      ${monetaryColumn ? "text-align: right;" : ""}
 
                       > button {
                         ${tablecell}
-                        padding-left: 0;
                         text-transform: none;
+                        padding-${monetaryColumn ? "right" : "left"}: 0;
 
                         > span {
                           font-size: 16px;
