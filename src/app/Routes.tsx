@@ -20,6 +20,7 @@ const DatasetUploadSteps = lazy(
 const EditMetaData = lazy(
   () => import("app/modules/datasets-module/editMetaData")
 );
+const ReportsModule = lazy(() => import("app/modules/reports-module"));
 const DataSetDetailModule = lazy(
   () => import("app/modules/dataset-detail-module")
 );
@@ -43,6 +44,10 @@ export function MainRoutes() {
 
         <Route path="/data-themes">
           <DataThemesModule />
+        </Route>
+
+        <Route path={`/reports/:page/overview`}>
+          <ReportsModule />
         </Route>
 
         {/* <Route path="/datasets">

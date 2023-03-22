@@ -55,7 +55,7 @@ export default function GridItem(props: Props) {
             align-self: flex-start;
           `}
         >
-          <Link to={`/chart/${props.id}`}>
+          <Link to={`/reports/${props.id}/overview`}>
             <p
               css={`
                 font-size: 14px;

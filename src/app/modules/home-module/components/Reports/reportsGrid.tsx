@@ -27,7 +27,7 @@ export default function ReportsGrid() {
   return (
     <Grid container spacing={2}>
       <ReportAddnewCard />
-      {loadedDataThemes.map((data) => (
+      {loadedDataThemes.slice(0, 11).map((data) => (
         <Grid item xs={12} sm={6} md={4} lg={3}>
           <GridItem
             key={data.id}

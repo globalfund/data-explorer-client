@@ -16,6 +16,8 @@ import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
 import { headercss } from "./style";
+import { homeDisplayAtom } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
 
 const TextHeader = (label: string) => (
   <h2
@@ -109,9 +111,9 @@ export function AppBar() {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openSearch, setOpenSearch] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const [activeNav, setActiveNav] = React.useState<boolean>(false);
-  console.log(activeNav, "activeNav");
+  const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+
   function handleClick(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
   }
@@ -148,6 +150,9 @@ export function AppBar() {
   if (location.pathname === "/" && isMobile) {
     return <React.Fragment />;
   }
+  const handlePath = (path: "charts" | "report" | "data") => {
+    setDisplay(path);
+  };
 
   return (
     <MUIAppBar
@@ -216,40 +221,42 @@ export function AppBar() {
                   gap: 2.5rem;
                 `}
               >
-                <div>
-                  <NavLink
-                    to="/datasets"
-                    activeClassName="app-link-active"
-                    css={`
-                      color: ${location.pathname === "/datasets"
+                <div
+                  css={`
+                    a {
+                      color: ${display === "data"
                         ? "#CEA8BC !important"
                         : "#231D2C"};
-                    `}
-                  >
+                    }
+                  `}
+                >
+                  <NavLink to="#" onClick={() => handlePath("data")}>
                     <b>Data</b>
                   </NavLink>{" "}
                 </div>
-                <div>
-                  <NavLink
-                    to="/charts"
-                    css={`
-                      color: ${location.pathname === "/charts"
+                <div
+                  css={`
+                    a {
+                      color: ${display === "charts"
                         ? "#CEA8BC !important"
                         : "#231D2C"};
-                    `}
-                  >
+                    }
+                  `}
+                >
+                  <NavLink to="#" onClick={() => handlePath("charts")}>
                     <b>Charts</b>
                   </NavLink>
                 </div>
-                <div>
-                  <Link
-                    to="/reports"
-                    css={`
-                      color: ${location.pathname === "/reports"
+                <div
+                  css={`
+                    a {
+                      color: ${display === "report"
                         ? "#CEA8BC !important"
                         : "#231D2C"};
-                    `}
-                  >
+                    }
+                  `}
+                >
+                  <Link to="#" onClick={() => handlePath("report")}>
                     <b>Reports</b>
                   </Link>
                 </div>

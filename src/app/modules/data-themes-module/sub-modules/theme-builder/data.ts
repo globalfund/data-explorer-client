@@ -31,11 +31,11 @@ import {
   violinplot,
   voronoidiagram,
   voronoitreemap,
-  // echartsBarchart,
-  // echartsGeomap,
-  // echartsLinechart,
-  // echartsSankey,
-  // echartsTreemap,
+  echartsBarchart,
+  echartsGeomap,
+  echartsLinechart,
+  echartsSankey,
+  echartsTreemap,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-charts";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
@@ -72,11 +72,11 @@ export const charts = {
   violinplot,
   voronoidiagram,
   voronoitreemap,
-  // echartsBarchart,
-  // echartsGeomap,
-  // echartsLinechart,
-  // echartsSankey,
-  // echartsTreemap,
+  echartsBarchart,
+  echartsGeomap,
+  echartsLinechart,
+  echartsSankey,
+  echartsTreemap,
 };
 
 export const CHART_DEFAULT_WIDTH = 1000;
@@ -1095,82 +1095,82 @@ export const defaultChartOptions = {
       default: true,
     },
   },
-  // echartsBarchart: {
-  //   ...baseOptions,
-  //   width: {
-  //     ...baseOptions.width,
-  //     default: CHART_DEFAULT_WIDTH,
-  //   },
-  //   height: {
-  //     ...baseOptions.height,
-  //     default: CHART_DEFAULT_HEIGHT,
-  //   },
-  //   ...echartsBarchart.visualOptions,
-  // },
-  // echartsGeomap: {
-  //   ...baseOptions,
-  //   width: {
-  //     ...baseOptions.width,
-  //     default: CHART_DEFAULT_WIDTH,
-  //   },
-  //   height: {
-  //     ...baseOptions.height,
-  //     default: CHART_DEFAULT_HEIGHT,
-  //   },
-  //   ...echartsGeomap.visualOptions,
-  // },
-  // echartsLinechart: {
-  //   ...baseOptions,
-  //   width: {
-  //     ...baseOptions.width,
-  //     default: CHART_DEFAULT_WIDTH,
-  //   },
-  //   height: {
-  //     ...baseOptions.height,
-  //     default: CHART_DEFAULT_HEIGHT,
-  //   },
-  //   ...echartsLinechart.visualOptions,
-  // },
-  // echartsSankey: {
-  //   ...baseOptions,
-  //   width: {
-  //     ...baseOptions.width,
-  //     default: CHART_DEFAULT_WIDTH,
-  //   },
-  //   height: {
-  //     ...baseOptions.height,
-  //     default: CHART_DEFAULT_HEIGHT,
-  //   },
-  //   ...echartsSankey.visualOptions,
-  // },
-  // echartsTreemap: {
-  //   ...baseOptions,
-  //   width: {
-  //     ...baseOptions.width,
-  //     default: CHART_DEFAULT_WIDTH,
-  //   },
-  //   height: {
-  //     ...baseOptions.height,
-  //     default: CHART_DEFAULT_HEIGHT,
-  //   },
-  //   ...echartsTreemap.visualOptions,
-  //   marginTop: {
-  //     ...echartsTreemap.visualOptions.marginTop,
-  //     default: 0,
-  //   },
-  //   marginLeft: {
-  //     ...echartsTreemap.visualOptions.marginLeft,
-  //     default: 0,
-  //   },
-  //   marginRight: {
-  //     ...echartsTreemap.visualOptions.marginRight,
-  //     default: 0,
-  //   },
-  //   marginBottom: {
-  //     ...echartsTreemap.visualOptions.marginBottom,
-  //     default: 0,
-  //   },
-  // },
+  echartsBarchart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...echartsBarchart.visualOptions,
+  },
+  echartsGeomap: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...echartsGeomap.visualOptions,
+  },
+  echartsLinechart: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...echartsLinechart.visualOptions,
+  },
+  echartsSankey: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...echartsSankey.visualOptions,
+  },
+  echartsTreemap: {
+    ...baseOptions,
+    width: {
+      ...baseOptions.width,
+      default: CHART_DEFAULT_WIDTH,
+    },
+    height: {
+      ...baseOptions.height,
+      default: CHART_DEFAULT_HEIGHT,
+    },
+    ...echartsTreemap.visualOptions,
+    marginTop: {
+      ...echartsTreemap.visualOptions.marginTop,
+      default: 0,
+    },
+    marginLeft: {
+      ...echartsTreemap.visualOptions.marginLeft,
+      default: 0,
+    },
+    marginRight: {
+      ...echartsTreemap.visualOptions.marginRight,
+      default: 0,
+    },
+    marginBottom: {
+      ...echartsTreemap.visualOptions.marginBottom,
+      default: 0,
+    },
+  },
 };
 
 export interface DataThemeTabVizAPIModel {

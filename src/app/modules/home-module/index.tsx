@@ -11,15 +11,19 @@ import DatasetsGrid from "./components/Datasets/datasetsGrid";
 import ChartsGrid from "./components/Charts/chartsGrid";
 import ReportsGrid from "./components/Reports/reportsGrid";
 import { Container } from "@material-ui/core";
+import { useRecoilState } from "recoil";
+import { homeDisplayAtom } from "app/state/recoil/atoms";
 
 export default function HomeModule() {
   useTitle("Dataxplorer - Home");
-  const [alignment, setAlignment] = React.useState<
-    "data" | "charts" | "report"
-  >("data");
+  const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+
+  React.useEffect(() => {
+    setDisplay("data");
+  }, []);
 
   const displayGrid = () => {
-    switch (alignment) {
+    switch (display) {
       case "data":
         return <DatasetsGrid />;
       case "charts":
@@ -78,7 +82,7 @@ export default function HomeModule() {
               margin: 2rem 0;
             `}
           >
-            <ToggleButtons alignment={alignment} setAlignment={setAlignment} />
+            <ToggleButtons alignment={display} setAlignment={setDisplay} />
           </div>
 
           {displayGrid()}
