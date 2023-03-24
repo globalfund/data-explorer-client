@@ -1,23 +1,20 @@
 import React from "react";
 import get from "lodash/get";
-import { Search } from "app/components/Search";
+import { useRecoilState } from "recoil";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
-import CloseIcon from "@material-ui/icons/Close";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
+import { homeDisplayAtom } from "app/state/recoil/atoms";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronLeft from "@material-ui/icons/ChevronLeft";
-import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { headercss, loginBtn } from "app/components/AppBar/style";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
-import { headercss, loginBtn } from "./style";
-import { homeDisplayAtom } from "app/state/recoil/atoms";
-import { useRecoilState } from "recoil";
+import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
 
 const TextHeader = (label: string) => (
   <h2
@@ -106,13 +103,11 @@ export const StyledMenuItem = withStyles(() => ({
 
 export function AppBar() {
   const location = useLocation();
-  const datasetMenuItems = useDatasetMenuItems();
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openSearch, setOpenSearch] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [activeNav, setActiveNav] = React.useState<boolean>(false);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   function handleClick(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
@@ -161,6 +156,7 @@ export function AppBar() {
       color={location.pathname !== "/" ? "secondary" : "transparent"}
       css={`
         display: flex;
+        background-color: #f2f7fd;
       `}
     >
       <Toolbar
@@ -189,83 +185,84 @@ export function AppBar() {
       >
         {isMobile && getMobilePageHeader()}
         {!isMobile && (
-          <div css={headercss}>
-            <div
-              css={`
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 50%;
-              `}
-            >
-              <NavLink
-                to="/"
-                css={`
-                  display: flex;
-                  justify-content: center;
-                  gap: 2.5rem;
-                  padding-top: 5px;
-                  margin-right: 64px;
-                `}
-              >
-                <img
-                  src="/logo.svg"
-                  alt={get(cmsData, "componentsAppBar.logoAlt", "")}
-                />
-              </NavLink>
-
+          <Container maxWidth="lg">
+            <div css={headercss}>
               <div
                 css={`
                   display: flex;
-                  justify-content: center;
-                  gap: 2.5rem;
+                  justify-content: space-between;
+                  align-items: center;
+                  width: 50%;
                 `}
               >
-                <div
+                <NavLink
+                  to="/"
                   css={`
-                    a {
-                      color: ${display === "data"
-                        ? "#CEA8BC !important"
-                        : "#231D2C"};
-                    }
+                    display: flex;
+                    justify-content: center;
+                    gap: 2.5rem;
+                    padding-top: 5px;
+                    margin-right: 64px;
                   `}
                 >
-                  <NavLink to="#" onClick={() => handlePath("data")}>
-                    <b>Data</b>
-                  </NavLink>{" "}
-                </div>
+                  <img
+                    src="/logo.svg"
+                    alt={get(cmsData, "componentsAppBar.logoAlt", "")}
+                  />
+                </NavLink>
                 <div
                   css={`
-                    a {
-                      color: ${display === "charts"
-                        ? "#CEA8BC !important"
-                        : "#231D2C"};
-                    }
+                    gap: 2.5rem;
+                    display: flex;
+                    justify-content: center;
                   `}
                 >
-                  <NavLink to="#" onClick={() => handlePath("charts")}>
-                    <b>Charts</b>
-                  </NavLink>
-                </div>
-                <div
-                  css={`
-                    a {
-                      color: ${display === "report"
-                        ? "#CEA8BC !important"
-                        : "#231D2C"};
-                    }
-                  `}
-                >
-                  <Link to="#" onClick={() => handlePath("report")}>
-                    <b>Reports</b>
-                  </Link>
+                  <div
+                    css={`
+                      a {
+                        color: ${display === "data"
+                          ? "#CEA8BC !important"
+                          : "#231D2C"};
+                      }
+                    `}
+                  >
+                    <NavLink to="#" onClick={() => handlePath("data")}>
+                      <b>Data</b>
+                    </NavLink>{" "}
+                  </div>
+                  <div
+                    css={`
+                      a {
+                        color: ${display === "charts"
+                          ? "#CEA8BC !important"
+                          : "#231D2C"};
+                      }
+                    `}
+                  >
+                    <NavLink to="#" onClick={() => handlePath("charts")}>
+                      <b>Charts</b>
+                    </NavLink>
+                  </div>
+                  <div
+                    css={`
+                      a {
+                        color: ${display === "report"
+                          ? "#CEA8BC !important"
+                          : "#231D2C"};
+                      }
+                    `}
+                  >
+                    <Link to="#" onClick={() => handlePath("report")}>
+                      <b>Reports</b>
+                    </Link>
+                  </div>
                 </div>
               </div>
+              <div css={loginBtn}>
+                <Link to="/onboarding/login">Log in</Link>
+              </div>
             </div>
-            <div css={loginBtn}>
-              <Link to="/onboarding/login">Log in</Link>
-            </div>
-          </div>
+          </Container>
         )}
       </Toolbar>
     </MUIAppBar>

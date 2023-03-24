@@ -35,12 +35,9 @@ export default function AddDatasetFragment(props: Props) {
           </p>
           <p
             css={`
-              font-family: "Gotham Narrow";
-              font-style: normal;
-              font-weight: 325;
               font-size: 20px;
               line-height: 24px;
-              wi
+              font-style: normal;
             `}
           >
             Drag and Drop Spreadsheets File here <br /> or connect to Google

@@ -123,7 +123,6 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
         />
         <div
           css={`
-            font-family: "Gotham Narrow";
             font-weight: 325;
             color: #262c34;
           `}
@@ -167,7 +166,6 @@ export function DataThemesToolBoxLock(props: DataThemesToolBoxLockProps) {
             display: flex;
             gap: 3rem;
             align-items: center;
-            font-family: "Gotham Narrow";
             font-weight: 325;
             color: #262c34;
           `}

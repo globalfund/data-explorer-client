@@ -22,7 +22,7 @@ const DatasetUploadSteps = lazy(
 const EditMetaData = lazy(
   () => import("app/modules/datasets-module/editMetaData")
 );
-const ReportsModule = lazy(() => import("app/modules/reports-module"));
+const ReportModule = lazy(() => import("app/modules/report-module"));
 const DataSetDetailModule = lazy(
   () => import("app/modules/dataset-detail-module")
 );
@@ -52,8 +52,8 @@ export function MainRoutes() {
           <DataThemesModule />
         </RouteWithAppBar>
 
-        <RouteWithAppBar path={`/reports/:page/overview`}>
-          <ReportsModule />
+        <RouteWithAppBar path="/report/:id">
+          <ReportModule />
         </RouteWithAppBar>
 
         {/* <RouteWithAppBar path="/datasets">

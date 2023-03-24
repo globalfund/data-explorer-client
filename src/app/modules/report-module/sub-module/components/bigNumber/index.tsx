@@ -5,7 +5,6 @@ export default function BigNumber() {
     <div
       css={`
         width: 100%;
-        font-family: "Gotham Narrow";
         color: #000000;
         word-break: break-all;
       `}

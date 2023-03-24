@@ -16,7 +16,6 @@ export default function ChartAddnewCard() {
           width: 296px;
           height: 125px;
           padding-left: 0.8rem;
-          font-family: "Gotham Narrow";
         `}
       >
         <Box height={9} />

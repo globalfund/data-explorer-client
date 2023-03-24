@@ -182,7 +182,6 @@ export function SearchLayout(props: SearchLayoutProps) {
               font-weight: 325;
               font-size: 14px;
               padding: 6px 16px;
-              font-family: "Gotham Narrow";
               color: #000000;
               background: #cfd4da;
               text-transform: capitalize;

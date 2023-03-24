@@ -5,7 +5,6 @@ export const headerBlockcss = {
     background: #252c34;
     padding: 4rem 0rem 4rem 15%;
     /* font-family: "Inter", "Helvetica Neue", sans-serif; */
-    font-family: "Gotham Narrow";
     margin-top: 6rem;
     input {
       font-size: 40.0325px;

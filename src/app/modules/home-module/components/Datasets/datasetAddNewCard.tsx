@@ -16,7 +16,6 @@ export default function DatasetAddnewCard() {
           height: 125px;
           padding-left: 0.8rem;
           padding-top: 0.2rem;
-          font-family: "Gotham Narrow";
         `}
       >
         <h4

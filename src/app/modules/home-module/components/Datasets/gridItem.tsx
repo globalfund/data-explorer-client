@@ -34,7 +34,6 @@ export default function GridItem(props: Props) {
         padding: 0rem 1rem;
         position: relative;
         color: #262c34;
-        font-family: "Gotham Narrow";
       `}
     >
       <div

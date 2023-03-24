@@ -32,7 +32,6 @@ export default function GridItem(props: Props) {
         padding-top: 0.2rem;
 
         color: #262c34;
-        font-family: "Gotham Narrow";
         height: 125px;
       `}
     >

@@ -127,8 +127,7 @@ export function DataThemesBuilderChartType(
                     <div
                       css={`
                         font-size: 14px;
-                        font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                          sans-serif;
+                        font-family: "Inter", "Helvetica Neue", sans-serif;
                       `}
                     >
                       {chartType.label}
@@ -136,8 +135,7 @@ export function DataThemesBuilderChartType(
                     <div
                       css={`
                         font-size: 12px;
-                        font-family: "GothamNarrow-Book", "Helvetica Neue",
-                          sans-serif;
+                        font-family: "Inter", "Helvetica Neue", sans-serif;
                       `}
                     >
                       {chartType.categories.join(", ")}

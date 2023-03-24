@@ -5,7 +5,7 @@ import { ReactComponent as AddNewImage } from "../../assets/add-img.svg";
 export default function ReportAddnewCard() {
   const history = useHistory();
   const goToDatasetUpload = () => {
-    history.push("/dataset-upload");
+    history.push("/report/create");
   };
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -18,7 +18,6 @@ export default function ReportAddnewCard() {
           padding-right: 0.8rem;
 
           padding-top: 0.2rem;
-          font-family: "Gotham Narrow";
         `}
       >
         <h4
