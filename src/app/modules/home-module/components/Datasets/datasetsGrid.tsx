@@ -73,7 +73,7 @@ export default function DatasetsGrid() {
     <>
       <Grid container spacing={2}>
         <DatasetAddnewCard />
-        {datasets.map((data, index) => (
+        {(datasets || []).map((data, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <GridItem
               key={index}
