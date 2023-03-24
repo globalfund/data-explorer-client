@@ -9,12 +9,15 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { PageLoader } from "app/modules/common/page-loader";
 import { StoreProvider, useStoreRehydrated } from "easy-peasy";
 import { StylesProvider, CssBaseline } from "@material-ui/core";
+import { useLocation } from "react-use";
+import Onboarding from "./modules/onboarding-module";
 
 type ProviderProps = {
   children: any;
 };
 
 function Providers(props: ProviderProps) {
+  const location = useLocation();
   return (
     <RecoilRoot>
       <StylesProvider injectFirst>
@@ -24,8 +27,8 @@ function Providers(props: ProviderProps) {
           <StoreProvider store={store}>
             <AppContainer>
               {/* react router */}
+
               <Router>
-                <AppBar />
                 <div
                   css={`
                     min-height: calc(100vh - 48px);

@@ -10,7 +10,7 @@ import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
 import DatasetsGrid from "./components/Datasets/datasetsGrid";
 import ChartsGrid from "./components/Charts/chartsGrid";
 import ReportsGrid from "./components/Reports/reportsGrid";
-import { Container } from "@material-ui/core";
+import { Box, Container } from "@material-ui/core";
 import { useRecoilState } from "recoil";
 import { homeDisplayAtom } from "app/state/recoil/atoms";
 

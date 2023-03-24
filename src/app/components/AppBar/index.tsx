@@ -15,7 +15,7 @@ import IconChevronLeft from "@material-ui/icons/ChevronLeft";
 import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
-import { headercss } from "./style";
+import { headercss, loginBtn } from "./style";
 import { homeDisplayAtom } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 
@@ -262,8 +262,8 @@ export function AppBar() {
                 </div>
               </div>
             </div>
-            <div>
-              <button>Log in</button>
+            <div css={loginBtn}>
+              <Link to="/onboarding/login">Log in</Link>
             </div>
           </div>
         )}

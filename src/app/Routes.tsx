@@ -8,6 +8,8 @@ import { Route, Switch } from "react-router-dom";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
 import ChartDetailModule from "./modules/chart-detail-module";
+import { AppBar } from "./components/AppBar";
+import { RouteWithAppBar } from "./utils/RouteWithAppBar";
 
 const HomeModule = lazy(() => import("app/modules/home-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -31,6 +33,7 @@ const DatasetUploadModule = lazy(
 const DatasetListModule = lazy(
   () => import("app/modules/datasets-module/list")
 );
+const OnboardingModule = lazy(() => import("app/modules/onboarding-module"));
 
 export function MainRoutes() {
   useScrollToTop();
@@ -38,41 +41,44 @@ export function MainRoutes() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
-        <Route exact path="/">
+        <Route path={`/onboarding/:page`}>
+          <OnboardingModule />
+        </Route>
+        <RouteWithAppBar exact path="/">
           <HomeModule />
-        </Route>
+        </RouteWithAppBar>
 
-        <Route path="/data-themes">
+        <RouteWithAppBar path="/data-themes">
           <DataThemesModule />
-        </Route>
+        </RouteWithAppBar>
 
-        <Route path={`/reports/:page/overview`}>
+        <RouteWithAppBar path={`/reports/:page/overview`}>
           <ReportsModule />
-        </Route>
+        </RouteWithAppBar>
 
-        {/* <Route path="/datasets">
+        {/* <RouteWithAppBar path="/datasets">
           <DatasetListModule />
         </Route> */}
 
-        <Route exact path="/about">
+        <RouteWithAppBar exact path="/about">
           <AboutModule />
-        </Route>
+        </RouteWithAppBar>
 
-        <Route exact path="/chart/:page">
+        <RouteWithAppBar exact path="/chart/:page">
           <ChartDetailModule />
-        </Route>
-        <Route exact path="/datasets">
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/datasets">
           <DatasetsModule />
-        </Route>
-        <Route exact path="/charts">
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/charts">
           <ChartsModule />
-        </Route>
-        <Route exact path="/dataset/:id/edit">
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/dataset/:id/edit">
           <EditMetaData />
-        </Route>
-        <Route exact path="/dataset-upload">
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/dataset-upload">
           <DatasetUploadSteps />
-        </Route>
+        </RouteWithAppBar>
 
         {/* <V1RouteRedirections /> */}
       </Switch>
