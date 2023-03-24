@@ -587,7 +587,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
                   />
                 </svg>
               </IconButton>
-              <IconButton onClick={onSave} disabled={!isSavedEnabled}>
+              <IconButton onClick={onSave} disabled={!props.isEditMode}>
                 <EditIcon htmlColor="#262c34" />
               </IconButton>
               <IconButton onClick={onSave} disabled={!isSavedEnabled}>
