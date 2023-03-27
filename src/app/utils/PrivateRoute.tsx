@@ -12,8 +12,6 @@ interface PrivateRouteProps {
 }
 
 export function PrivateRoute(props: PrivateRouteProps) {
-  // const { isAuthenticated, isLoading } = useAuth0();
-
   return (
     <>
       <Route
@@ -26,25 +24,6 @@ export function PrivateRoute(props: PrivateRouteProps) {
               {props.children}
             </React.Fragment>
           );
-          // if (isAuthenticated) {
-          //   if (props.render) {
-          //     return props.render();
-          //   }
-          //   return (
-          //     <React.Fragment>
-          //       <AppBar />
-          //       {props.children}
-          //     </React.Fragment>
-          //   );
-          // }
-          // return (
-          //   <Redirect
-          //     to={{
-          //       pathname: '/',
-          //       state: { from: location },
-          //     }}
-          //   />
-          // );
         }}
       />
     </>
