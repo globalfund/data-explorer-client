@@ -19,6 +19,7 @@ export const PrimaryButton = styled.button<Props>`
   align-items: center;
   width: 100%;
   text-transform: uppercase;
+  cursor: pointer;
 `;
 
 export const GreyedButton = styled(PrimaryButton)`

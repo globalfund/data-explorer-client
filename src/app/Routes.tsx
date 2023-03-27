@@ -8,8 +8,9 @@ import { Route, Switch } from "react-router-dom";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
 import ChartDetailModule from "./modules/chart-detail-module";
-import { AppBar } from "./components/AppBar";
 import { RouteWithAppBar } from "./utils/RouteWithAppBar";
+import { PrivateRoute } from "./utils/PrivateRoute";
+import UserProfileModule from "./modules/user-profile-module";
 
 const HomeModule = lazy(() => import("app/modules/home-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
@@ -63,6 +64,9 @@ export function MainRoutes() {
         <RouteWithAppBar exact path="/about">
           <AboutModule />
         </RouteWithAppBar>
+        <PrivateRoute exact path="/user-management/:page">
+          <UserProfileModule />
+        </PrivateRoute>
 
         <RouteWithAppBar exact path="/chart/:page">
           <ChartDetailModule />

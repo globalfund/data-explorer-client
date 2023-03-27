@@ -30,7 +30,7 @@ function getModalStyle() {
     transform: `translate(-${top}%, -47%)`,
   };
 }
-const useStyles = makeStyles((theme: Theme) =>
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     paper: {
       position: "absolute",
