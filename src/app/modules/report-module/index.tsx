@@ -6,6 +6,7 @@ import { ReportInitialView } from "app/modules/report-module/views/initial";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
 
 export default function ReportModule() {
+  const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
   const [currentView, setCurrentView] = React.useState<
     "initial" | "create" | "preview"
@@ -19,8 +20,11 @@ export default function ReportModule() {
         setName={setReportName}
       />
       <ReportRightPanel
+        open={rightPanelOpen}
         currentView={currentView}
         setCurrentView={setCurrentView}
+        onOpen={() => setRightPanelOpen(true)}
+        onClose={() => setRightPanelOpen(false)}
       />
       <div
         css={`
@@ -31,7 +35,10 @@ export default function ReportModule() {
       <Container maxWidth="lg">
         <div
           css={`
-            width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px);
+            transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+            width: ${rightPanelOpen
+              ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
+              : "100%"};
 
             @media (max-width: 1280px) {
               width: calc(100vw - 400px);
