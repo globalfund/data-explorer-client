@@ -1,12 +1,12 @@
-import { Grid, IconButton, Box } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { Grid, IconButton, Box } from "@material-ui/core";
 import { ReactComponent as AddNewImage } from "../../assets/add-img.svg";
 
 export default function ChartAddnewCard() {
   const history = useHistory();
   const goToDatasetUpload = () => {
-    history.push("/data-themes/new/data");
+    history.push("/chart/new/data");
   };
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
@@ -17,9 +17,9 @@ export default function ChartAddnewCard() {
           height: 125px;
           padding-left: 0.8rem;
         `}
+        onClick={goToDatasetUpload}
       >
         <Box height={9} />
-
         <h4
           css={`
             margin: 0;
@@ -28,7 +28,6 @@ export default function ChartAddnewCard() {
           Create new chart
         </h4>
         <Box height={9} />
-
         <div
           css={`
             display: flex;

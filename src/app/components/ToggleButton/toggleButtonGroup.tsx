@@ -2,15 +2,15 @@ import { ToggleButtonGroup, ToggleButton } from "@material-ui/lab";
 import React from "react";
 
 interface Props {
-  alignment: "data" | "charts" | "report" | "";
+  alignment: "data" | "charts" | "reports" | "";
   setAlignment: React.Dispatch<
-    React.SetStateAction<"data" | "charts" | "report" | "">
+    React.SetStateAction<"data" | "charts" | "reports" | "">
   >;
 }
 export default function ToggleButtons(props: Props) {
   const handleAlignment = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: "data" | "charts" | "report" | ""
+    newAlignment: "data" | "charts" | "reports" | ""
   ) => {
     props.setAlignment(newAlignment);
   };
@@ -28,7 +28,7 @@ export default function ToggleButtons(props: Props) {
       <ToggleButton value="charts" aria-label="centered">
         <p>Charts</p>
       </ToggleButton>
-      <ToggleButton value="report" aria-label="right aligned">
+      <ToggleButton value="reports" aria-label="right aligned">
         <p>Reports</p>
       </ToggleButton>
     </ToggleButtonGroup>

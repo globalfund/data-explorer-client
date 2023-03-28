@@ -6,7 +6,7 @@ import { ReactComponent as AddNewImage } from "../home-module/assets/add-img.svg
 export default function ChartAddnewCard() {
   const history = useHistory();
   const goToDatasetUpload = () => {
-    history.push("/data-themes/new/data");
+    history.push("/chart/new/data");
   };
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>

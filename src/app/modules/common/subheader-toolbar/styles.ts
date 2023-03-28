@@ -10,9 +10,8 @@ export const styles = {
     display: flex;
     position: fixed;
     background: #f4f4f4;
-    justify-content: center;
-
     flex-direction: column;
+    justify-content: center;
   `,
   innercontainer: css`
     height: 100%;
