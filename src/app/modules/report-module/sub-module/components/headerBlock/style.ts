@@ -3,9 +3,10 @@ import { css } from "styled-components/macro";
 export const headerBlockcss = {
   container: css`
     background: #252c34;
-    padding: 4rem 0rem 4rem 15%;
-    /* font-family: "Inter", "Helvetica Neue", sans-serif; */
-    margin-top: 6rem;
+    width: 100%;
+
+    padding: 4rem 0rem 4rem 0px;
+
     input {
       font-size: 40.0325px;
       line-height: 48px;
@@ -16,6 +17,9 @@ export const headerBlockcss = {
       width: 100%;
       height: 100%;
       background-color: inherit;
+      ::placeholder {
+        color: #ffffff;
+      }
     }
 
     textarea {
@@ -31,6 +35,9 @@ export const headerBlockcss = {
       height: max-content;
       background-color: inherit;
       resize: none;
+      ::placeholder {
+        color: #ffffff;
+      }
     }
     p {
       font-weight: 325;

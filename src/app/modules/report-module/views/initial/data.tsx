@@ -1,3 +1,5 @@
+import { useHistory } from "react-router-dom";
+
 export interface ReportInitialViewProps {
   setCurrentView: (view: "initial" | "create" | "preview") => void;
 }
@@ -29,6 +31,7 @@ export const TemplateItem = ({
 }: ReportSearchResultModel & {
   setCurrentView: (view: "initial" | "create" | "preview") => void;
 }) => {
+  const history = useHistory();
   return (
     <div
       css={`

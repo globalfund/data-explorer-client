@@ -4,6 +4,7 @@ import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
 import { ReportCreateView } from "app/modules/report-module/views/create";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
+import { Box } from "@material-ui/core";
 
 export default function ReportModule() {
   const [reportName, setReportName] = React.useState("My First Report");
@@ -25,10 +26,13 @@ export default function ReportModule() {
       <div
         css={`
           width: 100%;
-          height: 150px;
+          height: 100px;
         `}
       />
+      {currentView === "create" && <ReportCreateView />}
+
       <Container maxWidth="lg">
+        <Box height={50} />
         <div
           css={`
             width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px);
@@ -41,7 +45,6 @@ export default function ReportModule() {
           {currentView === "initial" && (
             <ReportInitialView setCurrentView={setCurrentView} />
           )}
-          {currentView === "create" && <ReportCreateView />}
         </div>
       </Container>
     </div>

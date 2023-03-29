@@ -10,7 +10,6 @@ export default function ReportsOverview() {
   return (
     <>
       <Subheader previewMode={true} />
-      <HeaderBlock previewMode={true} />
       <Box height={18} />
       <Container maxWidth="lg">
         <Grid container spacing={4}>

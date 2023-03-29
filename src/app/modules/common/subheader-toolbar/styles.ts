@@ -11,7 +11,6 @@ export const styles = {
     position: fixed;
     background: #f4f4f4;
     justify-content: center;
-
     flex-direction: column;
   `,
   innercontainer: css`
@@ -20,7 +19,6 @@ export const styles = {
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
-
     @media (max-width: 1280px) {
       margin-left: 0;
       width: calc(100vw - 400px);
@@ -76,7 +74,6 @@ export const styles = {
   nameInput: css`
     margin: 0;
     width: 600px;
-    height: 24px;
     display: flex;
     color: #262c34;
     font-size: 24px;
