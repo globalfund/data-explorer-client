@@ -1,22 +1,23 @@
-import { SankeyIcon } from "app/assets/icons/charts/Sankey";
-import React, { useState } from "react";
+import React from "react";
+import moment from "moment";
 import { Link } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
 import { ReactComponent as EditIcon } from "../../assets/edit.svg";
-import IconButton from "@material-ui/core/IconButton";
 
 interface Props {
+  id: string;
   path: string;
   title: string;
   descr: string;
   date: string;
-  viz: JSX.Element;
+  viz: React.ReactNode;
   handleDelete?: (id: string) => void;
-  id?: string;
 }
+
 export default function GridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
+  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
   const showMenuOptions = () => {
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
@@ -26,11 +27,13 @@ export default function GridItem(props: Props) {
         background: #ffffff;
         width: 296px;
         position: relative;
-
         padding: 0rem 1.2rem;
-        padding-bottom: 0.2rem;
+        padding-bottom: 0.5rem;
         color: #262c34;
         height: 125px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
       `}
     >
       <div
@@ -72,8 +75,15 @@ export default function GridItem(props: Props) {
             {props.descr}
           </p>
         </div>
-        <div>{props.viz}</div>
-
+        <div
+          css={`
+            path {
+              fill: #868a9d;
+            }
+          `}
+        >
+          {props.viz}
+        </div>
         <MenuIcon
           onClick={showMenuOptions}
           css={`
@@ -83,17 +93,19 @@ export default function GridItem(props: Props) {
           `}
         />
       </div>
-
       <div
         css={`
           display: flex;
-          justify-content: space-between;
-          margin-top: -10px;
           font-size: 12px;
+          justify-content: space-between;
+
+          > p {
+            margin: 0;
+          }
         `}
       >
         <p>Creation date</p>
-        <p>{props.date}</p>
+        <p>{moment(props.date).format("DD-MM-YYYY")}</p>
       </div>
       {menuOptionsDisplay ? (
         <div>
@@ -128,7 +140,7 @@ export default function GridItem(props: Props) {
             `}
           >
             <div>
-              <Link to={`/data-themes/${props.id}/customize`}>
+              <Link to={`/chart/${props.id}/customize`}>
                 <EditIcon
                   css={`
                     cursor: pointer;

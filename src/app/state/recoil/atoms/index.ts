@@ -49,9 +49,9 @@ export const cmsDataAtom = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const homeDisplayAtom = atom<"data" | "charts" | "report" | "">({
+export const homeDisplayAtom = atom<"data" | "charts" | "reports" | "">({
   key: "homeDisplayAtom",
-  default: "",
+  default: "data",
 });
 
 export const rowFrameStructureAtom = atom<IRowFrameStructure>({

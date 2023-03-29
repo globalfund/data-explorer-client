@@ -1,0 +1,28 @@
+.editor {
+    left: 0;
+    /* top: 144px; */
+    padding-top: 50px;
+    max-width: 1280px;
+    position: relative;
+    align-self: flex-start;
+    min-height: calc(100vh - 144px);
+    width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
+    border: none;
+    cursor: text;
+    background: none;
+}
+
+.editorPreview {
+    left: 0;
+    max-width: 1280px;
+    position: relative;
+    align-self: flex-start;
+    width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
+    border: none;
+    cursor: text;
+    background: none;
+}
+
+.editor :global(.public-DraftEditor-content) {
+    min-height: 140px;
+}

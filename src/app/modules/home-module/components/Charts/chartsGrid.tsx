@@ -1,13 +1,14 @@
-import Grid from "@material-ui/core/Grid";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-
 import React from "react";
-import { v4 } from "uuid";
-import ChartAddnewCard from "./chartAddNewCard";
-import { datasetsData } from "./data";
-import GridItem from "./gridItem";
-import { BarIcon, MapIcon, SankeyIcon, TableIcon } from "./vizIcons";
+import { find } from "lodash";
+import Grid from "@material-ui/core/Grid";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
+import GridItem from "app/modules/home-module/components/Charts/gridItem";
+import { chartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import ChartAddnewCard from "app/modules/home-module/components/Charts/chartAddNewCard";
+
+const description =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
 export default function ChartsGrid() {
   const [cardId, setCardId] = React.useState<number>(0);
@@ -15,13 +16,14 @@ export default function ChartsGrid() {
   const [inputValue, setInputValue] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
-  const [data, setData] = React.useState(
-    datasetsData.map((data) => ({ ...data, id: "63dd016c20ff974becd6330b" }))
+  const charts = useStoreState(
+    (state) => (state.charts.ChartGetList.crudData || []) as any[]
+  );
+  const loadCharts = useStoreActions(
+    (actions) => actions.charts.ChartGetList.fetch
   );
 
   const handleDelete = (id: number) => {
-    const newData = data.filter((data, i) => i !== id);
-    setData(newData);
     setModalDisplay(false);
     setEnableButton(false);
   };
@@ -41,37 +43,35 @@ export default function ChartsGrid() {
     setModalDisplay(true);
   };
 
-  const setViz = (vizType: "bar" | "sankey" | "map" | "table") => {
-    switch (vizType) {
-      case "sankey":
-        return <SankeyIcon />;
-
-      case "bar":
-        return <BarIcon />;
-      case "map":
-        return <MapIcon />;
-      case "table":
-        return <TableIcon />;
-      default:
-        return <TableIcon />;
+  const getIcon = (vizType: string) => {
+    const type = find(chartTypes, { id: vizType });
+    if (type) {
+      return type.icon;
     }
+    return chartTypes[0].icon;
   };
+
+  React.useEffect(() => {
+    loadCharts({
+      storeInCrudData: true,
+    });
+  }, []);
 
   return (
     <>
       <Grid container spacing={2}>
         <ChartAddnewCard />
-        {data.map((data, index) => (
+        {charts.map((c, index) => (
           <Grid item xs={12} sm={6} md={4} lg={3}>
             <GridItem
-              key={index}
-              date={data.date}
-              descr={data.desc}
-              path={data.path}
-              title={data.title}
-              viz={setViz(data.viz)}
+              id={c.id}
+              key={c.id}
+              title={c.name}
+              descr={description}
+              date={c.createdDate}
+              path={`/chart/${c.id}`}
+              viz={getIcon(c.vizType)}
               handleDelete={() => handleModal(index as number)}
-              id={data.id}
             />
           </Grid>
         ))}

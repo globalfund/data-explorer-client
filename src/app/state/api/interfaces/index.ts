@@ -68,6 +68,14 @@ import {
   DataPathPanelVisibilityStateModel,
   DataPathStepsStateModel,
 } from "../action-reducers/sync/dataPath";
+import {
+  ChartsActivePanelsStateModel,
+  ChartsChartTypeStateModel,
+  ChartsDatasetStateModel,
+  ChartsEnabledFilterOptionGroupsStateModel,
+  ChartsMappingStateModel,
+} from "../action-reducers/sync/charts";
+import { ChartsAppliedFiltersStateModel } from "../action-reducers/sync/charts/filters";
 
 export interface RequestValues<T> {
   values?: T;
@@ -350,5 +358,19 @@ export interface StoreModel {
     DataThemeGetList: ApiCallModel;
     DatasetGetList: ApiCallModel;
     DatasetCreate: ApiCallModel;
+  };
+  charts: {
+    ChartGet: ApiCallModel;
+    ChartCreate: ApiCallModel;
+    ChartUpdate: ApiCallModel;
+    ChartDelete: ApiCallModel;
+    ChartDuplicate: ApiCallModel;
+    ChartGetList: ApiCallModel;
+    activePanels: ChartsActivePanelsStateModel;
+    dataset: ChartsDatasetStateModel;
+    mapping: ChartsMappingStateModel;
+    chartType: ChartsChartTypeStateModel;
+    appliedFilters: ChartsAppliedFiltersStateModel;
+    enabledFilterOptionGroups: ChartsEnabledFilterOptionGroupsStateModel;
   };
 }

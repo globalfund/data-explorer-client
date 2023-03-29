@@ -145,7 +145,7 @@ export function AppBar() {
   if (location.pathname === "/" && isMobile) {
     return <React.Fragment />;
   }
-  const handlePath = (path: "charts" | "report" | "data") => {
+  const handlePath = (path: "charts" | "reports" | "data") => {
     setDisplay(path);
   };
 
@@ -226,9 +226,9 @@ export function AppBar() {
                       }
                     `}
                   >
-                    <NavLink to="#" onClick={() => handlePath("data")}>
+                    <NavLink to="/" onClick={() => handlePath("data")}>
                       <b>Data</b>
-                    </NavLink>{" "}
+                    </NavLink>
                   </div>
                   <div
                     css={`
@@ -239,20 +239,20 @@ export function AppBar() {
                       }
                     `}
                   >
-                    <NavLink to="#" onClick={() => handlePath("charts")}>
+                    <NavLink to="/" onClick={() => handlePath("charts")}>
                       <b>Charts</b>
                     </NavLink>
                   </div>
                   <div
                     css={`
                       a {
-                        color: ${display === "report"
+                        color: ${display === "reports"
                           ? "#CEA8BC !important"
                           : "#231D2C"};
                       }
                     `}
                   >
-                    <Link to="#" onClick={() => handlePath("report")}>
+                    <Link to="/" onClick={() => handlePath("reports")}>
                       <b>Reports</b>
                     </Link>
                   </div>

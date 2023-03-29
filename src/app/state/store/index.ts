@@ -199,6 +199,22 @@ import {
   AvailableDatasources,
   MappedDatasets,
 } from "../api/action-reducers/viz/datasourcesNdatasets";
+import {
+  ChartsActivePanelsState,
+  ChartsChartTypeState,
+  ChartsDatasetState,
+  ChartsEnabledFilterOptionGroupsState,
+  ChartsMappingState,
+} from "../api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersState } from "../api/action-reducers/sync/charts/filters";
+import {
+  ChartCreate,
+  ChartDelete,
+  ChartDuplicate,
+  ChartGet,
+  ChartGetList,
+  ChartUpdate,
+} from "../api/action-reducers/charts";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -425,6 +441,20 @@ const storeContent: StoreModel = {
     DataThemeGetList: persist(DataThemeGetList),
     DatasetGetList: persist(DatasetGetList),
     DatasetCreate: persist(DatasetCreate),
+  },
+  charts: {
+    ChartGet: persist(ChartGet),
+    ChartCreate: persist(ChartCreate),
+    ChartUpdate: persist(ChartUpdate),
+    ChartDelete: persist(ChartDelete),
+    ChartDuplicate: persist(ChartDuplicate),
+    ChartGetList: persist(ChartGetList),
+    activePanels: persist(ChartsActivePanelsState),
+    dataset: persist(ChartsDatasetState),
+    mapping: persist(ChartsMappingState),
+    chartType: persist(ChartsChartTypeState),
+    appliedFilters: persist(ChartsAppliedFiltersState),
+    enabledFilterOptionGroups: persist(ChartsEnabledFilterOptionGroupsState),
   },
 };
 
