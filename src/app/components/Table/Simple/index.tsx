@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
@@ -27,7 +28,7 @@ const useRowStyles = makeStyles({
   root: {
     "& > *": {
       userSelect: "none",
-      borderBottom: "1px solid #DFE3E6",
+      borderBottom: `1px solid ${appColors.TABLE.BORDER_BOTTOM_COLOR}`,
     },
   },
 });
@@ -60,20 +61,22 @@ function Row(props: {
         }}
         css={`
           transition: background 0.2s ease-in-out;
-          background: ${props.paddingLeft ? "#fff" : "#f5f5f7"};
+          background: ${props.paddingLeft
+            ? appColors.TABLE.ROW_BACKGROUND_COLOR_1
+            : appColors.TABLE.ROW_BACKGROUND_COLOR_2};
 
           ${props.row.children
             ? `
           :hover {
             cursor: pointer;
-            background: #262C34;
+            background: ${appColors.TABLE.ROW_BACKGROUND_HOVER_COLOR};
 
             > td {
-              color: #fff;
+              color: ${appColors.TABLE.ROW_TEXT_HOVER_COLOR};
             }
             
             path {
-              fill: #fff;
+              fill: ${appColors.TABLE.ROW_TEXT_HOVER_COLOR};
             }
           }
           `
@@ -86,7 +89,9 @@ function Row(props: {
         ).map((column: SimpleTableColumn, index: number) => {
           const value = get(props.row, column.key, "");
           let formattedValue =
-            props.formatNumbers && !Number.isNaN(value)
+            props.formatNumbers &&
+            !Number.isNaN(parseInt(value)) &&
+            column.name.indexOf("(USD)") > -1
               ? formatFinancialValue(value, true)
               : value;
           return (
@@ -106,13 +111,15 @@ function Row(props: {
                   display: flex;
                   align-items: center;
                   flex-direction: row;
-                  justify-content: space-between;
+                  justify-content: ${!Number.isNaN(parseInt(value)) &&
+                  column.name.indexOf("(USD)") > -1
+                    ? "flex-end"
+                    : "flex-start"};
                 `}
               >
                 <div
                   css={`
                     gap: 12px;
-                    width: 100%;
                     display: flex;
                     align-items: center;
                     flex-direction: row;
@@ -239,6 +246,7 @@ export function SimpleTable(props: SimpleTableProps) {
                 (_c, index) => visibleColumnsIndexes.indexOf(index) > -1
               ).map((column: SimpleTableColumn, index: number) => {
                 let icon = undefined;
+                const monetaryColumn = column.name.indexOf("(USD)") > -1;
                 if (sortBySplits.length > 1 && sortBySplits[0] === column.key) {
                   if (sortBySplits[1] === "DESC") {
                     icon = <ArrowDownward />;
@@ -251,11 +259,12 @@ export function SimpleTable(props: SimpleTableProps) {
                     key={column.key}
                     css={`
                       ${index === 0 ? "padding-left: 40px;" : ""}
+                      ${monetaryColumn ? "text-align: right;" : ""}
 
                       > button {
                         ${tablecell}
-                        padding-left: 0;
                         text-transform: none;
+                        padding-${monetaryColumn ? "right" : "left"}: 0;
 
                         > span {
                           font-size: 16px;

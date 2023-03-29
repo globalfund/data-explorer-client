@@ -1,8 +1,8 @@
 import React from "react";
 import find from "lodash/find";
 import filter from "lodash/filter";
-import { ProjectPalette } from "app/theme";
 import { css } from "styled-components/macro";
+import { appColors, ProjectPalette } from "app/theme";
 import { NavLink, useLocation, useParams } from "react-router-dom";
 import { StyledMenu, StyledMenuItem } from "app/components/AppBar";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
@@ -58,15 +58,15 @@ const styles = {
     &::-webkit-scrollbar {
       width: 1px;
       height: 3px;
-      background: #ededf6;
+      background: ${appColors.TABS.SCROLLBAR_BACKGROUND_COLOR};
     }
     &::-webkit-scrollbar-track {
       border-radius: 4px;
-      background: #ededf6;
+      background: ${appColors.TABS.SCROLLBAR_TRACK_BACKGROUND_COLOR};
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 4px;
-      background: #2e4063;
+      background: ${appColors.TABS.SCROLLBAR_THUMB_BACKGROUND_COLOR};
     }
   `,
   tabcss: (active?: boolean) => css`
@@ -75,7 +75,9 @@ const styles = {
     margin-right: 1px;
     align-items: center;
     transition: background 0.2s ease-in-out;
-    background: ${active ? "#262C34" : "#C7CDD1"};
+    background: ${active
+      ? appColors.TABS.ITEM_BACKGROUND_ACTIVE_COLOR
+      : appColors.TABS.ITEM_BACKGROUND_COLOR};
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -92,12 +94,14 @@ const styles = {
 
     @media (hover: hover) and (pointer: fine) {
       &:hover {
-        background: #262c34;
+        background: ${appColors.TABS.ITEM_BACKGROUND_HOVER_COLOR};
         a,
         div {
-          color: #fff;
+          color: ${appColors.TABS.LINK_ACTIVE_COLOR};
           cursor: pointer;
-          text-shadow: 0 0 0.9px #fff, 0 0 0.9px #fff, 0 0 0.9px #fff;
+          text-shadow: 0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR},
+            0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR},
+            0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR};
         }
       }
     }
@@ -108,9 +112,11 @@ const styles = {
       padding: 10px 15px;
       white-space: nowrap;
       text-decoration: none;
-      color: ${active ? "#fff" : "#13183F"};
+      color: ${active
+        ? appColors.TABS.LINK_ACTIVE_COLOR
+        : appColors.TABS.LINK_COLOR};
       text-shadow: ${active
-        ? "0 0 0.9px #fff, 0 0 0.9px #fff, 0 0 0.9px #fff"
+        ? `0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR}, 0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR}, 0 0 0.9px ${appColors.TABS.LINK_ACTIVE_COLOR}`
         : "none"};
     }
 
@@ -261,13 +267,13 @@ function PageHeaderTabWDropdown(props: TabProps) {
                 border-bottom-style: none;
 
                 > a {
-                  background: #c7cdd1;
+                  background: ${appColors.TABS.ITEM_BACKGROUND_COLOR};
 
                   ${tab.isActive &&
                   `
-                  color: #fff;
+                  color: ${appColors.TABS.LINK_ACTIVE_COLOR};
                   font-weight: bold;
-                  background: #262c34;
+                  background: ${appColors.TABS.ITEM_BACKGROUND_ACTIVE_COLOR};
                   transition: background 0.2s ease-in-out;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue",
                     sans-serif;
@@ -275,9 +281,9 @@ function PageHeaderTabWDropdown(props: TabProps) {
 
                   @media (min-width: 768px) {
                     &:hover {
-                      color: #fff;
+                      color: ${appColors.TABS.LINK_HOVER_COLOR};
                       font-weight: bold;
-                      background: #262c34;
+                      background: ${appColors.TABS.ITEM_BACKGROUND_HOVER_COLOR};
                       transition: background 0.2s ease-in-out;
                       font-family: "GothamNarrow-Bold", "Helvetica Neue",
                         sans-serif;

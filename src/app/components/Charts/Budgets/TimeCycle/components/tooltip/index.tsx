@@ -1,8 +1,9 @@
 import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { appColors } from "app/theme";
 import { useCMSData } from "app/hooks/useCMSData";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
   const valueKeys = filter(
@@ -15,11 +16,11 @@ export function BudgetsTimeCycleTooltip(props: Record<string, unknown>) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.TIME_CYCLE.MOBILE_TOOLTIP_COLOR};
         min-width: 260px;
         padding: 16px 25px;
         position: relative;
-        background: #f5f5f7;
+        background: ${appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
       `}
     >

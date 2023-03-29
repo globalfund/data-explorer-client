@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import { CSVLink } from "react-csv";
+import { appColors } from "app/theme";
 import { exportCSV } from "app/utils/exportCSV";
 import Toolbar from "@material-ui/core/Toolbar";
 import Popover from "@material-ui/core/Popover";
@@ -15,7 +16,6 @@ import ViewColumnIcon from "@material-ui/icons/ViewColumnOutlined";
 import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
-import { locationsToNotShowExport } from "app/components/ToolBoxPanel/components/iconbuttons";
 
 interface TableToolbarProps {
   light?: boolean;
@@ -67,7 +67,9 @@ export function TableToolbar(props: TableToolbarProps) {
       css={`
         display: flex;
         padding: 0 40px;
-        background: ${props.light ? "#F5F5F7" : "#dfe3e5"};
+        background: ${props.light
+          ? appColors.COMMON.SECONDARY_COLOR_10
+          : appColors.TABLE.TOOLBAR_BACKGROUND_COLOR};
         flex-direction: row;
         justify-content: space-between;
         border-radius: 20px 20px 0px 0px;
@@ -105,10 +107,11 @@ export function TableToolbar(props: TableToolbarProps) {
             padding: 4px;
 
             &:hover {
-              background: #252c34;
+              background: ${appColors.TABLE
+                .TOOLBAR_ICON_BUTTON_HOVER_BACKGROUND_COLOR};
 
               svg > path {
-                fill: #fff;
+                fill: ${appColors.TABLE.TOOLBAR_ICON_BUTTON_HOVER_COLOR};
               }
             }
           }
@@ -122,9 +125,9 @@ export function TableToolbar(props: TableToolbarProps) {
           css={`
             height: 32px;
             outline: none;
-            color: #262c34;
+            color: ${appColors.TABLE.TOOLBAR_SEARCH_TEXT_COLOR};
             font-size: 14px;
-            background: #fff;
+            background: ${appColors.TABLE.TOOLBAR_SEARCH_BACKGROUND_COLOR};
             border-style: none;
             border-radius: 20px;
             padding: 6px 16px !important;
@@ -151,12 +154,12 @@ export function TableToolbar(props: TableToolbarProps) {
           }}
         >
           {!openSearch ? (
-            <SearchIcon htmlColor="#252C34" />
+            <SearchIcon htmlColor={appColors.TABLE.TOOLBAR_ICON_COLOR} />
           ) : (
-            <CloseIcon htmlColor="#252C34" />
+            <CloseIcon htmlColor={appColors.TABLE.TOOLBAR_ICON_COLOR} />
           )}
         </IconButton>
-        {locationsToNotShowExport.indexOf(
+        {["/documents", "/location/<code>/documents"].indexOf(
           location.pathname.replace(`/${params.code}`, "/<code>")
         ) === -1 && (
           <IconButton
@@ -200,7 +203,9 @@ export function TableToolbar(props: TableToolbarProps) {
               }}
               {...csvLinkData}
             >
-              <CloudDownloadIcon htmlColor="#252C34" />
+              <CloudDownloadIcon
+                htmlColor={appColors.TABLE.TOOLBAR_ICON_COLOR}
+              />
             </CSVLink>
           </IconButton>
         )}
@@ -212,7 +217,7 @@ export function TableToolbar(props: TableToolbarProps) {
             }
           `}
         >
-          <ViewColumnIcon htmlColor="#252C34" />
+          <ViewColumnIcon htmlColor={appColors.TABLE.TOOLBAR_ICON_COLOR} />
         </IconButton>
       </div>
       <Popover

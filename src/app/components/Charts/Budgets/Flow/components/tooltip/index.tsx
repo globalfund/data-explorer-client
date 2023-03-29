@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import orderBy from "lodash/orderBy";
+import { appColors } from "app/theme";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import { useCMSData } from "app/hooks/useCMSData";
@@ -15,8 +16,8 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
-        background: #f5f5f7;
+        color: ${appColors.BUDGETS_FLOW.TOOLTIP_COLOR};
+        background: ${appColors.BUDGETS_FLOW.TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
       `}
     >
@@ -52,8 +53,8 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
     <div
       css={`
         padding: 25px;
-        color: #262c34;
-        background: #fff;
+        color: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_COLOR};
+        background: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
         box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
         z-index: 2500;
@@ -67,7 +68,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             justify-content flex-end;
 
             path {
-              fill: #2E4063;
+              fill: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_CLOSE_ICON_COLOR};
             }
           `}
         >
@@ -94,7 +95,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           padding-bottom: 16px;
           align-items: flex-end;
           justify-content: space-between;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -117,7 +118,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -206,19 +207,21 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           css={`
             width: 100%;
             margin-top: 20px;
-            background: #dfe3e6;
             border-radius: 22px;
+            background: ${appColors.BUDGETS_FLOW
+              .MOBILE_TOOLTIP_DRILLDOWN_BACKGROUND_COLOR};
 
             &:hover {
-              background: #dfe3e6;
+              background: ${appColors.BUDGETS_FLOW
+                .MOBILE_TOOLTIP_DRILLDOWN_BACKGROUND_HOVER_COLOR};
             }
 
             > span > div {
-              color: #262c34;
               font-size: 14px;
               font-weight: bold;
               text-transform: none;
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              color: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_DRILLDOWN_COLOR};
             }
           `}
         >

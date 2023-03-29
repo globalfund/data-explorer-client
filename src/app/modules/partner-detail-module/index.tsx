@@ -1,7 +1,8 @@
 /* third-party */
-import React, { useEffect } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
@@ -14,11 +15,12 @@ import {
   useLocation,
 } from "react-router-dom";
 /* project */
-
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
@@ -34,8 +36,6 @@ import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 
 export default function PartnerDetail() {
   useTitle("The Data Explorer - Partner");
@@ -44,7 +44,7 @@ export default function PartnerDetail() {
   const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const params = useParams<{
     code: string;
@@ -65,7 +65,7 @@ export default function PartnerDetail() {
   const paramCode = params.code.replace(/\|/g, "/");
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchPartnerInfoData({
       filterString: `partners=${paramCode}`,
     });
@@ -87,7 +87,7 @@ export default function PartnerDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -97,10 +97,9 @@ export default function PartnerDetail() {
     return 0;
   }
 
-  //breadcrumbs setter
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (!breadCrumbList.find((item) => item.path === location.pathname)) {
-      setBreadCrumList([
+      setBreadCrumbList([
         { name: "Datasets", path: "/", id: v4() },
         {
           name: partnerInfoData.partnerName,

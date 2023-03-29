@@ -55,7 +55,7 @@ function getTableData(data: DisbursementsTreemapDataItem[]): SimpleTableRow[] {
 
 export function PartnerInvestmentsTableWrapper(props: Props) {
   const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("grants ASC");
 
   const data = useStoreState((state) => {
     let compData = state.PartnerDetailDisbursementsTreemap.data;
@@ -123,7 +123,21 @@ export function PartnerInvestmentsTableWrapper(props: Props) {
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
 
-  const [,] = useDebounce(() => reloadData(), 500, [search]);
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
   if (isLoading) {
     return <PageLoader />;

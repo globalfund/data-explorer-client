@@ -3,11 +3,11 @@ import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
 import RightIcon from "@material-ui/icons/ChevronRight";
 import { breadCrumbItems } from "app/state/recoil/atoms";
+import { appColors } from "app/theme";
 
 export default function BreadCrumbs() {
   const history = useHistory();
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-
   return (
     <div
       css={`
@@ -66,14 +66,15 @@ export default function BreadCrumbs() {
               <button
                 css={`
                   background: ${index === breadCrumbList.length - 1
-                    ? "#495057"
-                    : "#868e96"};
+                    ? appColors.BREADCRUMBS.ITEM_BUTTON_BACKGROUND_COLOR
+                    : appColors.BREADCRUMBS
+                        .ITEM_BUTTON_SELECTED_BACKGROUND_COLOR};
                   height: 32px;
                   padding: 13px 12px;
                   border-radius: 20px;
                   font-size: 14px;
                   font-weight: 700;
-                  color: #fff;
+                  color: ${appColors.BREADCRUMBS.ITEM_BUTTON_COLOR};
                   text-align: center;
                   display: flex;
                   align-items: center;
@@ -85,7 +86,8 @@ export default function BreadCrumbs() {
                   :hover,
                   :active,
                   :focus {
-                    background: #495057;
+                    background: ${appColors.BREADCRUMBS
+                      .ITEM_BUTTON_SELECTED_BACKGROUND_COLOR};
                   }
                 `}
                 type="button"
@@ -101,7 +103,7 @@ export default function BreadCrumbs() {
               {index === breadCrumbList.length - 1 ? null : (
                 <div
                   css={`
-                    color: #495057;
+                    color: ${appColors.BREADCRUMBS.ITEM_ARROW_COLOR};
                     display: flex;
                     align-items: center;
                   `}

@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -32,7 +33,7 @@ export function LocationResults(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchYearOptionsData({});
   }, []);
 

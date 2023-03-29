@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import { appColors } from "app/theme";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
@@ -23,7 +24,8 @@ export function ToolBoxPanelBudgetTimeCycleYearSelector() {
         width: 100%;
         margin-bottom: 20px;
         padding: 15px 35px 15px 25px;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
       `}
     >
       <DrillDownArrowSelector

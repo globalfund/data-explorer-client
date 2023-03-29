@@ -14,6 +14,7 @@ import {
   GrantsListProps,
   GrantListItemModel,
 } from "app/modules/grants-module/data";
+import { appColors } from "app/theme";
 
 export function GrantsList(props: GrantsListProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -240,7 +241,7 @@ export function GrantsList(props: GrantsListProps) {
                 <div
                   css={row(14, "normal")}
                   style={{
-                    borderTop: "1px solid #DFE3E6",
+                    borderTop: `1px solid ${appColors.GRANT_LIST.DIVIDER}`,
                     paddingTop: 8,
                     marginTop: 0,
                   }}
@@ -289,15 +290,17 @@ export function GrantsList(props: GrantsListProps) {
                         width: 100%;
                         height: 5px;
                         border-radius: 20px;
-                        background: #c7cdd1;
+                        background: ${appColors.GRANT_LIST
+                          .PROGRESS_BAR_BACKGROUND_COLOR};
                       `}
                     >
                       <div
                         css={`
                           height: 5px;
                           border-radius: 20px;
-                          background: #373d43;
                           width: ${(item.disbursed * 100) / item.committed}%;
+                          background: ${appColors.GRANT_LIST
+                            .PROGRESS_BAR_COLOR};
                         `}
                       />
                     </div>

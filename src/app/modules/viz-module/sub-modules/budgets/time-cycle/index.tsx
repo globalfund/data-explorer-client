@@ -1,28 +1,27 @@
 /* third-party */
-import React, { useState } from "react";
-import find from "lodash/find";
+import React from "react";
 import { v4 } from "uuid";
-
+import get from "lodash/get";
+import find from "lodash/find";
+import sumBy from "lodash/sumBy";
 import uniqueId from "lodash/uniqueId";
+import { useRecoilState } from "recoil";
+import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
+import { useCMSData } from "app/hooks/useCMSData";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { DrilldownModelUpdated } from "app/interfaces";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { get, sumBy } from "lodash";
-import { useCMSData } from "app/hooks/useCMSData";
-import { Grid, useMediaQuery } from "@material-ui/core";
-import { InfoIcon } from "app/assets/icons/Info";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 interface BudgetsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -60,7 +59,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
     (actions) => actions.DataPathSteps.addSteps
   );
 
-  const [reRouteDialog, setReRouteDialog] = useState({
+  const [reRouteDialog, setReRouteDialog] = React.useState({
     display: false,
     code: "",
   });
@@ -272,10 +271,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
                 }
               `}
             >
-              <b>
-                {get(cmsData, "componentsChartsBudgets.budget", "")}{" "}
-                <InfoIcon />
-              </b>
+              <b>{get(cmsData, "componentsChartsBudgets.budget", "")}</b>
               <p
                 css={`
                   margin-top: -6px;

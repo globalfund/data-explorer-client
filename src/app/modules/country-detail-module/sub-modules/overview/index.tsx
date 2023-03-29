@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import groupBy from "lodash/groupBy";
+import { appColors } from "app/theme";
 import parse from "html-react-parser";
 import { Link } from "react-router-dom";
 import Collapse from "@material-ui/core/Collapse";
@@ -63,9 +64,9 @@ export function LocationDetailOverviewModule(props: Props) {
   }
 
   React.useEffect(() => {
-    document.body.style.background = "#F5F5F7";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_2;
     return () => {
-      document.body.style.background = "#FFFFFF";
+      document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     };
   }, []);
 
@@ -83,8 +84,8 @@ export function LocationDetailOverviewModule(props: Props) {
           opacity: 0.3;
           margin: 20px 0;
           margin-left: -24px;
-          border-color: #dfe3e6;
           width: calc(100% + 48px);
+          border-color: ${appColors.COMMON.SECONDARY_COLOR_7};
         }
       `}
     >
@@ -315,13 +316,13 @@ export function LocationDetailOverviewModule(props: Props) {
       spacing={2}
       css={`
         * {
-          color: #262c34;
+          color: ${appColors.COMMON.PRIMARY_COLOR_1};
         }
 
         > div {
           > div {
             padding: 24px;
-            background: #fff;
+            background: ${appColors.COMMON.WHITE};
             margin-bottom: ${!countrySummaryCMSData ? "20px" : 0};
           }
         }

@@ -16,14 +16,6 @@ export function EligibilityModule() {
     (state) => state.ToolBoxPanelEligibilityYearState.value
   );
 
-  // aggregateBy control const
-  const aggregateBy = useStoreState(
-    (state) =>
-      (state.ToolBoxPanelAggregateByState.value.length > 0
-        ? state.ToolBoxPanelAggregateByState.value
-        : "componentName") as "componentName" | "geographicAreaName"
-  );
-
   // api call & data
   const fetchData = useStoreActions((store) => store.Eligibility.fetch);
   const data = useStoreState(
@@ -44,11 +36,11 @@ export function EligibilityModule() {
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);
     fetchData({
-      filterString: `aggregateBy=${aggregateBy}&periods=${selectedYear}${
+      filterString: `aggregateBy=componentName&periods=${selectedYear}${
         filterString.length > 0 ? `&${filterString}` : ""
       }`,
     });
-  }, [aggregateBy, appliedFilters, selectedYear]);
+  }, [appliedFilters, selectedYear]);
 
   if (isLoading) {
     return <PageLoader />;
@@ -57,7 +49,7 @@ export function EligibilityModule() {
   return (
     <DotChart
       data={data}
-      aggregateBy={aggregateBy}
+      aggregateBy="componentName"
       selectedYear={selectedYear}
     />
   );

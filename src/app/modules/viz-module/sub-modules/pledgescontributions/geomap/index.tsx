@@ -2,16 +2,14 @@
 import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
-import {
-  GeoMapPinMarker,
-  NO_DATA_COLOR,
-} from "app/components/Charts/GeoMap/data";
+import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
@@ -145,7 +143,11 @@ export function PledgesContributionsGeoMap() {
               width: 100%;
               height: 6px;
               border-radius: 20px;
-              background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
+              background: linear-gradient(
+                90deg,
+                ${appColors.GEOMAP.DATA_LAYER_COLOR_1} 0%,
+                ${appColors.GEOMAP.DATA_LAYER_COLOR_12} 100%
+              );
             `}
           />
           <div
@@ -186,8 +188,8 @@ export function PledgesContributionsGeoMap() {
               width: 100%;
               height: 6px;
               border-radius: 20px;
-              border: 0.5px solid #c7cdd1;
-              background: ${NO_DATA_COLOR};
+              border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
+              background: ${appColors.GEOMAP.NO_DATA_LAYER_COLOR};
             `}
           />
           <div

@@ -8,7 +8,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { NetworkViz } from "app/components/Charts/Network";
 import { PageLoader } from "app/modules/common/page-loader";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
 import {
   PFIndicator,

@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 import Button from "@material-ui/core/Button";
 import { useCMSData } from "app/hooks/useCMSData";
@@ -29,8 +30,8 @@ const styles = {
     th {
       padding: 9px 0;
       text-align: start;
-      border-top: 1px solid #adb5bd;
-      border-bottom: 1px solid #adb5bd;
+      border-top: 1px solid ${appColors.NETWORK.TABLE_BORDER_COLOR};
+      border-bottom: 1px solid ${appColors.NETWORK.TABLE_BORDER_COLOR};
     }
   `,
   tablebody: css`
@@ -147,7 +148,9 @@ function ResultsTableRow(props: ResultsTableRowProps) {
   return (
     <tr
       css={`
-        background-color: ${props.selected ? "#cfd4da" : "transparent"};
+        background-color: ${props.selected
+          ? appColors.NETWORK.TABLE_ROW_SELECTED_COLOR
+          : appColors.NETWORK.TABLE_ROW_COLOR};
       `}
     >
       <td>{props.type}</td>
@@ -200,12 +203,9 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                background: ${props.color === "#E2E2E2"
-                  ? `repeating-linear-gradient(
-                    -45deg,
-                    #262c34 0 0.5px,
-                    #fff 1.5px 2px
-                    )`
+                background: ${props.color ===
+                appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
+                  ? appColors.NETWORK.TABLE_CIRCLE_INDICATOR_BACKGROUND_COLOR
                   : props.color};
               `}
             />
@@ -289,7 +289,7 @@ function MobileResultsTable(props: PFIndicator) {
       css={`
         font-size: 12px;
         padding-bottom: 15px;
-        border-bottom: 1px solid #262c34;
+        border-bottom: 1px solid ${appColors.COMMON.PRIMARY_COLOR_1};
       `}
     >
       <b>Indicator: {props.name}</b>
@@ -425,12 +425,9 @@ function MobileResultsTable(props: PFIndicator) {
                   width: 12px;
                   height: 12px;
                   border-radius: 50%;
-                  background: ${selectedItem.color === "#E2E2E2"
-                    ? `repeating-linear-gradient(
-                    -45deg,
-                    #262c34 0 0.5px,
-                    #fff 1.5px 2px
-                    )`
+                  background: ${selectedItem.color ===
+                  appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
+                    ? appColors.NETWORK.TABLE_CIRCLE_INDICATOR_BACKGROUND_COLOR
                     : selectedItem.color};
                 `}
               />
@@ -448,15 +445,15 @@ function MobileResultsTable(props: PFIndicator) {
           css={`
             width: 100%;
             margin-top: 20px;
-            background: #dfe3e6;
+            background: ${appColors.NETWORK.TOOLTIP_BUTTON_BACKGROUND_COLOR};
             border-radius: 22px;
 
             &:hover {
-              background: #dfe3e6;
+            background: ${appColors.NETWORK.TOOLTIP_BUTTON_BACKGROUND_COLOR};
             }
 
             > span {
-              color: #262c34;
+              color: ${appColors.NETWORK.TOOLTIP_BUTTON_TEXT_COLOR}
               font-size: 14px;
               font-weight: bold;
               text-transform: none;

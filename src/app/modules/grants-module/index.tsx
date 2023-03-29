@@ -16,6 +16,7 @@ import {
   useUpdateEffect,
 } from "react-use";
 /* project */
+import { appColors } from "app/theme";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -40,7 +41,7 @@ interface GrantsModuleProps {
 export default function GrantsModule(props: GrantsModuleProps) {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
-  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   useTitle(
     `${get(cmsData, "modulesGrants.titleStart", "")}${
@@ -110,7 +111,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
   };
 
   React.useEffect(() => {
-    setBreadCrumList([
+    setBreadCrumbList([
       { name: "Datasets", path: "/", id: v4() },
       {
         name: "Grant Implementation: Grants",
@@ -122,7 +123,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
 
   useEffectOnce(() => {
     reloadData();
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   });
 
   useUpdateEffect(() => {
@@ -160,7 +161,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
     } else if (widthThreshold < 0) {
       pushValue = 0;
     } else {
-      pushValue = 500 - widthThreshold;
+      pushValue = 450 - widthThreshold;
     }
   }
 

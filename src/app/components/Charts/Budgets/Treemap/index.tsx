@@ -1,18 +1,19 @@
 /* third-party */
 import React from "react";
+import { appColors } from "app/theme";
 import CloseIcon from "@material-ui/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { ResponsiveTreeMapHtml, TreeMapNodeDatum } from "@nivo/treemap";
 /* project */
 import { isTouchDevice } from "app/utils/isTouchDevice";
+import { BudgetsTreemapProps } from "app/components/Charts/Budgets/Treemap/data";
+import { TreemapTooltip } from "app/components/Charts/Budgets/Treemap/components/tooltip";
+import { TreeemapNode } from "app/components/Charts/Budgets/Treemap/components/treemapnode";
 import {
   TooltipButton,
   XsContainer,
 } from "app/components/Charts/common/styles";
-import { BudgetsTreemapProps } from "app/components/Charts/Budgets/Treemap/data";
-import { TreemapTooltip } from "app/components/Charts/Budgets/Treemap/components/tooltip";
-import { TreeemapNode } from "app/components/Charts/Budgets/Treemap/components/treemapnode";
 
 export function BudgetsTreemap(props: BudgetsTreemapProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -30,10 +31,10 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
         > div {
           > div {
             > div:first-of-type {
-              background: #373d43;
+              background: ${appColors.TREEMAP.BACKGROUND_COLOR};
 
               @media (max-width: 767px) {
-                background: #fff;
+                background: ${appColors.COMMON.WHITE};
               }
             }
           }
@@ -101,7 +102,8 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
                 borderRadius: 20,
                 padding: "16px 25px",
                 position: "relative",
-                backgroundColor: "#f5f5f7",
+                backgroundColor:
+                  appColors.BUDGETS_FLOW.TOOLTIP_BACKGROUND_COLOR,
                 display: isMobile ? "none" : "inherit",
               },
             },
@@ -131,13 +133,14 @@ export function BudgetsTreemap(props: BudgetsTreemapProps) {
               <div
                 css={`
                   padding: 16px;
-                  background: #fff;
+                  background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
                   position: relative;
                   border-radius: 20px;
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
 
                   > div {
-                    background: #fff !important;
+                    background: ${appColors.TREEMAP
+                      .TOOLTIP_BACKGROUND_COLOR} !important;
                   }
                 `}
               >

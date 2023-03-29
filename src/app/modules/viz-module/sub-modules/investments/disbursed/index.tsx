@@ -1,27 +1,25 @@
 /* third-party */
 import React from "react";
+import { v4 } from "uuid";
 import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
-import { v4 } from "uuid";
-
+import { useTitle } from "react-use";
+import { appColors } from "app/theme";
 import uniqueId from "lodash/uniqueId";
+import { useRecoilState } from "recoil";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-import { useTitle, useUpdateEffect } from "react-use";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { InfoIcon } from "app/assets/icons/Info";
 import { PageLoader } from "app/modules/common/page-loader";
-import { VizBackBtn } from "app/components/Charts/common/backbtn";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -275,7 +273,7 @@ export function InvestmentsDisbursedModule(
           margin-bottom: 20px;
 
           > div {
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             font-size: 14px;
           }
 
@@ -299,7 +297,7 @@ export function InvestmentsDisbursedModule(
                 }
               `}
             >
-              Investments - {props.type || "Disbursement"} <InfoIcon />
+              Investments - {props.type || "Disbursement"}
             </div>
             <div css="font-weight: normal; margin-top: -6px;">
               {formatFinancialValue(totalValue)}

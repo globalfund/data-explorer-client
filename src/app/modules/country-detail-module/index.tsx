@@ -1,9 +1,10 @@
 /* third-party */
-import React, { useEffect, useMemo } from "react";
-import get from "lodash/get";
-import { startCase } from "lodash";
-import { useRecoilState } from "recoil";
+import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
+import { appColors } from "app/theme";
+import queryString from "query-string";
+import { useRecoilState } from "recoil";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -50,8 +51,8 @@ export default function CountryDetail() {
   const vizWrapperRef = React.useRef(null);
   const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
-
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+  const { components } = queryString.parse(location.search);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
     code: string;
@@ -103,7 +104,7 @@ export default function CountryDetail() {
 
   React.useEffect(() => {
     if (location.pathname.indexOf("/overview") === -1) {
-      document.body.style.background = "#fff";
+      document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     }
     countrySummaryCMSAction({
       values: {
@@ -153,7 +154,7 @@ export default function CountryDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -164,71 +165,32 @@ export default function CountryDetail() {
     return 0;
   }
 
-  const vizTypePretext = (vizType: string) => {
-    vizType = startCase(vizType);
+  const breadcrumbID = React.useMemo(() => v4(), []);
 
-    switch (vizType) {
-      case "Pledges-contributions":
-        return `Resource Mobilization: ${vizType} `;
-      case "Allocations":
-        return `Access to funding: ${vizType}`;
-      case "Eligibility":
-        return `Access to funding: ${vizType}`;
-      case "Documents":
-        return "Documents";
-      case "Results":
-        return "Results";
-      default:
-        return `Grant Implementation: ${vizType} `;
-    }
-  };
-
-  const [prevVizState, setPrevVizState] = React.useState(breadCrumbList[1]);
-
-  const prevViz = useMemo(() => {
-    if (prevVizState !== breadCrumbList[1]) {
-      setPrevVizState({
-        name: vizTypePretext(params.vizType),
-        path: location.pathname,
-        id: v4(),
-      });
-      return {
-        name: vizTypePretext(params.vizType),
-        path: location.pathname,
-        id: v4(),
-      };
-    }
-    return prevVizState;
-  }, [location.pathname]);
-
-  useEffect(() => {
-    if (
-      breadCrumbList.length < 1 ||
-      prevViz === undefined ||
-      location.pathname == `/location/${params.code}/overview`
-    ) {
-      setBreadCrumList([
+  useUpdateEffect(() => {
+    if (breadCrumbList.length === 0) {
+      setBreadCrumbList([
         { name: "Datasets", path: "/", id: v4() },
-
         {
           name: locationInfoData.locationName,
           path: location.pathname,
           id: v4(),
         },
       ]);
-    } else {
-      setBreadCrumList([
-        { name: "Datasets", path: "/", id: v4() },
-
+    } else if (
+      !breadCrumbList.find((item) => item.id === breadcrumbID) &&
+      components
+    ) {
+      setBreadCrumbList([
+        ...breadCrumbList,
         {
-          name: locationInfoData.locationName,
-          path: `/location/${params.code}/overview`,
-          id: v4(),
+          name: components.toString(),
+          path: location.pathname,
+          id: breadcrumbID,
         },
-        prevViz,
       ]);
     }
-  }, [locationInfoData, prevViz]);
+  }, [locationInfoData]);
 
   const tabs = countryDetailTabs;
 

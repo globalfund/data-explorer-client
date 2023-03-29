@@ -1,25 +1,25 @@
 /* third-party */
-import React, { useEffect } from "react";
+import React from "react";
 import { v4 } from "uuid";
-
 import get from "lodash/get";
+import { useRecoilState } from "recoil";
+import { breadCrumbItems } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { appColors } from "app/theme";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { DocumentsSubModule } from "app/modules/common/documents";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { useRecoilState } from "recoil";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
@@ -28,7 +28,7 @@ export default function DocumentsModule() {
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [_, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -43,7 +43,7 @@ export default function DocumentsModule() {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   }, []);
 
   React.useEffect(() => {
@@ -95,7 +95,7 @@ export default function DocumentsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -105,8 +105,8 @@ export default function DocumentsModule() {
     return 0;
   }
 
-  useEffect(() => {
-    setBreadCrumList([
+  React.useEffect(() => {
+    setBreadCrumbList([
       { name: "Datasets", path: "/", id: v4() },
       {
         name: "Documents",

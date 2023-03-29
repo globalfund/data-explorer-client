@@ -1,5 +1,6 @@
 import React from "react";
 import find from "lodash/find";
+import { appColors } from "app/theme";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
@@ -23,19 +24,22 @@ const StyledMenu = withStyles({
   paper: {
     minWidth: 220,
     borderRadius: 10,
-    border: "1px solid #d3d4d5",
+    border: `1px solid ${appColors.MOBILE_VIEWS_CONTROL.MENU_PAPER_BORDER_COLOR}`,
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 10,
-      background: "#262c34",
+      background:
+        appColors.MOBILE_VIEWS_CONTROL.MENU_SCROLLBAR_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 10,
-      background: "#dfe3e6",
+      background:
+        appColors.MOBILE_VIEWS_CONTROL.MENU_SCROLLBAR_TRACK_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 10,
-      background: "#262c34",
+      background:
+        appColors.MOBILE_VIEWS_CONTROL.MENU_SCROLLBAR_THUMB_BACKGROUND_COLOR,
     },
   },
   list: {
@@ -64,11 +68,11 @@ export const StyledMenuItem = withStyles(() => ({
     padding: 0,
     minHeight: 0,
     width: "100%",
-    borderBottom: "1px solid #DFE3E6",
+    borderBottom: `1px solid ${appColors.MOBILE_VIEWS_CONTROL.MENU_ITEM_BORDER_COLOR}`,
     "& a": {
       width: "100%",
       fontSize: "14px",
-      color: "#262c34",
+      color: appColors.MOBILE_VIEWS_CONTROL.MENU_ITEM_COLOR,
       padding: "10px 12px",
       textDecoration: "none",
     },
@@ -91,6 +95,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
   }>(
     getControlItems(
       params.vizType,
+      params.subType,
       history.location.pathname,
       params.code,
       params.period
@@ -121,6 +126,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
       setControlItems(
         getControlItems(
           params.vizType,
+          params.subType,
           history.location.pathname,
           params.code,
           params.period
@@ -168,13 +174,15 @@ export function MobileViewControl(props: MobileViewControlProps) {
             font-weight: bold;
             padding: 6px 16px;
             border-radius: 20px;
-            background: #dfe3e6;
             text-transform: capitalize;
             max-width: calc(50vw - 32px);
             font-family: "GothamNarrow-Bold", sans-serif;
+            background: ${appColors.MOBILE_VIEWS_CONTROL
+              .BUTTON_BACKGROUND_COLOR};
 
             &:hover {
-              background: #dfe3e6;
+              background: ${appColors.MOBILE_VIEWS_CONTROL
+                .BUTTON_BACKGROUND_HOVER_COLOR};
             }
 
             svg {
@@ -182,7 +190,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
               transition: all 0.2s ease-in-out;
               transform: rotate(${anchorEl ? "180" : "0"}deg);
               > path {
-                fill: #262c34;
+                fill: ${appColors.COMMON.SECONDARY_COLOR_7};
               }
             }
           `}
@@ -250,11 +258,14 @@ export function MobileViewControl(props: MobileViewControlProps) {
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#262C34"
-                  : "#dfe3e6"};
+                  ? appColors.MOBILE_VIEWS_CONTROL.LINK_BACKGROUND_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL
+                      .LINK_BACKGROUND_SELECTED_COLOR};
 
                 path {
-                  fill: ${selectedView === option.value ? "#fff" : "#868A9D"};
+                  fill: ${selectedView === option.value
+                    ? appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_COLOR
+                    : appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_SELECTED_COLOR};
                 }
               `}
             >
@@ -275,14 +286,17 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${selectedView === option.value ? "#fff" : "#262C34"};
+                color: ${selectedView === option.value
+                  ? appColors.MOBILE_VIEWS_CONTROL.BUTTON_SELECTED_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL.BUTTON_COLOR};
                 ${index === 0 ? "border-radius: 20px 0 0 20px;" : ""}
                 ${index === controlItems.views.length - 1
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#262C34"
-                  : "#dfe3e6"};
+                  ? appColors.MOBILE_VIEWS_CONTROL
+                      .BUTTON_BACKGROUND_SELECTED_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL.BUTTON_BACKGROUND_COLOR};
               `}
             >
               {option.label}

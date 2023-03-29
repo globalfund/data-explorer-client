@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { appColors } from "app/theme";
 import { Dropdown } from "app/components/Dropdown";
 import { ViewModel } from "app/components/ToolBoxPanel/utils/getControlItems";
 
@@ -38,7 +39,8 @@ export function ToolBoxPanelAggregateBy(props: ToolBoxPanelAggregateByProps) {
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         @media (max-width: 767px) {
           padding: 16px;

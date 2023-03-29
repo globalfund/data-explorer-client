@@ -1,8 +1,9 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursements/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function TreemapTooltip(props: TreemapTooltipProps) {
   const { data } = props.node;
@@ -11,9 +12,9 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
         min-width: 350px;
-        background: #f5f5f7;
+        color: ${appColors.TREEMAP.TOOLTIP_COLOR};
+        background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
 
         @media (max-width: 767px) {
           min-width: 0px;
@@ -26,7 +27,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.TREEMAP.TOOLTIP_BORDER_COLOR};
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
@@ -39,7 +40,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.TREEMAP.TOOLTIP_BORDER_COLOR};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -72,7 +73,14 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             }
           `}
         >
-          <div>{props.tooltipKeyLabel || get(cmsData, "componentsChartsBudgets.treemapTooltipDefaultKeyLabel", "")}</div>
+          <div>
+            {props.tooltipKeyLabel ||
+              get(
+                cmsData,
+                "componentsChartsBudgets.treemapTooltipDefaultKeyLabel",
+                ""
+              )}
+          </div>
           <div>{props.tooltipValueLabel}</div>
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (

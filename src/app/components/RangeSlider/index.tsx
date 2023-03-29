@@ -3,6 +3,7 @@ import styled from "styled-components/macro";
 import { Range, useThumbOverlap } from "react-range";
 import { IThumbProps, ITrackProps } from "react-range/lib/types";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { appColors } from "app/theme";
 
 const THUMB_SIZE = 15;
 
@@ -41,7 +42,7 @@ const ThumbLabel = (props: any) => {
       data-label={props.index}
       style={{
         top: "-28px",
-        color: "#fff",
+        color: appColors.COMMON.WHITE,
         display: "block",
         fontSize: "10px",
         padding: "0 10px",
@@ -49,7 +50,7 @@ const ThumbLabel = (props: any) => {
         borderRadius: "3px",
         whiteSpace: "nowrap",
         position: "absolute",
-        backgroundColor: "#262C34",
+        backgroundColor: appColors.COMMON.PRIMARY_COLOR_1,
         ...(style as React.CSSProperties),
       }}
     >
@@ -73,7 +74,7 @@ const Track = (params: {
       ...params.props.style,
       height: "6px",
       width: "calc(100% - 50px)",
-      background: `linear-gradient(to right, #fff,#7e8a96,#0a0b0c)`,
+      background: appColors.RANGE_SLIDER.TRACK_BACKGROUND_COLOR,
     }}
   >
     {params.children}
@@ -121,12 +122,12 @@ export function RangeSlider(props: RangeSliderProps) {
                 height: `${THUMB_SIZE}px`,
                 width: `${THUMB_SIZE}px`,
                 borderRadius: "50%",
-                backgroundColor: "#fff",
+                backgroundColor: appColors.COMMON.WHITE,
                 display: "flex",
                 outline: "none",
                 justifyContent: "center",
                 alignItems: "center",
-                boxShadow: "0px 2px 6px #AAA",
+                boxShadow: `0px 2px 6px ${appColors.RANGE_SLIDER.THUMB_BOX_SHADOW_COLOR}`,
               }}
             >
               <ThumbLabel

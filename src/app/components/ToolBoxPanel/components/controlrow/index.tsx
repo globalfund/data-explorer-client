@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import Tooltip from "@material-ui/core/Tooltip";
 import { TickIcon } from "app/assets/icons/Tick";
 import { Link, useLocation } from "react-router-dom";
@@ -24,7 +25,8 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
         align-items: center;
         padding: 15px 35px 15px 25px;
         justify-content: space-between;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -75,16 +77,16 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
 
                   path {
                     fill: ${props.selected === option.value
-                      ? "#13183F"
-                      : "#868A9D"};
+                      ? appColors.TOOLBOX.VIEWS_ICON_ACTIVE_COLOR
+                      : appColors.TOOLBOX.VIEWS_ICON_COLOR};
                   }
 
                   &:hover {
-                    color: #fff;
+                    color: ${appColors.COMMON.WHITE};
                     cursor: pointer;
 
                     path {
-                      fill: #13183f;
+                      fill: ${appColors.TOOLBOX.VIEWS_ICON_ACTIVE_COLOR};
                     }
                   }
                 `}
@@ -107,10 +109,12 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${props.selected === option.value ? "#fff" : "#262C34"};
+                color: ${props.selected === option.value
+                  ? appColors.COMMON.WHITE
+                  : appColors.COMMON.PRIMARY_COLOR_1};
                 background: ${props.selected === option.value
-                  ? "#262C34"
-                  : "#fff"};
+                  ? appColors.COMMON.PRIMARY_COLOR_1
+                  : appColors.COMMON.WHITE};
 
                 > * {
                   @supports (-webkit-touch-callout: none) and
@@ -122,11 +126,11 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                 }
 
                 &:hover {
-                  color: #fff;
+                  color: ${appColors.COMMON.WHITE};
                   cursor: pointer;
                   background: ${props.selected === option.value
-                    ? "#262C34"
-                    : "#13183F"};
+                    ? appColors.COMMON.PRIMARY_COLOR_1
+                    : appColors.COMMON.SECONDARY_COLOR_13};
                 }
               `}
             >

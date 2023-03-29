@@ -1,3 +1,4 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const container = css`
@@ -6,7 +7,7 @@ export const container = css`
   z-index: 1;
   width: 100%;
   display: flex;
-  background: #fff;
+  background: ${appColors.SEARCH.CONTAINER_BACKGROUND};
   position: absolute;
   border-radius: 20px;
   flex-direction: column;
@@ -47,25 +48,32 @@ export const tabs = css`
 `;
 
 export const tab = (active: boolean) => css`
-  color: #262c34;
+  color: ${appColors.SEARCH.TAB_TEXT_COLOR};
   padding: 5px 0;
   font-size: 14px;
   font-weight: bold;
   white-space: nowrap;
   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-  border-bottom: 2px solid ${active ? "#262c34" : "transparent"};
+  border-bottom: 2px solid
+    ${active
+      ? appColors.SEARCH.TAB_BORDER_ACTIVE_COLOR
+      : appColors.SEARCH.TAB_BORDER_COLOR};
 
   &:hover {
     cursor: pointer;
-    border-color: #262c34;
+    border-color: ${appColors.SEARCH.TAB_BORDER_HOVER_COLOR};
   }
 
   @media (max-width: 767px) {
     padding: 2px 10px;
     border-radius: 16px;
     border-bottom-style: none;
-    color: ${active ? "#fff" : "#262c34"};
-    background: ${active ? "#262c34" : "#dfe3e6"};
+    color: ${active
+      ? appColors.SEARCH.MOBILE_TAB_ACTIVE_COLOR
+      : appColors.SEARCH.TAB_TEXT_COLOR};
+    background: ${active
+      ? appColors.SEARCH.MOBILE_TAB_ACTIVE_BACKGROUND_COLOR
+      : appColors.SEARCH.MOBILE_TAB_BACKGROUND_COLOR};
   }
 `;
 
@@ -92,17 +100,17 @@ export const result = css`
   padding: 12px 37px;
   flex-direction: row;
   text-decoration: none;
-  border-top: 1px solid #dfe3e6;
+  border-top: 1px solid ${appColors.SEARCH.RESULT_BORDER_COLOR};
 
   @media (max-width: 767px) {
     padding: 12px;
   }
 
   &:hover {
-    background: #262c34;
+    background: ${appColors.SEARCH.RESULT_HOVER_BACKGROUND_COLOR};
 
     > div {
-      color: #fff;
+      color: ${appColors.SEARCH.RESULT_HOVER_TEXT_COLOR};
     }
   }
 
@@ -116,7 +124,7 @@ export const result = css`
   }
 
   > div {
-    color: #262c34;
+    color: ${appColors.SEARCH.RESULT_TEXT_COLOR};
     font-size: 14px;
     width: calc(100% - 37px - 24px - 40px);
   }

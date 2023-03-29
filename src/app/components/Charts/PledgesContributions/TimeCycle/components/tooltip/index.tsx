@@ -1,15 +1,16 @@
 import React from "react";
+import { appColors } from "app/theme";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export function PledgesContributionsTimeCycleTooltip(props: any) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.TIME_CYCLE.TOOLTIP_COLOR};
         min-width: 250px;
         padding: 16px 25px;
         position: relative;
-        background: #f5f5f7;
+        color: ${appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
       `}
     >

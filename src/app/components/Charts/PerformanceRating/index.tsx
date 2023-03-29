@@ -1,13 +1,13 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import { ResponsiveBar } from "@nivo/bar";
-import { InfoIcon } from "app/assets/icons/Info";
+import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import {
   PerformanceRatingProps,
   ratingValues,
 } from "app/components/Charts/PerformanceRating/data";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function PerformanceRating(props: PerformanceRatingProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -40,8 +40,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           cmsData,
           "componentsChartsPerformanceRating.performanceRating",
           ""
-        )}{" "}
-        <InfoIcon />
+        )}
       </div>
       <ResponsiveBar
         animate
@@ -54,7 +53,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
         motionDamping={15}
         groupMode="grouped"
         enableLabel={false}
-        colors={["#1B2127"]}
+        colors={[appColors.PERFORMANCE_RATING.NODE_COLOR]}
         motionStiffness={90}
         isInteractive={false}
         padding={isMobile ? 0.3 : 0.5}
@@ -93,11 +92,11 @@ export function PerformanceRating(props: PerformanceRatingProps) {
             ticks: {
               line: {
                 strokeWidth: 1,
-                stroke: "#868E96",
+                stroke: appColors.PERFORMANCE_RATING.AXIS_GRID_COLOR,
                 strokeOpacity: 0.3,
               },
               text: {
-                fill: "#262c34",
+                stroke: appColors.PERFORMANCE_RATING.AXIS_TEXT_COLOR,
                 fontSize: 12,
               },
             },
@@ -115,7 +114,7 @@ export function PerformanceRating(props: PerformanceRatingProps) {
           grid: {
             line: {
               strokeWidth: 1,
-              stroke: "#868E96",
+              stroke: appColors.PERFORMANCE_RATING.AXIS_GRID_COLOR,
               strokeOpacity: 0.3,
             },
           },

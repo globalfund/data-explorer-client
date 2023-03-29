@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import ReactApexCharts from "react-apexcharts";
@@ -31,7 +32,7 @@ export function InvestmentsRadialViz() {
     locationInfoData.signed,
     locationInfoData.disbursed,
   ];
-  const colors = ["#727F95", "#21262B", "#595C70"];
+  const colors = appColors.LOCATION.OVERVIEW_VISUALISATION_COLORS;
   const keys = ["Committed", "Signed", "Disbursed"];
   const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
     percentages: number[];
@@ -67,12 +68,12 @@ export function InvestmentsRadialViz() {
           show: true,
           opacity: 0.5,
           strokeWidth: "1px",
-          background: "#252C34",
+          background: appColors.COMMON.PRIMARY_COLOR_1,
         },
         dataLabels: {
           name: {
             show: true,
-            color: "#262c34",
+            color: appColors.COMMON.PRIMARY_COLOR_1,
             fontFamily: "GothamNarrow-Book",
           },
           value: {

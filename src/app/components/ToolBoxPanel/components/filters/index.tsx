@@ -1,16 +1,17 @@
 import React from "react";
 import get from "lodash/get";
 import isEqual from "lodash/isEqual";
-import { ResetIcon } from "app/assets/icons/Reset";
+import { appColors } from "app/theme";
+import { useRecoilState } from "recoil";
 import Button from "@material-ui/core/Button";
+import { ResetIcon } from "app/assets/icons/Reset";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
 import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
-import { useRecoilState } from "recoil";
-import { filterExpandedGroup } from "app/state/recoil/atoms";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
@@ -53,15 +54,17 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
 
         &::-webkit-scrollbar {
           width: 4px;
-          background: #262c34;
+          background: ${appColors.TOOLBOX.FILTERS_SCROLLBAR_BACKGROUND_COLOR};
         }
         &::-webkit-scrollbar-track {
           border-radius: 4px;
-          background: #f5f5f7;
+          background: ${appColors.TOOLBOX
+            .FILTERS_SCROLLBAR_TRACK_BACKGROUND_COLOR};
         }
         &::-webkit-scrollbar-thumb {
           border-radius: 4px;
-          background: #262c34;
+          background: ${appColors.TOOLBOX
+            .FILTERS_SCROLLBAR_THUMB_BACKGROUND_COLOR};
         }
 
         @media (max-width: 767px) {
@@ -84,7 +87,8 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               flex-direction: row;
               align-items: center;
               justify-content: space-between;
-              border-bottom: 1px solid #dfe3e6;
+              border-bottom: 1px solid
+                ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
               @media (max-width: 767px) {
                 font-size: 18px;

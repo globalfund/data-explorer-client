@@ -5,6 +5,7 @@ import useTitle from "react-use/lib/useTitle";
 import useDebounce from "react-use/lib/useDebounce";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
+import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -19,7 +20,7 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
   useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
 
   const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("name ASC");
 
   const fetchData = useStoreActions((store) => store.AllocationsTable.fetch);
   const loading = useStoreState((state) => state.AllocationsTable.loading);
@@ -53,7 +54,21 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
     [props.code, sortBy, appliedFilters, selectedAggregation]
   );
 
-  const [,] = useDebounce(() => reloadData(), 500, [search]);
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
   if (loading) {
     return <PageLoader />;
@@ -70,18 +85,16 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
       : [];
 
   return (
-    <>
-      <SimpleTable
-        title="Allocations"
-        search={search}
-        sortBy={sortBy}
-        rows={data}
-        onSearchChange={setSearch}
-        onSortByChange={setSortBy}
-        formatNumbers
-        columns={columns}
-        forceExpand={Boolean(props.code)}
-      />
-    </>
+    <SimpleTable
+      title="Allocations"
+      search={search}
+      sortBy={sortBy}
+      rows={data}
+      onSearchChange={setSearch}
+      onSortByChange={setSortBy}
+      formatNumbers
+      columns={columns}
+      forceExpand={Boolean(props.code)}
+    />
   );
 }

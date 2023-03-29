@@ -2,6 +2,7 @@ import React from "react";
 import { css } from "styled-components/macro";
 import get from "lodash/get";
 import { useCMSData } from "app/hooks/useCMSData";
+import { appColors } from "app/theme";
 
 export function NetworkLegends() {
   const cmsData = useCMSData({ returnData: true });
@@ -10,7 +11,7 @@ export function NetworkLegends() {
     <React.Fragment>
       <div
         css={`
-          color: #262c34;
+          color: ${appColors.COMMON.PRIMARY_COLOR_1};
           font-size: 12px;
           font-weight: bold;
           margin-bottom: 10px;
@@ -33,13 +34,13 @@ export function NetworkLegends() {
             margin: 0 20px;
             position: relative;
             border-radius: 50%;
-            border: 0.5px solid #262c34;
+            border: 0.5px solid ${appColors.COMMON.PRIMARY_COLOR_1};
 
             &:before {
               width: 40px;
               left: -15px;
               bottom: -25px;
-              color: #262c34;
+              color: ${appColors.COMMON.PRIMARY_COLOR_1};
               font-size: 12px;
               position: absolute;
               text-align: center;
@@ -49,7 +50,7 @@ export function NetworkLegends() {
       >
         <span
           css={`
-            background: #fa7355;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_1};
             &:before {
               content: "0-0.2";
             }
@@ -57,7 +58,7 @@ export function NetworkLegends() {
         />
         <span
           css={`
-            background: #fa9a55;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_2};
             &:before {
               content: "0.2-0.4";
             }
@@ -65,7 +66,7 @@ export function NetworkLegends() {
         />
         <span
           css={`
-            background: #ffaa46;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_3};
             &:before {
               content: "0.4-0.6";
             }
@@ -73,7 +74,7 @@ export function NetworkLegends() {
         />
         <span
           css={`
-            background: #ffd646;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_4};
             &:before {
               content: "0.6-0.8";
             }
@@ -81,7 +82,7 @@ export function NetworkLegends() {
         />
         <span
           css={`
-            background: #daff46;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_5};
             &:before {
               content: "0.8-1.0";
             }
@@ -89,7 +90,7 @@ export function NetworkLegends() {
         />
         <span
           css={`
-            background: #97ff46;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_6};
             &:before {
               content: "1.0-1.2";
             }
@@ -97,7 +98,7 @@ export function NetworkLegends() {
         />
         <span
           css={`
-            background: #60ff46;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_7};
             &:before {
               content: "1.2-1.4";
             }
@@ -105,7 +106,7 @@ export function NetworkLegends() {
         />
         <span
           css={`
-            background: #11ad6b;
+            background: ${appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_8};
             &:before {
               content: "1.4-1.6";
             }
@@ -133,13 +134,13 @@ export function NetworkLegends() {
             margin: 0 20px;
             position: relative;
             border-radius: 50%;
-            border: 0.5px solid #262c34;
+            border: 0.5px solid ${appColors.COMMON.PRIMARY_COLOR_1};
 
             &:before {
               width: 40px;
               left: -15px;
               bottom: -25px;
-              color: #262c34;
+              color: ${appColors.COMMON.PRIMARY_COLOR_1};
               font-size: 12px;
               position: absolute;
               text-align: center;
@@ -149,7 +150,7 @@ export function NetworkLegends() {
       >
         <span
           css={`
-            background: #fff;
+            background: ${appColors.COMMON.WHITE};
             &:before {
               content: "N/A";
             }
@@ -159,8 +160,8 @@ export function NetworkLegends() {
           css={`
             background: repeating-linear-gradient(
               -45deg,
-              #262c34 0 0.5px,
-              #fff 1.5px 2px
+              ${appColors.COMMON.PRIMARY_COLOR_1} 0 0.5px,
+              ${appColors.COMMON.WHITE} 1.5px 2px
             );
             &:before {
               left: -40px !important;
@@ -177,23 +178,23 @@ export function NetworkLegends() {
 const legendItems = [
   {
     label: "0%",
-    color: "#fa7355",
+    color: appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_1,
   },
   {
     label: "30%",
-    color: "#ffaa46",
+    color: appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_3,
   },
   {
     label: "60%",
-    color: "#daff46",
+    color: appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_5,
   },
   {
     label: "80%",
-    color: "#60ff46",
+    color: appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_7,
   },
   {
     label: "100%",
-    color: "#11ad6b",
+    color: appColors.NETWORK.ACHIEVEMENT_RATE_COLOR_8,
   },
   {
     label: "> 100%",
@@ -213,13 +214,13 @@ const styles = {
     justify-content: space-between;
   `,
   title: css`
-    color: #262c34;
+    color: ${appColors.COMMON.PRIMARY_COLOR_1};
     font-size: 12px;
     font-weight: bold;
     font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   noData: (reported: boolean) => css`
-    color: #262c34;
+    color: ${appColors.COMMON.PRIMARY_COLOR_1};
     font-size: 12px;
     padding-left: 20px;
     position: relative;
@@ -237,13 +238,13 @@ const styles = {
       height: 13px;
       position: absolute;
       border-radius: 50%;
-      border: 0.5px solid #262c34;
+      border: 0.5px solid ${appColors.COMMON.PRIMARY_COLOR_1};
       background: ${reported
         ? "transparent"
         : `repeating-linear-gradient(
         -45deg,
-        #262c34 0 0.5px,
-        #fff 1.5px 2px
+        ${appColors.COMMON.PRIMARY_COLOR_1} 0 0.5px,
+        ${appColors.COMMON.WHITE} 1.5px 2px
       )`};
     }
   `,
@@ -306,7 +307,7 @@ export function AchievementRateLegend() {
                   top: 20px;
                   left: -5px;
                   position: relative;
-                  color: color: #262C34;
+                  color: color: ${appColors.COMMON.PRIMARY_COLOR_1};
                   content: "${item.label}";
                 }
               `}

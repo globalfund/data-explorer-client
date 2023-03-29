@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { InvestmentsTimeCycleTooltip } from "../tooltip";
 
 export function BarComponent(props: any) {
@@ -20,8 +21,7 @@ export function BarComponent(props: any) {
     const height = (item.value / props.data.value) * props.height;
     const localPrevY = prevY;
     prevY += height;
-    let nodecss =
-      "cursor: pointer;transition: opacity 0.2s ease-in-out;stroke: #1B2127;";
+    let nodecss = `cursor: pointer;transition: opacity 0.2s ease-in-out;stroke: ${appColors.TIME_CYCLE.NODE_STROKE_HOVER_COLOR};`;
     if (props.selected === props.data.indexValue) {
       nodecss += "z-index: 2;";
     } else if (

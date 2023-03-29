@@ -238,6 +238,10 @@ export function useGetAllVizData() {
         []
       ) as BudgetsTreemapDataItem[]
   );
+  const pledgesContributionsTable = useStoreState(
+    (state) =>
+      get(state.PledgesContributionsTable, "data.data", []) as SimpleTableRow[]
+  );
   const resultsList = useStoreState(
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
   );
@@ -325,7 +329,7 @@ export function useGetAllVizData() {
     "/viz/eligibility/table": eligibility,
     // Pledges & Contributions
     "/viz/pledges-contributions/map": pledgesContributionsGeomap,
-    "/viz/pledges-contributions/table": pledgesContributionsGeomap,
+    "/viz/pledges-contributions/table": pledgesContributionsTable,
     "/viz/pledges-contributions/treemap": pledgesContributionsTreemap,
     "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
     // Grant Budgets

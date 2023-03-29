@@ -1,3 +1,4 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const container = css`
@@ -16,7 +17,7 @@ export const container = css`
 `;
 
 export const subtitle = css`
-  color: #262c34;
+  color: ${appColors.COMMON.PRIMARY_COLOR_1};
   font-size: 18px;
   margin: 12px 0 24px 0;
 
@@ -28,7 +29,7 @@ export const subtitle = css`
 
 export const datasetstitle = css`
   width: 100%;
-  color: #262c34;
+  color: ${appColors.COMMON.PRIMARY_COLOR_1};
   font-size: 14px;
   margin-top: 24px;
   font-weight: bold;
@@ -44,6 +45,6 @@ export const datasetslink = css`
   justify-content: flex-end;
 
   > a {
-    color: #13183f;
+    color: ${appColors.COMMON.SECONDARY_COLOR_13};
   }
 `;

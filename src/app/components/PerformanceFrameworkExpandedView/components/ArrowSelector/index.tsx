@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
@@ -48,7 +49,7 @@ export function ArrowSelector(props: ArrowSelectorProps) {
         }
 
         > div {
-          color: #262c34;
+          color: ${appColors.NETWORK.EXPANDED_VIEW_SELECTOR_COLOR};
           font-size: 12px;
           max-width: 150px;
           line-height: 15px;

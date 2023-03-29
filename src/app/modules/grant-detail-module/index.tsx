@@ -1,13 +1,14 @@
 /* third-party */
-import React, { useMemo } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
+import find from "lodash/find";
+import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
-
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
-import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { breadCrumbItems } from "app/state/recoil/atoms";
 import { PageHeader } from "app/components/PageHeader";
@@ -29,6 +30,12 @@ import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-modul
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
 
+interface GrantDetailPeriod {
+  number: number;
+  endDate: string;
+  startDate: string;
+}
+
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
   const location = useLocation();
@@ -40,12 +47,27 @@ export default function GrantDetail() {
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
   );
-  const [breadCrumbList, setBreadCrumList] = useRecoilState(breadCrumbItems);
+  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
     (store) => store.GrantDetailInfo.fetch
   );
+
+  const periods = useStoreState(
+    (state) =>
+      get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
+  );
+
+  const selectedPeriod = find(
+    periods,
+    (p: GrantDetailPeriod) => p.number.toString() === params.period
+  ) || { startDate: "", endDate: "" };
+
+  const formatPeriod = (date: string) => {
+    return date.split("-")[0];
+  };
+  console.log(formatPeriod(selectedPeriod.startDate), "start year");
 
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
@@ -75,8 +97,7 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
-
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
@@ -107,7 +128,7 @@ export default function GrantDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 500 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   function isToolboxOvervlayVisible() {
@@ -115,12 +136,12 @@ export default function GrantDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-  const breadCrumbId = useMemo(() => v4(), []);
+  const breadCrumbId = React.useMemo(() => v4(), []);
 
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     if (grantInfoData) {
       if (breadCrumbList.length === 0) {
-        setBreadCrumList([
+        setBreadCrumbList([
           {
             name: "Datasets",
             path: "/",
@@ -128,14 +149,14 @@ export default function GrantDetail() {
           },
 
           {
-            name: grantInfoData.title,
+            name: grantInfoData.code,
             path: location.pathname,
             id: v4(),
           },
         ]);
       } else {
         if (!breadCrumbList.find((list) => list.id === breadCrumbId)) {
-          setBreadCrumList([
+          setBreadCrumbList([
             {
               name: "Datasets",
               path: "/",
@@ -147,15 +168,22 @@ export default function GrantDetail() {
               id: v4(),
             },
             {
-              name: grantInfoData.title,
+              name: `${grantInfoData.code} ${
+                selectedPeriod ? "-" : ""
+              } ${formatPeriod(selectedPeriod.startDate)} - ${formatPeriod(
+                selectedPeriod.endDate
+              )}`,
               path: location.pathname,
               id: v4(),
+              vizLevel: breadCrumbList[breadCrumbList.length - 1]?.vizLevel,
+              vizSelected:
+                breadCrumbList[breadCrumbList.length - 1]?.vizSelected,
             },
           ]);
         }
       }
     }
-  }, [grantInfoData]);
+  }, [grantInfoData, selectedPeriod]);
 
   return (
     <div
