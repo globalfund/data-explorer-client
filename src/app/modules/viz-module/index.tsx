@@ -93,6 +93,8 @@ export default function VizModule() {
         return `Access to funding: ${localVizType}`;
       case "Eligibility":
         return `Access to funding: ${localVizType}`;
+      case "Funding-requests":
+        return `Access to funding: ${localVizType}`;
       case "Documents":
         return "Documents";
       case "Results":
@@ -315,7 +317,7 @@ export default function VizModule() {
             <EligibilityModule />
           </Route>
           {/* Funding Request */}
-          <Route path="/viz/funding-request/table">
+          <Route path="/viz/funding-requests/table">
             <GenericFundingRequestWrapper />
           </Route>
         </Switch>

@@ -1,16 +1,17 @@
 import { css } from "styled-components/macro";
 
-export const chipcss = css`
+export const chipcss = (active: boolean) => css`
   padding: 7px 24px;
   width: max-content;
   height: 32px;
-  background: #c7cdd1;
+  background: ${active ? "#252c34" : "#c7cdd1"};
   border-radius: 100px;
   display: flex;
   justify-content: center;
   align-items: center;
   color: #ffffff;
   font-weight: 700;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   cursor: pointer;
   &:hover {
     background-color: #252c34;

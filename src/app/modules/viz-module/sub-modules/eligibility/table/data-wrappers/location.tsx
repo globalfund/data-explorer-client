@@ -10,16 +10,21 @@ import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility/table";
 import {
+  incomeLevels,
   diseaseBurdens,
   EligibilityScatterplotDataItemModel,
-  EligibilityScatterplotDataModel,
-  incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 
 function getTableData(
-  data: EligibilityScatterplotDataModel[]
+  data: EligibilityScatterplotDataItemModel[]
 ): SimpleTableRow[] {
-  return data.map((item: EligibilityScatterplotDataModel) => item.data);
+  return data.map((item: EligibilityScatterplotDataItemModel) => ({
+    year: item.x,
+    component: item.y,
+    incomeLevel: get(incomeLevels, `[${item.incomeLevel}]`, item.incomeLevel),
+    diseaseBurden: get(diseaseBurdens, `[${item.diseaseBurden}]`, ""),
+    status: item.eligibility,
+  }));
 }
 
 interface Props {
@@ -38,7 +43,7 @@ export function LocationEligibilityTableWrapper(props: Props) {
         state.EligibilityCountry.data,
         "data",
         []
-      ) as EligibilityScatterplotDataModel[]
+      ) as EligibilityScatterplotDataItemModel[]
   );
 
   const [page, setPage] = React.useState(0);

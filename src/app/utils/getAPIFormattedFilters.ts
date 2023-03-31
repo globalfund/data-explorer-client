@@ -71,6 +71,9 @@ export function getAPIFormattedFilters(
       `periods=${appliedFilters.replenishmentPeriods.join(",")}`
     );
   }
+  if (appliedFilters.trpWindows.length > 0) {
+    filterArray.push(`trpWindows=${appliedFilters.trpWindows.join(",")}`);
+  }
 
   return filterArray.join("&");
 }

@@ -1,20 +1,19 @@
+import React from "react";
+import { useMeasure } from "react-use";
+import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
 import ReactApexCharts from "react-apexcharts";
-
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
-
-import { findIndex, values, keys, get } from "lodash";
-
-import React from "react";
-import { NoDataAllocations } from "../../allocations/components/nodata";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { PageLoader } from "app/modules/common/page-loader";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { NoDataAllocations } from "../../allocations/components/nodata";
 import { getKeysPercentages } from "app/modules/viz-module/sub-modules/allocations/data";
-import { useMeasure } from "react-use";
 interface Props {
   total: number;
   keys: string[];
   values: number[];
+  isLoading: boolean;
 }
 
 export default function RadialChart(props: Props) {
@@ -28,8 +27,9 @@ export default function RadialChart(props: Props) {
   }>(getKeysPercentages(props.total, props.values));
 
   React.useEffect(() => {
+    console.log("RadialChart props", props);
     setKeysPercentagesColors(getKeysPercentages(props.total, props.values));
-  }, [props.total, values]);
+  }, [props.total, props.values]);
 
   const options: ApexOptions = {
     plotOptions: {
@@ -95,9 +95,8 @@ export default function RadialChart(props: Props) {
         if (isMobile) {
           return seriesName;
         }
-
         return `${seriesName}: ${Math.floor(
-          keysPercentagesColors.percentages[opts.seriesIndex]
+          opts.w.globals.series[opts.seriesIndex]
         )}%`;
       },
       itemMargin: {
@@ -122,6 +121,8 @@ export default function RadialChart(props: Props) {
     ],
   };
 
+  console.log("RadialChart keysPercentagesColors", keysPercentagesColors);
+
   return (
     <>
       <div
@@ -140,6 +141,7 @@ export default function RadialChart(props: Props) {
           }
         `}
       >
+        {props.isLoading && <PageLoader inLoader />}
         <div ref={ref} id="allocations-radial-bar">
           {props.total === 0 ? (
             <div css="display: flex;justify-content: center;">

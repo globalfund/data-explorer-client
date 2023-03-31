@@ -274,12 +274,12 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={frText}
-          link="/viz/funding-request/table"
+          link="/viz/funding-requests/table"
           description={frDescription}
           iconLinks={[
             {
               icon: <TableIcon />,
-              link: "/viz/funding-request/table",
+              link: "/viz/funding-requests/table",
             },
           ]}
         />

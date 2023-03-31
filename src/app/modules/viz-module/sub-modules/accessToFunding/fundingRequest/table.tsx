@@ -13,19 +13,15 @@ import {
 interface FundingRequestTableProps {
   search: string;
   sortBy: string;
-  isLoading: boolean;
   data: FundingTableRow[];
   columns: FundingTableColumn[];
   setSearch: (value: string) => void;
   setSortBy: (value: string) => void;
   title: string;
+  forceExpand?: boolean;
 }
 
 export function Table(props: FundingRequestTableProps) {
-  if (props.isLoading) {
-    return <PageLoader />;
-  }
-
   return (
     <div>
       <FundingRequestTable
@@ -38,6 +34,7 @@ export function Table(props: FundingRequestTableProps) {
         onSearchChange={props.setSearch}
         onSortByChange={props.setSortBy}
         paddingLeft={2}
+        forceExpand={props.forceExpand}
       />
     </div>
   );

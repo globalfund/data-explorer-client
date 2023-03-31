@@ -1,5 +1,7 @@
-import React, { Children } from "react";
+import React from "react";
+import { v4 } from "uuid";
 import get from "lodash/get";
+import find from "lodash/find";
 import filter from "lodash/filter";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
@@ -9,23 +11,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Simple/styles";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-
 import { TableToolbar } from "app/components/Table/Expandable/Toolbar";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
-import {
-  SimpleTableColumn,
-  SimpleTableProps,
-  // FundingTableRow,
-} from "app/components/Table/Simple/data";
 import { cellData } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/data";
-import { v4 } from "uuid";
-import IconButton from "@material-ui/core/IconButton";
+import { useUpdateEffect } from "react-use";
 
 export interface FundingTableRow {
   [key: string]: any;
@@ -42,7 +38,7 @@ export interface FundingTableProps {
   search: string;
   sortBy: string;
   paddingLeft: number;
-
+  forceExpand?: boolean;
   rows: FundingTableRow[];
   columns: FundingTableColumn[];
   onSearchChange: (value: string) => void;
@@ -63,22 +59,25 @@ function Row(props: {
   columns: FundingTableColumn[];
   paddingLeft: number;
   visibleColumnsIndexes: number[];
+  forceExpand?: boolean;
 }) {
   const classes = useRowStyles();
   const [open, setOpen] = React.useState(false);
 
   const firstColumnWidth = props.columns?.length > 3 ? "30%" : "";
-  const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;
   const columnWidthCalc = `${props.columns?.length > 3 ? "70%" : "100%"} / ${
     props.columns?.length
   }`;
 
   const [rowSelected, setRowSelected] = React.useState("parent");
 
+  const secondLevelRow = find(props.columns, { key: "id" });
+
   return (
     <React.Fragment>
       <TableRow
         className={classes.root}
+        id="funding-requests-table-row"
         onClick={() => {
           // padVal = padVal + 4;
           if (props.row.children) {
@@ -118,6 +117,7 @@ function Row(props: {
             key={v4()}
             css={`
               text-align: center;
+              padding: 16px 10px;
               ${tablecell} /* width: calc(${columnWidthCalc}); */
               ${index === 0 ? `padding-left: ${props.paddingLeft}rem;` : ""}
             `}
@@ -139,6 +139,7 @@ function Row(props: {
                   align-items: center;
                   flex-direction: row;
                   font-weight: ${props.row.children ? "bold" : "normal"};
+                  justify-content: ${secondLevelRow ? "center" : "initial"};
                   font-family: "GothamNarrow-${props.row.children
                       ? "Bold"
                       : "Book"}",
@@ -172,7 +173,6 @@ function Row(props: {
           </TableCell>
         ))}
       </TableRow>
-
       <TableRow
         css={`
           border-bottom: unset;
@@ -192,9 +192,10 @@ function Row(props: {
                   <TableRow>
                     {cellData.map((name, index) => (
                       <TableCell
-                        key={index}
+                        key={v4()}
                         css={`
                           text-align: center;
+                          padding: 16px 10px;
                           ${tablecell}
                           padding-left: ${index === 0 ? "4rem" : "auto"};
                           /* width: calc(${columnWidthCalc});
@@ -208,13 +209,12 @@ function Row(props: {
                             display: flex;
                             align-items: center;
                             flex-direction: row;
-                            justify-content: space-between;
+                            justify-content: center;
                           `}
                         >
                           <div
                             css={`
                               gap: 12px;
-                              width: 100%;
                               display: flex;
                               align-items: center;
                               flex-direction: row;
@@ -246,7 +246,12 @@ function Row(props: {
                 )}
                 {props.row.children &&
                   props.row.children.map((child: FundingTableRow) =>
-                    props.columns.map((childCol) => {
+                    (
+                      filter(
+                        props.columns,
+                        (c) => c.col
+                      ) as FundingTableColumn[]
+                    ).map((childCol) => {
                       return (
                         <Row
                           row={child}
@@ -303,6 +308,18 @@ export function FundingRequestTable(props: FundingTableProps) {
     );
   }, [props.columns]);
 
+  useUpdateEffect(() => {
+    setTimeout(() => {
+      if (props.forceExpand) {
+        const rows = document.querySelectorAll("#funding-requests-table-row");
+        if (rows.length > 0) {
+          // @ts-ignore
+          rows[0].click();
+        }
+      }
+    }, 500);
+  }, [props.rows]);
+
   const visibleColumnsIndexes = filter(toolbarCols, { checked: true }).map(
     (c) => c.index
   );
@@ -315,14 +332,14 @@ export function FundingRequestTable(props: FundingTableProps) {
     >
       <TableToolbar
         title={props.title}
-        light={props.light}
         search={props.search}
         columns={toolbarCols}
+        multiVizPageDataKey="fundingRequest"
         onSearchChange={props.onSearchChange}
         onColumnViewSelectionChange={onColumnViewSelectionChange}
       />
       <TableContainer>
-        <Table aria-label="Simple table">
+        <Table>
           <TableHead>
             <TableRow>
               {props.columns.map(
@@ -342,6 +359,7 @@ export function FundingRequestTable(props: FundingTableProps) {
                     <TableCell
                       key={column.key}
                       css={`
+                        padding: 16px 10px;
                         ${index === 0 ? "padding-left: 40px;" : ""}
 
                         > button {
@@ -372,19 +390,19 @@ export function FundingRequestTable(props: FundingTableProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.rows.map((row: FundingTableRow) => (
+            {props.rows.map((row: FundingTableRow, index: number) => (
               <Row
                 key={row.name}
                 row={row}
                 columns={props.columns}
                 visibleColumnsIndexes={visibleColumnsIndexes}
                 paddingLeft={props.paddingLeft}
+                forceExpand={props.forceExpand && index === 0}
               />
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-
       <div css="width: 100%;height: 25px;" />
     </div>
   );

@@ -15,6 +15,12 @@ import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filt
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
+  expandedGroup?: FilterGroupProps | null;
+  appliedFilters?: { [key: string]: string[] };
+  defaultAppliedFilters?: { [key: string]: string[] };
+  groupAppliedFiltersPathKey?: { [key: string]: string };
+  setExpandedGroup?: (group: FilterGroupProps | null) => void;
+  setAppliedFilters?: (filters: { [key: string]: string[] }) => void;
 }
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
@@ -25,21 +31,63 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const data = useStoreState((state) => state.AppliedFiltersState);
 
   function resetAllFilters() {
-    if (!isEqual(data, defaultAppliedFilters)) {
-      actions.setAll(defaultAppliedFilters);
+    if (
+      props.setAppliedFilters &&
+      props.defaultAppliedFilters &&
+      props.appliedFilters
+    ) {
+      if (!isEqual(data, props.defaultAppliedFilters)) {
+        props.setAppliedFilters(props.defaultAppliedFilters);
+      }
+    } else {
+      if (!isEqual(data, defaultAppliedFilters)) {
+        actions.setAll(defaultAppliedFilters);
+      }
+    }
+  }
+
+  function setGroupAppliedFilters(group: string, filters: string[]) {
+    const appliedFilterPathKey = get(
+      props.groupAppliedFiltersPathKey,
+      group,
+      null
+    );
+    if (
+      appliedFilterPathKey &&
+      props.setAppliedFilters &&
+      props.appliedFilters
+    ) {
+      props.setAppliedFilters({
+        ...props.appliedFilters,
+        [appliedFilterPathKey]: filters,
+      });
     }
   }
 
   const options = React.useMemo(() => {
-    if (expandedGroup) {
+    if (props.setExpandedGroup && props.expandedGroup) {
+      return get(filterOptions, props.expandedGroup.name, []);
+    } else if (!props.setExpandedGroup && expandedGroup) {
       return get(filterOptions, expandedGroup.name, []);
     }
     return [];
-  }, [filterOptions, expandedGroup]);
+  }, [
+    filterOptions,
+    expandedGroup,
+    props.expandedGroup,
+    props.setExpandedGroup,
+  ]);
 
   if (props.groups.length === 0) {
     return <React.Fragment />;
   }
+
+  const expandedGroupValue =
+    props.expandedGroup !== undefined
+      ? props.expandedGroup
+      : expandedGroup
+      ? expandedGroup
+      : null;
 
   return (
     <div
@@ -74,12 +122,12 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
           @supports (-webkit-touch-callout: none) {
             height: unset;
             max-height: unset;
-            padding-bottom: ${expandedGroup ? 100 : 200}px;
+            padding-bottom: ${expandedGroupValue ? 100 : 200}px;
           }
         }
       `}
     >
-      {!expandedGroup && (
+      {!expandedGroupValue && (
         <div>
           <div
             css={`
@@ -111,7 +159,32 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               {...group}
               key={group.name}
               options={get(filterOptions, group.name, [])}
-              expandGroup={() => setExpandedGroup(group)}
+              expandGroup={() => {
+                if (props.setExpandedGroup) {
+                  props.setExpandedGroup(group);
+                } else {
+                  setExpandedGroup(group);
+                }
+              }}
+              appliedFilters={
+                props.appliedFilters
+                  ? get(
+                      props.appliedFilters,
+                      get(
+                        props.groupAppliedFiltersPathKey,
+                        `["${group.name}"]`,
+                        group.name
+                      ),
+                      []
+                    )
+                  : undefined
+              }
+              setAppliedFilters={
+                props.setAppliedFilters
+                  ? (filters: string[]) =>
+                      setGroupAppliedFilters(group.name, filters)
+                  : undefined
+              }
             />
           ))}
         </div>
@@ -119,14 +192,40 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
       <div
         css={`
           transition: height 2s ease;
-          height: ${expandedGroup ? "calc(100% - 8px)" : "0"};
+          height: ${expandedGroupValue ? "calc(100% - 8px)" : "0"};
         `}
       >
-        {expandedGroup ? (
+        {expandedGroupValue ? (
           <ExpandedFilterGroup
-            {...expandedGroup}
-            goBack={() => setExpandedGroup(null)}
+            {...expandedGroupValue}
+            expandedGroup={expandedGroupValue}
+            goBack={() => {
+              if (props.setExpandedGroup) {
+                props.setExpandedGroup(null);
+              } else {
+                setExpandedGroup(null);
+              }
+            }}
             options={options}
+            appliedFilters={
+              props.appliedFilters
+                ? get(
+                    props.appliedFilters,
+                    get(
+                      props.groupAppliedFiltersPathKey,
+                      `["${expandedGroupValue.name}"]`,
+                      expandedGroupValue.name
+                    ),
+                    []
+                  )
+                : undefined
+            }
+            setAppliedFilters={
+              props.setAppliedFilters
+                ? (filters: string[]) =>
+                    setGroupAppliedFilters(expandedGroupValue.name, filters)
+                : undefined
+            }
           />
         ) : (
           <></>

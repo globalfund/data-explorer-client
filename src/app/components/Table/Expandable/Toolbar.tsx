@@ -18,10 +18,10 @@ import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
 
 interface TableToolbarProps {
-  light?: boolean;
   title: string;
   search: string;
   columns: TableToolbarCols[];
+  multiVizPageDataKey?: string;
   onSearchChange: (value: string) => void;
   onColumnViewSelectionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -67,9 +67,7 @@ export function TableToolbar(props: TableToolbarProps) {
       css={`
         display: flex;
         padding: 0 40px;
-        background: ${props.light
-          ? appColors.COMMON.SECONDARY_COLOR_10
-          : appColors.TABLE.TOOLBAR_BACKGROUND_COLOR};
+        background: ${appColors.TABLE.TOOLBAR_BACKGROUND_COLOR};
         flex-direction: row;
         justify-content: space-between;
         border-radius: 20px 20px 0px 0px;
@@ -178,24 +176,29 @@ export function TableToolbar(props: TableToolbarProps) {
               asyncOnClick
               onClick={(_, done) => {
                 new Promise((resolve) => {
+                  let data = get(
+                    vizData,
+                    location.pathname.replace(`/${params.code}`, "/<code>"),
+                    []
+                  );
+                  if (props.multiVizPageDataKey) {
+                    data = get(data, props.multiVizPageDataKey, []);
+                  }
                   setCSVLinkData(
                     exportCSV(
                       location.pathname
                         .replace("/location/", "/viz/")
                         .replace("/grant/", "/viz/")
                         .replace(`/${params.code}`, ""),
-                      get(
-                        vizData,
-                        location.pathname.replace(`/${params.code}`, "/<code>"),
-                        []
-                      ),
+                      data,
                       {
                         selectedAggregation,
                         donorMapView,
                         investmentsMapView,
                         isDetail: params.code !== undefined,
                         resultsSelectedYear,
-                      }
+                      },
+                      props.multiVizPageDataKey
                     )
                   );
                   resolve({});

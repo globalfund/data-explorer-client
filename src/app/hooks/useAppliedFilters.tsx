@@ -72,6 +72,11 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
         setAppliedFilters: actions.setDonors,
         appliedFilters: data.donors,
       };
+    case "TRP Window":
+      return {
+        setAppliedFilters: actions.setTrpWindows,
+        appliedFilters: data.trpWindows,
+      };
     case "All":
       return {
         setAppliedFilters: actions.setLocations,
@@ -84,6 +89,7 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
           ...data.status,
           ...data.donors,
           ...data.replenishmentPeriods,
+          ...data.trpWindows,
         ],
       };
     default:

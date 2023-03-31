@@ -29,6 +29,7 @@ export function useUrlFilters(): null {
       const donorSubCategories = currentUrlParams.get("donorSubCategories");
       const donorCategories = currentUrlParams.get("donorCategories");
       const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+      const trpWindows = currentUrlParams.get("trpWindows");
 
       if (locations) {
         updatedAppliedFilters.locations = locations.split(",");
@@ -64,6 +65,9 @@ export function useUrlFilters(): null {
       if (replenishmentPeriods) {
         updatedAppliedFilters.replenishmentPeriods =
           replenishmentPeriods.split(",");
+      }
+      if (trpWindows) {
+        updatedAppliedFilters.trpWindows = trpWindows.split(",");
       }
 
       actions.setAll(updatedAppliedFilters);
@@ -138,6 +142,11 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("replenishmentPeriods");
     }
+    if (data.trpWindows.length > 0) {
+      currentUrlParams.set("trpWindows", data.trpWindows.join(","));
+    } else {
+      currentUrlParams.delete("trpWindows");
+    }
 
     const queryString = decodeURIComponent(currentUrlParams.toString());
     history.push({
@@ -161,6 +170,7 @@ export function useUrlFilters(): null {
     const donorSubCategories = currentUrlParams.get("donorSubCategories");
     const donorCategories = currentUrlParams.get("donorCategories");
     const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+    const trpWindows = currentUrlParams.get("trpWindows");
 
     if (locations) {
       updatedAppliedFilters.locations = locations.split(",");
@@ -217,6 +227,11 @@ export function useUrlFilters(): null {
         replenishmentPeriods.split(",");
     } else if (updatedAppliedFilters.replenishmentPeriods.length > 0) {
       updatedAppliedFilters.replenishmentPeriods = [];
+    }
+    if (trpWindows) {
+      updatedAppliedFilters.trpWindows = trpWindows.split(",");
+    } else if (updatedAppliedFilters.trpWindows.length > 0) {
+      updatedAppliedFilters.trpWindows = [];
     }
 
     if (!isEqual(data, updatedAppliedFilters)) {

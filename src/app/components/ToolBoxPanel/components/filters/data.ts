@@ -157,7 +157,16 @@ export const filtergroups: FilterGroupProps[] = [
     name: "Document Types",
     addSubOptionFilters: false,
   },
+  // {
+  //   name: "Portfolio categorization",
+  //   addSubOptionFilters: false,
+  // },
+  {
+    name: "TRP Window",
+    addSubOptionFilters: true,
+  },
 ];
+
 export const fundingRequestFilterGroups: FilterGroupProps[] = [
   {
     name: "Components",
@@ -167,15 +176,16 @@ export const fundingRequestFilterGroups: FilterGroupProps[] = [
     name: "Locations",
     addSubOptionFilters: true,
   },
-  {
-    name: "Portfolio categorization",
-    addSubOptionFilters: false,
-  },
+  // {
+  //   name: "Portfolio categorization",
+  //   addSubOptionFilters: false,
+  // },
   {
     name: "TRP Window",
     addSubOptionFilters: true,
   },
 ];
+
 export const accessToFundingEligibilityFilterGroups: FilterGroupProps[] = [
   {
     name: "Year",
@@ -185,7 +195,6 @@ export const accessToFundingEligibilityFilterGroups: FilterGroupProps[] = [
     name: "Components",
     addSubOptionFilters: false,
   },
-
   {
     name: "Eligibility Status",
     addSubOptionFilters: false,
@@ -203,7 +212,9 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   documents: filter(
     filtergroups,
@@ -223,105 +234,135 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/disbursements/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/disbursements/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/disbursements/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/signed/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/signed/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/signed/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/signed/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/commitment/treemap": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/commitment/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/commitment/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/commitment/table": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/budgets/flow": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/budgets/time-cycle": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/budgets/map": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/viz/allocations": filter(
     filtergroups,
@@ -368,6 +409,15 @@ export const pathnameToFilterGroups = {
     (fg: FilterGroupProps) =>
       fg.name === "Donors" || fg.name === "Replenishment Periods"
   ),
+  "/viz/funding-requests/table": filter(
+    filtergroups,
+    (fg: FilterGroupProps) =>
+      fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods" &&
+      fg.name !== "Document Types" &&
+      fg.name !== "Grant Status" &&
+      fg.name !== "Partner Types"
+  ),
   // location detail page
   "/location/<code>/overview": filter(
     filtergroups,
@@ -375,7 +425,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   // "/location/<code>/overview": [],
   "/location/<code>/disbursements/treemap": filter(
@@ -384,7 +436,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/disbursements/table": filter(
     filtergroups,
@@ -392,7 +446,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/disbursements/time-cycle": filter(
     filtergroups,
@@ -400,7 +456,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/disbursements/map": filter(
     filtergroups,
@@ -408,7 +466,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/signed/treemap": filter(
     filtergroups,
@@ -416,7 +476,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/signed/table": filter(
     filtergroups,
@@ -424,7 +486,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/signed/time-cycle": filter(
     filtergroups,
@@ -432,7 +496,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/signed/map": filter(
     filtergroups,
@@ -440,7 +506,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/commitment/treemap": filter(
     filtergroups,
@@ -448,7 +516,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/commitment/table": filter(
     filtergroups,
@@ -456,7 +526,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/commitment/time-cycle": filter(
     filtergroups,
@@ -464,7 +536,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/commitment/map": filter(
     filtergroups,
@@ -472,7 +546,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/budgets/flow": filter(
     filtergroups,
@@ -480,7 +556,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/budgets/time-cycle": filter(
     filtergroups,
@@ -488,7 +566,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/budgets/map": filter(
     filtergroups,
@@ -496,7 +576,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
 
   "/location/<code>/allocations": filter(
@@ -526,7 +608,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/grants/list": filter(
     filtergroups,
@@ -534,7 +618,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/location/<code>/results": filter(
     filtergroups,
@@ -547,7 +633,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/disbursements/table": filter(
     filtergroups,
@@ -555,7 +643,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/disbursements/time-cycle": filter(
     filtergroups,
@@ -563,7 +653,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/disbursements/map": filter(
     filtergroups,
@@ -571,7 +663,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/signed/treemap": filter(
     filtergroups,
@@ -579,7 +673,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/signed/table": filter(
     filtergroups,
@@ -587,7 +683,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/signed/time-cycle": filter(
     filtergroups,
@@ -595,7 +693,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/signed/map": filter(
     filtergroups,
@@ -603,7 +703,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/commitment/treemap": filter(
     filtergroups,
@@ -611,7 +713,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/commitment/table": filter(
     filtergroups,
@@ -619,7 +723,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/commitment/time-cycle": filter(
     filtergroups,
@@ -627,7 +733,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/commitment/map": filter(
     filtergroups,
@@ -635,14 +743,18 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/budgets/flow": filter(
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
-      fg.name !== "Replenishment Periods"
+      fg.name !== "Replenishment Periods" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/budgets/time-cycle": filter(
     filtergroups,
@@ -650,7 +762,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/budgets/map": filter(
     filtergroups,
@@ -658,7 +772,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/grants": filter(
     filtergroups,
@@ -666,7 +782,9 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
   "/partner/<code>/grants/list": filter(
     filtergroups,
@@ -674,6 +792,8 @@ export const pathnameToFilterGroups = {
       fg.name !== "Locations" &&
       fg.name !== "Donors" &&
       fg.name !== "Replenishment Periods" &&
-      fg.name !== "Document Types"
+      fg.name !== "Document Types" &&
+      fg.name !== "Portfolio categorization" &&
+      fg.name !== "TRP Window"
   ),
 };

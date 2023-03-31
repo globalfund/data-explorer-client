@@ -64,3 +64,9 @@ export const selectedViewAtom = atom<string>({
   default: "",
   effects_UNSTABLE: [persistAtom],
 });
+
+export const locationAccessToFundingCycleAtom = atom<string>({
+  key: "locationAccessToFundingCycleAtom",
+  default: "All",
+  effects_UNSTABLE: [persistAtom],
+});

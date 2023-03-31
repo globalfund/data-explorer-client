@@ -21,7 +21,8 @@ export function exportCSV(
     donorMapView: string;
     isDetail: boolean;
     resultsSelectedYear: string;
-  }
+  },
+  multiVizPageDataKey?: string
 ): CommonPropTypes {
   const csvData: any[] = [];
   const isComponent = options.selectedAggregation === "componentName";
@@ -748,6 +749,71 @@ export function exportCSV(
           { label: "Location", key: "location" },
           { label: "Status", key: "status" },
         ],
+      };
+    case "/viz/access-to-funding":
+      if (multiVizPageDataKey === "eligibility") {
+        data.forEach((item: any) => {
+          item.children.forEach((subItem: any) => {
+            csvData.push({
+              year: item.year,
+              component: subItem.component,
+              status: subItem.eligibilityStatus,
+              diseaseBurden: subItem.diseaseBurden,
+              incomeLevel: item.incomeLevel,
+            });
+          });
+        });
+        return {
+          data: csvData,
+          filename: "access-to-funding-eligibility.csv",
+          headers: [
+            { label: "Year", key: "year" },
+            { label: "Component", key: "component" },
+            { label: "Status", key: "status" },
+            { label: "Disease Burden", key: "diseaseBurden" },
+            { label: "Income Level", key: "incomeLevel" },
+          ],
+        };
+      }
+      if (multiVizPageDataKey === "fundingRequest") {
+        data.forEach((item: any) => {
+          item.children.forEach((subItem: any) => {
+            subItem.children.forEach((subSubItem: any) => {
+              csvData.push({
+                location: item.name,
+                component: subItem.component,
+                date: subItem.approach,
+                approach: subItem.approach,
+                window: subItem.window,
+                outcome: subItem.outcome,
+                gac: subItem.gac,
+                board: subItem.board,
+                grant: subSubItem.grant1,
+              });
+            });
+          });
+        });
+        return {
+          data: csvData,
+          filename: "access-to-funding-funding-requests.csv",
+          headers: [
+            { label: "Location", key: "location" },
+            { label: "Application ID", key: "id" },
+            { label: "Submission date", key: "date" },
+            { label: "Component", key: "component" },
+            { label: "Approach", key: "approach" },
+            { label: "TRP Window", key: "window" },
+            { label: "TRP Outcome", key: "outcome" },
+            { label: "GAC Meeting", key: "gac" },
+            { label: "Board approval", key: "board" },
+            { label: "Grant Number (Start date - End date)", key: "grant" },
+          ],
+        };
+      }
+      return {
+        data: [],
+        filename: "empty.csv",
+        headers: [],
       };
     case "/viz/pledges-contributions/time-cycle":
       data.forEach((item: any) => {

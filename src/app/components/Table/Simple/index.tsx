@@ -44,9 +44,12 @@ function Row(props: {
   const classes = useRowStyles();
   const [open, setOpen] = React.useState(Boolean(props.forceExpand));
 
-  const firstColumnWidth = props.columns.length > 3 ? "30%" : "";
+  const firstColBig =
+    props.columns[0].key !== "year" ? props.columns.length > 3 : false;
+
+  const firstColumnWidth = firstColBig ? "30%" : "";
   const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;
-  const columnWidthCalc = `${props.columns.length > 3 ? "70%" : "100%"} / ${
+  const columnWidthCalc = `${firstColBig ? "70%" : "100%"} / ${
     props.columns.length
   }`;
 
@@ -126,6 +129,9 @@ function Row(props: {
                     font-weight: ${index === 0 ? "bold" : "normal"};
                     font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
                       "Helvetica Neue", sans-serif;
+                    color: ${column.valueToColorMap
+                      ? column.valueToColorMap[value]
+                      : "inherit"};
 
                     > * {
                       @supports (-webkit-touch-callout: none) and
@@ -150,7 +156,6 @@ function Row(props: {
           );
         })}
       </TableRow>
-
       <TableRow
         css={`
           border-bottom: unset;
@@ -231,10 +236,10 @@ export function SimpleTable(props: SimpleTableProps) {
     <React.Fragment>
       <TableToolbar
         title={props.title}
-        light={props.light}
         search={props.search}
         columns={toolbarCols}
         onSearchChange={props.onSearchChange}
+        multiVizPageDataKey={props.multiVizPageDataKey}
         onColumnViewSelectionChange={onColumnViewSelectionChange}
       />
       <TableContainer>
@@ -288,7 +293,7 @@ export function SimpleTable(props: SimpleTableProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {props.rows?.map((row: SimpleTableRow) => (
+            {props.rows.map((row: SimpleTableRow) => (
               <Row
                 key={row.name}
                 row={row}

@@ -11,7 +11,6 @@ import {
 interface EligibilityTableProps {
   search: string;
   sortBy: string;
-  isLoading: boolean;
   data: SimpleTableRow[];
   columns: SimpleTableColumn[];
   setSearch: (value: string) => void;
@@ -20,10 +19,6 @@ interface EligibilityTableProps {
 }
 
 export function EligibilityTable(props: EligibilityTableProps) {
-  if (props.isLoading) {
-    return <PageLoader />;
-  }
-
   return (
     <SimpleTable
       search={props.search}
@@ -33,6 +28,7 @@ export function EligibilityTable(props: EligibilityTableProps) {
       columns={props.columns}
       onSearchChange={props.setSearch}
       onSortByChange={props.setSortBy}
+      multiVizPageDataKey="eligibility"
     />
   );
 }

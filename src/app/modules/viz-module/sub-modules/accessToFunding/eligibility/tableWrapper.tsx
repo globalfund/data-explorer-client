@@ -1,48 +1,20 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { useDebounce } from "react-use";
+import { useRecoilValue } from "recoil";
+import Slide from "@material-ui/core/Slide";
 import TablePagination from "@material-ui/core/TablePagination";
-import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { PageLoader } from "app/modules/common/page-loader";
-import { SimpleTableRow } from "app/components/Table/Simple/data";
-import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import {
-  diseaseBurdens,
-  EligibilityScatterplotDataItemModel,
-  EligibilityScatterplotDataModel,
-  incomeLevels,
-} from "app/components/Charts/Eligibility/Scatterplot/data";
 import { EligibilityTable } from "./eligibilityTable";
-import { ClickAwayListener, Slide } from "@material-ui/core";
+import { PageLoader } from "app/modules/common/page-loader";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
+import { SimpleTableRow } from "app/components/Table/Simple/data";
+import { locationAccessToFundingCycleAtom } from "app/state/recoil/atoms";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
-import {
-  accessToFundingEligibilityFilterGroups,
-  FilterGroupProps,
-} from "app/components/ToolBoxPanel/components/filters/data";
-import { ViewModel } from "app/components/ToolBoxPanel/utils/getControlItems";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
-
-function getTableData(
-  data: EligibilityScatterplotDataModel[]
-): SimpleTableRow[] {
-  return data.map((item: EligibilityScatterplotDataModel) =>
-    item.data.map((itemData) => ({
-      year: itemData.x,
-      component: itemData.y,
-      incomeLevel: get(
-        incomeLevels,
-        `[${itemData.incomeLevel}]`,
-        itemData.incomeLevel
-      ),
-      diseaseBurden: get(diseaseBurdens, `[${itemData.diseaseBurden}]`, ""),
-      status: itemData.eligibility,
-    }))
-  );
-}
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface Props {
   code: string;
@@ -50,71 +22,164 @@ interface Props {
 }
 
 export function AccessToFundingEligibilityTableWrapper(props: Props) {
-  useTitle("The Data Explorer - Location Eligibility");
-
-  const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("");
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
-
   const data = useStoreState(
     (state) =>
       get(
-        state.EligibilityCountry.data,
+        state.LocationAccessToFunding.EligibilityTable.data,
         "data",
         []
-      ) as EligibilityScatterplotDataModel[]
+      ) as SimpleTableRow[]
   );
 
+  const [search, setSearch] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("year DESC");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const [tableData, setTableData] = React.useState<SimpleTableRow[]>(
-    getTableData(data)
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [selectedAggregate, setSelectedAggregate] = React.useState("year");
+  const [expandedGroup, setExpandedGroup] =
+    React.useState<FilterGroupProps | null>(null);
+
+  const controlItems = {
+    aggregates: [
+      { label: "Year", value: "year" },
+      { label: "Components", value: "componentName" },
+    ],
+  };
+
+  const fetchData = useStoreActions(
+    (store) => store.LocationAccessToFunding.EligibilityTable.fetch
   );
-  const fetchData = useStoreActions((store) => store.EligibilityCountry.fetch);
+  const isLoading = useStoreState(
+    (state) => state.LocationAccessToFunding.EligibilityTable.loading
+  );
 
-  const isLoading = useStoreState((state) => state.EligibilityCountry.loading);
+  const cycle = useRecoilValue(locationAccessToFundingCycleAtom);
 
-  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const [appliedFilters, setAppliedFilters] = React.useState<{
+    [key: string]: string[];
+  }>({
+    year: [],
+    components: [],
+    status: [],
+    diseaseBurden: [],
+  });
+
+  const filterGroups = [
+    {
+      name: "Eligibility Years",
+    },
+    {
+      name: "Components",
+    },
+    {
+      name: "Eligibility Status",
+    },
+    {
+      name: "Disease Burden",
+    },
+  ];
+
+  const groupAppliedFiltersPathKey = {
+    "Eligibility Years": "year",
+    Components: "components",
+    "Eligibility Status": "status",
+    "Disease Burden": "diseaseBurden",
+  };
 
   function reloadData() {
-    const filterString = getAPIFormattedFilters(
-      props.code
-        ? {
-            ...appliedFilters,
-            locations: [...appliedFilters.locations, props.code],
-          }
-        : appliedFilters,
-      { search, sortBy }
-    );
+    const filterStr: string[] = [`locations=${props.code}`];
+    if (search.length > 0) {
+      filterStr.push(`q=${search}`);
+    }
+    if (sortBy.length > 0) {
+      filterStr.push(`sortBy=${sortBy}`);
+    }
+    if (appliedFilters.year.length > 0) {
+      filterStr.push(`periods=${appliedFilters.year.join(",")}`);
+    }
+    if (appliedFilters.components.length > 0) {
+      filterStr.push(`components=${appliedFilters.components.join(",")}`);
+    }
+    if (appliedFilters.status.length > 0) {
+      filterStr.push(`status=${appliedFilters.status.join(",")}`);
+    }
+    if (appliedFilters.diseaseBurden.length > 0) {
+      filterStr.push(`diseaseBurden=${appliedFilters.diseaseBurden.join(",")}`);
+    }
+    if (cycle !== "All") {
+      filterStr.push(
+        `cycles=${cycle.replace("-20", "-")}${
+          cycle === "2002-2013" ? ",null" : ""
+        }`
+      );
+    }
     fetchData({
-      filterString: `${filterString}${
-        filterString.length > 0 ? "&" : ""
-      }view=table`,
+      filterString: `aggregateBy=${selectedAggregate}&${filterStr.join("&")}`,
     });
   }
 
-  React.useEffect(() => reloadData(), [props.code, appliedFilters, sortBy]);
+  React.useEffect(
+    () => reloadData(),
+    [props.code, selectedAggregate, appliedFilters, sortBy, cycle]
+  );
 
-  useUpdateEffect(() => setTableData(getTableData(data)), [data]);
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
-  const [,] = useDebounce(() => reloadData(), 500, [search]);
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
 
-  const [selectedView, setSelectedView] = React.useState("Table");
-  const [selectedAggregates, setSelectedAggregates] = React.useState("Year");
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
-  const [controlItems, setControlItems] = React.useState<{
-    views: ViewModel[];
-    aggregates: ViewModel[];
-  }>({
-    views: [{ label: "Table", value: "Table", link: location.pathname }],
-    aggregates: [
-      { label: "Year", value: "yearName" },
-      { label: "Components", value: "componentName" },
-    ],
-  });
+  let columns = [
+    { name: "Year", key: "year" },
+    { name: "Component", key: "component" },
+    {
+      name: "Eligibility Status",
+      key: "eligibilityStatus",
+      valueToColorMap: {
+        Eligible: "#11AD6B",
+        "Not Eligible": "#FA7355",
+        "Transition Funding": "#F7E248",
+      },
+    },
+    { name: "Disease Burden", key: "diseaseBurden" },
+    { name: "Income Level", key: "incomeLevel" },
+  ];
 
-  if (isLoading) {
-    return <PageLoader />;
+  if (selectedAggregate === "componentName") {
+    columns = [
+      { name: "Component", key: "component" },
+      { name: "Year", key: "year" },
+      {
+        name: "Eligibility Status",
+        key: "eligibilityStatus",
+        valueToColorMap: {
+          Eligible: "#11AD6B",
+          "Not Eligible": "#FA7355",
+          "Transition Funding": "#F7E248",
+        },
+      },
+      { name: "Disease Burden", key: "diseaseBurden" },
+      { name: "Income Level", key: "incomeLevel" },
+    ];
   }
 
   return (
@@ -124,6 +189,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
           position: relative;
         `}
       >
+        {isLoading && <PageLoader inLoader />}
         <div
           role="button"
           tabIndex={-1}
@@ -160,90 +226,89 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
         >
           <TriangleXSIcon />
         </div>
-        <ClickAwayListener
-          onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
-            if (openToolboxPanel) {
-              setOpenToolboxPanel(!openToolboxPanel);
-            }
-          }}
-        >
-          <>
-            <Slide direction="left" in={openToolboxPanel}>
-              <div
-                css={`
-                  right: -8px;
-                  z-index: 4;
-                  width: 600px;
-                  /* top: ${top}px; */
-                  position: absolute;
-                  background: #f5f5f7;
-                  height: 98%;
-                  visibility: visible !important;
-                  overflow-y: auto;
-                  ::-webkit-scrollbar {
-                    display: none;
-                  }
+        <Slide direction="left" in={openToolboxPanel}>
+          <div
+            css={`
+              z-index: 4;
+              right: -8px;
+              width: 600px;
+              height: 700px;
+              overflow-y: auto;
+              position: absolute;
+              background: #f5f5f7;
+              border-radius: 20px;
+              visibility: visible !important;
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
-                  box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-                  border-radius: 20px;
+              ::-webkit-scrollbar {
+                display: none;
+              }
 
-                  @media (max-width: 767px) {
-                    width: 100vw;
-                    box-shadow: none;
-                    overflow-y: auto;
-                  }
-                `}
-              >
-                <div
-                  css={`
-                    width: 100%;
+              @media (max-width: 767px) {
+                width: 100vw;
+                box-shadow: none;
+                overflow-y: auto;
+              }
+            `}
+          >
+            <div
+              css={`
+                width: 100%;
 
-                    display: flex;
+                display: flex;
 
-                    flex-direction: column;
-                  `}
-                >
-                  {}
-                  <React.Fragment>
-                    <ToolBoxPanelControlRow
-                      title="Views"
-                      selected={selectedView}
-                      options={controlItems.views}
-                      setSelected={setSelectedView}
-                    />
-                    <ToolBoxPanelAggregateBy
-                      title="Aggregate by"
-                      selected={selectedAggregates}
-                      options={controlItems.aggregates}
-                      setSelected={setSelectedAggregates}
-                    />
-                    <ToolBoxPanelFilters
-                      groups={accessToFundingEligibilityFilterGroups}
-                    />
-                  </React.Fragment>
-                </div>
-              </div>
-            </Slide>
-          </>
-        </ClickAwayListener>
+                flex-direction: column;
+              `}
+            >
+              <ToolBoxPanelAggregateBy
+                title="Aggregate by"
+                selected={selectedAggregate}
+                options={controlItems.aggregates}
+                setSelected={setSelectedAggregate}
+              />
+              <ToolBoxPanelFilters
+                groups={filterGroups}
+                expandedGroup={expandedGroup}
+                appliedFilters={appliedFilters}
+                setExpandedGroup={setExpandedGroup}
+                setAppliedFilters={setAppliedFilters}
+                defaultAppliedFilters={{
+                  year: [],
+                  components: [],
+                  status: [],
+                  diseaseBurden: [],
+                }}
+                groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
+              />
+            </div>
+          </div>
+        </Slide>
         <EligibilityTable
           search={search}
           sortBy={sortBy}
-          data={tableData[2]?.slice(
-            page * rowsPerPage,
-            (page + 1) * rowsPerPage
-          )}
-          isLoading={isLoading}
+          data={data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
           setSearch={setSearch}
           setSortBy={setSortBy}
-          columns={[
-            { name: "Year", key: "year" },
-            { name: "Component", key: "component" },
-            { name: "Income Level", key: "incomeLevel" },
-            { name: "Disease Burden", key: "diseaseBurden" },
-            { name: "Status", key: "status" },
-          ]}
-          title="2023-2025"
+          columns={columns}
+          title={cycle}
+        />
+        <TablePagination
+          page={page}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          css={`
+            @media (min-width: 768px) {
+              .MuiTablePagination-toolbar {
+                padding-left: 40px;
+              }
+              .MuiTablePagination-spacer {
+                display: none;
+              }
+            }
+          `}
         />
       </div>
     </>

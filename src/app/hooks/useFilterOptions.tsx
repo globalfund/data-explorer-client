@@ -6,6 +6,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { FilterGroupOptionModel } from "app/components/ToolBoxPanel/components/filters/data";
 
 interface UseFilterOptionsProps {
+  loadFilterOptions?: boolean;
   returnFilterOptions?: boolean;
 }
 
@@ -17,6 +18,10 @@ export interface UseFilterOptionsReturn {
   "Replenishment Periods": FilterGroupOptionModel[];
   "Document Types": FilterGroupOptionModel[];
   Donors: FilterGroupOptionModel[];
+  "Eligibility Status": FilterGroupOptionModel[];
+  "Disease Burden": FilterGroupOptionModel[];
+  "Eligibility Years": FilterGroupOptionModel[];
+  "TRP Window": FilterGroupOptionModel[];
 }
 
 export function useFilterOptions(
@@ -76,24 +81,63 @@ export function useFilterOptions(
     },
   ];
 
+  const getGrantCycles = useStoreActions(
+    (store) => store.LocationAccessToFunding.GrantCycles.fetch
+  );
+
+  const getEligibilityStatusCodelist = useStoreActions(
+    (store) => store.EligibilityStatusCodelist.fetch
+  );
+  const eligibilityStatusCodelist = useStoreState((state) =>
+    get(state.EligibilityStatusCodelist, "data.data", [])
+  );
+
+  const getEligibilityDiseaseBurdenCodelist = useStoreActions(
+    (store) => store.EligibilityDiseaseBurdenCodelist.fetch
+  );
+  const EligibilityDiseaseBurdenCodelist = useStoreState((state) =>
+    get(state.EligibilityDiseaseBurdenCodelist, "data.data", [])
+  );
+
+  const getEligibilityYearOptions = useStoreActions(
+    (store) => store.EligibilityYears.fetch
+  );
+  const EligibilityYearOptions = useStoreState((state) =>
+    get(state.EligibilityYears, "data.data", [])
+  );
+
+  const getFundingRequestsTRPWindowCodelist = useStoreActions(
+    (store) => store.FundingRequestsTRPWindowCodelist.fetch
+  );
+  const FundingRequestsTRPWindowCodelist = useStoreState((state) =>
+    get(state.FundingRequestsTRPWindowCodelist, "data.data", [])
+  );
+
   React.useEffect(() => {
-    if (locations.length === 0) {
-      getLocations({});
-    }
-    if (components.length === 0) {
-      getComponents({});
-    }
-    if (partnerTypes.length === 0) {
-      getPartnerTypes({});
-    }
-    if (status.length === 0) {
-      getStatus({});
-    }
-    if (replenishmentPeriods.length === 0) {
-      getReplenishmentPeriods({});
-    }
-    if (donors.length === 0) {
-      getDonors({});
+    if (props.loadFilterOptions) {
+      if (locations.length === 0) {
+        getLocations({});
+      }
+      if (components.length === 0) {
+        getComponents({});
+      }
+      if (partnerTypes.length === 0) {
+        getPartnerTypes({});
+      }
+      if (status.length === 0) {
+        getStatus({});
+      }
+      if (replenishmentPeriods.length === 0) {
+        getReplenishmentPeriods({});
+      }
+      if (donors.length === 0) {
+        getDonors({});
+      }
+      getGrantCycles({});
+      getEligibilityStatusCodelist({});
+      getEligibilityYearOptions({});
+      getEligibilityDiseaseBurdenCodelist({});
+      getFundingRequestsTRPWindowCodelist({});
     }
   }, []);
 
@@ -109,6 +153,13 @@ export function useFilterOptions(
         location.pathname === "/viz/pledges-contributions/map"
           ? get(find(donors, { label: donorsMapView }), "subOptions", donors)
           : donors,
+      "Eligibility Status": eligibilityStatusCodelist,
+      "Disease Burden": EligibilityDiseaseBurdenCodelist,
+      "Eligibility Years": EligibilityYearOptions.map((item: string) => ({
+        label: item,
+        value: item,
+      })),
+      "TRP Window": FundingRequestsTRPWindowCodelist,
     };
   }
 

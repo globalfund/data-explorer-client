@@ -536,7 +536,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         Allocations | {selectedPeriod}
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-
       {vizComponent}
     </div>
   );

@@ -1,15 +1,9 @@
-/* third-party */
 import React from "react";
-/* project */
-import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
+import { SimpleTableRow } from "app/components/Table/Simple/data";
 import {
-  SimpleTableRow,
-  SimpleTableColumn,
-} from "app/components/Table/Simple/data";
-import {
-  FundingRequestTable,
   FundingTableColumn,
+  FundingRequestTable,
 } from "app/components/Table/funding";
 
 interface FundingRequestTableProps {
@@ -29,15 +23,14 @@ export function Table(props: FundingRequestTableProps) {
 
   return (
     <FundingRequestTable
+      title=""
+      paddingLeft={2}
+      rows={props.data}
       search={props.search}
       sortBy={props.sortBy}
-      light
-      rows={props.data}
-      title="Funding Request"
       columns={props.columns}
       onSearchChange={props.setSearch}
       onSortByChange={props.setSortBy}
-      paddingLeft={2}
     />
   );
 }

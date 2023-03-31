@@ -1,15 +1,20 @@
-import { Box } from "@material-ui/core";
-import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
-import React, { useState } from "react";
-import { AllocationsModule } from "../allocations";
-
-import { chipcss, descriptioncss, vizcss } from "./style";
-import { AccessToFundingEligibilityTableWrapper } from "./eligibility/tableWrapper";
-import { AccessToFundingRequestTableWrapper } from "./fundingRequest/tableWrapper";
-import RadialChart from "./allocations/radialChart";
+import React from "react";
+import get from "lodash/get";
+import Box from "@material-ui/core/Box";
+import { useRecoilState } from "recoil";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { get } from "lodash";
-import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { locationAccessToFundingCycleAtom } from "app/state/recoil/atoms";
+import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
+import RadialChart from "app/modules/viz-module/sub-modules/accessToFunding/allocations/radialChart";
+import {
+  vizcss,
+  chipcss,
+  descriptioncss,
+} from "app/modules/viz-module/sub-modules/accessToFunding/style";
+import { AccessToFundingRequestTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/fundingRequest/tableWrapper";
+import { AccessToFundingEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/eligibility/tableWrapper";
 
 interface Props {
   code: string;
@@ -18,31 +23,58 @@ interface Props {
 }
 
 export default function LocationAccessToFundingWrapper(props: Props) {
-  const fetchData = useStoreActions((store) => store.Allocations.fetch);
-  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const [cycle, setCycle] = useRecoilState(locationAccessToFundingCycleAtom);
 
-  const selectedPeriod = useStoreState(
-    (state) => state.ToolBoxPanelAllocationsPeriodState.value
+  const grantCycles = useStoreState(
+    (state) =>
+      get(
+        state.LocationAccessToFunding.GrantCycles,
+        "data.data",
+        []
+      ) as string[]
+  );
+  const locationInfoData = useStoreState((state) =>
+    get(state.LocationDetailInfo.data, "data[0]", {
+      id: "",
+      locationName: "",
+      disbursed: 0,
+      committed: 0,
+      signed: 0,
+      countries: [],
+      multicountries: [],
+      portfolioManager: "",
+      portfolioManagerEmail: "",
+    })
   );
 
+  // Allocation data
   const total = useStoreState(
     (state) => get(state.Allocations.data, "total", []) as number
   );
   const keys = useStoreState(
     (state) => get(state.Allocations.data, "keys", []) as string[]
   );
-
   const values = useStoreState(
     (state) => get(state.Allocations.data, "values", []) as number[]
   );
-
+  const fetchData = useStoreActions((store) => store.Allocations.fetch);
+  const isLoading = useStoreState((state) => state.Allocations.loading);
   const colors = ["#E4EBF8", "#C9CAD4", "#F1ECEC"];
 
   React.useEffect(() => {
+    return () => {
+      setCycle("All");
+    };
+  }, []);
+
+  React.useEffect(() => {
     fetchData({
-      filterString: "periods=2023 - 2025",
+      filterString: `locations=${props.code}&${
+        cycle !== "All" ? `periods=${cycle}` : ""
+      }`,
     });
-  }, [props.code, appliedFilters, selectedPeriod]);
+  }, [props.code, cycle]);
+
   return (
     <>
       <div css={descriptioncss}>
@@ -59,8 +91,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           finished.
         </p>
       </div>
-      <Box height={26} />
-
+      <Box height={25} />
       <div>
         <p
           css={`
@@ -77,40 +108,49 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             margin-top: 1rem;
           `}
         >
-          <div css={chipcss}>All</div>
-          <div css={chipcss}>2011/2013</div>
-          <div css={chipcss}>2014/2016</div>
-          <div css={chipcss}>2017/2019</div>
-          <div css={chipcss}>2020/2022</div>
-          <div css={chipcss}>2023/2025</div>
+          <div css={chipcss(cycle === "All")} onClick={() => setCycle("All")}>
+            All
+          </div>
+          {grantCycles.map((c) => (
+            <div key={c} css={chipcss(cycle === c)} onClick={() => setCycle(c)}>
+              {c.replace("-", "/")}
+            </div>
+          ))}
         </div>
       </div>
       <div css={vizcss}>
+        {props.code.length === 3 && (
+          <div>
+            <h4>
+              <b>Eligibility </b>
+            </h4>
+            <hr />
+            <AccessToFundingEligibilityTableWrapper
+              code={props.code}
+              codeParam={props.codeParam}
+            />
+          </div>
+        )}
         <div>
           <h4>
-            <b>Eligibility </b>
-          </h4>
-          <hr />
-          <AccessToFundingEligibilityTableWrapper
-            code={props.code}
-            codeParam={props.codeParam}
-          />
-        </div>
-
-        <div>
-          <h4>
-            <b> Allocation</b>
+            <b>Allocation</b>
           </h4>
           <hr />
           <div
             css={`
+              gap: 1rem;
               display: flex;
-              justify-content: space-between;
+              position: relative;
               align-items: center;
-              gap: 3rem;
+              justify-content: space-evenly;
             `}
           >
-            <RadialChart total={total} values={values} keys={keys} />
+            <RadialChart
+              total={total}
+              values={values}
+              keys={keys}
+              isLoading={isLoading}
+            />
             <div
               css={`
                 /* background: pink; */
@@ -125,7 +165,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                     margin-bottom: 0px;
                   `}
                 >
-                  <b>{total} USD</b>
+                  <b>{formatFinancialValue(total)}</b>
                 </p>
                 <p
                   css={`
@@ -135,27 +175,27 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                     margin-top: 5px;
                   `}
                 >
-                  Total funds allocated in Kenya for<b>2023/2025</b>{" "}
+                  Total funds allocated in {locationInfoData.locationName} for{" "}
+                  <b>{cycle}</b>
                 </p>
               </div>
               <div
                 css={`
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                  text-align: center;
-                  width: 90%;
-                  /* background: yellow; */
+                  gap: 2rem;
                   margin: auto;
+                  display: flex;
                   margin-top: 3rem;
+                  text-align: center;
+                  align-items: center;
+                  justify-content: center;
                 `}
               >
                 {values.map((val, index) => (
                   <div
+                    key={keys[index]}
                     css={`
                       display: flex;
                       align-items: center;
-
                       flex-direction: column;
                       justify-content: center;
                     `}
@@ -170,12 +210,16 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                     />
                     <p
                       css={`
-                        width: 63%;
                         font-size: 18px;
                       `}
                     >
                       <b>
-                        {val} million {keys[index]} funds
+                        {formatLargeAmountsWithPrefix(val)
+                          .replace("$", "")
+                          .replace("bln", "billions")
+                          .replace("mln", "millions")}
+                        <br />
+                        {keys[index]} funds
                       </b>
                     </p>
                   </div>
@@ -184,7 +228,6 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             </div>
           </div>
         </div>
-
         <div>
           <h4>
             <b>Funding Requests</b>
@@ -197,8 +240,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           />
         </div>
       </div>
-
-      <Box height={26} />
+      <Box height={25} />
     </>
   );
 }
