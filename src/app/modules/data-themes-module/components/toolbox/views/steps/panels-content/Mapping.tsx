@@ -210,6 +210,7 @@ export function DataThemesToolBoxMappingItem(
       }
     },
   }));
+
   const [{ isDragging }, drag] = useDrag(() => ({
     type: dimension ? "card" : "column",
     item: dimension

@@ -34,7 +34,7 @@ export function MainRoutes() {
         <RouteWithAppBar exact path="/">
           <HomeModule />
         </RouteWithAppBar>
-        <RouteWithAppBar path="/report/:id">
+        <RouteWithAppBar path="/report/:view">
           <ReportModule />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/about">

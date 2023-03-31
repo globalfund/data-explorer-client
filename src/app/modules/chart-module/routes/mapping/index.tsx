@@ -164,6 +164,7 @@ function ChartBuilderMappingDimension(
         "data.value",
         {}
       ) as { [key: string]: any };
+
       const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
       if (item.type === "column") {
         const defaulAggregation = dimension.aggregation
