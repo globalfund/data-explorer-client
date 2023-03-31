@@ -1,35 +1,38 @@
 import { IconButton } from "@material-ui/core";
 import { IFramesArray } from "app/modules/report-module/views/create";
-import { rowFrameStructureAtom } from "app/state/recoil/atoms";
+import { IRowFrameStructure } from "app/state/recoil/atoms";
 import React from "react";
-import { useRecoilState } from "recoil";
+import { v4 } from "uuid";
 import { ReactComponent as PlusIcon } from "../../asset/addButton.svg";
-import RowStructureBlock from "./rowstructureSampleBlock";
+import RowFrame from "./rowFrame";
 
 interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
+  rowStructureType: IRowFrameStructure;
+  setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
 }
 
-export default function AddRowStructureBlockButton(props: Props) {
-  const [rowstructure, setRowStructure] = useRecoilState(rowFrameStructureAtom);
-
+export default function AddRowFrameButton(props: Props) {
   const handleAddrowStructureBlock = () => {
     props.setFramesArray([
       ...props.framesArray,
-      { frame: <RowStructureBlock /> },
+      {
+        frame: <RowFrame />,
+        id: v4(),
+      },
     ]);
-    setRowStructure({
-      ...rowstructure,
+    props.setRowStructureType({
+      ...props.rowStructureType,
       rowType: "",
-      disableAddRowStructureButton: true,
+      disableAddRowStructureButton: false,
     });
   };
   return (
     <div
       css={`
         border: 1px dashed #adb5bd;
-        width: 916px;
+        width: 100%;
         height: 48px;
         display: flex;
         justify-content: center;
@@ -38,7 +41,7 @@ export default function AddRowStructureBlockButton(props: Props) {
       <IconButton
         onClick={handleAddrowStructureBlock}
         disableRipple={true}
-        disabled={rowstructure.disableAddRowStructureButton}
+        disabled={props.rowStructureType.disableAddRowStructureButton}
       >
         <PlusIcon />
       </IconButton>

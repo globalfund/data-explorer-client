@@ -13,6 +13,7 @@ export interface IRowFrameStructure {
     | "";
 
   disableAddRowStructureButton: boolean;
+  index: number;
 }
 
 const { persistAtom } = recoilPersist();
@@ -52,12 +53,4 @@ export const cmsDataAtom = atom({
 export const homeDisplayAtom = atom<"data" | "charts" | "reports" | "">({
   key: "homeDisplayAtom",
   default: "data",
-});
-
-export const rowFrameStructureAtom = atom<IRowFrameStructure>({
-  key: "rowFrameStructureAtom",
-  default: {
-    rowType: "",
-    disableAddRowStructureButton: true,
-  },
 });
