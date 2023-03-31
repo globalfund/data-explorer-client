@@ -75,7 +75,6 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
 export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
-  console.log(view, page);
   const [_, setHomeTab] = useRecoilState(homeDisplayAtom);
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);

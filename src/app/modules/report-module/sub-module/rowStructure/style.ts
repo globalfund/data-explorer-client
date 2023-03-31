@@ -15,10 +15,11 @@ export const blockcss = css`
 
 export const containercss = css`
   border: 1px dashed #adb5bd;
-  width: 916px;
+  width: 100%;
   height: 252px;
   position: relative;
   padding: 5px 40px;
+  margin: 20px 0;
 
   p {
     font-weight: 325;

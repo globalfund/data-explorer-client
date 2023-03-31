@@ -5,6 +5,8 @@ import { ReportCreateView } from "app/modules/report-module/views/create";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
 import { Box } from "@material-ui/core";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 
 export default function ReportModule() {
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
@@ -14,7 +16,7 @@ export default function ReportModule() {
   >("initial");
 
   return (
-    <div>
+    <DndProvider backend={HTML5Backend}>
       <SubheaderToolbar
         pageType="report"
         name={reportName}
@@ -33,7 +35,7 @@ export default function ReportModule() {
           height: 100px;
         `}
       />
-      {currentView === "create" && <ReportCreateView />}
+      {currentView === "create" && <ReportCreateView open={rightPanelOpen} />}
 
       <Container maxWidth="lg">
         <Box height={50} />
@@ -54,6 +56,6 @@ export default function ReportModule() {
           )}
         </div>
       </Container>
-    </div>
+    </DndProvider>
   );
 }

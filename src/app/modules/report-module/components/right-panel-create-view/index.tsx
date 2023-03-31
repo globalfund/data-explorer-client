@@ -10,6 +10,10 @@ import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { SearchIcon } from "app/assets/icons/Search";
+import { DragPreviewImage, useDrag } from "react-dnd";
+import TextPreviewImg from "../../asset/textPreview.svg";
+import RowFramePreviewImg from "../../asset/rowframePreview.svg";
+import DividerPreviewImg from "../../asset/dividerPreview.svg";
 
 const Button = withStyles(() => ({
   root: {
@@ -85,10 +89,49 @@ export const StyledMenuItem = withStyles(() => ({
   },
 }))(MenuItem);
 
+export const ReportElmentsType = {
+  ROWFRAME: "rowFrame",
+  TEXT: "text",
+  DIVIDER: "divider",
+};
 export function ReportRightPanelCreateView() {
   const [currentView, setCurrentView] = React.useState<"elements" | "charts">(
     "elements"
   );
+  const elementItemDetails = [
+    {
+      elementType: ReportElmentsType.ROWFRAME,
+      leftIcon: <ArrowRightAltIcon />,
+      previewImg: RowFramePreviewImg,
+      name: "Row Frame",
+    },
+    {
+      elementType: ReportElmentsType.TEXT,
+      leftIcon: <TextFieldsIcon />,
+      previewImg: TextPreviewImg,
+      name: "Text",
+    },
+    {
+      elementType: ReportElmentsType.DIVIDER,
+      leftIcon: <ArrowRightAltIcon />,
+      previewImg: DividerPreviewImg,
+      name: "Divider",
+    },
+  ];
+
+  const [elementType, setElementType] = React.useState<
+    "text" | "divider" | "rowFrame"
+  >("text");
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
+    type: elementType,
+    item: {
+      type: elementType,
+      value: "",
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
 
   return (
     <div
@@ -146,18 +189,9 @@ export function ReportRightPanelCreateView() {
             }
           `}
         >
-          <div>
-            <ArrowRightAltIcon />
-            Row frame
-          </div>
-          <div>
-            <TextFieldsIcon />
-            Text
-          </div>
-          <div>
-            <RemoveIcon />
-            Divider
-          </div>
+          {elementItemDetails.map((item, index) => (
+            <ElementItem key={index} {...item} />
+          ))}
         </div>
       )}
       {currentView === "charts" && <ReportRightPanelCreateViewChartList />}
@@ -335,5 +369,34 @@ function ReportRightPanelCreateViewChartList() {
         ))}
       </div>
     </React.Fragment>
+  );
+}
+
+function ElementItem(props: {
+  leftIcon: JSX.Element;
+  previewImg: string;
+  elementType: string;
+  name: string;
+}) {
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
+    type: props.elementType,
+    item: {
+      type: props.elementType,
+      value: "",
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <>
+      <DragPreviewImage connect={preview} src={props.previewImg} />
+
+      <div ref={drag}>
+        {props.leftIcon}
+        {props.name}
+      </div>
+    </>
   );
 }

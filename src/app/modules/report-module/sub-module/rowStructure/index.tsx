@@ -1,135 +1,161 @@
-import { Grid } from "@material-ui/core";
-import {
-  IRowFrameStructure,
-  rowFrameStructureAtom,
-} from "app/state/recoil/atoms";
+import { Grid, IconButton } from "@material-ui/core";
+import { IRowFrameStructure } from "app/state/recoil/atoms";
 import React from "react";
-import { useRecoilState } from "recoil";
-import { RowStructureProps } from "./rowstructureSampleBlock";
+import { useDrop } from "react-dnd";
+import { ReportElmentsType } from "../../components/right-panel-create-view";
+import { ReactComponent as RowFrameHandleAdornment } from "../../asset/rowFrameHandleAdornment.svg";
+import { ReactComponent as EditIcon } from "../../asset/editIcon.svg";
+import { ReactComponent as DeleteIcon } from "../../asset/deleteIcon.svg";
 
-interface Props {
-  rowType: string;
-  rowId: string;
-}
 interface RowStructureDisplayProps {
-  rowstructureType: IRowFrameStructure;
+  gridTemplateColumns: string;
+  gap: string;
+  height: string;
+  rowStructureDetailItems: {
+    rowType: string;
+    rowId: string;
+  }[];
 }
 
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
-  const [rowstructure, setRowStructure] = React.useState<Props[]>([]);
-
-  const [gridTemplateArrangement, setGridTemplateArrangement] = React.useState({
-    gridTemplateColumns: "",
-    gap: "",
-    height: "",
-  });
-
-  React.useEffect(() => {
-    if (props.rowstructureType.rowType === "") {
-      return;
-    }
-
-    if (props.rowstructureType.rowType === "oneByOne") {
-      setGridTemplateArrangement({
-        gridTemplateColumns: "1fr",
-        gap: "auto",
-        height: "360.63px",
-      });
-      setRowStructure([{ rowType: "oneByOne", rowId: "" }]);
-    }
-    if (props.rowstructureType.rowType === "oneByTwo") {
-      setGridTemplateArrangement({
-        gridTemplateColumns: "auto auto",
-        gap: "60.59px",
-        height: "360.63px",
-      });
-      setRowStructure(Array(2).fill({ rowType: "oneByTwo", rowId: "" }));
-    }
-
-    if (props.rowstructureType.rowType === "oneByThree") {
-      setGridTemplateArrangement({
-        gridTemplateColumns: "27.79% auto auto",
-        gap: "68.2px",
-        height: "360.63px",
-      });
-      setRowStructure(Array(3).fill({ rowType: "oneByThree", rowId: "" }));
-    }
-
-    if (props.rowstructureType.rowType === "oneByFour") {
-      setGridTemplateArrangement({
-        gridTemplateColumns: "19.68% auto auto auto",
-        gap: "60.59px",
-        height: "122.61px",
-      });
-      setRowStructure(Array(4).fill({ rowType: "oneByFour", rowId: "" }));
-    }
-
-    if (props.rowstructureType.rowType === "oneByFive") {
-      setGridTemplateArrangement({
-        gridTemplateColumns: "auto auto auto  auto auto",
-        gap: "60.81px",
-        height: "121.67px",
-      });
-      setRowStructure(Array(5).fill({ rowType: "oneByFive", rowId: "" }));
-    }
-
-    if (props.rowstructureType.rowType === "oneToFour") {
-      setGridTemplateArrangement({
-        gridTemplateColumns: "36% auto",
-        gap: "60.95px",
-        height: "360.63px",
-      });
-      setRowStructure(Array(2).fill({ rowType: "oneToFour", rowId: "" }));
-    }
-
-    if (props.rowstructureType.rowType === "fourToOne") {
-      setGridTemplateArrangement({
-        gridTemplateColumns: " auto 36%",
-        gap: "60.95px",
-        height: "360.63px",
-      });
-      setRowStructure(Array(2).fill({ rowType: "fourToOne", rowId: "" }));
-    }
-  }, [props.rowstructureType.rowType]);
+  const [handleDisplay, setHandleDisplay] = React.useState(false);
 
   return (
     <div
       css={`
-        width: 916px;
-        margin-bottom: 50px;
+        width: 100%;
+        margin: 20px 0;
       `}
     >
       <div
+        onMouseEnter={() => setHandleDisplay(true)}
+        onMouseLeave={() => setHandleDisplay(false)}
         css={`
           width: 100%;
           display: grid;
-          grid-template-columns: ${gridTemplateArrangement.gridTemplateColumns};
-          gap: ${gridTemplateArrangement.gap};
+          position: relative;
+          grid-template-columns: ${props.gridTemplateColumns};
+          gap: ${props.gap};
+          padding: 4px;
+          border: ${handleDisplay ? "0.722415px dashed #ADB5BD" : "none"};
         `}
       >
-        {rowstructure.map((row) => (
+        {handleDisplay && (
           <div
             css={`
-              height: ${gridTemplateArrangement.height};
-              background: #dfe3e6;
+              height: 110%;
+              display: flex;
+              position: absolute;
+              left: -4rem;
+              top: -5%;
             `}
-            id={row.rowId}
           >
-            <p
+            <div
               css={`
-                font-weight: 325;
-                font-size: 8.65512px;
-                color: #495057;
-                text-align: center;
-                width: 117.57px;
-                margin: auto;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
               `}
             >
-              Drag and drop content here
-            </p>
+              <IconButton>
+                <EditIcon />
+              </IconButton>
+              <IconButton>
+                <DeleteIcon />
+              </IconButton>
+            </div>
+            <div
+              css={`
+                background: #adb5bd;
+                border-radius: 3.45px;
+                transform: matrix(-1, 0, 0, 1, 0, 0);
+                display: flex;
+                align-items: center;
+                width: 23px;
+
+                justify-content: center;
+              `}
+            >
+              <RowFrameHandleAdornment />
+            </div>
           </div>
+        )}
+
+        {props.rowStructureDetailItems.map((row, index) => (
+          <Box height={props.height} key={index} />
         ))}
       </div>
     </div>
   );
 }
+
+export const Box = (props: { height: string }) => {
+  const [displayTextBox, setDisplayTextBox] = React.useState(false);
+  const [{ canDrop, isOver, item }, drop] = useDrop(() => ({
+    accept: ReportElmentsType.TEXT,
+
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+      item: monitor.getItem(),
+    }),
+    drop: (item: any, monitor) => {
+      if (item.type == "text") {
+        setDisplayTextBox(true);
+      }
+    },
+  }));
+
+  if (displayTextBox) {
+    return (
+      <>
+        <div
+          css={`
+            height: ${props.height};
+
+            border: 1px solid #adb5bd;
+          `}
+        >
+          <textarea
+            css={`
+              width: 100%;
+              height: 100%;
+              outline: none;
+              padding: 20px;
+              font-size: 11.5586px;
+              background: #ffffff;
+            `}
+          />
+        </div>
+      </>
+    );
+  }
+  return (
+    <>
+      <div
+        css={`
+          height: ${props.height};
+          background: #dfe3e6;
+        `}
+        ref={drop}
+      >
+        <p
+          css={`
+            font-weight: 325;
+            font-size: 8.65512px;
+            color: #495057;
+            text-align: center;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+          `}
+        >
+          {isOver ? "Release to drop" : "Drag and drop content here"}
+        </p>
+      </div>
+    </>
+  );
+};
