@@ -27,7 +27,6 @@ export default function RadialChart(props: Props) {
   }>(getKeysPercentages(props.total, props.values));
 
   React.useEffect(() => {
-    console.log("RadialChart props", props);
     setKeysPercentagesColors(getKeysPercentages(props.total, props.values));
   }, [props.total, props.values]);
 
@@ -120,8 +119,6 @@ export default function RadialChart(props: Props) {
       },
     ],
   };
-
-  console.log("RadialChart keysPercentagesColors", keysPercentagesColors);
 
   return (
     <>
