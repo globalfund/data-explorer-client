@@ -14,7 +14,11 @@ export interface IFramesArray {
   frame: JSX.Element;
   id: string;
 }
-export function ReportCreateView(props: { open: boolean }) {
+
+export function ReportCreateView(props: {
+  open: boolean;
+  reportType: "basic" | "advanced";
+}) {
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -28,10 +32,69 @@ export function ReportCreateView(props: { open: boolean }) {
   });
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
     {
-      frame: <RowFrame />,
+      frame: <RowFrame deleteFrame={() => deleteFrame(0)} />,
       id: v4(),
     },
   ]);
+
+  function deleteFrame(index: number) {
+    setFramesArray((prev) => {
+      prev.splice(index, 1);
+      return [...prev];
+    });
+  }
+
+  React.useEffect(() => {
+    if (props.reportType === "advanced") {
+      setFramesArray([
+        {
+          frame: (
+            <RowFrame
+              forceSelectedType="oneByFive"
+              deleteFrame={() => deleteFrame(0)}
+            />
+          ),
+          id: v4(),
+        },
+        {
+          frame: (
+            <RowFrame
+              forceSelectedType="oneByOne"
+              deleteFrame={() => deleteFrame(1)}
+            />
+          ),
+          id: v4(),
+        },
+        {
+          frame: (
+            <RowFrame
+              forceSelectedType="oneToFour"
+              deleteFrame={() => deleteFrame(2)}
+            />
+          ),
+          id: v4(),
+        },
+        {
+          frame: (
+            <RowFrame
+              forceSelectedType="oneByOne"
+              deleteFrame={() => deleteFrame(3)}
+            />
+          ),
+          id: v4(),
+        },
+        {
+          frame: (
+            <RowFrame
+              forceSelectedType="oneByThree"
+              deleteFrame={() => deleteFrame(4)}
+            />
+          ),
+          id: v4(),
+        },
+      ]);
+    }
+  }, [props.reportType]);
 
   return (
     <div>
@@ -40,15 +103,21 @@ export function ReportCreateView(props: { open: boolean }) {
         headerDetails={headerDetails}
         setHeaderDetails={setHeaderDetails}
       />
-      <Container maxWidth="lg" css={``}>
-        <Box height={50} />
+      <Container maxWidth="lg">
         <div
           css={`
-            width: ${props.open ? "916px" : "1270px"};
-            transition: width 0.2s ease-in-out;
+            transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+            width: ${props.open
+              ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
+              : "100%"};
+
+            @media (max-width: 1280px) {
+              width: calc(100vw - 400px);
+            }
           `}
         >
-          {framesArray.map((frame, index) => {
+          <Box height={50} />
+          {framesArray.map((frame) => {
             return (
               <div key={frame.id}>
                 <div>{frame.frame}</div>
@@ -56,13 +125,14 @@ export function ReportCreateView(props: { open: boolean }) {
                   setFramesArray={setFramesArray}
                   index={frame.id}
                   framesArray={framesArray}
+                  deleteFrame={deleteFrame}
                 />
               </div>
             );
           })}
           <Box height={45} />
-
           <AddRowFrameButton
+            deleteFrame={deleteFrame}
             framesArray={framesArray}
             setFramesArray={setFramesArray}
             rowStructureType={rowStructureType}
@@ -78,8 +148,8 @@ export const PlaceHolder = (props: {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
   index: string;
-
   disableAddrowStructureButton?: boolean;
+  deleteFrame: (index: number) => void;
 }) => {
   const [{ canDrop, isOver, item }, drop] = useDrop(() => ({
     // The type (or types) to accept - strings or symbols
@@ -95,7 +165,9 @@ export const PlaceHolder = (props: {
         props.setFramesArray((prev) => {
           const tempIndex = prev.findIndex((frame) => frame.id == props.index);
           prev.splice(tempIndex + 1, 0, {
-            frame: <RowFrame />,
+            frame: (
+              <RowFrame deleteFrame={() => props.deleteFrame(tempIndex + 1)} />
+            ),
             id: v4(),
           });
           return [...prev];
@@ -130,7 +202,7 @@ export const PlaceHolder = (props: {
           width: 100%;
           background-color: ${isOver ? " #262C34;" : "transparent"};
         `}
-      ></div>
+      />
     </>
   );
 };

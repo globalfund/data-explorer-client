@@ -20,10 +20,13 @@ export const PrimaryButton = styled.button<Props>`
   width: 100%;
   text-transform: uppercase;
   cursor: pointer;
+
+  :disabled {
+    pointer-events: none;
+  }
 `;
 
 export const GreyedButton = styled(PrimaryButton)`
   background: #dfe3e6;
-
   border: 1px solid #ffffff;
 `;

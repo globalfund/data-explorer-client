@@ -11,6 +11,7 @@ interface Props {
   framesArray: IFramesArray[];
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
+  deleteFrame: (index: number) => void;
 }
 
 export default function AddRowFrameButton(props: Props) {
@@ -18,7 +19,11 @@ export default function AddRowFrameButton(props: Props) {
     props.setFramesArray([
       ...props.framesArray,
       {
-        frame: <RowFrame />,
+        frame: (
+          <RowFrame
+            deleteFrame={() => props.deleteFrame(props.framesArray.length)}
+          />
+        ),
         id: v4(),
       },
     ]);

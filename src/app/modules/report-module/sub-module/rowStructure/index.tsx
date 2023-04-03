@@ -6,6 +6,8 @@ import { ReportElmentsType } from "../../components/right-panel-create-view";
 import { ReactComponent as RowFrameHandleAdornment } from "../../asset/rowFrameHandleAdornment.svg";
 import { ReactComponent as EditIcon } from "../../asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "../../asset/deleteIcon.svg";
+import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
+import { EditorState } from "draft-js";
 
 interface RowStructureDisplayProps {
   gridTemplateColumns: string;
@@ -20,6 +22,7 @@ interface RowStructureDisplayProps {
     rowType: string;
     rowId: string;
   }[];
+  deleteFrame: () => void;
 }
 
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
@@ -48,19 +51,19 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         {handleDisplay && (
           <div
             css={`
-              height: 110%;
+              top: -4px;
+              left: -4rem;
               display: flex;
               position: absolute;
-              left: -4rem;
-              top: -5%;
+              height: calc(100% + 8px);
             `}
           >
             <div
               css={`
                 display: flex;
+                align-items: center;
                 flex-direction: column;
                 justify-content: center;
-                align-items: center;
               `}
             >
               <IconButton
@@ -74,18 +77,18 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
               >
                 <EditIcon />
               </IconButton>
-              <IconButton>
+              <IconButton onClick={props.deleteFrame}>
                 <DeleteIcon />
               </IconButton>
             </div>
             <div
               css={`
+                width: 23px;
+                display: flex;
+                align-items: center;
                 background: #adb5bd;
                 border-radius: 3.45px;
                 transform: matrix(-1, 0, 0, 1, 0, 0);
-                display: flex;
-                align-items: center;
-                width: 23px;
 
                 justify-content: center;
               `}
@@ -94,9 +97,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             </div>
           </div>
         )}
-
-        {props.rowStructureDetailItems.map((row, index) => (
-          <Box height={props.height} key={index} />
+        {props.rowStructureDetailItems.map((row) => (
+          <Box height={props.height} key={row.rowId} />
         ))}
       </div>
     </div>
@@ -105,9 +107,11 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
 
 export const Box = (props: { height: string }) => {
   const [displayTextBox, setDisplayTextBox] = React.useState(false);
+  const [textContent, setTextContent] = React.useState<EditorState>(
+    EditorState.createEmpty()
+  );
   const [{ canDrop, isOver, item }, drop] = useDrop(() => ({
     accept: ReportElmentsType.TEXT,
-
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -125,20 +129,16 @@ export const Box = (props: { height: string }) => {
       <>
         <div
           css={`
+            overflow: auto;
             height: ${props.height};
-
             border: 1px solid #adb5bd;
+            max-height: ${props.height};
           `}
         >
-          <textarea
-            css={`
-              width: 100%;
-              height: 100%;
-              outline: none;
-              padding: 20px;
-              font-size: 11.5586px;
-              background: #ffffff;
-            `}
+          <RichEditor
+            editMode={true}
+            textContent={textContent}
+            setTextContent={setTextContent}
           />
         </div>
       </>

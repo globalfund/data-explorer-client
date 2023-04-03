@@ -8,8 +8,8 @@ import { blockcss, containercss } from "./style";
 import { ReactComponent as CloseIcon } from "../../asset/closeIcon.svg";
 
 export interface RowFrameProps {
-  disableAddrowStructureButton?: boolean;
-  index: number;
+  deleteFrame: () => void;
+  forceSelectedType?: string;
 }
 
 export interface IRowStructureType {
@@ -17,11 +17,14 @@ export interface IRowStructureType {
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function RowFrame() {
-  const [selectedType, setSelectedType] = React.useState<string>("");
+export default function RowFrame(props: RowFrameProps) {
+  const [selectedType, setSelectedType] = React.useState<string>(
+    props.forceSelectedType || ""
+  );
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
   >([""]);
+
   React.useEffect(() => {
     setSelectedType(selectedTypeHistory[selectedTypeHistory.length - 1]);
   }, [selectedTypeHistory]);
@@ -32,6 +35,7 @@ export default function RowFrame() {
         gap="60.59px"
         height="360.63px"
         gridTemplateColumns="1fr"
+        deleteFrame={props.deleteFrame}
         rowStructureDetailItems={[{ rowType: "oneByOne", rowId: "" }]}
         setSelectedType={setSelectedType}
         setSelectedTypeHistory={setSelectedTypeHistory}
@@ -44,6 +48,7 @@ export default function RowFrame() {
         gap="60.59px"
         height="360.63px"
         gridTemplateColumns="1fr 1fr"
+        deleteFrame={props.deleteFrame}
         rowStructureDetailItems={Array(2).fill({
           rowType: "oneByTwo",
           rowId: "",
@@ -58,6 +63,7 @@ export default function RowFrame() {
       <RowstructureDisplay
         gap="68.2px"
         height="360.63px"
+        deleteFrame={props.deleteFrame}
         gridTemplateColumns="27.79% 1fr 1fr"
         rowStructureDetailItems={Array(3).fill({
           rowType: "oneByThree",
@@ -73,6 +79,7 @@ export default function RowFrame() {
       <RowstructureDisplay
         gap="60.59px"
         height="122.61px"
+        deleteFrame={props.deleteFrame}
         gridTemplateColumns="19.68% 1fr 1fr 1fr"
         rowStructureDetailItems={Array(4).fill({
           rowType: "oneByFour",
@@ -84,11 +91,11 @@ export default function RowFrame() {
         selectedType={selectedType}
       />
     ),
-
     oneByFive: (
       <RowstructureDisplay
         gap="60.81px"
         height="121.67px"
+        deleteFrame={props.deleteFrame}
         gridTemplateColumns="1fr 1fr 1fr 1fr 1fr"
         rowStructureDetailItems={Array(5).fill({
           rowType: "oneByFive",
@@ -105,6 +112,7 @@ export default function RowFrame() {
         gap="60.95px"
         height="360.63px"
         gridTemplateColumns="36% 1fr"
+        deleteFrame={props.deleteFrame}
         rowStructureDetailItems={Array(2).fill({
           rowType: "oneToFour",
           rowId: "",
@@ -120,6 +128,7 @@ export default function RowFrame() {
         gap="60.95px"
         height="360.63px"
         gridTemplateColumns="1fr 36%"
+        deleteFrame={props.deleteFrame}
         rowStructureDetailItems={Array(2).fill({
           rowType: "fourToOne",
           rowId: "",
@@ -132,6 +141,12 @@ export default function RowFrame() {
     ),
   };
 
+  React.useEffect(() => {
+    if (props.forceSelectedType) {
+      setSelectedType(props.forceSelectedType);
+    }
+  }, [props.forceSelectedType]);
+
   return (
     <>
       {selectedType ? (
@@ -141,11 +156,12 @@ export default function RowFrame() {
           <p>Select your row structure</p>
           <IconButton
             css={`
+              top: -5px;
+              right: -5px;
               position: absolute;
-              right: -1%;
-              top: -2%;
             `}
             onClick={() => {
+              props.deleteFrame();
               setSelectedType(
                 selectedTypeHistory[selectedTypeHistory.length - 2]
               );

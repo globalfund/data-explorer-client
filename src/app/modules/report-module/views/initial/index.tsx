@@ -2,15 +2,15 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import {
+  TemplateItem,
+  searchResultOptions,
   ReportInitialViewProps,
   ReportSearchResultModel,
-  searchResultOptions,
-  TemplateItem,
 } from "app/modules/report-module/views/initial/data";
 
 export function ReportInitialView(props: ReportInitialViewProps) {
-  const [searchResults, setSearchResults] = React.useState(searchResultOptions);
   const [currentValue, setCurrentValue] = React.useState<string>("");
+  const [searchResults, setSearchResults] = React.useState(searchResultOptions);
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
@@ -28,7 +28,7 @@ export function ReportInitialView(props: ReportInitialViewProps) {
     searchResults.filter((filterOption) => {
       if (filterOption.value === option.value) {
         setCurrentValue(option.value);
-        props.setButtonActive?.(true);
+        props.setButtonActive(true, option.value);
       }
     });
   };
@@ -50,14 +50,13 @@ export function ReportInitialView(props: ReportInitialViewProps) {
         {count} result{count !== 1 ? "s" : ""}
       </div>
       <Grid container spacing={2}>
-        {searchResults.map((option, index) => (
+        {searchResults.map((option) => (
           <Grid key={option.value} item xs={12} sm={6} md={4}>
             <TemplateItem
               name={option.name}
               value={option.value}
-              description={option.description}
-              buttonActive={props.buttonActive}
               currentValue={currentValue}
+              description={option.description}
               handleClick={() => handleTemplateSelected(option)}
             />
           </Grid>

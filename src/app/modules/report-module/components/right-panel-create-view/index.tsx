@@ -94,6 +94,7 @@ export const ReportElmentsType = {
   TEXT: "text",
   DIVIDER: "divider",
 };
+
 export function ReportRightPanelCreateView() {
   const [currentView, setCurrentView] = React.useState<"elements" | "charts">(
     "elements"
@@ -122,6 +123,7 @@ export function ReportRightPanelCreateView() {
   const [elementType, setElementType] = React.useState<
     "text" | "divider" | "rowFrame"
   >("text");
+
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: elementType,
     item: {
@@ -189,8 +191,8 @@ export function ReportRightPanelCreateView() {
             }
           `}
         >
-          {elementItemDetails.map((item, index) => (
-            <ElementItem key={index} {...item} />
+          {elementItemDetails.map((item) => (
+            <ElementItem key={item.elementType} {...item} />
           ))}
         </div>
       )}
@@ -392,7 +394,6 @@ function ElementItem(props: {
   return (
     <>
       <DragPreviewImage connect={preview} src={props.previewImg} />
-
       <div ref={drag}>
         {props.leftIcon}
         {props.name}

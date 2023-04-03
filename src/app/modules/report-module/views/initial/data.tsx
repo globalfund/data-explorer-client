@@ -1,18 +1,12 @@
-import { useState } from "react";
-import { useHistory } from "react-router-dom";
-
 export interface ReportInitialViewProps {
-  setButtonActive?: React.Dispatch<React.SetStateAction<boolean>>;
   buttonActive: boolean;
-
-  handleClick?: () => void;
-  currentValue?: string;
+  setButtonActive: (active: boolean, type: "basic" | "advanced") => void;
 }
 
 export interface ReportSearchResultModel {
   name: string;
   description: string;
-  value: string;
+  value: "basic" | "advanced";
 }
 
 export const searchResultOptions: ReportSearchResultModel[] = [
@@ -33,9 +27,11 @@ export const TemplateItem = ({
   value,
   description,
   currentValue,
-
   handleClick,
-}: ReportSearchResultModel & ReportInitialViewProps) => {
+}: ReportSearchResultModel & {
+  currentValue: string;
+  handleClick: () => void;
+}) => {
   return (
     <div
       css={`

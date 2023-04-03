@@ -1,11 +1,6 @@
-import React, { ReactElement, useMemo, useRef, useState } from "react";
-import get from "lodash/get";
-import isEqual from "lodash/isEqual";
+import React, { ReactElement, useMemo, useRef } from "react";
 import Editor from "@draft-js-plugins/editor";
 import createLinkPlugin from "@draft-js-plugins/anchor";
-import useUpdateEffect from "react-use/lib/useUpdateEffect";
-import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import createInlineToolbarPlugin, {
   Separator,
 } from "@draft-js-plugins/inline-toolbar";
@@ -24,11 +19,12 @@ import editorStyles from "./editorStyles.module.css";
 import buttonStyles from "./buttonStyles.module.css";
 import toolbarStyles from "./toolbarStyles.module.css";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
+import { EditorState } from "draft-js";
 
 export const RichEditor = (props: {
   editMode: boolean;
-  tabIndex: number;
-  vizIndex: number;
+  textContent: EditorState;
+  setTextContent: (value: EditorState) => void;
 }): ReactElement => {
   const linkPlugin = createLinkPlugin();
   const [plugins, InlineToolbar] = useMemo(() => {
@@ -41,52 +37,11 @@ export const RichEditor = (props: {
     ];
   }, []);
 
-  const textContent = useStoreState(
-    (state) => state.dataThemes.textContent.value
-  );
-  const setTextContent = useStoreActions(
-    (state) => state.dataThemes.textContent.setValue
-  );
-
   const editor = useRef<Editor | null>(null);
-
-  const [localTextContent, setLocalTextContent] = useState(
-    textContent[props.tabIndex][props.vizIndex]
-  );
 
   const focus = (): void => {
     editor.current?.focus();
   };
-
-  useUpdateEffect(() => {
-    if (
-      !isEqual(
-        localTextContent.getCurrentContent(),
-        textContent[props.tabIndex][props.vizIndex].getCurrentContent()
-      )
-    ) {
-      setTextContent({
-        tab: props.tabIndex,
-        viz: props.vizIndex,
-        value: localTextContent,
-      });
-    }
-  }, [localTextContent]);
-
-  useUpdateEffectOnce(() => {
-    setTextContent({
-      tab: props.tabIndex,
-      viz: props.vizIndex,
-      value: textContent[props.tabIndex][props.vizIndex],
-    });
-  }, [textContent]);
-
-  if (
-    get(textContent, `[${props.tabIndex}][${props.vizIndex}]`, undefined) ===
-    undefined
-  ) {
-    return <React.Fragment />;
-  }
 
   return (
     <div
@@ -150,8 +105,8 @@ export const RichEditor = (props: {
         plugins={plugins}
         editorKey="RichEditor"
         readOnly={!props.editMode}
-        editorState={localTextContent}
-        onChange={setLocalTextContent}
+        editorState={props.textContent}
+        onChange={props.setTextContent}
         placeholder="Add your story..."
         ref={(element) => {
           editor.current = element;
