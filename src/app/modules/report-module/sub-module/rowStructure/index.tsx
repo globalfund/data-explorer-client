@@ -11,6 +11,11 @@ interface RowStructureDisplayProps {
   gridTemplateColumns: string;
   gap: string;
   height: string;
+  setSelectedType: React.Dispatch<React.SetStateAction<string>>;
+  selectedTypeHistory: string[];
+  selectedType: string;
+
+  setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
     rowType: string;
     rowId: string;
@@ -58,7 +63,15 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                 align-items: center;
               `}
             >
-              <IconButton>
+              <IconButton
+                onClick={() => {
+                  props.setSelectedTypeHistory([
+                    ...props.selectedTypeHistory,
+                    props.selectedType,
+                    "",
+                  ]);
+                }}
+              >
                 <EditIcon />
               </IconButton>
               <IconButton>

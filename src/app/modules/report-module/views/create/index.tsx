@@ -91,7 +91,6 @@ export const PlaceHolder = (props: {
       item: monitor.getItem() as any,
     }),
     drop: (item: any, monitor) => {
-      // console.log(props.index, "indexprop");
       if (item.type == ReportElmentsType.ROWFRAME) {
         props.setFramesArray((prev) => {
           const tempIndex = prev.findIndex((frame) => frame.id == props.index);

@@ -19,6 +19,12 @@ export interface IRowStructureType {
 
 export default function RowFrame() {
   const [selectedType, setSelectedType] = React.useState<string>("");
+  const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
+    string[]
+  >([""]);
+  React.useEffect(() => {
+    setSelectedType(selectedTypeHistory[selectedTypeHistory.length - 1]);
+  }, [selectedTypeHistory]);
 
   const checkSelectedType = {
     oneByOne: (
@@ -27,6 +33,10 @@ export default function RowFrame() {
         height="360.63px"
         gridTemplateColumns="1fr"
         rowStructureDetailItems={[{ rowType: "oneByOne", rowId: "" }]}
+        setSelectedType={setSelectedType}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        selectedTypeHistory={selectedTypeHistory}
+        selectedType={selectedType}
       />
     ),
     oneByTwo: (
@@ -38,6 +48,10 @@ export default function RowFrame() {
           rowType: "oneByTwo",
           rowId: "",
         })}
+        setSelectedType={setSelectedType}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        selectedTypeHistory={selectedTypeHistory}
+        selectedType={selectedType}
       />
     ),
     oneByThree: (
@@ -49,6 +63,10 @@ export default function RowFrame() {
           rowType: "oneByThree",
           rowId: "",
         })}
+        setSelectedType={setSelectedType}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        selectedTypeHistory={selectedTypeHistory}
+        selectedType={selectedType}
       />
     ),
     oneByFour: (
@@ -60,6 +78,10 @@ export default function RowFrame() {
           rowType: "oneByFour",
           rowId: "",
         })}
+        setSelectedType={setSelectedType}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        selectedTypeHistory={selectedTypeHistory}
+        selectedType={selectedType}
       />
     ),
 
@@ -72,6 +94,10 @@ export default function RowFrame() {
           rowType: "oneByFive",
           rowId: "",
         })}
+        setSelectedType={setSelectedType}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        selectedTypeHistory={selectedTypeHistory}
+        selectedType={selectedType}
       />
     ),
     oneToFour: (
@@ -83,6 +109,10 @@ export default function RowFrame() {
           rowType: "oneToFour",
           rowId: "",
         })}
+        setSelectedType={setSelectedType}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        selectedTypeHistory={selectedTypeHistory}
+        selectedType={selectedType}
       />
     ),
     fourToOne: (
@@ -94,6 +124,10 @@ export default function RowFrame() {
           rowType: "fourToOne",
           rowId: "",
         })}
+        setSelectedType={setSelectedType}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        selectedTypeHistory={selectedTypeHistory}
+        selectedType={selectedType}
       />
     ),
   };
@@ -111,6 +145,11 @@ export default function RowFrame() {
               right: -1%;
               top: -2%;
             `}
+            onClick={() => {
+              setSelectedType(
+                selectedTypeHistory[selectedTypeHistory.length - 2]
+              );
+            }}
           >
             <CloseIcon />
           </IconButton>

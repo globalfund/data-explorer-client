@@ -7,13 +7,21 @@ import { ReportRightPanel } from "app/modules/report-module/components/right-pan
 import { Box } from "@material-ui/core";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { PrimaryButton } from "app/components/Styled/button";
 
 export default function ReportModule() {
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
+  const [buttonActive, setButtonActive] = React.useState(false);
   const [currentView, setCurrentView] = React.useState<
     "initial" | "create" | "preview"
   >("initial");
+
+  const handleNextButton = () => {
+    if (buttonActive) {
+      setCurrentView("create");
+    }
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -52,8 +60,40 @@ export default function ReportModule() {
           `}
         >
           {currentView === "initial" && (
-            <ReportInitialView setCurrentView={setCurrentView} />
+            <ReportInitialView
+              setButtonActive={setButtonActive}
+              buttonActive={buttonActive}
+            />
           )}
+        </div>
+        <div
+          css={`
+            height: 55vh;
+          `}
+        />
+        <div
+          css={`
+            display: flex;
+            justify-content: flex-end;
+            width: 86%;
+            /* height: 40vh; */
+          `}
+        >
+          <div
+            css={`
+              width: 19%;
+              padding-right: 20px;
+              color: #fff;
+            `}
+          >
+            <PrimaryButton
+              color={buttonActive ? "#231D2C" : "#E4E4E4"}
+              disabled={!buttonActive}
+              onClick={handleNextButton}
+            >
+              use template
+            </PrimaryButton>
+          </div>
         </div>
       </Container>
     </DndProvider>

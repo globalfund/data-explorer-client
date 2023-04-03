@@ -3,12 +3,14 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import {
   ReportInitialViewProps,
+  ReportSearchResultModel,
   searchResultOptions,
   TemplateItem,
 } from "app/modules/report-module/views/initial/data";
 
 export function ReportInitialView(props: ReportInitialViewProps) {
   const [searchResults, setSearchResults] = React.useState(searchResultOptions);
+  const [currentValue, setCurrentValue] = React.useState<string>("");
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     const searchValue = event.target.value;
@@ -20,6 +22,15 @@ export function ReportInitialView(props: ReportInitialViewProps) {
       option.name.toLowerCase().includes(searchValue.toLowerCase())
     );
     setSearchResults(filteredResults);
+  };
+
+  const handleTemplateSelected = (option: ReportSearchResultModel) => {
+    searchResults.filter((filterOption) => {
+      if (filterOption.value === option.value) {
+        setCurrentValue(option.value);
+        props.setButtonActive?.(true);
+      }
+    });
   };
 
   const count = React.useMemo(() => {
@@ -39,13 +50,15 @@ export function ReportInitialView(props: ReportInitialViewProps) {
         {count} result{count !== 1 ? "s" : ""}
       </div>
       <Grid container spacing={2}>
-        {searchResults.map((option) => (
+        {searchResults.map((option, index) => (
           <Grid key={option.value} item xs={12} sm={6} md={4}>
             <TemplateItem
               name={option.name}
               value={option.value}
               description={option.description}
-              setCurrentView={props.setCurrentView}
+              buttonActive={props.buttonActive}
+              currentValue={currentValue}
+              handleClick={() => handleTemplateSelected(option)}
             />
           </Grid>
         ))}

@@ -1,10 +1,15 @@
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 export interface ReportInitialViewProps {
-  setCurrentView: (view: "initial" | "create" | "preview") => void;
+  setButtonActive?: React.Dispatch<React.SetStateAction<boolean>>;
+  buttonActive: boolean;
+
+  handleClick?: () => void;
+  currentValue?: string;
 }
 
-interface ReportSearchResultModel {
+export interface ReportSearchResultModel {
   name: string;
   description: string;
   value: string;
@@ -27,23 +32,22 @@ export const TemplateItem = ({
   name,
   value,
   description,
-  setCurrentView,
-}: ReportSearchResultModel & {
-  setCurrentView: (view: "initial" | "create" | "preview") => void;
-}) => {
-  const history = useHistory();
+  currentValue,
+
+  handleClick,
+}: ReportSearchResultModel & ReportInitialViewProps) => {
   return (
     <div
       css={`
         padding: 16px;
-        border: 1px solid transparent;
+        border: 1px solid ${value === currentValue ? "#6061e5" : "transparent"};
 
         &:hover {
           cursor: pointer;
           border-color: #6061e5;
         }
       `}
-      onClick={() => setCurrentView("create")}
+      onClick={handleClick}
     >
       <div
         css={`
