@@ -1,75 +1,24 @@
 import React from "react";
 import { v4 } from "uuid";
 import { useDrop } from "react-dnd";
-import { EditorState } from "draft-js";
+import { useRecoilValue } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
+import {
+  ReportCreateViewProps,
+  IFramesArray,
+  PlaceholderProps,
+} from "app/modules/report-module/views/create/data";
+import {
+  IRowFrameStructure,
+  isDividerOrRowFrameDraggingAtom,
+} from "app/state/recoil/atoms";
 
-export interface IFramesArray {
-  id: string;
-  frame: JSX.Element;
-  content: (object | string | null)[];
-  contentTypes: ("text" | "divider" | "chart" | null)[];
-  structure:
-    | null
-    | "oneByOne"
-    | "oneByTwo"
-    | "oneByThree"
-    | "oneByFour"
-    | "oneByFive"
-    | "oneToFour"
-    | "fourToOne";
-}
-
-export function ReportCreateView(props: {
-  open: boolean;
-  reportType: "basic" | "advanced";
-  setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
-  framesArray: IFramesArray[];
-  headerDetails: {
-    title: string;
-    showHeader: boolean;
-    description: EditorState;
-    backgroundColor: string;
-    titleColor: string;
-    descriptionColor: string;
-    dateColor: string;
-  };
-  setHeaderDetails: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      showHeader: boolean;
-      description: EditorState;
-      backgroundColor: string;
-      titleColor: string;
-      descriptionColor: string;
-      dateColor: string;
-    }>
-  >;
-  handleRowFrameItemAddition: (
-    rowIndex: number,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
-  ) => void;
-}) {
+export function ReportCreateView(props: ReportCreateViewProps) {
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -214,7 +163,6 @@ export function ReportCreateView(props: {
               </div>
             );
           })}
-          <Box height={45} />
           <AddRowFrameButton
             deleteFrame={deleteFrame}
             framesArray={props.framesArray}
@@ -233,31 +181,7 @@ export function ReportCreateView(props: {
   );
 }
 
-export const PlaceHolder = (props: {
-  setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
-  framesArray: IFramesArray[];
-  index: string;
-  disableAddrowStructureButton?: boolean;
-  deleteFrame: (index: number) => void;
-  handleRowFrameItemAddition: (
-    rowIndex: number,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
-  ) => void;
-}) => {
+export const PlaceHolder = (props: PlaceholderProps) => {
   const [{ isOver }, drop] = useDrop(() => ({
     // The type (or types) to accept - strings or symbols
     accept: [ReportElementsType.DIVIDER, ReportElementsType.ROWFRAME],
@@ -265,7 +189,7 @@ export const PlaceHolder = (props: {
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
-      item: monitor.getItem() as any,
+      item: monitor.getItem(),
     }),
     drop: (item: any, monitor) => {
       if (item.type === ReportElementsType.ROWFRAME) {
@@ -312,13 +236,17 @@ export const PlaceHolder = (props: {
     },
   }));
 
+  const isItemDragging = useRecoilValue(isDividerOrRowFrameDraggingAtom);
+
   return (
     <>
       <div
         ref={drop}
         css={`
-          height: 10px;
           width: 100%;
+          height: 20px;
+          margin: 10px 0;
+          border: 1px ${isItemDragging ? "dashed" : "none"} #adb5bd;
           background-color: ${isOver ? " #262C34;" : "transparent"};
         `}
       />

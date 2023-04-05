@@ -63,7 +63,7 @@ export function ReportPreviewView() {
         setHeaderDetails={() => {}}
       />
       <Container maxWidth="lg">
-        <Box height={50} />
+        <Box height={45} />
         {reportData.rows.map((rowFrame, index) => {
           if (
             rowFrame.items &&
@@ -74,8 +74,8 @@ export function ReportPreviewView() {
               <hr
                 key={index}
                 css={`
+                  margin: 0;
                   border: 1px solid #e4e4e4;
-                  margin: 20px 0;
                 `}
               />
             );

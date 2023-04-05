@@ -11,7 +11,10 @@ import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
-import { reportRightPanelViewAtom } from "app/state/recoil/atoms";
+import {
+  isDividerOrRowFrameDraggingAtom,
+  reportRightPanelViewAtom,
+} from "app/state/recoil/atoms";
 import HeaderIcon from "app/modules/report-module/asset/HeaderIcon";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
@@ -235,11 +238,14 @@ export function ReportRightPanelCreateView(props: Props) {
 }
 
 const sortByOptions = [
-  { value: "date", label: "Recent" },
-  { value: "name", label: "Name" },
+  { value: "createdDate desc", label: "Recent (DESC)" },
+  { value: "createdDate asc", label: "Recent (ASC)" },
+  { value: "name desc", label: "Name (DESC)" },
+  { value: "name asc", label: "Name (ASC)" },
 ];
 
 function ReportRightPanelCreateViewChartList() {
+  const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -261,8 +267,9 @@ function ReportRightPanelCreateViewChartList() {
   React.useEffect(() => {
     loadChartList({
       storeInCrudData: true,
+      filterString: `filter={"where":{"name":{"like":"${search}.*","options":"i"}},"order":"${sortBy.value}"}`,
     });
-  }, []);
+  }, [search, sortBy]);
 
   return (
     <React.Fragment>
@@ -284,6 +291,7 @@ function ReportRightPanelCreateViewChartList() {
       >
         <input
           type="text"
+          onChange={(e) => setSearch(e.target.value)}
           css={`
             width: 200px;
             height: 35px;
@@ -394,6 +402,20 @@ function ElementItem(props: {
       isDragging: !!monitor.isDragging(),
     }),
   }));
+
+  const [isItemDragging, setIsItemDragging] = useRecoilState(
+    isDividerOrRowFrameDraggingAtom
+  );
+
+  React.useEffect(() => {
+    if (
+      (props.elementType === ReportElementsType.DIVIDER ||
+        props.elementType === ReportElementsType.ROWFRAME) &&
+      isDragging !== isItemDragging
+    ) {
+      setIsItemDragging(isDragging);
+    }
+  }, [isDragging]);
 
   return (
     <>

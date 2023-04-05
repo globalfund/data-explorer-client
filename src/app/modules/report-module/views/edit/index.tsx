@@ -46,6 +46,7 @@ export function ReportEditView(props: ReportEditViewProps) {
   }, [page]);
 
   useUpdateEffect(() => {
+    props.setName(reportData.name);
     props.setHeaderDetails({
       title: reportData.title,
       showHeader: reportData.showHeader,
@@ -72,8 +73,8 @@ export function ReportEditView(props: ReportEditViewProps) {
         frame: isDivider ? (
           <hr
             css={`
+              margin: 0;
               border: 1px solid #e4e4e4;
-              margin: 20px 0;
             `}
           />
         ) : (
@@ -119,32 +120,23 @@ export function ReportEditView(props: ReportEditViewProps) {
           `}
         >
           <Box height={50} />
-          {props.framesArray.map((frame, index) => (
-            <div key={frame.id}>
-              <div>{frame.frame}</div>
-              {get(frame, "content[0]", ReportElementsType.DIVIDER) !==
-                ReportElementsType.DIVIDER &&
-                get(
-                  props.framesArray,
-                  `[${index + 1}].content[0]`,
-                  ReportElementsType.DIVIDER
-                ) !== ReportElementsType.DIVIDER && (
-                  <PlaceHolder
-                    index={frame.id}
-                    deleteFrame={deleteFrame}
-                    framesArray={props.framesArray}
-                    setFramesArray={props.setFramesArray}
-                    handleRowFrameItemAddition={
-                      props.handleRowFrameItemAddition
-                    }
-                    handleRowFrameStructureTypeSelection={
-                      props.handleRowFrameStructureTypeSelection
-                    }
-                  />
-                )}
-            </div>
-          ))}
-          <Box height={45} />
+          {props.framesArray.map((frame, index) => {
+            return (
+              <div key={frame.id}>
+                <div>{frame.frame}</div>
+                <PlaceHolder
+                  index={frame.id}
+                  deleteFrame={deleteFrame}
+                  framesArray={props.framesArray}
+                  setFramesArray={props.setFramesArray}
+                  handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+                  handleRowFrameStructureTypeSelection={
+                    props.handleRowFrameStructureTypeSelection
+                  }
+                />
+              </div>
+            );
+          })}
           <AddRowFrameButton
             deleteFrame={deleteFrame}
             framesArray={props.framesArray}

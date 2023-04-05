@@ -1,10 +1,10 @@
-import { IconButton } from "@material-ui/core";
-import { IFramesArray } from "app/modules/report-module/views/create";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
 import React from "react";
 import { v4 } from "uuid";
-import { ReactComponent as PlusIcon } from "../../asset/addButton.svg";
-import RowFrame from "./rowFrame";
+import IconButton from "@material-ui/core/IconButton";
+import { IRowFrameStructure } from "app/state/recoil/atoms";
+import { IFramesArray } from "app/modules/report-module/views/create/data";
+import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+import { ReactComponent as PlusIcon } from "app/modules/report-module/asset/addButton.svg";
 
 interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;

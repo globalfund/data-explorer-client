@@ -61,3 +61,8 @@ export const reportRightPanelViewAtom = atom<
   key: "reportRightPanelViewAtom",
   default: "elements",
 });
+
+export const isDividerOrRowFrameDraggingAtom = atom<boolean>({
+  key: "isDividerOrRowFrameDraggingAtom",
+  default: false,
+});

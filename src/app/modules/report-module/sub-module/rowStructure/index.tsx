@@ -54,13 +54,12 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const border =
     viewOnlyMode && handleDisplay
       ? "0.722415px dashed #adb5bd"
-      : "0.722415px dashed transprent";
+      : "0.722415px dashed transparent";
 
   return (
     <div
       css={`
         width: 100%;
-        margin: 20px 0;
       `}
     >
       <div

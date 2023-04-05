@@ -12,6 +12,8 @@ import { ReportEditView } from "app/modules/report-module/views/edit";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
+import { ReportCreateView } from "app/modules/report-module/views/create";
+import { IFramesArray } from "app/modules/report-module/views/create/data";
 import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
@@ -23,10 +25,6 @@ import {
   useParams,
   Redirect,
 } from "react-router-dom";
-import {
-  IFramesArray,
-  ReportCreateView,
-} from "app/modules/report-module/views/create";
 
 export default function ReportModule() {
   const history = useHistory();
@@ -384,6 +382,7 @@ export default function ReportModule() {
         <Route path="/report/:page/edit">
           <ReportEditView
             open={rightPanelOpen}
+            setName={setReportName}
             framesArray={framesArray}
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}

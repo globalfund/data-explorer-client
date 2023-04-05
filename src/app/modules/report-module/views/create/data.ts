@@ -1,11 +1,26 @@
 import { EditorState } from "draft-js";
-import { IFramesArray } from "app/modules/report-module/views/create/data";
 
-export interface ReportEditViewProps {
+export interface IFramesArray {
+  id: string;
+  frame: JSX.Element;
+  content: (object | string | null)[];
+  contentTypes: ("text" | "divider" | "chart" | null)[];
+  structure:
+    | null
+    | "oneByOne"
+    | "oneByTwo"
+    | "oneByThree"
+    | "oneByFour"
+    | "oneByFive"
+    | "oneToFour"
+    | "fourToOne";
+}
+
+export interface ReportCreateViewProps {
   open: boolean;
+  reportType: "basic" | "advanced";
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
-  setName: React.Dispatch<React.SetStateAction<string>>;
   headerDetails: {
     title: string;
     showHeader: boolean;
@@ -26,6 +41,32 @@ export interface ReportEditViewProps {
       dateColor: string;
     }>
   >;
+  handleRowFrameItemAddition: (
+    rowIndex: number,
+    itemIndex: number,
+    itemContent: string | object,
+    itemContentType: "text" | "divider" | "chart"
+  ) => void;
+  handleRowFrameStructureTypeSelection: (
+    rowIndex: number,
+    structure:
+      | null
+      | "oneByOne"
+      | "oneByTwo"
+      | "oneByThree"
+      | "oneByFour"
+      | "oneByFive"
+      | "oneToFour"
+      | "fourToOne"
+  ) => void;
+}
+
+export interface PlaceholderProps {
+  setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
+  framesArray: IFramesArray[];
+  index: string;
+  disableAddrowStructureButton?: boolean;
+  deleteFrame: (index: number) => void;
   handleRowFrameItemAddition: (
     rowIndex: number,
     itemIndex: number,

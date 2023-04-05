@@ -8,85 +8,112 @@ import {
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
 
+const itemSpacing = "30px";
+const containerGap = "60px";
+
 const rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%" }],
   [
-    { rowType: "oneByTwo", rowId: "oneByTwo-1", width: "calc(50% - 30px)" },
-    { rowType: "oneByTwo", rowId: "oneByTwo-2", width: "calc(50% - 30px)" },
+    {
+      rowType: "oneByTwo",
+      rowId: "oneByTwo-1",
+      width: `calc(50% - ${itemSpacing})`,
+    },
+    {
+      rowType: "oneByTwo",
+      rowId: "oneByTwo-2",
+      width: `calc(50% - ${itemSpacing})`,
+    },
   ],
   [
     {
       rowType: "oneByThree",
       rowId: "oneByThree-1",
-      width: "calc(100% / 3 - 30px)",
+      width: `calc(100% / 3 - ${itemSpacing})`,
     },
     {
       rowType: "oneByThree",
       rowId: "oneByThree-2",
-      width: "calc(100% / 3 - 30px)",
+      width: `calc(100% / 3 - ${itemSpacing})`,
     },
     {
       rowType: "oneByThree",
       rowId: "oneByThree-3",
-      width: "calc(100% / 3 - 30px)",
+      width: `calc(100% / 3 - ${itemSpacing})`,
     },
   ],
   [
     {
       rowType: "oneByFour",
       rowId: "oneByFour-1",
-      width: "calc(100% / 4 - 30px)",
+      width: `calc(100% / 4 - ${itemSpacing})`,
     },
     {
       rowType: "oneByFour",
       rowId: "oneByFour-2",
-      width: "calc(100% / 4 - 30px)",
+      width: `calc(100% / 4 - ${itemSpacing})`,
     },
     {
       rowType: "oneByFour",
       rowId: "oneByFour-3",
-      width: "calc(100% / 4 - 30px)",
+      width: `calc(100% / 4 - ${itemSpacing})`,
     },
     {
       rowType: "oneByFour",
       rowId: "oneByFour-4",
-      width: "calc(100% / 4 - 30px)",
+      width: `calc(100% / 4 - ${itemSpacing})`,
     },
   ],
   [
     {
       rowType: "oneByFive",
       rowId: "oneByFive-1",
-      width: "calc(100% / 5 - 30px)",
+      width: `calc(100% / 5 - ${itemSpacing})`,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-2",
-      width: "calc(100% / 5 - 30px)",
+      width: `calc(100% / 5 - ${itemSpacing})`,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-3",
-      width: "calc(100% / 5 - 30px)",
+      width: `calc(100% / 5 - ${itemSpacing})`,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-4",
-      width: "calc(100% / 5 - 30px)",
+      width: `calc(100% / 5 - ${itemSpacing})`,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-5",
-      width: "calc(100% / 5 - 30px)",
+      width: `calc(100% / 5 - ${itemSpacing})`,
     },
   ],
   [
-    { rowType: "oneToFour", rowId: "oneToFour-1", width: "calc(20% - 30px)" },
-    { rowType: "oneToFour", rowId: "oneToFour-2", width: "calc(80% - 30px)" },
+    {
+      rowType: "oneToFour",
+      rowId: "oneToFour-1",
+      width: `calc(20% - ${itemSpacing})`,
+    },
+    {
+      rowType: "oneToFour",
+      rowId: "oneToFour-2",
+      width: `calc(80% - ${itemSpacing})`,
+    },
   ],
   [
-    { rowType: "fourToOne", rowId: "fourToOne-1", width: "calc(80% - 30px)" },
-    { rowType: "fourToOne", rowId: "fourToOne-2", width: "calc(20% - 30px)" },
+    {
+      rowType: "fourToOne",
+      rowId: "fourToOne-1",
+      width: `calc(80% - ${itemSpacing})`,
+    },
+    {
+      rowType: "fourToOne",
+      rowId: "fourToOne-2",
+      width: `calc(20% - ${itemSpacing})`,
+    },
   ],
 ];
 
@@ -135,7 +162,7 @@ export default function RowFrame(props: RowFrameProps) {
   const checkSelectedType = {
     oneByOne: (
       <RowstructureDisplay
-        gap="60px"
+        gap={containerGap}
         height="400px"
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -150,7 +177,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByTwo: (
       <RowstructureDisplay
-        gap="60px"
+        gap={containerGap}
         height="400px"
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -165,7 +192,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByThree: (
       <RowstructureDisplay
-        gap="68px"
+        gap={containerGap}
         height="460px"
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -180,7 +207,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByFour: (
       <RowstructureDisplay
-        gap="60px"
+        gap={containerGap}
         height="122px"
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -195,7 +222,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneByFive: (
       <RowstructureDisplay
-        gap="60px"
+        gap={containerGap}
         height="121px"
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -210,7 +237,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     oneToFour: (
       <RowstructureDisplay
-        gap="60px"
+        gap={containerGap}
         height="400px"
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -225,7 +252,7 @@ export default function RowFrame(props: RowFrameProps) {
     ),
     fourToOne: (
       <RowstructureDisplay
-        gap="60px"
+        gap={containerGap}
         height="400px"
         rowIndex={props.rowIndex}
         selectedType={selectedType}
