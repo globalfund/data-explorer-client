@@ -12,6 +12,24 @@ interface Props {
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   deleteFrame: (index: number) => void;
+  handleRowFrameItemAddition: (
+    rowIndex: number,
+    itemIndex: number,
+    itemContent: string | object,
+    itemContentType: "text" | "divider" | "chart"
+  ) => void;
+  handleRowFrameStructureTypeSelection: (
+    rowIndex: number,
+    structure:
+      | null
+      | "oneByOne"
+      | "oneByTwo"
+      | "oneByThree"
+      | "oneByFour"
+      | "oneByFive"
+      | "oneToFour"
+      | "fourToOne"
+  ) => void;
 }
 
 export default function AddRowFrameButton(props: Props) {
@@ -19,12 +37,20 @@ export default function AddRowFrameButton(props: Props) {
     props.setFramesArray([
       ...props.framesArray,
       {
+        id: v4(),
         frame: (
           <RowFrame
+            rowIndex={props.framesArray.length}
+            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             deleteFrame={() => props.deleteFrame(props.framesArray.length)}
+            handleRowFrameStructureTypeSelection={
+              props.handleRowFrameStructureTypeSelection
+            }
           />
         ),
-        id: v4(),
+        content: [],
+        contentTypes: [],
+        structure: null,
       },
     ]);
     props.setRowStructureType({

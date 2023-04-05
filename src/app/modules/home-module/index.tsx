@@ -13,6 +13,7 @@ import DatasetsGrid from "app/modules/home-module/components/Datasets/datasetsGr
 
 export default function HomeModule() {
   useTitle("DX DataXplorer");
+
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
 
   const displayGrid = () => {
@@ -50,22 +51,17 @@ export default function HomeModule() {
             alt="dataxplorer logo"
             css={`
               transform: scale(2);
-              margin-bottom: 48px;
             `}
           />
-
           <p
             css={`
-              margin-top: -17px;
-              font-weight: 325;
               font-size: 16px;
+              font-weight: 400;
               text-align: center;
-              margin-bottom: 43px;
             `}
           >
             Data exploration solution that boosts your performance
           </p>
-
           <Search />
           <div
             css={`
@@ -76,7 +72,6 @@ export default function HomeModule() {
           >
             <ToggleButtons alignment={display} setAlignment={setDisplay} />
           </div>
-
           {displayGrid()}
         </div>
       </Container>

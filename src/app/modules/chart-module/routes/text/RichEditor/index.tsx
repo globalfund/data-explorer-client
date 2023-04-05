@@ -1,4 +1,5 @@
 import React, { ReactElement, useMemo, useRef } from "react";
+import { EditorState } from "draft-js";
 import Editor from "@draft-js-plugins/editor";
 import createLinkPlugin from "@draft-js-plugins/anchor";
 import createInlineToolbarPlugin, {
@@ -18,18 +19,27 @@ import "@draft-js-plugins/anchor/lib/plugin.css";
 import editorStyles from "./editorStyles.module.css";
 import buttonStyles from "./buttonStyles.module.css";
 import toolbarStyles from "./toolbarStyles.module.css";
+import buttonInvertedStyles from "./buttonInvertedStyles.module.css";
+import toolbarInvertedStyles from "./toolbarInvertedStyles.module.css";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
-import { EditorState } from "draft-js";
 
 export const RichEditor = (props: {
   editMode: boolean;
+  fullWidth?: boolean;
+  placeholder?: string;
+  invertColors?: boolean;
   textContent: EditorState;
   setTextContent: (value: EditorState) => void;
 }): ReactElement => {
   const linkPlugin = createLinkPlugin();
   const [plugins, InlineToolbar] = useMemo(() => {
     const inlineToolbarPlugin = createInlineToolbarPlugin({
-      theme: { buttonStyles, toolbarStyles },
+      theme: {
+        buttonStyles: props.invertColors ? buttonInvertedStyles : buttonStyles,
+        toolbarStyles: props.invertColors
+          ? toolbarInvertedStyles
+          : toolbarStyles,
+      },
     });
     return [
       [inlineToolbarPlugin, linkPlugin],
@@ -50,7 +60,7 @@ export const RichEditor = (props: {
       }
       onClick={focus}
       css={`
-        max-width: 800px !important;
+        ${!props.fullWidth && "max-width: 800px !important;"}
 
         h1,
         h2 {
@@ -107,7 +117,7 @@ export const RichEditor = (props: {
         readOnly={!props.editMode}
         editorState={props.textContent}
         onChange={props.setTextContent}
-        placeholder="Add your story..."
+        placeholder={props.placeholder || "Add your story..."}
         ref={(element) => {
           editor.current = element;
         }}

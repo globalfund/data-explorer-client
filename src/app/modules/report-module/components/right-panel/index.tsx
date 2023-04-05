@@ -60,7 +60,13 @@ export function ReportRightPanel(props: ReportRightPanelProps) {
             appear, don’t worry.
           </section>
         )}
-        {props.currentView === "create" && <ReportRightPanelCreateView />}
+        {(props.currentView === "create" || props.currentView === "edit") && (
+          <ReportRightPanelCreateView
+            showHeaderItem={props.showHeaderItem}
+            headerDetails={props.headerDetails}
+            setHeaderDetails={props.setHeaderDetails}
+          />
+        )}
       </div>
     </Slide>
   );

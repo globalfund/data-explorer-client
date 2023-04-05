@@ -373,4 +373,12 @@ export interface StoreModel {
     appliedFilters: ChartsAppliedFiltersStateModel;
     enabledFilterOptionGroups: ChartsEnabledFilterOptionGroupsStateModel;
   };
+  reports: {
+    ReportGet: ApiCallModel;
+    ReportCreate: ApiCallModel;
+    ReportUpdate: ApiCallModel;
+    ReportDelete: ApiCallModel;
+    ReportDuplicate: ApiCallModel;
+    ReportGetList: ApiCallModel;
+  };
 }

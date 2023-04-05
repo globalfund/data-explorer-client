@@ -1,19 +1,26 @@
 import React from "react";
 import moment from "moment";
+import { EditorState } from "draft-js";
+import { useRecoilState } from "recoil";
+import Paper from "@material-ui/core/Paper";
 import MuiButton from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
-import RemoveIcon from "@material-ui/icons/Remove";
+import { SearchIcon } from "app/assets/icons/Search";
+import { DragPreviewImage, useDrag } from "react-dnd";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
+import { reportRightPanelViewAtom } from "app/state/recoil/atoms";
+import HeaderIcon from "app/modules/report-module/asset/HeaderIcon";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { SearchIcon } from "app/assets/icons/Search";
-import { DragPreviewImage, useDrag } from "react-dnd";
-import TextPreviewImg from "../../asset/textPreview.svg";
-import RowFramePreviewImg from "../../asset/rowframePreview.svg";
-import DividerPreviewImg from "../../asset/dividerPreview.svg";
+import EditHeaderIcon from "app/modules/report-module/asset/EditHeaderIcon";
+import TextPreviewImg from "app/modules/report-module/asset/textPreview.svg";
+import DividerPreviewImg from "app/modules/report-module/asset/dividerPreview.svg";
+import HeaderPreviewImg from "app/modules/report-module/asset/headerPreviewImg.svg";
+import RowFramePreviewImg from "app/modules/report-module/asset/rowframePreview.svg";
+import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
 
 const Button = withStyles(() => ({
   root: {
@@ -89,51 +96,68 @@ export const StyledMenuItem = withStyles(() => ({
   },
 }))(MenuItem);
 
-export const ReportElmentsType = {
+export const ReportElementsType = {
   ROWFRAME: "rowFrame",
   TEXT: "text",
   DIVIDER: "divider",
+  CHART: "chart",
 };
 
-export function ReportRightPanelCreateView() {
-  const [currentView, setCurrentView] = React.useState<"elements" | "charts">(
-    "elements"
+interface Props {
+  showHeaderItem: boolean;
+  headerDetails: {
+    title: string;
+    showHeader: boolean;
+    description: EditorState;
+    backgroundColor: string;
+    titleColor: string;
+    descriptionColor: string;
+    dateColor: string;
+  };
+  setHeaderDetails: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      showHeader: boolean;
+      description: EditorState;
+      backgroundColor: string;
+      titleColor: string;
+      descriptionColor: string;
+      dateColor: string;
+    }>
+  >;
+}
+
+export function ReportRightPanelCreateView(props: Props) {
+  const [currentView, setCurrentView] = useRecoilState(
+    reportRightPanelViewAtom
   );
+
   const elementItemDetails = [
     {
-      elementType: ReportElmentsType.ROWFRAME,
+      elementType: ReportElementsType.ROWFRAME,
       leftIcon: <ArrowRightAltIcon />,
       previewImg: RowFramePreviewImg,
       name: "Row Frame",
     },
     {
-      elementType: ReportElmentsType.TEXT,
+      elementType: ReportElementsType.TEXT,
       leftIcon: <TextFieldsIcon />,
       previewImg: TextPreviewImg,
       name: "Text",
     },
     {
-      elementType: ReportElmentsType.DIVIDER,
+      elementType: ReportElementsType.DIVIDER,
       leftIcon: <ArrowRightAltIcon />,
       previewImg: DividerPreviewImg,
       name: "Divider",
     },
   ];
 
-  const [elementType, setElementType] = React.useState<
-    "text" | "divider" | "rowFrame"
-  >("text");
-
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
-    type: elementType,
-    item: {
-      type: elementType,
-      value: "",
-    },
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
+  React.useEffect(() => {
+    if (!props.headerDetails.showHeader && currentView === "editHeader") {
+      setCurrentView("elements");
+    }
+  }, [props.headerDetails.showHeader]);
 
   return (
     <div
@@ -191,12 +215,21 @@ export function ReportRightPanelCreateView() {
             }
           `}
         >
+          {props.showHeaderItem && (
+            <ElementItem
+              name="Header"
+              elementType="header"
+              leftIcon={<HeaderIcon />}
+              previewImg={HeaderPreviewImg}
+            />
+          )}
           {elementItemDetails.map((item) => (
             <ElementItem key={item.elementType} {...item} />
           ))}
         </div>
       )}
       {currentView === "charts" && <ReportRightPanelCreateViewChartList />}
+      {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
     </div>
   );
 }
@@ -329,45 +362,16 @@ function ReportRightPanelCreateViewChartList() {
           max-height: calc(100vh - 48px - 50px - 52px - 60px);
         `}
       >
-        {chartList.map((chart, index) => (
-          <div
+        {chartList.map((chart) => (
+          <ChartItem
             key={chart.id}
-            css={`
-              width: 100%;
-              cursor: grab;
-              height: 125px;
-              font-size: 12px;
-              background: #fff;
-              user-select: none;
-              padding: 16px 25px;
-
-              > div {
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-
-                :first-of-type {
-                  font-size: 14px;
-                  font-weight: 700;
-                }
-              }
-            `}
-          >
-            <div>{chart.name}</div>
-            <div>
-              <div>Chart type</div>
-              <div>{chart.vizType}</div>
-            </div>
-            <div>
-              <div>Dataset</div>
-              <div>{chart.datasetId}</div>
-            </div>
-            <div>
-              <div>Creation date</div>
-              <div>{moment(chart.createdDate).format("DD-MM-YYYY")}</div>
-            </div>
-          </div>
+            id={chart.id}
+            name={chart.name}
+            vizType={chart.vizType}
+            datasetId={chart.datasetId}
+            createdDate={chart.createdDate}
+            elementType={ReportElementsType.CHART}
+          />
         ))}
       </div>
     </React.Fragment>
@@ -399,5 +403,176 @@ function ElementItem(props: {
         {props.name}
       </div>
     </>
+  );
+}
+
+function ChartItem(props: {
+  elementType: string;
+  id: string;
+  name: string;
+  vizType: string;
+  datasetId: string;
+  createdDate: string;
+}) {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: props.elementType,
+    item: {
+      type: props.elementType,
+      value: props.id,
+    },
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
+  return (
+    <div
+      ref={drag}
+      css={`
+        width: 100%;
+        cursor: grab;
+        height: 125px;
+        font-size: 12px;
+        background: #fff;
+        user-select: none;
+        padding: 16px 25px;
+
+        > div {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          justify-content: space-between;
+
+          :first-of-type {
+            font-size: 14px;
+            font-weight: 700;
+          }
+        }
+      `}
+    >
+      <div>{props.name}</div>
+      <div>
+        <div>Chart type</div>
+        <div>{props.vizType}</div>
+      </div>
+      <div>
+        <div>Dataset</div>
+        <div>{props.datasetId}</div>
+      </div>
+      <div>
+        <div>Creation date</div>
+        <div>{moment(props.createdDate).format("DD-MM-YYYY")}</div>
+      </div>
+    </div>
+  );
+}
+
+function EditHeaderPanelView(props: Props) {
+  return (
+    <div
+      css={`
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+      `}
+    >
+      <div
+        css={`
+          width: 100%;
+          height: 55px;
+          display: flex;
+          padding: 0 25px;
+          align-items: center;
+          background-color: #f2f7fd;
+          border-bottom: 1px solid #cfd4da;
+
+          > svg {
+            margin-right: 25px;
+          }
+        `}
+      >
+        <EditHeaderIcon />
+        Edit header
+      </div>
+      <div
+        css={`
+          padding: 0 24px;
+        `}
+      >
+        <div
+          css={`
+            padding: 16px 0;
+          `}
+        >
+          Colors
+        </div>
+        <Paper
+          css={`
+            > label {
+              --bs-gutter-x: 0;
+              padding: 12px 24px;
+              border-bottom: 1px solid #dfe3e6;
+            }
+
+            #inline-color-picker-popover {
+              right: 0;
+            }
+          `}
+        >
+          <ChartOptionColor
+            isEnabled
+            error={false}
+            value={props.headerDetails.backgroundColor}
+            default={props.headerDetails.backgroundColor}
+            onChange={(value: string) => {
+              props.setHeaderDetails({
+                ...props.headerDetails,
+                backgroundColor: value,
+              });
+            }}
+            label="Background color"
+          />
+          <ChartOptionColor
+            isEnabled
+            error={false}
+            value={props.headerDetails.titleColor}
+            default={props.headerDetails.titleColor}
+            onChange={(value: string) => {
+              props.setHeaderDetails({
+                ...props.headerDetails,
+                titleColor: value,
+              });
+            }}
+            label="Title color"
+          />
+          <ChartOptionColor
+            isEnabled
+            error={false}
+            value={props.headerDetails.descriptionColor}
+            default={props.headerDetails.descriptionColor}
+            onChange={(value: string) => {
+              props.setHeaderDetails({
+                ...props.headerDetails,
+                descriptionColor: value,
+              });
+            }}
+            label="Description color"
+          />
+          <ChartOptionColor
+            isEnabled
+            error={false}
+            value={props.headerDetails.dateColor}
+            default={props.headerDetails.dateColor}
+            onChange={(value: string) => {
+              props.setHeaderDetails({
+                ...props.headerDetails,
+                dateColor: value,
+              });
+            }}
+            label="Date color"
+          />
+        </Paper>
+      </div>
+    </div>
   );
 }

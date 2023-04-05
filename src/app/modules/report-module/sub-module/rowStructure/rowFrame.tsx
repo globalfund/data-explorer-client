@@ -1,15 +1,118 @@
-import { IconButton } from "@material-ui/core";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
 import React from "react";
-import { SetterOrUpdater, useRecoilState } from "recoil";
-import RowstructureDisplay from ".";
-import { IFramesArray } from "../../views/create";
-import { blockcss, containercss } from "./style";
-import { ReactComponent as CloseIcon } from "../../asset/closeIcon.svg";
+import { useUpdateEffect } from "react-use";
+import IconButton from "@material-ui/core/IconButton";
+import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
+import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
+import {
+  blockcss,
+  containercss,
+} from "app/modules/report-module/sub-module/rowStructure/style";
+
+const rowStructureDetailItems = [
+  [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%" }],
+  [
+    { rowType: "oneByTwo", rowId: "oneByTwo-1", width: "calc(50% - 30px)" },
+    { rowType: "oneByTwo", rowId: "oneByTwo-2", width: "calc(50% - 30px)" },
+  ],
+  [
+    {
+      rowType: "oneByThree",
+      rowId: "oneByThree-1",
+      width: "calc(100% / 3 - 30px)",
+    },
+    {
+      rowType: "oneByThree",
+      rowId: "oneByThree-2",
+      width: "calc(100% / 3 - 30px)",
+    },
+    {
+      rowType: "oneByThree",
+      rowId: "oneByThree-3",
+      width: "calc(100% / 3 - 30px)",
+    },
+  ],
+  [
+    {
+      rowType: "oneByFour",
+      rowId: "oneByFour-1",
+      width: "calc(100% / 4 - 30px)",
+    },
+    {
+      rowType: "oneByFour",
+      rowId: "oneByFour-2",
+      width: "calc(100% / 4 - 30px)",
+    },
+    {
+      rowType: "oneByFour",
+      rowId: "oneByFour-3",
+      width: "calc(100% / 4 - 30px)",
+    },
+    {
+      rowType: "oneByFour",
+      rowId: "oneByFour-4",
+      width: "calc(100% / 4 - 30px)",
+    },
+  ],
+  [
+    {
+      rowType: "oneByFive",
+      rowId: "oneByFive-1",
+      width: "calc(100% / 5 - 30px)",
+    },
+    {
+      rowType: "oneByFive",
+      rowId: "oneByFive-2",
+      width: "calc(100% / 5 - 30px)",
+    },
+    {
+      rowType: "oneByFive",
+      rowId: "oneByFive-3",
+      width: "calc(100% / 5 - 30px)",
+    },
+    {
+      rowType: "oneByFive",
+      rowId: "oneByFive-4",
+      width: "calc(100% / 5 - 30px)",
+    },
+    {
+      rowType: "oneByFive",
+      rowId: "oneByFive-5",
+      width: "calc(100% / 5 - 30px)",
+    },
+  ],
+  [
+    { rowType: "oneToFour", rowId: "oneToFour-1", width: "calc(20% - 30px)" },
+    { rowType: "oneToFour", rowId: "oneToFour-2", width: "calc(80% - 30px)" },
+  ],
+  [
+    { rowType: "fourToOne", rowId: "fourToOne-1", width: "calc(80% - 30px)" },
+    { rowType: "fourToOne", rowId: "fourToOne-2", width: "calc(20% - 30px)" },
+  ],
+];
 
 export interface RowFrameProps {
+  rowIndex: number;
   deleteFrame: () => void;
   forceSelectedType?: string;
+  handleRowFrameItemAddition: (
+    rowIndex: number,
+    itemIndex: number,
+    itemContent: string | object,
+    itemContentType: "text" | "divider" | "chart"
+  ) => void;
+  handleRowFrameStructureTypeSelection: (
+    rowIndex: number,
+    structure:
+      | null
+      | "oneByOne"
+      | "oneByTwo"
+      | "oneByThree"
+      | "oneByFour"
+      | "oneByFive"
+      | "oneToFour"
+      | "fourToOne"
+  ) => void;
+  previewItems?: (string | object)[];
 }
 
 export interface IRowStructureType {
@@ -32,111 +135,107 @@ export default function RowFrame(props: RowFrameProps) {
   const checkSelectedType = {
     oneByOne: (
       <RowstructureDisplay
-        gap="60.59px"
-        height="360.63px"
-        gridTemplateColumns="1fr"
-        deleteFrame={props.deleteFrame}
-        rowStructureDetailItems={[{ rowType: "oneByOne", rowId: "" }]}
-        setSelectedType={setSelectedType}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        selectedTypeHistory={selectedTypeHistory}
+        gap="60px"
+        height="400px"
+        rowIndex={props.rowIndex}
         selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[0]}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
       />
     ),
     oneByTwo: (
       <RowstructureDisplay
-        gap="60.59px"
-        height="360.63px"
-        gridTemplateColumns="1fr 1fr"
-        deleteFrame={props.deleteFrame}
-        rowStructureDetailItems={Array(2).fill({
-          rowType: "oneByTwo",
-          rowId: "",
-        })}
-        setSelectedType={setSelectedType}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        selectedTypeHistory={selectedTypeHistory}
+        gap="60px"
+        height="400px"
+        rowIndex={props.rowIndex}
         selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[1]}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
       />
     ),
     oneByThree: (
       <RowstructureDisplay
-        gap="68.2px"
-        height="360.63px"
-        deleteFrame={props.deleteFrame}
-        gridTemplateColumns="27.79% 1fr 1fr"
-        rowStructureDetailItems={Array(3).fill({
-          rowType: "oneByThree",
-          rowId: "",
-        })}
-        setSelectedType={setSelectedType}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        selectedTypeHistory={selectedTypeHistory}
+        gap="68px"
+        height="460px"
+        rowIndex={props.rowIndex}
         selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[2]}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
       />
     ),
     oneByFour: (
       <RowstructureDisplay
-        gap="60.59px"
-        height="122.61px"
-        deleteFrame={props.deleteFrame}
-        gridTemplateColumns="19.68% 1fr 1fr 1fr"
-        rowStructureDetailItems={Array(4).fill({
-          rowType: "oneByFour",
-          rowId: "",
-        })}
-        setSelectedType={setSelectedType}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        selectedTypeHistory={selectedTypeHistory}
+        gap="60px"
+        height="122px"
+        rowIndex={props.rowIndex}
         selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[3]}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
       />
     ),
     oneByFive: (
       <RowstructureDisplay
-        gap="60.81px"
-        height="121.67px"
-        deleteFrame={props.deleteFrame}
-        gridTemplateColumns="1fr 1fr 1fr 1fr 1fr"
-        rowStructureDetailItems={Array(5).fill({
-          rowType: "oneByFive",
-          rowId: "",
-        })}
-        setSelectedType={setSelectedType}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        selectedTypeHistory={selectedTypeHistory}
+        gap="60px"
+        height="121px"
+        rowIndex={props.rowIndex}
         selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[4]}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
       />
     ),
     oneToFour: (
       <RowstructureDisplay
-        gap="60.95px"
-        height="360.63px"
-        gridTemplateColumns="36% 1fr"
-        deleteFrame={props.deleteFrame}
-        rowStructureDetailItems={Array(2).fill({
-          rowType: "oneToFour",
-          rowId: "",
-        })}
-        setSelectedType={setSelectedType}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        selectedTypeHistory={selectedTypeHistory}
+        gap="60px"
+        height="400px"
+        rowIndex={props.rowIndex}
         selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[5]}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
       />
     ),
     fourToOne: (
       <RowstructureDisplay
-        gap="60.95px"
-        height="360.63px"
-        gridTemplateColumns="1fr 36%"
-        deleteFrame={props.deleteFrame}
-        rowStructureDetailItems={Array(2).fill({
-          rowType: "fourToOne",
-          rowId: "",
-        })}
-        setSelectedType={setSelectedType}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        selectedTypeHistory={selectedTypeHistory}
+        gap="60px"
+        height="400px"
+        rowIndex={props.rowIndex}
         selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[6]}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
       />
     ),
   };
@@ -146,6 +245,20 @@ export default function RowFrame(props: RowFrameProps) {
       setSelectedType(props.forceSelectedType);
     }
   }, [props.forceSelectedType]);
+
+  useUpdateEffect(() => {
+    props.handleRowFrameStructureTypeSelection(
+      props.rowIndex,
+      selectedType as
+        | "oneByOne"
+        | "oneByTwo"
+        | "oneByThree"
+        | "oneByFour"
+        | "oneByFive"
+        | "oneToFour"
+        | "fourToOne"
+    );
+  }, [selectedType]);
 
   return (
     <>

@@ -2,7 +2,6 @@
 
 // base
 import React, { Suspense, lazy } from "react";
-// import axios, { AxiosResponse } from "axios";
 import { Route, Switch } from "react-router-dom";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -15,9 +14,10 @@ const ChartsModule = lazy(() => import("app/modules/charts-module"));
 const ChartModule = lazy(() => import("app/modules/chart-module"));
 const ReportModule = lazy(() => import("app/modules/report-module"));
 const OnboardingModule = lazy(() => import("app/modules/onboarding-module"));
-const DatasetUploadSteps = lazy(
-  () => import("app/fragments/datasets-fragment/upload-steps")
-);
+// const DatasetUploadSteps = lazy(
+//   () => import("app/fragments/datasets-fragment/upload-steps")
+// );
+const UploadDatasetV1 = lazy(() => import("app/modules/dataset-upload-module"));
 const EditMetaData = lazy(
   () => import("app/modules/datasets-module/editMetaData")
 );
@@ -28,13 +28,13 @@ export function MainRoutes() {
   return (
     <Suspense fallback={<PageLoader />}>
       <Switch>
-        <Route path={`/onboarding/:page`}>
+        <Route path="/onboarding/:page">
           <OnboardingModule />
         </Route>
         <RouteWithAppBar exact path="/">
           <HomeModule />
         </RouteWithAppBar>
-        <RouteWithAppBar path="/report/:view">
+        <RouteWithAppBar exact path="/report/:page/:view?">
           <ReportModule />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/about">
@@ -53,7 +53,7 @@ export function MainRoutes() {
           <EditMetaData />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/dataset-upload">
-          <DatasetUploadSteps />
+          <UploadDatasetV1 />
         </RouteWithAppBar>
       </Switch>
     </Suspense>

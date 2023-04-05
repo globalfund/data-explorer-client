@@ -1,11 +1,10 @@
-import { SankeyIcon } from "app/assets/icons/charts/Sankey";
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
-import { ReactComponent as EditIcon } from "../../assets/edit.svg";
-import IconButton from "@material-ui/core/IconButton";
+import React from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
+import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
 
 interface Props {
   title: string;
@@ -15,11 +14,14 @@ interface Props {
   handleDelete?: (id: string) => void;
   id?: string;
 }
+
 export default function GridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
+  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
+
   const showMenuOptions = () => {
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
+
   return (
     <div
       css={`
@@ -54,7 +56,7 @@ export default function GridItem(props: Props) {
             align-self: flex-start;
           `}
         >
-          <Link to={`/reports/${props.id}/overview`}>
+          <Link to={`/report/${props.id}`}>
             <p
               css={`
                 font-size: 14px;
@@ -78,17 +80,16 @@ export default function GridItem(props: Props) {
           </p>
         </div>
         <div>{props.viz}</div>
-
-        <MenuIcon
-          onClick={showMenuOptions}
+        <IconButton
           css={`
-            margin-top: 13px;
-            cursor: pointer;
-            align-self: flex-start;
+            padding: 0;
+            margin-top: -60px;
           `}
-        />
+          onClick={showMenuOptions}
+        >
+          <MenuIcon />
+        </IconButton>
       </div>
-
       <div
         css={`
           display: flex;
@@ -98,9 +99,9 @@ export default function GridItem(props: Props) {
         `}
       >
         <p>Creation date</p>
-        <p>{moment(props.date).format("l")}</p>
+        <p>{moment(props.date).format("DD-MM-YYYY")}</p>
       </div>
-      {menuOptionsDisplay ? (
+      {menuOptionsDisplay && (
         <div>
           <div
             css={`
@@ -133,7 +134,7 @@ export default function GridItem(props: Props) {
             `}
           >
             <div>
-              <Link to={`/data-themes/${props.id}/customize`}>
+              <Link to={`/report/${props.id}/edit`}>
                 <EditIcon
                   css={`
                     cursor: pointer;
@@ -164,8 +165,6 @@ export default function GridItem(props: Props) {
             </div>
           </div>
         </div>
-      ) : (
-        ""
       )}
     </div>
   );

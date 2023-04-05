@@ -132,7 +132,8 @@ export function useChartsRawData(props: {
           [key: string]: any[];
         }
       ]
-    ]
+    ],
+    chartId?: string
   ) {
     const body = {
       previewAppliedFilters: customAppliedFilters
@@ -141,11 +142,15 @@ export function useChartsRawData(props: {
     };
     setLoading(true);
     axios
-      .post(`${process.env.REACT_APP_API}/chart/${page}/render`, body, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        `${process.env.REACT_APP_API}/chart/${chartId || page}/render`,
+        body,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((response) => {
         const chart = response.data || {};
 

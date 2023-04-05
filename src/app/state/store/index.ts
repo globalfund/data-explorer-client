@@ -215,6 +215,14 @@ import {
   ChartGetList,
   ChartUpdate,
 } from "../api/action-reducers/charts";
+import {
+  ReportCreate,
+  ReportDelete,
+  ReportDuplicate,
+  ReportGet,
+  ReportGetList,
+  ReportUpdate,
+} from "../api/action-reducers/reports";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -455,6 +463,14 @@ const storeContent: StoreModel = {
     chartType: persist(ChartsChartTypeState),
     appliedFilters: persist(ChartsAppliedFiltersState),
     enabledFilterOptionGroups: persist(ChartsEnabledFilterOptionGroupsState),
+  },
+  reports: {
+    ReportGet: persist(ReportGet),
+    ReportCreate: persist(ReportCreate),
+    ReportUpdate: persist(ReportUpdate),
+    ReportDelete: persist(ReportDelete),
+    ReportDuplicate: persist(ReportDuplicate),
+    ReportGetList: persist(ReportGetList),
   },
 };
 

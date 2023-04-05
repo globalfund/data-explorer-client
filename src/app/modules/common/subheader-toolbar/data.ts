@@ -1,6 +1,8 @@
 export interface SubheaderToolbarProps {
-  pageType: "chart" | "report";
-  visualOptions?: any;
   name: string;
+  visualOptions?: any;
+  onReportSave?: () => void;
+  pageType: "chart" | "report";
   setName: (name: string) => void;
+  forceEnablePreviewSave?: boolean;
 }

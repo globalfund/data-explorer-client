@@ -1,28 +1,23 @@
-import { Box } from "@material-ui/core";
+import React from "react";
+import axios from "axios";
+import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { Dataset } from "app/modules/home-module/components/Datasets/data";
+import GridItem from "app/modules/home-module/components/Datasets/gridItem";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import axios from "axios";
-import { get } from "lodash";
-
-import React from "react";
-import { v4 } from "uuid";
-import { dummyDatasetsData } from "./data";
-import DatasetAddnewCard from "./datasetAddNewCard";
-import GridItem from "./gridItem";
+import DatasetAddnewCard from "app/modules/home-module/components/Datasets/datasetAddNewCard";
 
 export default function DatasetsGrid() {
+  const [data, setData] = React.useState<Dataset[]>([]);
   const [cardId, setCardId] = React.useState<string>("");
-  const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
+  const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
 
-  const [data, setData] = React.useState(
-    dummyDatasetsData.map((data) => ({ ...data, id: v4() }))
-  );
   const handleDelete = (id: string) => {
-    const newData = data.filter((data, i) => data.id !== id);
+    const newData = data.filter((data) => data.id !== id);
     setData(newData);
     setModalDisplay(false);
     setEnableButton(false);
@@ -74,9 +69,8 @@ export default function DatasetsGrid() {
       <Grid container spacing={2}>
         <DatasetAddnewCard />
         {(datasets || []).map((data, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+          <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
             <GridItem
-              key={index}
               date={data.createdDate}
               descr={data.description}
               path={"#"}

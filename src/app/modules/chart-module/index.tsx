@@ -47,6 +47,7 @@ export default function ChartModule() {
     {}
   );
   const [rawViz, setRawViz] = React.useState<any>(null);
+  const [chartName, setChartName] = React.useState("My First Chart");
 
   const {
     loading,
@@ -97,9 +98,7 @@ export default function ChartModule() {
   const resetActivePanels = useStoreActions(
     (actions) => actions.charts.activePanels.reset
   );
-  const setTitle = useStoreActions(
-    (actions) => actions.dataThemes.titles.setTitle
-  );
+
   const resetEnabledFilterOptionGroups = useStoreActions(
     (actions) => actions.charts.enabledFilterOptionGroups.clear
   );
@@ -256,7 +255,7 @@ export default function ChartModule() {
   React.useEffect(() => {
     if (loadedChart && loadedChart.id !== "") {
       if (loadedChart.name.length > 0) {
-        setTitle({ title: loadedChart.name });
+        setChartName(loadedChart.name);
       }
     }
   }, [loadedChart]);
@@ -266,10 +265,8 @@ export default function ChartModule() {
       <SubheaderToolbar
         pageType="chart"
         visualOptions={visualOptions}
-        name="My First Chart"
-        setName={(name) => {
-          setTitle({ title: name });
-        }}
+        name={chartName}
+        setName={setChartName}
       />
       <ChartModuleToolBox
         rawViz={rawViz}

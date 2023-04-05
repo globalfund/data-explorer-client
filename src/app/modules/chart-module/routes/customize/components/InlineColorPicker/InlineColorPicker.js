@@ -20,7 +20,7 @@ export default function InlineColorPicker({
         {color.toUpperCase()}
       </div>
       {displayColorPicker && (
-        <div className={styles.popover}>
+        <div className={styles.popover} id="inline-color-picker-popover">
           <div
             className={styles.cover}
             onClick={() => setDisplayColorPicker(false)}

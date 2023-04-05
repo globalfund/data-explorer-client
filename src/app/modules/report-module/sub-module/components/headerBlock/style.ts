@@ -1,60 +1,48 @@
 import { css } from "styled-components/macro";
 
 export const headerBlockcss = {
-  container: css`
-    background: #252c34;
+  container: (backgroundColor: string, titleColor: string) => css`
     width: 100%;
-
-    padding: 4rem 0rem 4rem 0px;
+    padding: 60px 0;
+    position: relative;
+    background: ${backgroundColor};
 
     input {
-      font-size: 40.0325px;
-      line-height: 48px;
-      color: #ffffff;
-      font-weight: 700;
-      border: none;
-      outline: none;
       width: 100%;
+      color: ${titleColor};
       height: 100%;
-      background-color: inherit;
-      ::placeholder {
-        color: #ffffff;
-      }
-    }
-
-    textarea {
-      font-weight: 325;
-      font-size: 19.3929px;
-      line-height: 23px;
-      letter-spacing: 0.692603px;
-      color: #ffffff;
       border: none;
       outline: none;
-      width: max-content;
-      min-width: 600px;
-      height: max-content;
-      background-color: inherit;
-      resize: none;
-      ::placeholder {
-        color: #ffffff;
-      }
-    }
-    p {
-      font-weight: 325;
-      font-size: 12.0083px;
-      line-height: 14px;
+      font-size: 40px;
+      font-weight: 700;
+      line-height: 48px;
+      background: inherit;
 
-      color: #ffffff;
+      :disabled {
+        color: ${titleColor};
+      }
+
+      ::placeholder {
+        color: ${titleColor};
+      }
     }
   `,
   innerContainer: css`
     width: 60%;
   `,
-
-  date: css`
-    display: flex;
-    align-items: center;
-    margin-top: 0.5rem;
+  date: (dateColor: string) => css`
     gap: 0.7rem;
+    display: flex;
+    font-size: 12px;
+    line-height: 14px;
+    margin-top: 0.5rem;
+    color: ${dateColor};
+    align-items: center;
+
+    svg {
+      path {
+        fill: ${dateColor};
+      }
+    }
   `,
 };

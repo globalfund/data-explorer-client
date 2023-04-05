@@ -1,0 +1,42 @@
+import { EditorState, convertToRaw, RawDraftContentState } from "draft-js";
+
+export interface ReportModel {
+  id: string;
+  name: string;
+  title: string;
+  public: boolean;
+  showHeader: boolean;
+  subTitle: RawDraftContentState;
+  rows: {
+    structure:
+      | null
+      | "oneByOne"
+      | "oneByTwo"
+      | "oneByThree"
+      | "oneByFour"
+      | "oneByFive"
+      | "oneToFour"
+      | "fourToOne";
+    items: (object | string)[];
+  }[];
+  createdDate: Date;
+  backgroundColor: string;
+  titleColor: string;
+  descriptionColor: string;
+  dateColor: string;
+}
+
+export const emptyReport: ReportModel = {
+  id: "",
+  name: "",
+  title: "",
+  public: false,
+  subTitle: convertToRaw(EditorState.createEmpty().getCurrentContent()),
+  showHeader: false,
+  rows: [],
+  createdDate: new Date(),
+  backgroundColor: "#252c34",
+  titleColor: "#ffffff",
+  descriptionColor: "#ffffff",
+  dateColor: "#ffffff",
+};

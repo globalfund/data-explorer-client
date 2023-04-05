@@ -10,7 +10,6 @@ import {
 } from "app/modules/datasets-module/style";
 import { PageHeader } from "app/components/PageHeader";
 import { Box, Grid, Container } from "@material-ui/core";
-import { dummyDatasetsData } from "../home-module/components/Datasets/data";
 import GridItem from "../home-module/components/Datasets/gridItem";
 import DatasetAddnewCard from "../home-module/components/Datasets/datasetAddNewCard";
 import { v4 } from "uuid";
@@ -23,16 +22,14 @@ import { DatasetListItemAPIModel } from "../data-themes-module/sub-modules/list"
 export default function Datasets() {
   useTitle("Dataxplorer - Datasets");
 
+  const [data, setData] = React.useState([]);
   const [cardId, setCardId] = React.useState<string>("");
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [inputValue, setInputValue] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
-  const [data, setData] = React.useState(
-    dummyDatasetsData.map((data) => ({ ...data, id: v4() }))
-  );
   const handleDelete = (id: string) => {
-    const newData = data.filter((data, i) => data.id !== id);
+    const newData = data.filter((data: any) => data.id !== id);
     setData(newData);
     setModalDisplay(false);
     setEnableButton(false);

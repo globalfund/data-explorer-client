@@ -192,15 +192,11 @@ export default createTheme({
       root: {
         height: "34px",
         width: "267px",
-
         borderRadius: "35px",
       },
       groupedHorizontal: {
         "&:last-child": {
           borderRadius: "0px 20px 20px 0px",
-          padding: "8px 22px",
-          background: "#CFD4DA",
-          color: "#373D43",
         },
       },
     },

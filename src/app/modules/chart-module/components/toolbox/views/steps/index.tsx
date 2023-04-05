@@ -139,7 +139,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   });
 
   const stepPaths = [
-    `/chart/page/preview`,
+    `/chart/${page}/preview`,
     `/chart/${page}/data`,
     `/chart/${page}/preview-data`,
     `/chart/${page}/chart-type`,

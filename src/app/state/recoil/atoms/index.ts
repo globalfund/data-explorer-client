@@ -50,7 +50,14 @@ export const cmsDataAtom = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-export const homeDisplayAtom = atom<"data" | "charts" | "reports" | "">({
+export const homeDisplayAtom = atom<"data" | "charts" | "reports">({
   key: "homeDisplayAtom",
   default: "data",
+});
+
+export const reportRightPanelViewAtom = atom<
+  "elements" | "charts" | "editHeader"
+>({
+  key: "reportRightPanelViewAtom",
+  default: "elements",
 });

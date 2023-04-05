@@ -1,44 +1,89 @@
-import Grid from "@material-ui/core/Grid";
-import { ReactComponent as ReportIcon } from "../../assets/reports-img.svg";
 import React from "react";
-import { reportsDummyData } from "./data";
-import GridItem from "./gridItem";
+import axios from "axios";
+import Grid from "@material-ui/core/Grid";
+import { ReportModel } from "app/modules/report-module/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { DataThemeListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
-import ReportAddnewCard from "./reportAddNewCard";
+import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
+import GridItem from "app/modules/home-module/components/Reports/gridItem";
+import ReportAddnewCard from "app/modules/home-module/components/Reports/reportAddNewCard";
+import { ReactComponent as ReportIcon } from "app/modules/home-module/assets/reports-img.svg";
 
 export default function ReportsGrid() {
-  const loadedDataThemes = useStoreState(
-    (state) =>
-      (state.dataThemes.DataThemeGetList.crudData ??
-        []) as DataThemeListItemAPIModel[]
-  );
-  const isLoadingDataThemes = useStoreState(
-    (state) => state.dataThemes.DataThemeGetList.loading
-  );
-  const loadDataThemes = useStoreActions(
-    (actions) => actions.dataThemes.DataThemeGetList.fetch
+  const [cardId, setCardId] = React.useState<number>(0);
+  const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
+  const [enableButton, setEnableButton] = React.useState<boolean>(false);
+
+  const reports = useStoreState(
+    (state) => (state.reports.ReportGetList.crudData ?? []) as ReportModel[]
   );
 
+  const loadReports = useStoreActions(
+    (actions) => actions.reports.ReportGetList.fetch
+  );
+
+  const handleDelete = (index: number) => {
+    setModalDisplay(false);
+    setEnableButton(false);
+    const id = reports[index].id;
+    if (!id) {
+      return;
+    }
+    axios
+      .delete(`${process.env.REACT_APP_API}/report/${id}`)
+      .then(() => {
+        loadReports({
+          storeInCrudData: true,
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value === "DELETE") {
+      setEnableButton(true);
+    } else {
+      setEnableButton(false);
+    }
+  };
+
+  const handleModal = (id: number) => {
+    setCardId(id);
+    setModalDisplay(true);
+  };
+
   React.useEffect(() => {
-    loadDataThemes({ filterString: `order=createdDate DESC` });
+    loadReports({
+      filterString: `order=createdDate DESC`,
+      storeInCrudData: true,
+    });
   }, []);
 
   return (
-    <Grid container spacing={2}>
-      <ReportAddnewCard />
-      {loadedDataThemes.slice(0, 11).map((data) => (
-        <Grid item xs={12} sm={6} md={4} lg={3}>
-          <GridItem
-            key={data.id}
-            id={data.id}
-            date={data.createdDate}
-            title={data.title}
-            descr={data.subTitle}
-            viz={<ReportIcon />}
-          />
-        </Grid>
-      ))}
-    </Grid>
+    <>
+      <Grid container spacing={2}>
+        <ReportAddnewCard />
+        {reports.map((data, index) => (
+          <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
+            <GridItem
+              id={data.id}
+              key={data.id}
+              title={data.name}
+              descr={data.title}
+              viz={<ReportIcon />}
+              date={data.createdDate}
+              handleDelete={() => handleModal(index)}
+            />
+          </Grid>
+        ))}
+      </Grid>
+      <DeleteChartDialog
+        cardId={cardId}
+        modalDisplay={modalDisplay}
+        enableButton={enableButton}
+        handleDelete={handleDelete}
+        setModalDisplay={setModalDisplay}
+        handleInputChange={handleInputChange}
+      />
+    </>
   );
 }
