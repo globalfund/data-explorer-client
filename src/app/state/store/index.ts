@@ -52,7 +52,11 @@ import PledgesContributionsTimeCycle, {
   PledgesContributionsTimeCycleDrilldown,
 } from "app/state/api/action-reducers/viz/pledgesContributionsTimeCycle";
 
-import GlobalSearch from "app/state/api/action-reducers/search";
+import GlobalSearch, {
+  GlobalSearchCharts,
+  GlobalSearchDatasets,
+  GlobalSearchReports,
+} from "app/state/api/action-reducers/search";
 
 import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
 import StatusFilterOptions from "app/state/api/action-reducers/filters/status";
@@ -471,6 +475,11 @@ const storeContent: StoreModel = {
     ReportDelete: persist(ReportDelete),
     ReportDuplicate: persist(ReportDuplicate),
     ReportGetList: persist(ReportGetList),
+  },
+  search: {
+    charts: persist(GlobalSearchCharts),
+    reports: persist(GlobalSearchReports),
+    datasets: persist(GlobalSearchDatasets),
   },
 };
 

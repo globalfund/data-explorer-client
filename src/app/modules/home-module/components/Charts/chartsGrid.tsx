@@ -5,11 +5,8 @@ import Grid from "@material-ui/core/Grid";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import GridItem from "app/modules/home-module/components/Charts/gridItem";
+import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ChartAddnewCard from "app/modules/home-module/components/Charts/chartAddNewCard";
-import {
-  chartTypes,
-  echartTypes,
-} from "app/modules/chart-module/routes/chart-type/data";
 
 const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
@@ -38,6 +35,7 @@ export default function ChartsGrid() {
       .then(() => {
         loadCharts({
           storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
         });
       })
       .catch((error) => console.log(error));
@@ -57,16 +55,17 @@ export default function ChartsGrid() {
   };
 
   const getIcon = (vizType: string) => {
-    const type = find([...chartTypes, ...echartTypes], { id: vizType });
+    const type = find(echartTypes, { id: vizType });
     if (type) {
       return type.icon;
     }
-    return chartTypes[0].icon;
+    return echartTypes[0].icon;
   };
 
   React.useEffect(() => {
     loadCharts({
       storeInCrudData: true,
+      filterString: "filter[order]=createdDate desc",
     });
   }, []);
 

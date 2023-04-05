@@ -4,7 +4,6 @@ import find from "lodash/find";
 import { useStoreState } from "app/state/store/hooks";
 /* project */
 import {
-  chartTypes,
   echartTypes,
   ChartTypeModel,
 } from "app/modules/chart-module/routes/chart-type/data";
@@ -13,7 +12,7 @@ export function ChartToolBoxChartType() {
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
   const fChartType = find(
-    [...chartTypes, ...echartTypes],
+    echartTypes,
     (ct: ChartTypeModel) => ct.id === chartType
   );
 

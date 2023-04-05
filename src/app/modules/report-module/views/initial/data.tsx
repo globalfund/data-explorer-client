@@ -1,5 +1,6 @@
 export interface ReportInitialViewProps {
   buttonActive: boolean;
+  resetFrames: () => void;
   setButtonActive: (active: boolean, type: "basic" | "advanced") => void;
 }
 

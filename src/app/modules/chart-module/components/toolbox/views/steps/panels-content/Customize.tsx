@@ -38,7 +38,7 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
     const fChart = get(
       charts,
       `["${selectedChartType}"]`,
-      charts.alluvialdiagram
+      charts.echartsBarchart
     );
     const newOptionsConfig = getOptionsConfig(fChart.visualOptions);
     if (!fChart.visualOptions.width) {

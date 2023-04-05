@@ -381,4 +381,9 @@ export interface StoreModel {
     ReportDuplicate: ApiCallModel;
     ReportGetList: ApiCallModel;
   };
+  search: {
+    charts: ApiCallModel;
+    reports: ApiCallModel;
+    datasets: ApiCallModel;
+  };
 }

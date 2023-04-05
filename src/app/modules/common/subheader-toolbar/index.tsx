@@ -180,6 +180,13 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   };
 
   React.useEffect(() => {
+    return () => {
+      createChartClear();
+      editChartClear();
+    };
+  }, []);
+
+  React.useEffect(() => {
     const newValue =
       selectedChartType !== "" &&
       selectedChartType !== null &&
@@ -208,16 +215,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     loadedChart.name,
     selectedChartType,
   ]);
-
-  React.useEffect(() => {
-    if (createChartSuccess || editChartSuccess) {
-      setShowSnackbar("Your Chart has been saved!");
-    }
-    return () => {
-      createChartClear();
-      editChartClear();
-    };
-  }, [createChartSuccess, editChartSuccess]);
 
   React.useEffect(() => {
     if (

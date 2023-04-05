@@ -8,13 +8,10 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { styles } from "app/modules/chart-module/components/toolbox/styles";
 import { ChartExporter } from "app/modules/chart-module/components/exporter";
+import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { ChartToolBoxProps } from "app/modules/chart-module/components/toolbox/data";
 import { ChartToolBoxSteps } from "app/modules/chart-module/components/toolbox/views/steps";
 import { ChartToolBoxPreview } from "app/modules/chart-module/components/toolbox/views/preview";
-import {
-  DataThemeAPIModel,
-  emptyDataThemeAPI,
-} from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 
 const Button = withStyles(() => ({
   root: {
@@ -42,10 +39,8 @@ const Button = withStyles(() => ({
 }))(MuiButton);
 
 export function ChartModuleToolBox(props: ChartToolBoxProps) {
-  const { page } = useParams<{ page: string }>();
+  const { page, view } = useParams<{ page: string; view?: string }>();
 
-  const title = useStoreState((state) => state.dataThemes.titles.title);
-  const subTitle = useStoreState((state) => state.dataThemes.titles.subTitle);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
@@ -62,10 +57,9 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
   );
-  const loadedDataTheme = useStoreState(
+  const loadedChart = useStoreState(
     (state) =>
-      (state.dataThemes.DataThemeGet.crudData ??
-        emptyDataThemeAPI) as DataThemeAPIModel
+      (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
   );
 
   const createChart = useStoreActions(
@@ -77,7 +71,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
 
   function onSave() {
     const chart = {
-      name: title,
+      name: props.chartName,
       vizType: selectedChartType,
       mapping,
       datasetId: dataset,
@@ -85,7 +79,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
       appliedFilters,
       enabledFilterOptionGroups,
     };
-    if (props.isEditMode) {
+    if (props.isEditMode && page !== "new") {
       editChart({
         patchId: page,
         values: chart,
@@ -99,26 +93,23 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
 
   React.useEffect(() => {
     const newValue =
-      (!props.loading &&
-        (props.data && props.data.length) > 0 &&
-        selectedChartType !== "" &&
+      (selectedChartType !== "" &&
         selectedChartType !== null &&
         !isEmpty(mapping) &&
         activePanels > 3) ||
-      (props.isEditMode &&
-        (title !== loadedDataTheme.title ||
-          subTitle !== loadedDataTheme.subTitle));
+      (view !== undefined &&
+        page !== "new" &&
+        props.chartName !== loadedChart.name);
     if (newValue !== isSavedEnabled) {
       setIsSavedEnabled(newValue);
     }
   }, [
-    props.data,
-    props.loading,
-    selectedChartType,
+    view,
+    props.chartName,
     mapping,
     activePanels,
-    title,
-    subTitle,
+    loadedChart.name,
+    selectedChartType,
   ]);
 
   return (
@@ -136,6 +127,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
           forceNextEnabled={props.forceNextEnabled}
           setVisualOptions={props.setVisualOptions}
           filterOptionGroups={props.filterOptionGroups}
+          save={onSave}
         />
       )}
       {props.exportView && props.rawViz && (

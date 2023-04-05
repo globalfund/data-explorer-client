@@ -12,7 +12,6 @@ import DatasetAddnewCard from "app/modules/home-module/components/Datasets/datas
 export default function DatasetsGrid() {
   const [data, setData] = React.useState<Dataset[]>([]);
   const [cardId, setCardId] = React.useState<string>("");
-  const [inputValue, setInputValue] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
 
@@ -24,8 +23,6 @@ export default function DatasetsGrid() {
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-
     if (e.target.value === "DELETE") {
       setEnableButton(true);
     } else {
@@ -55,13 +52,19 @@ export default function DatasetsGrid() {
     axios
       .delete(`${process.env.REACT_APP_API}/datasets/${id}`)
       .then(() => {
-        loadDatasets({ storeInCrudData: true });
+        loadDatasets({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
       })
       .catch((error) => console.log(error));
   }
 
   React.useEffect(() => {
-    loadDatasets({ storeInCrudData: true });
+    loadDatasets({
+      storeInCrudData: true,
+      filterString: "filter[order]=createdDate desc",
+    });
   }, []);
 
   return (

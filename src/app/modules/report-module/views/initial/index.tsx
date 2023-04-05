@@ -33,6 +33,10 @@ export function ReportInitialView(props: ReportInitialViewProps) {
     });
   };
 
+  React.useEffect(() => {
+    props.resetFrames();
+  }, []);
+
   const count = React.useMemo(() => {
     return searchResults.length;
   }, [searchResults]);

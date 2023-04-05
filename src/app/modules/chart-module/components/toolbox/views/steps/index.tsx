@@ -113,6 +113,7 @@ interface ChartToolBoxStepsProps {
   visualOptions?: any;
   forceNextEnabled?: boolean;
   rawViz?: any;
+  save: () => void;
   filterOptionGroups: FilterGroupModel[];
   setVisualOptions?: (value: any) => void;
   loadDataset: (endpoint: string) => Promise<boolean>;
@@ -163,6 +164,10 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
+      if (direction === "next" && activePanels === 7) {
+        props.save();
+        return;
+      }
       if (history.location.pathname === stepPaths[8] && direction === "next") {
         // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
         history.push(stepPaths[0]);
@@ -238,8 +243,9 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
                 <PrimaryButton
                   dark
                   onClick={() => history.push("/dataset-upload")}
+                  disabled={history.location.pathname === stepPaths[2]}
                 >
-                  ADD new dataset
+                  add new dataset
                 </PrimaryButton>
               </div>
             </div>
@@ -354,9 +360,6 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
           id="step5-header"
           aria-controls="step5-content"
           expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
-          css={`
-            min-height: 10px !important;
-          `}
         >
           <div>5</div> Lock <br />
         </AccordionSummary>

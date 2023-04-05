@@ -5,6 +5,7 @@ export interface ChartToolBoxProps {
   loading: boolean;
   mappedData: any;
   isEditMode: boolean;
+  chartName: string;
   openPanel?: number;
   dataSteps: boolean;
   guideView: boolean;

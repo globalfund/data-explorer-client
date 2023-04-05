@@ -22,7 +22,9 @@ export const PrimaryButton = styled.button<Props>`
   cursor: pointer;
 
   :disabled {
+    background: #dfe3e6;
     pointer-events: none;
+    border: 1px solid #fff;
   }
 `;
 

@@ -195,6 +195,27 @@ export default function ReportModule() {
     setReportType(type);
   };
 
+  const resetFrames = () => {
+    setFramesArray([
+      {
+        id: v4(),
+        frame: (
+          <RowFrame
+            rowIndex={0}
+            deleteFrame={() => deleteFrame(0)}
+            handleRowFrameItemAddition={handleRowFrameItemAddition}
+            handleRowFrameStructureTypeSelection={
+              handleRowFrameStructureTypeSelection
+            }
+          />
+        ),
+        content: [],
+        contentTypes: [],
+        structure: null,
+      },
+    ]);
+  };
+
   const onSave = () => {
     if (!isPreviewSaveEnabled) {
       alert("Please add content to all rows");
@@ -306,6 +327,7 @@ export default function ReportModule() {
               `}
             >
               <ReportInitialView
+                resetFrames={resetFrames}
                 buttonActive={buttonActive}
                 setButtonActive={handleSetButtonActive}
               />

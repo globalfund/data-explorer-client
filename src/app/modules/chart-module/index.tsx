@@ -159,9 +159,10 @@ export default function ChartModule() {
   function setVisualOptionsOnChange() {
     const options = {
       ...getOptionsConfig(
-        get(charts, chartType || "barchart", charts.barchart).visualOptions
+        get(charts, chartType || "echartsBarchart", charts.echartsBarchart)
+          .visualOptions
       ),
-      ...get(defaultChartOptions, chartType || "barchart", {}),
+      ...get(defaultChartOptions, chartType || "echartsBarchart", {}),
     };
     const defaultOptionsValues = getDefaultOptionsValues(options);
 
@@ -271,6 +272,7 @@ export default function ChartModule() {
       <ChartModuleToolBox
         rawViz={rawViz}
         data={sampleData}
+        chartName={chartName}
         dataTypes={dataTypes2}
         isEditMode={isEditMode}
         mappedData={mappedData}

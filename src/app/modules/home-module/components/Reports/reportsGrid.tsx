@@ -33,6 +33,7 @@ export default function ReportsGrid() {
       .then(() => {
         loadReports({
           storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
         });
       })
       .catch((error) => console.log(error));
@@ -53,8 +54,8 @@ export default function ReportsGrid() {
 
   React.useEffect(() => {
     loadReports({
-      filterString: `order=createdDate DESC`,
       storeInCrudData: true,
+      filterString: "filter[order]=createdDate desc",
     });
   }, []);
 

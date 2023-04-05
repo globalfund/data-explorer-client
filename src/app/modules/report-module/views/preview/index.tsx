@@ -28,12 +28,17 @@ export function ReportPreviewView() {
     (actions) => actions.reports.ReportCreate.clear
   );
 
+  const reportGetClear = useStoreActions(
+    (actions) => actions.reports.ReportGet.clear
+  );
+
   React.useEffect(() => {
     fetchReportData({ getId: page });
   }, [page]);
 
   React.useEffect(() => {
     return () => {
+      reportGetClear();
       reportEditClear();
       reportCreateClear();
     };
