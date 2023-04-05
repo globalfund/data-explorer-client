@@ -26,6 +26,7 @@ import {
 } from "app/components/ToolBoxPanel/utils/getControlItems";
 import { useRecoilState } from "recoil";
 import { filterExpandedGroup } from "app/state/recoil/atoms";
+import DocumentsPeriods from "../documentsPeriod";
 
 interface SubToolBoxPanelProps {
   filterGroups: FilterGroupProps[];
@@ -186,6 +187,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
   const isResultsPage = history.location.pathname.indexOf("/results") > -1;
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
+  const isDocuments = location.pathname === "/documents";
 
   return (
     <>
@@ -227,6 +229,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
           {params.vizType === "eligibility" && !isLocationDetail && (
             <EligibilityYear />
           )}
+          {isDocuments && <DocumentsPeriods />}
           {isResultsPage && <ResultsYear />}
           {(((params.vizType === "commitment" ||
             params.vizType === "disbursements" ||

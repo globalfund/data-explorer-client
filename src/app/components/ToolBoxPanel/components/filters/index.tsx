@@ -19,7 +19,6 @@ interface ToolBoxPanelFiltersProps {
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
-
   const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);

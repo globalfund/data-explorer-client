@@ -89,6 +89,19 @@ export const ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapView
     }),
   };
 
+export interface ToolBoxPanelDocumentsPeriodStateModel {
+  value: string;
+  setValue: Action<ToolBoxPanelDocumentsPeriodStateModel, string>;
+}
+
+export const ToolBoxPanelDocumentsPeriodState: ToolBoxPanelDocumentsPeriodStateModel =
+  {
+    value: "2014 - 2016",
+    setValue: action((state, payload: string) => {
+      state.value = payload;
+    }),
+  };
+
 export interface ToolBoxPanelAllocationsPeriodStateModel {
   value: string;
   setValue: Action<ToolBoxPanelAllocationsPeriodStateModel, string>;

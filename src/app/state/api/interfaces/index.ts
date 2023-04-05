@@ -6,6 +6,7 @@ import {
   ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel,
   ToolBoxPanelDisbursementsSliderValuesModel,
+  ToolBoxPanelDocumentsPeriodStateModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
@@ -139,6 +140,7 @@ export interface CMSApiCallParams {}
 export interface StoreModel {
   // data viz api
   Documents: ApiCallModel;
+  DocumentsPeriods: ApiCallModel;
   GrantsList: ApiCallModel;
   Allocations: ApiCallModel;
   AllocationsPeriods: ApiCallModel;
@@ -245,6 +247,7 @@ export interface StoreModel {
   ToolBoxPanelDonorMapTypeState: ToolBoxPanelDonorMapTypeStateModel;
   ToolBoxPanelDonorMapViewState: ToolBoxPanelDonorMapViewStateModel;
   ToolBoxPanelEligibilityYearState: ToolBoxPanelEligibilityYearStateModel;
+  ToolBoxPanelDocumentsPeriodState: ToolBoxPanelDocumentsPeriodStateModel;
   ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;

@@ -5,4 +5,8 @@ const Documents: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/documents`),
 };
 
+export const DocumentsPeriods: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/documents/periods`),
+};
+
 export default Documents;

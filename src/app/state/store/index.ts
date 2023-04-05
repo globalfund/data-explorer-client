@@ -9,6 +9,7 @@ import {
   ToolBoxPanelBudgetFlowDrilldownSelectors,
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   ToolBoxPanelDisbursementsSliderValues,
+  ToolBoxPanelDocumentsPeriodState,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
@@ -67,7 +68,9 @@ import GrantDetailPerformanceRating from "app/state/api/action-reducers/grantDet
 import GrantDetailPerformanceFramework, {
   GrantDetailPerformanceFrameworkExpand,
 } from "app/state/api/action-reducers/grantDetail/performanceFramework";
-import Documents from "app/state/api/action-reducers/viz/documents";
+import Documents, {
+  DocumentsPeriods,
+} from "app/state/api/action-reducers/viz/documents";
 import GrantDetailDocuments from "app/state/api/action-reducers/grantDetail/documents";
 import GrantDetailPeriods from "app/state/api/action-reducers/grantDetail/periods";
 import GrantDetailPeriodInfo from "app/state/api/action-reducers/grantDetail/periodInfo";
@@ -172,6 +175,7 @@ import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContrib
 const storeContent: StoreModel = {
   // data viz api
   Documents: persist(Documents),
+  DocumentsPeriods: persist(DocumentsPeriods),
   GrantsList: persist(GrantsList),
   BudgetsFlow: persist(BudgetsFlow),
   BudgetsFlowDrilldownLevel1: persist(BudgetsFlowDrilldownLevel1),
@@ -320,6 +324,7 @@ const storeContent: StoreModel = {
   ToolBoxPanelAllocationsPeriodState: persist(
     ToolBoxPanelAllocationsPeriodState
   ),
+  ToolBoxPanelDocumentsPeriodState: persist(ToolBoxPanelDocumentsPeriodState),
   ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState

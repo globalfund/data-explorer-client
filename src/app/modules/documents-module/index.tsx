@@ -37,6 +37,10 @@ export default function DocumentsModule() {
       get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
   );
 
+  const fetchPeriodOptionsData = useStoreActions(
+    (store) => store.DocumentsPeriods.fetch
+  );
+
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const isLoading = useStoreState((state) => state.Documents.loading);
@@ -44,6 +48,10 @@ export default function DocumentsModule() {
 
   React.useEffect(() => {
     document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
+  }, []);
+
+  React.useEffect(() => {
+    fetchPeriodOptionsData({});
   }, []);
 
   React.useEffect(() => {
