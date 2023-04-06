@@ -62,9 +62,7 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
     ) => {
       const mappingFromStorage = get(
         JSON.parse(
-          sessionStorage.getItem(
-            "[EasyPeasyStore][0][dataThemes.sync.mapping]"
-          ) || ""
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
         ),
         "data.value",
         {}
@@ -152,18 +150,18 @@ function ChartBuilderMappingDimension(
       isOver: monitor.isOver(),
     }),
     drop: (item: any) => {
-      // console.log("drop 1");
-      // console.log("drop 1 item", item);
-      // console.log("drop 1 dimension", dimension);
+      console.log("drop 1");
+      console.log("drop 1 item", item);
+      console.log("drop 1 dimension", dimension);
       const mappingFromStorage = get(
         JSON.parse(
-          sessionStorage.getItem(
-            "[EasyPeasyStore][0][dataThemes.sync.mapping]"
-          ) || ""
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
         ),
         "data.value",
         {}
       ) as { [key: string]: any };
+
+      console.log(mappingFromStorage);
 
       const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
       if (item.type === "column") {

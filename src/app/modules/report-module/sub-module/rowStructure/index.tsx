@@ -246,7 +246,7 @@ export const Box = (props: {
             height: ${props.height};
           `}
         >
-          <ReportChartWrapper id={chartId} />
+          <ReportChartWrapper key={chartId} id={chartId} />
         </div>
       );
     }
