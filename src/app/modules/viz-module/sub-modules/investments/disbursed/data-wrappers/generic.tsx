@@ -181,7 +181,6 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
       }
     }
   }, [dataPathActiveStep]);
-
   return (
     <InvestmentsDisbursedModule
       data={data}

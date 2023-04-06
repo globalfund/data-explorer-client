@@ -32,6 +32,7 @@ export interface DisbursementsTreemapProps {
   parentNodeCoords?: { x: number; y: number };
   setXsTooltipData?: (data: TreeMapNodeDatum | null) => void;
   onNodeClick: (node: string, x: number, y: number, code?: string) => void;
+  onCountryNameClick?: (node: any) => void;
 }
 
 export interface TreemapTooltipProps {

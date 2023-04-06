@@ -69,6 +69,10 @@ export function TreeemapNode(props: any) {
       onMouseEnter={!hasChildren ? node.onMouseEnter : undefined}
       onMouseLeave={!hasChildren ? node.onMouseLeave : undefined}
       onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+        if (!props.isChildTreemap) {
+          props.onCountryNameClick(node);
+          // e.stopPropagation();
+        }
         if (isTouchDevice()) {
           e.stopPropagation();
           props.setXsTooltipData(node);

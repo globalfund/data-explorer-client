@@ -98,6 +98,7 @@ export function DisbursementsTreemap(props: DisbursementsTreemapProps) {
             nodeComponent={(nodeProps: TreeMapNodeDatum) => (
               <TreeemapNode
                 {...nodeProps}
+                onCountryNameClick={props.onCountryNameClick}
                 onNodeClick={props.onNodeClick}
                 xsTooltipData={actualXsTooltipData}
                 selectedNodeId={props.selectedNodeId}

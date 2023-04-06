@@ -213,6 +213,7 @@ export function InvestmentsDisbursedModule(
         <DisbursementsTreemap
           data={treemapData}
           selectedNodeId={props.vizSelected}
+          onCountryNameClick={() => {}}
           onNodeClick={(
             node: string,
             _x: number,
@@ -244,6 +245,9 @@ export function InvestmentsDisbursedModule(
         <DisbursementsTreemap
           isDrilldownTreemap
           data={props.drilldownData}
+          onCountryNameClick={(node) => {
+            history.push(`/location/${node.data.code}/overview`);
+          }}
           onNodeClick={(node: string) => {
             const idSplits = node.split("-");
             const code = getIso3FromName(idSplits[1]);
