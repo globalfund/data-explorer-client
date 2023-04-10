@@ -241,6 +241,8 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
         padding-left: 16px;
         align-items: center;
         border-radius: 25px;
+        z-index: 10;
+
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
         background: ${props.backgroundColor || "#cfd4da"};
@@ -269,6 +271,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
           ]});
         `}
       />
+
       <div
         css={`
           overflow: clip;
@@ -289,6 +292,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
         props.onChangeAggregation && (
           <Dropdown
             className="d-inline-block ml-2 raw-dropdown"
+            id="rb-dropdown-menu"
             css={`
               margin-right: -7px;
             `}
