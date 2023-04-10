@@ -13,6 +13,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
     <div
       css={`
         min-width: 350px;
+        max-width: 350px;
         color: ${appColors.TREEMAP.TOOLTIP_COLOR};
         background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
 

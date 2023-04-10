@@ -1,13 +1,45 @@
 import React from "react";
-import { useRecoilState } from "recoil";
-import { useHistory } from "react-router-dom";
-import RightIcon from "@material-ui/icons/ChevronRight";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { appColors } from "app/theme";
+import findIndex from "lodash/findIndex";
+import { useHistory } from "react-router-dom";
+import { DrilldownModelUpdated } from "app/interfaces";
+import RightIcon from "@material-ui/icons/ChevronRight";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 export default function BreadCrumbs() {
   const history = useHistory();
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
+  );
+  const setActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.setStep
+  );
+  const clearActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
+
+  function onItemClick(index: number, item: DrilldownModelUpdated) {
+    if (index > 0) {
+      const fItemIndex = findIndex(dataPathSteps, { id: item.id });
+      if (fItemIndex > -1) {
+        setDataPathSteps(dataPathSteps.slice(0, fItemIndex + 1));
+      }
+      setActiveStep(item);
+      if (
+        item &&
+        item.path !== `${history.location.pathname}${history.location.search}`
+      ) {
+        history.push(item.path);
+      }
+    } else {
+      setDataPathSteps([]);
+      clearActiveStep();
+      history.push("/");
+    }
+  }
+
   return (
     <div
       css={`
@@ -53,66 +85,70 @@ export default function BreadCrumbs() {
           }
         `}
       >
-        {breadCrumbList &&
-          breadCrumbList.map((item, index) => (
-            <div
+        {[
+          {
+            id: "datasets",
+            name: "Datasets",
+            path: "",
+          },
+          ...dataPathSteps,
+        ].map((item, index) => (
+          <div
+            key={item.id}
+            css={`
+              gap: 5px;
+              display: flex;
+              align-items: center;
+            `}
+          >
+            <button
               css={`
+                background: ${index === dataPathSteps.length
+                  ? appColors.BREADCRUMBS.ITEM_BUTTON_SELECTED_BACKGROUND_COLOR
+                  : appColors.BREADCRUMBS.ITEM_BUTTON_BACKGROUND_COLOR};
+                height: 32px;
+                padding: 13px 12px;
+                border-radius: 20px;
+                font-size: 14px;
+                font-weight: 700;
+                color: ${appColors.BREADCRUMBS.ITEM_BUTTON_COLOR};
+                text-align: center;
                 display: flex;
-                gap: 5px;
                 align-items: center;
+                border: none;
+                outline: none;
+                width: max-content;
+                cursor: ${index < dataPathSteps.length ? "pointer" : "default"};
+
+                :hover,
+                :active,
+                :focus {
+                  background: ${appColors.BREADCRUMBS
+                    .ITEM_BUTTON_SELECTED_BACKGROUND_COLOR};
+                }
               `}
-              key={item?.id}
+              type="button"
+              onClick={() => {
+                if (index < dataPathSteps.length) {
+                  onItemClick(index, item);
+                }
+              }}
             >
-              <button
+              <b>{item.name}</b>
+            </button>
+            {index === dataPathSteps.length ? null : (
+              <div
                 css={`
-                  background: ${index === breadCrumbList.length - 1
-                    ? appColors.BREADCRUMBS.ITEM_BUTTON_BACKGROUND_COLOR
-                    : appColors.BREADCRUMBS
-                        .ITEM_BUTTON_SELECTED_BACKGROUND_COLOR};
-                  height: 32px;
-                  padding: 13px 12px;
-                  border-radius: 20px;
-                  font-size: 14px;
-                  font-weight: 700;
-                  color: ${appColors.BREADCRUMBS.ITEM_BUTTON_COLOR};
-                  text-align: center;
                   display: flex;
                   align-items: center;
-                  border: none;
-                  outline: none;
-                  width: max-content;
-                  /* padding: 0 2rem; */
-                  cursor: pointer;
-                  :hover,
-                  :active,
-                  :focus {
-                    background: ${appColors.BREADCRUMBS
-                      .ITEM_BUTTON_SELECTED_BACKGROUND_COLOR};
-                  }
+                  color: ${appColors.BREADCRUMBS.ITEM_ARROW_COLOR};
                 `}
-                type="button"
-                onClick={() => {
-                  if (item?.path !== "#") {
-                    history.push(item.path);
-                  }
-                  setBreadCrumbList([...breadCrumbList.slice(0, index + 1)]);
-                }}
               >
-                <b>{item?.name}</b>
-              </button>
-              {index === breadCrumbList.length - 1 ? null : (
-                <div
-                  css={`
-                    color: ${appColors.BREADCRUMBS.ITEM_ARROW_COLOR};
-                    display: flex;
-                    align-items: center;
-                  `}
-                >
-                  <RightIcon color="inherit" />
-                </div>
-              )}
-            </div>
-          ))}
+                <RightIcon color="inherit" />
+              </div>
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );

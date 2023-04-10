@@ -1,9 +1,7 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import get from "lodash/get";
 import { appColors } from "app/theme";
-import { useRecoilState } from "recoil";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -17,11 +15,9 @@ import {
 /* project */
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { partnerDetailTabs } from "app/components/PageHeader/components/tabs/data";
@@ -41,16 +37,19 @@ export default function PartnerDetail() {
   useTitle("The Data Explorer - Partner");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const params = useParams<{
     code: string;
     vizType: string;
     subType?: string;
   }>();
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   // api call & data
   const fetchPartnerInfoData = useStoreActions(
@@ -98,13 +97,16 @@ export default function PartnerDetail() {
   }
 
   useUpdateEffect(() => {
-    if (!breadCrumbList.find((item) => item.path === location.pathname)) {
-      setBreadCrumbList([
-        { name: "Datasets", path: "/", id: v4() },
+    if (
+      partnerInfoData &&
+      partnerInfoData.partnerName &&
+      !dataPathSteps.find((item) => item.id === partnerInfoData.partnerName)
+    ) {
+      addDataPathSteps([
         {
+          id: "partner",
           name: partnerInfoData.partnerName,
           path: location.pathname,
-          id: v4(),
         },
       ]);
     }
@@ -124,18 +126,8 @@ export default function PartnerDetail() {
       <BreadCrumbs />
       <PageHeader
         isDetail
-        title={partnerInfoData.partnerName}
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          {
-            name: partnerInfoData.partnerName,
-          },
-        ]}
         tabs={partnerDetailTabs}
+        title={partnerInfoData.partnerName}
       />
       <PageTopSpacer />
       {isMobile && (

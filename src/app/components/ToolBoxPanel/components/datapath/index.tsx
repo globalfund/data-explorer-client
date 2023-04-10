@@ -23,9 +23,6 @@ export function DataPathPanel() {
   const setActiveStep = useStoreActions(
     (actions) => actions.DataPathActiveStep.setStep
   );
-  const setShowDataPath = useStoreActions(
-    (state) => state.DataPathPanelVisibilityState.setValue
-  );
 
   function onItemClick(index: number, item: DrilldownModelUpdated) {
     if (index > 0) {
@@ -66,15 +63,6 @@ export function DataPathPanel() {
         `}
       >
         Your data path
-        <IconButton
-          css={`
-            width: 14px;
-            height: 14px;
-          `}
-          onClick={() => setShowDataPath(false)}
-        >
-          <CloseOutlinedIcon htmlColor={appColors.COMMON.SECONDARY_COLOR_18} />
-        </IconButton>
       </div>
       {dataPathSteps.length > 0 && (
         <div>

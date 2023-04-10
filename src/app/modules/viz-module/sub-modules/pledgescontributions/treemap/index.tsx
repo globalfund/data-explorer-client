@@ -1,10 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
 import sumBy from "lodash/sumBy";
 import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
+import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
+import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -18,6 +21,9 @@ import { appColors } from "app/theme";
 
 export function PledgesContributionsTreemap() {
   useTitle("The Data Explorer - Pledges & Contributions/Treemap");
+
+  const history = useHistory();
+
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -61,6 +67,28 @@ export function PledgesContributionsTreemap() {
   const valueType = useStoreState(
     (state) => state.ToolBoxPanelDonorMapTypeState.value
   );
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Resource Mobilization: Pledges & Contributions",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);

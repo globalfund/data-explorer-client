@@ -1,12 +1,9 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
-import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -14,6 +11,9 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
+import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -23,6 +23,8 @@ interface InvestmentsTimeCycleModuleProps {
   vizLevel: number;
   setVizLevel: (vizLevel: number) => void;
   vizSelected: string | undefined;
+  setDrilldownVizSelected?: (vizSelected: string | undefined) => void;
+  drilldownVizSelected?: string | undefined;
   setVizSelected: (vizSelected: string | undefined) => void;
   type?: string;
   toolboxOpen?: boolean;
@@ -31,6 +33,8 @@ interface InvestmentsTimeCycleModuleProps {
   isGrantDetail?: boolean;
   isPartnerDetail?: boolean;
   isLocationDetail?: boolean;
+  isDrilldown2Loading?: boolean;
+  drilldown2Data?: BudgetsTreemapDataItem[];
 }
 
 export function InvestmentsTimeCycleModule(
@@ -41,33 +45,25 @@ export function InvestmentsTimeCycleModule(
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
+  const [reRouteDialog, setReRouteDialog] = React.useState({
+    display: false,
+    code: "",
+  });
+
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
 
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-
   React.useEffect(() => {
     if (props.vizLevel === 0) {
       if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: "Budget-time cycle" })
-      ) {
-        addDataPathSteps([
-          {
-            id: uniqueId(),
-            name: "Budget-time cycle",
-            path: `${history.location.pathname}${history.location.search}`,
-          },
-        ]);
-      } else if (
         props.isGrantDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "grant",
             name: props.codeParam || "Grant",
             path: `${history.location.pathname}${history.location.search}`,
           },
@@ -78,7 +74,7 @@ export function InvestmentsTimeCycleModule(
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "location",
             name: props.codeParam
               ? getNameFromIso3(props.codeParam)
               : "Location",
@@ -91,27 +87,26 @@ export function InvestmentsTimeCycleModule(
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "partner",
             name: props.codeParam || "Partner",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
       }
-    }
-    if (props.vizLevel > 0 && props.vizSelected) {
-      addDataPathSteps([
-        {
-          id: uniqueId(),
-          name: props.vizSelected,
-          path: `${history.location.pathname}${history.location.search}`,
-          vizSelected: {
-            id: props.vizSelected,
-            filterStr: props.vizSelected,
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: `Grant Implementation: ${props.type}`,
+            path: `${history.location.pathname}${history.location.search}`,
           },
-        },
-      ]);
+        ]);
+      }
     }
-  }, [props.vizLevel, props.vizSelected]);
+  }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
 
   let clickthroughPath = "signed/treemap";
   if (props.type === "Commitment") {
@@ -122,7 +117,11 @@ export function InvestmentsTimeCycleModule(
 
   let vizComponent = <React.Fragment />;
 
-  if (props.isLoading || props.isDrilldownLoading) {
+  if (
+    props.isLoading ||
+    props.isDrilldownLoading ||
+    props.isDrilldown2Loading
+  ) {
     vizComponent = <PageLoader />;
   } else {
     if (props.vizLevel === 0) {
@@ -130,20 +129,21 @@ export function InvestmentsTimeCycleModule(
         <InvestmentsTimeCycle
           data={props.data}
           type={props.type}
-          // selectedNodeId={props.vizSelected}
-          onNodeClick={(node: string, x: number, y: number) => {
-            setBreadCrumbList([
-              ...breadCrumbList,
-              {
-                name: node,
-                path: location.pathname,
-                id: v4(),
-                vizLevel: 1,
-                vizSelected: node,
-              },
-            ]);
+          onNodeClick={(node: string, _x: number, _y: number) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
+            addDataPathSteps([
+              {
+                // TODO: implement changes applied here to the other viz modules
+                id: uniqueId(),
+                name: node,
+                path: `${history.location.pathname}${history.location.search}`,
+                vizSelected: {
+                  id: node,
+                  filterStr: node,
+                },
+              },
+            ]);
           }}
         />
       );
@@ -154,47 +154,70 @@ export function InvestmentsTimeCycleModule(
           xsTooltipData={xsTooltipData}
           tooltipValueLabel="Disbursements"
           setXsTooltipData={setXsTooltipData}
-          onNodeClick={(node: string, x: number, y: number) => {
-            // props.setVizLevel(2);
-            // props.setVizSelected(node);
-            const idSplits = node.split("-");
-            const code = getIso3FromName(idSplits[0]);
-            addDataPathSteps([
-              {
-                id: uniqueId(),
-                name: `${idSplits[0]} - ${idSplits[1]}`,
-                path: `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`,
-              },
-            ]);
-            history.push(
-              `/location/${code}/${clickthroughPath}?components=${idSplits[1]}`
-            );
+          onNodeClick={(node: string, _x: number, _y: number) => {
+            if (props.setDrilldownVizSelected) {
+              props.setVizLevel(2);
+              props.setDrilldownVizSelected(node);
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  drilldownVizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
+                },
+              ]);
+            }
           }}
         />
       );
-    } else if (props.vizLevel === 2) {
-      // vizComponent = (
-      //   <DisbursementsTreemap
-      //     data={}
-      //     selectedNodeId={props.vizSelected}
-      //     onNodeClick={(node: string, x: number, y: number) => {}}
-      //   />
-      // );
+    } else if (props.vizLevel === 2 && props.drilldown2Data) {
+      vizComponent = (
+        <BudgetsTreemap
+          data={props.drilldown2Data}
+          xsTooltipData={xsTooltipData}
+          tooltipValueLabel="Disbursements"
+          setXsTooltipData={setXsTooltipData}
+          onNodeClick={(node: string, _x: number, _y: number) => {
+            const idSplits = node.split("-");
+            const code = getIso3FromName(idSplits[0]);
+            setReRouteDialog({
+              display: true,
+              code,
+            });
+          }}
+        />
+      );
     }
   }
 
   return (
-    <div
-      id="investments-time-cycle"
-      css={`
-        width: 100%;
+    <React.Fragment>
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(
+              `/grant/${reRouteDialog.code}/period/${clickthroughPath}`
+            )
+          }
+        />
+      )}
+      <div
+        id="investments-time-cycle"
+        css={`
+          width: 100%;
 
-        * {
-          overflow: visible !important;
-        }
-      `}
-    >
-      {vizComponent}
-    </div>
+          * {
+            overflow: visible !important;
+          }
+        `}
+      >
+        {vizComponent}
+      </div>
+    </React.Fragment>
   );
 }

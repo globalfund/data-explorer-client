@@ -68,12 +68,12 @@ export function InvestmentsGeoMap(props: Props) {
   React.useEffect(() => {
     if (
       dataPathSteps.length === 0 ||
-      !find(dataPathSteps, { name: `${props.type}-map` })
+      !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
     ) {
       addDataPathSteps([
         {
           id: uniqueId(),
-          name: `${props.type}-map`,
+          name: `Grant Implementation: ${props.type}`,
           path: `${history.location.pathname}${history.location.search}`,
         },
       ]);

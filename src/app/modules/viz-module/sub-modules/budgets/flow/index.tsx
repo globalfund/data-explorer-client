@@ -1,27 +1,22 @@
 /* third-party */
-import React, { useState } from "react";
+import React from "react";
 import find from "lodash/find";
-import { v4 } from "uuid";
 import sumBy from "lodash/sumBy";
-
 import filter from "lodash/filter";
 import uniqueId from "lodash/uniqueId";
+import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { DrilldownModelUpdated } from "app/interfaces";
+import { appColors } from "app/theme";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { Grid } from "@material-ui/core";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { appColors } from "app/theme";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -62,12 +57,11 @@ interface BudgetsFlowModuleProps {
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
-  const [reRouteDialog, setReRouteDialog] = useState({
+  const [reRouteDialog, setReRouteDialog] = React.useState({
     display: false,
     code: "",
   });
@@ -77,31 +71,19 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
     (actions) => actions.DataPathSteps.addSteps
   );
 
-  const totalBudget = sumBy(
-    filter(props.links, { source: "Budgets" }),
-    "value"
-  );
+  const totalBudget: number = React.useMemo(() => {
+    return sumBy(filter(props.links, { source: "Budgets" }), "value");
+  }, [props.links]);
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
       if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: "Budget-budget flow" })
-      ) {
-        addDataPathSteps([
-          {
-            id: uniqueId(),
-            name: "Budget-budget flow",
-            path: `${history.location.pathname}${history.location.search}`,
-          },
-        ]);
-      } else if (
         props.isGrantDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "grant",
             name: props.codeParam || "Grant",
             path: `${history.location.pathname}${history.location.search}`,
           },
@@ -112,7 +94,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "location",
             name: props.codeParam
               ? getNameFromIso3(props.codeParam)
               : "Location",
@@ -125,45 +107,24 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "partner",
             name: props.codeParam || "Partner",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
       }
-    }
-    if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
-      const newDrilldowns: DrilldownModelUpdated[] = [];
-      if (props.vizLevel === 1) {
-        newDrilldowns.push({
-          id: uniqueId(),
-          name: props.vizSelected.id,
-          path: `${history.location.pathname}${history.location.search}`,
-          vizSelected: {
-            id: props.vizSelected.id || "",
-            filterStr: props.vizSelected.filterStr || "",
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Grant Implementation: Budgets" })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Grant Implementation: Budgets",
+            path: `${history.location.pathname}${history.location.search}`,
           },
-        });
-      } else if (props.vizLevel === 2 && props.drilldownVizSelected.id) {
-        const idSplits = props.drilldownVizSelected.id.split("-");
-        const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
-        const secondDrillDown =
-          idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-        newDrilldowns.push({
-          id: uniqueId(),
-          name: `${firstDrillDown} - ${secondDrillDown}`,
-          path: `${history.location.pathname}${history.location.search}`,
-          vizSelected: {
-            id: props.vizSelected.id || "",
-            filterStr: props.vizSelected.filterStr || "",
-          },
-          drilldownVizSelected: {
-            id: props.drilldownVizSelected.id || "",
-            filterStr: props.drilldownVizSelected.filterStr || "",
-          },
-        });
+        ]);
       }
-      addDataPathSteps(newDrilldowns);
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
 
@@ -180,18 +141,16 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             links: props.links,
           }}
           onNodeClick={(node: { id: string; filterStr: string }) => {
-            setBreadCrumbList([
-              ...breadCrumbList,
+            props.setVizLevel(1);
+            props.setVizSelected(node);
+            addDataPathSteps([
               {
+                id: uniqueId(),
                 name: node.id,
-                path: location.pathname,
-                id: v4(),
-                vizLevel: 1,
+                path: `${history.location.pathname}${history.location.search}`,
                 vizSelected: node,
               },
             ]);
-            props.setVizLevel(1);
-            props.setVizSelected(node);
           }}
         />
       );
@@ -204,24 +163,24 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string) => {
-            setBreadCrumbList([
-              ...breadCrumbList,
-              {
-                name: node,
-                path: location.pathname,
-                id: v4(),
-                vizLevel: 2,
-                vizSelected: {
-                  id: node,
-                  filterStr: undefined,
+            if (props.setDrilldownVizSelected) {
+              props.setVizLevel(2);
+              props.setDrilldownVizSelected({
+                id: node,
+                filterStr: undefined,
+              });
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  drilldownVizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
                 },
-              },
-            ]);
-            props.setVizLevel(2);
-            props.setDrilldownVizSelected({
-              id: node,
-              filterStr: undefined,
-            });
+              ]);
+            }
           }}
         />
       );
@@ -234,19 +193,12 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected.id}
           onNodeClick={(node: string) => {
-            if (props.drilldownVizSelected.id) {
+            if (props.drilldownVizSelected.id && !props.isGrantDetail) {
               const idSplits = props.drilldownVizSelected.id.split("-");
               let code = node
                 .replace(idSplits[0], "")
                 .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: code,
-                  path: `/grant/${code}/period/budgets/flow`,
-                },
-              ]);
               setReRouteDialog({
                 display: true,
                 code,

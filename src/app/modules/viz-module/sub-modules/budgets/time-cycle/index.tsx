@@ -1,11 +1,9 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import get from "lodash/get";
 import find from "lodash/find";
 import sumBy from "lodash/sumBy";
 import uniqueId from "lodash/uniqueId";
-import { useRecoilState } from "recoil";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
@@ -14,7 +12,6 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { DrilldownModelUpdated } from "app/interfaces";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -45,14 +42,15 @@ interface BudgetsTimeCycleModuleProps {
 
 export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const history = useHistory();
-  const totalBudget = sumBy(props.data, "amount");
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+  const totalBudget = React.useMemo(() => {
+    return sumBy(props.data, "amount");
+  }, [props.data]);
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
@@ -67,23 +65,12 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   React.useEffect(() => {
     if (props.vizLevel === 0) {
       if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: "Budget-time cycle" })
-      ) {
-        addDataPathSteps([
-          {
-            id: uniqueId(),
-            name: "Budget-time cycle",
-            path: `${history.location.pathname}${history.location.search}`,
-          },
-        ]);
-      } else if (
         props.isGrantDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "grant",
             name: props.codeParam || "Grant",
             path: `${history.location.pathname}${history.location.search}`,
           },
@@ -94,7 +81,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "location",
             name: props.codeParam
               ? getNameFromIso3(props.codeParam)
               : "Location",
@@ -107,45 +94,24 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "partner",
             name: props.codeParam || "Partner",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
       }
-    }
-    if (props.vizLevel > 0 && props.vizSelected && props.vizSelected) {
-      const newDrilldowns: DrilldownModelUpdated[] = [];
-      if (props.vizLevel === 1) {
-        newDrilldowns.push({
-          id: uniqueId(),
-          name: props.vizSelected,
-          path: `${history.location.pathname}${history.location.search}`,
-          vizSelected: {
-            id: props.vizSelected || "",
-            filterStr: props.vizSelected || "",
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Grant Implementation: Budgets" })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Grant Implementation: Budgets",
+            path: `${history.location.pathname}${history.location.search}`,
           },
-        });
-      } else if (props.vizLevel === 2 && props.drilldownVizSelected) {
-        const idSplits = props.drilldownVizSelected.split("-");
-        const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
-        const secondDrillDown =
-          idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-        newDrilldowns.push({
-          id: uniqueId(),
-          name: `${firstDrillDown} - ${secondDrillDown}`,
-          path: `${history.location.pathname}${history.location.search}`,
-          vizSelected: {
-            id: props.vizSelected || "",
-            filterStr: props.vizSelected || "",
-          },
-          drilldownVizSelected: {
-            id: props.drilldownVizSelected || "",
-            filterStr: props.drilldownVizSelected || "",
-          },
-        });
+        ]);
       }
-      addDataPathSteps(newDrilldowns);
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
 
@@ -159,46 +125,49 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
         <BudgetsTimeCycle
           data={props.data}
           onNodeClick={(node: string) => {
-            setBreadCrumbList([
-              ...breadCrumbList,
-              {
-                name: node,
-                path: location.pathname,
-                id: v4(),
-                vizLevel: 1,
-                vizSelected: node,
-              },
-            ]);
             props.setVizLevel(1);
             props.setVizSelected(node);
+            addDataPathSteps([
+              {
+                // TODO: implement changes applied here to the other viz modules
+                id: uniqueId(),
+                name: node,
+                path: `${history.location.pathname}${history.location.search}`,
+                vizSelected: {
+                  id: node,
+                  filterStr: node,
+                },
+              },
+            ]);
           }}
         />
       );
     } else if (props.vizLevel === 1) {
       vizComponent = (
-        <React.Fragment>
-          <BudgetsTreemap
-            isDrilldownTreemap
-            tooltipValueLabel="Budget"
-            xsTooltipData={xsTooltipData}
-            data={props.dataDrilldownLevel1}
-            setXsTooltipData={setXsTooltipData}
-            onNodeClick={(node: string) => {
-              setBreadCrumbList([
-                ...breadCrumbList,
-                {
-                  name: node,
-                  path: location.pathname,
-                  id: v4(),
-                  vizLevel: 2,
-                  vizSelected: node,
-                },
-              ]);
+        <BudgetsTreemap
+          isDrilldownTreemap
+          tooltipValueLabel="Budget"
+          xsTooltipData={xsTooltipData}
+          data={props.dataDrilldownLevel1}
+          setXsTooltipData={setXsTooltipData}
+          onNodeClick={(node: string) => {
+            if (props.setDrilldownVizSelected) {
               props.setVizLevel(2);
               props.setDrilldownVizSelected(node);
-            }}
-          />
-        </React.Fragment>
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  drilldownVizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
+                },
+              ]);
+            }
+          }}
+        />
       );
     } else if (props.vizLevel === 2) {
       vizComponent = (
@@ -208,19 +177,12 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected}
           onNodeClick={(node: string) => {
-            if (props.drilldownVizSelected) {
+            if (props.drilldownVizSelected && !props.isGrantDetail) {
               const idSplits = props.drilldownVizSelected.split("-");
               let code = node
                 .replace(idSplits[0], "")
                 .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: code,
-                  path: `/grant/${code}/period/budgets/time-cycle`,
-                },
-              ]);
               setReRouteDialog({
                 display: true,
                 code,

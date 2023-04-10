@@ -1,14 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle, useUpdateEffect } from "react-use";
+import isEqual from "lodash/isEqual";
+import { useTitle, useUpdateEffect, useMount } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
-import { useRecoilValue } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 
 interface Props {
   code: string;
@@ -20,28 +19,73 @@ interface DrilldownVizSelectedType {
   id: string | undefined;
   filterStr: string | undefined;
 }
+
 export function GrantDetailBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Grant Budgets Flow");
 
-  const breadcrumbList = useRecoilValue(breadCrumbItems);
-
-  const [vizLevel, setVizLevel] = React.useState(
-    breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0
-  );
-
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const [drilldownVizSelected, setDrilldownVizSelected] =
-    React.useState<DrilldownVizSelectedType>(
-      breadcrumbList[breadcrumbList.length - 1]
-        ?.vizSelected as DrilldownVizSelectedType
-    );
+    React.useState<DrilldownVizSelectedType>({
+      id: dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.id,
+      filterStr:
+        dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected
+          ?.filterStr,
+    });
+  const [vizLevel, setVizLevel] = React.useState(0);
+
+  useMount(() => {
+    setVizSelected({
+      id: dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr,
+      filterStr:
+        dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr,
+    });
+  });
 
   React.useEffect(() => {
-    setDrilldownVizSelected(
-      breadcrumbList[breadcrumbList.length - 1]
-        ?.vizSelected as DrilldownVizSelectedType
-    );
-    setVizLevel(breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0);
-  }, [breadcrumbList]);
+    const newVizSelectedId =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.id;
+    const newVizSelectedFilterStr =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelectedId =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.id;
+    const newDrilldownVizSelectedFilterStr =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (
+      !isEqual(
+        {
+          id: newVizSelectedId,
+          filterStr: newVizSelectedFilterStr,
+        },
+        vizSelected
+      )
+    ) {
+      setVizSelected({
+        id: newVizSelectedId,
+        filterStr: newVizSelectedFilterStr,
+      });
+    }
+    if (
+      !isEqual(
+        {
+          id: newDrilldownVizSelectedId,
+          filterStr: newDrilldownVizSelectedFilterStr,
+        },
+        drilldownVizSelected
+      )
+    ) {
+      setDrilldownVizSelected({
+        id: newDrilldownVizSelectedId,
+        filterStr: newDrilldownVizSelectedFilterStr,
+      });
+    }
+    if (newDrilldownVizSelectedFilterStr) {
+      setVizLevel(2);
+    } else if (newVizSelectedFilterStr) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions(
