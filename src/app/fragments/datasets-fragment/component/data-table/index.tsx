@@ -1,16 +1,15 @@
-/* third-party */
 import React from "react";
 import orderBy from "lodash/orderBy";
 import { useUpdateEffect } from "react-use";
 import DataGrid, { SortColumn } from "react-data-grid";
-/* third-party */
+
 import {
   getColumnsFromData,
   DataThemesDataTableProps,
 } from "app/modules/data-themes-module/components/data-table/data";
 import PreviewTable from "app/components/Table/Preview-table";
 
-export function DataThemesDataTable(props: DataThemesDataTableProps) {
+export function DatasetDataTable(props: DataThemesDataTableProps) {
   const containerEl = React.useRef<HTMLDivElement>(null);
   const [data, setData] = React.useState<
     { [key: string]: number | string | null | boolean }[]
@@ -63,12 +62,10 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     <div
       ref={containerEl}
       css={`
-        width: calc(100% - 24px);
-        height: calc(100vh - 225px);
-        margin-top: 2rem;
+        width: 100%;
+        height: calc(100vh - 312px);
 
         > div {
-          height: 100%;
           background: #fff;
           border-style: none;
 
@@ -84,17 +81,6 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
         setTableData={setData}
         columns={getColumns(data)}
       />
-      {/* <DataGrid
-        rows={data}
-        rowHeight={48}
-        headerRowHeight={88}
-        sortColumns={[sort]}
-        onSortColumnsChange={handleSort}
-        columns={getColumnsFromData(
-          props.data,
-          containerEl.current?.getBoundingClientRect().width
-        )}
-      /> */}
     </div>
   );
 }

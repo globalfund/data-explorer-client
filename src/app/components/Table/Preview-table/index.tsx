@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 
-import { ReactComponent as SortIcon } from "../../assets/sort.svg";
+import { ReactComponent as SortIcon } from "../../../fragments/datasets-fragment/assets/sort.svg";
 import { v4 } from "uuid";
 import { tablecss } from "app/modules/dataset-detail-module/component/table/style";
 import {

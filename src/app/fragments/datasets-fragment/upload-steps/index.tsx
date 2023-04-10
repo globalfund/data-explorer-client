@@ -2,14 +2,32 @@ import React from "react";
 import Container from "@material-ui/core/Container";
 import { stepcss } from "app/fragments/datasets-fragment/style";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import MetaData from "app/fragments/datasets-fragment/upload-steps/metaData";
+import MetaData, {
+  IFormDetails,
+} from "app/fragments/datasets-fragment/upload-steps/metaData";
 import Processing from "app/fragments/datasets-fragment/upload-steps/processing";
 import PreviewFragment from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 import FinishedFragment from "app/fragments/datasets-fragment/upload-steps/finishedFragment";
 import AddDatasetFragment from "app/fragments/datasets-fragment/upload-steps/addDatasetFragment";
+import axios from "axios";
+import { useStoreActions } from "app/state/store/hooks";
 
 export default function DatasetUploadSteps() {
   const [activeStep, setActiveStep] = React.useState(0);
+  const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
+  const [uploading, setUploading] = React.useState(false);
+  const [uploadSuccess, setUploadSuccess] = React.useState(false);
+  const [errorMessage, setErrorMessage] = React.useState("");
+  const [datasetId, setDatasetId] = React.useState("");
+  const loadDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.fetch
+  );
+  const [formDetails, setFormDetails] = React.useState({
+    name: "",
+    description: "",
+    category: "General",
+    public: false,
+  });
 
   const steps = [
     "Upload",
@@ -37,38 +55,95 @@ export default function DatasetUploadSteps() {
     }
   };
 
-  const handleMetaForm = () => {
-    handleNext();
-    const promise = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        resolve("Promise resolved after 5 seconds");
-      }, 5000);
-    });
+  const onSubmit = async (data: IFormDetails) => {
+    // Post the dataset
 
-    promise
-      .then((result) => {
-        setActiveStep(3);
-        console.log(result);
+    handleNext();
+
+    setUploading(true);
+    axios
+      .post(`${process.env.REACT_APP_API}/datasets`, formDetails, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        // if the dataset was created successfully, post the file to the server
+        const formData = new FormData();
+        let file = selectedFile;
+        let filename = "dx" + response.data.id;
+        formData.append(filename, file as File);
+        axios
+          .post(`${process.env.REACT_APP_API}/files`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then((_) => {
+            setUploading(false);
+            setUploadSuccess(true);
+            loadDatasets({ storeInCrudData: true });
+            setDatasetId(response.data.id);
+            setActiveStep(3);
+          })
+          .catch((error) => {
+            console.debug("Dataset upload error", error);
+            setUploading(false);
+            setUploadSuccess(false);
+            setSelectedFile(null);
+            setErrorMessage(
+              "The file could not be uploaded, make sure it is less than 40MB, and of type XLSX, CSV, JSON or XML."
+            );
+            axios
+              .delete(
+                `${process.env.REACT_APP_API}/datasets/${response.data.id}`
+              )
+              .then(() => {
+                loadDatasets({ storeInCrudData: true });
+              })
+              .catch((error) => console.log(error));
+          });
       })
       .catch((error) => {
-        console.error(error);
+        console.debug("Dataset creation error", error);
+        setUploading(false);
+        setUploadSuccess(false);
       });
   };
 
   const currentStep = () => {
     switch (activeStep) {
       case 0:
-        return <AddDatasetFragment handleNext={handleNext} />;
+        return (
+          <AddDatasetFragment
+            handleNext={handleNext}
+            setFile={setSelectedFile}
+          />
+        );
       case 1:
-        return <MetaData handleNext={handleMetaForm} handleBack={handleBack} />;
+        return (
+          <MetaData
+            onSubmit={onSubmit}
+            handleBack={handleBack}
+            formDetails={formDetails}
+            setFormDetails={setFormDetails}
+          />
+        );
       case 2:
         return <Processing />;
       case 3:
-        return <PreviewFragment handleNext={handleNext} />;
+        return (
+          <PreviewFragment handleNext={handleNext} datasetId={datasetId} />
+        );
       case 4:
-        return <FinishedFragment />;
+        return <FinishedFragment datasetId={datasetId} />;
       default:
-        return <AddDatasetFragment handleNext={handleNext} />;
+        return (
+          <AddDatasetFragment
+            handleNext={handleNext}
+            setFile={setSelectedFile}
+          />
+        );
     }
   };
 

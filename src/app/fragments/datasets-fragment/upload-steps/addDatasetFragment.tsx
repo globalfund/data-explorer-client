@@ -10,9 +10,14 @@ import { ReactComponent as GoogleDriveIcon } from "app/fragments/datasets-fragme
 
 interface Props {
   handleNext: () => void;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 export default function AddDatasetFragment(props: Props) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setFile(e.target.files?.[0] || null);
+    props.handleNext();
+  };
   return (
     <div css={uploadDatasetcss}>
       <div>
@@ -54,7 +59,7 @@ export default function AddDatasetFragment(props: Props) {
             id="local-upload"
             type="file"
             hidden
-            onChange={props.handleNext}
+            onChange={handleFileChange}
           />
           <label htmlFor="local-upload">
             <LocalUploadIcon /> <p>Local upload</p>

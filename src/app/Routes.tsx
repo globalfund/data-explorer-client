@@ -14,9 +14,9 @@ const ChartsModule = lazy(() => import("app/modules/charts-module"));
 const ChartModule = lazy(() => import("app/modules/chart-module"));
 const ReportModule = lazy(() => import("app/modules/report-module"));
 const OnboardingModule = lazy(() => import("app/modules/onboarding-module"));
-// const DatasetUploadSteps = lazy(
-//   () => import("app/fragments/datasets-fragment/upload-steps")
-// );
+const DatasetUploadSteps = lazy(
+  () => import("app/fragments/datasets-fragment/upload-steps")
+);
 const UploadDatasetV1 = lazy(() => import("app/modules/dataset-upload-module"));
 const EditMetaData = lazy(
   () => import("app/modules/datasets-module/editMetaData")
@@ -53,7 +53,7 @@ export function MainRoutes() {
           <EditMetaData />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/dataset-upload">
-          <UploadDatasetV1 />
+          <DatasetUploadSteps />
         </RouteWithAppBar>
       </Switch>
     </Suspense>
