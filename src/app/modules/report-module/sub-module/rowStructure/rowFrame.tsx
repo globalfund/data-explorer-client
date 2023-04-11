@@ -1,9 +1,14 @@
 import React from "react";
+import get from "lodash/get";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
+import { useLocation, useParams } from "react-router-dom";
 import { itemSpacing, containerGap } from "app/modules/report-module/data";
 import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
+import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
+import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
+import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import {
   blockcss,
   containercss,
@@ -532,3 +537,77 @@ const FourToOne = (props: IRowStructureType) => {
     </div>
   );
 };
+
+export function Divider(props: { delete: () => void }) {
+  const location = useLocation();
+  const { page } = useParams<{ page: string }>();
+  const [handleDisplay, setHandleDisplay] = React.useState(false);
+
+  const viewOnlyMode =
+    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
+
+  const handlers = viewOnlyMode
+    ? {}
+    : {
+        onMouseEnter: () => setHandleDisplay(true),
+        onMouseLeave: () => setHandleDisplay(false),
+      };
+
+  return (
+    <div
+      {...handlers}
+      css={`
+        width: 100%;
+        padding: 4px;
+        display: flex;
+        position: relative;
+      `}
+    >
+      {handleDisplay && (
+        <div
+          css={`
+            top: -4px;
+            left: -4rem;
+            display: flex;
+            position: absolute;
+            height: calc(100% + 8px);
+          `}
+        >
+          <div
+            css={`
+              display: flex;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+            `}
+          >
+            <IconButton onClick={props.delete}>
+              <DeleteIcon />
+            </IconButton>
+          </div>
+          <div
+            css={`
+              width: 23px;
+              display: flex;
+              align-items: center;
+              background: #adb5bd;
+              border-radius: 3.45px;
+              transform: matrix(-1, 0, 0, 1, 0, 0);
+
+              justify-content: center;
+            `}
+          >
+            <RowFrameHandleAdornment />
+          </div>
+        </div>
+      )}
+      <hr
+        css={`
+          width: 100%;
+          margin: 20px 0;
+          border: 1px solid #e4e4e4;
+        `}
+      />
+    </div>
+  );
+}
