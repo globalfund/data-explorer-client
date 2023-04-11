@@ -15,6 +15,12 @@ interface Props {
   setVisualOptions: (value: any) => void;
   containerRef: React.RefObject<HTMLDivElement>;
   chartId?: string;
+  renderedChartType?:
+    | "echartsBarchart"
+    | "echartsGeomap"
+    | "echartsLinechart"
+    | "echartsSankey"
+    | "echartsTreemap";
 }
 
 export function CommonChart(props: Props) {
@@ -71,12 +77,13 @@ export function CommonChart(props: Props) {
           props.renderedChartMappedData,
           // @ts-ignore
           domRef.current,
-          chartType as
-            | "echartsBarchart"
-            | "echartsGeomap"
-            | "echartsLinechart"
-            | "echartsSankey"
-            | "echartsTreemap",
+          props.renderedChartType ||
+            (chartType as
+              | "echartsBarchart"
+              | "echartsGeomap"
+              | "echartsLinechart"
+              | "echartsSankey"
+              | "echartsTreemap"),
           props.visualOptions,
           `common-chart-render-container-${props.chartId || "1"}`
         );

@@ -32,6 +32,10 @@ export function ReportChartWrapper(props: Props) {
     return get(chartFromAPI, "ssr", false);
   }, [chartFromAPI]);
 
+  const renderedChartType = React.useMemo(() => {
+    return get(chartFromAPI, "vizType", "echartsBarchart");
+  }, [chartFromAPI]);
+
   const { loadDataFromAPI } = useChartsRawData({
     visualOptions,
     setVisualOptions,
@@ -106,6 +110,7 @@ export function ReportChartWrapper(props: Props) {
         visualOptions={visualOptions}
         renderedChartSsr={renderedChartSsr}
         setVisualOptions={setVisualOptions}
+        renderedChartType={renderedChartType}
         renderedChartMappedData={renderedChartMappedData}
       />
     </div>
