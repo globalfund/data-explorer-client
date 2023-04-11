@@ -138,7 +138,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   );
 }
 
-export const Box = (props: {
+const Box = (props: {
   width: string;
   height: string;
   rowIndex: number;

@@ -1,38 +1,38 @@
 import React from "react";
 import uniqBy from "lodash/uniqBy";
 import * as echarts from "echarts/core";
-import { SVGRenderer } from "echarts/renderers";
+import { CanvasRenderer } from "echarts/renderers";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
+  MapChart,
   BarChart,
   LineChart,
-  MapChart,
   SankeyChart,
   TreemapChart,
 } from "echarts/charts";
 import {
-  TooltipComponent,
   GridComponent,
   LegendComponent,
+  TooltipComponent,
   VisualMapComponent,
 } from "echarts/components";
 
 echarts.use([
-  TooltipComponent,
-  VisualMapComponent,
-  GridComponent,
-  LegendComponent,
   BarChart,
-  LineChart,
   MapChart,
+  LineChart,
   SankeyChart,
   TreemapChart,
-  SVGRenderer,
+  GridComponent,
+  CanvasRenderer,
+  LegendComponent,
+  TooltipComponent,
+  VisualMapComponent,
 ]);
 
 export function useDataThemesEchart() {
-  function onResize(chart: echarts.EChartsType, height?: number) {
-    const container = document.getElementById("common-chart-render-container");
+  function onResize(chart: echarts.EChartsType, id: string, height?: number) {
+    const container = document.getElementById(id);
     chart.resize({
       width: container?.clientWidth,
       height: height || "auto",
@@ -421,16 +421,19 @@ export function useDataThemesEchart() {
       | "echartsLinechart"
       | "echartsSankey"
       | "echartsTreemap",
-    visualOptions: any
+    visualOptions: any,
+    id: string
   ) {
-    new ResizeObserver(() => onResize(chart, node.clientHeight)).observe(node);
+    new ResizeObserver(() => onResize(chart, id, node.clientHeight)).observe(
+      node
+    );
 
     const chart = echarts.init(node, undefined, {
-      renderer: "svg",
+      renderer: "canvas",
       height: visualOptions.height,
     });
 
-    window.removeEventListener("resize", () => onResize(chart));
+    window.removeEventListener("resize", () => onResize(chart, id));
 
     const CHART_TYPE_TO_COMPONENT = {
       echartsBarchart: () => echartsBarchart(data, visualOptions),
@@ -442,7 +445,7 @@ export function useDataThemesEchart() {
 
     chart.setOption(CHART_TYPE_TO_COMPONENT[chartType]());
 
-    window.addEventListener("resize", () => onResize(chart));
+    window.addEventListener("resize", () => onResize(chart, id));
   }
 
   return { render };

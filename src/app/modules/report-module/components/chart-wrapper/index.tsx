@@ -99,6 +99,7 @@ export function ReportChartWrapper(props: Props) {
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
       <CommonChart
+        chartId={props.id}
         setRawViz={setRawViz}
         containerRef={containerRef}
         renderedChart={renderedChart}

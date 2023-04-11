@@ -81,7 +81,12 @@ export function DataThemesCommonChart(props: Props) {
           // @ts-ignore
           domRef.current,
           get(selectedChartType, `[${activeTabIndex}][${activeVizIndex}]`, ""),
-          get(props.visualOptions, `[${activeTabIndex}][${activeVizIndex}]`, {})
+          get(
+            props.visualOptions,
+            `[${activeTabIndex}][${activeVizIndex}]`,
+            {}
+          ),
+          "common-chart-render-container"
         );
       } catch (e) {
         if (process.env.NODE_ENV === "development") {

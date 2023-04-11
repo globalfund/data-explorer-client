@@ -1,15 +1,13 @@
 import React from "react";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
+import { itemSpacing, containerGap } from "app/modules/report-module/data";
 import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
 import {
   blockcss,
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
-
-const itemSpacing = "30px";
-const containerGap = "60px";
 
 const rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%" }],
