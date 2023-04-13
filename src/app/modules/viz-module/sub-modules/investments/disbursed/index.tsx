@@ -17,7 +17,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { DisbursementsTreemapDataItem } from "app/interfaces";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];

@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { DisbursementsTreemapDataItem } from "app/interfaces";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 

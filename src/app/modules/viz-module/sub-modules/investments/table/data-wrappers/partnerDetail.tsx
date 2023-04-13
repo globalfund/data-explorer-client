@@ -10,7 +10,7 @@ import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { InvestmentsTable } from "app/modules/viz-module/sub-modules/investments/table";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { DisbursementsTreemapDataItem } from "app/interfaces";
 
 interface Props {
   code?: string;

@@ -4,7 +4,7 @@ import get from "lodash/get";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { DisbursementsTreemapDataItem } from "app/interfaces";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
 
 interface Props {
