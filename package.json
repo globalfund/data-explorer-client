@@ -37,6 +37,7 @@
     "dom-to-image": "^2.6.0",
     "dotenv": "^8.2.0",
     "easy-peasy": "^5.0.4",
+    "echarts": "^5.4.2",
     "fs": "^0.0.1-security",
     "html-react-parser": "^1.4.12",
     "i18next": "^20.2.1",

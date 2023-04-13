@@ -5,7 +5,7 @@ import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
 
 interface Props {

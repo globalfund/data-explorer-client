@@ -12,7 +12,7 @@ import { ResultListItemModel } from "app/modules/results-module/data";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityScatterplotDataModel } from "app/components/Charts/Eligibility/Scatterplot/data";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 
 export function useGetAllVizData() {

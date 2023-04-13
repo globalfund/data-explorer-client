@@ -10,10 +10,10 @@ import { breadCrumbItems } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -37,9 +37,6 @@ export function InvestmentsTimeCycleModule(
   props: InvestmentsTimeCycleModuleProps
 ) {
   const history = useHistory();
-
-  const [xsTooltipData, setXsTooltipData] =
-    React.useState<TreeMapNodeDatum | null>(null);
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
@@ -149,12 +146,10 @@ export function InvestmentsTimeCycleModule(
       );
     } else if (props.vizLevel === 1) {
       vizComponent = (
-        <BudgetsTreemap
+        <EchartBaseChart
+          type="treemap"
           data={props.drilldownData}
-          xsTooltipData={xsTooltipData}
-          tooltipValueLabel="Disbursements"
-          setXsTooltipData={setXsTooltipData}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             // props.setVizLevel(2);
             // props.setVizSelected(node);
             const idSplits = node.split("-");

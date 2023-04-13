@@ -6,7 +6,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
 
 interface Props {

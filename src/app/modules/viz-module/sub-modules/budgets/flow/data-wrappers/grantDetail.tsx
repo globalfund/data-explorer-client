@@ -4,7 +4,7 @@ import get from "lodash/get";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 import { BudgetsFlowModule } from "app/modules/viz-module/sub-modules/budgets/flow";
 import { getDrilldownPanelOptions } from "app/modules/viz-module/sub-modules/budgets/flow/utils";
 import { useRecoilValue } from "recoil";

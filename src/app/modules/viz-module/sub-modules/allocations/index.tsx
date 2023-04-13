@@ -19,9 +19,9 @@ import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
 import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
@@ -475,20 +475,22 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               }}
             />
           </span>
-          <BudgetsTreemap
+          <EchartBaseChart
+            type="treemap"
             data={dataDrilldownLevel}
-            tooltipValueLabel="Allocation"
             onNodeClick={(node: string) => {
               const name = node.split("-")[0];
               const code = getIso3FromName(name);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: name,
-                  path: `/location/${code}/allocations`,
-                },
-              ]);
-              history.push(`/location/${code}/allocations`);
+              if (name !== code) {
+                addDataPathSteps([
+                  {
+                    id: uniqueId(),
+                    name: name,
+                    path: `/location/${code}/allocations`,
+                  },
+                ]);
+                history.push(`/location/${code}/allocations`);
+              }
             }}
           />
         </React.Fragment>

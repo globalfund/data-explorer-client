@@ -6,7 +6,7 @@ import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 import { InvestmentsTimeCycleModule } from "app/modules/viz-module/sub-modules/investments/time-cycle";
 
 interface Props {

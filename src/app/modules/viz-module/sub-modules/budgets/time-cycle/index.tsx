@@ -19,9 +19,9 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
-import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 
 interface BudgetsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -48,9 +48,6 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const totalBudget = sumBy(props.data, "amount");
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
-
-  const [xsTooltipData, setXsTooltipData] =
-    React.useState<TreeMapNodeDatum | null>(null);
 
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
@@ -176,37 +173,30 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       );
     } else if (props.vizLevel === 1) {
       vizComponent = (
-        <React.Fragment>
-          <BudgetsTreemap
-            isDrilldownTreemap
-            tooltipValueLabel="Budget"
-            xsTooltipData={xsTooltipData}
-            data={props.dataDrilldownLevel1}
-            setXsTooltipData={setXsTooltipData}
-            onNodeClick={(node: string) => {
-              setBreadCrumbList([
-                ...breadCrumbList,
-                {
-                  name: node,
-                  path: location.pathname,
-                  id: v4(),
-                  vizLevel: 2,
-                  vizSelected: node,
-                },
-              ]);
-              props.setVizLevel(2);
-              props.setDrilldownVizSelected(node);
-            }}
-          />
-        </React.Fragment>
+        <EchartBaseChart
+          type="treemap"
+          data={props.dataDrilldownLevel1}
+          onNodeClick={(node: string) => {
+            setBreadCrumbList([
+              ...breadCrumbList,
+              {
+                name: node,
+                path: location.pathname,
+                id: v4(),
+                vizLevel: 2,
+                vizSelected: node,
+              },
+            ]);
+            props.setVizLevel(2);
+            props.setDrilldownVizSelected(node);
+          }}
+        />
       );
     } else if (props.vizLevel === 2) {
       vizComponent = (
-        <BudgetsTreemap
-          isDrilldownTreemap
-          tooltipValueLabel="Budget"
+        <EchartBaseChart
+          type="treemap"
           data={props.dataDrilldownLevel2}
-          selectedNodeId={props.vizSelected}
           onNodeClick={(node: string) => {
             if (props.drilldownVizSelected) {
               const idSplits = props.drilldownVizSelected.split("-");

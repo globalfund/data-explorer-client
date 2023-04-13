@@ -14,14 +14,14 @@ import { DrilldownModelUpdated } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
-import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { useRecoilState } from "recoil";
 import { breadCrumbItems } from "app/state/recoil/atoms";
 import { Grid } from "@material-ui/core";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { appColors } from "app/theme";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -197,12 +197,9 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       );
     } else if (props.vizLevel === 1) {
       vizComponent = (
-        <BudgetsTreemap
-          isDrilldownTreemap
-          tooltipValueLabel="Budget"
-          xsTooltipData={xsTooltipData}
+        <EchartBaseChart
+          type="treemap"
           data={props.dataDrilldownLevel1}
-          setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string) => {
             setBreadCrumbList([
               ...breadCrumbList,
@@ -227,12 +224,9 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       );
     } else if (props.vizLevel === 2) {
       vizComponent = (
-        <BudgetsTreemap
-          isDrilldownTreemap
-          tooltipKeyLabel="Grant"
-          tooltipValueLabel="Budget"
+        <EchartBaseChart
+          type="treemap"
           data={props.dataDrilldownLevel2}
-          selectedNodeId={props.vizSelected.id}
           onNodeClick={(node: string) => {
             if (props.drilldownVizSelected.id) {
               const idSplits = props.drilldownVizSelected.id.split("-");

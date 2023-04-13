@@ -6,10 +6,8 @@ import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import { useTitle } from "react-use";
-import { appColors } from "app/theme";
 import uniqueId from "lodash/uniqueId";
 import { useRecoilState } from "recoil";
-import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { breadCrumbItems } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -18,7 +16,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 
 interface InvestmentsDisbursedModuleProps {
@@ -71,8 +69,6 @@ export function InvestmentsDisbursedModule(
   props: InvestmentsDisbursedModuleProps
 ) {
   useTitle("The Data Explorer - Investments/Disbursed");
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const totalValue = sumBy(props.data, "value");
 
   const history = useHistory();
 
@@ -210,23 +206,17 @@ export function InvestmentsDisbursedModule(
   } else {
     if (props.vizLevel === 0) {
       vizComponent = (
-        <DisbursementsTreemap
+        <EchartBaseChart
+          type="treemap"
           data={treemapData}
-          selectedNodeId={props.vizSelected}
-          onNodeClick={(
-            node: string,
-            _x: number,
-            _y: number,
-            code?: string,
-            name?: string
-          ) => {
+          onNodeClick={(node: string, code?: string) => {
             if (props.allowDrilldown) {
               props.setVizLevel(1);
               props.setVizSelected(node);
               setBreadCrumbList([
                 ...breadCrumbList,
                 {
-                  name: name as string,
+                  name: node,
                   path: location.pathname,
                   id: breadcrumbID,
                   vizLevel: 1,
@@ -241,8 +231,8 @@ export function InvestmentsDisbursedModule(
       );
     } else if (props.vizLevel === 1) {
       vizComponent = (
-        <DisbursementsTreemap
-          isDrilldownTreemap
+        <EchartBaseChart
+          type="treemap"
           data={props.drilldownData}
           onNodeClick={(node: string) => {
             const idSplits = node.split("-");
@@ -264,63 +254,16 @@ export function InvestmentsDisbursedModule(
   }
 
   return (
-    <React.Fragment>
-      <Grid
-        container
-        alignItems="center"
-        spacing={2}
-        css={`
-          margin-bottom: 20px;
+    <div
+      css={`
+        width: 100%;
 
-          > div {
-            color: ${appColors.COMMON.PRIMARY_COLOR_1};
-            font-size: 14px;
-          }
-
-          @media (max-width: 767px) {
-            margin-bottom: 0;
-          }
-        `}
-      >
-        {!isMobile && (
-          <Grid item xs={3}>
-            <div
-              css={`
-                display: flex;
-                font-weight: bold;
-                align-items: center;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                font-size: 12px;
-                margin-top: -10px;
-                > svg {
-                  margin-left: 10px;
-                }
-              `}
-            >
-              Investments - {props.type || "Disbursement"}
-            </div>
-            <div css="font-weight: normal; margin-top: -6px;">
-              {formatFinancialValue(totalValue)}
-            </div>
-          </Grid>
-        )}
-        {isMobile && (
-          <Grid item xs={12} css="font-size: 12px !important;">
-            <b>Total amount: {formatFinancialValue(totalValue)}</b>
-          </Grid>
-        )}
-      </Grid>
-      <div
-        css={`
-          width: 100%;
-
-          * {
-            overflow: visible !important;
-          }
-        `}
-      >
-        {vizComponent}
-      </div>
-    </React.Fragment>
+        * {
+          overflow: visible !important;
+        }
+      `}
+    >
+      {vizComponent}
+    </div>
   );
 }

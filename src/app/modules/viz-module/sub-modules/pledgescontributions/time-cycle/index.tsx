@@ -6,8 +6,8 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
-import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
@@ -158,11 +158,7 @@ export function PledgesContributionsTimeCycleModule() {
               }}
             />
           </span>
-          <BudgetsTreemap
-            data={dataDrilldownLevel}
-            tooltipValueLabel="Amount"
-            onNodeClick={(node: string, x: number, y: number) => {}}
-          />
+          <EchartBaseChart type="treemap" data={dataDrilldownLevel} />
         </React.Fragment>
       );
     }
