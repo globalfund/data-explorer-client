@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
 import * as echarts from "echarts";
 import { useCMSData } from "app/hooks/useCMSData";
 import {
@@ -40,17 +41,39 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
     chart.setOption(option);
 
     chart.on("click", (params) => {
-      if (props.onNodeClick && get(params, "data.children.length", 0) === 0) {
-        const node = `${get(params, "data.code", "")}-${get(
-          params,
-          "data.tooltip.header",
-          ""
-        )}`;
-        props.onNodeClick(
-          node,
-          get(params, "data.code", ""),
-          get(params, "data.name", "")
-        );
+      if (props.onNodeClick) {
+        if (
+          props.type === "treemap" &&
+          get(params, "data.children.length", 0) === 0
+        ) {
+          const node = `${get(params, "data.code", "")}-${get(
+            params,
+            "data.tooltip.header",
+            ""
+          )}`;
+          props.onNodeClick(
+            node,
+            get(params, "data.code", ""),
+            get(params, "data.name", "")
+          );
+        } else if (props.type === "sankey") {
+          if (params.dataType === "node") {
+            props.onNodeClick({
+              id: get(params, "data.id", ""),
+              filterStr: get(params, "data.filterStr", ""),
+            });
+          } else if (params.dataType === "edge") {
+            const target = find(props.data.nodes, {
+              id: get(params, "data.target", ""),
+            });
+            if (target) {
+              props.onNodeClick({
+                id: get(params, "data.target", ""),
+                filterStr: get(target, "filterStr", ""),
+              });
+            }
+          }
+        }
       }
     });
 
@@ -62,7 +85,7 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
       id={id}
       ref={ref}
       css={`
-        height: 870px;
+        height: 800px;
       `}
     />
   );

@@ -1,5 +1,6 @@
 /* third-party */
 import React, { useState } from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import { v4 } from "uuid";
 import sumBy from "lodash/sumBy";
@@ -10,11 +11,10 @@ import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { DrilldownModelUpdated } from "app/interfaces";
+import { DrilldownModelUpdated, BudgetsTreemapDataItem } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
-import { BudgetsTreemapDataItem } from "app/interfaces";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { useRecoilState } from "recoil";
 import { breadCrumbItems } from "app/state/recoil/atoms";
@@ -22,6 +22,8 @@ import { Grid } from "@material-ui/core";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { appColors } from "app/theme";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
+import { useCMSData } from "app/hooks/useCMSData";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -62,10 +64,9 @@ interface BudgetsFlowModuleProps {
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
+  const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 767px)");
   const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-
-  const [xsTooltipData, setXsTooltipData] =
-    React.useState<TreeMapNodeDatum | null>(null);
 
   const [reRouteDialog, setReRouteDialog] = useState({
     display: false,
@@ -174,26 +175,68 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   } else {
     if (props.vizLevel === 0) {
       vizComponent = (
-        <BudgetsFlow
-          data={{
-            nodes: props.nodes,
-            links: props.links,
-          }}
-          onNodeClick={(node: { id: string; filterStr: string }) => {
-            setBreadCrumbList([
-              ...breadCrumbList,
-              {
-                name: node.id,
-                path: location.pathname,
-                id: v4(),
-                vizLevel: 1,
-                vizSelected: node,
-              },
-            ]);
-            props.setVizLevel(1);
-            props.setVizSelected(node);
-          }}
-        />
+        <React.Fragment>
+          <Grid
+            container
+            css={`
+              > div {
+                color: ${appColors.COMMON.PRIMARY_COLOR_1};
+                font-size: 14px;
+
+                @media (max-width: 767px) {
+                  font-size: 10px;
+                }
+              }
+            `}
+            alignItems="baseline"
+            spacing={!isMobile ? 4 : undefined}
+          >
+            <Grid item xs={3}>
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+
+                  > svg {
+                    margin-left: 10px;
+                  }
+                `}
+              >
+                {get(cmsData, "componentsChartsBudgets.budget", "")}
+              </div>
+            </Grid>
+            <Grid item xs={3}>
+              {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel1", "")}
+            </Grid>
+            <Grid item xs={3} css="text-align: center;">
+              {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel2", "")}
+            </Grid>
+            <Grid item xs={3} css="text-align: right;">
+              {get(cmsData, "componentsChartsBudgets.flowCostCategory", "")}
+            </Grid>
+          </Grid>
+          <EchartBaseChart
+            type="sankey"
+            data={{
+              nodes: props.nodes,
+              links: props.links,
+            }}
+            onNodeClick={(node: any) => {
+              setBreadCrumbList([
+                ...breadCrumbList,
+                {
+                  name: node.id,
+                  path: location.pathname,
+                  id: v4(),
+                  vizLevel: 1,
+                  vizSelected: node,
+                },
+              ]);
+              props.setVizLevel(1);
+              props.setVizSelected(node);
+            }}
+          />
+        </React.Fragment>
       );
     } else if (props.vizLevel === 1) {
       vizComponent = (

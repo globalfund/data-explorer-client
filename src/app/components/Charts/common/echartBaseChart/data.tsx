@@ -5,6 +5,10 @@ import { CanvasRenderer } from "echarts/renderers";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { EchartsTreemapTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/treemap";
 import {
+  EchartsSankeyNodeTooltip,
+  EchartsSankeyLinkTooltip,
+} from "app/components/Charts/common/echartBaseChart/tooltips/sankey";
+import {
   MapChart,
   BarChart,
   LineChart,
@@ -31,12 +35,12 @@ echarts.use([
   VisualMapComponent,
 ]);
 
-type EchartChartTypes = "treemap";
+type EchartChartTypes = "treemap" | "sankey";
 
 export interface EchartBaseChartProps {
   data: any;
   type: EchartChartTypes;
-  onNodeClick?: (node: string, code?: string, name?: string) => void;
+  onNodeClick?: (node: any, code?: string, name?: string) => void;
 }
 
 function getTreemapConfig(data: any, cmsData: any) {
@@ -187,6 +191,115 @@ function getTreemapConfig(data: any, cmsData: any) {
   };
 }
 
+function getSankeyConfig(data: any) {
+  let nodes = data.nodes.map((node: any) => ({
+    ...node,
+    name: node.id,
+  }));
+  return {
+    series: [
+      {
+        type: "sankey",
+        data: nodes,
+        links: data.links,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 20,
+        nodeGap: 14,
+        nodeWidth: 12,
+        draggable: false,
+        nodeAlign: "left",
+        emphasis: {
+          focus: "adjacency",
+        },
+        itemStyle: {
+          borderWidth: 0,
+          color: appColors.BUDGETS_FLOW.SINGLE_NODE_BACKGROUND_COLOR,
+        },
+        lineStyle: {
+          opacity: 1,
+          curveness: 0.5,
+          color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+            { offset: 0.25, color: "#CDCDCD" },
+            { offset: 1, color: "#FEFEFE" },
+          ]),
+        },
+        levels: [
+          {
+            depth: 0,
+            label: {
+              position: "right",
+            },
+          },
+          {
+            depth: 1,
+            label: {
+              position: "right",
+              width: 150,
+              overflow: "break",
+            },
+          },
+          {
+            depth: 2,
+            label: {
+              position: "right",
+              width: 150,
+              overflow: "break",
+            },
+          },
+          {
+            depth: 3,
+            label: {
+              position: "left",
+              width: 150,
+              overflow: "break",
+            },
+          },
+        ],
+        label: {
+          show: true,
+          fontSize: 12,
+          color: appColors.BUDGETS_FLOW.TEXT_COLOR,
+          textBorderColor: appColors.BUDGETS_FLOW.TEXT_COLOR,
+        },
+      },
+    ],
+    tooltip: {
+      confine: true,
+      trigger: "item",
+      triggerOn: "mousemove",
+      formatter: (params: any) => {
+        const ct = document.createElement("div");
+        const content =
+          params.dataType === "node" ? (
+            <EchartsSankeyNodeTooltip
+              id={params.data.id}
+              components={params.data.components}
+            />
+          ) : (
+            <EchartsSankeyLinkTooltip
+              value={params.data.value}
+              source={params.data.source}
+              target={params.data.target}
+            />
+          );
+        ReactDOM.render(content, ct);
+        const result = ct.outerHTML;
+        ReactDOM.unmountComponentAtNode(ct);
+        return result;
+      },
+      extraCssText: `
+        padding: 20px;
+        border-style: none;
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+        background: ${appColors.BUDGETS_FLOW.TOOLTIP_BACKGROUND_COLOR};
+      `,
+    },
+  };
+}
+
 export function getChartConfigAsPerType(
   type: EchartChartTypes,
   data: any,
@@ -195,6 +308,8 @@ export function getChartConfigAsPerType(
   switch (type) {
     case "treemap":
       return getTreemapConfig(data, cmsData);
+    case "sankey":
+      return getSankeyConfig(data);
     default:
       return {};
   }
