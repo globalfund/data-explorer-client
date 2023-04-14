@@ -16,7 +16,6 @@ import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { BarComponent } from "app/components/Charts/Investments/TimeCycle/components/bar";
 import { InvestmentsTimeCycleProps } from "app/components/Charts/Investments/TimeCycle/data";
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
-import { NoDataBudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle/components/nodata";
 import {
   TooltipButton,
   XsContainer,
@@ -282,7 +281,6 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
         </Grid>
         {props.data.length === 0 ? (
           <div css="display: flex;justify-content: center;">
-            <NoDataBudgetsTimeCycle />
             <NoDataLabel />
           </div>
         ) : (

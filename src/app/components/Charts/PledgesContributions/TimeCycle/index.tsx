@@ -11,7 +11,6 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { getFinancialValueWithMetricPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
-import { NoDataBudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle/components/nodata";
 import { BarComponent } from "app/components/Charts/PledgesContributions/TimeCycle/components/bar";
 import { PledgesContributionsProps } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 import { PledgesContributionsTimeCycleTooltip } from "app/components/Charts/PledgesContributions/TimeCycle/components/tooltip";
@@ -169,7 +168,6 @@ export function PledgesContributionsTimeCycle(
         </Grid>
         {props.data.length === 0 ? (
           <React.Fragment>
-            <NoDataBudgetsTimeCycle />
             <NoDataLabel />
           </React.Fragment>
         ) : (

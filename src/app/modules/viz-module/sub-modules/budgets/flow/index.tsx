@@ -14,7 +14,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DrilldownModelUpdated, BudgetsTreemapDataItem } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
-import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { useRecoilState } from "recoil";
 import { breadCrumbItems } from "app/state/recoil/atoms";

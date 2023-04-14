@@ -19,7 +19,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
-import { BudgetsTimeCycle } from "app/components/Charts/Budgets/TimeCycle";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 import { BudgetsTreemapDataItem } from "app/interfaces";
 
