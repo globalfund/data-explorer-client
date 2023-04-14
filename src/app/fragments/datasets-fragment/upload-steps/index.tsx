@@ -13,11 +13,13 @@ import axios from "axios";
 import { useStoreActions } from "app/state/store/hooks";
 
 export default function DatasetUploadSteps() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState<number>(0);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [uploading, setUploading] = React.useState(false);
   const [uploadSuccess, setUploadSuccess] = React.useState(false);
+  const [processingError, setProcessingError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
+
   const [datasetId, setDatasetId] = React.useState("");
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
@@ -88,6 +90,7 @@ export default function DatasetUploadSteps() {
           })
           .catch((error) => {
             console.debug("Dataset upload error", error);
+            setProcessingError(true);
             setUploading(false);
             setUploadSuccess(false);
             setSelectedFile(null);
@@ -106,6 +109,8 @@ export default function DatasetUploadSteps() {
       })
       .catch((error) => {
         console.debug("Dataset creation error", error);
+        setProcessingError(true);
+
         setUploading(false);
         setUploadSuccess(false);
       });
@@ -130,13 +135,19 @@ export default function DatasetUploadSteps() {
           />
         );
       case 2:
-        return <Processing />;
+        return (
+          <Processing
+            setProcessingError={setProcessingError}
+            processingError={processingError}
+          />
+        );
       case 3:
         return (
           <PreviewFragment handleNext={handleNext} datasetId={datasetId} />
         );
       case 4:
         return <FinishedFragment datasetId={datasetId} />;
+
       default:
         return (
           <AddDatasetFragment
@@ -168,8 +179,16 @@ export default function DatasetUploadSteps() {
                 `}
               />
             )}
-            <div
+            <button
+              type="button"
+              onClick={() => {
+                if (activeStep > 0) {
+                  setActiveStep(index);
+                }
+              }}
               css={`
+                outline: none;
+                border: none;
                 height: 27px;
                 display: flex;
                 padding: 5px 16px;
@@ -183,7 +202,7 @@ export default function DatasetUploadSteps() {
               `}
             >
               {tab}
-            </div>
+            </button>
           </div>
         ))}
       </div>
