@@ -1,14 +1,11 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import sum from "lodash/sum";
 import find from "lodash/find";
 import { appColors } from "app/theme";
 import uniqueId from "lodash/uniqueId";
 import findIndex from "lodash/findIndex";
-import { ApexOptions } from "apexcharts";
 import { useHistory } from "react-router-dom";
-import ReactApexCharts from "react-apexcharts";
 import { useTitle, useMeasure } from "react-use";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
@@ -17,18 +14,12 @@ import { getIso3FromName } from "app/utils/getIso3FromName";
 import { PageLoader } from "app/modules/common/page-loader";
 import { XsContainer } from "app/components/Charts/common/styles";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
-import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
-import { NoDataAllocations } from "app/modules/viz-module/sub-modules/allocations/components/nodata";
+import { AllocationsTreemapDataItem } from "app/modules/viz-module/sub-modules/allocations/data";
 import { AllocationsRadialMobileTooltip } from "app/modules/viz-module/sub-modules/allocations/components/mobiletooltip";
-import {
-  getKeysPercentages,
-  AllocationsTreemapDataItem,
-} from "app/modules/viz-module/sub-modules/allocations/data";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -66,9 +57,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const keys = useStoreState(
     (state) => get(state.Allocations.data, "keys", []) as string[]
   );
-  const colors = useStoreState(
-    (state) => get(state.Allocations.data, "colors", []) as string[]
-  );
   const values = useStoreState(
     (state) => get(state.Allocations.data, "values", []) as number[]
   );
@@ -98,159 +86,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
-    percentages: number[];
-    colors: string[];
-  }>(getKeysPercentages(total, values));
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
   const [xsTooltipData, setXsTooltipData] = React.useState<any | null>(null);
-
-  const options: ApexOptions = {
-    plotOptions: {
-      radialBar: {
-        offsetY: 0,
-        startAngle: 0,
-        endAngle: 300,
-        hollow: {
-          margin: 5,
-          size: "50%",
-          background: "transparent",
-          image: undefined,
-        },
-        track: {
-          show: true,
-          strokeWidth: "1px",
-          background: appColors.ALLOCATIONS.RADIAL_TRACK_BACKGROUND_COLOR,
-        },
-        dataLabels: {
-          name: {
-            show: true,
-            color: appColors.ALLOCATIONS.RADIAL_DATA_LABELS_COLOR,
-            fontFamily: "GothamNarrow-Book",
-          },
-          value: {
-            show: true,
-            fontFamily: "GothamNarrow-Book",
-            formatter: (value: number) => {
-              const fkeyIndex = findIndex(
-                keysPercentagesColors.percentages,
-                (p: number) => p.toString() === value.toString()
-              );
-              if (fkeyIndex > -1) {
-                return formatFinancialValue(values[fkeyIndex]);
-              }
-              return "";
-            },
-          },
-          total: {
-            show: true,
-            fontFamily: "GothamNarrow-Bold",
-            formatter: () => formatFinancialValue(total),
-          },
-        },
-      },
-    },
-    colors,
-    labels: keys,
-    legend: {
-      show: true,
-      floating: true,
-      fontSize: !isMobile ? "14px" : "10px",
-      fontFamily: "GothamNarrow-Book",
-      fontWeight: "bold",
-      position: "right",
-      offsetX: width / 2,
-      offsetY: !isMobile ? 25 : 15,
-      markers: {
-        width: 0,
-      },
-      formatter: (seriesName: string, opts: any) => {
-        if (isMobile) {
-          return seriesName;
-        }
-        return `${seriesName}: ${formatLargeAmountsWithPrefix(
-          values[opts.seriesIndex]
-        )}`;
-      },
-      itemMargin: {
-        vertical: !isMobile ? 8 : 2,
-      },
-      onItemClick: {
-        toggleDataSeries: false,
-      },
-      onItemHover: {
-        highlightDataSeries: false,
-      },
-    },
-    responsive: [
-      {
-        breakpoint: 480,
-        options: {
-          legend: {
-            show: true,
-          },
-        },
-      },
-    ],
-  };
-
-  function onClick(this: Window, e: MouseEvent | TouchEvent) {
-    // @ts-ignore
-    if (e.target && e.target.parentNode && !vizSelected) {
-      // @ts-ignore
-      const key = e.target.parentNode.getAttribute("seriesName");
-      if (key) {
-        // @ts-ignore
-        const keySelected = e.target.getAttribute("selected");
-        if (keySelected === "true") {
-          setVizLevel(1);
-          setVizSelected(key);
-          addDataPathSteps([
-            {
-              id: uniqueId(),
-              name: key,
-              path: `${history.location.pathname}${history.location.search}`,
-              vizSelected: {
-                id: key,
-                filterStr: key,
-              },
-            },
-          ]);
-        } else if (isMobile || isTouchDevice()) {
-          setXsTooltipData({
-            label: key,
-            value: values[keys.indexOf(key)],
-          });
-        }
-        // @ts-ignore
-      } else if (e.target.className.baseVal === "apexcharts-radialbar-hollow") {
-        if (isMobile || isTouchDevice()) {
-          setXsTooltipData({
-            label: "Total",
-            value: sum(values),
-          });
-        } else {
-          setVizLevel(1);
-          setVizSelected("Total");
-          addDataPathSteps([
-            {
-              id: uniqueId(),
-              name: "Total",
-              path: `${history.location.pathname}${history.location.search}`,
-              vizSelected: {
-                id: "Total",
-                filterStr: "Total",
-              },
-            },
-          ]);
-        }
-      }
-    }
-  }
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -269,23 +109,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }, [props.code, appliedFilters, selectedPeriod]);
 
   React.useEffect(() => {
-    setKeysPercentagesColors(getKeysPercentages(total, values));
-  }, [total, values]);
-
-  React.useEffect(() => {
-    const items = document.getElementsByClassName("apexcharts-radial-series");
     if (vizSelected) {
-      [...items].forEach((item: Element) => {
-        const paths = item.getElementsByTagName("path");
-        if (paths.length > 0) {
-          if (item.getAttribute("seriesName") === vizSelected) {
-            // paths[0].style.stroke = "url(#diagonalHatch)";
-            paths[0].style.opacity = "1";
-          } else {
-            paths[0].style.opacity = "0.3";
-          }
-        }
-      });
       const filterString = getAPIFormattedFilters(
         props.code
           ? {
@@ -307,12 +131,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         }`,
       });
     } else {
-      [...items].forEach((item: Element) => {
-        const paths = item.getElementsByTagName("path");
-        if (paths.length > 0) {
-          paths[0].style.opacity = "1";
-        }
-      });
       clearDrilldownLevelData();
     }
   }, [vizSelected, selectedPeriod]);
@@ -336,13 +154,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
 
   React.useEffect(() => {
     fetchPeriodOptionsData({});
-
-    window.addEventListener("click", onClick);
-    window.addEventListener("touchstart", onClick);
-    return () => {
-      window.removeEventListener("click", onClick);
-      window.removeEventListener("touchstart", onClick);
-    };
   }, []);
 
   React.useEffect(() => {
@@ -386,27 +197,28 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             }
           `}
         >
-          <div
-            ref={ref}
-            id="allocations-radial-bar"
-            css={`
-              width: 100%;
-            `}
-          >
-            {total === 0 ? (
-              <div css="display: flex;justify-content: center;">
-                <NoDataLabel />
-                <NoDataAllocations />
-              </div>
-            ) : (
-              <ReactApexCharts
-                type="radialBar"
-                options={options}
-                height={isMobile ? 400 : 580}
-                series={keysPercentagesColors.percentages}
-              />
-            )}
-          </div>
+          <EchartBaseChart
+            type="polarbar"
+            data={{
+              keys: [...keys].reverse(),
+              values: [...values].reverse(),
+            }}
+            onNodeClick={(key: string) => {
+              setVizLevel(1);
+              setVizSelected(key);
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: key,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  vizSelected: {
+                    id: key,
+                    filterStr: key,
+                  },
+                },
+              ]);
+            }}
+          />
           {(isMobile || isTouchDevice()) && xsTooltipData && (
             <XsContainer id="mobile-tooltip-container">
               <div
@@ -536,7 +348,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         Allocations | {selectedPeriod}
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-
       {vizComponent}
     </div>
   );

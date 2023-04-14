@@ -1,9 +1,12 @@
+import get from "lodash/get";
 import ReactDOM from "react-dom";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { EchartsTreemapTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/treemap";
+import { EchartsPolarBarTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/polarbar";
 import {
   EchartsSankeyNodeTooltip,
   EchartsSankeyLinkTooltip,
@@ -35,7 +38,7 @@ echarts.use([
   VisualMapComponent,
 ]);
 
-type EchartChartTypes = "treemap" | "sankey";
+type EchartChartTypes = "treemap" | "sankey" | "polarbar";
 
 export interface EchartBaseChartProps {
   data: any;
@@ -300,6 +303,80 @@ function getSankeyConfig(data: any) {
   };
 }
 
+function getPolarBarConfig(data: any, cmsData: any) {
+  return {
+    colorBy: "data",
+    color: appColors.ALLOCATIONS.POLAR_BAR_COLORS,
+    polar: {
+      radius: [30, "80%"],
+    },
+    angleAxis: {
+      startAngle: 75,
+      max: (value: any) => value.max * 1.2,
+      axisLabel: {
+        formatter: (value: any) => formatLargeAmountsWithPrefix(value),
+      },
+    },
+    radiusAxis: {
+      type: "category",
+      data: data.keys,
+      axisLabel: {
+        formatter: (value: any, index: number) => {
+          const nValue = data.values[index];
+          return `${value}\n${formatLargeAmountsWithPrefix(nValue)}`;
+        },
+      },
+    },
+    series: {
+      type: "bar",
+      data: data.values,
+      coordinateSystem: "polar",
+      barWidth: 60,
+      label: {
+        show: false,
+      },
+    },
+    tooltip: {
+      show: true,
+      confine: true,
+      trigger: "item",
+      triggerOn: "mousemove",
+      formatter: (params: any) => {
+        const ct = document.createElement("div");
+        ReactDOM.render(
+          <EchartsPolarBarTooltip
+            data={{
+              header: `Allocation ${get(
+                JSON.parse(
+                  sessionStorage.getItem(
+                    "[EasyPeasyStore][0][ToolBoxPanelAllocationsPeriodState]"
+                  ) || ""
+                ),
+                "data.value",
+                ""
+              )}`,
+              key: params.name,
+              value: params.value,
+            }}
+            cmsData={cmsData}
+          />,
+          ct
+        );
+        const result = ct.outerHTML;
+        ReactDOM.unmountComponentAtNode(ct);
+        return result;
+      },
+      extraCssText: `
+        padding: 20px;
+        border-style: none;
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+        background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
+      `,
+    },
+  };
+}
+
 export function getChartConfigAsPerType(
   type: EchartChartTypes,
   data: any,
@@ -310,6 +387,8 @@ export function getChartConfigAsPerType(
       return getTreemapConfig(data, cmsData);
     case "sankey":
       return getSankeyConfig(data);
+    case "polarbar":
+      return getPolarBarConfig(data, cmsData);
     default:
       return {};
   }

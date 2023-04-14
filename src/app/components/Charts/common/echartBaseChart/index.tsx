@@ -10,6 +10,12 @@ import {
 
 const id = "echart-container";
 
+const height = {
+  treemap: 800,
+  sankey: 800,
+  polarbar: 700,
+};
+
 export function EchartBaseChart(props: EchartBaseChartProps) {
   const cmsData = useCMSData({ returnData: true });
 
@@ -73,6 +79,8 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
               });
             }
           }
+        } else if (props.type === "polarbar") {
+          props.onNodeClick(get(params, "name", ""));
         }
       }
     });
@@ -85,7 +93,7 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
       id={id}
       ref={ref}
       css={`
-        height: 800px;
+        height: ${height[props.type]}px;
       `}
     />
   );
