@@ -1,6 +1,5 @@
 import React from "react";
 import { v4 } from "uuid";
-import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import { useUpdateEffect } from "react-use";
 import { useParams } from "react-router-dom";
@@ -11,10 +10,12 @@ import { PlaceHolder } from "app/modules/report-module/views/create";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import { ReportEditViewProps } from "app/modules/report-module/views/edit/data";
-import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
+import RowFrame, {
+  Divider,
+} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 
 export function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
@@ -71,12 +72,7 @@ export function ReportEditView(props: ReportEditViewProps) {
         id: v4(),
         structure: rowFrame.structure,
         frame: isDivider ? (
-          <hr
-            css={`
-              margin: 0;
-              border: 1px solid #e4e4e4;
-            `}
-          />
+          <Divider delete={() => deleteFrame(index)} />
         ) : (
           <RowFrame
             rowIndex={index}

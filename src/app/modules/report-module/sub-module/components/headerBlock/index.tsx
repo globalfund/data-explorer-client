@@ -188,6 +188,7 @@ export default function HeaderBlock(props: Props) {
           <Box height={17} />
           <div
             css={`
+              width: 60%;
               color: ${props.headerDetails.descriptionColor} !important;
               font-size: 14px;
               font-weight: 400;

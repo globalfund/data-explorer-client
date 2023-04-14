@@ -57,6 +57,7 @@ export function useChartsRawData(props: {
   setVisualOptions: (value: any) => void;
   chartFromAPI: ChartRenderedItem | null;
   setChartFromAPI: (value: ChartRenderedItem) => void;
+  inChartWrapper?: boolean;
 }) {
   const { visualOptions, chartFromAPI, setVisualOptions, setChartFromAPI } =
     props;
@@ -173,7 +174,7 @@ export function useChartsRawData(props: {
   }
 
   useMount(() => {
-    if (isEditMode && page !== "new") {
+    if (isEditMode && page !== "new" && !props.inChartWrapper) {
       loadDataFromAPI();
     }
   });
@@ -186,7 +187,7 @@ export function useChartsRawData(props: {
   }, [view]);
 
   React.useEffect(() => {
-    if (page !== "new" && !isEditMode) {
+    if (!props.inChartWrapper && page !== "new" && !isEditMode) {
       loadDataFromAPI();
     }
   }, [page, isEditMode]);
@@ -194,6 +195,7 @@ export function useChartsRawData(props: {
   useUpdateEffect(() => {
     if (
       !loading &&
+      !props.inChartWrapper &&
       (page === "new" || isEditMode) &&
       checkMappingAndDatasetIdNotEmpty([[mapping]], [[{ dataset }]], 0, [
         [false],

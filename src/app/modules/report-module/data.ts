@@ -40,3 +40,6 @@ export const emptyReport: ReportModel = {
   descriptionColor: "#ffffff",
   dateColor: "#ffffff",
 };
+
+export const itemSpacing = "30px";
+export const containerGap = "60px";

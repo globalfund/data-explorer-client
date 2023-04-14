@@ -111,7 +111,8 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
                 // @ts-ignore
                 domRef.current,
                 selectedChartType || "echartsBarchart",
-                visualOptions
+                visualOptions,
+                "common-chart-render-container"
               );
             }
             resolve(1);

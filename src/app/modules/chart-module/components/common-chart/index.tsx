@@ -14,6 +14,13 @@ interface Props {
   setRawViz?: React.Dispatch<any>;
   setVisualOptions: (value: any) => void;
   containerRef: React.RefObject<HTMLDivElement>;
+  chartId?: string;
+  renderedChartType?:
+    | "echartsBarchart"
+    | "echartsGeomap"
+    | "echartsLinechart"
+    | "echartsSankey"
+    | "echartsTreemap";
 }
 
 export function CommonChart(props: Props) {
@@ -70,13 +77,15 @@ export function CommonChart(props: Props) {
           props.renderedChartMappedData,
           // @ts-ignore
           domRef.current,
-          chartType as
-            | "echartsBarchart"
-            | "echartsGeomap"
-            | "echartsLinechart"
-            | "echartsSankey"
-            | "echartsTreemap",
-          props.visualOptions
+          props.renderedChartType ||
+            (chartType as
+              | "echartsBarchart"
+              | "echartsGeomap"
+              | "echartsLinechart"
+              | "echartsSankey"
+              | "echartsTreemap"),
+          props.visualOptions,
+          `common-chart-render-container-${props.chartId || "1"}`
         );
       } catch (e) {
         if (process.env.NODE_ENV === "development") {
@@ -97,7 +106,7 @@ export function CommonChart(props: Props) {
     content = (
       <div
         ref={domRef}
-        id="common-chart-render-container"
+        id={`common-chart-render-container-${props.chartId || "1"}`}
         css={`
           overflow-x: auto;
           margin-top: 40px;
@@ -124,7 +133,7 @@ export function CommonChart(props: Props) {
       >
         <div
           ref={domRef}
-          id="common-chart-render-container"
+          id={`common-chart-render-container-${props.chartId || "1"}`}
           css={`
             width: auto !important;
             height: ${get(props.visualOptions, "height", 500)}px;
