@@ -19,7 +19,7 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
     data: { [key: string]: number | string | null | boolean }[]
   ) => {
     let columns = [];
-    for (let key in data[0]) {
+    for (let key in data?.[0]) {
       columns.push({ key: key, type: typeof data[0][key] });
     }
     return columns;

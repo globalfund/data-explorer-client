@@ -9,7 +9,7 @@ interface Props {
   datasetId: string;
 }
 export default function PreviewFragment(props: Props) {
-  const [openToolboxPanel, setOpenToolboxPanel] = useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = useState(true);
   const onCloseBtnClick = () => {
     setOpenToolboxPanel(!openToolboxPanel);
   };
@@ -24,6 +24,7 @@ export default function PreviewFragment(props: Props) {
   React.useEffect(() => {
     loadDataset(`data-themes/sample-data/${props.datasetId}`);
   }, [props.datasetId]);
+  console.log(sampleData, "sampleData");
 
   return (
     <div>
