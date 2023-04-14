@@ -153,8 +153,9 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   } else {
     if (props.vizLevel === 0) {
       vizComponent = (
-        <BudgetsTimeCycle
+        <EchartBaseChart
           data={props.data}
+          type="horizontalbar"
           onNodeClick={(node: string) => {
             setBreadCrumbList([
               ...breadCrumbList,

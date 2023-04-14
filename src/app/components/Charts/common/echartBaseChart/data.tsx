@@ -1,5 +1,7 @@
 import get from "lodash/get";
+import find from "lodash/find";
 import ReactDOM from "react-dom";
+import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -24,6 +26,7 @@ import {
   TooltipComponent,
   VisualMapComponent,
 } from "echarts/components";
+import { EchartsHorizontalBarTooltip } from "./tooltips/horizontalbar";
 
 echarts.use([
   BarChart,
@@ -38,7 +41,7 @@ echarts.use([
   VisualMapComponent,
 ]);
 
-type EchartChartTypes = "treemap" | "sankey" | "polarbar";
+type EchartChartTypes = "treemap" | "sankey" | "polarbar" | "horizontalbar";
 
 export interface EchartBaseChartProps {
   data: any;
@@ -377,6 +380,101 @@ function getPolarBarConfig(data: any, cmsData: any) {
   };
 }
 
+function getHorizontalBarConfig(data: any, cmsData: any) {
+  let components: any[] = [];
+
+  data.forEach((item: any) => {
+    const itemComponentKeys = filter(
+      Object.keys(item),
+      (key) =>
+        key !== "year" && key !== "amount" && !key.toString().includes("Color")
+    );
+    itemComponentKeys.forEach((key: any) => {
+      if (!find(components, { name: key })) {
+        components.push({
+          name: key,
+          type: "bar",
+          stack: "total",
+          data: data.map((item: any) => ({
+            value: item[key],
+            itemStyle: { color: item[`${key}Color`] },
+          })),
+          barWidth: 24,
+          emphasis: {
+            focus: "none",
+          },
+        });
+      }
+    });
+  });
+
+  return {
+    colorBy: "data",
+    xAxis: {
+      name: "values in USD",
+      type: "value",
+      nameLocation: "start",
+      nameTextStyle: {
+        color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+      },
+      axisLabel: {
+        formatter: (value: any) =>
+          formatLargeAmountsWithPrefix(value).replace("$", ""),
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+    },
+    yAxis: {
+      type: "category",
+      data: data.map((item: any) => item.year),
+      axisLabel: {
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+    },
+    series: components,
+    legend: {
+      right: 0,
+      show: true,
+      data: components.map((item: any) => {
+        const color = find(item.data, (d: any) => d.value).itemStyle.color;
+        return {
+          name: item.name,
+          icon: "rect",
+          itemStyle: { color },
+        };
+      }),
+    },
+    tooltip: {
+      show: true,
+      confine: true,
+      trigger: "item",
+      triggerOn: "mousemove",
+      formatter: (params: any) => {
+        const tdata = find(data, { year: params.name });
+        if (!data) return;
+        const ct = document.createElement("div");
+        ReactDOM.render(
+          <EchartsHorizontalBarTooltip data={tdata} cmsData={cmsData} />,
+          ct
+        );
+        const result = ct.outerHTML;
+        ReactDOM.unmountComponentAtNode(ct);
+        return result;
+      },
+      extraCssText: `
+        padding: 20px;
+        border-style: none;
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+        background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
+      `,
+    },
+  };
+}
+
 export function getChartConfigAsPerType(
   type: EchartChartTypes,
   data: any,
@@ -389,6 +487,8 @@ export function getChartConfigAsPerType(
       return getSankeyConfig(data);
     case "polarbar":
       return getPolarBarConfig(data, cmsData);
+    case "horizontalbar":
+      return getHorizontalBarConfig(data, cmsData);
     default:
       return {};
   }

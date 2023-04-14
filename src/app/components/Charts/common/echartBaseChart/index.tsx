@@ -14,6 +14,7 @@ const height = {
   treemap: 800,
   sankey: 800,
   polarbar: 700,
+  horizontalbar: 700,
 };
 
 export function EchartBaseChart(props: EchartBaseChartProps) {
@@ -80,6 +81,8 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
             }
           }
         } else if (props.type === "polarbar") {
+          props.onNodeClick(get(params, "name", ""));
+        } else if (props.type === "horizontalbar") {
           props.onNodeClick(get(params, "name", ""));
         }
       }
