@@ -24,7 +24,6 @@ export default function PreviewFragment(props: Props) {
   React.useEffect(() => {
     loadDataset(`data-themes/sample-data/${props.datasetId}`);
   }, [props.datasetId]);
-  console.log(sampleData, "sampleData");
 
   return (
     <div>

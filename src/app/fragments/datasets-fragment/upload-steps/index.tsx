@@ -116,8 +116,6 @@ export default function DatasetUploadSteps() {
       });
   };
 
-  console.log(activeStep, "active step");
-
   const currentStep = () => {
     switch (activeStep) {
       case 0:
