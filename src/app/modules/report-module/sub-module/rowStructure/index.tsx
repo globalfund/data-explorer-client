@@ -124,7 +124,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         )}
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
-            key={row.rowId}
+            key={`${row.rowId}-${index}`}
             width={row.width}
             itemIndex={index}
             height={props.height}
@@ -138,7 +138,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   );
 }
 
-export const Box = (props: {
+const Box = (props: {
   width: string;
   height: string;
   rowIndex: number;
@@ -239,6 +239,7 @@ export const Box = (props: {
     if (displayChart && chartId) {
       return (
         <div
+          key={chartId}
           css={`
             padding: 24px;
             background: #fff;

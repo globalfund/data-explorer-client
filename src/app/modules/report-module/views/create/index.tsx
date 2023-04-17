@@ -4,10 +4,12 @@ import { useDrop } from "react-dnd";
 import { useRecoilValue } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
+import RowFrame, {
+  Divider,
+} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
   ReportCreateViewProps,
   IFramesArray,
@@ -218,14 +220,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
           const tempIndex = prev.findIndex((frame) => frame.id === props.index);
           prev.splice(tempIndex + 1, 0, {
             id: v4(),
-            frame: (
-              <hr
-                css={`
-                  border: 1px solid #e4e4e4;
-                  margin: 20px 0;
-                `}
-              />
-            ),
+            frame: <Divider delete={() => props.deleteFrame(tempIndex + 1)} />,
             content: ["divider"],
             contentTypes: ["divider"],
             structure: null,

@@ -32,11 +32,16 @@ export function ReportChartWrapper(props: Props) {
     return get(chartFromAPI, "ssr", false);
   }, [chartFromAPI]);
 
+  const renderedChartType = React.useMemo(() => {
+    return get(chartFromAPI, "vizType", "echartsBarchart");
+  }, [chartFromAPI]);
+
   const { loadDataFromAPI } = useChartsRawData({
     visualOptions,
     setVisualOptions,
     setChartFromAPI,
     chartFromAPI,
+    inChartWrapper: true,
   });
 
   React.useEffect(() => {
@@ -98,12 +103,14 @@ export function ReportChartWrapper(props: Props) {
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
       <CommonChart
+        chartId={props.id}
         setRawViz={setRawViz}
         containerRef={containerRef}
         renderedChart={renderedChart}
         visualOptions={visualOptions}
         renderedChartSsr={renderedChartSsr}
         setVisualOptions={setVisualOptions}
+        renderedChartType={renderedChartType}
         renderedChartMappedData={renderedChartMappedData}
       />
     </div>
