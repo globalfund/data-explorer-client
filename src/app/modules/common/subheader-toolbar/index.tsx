@@ -76,6 +76,7 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
 export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
+
   const [_, setHomeTab] = useRecoilState(homeDisplayAtom);
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
@@ -267,117 +268,123 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       />
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
-          <input
-            value={props.name}
-            placeholder="Title"
-            css={styles.nameInput}
-            onChange={onNameChange}
-            style={
-              page !== "new" && !view
-                ? {
-                    pointerEvents: "none",
-                  }
-                : {}
-            }
-          />
-          <div css={styles.iconbtns}>
-            <IconButton onClick={handleClick}>
-              <ShareIcon htmlColor="#262c34" />
-            </IconButton>
-            <Popover
-              id={id}
-              open={open}
-              anchorEl={anchorEl}
-              onClose={handleClose}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              css={`
-                .MuiPaper-root {
-                  border-radius: 10px;
-                  background: #495057;
-                }
-              `}
-            >
-              <div css={styles.sharePopup}>
-                <FormControlLabel
-                  value="public-theme"
-                  label="Public theme"
-                  labelPlacement="start"
-                  control={
-                    <Switch
-                      color="primary"
-                      checked={isPublicTheme}
-                      onChange={() => setIsPublicTheme(!isPublicTheme)}
-                    />
-                  }
-                />
-                <Divider />
-                <CopyToClipboard
-                  text={window.location.href}
-                  onCopy={handleCopy}
-                >
-                  <Button startIcon={<LinkIcon />}>Copy link</Button>
-                </CopyToClipboard>
-              </div>
-            </Popover>
-            {(page === "new" || view) && (
-              <React.Fragment>
-                <IconButton
-                  component={Link}
-                  to={`/${props.pageType}/${page}/preview`}
-                  disabled={
-                    props.forceEnablePreviewSave
-                      ? !props.forceEnablePreviewSave
-                      : !isPreviewEnabled
-                  }
-                  css={`
-                    :disabled {
-                      opacity: 0.5;
+          {view === "initial" ? (
+            <p>Select your report template</p>
+          ) : (
+            <input
+              value={props.name}
+              placeholder="Title"
+              css={styles.nameInput}
+              onChange={onNameChange}
+              style={
+                page !== "new" && !view
+                  ? {
+                      pointerEvents: "none",
                     }
-                  `}
-                >
-                  <svg width="20" height="19" viewBox="0 0 20 19">
-                    <rect width="20" height="19" rx="3" fill="#262C34" />
-                    <path
-                      fill="#EFEFEF"
-                      d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
-                    />
-                  </svg>
-                </IconButton>
-                <IconButton
-                  onClick={onSave}
-                  disabled={
-                    props.forceEnablePreviewSave
-                      ? !props.forceEnablePreviewSave
-                      : !isSavedEnabled
+                  : {}
+              }
+            />
+          )}
+          {view !== "initial" && (
+            <div css={styles.iconbtns}>
+              <IconButton onClick={handleClick}>
+                <ShareIcon htmlColor="#262c34" />
+              </IconButton>
+              <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                  vertical: "bottom",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                css={`
+                  .MuiPaper-root {
+                    border-radius: 10px;
+                    background: #495057;
                   }
-                  css={`
-                    :disabled {
-                      opacity: 0.5;
+                `}
+              >
+                <div css={styles.sharePopup}>
+                  <FormControlLabel
+                    value="public-theme"
+                    label="Public theme"
+                    labelPlacement="start"
+                    control={
+                      <Switch
+                        color="primary"
+                        checked={isPublicTheme}
+                        onChange={() => setIsPublicTheme(!isPublicTheme)}
+                      />
                     }
-                  `}
-                >
-                  <SaveIcon htmlColor="#262c34" />
-                </IconButton>
-              </React.Fragment>
-            )}
-            {page !== "new" && !view && (
-              <React.Fragment>
-                <IconButton
-                  component={Link}
-                  to={`/${props.pageType}/${page}/edit`}
-                >
-                  <EditIcon htmlColor="#262c34" />
-                </IconButton>
-              </React.Fragment>
-            )}
-          </div>
+                  />
+                  <Divider />
+                  <CopyToClipboard
+                    text={window.location.href}
+                    onCopy={handleCopy}
+                  >
+                    <Button startIcon={<LinkIcon />}>Copy link</Button>
+                  </CopyToClipboard>
+                </div>
+              </Popover>
+              {(page === "new" || view) && (
+                <React.Fragment>
+                  <IconButton
+                    component={Link}
+                    to={`/${props.pageType}/${page}/preview`}
+                    disabled={
+                      props.forceEnablePreviewSave
+                        ? !props.forceEnablePreviewSave
+                        : !isPreviewEnabled
+                    }
+                    css={`
+                      :disabled {
+                        opacity: 0.5;
+                      }
+                    `}
+                  >
+                    <svg width="20" height="19" viewBox="0 0 20 19">
+                      <rect width="20" height="19" rx="3" fill="#262C34" />
+                      <path
+                        fill="#EFEFEF"
+                        d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
+                      />
+                    </svg>
+                  </IconButton>
+                  <IconButton
+                    onClick={onSave}
+                    disabled={
+                      props.forceEnablePreviewSave
+                        ? !props.forceEnablePreviewSave
+                        : !isSavedEnabled
+                    }
+                    css={`
+                      :disabled {
+                        opacity: 0.5;
+                      }
+                    `}
+                  >
+                    <SaveIcon htmlColor="#262c34" />
+                  </IconButton>
+                </React.Fragment>
+              )}
+              {page !== "new" && !view && (
+                <React.Fragment>
+                  <IconButton
+                    component={Link}
+                    to={`/${props.pageType}/${page}/edit`}
+                  >
+                    <EditIcon htmlColor="#262c34" />
+                  </IconButton>
+                </React.Fragment>
+              )}
+            </div>
+          )}
         </div>
       </Container>
     </div>

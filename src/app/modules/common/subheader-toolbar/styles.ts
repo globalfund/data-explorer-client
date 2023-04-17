@@ -19,6 +19,13 @@ export const styles = {
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+    p {
+      font-family: "Inter";
+      font-style: normal;
+      font-weight: 700;
+      font-size: 24px;
+      color: #231d2c;
+    }
     @media (max-width: 1280px) {
       margin-left: 0;
       width: calc(100vw - 400px);

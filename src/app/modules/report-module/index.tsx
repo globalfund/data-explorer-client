@@ -332,7 +332,7 @@ export default function ReportModule() {
             </div>
             <div
               css={`
-                height: 55vh;
+                height: calc(100vh - 450px);
               `}
             />
             <div

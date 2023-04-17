@@ -37,8 +37,9 @@ export const TemplateItem = ({
     <div
       css={`
         padding: 16px;
+        background: #ffffff;
         border: 1px solid ${value === currentValue ? "#6061e5" : "transparent"};
-
+        width: 296px;
         &:hover {
           cursor: pointer;
           border-color: #6061e5;
