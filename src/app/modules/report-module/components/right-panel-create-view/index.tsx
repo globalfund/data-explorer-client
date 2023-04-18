@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { EditorState } from "draft-js";
-import { useRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilState } from "recoil";
 import Paper from "@material-ui/core/Paper";
 import MuiButton from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
+import { ReactComponent as DividerIcon } from "../../asset/dividerIcon.svg";
 import {
   isDividerOrRowFrameDraggingAtom,
   reportRightPanelViewAtom,
@@ -106,28 +107,21 @@ export const ReportElementsType = {
   CHART: "chart",
 };
 
+interface IHeaderDeatils {
+  title: string;
+  showHeader: boolean;
+  description: EditorState;
+  backgroundColor: string;
+  titleColor: string;
+  descriptionColor: string;
+  dateColor: string;
+}
 interface Props {
   showHeaderItem: boolean;
-  headerDetails: {
-    title: string;
-    showHeader: boolean;
-    description: EditorState;
-    backgroundColor: string;
-    titleColor: string;
-    descriptionColor: string;
-    dateColor: string;
-  };
-  setHeaderDetails: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      showHeader: boolean;
-      description: EditorState;
-      backgroundColor: string;
-      titleColor: string;
-      descriptionColor: string;
-      dateColor: string;
-    }>
-  >;
+  appliedHeaderDetails: IHeaderDeatils;
+  setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
+  headerDetails: IHeaderDeatils;
+  setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
 }
 
 export function ReportRightPanelCreateView(props: Props) {
@@ -150,7 +144,7 @@ export function ReportRightPanelCreateView(props: Props) {
     },
     {
       elementType: ReportElementsType.DIVIDER,
-      leftIcon: <ArrowRightAltIcon />,
+      leftIcon: <DividerIcon />,
       previewImg: DividerPreviewImg,
       name: "Divider",
     },
@@ -167,6 +161,7 @@ export function ReportRightPanelCreateView(props: Props) {
       css={`
         width: 100%;
         display: flex;
+        height: 100%;
         flex-direction: column;
       `}
     >
@@ -175,6 +170,7 @@ export function ReportRightPanelCreateView(props: Props) {
           width: 100%;
           display: flex;
           flex-direction: row;
+          display: ${currentView === "editHeader" ? "none" : "block"};
         `}
       >
         <Button
@@ -366,13 +362,18 @@ function ReportRightPanelCreateViewChartList() {
           overflow-y: auto;
           padding: 18px 23px;
           flex-direction: column;
+
           height: calc(100vh - 48px - 50px - 52px - 60px);
           max-height: calc(100vh - 48px - 50px - 52px - 60px);
+          &::-webkit-scrollbar {
+            display: none;
+          }
         `}
       >
         {chartList.map((chart) => (
           <ChartItem
             key={chart.id}
+            chartList={chartList}
             id={chart.id}
             name={chart.name}
             vizType={chart.vizType}
@@ -430,13 +431,17 @@ function ElementItem(props: {
 
 function ChartItem(props: {
   elementType: string;
+  chartList: any[];
   id: string;
   name: string;
   vizType: string;
   datasetId: string;
   createdDate: string;
 }) {
-  const [{ isDragging }, drag] = useDrag(() => ({
+  const [draggedItem, setDraggedItem] = React.useState<string>();
+  const dragged: string[] = [];
+
+  const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: props.elementType,
     item: {
       type: props.elementType,
@@ -445,57 +450,79 @@ function ChartItem(props: {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
+    canDrag: () => {
+      const pickedItem = dragged.find((item) => item == props.id);
+      setDraggedItem(pickedItem);
+
+      if (pickedItem) {
+        return false;
+      } else {
+        return true;
+      }
+    },
+    end: (item, monitor) => {
+      const dropped = monitor.didDrop();
+      if (dropped) {
+        dragged.push(item.value);
+      }
+    },
   }));
 
   return (
-    <div
-      ref={drag}
-      css={`
-        width: 100%;
-        cursor: grab;
-        height: 125px;
-        font-size: 12px;
-        background: #fff;
-        user-select: none;
-        padding: 16px 25px;
+    <>
+      <div
+        ref={drag}
+        css={`
+          width: 100%;
+          cursor: grab;
+          height: 125px;
+          font-size: 12px;
+          background: #fff;
+          user-select: none;
+          padding: 16px 25px;
 
-        > div {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
+          > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
 
-          :first-of-type {
-            font-size: 14px;
-            font-weight: 700;
+            :first-of-type {
+              font-size: 14px;
+              font-weight: 700;
+            }
           }
-        }
-      `}
-    >
-      <div>{props.name}</div>
-      <div>
-        <div>Chart type</div>
-        <div>{props.vizType}</div>
+        `}
+      >
+        <p> {draggedItem && "Added"}</p>
+        <div>{props.name}</div>
+        <div>
+          <div>Chart type</div>
+          <div>{props.vizType}</div>
+        </div>
+        <div>
+          <div>Dataset</div>
+          <div>{props.datasetId}</div>
+        </div>
+        <div>
+          <div>Creation date</div>
+          <div>{moment(props.createdDate).format("DD-MM-YYYY")}</div>
+        </div>
       </div>
-      <div>
-        <div>Dataset</div>
-        <div>{props.datasetId}</div>
-      </div>
-      <div>
-        <div>Creation date</div>
-        <div>{moment(props.createdDate).format("DD-MM-YYYY")}</div>
-      </div>
-    </div>
+    </>
   );
 }
 
 function EditHeaderPanelView(props: Props) {
+  const [_, setCurrentView] = useRecoilState(reportRightPanelViewAtom);
   return (
     <div
       css={`
         width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
+        position: relative;
       `}
     >
       <div
@@ -594,6 +621,50 @@ function EditHeaderPanelView(props: Props) {
             label="Date color"
           />
         </Paper>
+      </div>
+
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          position: absolute;
+          bottom: 0;
+        `}
+      >
+        <Button
+          onClick={() => {
+            props.setHeaderDetails(props.appliedHeaderDetails);
+
+            setCurrentView("elements");
+          }}
+          css={`
+            background: #cfd4da;
+            :hover {
+              color: #fff;
+            }
+          `}
+        >
+          <p
+            css={`
+              color: #70777e;
+            `}
+          >
+            Cancel
+          </p>
+        </Button>
+        <Button
+          onClick={() => {
+            props.setAppliedHeaderDetails(props.headerDetails);
+            setCurrentView("elements");
+          }}
+          css={`
+            background: #262c34;
+            color: #ffffff;
+          `}
+        >
+          Apply
+        </Button>
       </div>
     </div>
   );

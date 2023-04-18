@@ -95,15 +95,15 @@ export const styles = {
     }
   `,
   iconbtns: css`
-    right: 0;
+    right: 29px;
     display: flex;
     position: absolute;
     flex-direction: row;
 
     > a,
     button {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       padding: 9px;
     }
   `,

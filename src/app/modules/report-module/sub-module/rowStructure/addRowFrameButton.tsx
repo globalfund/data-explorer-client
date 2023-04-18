@@ -33,6 +33,7 @@ interface Props {
 }
 
 export default function AddRowFrameButton(props: Props) {
+  const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
   const handleAddrowStructureBlock = () => {
     props.setFramesArray([
       ...props.framesArray,
@@ -60,22 +61,52 @@ export default function AddRowFrameButton(props: Props) {
     });
   };
   return (
-    <div
-      css={`
-        border: 1px dashed #adb5bd;
-        width: 100%;
-        height: 48px;
-        display: flex;
-        justify-content: center;
-      `}
-    >
-      <IconButton
-        onClick={handleAddrowStructureBlock}
-        disableRipple={true}
-        disabled={props.rowStructureType.disableAddRowStructureButton}
+    <>
+      <div
+        css={`
+          width: 100%;
+        `}
       >
-        <PlusIcon />
-      </IconButton>
-    </div>
+        <div
+          css={`
+            border: 1px dashed #adb5bd;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+          `}
+        >
+          <IconButton
+            onClick={handleAddrowStructureBlock}
+            disableRipple={true}
+            disabled={props.rowStructureType.disableAddRowStructureButton}
+            onMouseEnter={() => setDisplayTooltip(true)}
+            onMouseLeave={() => setDisplayTooltip(false)}
+          >
+            <PlusIcon />
+          </IconButton>
+        </div>
+
+        {displayTooltip && (
+          <div
+            css={`
+              background-color: #626262;
+              border-radius: 4px;
+              font-size: 12px;
+              font-family: "Inter";
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 127px;
+              height: 23px;
+              margin: auto;
+              color: white;
+            `}
+          >
+            <p>Add new row frame</p>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

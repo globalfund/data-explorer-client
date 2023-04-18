@@ -47,13 +47,15 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const handlers = viewOnlyMode
     ? {}
     : {
-        onMouseEnter: () => setHandleDisplay(true),
+        onMouseEnter: () => {
+          setHandleDisplay(true);
+        },
         onMouseLeave: () => setHandleDisplay(false),
       };
 
   const border =
-    viewOnlyMode && handleDisplay
-      ? "0.722415px dashed #adb5bd"
+    !viewOnlyMode && handleDisplay
+      ? "0.722415px dashed  #ADB5BD"
       : "0.722415px dashed transparent";
 
   return (
@@ -191,6 +193,7 @@ const Box = (props: {
         setChartId(item.value);
         setDisplayChart(true);
         setDisplayTextBox(false);
+        monitor.getDropResult();
       }
     },
   }));
@@ -292,8 +295,9 @@ const Box = (props: {
     <div
       css={`
         background: #dfe3e6;
-        width: ${props.width}};
+        width: ${props.width};
         height: ${props.height};
+        border: ${isOver ? "1px solid #231D2C" : "none"};
       `}
       ref={drop}
     >

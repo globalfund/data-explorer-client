@@ -48,6 +48,9 @@ export default function ReportModule() {
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
+  const [appliedHeaderDetails, setAppliedHeaderDetails] =
+    React.useState(headerDetails);
+
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
 
   const handleRowFrameItemAddition = (
@@ -224,11 +227,13 @@ export default function ReportModule() {
       patchId: page === "new" ? undefined : page,
       values: {
         name: reportName,
-        showHeader: headerDetails.showHeader,
-        title: headerDetails.showHeader ? headerDetails.title : undefined,
+        showHeader: appliedHeaderDetails.showHeader,
+        title: appliedHeaderDetails.showHeader
+          ? appliedHeaderDetails.title
+          : undefined,
         subTitle: convertToRaw(
-          headerDetails.showHeader
-            ? headerDetails.description.getCurrentContent()
+          appliedHeaderDetails.showHeader
+            ? appliedHeaderDetails.description.getCurrentContent()
             : EditorState.createEmpty().getCurrentContent()
         ),
         rows: framesArray.map((frame) => ({
@@ -239,10 +244,10 @@ export default function ReportModule() {
               : item
           ),
         })),
-        backgroundColor: headerDetails.backgroundColor,
-        titleColor: headerDetails.titleColor,
-        descriptionColor: headerDetails.descriptionColor,
-        dateColor: headerDetails.dateColor,
+        backgroundColor: appliedHeaderDetails.backgroundColor,
+        titleColor: appliedHeaderDetails.titleColor,
+        descriptionColor: appliedHeaderDetails.descriptionColor,
+        dateColor: appliedHeaderDetails.dateColor,
       },
     });
   };
@@ -297,6 +302,8 @@ export default function ReportModule() {
           currentView={view}
           headerDetails={headerDetails}
           setHeaderDetails={setHeaderDetails}
+          appliedHeaderDetails={appliedHeaderDetails}
+          setAppliedHeaderDetails={setAppliedHeaderDetails}
           onOpen={() => setRightPanelOpen(true)}
           onClose={() => setRightPanelOpen(false)}
           showHeaderItem={!headerDetails.showHeader}
