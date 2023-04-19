@@ -60,3 +60,19 @@ export interface DisbursementsTreemapDataItem {
     percValue: string;
   };
 }
+
+export interface PledgesContributionsTreemapDataItem {
+  name: string;
+  value: number;
+  formattedValue: string;
+  color: string;
+  _children?: PledgesContributionsTreemapDataItem[];
+  tooltip: {
+    header: string;
+    componentsStats: {
+      name: string;
+      value: number;
+    }[];
+    value: number;
+  };
+}

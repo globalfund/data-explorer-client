@@ -6,11 +6,10 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
+import { PledgesContributionsTreemapDataItem } from "app/interfaces";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
-import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
-import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
 export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
@@ -19,7 +18,6 @@ export function PledgesContributionsTimeCycleModule() {
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
-  const [vizCompData, setVizCompData] = React.useState([]);
 
   // api call & data
   const fetchData = useStoreActions(
@@ -102,7 +100,14 @@ export function PledgesContributionsTimeCycleModule() {
   } else {
     if (vizLevel === 0) {
       vizComponent = (
-        <EchartBaseChart type="pledgescontributions" data={data} />
+        <EchartBaseChart
+          data={data}
+          type="pledgescontributions"
+          onNodeClick={(node: string) => {
+            setVizLevel(1);
+            setVizSelected(node);
+          }}
+        />
       );
     } else if (vizLevel === 1) {
       vizComponent = (
@@ -129,7 +134,7 @@ export function PledgesContributionsTimeCycleModule() {
               selected={`${(vizSelected || "").split("-")[0]}-${
                 (vizSelected || "").split("-")[1]
               }`}
-              options={vizCompData.map((item: any) => item.data.indexValue)}
+              options={data.map((item: any) => item.year)}
               onChange={(value: string) => {
                 const splits = (vizSelected as string).split("-");
                 if (splits.length > 2) {

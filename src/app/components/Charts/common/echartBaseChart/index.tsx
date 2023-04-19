@@ -85,6 +85,14 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
           props.onNodeClick(get(params, "name", ""));
         } else if (props.type === "horizontalbar") {
           props.onNodeClick(get(params, "name", ""));
+        } else if (props.type === "pledgescontributions") {
+          props.onNodeClick(
+            `${get(params, "name", "")}-${get(
+              params,
+              "seriesName",
+              ""
+            ).toLowerCase()}`
+          );
         }
       }
     });
