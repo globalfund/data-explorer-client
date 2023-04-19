@@ -27,6 +27,7 @@ import {
   VisualMapComponent,
 } from "echarts/components";
 import { EchartsHorizontalBarTooltip } from "./tooltips/horizontalbar";
+import { EchartsPledgesContributionsTooltip } from "./tooltips/pledgescontributions";
 
 echarts.use([
   BarChart,
@@ -41,7 +42,12 @@ echarts.use([
   VisualMapComponent,
 ]);
 
-type EchartChartTypes = "treemap" | "sankey" | "polarbar" | "horizontalbar";
+type EchartChartTypes =
+  | "treemap"
+  | "sankey"
+  | "polarbar"
+  | "horizontalbar"
+  | "pledgescontributions";
 
 export interface EchartBaseChartProps {
   data: any;
@@ -480,6 +486,117 @@ function getHorizontalBarConfig(data: any, cmsData: any) {
   };
 }
 
+function getPledgesContributionsBarConfig(data: any, cmsData: any) {
+  const years = data.map((item: any) => item.year);
+  const pledges = data.map((item: any) => ({
+    value: item.pledge,
+    itemStyle: { color: item.pledgeColor },
+  }));
+  const contributions = data.map((item: any) => ({
+    value: item.contribution,
+    itemStyle: { color: item.contributionColor },
+  }));
+
+  return {
+    colorBy: "data",
+    yAxis: {
+      name: "(values in USD)",
+      type: "value",
+      nameTextStyle: {
+        align: "right",
+        color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+      },
+      axisLabel: {
+        formatter: (value: any) =>
+          formatLargeAmountsWithPrefix(value).replace("$", ""),
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+    },
+    xAxis: {
+      type: "category",
+      data: years,
+      axisLabel: {
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+    },
+    dataZoom: [
+      {
+        bottom: 15,
+        show: true,
+        start: 0,
+        end: 100,
+        height: 20,
+      },
+    ],
+    series: [
+      {
+        type: "bar",
+        barWidth: 24,
+        data: pledges,
+        name: "Pledge",
+        emphasis: {
+          focus: "self",
+        },
+      },
+      {
+        type: "bar",
+        barWidth: 24,
+        data: contributions,
+        name: "Contribution",
+        emphasis: {
+          focus: "self",
+        },
+      },
+    ],
+    calculable: true,
+    legend: {
+      right: 0,
+      show: true,
+      data: [
+        {
+          name: "Pledge",
+          icon: "rect",
+          itemStyle: { color: appColors.TIME_CYCLE.PLEDGE_COLOR },
+        },
+        {
+          name: "Contribution",
+          icon: "rect",
+          itemStyle: { color: appColors.TIME_CYCLE.CONTRIBUTION_COLOR },
+        },
+      ],
+    },
+    tooltip: {
+      show: true,
+      confine: true,
+      trigger: "item",
+      triggerOn: "mousemove",
+      formatter: (params: any) => {
+        const tdata = find(data, { year: params.name });
+        if (!data) return;
+        const ct = document.createElement("div");
+        ReactDOM.render(
+          <EchartsPledgesContributionsTooltip data={tdata} cmsData={cmsData} />,
+          ct
+        );
+        const result = ct.outerHTML;
+        ReactDOM.unmountComponentAtNode(ct);
+        return result;
+      },
+      extraCssText: `
+        padding: 20px;
+        border-style: none;
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+        background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
+      `,
+    },
+  };
+}
+
 export function getChartConfigAsPerType(
   type: EchartChartTypes,
   data: any,
@@ -494,6 +611,8 @@ export function getChartConfigAsPerType(
       return getPolarBarConfig(data, cmsData);
     case "horizontalbar":
       return getHorizontalBarConfig(data, cmsData);
+    case "pledgescontributions":
+      return getPledgesContributionsBarConfig(data, cmsData);
     default:
       return {};
   }

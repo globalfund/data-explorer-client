@@ -15,6 +15,7 @@ const height = {
   sankey: 800,
   polarbar: 700,
   horizontalbar: 700,
+  pledgescontributions: 800,
 };
 
 export function EchartBaseChart(props: EchartBaseChartProps) {

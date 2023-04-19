@@ -102,15 +102,7 @@ export function PledgesContributionsTimeCycleModule() {
   } else {
     if (vizLevel === 0) {
       vizComponent = (
-        <PledgesContributionsTimeCycle
-          data={data}
-          vizCompData={vizCompData}
-          setVizCompData={setVizCompData}
-          onNodeClick={(node: string) => {
-            setVizLevel(1);
-            setVizSelected(node);
-          }}
-        />
+        <EchartBaseChart type="pledgescontributions" data={data} />
       );
     } else if (vizLevel === 1) {
       vizComponent = (
