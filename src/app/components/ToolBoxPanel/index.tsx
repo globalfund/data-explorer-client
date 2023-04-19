@@ -12,7 +12,6 @@ import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { filterExpandedGroup } from "app/state/recoil/atoms";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
@@ -37,14 +36,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.scrollHeight > document.body.clientHeight
   );
 
-  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
-  const showDataPath = useStoreState(
-    (state) => state.DataPathPanelVisibilityState.value
-  );
-  const setShowDataPath = useStoreActions(
-    (state) => state.DataPathPanelVisibilityState.setValue
-  );
-
   React.useLayoutEffect(() => {
     setVisibleVScrollbar(
       document.body.scrollHeight > document.body.clientHeight
@@ -56,12 +47,6 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
       document.body.scrollHeight > document.body.clientHeight
     );
   }, [history.location.pathname]);
-
-  React.useEffect(() => {
-    if (dataPathSteps.length < 2 && showDataPath) {
-      setShowDataPath(false);
-    }
-  }, [dataPathSteps]);
 
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -180,57 +165,50 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                 <TriangleXSIcon />
               </div>
             )}
-            {!showDataPath ? (
-              <React.Fragment>
-                {isMobile && (
-                  <div
-                    css={`
-                      width: 100%;
-                      padding: 16px;
-                      display: flex;
-                      flex-direction: row;
-                      justify-content: space-between;
-                      border-bottom: 1px solid
-                        ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
-                    `}
-                  >
-                    <div
-                      css={`
-                        font-size: 18px;
-                        font-weight: bold;
-                        font-family: GothamNarrow-Bold;
-                      `}
-                    >
-                      Toolbox
-                    </div>
-                    <IconButton
-                      css={`
-                        width: 14px;
-                        height: 14px;
-                      `}
-                      onClick={() => props.onCloseBtnClick()}
-                    >
-                      <CloseOutlinedIcon
-                        htmlColor={appColors.COMMON.PRIMARY_COLOR_1}
-                        viewBox=" -4 -4 30 30"
-                      />
-                    </IconButton>
-                  </div>
-                )}
-                {!expandedGroup && (
-                  <ToolBoxPanelIconButtons
-                    getAllAvailableGrants={props.getAllAvailableGrants}
+            {isMobile && (
+              <div
+                css={`
+                  width: 100%;
+                  padding: 16px;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  border-bottom: 1px solid
+                    ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
+                `}
+              >
+                <div
+                  css={`
+                    font-size: 18px;
+                    font-weight: bold;
+                    font-family: GothamNarrow-Bold;
+                  `}
+                >
+                  Toolbox
+                </div>
+                <IconButton
+                  css={`
+                    width: 14px;
+                    height: 14px;
+                  `}
+                  onClick={() => props.onCloseBtnClick()}
+                >
+                  <CloseOutlinedIcon
+                    htmlColor={appColors.COMMON.PRIMARY_COLOR_1}
+                    viewBox=" -4 -4 30 30"
                   />
-                )}
-                <SubToolBoxPanel
-                  filterGroups={props.filterGroups}
-                  closePanel={props.onCloseBtnClick}
-                />
-              </React.Fragment>
-            ) : (
-              ""
-              // <DataPathPanel />
+                </IconButton>
+              </div>
             )}
+            {!expandedGroup && (
+              <ToolBoxPanelIconButtons
+                getAllAvailableGrants={props.getAllAvailableGrants}
+              />
+            )}
+            <SubToolBoxPanel
+              filterGroups={props.filterGroups}
+              closePanel={props.onCloseBtnClick}
+            />
           </div>
         </div>
       </Slide>

@@ -1,21 +1,18 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import get from "lodash/get";
 import find from "lodash/find";
 import { appColors } from "app/theme";
-import { useRecoilState } from "recoil";
+import findIndex from "lodash/findIndex";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
@@ -40,14 +37,20 @@ export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
   );
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
+  );
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
@@ -59,15 +62,18 @@ export default function GrantDetail() {
       get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
   );
 
-  const selectedPeriod = find(
-    periods,
-    (p: GrantDetailPeriod) => p.number.toString() === params.period
-  ) || { startDate: "", endDate: "" };
+  const selectedPeriod = React.useMemo(() => {
+    return (
+      find(
+        periods,
+        (p: GrantDetailPeriod) => p.number.toString() === params.period
+      ) || { startDate: "", endDate: "" }
+    );
+  }, [periods, params.period]);
 
   const formatPeriod = (date: string) => {
     return date.split("-")[0];
   };
-  console.log(formatPeriod(selectedPeriod.startDate), "start year");
 
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
@@ -136,54 +142,47 @@ export default function GrantDetail() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
-  const breadCrumbId = React.useMemo(() => v4(), []);
 
   useUpdateEffect(() => {
-    if (grantInfoData) {
-      if (breadCrumbList.length === 0) {
-        setBreadCrumbList([
-          {
-            name: "Datasets",
-            path: "/",
-            id: breadCrumbId,
-          },
-
-          {
-            name: grantInfoData.code,
-            path: location.pathname,
-            id: v4(),
-          },
-        ]);
-      } else {
-        if (!breadCrumbList.find((list) => list.id === breadCrumbId)) {
-          setBreadCrumbList([
-            {
-              name: "Datasets",
-              path: "/",
-              id: v4(),
-            },
-            {
-              name: "Grant Implementation: Grants",
-              path: "/grants",
-              id: v4(),
-            },
-            {
-              name: `${grantInfoData.code} ${
-                selectedPeriod ? "-" : ""
-              } ${formatPeriod(selectedPeriod.startDate)} - ${formatPeriod(
-                selectedPeriod.endDate
-              )}`,
-              path: location.pathname,
-              id: v4(),
-              vizLevel: breadCrumbList[breadCrumbList.length - 1]?.vizLevel,
-              vizSelected:
-                breadCrumbList[breadCrumbList.length - 1]?.vizSelected,
-            },
-          ]);
-        }
-      }
+    if (
+      grantInfoData &&
+      grantInfoData.code &&
+      !dataPathSteps.find((item) => item.id === "grant")
+    ) {
+      addDataPathSteps([
+        {
+          id: "grant",
+          name: `${params.code} - ${formatPeriod(
+            selectedPeriod.startDate
+          )} - ${formatPeriod(selectedPeriod.endDate)}`,
+          path: location.pathname,
+        },
+      ]);
     }
-  }, [grantInfoData, selectedPeriod]);
+  }, [grantInfoData]);
+
+  useUpdateEffect(() => {
+    const value = `${params.code} - ${formatPeriod(
+      selectedPeriod.startDate
+    )} - ${formatPeriod(selectedPeriod.endDate)}`;
+    const fIndex = findIndex(dataPathSteps, {
+      id: "grant",
+    });
+    if (fIndex > -1) {
+      const newDataPathSteps = [...dataPathSteps];
+      newDataPathSteps[fIndex].name = value;
+      newDataPathSteps[fIndex].path = location.pathname;
+      setDataPathSteps(newDataPathSteps);
+    } else {
+      addDataPathSteps([
+        {
+          id: "grant",
+          name: value,
+          path: location.pathname,
+        },
+      ]);
+    }
+  }, [selectedPeriod]);
 
   return (
     <div
@@ -197,21 +196,7 @@ export default function GrantDetail() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader
-        isDetail
-        title={grantInfoData.title}
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          {
-            name: params.code,
-          },
-        ]}
-        tabs={grantDetailTabs}
-      />
+      <PageHeader isDetail tabs={grantDetailTabs} title={grantInfoData.title} />
 
       <PageTopSpacer />
       {isMobile && (

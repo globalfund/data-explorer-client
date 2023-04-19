@@ -1,9 +1,12 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
 import filter from "lodash/filter";
-import { useDebounce, useTitle, useUpdateEffect } from "react-use";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import TablePagination from "@material-ui/core/TablePagination";
+import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { SimpleTable } from "app/components/Table/Simple";
@@ -13,6 +16,8 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export function PledgesContributionsTable() {
   useTitle("The Data Explorer - Pledges & Contributions Table");
+
+  const history = useHistory();
 
   const [page, setPage] = React.useState(0);
   const [search, setSearch] = React.useState("");
@@ -45,6 +50,28 @@ export function PledgesContributionsTable() {
       }`,
     });
   }
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Resource Mobilization: Pledges & Contributions",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
 
   React.useEffect(
     () => reloadData(),

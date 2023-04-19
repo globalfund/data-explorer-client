@@ -1,6 +1,9 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -13,6 +16,8 @@ import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 
 export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
+
+  const history = useHistory();
 
   const [vizLevel, setVizLevel] = React.useState(0);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
@@ -55,6 +60,28 @@ export function PledgesContributionsTimeCycleModule() {
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Resource Mobilization: Pledges & Contributions",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
 
   React.useEffect(() => {
     if (vizLevel === 0) {

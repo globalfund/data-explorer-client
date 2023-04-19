@@ -1,28 +1,24 @@
 /* third-party */
-import React, { useState } from "react";
+import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
-import { v4 } from "uuid";
 import sumBy from "lodash/sumBy";
-
 import filter from "lodash/filter";
 import uniqueId from "lodash/uniqueId";
+import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { DrilldownModelUpdated, BudgetsTreemapDataItem } from "app/interfaces";
-import { PageLoader } from "app/modules/common/page-loader";
-import { getNameFromIso3 } from "app/utils/getIso3FromName";
-import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { Grid } from "@material-ui/core";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { appColors } from "app/theme";
-import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 import { useCMSData } from "app/hooks/useCMSData";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { BudgetsTreemapDataItem } from "app/interfaces";
+import { getNameFromIso3 } from "app/utils/getIso3FromName";
+import { PageLoader } from "app/modules/common/page-loader";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -65,9 +61,11 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
-  const [reRouteDialog, setReRouteDialog] = useState({
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<TreeMapNodeDatum | null>(null);
+
+  const [reRouteDialog, setReRouteDialog] = React.useState({
     display: false,
     code: "",
   });
@@ -77,31 +75,19 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
     (actions) => actions.DataPathSteps.addSteps
   );
 
-  const totalBudget = sumBy(
-    filter(props.links, { source: "Budgets" }),
-    "value"
-  );
+  const totalBudget: number = React.useMemo(() => {
+    return sumBy(filter(props.links, { source: "Budgets" }), "value");
+  }, [props.links]);
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
       if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: "Budget-budget flow" })
-      ) {
-        addDataPathSteps([
-          {
-            id: uniqueId(),
-            name: "Budget-budget flow",
-            path: `${history.location.pathname}${history.location.search}`,
-          },
-        ]);
-      } else if (
         props.isGrantDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "grant",
             name: props.codeParam || "Grant",
             path: `${history.location.pathname}${history.location.search}`,
           },
@@ -112,7 +98,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "location",
             name: props.codeParam
               ? getNameFromIso3(props.codeParam)
               : "Location",
@@ -125,45 +111,24 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "partner",
             name: props.codeParam || "Partner",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
       }
-    }
-    if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
-      const newDrilldowns: DrilldownModelUpdated[] = [];
-      if (props.vizLevel === 1) {
-        newDrilldowns.push({
-          id: uniqueId(),
-          name: props.vizSelected.id,
-          path: `${history.location.pathname}${history.location.search}`,
-          vizSelected: {
-            id: props.vizSelected.id || "",
-            filterStr: props.vizSelected.filterStr || "",
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Grant Implementation: Budgets" })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Grant Implementation: Budgets",
+            path: `${history.location.pathname}${history.location.search}`,
           },
-        });
-      } else if (props.vizLevel === 2 && props.drilldownVizSelected.id) {
-        const idSplits = props.drilldownVizSelected.id.split("-");
-        const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
-        const secondDrillDown =
-          idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-        newDrilldowns.push({
-          id: uniqueId(),
-          name: `${firstDrillDown} - ${secondDrillDown}`,
-          path: `${history.location.pathname}${history.location.search}`,
-          vizSelected: {
-            id: props.vizSelected.id || "",
-            filterStr: props.vizSelected.filterStr || "",
-          },
-          drilldownVizSelected: {
-            id: props.drilldownVizSelected.id || "",
-            filterStr: props.drilldownVizSelected.filterStr || "",
-          },
-        });
+        ]);
       }
-      addDataPathSteps(newDrilldowns);
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
 
@@ -220,19 +185,17 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
               nodes: props.nodes,
               links: props.links,
             }}
-            onNodeClick={(node: any) => {
-              setBreadCrumbList([
-                ...breadCrumbList,
+            onNodeClick={(node: { id: string; filterStr: string }) => {
+              props.setVizLevel(1);
+              props.setVizSelected(node);
+              addDataPathSteps([
                 {
+                  id: uniqueId(),
                   name: node.id,
-                  path: location.pathname,
-                  id: v4(),
-                  vizLevel: 1,
+                  path: `${history.location.pathname}${history.location.search}`,
                   vizSelected: node,
                 },
               ]);
-              props.setVizLevel(1);
-              props.setVizSelected(node);
             }}
           />
         </React.Fragment>
@@ -243,24 +206,24 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           type="treemap"
           data={props.dataDrilldownLevel1}
           onNodeClick={(node: string) => {
-            setBreadCrumbList([
-              ...breadCrumbList,
-              {
-                name: node,
-                path: location.pathname,
-                id: v4(),
-                vizLevel: 2,
-                vizSelected: {
-                  id: node,
-                  filterStr: undefined,
+            if (props.setDrilldownVizSelected) {
+              props.setVizLevel(2);
+              props.setDrilldownVizSelected({
+                id: node,
+                filterStr: undefined,
+              });
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  drilldownVizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
                 },
-              },
-            ]);
-            props.setVizLevel(2);
-            props.setDrilldownVizSelected({
-              id: node,
-              filterStr: undefined,
-            });
+              ]);
+            }
           }}
         />
       );
@@ -270,19 +233,12 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           type="treemap"
           data={props.dataDrilldownLevel2}
           onNodeClick={(node: string) => {
-            if (props.drilldownVizSelected.id) {
+            if (props.drilldownVizSelected.id && !props.isGrantDetail) {
               const idSplits = props.drilldownVizSelected.id.split("-");
               let code = node
                 .replace(idSplits[0], "")
                 .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: code,
-                  path: `/grant/${code}/period/budgets/flow`,
-                },
-              ]);
               setReRouteDialog({
                 display: true,
                 code,

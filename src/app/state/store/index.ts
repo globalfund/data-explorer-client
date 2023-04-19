@@ -46,6 +46,7 @@ import DisbursementsTreemap, {
 } from "app/state/api/action-reducers/viz/disbursementsTreemap";
 import DisbursementsTimeCycle, {
   DisbursementsTimeCycleDrilldown,
+  DisbursementsTimeCycleDrilldown2,
 } from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
 import PledgesContributionsGeomap from "app/state/api/action-reducers/viz/pledgesContributionsGeomap";
 import PledgesContributionsTimeCycle, {
@@ -115,11 +116,13 @@ import PartnerDetailBudgetsTimeCycle, {
 import SignedTreemap, {
   SignedTimeCycle,
   SignedTimeCycleDrilldown,
+  SignedTimeCycleDrilldown2,
   SignedTreemapDrilldown,
 } from "../api/action-reducers/viz/signed";
 import CommitmentTreemap, {
   CommitmentTimeCycle,
   CommitmentTimeCycleDrilldown,
+  CommitmentTimeCycleDrilldown2,
   CommitmentTreemapDrilldown,
 } from "../api/action-reducers/viz/commitment";
 import LocationDetailSignedTreemap from "../api/action-reducers/locationDetail/signedTreemap";
@@ -164,7 +167,6 @@ import countrySummary from "../api/action-reducers/cms/countrySummary";
 import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
 import {
   DataPathActiveStep,
-  DataPathPanelVisibilityState,
   DataPathStepsState,
 } from "../api/action-reducers/sync/dataPath";
 import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
@@ -196,14 +198,17 @@ const storeContent: StoreModel = {
   DisbursementsTreemapDrilldown: persist(DisbursementsTreemapDrilldown),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
   DisbursementsTimeCycleDrilldown: persist(DisbursementsTimeCycleDrilldown),
+  DisbursementsTimeCycleDrilldown2: persist(DisbursementsTimeCycleDrilldown2),
   SignedTreemap: persist(SignedTreemap),
   SignedTreemapDrilldown: persist(SignedTreemapDrilldown),
   SignedTimeCycle: persist(SignedTimeCycle),
   SignedTimeCycleDrilldown: persist(SignedTimeCycleDrilldown),
+  SignedTimeCycleDrilldown2: persist(SignedTimeCycleDrilldown2),
   CommitmentTreemap: persist(CommitmentTreemap),
   CommitmentTreemapDrilldown: persist(CommitmentTreemapDrilldown),
   CommitmentTimeCycle: persist(CommitmentTimeCycle),
   CommitmentTimeCycleDrilldown: persist(CommitmentTimeCycleDrilldown),
+  CommitmentTimeCycleDrilldown2: persist(CommitmentTimeCycleDrilldown2),
   PledgesContributionsGeomap: persist(PledgesContributionsGeomap),
   PledgesContributionsTimeCycle: persist(PledgesContributionsTimeCycle),
   PledgesContributionsTimeCycleDrilldown: persist(
@@ -327,7 +332,6 @@ const storeContent: StoreModel = {
   ToolBoxPanelBudgetFlowDrilldownSelectors,
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   // sync data path vars
-  DataPathPanelVisibilityState,
   DataPathSteps: persist(DataPathStepsState),
   DataPathActiveStep: DataPathActiveStep,
   // CMS API

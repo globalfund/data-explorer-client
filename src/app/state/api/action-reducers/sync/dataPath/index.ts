@@ -2,18 +2,6 @@
 import { action, Action } from "easy-peasy";
 import { DrilldownModelUpdated } from "app/interfaces";
 
-export interface DataPathPanelVisibilityStateModel {
-  value: boolean;
-  setValue: Action<DataPathPanelVisibilityStateModel, boolean>;
-}
-
-export const DataPathPanelVisibilityState: DataPathPanelVisibilityStateModel = {
-  value: false,
-  setValue: action((state, payload: boolean) => {
-    state.value = payload;
-  }),
-};
-
 export interface DataPathStepsStateModel {
   steps: DrilldownModelUpdated[];
   addSteps: Action<DataPathStepsStateModel, DrilldownModelUpdated[]>;
