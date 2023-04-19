@@ -317,16 +317,21 @@ function getPolarBarConfig(data: any, cmsData: any) {
       startAngle: 75,
       max: (value: any) => value.max * 1.2,
       axisLabel: {
-        formatter: (value: any) => formatLargeAmountsWithPrefix(value),
+        formatter: (value: any) =>
+          formatLargeAmountsWithPrefix(value).replace("$", ""),
       },
     },
     radiusAxis: {
-      type: "category",
+      name: "values in USD",
       data: data.keys,
+      type: "category",
       axisLabel: {
         formatter: (value: any, index: number) => {
           const nValue = data.values[index];
-          return `${value}\n${formatLargeAmountsWithPrefix(nValue)}`;
+          return `${value}\n${formatLargeAmountsWithPrefix(nValue).replace(
+            "$",
+            ""
+          )}`;
         },
       },
     },
