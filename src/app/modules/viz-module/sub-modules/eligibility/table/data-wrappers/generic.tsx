@@ -1,7 +1,10 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
 import filter from "lodash/filter";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -32,6 +35,8 @@ function getTableData(data: DotChartModel[]): SimpleTableRow[] {
 export function GenericEligibilityWrapper() {
   useTitle("The Data Explorer - Eligibility");
 
+  const history = useHistory();
+
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState("name ASC");
 
@@ -43,6 +48,7 @@ export function GenericEligibilityWrapper() {
     (store) => store.EligibilityYears.fetch
   );
 
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const data = useStoreState(
     (state) => get(state.EligibilityTable.data, "data", []) as DotChartModel[]
   );
@@ -59,8 +65,24 @@ export function GenericEligibilityWrapper() {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
   React.useEffect(() => {
     fetchYearOptionsData({});
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: "Access to Funding: Eligibility" })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Access to Funding: Eligibility",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
   }, []);
 
   function reloadData() {

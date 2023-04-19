@@ -1,21 +1,19 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import get from "lodash/get";
+import find from "lodash/find";
 import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
 import { useLocation } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { ResultListItemModel } from "app/modules/results-module/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
@@ -24,11 +22,9 @@ export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelResultsYearState.value
@@ -45,18 +41,28 @@ export default function ResultsModule() {
   );
   const isLoading = useStoreState((state) => state.ResultsList.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   React.useEffect(() => {
     document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchYearOptionsData({});
-    setBreadCrumbList([
-      { name: "Datasets", path: "/", id: v4() },
-      {
-        name: "Annual results",
-        path: location.pathname,
-        id: v4(),
-      },
-    ]);
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Annual Results",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Annual Results",
+          path: `${location.pathname}${location.search}`,
+        },
+      ]);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -139,17 +145,7 @@ export default function ResultsModule() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader
-        title="Results"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          { name: "Results" },
-        ]}
-      />
+      <PageHeader title="Results" />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}

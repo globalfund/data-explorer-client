@@ -68,12 +68,12 @@ export function BudgetsGeoMap(props: Props) {
   React.useEffect(() => {
     if (
       dataPathSteps.length === 0 ||
-      !find(dataPathSteps, { name: "Budget-map" })
+      !find(dataPathSteps, { name: "Grant Implementation: Budgets" })
     ) {
       addDataPathSteps([
         {
           id: uniqueId(),
-          name: "Budget-map",
+          name: "Grant Implementation: Budgets",
           path: `${history.location.pathname}${history.location.search}`,
         },
       ]);

@@ -1,13 +1,11 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import get from "lodash/get";
-import { useRecoilState } from "recoil";
+import find from "lodash/find";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   useTitle,
@@ -22,7 +20,6 @@ import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { GrantListItemModel } from "app/modules/grants-module/data";
 import { Search } from "app/modules/grants-module/components/Search";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
@@ -41,7 +38,6 @@ interface GrantsModuleProps {
 export default function GrantsModule(props: GrantsModuleProps) {
   const location = useLocation();
   const cmsData = useCMSData({ returnData: true });
-  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
 
   useTitle(
     `${get(cmsData, "modulesGrants.titleStart", "")}${
@@ -56,7 +52,6 @@ export default function GrantsModule(props: GrantsModuleProps) {
     } ${get(cmsData, "modulesGrants.titleEnd", "")}`
   );
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
   const [search, setSearch] = React.useState("");
@@ -66,6 +61,11 @@ export default function GrantsModule(props: GrantsModuleProps) {
     props.search || search,
     props.code,
     props.detailFilterType
+  );
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
   );
 
   // api call & data
@@ -111,14 +111,22 @@ export default function GrantsModule(props: GrantsModuleProps) {
   };
 
   React.useEffect(() => {
-    setBreadCrumbList([
-      { name: "Datasets", path: "/", id: v4() },
-      {
-        name: "Grant Implementation: Grants",
-        path: location.pathname,
-        id: v4(),
-      },
-    ]);
+    setTimeout(() => {
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, {
+          name: "Grant Implementation: Grants",
+        })
+      ) {
+        setDataPathSteps([
+          {
+            name: "Grant Implementation: Grants",
+            path: location.pathname,
+            id: "grants",
+          },
+        ]);
+      }
+    }, 500);
   }, []);
 
   useEffectOnce(() => {
@@ -187,19 +195,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
       {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
-          <PageHeader
-            title={get(cmsData, "modulesGrants.titleShort", "")}
-            breadcrumbs={[
-              { name: get(cmsData, "modulesGrants.home", ""), link: "/" },
-              {
-                name: get(cmsData, "modulesGrants.datasets", ""),
-                menuitems: datasetMenuItems,
-              },
-              {
-                name: get(cmsData, "modulesGrants.titleShort", ""),
-              },
-            ]}
-          />
+          <PageHeader title={get(cmsData, "modulesGrants.titleShort", "")} />
           <ToolBoxPanel
             open={openToolboxPanel}
             vizWrapperRef={vizWrapperRef}

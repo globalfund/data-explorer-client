@@ -1,9 +1,12 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
 import filter from "lodash/filter";
 import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
 import { FeatureCollection } from "geojson";
+import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -15,6 +18,9 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export function PledgesContributionsGeoMap() {
   useTitle("The Data Explorer - Pledges & Contributions GeoMap");
+
+  const history = useHistory();
+
   const valueType = useStoreState(
     (state) => state.ToolBoxPanelDonorMapTypeState.value
   );
@@ -49,6 +55,28 @@ export function PledgesContributionsGeoMap() {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Resource Mobilization: Pledges & Contributions",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);

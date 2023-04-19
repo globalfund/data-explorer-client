@@ -46,7 +46,6 @@ import {
 } from "app/state/api/interfaces/cms";
 import {
   DataPathActiveStepStateModel,
-  DataPathPanelVisibilityStateModel,
   DataPathStepsStateModel,
 } from "../action-reducers/sync/dataPath";
 
@@ -165,14 +164,17 @@ export interface StoreModel {
   DisbursementsTreemapDrilldown: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
   DisbursementsTimeCycleDrilldown: ApiCallModel;
+  DisbursementsTimeCycleDrilldown2: ApiCallModel;
   SignedTreemap: ApiCallModel;
   SignedTreemapDrilldown: ApiCallModel;
   SignedTimeCycle: ApiCallModel;
   SignedTimeCycleDrilldown: ApiCallModel;
+  SignedTimeCycleDrilldown2: ApiCallModel;
   CommitmentTreemap: ApiCallModel;
   CommitmentTreemapDrilldown: ApiCallModel;
   CommitmentTimeCycle: ApiCallModel;
   CommitmentTimeCycleDrilldown: ApiCallModel;
+  CommitmentTimeCycleDrilldown2: ApiCallModel;
   PledgesContributionsGeomap: ApiCallModel;
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
@@ -261,7 +263,6 @@ export interface StoreModel {
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
   // sync data path vars
-  DataPathPanelVisibilityState: DataPathPanelVisibilityStateModel;
   DataPathSteps: DataPathStepsStateModel;
   DataPathActiveStep: DataPathActiveStepStateModel;
   // CMS

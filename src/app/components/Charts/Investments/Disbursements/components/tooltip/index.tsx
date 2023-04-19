@@ -24,6 +24,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
       css={`
         color: ${appColors.TREEMAP.TOOLTIP_COLOR};
         min-width: 350px;
+        max-width: 350px;
         background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
 
         @media (max-width: 767px) {
@@ -33,10 +34,12 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
     >
       <div
         css={`
+          width: 100%;
           font-size: 18px;
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
+          text-overflow: break-word;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           border-bottom: 1px solid ${appColors.TREEMAP.TOOLTIP_BORDER_COLOR};
         `}

@@ -16,6 +16,7 @@ import { isTouchDevice } from "app/utils/isTouchDevice";
 import { getIso3FromName } from "app/utils/getIso3FromName";
 import { PageLoader } from "app/modules/common/page-loader";
 import { XsContainer } from "app/components/Charts/common/styles";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -109,6 +110,10 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     undefined
   );
   const [xsTooltipData, setXsTooltipData] = React.useState<any | null>(null);
+  const [reRouteDialog, setReRouteDialog] = React.useState({
+    display: false,
+    code: "",
+  });
 
   const options: ApexOptions = {
     plotOptions: {
@@ -323,12 +328,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     if (vizLevel === 0) {
       if (
         dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: "Allocation-radial" })
+        !find(dataPathSteps, { name: "Access to Funding: Allocations" })
       ) {
         addDataPathSteps([
           {
             id: uniqueId(),
-            name: "Allocation-radial",
+            name: "Access to Funding: Allocations",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
@@ -358,9 +363,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         setVizLevel(0);
         setVizSelected(undefined);
         clearDataPathActiveStep();
-        if (dataPathSteps.length > 0) {
-          addDataPathSteps([dataPathActiveStep]);
-        }
       }
     }
   }, [dataPathActiveStep]);
@@ -454,26 +456,27 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               options={[...keys, "Total"]}
               selected={vizSelected || ""}
               onChange={(value: string) => {
-                setVizSelected(value);
+                const prevValue = vizSelected || "";
+                console.log("prevValue", prevValue);
                 const fItemIndex = findIndex(dataPathSteps, {
+                  vizSelected: { id: prevValue, filterStr: prevValue },
+                });
+                console.log("fItemIndex", fItemIndex);
+                setVizSelected(value);
+                let newDataPathSteps = [...dataPathSteps];
+                if (fItemIndex > -1) {
+                  newDataPathSteps = dataPathSteps.slice(0, fItemIndex);
+                }
+                newDataPathSteps.push({
+                  id: uniqueId(),
                   name: value,
                   path: `${history.location.pathname}${history.location.search}`,
+                  vizSelected: {
+                    id: value,
+                    filterStr: value,
+                  },
                 });
-                if (fItemIndex > -1) {
-                  setDataPathSteps(dataPathSteps.slice(0, fItemIndex + 1));
-                } else {
-                  addDataPathSteps([
-                    {
-                      id: uniqueId(),
-                      name: value,
-                      path: `${history.location.pathname}${history.location.search}`,
-                      vizSelected: {
-                        id: value,
-                        filterStr: value,
-                      },
-                    },
-                  ]);
-                }
+                setDataPathSteps(newDataPathSteps);
               }}
             />
           </span>
@@ -483,14 +486,10 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             onNodeClick={(node: string) => {
               const name = node.split("-")[0];
               const code = getIso3FromName(name);
-              addDataPathSteps([
-                {
-                  id: uniqueId(),
-                  name: name,
-                  path: `/location/${code}/allocations`,
-                },
-              ]);
-              history.push(`/location/${code}/allocations`);
+              setReRouteDialog({
+                display: true,
+                code,
+              });
             }}
           />
         </React.Fragment>
@@ -519,6 +518,15 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         }
       `}
     >
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={{ ...reRouteDialog, pageType: "location" }}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(`/location/${reRouteDialog.code}/overview`)
+          }
+        />
+      )}
       <div
         css={`
           display: flex;

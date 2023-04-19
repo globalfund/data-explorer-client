@@ -1,6 +1,9 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -12,6 +15,9 @@ import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 export function EligibilityModule() {
   useTitle("The Data Explorer - Eligibility");
 
+  const history = useHistory();
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelEligibilityYearState.value
   );
@@ -29,8 +35,24 @@ export function EligibilityModule() {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
   React.useEffect(() => {
     fetchYearOptionsData({});
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: "Access to Funding: Eligibility" })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Access to Funding: Eligibility",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
   }, []);
 
   React.useEffect(() => {

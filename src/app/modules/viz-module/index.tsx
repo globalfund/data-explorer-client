@@ -2,7 +2,6 @@
 import React from "react";
 import get from "lodash/get";
 import { appColors } from "app/theme";
-import startCase from "lodash/startCase";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
@@ -10,7 +9,7 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
@@ -26,27 +25,20 @@ import { GenericEligibilityWrapper } from "app/modules/viz-module/sub-modules/el
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
+import { GenericFundingRequestWrapper } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/generic";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import {
   filtergroups,
   pathnameToFilterGroups,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { v4 } from "uuid";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { GenericFundingRequestWrapper } from "./sub-modules/fundingRequests/table/data-wrappers/generic";
 
 export default function VizModule() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-  const [subTypeCopy, setSubTypeCopy] = React.useState(params.subType);
 
   React.useEffect(() => {
     document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
@@ -79,80 +71,6 @@ export default function VizModule() {
     return 0;
   }
 
-  const vizType = `${params.vizType
-    .slice(0, 1)
-    .toUpperCase()}${params.vizType.slice(1)}`;
-
-  const vizTypePretext = (value: string) => {
-    const localVizType = startCase(value);
-
-    switch (vizType) {
-      case "Pledges-contributions":
-        return `Resource Mobilization: ${localVizType}`;
-      case "Allocations":
-        return `Access to funding: ${localVizType}`;
-      case "Eligibility":
-        return `Access to funding: ${localVizType}`;
-      case "Funding-requests":
-        return `Access to funding: ${localVizType}`;
-      case "Documents":
-        return "Documents";
-      case "Results":
-        return "Results";
-      default:
-        return `Grant Implementation: ${localVizType} `;
-    }
-  };
-
-  React.useEffect(() => {
-    setBreadCrumbList((list) => {
-      if (list[list.length - 1]?.vizSelected) {
-        return [
-          { name: "Datasets", path: "/", id: v4() },
-          {
-            name: vizTypePretext(vizType),
-            path: list[list.length - 2].path,
-            id: v4(),
-          },
-          {
-            name: list[list.length - 1]?.name || "",
-            path: location.pathname,
-            id: v4(),
-            vizLevel: list[list.length - 1]?.vizLevel,
-            vizSelected: list[list.length - 1]?.vizSelected,
-          },
-        ];
-      } else {
-        return [
-          { name: "Datasets", path: "/", id: v4() },
-          {
-            name: vizTypePretext(vizType),
-            path: location.pathname,
-            id: v4(),
-            vizSelected: undefined,
-            vizLevel: 0,
-          },
-        ];
-      }
-    });
-  }, [vizType]);
-
-  React.useEffect(() => {
-    if (params.subType !== subTypeCopy) {
-      setBreadCrumbList([
-        { name: "Datasets", path: "/", id: v4() },
-        {
-          name: vizTypePretext(vizType),
-          path: location.pathname,
-          id: v4(),
-          vizSelected: undefined,
-          vizLevel: 0,
-        },
-      ]);
-      setSubTypeCopy(params.subType);
-    }
-  }, [params.subType]);
-
   return (
     <div
       css={`
@@ -165,25 +83,7 @@ export default function VizModule() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader
-        title={params.vizType.replace("-", " & ")}
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          {
-            name: `${vizType}${
-              params.subType
-                ? `${params.subType
-                    .slice(0, 1)
-                    .toUpperCase()}${params.subType.slice(1)}`
-                : ""
-            }`,
-          },
-        ]}
-      />
+      <PageHeader title={params.vizType.replace("-", " & ")} />
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>

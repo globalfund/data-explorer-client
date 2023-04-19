@@ -1,13 +1,12 @@
 /* third-party */
-import React, { useState } from "react";
+import React from "react";
 import get from "lodash/get";
-import { useHistory } from "react-router-dom";
+import isEqual from "lodash/isEqual";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 import { InvestmentsDisbursedModule } from "app/modules/viz-module/sub-modules/investments/disbursed";
-import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 
 interface Props {
   code: string;
@@ -16,21 +15,34 @@ interface Props {
 }
 
 export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
-  const history = useHistory();
-  const [vizLevel, setVizLevel] = React.useState(0);
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
+    dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr
   );
+  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
+    string | undefined
+  >(dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr);
+  const [vizLevel, setVizLevel] = React.useState(0);
 
-  const [reRouteDialog, setReRouteDialog] = useState<{
-    display: boolean;
-    code: string;
-    clickthroughPath?: string;
-  }>({
-    display: false,
-    code: "",
-    clickthroughPath: "",
-  });
+  React.useEffect(() => {
+    const newVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (!isEqual(newVizSelected, vizSelected)) {
+      setVizSelected(newVizSelected);
+    }
+    if (!isEqual(newDrilldownVizSelected, drilldownVizSelected)) {
+      setDrilldownVizSelected(newDrilldownVizSelected);
+    }
+    if (newDrilldownVizSelected) {
+      setVizLevel(2);
+    } else if (newVizSelected) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -75,20 +87,6 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
-  function goToGrantDetail(code: string) {
-    let clickthroughPath = "signed/treemap";
-    if (props.type === "Commitment") {
-      clickthroughPath = "commitment/treemap";
-    } else if (props.type === "Disbursed") {
-      clickthroughPath = "disbursements/treemap";
-    }
-    setReRouteDialog({
-      display: true,
-      code,
-      clickthroughPath,
-    });
-  }
-
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
       props.code
@@ -102,34 +100,20 @@ export function LocationDetailInvestmentsDisbursedWrapper(props: Props) {
   }, [props.code, appliedFilters, props.type]);
 
   return (
-    <>
-      {reRouteDialog.display && (
-        <ReRouteDialogBox
-          display={reRouteDialog}
-          setDisplay={setReRouteDialog}
-          handleClick={() =>
-            history.push(
-              `/grant/${reRouteDialog.code}/period/${reRouteDialog.clickthroughPath}`
-            )
-          }
-        />
-      )}
-      <InvestmentsDisbursedModule
-        data={data}
-        isLocationDetail
-        type={props.type}
-        drilldownData={[]}
-        vizLevel={vizLevel}
-        isLoading={isLoading}
-        codeParam={props.code}
-        allowDrilldown={false}
-        setVizLevel={setVizLevel}
-        vizSelected={vizSelected}
-        isDrilldownLoading={false}
-        onNodeClick={goToGrantDetail}
-        setVizSelected={setVizSelected}
-        toolboxOpen={props.toolboxOpen}
-      />
-    </>
+    <InvestmentsDisbursedModule
+      data={data}
+      allowDrilldown
+      isLocationDetail
+      type={props.type}
+      drilldownData={[]}
+      vizLevel={vizLevel}
+      isLoading={isLoading}
+      codeParam={props.code}
+      setVizLevel={setVizLevel}
+      vizSelected={vizSelected}
+      isDrilldownLoading={false}
+      setVizSelected={setVizSelected}
+      toolboxOpen={props.toolboxOpen}
+    />
   );
 }

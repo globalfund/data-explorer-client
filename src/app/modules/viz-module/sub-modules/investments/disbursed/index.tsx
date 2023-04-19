@@ -1,6 +1,5 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
@@ -8,16 +7,15 @@ import filter from "lodash/filter";
 import { useTitle } from "react-use";
 import { appColors } from "app/theme";
 import uniqueId from "lodash/uniqueId";
-import { useRecoilState } from "recoil";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
+import { getNameFromIso3 } from "app/utils/getIso3FromName";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
-import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 
@@ -72,7 +70,6 @@ export function InvestmentsDisbursedModule(
 ) {
   useTitle("The Data Explorer - Investments/Disbursed");
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const totalValue = sumBy(props.data, "value");
 
   const history = useHistory();
 
@@ -80,34 +77,30 @@ export function InvestmentsDisbursedModule(
     DisbursementsTreemapDataItem[]
   >(props.data);
 
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-  const breadcrumbID = v4();
+  const [reRouteDialog, setReRouteDialog] = React.useState({
+    display: false,
+    code: "",
+  });
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
 
+  const totalValue = React.useMemo(
+    () => sumBy(props.data, "value"),
+    [props.data]
+  );
+
   React.useEffect(() => {
     if (props.vizLevel === 0) {
       if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: `${props.type}-treemap` })
-      ) {
-        addDataPathSteps([
-          {
-            id: uniqueId(),
-            name: `${props.type}-treemap`,
-            path: `${history.location.pathname}${history.location.search}`,
-          },
-        ]);
-      } else if (
         props.isGrantDetail &&
         !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "grant",
             name: props.codeParam || "Grant",
             path: `${history.location.pathname}${history.location.search}`,
           },
@@ -118,7 +111,7 @@ export function InvestmentsDisbursedModule(
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "location",
             name: props.codeParam
               ? getNameFromIso3(props.codeParam)
               : "Location",
@@ -131,32 +124,34 @@ export function InvestmentsDisbursedModule(
       ) {
         addDataPathSteps([
           {
-            id: uniqueId(),
+            id: "partner",
             name: props.codeParam || "Partner",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      }
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: `Grant Implementation: ${props.type}`,
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
       }
     }
     if (props.vizLevel > 0 && props.vizSelected) {
-      const code = props.vizSelected.split("-")[0];
-      let name = "";
-      props.data.forEach((item: DisbursementsTreemapDataItem) => {
-        if (name.length === 0) {
-          const fItem = find(item._children, { code });
-          if (fItem) {
-            name = fItem.name;
-          }
-        }
-      });
       addDataPathSteps([
         {
           id: uniqueId(),
-          name: name || code,
+          name: props.vizSelected,
           path: `${history.location.pathname}${history.location.search}`,
           vizSelected: {
-            id: props.vizSelected || "",
-            filterStr: props.vizSelected || "",
+            id: props.vizSelected,
+            filterStr: props.vizSelected,
           },
         },
       ]);
@@ -223,16 +218,6 @@ export function InvestmentsDisbursedModule(
             if (props.allowDrilldown) {
               props.setVizLevel(1);
               props.setVizSelected(node);
-              setBreadCrumbList([
-                ...breadCrumbList,
-                {
-                  name: name as string,
-                  path: location.pathname,
-                  id: breadcrumbID,
-                  vizLevel: 1,
-                  vizSelected: node,
-                },
-              ]);
             } else if (props.onNodeClick && code) {
               props.onNodeClick(code);
             }
@@ -245,18 +230,14 @@ export function InvestmentsDisbursedModule(
           isDrilldownTreemap
           data={props.drilldownData}
           onNodeClick={(node: string) => {
-            const idSplits = node.split("-");
-            const code = getIso3FromName(idSplits[1]);
-            addDataPathSteps([
-              {
-                id: uniqueId(),
-                name: `${idSplits[1]} - ${idSplits[0]}`,
-                path: `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`,
-              },
-            ]);
-            history.push(
-              `/location/${code}/${clickthroughPath}?components=${idSplits[0]}`
-            );
+            const code = node
+              .split("-")
+              .slice(0, node.split("-").length - 1)
+              .join("-");
+            setReRouteDialog({
+              display: true,
+              code,
+            });
           }}
         />
       );
@@ -265,6 +246,17 @@ export function InvestmentsDisbursedModule(
 
   return (
     <React.Fragment>
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(
+              `/grant/${reRouteDialog.code}/period/${clickthroughPath}`
+            )
+          }
+        />
+      )}
       <Grid
         container
         alignItems="center"

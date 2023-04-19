@@ -1,14 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { BudgetsTimeCycleModule } from "app/modules/viz-module/sub-modules/budgets/time-cycle";
-import { breadCrumbItems } from "app/state/recoil/atoms";
-import { useRecoilValue } from "recoil";
 
 interface Props {
   code: string;
@@ -19,22 +18,32 @@ interface Props {
 export function GrantDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Grant Budgets Time cycle");
 
-  const breadcrumbList = useRecoilValue(breadCrumbItems);
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
 
-  const [vizLevel, setVizLevel] = React.useState(
-    breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0
-  );
-
+  const [vizLevel, setVizLevel] = React.useState(0);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
     string | undefined
-  >(breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string);
+  >(dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr);
 
   React.useEffect(() => {
-    setDrilldownVizSelected(
-      breadcrumbList[breadcrumbList.length - 1]?.vizSelected as string
-    );
-    setVizLevel(breadcrumbList[breadcrumbList.length - 1]?.vizLevel || 0);
-  }, [breadcrumbList]);
+    const newVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (!isEqual(newVizSelected, vizSelected)) {
+      setVizSelected(newVizSelected);
+    }
+    if (!isEqual(newDrilldownVizSelected, drilldownVizSelected)) {
+      setDrilldownVizSelected(newDrilldownVizSelected);
+    }
+    if (newDrilldownVizSelected) {
+      setVizLevel(2);
+    } else if (newVizSelected) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions(

@@ -1,7 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useTitle, useUpdateEffect } from "react-use";
+import isEqual from "lodash/isEqual";
+import { useTitle, useUpdateEffect, useMount } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -14,13 +15,77 @@ interface Props {
   toolboxOpen?: boolean;
 }
 
+interface DrilldownVizSelectedType {
+  id: string | undefined;
+  filterStr: string | undefined;
+}
+
 export function PartnerDetailBudgetsFlowWrapper(props: Props) {
   useTitle("The Data Explorer - Partner Budgets Flow");
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const [drilldownVizSelected, setDrilldownVizSelected] =
+    React.useState<DrilldownVizSelectedType>({
+      id: dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.id,
+      filterStr:
+        dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected
+          ?.filterStr,
+    });
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<{
-    id: string | undefined;
-    filterStr: string | undefined;
-  }>({ id: undefined, filterStr: undefined });
+
+  useMount(() => {
+    setVizSelected({
+      id: dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr,
+      filterStr:
+        dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr,
+    });
+  });
+
+  React.useEffect(() => {
+    const newVizSelectedId =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.id;
+    const newVizSelectedFilterStr =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelectedId =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.id;
+    const newDrilldownVizSelectedFilterStr =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (
+      !isEqual(
+        {
+          id: newVizSelectedId,
+          filterStr: newVizSelectedFilterStr,
+        },
+        vizSelected
+      )
+    ) {
+      setVizSelected({
+        id: newVizSelectedId,
+        filterStr: newVizSelectedFilterStr,
+      });
+    }
+    if (
+      !isEqual(
+        {
+          id: newDrilldownVizSelectedId,
+          filterStr: newDrilldownVizSelectedFilterStr,
+        },
+        drilldownVizSelected
+      )
+    ) {
+      setDrilldownVizSelected({
+        id: newDrilldownVizSelectedId,
+        filterStr: newDrilldownVizSelectedFilterStr,
+      });
+    }
+    if (newDrilldownVizSelectedFilterStr) {
+      setVizLevel(2);
+    } else if (newVizSelectedFilterStr) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions(

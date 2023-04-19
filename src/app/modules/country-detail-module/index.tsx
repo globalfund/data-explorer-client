@@ -1,10 +1,7 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import get from "lodash/get";
 import { appColors } from "app/theme";
-import queryString from "query-string";
-import { useRecoilState } from "recoil";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -12,12 +9,10 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import GrantsModule from "app/modules/grants-module";
 import { PageHeader } from "app/components/PageHeader";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
@@ -49,10 +44,8 @@ export default function CountryDetail() {
   useTitle("The Data Explorer - Location");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
+
   const [search, setSearch] = React.useState("");
-  const [breadCrumbList, setBreadCrumbList] = useRecoilState(breadCrumbItems);
-  const { components } = queryString.parse(location.search);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{
     code: string;
@@ -67,6 +60,11 @@ export default function CountryDetail() {
     search,
     params.code,
     "locations"
+  );
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
   );
 
   // api call & data
@@ -165,38 +163,30 @@ export default function CountryDetail() {
     return 0;
   }
 
-  const breadcrumbID = React.useMemo(() => v4(), []);
-
   useUpdateEffect(() => {
-    if (breadCrumbList.length === 0) {
-      setBreadCrumbList([
-        { name: "Datasets", path: "/", id: v4() },
+    if (
+      locationInfoData &&
+      locationInfoData.locationName &&
+      !dataPathSteps.find((item) => item.id === "location")
+    ) {
+      addDataPathSteps([
         {
+          id: "location",
           name: locationInfoData.locationName,
           path: location.pathname,
-          id: v4(),
-        },
-      ]);
-    } else if (
-      !breadCrumbList.find((item) => item.id === breadcrumbID) &&
-      components
-    ) {
-      setBreadCrumbList([
-        ...breadCrumbList,
-        {
-          name: components.toString(),
-          path: location.pathname,
-          id: breadcrumbID,
         },
       ]);
     }
   }, [locationInfoData]);
 
-  const tabs = countryDetailTabs;
-
-  if (params.code.length > 3) {
-    tabs[3].tabs = tabs[3].tabs?.slice(0, 1);
-  }
+  const tabs = React.useMemo(() => {
+    if (params.code.length > 3) {
+      const updatedTabs = countryDetailTabs;
+      updatedTabs[3].tabs = updatedTabs[3].tabs?.slice(0, 1);
+      return updatedTabs;
+    }
+    return countryDetailTabs;
+  }, [params.code]);
 
   return (
     <div
@@ -211,21 +201,7 @@ export default function CountryDetail() {
     >
       <BreadCrumbs />
       {loading && <PageLoader />}
-      <PageHeader
-        isDetail
-        tabs={tabs}
-        title={locationInfoData.locationName}
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          {
-            name: locationInfoData.locationName,
-          },
-        ]}
-      />
+      <PageHeader isDetail tabs={tabs} title={locationInfoData.locationName} />
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>

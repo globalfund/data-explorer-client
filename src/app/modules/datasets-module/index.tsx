@@ -26,15 +26,7 @@ export default function Datasets() {
   return (
     <div css={dataSetsCss}>
       {!isMobile && (
-        <PageHeader
-          title={get(cmsData, "modulesDatasets.titleShort", "")}
-          breadcrumbs={[
-            { name: get(cmsData, "modulesDatasets.home", ""), link: "/" },
-            {
-              name: get(cmsData, "modulesDatasets.titleShort", ""),
-            },
-          ]}
-        />
+        <PageHeader title={get(cmsData, "modulesDatasets.titleShort", "")} />
       )}
       <PageTopSpacer />
       <LandingDatasetGrid />

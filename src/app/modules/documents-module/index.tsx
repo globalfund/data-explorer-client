@@ -1,9 +1,6 @@
 /* third-party */
 import React from "react";
-import { v4 } from "uuid";
 import get from "lodash/get";
-import { useRecoilState } from "recoil";
-import { breadCrumbItems } from "app/state/recoil/atoms";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
@@ -16,7 +13,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { DocumentsSubModule } from "app/modules/common/documents";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
@@ -24,11 +20,13 @@ import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/f
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
-  const [_, setBreadCrumbList] = useRecoilState(breadCrumbItems);
+
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -106,12 +104,11 @@ export default function DocumentsModule() {
   }
 
   React.useEffect(() => {
-    setBreadCrumbList([
-      { name: "Datasets", path: "/", id: v4() },
+    addDataPathSteps([
       {
         name: "Documents",
         path: location.pathname,
-        id: v4(),
+        id: "documents",
       },
     ]);
   }, []);
@@ -128,17 +125,7 @@ export default function DocumentsModule() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader
-        title="Documents"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          { name: "Documents" },
-        ]}
-      />
+      <PageHeader title="Documents" />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}

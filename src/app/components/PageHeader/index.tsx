@@ -5,7 +5,6 @@ import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
 import { useHistory } from "react-router-dom";
-import { BreadcrumbModel } from "app/interfaces";
 import Container from "@material-ui/core/Container";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
@@ -17,7 +16,6 @@ interface PageHeaderProps {
   tabs?: TabProps[];
   isDetail?: boolean;
   partialTitle?: string;
-  breadcrumbs: BreadcrumbModel[];
 }
 
 const styles = {

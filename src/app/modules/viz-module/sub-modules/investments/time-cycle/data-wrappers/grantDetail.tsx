@@ -70,15 +70,15 @@ export function GrantDetailInvestmentsTimeCycleWrapper(props: Props) {
   return (
     <InvestmentsTimeCycleModule
       data={data}
+      vizLevel={0}
       isGrantDetail
       type={props.type}
-      isDrilldownLoading={false}
-      codeParam={props.code}
       drilldownData={[]}
       isLoading={isLoading}
-      vizLevel={0}
-      setVizLevel={setVizLevel}
+      codeParam={props.code}
       vizSelected={undefined}
+      setVizLevel={setVizLevel}
+      isDrilldownLoading={false}
       setVizSelected={setVizSelected}
       toolboxOpen={props.toolboxOpen}
     />

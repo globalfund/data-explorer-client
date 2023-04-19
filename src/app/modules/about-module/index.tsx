@@ -37,18 +37,7 @@ export default function About() {
       `}
     >
       {!isMobile && (
-        <PageHeader
-          title={get(cmsData, "modulesAbout.titleShort", "")}
-          breadcrumbs={[
-            {
-              name: get(cmsData, "modulesAbout.breadcrumbHome", ""),
-              link: "/",
-            },
-            {
-              name: get(cmsData, "modulesAbout.titleShort", ""),
-            },
-          ]}
-        />
+        <PageHeader title={get(cmsData, "modulesAbout.titleShort", "")} />
       )}
       <div
         css={`

@@ -12,3 +12,9 @@ export const DisbursementsTimeCycleDrilldown: ApiCallModel = {
     `${process.env.REACT_APP_API}/disbursements/time-cycle/drilldown`
   ),
 };
+
+export const DisbursementsTimeCycleDrilldown2: ApiCallModel = {
+  ...APIModel(
+    `${process.env.REACT_APP_API}/disbursements/time-cycle/drilldown/2`
+  ),
+};
