@@ -173,7 +173,13 @@ export function LocationDetailOverviewModule(props: Props) {
                             margin-bottom: 8px;
                           `}
                         >
-                          <b>{c.name}</b>
+                          {c.url ? (
+                            <a href={c.url} target="_blank">
+                              <b>{c.name}</b>
+                            </a>
+                          ) : (
+                            <b>{c.name}</b>
+                          )}
                         </div>
                         <div
                           css={`
