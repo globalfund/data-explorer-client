@@ -6,18 +6,16 @@ import sumBy from "lodash/sumBy";
 import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { DrilldownModelUpdated } from "app/interfaces";
+import { BudgetsTreemapDataItem } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
-import { BudgetsTreemapDataItem } from "app/interfaces";
 
 interface BudgetsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -43,9 +41,6 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const history = useHistory();
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
-
-  const [xsTooltipData, setXsTooltipData] =
-    React.useState<TreeMapNodeDatum | null>(null);
 
   const totalBudget = React.useMemo(() => {
     return sumBy(props.data, "amount");

@@ -1,4 +1,5 @@
 import React from "react";
+import uniqBy from "lodash/uniqBy";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
@@ -39,6 +40,22 @@ export default function BreadCrumbs() {
       history.push("/");
     }
   }
+
+  const items = React.useMemo(
+    () =>
+      uniqBy(
+        [
+          {
+            id: "datasets",
+            name: "Datasets",
+            path: "",
+          },
+          ...dataPathSteps,
+        ],
+        "name"
+      ),
+    [dataPathSteps]
+  );
 
   return (
     <div
@@ -85,14 +102,7 @@ export default function BreadCrumbs() {
           }
         `}
       >
-        {[
-          {
-            id: "datasets",
-            name: "Datasets",
-            path: "",
-          },
-          ...dataPathSteps,
-        ].map((item, index) => (
+        {items.map((item, index) => (
           <div
             key={item.id}
             css={`
@@ -103,7 +113,7 @@ export default function BreadCrumbs() {
           >
             <button
               css={`
-                background: ${index === dataPathSteps.length
+                background: ${index === items.length - 1
                   ? appColors.BREADCRUMBS.ITEM_BUTTON_SELECTED_BACKGROUND_COLOR
                   : appColors.BREADCRUMBS.ITEM_BUTTON_BACKGROUND_COLOR};
                 height: 32px;
@@ -118,7 +128,7 @@ export default function BreadCrumbs() {
                 border: none;
                 outline: none;
                 width: max-content;
-                cursor: ${index < dataPathSteps.length ? "pointer" : "default"};
+                cursor: ${index < items.length - 1 ? "pointer" : "default"};
 
                 :hover,
                 :active,
@@ -129,14 +139,14 @@ export default function BreadCrumbs() {
               `}
               type="button"
               onClick={() => {
-                if (index < dataPathSteps.length) {
+                if (index < items.length - 1) {
                   onItemClick(index, item);
                 }
               }}
             >
               <b>{item.name}</b>
             </button>
-            {index === dataPathSteps.length ? null : (
+            {index === items.length - 1 ? null : (
               <div
                 css={`
                   display: flex;

@@ -2,9 +2,10 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import isEqual from "lodash/isEqual";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
-import { useTitle, useUnmount, useUpdateEffect } from "react-use";
+import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { Dropdown } from "app/components/Dropdown";
@@ -57,9 +58,6 @@ export function PledgesContributionsTimeCycleModule() {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-  const setVizDrilldowns = useStoreActions(
-    (actions) => actions.PageHeaderVizDrilldownsState.setValue
-  );
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
@@ -67,32 +65,32 @@ export function PledgesContributionsTimeCycleModule() {
   );
 
   React.useEffect(() => {
-    if (
-      dataPathSteps.length === 0 ||
-      !find(dataPathSteps, {
-        name: "Resource Mobilization: Pledges & Contributions",
-      })
-    ) {
-      addDataPathSteps([
-        {
-          id: uniqueId(),
-          name: "Resource Mobilization: Pledges & Contributions",
-          path: `${history.location.pathname}${history.location.search}`,
-        },
-      ]);
+    const newVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    if (!isEqual(newVizSelected, vizSelected)) {
+      setVizSelected(newVizSelected);
     }
-  }, []);
+    if (newVizSelected) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   React.useEffect(() => {
     if (vizLevel === 0) {
-      setVizDrilldowns([]);
-    }
-    if (vizLevel > 0 && vizSelected) {
-      const splits = vizSelected.split("-");
-      if (splits.length > 1) {
-        setVizDrilldowns([
-          { name: "Pledges & Contributions-treemap" },
-          { name: `${splits[0]}-${splits[1]}` },
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, {
+          name: "Resource Mobilization: Pledges & Contributions",
+        })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Resource Mobilization: Pledges & Contributions",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
         ]);
       }
     }
@@ -118,8 +116,6 @@ export function PledgesContributionsTimeCycleModule() {
     }
   }, [vizSelected]);
 
-  useUnmount(() => setVizDrilldowns([]));
-
   let vizComponent = <React.Fragment />;
 
   if (isLoading || isDrilldownLoading) {
@@ -133,6 +129,24 @@ export function PledgesContributionsTimeCycleModule() {
           onNodeClick={(node: string) => {
             setVizLevel(1);
             setVizSelected(node);
+            const splits = node.split("-");
+            if (
+              splits.length > 1 &&
+              dataPathSteps[dataPathSteps.length - 1].vizSelected?.filterStr !==
+                node
+            ) {
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: `${splits[0]}-${splits[1]}`,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  vizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
+                },
+              ]);
+            }
           }}
         />
       );
