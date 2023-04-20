@@ -3,6 +3,8 @@ import get from "lodash/get";
 import find from "lodash/find";
 import * as echarts from "echarts";
 import { useCMSData } from "app/hooks/useCMSData";
+import Checkbox from "@material-ui/core/Checkbox";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
   EchartBaseChartProps,
   getChartConfigAsPerType,
@@ -16,10 +18,13 @@ const height = {
   polarbar: 700,
   horizontalbar: 700,
   pledgescontributions: 800,
+  investments: 800,
 };
 
 export function EchartBaseChart(props: EchartBaseChartProps) {
   const cmsData = useCMSData({ returnData: true });
+
+  const [showCumulative, setShowCumulative] = React.useState(false);
 
   const ref = React.useRef<HTMLDivElement>(null);
 
@@ -29,6 +34,10 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
       width: container?.clientWidth,
       height: height || "auto",
     });
+  }
+
+  function handleChangeCumulative() {
+    setShowCumulative(!showCumulative);
   }
 
   React.useEffect(() => {
@@ -42,9 +51,13 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
       renderer: "canvas",
     });
 
+    chart.clear();
+
     window.removeEventListener("resize", () => onResize(chart, id));
 
-    const option = getChartConfigAsPerType(props.type, props.data, cmsData);
+    const option = getChartConfigAsPerType(props.type, props.data, cmsData, {
+      showCumulative,
+    });
 
     chart.setOption(option);
 
@@ -98,15 +111,36 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
     });
 
     window.addEventListener("resize", () => onResize(chart, id));
-  }, [ref.current, props.data]);
+  }, [ref.current, props.data, props.type, showCumulative]);
 
   return (
-    <div
-      id={id}
-      ref={ref}
-      css={`
-        height: ${height[props.type]}px;
-      `}
-    />
+    <React.Fragment>
+      {props.type === "investments" && (
+        <FormControlLabel
+          label="Show Cumulative"
+          control={
+            <Checkbox
+              disableRipple
+              color="primary"
+              name="cumulative"
+              checked={showCumulative}
+              onChange={handleChangeCumulative}
+            />
+          }
+          css={`
+            z-index: 10;
+            position: relative;
+            margin-bottom: -40px;
+          `}
+        />
+      )}
+      <div
+        id={id}
+        ref={ref}
+        css={`
+          height: ${height[props.type]}px;
+        `}
+      />
+    </React.Fragment>
   );
 }

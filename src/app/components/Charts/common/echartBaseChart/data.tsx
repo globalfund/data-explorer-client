@@ -1,14 +1,19 @@
 import get from "lodash/get";
 import find from "lodash/find";
 import ReactDOM from "react-dom";
+import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import * as echarts from "echarts/core";
+import findIndex from "lodash/findIndex";
 import { CanvasRenderer } from "echarts/renderers";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
 import { EchartsTreemapTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/treemap";
 import { EchartsPolarBarTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/polarbar";
+import { EchartsHorizontalBarTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/horizontalbar";
+import { EchartsInvestmentsBarTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/investmentsbar";
+import { EchartsPledgesContributionsTooltip } from "app/components/Charts/common/echartBaseChart/tooltips/pledgescontributions";
 import {
   EchartsSankeyNodeTooltip,
   EchartsSankeyLinkTooltip,
@@ -26,8 +31,6 @@ import {
   TooltipComponent,
   VisualMapComponent,
 } from "echarts/components";
-import { EchartsHorizontalBarTooltip } from "./tooltips/horizontalbar";
-import { EchartsPledgesContributionsTooltip } from "./tooltips/pledgescontributions";
 
 echarts.use([
   BarChart,
@@ -47,7 +50,8 @@ type EchartChartTypes =
   | "sankey"
   | "polarbar"
   | "horizontalbar"
-  | "pledgescontributions";
+  | "pledgescontributions"
+  | "investments";
 
 export interface EchartBaseChartProps {
   data: any;
@@ -597,10 +601,171 @@ function getPledgesContributionsBarConfig(data: any, cmsData: any) {
   };
 }
 
+function getInvestmentsBarConfig(data: any, cmsData: any, extra: any) {
+  const valueKey = "disbursed";
+  const years = data.map((item: any) => item.year);
+  const series: any[] = [];
+
+  data.forEach((item: any) => {
+    get(item, `["${valueKey}Children"]`, []).forEach((component: any) => {
+      const fCompIndex = findIndex(series, {
+        name: component.name,
+        stack: valueKey,
+      });
+      if (fCompIndex === -1) {
+        series.push({
+          type: "bar",
+          stack: valueKey,
+          data: [
+            {
+              value: component.value,
+              itemStyle: { color: component.color },
+            },
+          ],
+          name: component.name,
+          emphasis: {
+            focus: "none",
+          },
+        });
+      } else {
+        series[fCompIndex].data.push({
+          value: component.value,
+          itemStyle: { color: component.color },
+        });
+      }
+    });
+    if (extra.showCumulative) {
+      item.cumulativeChildren.forEach((component: any) => {
+        const fCompIndex = findIndex(series, {
+          name: component.name,
+          stack: "cumulative",
+        });
+        if (fCompIndex === -1) {
+          series.push({
+            type: "bar",
+            stack: "cumulative",
+            data: [
+              {
+                value: component.value,
+                itemStyle: { color: component.color },
+              },
+            ],
+            name: component.name,
+            id: `cumulative-${component.name}`,
+            emphasis: {
+              focus: "none",
+            },
+          });
+        } else {
+          series[fCompIndex].data.push({
+            value: component.value,
+            itemStyle: { color: component.color },
+          });
+        }
+      });
+    }
+  });
+
+  return {
+    colorBy: "data",
+    yAxis: {
+      min: 0,
+      name: "(values in USD)",
+      type: "value",
+      nameTextStyle: {
+        align: "right",
+        color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+      },
+      axisLabel: {
+        formatter: (value: any) =>
+          formatLargeAmountsWithPrefix(value).replace("$", ""),
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+    },
+    xAxis: {
+      type: "category",
+      data: years,
+      axisLabel: {
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+    },
+    grid: {
+      top: 100,
+      right: 0,
+      left: "8%",
+    },
+    dataZoom: [
+      {
+        bottom: 15,
+        show: true,
+        start: 0,
+        end: 100,
+        height: 20,
+      },
+    ],
+    series: series,
+    legend: {
+      top: 0,
+      right: 0,
+      show: true,
+      data: uniqBy(series, "name").map((serie: any) => ({
+        name: serie.name,
+        icon: "rect",
+        itemStyle: { color: serie.data[0].itemStyle.color },
+      })),
+    },
+    tooltip: {
+      show: true,
+      confine: true,
+      trigger: "item",
+      triggerOn: "mousemove",
+      formatter: (params: any) => {
+        let tdata = find(data, { year: params.name });
+        if (!data) return;
+        const year = tdata.year;
+        const isCumulative =
+          params.seriesId && params.seriesId.includes("cumulative");
+        if (isCumulative) {
+          tdata = tdata.cumulativeChildren;
+        } else {
+          tdata = tdata[`${valueKey}Children`];
+        }
+        const ct = document.createElement("div");
+        ReactDOM.render(
+          <EchartsInvestmentsBarTooltip
+            year={year}
+            data={tdata}
+            cmsData={cmsData}
+            isCumulative={isCumulative}
+          />,
+          ct
+        );
+        const result = ct.outerHTML;
+        ReactDOM.unmountComponentAtNode(ct);
+        return result;
+      },
+      extraCssText: `
+        padding: 20px;
+        border-style: none;
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+        background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
+      `,
+    },
+  };
+}
+
 export function getChartConfigAsPerType(
   type: EchartChartTypes,
   data: any,
-  cmsData: any
+  cmsData: any,
+  extra: {
+    [key: string]: any;
+  }
 ) {
   switch (type) {
     case "treemap":
@@ -613,6 +778,8 @@ export function getChartConfigAsPerType(
       return getHorizontalBarConfig(data, cmsData);
     case "pledgescontributions":
       return getPledgesContributionsBarConfig(data, cmsData);
+    case "investments":
+      return getInvestmentsBarConfig(data, cmsData, extra);
     default:
       return {};
   }

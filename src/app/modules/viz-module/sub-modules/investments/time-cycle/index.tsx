@@ -10,7 +10,6 @@ import { PageLoader } from "app/modules/common/page-loader";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
-import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -120,10 +119,10 @@ export function InvestmentsTimeCycleModule(
   } else {
     if (props.vizLevel === 0) {
       vizComponent = (
-        <InvestmentsTimeCycle
+        <EchartBaseChart
           data={props.data}
-          type={props.type}
-          onNodeClick={(node: string, _x: number, _y: number) => {
+          type="investments"
+          onNodeClick={(node: string) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
             addDataPathSteps([

@@ -1,21 +1,17 @@
 import React from "react";
 import get from "lodash/get";
-import filter from "lodash/filter";
+import sumBy from "lodash/sumBy";
 import orderBy from "lodash/orderBy";
 import { appColors } from "app/theme";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
-export function EchartsHorizontalBarTooltip(props: {
+export function EchartsInvestmentsBarTooltip(props: {
   data: any;
+  year: any;
   cmsData: any;
+  isCumulative: boolean;
 }) {
-  const { data, cmsData } = props;
-
-  const valueKeys = filter(
-    Object.keys(data),
-    (key: string) =>
-      key !== "year" && key.indexOf("Color") === -1 && key !== "amount"
-  );
+  const { data, year, cmsData, isCumulative } = props;
 
   return (
     <div
@@ -35,8 +31,10 @@ export function EchartsHorizontalBarTooltip(props: {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        {get(cmsData, "componentsChartsBudgets.timeCycleTooltipBudgets", "")}{" "}
-        {data.year}
+        {isCumulative
+          ? "Cumulative"
+          : get(cmsData, "componentsChartsInvestments.disbursed", "")}{" "}
+        {year}
       </div>
       <div css="width: 100%;height: 12px;" />
       <div
@@ -62,7 +60,7 @@ export function EchartsHorizontalBarTooltip(props: {
             {get(cmsData, "componentsChartsInvestments.totalAmount", "")}
           </div>
         </div>
-        <div>{formatFinancialValue(data.amount as number)}</div>
+        <div>{formatFinancialValue(sumBy(data, "value"))}</div>
       </div>
       <hr
         css={`
@@ -87,9 +85,9 @@ export function EchartsHorizontalBarTooltip(props: {
           }
         `}
       >
-        {orderBy(valueKeys, (key) => data[key], "desc").map((key: string) => (
+        {orderBy(data, "value", "desc").map((item: any) => (
           <div
-            key={key}
+            key={item.name}
             css={`
               display: flex;
               flex-direction: row;
@@ -108,7 +106,7 @@ export function EchartsHorizontalBarTooltip(props: {
                   height: 8px;
                   border-radius: 50%;
                   margin-right: 12px;
-                  background: ${get(data, `${key}Color`, "#000")};
+                  background: ${item.color};
                 `}
               />
               <div
@@ -117,10 +115,10 @@ export function EchartsHorizontalBarTooltip(props: {
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
-                {key}
+                {item.name}
               </div>
             </div>
-            <div>{formatFinancialValue(get(data, key, 0) as number)}</div>
+            <div>{formatFinancialValue(item.value)}</div>
           </div>
         ))}
       </div>
