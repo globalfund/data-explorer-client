@@ -7,7 +7,6 @@ import filter from "lodash/filter";
 import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-import { TreeMapNodeDatum } from "@nivo/treemap";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -61,9 +60,6 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
-
-  const [xsTooltipData, setXsTooltipData] =
-    React.useState<TreeMapNodeDatum | null>(null);
 
   const [reRouteDialog, setReRouteDialog] = React.useState({
     display: false,
