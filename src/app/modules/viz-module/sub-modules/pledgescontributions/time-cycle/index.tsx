@@ -1,9 +1,9 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import isEqual from "lodash/isEqual";
 import uniqueId from "lodash/uniqueId";
+import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -58,10 +58,12 @@ export function PledgesContributionsTimeCycleModule() {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
   );
 
   React.useEffect(() => {
@@ -79,12 +81,10 @@ export function PledgesContributionsTimeCycleModule() {
 
   React.useEffect(() => {
     if (vizLevel === 0) {
-      if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, {
-          name: "Resource Mobilization: Pledges & Contributions",
-        })
-      ) {
+      const fStepIndex = findIndex(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      });
+      if (dataPathSteps.length === 0) {
         addDataPathSteps([
           {
             id: uniqueId(),
@@ -92,6 +92,12 @@ export function PledgesContributionsTimeCycleModule() {
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
+      } else if (fStepIndex > -1) {
+        const newSteps = [...dataPathSteps];
+        newSteps[
+          fStepIndex
+        ].path = `${history.location.pathname}${history.location.search}`;
+        setDataPathSteps(newSteps);
       }
     }
   }, [vizLevel, vizSelected]);

@@ -106,6 +106,8 @@ export function EchartBaseChart(props: EchartBaseChartProps) {
               ""
             ).toLowerCase()}`
           );
+        } else if (props.type === "investments") {
+          props.onNodeClick(params.name);
         }
       }
     });

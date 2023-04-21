@@ -4,6 +4,7 @@ import get from "lodash/get";
 import find from "lodash/find";
 import sumBy from "lodash/sumBy";
 import uniqueId from "lodash/uniqueId";
+import findIndex from "lodash/findIndex";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
@@ -49,6 +50,9 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
   );
 
   const [reRouteDialog, setReRouteDialog] = React.useState({
@@ -105,6 +109,17 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
+      } else {
+        const fStepIndex = findIndex(dataPathSteps, {
+          name: "Grant Implementation: Budgets",
+        });
+        if (fStepIndex > -1) {
+          const newSteps = [...dataPathSteps];
+          newSteps[
+            fStepIndex
+          ].path = `${history.location.pathname}${history.location.search}`;
+          setDataPathSteps(newSteps);
+        }
       }
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);

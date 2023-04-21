@@ -2,6 +2,7 @@
 import React from "react";
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
+import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -46,6 +47,9 @@ export function InvestmentsTimeCycleModule(
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
   );
 
   React.useEffect(() => {
@@ -97,6 +101,17 @@ export function InvestmentsTimeCycleModule(
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
+      } else {
+        const fStepIndex = findIndex(dataPathSteps, {
+          name: `Grant Implementation: ${props.type}`,
+        });
+        if (fStepIndex > -1) {
+          const newSteps = [...dataPathSteps];
+          newSteps[
+            fStepIndex
+          ].path = `${history.location.pathname}${history.location.search}`;
+          setDataPathSteps(newSteps);
+        }
       }
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);

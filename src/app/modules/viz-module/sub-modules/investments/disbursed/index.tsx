@@ -6,6 +6,7 @@ import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
 import { useTitle } from "react-use";
 import uniqueId from "lodash/uniqueId";
+import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -82,6 +83,9 @@ export function InvestmentsDisbursedModule(
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
+  );
 
   React.useEffect(() => {
     if (props.vizLevel === 0) {
@@ -132,6 +136,17 @@ export function InvestmentsDisbursedModule(
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
+      } else {
+        const fStepIndex = findIndex(dataPathSteps, {
+          name: `Grant Implementation: ${props.type}`,
+        });
+        if (fStepIndex > -1) {
+          const newSteps = [...dataPathSteps];
+          newSteps[
+            fStepIndex
+          ].path = `${history.location.pathname}${history.location.search}`;
+          setDataPathSteps(newSteps);
+        }
       }
     }
     if (props.vizLevel > 0 && props.vizSelected) {

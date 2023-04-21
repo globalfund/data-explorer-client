@@ -18,6 +18,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
+import findIndex from "lodash/findIndex";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -69,6 +70,9 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
   );
 
   const totalBudget: number = React.useMemo(() => {
@@ -124,6 +128,17 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
+      } else {
+        const fStepIndex = findIndex(dataPathSteps, {
+          name: "Grant Implementation: Budgets",
+        });
+        if (fStepIndex > -1) {
+          const newSteps = [...dataPathSteps];
+          newSteps[
+            fStepIndex
+          ].path = `${history.location.pathname}${history.location.search}`;
+          setDataPathSteps(newSteps);
+        }
       }
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
