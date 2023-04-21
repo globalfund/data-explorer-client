@@ -527,6 +527,11 @@ function getPledgesContributionsBarConfig(data: any, cmsData: any) {
         },
       },
     },
+    grid: {
+      top: 100,
+      right: 0,
+      left: "8%",
+    },
     dataZoom: [
       {
         bottom: 15,

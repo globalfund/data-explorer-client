@@ -37,7 +37,7 @@ export function EchartsPolarBarTooltip(props: { data: any; cmsData: any }) {
           gap: 10px;
           display: flex;
           font-size: 12px;
-          padding: 16px 0;
+          padding-top: 16px;
           flex-direction: column;
 
           > * {

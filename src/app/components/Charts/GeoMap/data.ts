@@ -1,3 +1,4 @@
+import { appColors } from "app/theme";
 import { FeatureCollection, Feature } from "geojson";
 
 import D2HACCENT from "app/assets/geo-map-pins/d2h_accent.png";
@@ -1551,4 +1552,20 @@ export const donorPins: GeoMapPinMarker[] = [
     d2hCoordinates: null,
     intId: 53,
   },
+];
+
+export const geomapLegendItems = [
+  appColors.GEOMAP.NO_DATA_LAYER_COLOR,
+  appColors.GEOMAP.DATA_LAYER_COLOR_1,
+  appColors.GEOMAP.DATA_LAYER_COLOR_2,
+  appColors.GEOMAP.DATA_LAYER_COLOR_3,
+  appColors.GEOMAP.DATA_LAYER_COLOR_4,
+  appColors.GEOMAP.DATA_LAYER_COLOR_5,
+  appColors.GEOMAP.DATA_LAYER_COLOR_6,
+  appColors.GEOMAP.DATA_LAYER_COLOR_7,
+  appColors.GEOMAP.DATA_LAYER_COLOR_8,
+  appColors.GEOMAP.DATA_LAYER_COLOR_9,
+  appColors.GEOMAP.DATA_LAYER_COLOR_10,
+  appColors.GEOMAP.DATA_LAYER_COLOR_11,
+  appColors.GEOMAP.DATA_LAYER_COLOR_12,
 ];

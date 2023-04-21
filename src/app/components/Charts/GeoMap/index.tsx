@@ -325,21 +325,12 @@ export function GeoMap(props: GeoMapProps) {
     uMapStyle.layers[0].paint["background-color"] = "hsl(204, 10%, 80%)";
   }
 
-  let heightDef =
-    props.investmentsPins.length > 0 || props.pins.length > 0
-      ? "183px"
-      : "244px";
-
-  if (props.type === "allocations") {
-    heightDef = "274px";
-  }
-
   return (
     <div
       ref={containerRef as React.RefObject<HTMLDivElement>}
       css={`
         width: 100%;
-        height: ${isSmallScreen ? `50vh` : `calc(100vh - ${heightDef})`};
+        height: ${isSmallScreen ? `50vh` : `calc(100vh - 274px)`};
 
         @media (max-width: 767px) {
           width: 100vw;

@@ -3,6 +3,7 @@ import get from "lodash/get";
 import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import { useCMSData } from "app/hooks/useCMSData";
+import { useStoreState } from "app/state/store/hooks";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
   GeomapAllocationsTooltipProps,
@@ -240,6 +241,8 @@ export function GeomapPinTooltip(props: {
     }
   );
 
+  const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
   return (
     <div
       css={`
@@ -257,6 +260,9 @@ export function GeomapPinTooltip(props: {
         `}
       >
         {props.pin.geoName}
+        {appliedFilters.replenishmentPeriods.length === 1
+          ? ` ${appliedFilters.replenishmentPeriods[0]}`
+          : ""}
       </div>
       <div
         css={`
@@ -357,6 +363,10 @@ export function GeomapPinTooltip(props: {
 export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
   const cmsData = useCMSData({ returnData: true });
 
+  const allocationPeriod = useStoreState(
+    (state) => state.ToolBoxPanelAllocationsPeriodState.value
+  );
+
   return (
     <div
       css={`
@@ -369,18 +379,17 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
-          border-bottom: 1px solid ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        {props.name}
+        {props.name} {allocationPeriod}
       </div>
       <div
         css={`
           gap: 10px;
           display: flex;
           font-size: 12px;
-          padding: 16px 0;
+          padding-bottom: 14px;
           flex-direction: column;
           border-bottom: 1px solid ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
 
@@ -399,34 +408,36 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
-
-            > div {
-              font-weight: bold;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
-              &:nth-of-type(1) {
-                width: 50%;
-                text-align: start;
-              }
-
-              &:nth-of-type(2) {
-                width: 50%;
-                text-align: right;
-              }
-            }
           `}
         >
-          <div>
-            {get(cmsData, "componentsChartsGeomap.tooltipComponent", "")}
-          </div>
           <div
             css={`
-              text-transform: capitalize;
+              font-weight: bold;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            {props.valueLabel}
+            {get(cmsData, "componentsChartsGeomap.tooltipTotal", "")} allocation
           </div>
+          <div>{formatFinancialValue(props.data.value)}</div>
         </div>
+      </div>
+      <div
+        css={`
+          gap: 5px;
+          display: flex;
+          font-size: 12px;
+          padding: 14px 0 0 0;
+          flex-direction: column;
+
+          > * {
+            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
+              &:not(:last-child) {
+                margin-right: 10px;
+              }
+            }
+          }
+        `}
+      >
         {props.data.components.map((stat: any) => (
           <div
             key={stat.name}
@@ -440,7 +451,9 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
               > div {
                 &:nth-of-type(1) {
                   width: 50%;
+                  font-weight: bold;
                   text-align: start;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 }
 
                 &:nth-of-type(2) {
@@ -454,42 +467,6 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
             <div>{formatFinancialValue(stat.value)}</div>
           </div>
         ))}
-      </div>
-      <div
-        css={`
-          gap: 10px;
-          display: flex;
-          font-size: 12px;
-          padding-top: 16px;
-          flex-direction: column;
-
-          > * {
-            @supports (-webkit-touch-callout: none) and (not (translate: none)) {
-              &:not(:last-child) {
-                margin-right: 10px;
-              }
-            }
-          }
-        `}
-      >
-        <div
-          css={`
-            width: 100%;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-          `}
-        >
-          <div
-            css={`
-              font-weight: bold;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-            `}
-          >
-            {get(cmsData, "componentsChartsGeomap.tooltipTotal", "")}
-          </div>
-          <div>{formatFinancialValue(props.data.value)}</div>
-        </div>
       </div>
     </div>
   );
