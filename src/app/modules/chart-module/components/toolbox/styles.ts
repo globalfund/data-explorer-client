@@ -4,13 +4,17 @@ export const styles = {
   container: (placeUnderSubHeader?: boolean) => css`
     right: 0;
     z-index: 99;
-    width: 400px;
-    display: flex;
     position: fixed;
+    top: ${!placeUnderSubHeader ? 45 : 97}px;
+
+    display: flex;
     background: #f2f7fd;
     flex-direction: column;
-    top: ${!placeUnderSubHeader ? 40 : 97}px;
-    height: calc(100vh - ${!placeUnderSubHeader ? 40 : 97}px);
+
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     > section {
       padding: 0 31px 25px 31px;
@@ -71,6 +75,8 @@ export const styles = {
     font-family: "Inter", "Helvetica Neue", sans-serif;
   `,
   exportview: css`
+    width: 400px;
+    background: red;
     padding: 24px;
   `,
 };

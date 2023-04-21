@@ -60,7 +60,9 @@ export default function GridItem(props: Props) {
               css={`
                 font-size: 14px;
                 margin-top: 8px;
-
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 margin-bottom: 0;
               `}
             >
@@ -73,6 +75,11 @@ export default function GridItem(props: Props) {
               font-size: 10px;
               line-height: 12px;
               margin-top: 1px;
+              display: -webkit-box;
+              -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical;
+              overflow: hidden;
+              text-overflow: ellipsis;
             `}
           >
             {props.descr}
@@ -80,8 +87,9 @@ export default function GridItem(props: Props) {
         </div>
         <div
           css={`
-            transform: scale(1.2);
-
+            margin-top: 28px;
+            width: 74px;
+            height: 74px;
             path {
               fill: #868a9d;
             }

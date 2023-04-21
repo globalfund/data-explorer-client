@@ -48,14 +48,18 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
   }, [selectedChartType, visualOptions]);
 
   const [collapseStatus, setCollapseStatus] = React.useState(() => {
-    const groups = {};
-    for (const option in optionsConfig) {
-      const group = optionsConfig[option].group;
-      if (!groups.hasOwnProperty(group)) {
-        // @ts-ignore
-        groups[group] = true;
-      }
+    let groups = {};
+
+    if (!groups.hasOwnProperty("")) {
+      // @ts-ignore
+      groups = {
+        artboard: true,
+        chart: true,
+        tooltip: true,
+        label: true,
+      };
     }
+
     return groups;
   });
 
@@ -70,15 +74,17 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
   const optionsDefinitionsByGroup = React.useMemo(() => {
     if (!firstRendered) {
       let index = 0;
-      const groups = {};
-      for (const option in optionsConfig) {
-        const group = optionsConfig[option].group;
-        if (!groups.hasOwnProperty(group) && index === 0) {
-          // @ts-ignore
-          groups[group] = true;
-        }
-        index += 1;
+      let groups = {};
+      if (!groups.hasOwnProperty("")) {
+        // @ts-ignore
+        groups = {
+          artboard: true,
+          chart: true,
+          Tooltip: true,
+          Label: true,
+        };
       }
+
       setCollapseStatus(groups);
       setFirstRendered(true);
     }
@@ -158,7 +164,7 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
                 flex-direction: row;
                 align-items: center;
                 background: transparent;
-                text-transform: uppercase;
+                text-transform: capitalize;
                 justify-content: space-between;
 
                 > svg {
