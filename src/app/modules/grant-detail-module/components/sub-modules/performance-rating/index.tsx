@@ -4,7 +4,7 @@ import get from "lodash/get";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { PerformanceRating } from "app/components/Charts/PerformanceRating";
+import { EchartBaseChart } from "app/components/Charts/common/echartBaseChart";
 
 interface PerformanceRatingModuleProps {
   code: string;
@@ -39,5 +39,5 @@ export function PerformanceRatingModule(props: PerformanceRatingModuleProps) {
     return <PageLoader />;
   }
 
-  return <PerformanceRating data={data} />;
+  return <EchartBaseChart type="performanceratingbar" data={data} />;
 }

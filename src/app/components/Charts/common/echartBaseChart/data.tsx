@@ -51,7 +51,10 @@ type EchartChartTypes =
   | "polarbar"
   | "horizontalbar"
   | "pledgescontributions"
-  | "investments";
+  | "investments"
+  | "performanceratingbar";
+
+const ratingValues = ["N/A", "C", "B2", "B1", "A2", "A1"];
 
 export interface EchartBaseChartProps {
   data: any;
@@ -764,6 +767,80 @@ function getInvestmentsBarConfig(data: any, cmsData: any, extra: any) {
   };
 }
 
+function getPerformanceRatingBarConfig(data: any, cmsData: any) {
+  return {
+    color: [appColors.PERFORMANCE_RATING.NODE_COLOR],
+    xAxis: {
+      type: "category",
+      data: data.map((item: any) => item.year),
+      axisLabel: {
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+      axisTick: {
+        show: false,
+      },
+      minorTick: {
+        show: false,
+      },
+    },
+    yAxis: {
+      name: "Rating",
+      type: "value",
+      data: [0, 1, 2, 3, 4, 5],
+      max: 5,
+      splitNumber: ratingValues.length,
+      axisLine: {
+        show: false,
+      },
+      axisTick: {
+        show: false,
+      },
+      minorTick: {
+        show: false,
+      },
+      splitLine: {
+        show: true,
+      },
+      axisLabel: {
+        formatter: (value: any) => ratingValues[value],
+        textStyle: {
+          color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+        },
+      },
+      nameTextStyle: {
+        align: "center",
+        padding: [0, 20, 20, 0],
+        color: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
+      },
+    },
+    grid: {
+      top: 100,
+      right: 0,
+      left: "4%",
+    },
+    series: [
+      {
+        type: "bar",
+        data: data.map((item: any) => item.rating),
+        barWidth: 24,
+      },
+      {
+        type: "line",
+        data: data.map((item: any) => item.rating),
+        silent: true,
+        showSymbol: false,
+        lineStyle: {
+          width: 1,
+          color: "#B3B3B3",
+          data: data.map((item: any) => item.rating),
+        },
+      },
+    ],
+  };
+}
+
 export function getChartConfigAsPerType(
   type: EchartChartTypes,
   data: any,
@@ -785,6 +862,8 @@ export function getChartConfigAsPerType(
       return getPledgesContributionsBarConfig(data, cmsData);
     case "investments":
       return getInvestmentsBarConfig(data, cmsData, extra);
+    case "performanceratingbar":
+      return getPerformanceRatingBarConfig(data, cmsData);
     default:
       return {};
   }

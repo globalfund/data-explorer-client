@@ -19,6 +19,7 @@ const height = {
   horizontalbar: 700,
   pledgescontributions: 800,
   investments: 800,
+  performanceratingbar: 700,
 };
 
 export function EchartBaseChart(props: EchartBaseChartProps) {
