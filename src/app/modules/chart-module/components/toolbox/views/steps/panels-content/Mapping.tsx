@@ -234,13 +234,15 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
       ref={ref}
       key={props.dataTypeName}
       css={`
-        height: 32px;
+        height: 31px;
         display: flex;
-        min-height: 32px;
+        min-height: 31px;
+
         position: relative;
         padding-left: 16px;
         align-items: center;
         border-radius: 25px;
+        width: 264px;
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
         background: ${props.backgroundColor || "#cfd4da"};

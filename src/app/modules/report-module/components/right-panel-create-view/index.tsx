@@ -118,6 +118,8 @@ interface IHeaderDeatils {
 }
 interface Props {
   showHeaderItem: boolean;
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   appliedHeaderDetails: IHeaderDeatils;
   setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
   headerDetails: IHeaderDeatils;
@@ -227,7 +229,12 @@ export function ReportRightPanelCreateView(props: Props) {
           ))}
         </div>
       )}
-      {currentView === "charts" && <ReportRightPanelCreateViewChartList />}
+      {currentView === "charts" && (
+        <ReportRightPanelCreateViewChartList
+          pickedCharts={props.pickedCharts}
+          setPickedCharts={props.setPickedCharts}
+        />
+      )}
       {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
     </div>
   );
@@ -240,11 +247,13 @@ const sortByOptions = [
   { value: "name asc", label: "Name (ASC)" },
 ];
 
-function ReportRightPanelCreateViewChartList() {
+function ReportRightPanelCreateViewChartList(props: {
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
+}) {
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const chartList = useStoreState(
     (state) => (state.charts.ChartGetList.crudData || []) as any[]
   );
@@ -373,7 +382,8 @@ function ReportRightPanelCreateViewChartList() {
         {chartList.map((chart) => (
           <ChartItem
             key={chart.id}
-            chartList={chartList}
+            pickedCharts={props.pickedCharts}
+            setPickedCharts={props.setPickedCharts}
             id={chart.id}
             name={chart.name}
             vizType={chart.vizType}
@@ -431,16 +441,15 @@ function ElementItem(props: {
 
 function ChartItem(props: {
   elementType: string;
-  chartList: any[];
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   id: string;
   name: string;
   vizType: string;
   datasetId: string;
   createdDate: string;
 }) {
-  const [draggedItem, setDraggedItem] = React.useState<string>();
-  const dragged: string[] = [];
-
+  const nullRef = React.useRef(null);
   const [{ isDragging }, drag, preview] = useDrag(() => ({
     type: props.elementType,
     item: {
@@ -450,20 +459,11 @@ function ChartItem(props: {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-    canDrag: () => {
-      const pickedItem = dragged.find((item) => item == props.id);
-      setDraggedItem(pickedItem);
 
-      if (pickedItem) {
-        return false;
-      } else {
-        return true;
-      }
-    },
     end: (item, monitor) => {
       const dropped = monitor.didDrop();
       if (dropped) {
-        dragged.push(item.value);
+        props.setPickedCharts((prev) => [...prev, item.value]);
       }
     },
   }));
@@ -471,7 +471,7 @@ function ChartItem(props: {
   return (
     <>
       <div
-        ref={drag}
+        ref={props.pickedCharts.includes(props.id) ? nullRef : drag}
         css={`
           width: 100%;
           cursor: grab;
@@ -494,8 +494,21 @@ function ChartItem(props: {
           }
         `}
       >
-        <p> {draggedItem && "Added"}</p>
-        <div>{props.name}</div>
+        {props.pickedCharts.includes(props.id) && <p> {"Added"}</p>}
+
+        <div>
+          <span
+            css={`
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              width: 300px;
+              margin-top: 0;
+            `}
+          >
+            {props.name}
+          </span>
+        </div>
         <div>
           <div>Chart type</div>
           <div>{props.vizType}</div>

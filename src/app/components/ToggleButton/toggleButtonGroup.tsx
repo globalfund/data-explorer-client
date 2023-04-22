@@ -25,8 +25,10 @@ export default function ToggleButtons(props: Props) {
       value={props.alignment}
       onChange={handleAlignment}
       css={`
+        border: none;
         p {
           font-weight: 500;
+          font-size: 12px;
           text-transform: capitalize;
         }
       `}

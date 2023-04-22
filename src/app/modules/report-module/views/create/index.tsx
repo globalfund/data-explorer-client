@@ -28,104 +28,108 @@ export function ReportCreateView(props: ReportCreateViewProps) {
       disableAddRowStructureButton: false,
     });
 
-  function deleteFrame(index: number) {
-    props.setFramesArray((prev) => {
-      prev.splice(index, 1);
-      return [...prev];
-    });
-  }
+  // function deleteFrame(id: string) {
+  //   props.setFramesArray((prev) => {
+  //     let tempPrev = prev.map((item) => ({ ...item }));
+  //     console.log(tempPrev, "tempPrev");
+  //     const frameId = tempPrev.findIndex((frame) => frame.id === id);
 
-  React.useEffect(() => {
-    if (props.reportType === "advanced") {
-      props.setFramesArray([
-        {
-          id: v4(),
-          frame: (
-            <RowFrame
-              rowIndex={0}
-              forceSelectedType="oneByFive"
-              deleteFrame={() => deleteFrame(0)}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-            />
-          ),
-          content: [null, null, null, null, null],
-          contentTypes: [null, null, null, null, null],
-          structure: "oneByFive",
-        },
-        {
-          id: v4(),
-          frame: (
-            <RowFrame
-              rowIndex={1}
-              forceSelectedType="oneByOne"
-              deleteFrame={() => deleteFrame(1)}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-            />
-          ),
-          content: [null],
-          contentTypes: [null],
-          structure: "oneByOne",
-        },
-        {
-          id: v4(),
-          frame: (
-            <RowFrame
-              rowIndex={2}
-              forceSelectedType="oneToFour"
-              deleteFrame={() => deleteFrame(2)}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-            />
-          ),
-          content: [null, null],
-          contentTypes: [null, null],
-          structure: "oneToFour",
-        },
-        {
-          id: v4(),
-          frame: (
-            <RowFrame
-              rowIndex={3}
-              forceSelectedType="oneByOne"
-              deleteFrame={() => deleteFrame(3)}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-            />
-          ),
-          content: [null],
-          contentTypes: [null],
-          structure: "oneByOne",
-        },
-        {
-          id: v4(),
-          frame: (
-            <RowFrame
-              rowIndex={4}
-              forceSelectedType="oneByThree"
-              deleteFrame={() => deleteFrame(4)}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-            />
-          ),
-          content: [null, null, null],
-          contentTypes: [null, null, null],
-          structure: "oneByThree",
-        },
-      ]);
-    }
-  }, [props.reportType]);
+  //     tempPrev.splice(frameId, 1);
+  //     return [...tempPrev];
+  //   });
+  // }
+
+  // React.useEffect(() => {
+  //   if (props.reportType === "advanced") {
+  //     props.setFramesArray([
+  //       {
+  //         id: v4(),
+  //         frame: (
+  //           <RowFrame
+  //             rowIndex={0}
+  //             forceSelectedType="oneByFive"
+  //             deleteFrame={() => deleteFrame(0, "0")}
+  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+  //             handleRowFrameStructureTypeSelection={
+  //               props.handleRowFrameStructureTypeSelection
+  //             }
+  //           />
+  //         ),
+  //         content: [null, null, null, null, null],
+  //         contentTypes: [null, null, null, null, null],
+  //         structure: "oneByFive",
+  //       },
+  //       {
+  //         id: v4(),
+  //         frame: (
+  //           <RowFrame
+  //             rowIndex={1}
+  //             forceSelectedType="oneByOne"
+  //             deleteFrame={() => deleteFrame(1, "1")}
+  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+  //             handleRowFrameStructureTypeSelection={
+  //               props.handleRowFrameStructureTypeSelection
+  //             }
+  //           />
+  //         ),
+  //         content: [null],
+  //         contentTypes: [null],
+  //         structure: "oneByOne",
+  //       },
+  //       {
+  //         id: v4(),
+  //         frame: (
+  //           <RowFrame
+  //             rowIndex={2}
+  //             forceSelectedType="oneToFour"
+  //             deleteFrame={() => deleteFrame(2, "2")}
+  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+  //             handleRowFrameStructureTypeSelection={
+  //               props.handleRowFrameStructureTypeSelection
+  //             }
+  //           />
+  //         ),
+  //         content: [null, null],
+  //         contentTypes: [null, null],
+  //         structure: "oneToFour",
+  //       },
+  //       {
+  //         id: v4(),
+  //         frame: (
+  //           <RowFrame
+  //             rowIndex={3}
+  //             forceSelectedType="oneByOne"
+  //             deleteFrame={() => deleteFrame(3, "3")}
+  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+  //             handleRowFrameStructureTypeSelection={
+  //               props.handleRowFrameStructureTypeSelection
+  //             }
+  //           />
+  //         ),
+  //         content: [null],
+  //         contentTypes: [null],
+  //         structure: "oneByOne",
+  //       },
+  //       {
+  //         id: v4(),
+  //         frame: (
+  //           <RowFrame
+  //             rowIndex={4}
+  //             forceSelectedType="oneByThree"
+  //             deleteFrame={() => deleteFrame(4, "4")}
+  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+  //             handleRowFrameStructureTypeSelection={
+  //               props.handleRowFrameStructureTypeSelection
+  //             }
+  //           />
+  //         ),
+  //         content: [null, null, null],
+  //         contentTypes: [null, null, null],
+  //         structure: "oneByThree",
+  //       },
+  //     ]);
+  //   }
+  // }, [props.reportType]);
 
   return (
     <div>
@@ -152,9 +156,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
             return (
               <div key={frame.id}>
                 <div>{frame.frame}</div>
+                <Box height={25} />
                 <PlaceHolder
+                  rowId={frame.id}
                   index={frame.id}
-                  deleteFrame={deleteFrame}
+                  deleteFrame={props.deleteFrame}
                   framesArray={props.framesArray}
                   setFramesArray={props.setFramesArray}
                   handleRowFrameItemAddition={props.handleRowFrameItemAddition}
@@ -165,8 +171,10 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               </div>
             );
           })}
+          <Box height={40} />
+
           <AddRowFrameButton
-            deleteFrame={deleteFrame}
+            deleteFrame={props.deleteFrame}
             framesArray={props.framesArray}
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}
@@ -197,12 +205,14 @@ export const PlaceHolder = (props: PlaceholderProps) => {
       if (item.type === ReportElementsType.ROWFRAME) {
         props.setFramesArray((prev) => {
           const tempIndex = prev.findIndex((frame) => frame.id === props.index);
+          const id = v4();
           prev.splice(tempIndex + 1, 0, {
-            id: v4(),
+            id,
             frame: (
               <RowFrame
+                rowId={id}
                 rowIndex={tempIndex + 1}
-                deleteFrame={() => props.deleteFrame(tempIndex + 1)}
+                deleteFrame={props.deleteFrame}
                 handleRowFrameItemAddition={props.handleRowFrameItemAddition}
                 handleRowFrameStructureTypeSelection={
                   props.handleRowFrameStructureTypeSelection
@@ -218,9 +228,10 @@ export const PlaceHolder = (props: PlaceholderProps) => {
       } else {
         return props.setFramesArray((prev) => {
           const tempIndex = prev.findIndex((frame) => frame.id === props.index);
+          const id = v4();
           prev.splice(tempIndex + 1, 0, {
-            id: v4(),
-            frame: <Divider delete={() => props.deleteFrame(tempIndex + 1)} />,
+            id,
+            frame: <Divider delete={props.deleteFrame} dividerId={id} />,
             content: ["divider"],
             contentTypes: ["divider"],
             structure: null,
@@ -241,8 +252,9 @@ export const PlaceHolder = (props: PlaceholderProps) => {
           width: 100%;
           height: 20px;
           margin: 10px 0;
+          display: ${isItemDragging ? "block" : "none"};
           border: 1px ${isItemDragging ? "dashed" : "none"} #adb5bd;
-          background-color: ${isOver ? " #262C34;" : "transparent"};
+          background-color: #262c34;
         `}
       />
     </>

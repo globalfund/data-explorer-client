@@ -35,10 +35,13 @@ export function ReportEditView(props: ReportEditViewProps) {
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
   );
 
-  function deleteFrame(index: number) {
+  function deleteFrame(id: string) {
     props.setFramesArray((prev) => {
-      prev.splice(index, 1);
-      return [...prev];
+      const frameId = prev.findIndex((frame) => frame.id === id);
+
+      let tempPrev = prev.map((item) => ({ ...item }));
+      tempPrev.splice(frameId, 1);
+      return [...tempPrev];
     });
   }
 
@@ -68,15 +71,17 @@ export function ReportEditView(props: ReportEditViewProps) {
         content &&
         content.length === 1 &&
         content[0] === ReportElementsType.DIVIDER;
+      const id = v4();
       return {
-        id: v4(),
+        id,
         structure: rowFrame.structure,
         frame: isDivider ? (
-          <Divider delete={() => deleteFrame(index)} />
+          <Divider delete={deleteFrame} dividerId={id} />
         ) : (
           <RowFrame
             rowIndex={index}
-            deleteFrame={() => deleteFrame(index)}
+            rowId={id}
+            deleteFrame={deleteFrame}
             forceSelectedType={rowFrame.structure ?? undefined}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
@@ -122,6 +127,7 @@ export function ReportEditView(props: ReportEditViewProps) {
                 <div>{frame.frame}</div>
                 <PlaceHolder
                   index={frame.id}
+                  rowId={frame.id}
                   deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
                   setFramesArray={props.setFramesArray}

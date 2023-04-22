@@ -335,7 +335,7 @@ function ChartBuilderMappingDimension(
           css={`
             width: 100%;
             display: flex;
-            margin-bottom: 7px;
+            margin-bottom: 4px;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;

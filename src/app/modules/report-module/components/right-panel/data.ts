@@ -13,6 +13,8 @@ export interface ReportRightPanelProps {
   open: boolean;
   onOpen: () => void;
   onClose: () => void;
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   showHeaderItem: boolean;
   currentView: "initial" | "edit" | "create" | "preview";
   appliedHeaderDetails: IHeaderDeatils;

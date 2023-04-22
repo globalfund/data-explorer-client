@@ -192,7 +192,7 @@ export function AppBar() {
                   display: flex;
                   justify-content: space-between;
                   align-items: center;
-                  width: 50%;
+                  width: 48%;
                 `}
               >
                 <NavLink

@@ -91,64 +91,58 @@ export function ReportChartWrapper(props: Props) {
   ]);
 
   return (
-    <div>
+    <div
+      ref={containerRef}
+      css={`
+        width: 100%;
+        height: 100%;
+        padding-bottom: 10px;
+
+        > div {
+          margin: 0 !important;
+          overflow: hidden !important;
+
+          :nth-of-type(2) {
+            #extra-loader {
+              display: none !important;
+            }
+          }
+        }
+      `}
+    >
+      <div
+        id="extra-loader"
+        css={`
+          .MuiSkeleton-wave::after {
+            background: linear-gradient(
+              90deg,
+              transparent,
+              rgba(223, 227, 230, 1),
+              transparent
+            );
+          }
+        `}
+      >
+        <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
+      </div>
       <h4
         css={`
-          margin-top: 0;
+          margin: 0;
         `}
       >
         {chartName}{" "}
       </h4>
-      <div
-        ref={containerRef}
-        css={`
-          width: 100%;
-          height: 100%;
-
-          > div {
-            margin: 0 !important;
-            overflow: hidden !important;
-
-            :nth-of-type(2) {
-              #extra-loader {
-                display: none !important;
-              }
-            }
-          }
-        `}
-      >
-        <div
-          id="extra-loader"
-          css={`
-            .MuiSkeleton-wave::after {
-              background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(223, 227, 230, 1),
-                transparent
-              );
-            }
-          `}
-        >
-          <Skeleton
-            animation="wave"
-            variant="rect"
-            width="100%"
-            height="100%"
-          />
-        </div>
-        <CommonChart
-          chartId={props.id}
-          setRawViz={setRawViz}
-          containerRef={containerRef}
-          renderedChart={renderedChart}
-          visualOptions={visualOptions}
-          renderedChartSsr={renderedChartSsr}
-          setVisualOptions={setVisualOptions}
-          renderedChartType={renderedChartType}
-          renderedChartMappedData={renderedChartMappedData}
-        />
-      </div>
+      <CommonChart
+        chartId={props.id}
+        setRawViz={setRawViz}
+        containerRef={containerRef}
+        renderedChart={renderedChart}
+        visualOptions={visualOptions}
+        renderedChartSsr={renderedChartSsr}
+        setVisualOptions={setVisualOptions}
+        renderedChartType={renderedChartType}
+        renderedChartMappedData={renderedChartMappedData}
+      />
     </div>
   );
 }

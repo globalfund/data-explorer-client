@@ -228,8 +228,6 @@ export default function ChartModule() {
   }
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
-
     return () => {
       document.body.style.background =
         "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%)";

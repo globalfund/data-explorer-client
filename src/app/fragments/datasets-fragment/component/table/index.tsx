@@ -40,20 +40,28 @@ export default function PreviewTable(props: PreviewTableProps) {
             height: 480px;
             overflow: auto;
             &::-webkit-scrollbar {
-              height: 5px;
+              height: 12px;
               border-radius: 23px;
-              width: 5.64px;
+              width: 12px;
+
               background: #231d2c;
-              padding: 0 0.5rem;
             }
             &::-webkit-scrollbar-track {
-              background: #dfe3e6;
-              width: 7.64px;
+              background: #fff;
+              border: 1px solid #e4e4e4;
+
               padding: 0 0.5rem;
+            }
+            &::-webkit-scrollbar-track:horizontal {
+              border-right: none;
+              border-radius: 0px 0px 0px 6px;
             }
             &::-webkit-scrollbar-thumb {
               background: #231d2c;
               border-radius: 23px;
+              border: 3px solid transparent;
+
+              background-clip: content-box;
             }
           `}
         >

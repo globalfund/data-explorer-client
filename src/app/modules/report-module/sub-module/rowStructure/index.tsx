@@ -16,8 +16,11 @@ interface RowStructureDisplayProps {
   gap: string;
   height: string;
   rowIndex: number;
+  rowId: string;
+
   selectedType: string;
-  deleteFrame: () => void;
+  deleteFrame: (id: string) => void;
+
   selectedTypeHistory: string[];
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
@@ -104,7 +107,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
               >
                 <EditIcon />
               </IconButton>
-              <IconButton onClick={props.deleteFrame}>
+              <IconButton onClick={() => props.deleteFrame(props.rowId)}>
                 <DeleteIcon />
               </IconButton>
             </div>

@@ -193,13 +193,14 @@ export function ChartToolBoxSelectDataset(
           font-size: 14px;
           padding: 12px 16px;
           flex-direction: row;
+          height: 44px;
           border-radius: 24px;
-          background: #dfe3e6;
+          background: #cfd4da;
           text-transform: capitalize;
           justify-content: space-between;
 
           &:hover {
-            background: #dfe3e6;
+            background: #cfd4da;
           }
 
           svg {

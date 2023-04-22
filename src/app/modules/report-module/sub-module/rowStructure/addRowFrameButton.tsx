@@ -11,7 +11,8 @@ interface Props {
   framesArray: IFramesArray[];
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
-  deleteFrame: (index: number) => void;
+  deleteFrame: (id: string) => void;
+
   handleRowFrameItemAddition: (
     rowIndex: number,
     itemIndex: number,
@@ -34,16 +35,19 @@ interface Props {
 
 export default function AddRowFrameButton(props: Props) {
   const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
+
   const handleAddrowStructureBlock = () => {
+    const id = v4();
     props.setFramesArray([
       ...props.framesArray,
       {
-        id: v4(),
+        id,
         frame: (
           <RowFrame
+            rowId={id}
             rowIndex={props.framesArray.length}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            deleteFrame={() => props.deleteFrame(props.framesArray.length)}
+            deleteFrame={props.deleteFrame}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
             }

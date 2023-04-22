@@ -12,7 +12,7 @@ export function ChartToolBoxChartType() {
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
   const fChartType = find(
-    echartTypes,
+    echartTypes(false),
     (ct: ChartTypeModel) => ct.id === chartType
   );
 
