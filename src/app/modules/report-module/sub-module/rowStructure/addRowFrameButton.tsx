@@ -14,7 +14,7 @@ interface Props {
   deleteFrame: (id: string) => void;
 
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"

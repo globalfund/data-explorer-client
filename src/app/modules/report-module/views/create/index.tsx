@@ -28,17 +28,21 @@ export function ReportCreateView(props: ReportCreateViewProps) {
       disableAddRowStructureButton: false,
     });
 
-  // function deleteFrame(id: string) {
-  //   props.setFramesArray((prev) => {
-  //     let tempPrev = prev.map((item) => ({ ...item }));
-  //     console.log(tempPrev, "tempPrev");
-  //     const frameId = tempPrev.findIndex((frame) => frame.id === id);
+  function deleteFrame(id: string) {
+    props.setFramesArray((prev) => {
+      let tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === id);
+      const contentArr = tempPrev[frameId].content;
 
-  //     tempPrev.splice(frameId, 1);
-  //     return [...tempPrev];
-  //   });
-  // }
+      props.setPickedCharts((prevPickedCharts) => {
+        return prevPickedCharts.filter((item) => !contentArr.includes(item));
+      });
 
+      tempPrev.splice(frameId, 1);
+
+      return [...tempPrev];
+    });
+  }
   // React.useEffect(() => {
   //   if (props.reportType === "advanced") {
   //     props.setFramesArray([
@@ -160,7 +164,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                 <PlaceHolder
                   rowId={frame.id}
                   index={frame.id}
-                  deleteFrame={props.deleteFrame}
+                  deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
                   setFramesArray={props.setFramesArray}
                   handleRowFrameItemAddition={props.handleRowFrameItemAddition}
@@ -174,7 +178,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           <Box height={40} />
 
           <AddRowFrameButton
-            deleteFrame={props.deleteFrame}
+            deleteFrame={deleteFrame}
             framesArray={props.framesArray}
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}

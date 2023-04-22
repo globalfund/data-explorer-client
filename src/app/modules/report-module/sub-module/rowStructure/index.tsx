@@ -30,7 +30,7 @@ interface RowStructureDisplayProps {
     width: string;
   }[];
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
@@ -133,7 +133,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             width={row.width}
             itemIndex={index}
             height={props.height}
-            rowIndex={props.rowIndex}
+            rowId={props.rowId}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             previewItem={get(props.previewItems, `[${index}]`, undefined)}
           />
@@ -146,10 +146,10 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
 const Box = (props: {
   width: string;
   height: string;
-  rowIndex: number;
+  rowId: string;
   itemIndex: number;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
@@ -179,7 +179,7 @@ const Box = (props: {
     drop: (item: any, monitor) => {
       if (item.type === ReportElementsType.TEXT) {
         props.handleRowFrameItemAddition(
-          props.rowIndex,
+          props.rowId,
           props.itemIndex,
           textContent,
           "text"
@@ -188,7 +188,7 @@ const Box = (props: {
         setDisplayChart(false);
       } else if (item.type === ReportElementsType.CHART) {
         props.handleRowFrameItemAddition(
-          props.rowIndex,
+          props.rowId,
           props.itemIndex,
           item.value,
           "chart"
@@ -205,7 +205,7 @@ const Box = (props: {
     () => {
       if (displayTextBox) {
         props.handleRowFrameItemAddition(
-          props.rowIndex,
+          props.rowId,
           props.itemIndex,
           textContent,
           "text"
@@ -284,7 +284,7 @@ const Box = (props: {
   React.useEffect(() => {
     if (displayChart && chartId) {
       props.handleRowFrameItemAddition(
-        props.rowIndex,
+        props.rowId,
         props.itemIndex,
         chartId,
         "chart"

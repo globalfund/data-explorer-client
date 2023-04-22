@@ -126,7 +126,7 @@ export interface RowFrameProps {
   deleteFrame: (id: string) => void;
   forceSelectedType?: string;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"

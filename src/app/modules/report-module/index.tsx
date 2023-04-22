@@ -57,15 +57,17 @@ export default function ReportModule() {
   const [updatePickedCharts, setUpdatePickedCharts] = React.useState(false);
 
   const handleRowFrameItemAddition = (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
   ) => {
     setFramesArray((prev) => {
       let tempPrev = prev.map((item) => ({ ...item }));
-      const frameId = tempPrev.findIndex((frame) => frame.id === id);
-
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
       tempPrev[frameId].content[itemIndex] = itemContent;
       tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
       return [...tempPrev];

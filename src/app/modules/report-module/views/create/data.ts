@@ -45,7 +45,7 @@ export interface ReportCreateViewProps {
     }>
   >;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
@@ -72,7 +72,7 @@ export interface PlaceholderProps {
   deleteFrame: (id: string) => void;
   rowId: string;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"

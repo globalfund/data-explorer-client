@@ -17,10 +17,12 @@ interface Props {
 export function ReportChartWrapper(props: Props) {
   const containerRef = React.useRef<HTMLDivElement>(null);
   const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
+
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
   );
+
   const [chartName, setChartName] = React.useState<string>("");
   const [rawViz, setRawViz] = React.useState<any>(null);
   const [visualOptions, setVisualOptions] = React.useState({});
@@ -51,7 +53,7 @@ export function ReportChartWrapper(props: Props) {
   }, [props.id]);
 
   React.useEffect(() => {
-    if (loadedChart && loadedChart.id !== "") {
+    if (loadedChart && loadedChart.id !== "" && loadedChart.id === props.id) {
       if (loadedChart.name.length > 0) {
         setChartName(loadedChart.name);
       }
