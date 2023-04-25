@@ -30,6 +30,29 @@ export default function RadialChart(props: Props) {
     setKeysPercentagesColors(getKeysPercentages(props.total, props.values));
   }, [props.total, props.values]);
 
+  if (props.isLoading) {
+    return (
+      <div
+        css={`
+          @media (max-width: 767px) {
+            z-index: 2;
+            width: 100%;
+            position: relative;
+            padding-bottom: 100px;
+
+            #mobile-tooltip-container {
+              top: 30vh;
+              left: 16px;
+              width: calc(100% - 32px);
+            }
+          }
+        `}
+      >
+        <PageLoader inLoader />
+      </div>
+    );
+  }
+
   const options: ApexOptions = {
     plotOptions: {
       radialBar: {
@@ -121,41 +144,38 @@ export default function RadialChart(props: Props) {
   };
 
   return (
-    <>
-      <div
-        css={`
-          @media (max-width: 767px) {
-            z-index: 2;
-            width: 100%;
-            position: relative;
-            padding-bottom: 100px;
+    <div
+      css={`
+        @media (max-width: 767px) {
+          z-index: 2;
+          width: 100%;
+          position: relative;
+          padding-bottom: 100px;
 
-            #mobile-tooltip-container {
-              top: 30vh;
-              left: 16px;
-              width: calc(100% - 32px);
-            }
+          #mobile-tooltip-container {
+            top: 30vh;
+            left: 16px;
+            width: calc(100% - 32px);
           }
-        `}
-      >
-        {props.isLoading && <PageLoader inLoader />}
-        <div ref={ref} id="allocations-radial-bar">
-          {props.total === 0 ? (
-            <div css="display: flex;justify-content: center;">
-              <NoDataLabel />
-              <NoDataAllocations />
-            </div>
-          ) : (
-            <ReactApexCharts
-              type="radialBar"
-              options={options}
-              height={isMobile ? 400 : 580}
-              series={keysPercentagesColors.percentages}
-              width={480}
-            />
-          )}
-        </div>
+        }
+      `}
+    >
+      <div ref={ref} id="allocations-radial-bar">
+        {props.total === 0 ? (
+          <div css="display: flex;justify-content: center;">
+            <NoDataLabel />
+            <NoDataAllocations />
+          </div>
+        ) : (
+          <ReactApexCharts
+            type="radialBar"
+            options={options}
+            height={isMobile ? 400 : 580}
+            series={keysPercentagesColors.percentages}
+            width={480}
+          />
+        )}
       </div>
-    </>
+    </div>
   );
 }
