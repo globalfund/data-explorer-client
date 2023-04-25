@@ -143,7 +143,7 @@ export function CommonChart(props: Props) {
               height: 100% !important;
 
               > canvas {
-                height: 94% !important;
+                height: 88% !important;
               }
               > svg {
                 height: 100%;

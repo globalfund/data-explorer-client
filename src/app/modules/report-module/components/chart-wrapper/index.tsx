@@ -130,7 +130,7 @@ export function ReportChartWrapper(props: Props) {
       <h4
         css={`
           margin: 0;
-          margin-bottom: 3px;
+          margin-bottom: 12px;
         `}
       >
         {chartName}{" "}
