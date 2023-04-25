@@ -5,6 +5,7 @@ export interface ReportEditViewProps {
   open: boolean;
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
   setName: React.Dispatch<React.SetStateAction<string>>;
   headerDetails: {
     title: string;

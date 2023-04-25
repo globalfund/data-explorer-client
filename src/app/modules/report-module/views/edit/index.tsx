@@ -37,9 +37,14 @@ export function ReportEditView(props: ReportEditViewProps) {
 
   function deleteFrame(id: string) {
     props.setFramesArray((prev) => {
+      let tempPrev = prev.map((item) => ({ ...item }));
       const frameId = prev.findIndex((frame) => frame.id === id);
 
-      let tempPrev = prev.map((item) => ({ ...item }));
+      const contentArr = tempPrev[frameId].content;
+      props.setPickedCharts((prevPickedCharts) => {
+        return prevPickedCharts.filter((item) => !contentArr.includes(item));
+      });
+
       tempPrev.splice(frameId, 1);
       return [...tempPrev];
     });
@@ -48,6 +53,19 @@ export function ReportEditView(props: ReportEditViewProps) {
   React.useEffect(() => {
     fetchReportData({ getId: page });
   }, [page]);
+
+  React.useEffect(() => {
+    const items = reportData.rows.map((rowFrame, index) =>
+      rowFrame.items.filter((item) => typeof item === "string")
+    ) as string[][];
+    let pickedItems: string[] = [];
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      pickedItems = [...pickedItems, ...item];
+    }
+    props.setPickedCharts(pickedItems);
+  }, []);
 
   useUpdateEffect(() => {
     props.setName(reportData.name);
@@ -125,6 +143,8 @@ export function ReportEditView(props: ReportEditViewProps) {
             return (
               <div key={frame.id}>
                 <div>{frame.frame}</div>
+                <Box height={38} />
+
                 <PlaceHolder
                   index={frame.id}
                   rowId={frame.id}

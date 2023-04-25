@@ -98,7 +98,6 @@ export function ReportChartWrapper(props: Props) {
       css={`
         width: 100%;
         height: 100%;
-        padding-bottom: 10px;
 
         > div {
           margin: 0 !important;
@@ -127,9 +126,11 @@ export function ReportChartWrapper(props: Props) {
       >
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
+
       <h4
         css={`
           margin: 0;
+          margin-bottom: 3px;
         `}
       >
         {chartName}{" "}

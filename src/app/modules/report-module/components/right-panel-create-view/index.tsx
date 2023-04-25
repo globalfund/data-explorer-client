@@ -474,8 +474,8 @@ function ChartItem(props: {
         ref={props.pickedCharts.includes(props.id) ? nullRef : drag}
         css={`
           width: 100%;
-          cursor: grab;
-          height: 125px;
+          cursor: ${props.pickedCharts.includes(props.id) ? "auto" : "grab"};
+          height: 100%;
           font-size: 12px;
           background: #fff;
           user-select: none;
@@ -494,7 +494,18 @@ function ChartItem(props: {
           }
         `}
       >
-        {props.pickedCharts.includes(props.id) && <p> {"Added"}</p>}
+        {props.pickedCharts.includes(props.id) && (
+          <p
+            css={`
+              margin: 0;
+              width: 10%;
+              margin-left: auto;
+            `}
+          >
+            {" "}
+            {"Added"}
+          </p>
+        )}
 
         <div>
           <span

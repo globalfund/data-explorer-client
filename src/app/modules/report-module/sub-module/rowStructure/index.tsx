@@ -128,15 +128,17 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           </div>
         )}
         {props.rowStructureDetailItems.map((row, index) => (
-          <Box
-            key={`${row.rowId}-${index}`}
-            width={row.width}
-            itemIndex={index}
-            height={props.height}
-            rowId={props.rowId}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            previewItem={get(props.previewItems, `[${index}]`, undefined)}
-          />
+          <>
+            <Box
+              key={`${row.rowId}-${index}`}
+              width={row.width}
+              itemIndex={index}
+              height={props.height}
+              rowId={props.rowId}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              previewItem={get(props.previewItems, `[${index}]`, undefined)}
+            />
+          </>
         ))}
       </div>
     </div>
@@ -247,9 +249,11 @@ const Box = (props: {
         <div
           key={chartId}
           css={`
-            padding: 24px;
             background: #fff;
-            width: ${props.width}};
+            box-sizing: border-box;
+            padding: 24px;
+
+            width: ${props.width};
             height: ${props.height};
           `}
         >

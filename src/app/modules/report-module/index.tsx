@@ -128,34 +128,16 @@ export default function ReportModule() {
     setFramesArray((prev) => {
       let tempPrev = prev.map((item) => ({ ...item }));
       const frameId = tempPrev.findIndex((frame) => frame.id === id);
+      const contentArr = tempPrev[frameId].content;
+
+      setPickedCharts((prevPickedCharts) => {
+        return prevPickedCharts.filter((item) => !contentArr.includes(item));
+      });
 
       tempPrev.splice(frameId, 1);
       return [...tempPrev];
     });
   };
-
-  // React.useEffect(() => {
-  //   console.log(updatePickedCharts, "updatePickedCharts");
-  //   const frameId = framesArray.findIndex((item) => item.id === id);
-  //   console.log(frameId, "frameId");
-
-  //   if (frameId === -1) {
-  //     // handle the case where the frame with the given id is not found
-  //     return;
-  //   }
-
-  //   console.log(pickedCharts, "picked");
-  //   const filteredPickedCharts = pickedCharts.filter(
-  //     (chartId: string, index: number) => {
-  //       if (framesArray[frameId].content[index]) {
-  //         return framesArray[frameId].content[index] !== chartId;
-  //       } else {
-  //         return pickedCharts; // or return an empty array []
-  //       }
-  //     }
-  //   );
-  //   setPickedCharts(filteredPickedCharts);
-  // }, [updatePickedCharts]);
 
   const id = v4();
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
@@ -435,6 +417,7 @@ export default function ReportModule() {
           <ReportEditView
             open={rightPanelOpen}
             setName={setReportName}
+            setPickedCharts={setPickedCharts}
             framesArray={framesArray}
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}

@@ -12,7 +12,6 @@ import RowFrame, {
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
   ReportCreateViewProps,
-  IFramesArray,
   PlaceholderProps,
 } from "app/modules/report-module/views/create/data";
 import {
@@ -43,97 +42,107 @@ export function ReportCreateView(props: ReportCreateViewProps) {
       return [...tempPrev];
     });
   }
-  // React.useEffect(() => {
-  //   if (props.reportType === "advanced") {
-  //     props.setFramesArray([
-  //       {
-  //         id: v4(),
-  //         frame: (
-  //           <RowFrame
-  //             rowIndex={0}
-  //             forceSelectedType="oneByFive"
-  //             deleteFrame={() => deleteFrame(0, "0")}
-  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-  //             handleRowFrameStructureTypeSelection={
-  //               props.handleRowFrameStructureTypeSelection
-  //             }
-  //           />
-  //         ),
-  //         content: [null, null, null, null, null],
-  //         contentTypes: [null, null, null, null, null],
-  //         structure: "oneByFive",
-  //       },
-  //       {
-  //         id: v4(),
-  //         frame: (
-  //           <RowFrame
-  //             rowIndex={1}
-  //             forceSelectedType="oneByOne"
-  //             deleteFrame={() => deleteFrame(1, "1")}
-  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-  //             handleRowFrameStructureTypeSelection={
-  //               props.handleRowFrameStructureTypeSelection
-  //             }
-  //           />
-  //         ),
-  //         content: [null],
-  //         contentTypes: [null],
-  //         structure: "oneByOne",
-  //       },
-  //       {
-  //         id: v4(),
-  //         frame: (
-  //           <RowFrame
-  //             rowIndex={2}
-  //             forceSelectedType="oneToFour"
-  //             deleteFrame={() => deleteFrame(2, "2")}
-  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-  //             handleRowFrameStructureTypeSelection={
-  //               props.handleRowFrameStructureTypeSelection
-  //             }
-  //           />
-  //         ),
-  //         content: [null, null],
-  //         contentTypes: [null, null],
-  //         structure: "oneToFour",
-  //       },
-  //       {
-  //         id: v4(),
-  //         frame: (
-  //           <RowFrame
-  //             rowIndex={3}
-  //             forceSelectedType="oneByOne"
-  //             deleteFrame={() => deleteFrame(3, "3")}
-  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-  //             handleRowFrameStructureTypeSelection={
-  //               props.handleRowFrameStructureTypeSelection
-  //             }
-  //           />
-  //         ),
-  //         content: [null],
-  //         contentTypes: [null],
-  //         structure: "oneByOne",
-  //       },
-  //       {
-  //         id: v4(),
-  //         frame: (
-  //           <RowFrame
-  //             rowIndex={4}
-  //             forceSelectedType="oneByThree"
-  //             deleteFrame={() => deleteFrame(4, "4")}
-  //             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-  //             handleRowFrameStructureTypeSelection={
-  //               props.handleRowFrameStructureTypeSelection
-  //             }
-  //           />
-  //         ),
-  //         content: [null, null, null],
-  //         contentTypes: [null, null, null],
-  //         structure: "oneByThree",
-  //       },
-  //     ]);
-  //   }
-  // }, [props.reportType]);
+  React.useEffect(() => {
+    if (props.reportType === "advanced") {
+      const rowOne = v4();
+      const rowTwo = v4();
+      const rowThree = v4();
+      const rowFour = v4();
+      const rowFive = v4();
+      props.setFramesArray([
+        {
+          id: rowOne,
+          frame: (
+            <RowFrame
+              rowId={rowOne}
+              rowIndex={0}
+              forceSelectedType="oneByFive"
+              deleteFrame={() => deleteFrame(rowOne)}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+            />
+          ),
+          content: [null, null, null, null, null],
+          contentTypes: [null, null, null, null, null],
+          structure: "oneByFive",
+        },
+        {
+          id: rowTwo,
+          frame: (
+            <RowFrame
+              rowId={rowTwo}
+              rowIndex={1}
+              forceSelectedType="oneByOne"
+              deleteFrame={() => deleteFrame(rowTwo)}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+            />
+          ),
+          content: [null],
+          contentTypes: [null],
+          structure: "oneByOne",
+        },
+        {
+          id: rowThree,
+          frame: (
+            <RowFrame
+              rowId={rowThree}
+              rowIndex={2}
+              forceSelectedType="oneToFour"
+              deleteFrame={() => deleteFrame(rowThree)}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+            />
+          ),
+          content: [null, null],
+          contentTypes: [null, null],
+          structure: "oneToFour",
+        },
+        {
+          id: rowFour,
+          frame: (
+            <RowFrame
+              rowId={rowFour}
+              rowIndex={3}
+              forceSelectedType="oneByOne"
+              deleteFrame={() => deleteFrame(rowFour)}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+            />
+          ),
+          content: [null],
+          contentTypes: [null],
+          structure: "oneByOne",
+        },
+        {
+          id: rowFive,
+          frame: (
+            <RowFrame
+              rowId={rowFive}
+              rowIndex={4}
+              forceSelectedType="oneByThree"
+              deleteFrame={() => deleteFrame(rowFive)}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+            />
+          ),
+          content: [null, null, null],
+          contentTypes: [null, null, null],
+          structure: "oneByThree",
+        },
+      ]);
+    }
+  }, [props.reportType]);
 
   return (
     <div>
@@ -160,7 +169,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
             return (
               <div key={frame.id}>
                 <div>{frame.frame}</div>
-                <Box height={25} />
+                <Box height={38} />
                 <PlaceHolder
                   rowId={frame.id}
                   index={frame.id}
@@ -175,7 +184,6 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               </div>
             );
           })}
-          <Box height={40} />
 
           <AddRowFrameButton
             deleteFrame={deleteFrame}

@@ -91,6 +91,7 @@ export function ReportInitialView(props: ReportInitialViewProps) {
               currentValue={currentValue}
               description={option.description}
               handleClick={() => handleTemplateSelected(option)}
+              templateImg={option.templateImg}
             />
           </Grid>
         ))}

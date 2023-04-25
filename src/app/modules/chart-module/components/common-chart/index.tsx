@@ -38,6 +38,7 @@ export function CommonChart(props: Props) {
       const tmpVisualOptions = {
         ...props.visualOptions,
         width: props.containerRef.current.clientWidth,
+        height: props.containerRef.current.clientHeight,
       };
       props.setVisualOptions(tmpVisualOptions);
     }
@@ -124,7 +125,7 @@ export function CommonChart(props: Props) {
           width: 100%;
           overflow: hidden;
           margin-top: 40px;
-          height: ${get(props.visualOptions, "height", 500)}px;
+          height: 100%;
 
           * {
             font-family: "Inter", "Helvetica Neue", sans-serif !important;
@@ -136,16 +137,19 @@ export function CommonChart(props: Props) {
           id={`common-chart-render-container-${props.chartId || "1"}`}
           css={`
             width: auto !important;
-            height: ${get(props.visualOptions, "height", 500)}px;
+            height: 100%;
 
             > div:first-of-type {
-              height: ${get(props.visualOptions, "height", 500)}px !important;
+              height: 100% !important;
 
+              > canvas {
+                height: 94% !important;
+              }
               > svg {
-                height: ${get(props.visualOptions, "height", 500)}px;
+                height: 100%;
 
                 > rect {
-                  height: ${get(props.visualOptions, "height", 500)}px;
+                  height: 100%;
                 }
               }
             }

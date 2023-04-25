@@ -302,7 +302,7 @@ export default function RowFrame(props: RowFrameProps) {
   return (
     <>
       {selectedType ? (
-        checkSelectedType[selectedType as keyof typeof checkSelectedType]
+        <>{checkSelectedType[selectedType as keyof typeof checkSelectedType]}</>
       ) : (
         <div css={containercss}>
           <p>Select your row structure</p>
