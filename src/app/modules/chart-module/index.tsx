@@ -261,6 +261,11 @@ export default function ChartModule() {
     }
   }, [loadedChart]);
 
+  console.log(visualOptions, "visualOptions");
+  console.log(content, "content");
+  console.log(activeRenderedChartSsr, "activeRenderedChartSsr");
+  console.log(renderedChartMappedData, "renderedChartMappedData");
+
   return (
     <DndProvider backend={HTML5Backend}>
       <SubheaderToolbar
@@ -354,7 +359,7 @@ export default function ChartModule() {
               dataTypes={dataTypes2}
               dimensions={dimensions}
               renderedChart={content}
-              renderedChartSsr={activeRenderedChartSsr}
+              renderedChartSsr={false}
               renderedChartMappedData={renderedChartMappedData}
             />
           </Route>

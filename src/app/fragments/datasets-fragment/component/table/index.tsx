@@ -6,21 +6,13 @@ import {
   TableHead,
   TableCell,
   TableRow,
-  makeStyles,
-  Grid,
-  Checkbox,
-  Container,
 } from "@material-ui/core";
 import React, { useState } from "react";
 
 import { ReactComponent as SortIcon } from "../../assets/sort.svg";
-import { v4 } from "uuid";
-import { tablecss } from "app/modules/dataset-detail-module/component/table/style";
-import {
-  dummyDatasetData,
-  tHeadData,
-} from "app/modules/dataset-detail-module/data";
+
 import { previewTablecss } from "./style";
+import StatisticDisplay from "./statisticDisplay";
 
 interface PreviewTableProps {
   columns: { [key: string]: string }[];
@@ -31,124 +23,148 @@ interface PreviewTableProps {
 }
 
 export default function PreviewTable(props: PreviewTableProps) {
+  const [tableRows, setTableRows] = useState(props.tableData);
+  React.useEffect(() => {
+    setTableRows([{ id: "viz", type: "component" }, ...props.tableData]);
+  }, [props.tableData]);
+
   return (
     <>
-      <div>
+      <div
+        css={`
+          &::-webkit-scrollbar {
+            height: 5px;
+            border-radius: 23px;
+            width: 5.64px;
+            background: #231d2c;
+            padding: 0 0.5rem;
+          }
+          &::-webkit-scrollbar-track {
+            background: #dfe3e6;
+            width: 7.64px;
+            padding: 0 0.5rem;
+          }
+          &::-webkit-scrollbar-thumb {
+            background: #231d2c;
+            border-radius: 23px;
+          }
+          overflow: auto;
+          height: 100%;
+        `}
+      >
         <TableContainer
           css={`
             width: inherit;
-            height: 480px;
-            overflow: auto;
-            &::-webkit-scrollbar {
-              height: 5px;
-              border-radius: 23px;
-              width: 5.64px;
-              background: #231d2c;
-              padding: 0 0.5rem;
-            }
-            &::-webkit-scrollbar-track {
-              background: #dfe3e6;
-              width: 7.64px;
-              padding: 0 0.5rem;
-            }
-            &::-webkit-scrollbar-thumb {
-              background: #231d2c;
-              border-radius: 23px;
-            }
+            height: 493px;
           `}
         >
           <Table css={previewTablecss}>
             <TableHead
               css={`
-                background: rgba(218, 218, 248, 0.3);
+                background: #dadaf8;
+                height: 54px;
               `}
             >
               <TableRow
                 css={`
-                  border: 1px solid #e4e4e4;
                   padding: 0rem 0.4rem;
-                  height: 42px;
+                  height: 54px;
                 `}
               >
                 {props.columns.map((val, index) => {
                   return (
-                    <>
-                      <TableCell
-                        key={val.key}
-                        css={`
-                          border-left: ${index == 0 ? "none" : "auto"};
-                        `}
-                      >
-                        {index !== 0 && (
+                    <TableCell
+                      key={val.key}
+                      css={`
+                        border-left: ${index == 0 ? "none" : "auto"};
+                        border-top-left-radius: ${index == 0 ? "5px" : "0"};
+                      `}
+                    >
+                      {index !== 0 && (
+                        <div
+                          css={`
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            gap: 1rem;
+                          `}
+                        >
                           <div
                             css={`
+                              width: 25px;
+                              height: 25px;
+                              border-radius: 50%;
+                              padding: 3px;
+                              /* display: none; */
+                              justify-content: center;
                               display: flex;
-                              justify-content: space-between;
                               align-items: center;
-                              gap: 1rem;
+                              background: #ffffff;
                             `}
                           >
-                            <div
-                              css={`
-                                width: 25px;
-                                height: 25px;
-                                border-radius: 50%;
-                                padding: 3px;
-                                display: none;
-                                justify-content: center;
-                                align-items: center;
-                                background: #ffffff;
-                              `}
-                            >
-                              <p>{val.type === "string" ? "Aa" : "#"}</p>
-                            </div>
-
-                            <p
-                              css={`
-                                text-align: left;
-                                line-height: 17px;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                overflow: clip;
-                                max-width: 220px;
-                              `}
-                            >
-                              {val.key}
-                            </p>
-                            <IconButton>
-                              <SortIcon />
-                            </IconButton>
+                            {val.type === "string" ? "Aa" : "#"}
                           </div>
-                        )}
-                      </TableCell>
-                    </>
+
+                          <p
+                            css={`
+                              text-align: left;
+                              line-height: 17px;
+                              text-overflow: ellipsis;
+                              white-space: nowrap;
+                              overflow: clip;
+                              max-width: 220px;
+                            `}
+                          >
+                            <b>{val.key}</b>
+                          </p>
+                          <IconButton>
+                            <SortIcon />
+                          </IconButton>
+                        </div>
+                      )}
+                    </TableCell>
                   );
                 })}
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.tableData?.map((data, index) => (
+              {tableRows?.map((data, rowIndex) => (
                 <TableRow
                   key={Object.values(data).join("-")}
                   css={`
-                    background: #fff;
+                    background: ${rowIndex === 0 ? "#F4F4F4" : "#fff"};
                   `}
                 >
-                  <>
-                    {props.columns.map((val, index) => (
-                      <TableCell
-                        key={val.key}
-                        css={`
-                          background: ${index === 0
-                            ? "rgba(218, 218, 248, 0.3)"
-                            : "#fff"};
-                        `}
-                      >
+                  {props.columns.map((val, index) => (
+                    <TableCell
+                      key={val.key}
+                      css={`
+                        background: ${rowIndex === 0 ? "#F4F4F4" : "#fff"};
+                        color: ${rowIndex === 0
+                          ? "#000"
+                          : "rgba(0, 0, 0, 0.87)"};
+                        font-size: 12px;
+                      `}
+                    >
+                      {rowIndex === 0 ? (
+                        <div
+                          css={`
+                            background: "#F4F4F4";
+                          `}
+                        >
+                          {index == 0 ? (
+                            ""
+                          ) : (
+                            <StatisticDisplay position={index} />
+                          )}{" "}
+                        </div>
+                      ) : (
                         <p
                           css={`
                             text-overflow: ellipsis;
                             white-space: nowrap;
                             overflow: clip;
+
                             max-width: 220px;
                             min-width: ${index === 0 ? "30px" : "auto"};
                             text-align: ${index === 0 ? "center" : "left"};
@@ -156,9 +172,9 @@ export default function PreviewTable(props: PreviewTableProps) {
                         >
                           {data[val.key]}
                         </p>
-                      </TableCell>
-                    ))}
-                  </>
+                      )}
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))}
             </TableBody>
