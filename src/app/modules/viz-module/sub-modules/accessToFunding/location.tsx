@@ -15,6 +15,7 @@ import {
 } from "app/modules/viz-module/sub-modules/accessToFunding/style";
 import { AccessToFundingRequestTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/fundingRequest/tableWrapper";
 import { AccessToFundingEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/eligibility/tableWrapper";
+import { Link } from "react-router-dom";
 
 interface Props {
   code: string;
@@ -125,6 +126,24 @@ export default function LocationAccessToFundingWrapper(props: Props) {
               <b>Eligibility </b>
             </h4>
             <hr />
+            <div css={descriptioncss}>
+              <p>
+                Below are the components which are eligible for an allocation
+                for the selected allocation period, according to the Global Fund
+                Eligibility Policy. Eligibility does not guarantee a funding
+                allocation.
+                <a href="https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/">
+                  {" "}
+                  Learn more about Eligibility here{" "}
+                </a>{" "}
+                or{" "}
+                <Link to="/viz/eligibility/table">
+                  {" "}
+                  see the full history of eligibility for this country.
+                </Link>
+              </p>
+            </div>
+            <Box height="50px" />
             <AccessToFundingEligibilityTableWrapper
               code={props.code}
               codeParam={props.codeParam}

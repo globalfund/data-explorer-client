@@ -283,6 +283,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
             </div>
           </div>
         </Slide>
+
         <EligibilityTable
           search={search}
           sortBy={sortBy}
