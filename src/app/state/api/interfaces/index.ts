@@ -43,6 +43,7 @@ import {
   CMSApiModulesGrants,
   CMSApiCountrySummary,
   CMSApiNotesAndDisclaimers,
+  CMSApiModulesFundingRequests,
 } from "app/state/api/interfaces/cms";
 import {
   DataPathActiveStepStateModel,
@@ -131,6 +132,7 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiModulesGrants
   | CMSApiCountrySummary
   | CMSApiNotesAndDisclaimers
+  | CMSApiModulesFundingRequests
 >;
 
 export interface CMSApiCallParams {}
@@ -292,6 +294,7 @@ export interface StoreModel {
     modulesDatasets: CMSApiCallModel;
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
+    modulesFundingRequests: CMSApiCallModel;
     countrySummary: CMSApiCallModel;
     notesAndDisclaimers: CMSApiCallModel;
   };

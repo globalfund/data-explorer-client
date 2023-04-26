@@ -333,6 +333,12 @@ export interface CMSApiModulesGrants {
   };
 }
 
+export interface CMSApiModulesFundingRequests {
+  data: {
+    tableDisclaimer: string;
+  };
+}
+
 // COUNTRY SUMMARY
 export interface CMSApiCountrySummary {
   entries: {

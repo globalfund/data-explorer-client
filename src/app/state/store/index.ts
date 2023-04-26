@@ -179,6 +179,7 @@ import {
   TRPWindowCodelist,
 } from "../api/action-reducers/locationDetail/accessToFunding";
 import { FundingRequestsTableGeneric } from "../api/action-reducers/viz/fundingRequests";
+import modulesFundingRequests from "../api/action-reducers/cms/modulesFundingRequests";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -383,6 +384,7 @@ const storeContent: StoreModel = {
     modulesDatasets: persist(modulesDatasets),
     modulesGrantDetail: persist(modulesGrantDetail),
     modulesGrants: persist(modulesGrants),
+    modulesFundingRequests: persist(modulesFundingRequests),
     countrySummary: persist(countrySummary),
     notesAndDisclaimers: persist(notesAndDisclaimers),
   },
