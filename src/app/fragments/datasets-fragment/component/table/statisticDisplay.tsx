@@ -6,7 +6,6 @@ import {
 } from "./StatisticalRepresentations";
 
 export default function StatisticDisplay(props: { position: number }) {
-  // console.log(props.position);
   if (props.position === 1) {
     return (
       <div

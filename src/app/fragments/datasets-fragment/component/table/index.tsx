@@ -95,7 +95,6 @@ export default function PreviewTable(props: PreviewTableProps) {
                               height: 25px;
                               border-radius: 50%;
                               padding: 3px;
-                              /* display: none; */
                               justify-content: center;
                               display: flex;
                               align-items: center;

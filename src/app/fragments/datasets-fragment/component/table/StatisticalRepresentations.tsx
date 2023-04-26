@@ -59,8 +59,8 @@ export const BarChartRepresentaion = () => {
     background: "transparent",
   });
 
-  console.log(data, "data");
-  console.log(visualOptions, "visualOptions");
+  // console.log(data, "data");
+  // console.log(visualOptions, "visualOptions");
   return (
     <div
       ref={ref}
