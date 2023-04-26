@@ -2,10 +2,10 @@ import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const listitem = css`
-  height: 100%;
+  height: 300px;
   display: flex;
   color: ${appColors.GRANT_LIST.ITEM_TEXT_COLOR};
-  padding: 12px 20px;
+  padding: 19px 20px;
   background: ${appColors.GRANT_LIST.ITEM_BACKGROUND_COLOR};
   border-radius: 20px;
   text-decoration: none;
@@ -26,11 +26,11 @@ export const listitem = css`
 
 export const row = (size: number, style: string, lineHeight?: number) => css`
   display: flex;
-  margin: 16px 0;
+
   flex-direction: row;
   font-size: ${size}px;
   font-weight: ${style};
-  align-items: flex-end;
+  align-items: flex-start;
   justify-content: space-between;
   line-height: ${lineHeight ?? 16}px;
   font-family: "GothamNarrow-${style === "bold" ? "Bold" : "Book"}",
