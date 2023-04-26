@@ -4,7 +4,7 @@ import get from "lodash/get";
 import find from "lodash/find";
 import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
-import { useMediaQuery } from "@material-ui/core";
+import { Box, useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -161,6 +161,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
   );
 
   let pushValue = 0;
+
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
   if (!props.code && !props.detailFilterType) {
@@ -169,7 +170,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
     } else if (widthThreshold < 0) {
       pushValue = 0;
     } else {
-      pushValue = 450 - widthThreshold;
+      pushValue = 500 - widthThreshold;
     }
   }
 
@@ -220,6 +221,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
         `}
         ref={vizWrapperRef}
       >
+        <Box height="38px" />
         <Search
           value={props.search || search}
           setValue={props.setSearch || setSearch}

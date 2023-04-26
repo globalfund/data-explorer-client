@@ -18,7 +18,6 @@ import { appColors } from "app/theme";
 
 export function GrantsList(props: GrantsListProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
-
   return (
     <Grid container spacing={2}>
       {props.listitems.map((item: GrantListItemModel) => {
@@ -220,17 +219,33 @@ export function GrantsList(props: GrantsListProps) {
                   </div>
                 </div>
               </div>
-              {/* 2nd row */}
-              <div css={row(18, "bold", 24)}>{item.title}</div>
-              <div css={row(14, "normal")} style={{ margin: "0 0 32px 0" }}>
+
+              <div
+                css={row(12, "normal")}
+                style={{
+                  borderBottom: `1px solid ${appColors.GRANT_LIST.DIVIDER}`,
+                }}
+              >
                 <div>
-                  Principal Recipient:{" "}
-                  <b>
-                    {item.recipientName}
-                    {item.recipientShortName && ` (${item.recipientShortName})`}
-                  </b>
+                  <p>
+                    <b>Principal recipient:</b>
+                  </p>
+                  <p>
+                    <b>Cycle:</b>
+                  </p>
+                  <p>
+                    <b>Start / end date:</b>
+                  </p>
+                </div>
+                <div>
+                  <p>{item.recipientName}</p>
+                  <p>Nil</p>
+                  <p>Nil</p>
                 </div>
               </div>
+              {/* 2nd row */}
+              <div css={row(14, "bold", 24)}>{item.title}</div>
+
               {/* 3rd row */}
               {isMobile ? (
                 <div>
@@ -303,44 +318,6 @@ export function GrantsList(props: GrantsListProps) {
                             .PROGRESS_BAR_COLOR};
                         `}
                       />
-                    </div>
-                    <div
-                      css={`
-                        width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                      `}
-                    >
-                      <div
-                        css={`
-                          font-weight: bold;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
-                        `}
-                      >
-                        Committed
-                      </div>
-                      <div>{formatFinancialValue(item.committed)}</div>
-                    </div>
-                    <div
-                      css={`
-                        width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                      `}
-                    >
-                      <div
-                        css={`
-                          font-weight: bold;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
-                        `}
-                      >
-                        Signed
-                      </div>
-                      <div>{formatFinancialValue(item.signed)}</div>
                     </div>
                   </div>
                 </div>
