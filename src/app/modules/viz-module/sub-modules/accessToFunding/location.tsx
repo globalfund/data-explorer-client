@@ -175,7 +175,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                     margin-top: 5px;
                   `}
                 >
-                  Total funds allocated in {locationInfoData.locationName} for{" "}
+                  Allocated to {locationInfoData.locationName} for{" "}
                   <b>{cycle}</b>
                 </p>
               </div>
@@ -216,10 +216,10 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                       <b>
                         {formatLargeAmountsWithPrefix(val)
                           .replace("$", "")
-                          .replace("bln", "billions")
-                          .replace("mln", "millions")}
+                          .replace("bln", "billion")
+                          .replace("mln", "million")}
                         <br />
-                        {keys[index]} funds
+                        {keys[index]}
                       </b>
                     </p>
                   </div>
