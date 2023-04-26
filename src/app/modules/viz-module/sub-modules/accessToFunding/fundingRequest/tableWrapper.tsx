@@ -205,7 +205,7 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
           setSearch={setSearch}
           setSortBy={setSortBy}
           columns={fundingRequestColumns}
-          title={cycle}
+          title={cycle || ""}
         />
       </div>
     </>

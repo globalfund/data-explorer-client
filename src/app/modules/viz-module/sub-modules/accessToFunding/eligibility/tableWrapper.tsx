@@ -109,7 +109,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     }
     if (cycle !== "All") {
       filterStr.push(
-        `cycles=${cycle.replace("-20", "-")}${
+        `cycles=${(cycle || "").replace("-20", "-")}${
           cycle === "2002-2013" ? ",null" : ""
         }`
       );
@@ -290,7 +290,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
           setSearch={setSearch}
           setSortBy={setSortBy}
           columns={columns}
-          title={cycle}
+          title={cycle || ""}
         />
         <TablePagination
           page={page}
