@@ -10,7 +10,6 @@ import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
 import TableRow from "@material-ui/core/TableRow";
-import { useCMSData } from "app/hooks/useCMSData";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -340,8 +339,6 @@ function Row(props: {
 }
 
 export function FundingRequestTable(props: FundingTableProps) {
-  const cmsData = useCMSData({ returnData: true });
-
   const sortBySplits = props.sortBy.split(" ");
 
   const [toolbarCols, setToolbarCols] = React.useState<TableToolbarCols[]>([]);
@@ -472,18 +469,6 @@ export function FundingRequestTable(props: FundingTableProps) {
           </TableBody>
         </Table>
       </TableContainer>
-      <div css="width: 100%;height: 50px;" />
-      <div
-        css={`
-          width: 90%;
-          margin: 0 auto;
-          font-size: 14px;
-          line-height: 17px;
-          text-align: center;
-        `}
-      >
-        {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}
-      </div>
       <div css="width: 100%;height: 25px;" />
     </div>
   );
