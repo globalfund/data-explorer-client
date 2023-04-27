@@ -359,7 +359,7 @@ export default function ChartModule() {
               dataTypes={dataTypes2}
               dimensions={dimensions}
               renderedChart={content}
-              renderedChartSsr={false}
+              renderedChartSsr={activeRenderedChartSsr}
               renderedChartMappedData={renderedChartMappedData}
             />
           </Route>

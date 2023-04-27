@@ -32,23 +32,6 @@ export default function PreviewTable(props: PreviewTableProps) {
     <>
       <div
         css={`
-          &::-webkit-scrollbar {
-            height: 5px;
-            border-radius: 23px;
-            width: 5.64px;
-            background: #231d2c;
-            padding: 0 0.5rem;
-          }
-          &::-webkit-scrollbar-track {
-            background: #dfe3e6;
-            width: 7.64px;
-            padding: 0 0.5rem;
-          }
-          &::-webkit-scrollbar-thumb {
-            background: #231d2c;
-            border-radius: 23px;
-          }
-          overflow: auto;
           height: 100%;
         `}
       >
@@ -56,19 +39,40 @@ export default function PreviewTable(props: PreviewTableProps) {
           css={`
             width: inherit;
             height: 493px;
+            &::-webkit-scrollbar {
+              height: 12px;
+              border-radius: 23px;
+              width: 12px;
+
+              background: #231d2c;
+            }
+            &::-webkit-scrollbar-track {
+              background: #fff;
+
+              padding: 0 0.5rem;
+            }
+            &::-webkit-scrollbar-track:horizontal {
+              border-right: none;
+            }
+            &::-webkit-scrollbar-thumb {
+              background: #231d2c;
+              border-radius: 23px;
+              border: 3px solid transparent;
+
+              background-clip: content-box;
+            }
+            overflow: auto;
           `}
         >
           <Table css={previewTablecss}>
             <TableHead
               css={`
                 background: #dadaf8;
-                height: 54px;
               `}
             >
               <TableRow
                 css={`
                   padding: 0rem 0.4rem;
-                  height: 54px;
                 `}
               >
                 {props.columns.map((val, index) => {

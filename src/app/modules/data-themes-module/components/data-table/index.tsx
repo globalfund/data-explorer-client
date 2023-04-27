@@ -63,7 +63,7 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     <div
       ref={containerEl}
       css={`
-        width: calc(100% - 24px);
+        width: 100%;
         height: calc(100vh - 225px);
         margin-top: 2rem;
 

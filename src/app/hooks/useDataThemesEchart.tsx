@@ -52,6 +52,14 @@ export function useDataThemesEchart() {
       // chart options
       // orientation,
       // Tooltip
+      realTimeSort,
+      color,
+      splitLineY,
+      barRadius,
+      xAxisLineColor,
+      showXAxis,
+      xAxisLabelColor,
+      xAxisLabelInterval,
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
@@ -66,8 +74,31 @@ export function useDataThemesEchart() {
         right: marginRight,
         bottom: marginBottom,
       },
-      xAxis: { data: bars },
-      yAxis: { type: "value" },
+      xAxis: {
+        data: bars,
+        show: true,
+        type: "category",
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          lineStyle: {
+            color: xAxisLineColor,
+          },
+        },
+        axisLabel: {
+          show: true,
+          color: xAxisLabelColor,
+          interval: xAxisLabelInterval,
+        },
+      },
+      yAxis: {
+        type: "value",
+        show: true,
+        splitLine: {
+          show: splitLineY ?? true,
+        },
+      },
       // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
       // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
       backgroundColor: background,
@@ -77,7 +108,11 @@ export function useDataThemesEchart() {
           // height,
           type: "bar",
           data: sizes,
-          realtimeSort: true,
+          realtimeSort: realTimeSort ?? true,
+          itemStyle: {
+            color: color,
+            borderRadius: barRadius,
+          },
         },
       ],
       tooltip: {

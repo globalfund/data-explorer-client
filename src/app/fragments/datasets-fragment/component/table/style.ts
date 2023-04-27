@@ -15,7 +15,7 @@ export const previewTablecss = css`
     border-bottom: 1px solid #e4e4e4;
     border-right: 1px solid #e4e4e4;
     border-left: 1px solid #e4e4e4;
-    padding: 0.1rem 0.7rem;
+    padding: 0rem 0.7rem;
     height: 35px;
     font-weight: 400;
     font-size: 14px;
