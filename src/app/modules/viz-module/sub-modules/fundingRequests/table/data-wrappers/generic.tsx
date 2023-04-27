@@ -1,6 +1,9 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import { useDebounce, useTitle } from "react-use";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -15,6 +18,8 @@ import { fundingRequestColumns } from "app/modules/viz-module/sub-modules/fundin
 
 export function GenericFundingRequestWrapper() {
   useTitle("The Data Explorer - Funding Requests");
+
+  const history = useHistory();
 
   const cmsData = useCMSData({ returnData: true });
 
@@ -38,6 +43,26 @@ export function GenericFundingRequestWrapper() {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: "Access to Funding: Funding Requests" })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Access to Funding: Funding Requests",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
 
   function reloadData() {
     const filterString = getAPIFormattedFilters(appliedFilters, {

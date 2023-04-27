@@ -44,6 +44,9 @@ export const descriptioncss = css`
 `;
 
 export const vizcss = css`
+  a {
+    color: #252c34;
+  }
   h4 {
     font-size: 18px;
     color: #252c34;

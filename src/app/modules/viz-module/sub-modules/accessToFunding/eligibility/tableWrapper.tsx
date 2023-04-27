@@ -69,6 +69,10 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     diseaseBurden: [],
   });
 
+  const storedAppliedFilters = useStoreState(
+    (state) => state.AppliedFiltersState
+  );
+
   const filterGroups = [
     {
       name: "Eligibility Years",
@@ -93,8 +97,13 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
 
   function reloadData() {
     const filterStr: string[] = [];
+    const appliedFiltersToUse = props.code
+      ? appliedFilters
+      : storedAppliedFilters;
     if (props.code) {
       filterStr.push(`locations=${props.code}`);
+    } else {
+      filterStr.push(`locations=${appliedFiltersToUse.locations.join(",")}`);
     }
     if (search.length > 0) {
       filterStr.push(`q=${search}`);
@@ -105,11 +114,11 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     if (appliedFilters.year.length > 0) {
       filterStr.push(`periods=${appliedFilters.year.join(",")}`);
     }
-    if (appliedFilters.components.length > 0) {
-      filterStr.push(`components=${appliedFilters.components.join(",")}`);
+    if (appliedFiltersToUse.components.length > 0) {
+      filterStr.push(`components=${appliedFiltersToUse.components.join(",")}`);
     }
-    if (appliedFilters.status.length > 0) {
-      filterStr.push(`status=${appliedFilters.status.join(",")}`);
+    if (appliedFiltersToUse.status.length > 0) {
+      filterStr.push(`status=${appliedFiltersToUse.status.join(",")}`);
     }
     if (appliedFilters.diseaseBurden.length > 0) {
       filterStr.push(`diseaseBurden=${appliedFilters.diseaseBurden.join(",")}`);
@@ -131,6 +140,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     () => reloadData(),
     [
       props.code,
+      storedAppliedFilters,
       selectedAggregation,
       selectedAggregate,
       appliedFilters,

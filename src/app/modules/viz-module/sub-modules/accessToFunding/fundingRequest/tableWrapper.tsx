@@ -90,10 +90,11 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
     });
   }
 
-  React.useEffect(
-    () => reloadData(),
-    [props.code, appliedFilters, sortBy, cycle]
-  );
+  React.useEffect(() => {
+    if ((props.code && cycle) || !props.code) {
+      reloadData();
+    }
+  }, [props.code, appliedFilters, sortBy, cycle]);
 
   const [,] = useDebounce(
     () => {

@@ -64,7 +64,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
 
   React.useEffect(() => {
     return () => {
-      setCycle("All");
+      setCycle(null);
     };
   }, []);
 
@@ -94,10 +94,12 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           <b>Eligibility, Allocation & Funding Requests</b>
         </h3>
         <p>
-          Description of Access to Funding / eligibility / FR: We unite the
-          world to find solutions that have the most impact, and we take them to
-          scale worldwide. It’s working. We won’t stop until the job is
-          finished.
+          Eligibility for Global Fund support is determined by the income
+          classification and disease burden of a country or region. Resources
+          are allocated to eligible countries or regions with the highest
+          disease burden, the least economic capacity, and where key and
+          vulnerable populations are disproportionately affected by the three
+          diseases.
         </p>
       </div>
       <Box height={25} />
@@ -139,12 +141,15 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                 Below are the components which are eligible for an allocation
                 for the selected allocation period, according to the Global Fund
                 Eligibility Policy. Eligibility does not guarantee a funding
-                allocation.{" "}
-                <a href="https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/">
-                  Learn more about Eligibility here
+                allocation. Learn more about Eligibility{" "}
+                <a
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/"
+                >
+                  here
                 </a>{" "}
                 or{" "}
-                <Link to="/viz/eligibility/table">
+                <Link to={`/viz/eligibility/table?locations=${props.code}`}>
                   see the full history of eligibility for this country.
                 </Link>
               </p>

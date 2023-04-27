@@ -1,8 +1,34 @@
 import React from "react";
+import find from "lodash/find";
 import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { AccessToFundingEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/eligibility/tableWrapper";
 
 export function EligibilityTableModuleWrapper() {
+  const history = useHistory();
+
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: "Access to Funding: Eligibility" })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Access to Funding: Eligibility",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
+
   return (
     <React.Fragment>
       <div
