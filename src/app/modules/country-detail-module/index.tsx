@@ -18,17 +18,12 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { countryDetailTabs } from "app/components/PageHeader/components/tabs/data";
-import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { LocationGrants } from "app/modules/country-detail-module/sub-modules/grants";
 import { LocationResults } from "app/modules/country-detail-module/sub-modules/results";
-import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
-import { AllocationsTableModule } from "app/modules/viz-module/sub-modules/allocations/table";
 import { LocationDetailOverviewModule } from "app/modules/country-detail-module/sub-modules/overview";
 import { LocationDetailDocumentsModule } from "app/modules/country-detail-module/sub-modules/documents";
-import { LocationDetailEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/data-wrappers/location";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
-import { LocationEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/location";
 import { LocationDetailBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/locationDetail";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import { LocationDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/locationDetail";
@@ -289,13 +284,6 @@ export default function CountryDetail() {
           <Route path={`/location/:code/signed/table`}>
             <GenericInvestmentsTableWrapper code={paramCode} />
           </Route>
-          {/* <Route path={`/location/:code/signed/time-cycle`}>
-            <GenericInvestmentsTimeCycleWrapper
-              type="Signed"
-              code={paramCode}
-              toolboxOpen={openToolboxPanel}
-            />
-          </Route> */}
           <Route path={`/location/:code/signed/map`}>
             <InvestmentsGeoMap
               type="Signed"
@@ -328,24 +316,6 @@ export default function CountryDetail() {
               detailFilterType="locations"
             />
           </Route>
-          {/* Allocations */}
-          <Route path={`/location/:code/allocations/map`}>
-            <AllocationsGeoMap code={paramCode} />
-          </Route>
-          <Route path={`/location/:code/allocations/table`}>
-            <AllocationsTableModule
-              code={paramCode}
-              toolboxOpen={openToolboxPanel}
-              setOpenToolboxPanel={setOpenToolboxPanel}
-            />
-          </Route>
-          <Route path={`/location/:code/allocations`}>
-            <AllocationsModule
-              code={paramCode}
-              toolboxOpen={openToolboxPanel}
-              setOpenToolboxPanel={setOpenToolboxPanel}
-            />
-          </Route>
           {/*Access to Funding*/}
           <Route path={`/location/:code/access-to-funding`}>
             <LocationAccessToFundingWrapper
@@ -353,13 +323,6 @@ export default function CountryDetail() {
               codeParam={params.code}
               filterGroups={fundingRequestFilterGroups}
             />
-          </Route>
-          {/* Eligibility */}
-          <Route path={`/location/:code/eligibility/table`}>
-            <LocationEligibilityTableWrapper code={paramCode} />
-          </Route>
-          <Route path={`/location/:code/eligibility`}>
-            <LocationDetailEligibilityWrapper code={paramCode} />
           </Route>
           {/* Grants */}
           <Route path={`/location/:code/grants/list`}>

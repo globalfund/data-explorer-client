@@ -56,6 +56,7 @@ function Row(props: {
   return (
     <React.Fragment>
       <TableRow
+        id="simple-table-row"
         className={classes.root}
         onClick={() => {
           if (props.row.children) {

@@ -8,7 +8,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ResultsYear } from "app/components/ToolBoxPanel/components/resultsyear";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
-import { EligibilityYear } from "app/components/ToolBoxPanel/components/eligibilityyear";
 import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 import { ToolBoxPanelDonorViews } from "app/components/ToolBoxPanel/components/donormapviews";
@@ -224,9 +223,6 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
           {(params.vizType === "allocations" ||
             params.vizType === "allocation") &&
             params.subType !== "table" && <AllocationsPeriods />}
-          {params.vizType === "eligibility" && !isLocationDetail && (
-            <EligibilityYear />
-          )}
           {isResultsPage && <ResultsYear />}
           {(((params.vizType === "commitment" ||
             params.vizType === "disbursements" ||

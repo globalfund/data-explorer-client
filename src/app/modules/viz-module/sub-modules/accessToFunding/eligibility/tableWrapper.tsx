@@ -13,12 +13,11 @@ import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { locationAccessToFundingCycleAtom } from "app/state/recoil/atoms";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
-import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
+import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 
 interface Props {
-  code: string;
-  codeParam: string;
+  code?: string;
 }
 
 export function AccessToFundingEligibilityTableWrapper(props: Props) {
@@ -32,17 +31,18 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
   );
 
   const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("year DESC");
+  const [sortBy, setSortBy] = React.useState("level1 ASC");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
-  const [selectedAggregate, setSelectedAggregate] = React.useState("year");
+  const [selectedAggregate, setSelectedAggregate] =
+    React.useState("geographicAreaName");
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupProps | null>(null);
 
   const controlItems = {
     aggregates: [
-      { label: "Year", value: "year" },
+      { label: "Locations", value: "geographicAreaName" },
       { label: "Components", value: "componentName" },
     ],
   };
@@ -50,8 +50,12 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
   const fetchData = useStoreActions(
     (store) => store.LocationAccessToFunding.EligibilityTable.fetch
   );
+
   const isLoading = useStoreState(
     (state) => state.LocationAccessToFunding.EligibilityTable.loading
+  );
+  const selectedAggregation = useStoreState(
+    (state) => state.ToolBoxPanelAggregateByState.value
   );
 
   const cycle = useRecoilValue(locationAccessToFundingCycleAtom);
@@ -88,7 +92,10 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
   };
 
   function reloadData() {
-    const filterStr: string[] = [`locations=${props.code}`];
+    const filterStr: string[] = [];
+    if (props.code) {
+      filterStr.push(`locations=${props.code}`);
+    }
     if (search.length > 0) {
       filterStr.push(`q=${search}`);
     }
@@ -114,14 +121,22 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
         }`
       );
     }
+    const aggregateBy = props.code ? selectedAggregate : selectedAggregation;
     fetchData({
-      filterString: `aggregateBy=${selectedAggregate}&${filterStr.join("&")}`,
+      filterString: `aggregateBy=${aggregateBy}&${filterStr.join("&")}`,
     });
   }
 
   React.useEffect(
     () => reloadData(),
-    [props.code, selectedAggregate, appliedFilters, sortBy, cycle]
+    [
+      props.code,
+      selectedAggregation,
+      selectedAggregate,
+      appliedFilters,
+      sortBy,
+      cycle,
+    ]
   );
 
   const [,] = useDebounce(
@@ -148,9 +163,23 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     setPage(0);
   };
 
+  React.useEffect(() => {
+    if (!props.code) {
+      document.title = "The Data Explorer - Eligibility";
+    } else {
+      setTimeout(() => {
+        const rows = document.querySelectorAll("#simple-table-row");
+        if (rows.length > 0) {
+          // @ts-ignore
+          rows[0].click();
+        }
+      }, 500);
+    }
+  }, []);
+
   let columns = [
-    { name: "Year", key: "year" },
-    { name: "Component", key: "component" },
+    { name: "Location", key: "level1" },
+    { name: "Component", key: "level2" },
     {
       name: "Eligibility Status",
       key: "eligibilityStatus",
@@ -164,10 +193,12 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     { name: "Income Level", key: "incomeLevel" },
   ];
 
-  if (selectedAggregate === "componentName") {
+  if (
+    (props.code ? selectedAggregate : selectedAggregation) === "componentName"
+  ) {
     columns = [
-      { name: "Component", key: "component" },
-      { name: "Year", key: "year" },
+      { name: "Component", key: "level1" },
+      { name: "Location", key: "level2" },
       {
         name: "Eligibility Status",
         key: "eligibilityStatus",
@@ -190,100 +221,103 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
         `}
       >
         {isLoading && <PageLoader inLoader />}
-        <div
-          role="button"
-          tabIndex={-1}
-          css={`
-            top: 32%;
-            color: #fff;
-            width: 16px;
-            height: 133px;
-            z-index: 1;
-            display: flex;
-            cursor: pointer;
-            position: absolute;
-            background: #262c34;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            border-radius: 10px 0px 0px 10px;
-            transition: all 0.2s ease-in-out;
-
-            right: ${openToolboxPanel ? "48%" : 0};
-
-            &:hover {
-              background: #13183f;
-            }
-
-            > svg {
-              transform: rotate(${!openToolboxPanel ? "-" : ""}90deg);
-              > path {
-                fill: #fff;
-              }
-            }
-          `}
-          onClick={() => setOpenToolboxPanel(!openToolboxPanel)}
-        >
-          <TriangleXSIcon />
-        </div>
-        <Slide direction="left" in={openToolboxPanel}>
+        {props.code && (
           <div
+            role="button"
+            tabIndex={-1}
             css={`
-              z-index: 4;
-              right: -8px;
-              width: 600px;
-              height: 700px;
-              overflow-y: auto;
+              top: 32%;
+              color: #fff;
+              width: 16px;
+              height: 133px;
+              z-index: 1;
+              display: flex;
+              cursor: pointer;
               position: absolute;
-              background: #f5f5f7;
-              border-radius: 20px;
-              visibility: visible !important;
-              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+              background: #262c34;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              border-radius: 10px 0px 0px 10px;
+              transition: all 0.2s ease-in-out;
 
-              ::-webkit-scrollbar {
-                display: none;
+              right: ${openToolboxPanel ? "48%" : 0};
+
+              &:hover {
+                background: #13183f;
               }
 
-              @media (max-width: 767px) {
-                width: 100vw;
-                box-shadow: none;
-                overflow-y: auto;
+              > svg {
+                transform: rotate(${!openToolboxPanel ? "-" : ""}90deg);
+                > path {
+                  fill: #fff;
+                }
               }
             `}
+            onClick={() => setOpenToolboxPanel(!openToolboxPanel)}
           >
+            <TriangleXSIcon />
+          </div>
+        )}
+        {props.code && (
+          <Slide direction="left" in={openToolboxPanel}>
             <div
               css={`
-                width: 100%;
+                z-index: 4;
+                right: -8px;
+                width: 600px;
+                height: 700px;
+                overflow-y: auto;
+                position: absolute;
+                background: #f5f5f7;
+                border-radius: 20px;
+                visibility: visible !important;
+                box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
-                display: flex;
+                ::-webkit-scrollbar {
+                  display: none;
+                }
 
-                flex-direction: column;
+                @media (max-width: 767px) {
+                  width: 100vw;
+                  box-shadow: none;
+                  overflow-y: auto;
+                }
               `}
             >
-              <ToolBoxPanelAggregateBy
-                title="Aggregate by"
-                selected={selectedAggregate}
-                options={controlItems.aggregates}
-                setSelected={setSelectedAggregate}
-              />
-              <ToolBoxPanelFilters
-                groups={filterGroups}
-                expandedGroup={expandedGroup}
-                appliedFilters={appliedFilters}
-                setExpandedGroup={setExpandedGroup}
-                setAppliedFilters={setAppliedFilters}
-                defaultAppliedFilters={{
-                  year: [],
-                  components: [],
-                  status: [],
-                  diseaseBurden: [],
-                }}
-                groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
-              />
-            </div>
-          </div>
-        </Slide>
+              <div
+                css={`
+                  width: 100%;
 
+                  display: flex;
+
+                  flex-direction: column;
+                `}
+              >
+                <ToolBoxPanelAggregateBy
+                  title="Aggregate by"
+                  selected={selectedAggregate}
+                  options={controlItems.aggregates}
+                  setSelected={setSelectedAggregate}
+                />
+                <ToolBoxPanelFilters
+                  groups={filterGroups}
+                  expandedGroup={expandedGroup}
+                  appliedFilters={appliedFilters}
+                  setExpandedGroup={setExpandedGroup}
+                  setAppliedFilters={setAppliedFilters}
+                  defaultAppliedFilters={{
+                    year: [],
+                    components: [],
+                    status: [],
+                    diseaseBurden: [],
+                  }}
+                  groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
+                />
+              </div>
+            </div>
+          </Slide>
+        )}
         <EligibilityTable
           search={search}
           sortBy={sortBy}

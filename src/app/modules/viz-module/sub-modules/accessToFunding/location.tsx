@@ -139,23 +139,18 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                 Below are the components which are eligible for an allocation
                 for the selected allocation period, according to the Global Fund
                 Eligibility Policy. Eligibility does not guarantee a funding
-                allocation.
+                allocation.{" "}
                 <a href="https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/">
-                  {" "}
-                  Learn more about Eligibility here{" "}
+                  Learn more about Eligibility here
                 </a>{" "}
                 or{" "}
                 <Link to="/viz/eligibility/table">
-                  {" "}
                   see the full history of eligibility for this country.
                 </Link>
               </p>
             </div>
             <Box height="50px" />
-            <AccessToFundingEligibilityTableWrapper
-              code={props.code}
-              codeParam={props.codeParam}
-            />
+            <AccessToFundingEligibilityTableWrapper code={props.code} />
           </div>
         )}
         <div>
