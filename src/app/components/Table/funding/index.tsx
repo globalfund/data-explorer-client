@@ -3,6 +3,9 @@ import { v4 } from "uuid";
 import get from "lodash/get";
 import find from "lodash/find";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
+import { Link } from "react-router-dom";
+import { useUpdateEffect } from "react-use";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
@@ -11,17 +14,17 @@ import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
-import IconButton from "@material-ui/core/IconButton";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Simple/styles";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import { TableToolbar } from "app/components/Table/Expandable/Toolbar";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
-import { cellData } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/data";
-import { useUpdateEffect } from "react-use";
+import {
+  cellData,
+  cellData2,
+} from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/data";
 
 export interface FundingTableRow {
   [key: string]: any;
@@ -64,17 +67,68 @@ function Row(props: {
   const classes = useRowStyles();
   const [open, setOpen] = React.useState(false);
 
-  const firstColumnWidth = props.columns?.length > 3 ? "30%" : "";
-  const columnWidthCalc = `${props.columns?.length > 3 ? "70%" : "100%"} / ${
-    props.columns?.length
-  }`;
-
   const [rowSelected, setRowSelected] = React.useState("parent");
 
-  const secondLevelRow = find(props.columns, { key: "id" });
+  const secondLevelRow = !find(props.columns, { key: "name" });
+
+  const thirdLevelRow = secondLevelRow && !find(props.columns, { key: "date" });
 
   return (
     <React.Fragment>
+      {thirdLevelRow && (
+        <TableRow>
+          {cellData2.map((name, index) => (
+            <TableCell
+              key={v4()}
+              css={`
+                text-align: center;
+                padding: 16px 10px;
+                // padding-left: ${index === 0 ? "4rem" : "auto"};
+                ${tablecell}
+              `}
+            >
+              <div
+                css={`
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  flex-direction: row;
+                  justify-content: center;
+                `}
+              >
+                <div
+                  css={`
+                    gap: 12px;
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    justify-content: center;
+                    font-weight: bold;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
+
+                    > * {
+                      @supports (-webkit-touch-callout: none) and
+                        (not (translate: none)) {
+                        &:not(:last-child) {
+                          margin-right: 12px;
+                        }
+                      }
+                    }
+
+                    > svg {
+                      transition: transform 0.1s ease-in-out;
+                      transform: rotate(${open ? "0deg" : "-180deg"});
+                    }
+                  `}
+                >
+                  {name}
+                </div>
+              </div>
+            </TableCell>
+          ))}
+        </TableRow>
+      )}
       <TableRow
         className={classes.root}
         id="funding-requests-table-row"
@@ -118,8 +172,10 @@ function Row(props: {
             css={`
               text-align: center;
               padding: 16px 10px;
-              ${tablecell} /* width: calc(${columnWidthCalc}); */
-              ${index === 0 ? `padding-left: ${props.paddingLeft}rem;` : ""}
+              ${index === 0 && !secondLevelRow
+                ? `padding-left: ${props.paddingLeft}rem;`
+                : ""}
+              ${tablecell}
             `}
           >
             <div
@@ -155,16 +211,28 @@ function Row(props: {
                   }
 
                   > svg {
+                    margin-left: -12px;
                     transition: transform 0.1s ease-in-out;
                     transform: rotate(${open ? "0deg" : "-180deg"});
                   }
                 `}
               >
-                {index === 0 && props.row.children && <TriangleXSIcon />}
-                {column.key === "link" ? (
-                  <IconButton>
-                    <CloudDownloadIcon htmlColor="#252C34" />
-                  </IconButton>
+                {index === 0 &&
+                  props.row.children &&
+                  props.row.children.length > 0 && <TriangleXSIcon />}
+                {column.key === "grant" ? (
+                  <Link
+                    css={`
+                      color: ${appColors.TABLE.ROW_TEXT_COLOR};
+                    `}
+                    to={`/grant/${get(props.row, column.key, "")}/${get(
+                      props.row,
+                      "ip",
+                      ""
+                    )}`}
+                  >
+                    {get(props.row, column.key, "")}
+                  </Link>
                 ) : (
                   get(props.row, column.key, "")
                 )}
@@ -188,7 +256,7 @@ function Row(props: {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Table>
               <TableBody>
-                {rowSelected == "child" && (
+                {rowSelected === "child" && (
                   <TableRow>
                     {cellData.map((name, index) => (
                       <TableCell
@@ -196,11 +264,8 @@ function Row(props: {
                         css={`
                           text-align: center;
                           padding: 16px 10px;
+                          // padding-left: ${index === 0 ? "4rem" : "auto"};
                           ${tablecell}
-                          padding-left: ${index === 0 ? "4rem" : "auto"};
-                          /* width: calc(${columnWidthCalc});
-
-                          width: ${firstColumnWidth}; */
                         `}
                       >
                         <div
@@ -218,6 +283,7 @@ function Row(props: {
                               display: flex;
                               align-items: center;
                               flex-direction: row;
+                              justify-content: center;
                               font-weight: bold;
                               font-family: "GothamNarrow-Bold", "Helvetica Neue",
                                 sans-serif;

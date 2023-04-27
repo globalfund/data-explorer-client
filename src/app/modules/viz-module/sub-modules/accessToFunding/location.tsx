@@ -69,12 +69,20 @@ export default function LocationAccessToFundingWrapper(props: Props) {
   }, []);
 
   React.useEffect(() => {
-    fetchData({
-      filterString: `locations=${props.code}&${
-        cycle !== "All" ? `periods=${cycle}` : ""
-      }`,
-    });
+    if (cycle) {
+      fetchData({
+        filterString: `locations=${props.code}&${
+          cycle !== "All" ? `periods=${cycle}` : ""
+        }`,
+      });
+    }
   }, [props.code, cycle]);
+
+  React.useEffect(() => {
+    if (grantCycles.length > 0) {
+      setCycle(grantCycles[grantCycles.length - 1]);
+    }
+  }, [grantCycles]);
 
   return (
     <>
@@ -99,7 +107,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             text-align: center;
           `}
         >
-          <b>Period / Cycle</b>
+          <b>Cycle</b>
         </p>
         <div
           css={`

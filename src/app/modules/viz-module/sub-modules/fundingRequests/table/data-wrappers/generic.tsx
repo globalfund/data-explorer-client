@@ -6,6 +6,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { InfoIcon } from "app/assets/icons/Info";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -14,6 +15,8 @@ import { fundingRequestColumns } from "app/modules/viz-module/sub-modules/fundin
 
 export function GenericFundingRequestWrapper() {
   useTitle("The Data Explorer - Funding Requests");
+
+  const cmsData = useCMSData({ returnData: true });
 
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState("name ASC");
@@ -123,6 +126,19 @@ export function GenericFundingRequestWrapper() {
           }
         `}
       />
+      <div css="width: 100%;height: 25px;" />
+      <div
+        css={`
+          width: 90%;
+          margin: 0 auto;
+          font-size: 14px;
+          line-height: 17px;
+          text-align: center;
+        `}
+      >
+        {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}
+      </div>
+      <div css="width: 100%;height: 25px;" />
     </React.Fragment>
   );
 }

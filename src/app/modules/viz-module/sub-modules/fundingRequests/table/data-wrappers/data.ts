@@ -4,21 +4,37 @@ export const fundingRequestColumns = [
     name: "Location",
     col: [
       {
-        key: "id",
+        key: "component",
         name: "",
         col: [
           {
-            key: "grant1",
+            key: "gac",
+            name: "",
+          },
+          {
+            key: "grant",
+            name: "",
+          },
+          {
+            key: "start",
+            name: "",
+          },
+          {
+            key: "end",
+            name: "",
+          },
+          // {
+          //   key: "recipient",
+          //   name: "",
+          // },
+          {
+            key: "component",
             name: "",
           },
         ],
       },
       {
         key: "date",
-        name: "",
-      },
-      {
-        key: "component",
         name: "",
       },
       {
@@ -34,15 +50,7 @@ export const fundingRequestColumns = [
         name: "",
       },
       {
-        key: "gac",
-        name: "",
-      },
-      {
         key: "board",
-        name: "",
-      },
-      {
-        key: "linkk",
         name: "",
       },
     ],
@@ -50,13 +58,18 @@ export const fundingRequestColumns = [
 ];
 
 export const cellData = [
-  "Application ID",
-  "Submission date",
   "Component",
+  "Submission date",
   "Approach",
   "TRP Window ",
   "TRP Outcome",
-  "GAC Meeting",
   "Board Approval",
-  "",
+];
+
+export const cellData2 = [
+  "GAC Meeting",
+  "Grant",
+  "Starting Date",
+  "End Date",
+  "Component",
 ];
