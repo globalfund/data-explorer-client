@@ -181,7 +181,10 @@ export function TableToolbar(props: TableToolbarProps) {
                     location.pathname.replace(`/${params.code}`, "/<code>"),
                     []
                   );
-                  if (props.multiVizPageDataKey) {
+                  if (
+                    props.multiVizPageDataKey &&
+                    data[props.multiVizPageDataKey]
+                  ) {
                     data = get(data, props.multiVizPageDataKey, []);
                   }
                   setCSVLinkData(

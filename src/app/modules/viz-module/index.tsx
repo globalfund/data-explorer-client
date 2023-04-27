@@ -17,6 +17,7 @@ import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibilit
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
 import { AllocationsTableModule } from "app/modules/viz-module/sub-modules/allocations/table";
+import { EligibilityTableModuleWrapper } from "app/modules/viz-module/sub-modules/eligibility/table";
 import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
@@ -26,7 +27,6 @@ import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modul
 import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
 import { GenericFundingRequestWrapper } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/generic";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
-import { AccessToFundingEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/eligibility/tableWrapper";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import {
   filtergroups,
@@ -211,7 +211,7 @@ export default function VizModule() {
           </Route>
           {/* Eligibility */}
           <Route path="/viz/eligibility/table">
-            <AccessToFundingEligibilityTableWrapper />
+            <EligibilityTableModuleWrapper />
           </Route>
           <Route path="/viz/eligibility">
             <EligibilityModule />

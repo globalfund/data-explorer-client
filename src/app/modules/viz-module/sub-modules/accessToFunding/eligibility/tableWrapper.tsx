@@ -325,7 +325,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
           setSearch={setSearch}
           setSortBy={setSortBy}
           columns={columns}
-          title={cycle || ""}
+          title={props.code ? cycle || "" : ""}
         />
         <TablePagination
           page={page}

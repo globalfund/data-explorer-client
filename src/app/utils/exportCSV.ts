@@ -704,38 +704,28 @@ export function exportCSV(
         ],
       };
     case "/viz/eligibility/table":
-      if (options.isDetail) {
-        data.forEach((item: any) => {
-          csvData.push({
-            year: item.x,
-            component: item.y,
-            incomeLevel: get(
-              incomeLevels,
-              `[${item.incomeLevel}]`,
-              item.incomeLevel
-            ),
-            diseaseBurden: get(diseaseBurdens, `[${item.diseaseBurden}]`, ""),
-            eligibility: item.eligibility,
-          });
-        });
-        return {
-          data: csvData,
-          filename: "location-eligibility.csv",
-          headers: [
-            { label: "Year", key: "year" },
-            { label: "Component", key: "component" },
-            { label: "Income Level", key: "incomeLevel" },
-            { label: "Disease Burden", key: "diseaseBurden" },
-            { label: "Status", key: "eligibility" },
-          ],
-        };
-      }
       data.forEach((item: any) => {
-        item.items.forEach((subitem: any) => {
-          csvData.push({
-            [isComponent ? "component" : "location"]: item.name,
-            [!isComponent ? "component" : "location"]: subitem.name,
-            status: subitem.status,
+        item.children.forEach((subItem: any) => {
+          subItem.children.forEach((subSubItem: any) => {
+            csvData.push(
+              isComponent
+                ? {
+                    component: item.level1,
+                    year: subItem.level1,
+                    location: subSubItem.level2,
+                    status: subSubItem.eligibilityStatus,
+                    diseaseBurden: subSubItem.diseaseBurden,
+                    incomeLevel: subSubItem.incomeLevel,
+                  }
+                : {
+                    location: item.level1,
+                    year: subItem.level1,
+                    component: subSubItem.level2,
+                    status: subSubItem.eligibilityStatus,
+                    diseaseBurden: subSubItem.diseaseBurden,
+                    incomeLevel: subItem.incomeLevel,
+                  }
+            );
           });
         });
       });
@@ -743,36 +733,74 @@ export function exportCSV(
         data: csvData,
         filename: `eligibility-by-${
           isComponent ? "component" : "location"
-        }-${yearDropdownNode?.getAttribute("value")}.csv`,
-        headers: [
-          { label: "Component", key: "component" },
-          { label: "Location", key: "location" },
-          { label: "Status", key: "status" },
-        ],
+        }.csv`,
+        headers: isComponent
+          ? [
+              { label: "Component", key: "component" },
+              { label: "Year", key: "year" },
+              { label: "Location", key: "location" },
+              { label: "Status", key: "status" },
+              { label: "Disease Burden", key: "diseaseBurden" },
+              { label: "Income Level", key: "incomeLevel" },
+            ]
+          : [
+              { label: "Location", key: "location" },
+              { label: "Year", key: "year" },
+              { label: "Component", key: "component" },
+              { label: "Status", key: "status" },
+              { label: "Disease Burden", key: "diseaseBurden" },
+              { label: "Income Level", key: "incomeLevel" },
+            ],
       };
     case "/viz/access-to-funding":
       if (multiVizPageDataKey === "eligibility") {
         data.forEach((item: any) => {
           item.children.forEach((subItem: any) => {
-            csvData.push({
-              year: item.year,
-              component: subItem.component,
-              status: subItem.eligibilityStatus,
-              diseaseBurden: subItem.diseaseBurden,
-              incomeLevel: item.incomeLevel,
+            subItem.children.forEach((subSubItem: any) => {
+              csvData.push(
+                isComponent
+                  ? {
+                      component: item.level1,
+                      year: subItem.level1,
+                      location: subSubItem.level2,
+                      status: subSubItem.eligibilityStatus,
+                      diseaseBurden: subSubItem.diseaseBurden,
+                      incomeLevel: subSubItem.incomeLevel,
+                    }
+                  : {
+                      location: item.level1,
+                      year: subItem.level1,
+                      component: subSubItem.level2,
+                      status: subSubItem.eligibilityStatus,
+                      diseaseBurden: subSubItem.diseaseBurden,
+                      incomeLevel: subItem.incomeLevel,
+                    }
+              );
             });
           });
         });
         return {
           data: csvData,
-          filename: "access-to-funding-eligibility.csv",
-          headers: [
-            { label: "Year", key: "year" },
-            { label: "Component", key: "component" },
-            { label: "Status", key: "status" },
-            { label: "Disease Burden", key: "diseaseBurden" },
-            { label: "Income Level", key: "incomeLevel" },
-          ],
+          filename: `access-to-funding-eligibility-by-${
+            isComponent ? "component" : "location"
+          }.csv`,
+          headers: isComponent
+            ? [
+                { label: "Component", key: "component" },
+                { label: "Year", key: "year" },
+                { label: "Location", key: "location" },
+                { label: "Status", key: "status" },
+                { label: "Disease Burden", key: "diseaseBurden" },
+                { label: "Income Level", key: "incomeLevel" },
+              ]
+            : [
+                { label: "Location", key: "location" },
+                { label: "Year", key: "year" },
+                { label: "Component", key: "component" },
+                { label: "Status", key: "status" },
+                { label: "Disease Burden", key: "diseaseBurden" },
+                { label: "Income Level", key: "incomeLevel" },
+              ],
         };
       }
       if (multiVizPageDataKey === "fundingRequest") {

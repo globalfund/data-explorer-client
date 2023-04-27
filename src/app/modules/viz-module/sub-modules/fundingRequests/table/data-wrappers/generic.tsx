@@ -98,7 +98,6 @@ export function GenericFundingRequestWrapper() {
           <InfoIcon />
         </div>
       </div>
-      <div css="width: 100%;height: 25px;" />
       <Table
         data={data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
         search={search}

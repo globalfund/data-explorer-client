@@ -342,7 +342,7 @@ export function useGetAllVizData() {
     "/viz/commitment/table": disbursementsTreemap,
     // Eligibility
     "/viz/eligibility": eligibility,
-    "/viz/eligibility/table": eligibility,
+    "/viz/eligibility/table": locationDetailEligibility,
     // Pledges & Contributions
     "/viz/pledges-contributions/map": pledgesContributionsGeomap,
     "/viz/pledges-contributions/table": pledgesContributionsTable,
