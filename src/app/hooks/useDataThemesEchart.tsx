@@ -58,6 +58,7 @@ export function useDataThemesEchart() {
       barRadius,
       xAxisLineColor,
       showXAxis,
+      focus,
       xAxisLabelColor,
       xAxisLabelInterval,
       showTooltip,
@@ -112,6 +113,9 @@ export function useDataThemesEchart() {
           itemStyle: {
             color: color,
             borderRadius: barRadius,
+          },
+          emphasis: {
+            focus,
           },
         },
       ],

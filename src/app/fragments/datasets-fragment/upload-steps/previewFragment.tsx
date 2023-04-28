@@ -5,6 +5,8 @@ import React, { useState } from "react";
 import { v4 } from "uuid";
 import DataParserToolBox from "../component/dataParserToolBox";
 import PreviewTable from "../component/table";
+import { barChartdata, tableToolBoxData } from "../component/table/data";
+import { ChartRepresentationProps } from "../component/table/StatisticalRepresentations";
 
 interface Props {
   handleNext: () => void;
@@ -14,6 +16,7 @@ export default function PreviewFragment(props: Props) {
   const onCloseBtnClick = () => {
     setOpenToolboxPanel(!openToolboxPanel);
   };
+  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
   const [tableData, setTableData] = React.useState<
     { [key: string]: number | string | null | boolean }[]
   >(dummyDatasetData.map((data) => ({ ...data, checked: false, id: v4() })));
@@ -25,6 +28,37 @@ export default function PreviewFragment(props: Props) {
       columns.push({ key: key, type: typeof data[0][key] });
     }
     return columns;
+  };
+
+  const domRef = React.useRef<HTMLDivElement>(null);
+  const [renderedChartMappedData, setRenderedChartMappedData] =
+    React.useState<{ bars: string; size: string }[]>(barChartdata);
+
+  const [visualOptions, setVisualOptions] = React.useState({
+    barWidth: 15.84,
+    background: "transparent",
+    color: "#000000",
+    splitLineY: false,
+    width: "100%",
+    height: 100,
+    marginBottom: 20,
+    showXAxis: true,
+    realTimeSort: false,
+    xAxisLineColor: "#ADB5BD",
+    xAxisLabelColor: "#262C34",
+    barRadius: [2, 2, 0, 0],
+    xAxisLabelInterval: (index: number) => {
+      return index === 0 || index === renderedChartMappedData.length - 1;
+    },
+  });
+
+  const chartOptions: ChartRepresentationProps = {
+    containerId: "chart-placeholder",
+
+    domRef,
+    visualOptions,
+    renderedChartMappedData,
+    setRenderedChartMappedData,
   };
   return (
     <div>
@@ -49,6 +83,8 @@ export default function PreviewFragment(props: Props) {
           tableData={tableData}
           setTableData={setTableData}
           columns={getColumns(tableData)}
+          columnDetails={columnDetails}
+          chartOptions={chartOptions}
         />
       </div>
       <DataParserToolBox

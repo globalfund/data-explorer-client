@@ -13,6 +13,10 @@ import { ReactComponent as SortIcon } from "../../assets/sort.svg";
 
 import { previewTablecss } from "./style";
 import StatisticDisplay from "./statisticDisplay";
+import StatisticalTableToolBox, {
+  ColumnDetailsProps,
+} from "../statisticalTableToolBox";
+import { ChartRepresentationProps } from "./StatisticalRepresentations";
 
 interface PreviewTableProps {
   columns: { [key: string]: string }[];
@@ -20,6 +24,9 @@ interface PreviewTableProps {
   setTableData: React.Dispatch<
     React.SetStateAction<{ [key: string]: number | string | null | boolean }[]>
   >;
+  placeUnderSubHeader?: boolean;
+  columnDetails: ColumnDetailsProps;
+  chartOptions: ChartRepresentationProps;
 }
 
 export default function PreviewTable(props: PreviewTableProps) {
@@ -27,6 +34,10 @@ export default function PreviewTable(props: PreviewTableProps) {
   React.useEffect(() => {
     setTableRows([{ id: "viz", type: "component" }, ...props.tableData]);
   }, [props.tableData]);
+  const [toolboxDisplay, setToolboxDisplay] = useState(false);
+  const handleToolBoxDisplay = () => {
+    setToolboxDisplay(true);
+  };
 
   return (
     <>
@@ -38,7 +49,7 @@ export default function PreviewTable(props: PreviewTableProps) {
         <TableContainer
           css={`
             width: inherit;
-            height: 493px;
+            height: 593px;
             &::-webkit-scrollbar {
               height: 12px;
               border-radius: 23px;
@@ -147,7 +158,13 @@ export default function PreviewTable(props: PreviewTableProps) {
                           ? "#000"
                           : "rgba(0, 0, 0, 0.87)"};
                         font-size: 12px;
+                        cursor: ${rowIndex === 0 ? "pointer" : "auto"};
                       `}
+                      onClick={() => {
+                        if (rowIndex === 0 && index !== 0) {
+                          handleToolBoxDisplay();
+                        }
+                      }}
                     >
                       {rowIndex === 0 ? (
                         <div
@@ -158,7 +175,10 @@ export default function PreviewTable(props: PreviewTableProps) {
                           {index == 0 ? (
                             ""
                           ) : (
-                            <StatisticDisplay position={index} />
+                            <StatisticDisplay
+                              position={index}
+                              chartOptions={props.chartOptions}
+                            />
                           )}{" "}
                         </div>
                       ) : (
@@ -184,6 +204,14 @@ export default function PreviewTable(props: PreviewTableProps) {
           </Table>
         </TableContainer>
       </div>
+      {toolboxDisplay && (
+        <StatisticalTableToolBox
+          {...props.columnDetails}
+          position={2}
+          handleClose={() => setToolboxDisplay(false)}
+          placeUnderSubHeader={props.placeUnderSubHeader as boolean}
+        />
+      )}
     </>
   );
 }

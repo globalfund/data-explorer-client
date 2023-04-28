@@ -46,45 +46,22 @@ export const ProgressBar = (props: { progress: string; label: string }) => {
   );
 };
 
-export const BarChartRepresentaion = () => {
+export interface ChartRepresentationProps {
+  visualOptions: any;
+  domRef: React.RefObject<HTMLDivElement>;
+  containerId: string;
+  renderedChartMappedData: any;
+  setRenderedChartMappedData: React.Dispatch<React.SetStateAction<any[]>>;
+}
+export const BarChartRepresentaion = (props: ChartRepresentationProps) => {
   const domRef = React.useRef<HTMLDivElement>(null);
   const { render } = useDataThemesEchart();
 
-  const data = [
-    { bars: "1", size: "14" },
-    { bars: "50", size: "6" },
-    { bars: "2", size: "4" },
-    { bars: "3", size: "10" },
-    { bars: "4", size: "1" },
-    { bars: "59", size: "1" },
-    { bars: "6", size: "4" },
-    { bars: "4199", size: "6" },
-  ];
   const renderedChartSsr = false;
   const renderedChart = "";
-  const [renderedChartMappedData, setRenderedChartMappedData] =
-    React.useState<{ bars: string; size: string }[]>(data);
-
-  const [visualOptions, setVisualOptions] = React.useState({
-    barWidth: 15.84,
-    background: "transparent",
-    color: "#000000",
-    splitLineY: false,
-    width: "100%",
-    height: 100,
-    marginBottom: 20,
-    showXAxis: true,
-    realTimeSort: false,
-    xAxisLineColor: "#ADB5BD",
-    xAxisLabelColor: "#262C34",
-    barRadius: [2, 2, 0, 0],
-    xAxisLabelInterval: (index: number) => {
-      return index === 0 || index === renderedChartMappedData.length - 1;
-    },
-  });
 
   React.useEffect(() => {
-    if (domRef && domRef.current && !isEmpty(visualOptions)) {
+    if (domRef && domRef.current && !isEmpty(props.visualOptions)) {
       try {
         const loader = document.getElementById("chart-placeholder");
 
@@ -100,12 +77,12 @@ export const BarChartRepresentaion = () => {
               domRef.current.appendChild(element.firstChild || element);
             } else {
               render(
-                renderedChartMappedData,
+                props.renderedChartMappedData,
                 // @ts-ignore
                 domRef.current,
                 "echartsBarchart",
-                visualOptions,
-                "common-chart-render-container"
+                props.visualOptions,
+                props.containerId
               );
             }
             resolve(1);
@@ -139,18 +116,28 @@ export const BarChartRepresentaion = () => {
         }
       }
     }
-  }, [visualOptions, "", renderedChartSsr, renderedChartMappedData]);
-  console.log(domRef, "reff");
+  }, [
+    props.visualOptions,
+    "",
+    renderedChartSsr,
+    props.renderedChartMappedData,
+  ]);
   return (
     <div
-      id="common-chart-render-container"
-      ref={domRef}
       css={`
-        height: ${visualOptions.height}px;
-        width: ${visualOptions.width}px;
-        margin-top: 20px;
+        width: 100%;
       `}
-    ></div>
+    >
+      <div
+        id={props.containerId}
+        ref={domRef}
+        css={`
+          height: ${props.visualOptions.height}px;
+          width: ${props.visualOptions.width}px;
+          margin-top: 20px;
+        `}
+      ></div>
+    </div>
   );
 };
 

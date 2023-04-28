@@ -9,12 +9,18 @@ import {
   DataThemesDataTableProps,
 } from "app/modules/data-themes-module/components/data-table/data";
 import PreviewTable from "app/fragments/datasets-fragment/component/table";
+import {
+  barChartdata,
+  tableToolBoxData,
+} from "app/fragments/datasets-fragment/component/table/data";
+import { ChartRepresentationProps } from "app/fragments/datasets-fragment/component/table/StatisticalRepresentations";
 
 export function DataThemesDataTable(props: DataThemesDataTableProps) {
   const containerEl = React.useRef<HTMLDivElement>(null);
   const [data, setData] = React.useState<
     { [key: string]: number | string | null | boolean }[]
   >([]);
+  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
 
   const getColumns = (
     data: { [key: string]: number | string | null | boolean }[]
@@ -59,6 +65,37 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     );
   }, [sort]);
 
+  //table chart details
+  const domRef = React.useRef<HTMLDivElement>(null);
+  const [renderedChartMappedData, setRenderedChartMappedData] =
+    React.useState<{ bars: string; size: string }[]>(barChartdata);
+
+  const [visualOptions, setVisualOptions] = React.useState({
+    barWidth: 15.84,
+    background: "transparent",
+    color: "#000000",
+    splitLineY: false,
+    width: "100%",
+    height: 100,
+    marginBottom: 20,
+    showXAxis: true,
+    realTimeSort: false,
+    xAxisLineColor: "#ADB5BD",
+    xAxisLabelColor: "#262C34",
+    barRadius: [2, 2, 0, 0],
+    xAxisLabelInterval: (index: number) => {
+      return index === 0 || index === renderedChartMappedData.length - 1;
+    },
+  });
+
+  const chartOptions: ChartRepresentationProps = {
+    containerId: "common-chart-render-containerr",
+    domRef,
+    visualOptions,
+    renderedChartMappedData,
+    setRenderedChartMappedData,
+  };
+
   return (
     <div
       ref={containerEl}
@@ -69,7 +106,6 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
 
         > div {
           height: 100%;
-          background: #fff;
           border-style: none;
 
           * {
@@ -83,18 +119,10 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
         tableData={data}
         setTableData={setData}
         columns={getColumns(data)}
+        placeUnderSubHeader
+        columnDetails={columnDetails}
+        chartOptions={chartOptions}
       />
-      {/* <DataGrid
-        rows={data}
-        rowHeight={48}
-        headerRowHeight={88}
-        sortColumns={[sort]}
-        onSortColumnsChange={handleSort}
-        columns={getColumnsFromData(
-          props.data,
-          containerEl.current?.getBoundingClientRect().width
-        )}
-      /> */}
     </div>
   );
 }
