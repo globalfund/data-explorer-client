@@ -92,7 +92,6 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
                     <div
                       css={`
                         font-size: 14px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
                       `}
                     >
                       <b>{ct.label}</b>
@@ -100,7 +99,8 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
                     <div
                       css={`
                         font-size: 12px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {ct.categories.join(", ")}

@@ -32,7 +32,7 @@ export function ChartToolBoxChartType() {
           css={`
             color: #262c34;
             font-size: 14px;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
           <b>Please select a chart type</b>
@@ -59,7 +59,7 @@ export function ChartToolBoxChartType() {
             css={`
               font-size: 14px;
               margin-bottom: 20px;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             `}
           >
             {fChartType.label}

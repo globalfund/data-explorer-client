@@ -48,7 +48,7 @@ export const actionbuttoncss = css`
   }
 `;
 export const termsOfServiceCss = css`
-  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   margin-top: -6px;
   > span {
     font-size: 12px;

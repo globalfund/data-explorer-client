@@ -70,12 +70,12 @@ export default function LoginCard(props: Prop) {
               width: 100%;
               color: #231d2c;
               cursor: pointer;
-              font-size: 1wpx;
+              font-size: 1px;
               line-height: 20px;
               text-align: start;
               border-style: none;
               margin-top: -0.7rem;
-              font-family: "Inter";
+              font-family: "GothamNarrow-Book";
               /* margin-bottom: 12px; */
               display: flex;
               justify-content: flex-end;

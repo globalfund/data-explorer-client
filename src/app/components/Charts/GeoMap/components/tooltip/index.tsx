@@ -25,7 +25,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.name}
@@ -57,7 +57,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
 
             > div {
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               &:nth-of-type(1) {
                 width: 30%;
@@ -151,7 +151,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsGeomap.tooltipDisbursed", "")}
@@ -186,7 +186,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsGeomap.committed", "")}
@@ -204,7 +204,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsGeomap.tooltipSigned", "")}
@@ -251,7 +251,7 @@ export function GeomapPinTooltip(props: {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.pin.geoName}
@@ -302,7 +302,7 @@ export function GeomapPinTooltip(props: {
                 font-weight: bold;
                 line-height: 20px;
                 border-bottom: 1px solid #dfe3e6;
-                font-family: "Inter", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               {d.geoName}
@@ -366,7 +366,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.name}
@@ -398,7 +398,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
 
             > div {
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               &:nth-of-type(1) {
                 width: 50%;
@@ -479,7 +479,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsGeomap.tooltipTotal", "")}

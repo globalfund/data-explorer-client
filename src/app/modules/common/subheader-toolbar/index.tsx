@@ -50,7 +50,7 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
     font-size: 18px;
     padding: 16px 0;
     font-weight: 700;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 
   & [class*="MuiSnackbarContent-action"] {
@@ -64,7 +64,7 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
       background: #262c34;
       border-radius: 20px;
       box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-      font-family: "Inter", "Helvetica Neue", sans-serif;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
   }
 

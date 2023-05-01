@@ -34,7 +34,7 @@ const Button = withStyles(() => ({
     fontSize: "14px",
     borderRadius: "0px",
     backgroundColor: "#C7CDD1",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Bold, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
     },
@@ -46,7 +46,7 @@ const Button = withStyles(() => ({
     color: "#fff",
     fontSize: "14px",
     textTransform: "none",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Book, sans-serif",
   },
 }))(MuiButton);
 
@@ -336,7 +336,7 @@ function ReportRightPanelCreateViewChartList(props: {
               font-weight: 400;
               white-space: nowrap;
               text-overflow: ellipsis;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             `}
           >
             Sort by {sortBy.label}

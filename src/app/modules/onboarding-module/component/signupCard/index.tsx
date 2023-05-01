@@ -77,7 +77,7 @@ export default function SignupCard() {
               <p
                 css={`
                   color: #231d2c;
-                  font-family: "Inter";
+                  font-family: "GothamNarrow-Book";
                   font-size: 12px;
                 `}
               >

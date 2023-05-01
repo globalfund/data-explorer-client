@@ -97,7 +97,7 @@ export default function AddRowFrameButton(props: Props) {
               background-color: #626262;
               border-radius: 4px;
               font-size: 12px;
-              font-family: "Inter";
+              font-family: "GothamNarrow-Book";
               display: flex;
               justify-content: center;
               align-items: center;

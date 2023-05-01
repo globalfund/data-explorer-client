@@ -230,7 +230,7 @@ export function DataThemesToolBoxSelectDataset(
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
           {stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset ||

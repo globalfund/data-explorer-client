@@ -17,7 +17,7 @@ export const CssTextField = withStyles({
 
     "&.MuiInputLabel-outlined": {
       fontSize: "16px",
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "'GothamNarrow-Book', sans-serif",
       color: "#231D2C",
     },
     "& .MuiOutlinedInput-input": {

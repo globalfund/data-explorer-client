@@ -133,7 +133,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
               margin-bottom: 10px;
               flex-direction: row;
               justify-content: space-between;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               path {
                 fill: #2e4063;
@@ -235,7 +235,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   text-align: center;
                   color: rgb(38, 44, 52);
                   transform: rotate(-90deg);
-                  font-family: "Inter", "Helvetica Neue", sans-serif;
+                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
                   @media (max-width: 767px) {
                     width: 50px;
@@ -329,7 +329,7 @@ export function ScatterPlot(props: ScatterPlotProps) {
                   //           font-weight: bold;
                   //           fill: rgb(38, 44, 52);
                   //           font-family: sans-serif;
-                  //           font-family: "Inter", "Helvetica Neue",
+                  //           font-family: "GothamNarrow-Bold", "Helvetica Neue",
                   //             sans-serif;
                   //         `}
                   //       >

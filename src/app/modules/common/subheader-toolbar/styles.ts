@@ -20,7 +20,7 @@ export const styles = {
     flex-direction: row;
     justify-content: space-between;
     p {
-      font-family: "Inter";
+      font-family: "GothamNarrow-Bold";
       font-style: normal;
       font-weight: 700;
       font-size: 24px;
@@ -88,7 +88,7 @@ export const styles = {
     border-style: none;
     background: transparent;
     transition: background 0.2s ease-in-out;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     &:focus {
       background: #f1f3f5;

@@ -24,7 +24,7 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
         css={`
           font-size: 18px;
           font-weight: bold;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {formatFinancialValue(props.value)}
@@ -137,7 +137,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
 
             > div {
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               &:nth-of-type(1) {
                 width: 40%;
@@ -218,7 +218,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
               font-size: 14px;
               font-weight: bold;
               text-transform: none;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             }
           `}
         >

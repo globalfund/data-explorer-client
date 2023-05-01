@@ -218,7 +218,7 @@ export function ChartToolBoxSelectDataset(
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
           {get(find(datasets, { id: dataset }), "name", "Datasets")}

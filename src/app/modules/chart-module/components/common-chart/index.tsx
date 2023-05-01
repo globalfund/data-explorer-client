@@ -113,7 +113,7 @@ export function CommonChart(props: Props) {
           margin-top: 40px;
 
           * {
-            font-family: "Inter", "Helvetica Neue", sans-serif !important;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
           }
         `}
       />
@@ -128,7 +128,7 @@ export function CommonChart(props: Props) {
           height: 100%;
 
           * {
-            font-family: "Inter", "Helvetica Neue", sans-serif !important;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
           }
         `}
       >

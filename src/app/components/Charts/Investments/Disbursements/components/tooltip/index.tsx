@@ -37,7 +37,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           line-height: 20px;
           padding-bottom: 16px;
           border-bottom: 1px solid #dfe3e6;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {data.tooltip.header}
@@ -69,7 +69,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
 
             > div {
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               &:nth-of-type(1) {
                 width: 30%;
@@ -154,7 +154,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsInvestments.disbursed", "")}
@@ -191,7 +191,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsInvestments.committed", "")}
@@ -211,7 +211,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsInvestments.signed", "")}

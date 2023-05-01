@@ -99,9 +99,9 @@ export const RichEditor = (props: {
 
         h1,
         h2 {
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           * {
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           }
         }
 
@@ -129,13 +129,13 @@ export const RichEditor = (props: {
 
         #headline-one-button {
           font-size: 22px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
 
         #headline-two-button {
           font-size: 14px;
           margin-bottom: -5px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         }
 
         #quotes-button {
@@ -158,7 +158,7 @@ export const RichEditor = (props: {
         }}
         customStyleMap={{
           BOLD: {
-            fontFamily: "'Inter', 'Helvetica Neue', sans-serif",
+            fontFamily: "'GothamNarrow-Bold', 'Helvetica Neue', sans-serif",
           },
           ITALIC: {
             fontStyle: "italic",

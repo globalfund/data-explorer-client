@@ -19,7 +19,7 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.indexValue}
@@ -51,7 +51,7 @@ export function PledgesContributionsTimeCycleTooltip(props: any) {
             css={`
               font-weight: bold;
               text-transform: capitalize;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {props.id}

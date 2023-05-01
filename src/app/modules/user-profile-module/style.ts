@@ -20,10 +20,10 @@ export const tabcss = (active: boolean) => css`
   }
 `;
 export const profilecss = css`
-  font-family: "Inter", "Helvetica Neue", sans-serif;
   font-style: normal;
 
   h4 {
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     font-weight: 700;
     font-size: 24px;
     color: #6061e5;
@@ -31,6 +31,7 @@ export const profilecss = css`
   p {
     width: 11vw;
     font-weight: 400;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   }
 `;
 export const flexContainercss = css`

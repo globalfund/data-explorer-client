@@ -17,7 +17,7 @@ interface ProjectPalette extends Palette {
 }
 
 export const TextStyle: FontStyle = {
-  fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
+  fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
   fontSize: 14,
   fontWeightLight: 300,
   fontWeightRegular: 400,
@@ -271,13 +271,13 @@ export default createTheme({
         fontSize: 12,
         color: "#fff",
         backgroundColor: "#373d43",
-        fontFamily: '"Inter", "Helvetica", "Arial", sans-serif',
+        fontFamily: '"GothamNarrow-Book", "Helvetica", "Arial", sans-serif',
       },
     },
     MuiBottomNavigationAction: {
       label: {
         fontSize: 12,
-        fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+        fontFamily: '"GothamNarrow-Book", "Helvetica Neue", sans-serif',
         "&.Mui-selected": {
           fontSize: 12,
         },

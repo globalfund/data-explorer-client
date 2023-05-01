@@ -54,7 +54,7 @@ export default function Onboarding() {
           <h2
             css={`
               color: #6061e5;
-              font-family: "Inter";
+              font-family: "GothamNarrow-Bold";
               font-style: normal;
               font-weight: 700;
               font-size: 24px;

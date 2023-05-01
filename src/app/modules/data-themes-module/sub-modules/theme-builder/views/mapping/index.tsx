@@ -144,7 +144,6 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
             css={`
               font-size: 14px;
               margin-bottom: 16px;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
             `}
           >
             <b> Chart variables</b>

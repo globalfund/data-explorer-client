@@ -52,7 +52,7 @@ export const tab = (active: boolean) => css`
   font-size: 14px;
   font-weight: bold;
   white-space: nowrap;
-  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   border-bottom: 2px solid ${active ? "#231d2c" : "transparent"};
 
   &:hover {
