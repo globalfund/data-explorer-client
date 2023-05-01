@@ -14,14 +14,13 @@ const StyledTextField = withStyles({
     "& label.MuiInputLabel-root": {
       fontSize: "14px",
       color: "#868E96",
-      fontFamily: "Gotham Narrow",
+      fontFamily: "GothamNarrow-Book",
     },
 
     "& label.Mui-focused": {
       fontSize: "14px",
       color: "#6061e5",
-
-      fontFamily: "Gotham Narrow",
+      fontFamily: "GothamNarrow-Book",
     },
     "&.MuiInputBase-root": {
       bordercolor: "#ADB5BD",
