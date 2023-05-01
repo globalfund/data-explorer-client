@@ -1,10 +1,4 @@
-import {
-  createStyles,
-  IconButton,
-  makeStyles,
-  Modal,
-  Theme,
-} from "@material-ui/core";
+import { IconButton, Modal } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 import { useStyles } from "./deleteChartDialog";
@@ -13,27 +7,11 @@ interface Props {
   modalDisplay: boolean;
   setModalDisplay: (value: boolean) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDelete: (id: string) => void;
-  cardId: string;
+  handleDelete: () => void;
   enableButton: boolean;
 }
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `47%`,
-    transform: `translate(-${top}%, -47%)`,
-  };
-}
-
-export default function DeleteDatasetDialog(props: Props) {
-  const [modalStyle] = React.useState(getModalStyle);
+export default function DeleteAccountDialog(props: Props) {
   const classes = useStyles();
   return (
     <div>
@@ -43,7 +21,14 @@ export default function DeleteDatasetDialog(props: Props) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div style={modalStyle} className={classes.paper}>
+        <div
+          style={{
+            top: `21vh`,
+            left: `61vh`,
+            height: "350px",
+          }}
+          className={classes.paper}
+        >
           <div
             css={`
               width: 80%;
@@ -70,15 +55,15 @@ export default function DeleteDatasetDialog(props: Props) {
                 margin-bottom: 0px;
               `}
             >
-              Delete dataset
+              Delete account
             </p>
             <p
               css={`
                 margin-top: 3px;
               `}
             >
-              Absolutely sure you want to delete the dataset(s)? <br />{" "}
-              <b>This action is irreversible!</b>
+              Are you sure about delete account? Deleted accounts cannot be
+              restored.
             </p>
             <div
               css={`
@@ -117,7 +102,7 @@ export default function DeleteDatasetDialog(props: Props) {
           >
             <button
               type="button"
-              onClick={() => props.handleDelete(props.cardId)}
+              onClick={() => props.handleDelete()}
               disabled={!props.enableButton}
               css={`
                 background: ${props.enableButton ? "#231D2C" : "#e4e4e4"};

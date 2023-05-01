@@ -156,12 +156,12 @@ export default function MetaData(props: Props) {
             <button
               onClick={props.handleBack}
               css={`
-                color: #fff;
+                color: #231d2c;
                 text-transform: uppercase;
                 width: 125px;
 
                 :hover {
-                  background: #231d2c;
+                  opacity: 0.5;
                 }
               `}
             >
@@ -173,9 +173,10 @@ export default function MetaData(props: Props) {
                 color: #231d2c;
                 text-transform: uppercase;
                 width: 125px;
+                background: #231d2c;
+                color: #fff;
                 :hover {
-                  background: #231d2c;
-                  color: #fff;
+                  opacity: 0.8;
                 }
               `}
             >
