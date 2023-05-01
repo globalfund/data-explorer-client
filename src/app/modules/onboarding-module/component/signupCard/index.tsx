@@ -24,6 +24,7 @@ export default function SignupCard() {
         align-items: center;
         flex-direction: column;
         justify-content: center;
+        color: #231d2c;
       `}
     >
       <React.Fragment>
@@ -71,11 +72,24 @@ export default function SignupCard() {
           />
 
           <FormControlLabel
-            control={<Checkbox name="tna" color="primary" />}
+            control={<Checkbox name="tna" color="default" />}
             label={
-              <span>
-                I agree with DX's terms of services and privacy policy
-              </span>
+              <p
+                css={`
+                  color: #231d2c;
+                  font-family: "Inter";
+                  font-size: 12px;
+                `}
+              >
+                I agree with DX's{" "}
+                <span
+                  css={`
+                    text-decoration: underline;
+                  `}
+                >
+                  terms of services and privacy policy
+                </span>
+              </p>
             }
             css={termsOfServiceCss}
           />
