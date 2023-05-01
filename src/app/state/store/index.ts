@@ -52,7 +52,11 @@ import PledgesContributionsTimeCycle, {
   PledgesContributionsTimeCycleDrilldown,
 } from "app/state/api/action-reducers/viz/pledgesContributionsTimeCycle";
 
-import GlobalSearch from "app/state/api/action-reducers/search";
+import GlobalSearch, {
+  GlobalSearchCharts,
+  GlobalSearchDatasets,
+  GlobalSearchReports,
+} from "app/state/api/action-reducers/search";
 
 import DonorFilterOptions from "app/state/api/action-reducers/filters/donors";
 import StatusFilterOptions from "app/state/api/action-reducers/filters/status";
@@ -199,6 +203,30 @@ import {
   AvailableDatasources,
   MappedDatasets,
 } from "../api/action-reducers/viz/datasourcesNdatasets";
+import {
+  ChartsActivePanelsState,
+  ChartsChartTypeState,
+  ChartsDatasetState,
+  ChartsEnabledFilterOptionGroupsState,
+  ChartsMappingState,
+} from "../api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersState } from "../api/action-reducers/sync/charts/filters";
+import {
+  ChartCreate,
+  ChartDelete,
+  ChartDuplicate,
+  ChartGet,
+  ChartGetList,
+  ChartUpdate,
+} from "../api/action-reducers/charts";
+import {
+  ReportCreate,
+  ReportDelete,
+  ReportDuplicate,
+  ReportGet,
+  ReportGetList,
+  ReportUpdate,
+} from "../api/action-reducers/reports";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -425,6 +453,33 @@ const storeContent: StoreModel = {
     DataThemeGetList: persist(DataThemeGetList),
     DatasetGetList: persist(DatasetGetList),
     DatasetCreate: persist(DatasetCreate),
+  },
+  charts: {
+    ChartGet: persist(ChartGet),
+    ChartCreate: persist(ChartCreate),
+    ChartUpdate: persist(ChartUpdate),
+    ChartDelete: persist(ChartDelete),
+    ChartDuplicate: persist(ChartDuplicate),
+    ChartGetList: persist(ChartGetList),
+    activePanels: persist(ChartsActivePanelsState),
+    dataset: persist(ChartsDatasetState),
+    mapping: persist(ChartsMappingState),
+    chartType: persist(ChartsChartTypeState),
+    appliedFilters: persist(ChartsAppliedFiltersState),
+    enabledFilterOptionGroups: persist(ChartsEnabledFilterOptionGroupsState),
+  },
+  reports: {
+    ReportGet: persist(ReportGet),
+    ReportCreate: persist(ReportCreate),
+    ReportUpdate: persist(ReportUpdate),
+    ReportDelete: persist(ReportDelete),
+    ReportDuplicate: persist(ReportDuplicate),
+    ReportGetList: persist(ReportGetList),
+  },
+  search: {
+    charts: persist(GlobalSearchCharts),
+    reports: persist(GlobalSearchReports),
+    datasets: persist(GlobalSearchDatasets),
   },
 };
 

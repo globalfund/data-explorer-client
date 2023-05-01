@@ -1,4 +1,7 @@
 import React from "react";
+import { BarIcon } from "app/assets/icons/charts/Bar";
+import { SankeyIcon } from "app/assets/icons/charts/Sankey";
+import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 
 export function getIcon(type: string) {
   switch (type) {
@@ -14,6 +17,12 @@ export function getIcon(type: string) {
       return <ResultsIcon />;
     case "Document":
       return <DocumentsIcon />;
+    case "Data":
+      return <BarIcon />;
+    case "Chart":
+      return <SankeyIcon />;
+    case "Report":
+      return <TreemapIcon />;
     default:
       return <AllCategoriesIcon />;
   }

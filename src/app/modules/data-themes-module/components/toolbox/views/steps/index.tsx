@@ -53,7 +53,6 @@ export const AccordionSummary = withStyles({
   },
   content: {
     fontSize: "14px",
-    fontFamily: "Gotham Narrow, sans-serif",
     "& > div": {
       width: 23,
       height: 23,
@@ -63,7 +62,6 @@ export const AccordionSummary = withStyles({
       borderRadius: "50%",
       textAlign: "center",
       backgroundColor: "#727F95",
-      fontFamily: "Gotham Narrow, sans-serif",
     },
     "&$expanded": {
       margin: "12px 0",
@@ -233,7 +231,6 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             font-weight: 325;
             font-size: 14px;
             margin-top: 0;
-            font-family: "Gotham Narrow";
             margin-left: 28px;
             color: #262c34;
           `}
@@ -278,7 +275,6 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
                 font-size: 14px;
                 color: #262c34;
                 margin-top: 0;
-                font-family: "Gotham Narrow";
 
                 font-weight: 325;
               `}

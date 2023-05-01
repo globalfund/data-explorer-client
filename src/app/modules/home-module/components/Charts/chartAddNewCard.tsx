@@ -1,42 +1,43 @@
-import { Grid, IconButton, Box } from "@material-ui/core";
 import React from "react";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
-import { ReactComponent as AddNewImage } from "../../assets/add-img.svg";
+import IconButton from "@material-ui/core/IconButton";
+import { ReactComponent as AddNewImage } from "app/modules/home-module/assets/add-img.svg";
 
 export default function ChartAddnewCard() {
   const history = useHistory();
+
   const goToDatasetUpload = () => {
-    history.push("/data-themes/new/data");
+    history.push("/chart/new/data");
   };
+
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <div
         css={`
-          background: #ffffff;
           width: 296px;
           height: 125px;
+          background: #fff;
           padding-left: 0.8rem;
-          font-family: "Gotham Narrow";
         `}
+        onClick={goToDatasetUpload}
       >
-        <Box height={9} />
-
         <h4
           css={`
             margin: 0;
+            padding-top: 6px;
           `}
         >
           Create new chart
         </h4>
-        <Box height={9} />
-
         <div
           css={`
-            display: flex;
-            justify-content: start;
-            align-items: center;
-            cursor: pointer;
             gap: 0.7rem;
+            display: flex;
+            cursor: pointer;
+            align-items: center;
+            justify-content: start;
           `}
         >
           <IconButton
@@ -49,15 +50,14 @@ export default function ChartAddnewCard() {
           </IconButton>
           <p
             css={`
-              border: 1px solid #231d2c;
-              height: 49px;
               width: 0px;
+              height: 49px;
+              border: 1px solid #231d2c;
             `}
           />
           <p
             css={`
               color: #495057;
-              font-weight: 325;
               font-size: 12px;
               line-height: 15px;
             `}

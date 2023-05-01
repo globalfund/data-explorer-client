@@ -1,34 +1,47 @@
-import Grid from "@material-ui/core/Grid";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
-
 import React from "react";
-import { v4 } from "uuid";
-import ChartAddnewCard from "./chartAddNewCard";
-import { datasetsData } from "./data";
-import GridItem from "./gridItem";
-import { BarIcon, MapIcon, SankeyIcon, TableIcon } from "./vizIcons";
+import axios from "axios";
+import find from "lodash/find";
+import Grid from "@material-ui/core/Grid";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
+import GridItem from "app/modules/home-module/components/Charts/gridItem";
+import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import ChartAddnewCard from "app/modules/home-module/components/Charts/chartAddNewCard";
+
+const description =
+  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
 export default function ChartsGrid() {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
-  const [inputValue, setInputValue] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
-  const [data, setData] = React.useState(
-    datasetsData.map((data) => ({ ...data, id: "63dd016c20ff974becd6330b" }))
+  const charts = useStoreState(
+    (state) => (state.charts.ChartGetList.crudData || []) as any[]
+  );
+  const loadCharts = useStoreActions(
+    (actions) => actions.charts.ChartGetList.fetch
   );
 
-  const handleDelete = (id: number) => {
-    const newData = data.filter((data, i) => i !== id);
-    setData(newData);
+  const handleDelete = (index: number) => {
     setModalDisplay(false);
     setEnableButton(false);
+    const id = charts[index].id;
+    if (!id) {
+      return;
+    }
+    axios
+      .delete(`${process.env.REACT_APP_API}/chart/${id}`)
+      .then(() => {
+        loadCharts({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-
     if (e.target.value === "DELETE") {
       setEnableButton(true);
     } else {
@@ -41,48 +54,46 @@ export default function ChartsGrid() {
     setModalDisplay(true);
   };
 
-  const setViz = (vizType: "bar" | "sankey" | "map" | "table") => {
-    switch (vizType) {
-      case "sankey":
-        return <SankeyIcon />;
-
-      case "bar":
-        return <BarIcon />;
-      case "map":
-        return <MapIcon />;
-      case "table":
-        return <TableIcon />;
-      default:
-        return <TableIcon />;
+  const getIcon = (vizType: string) => {
+    const type = find(echartTypes, { id: vizType });
+    if (type) {
+      return type.icon;
     }
+    return echartTypes[0].icon;
   };
+
+  React.useEffect(() => {
+    loadCharts({
+      storeInCrudData: true,
+      filterString: "filter[order]=createdDate desc",
+    });
+  }, []);
 
   return (
     <>
       <Grid container spacing={2}>
         <ChartAddnewCard />
-        {data.map((data, index) => (
-          <Grid item xs={12} sm={6} md={4} lg={3}>
+        {charts.map((c, index) => (
+          <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
             <GridItem
-              key={index}
-              date={data.date}
-              descr={data.desc}
-              path={data.path}
-              title={data.title}
-              viz={setViz(data.viz)}
-              handleDelete={() => handleModal(index as number)}
-              id={data.id}
+              id={c.id}
+              title={c.name}
+              descr={description}
+              date={c.createdDate}
+              path={`/chart/${c.id}`}
+              viz={getIcon(c.vizType)}
+              handleDelete={() => handleModal(index)}
             />
           </Grid>
         ))}
       </Grid>
       <DeleteChartDialog
         cardId={cardId}
+        modalDisplay={modalDisplay}
         enableButton={enableButton}
         handleDelete={handleDelete}
-        handleInputChange={handleInputChange}
-        modalDisplay={modalDisplay}
         setModalDisplay={setModalDisplay}
+        handleInputChange={handleInputChange}
       />
     </>
   );

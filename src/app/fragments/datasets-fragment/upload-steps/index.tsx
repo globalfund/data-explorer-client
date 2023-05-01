@@ -1,18 +1,16 @@
-import { PageHeader } from "app/components/PageHeader";
-import { tabs } from "app/components/Search/components/results/styles";
+import React from "react";
+import Container from "@material-ui/core/Container";
+import { stepcss } from "app/fragments/datasets-fragment/style";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { dataSetsCss } from "app/modules/datasets-module/style";
-import React, { useState } from "react";
-import { stepcss } from "../style";
-import AddDatasetFragment from "./addDatasetFragment";
-import MetaData from "./metaData";
-import Processing from "./processing";
-import PreviewFragment from "./previewFragment";
-import FinishedFragment from "./finishedFragment";
-import { Container } from "@material-ui/core";
+import MetaData from "app/fragments/datasets-fragment/upload-steps/metaData";
+import Processing from "app/fragments/datasets-fragment/upload-steps/processing";
+import PreviewFragment from "app/fragments/datasets-fragment/upload-steps/previewFragment";
+import FinishedFragment from "app/fragments/datasets-fragment/upload-steps/finishedFragment";
+import AddDatasetFragment from "app/fragments/datasets-fragment/upload-steps/addDatasetFragment";
 
 export default function DatasetUploadSteps() {
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = React.useState(0);
+
   const steps = [
     "Upload",
     "Description",
@@ -20,6 +18,7 @@ export default function DatasetUploadSteps() {
     "Preview",
     "Finished",
   ];
+
   const handleNext = () => {
     const newActiveStep = activeStep + 1;
     setActiveStep(newActiveStep);
@@ -28,9 +27,9 @@ export default function DatasetUploadSteps() {
     }
     if (newActiveStep > steps.length - 1) {
       setActiveStep(0);
-      return;
     }
   };
+
   const handleBack = () => {
     if (activeStep > 0) {
       const newActiveStep = activeStep - 1;
@@ -56,8 +55,6 @@ export default function DatasetUploadSteps() {
       });
   };
 
-  console.log("stepp", activeStep);
-
   const currentStep = () => {
     switch (activeStep) {
       case 0:
@@ -77,25 +74,22 @@ export default function DatasetUploadSteps() {
 
   return (
     <Container maxWidth="lg">
-      {/* <PageHeader title="" /> */}
       <div css={stepcss}>
         {steps.map((tab, index) => (
           <div
+            key={tab}
             css={`
+              gap: 1rem;
               display: flex;
               align-items: center;
-              gap: 1rem;
             `}
-            key={index}
           >
-            {index === 0 ? (
-              ""
-            ) : (
+            {index !== 0 && (
               <div
                 css={`
+                  width: 80px;
                   border: 1px solid
                     ${index <= activeStep ? "#6061e5" : "#231D2C"};
-                  width: 80px;
                 `}
               />
             )}
@@ -103,24 +97,22 @@ export default function DatasetUploadSteps() {
               css={`
                 height: 27px;
                 display: flex;
-                align-items: center;
-                justify-content: center;
-                background: ${index <= activeStep ? "#dadaf8" : "#E4E4E4"};
-                border-radius: 32px;
-                width: max-content;
                 padding: 5px 16px;
+                width: max-content;
+                align-items: center;
+                border-radius: 32px;
+                justify-content: center;
                 font-weight: ${index === activeStep && "bold"};
                 border: ${index === activeStep && "1px solid #6061E5"};
+                background: ${index <= activeStep ? "#dadaf8" : "#E4E4E4"};
               `}
             >
-              {" "}
               {tab}
             </div>
           </div>
         ))}
       </div>
       <PageTopSpacer />
-
       <div>{currentStep()}</div>
     </Container>
   );

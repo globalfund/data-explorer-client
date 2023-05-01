@@ -7,13 +7,11 @@ export const headercss = css`
   align-items: center;
   justify-content: space-between;
   background-color: #f2f7fd;
-  padding: 0 14.1rem;
 
   a {
     text-decoration: none;
     color: #231d2c;
     font-size: 14px;
-    font-family: "Gotham Narrow";
     :hover {
       color: #cea8bc;
     }
@@ -61,7 +59,6 @@ export const loginBtn = css`
     text-decoration: none;
     font-weight: 500;
     font-size: 11.424px;
-    font-family: "Gotham Narrow";
     &:hover {
       color: #231d2c;
     }

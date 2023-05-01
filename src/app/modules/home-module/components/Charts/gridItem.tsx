@@ -1,47 +1,52 @@
-import { SankeyIcon } from "app/assets/icons/charts/Sankey";
-import React, { useState } from "react";
+import React from "react";
+import moment from "moment";
 import { Link } from "react-router-dom";
-import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
-import { ReactComponent as EditIcon } from "../../assets/edit.svg";
 import IconButton from "@material-ui/core/IconButton";
+import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
+import { ReactComponent as EditIcon } from "../../assets/edit.svg";
+import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
 
 interface Props {
+  id: string;
   path: string;
   title: string;
   descr: string;
   date: string;
-  viz: JSX.Element;
+  viz: React.ReactNode;
   handleDelete?: (id: string) => void;
-  id?: string;
 }
+
 export default function GridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
+  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
+
   const showMenuOptions = () => {
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
+
   return (
     <div
       css={`
-        background: #ffffff;
         width: 296px;
-        position: relative;
-
-        padding: 0rem 1.2rem;
-        padding-bottom: 0.2rem;
-        color: #262c34;
-        font-family: "Gotham Narrow";
+        display: flex;
         height: 125px;
+        color: #262c34;
+        background: #fff;
+        position: relative;
+        padding: 0rem 1.2rem;
+        padding-bottom: 0.5rem;
+        flex-direction: column;
+        justify-content: space-between;
       `}
     >
       <div
         css={`
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          justify-content: space-between;
+
           a {
-            text-decoration: none;
             color: inherit;
+            text-decoration: none;
           }
         `}
       >
@@ -73,63 +78,72 @@ export default function GridItem(props: Props) {
             {props.descr}
           </p>
         </div>
-        <div>{props.viz}</div>
-
-        <MenuIcon
-          onClick={showMenuOptions}
+        <div
           css={`
-            margin-top: 13px;
-            cursor: pointer;
-            align-self: flex-start;
-          `}
-        />
-      </div>
+            transform: scale(1.2);
 
+            path {
+              fill: #868a9d;
+            }
+          `}
+        >
+          {props.viz}
+        </div>
+        <IconButton
+          css={`
+            padding: 0;
+            margin-top: -30px;
+          `}
+          onClick={showMenuOptions}
+        >
+          <MenuIcon />
+        </IconButton>
+      </div>
       <div
         css={`
           display: flex;
-          justify-content: space-between;
-          margin-top: -10px;
           font-size: 12px;
+          justify-content: space-between;
+
+          > p {
+            margin: 0;
+          }
         `}
       >
         <p>Creation date</p>
-        <p>{props.date}</p>
+        <p>{moment(props.date).format("DD-MM-YYYY")}</p>
       </div>
-      {menuOptionsDisplay ? (
-        <div>
+      {menuOptionsDisplay && (
+        <React.Fragment>
           <div
             css={`
-              position: fixed;
-              height: 100vh;
-              width: 100vw;
               top: 0;
-              bottom: 0;
               left: 0;
-              right: 0;
-
               z-index: 1;
+              width: 100vw;
+              height: 100vh;
+              position: fixed;
             `}
             onClick={showMenuOptions}
           />
           <div
             css={`
-              background: #f4f4f4;
-              border-radius: 13px;
+              top: 30%;
+              gap: 1rem;
+              right: 3%;
               z-index: 2;
               width: 128px;
               display: flex;
-              justify-content: center;
-              align-items: center;
-              gap: 1rem;
-              position: absolute;
-              right: 3%;
-              top: 30%;
               padding: 7px 0;
+              position: absolute;
+              border-radius: 13px;
+              background: #f4f4f4;
+              align-items: center;
+              justify-content: center;
             `}
           >
             <div>
-              <Link to={`/data-themes/${props.id}/customize`}>
+              <Link to={`/chart/${props.id}/customize`}>
                 <EditIcon
                   css={`
                     cursor: pointer;
@@ -159,9 +173,7 @@ export default function GridItem(props: Props) {
               </IconButton>
             </div>
           </div>
-        </div>
-      ) : (
-        ""
+        </React.Fragment>
       )}
     </div>
   );

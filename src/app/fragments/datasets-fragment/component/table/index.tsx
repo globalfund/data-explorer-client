@@ -74,6 +74,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                   return (
                     <>
                       <TableCell
+                        key={val.key}
                         css={`
                           border-left: ${index == 0 ? "none" : "auto"};
                         `}
@@ -128,6 +129,7 @@ export default function PreviewTable(props: PreviewTableProps) {
             <TableBody>
               {props.tableData?.map((data, index) => (
                 <TableRow
+                  key={Object.values(data).join("-")}
                   css={`
                     background: #fff;
                   `}
@@ -135,14 +137,12 @@ export default function PreviewTable(props: PreviewTableProps) {
                   <>
                     {props.columns.map((val, index) => (
                       <TableCell
+                        key={val.key}
                         css={`
                           background: ${index === 0
                             ? "rgba(218, 218, 248, 0.3)"
                             : "#fff"};
-
-                          /* max-width: 80px; */
                         `}
-                        key={val.key}
                       >
                         <p
                           css={`

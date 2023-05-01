@@ -1,12 +1,16 @@
-import { Grid, IconButton } from "@material-ui/core";
 import React from "react";
 import { useHistory } from "react-router-dom";
-import { ReactComponent as AddNewImage } from "../../assets/add-img.svg";
+import Grid from "@material-ui/core/Grid";
+import IconButton from "@material-ui/core/IconButton";
+import { ReactComponent as AddNewImage } from "app/modules/home-module/assets/add-img.svg";
+
 export default function DatasetAddnewCard() {
   const history = useHistory();
+
   const goToDatasetUpload = () => {
     history.push("/dataset-upload");
   };
+
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <div
@@ -16,7 +20,6 @@ export default function DatasetAddnewCard() {
           height: 125px;
           padding-left: 0.8rem;
           padding-top: 0.2rem;
-          font-family: "Gotham Narrow";
         `}
       >
         <h4
@@ -25,7 +28,7 @@ export default function DatasetAddnewCard() {
             margin-bottom: 1px;
           `}
         >
-          Add new dataset
+          Add new data
         </h4>
         <div
           css={`

@@ -316,7 +316,12 @@ export function DataThemesBuilderPreviewTheme(
                   `[${props.tabIndex}][${props.vizIndex}]`,
                   ""
                 ),
-                get(visualOptions, `[${props.tabIndex}][${props.vizIndex}]`, {})
+                get(
+                  visualOptions,
+                  `[${props.tabIndex}][${props.vizIndex}]`,
+                  {}
+                ),
+                "common-chart-render-container"
               );
             }
             resolve(1);

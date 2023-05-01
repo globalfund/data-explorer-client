@@ -1,0 +1,34 @@
+.button {
+  border: 0;
+  color: #fff;
+  font-size: 18px;
+  background: #262c34;
+  height: 34px;
+  width: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.button svg {
+  fill: #fff;
+  padding-top: 5px;
+}
+
+.button:hover,
+.button:focus {
+  outline: 0;
+  color: #6a9cc9;
+}
+
+.button:hover svg,
+.button:focus svg {
+  fill: #6a9cc9;
+}
+
+.active {
+  color: #6a9cc9;
+}
+
+.active svg {
+  fill: #6a9cc9;
+}

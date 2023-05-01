@@ -1,0 +1,25 @@
+.editor {
+  left: 0;
+  padding: 16px 26px;
+  position: relative;
+  align-self: flex-start;
+  border: none;
+  cursor: text;
+  background: none;
+  width: 100%;
+}
+
+.editorPreview {
+  left: 0;
+  padding: 16px 26px;
+  position: relative;
+  align-self: flex-start;
+  border: none;
+  cursor: text;
+  background: none;
+  width: 100%;
+}
+
+.editor :global(.public-DraftEditor-content) {
+  min-height: 140px;
+}

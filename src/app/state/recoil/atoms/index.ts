@@ -1,6 +1,21 @@
 import { atom, RecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
+export interface IRowFrameStructure {
+  rowType:
+    | "oneByOne"
+    | "oneByTwo"
+    | "oneByThree"
+    | "oneByFour"
+    | "oneByFive"
+    | "oneToFour"
+    | "fourToOne"
+    | "";
+
+  disableAddRowStructureButton: boolean;
+  index: number;
+}
+
 const { persistAtom } = recoilPersist();
 
 export const cmsDataAtom = atom({
@@ -35,8 +50,19 @@ export const cmsDataAtom = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
-
-export const homeDisplayAtom = atom<  "data" | "charts" | "report" | ''>({
+export const homeDisplayAtom = atom<"data" | "charts" | "reports">({
   key: "homeDisplayAtom",
-  default: '',
+  default: "data",
+});
+
+export const reportRightPanelViewAtom = atom<
+  "elements" | "charts" | "editHeader"
+>({
+  key: "reportRightPanelViewAtom",
+  default: "elements",
+});
+
+export const isDividerOrRowFrameDraggingAtom = atom<boolean>({
+  key: "isDividerOrRowFrameDraggingAtom",
+  default: false,
 });
