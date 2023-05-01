@@ -16,15 +16,19 @@ export const StyledTextField = withStyles({
     "& label.Mui-focused": {
       color: "#231D2C",
     },
-    "&.MuiInputBase-root": {
-      border: "1px solid #231d2c",
+    "& label.MuiInputLabel-outlined.MuiInputLabel-marginDense": {
+      transform: "translate(14px, 18px) scale(1)",
     },
 
-    "&.MuiInputLabel-outlined": {
+    "& label.MuiInputLabel-outlined.MuiInputLabel-shrink": {
+      transform: "translate(14px, -5px) scale(0.8)",
+    },
+    "& label-outlined": {
       fontSize: "16px",
       fontFamily: "'Inter', sans-serif",
       color: "#231D2C",
     },
+
     "& .MuiOutlinedInput-input": {
       padding: "2px 14px",
       height: "48px",
@@ -42,6 +46,7 @@ export const StyledTextField = withStyles({
     "& .MuiOutlinedInput-multiline ": {
       backgroundColor: "#Fff",
     },
+
     "& .MuiOutlinedInput-root": {
       "& fieldset": {
         borderColor: "#231D2C",
