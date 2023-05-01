@@ -121,7 +121,9 @@ export default function Profile() {
                     margin-top: 2rem;
                   `}
                 >
-                  <PrimaryButton color="#231D2C"> Save</PrimaryButton>
+                  <PrimaryButton type="button" color="#231D2C">
+                    Save
+                  </PrimaryButton>
                 </div>
               </div>
             </div>

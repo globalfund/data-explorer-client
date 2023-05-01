@@ -147,7 +147,7 @@ export function PrivateAppBar() {
   if (location.pathname === "/" && isMobile) {
     return <React.Fragment />;
   }
-  const handlePath = (path: "charts" | "report" | "data") => {
+  const handlePath = (path: "charts" | "reports" | "data") => {
     setDisplay(path);
   };
 
@@ -247,13 +247,13 @@ export function PrivateAppBar() {
                 <div
                   css={`
                     a {
-                      color: ${display === "report"
+                      color: ${display === "reports"
                         ? "#CEA8BC !important"
                         : "#231D2C"};
                     }
                   `}
                 >
-                  <Link to="#" onClick={() => handlePath("report")}>
+                  <Link to="#" onClick={() => handlePath("reports")}>
                     <b>Reports</b>
                   </Link>
                 </div>
