@@ -1,10 +1,4 @@
-import {
-  createStyles,
-  IconButton,
-  makeStyles,
-  Modal,
-  Theme,
-} from "@material-ui/core";
+import { IconButton, Modal } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 import { useStyles } from "./deleteChartDialog";
@@ -12,28 +6,9 @@ import { useStyles } from "./deleteChartDialog";
 interface Props {
   modalDisplay: boolean;
   setModalDisplay: (value: boolean) => void;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  handleDelete: (id: string) => void;
-  cardId: string;
-  enableButton: boolean;
 }
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `47%`,
-    transform: `translate(-${top}%, -47%)`,
-  };
-}
-
-export default function DeleteDatasetDialog(props: Props) {
-  const [modalStyle] = React.useState(getModalStyle);
+export default function LogOutDialog(props: Props) {
   const classes = useStyles();
   return (
     <div>
@@ -43,7 +18,14 @@ export default function DeleteDatasetDialog(props: Props) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div style={modalStyle} className={classes.paper}>
+        <div
+          style={{
+            top: `21vh`,
+            left: `61vh`,
+            height: "264px",
+          }}
+          className={classes.paper}
+        >
           <div
             css={`
               width: 80%;
@@ -56,7 +38,7 @@ export default function DeleteDatasetDialog(props: Props) {
                 position: absolute;
                 right: -93px;
                 top: -16px;
-                color: "#231D2C";
+                color: #231d2c;
               `}
             >
               <CloseOutlined color="inherit" />
@@ -68,59 +50,53 @@ export default function DeleteDatasetDialog(props: Props) {
                 color: #231d2c;
                 line-height: 41px;
                 margin-bottom: 0px;
+                margin-top: 2.5rem;
               `}
             >
-              Delete dataset
+              Log out
             </p>
             <p
               css={`
                 margin-top: 3px;
               `}
             >
-              Absolutely sure you want to delete the dataset(s)? <br />{" "}
-              <b>This action is irreversible!</b>
+              Are you sure you want to log out?
             </p>
-            <div
-              css={`
-                margin-top: 3rem;
-              `}
-            >
-              <input
-                type="text"
-                placeholder='Type "DELETE" to confirm'
-                onChange={props.handleInputChange}
-                css={`
-                  border: 1px solid #231d2c;
-                  border-radius: 10px;
-                  background: #ffffff;
-                  height: 48px;
-                  width: 100%;
-                  padding: 0px 24px;
-                  :focus,
-                  :active,
-                  :hover {
-                    outline: 1px solid #6061e5;
-                  }
-                `}
-              />
-            </div>
           </div>
           <div
             css={`
               display: flex;
               justify-content: flex-end;
-              margin-top: 3rem;
-
+              margin-top: 4rem;
+              gap: 2rem;
               margin-bottom: 2rem;
               padding-right: 1rem;
             `}
           >
             <button
               type="button"
-              onClick={() => props.handleDelete(props.cardId)}
-              disabled={!props.enableButton}
+              onClick={() => props.setModalDisplay(false)}
               css={`
-                background: ${props.enableButton ? "#231D2C" : "#e4e4e4"};
+                background: transparent;
+                border-radius: 30px;
+                width: 107px;
+                height: 41px;
+                outline: none;
+                border: none;
+                text-transform: uppercase;
+                color: #231d2c;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+              `}
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              css={`
+                background: #231d2c;
                 border-radius: 30px;
                 width: 107px;
                 height: 41px;
@@ -134,7 +110,7 @@ export default function DeleteDatasetDialog(props: Props) {
                 cursor: pointer;
               `}
             >
-              Delete
+              Log out
             </button>
           </div>
         </div>

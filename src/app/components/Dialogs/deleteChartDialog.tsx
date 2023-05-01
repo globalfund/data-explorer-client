@@ -11,7 +11,7 @@ interface Props {
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const useStyles = makeStyles(() =>
+export const useStyles = makeStyles(() =>
   createStyles({
     modal: {
       display: "flex",

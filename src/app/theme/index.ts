@@ -188,6 +188,19 @@ export default createTheme({
     //     },
     //   },
     // },
+    MuiInputLabel: {
+      outlined: {
+        transform: "translate(14px, 15px) scale(1)",
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        "&.Mui-focused": {
+          color: "#231D2C",
+        },
+      },
+    },
+
     MuiToggleButtonGroup: {
       root: {
         height: "34px",
