@@ -53,6 +53,7 @@ export default function GridItem(props: Props) {
         <div
           css={`
             width: 60%;
+            margin-top: -7px;
           `}
         >
           <Link to={`/chart/${props.id}`}>
@@ -87,7 +88,7 @@ export default function GridItem(props: Props) {
         </div>
         <div
           css={`
-            margin-top: 28px;
+            margin-top: 12px;
             width: 74px;
             height: 74px;
             path {

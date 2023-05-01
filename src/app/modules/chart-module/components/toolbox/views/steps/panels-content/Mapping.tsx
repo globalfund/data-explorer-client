@@ -74,6 +74,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
             }
             return (
               <ChartToolBoxMappingItem
+                testId={`mapping-item-${dataTypeName}`}
                 type={type}
                 index={index}
                 key={dataTypeName}
@@ -91,6 +92,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
 interface ChartToolBoxMappingItemProps {
   index: number;
   dimension?: any;
+  testId: string;
   dataTypeName: string;
   marginBottom: string;
   backgroundColor?: string;
@@ -233,6 +235,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
     <div
       ref={ref}
       key={props.dataTypeName}
+      id={props.testId}
       css={`
         height: 31px;
         display: flex;

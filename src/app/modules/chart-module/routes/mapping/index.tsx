@@ -409,6 +409,7 @@ function ChartBuilderMappingDimension(
               <ChartToolBoxMappingItem
                 key={id}
                 type={type}
+                testId={`mapping-item-${id}`}
                 index={index}
                 onMove={onMove}
                 isValid={isValid}

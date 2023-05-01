@@ -27,6 +27,17 @@ export interface ReportEditViewProps {
       dateColor: string;
     }>
   >;
+  setAppliedHeaderDetails: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      showHeader: boolean;
+      description: EditorState;
+      backgroundColor: string;
+      titleColor: string;
+      descriptionColor: string;
+      dateColor: string;
+    }>
+  >;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,

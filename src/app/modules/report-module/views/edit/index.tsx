@@ -80,6 +80,17 @@ export function ReportEditView(props: ReportEditViewProps) {
       descriptionColor: reportData.descriptionColor,
       dateColor: reportData.dateColor,
     });
+    props.setAppliedHeaderDetails({
+      title: reportData.title,
+      showHeader: reportData.showHeader,
+      description: EditorState.createWithContent(
+        convertFromRaw(reportData.subTitle as any)
+      ),
+      backgroundColor: reportData.backgroundColor,
+      titleColor: reportData.titleColor,
+      descriptionColor: reportData.descriptionColor,
+      dateColor: reportData.dateColor,
+    });
     const newFrameArray = reportData.rows.map((rowFrame, index) => {
       const content = rowFrame.items;
       const contentTypes = rowFrame.items.map((item) =>

@@ -164,10 +164,10 @@ export default function HeaderBlock(props: Props) {
               }
             `}
           >
-            <IconButton onClick={onEdit}>
+            <IconButton onClick={onEdit} id="edit-header-icon">
               <EditIcon />
             </IconButton>
-            <IconButton onClick={onRemove}>
+            <IconButton onClick={onRemove} id="delete-header-icon">
               <DeleteIcon />
             </IconButton>
           </div>

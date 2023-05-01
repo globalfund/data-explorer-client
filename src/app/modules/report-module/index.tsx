@@ -422,6 +422,7 @@ export default function ReportModule() {
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}
             setHeaderDetails={setHeaderDetails}
+            setAppliedHeaderDetails={setAppliedHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
