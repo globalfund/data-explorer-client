@@ -6,12 +6,14 @@ import { ReactComponent as DividerImg } from "../../asset/login-divider.svg";
 
 import { OnboardingTextInput } from "../textinput";
 import { Box } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 interface Prop {
   splitForm?: boolean;
   setSplitForm?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 export default function LoginCard(props: Prop) {
+  const history = useHistory();
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   return (
@@ -68,12 +70,12 @@ export default function LoginCard(props: Prop) {
               width: 100%;
               color: #231d2c;
               cursor: pointer;
-              font-size: 1wpx;
+              font-size: 1px;
               line-height: 20px;
               text-align: start;
               border-style: none;
               margin-top: -0.7rem;
-              font-family: "Inter";
+              font-family: "GothamNarrow-Book";
               /* margin-bottom: 12px; */
               display: flex;
               justify-content: flex-end;
@@ -85,6 +87,7 @@ export default function LoginCard(props: Prop) {
           <Box height={48} />
           <button
             type="button"
+            onClick={() => history.push("/user-management/profile")}
             css={actionbuttoncss(props.splitForm as boolean)}
           >
             Log in

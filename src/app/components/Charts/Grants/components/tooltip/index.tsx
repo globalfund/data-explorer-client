@@ -24,7 +24,7 @@ const rowcss = css`
 
   > div:first-of-type {
     font-weight: bold;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 `;
 
@@ -38,7 +38,7 @@ export function GrantsRadialTooltip(props: Props) {
           color: #231d2c;
           font-size: 18px;
           font-weight: bold;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}

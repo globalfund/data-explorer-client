@@ -79,7 +79,7 @@ export const TableTop = () => {
               color: #262c34;
               font-weight: 500;
               font-size: 14px;
-              font-family: "Inter";
+              font-family: "GothamNarrow-Book";
             `}
           >
             More actions

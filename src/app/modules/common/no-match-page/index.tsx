@@ -24,7 +24,7 @@ export const NoMatchPage = () => {
     >
       <div
         css={`
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           font-size: 14px;
           font-weight: 500;
           font-style: normal;
@@ -45,14 +45,14 @@ export const NoMatchPage = () => {
           line-height: normal;
           letter-spacing: 2.15px;
           color: #525252;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
         `}
       >
         <div>{get(cmsData, "modulesCommon.noMatch404", "")}</div>
       </div>
       <div
         css={`
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           font-size: 14px;
           font-weight: 600;
           font-style: normal;
@@ -89,7 +89,7 @@ export const NoMatchPage = () => {
         >
           <span
             css={`
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
               font-size: 14px;
               font-weight: 500;
               font-style: normal;

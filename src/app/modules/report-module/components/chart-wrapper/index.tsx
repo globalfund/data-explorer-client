@@ -2,8 +2,13 @@ import React from "react";
 import get from "lodash/get";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
-import { ChartRenderedItem } from "app/modules/chart-module/data";
+import {
+  ChartAPIModel,
+  ChartRenderedItem,
+  emptyChartAPI,
+} from "app/modules/chart-module/data";
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
 interface Props {
   id: string;
@@ -11,7 +16,14 @@ interface Props {
 
 export function ReportChartWrapper(props: Props) {
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
 
+  const loadedChart = useStoreState(
+    (state) =>
+      (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
+  );
+
+  const [chartName, setChartName] = React.useState<string>("");
   const [rawViz, setRawViz] = React.useState<any>(null);
   const [visualOptions, setVisualOptions] = React.useState({});
 
@@ -35,6 +47,18 @@ export function ReportChartWrapper(props: Props) {
   const renderedChartType = React.useMemo(() => {
     return get(chartFromAPI, "vizType", "echartsBarchart");
   }, [chartFromAPI]);
+
+  React.useEffect(() => {
+    loadChart({ getId: props.id });
+  }, [props.id]);
+
+  React.useEffect(() => {
+    if (loadedChart && loadedChart.id !== "" && loadedChart.id === props.id) {
+      if (loadedChart.name.length > 0) {
+        setChartName(loadedChart.name);
+      }
+    }
+  }, [loadedChart]);
 
   const { loadDataFromAPI } = useChartsRawData({
     visualOptions,
@@ -102,7 +126,17 @@ export function ReportChartWrapper(props: Props) {
       >
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
+
+      <h4
+        css={`
+          margin: 0;
+          margin-bottom: 12px;
+        `}
+      >
+        {chartName}
+      </h4>
       <CommonChart
+        withHeader
         chartId={props.id}
         setRawViz={setRawViz}
         containerRef={containerRef}

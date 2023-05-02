@@ -19,6 +19,6 @@ export const previewTablecss = css`
     height: 35px;
     font-weight: 400;
     font-size: 14px;
-    font-family: "Inter";
+    font-family: "GothamNarrow-Book";
   }
 `;

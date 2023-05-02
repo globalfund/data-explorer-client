@@ -233,7 +233,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                         css={`
                           font-size: 18px;
                           font-weight: bold;
-                          font-family: "Inter", "Helvetica Neue", sans-serif;
+                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                            sans-serif;
                         `}
                       >
                         Toolbox

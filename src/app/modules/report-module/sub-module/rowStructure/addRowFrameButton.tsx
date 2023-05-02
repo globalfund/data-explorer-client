@@ -11,9 +11,10 @@ interface Props {
   framesArray: IFramesArray[];
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
-  deleteFrame: (index: number) => void;
+  deleteFrame: (id: string) => void;
+
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
@@ -33,16 +34,20 @@ interface Props {
 }
 
 export default function AddRowFrameButton(props: Props) {
+  const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
+
   const handleAddrowStructureBlock = () => {
+    const id = v4();
     props.setFramesArray([
       ...props.framesArray,
       {
-        id: v4(),
+        id,
         frame: (
           <RowFrame
+            rowId={id}
             rowIndex={props.framesArray.length}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            deleteFrame={() => props.deleteFrame(props.framesArray.length)}
+            deleteFrame={props.deleteFrame}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
             }
@@ -60,22 +65,52 @@ export default function AddRowFrameButton(props: Props) {
     });
   };
   return (
-    <div
-      css={`
-        border: 1px dashed #adb5bd;
-        width: 100%;
-        height: 48px;
-        display: flex;
-        justify-content: center;
-      `}
-    >
-      <IconButton
-        onClick={handleAddrowStructureBlock}
-        disableRipple={true}
-        disabled={props.rowStructureType.disableAddRowStructureButton}
+    <>
+      <div
+        css={`
+          width: 100%;
+        `}
       >
-        <PlusIcon />
-      </IconButton>
-    </div>
+        <div
+          css={`
+            border: 1px dashed #adb5bd;
+            width: 100%;
+            height: 48px;
+            display: flex;
+            justify-content: center;
+          `}
+        >
+          <IconButton
+            onClick={handleAddrowStructureBlock}
+            disableRipple={true}
+            disabled={props.rowStructureType.disableAddRowStructureButton}
+            onMouseEnter={() => setDisplayTooltip(true)}
+            onMouseLeave={() => setDisplayTooltip(false)}
+          >
+            <PlusIcon />
+          </IconButton>
+        </div>
+
+        {displayTooltip && (
+          <div
+            css={`
+              background-color: #626262;
+              border-radius: 4px;
+              font-size: 12px;
+              font-family: "GothamNarrow-Book";
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              width: 127px;
+              height: 23px;
+              margin: auto;
+              color: white;
+            `}
+          >
+            <p>Add new row frame</p>
+          </div>
+        )}
+      </div>
+    </>
   );
 }

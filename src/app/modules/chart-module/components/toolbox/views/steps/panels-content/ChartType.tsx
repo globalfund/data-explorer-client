@@ -12,7 +12,7 @@ export function ChartToolBoxChartType() {
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
   const fChartType = find(
-    echartTypes,
+    echartTypes(false),
     (ct: ChartTypeModel) => ct.id === chartType
   );
 
@@ -20,9 +20,9 @@ export function ChartToolBoxChartType() {
     <div
       css={`
         width: 100%;
-        height: 340px;
         display: flex;
         flex-direction: column;
+        ${!chartType && !fChartType && `height: 340px;`}
         align-items: ${chartType && fChartType ? "flex-start" : "center"};
         justify-content: ${chartType && fChartType ? "flex-start" : "center"};
       `}
@@ -32,7 +32,7 @@ export function ChartToolBoxChartType() {
           css={`
             color: #262c34;
             font-size: 14px;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
           <b>Please select a chart type</b>
@@ -59,7 +59,7 @@ export function ChartToolBoxChartType() {
             css={`
               font-size: 14px;
               margin-bottom: 20px;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {fChartType.label}
@@ -68,7 +68,7 @@ export function ChartToolBoxChartType() {
             css={`
               font-size: 14px;
               line-height: 17px;
-              margin-bottom: 20px;
+              margin-bottom: 8px;
             `}
           >
             {fChartType.description}

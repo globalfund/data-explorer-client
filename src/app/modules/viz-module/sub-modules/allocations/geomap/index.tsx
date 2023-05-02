@@ -206,7 +206,7 @@ export function AllocationsGeoMap(props: Props) {
                 border-radius: 20px;
                 border: 0.5px solid #c7cdd1;
                 background: ${NO_DATA_COLOR};
-                font-family: "Inter", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             />
             <div>N/A</div>

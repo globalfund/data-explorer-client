@@ -141,7 +141,7 @@ function StatItem(props: ResultsInfoContentStatsProps) {
           flex-direction: row;
           align-items: center;
           text-transform: uppercase;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -160,7 +160,7 @@ function StatItem(props: ResultsInfoContentStatsProps) {
           font-size: 40px;
           font-weight: bold;
           line-height: 24px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {fValue.number} {fValue.text}

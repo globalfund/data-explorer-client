@@ -19,14 +19,14 @@ export const styles = {
         font-size: 18px;
         font-weight: 700;
         margin: 25px 0 16px 0;
-        font-family: "Inter", "Helvetica Neue", sans-serif;
+        font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
       }
 
       > h6 {
         margin: 0;
         font-size: 14px;
         font-weight: 400;
-        font-family: "Inter", "Helvetica Neue", sans-serif;
+        font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
       }
     }
   `,
@@ -42,7 +42,7 @@ export const styles = {
       flex-direction: row;
       margin-bottom: 24px;
       align-items: center;
-      font-family: "Inter", "Helvetica Neue", sans-serif;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
       :nth-of-type(1),
       :nth-of-type(2) {
@@ -68,7 +68,7 @@ export const styles = {
     padding-top: 96px;
     line-height: 22px;
     text-align: center;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   exportview: css`
     padding: 24px;

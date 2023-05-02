@@ -3,6 +3,7 @@
 // base
 import React, { Suspense, lazy } from "react";
 import { Route, Switch } from "react-router-dom";
+import { PrivateRoute } from "app/utils/PrivateRoute";
 import { useScrollToTop } from "app/hooks/useScrollToTop";
 import { PageLoader } from "app/modules/common/page-loader";
 import { RouteWithAppBar } from "app/utils/RouteWithAppBar";
@@ -14,10 +15,10 @@ const ChartsModule = lazy(() => import("app/modules/charts-module"));
 const ChartModule = lazy(() => import("app/modules/chart-module"));
 const ReportModule = lazy(() => import("app/modules/report-module"));
 const OnboardingModule = lazy(() => import("app/modules/onboarding-module"));
-// const DatasetUploadSteps = lazy(
-//   () => import("app/fragments/datasets-fragment/upload-steps")
-// );
-const UploadDatasetV1 = lazy(() => import("app/modules/dataset-upload-module"));
+const DatasetUploadSteps = lazy(
+  () => import("app/fragments/datasets-fragment/upload-steps")
+);
+const UserProfileModule = lazy(() => import("app/modules/user-profile-module"));
 const EditMetaData = lazy(
   () => import("app/modules/datasets-module/editMetaData")
 );
@@ -40,6 +41,9 @@ export function MainRoutes() {
         <RouteWithAppBar exact path="/about">
           <AboutModule />
         </RouteWithAppBar>
+        <PrivateRoute exact path="/user-management/:page">
+          <UserProfileModule />
+        </PrivateRoute>
         <RouteWithAppBar exact path="/chart/:page/:view?">
           <ChartModule />
         </RouteWithAppBar>
@@ -53,7 +57,7 @@ export function MainRoutes() {
           <EditMetaData />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/dataset-upload">
-          <UploadDatasetV1 />
+          <DatasetUploadSteps />
         </RouteWithAppBar>
       </Switch>
     </Suspense>

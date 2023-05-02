@@ -75,11 +75,11 @@ export function InvestmentsRadialViz() {
           name: {
             show: true,
             color: "#262c34",
-            fontFamily: "Inter",
+            fontFamily: "GothamNarrow-Book",
           },
           value: {
             show: true,
-            fontFamily: "Inter",
+            fontFamily: "GothamNarrow-Book",
             formatter: (value: number) => {
               const fkeyIndex = findIndex(
                 keysPercentagesColors.percentages,
@@ -96,7 +96,7 @@ export function InvestmentsRadialViz() {
             label: `${Math.floor(
               (locationInfoData.disbursed / locationInfoData.committed) * 100
             )}%`,
-            fontFamily: "Inter",
+            fontFamily: "GothamNarrow-Book",
             formatter: () => "Disbursed/Committed",
           },
         },
@@ -112,7 +112,7 @@ export function InvestmentsRadialViz() {
       position: "right",
       offsetX: width / 2 - 25,
       fontWeight: "normal",
-      fontFamily: "Inter",
+      fontFamily: "GothamNarrow-Book",
       markers: {
         width: 0,
       },
@@ -175,7 +175,7 @@ export function InvestmentsRadialViz() {
             > div {
               font-size: 14px;
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             }
           }
         `}

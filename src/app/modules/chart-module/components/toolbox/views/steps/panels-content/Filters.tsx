@@ -23,6 +23,17 @@ export function ChartToolBoxFilters(props: ChartToolBoxFiltersProps) {
         overflow-y: auto;
         flex-direction: column;
         max-height: calc(100vh - 260px);
+        &::-webkit-scrollbar {
+          width: 4px;
+          background: #495057;
+        }
+        &::-webkit-scrollbar-track {
+          background: #f1f3f5;
+        }
+        &::-webkit-scrollbar-thumb {
+          border-radius: 4px;
+          background: #495057;
+        }
       `}
     >
       {!expandedGroup && (

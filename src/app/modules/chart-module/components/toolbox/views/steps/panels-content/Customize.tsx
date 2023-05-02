@@ -44,6 +44,9 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
     if (!fChart.visualOptions.width) {
       delete newOptionsConfig.width;
     }
+    if (!fChart.visualOptions.background) {
+      delete newOptionsConfig.background;
+    }
     return newOptionsConfig;
   }, [selectedChartType, visualOptions]);
 
@@ -69,16 +72,15 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
 
   const optionsDefinitionsByGroup = React.useMemo(() => {
     if (!firstRendered) {
-      let index = 0;
       const groups = {};
       for (const option in optionsConfig) {
         const group = optionsConfig[option].group;
-        if (!groups.hasOwnProperty(group) && index === 0) {
+        if (!groups.hasOwnProperty(group)) {
           // @ts-ignore
           groups[group] = true;
         }
-        index += 1;
       }
+
       setCollapseStatus(groups);
       setFirstRendered(true);
     }
@@ -121,7 +123,7 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
 
         * {
           font-size: 14px;
-          font-family: "Inter", "Helvetica Neue", sans-serif !important;
+          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
         }
       `}
     >
@@ -158,7 +160,7 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
                 flex-direction: row;
                 align-items: center;
                 background: transparent;
-                text-transform: uppercase;
+                text-transform: capitalize;
                 justify-content: space-between;
 
                 > svg {

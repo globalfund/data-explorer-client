@@ -48,8 +48,8 @@ export const actionbuttoncss = css`
   }
 `;
 export const termsOfServiceCss = css`
-  margin: 4px 0;
-
+  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+  margin-top: -6px;
   > span {
     font-size: 12px;
   }

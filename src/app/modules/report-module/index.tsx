@@ -39,6 +39,8 @@ export default function ReportModule() {
   const [reportType, setReportType] = React.useState<"basic" | "advanced">(
     "basic"
   );
+  const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
+
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -48,18 +50,27 @@ export default function ReportModule() {
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
+  const [appliedHeaderDetails, setAppliedHeaderDetails] =
+    React.useState(headerDetails);
+
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
+  const [updatePickedCharts, setUpdatePickedCharts] = React.useState(false);
 
   const handleRowFrameItemAddition = (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
   ) => {
     setFramesArray((prev) => {
-      prev[rowIndex].content[itemIndex] = itemContent;
-      prev[rowIndex].contentTypes[itemIndex] = itemContentType;
-      return [...prev];
+      let tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      tempPrev[frameId].content[itemIndex] = itemContent;
+      tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
     });
   };
 
@@ -104,20 +115,39 @@ export default function ReportModule() {
         break;
     }
     setFramesArray((prev) => {
-      prev[rowIndex].content = content;
-      prev[rowIndex].contentTypes = contentTypes;
-      prev[rowIndex].structure = structure;
-      return [...prev];
+      let tempPrev = prev.map((item) => ({ ...item }));
+
+      tempPrev[rowIndex].content = content;
+      tempPrev[rowIndex].contentTypes = contentTypes;
+      tempPrev[rowIndex].structure = structure;
+      return [...tempPrev];
     });
   };
 
+  const deleteFrame = (id: string) => {
+    setFramesArray((prev) => {
+      let tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === id);
+      const contentArr = tempPrev[frameId].content;
+
+      setPickedCharts((prevPickedCharts) => {
+        return prevPickedCharts.filter((item) => !contentArr.includes(item));
+      });
+
+      tempPrev.splice(frameId, 1);
+      return [...tempPrev];
+    });
+  };
+
+  const id = v4();
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
     {
-      id: v4(),
+      id,
       frame: (
         <RowFrame
           rowIndex={0}
-          deleteFrame={() => deleteFrame(0)}
+          rowId={id}
+          deleteFrame={deleteFrame}
           handleRowFrameItemAddition={handleRowFrameItemAddition}
           handleRowFrameStructureTypeSelection={
             handleRowFrameStructureTypeSelection
@@ -171,13 +201,6 @@ export default function ReportModule() {
     (actions) => actions.reports.ReportUpdate.clear
   );
 
-  const deleteFrame = (index: number) => {
-    setFramesArray((prev) => {
-      prev.splice(index, 1);
-      return [...prev];
-    });
-  };
-
   const handleNextButton = () => {
     if (buttonActive) {
       history.push(`/report/${page}/create`);
@@ -194,13 +217,15 @@ export default function ReportModule() {
   };
 
   const resetFrames = () => {
+    const id = v4();
     setFramesArray([
       {
-        id: v4(),
+        id,
         frame: (
           <RowFrame
             rowIndex={0}
-            deleteFrame={() => deleteFrame(0)}
+            rowId={id}
+            deleteFrame={deleteFrame}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
@@ -224,11 +249,13 @@ export default function ReportModule() {
       patchId: page === "new" ? undefined : page,
       values: {
         name: reportName,
-        showHeader: headerDetails.showHeader,
-        title: headerDetails.showHeader ? headerDetails.title : undefined,
+        showHeader: appliedHeaderDetails.showHeader,
+        title: appliedHeaderDetails.showHeader
+          ? appliedHeaderDetails.title
+          : undefined,
         subTitle: convertToRaw(
-          headerDetails.showHeader
-            ? headerDetails.description.getCurrentContent()
+          appliedHeaderDetails.showHeader
+            ? appliedHeaderDetails.description.getCurrentContent()
             : EditorState.createEmpty().getCurrentContent()
         ),
         rows: framesArray.map((frame) => ({
@@ -239,10 +266,10 @@ export default function ReportModule() {
               : item
           ),
         })),
-        backgroundColor: headerDetails.backgroundColor,
-        titleColor: headerDetails.titleColor,
-        descriptionColor: headerDetails.descriptionColor,
-        dateColor: headerDetails.dateColor,
+        backgroundColor: appliedHeaderDetails.backgroundColor,
+        titleColor: appliedHeaderDetails.titleColor,
+        descriptionColor: appliedHeaderDetails.descriptionColor,
+        dateColor: appliedHeaderDetails.dateColor,
       },
     });
   };
@@ -295,8 +322,12 @@ export default function ReportModule() {
         <ReportRightPanel
           open={rightPanelOpen}
           currentView={view}
+          pickedCharts={pickedCharts}
+          setPickedCharts={setPickedCharts}
           headerDetails={headerDetails}
           setHeaderDetails={setHeaderDetails}
+          appliedHeaderDetails={appliedHeaderDetails}
+          setAppliedHeaderDetails={setAppliedHeaderDetails}
           onOpen={() => setRightPanelOpen(true)}
           onClose={() => setRightPanelOpen(false)}
           showHeaderItem={!headerDetails.showHeader}
@@ -332,7 +363,7 @@ export default function ReportModule() {
             </div>
             <div
               css={`
-                height: 55vh;
+                height: calc(100vh - 450px);
               `}
             />
             <div
@@ -368,6 +399,9 @@ export default function ReportModule() {
         <Route path="/report/:page/create">
           <ReportCreateView
             open={rightPanelOpen}
+            pickedCharts={pickedCharts}
+            setPickedCharts={setPickedCharts}
+            deleteFrame={deleteFrame}
             reportType={reportType}
             framesArray={framesArray}
             headerDetails={headerDetails}
@@ -383,10 +417,12 @@ export default function ReportModule() {
           <ReportEditView
             open={rightPanelOpen}
             setName={setReportName}
+            setPickedCharts={setPickedCharts}
             framesArray={framesArray}
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}
             setHeaderDetails={setHeaderDetails}
+            setAppliedHeaderDetails={setAppliedHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection

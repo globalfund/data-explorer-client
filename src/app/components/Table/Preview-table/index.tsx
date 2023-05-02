@@ -9,14 +9,15 @@ import {
 } from "@material-ui/core";
 import React, { useState } from "react";
 
-import { ReactComponent as SortIcon } from "../../assets/sort.svg";
+import { ReactComponent as SortIcon } from "../../../fragments/datasets-fragment/assets/sort.svg";
 
 import { previewTablecss } from "./style";
-import StatisticDisplay from "./statisticDisplay";
+import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
+
+import { ChartRepresentationProps } from "app/components/Table/Preview-table/StatisticalRepresentations";
 import StatisticalTableToolBox, {
   ColumnDetailsProps,
-} from "../statisticalTableToolBox";
-import { ChartRepresentationProps } from "./StatisticalRepresentations";
+} from "app/components/Table/Preview-table/StatisticalTableToolBox";
 
 interface PreviewTableProps {
   columns: { [key: string]: string }[];

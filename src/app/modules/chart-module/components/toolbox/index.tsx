@@ -19,7 +19,7 @@ const Button = withStyles(() => ({
     height: "48px",
     borderRadius: "0px",
     backgroundColor: "#262C34",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Book, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
     },
@@ -31,7 +31,7 @@ const Button = withStyles(() => ({
     color: "#fff",
     fontSize: "14px",
     textTransform: "none",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Book, sans-serif",
   },
   disabled: {
     backgroundColor: "#ADB5BD",
@@ -113,47 +113,61 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   ]);
 
   return (
-    <div css={styles.container(props.filtersView)}>
-      {props.dataSteps && (
-        <ChartToolBoxSteps
-          data={props.data}
-          rawViz={props.rawViz}
-          loading={props.loading}
-          dataTypes={props.dataTypes}
-          openPanel={props.openPanel}
-          mappedData={props.mappedData}
-          loadDataset={props.loadDataset}
-          visualOptions={props.visualOptions}
-          forceNextEnabled={props.forceNextEnabled}
-          setVisualOptions={props.setVisualOptions}
-          filterOptionGroups={props.filterOptionGroups}
-          save={onSave}
-        />
-      )}
-      {props.exportView && props.rawViz && (
-        <div css={styles.exportview}>
-          <ChartExporter rawViz={props.rawViz} />
-        </div>
-      )}
-      {props.filtersView && (
-        <div css="height: 100%;position: relative;">
-          <ChartToolBoxPreview
-            loadDataFromAPI={props.loadDataFromAPI}
+    <>
+      <div css={styles.container(props.filtersView)}>
+        {props.dataSteps && (
+          <ChartToolBoxSteps
+            data={props.data}
+            rawViz={props.rawViz}
+            loading={props.loading}
+            dataTypes={props.dataTypes}
+            openPanel={props.openPanel}
+            mappedData={props.mappedData}
+            loadDataset={props.loadDataset}
+            visualOptions={props.visualOptions}
+            forceNextEnabled={props.forceNextEnabled}
+            setVisualOptions={props.setVisualOptions}
             filterOptionGroups={props.filterOptionGroups}
+            filtersView={props.filtersView}
+            save={onSave}
           />
-          {isSavedEnabled && props.isEditMode && (
-            <div
-              css={`
-                bottom: 0;
-                width: 100%;
-                position: absolute;
-              `}
-            >
-              <Button onClick={onSave}>Save</Button>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+        )}
+
+        {props.exportView && props.rawViz && (
+          <div css={styles.exportview}>
+            <ChartExporter rawViz={props.rawViz} />
+          </div>
+        )}
+        {props.filtersView && (
+          <div
+            css={`
+              height: calc(100vh - 101px);
+              position: relative;
+              width: 400px;
+              overflow-y: scroll;
+              ::-webkit-scrollbar {
+                display: none;
+              }
+            `}
+          >
+            <ChartToolBoxPreview
+              loadDataFromAPI={props.loadDataFromAPI}
+              filterOptionGroups={props.filterOptionGroups}
+            />
+            {isSavedEnabled && props.isEditMode && (
+              <div
+                css={`
+                  bottom: 0;
+                  width: 100%;
+                  position: absolute;
+                `}
+              >
+                <Button onClick={onSave}>Save</Button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 }

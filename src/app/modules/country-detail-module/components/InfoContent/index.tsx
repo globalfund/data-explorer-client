@@ -44,7 +44,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -57,7 +57,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
             font-weight: bold;
             margin-bottom: 40px;
             text-decoration: none;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           {get(cmsData, "modulesCountryDetail.seeResultsStart", "")}{" "}
@@ -70,7 +70,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "modulesCountryDetail.investments", "")}
@@ -105,7 +105,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.multicountries.length > 0 &&
@@ -144,7 +144,7 @@ export function LocationInfoContent(props: LocationInfoContentProps) {
         css={`
           font-size: 14px;
           font-weight: bold;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "modulesCountryDetail.fundManager", "")}

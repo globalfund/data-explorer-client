@@ -12,7 +12,6 @@ import RowFrame, {
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
   ReportCreateViewProps,
-  IFramesArray,
   PlaceholderProps,
 } from "app/modules/report-module/views/create/data";
 import {
@@ -28,23 +27,37 @@ export function ReportCreateView(props: ReportCreateViewProps) {
       disableAddRowStructureButton: false,
     });
 
-  function deleteFrame(index: number) {
+  function deleteFrame(id: string) {
     props.setFramesArray((prev) => {
-      prev.splice(index, 1);
-      return [...prev];
+      let tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === id);
+      const contentArr = tempPrev[frameId].content;
+
+      props.setPickedCharts((prevPickedCharts) => {
+        return prevPickedCharts.filter((item) => !contentArr.includes(item));
+      });
+
+      tempPrev.splice(frameId, 1);
+
+      return [...tempPrev];
     });
   }
-
   React.useEffect(() => {
     if (props.reportType === "advanced") {
+      const rowOne = v4();
+      const rowTwo = v4();
+      const rowThree = v4();
+      const rowFour = v4();
+      const rowFive = v4();
       props.setFramesArray([
         {
-          id: v4(),
+          id: rowOne,
           frame: (
             <RowFrame
+              rowId={rowOne}
               rowIndex={0}
               forceSelectedType="oneByFive"
-              deleteFrame={() => deleteFrame(0)}
+              deleteFrame={() => deleteFrame(rowOne)}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -56,12 +69,13 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           structure: "oneByFive",
         },
         {
-          id: v4(),
+          id: rowTwo,
           frame: (
             <RowFrame
+              rowId={rowTwo}
               rowIndex={1}
               forceSelectedType="oneByOne"
-              deleteFrame={() => deleteFrame(1)}
+              deleteFrame={() => deleteFrame(rowTwo)}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -73,12 +87,13 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           structure: "oneByOne",
         },
         {
-          id: v4(),
+          id: rowThree,
           frame: (
             <RowFrame
+              rowId={rowThree}
               rowIndex={2}
               forceSelectedType="oneToFour"
-              deleteFrame={() => deleteFrame(2)}
+              deleteFrame={() => deleteFrame(rowThree)}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -90,12 +105,13 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           structure: "oneToFour",
         },
         {
-          id: v4(),
+          id: rowFour,
           frame: (
             <RowFrame
+              rowId={rowFour}
               rowIndex={3}
               forceSelectedType="oneByOne"
-              deleteFrame={() => deleteFrame(3)}
+              deleteFrame={() => deleteFrame(rowFour)}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -107,12 +123,13 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           structure: "oneByOne",
         },
         {
-          id: v4(),
+          id: rowFive,
           frame: (
             <RowFrame
+              rowId={rowFive}
               rowIndex={4}
               forceSelectedType="oneByThree"
-              deleteFrame={() => deleteFrame(4)}
+              deleteFrame={() => deleteFrame(rowFive)}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -152,7 +169,9 @@ export function ReportCreateView(props: ReportCreateViewProps) {
             return (
               <div key={frame.id}>
                 <div>{frame.frame}</div>
+                <Box height={38} />
                 <PlaceHolder
+                  rowId={frame.id}
                   index={frame.id}
                   deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
@@ -165,6 +184,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               </div>
             );
           })}
+
           <AddRowFrameButton
             deleteFrame={deleteFrame}
             framesArray={props.framesArray}
@@ -197,12 +217,14 @@ export const PlaceHolder = (props: PlaceholderProps) => {
       if (item.type === ReportElementsType.ROWFRAME) {
         props.setFramesArray((prev) => {
           const tempIndex = prev.findIndex((frame) => frame.id === props.index);
+          const id = v4();
           prev.splice(tempIndex + 1, 0, {
-            id: v4(),
+            id,
             frame: (
               <RowFrame
+                rowId={id}
                 rowIndex={tempIndex + 1}
-                deleteFrame={() => props.deleteFrame(tempIndex + 1)}
+                deleteFrame={props.deleteFrame}
                 handleRowFrameItemAddition={props.handleRowFrameItemAddition}
                 handleRowFrameStructureTypeSelection={
                   props.handleRowFrameStructureTypeSelection
@@ -218,9 +240,10 @@ export const PlaceHolder = (props: PlaceholderProps) => {
       } else {
         return props.setFramesArray((prev) => {
           const tempIndex = prev.findIndex((frame) => frame.id === props.index);
+          const id = v4();
           prev.splice(tempIndex + 1, 0, {
-            id: v4(),
-            frame: <Divider delete={() => props.deleteFrame(tempIndex + 1)} />,
+            id,
+            frame: <Divider delete={props.deleteFrame} dividerId={id} />,
             content: ["divider"],
             contentTypes: ["divider"],
             structure: null,
@@ -241,8 +264,9 @@ export const PlaceHolder = (props: PlaceholderProps) => {
           width: 100%;
           height: 20px;
           margin: 10px 0;
+          display: ${isItemDragging ? "block" : "none"};
           border: 1px ${isItemDragging ? "dashed" : "none"} #adb5bd;
-          background-color: ${isOver ? " #262C34;" : "transparent"};
+          background-color: #262c34;
         `}
       />
     </>

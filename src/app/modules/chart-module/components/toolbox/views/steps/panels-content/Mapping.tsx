@@ -49,7 +49,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
           width: 100%;
           display: flex;
           overflow-y: auto;
-          padding-right: 10px;
+          padding-right: 88px;
           flex-direction: column;
           max-height: calc(100vh - 340px);
 
@@ -74,6 +74,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
             }
             return (
               <ChartToolBoxMappingItem
+                testId={`mapping-item-${dataTypeName}`}
                 type={type}
                 index={index}
                 key={dataTypeName}
@@ -91,6 +92,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
 interface ChartToolBoxMappingItemProps {
   index: number;
   dimension?: any;
+  testId: string;
   dataTypeName: string;
   marginBottom: string;
   backgroundColor?: string;
@@ -233,14 +235,18 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
     <div
       ref={ref}
       key={props.dataTypeName}
+      id={props.testId}
       css={`
-        height: 32px;
+        height: 31px;
         display: flex;
-        min-height: 32px;
+        min-height: 31px;
+
         position: relative;
         padding-left: 16px;
         align-items: center;
         border-radius: 25px;
+        z-index: 10;
+
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
         background: ${props.backgroundColor || "#cfd4da"};
@@ -269,6 +275,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
           ]});
         `}
       />
+
       <div
         css={`
           overflow: clip;
@@ -289,6 +296,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
         props.onChangeAggregation && (
           <Dropdown
             className="d-inline-block ml-2 raw-dropdown"
+            id="rb-dropdown-menu"
             css={`
               margin-right: -7px;
             `}

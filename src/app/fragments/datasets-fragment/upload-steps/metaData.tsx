@@ -4,10 +4,31 @@ import BasicTextarea from "app/components/Textarea/BasicTextarea";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import React from "react";
 import { metaDatacss } from "../style";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 
+export interface IFormDetails {
+  name: string;
+  description: string;
+  category?: string;
+  public?: boolean;
+}
 interface Props {
-  handleNext: () => void;
+  onSubmit: (data: IFormDetails) => void;
   handleBack: () => void;
+  formDetails: {
+    name: string;
+    description: string;
+    category: string;
+    public: boolean;
+  };
+  setFormDetails: React.Dispatch<
+    React.SetStateAction<{
+      name: string;
+      description: string;
+      category: string;
+      public: boolean;
+    }>
+  >;
 }
 export const CssTextField = withStyles({
   root: {
@@ -17,7 +38,7 @@ export const CssTextField = withStyles({
 
     "&.MuiInputLabel-outlined": {
       fontSize: "16px",
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "'GothamNarrow-Book', sans-serif",
       color: "#231D2C",
     },
     "& .MuiOutlinedInput-input": {
@@ -52,16 +73,21 @@ export const CssTextField = withStyles({
     },
   },
 })(TextField);
+
 export default function MetaData(props: Props) {
-  const [textareaValue, setTextareaValue] = React.useState("");
+  const { register, handleSubmit } = useForm<IFormDetails>();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTextareaValue(event.target.value);
+    const { name, value } = event.target;
+    props.setFormDetails({
+      ...props.formDetails,
+      [name]: value,
+    });
   };
   const [characterCount, setCharacterCount] = React.useState(0);
 
   React.useEffect(() => {
-    setCharacterCount(textareaValue.length);
-  }, [textareaValue]);
+    setCharacterCount(props.formDetails.description.length);
+  }, [props.formDetails.description]);
 
   return (
     <div css={metaDatacss}>
@@ -71,50 +97,54 @@ export default function MetaData(props: Props) {
           width: 100%;
         `}
       >
-        <form css={``}>
-          <Grid lg={12} xs={12} md={12}>
-            <CssTextField
-              id="outlined-basic"
-              label="Data title "
-              variant="outlined"
-              helperText="Title must be between 6 and 50 characters in lenght."
-              fullWidth
-            />
-          </Grid>
-          <Box height={50} />
-          <Grid lg={12} xs={12} md={12}>
-            <div
-              css={`
-                position: relative;
-              `}
-            >
+        <form onSubmit={handleSubmit(props.onSubmit)}>
+          <Grid container spacing={6}>
+            <Grid lg={12} xs={12} md={12} item>
               <CssTextField
                 id="outlined-basic"
-                label="Brief description of your dataset*  "
+                label="Data title "
                 variant="outlined"
-                fullWidth
-                multiline
-                minRows={3}
-                inputProps={{
-                  maxLength: 150,
-                }}
+                {...register("name", { required: true })}
+                helperText="Title must be between 6 and 50 characters in lenght."
                 onChange={handleChange}
+                fullWidth
               />
-              <p
+            </Grid>
+            <Box height={50} />
+            <Grid lg={12} xs={12} md={12} item>
+              <div
                 css={`
-                  position: absolute;
-                  bottom: -12px;
-                  right: 20px;
-                  font-weight: 325;
-                  font-size: 12px;
-                  color: #231d2c;
+                  position: relative;
                 `}
               >
-                {characterCount}/150
-              </p>
-            </div>
+                <CssTextField
+                  id="outlined-basic"
+                  label="Brief description of your dataset*  "
+                  variant="outlined"
+                  {...register("description", { required: true })}
+                  fullWidth
+                  multiline
+                  minRows={3}
+                  inputProps={{
+                    maxLength: 150,
+                  }}
+                  onChange={handleChange}
+                />
+                <p
+                  css={`
+                    position: absolute;
+                    bottom: -12px;
+                    right: 20px;
+                    font-weight: 325;
+                    font-size: 12px;
+                    color: #231d2c;
+                  `}
+                >
+                  {characterCount}/150
+                </p>
+              </div>
+            </Grid>
           </Grid>
-
           <div
             css={`
               display: flex;
@@ -126,26 +156,27 @@ export default function MetaData(props: Props) {
             <button
               onClick={props.handleBack}
               css={`
-                color: #fff;
+                color: #231d2c;
                 text-transform: uppercase;
                 width: 125px;
 
                 :hover {
-                  background: #231d2c;
+                  opacity: 0.5;
                 }
               `}
             >
               previous
             </button>
             <button
-              onClick={props.handleNext}
+              type="submit"
               css={`
                 color: #231d2c;
                 text-transform: uppercase;
                 width: 125px;
+                background: #231d2c;
+                color: #fff;
                 :hover {
-                  background: #231d2c;
-                  color: #fff;
+                  opacity: 0.8;
                 }
               `}
             >

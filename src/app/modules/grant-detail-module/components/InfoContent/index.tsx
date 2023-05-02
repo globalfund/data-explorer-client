@@ -79,7 +79,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 20px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.title}
@@ -137,7 +137,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
           font-size: 14px;
           font-weight: bold;
           margin-bottom: 5px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "modulesGrantDetail.rating", "")}
@@ -215,7 +215,7 @@ export function GrantInfoContent(props: GrantInfoContentProps) {
         css={`
           font-size: 14px;
           font-weight: bold;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "modulesGrantDetail.fundManager", "")}

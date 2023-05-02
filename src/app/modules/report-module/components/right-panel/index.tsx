@@ -63,8 +63,12 @@ export function ReportRightPanel(props: ReportRightPanelProps) {
         {(props.currentView === "create" || props.currentView === "edit") && (
           <ReportRightPanelCreateView
             showHeaderItem={props.showHeaderItem}
+            pickedCharts={props.pickedCharts}
+            setPickedCharts={props.setPickedCharts}
             headerDetails={props.headerDetails}
             setHeaderDetails={props.setHeaderDetails}
+            appliedHeaderDetails={props.appliedHeaderDetails}
+            setAppliedHeaderDetails={props.setAppliedHeaderDetails}
           />
         )}
       </div>

@@ -56,6 +56,9 @@ export default function GridItem(props: Props) {
               font-size: 14px;
               line-height: 16px;
               margin-bottom: 6px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
             `}
           >
             <b>{props.title}</b>

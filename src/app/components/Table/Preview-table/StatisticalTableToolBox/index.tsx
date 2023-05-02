@@ -1,12 +1,12 @@
 import React from "react";
-import { ReactComponent as ClockIcon } from "../../assets/clock-icon.svg";
-import { ReactComponent as CloseIcon } from "../../assets/close-icon.svg";
+import { ReactComponent as ClockIcon } from "../../../../fragments/datasets-fragment/assets/clock-icon.svg";
+import { ReactComponent as CloseIcon } from "../../../../fragments/datasets-fragment/assets/close-icon.svg";
 
 import { statisticalTableToolBoxStyle } from "./style";
 import { IconButton } from "@material-ui/core";
-import StatisticDisplay from "../table/statisticDisplay";
-import { ChartRepresentationProps } from "../table/StatisticalRepresentations";
-import { barChartdata } from "../table/data";
+import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
+import { ChartRepresentationProps } from "app/components/Table/Preview-table/StatisticalRepresentations";
+import { barChartdata } from "app/components/Table/Preview-table/data";
 
 export interface ColumnDetailsProps {
   columnName: string;

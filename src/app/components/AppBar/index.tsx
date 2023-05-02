@@ -21,7 +21,7 @@ const TextHeader = (label: string) => (
     css={`
       font-size: 18px;
       font-weight: bold;
-      font-family: "Inter", "Helvetica Neue", sans-serif;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     `}
   >
     {label}
@@ -189,20 +189,18 @@ export function AppBar() {
             <div css={headercss}>
               <div
                 css={`
+                  gap: 180px;
                   display: flex;
-                  justify-content: space-between;
                   align-items: center;
-                  width: 50%;
                 `}
               >
                 <NavLink
                   to="/"
                   css={`
                     display: flex;
-                    justify-content: center;
-                    gap: 2.5rem;
                     padding-top: 5px;
                     margin-right: 64px;
+                    justify-content: center;
                   `}
                 >
                   <img

@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import { useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
@@ -8,6 +7,7 @@ import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 
 interface Props {
   visualOptions: any;
+  withHeader?: boolean;
   renderedChart: string;
   renderedChartSsr: boolean;
   renderedChartMappedData: any;
@@ -31,13 +31,11 @@ export function CommonChart(props: Props) {
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
   useUpdateEffectOnce(() => {
-    if (
-      props.containerRef.current &&
-      props.visualOptions.width === CHART_DEFAULT_WIDTH
-    ) {
+    if (props.containerRef.current) {
       const tmpVisualOptions = {
         ...props.visualOptions,
         width: props.containerRef.current.clientWidth,
+        height: props.containerRef.current.clientHeight,
       };
       props.setVisualOptions(tmpVisualOptions);
     }
@@ -71,7 +69,22 @@ export function CommonChart(props: Props) {
 
   // client side rendering
   React.useEffect(() => {
-    if (!props.renderedChartSsr && domRef && domRef.current && chartType) {
+    const visualOptions = props.containerRef.current
+      ? {
+          ...props.visualOptions,
+          width: props.containerRef.current.clientWidth,
+          height:
+            props.containerRef.current.clientHeight -
+            (props.withHeader ? 36 : 0),
+        }
+      : props.visualOptions;
+    if (
+      !props.renderedChartSsr &&
+      domRef &&
+      domRef.current &&
+      chartType &&
+      props.containerRef.current
+    ) {
       try {
         render(
           props.renderedChartMappedData,
@@ -84,7 +97,7 @@ export function CommonChart(props: Props) {
               | "echartsLinechart"
               | "echartsSankey"
               | "echartsTreemap"),
-          props.visualOptions,
+          visualOptions,
           `common-chart-render-container-${props.chartId || "1"}`
         );
       } catch (e) {
@@ -112,7 +125,7 @@ export function CommonChart(props: Props) {
           margin-top: 40px;
 
           * {
-            font-family: "Inter", "Helvetica Neue", sans-serif !important;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
           }
         `}
       />
@@ -124,10 +137,10 @@ export function CommonChart(props: Props) {
           width: 100%;
           overflow: hidden;
           margin-top: 40px;
-          height: ${get(props.visualOptions, "height", 500)}px;
+          height: ${props.visualOptions.height - (props.withHeader ? 36 : 0)}px;
 
           * {
-            font-family: "Inter", "Helvetica Neue", sans-serif !important;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
           }
         `}
       >
@@ -136,16 +149,14 @@ export function CommonChart(props: Props) {
           id={`common-chart-render-container-${props.chartId || "1"}`}
           css={`
             width: auto !important;
-            height: ${get(props.visualOptions, "height", 500)}px;
+            height: 100%;
 
             > div:first-of-type {
-              height: ${get(props.visualOptions, "height", 500)}px !important;
-
               > svg {
-                height: ${get(props.visualOptions, "height", 500)}px;
+                height: 100%;
 
                 > rect {
-                  height: ${get(props.visualOptions, "height", 500)}px;
+                  height: 100%;
                 }
               }
             }

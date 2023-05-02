@@ -21,7 +21,7 @@ export default function LinkList() {
           font-size: 24px;
           font-weight: bold;
           margin-bottom: 35px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "modulesAbout.linksTitle", "")}
@@ -53,7 +53,7 @@ export default function LinkList() {
             text-decoration: none;
             border: 1px solid #dfe3e6;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           }
         `}
       >

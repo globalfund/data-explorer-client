@@ -4,8 +4,8 @@ import useTitle from "react-use/lib/useTitle";
 import { useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { styles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/data/styles";
-import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
+import { styles } from "app/modules/chart-module/routes/data/styles";
+import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 
 export function ChartModuleDataView() {
   useTitle("DX DataXplorer - Select Data");

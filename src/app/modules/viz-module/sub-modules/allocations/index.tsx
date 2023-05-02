@@ -132,11 +132,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           name: {
             show: true,
             color: "#262c34",
-            fontFamily: "Inter",
+            fontFamily: "GothamNarrow-Book",
           },
           value: {
             show: true,
-            fontFamily: "Inter",
+            fontFamily: "GothamNarrow-Book",
             formatter: (value: number) => {
               const fkeyIndex = findIndex(
                 keysPercentagesColors.percentages,
@@ -150,7 +150,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           },
           total: {
             show: true,
-            fontFamily: "Inter",
+            fontFamily: "GothamNarrow-Book",
             formatter: () => formatFinancialValue(total),
           },
         },
@@ -162,7 +162,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       show: true,
       floating: true,
       fontSize: !isMobile ? "14px" : "10px",
-      fontFamily: "Inter",
+      fontFamily: "GothamNarrow-Bold",
       fontWeight: "bold",
       position: "right",
       offsetX: width / 2,
@@ -560,7 +560,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           font-size: 14px;
           font-weight: bold;
           align-items: center;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
           > svg {
             margin-left: 10px;

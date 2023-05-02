@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
+import { useStyles } from "./deleteChartDialog";
 
 interface Props {
   modalDisplay: boolean;
@@ -30,22 +31,7 @@ function getModalStyle() {
     transform: `translate(-${top}%, -47%)`,
   };
 }
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    paper: {
-      position: "absolute",
-      width: 544,
-      backgroundColor: "#fff",
-      // border: '2px solid #000',
-      borderRadius: "10px",
-      outline: 0,
-      boxShadow:
-        "0px 14.8787px 22.318px rgba(0, 0, 0, 0.05), 0px 4.4636px 7.43933px rgba(0, 0, 0, 0.05), 0px 0.743933px 7.43933px rgba(0, 0, 0, 0.05)",
-      paddingLeft: "3.5rem",
-      paddingRight: "2rem",
-    },
-  })
-);
+
 export default function DeleteDatasetDialog(props: Props) {
   const [modalStyle] = React.useState(getModalStyle);
   const classes = useStyles();

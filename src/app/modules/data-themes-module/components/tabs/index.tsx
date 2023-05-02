@@ -332,7 +332,7 @@ export function DataThemesTabs(props: any) {
               background: #262c34;
               border-radius: 20px;
               text-transform: none;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             }
           }
         `}

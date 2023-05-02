@@ -23,7 +23,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 20px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         Year {props.indexValue}
@@ -54,7 +54,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsInvestments.totalAmount", "")}
@@ -73,7 +73,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
             <div
               css={`
                 font-weight: bold;
-                font-family: "Inter", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               {child.name}

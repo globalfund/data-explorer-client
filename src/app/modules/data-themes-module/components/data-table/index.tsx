@@ -8,12 +8,12 @@ import {
   getColumnsFromData,
   DataThemesDataTableProps,
 } from "app/modules/data-themes-module/components/data-table/data";
-import PreviewTable from "app/fragments/datasets-fragment/component/table";
 import {
   barChartdata,
   tableToolBoxData,
-} from "app/fragments/datasets-fragment/component/table/data";
-import { ChartRepresentationProps } from "app/fragments/datasets-fragment/component/table/StatisticalRepresentations";
+} from "app/components/Table/Preview-table/data";
+import { ChartRepresentationProps } from "app/components/Table/Preview-table/StatisticalRepresentations";
+import PreviewTable from "app/components/Table/Preview-table";
 
 export function DataThemesDataTable(props: DataThemesDataTableProps) {
   const containerEl = React.useRef<HTMLDivElement>(null);
@@ -102,7 +102,7 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
       css={`
         width: 100%;
         height: calc(100vh - 225px);
-        margin-top: 2rem;
+        margin-top: -1rem;
 
         > div {
           height: 100%;

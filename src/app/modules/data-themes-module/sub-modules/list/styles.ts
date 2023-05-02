@@ -76,7 +76,7 @@ export const styles = {
     font-weight: 700;
     line-height: 20px;
     letter-spacing: 0.5px;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     &:hover {
       background: #495057;
@@ -99,7 +99,7 @@ export const styles = {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   menuBtns: css`
     gap: 16px;
@@ -148,7 +148,7 @@ export const styles = {
 
         &:last-child {
           font-weight: 700;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         }
       }
     }
@@ -167,7 +167,7 @@ export const styles = {
     text-decoration: none;
     border-radius: 0px 0px 30px 30px;
     transition: background 0.2s ease-in-out;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     &:hover {
       background: #495057;

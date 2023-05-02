@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 import { EditorState } from "draft-js";
-import { useRecoilState } from "recoil";
+import { SetterOrUpdater, useRecoilState } from "recoil";
 import Paper from "@material-ui/core/Paper";
 import MuiButton from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
+import { ReactComponent as DividerIcon } from "../../asset/dividerIcon.svg";
 import {
   isDividerOrRowFrameDraggingAtom,
   reportRightPanelViewAtom,
@@ -33,7 +34,7 @@ const Button = withStyles(() => ({
     fontSize: "14px",
     borderRadius: "0px",
     backgroundColor: "#C7CDD1",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Bold, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
     },
@@ -45,7 +46,7 @@ const Button = withStyles(() => ({
     color: "#fff",
     fontSize: "14px",
     textTransform: "none",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Book, sans-serif",
   },
 }))(MuiButton);
 
@@ -106,28 +107,23 @@ export const ReportElementsType = {
   CHART: "chart",
 };
 
+interface IHeaderDeatils {
+  title: string;
+  showHeader: boolean;
+  description: EditorState;
+  backgroundColor: string;
+  titleColor: string;
+  descriptionColor: string;
+  dateColor: string;
+}
 interface Props {
   showHeaderItem: boolean;
-  headerDetails: {
-    title: string;
-    showHeader: boolean;
-    description: EditorState;
-    backgroundColor: string;
-    titleColor: string;
-    descriptionColor: string;
-    dateColor: string;
-  };
-  setHeaderDetails: React.Dispatch<
-    React.SetStateAction<{
-      title: string;
-      showHeader: boolean;
-      description: EditorState;
-      backgroundColor: string;
-      titleColor: string;
-      descriptionColor: string;
-      dateColor: string;
-    }>
-  >;
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
+  appliedHeaderDetails: IHeaderDeatils;
+  setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
+  headerDetails: IHeaderDeatils;
+  setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
 }
 
 export function ReportRightPanelCreateView(props: Props) {
@@ -150,7 +146,7 @@ export function ReportRightPanelCreateView(props: Props) {
     },
     {
       elementType: ReportElementsType.DIVIDER,
-      leftIcon: <ArrowRightAltIcon />,
+      leftIcon: <DividerIcon />,
       previewImg: DividerPreviewImg,
       name: "Divider",
     },
@@ -167,6 +163,7 @@ export function ReportRightPanelCreateView(props: Props) {
       css={`
         width: 100%;
         display: flex;
+        height: 100%;
         flex-direction: column;
       `}
     >
@@ -175,6 +172,7 @@ export function ReportRightPanelCreateView(props: Props) {
           width: 100%;
           display: flex;
           flex-direction: row;
+          display: ${currentView === "editHeader" ? "none" : "block"};
         `}
       >
         <Button
@@ -231,7 +229,12 @@ export function ReportRightPanelCreateView(props: Props) {
           ))}
         </div>
       )}
-      {currentView === "charts" && <ReportRightPanelCreateViewChartList />}
+      {currentView === "charts" && (
+        <ReportRightPanelCreateViewChartList
+          pickedCharts={props.pickedCharts}
+          setPickedCharts={props.setPickedCharts}
+        />
+      )}
       {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
     </div>
   );
@@ -244,11 +247,13 @@ const sortByOptions = [
   { value: "name asc", label: "Name (ASC)" },
 ];
 
-function ReportRightPanelCreateViewChartList() {
+function ReportRightPanelCreateViewChartList(props: {
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
+}) {
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
   const chartList = useStoreState(
     (state) => (state.charts.ChartGetList.crudData || []) as any[]
   );
@@ -331,7 +336,7 @@ function ReportRightPanelCreateViewChartList() {
               font-weight: 400;
               white-space: nowrap;
               text-overflow: ellipsis;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
             `}
           >
             Sort by {sortBy.label}
@@ -366,13 +371,29 @@ function ReportRightPanelCreateViewChartList() {
           overflow-y: auto;
           padding: 18px 23px;
           flex-direction: column;
+
           height: calc(100vh - 48px - 50px - 52px - 60px);
           max-height: calc(100vh - 48px - 50px - 52px - 60px);
+
+          &::-webkit-scrollbar {
+            width: 5px;
+            border-radius: 6px;
+            background: #231d2c;
+          }
+          &::-webkit-scrollbar-track {
+            background: #f2f7fd;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background: #231d2c;
+          }
         `}
       >
         {chartList.map((chart) => (
           <ChartItem
             key={chart.id}
+            pickedCharts={props.pickedCharts}
+            setPickedCharts={props.setPickedCharts}
             id={chart.id}
             name={chart.name}
             vizType={chart.vizType}
@@ -430,12 +451,15 @@ function ElementItem(props: {
 
 function ChartItem(props: {
   elementType: string;
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   id: string;
   name: string;
   vizType: string;
   datasetId: string;
   createdDate: string;
 }) {
+  const nullRef = React.useRef(null);
   const [{ isDragging }, drag] = useDrag(() => ({
     type: props.elementType,
     item: {
@@ -445,57 +469,96 @@ function ChartItem(props: {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
+    end: (item, monitor) => {
+      const dropped = monitor.didDrop();
+      if (dropped) {
+        props.setPickedCharts((prev) => [...prev, item.value]);
+      }
+    },
   }));
 
   return (
-    <div
-      ref={drag}
-      css={`
-        width: 100%;
-        cursor: grab;
-        height: 125px;
-        font-size: 12px;
-        background: #fff;
-        user-select: none;
-        padding: 16px 25px;
+    <>
+      <div
+        ref={props.pickedCharts.includes(props.id) ? nullRef : drag}
+        css={`
+          width: 100%;
+          cursor: ${props.pickedCharts.includes(props.id) ? "auto" : "grab"};
+          font-size: 12px;
+          background: #fff;
+          user-select: none;
+          padding: 16px 25px;
 
-        > div {
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
+          > div {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
 
-          :first-of-type {
-            font-size: 14px;
-            font-weight: 700;
+            :first-of-type {
+              font-size: 14px;
+            }
           }
-        }
-      `}
-    >
-      <div>{props.name}</div>
-      <div>
-        <div>Chart type</div>
-        <div>{props.vizType}</div>
+        `}
+      >
+        <div>
+          <span
+            css={`
+              width: 300px;
+              display: flex;
+              margin-top: 0;
+              overflow: hidden;
+              flex-direction: row;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              justify-content: space-between;
+            `}
+          >
+            <b>{props.name}</b>
+            {props.pickedCharts.includes(props.id) && (
+              <span
+                css={`
+                  color: #000;
+                  height: 17px;
+                  font-size: 12px;
+                  padding: 0 10px;
+                  line-height: 14px;
+                  border-radius: 10px;
+                  border: 1px solid #000;
+                `}
+              >
+                Added
+              </span>
+            )}
+          </span>
+        </div>
+        <div>
+          <div>Chart type</div>
+          <div>{props.vizType}</div>
+        </div>
+        <div>
+          <div>Dataset</div>
+          <div>{props.datasetId}</div>
+        </div>
+        <div>
+          <div>Creation date</div>
+          <div>{moment(props.createdDate).format("DD-MM-YYYY")}</div>
+        </div>
       </div>
-      <div>
-        <div>Dataset</div>
-        <div>{props.datasetId}</div>
-      </div>
-      <div>
-        <div>Creation date</div>
-        <div>{moment(props.createdDate).format("DD-MM-YYYY")}</div>
-      </div>
-    </div>
+    </>
   );
 }
 
 function EditHeaderPanelView(props: Props) {
+  const [_, setCurrentView] = useRecoilState(reportRightPanelViewAtom);
   return (
     <div
       css={`
         width: 100%;
+        height: 100%;
         display: flex;
         flex-direction: column;
+        position: relative;
       `}
     >
       <div
@@ -594,6 +657,51 @@ function EditHeaderPanelView(props: Props) {
             label="Date color"
           />
         </Paper>
+      </div>
+
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          flex-direction: row;
+          position: absolute;
+          bottom: 0;
+        `}
+      >
+        <Button
+          onClick={() => {
+            props.setHeaderDetails(props.appliedHeaderDetails);
+            setCurrentView("elements");
+          }}
+          css={`
+            background: #cfd4da;
+            :hover {
+              p {
+                color: #fff;
+              }
+            }
+          `}
+        >
+          <p
+            css={`
+              color: #70777e;
+            `}
+          >
+            Cancel
+          </p>
+        </Button>
+        <Button
+          onClick={() => {
+            props.setAppliedHeaderDetails(props.headerDetails);
+            setCurrentView("elements");
+          }}
+          css={`
+            background: #262c34;
+            color: #ffffff;
+          `}
+        >
+          Apply
+        </Button>
       </div>
     </div>
   );

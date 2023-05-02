@@ -1,11 +1,16 @@
 import React from "react";
 
-export default function Icon() {
+interface Props {
+  big?: boolean;
+  pathFill?: string;
+}
+
+export default function Icon(props: Props) {
   return (
     <svg
-      width="48"
-      height="48"
-      viewBox="0 0 48 48"
+      width={props.big ? "74" : "48"}
+      height={props.big ? "74" : "48"}
+      viewBox="0 0 62 53"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >

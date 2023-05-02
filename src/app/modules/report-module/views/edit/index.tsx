@@ -35,10 +35,18 @@ export function ReportEditView(props: ReportEditViewProps) {
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
   );
 
-  function deleteFrame(index: number) {
+  function deleteFrame(id: string) {
     props.setFramesArray((prev) => {
-      prev.splice(index, 1);
-      return [...prev];
+      let tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = prev.findIndex((frame) => frame.id === id);
+
+      const contentArr = tempPrev[frameId].content;
+      props.setPickedCharts((prevPickedCharts) => {
+        return prevPickedCharts.filter((item) => !contentArr.includes(item));
+      });
+
+      tempPrev.splice(frameId, 1);
+      return [...tempPrev];
     });
   }
 
@@ -46,9 +54,33 @@ export function ReportEditView(props: ReportEditViewProps) {
     fetchReportData({ getId: page });
   }, [page]);
 
+  React.useEffect(() => {
+    const items = reportData.rows.map((rowFrame, index) =>
+      rowFrame.items.filter((item) => typeof item === "string")
+    ) as string[][];
+    let pickedItems: string[] = [];
+
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      pickedItems = [...pickedItems, ...item];
+    }
+    props.setPickedCharts(pickedItems);
+  }, []);
+
   useUpdateEffect(() => {
     props.setName(reportData.name);
     props.setHeaderDetails({
+      title: reportData.title,
+      showHeader: reportData.showHeader,
+      description: EditorState.createWithContent(
+        convertFromRaw(reportData.subTitle as any)
+      ),
+      backgroundColor: reportData.backgroundColor,
+      titleColor: reportData.titleColor,
+      descriptionColor: reportData.descriptionColor,
+      dateColor: reportData.dateColor,
+    });
+    props.setAppliedHeaderDetails({
       title: reportData.title,
       showHeader: reportData.showHeader,
       description: EditorState.createWithContent(
@@ -68,15 +100,17 @@ export function ReportEditView(props: ReportEditViewProps) {
         content &&
         content.length === 1 &&
         content[0] === ReportElementsType.DIVIDER;
+      const id = v4();
       return {
-        id: v4(),
+        id,
         structure: rowFrame.structure,
         frame: isDivider ? (
-          <Divider delete={() => deleteFrame(index)} />
+          <Divider delete={deleteFrame} dividerId={id} />
         ) : (
           <RowFrame
             rowIndex={index}
-            deleteFrame={() => deleteFrame(index)}
+            rowId={id}
+            deleteFrame={deleteFrame}
             forceSelectedType={rowFrame.structure ?? undefined}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
@@ -120,8 +154,11 @@ export function ReportEditView(props: ReportEditViewProps) {
             return (
               <div key={frame.id}>
                 <div>{frame.frame}</div>
+                <Box height={38} />
+
                 <PlaceHolder
                   index={frame.id}
+                  rowId={frame.id}
                   deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
                   setFramesArray={props.setFramesArray}

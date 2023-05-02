@@ -75,7 +75,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
         gap: 6px;
         width: 100%;
         display: flex;
-        padding: 15px 0;
+        padding: 11px 0;
         flex-direction: column;
         border-bottom: 1px solid #dfe3e6;
 

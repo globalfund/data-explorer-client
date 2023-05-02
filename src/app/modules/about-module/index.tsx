@@ -67,7 +67,7 @@ export default function About() {
               > div {
                 font-size: 24px;
                 font-weight: bold;
-                font-family: "Inter", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
               > p {
                 > a {

@@ -1,25 +1,49 @@
-import { Box } from "@material-ui/core";
-import DatasetTable from "app/modules/dataset-detail-module/component/table/datasetTable";
-import { dummyDatasetData } from "app/modules/dataset-detail-module/data";
+import { Box, Snackbar, withStyles } from "@material-ui/core";
 import React, { useState } from "react";
-import { v4 } from "uuid";
 import DataParserToolBox from "../component/dataParserToolBox";
-import PreviewTable from "../component/table";
-import { barChartdata, tableToolBoxData } from "../component/table/data";
-import { ChartRepresentationProps } from "../component/table/StatisticalRepresentations";
+import PreviewTable from "app/components/Table/Preview-table";
+import {
+  barChartdata,
+  tableToolBoxData,
+} from "app/components/Table/Preview-table/data";
+import { ChartRepresentationProps } from "app/components/Table/Preview-table/StatisticalRepresentations";
+import { useChartsRawData } from "app/hooks/useChartsRawData";
+import { DatasetDataTable } from "../component/data-table";
 
 interface Props {
   handleNext: () => void;
+  datasetId: string;
 }
+
+interface ISnackbarState {
+  open: boolean;
+  vertical: "top" | "bottom";
+  horizontal: "left" | "center" | "right";
+}
+
+export const CssSnackbar = withStyles({
+  root: {
+    "& .MuiSnackbarContent-root": {
+      backgroundColor: "#fff",
+      color: "#000",
+      borderRadius: "12px",
+      fontSize: "18px",
+      fontWeight: "bold",
+      letterSpacing: "0.5px",
+    },
+  },
+})(Snackbar);
+
 export default function PreviewFragment(props: Props) {
-  const [openToolboxPanel, setOpenToolboxPanel] = useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = useState(true);
   const onCloseBtnClick = () => {
     setOpenToolboxPanel(!openToolboxPanel);
   };
-  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
-  const [tableData, setTableData] = React.useState<
-    { [key: string]: number | string | null | boolean }[]
-  >(dummyDatasetData.map((data) => ({ ...data, checked: false, id: v4() })));
+
+  // const [tableData, setTableData] = React.useState<
+  //   { [key: string]: number | string | null | boolean }[]
+  // >(dummyDatasetData.map((data) => ({ ...data, checked: false, id: v4() })));
+
   const getColumns = (
     data: { [key: string]: number | string | null | boolean }[]
   ) => {
@@ -30,36 +54,32 @@ export default function PreviewFragment(props: Props) {
     return columns;
   };
 
-  const domRef = React.useRef<HTMLDivElement>(null);
-  const [renderedChartMappedData, setRenderedChartMappedData] =
-    React.useState<{ bars: string; size: string }[]>(barChartdata);
-
-  const [visualOptions, setVisualOptions] = React.useState({
-    barWidth: 15.84,
-    background: "transparent",
-    color: "#000000",
-    splitLineY: false,
-    width: "100%",
-    height: 100,
-    marginBottom: 20,
-    showXAxis: true,
-    realTimeSort: false,
-    xAxisLineColor: "#ADB5BD",
-    xAxisLabelColor: "#262C34",
-    barRadius: [2, 2, 0, 0],
-    xAxisLabelInterval: (index: number) => {
-      return index === 0 || index === renderedChartMappedData.length - 1;
-    },
+  const { loadDataset, sampleData, dataTotalCount } = useChartsRawData({
+    visualOptions: () => {},
+    setVisualOptions: () => {},
+    setChartFromAPI: () => {},
+    chartFromAPI: null,
   });
 
-  const chartOptions: ChartRepresentationProps = {
-    containerId: "chart-placeholder",
+  React.useEffect(() => {
+    loadDataset(`data-themes/sample-data/${props.datasetId}`);
+  }, [props.datasetId]);
 
-    domRef,
-    visualOptions,
-    renderedChartMappedData,
-    setRenderedChartMappedData,
-  };
+  const [snackbarState, setSnackbarState] = React.useState<ISnackbarState>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
+
+  React.useEffect(() => {
+    if (dataTotalCount > 0) {
+      setSnackbarState({ ...snackbarState, open: true });
+      setTimeout(() => {
+        setSnackbarState({ ...snackbarState, open: false });
+      }, 10000);
+    }
+  }, [dataTotalCount]);
+
   return (
     <div>
       <h1
@@ -79,18 +99,23 @@ export default function PreviewFragment(props: Props) {
           width: ${openToolboxPanel ? `calc(100% - 217px)` : "100%"};
         `}
       >
-        <PreviewTable
-          tableData={tableData}
-          setTableData={setTableData}
-          columns={getColumns(tableData)}
-          columnDetails={columnDetails}
-          chartOptions={chartOptions}
-        />
+        <DatasetDataTable data={sampleData} />
       </div>
       <DataParserToolBox
         onCloseBtnClick={onCloseBtnClick}
         open={openToolboxPanel}
         handleNext={props.handleNext}
+      />
+
+      <CssSnackbar
+        anchorOrigin={{
+          vertical: snackbarState.vertical,
+          horizontal: snackbarState.horizontal,
+        }}
+        open={snackbarState.open}
+        onClose={() => setSnackbarState({ ...snackbarState, open: false })}
+        message={`${dataTotalCount} rows have been successfully parsed!`}
+        key={snackbarState.vertical + snackbarState.horizontal}
       />
     </div>
   );
