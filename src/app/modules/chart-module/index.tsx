@@ -295,7 +295,13 @@ export default function ChartModule() {
           height: 50px;
         `}
       />
-      <Container max-width="lg">
+      <Container
+        maxWidth="lg"
+        css={`
+          top: 50px;
+          position: relative;
+        `}
+      >
         <Switch>
           {(isSaveLoading || isChartLoading) && <PageLoader />}
           <Route path="/chart/:page/export">

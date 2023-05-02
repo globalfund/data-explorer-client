@@ -47,10 +47,27 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
     (state) => state.charts.activePanels.setValue
   );
 
+  const [errors, setErrors] = React.useState<string[]>([]);
+  const [requiredFields, setRequiredFields] = React.useState<
+    { id: string; name: string }[]
+  >([]);
+  const [minValuesFields, setMinValuesFields] = React.useState<
+    { id: string; name: string; minValues: number }[]
+  >([]);
+
   React.useEffect(() => {
     // When the Mapping component is rendered, we are at step 3.
     setActivePanels(3);
   }, []);
+
+  React.useEffect(() => {
+    const { updRequiredFields, updErrors, updMinValuesFields } =
+      getRequiredFieldsAndErrors(mapping, props.dimensions);
+
+    setRequiredFields(updRequiredFields);
+    setErrors(updErrors);
+    setMinValuesFields(updMinValuesFields);
+  }, [mapping, props.dimensions]);
 
   const replaceDimension = React.useCallback(
     (
@@ -106,7 +123,14 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
           >
             <b> Chart variables</b>
           </div>
-          <Grid container spacing={2}>
+          <Grid
+            container
+            spacing={2}
+            css={`
+              z-index: 1030;
+              position: relative;
+            `}
+          >
             {props.dimensions.map((dimension: any) => (
               <ChartBuilderMappingDimension
                 key={dimension.id}
@@ -116,15 +140,24 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
               />
             ))}
           </Grid>
-          <ChartBuilderMappingMessage dimensions={props.dimensions} />
-          <CommonChart
-            containerRef={containerRef}
-            renderedChart={props.renderedChart}
-            visualOptions={props.visualOptions}
-            setVisualOptions={props.setVisualOptions}
-            renderedChartSsr={props.renderedChartSsr}
-            renderedChartMappedData={props.renderedChartMappedData}
+          <ChartBuilderMappingMessage
+            errors={errors}
+            dimensions={props.dimensions}
+            requiredFields={requiredFields}
+            minValuesFields={minValuesFields}
           />
+          {requiredFields.length === 0 &&
+            errors.length === 0 &&
+            minValuesFields.length === 0 && (
+              <CommonChart
+                containerRef={containerRef}
+                renderedChart={props.renderedChart}
+                visualOptions={props.visualOptions}
+                setVisualOptions={props.setVisualOptions}
+                renderedChartSsr={props.renderedChartSsr}
+                renderedChartMappedData={props.renderedChartMappedData}
+              />
+            )}
         </div>
       </div>
     </div>
@@ -452,24 +485,7 @@ function ChartBuilderMappingDimension(
 }
 
 function ChartBuilderMappingMessage(props: ChartBuilderMappingMessageProps) {
-  const [errors, setErrors] = React.useState<string[]>([]);
-  const [requiredFields, setRequiredFields] = React.useState<
-    { id: string; name: string }[]
-  >([]);
-  const [minValuesFields, setMinValuesFields] = React.useState<
-    { id: string; name: string; minValues: number }[]
-  >([]);
-
-  const mapping = useStoreState((state) => state.charts.mapping.value);
-
-  React.useEffect(() => {
-    const { updRequiredFields, updErrors, updMinValuesFields } =
-      getRequiredFieldsAndErrors(mapping, props.dimensions);
-
-    setRequiredFields(updRequiredFields);
-    setErrors(updErrors);
-    setMinValuesFields(updMinValuesFields);
-  }, [mapping, props.dimensions]);
+  const { errors, requiredFields, minValuesFields } = props;
 
   return (
     <div

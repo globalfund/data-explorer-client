@@ -49,7 +49,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
           width: 100%;
           display: flex;
           overflow-y: auto;
-          padding-right: 10px;
+          padding-right: 88px;
           flex-direction: column;
           max-height: calc(100vh - 340px);
 
@@ -245,7 +245,6 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
         padding-left: 16px;
         align-items: center;
         border-radius: 25px;
-        width: 264px;
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
         background: ${props.backgroundColor || "#cfd4da"};

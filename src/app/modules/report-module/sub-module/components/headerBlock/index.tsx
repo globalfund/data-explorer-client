@@ -60,7 +60,9 @@ export default function HeaderBlock(props: Props) {
     },
   }));
 
-  const [_, setCurrentView] = useRecoilState(reportRightPanelViewAtom);
+  const [currentView, setCurrentView] = useRecoilState(
+    reportRightPanelViewAtom
+  );
 
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
@@ -124,7 +126,7 @@ export default function HeaderBlock(props: Props) {
       )}
       {...handlers}
     >
-      {handleDisplay && (
+      {(handleDisplay || currentView === "editHeader") && (
         <div
           css={`
             top: 0;

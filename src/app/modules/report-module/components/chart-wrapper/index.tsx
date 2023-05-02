@@ -133,9 +133,10 @@ export function ReportChartWrapper(props: Props) {
           margin-bottom: 12px;
         `}
       >
-        {chartName}{" "}
+        {chartName}
       </h4>
       <CommonChart
+        withHeader
         chartId={props.id}
         setRawViz={setRawViz}
         containerRef={containerRef}

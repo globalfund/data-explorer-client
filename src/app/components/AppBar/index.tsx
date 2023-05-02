@@ -189,20 +189,18 @@ export function AppBar() {
             <div css={headercss}>
               <div
                 css={`
+                  gap: 180px;
                   display: flex;
-                  justify-content: space-between;
                   align-items: center;
-                  width: 48%;
                 `}
               >
                 <NavLink
                   to="/"
                   css={`
                     display: flex;
-                    justify-content: center;
-                    gap: 2.5rem;
                     padding-top: 5px;
                     margin-right: 64px;
+                    justify-content: center;
                   `}
                 >
                   <img

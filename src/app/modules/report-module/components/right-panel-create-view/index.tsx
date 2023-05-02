@@ -374,8 +374,18 @@ function ReportRightPanelCreateViewChartList(props: {
 
           height: calc(100vh - 48px - 50px - 52px - 60px);
           max-height: calc(100vh - 48px - 50px - 52px - 60px);
+
           &::-webkit-scrollbar {
-            display: none;
+            width: 5px;
+            border-radius: 6px;
+            background: #231d2c;
+          }
+          &::-webkit-scrollbar-track {
+            background: #f2f7fd;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background: #231d2c;
           }
         `}
       >
@@ -450,7 +460,7 @@ function ChartItem(props: {
   createdDate: string;
 }) {
   const nullRef = React.useRef(null);
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: props.elementType,
     item: {
       type: props.elementType,
@@ -459,7 +469,6 @@ function ChartItem(props: {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-
     end: (item, monitor) => {
       const dropped = monitor.didDrop();
       if (dropped) {
@@ -475,7 +484,6 @@ function ChartItem(props: {
         css={`
           width: 100%;
           cursor: ${props.pickedCharts.includes(props.id) ? "auto" : "grab"};
-          height: 100%;
           font-size: 12px;
           background: #fff;
           user-select: none;
@@ -489,35 +497,39 @@ function ChartItem(props: {
 
             :first-of-type {
               font-size: 14px;
-              font-weight: 700;
             }
           }
         `}
       >
-        {props.pickedCharts.includes(props.id) && (
-          <p
-            css={`
-              margin: 0;
-              width: 10%;
-              margin-left: auto;
-            `}
-          >
-            {" "}
-            {"Added"}
-          </p>
-        )}
-
         <div>
           <span
             css={`
+              width: 300px;
+              display: flex;
+              margin-top: 0;
               overflow: hidden;
+              flex-direction: row;
               white-space: nowrap;
               text-overflow: ellipsis;
-              width: 300px;
-              margin-top: 0;
+              justify-content: space-between;
             `}
           >
-            {props.name}
+            <b>{props.name}</b>
+            {props.pickedCharts.includes(props.id) && (
+              <span
+                css={`
+                  color: #000;
+                  height: 17px;
+                  font-size: 12px;
+                  padding: 0 10px;
+                  line-height: 14px;
+                  border-radius: 10px;
+                  border: 1px solid #000;
+                `}
+              >
+                Added
+              </span>
+            )}
           </span>
         </div>
         <div>
@@ -659,13 +671,14 @@ function EditHeaderPanelView(props: Props) {
         <Button
           onClick={() => {
             props.setHeaderDetails(props.appliedHeaderDetails);
-
             setCurrentView("elements");
           }}
           css={`
             background: #cfd4da;
             :hover {
-              color: #fff;
+              p {
+                color: #fff;
+              }
             }
           `}
         >

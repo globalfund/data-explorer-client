@@ -377,7 +377,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                 <React.Fragment>
                   <IconButton
                     component={Link}
-                    to={`/${props.pageType}/${page}/edit`}
+                    to={`/${props.pageType}/${page}/${
+                      props.pageType === "chart" ? "customize" : "edit"
+                    }`}
                   >
                     <EditIcon htmlColor="#262c34" />
                   </IconButton>

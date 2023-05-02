@@ -7,12 +7,11 @@ export const styles = {
   `,
   innercontainer: css`
     left: 0;
-    // top: 136px;
     max-width: 1280px;
     position: relative;
+    padding: 70px 43px 0 0;
     align-self: flex-start;
-    padding: 114px 42px 0 0;
-    min-height: calc(100vh - 144px);
+    min-height: calc(100vh - 98px);
     width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
 
     @media (max-width: 1280px) {
@@ -21,9 +20,7 @@ export const styles = {
   `,
   previewInnercontainer: (isEditMode: boolean) => css`
     left: 0;
-
-    margin-top: 10rem;
-
+    margin-top: 64px;
     max-width: 1280px;
     position: relative;
     align-self: flex-start;

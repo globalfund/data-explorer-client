@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import { useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
@@ -8,6 +7,7 @@ import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 
 interface Props {
   visualOptions: any;
+  withHeader?: boolean;
   renderedChart: string;
   renderedChartSsr: boolean;
   renderedChartMappedData: any;
@@ -31,10 +31,7 @@ export function CommonChart(props: Props) {
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
   useUpdateEffectOnce(() => {
-    if (
-      props.containerRef.current &&
-      props.visualOptions.width === CHART_DEFAULT_WIDTH
-    ) {
+    if (props.containerRef.current) {
       const tmpVisualOptions = {
         ...props.visualOptions,
         width: props.containerRef.current.clientWidth,
@@ -72,7 +69,22 @@ export function CommonChart(props: Props) {
 
   // client side rendering
   React.useEffect(() => {
-    if (!props.renderedChartSsr && domRef && domRef.current && chartType) {
+    const visualOptions = props.containerRef.current
+      ? {
+          ...props.visualOptions,
+          width: props.containerRef.current.clientWidth,
+          height:
+            props.containerRef.current.clientHeight -
+            (props.withHeader ? 36 : 0),
+        }
+      : props.visualOptions;
+    if (
+      !props.renderedChartSsr &&
+      domRef &&
+      domRef.current &&
+      chartType &&
+      props.containerRef.current
+    ) {
       try {
         render(
           props.renderedChartMappedData,
@@ -85,7 +97,7 @@ export function CommonChart(props: Props) {
               | "echartsLinechart"
               | "echartsSankey"
               | "echartsTreemap"),
-          props.visualOptions,
+          visualOptions,
           `common-chart-render-container-${props.chartId || "1"}`
         );
       } catch (e) {
@@ -125,7 +137,7 @@ export function CommonChart(props: Props) {
           width: 100%;
           overflow: hidden;
           margin-top: 40px;
-          height: 100%;
+          height: ${props.visualOptions.height - (props.withHeader ? 36 : 0)}px;
 
           * {
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
@@ -140,11 +152,6 @@ export function CommonChart(props: Props) {
             height: 100%;
 
             > div:first-of-type {
-              height: 100% !important;
-
-              > canvas {
-                height: 88% !important;
-              }
               > svg {
                 height: 100%;
 

@@ -70,30 +70,29 @@
 
 body {
   margin: 0;
-  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
-
-  overflow-x: hidden;
-
   width: 100vw;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
   transition: background 0.2s ease-in-out;
-}
-
-body::-webkit-scrollbar {
-  width: 6px;
-  border-radius: 4px;
-  background: #f4f4f4;
-}
-body::-webkit-scrollbar-track {
-  background: #262c34;
+  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
 }
 
 #root {
   width: 100vw;
-  /* height: 100vh; */
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
+}
+
+#root::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 4px;
+  background: #f4f4f4;
+}
+#root::-webkit-scrollbar-track {
+  background: #262c34;
 }
 
 * {

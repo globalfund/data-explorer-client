@@ -23,6 +23,9 @@ export interface ChartBuilderMappingDimensionProps {
 
 export interface ChartBuilderMappingMessageProps {
   dimensions: any[];
+  errors: string[];
+  requiredFields: { id: string; name: string }[];
+  minValuesFields: { id: string; name: string; minValues: number }[];
 }
 
 export const typeIcon = {

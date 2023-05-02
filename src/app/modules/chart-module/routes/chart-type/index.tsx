@@ -74,6 +74,9 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
                     border: 1px solid
                       ${chartType === ct.id ? "#262c34" : "#dfe3e6"};
 
+                    ${ct.id === "" &&
+                    `pointer-events: none;background: #f1f3f5;`}
+
                     &:hover {
                       cursor: ${ct.id !== "" ? "pointer" : "auto"};
                       background: #cfd4da;

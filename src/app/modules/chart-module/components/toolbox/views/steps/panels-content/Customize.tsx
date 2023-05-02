@@ -44,22 +44,21 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
     if (!fChart.visualOptions.width) {
       delete newOptionsConfig.width;
     }
+    if (!fChart.visualOptions.background) {
+      delete newOptionsConfig.background;
+    }
     return newOptionsConfig;
   }, [selectedChartType, visualOptions]);
 
   const [collapseStatus, setCollapseStatus] = React.useState(() => {
-    let groups = {};
-
-    if (!groups.hasOwnProperty("")) {
-      // @ts-ignore
-      groups = {
-        artboard: true,
-        chart: true,
-        tooltip: true,
-        label: true,
-      };
+    const groups = {};
+    for (const option in optionsConfig) {
+      const group = optionsConfig[option].group;
+      if (!groups.hasOwnProperty(group)) {
+        // @ts-ignore
+        groups[group] = true;
+      }
     }
-
     return groups;
   });
 
@@ -73,16 +72,13 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
 
   const optionsDefinitionsByGroup = React.useMemo(() => {
     if (!firstRendered) {
-      let index = 0;
-      let groups = {};
-      if (!groups.hasOwnProperty("")) {
-        // @ts-ignore
-        groups = {
-          artboard: true,
-          chart: true,
-          Tooltip: true,
-          Label: true,
-        };
+      const groups = {};
+      for (const option in optionsConfig) {
+        const group = optionsConfig[option].group;
+        if (!groups.hasOwnProperty(group)) {
+          // @ts-ignore
+          groups[group] = true;
+        }
       }
 
       setCollapseStatus(groups);
