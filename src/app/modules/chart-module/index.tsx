@@ -261,11 +261,6 @@ export default function ChartModule() {
     }
   }, [loadedChart]);
 
-  // console.log(visualOptions, "visualOptions");
-  // console.log(content, "content");
-  // console.log(activeRenderedChartSsr, "activeRenderedChartSsr");
-  // console.log(renderedChartMappedData, "renderedChartMappedData");
-
   return (
     <DndProvider backend={HTML5Backend}>
       <SubheaderToolbar
