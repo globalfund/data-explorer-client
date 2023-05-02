@@ -40,6 +40,9 @@ body::-webkit-scrollbar-track {
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 }
+#rb-dropdown-menu{
+  z-index: 10;
+}
 
 #ruler {
   z-index: 0;
@@ -103,3 +106,4 @@ input[type="text"] {
   color: #262c34;
   background: #f1f3f5;
 }
+

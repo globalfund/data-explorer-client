@@ -65,6 +65,8 @@ export const uploadAreacss = css`
       font-family: "Inter";
       text-transform: uppercase;
     }
+  }
+  label {
     :hover {
       opacity: 0.9;
     }

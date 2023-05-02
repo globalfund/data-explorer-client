@@ -203,13 +203,19 @@ export function useDataThemesEchart() {
         left: marginLeft,
         right: marginRight,
         bottom: marginBottom,
+        zlevel: -1,
+        z: -1,
       },
       xAxis: {
         type: "category",
         data: data.xAxisValues,
+        zlevel: -1,
+        z: -1,
       },
       yAxis: {
         type: "value",
+        zlevel: -1,
+        z: -1,
       },
       legend: {
         show: showLegend,
@@ -221,6 +227,8 @@ export function useDataThemesEchart() {
         name: d[0],
         data: d[1].map((l: any) => l.y),
         stack: stack ? "Total" : undefined,
+        z: -1,
+        zlevel: -1,
       })),
       tooltip: {
         trigger: showTooltip ? "axis" : "none",

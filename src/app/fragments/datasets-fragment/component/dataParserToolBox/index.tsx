@@ -35,7 +35,8 @@ export default function DataParserToolBox(props: Props) {
               right: 0;
 
               width: 400px;
-              top: 100px;
+              top: 98px;
+
               position: fixed;
               background: #f4f4f4;
 
@@ -101,6 +102,8 @@ export default function DataParserToolBox(props: Props) {
               css={`
                 padding-right: 9%;
                 padding-left: 7%;
+
+                height: calc(100vh - 98px);
               `}
             >
               <DataParsingOptions handleNext={props.handleNext} />

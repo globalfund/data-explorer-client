@@ -1,31 +1,65 @@
-import { Box } from "@material-ui/core";
-import DatasetTable from "app/modules/dataset-detail-module/component/table/datasetTable";
-import { dummyDatasetData } from "app/modules/dataset-detail-module/data";
+import { Box, Snackbar, withStyles } from "@material-ui/core";
 import React, { useState } from "react";
-import { v4 } from "uuid";
 import DataParserToolBox from "../component/dataParserToolBox";
-import PreviewTable from "../component/table";
+import { useChartsRawData } from "app/hooks/useChartsRawData";
+import { DatasetDataTable } from "../component/data-table";
 
 interface Props {
   handleNext: () => void;
+  datasetId: string;
 }
+
+interface ISnackbarState {
+  open: boolean;
+  vertical: "top" | "bottom";
+  horizontal: "left" | "center" | "right";
+}
+
+export const CssSnackbar = withStyles({
+  root: {
+    "& .MuiSnackbarContent-root": {
+      backgroundColor: "#fff",
+      color: "#000",
+      borderRadius: "12px",
+      fontSize: "18px",
+      fontWeight: "bold",
+      letterSpacing: "0.5px",
+    },
+  },
+})(Snackbar);
+
 export default function PreviewFragment(props: Props) {
-  const [openToolboxPanel, setOpenToolboxPanel] = useState(false);
+  const [openToolboxPanel, setOpenToolboxPanel] = useState(true);
   const onCloseBtnClick = () => {
     setOpenToolboxPanel(!openToolboxPanel);
   };
-  const [tableData, setTableData] = React.useState<
-    { [key: string]: number | string | null | boolean }[]
-  >(dummyDatasetData.map((data) => ({ ...data, checked: false, id: v4() })));
-  const getColumns = (
-    data: { [key: string]: number | string | null | boolean }[]
-  ) => {
-    let columns = [];
-    for (let key in data[0]) {
-      columns.push({ key: key, type: typeof data[0][key] });
+
+  const { loadDataset, sampleData, dataTotalCount } = useChartsRawData({
+    visualOptions: () => {},
+    setVisualOptions: () => {},
+    setChartFromAPI: () => {},
+    chartFromAPI: null,
+  });
+
+  React.useEffect(() => {
+    loadDataset(`data-themes/sample-data/${props.datasetId}`);
+  }, [props.datasetId]);
+
+  const [snackbarState, setSnackbarState] = React.useState<ISnackbarState>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
+
+  React.useEffect(() => {
+    if (dataTotalCount > 0) {
+      setSnackbarState({ ...snackbarState, open: true });
+      setTimeout(() => {
+        setSnackbarState({ ...snackbarState, open: false });
+      }, 10000);
     }
-    return columns;
-  };
+  }, [dataTotalCount]);
+
   return (
     <div>
       <h1
@@ -45,16 +79,23 @@ export default function PreviewFragment(props: Props) {
           width: ${openToolboxPanel ? `calc(100% - 217px)` : "100%"};
         `}
       >
-        <PreviewTable
-          tableData={tableData}
-          setTableData={setTableData}
-          columns={getColumns(tableData)}
-        />
+        <DatasetDataTable data={sampleData} />
       </div>
       <DataParserToolBox
         onCloseBtnClick={onCloseBtnClick}
         open={openToolboxPanel}
         handleNext={props.handleNext}
+      />
+
+      <CssSnackbar
+        anchorOrigin={{
+          vertical: snackbarState.vertical,
+          horizontal: snackbarState.horizontal,
+        }}
+        open={snackbarState.open}
+        onClose={() => setSnackbarState({ ...snackbarState, open: false })}
+        message={`${dataTotalCount} rows have been successfully parsed!`}
+        key={snackbarState.vertical + snackbarState.horizontal}
       />
     </div>
   );
