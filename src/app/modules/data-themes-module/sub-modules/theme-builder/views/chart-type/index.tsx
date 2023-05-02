@@ -127,7 +127,8 @@ export function DataThemesBuilderChartType(
                     <div
                       css={`
                         font-size: 14px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {chartType.label}
@@ -135,7 +136,8 @@ export function DataThemesBuilderChartType(
                     <div
                       css={`
                         font-size: 12px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {chartType.categories.join(", ")}
@@ -194,7 +196,8 @@ export function DataThemesBuilderChartType(
                     <div
                       css={`
                         font-size: 14px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {chartType.label}
@@ -202,7 +205,8 @@ export function DataThemesBuilderChartType(
                     <div
                       css={`
                         font-size: 12px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {chartType.categories.join(", ")}

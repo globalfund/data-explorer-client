@@ -83,7 +83,7 @@ export function NetworkViz(props: NetworkVizProps) {
             }
             > text {
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             }`
                 : ""
             }
@@ -93,7 +93,7 @@ export function NetworkViz(props: NetworkVizProps) {
               }
               > text {
                 font-weight: bold;
-                font-family: "Inter", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               }
             }
           `
@@ -173,7 +173,7 @@ export function NetworkViz(props: NetworkVizProps) {
             css={`
               color: #231d2c;
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {get(cmsData, "componentsChartsNetwork.performanceFramework", "")}

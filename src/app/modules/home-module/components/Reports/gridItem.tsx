@@ -62,6 +62,9 @@ export default function GridItem(props: Props) {
                 font-size: 14px;
                 margin-top: 8px;
                 line-height: 16.8px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
                 margin-bottom: 0;
               `}
             >

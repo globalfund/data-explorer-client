@@ -7,6 +7,30 @@ import {
   ReportInitialViewProps,
   ReportSearchResultModel,
 } from "app/modules/report-module/views/initial/data";
+import { withStyles } from "@material-ui/core";
+
+const StyledTextField = withStyles({
+  root: {
+    "& label.MuiInputLabel-root": {
+      fontSize: "14px",
+      color: "#868E96",
+      fontFamily: "GothamNarrow-Book",
+    },
+
+    "& label.Mui-focused": {
+      fontSize: "14px",
+      color: "#6061e5",
+      fontFamily: "GothamNarrow-Book",
+    },
+    "&.MuiInputBase-root": {
+      bordercolor: "#ADB5BD",
+    },
+
+    "& .MuiInput-underline:before": {
+      borderBottom: "1px solid #ADB5BD",
+    },
+  },
+})(TextField);
 
 export function ReportInitialView(props: ReportInitialViewProps) {
   const [currentValue, setCurrentValue] = React.useState<string>("");
@@ -43,7 +67,11 @@ export function ReportInitialView(props: ReportInitialViewProps) {
 
   return (
     <div>
-      <TextField fullWidth label="Search templates" onChange={handleSearch} />
+      <StyledTextField
+        fullWidth
+        label="Search templates"
+        onChange={handleSearch}
+      />
       <div
         css={`
           font-size: 14px;
@@ -62,6 +90,7 @@ export function ReportInitialView(props: ReportInitialViewProps) {
               currentValue={currentValue}
               description={option.description}
               handleClick={() => handleTemplateSelected(option)}
+              templateImg={option.templateImg}
             />
           </Grid>
         ))}

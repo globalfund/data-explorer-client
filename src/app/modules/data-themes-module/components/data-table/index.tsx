@@ -65,11 +65,10 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
       css={`
         width: calc(100% - 24px);
         height: calc(100vh - 225px);
-        margin-top: 2rem;
+        margin-top: -1rem;
 
         > div {
           height: 100%;
-          background: #fff;
           border-style: none;
 
           * {

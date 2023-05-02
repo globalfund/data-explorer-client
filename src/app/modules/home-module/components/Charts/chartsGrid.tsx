@@ -55,11 +55,11 @@ export default function ChartsGrid() {
   };
 
   const getIcon = (vizType: string) => {
-    const type = find(echartTypes, { id: vizType });
+    const type = find(echartTypes(true), { id: vizType });
     if (type) {
       return type.icon;
     }
-    return echartTypes[0].icon;
+    return echartTypes(true)[0].icon;
   };
 
   React.useEffect(() => {

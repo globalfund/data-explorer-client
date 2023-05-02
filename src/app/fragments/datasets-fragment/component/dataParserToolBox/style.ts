@@ -4,7 +4,7 @@ export const optionscss = css`
   p {
     font-size: 24px;
     color: #231d2c;
-    font-family: "Inter";
+    font-family: "GothamNarrow-Book";
   }
   input {
     background: #ffffff;

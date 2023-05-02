@@ -19,6 +19,13 @@ export const styles = {
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+    p {
+      font-family: "GothamNarrow-Bold";
+      font-style: normal;
+      font-weight: 700;
+      font-size: 24px;
+      color: #231d2c;
+    }
     @media (max-width: 1280px) {
       margin-left: 0;
       width: calc(100vw - 400px);
@@ -81,22 +88,22 @@ export const styles = {
     border-style: none;
     background: transparent;
     transition: background 0.2s ease-in-out;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     &:focus {
       background: #f1f3f5;
     }
   `,
   iconbtns: css`
-    right: 0;
+    right: 29px;
     display: flex;
     position: absolute;
     flex-direction: row;
 
     > a,
     button {
-      width: 42px;
-      height: 42px;
+      width: 40px;
+      height: 40px;
       padding: 9px;
     }
   `,

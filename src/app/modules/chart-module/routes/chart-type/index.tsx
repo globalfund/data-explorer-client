@@ -57,10 +57,10 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
           `}
         >
           <Grid container item spacing={2}>
-            {echartTypes.map((ct: ChartTypeModel) => (
+            {echartTypes(false).map((ct: ChartTypeModel) => (
               <Grid item xs={12} sm={6} md={4} key={ct.id}>
                 <div
-                  onClick={onChartTypeChange(ct.id)}
+                  onClick={ct.id == "" ? () => {} : onChartTypeChange(ct.id)}
                   css={`
                     width: 100%;
                     height: 64px;
@@ -74,8 +74,11 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
                     border: 1px solid
                       ${chartType === ct.id ? "#262c34" : "#dfe3e6"};
 
+                    ${ct.id === "" &&
+                    `pointer-events: none;background: #f1f3f5;`}
+
                     &:hover {
-                      cursor: pointer;
+                      cursor: ${ct.id !== "" ? "pointer" : "auto"};
                       background: #cfd4da;
                       border-color: #262c34;
                     }
@@ -92,15 +95,15 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
                     <div
                       css={`
                         font-size: 14px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
                       `}
                     >
-                      {ct.label}
+                      <b>{ct.label}</b>
                     </div>
                     <div
                       css={`
                         font-size: 12px;
-                        font-family: "Inter", "Helvetica Neue", sans-serif;
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif;
                       `}
                     >
                       {ct.categories.join(", ")}

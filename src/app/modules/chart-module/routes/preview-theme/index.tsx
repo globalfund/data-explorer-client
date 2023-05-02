@@ -214,7 +214,7 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
                 : `height: ${get(visualOptions, "height", 500)}px;`}
 
               * {
-                font-family: "Inter", "Helvetica Neue", sans-serif !important;
+                font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
               }
             `}
           />

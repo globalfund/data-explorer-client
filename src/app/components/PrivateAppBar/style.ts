@@ -13,7 +13,7 @@ export const headercss = css`
     text-decoration: none;
     color: #231d2c;
     font-size: 14px;
-    font-family: "Gotham Narrow";
+    font-family: "GothamNarrow-Book";
     :hover {
       color: #cea8bc;
     }
@@ -48,7 +48,7 @@ export const avicss = css`
   align-items: center;
   p {
     font-size: 14px;
-    font-family: "Gotham Narrow";
+    font-family: "GothamNarrow-Book";
     color: #231d2c;
   }
 `;

@@ -75,7 +75,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
           padding-bottom: 16px;
           text-transform: capitalize;
           border-bottom: 1px solid #dfe3e6;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {props.id}
@@ -108,7 +108,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             Year
@@ -116,7 +116,7 @@ function InvestmentsTimeCycleVizTooltip(props: BarTooltipDatum) {
           <div
             css={`
               font-weight: bold;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             Amount
@@ -281,13 +281,15 @@ export function InvestmentsTimeCycleViz(props: Props) {
                 text: {
                   fontSize: 10,
                   fill: "#262c34",
-                  fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+                  fontFamily:
+                    '"GothamNarrow-Book", "Helvetica Neue", sans-serif',
                 },
               },
               legend: {
                 text: {
                   fontSize: 10,
-                  fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+                  fontFamily:
+                    '"GothamNarrow-Book", "Helvetica Neue", sans-serif',
                 },
               },
             },
@@ -295,7 +297,7 @@ export function InvestmentsTimeCycleViz(props: Props) {
               text: {
                 fontSize: 10,
                 textTransform: "capitalize",
-                fontFamily: '"Inter", "Helvetica Neue", sans-serif',
+                fontFamily: '"GothamNarrow-Book", "Helvetica Neue", sans-serif',
               },
             },
             grid: {

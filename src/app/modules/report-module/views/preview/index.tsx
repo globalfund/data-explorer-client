@@ -83,6 +83,7 @@ export function ReportPreviewView() {
           return (
             <RowFrame
               key={index}
+              rowId={reportData.id}
               rowIndex={index}
               deleteFrame={() => {}}
               forceSelectedType={rowFrame.structure ?? undefined}

@@ -43,7 +43,7 @@ export function useDataThemesEchart() {
     const {
       // artboard
       // height,
-      background,
+      // background,
       // margins
       marginTop,
       marginRight,
@@ -70,7 +70,8 @@ export function useDataThemesEchart() {
       yAxis: { type: "value" },
       // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
       // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
-      backgroundColor: background,
+      // backgroundColor: background,
+      backgroundColor: "transparent",
       series: [
         {
           name: "",
@@ -85,7 +86,9 @@ export function useDataThemesEchart() {
         confine: true,
         formatter: (params: any) => {
           return `${params.name}: ${
-            isMonetaryValue ? formatFinancialValue(params.value) : params.value
+            isMonetaryValue
+              ? formatFinancialValue(params.value, true)
+              : params.value
           }`;
         },
       },
@@ -123,7 +126,7 @@ export function useDataThemesEchart() {
           if (params.value) {
             return `${params.name}: ${
               isMonetaryValue
-                ? formatFinancialValue(params.value)
+                ? formatFinancialValue(params.value, true)
                 : params.value
             }`;
           }
@@ -221,7 +224,8 @@ export function useDataThemesEchart() {
         show: showLegend,
         data: data.lines.map((d: any) => d[0]),
       },
-      backgroundColor: background,
+      // backgroundColor: background,
+      backgroundColor: "transparent",
       series: data.lines.map((d: any) => ({
         type: "line",
         name: d[0],
@@ -235,7 +239,7 @@ export function useDataThemesEchart() {
         confine: true,
         valueFormatter: (value: number | string) =>
           isMonetaryValue
-            ? formatFinancialValue(parseInt(value.toString(), 10))
+            ? formatFinancialValue(parseInt(value.toString(), 10), true)
             : value,
       },
     };
@@ -277,7 +281,8 @@ export function useDataThemesEchart() {
     nodes = uniqBy(nodes, "name");
 
     const option = {
-      backgroundColor: background,
+      // backgroundColor: background,
+      backgroundColor: "transparent",
       series: [
         {
           type: "sankey",
@@ -338,7 +343,7 @@ export function useDataThemesEchart() {
             }
             result = `${source} - ${target}: ${
               isMonetaryValue
-                ? formatFinancialValue(params.data.value)
+                ? formatFinancialValue(params.data.value, true)
                 : params.data.value
             }`;
           } else {
@@ -380,7 +385,8 @@ export function useDataThemesEchart() {
     } = visualOptions;
 
     const option = {
-      backgroundColor: background,
+      // backgroundColor: background,
+      backgroundColor: "transparent",
       series: [
         {
           name: "All",
@@ -410,7 +416,7 @@ export function useDataThemesEchart() {
         formatter: (params: any) => {
           return `${params.name}: ${
             isMonetaryValue
-              ? formatFinancialValue(params.data.value)
+              ? formatFinancialValue(params.data.value, true)
               : params.data.value
           }`;
         },

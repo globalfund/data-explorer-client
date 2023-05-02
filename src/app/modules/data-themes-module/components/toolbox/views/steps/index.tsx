@@ -65,7 +65,7 @@ export const AccordionSummary = withStyles({
     },
     "&$expanded": {
       margin: "12px 0",
-      fontFamily: "Inter, sans-serif",
+      fontFamily: "GothamNarrow-Bold, sans-serif",
       fontWeight: 700,
       "& > div": {
         backgroundColor: "#262C34",
@@ -88,7 +88,7 @@ const Button = withStyles(() => ({
     height: "48px",
     borderRadius: "0px",
     backgroundColor: "#262C34",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Book, sans-serif",
     "&:first-child": {
       borderRight: "1px solid #f1f3f5",
     },
@@ -100,7 +100,7 @@ const Button = withStyles(() => ({
     color: "#fff",
     fontSize: "14px",
     textTransform: "none",
-    fontFamily: "Inter, sans-serif",
+    fontFamily: "GothamNarrow-Book, sans-serif",
   },
   disabled: {
     backgroundColor: "#ADB5BD",

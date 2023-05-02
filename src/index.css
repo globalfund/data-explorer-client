@@ -1,29 +1,98 @@
+@font-face {
+  font-family: "GothamNarrow-Light";
+  src: url("app/assets/fonts/subset-GothamNarrow-Light.eot");
+  /*src: local('Gotham Narrow Light'), local('GothamNarrow-Light'),*/
+  src: url("app/assets/fonts/subset-GothamNarrow-Light.eot?#iefix")
+      format("embedded-opentype"),
+    url("app/assets/fonts/subset-GothamNarrow-Light.woff2") format("woff2"),
+    url("app/assets/fonts/subset-GothamNarrow-Light.woff") format("woff"),
+    url("app/assets/fonts/subset-GothamNarrow-Light.ttf") format("truetype");
+  /*url('app/assets/fonts/subset-GothamNarrow-Light.svg#GothamNarrow-Light') format('svg');*/
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GothamNarrow-Medium";
+  src: url("app/assets/fonts/subset-GothamNarrow-Medium.eot");
+  /*src: local('Gotham Narrow Medium'), local('GothamNarrow-Medium'),*/
+  src: url("app/assets/fonts/subset-GothamNarrow-Medium.eot?#iefix")
+      format("embedded-opentype"),
+    url("app/assets/fonts/subset-GothamNarrow-Medium.woff2") format("woff2"),
+    url("app/assets/fonts/subset-GothamNarrow-Medium.woff") format("woff"),
+    url("app/assets/fonts/subset-GothamNarrow-Medium.ttf") format("truetype");
+  /*url('app/assets/fonts/subset-GothamNarrow-Medium.svg#GothamNarrow-Medium') format('svg');*/
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GothamNarrow-Thin";
+  src: url("app/assets/fonts/subset-GothamNarrow-Thin.eot");
+  /*src: local('Gotham Narrow Thin'), local('GothamNarrow-Thin'),*/
+  src: url("app/assets/fonts/subset-GothamNarrow-Thin.eot?#iefix")
+      format("embedded-opentype"),
+    url("app/assets/fonts/subset-GothamNarrow-Thin.woff2") format("woff2"),
+    url("app/assets/fonts/subset-GothamNarrow-Thin.woff") format("woff"),
+    url("app/assets/fonts/subset-GothamNarrow-Thin.ttf") format("truetype");
+  /*url('app/assets/fonts/subset-GothamNarrow-Thin.svg#GothamNarrow-Thin') format('svg');*/
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GothamNarrow-Book";
+  src: url("app/assets/fonts/subset-GothamNarrow-Book.eot");
+  /*src: local('Gotham Narrow Book'), local('GothamNarrow-Book'),*/
+  src: url("app/assets/fonts/subset-GothamNarrow-Book.eot?#iefix")
+      format("embedded-opentype"),
+    url("app/assets/fonts/subset-GothamNarrow-Book.woff2") format("woff2"),
+    url("app/assets/fonts/subset-GothamNarrow-Book.woff") format("woff"),
+    url("app/assets/fonts/subset-GothamNarrow-Book.ttf") format("truetype");
+  /*url('app/assets/fonts/subset-GothamNarrow-Book.svg#GothamNarrow-Book') format('svg');*/
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "GothamNarrow-Bold";
+  src: url("app/assets/fonts/subset-GothamNarrow-Bold.eot");
+  /*src: local('Gotham Narrow Bold'), local('GothamNarrow-Bold'),*/
+  src: url("app/assets/fonts/subset-GothamNarrow-Bold.eot?#iefix")
+      format("embedded-opentype"),
+    url("app/assets/fonts/subset-GothamNarrow-Bold.woff2") format("woff2"),
+    url("app/assets/fonts/subset-GothamNarrow-Bold.woff") format("woff"),
+    url("app/assets/fonts/subset-GothamNarrow-Bold.ttf") format("truetype");
+  /*url('app/assets/fonts/subset-GothamNarrow-Bold.svg#GothamNarrow-Bold') format('svg');*/
+  font-weight: bold;
+  font-style: normal;
+}
+
 body {
   margin: 0;
-  font-family: "Inter", "Helvetica Neue", sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
-
-  overflow-x: hidden;
-
   width: 100vw;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
   transition: background 0.2s ease-in-out;
-}
-
-body::-webkit-scrollbar {
-  width: 6px;
-  border-radius: 4px;
-  background: #f4f4f4;
-}
-body::-webkit-scrollbar-track {
-  background: #262c34;
+  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
 }
 
 #root {
   width: 100vw;
-  /* height: 100vh; */
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
+}
+
+#root::-webkit-scrollbar {
+  width: 6px;
+  border-radius: 4px;
+  background: #f4f4f4;
+}
+#root::-webkit-scrollbar-track {
+  background: #262c34;
 }
 
 * {
@@ -31,7 +100,7 @@ body::-webkit-scrollbar-track {
 }
 
 *:not([data-text="true"]) {
-  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
 }
 
 .MuiTooltip-popperInteractive > div {
@@ -60,7 +129,7 @@ body::-webkit-scrollbar-track {
 }
 
 b {
-  font-family: "Inter", "Helvetica Neue", sans-serif !important;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif !important;
 }
 
 a:hover {

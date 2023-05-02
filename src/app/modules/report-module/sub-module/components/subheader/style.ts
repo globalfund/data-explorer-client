@@ -49,7 +49,7 @@ export const styles = {
       margin: 0;
       font-size: 24px;
       font-weight: 700;
-      font-family: "Inter", "Helvetica Neue", sans-serif;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
   `,
   sharePopup: css`
@@ -106,7 +106,7 @@ export const styles = {
     border-style: none;
     background: transparent;
     transition: background 0.2s ease-in-out;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     &:focus {
       background: #f1f3f5;
@@ -122,7 +122,7 @@ export const styles = {
     border-style: none;
     background: transparent;
     transition: background 0.2s ease-in-out;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
 
     &:focus {
       background: #f1f3f5;

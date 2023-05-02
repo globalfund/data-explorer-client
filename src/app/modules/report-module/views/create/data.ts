@@ -19,7 +19,10 @@ export interface IFramesArray {
 export interface ReportCreateViewProps {
   open: boolean;
   reportType: "basic" | "advanced";
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
+  deleteFrame: (id: string) => void;
   framesArray: IFramesArray[];
   headerDetails: {
     title: string;
@@ -42,7 +45,7 @@ export interface ReportCreateViewProps {
     }>
   >;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
@@ -66,9 +69,10 @@ export interface PlaceholderProps {
   framesArray: IFramesArray[];
   index: string;
   disableAddrowStructureButton?: boolean;
-  deleteFrame: (index: number) => void;
+  deleteFrame: (id: string) => void;
+  rowId: string;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"

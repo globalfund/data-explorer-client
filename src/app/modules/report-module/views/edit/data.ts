@@ -5,6 +5,7 @@ export interface ReportEditViewProps {
   open: boolean;
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
   setName: React.Dispatch<React.SetStateAction<string>>;
   headerDetails: {
     title: string;
@@ -26,8 +27,19 @@ export interface ReportEditViewProps {
       dateColor: string;
     }>
   >;
+  setAppliedHeaderDetails: React.Dispatch<
+    React.SetStateAction<{
+      title: string;
+      showHeader: boolean;
+      description: EditorState;
+      backgroundColor: string;
+      titleColor: string;
+      descriptionColor: string;
+      dateColor: string;
+    }>
+  >;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"

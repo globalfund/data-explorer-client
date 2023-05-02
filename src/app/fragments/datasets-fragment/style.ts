@@ -23,7 +23,7 @@ export const uploadDatasetcss = css`
     height: 55px;
     width: 100%;
     color: #231d2c;
-    font-family: "Inter";
+    font-family: "GothamNarrow-Book";
     font-style: normal;
     font-weight: 500;
     font-size: 14px;
@@ -62,7 +62,7 @@ export const uploadAreacss = css`
     p {
       font-weight: 500;
       font-size: 14px;
-      font-family: "Inter";
+      font-family: "GothamNarrow-Book";
       text-transform: uppercase;
     }
   }
@@ -78,7 +78,7 @@ export const metaDatacss = css`
   h1 {
     font-weight: 500;
     font-size: 48px;
-    font-family: "Inter";
+    font-family: "GothamNarrow-Book";
     margin-top: 6rem;
 
     margin-bottom: 4.5rem;

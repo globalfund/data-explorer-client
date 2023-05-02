@@ -55,6 +55,6 @@ export const styles = {
     border-style: none;
     background: #262c34;
     border-radius: 16px;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
 };

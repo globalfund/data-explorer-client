@@ -58,15 +58,38 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
           overflow-y: auto;
           padding-right: 15px;
           flex-direction: column;
+          overflow-x: hidden;
 
+          &::-webkit-scrollbar {
+            width: 5px;
+            height: 1px;
+
+            background: #262c34;
+          }
+          &::-webkit-scrollbar-track {
+            background: #f1f3f5;
+            width: 1px;
+
+            height: 1px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 6px;
+            background: #262c34;
+          }
           .MuiFormControlLabel-label {
             font-size: 14px;
           }
         `}
       >
-        <div>Filters</div>
+        <div
+          css={`
+            margin-bottom: 5px;
+          `}
+        >
+          Filters
+        </div>
         <FormGroup row>
-          <Grid container>
+          <Grid container spacing={1}>
             {props.filterOptionGroups.map((optionGroup: FilterGroupModel) => (
               <Grid item key={optionGroup.name} lg={6}>
                 <FormControlLabel
@@ -110,12 +133,13 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
           css={`
             font-weight: 325;
             color: #262c34;
+            margin-bottom: 5px;
           `}
         >
           Aggregation Types
         </div>
         <FormGroup row>
-          <Grid container>
+          <Grid container spacing={1}>
             {aggregationTypes.map((name, index) => (
               <Grid item key={name} lg={6}>
                 <FormControlLabel

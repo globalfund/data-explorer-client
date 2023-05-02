@@ -172,7 +172,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
             background: #dfe3e6;
             text-transform: capitalize;
             max-width: calc(50vw - 32px);
-            font-family: "Inter", sans-serif;
+            font-family: "GothamNarrow-Bold", sans-serif;
 
             &:hover {
               background: #dfe3e6;
@@ -193,7 +193,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
               overflow: hidden;
               white-space: nowrap;
               text-overflow: ellipsis;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             {params.vizType.replace("-", " & ")}

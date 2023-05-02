@@ -82,7 +82,8 @@ const styles = {
     transition: background 0.2s ease-in-out;
     font-weight: ${active ? "bold" : "normal"};
     background: ${active ? "#262C34" : "#C7CDD1"};
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
+      sans-serif;
 
     :first-of-type {
       border-radius: 15px 0px 0px 0px;
@@ -97,7 +98,7 @@ const styles = {
       color: #fff;
       font-weight: bold;
       background: #231d2c;
-      font-family: "Inter", "Helvetica Neue", sans-serif;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
 
     @media (max-width: 767px) {

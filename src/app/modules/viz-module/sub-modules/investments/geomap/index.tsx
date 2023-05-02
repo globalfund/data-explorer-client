@@ -241,7 +241,7 @@ export function InvestmentsGeoMap(props: Props) {
               font-weight: bold;
               text-align: center;
               flex-direction: column;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               > * {
                 @supports (-webkit-touch-callout: none) and
@@ -265,7 +265,7 @@ export function InvestmentsGeoMap(props: Props) {
             <div
               css={`
                 font-weight: bold;
-                font-family: "Inter", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               N/A

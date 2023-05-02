@@ -122,10 +122,11 @@ const rowStructureDetailItems = [
 
 export interface RowFrameProps {
   rowIndex: number;
-  deleteFrame: () => void;
+  rowId: string;
+  deleteFrame: (id: string) => void;
   forceSelectedType?: string;
   handleRowFrameItemAddition: (
-    rowIndex: number,
+    rowId: string,
     itemIndex: number,
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
@@ -154,6 +155,7 @@ export default function RowFrame(props: RowFrameProps) {
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType || ""
   );
+
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
   >([""]);
@@ -167,6 +169,7 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height="400px"
+        rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
@@ -181,8 +184,9 @@ export default function RowFrame(props: RowFrameProps) {
     oneByTwo: (
       <RowstructureDisplay
         gap={containerGap}
-        height="400px"
+        height="420px"
         rowIndex={props.rowIndex}
+        rowId={props.rowId}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
         setSelectedType={setSelectedType}
@@ -197,6 +201,7 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height="460px"
+        rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
@@ -212,6 +217,7 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height="122px"
+        rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
@@ -227,6 +233,7 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height="121px"
+        rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
@@ -242,6 +249,7 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height="400px"
+        rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
@@ -258,6 +266,7 @@ export default function RowFrame(props: RowFrameProps) {
         gap={containerGap}
         height="400px"
         rowIndex={props.rowIndex}
+        rowId={props.rowId}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
         setSelectedType={setSelectedType}
@@ -293,7 +302,7 @@ export default function RowFrame(props: RowFrameProps) {
   return (
     <>
       {selectedType ? (
-        checkSelectedType[selectedType as keyof typeof checkSelectedType]
+        <>{checkSelectedType[selectedType as keyof typeof checkSelectedType]}</>
       ) : (
         <div css={containercss}>
           <p>Select your row structure</p>
@@ -304,7 +313,7 @@ export default function RowFrame(props: RowFrameProps) {
               position: absolute;
             `}
             onClick={() => {
-              props.deleteFrame();
+              props.deleteFrame(props.rowId);
               setSelectedType(
                 selectedTypeHistory[selectedTypeHistory.length - 2]
               );
@@ -538,9 +547,13 @@ const FourToOne = (props: IRowStructureType) => {
   );
 };
 
-export function Divider(props: { delete: () => void }) {
+export function Divider(props: {
+  dividerId: string;
+  delete: (id: string) => void;
+}) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
+
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
   const viewOnlyMode =
@@ -581,7 +594,7 @@ export function Divider(props: { delete: () => void }) {
               justify-content: center;
             `}
           >
-            <IconButton onClick={props.delete}>
+            <IconButton onClick={() => props.delete(props.dividerId)}>
               <DeleteIcon />
             </IconButton>
           </div>

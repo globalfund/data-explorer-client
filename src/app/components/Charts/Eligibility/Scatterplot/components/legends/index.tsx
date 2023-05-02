@@ -156,7 +156,7 @@ export function ScatterplotLegends(props: Props) {
             font-size: 14px;
             font-weight: bold;
             margin-bottom: 5px;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
           Eligibility
@@ -191,7 +191,7 @@ export function ScatterplotLegends(props: Props) {
               font-size: 14px;
               font-weight: bold;
               margin-bottom: 5px;
-              font-family: "Inter", "Helvetica Neue", sans-serif;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
             Disease Burden
@@ -400,7 +400,7 @@ export function ScatterplotLegends(props: Props) {
                 font-size: 14px;
                 font-weight: bold;
                 margin-bottom: 5px;
-                font-family: "Inter", "Helvetica Neue", sans-serif;
+                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
               Income Level

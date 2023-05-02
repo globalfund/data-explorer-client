@@ -1,8 +1,8 @@
 import { css } from "styled-components/macro";
 
-export const  previewTablecss = css`
+export const previewTablecss = css`
   width: max-content;
- 
+
   th {
     border-bottom: 1px solid #e4e4e4;
     border-right: 1px solid #e4e4e4;
@@ -18,7 +18,6 @@ export const  previewTablecss = css`
     height: 52px;
     font-weight: 500;
     font-size: 14px;
-    font-family: "Inter";
-  
+    font-family: "GothamNarrow-Book";
   }
 `;

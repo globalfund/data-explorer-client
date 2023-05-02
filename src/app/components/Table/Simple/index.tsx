@@ -94,7 +94,8 @@ function Row(props: {
                   align-items: center;
                   flex-direction: row;
                   font-weight: ${index === 0 ? "bold" : "normal"};
-                  font-family: "Inter", "Helvetica Neue", sans-serif;
+                  font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
+                    "Helvetica Neue", sans-serif;
 
                   > * {
                     @supports (-webkit-touch-callout: none) and
@@ -164,7 +165,8 @@ export function SimpleTable(props: SimpleTableProps) {
                   css={`
                     ${tablecell}
                     font-weight: bold;
-                    font-family: "Inter", "Helvetica Neue", sans-serif;
+                    font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                      sans-serif;
                   `}
                 >
                   {column.name}

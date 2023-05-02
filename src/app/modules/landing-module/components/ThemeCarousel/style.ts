@@ -66,7 +66,7 @@ export const gridItemCss = css`
   > div {
     font-weight: bold;
     margin-bottom: 10px;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 
   > svg {

@@ -5,6 +5,7 @@ export const headerBlockcss = {
     width: 100%;
     padding: 60px 0;
     position: relative;
+    height: 262px;
     background: ${backgroundColor};
 
     input {
@@ -13,7 +14,7 @@ export const headerBlockcss = {
       height: 100%;
       border: none;
       outline: none;
-      font-size: 40px;
+      font-size: 28.9px;
       font-weight: 700;
       line-height: 48px;
       background: inherit;
@@ -33,9 +34,8 @@ export const headerBlockcss = {
   date: (dateColor: string) => css`
     gap: 0.7rem;
     display: flex;
-    font-size: 12px;
+    font-size: 8.66898px;
     line-height: 14px;
-    margin-top: 0.5rem;
     color: ${dateColor};
     align-items: center;
 

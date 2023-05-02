@@ -193,13 +193,14 @@ export function ChartToolBoxSelectDataset(
           font-size: 14px;
           padding: 12px 16px;
           flex-direction: row;
+          height: 44px;
           border-radius: 24px;
-          background: #dfe3e6;
+          background: #cfd4da;
           text-transform: capitalize;
           justify-content: space-between;
 
           &:hover {
-            background: #dfe3e6;
+            background: #cfd4da;
           }
 
           svg {
@@ -217,7 +218,7 @@ export function ChartToolBoxSelectDataset(
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            font-family: "Inter", "Helvetica Neue", sans-serif;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
           {get(find(datasets, { id: dataset }), "name", "Datasets")}

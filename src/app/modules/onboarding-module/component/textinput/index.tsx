@@ -25,7 +25,7 @@ export const StyledTextField = withStyles({
     },
     "& label-outlined": {
       fontSize: "16px",
-      fontFamily: "'Inter', sans-serif",
+      fontFamily: "'GothamNarrow-Book', sans-serif",
       color: "#231D2C",
     },
 

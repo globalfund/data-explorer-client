@@ -30,7 +30,7 @@ export default function FinishedFragment(props: Props) {
       <div
         css={`
           color: #231d2c;
-          font-family: "Inter";
+          font-family: "GothamNarrow-Book";
           font-style: normal;
           font-weight: 500;
           font-size: 14px;

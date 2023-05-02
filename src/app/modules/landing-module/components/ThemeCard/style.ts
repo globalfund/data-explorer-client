@@ -22,7 +22,7 @@ export const themeCardCss = css`
     margin: 0;
     margin-bottom: 1rem;
     color: #000;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   }
 `;
 

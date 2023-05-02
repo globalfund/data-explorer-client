@@ -4,13 +4,17 @@ export const styles = {
   container: (placeUnderSubHeader?: boolean) => css`
     right: 0;
     z-index: 99;
-    width: 400px;
-    display: flex;
     position: fixed;
+    top: ${!placeUnderSubHeader ? 45 : 97}px;
+
+    display: flex;
     background: #f2f7fd;
     flex-direction: column;
-    top: ${!placeUnderSubHeader ? 40 : 97}px;
-    height: calc(100vh - ${!placeUnderSubHeader ? 40 : 97}px);
+
+    overflow-y: scroll;
+    ::-webkit-scrollbar {
+      display: none;
+    }
 
     > section {
       padding: 0 31px 25px 31px;
@@ -19,14 +23,14 @@ export const styles = {
         font-size: 18px;
         font-weight: 700;
         margin: 25px 0 16px 0;
-        font-family: "Inter", "Helvetica Neue", sans-serif;
+        font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
       }
 
       > h6 {
         margin: 0;
         font-size: 14px;
         font-weight: 400;
-        font-family: "Inter", "Helvetica Neue", sans-serif;
+        font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
       }
     }
   `,
@@ -42,7 +46,7 @@ export const styles = {
       flex-direction: row;
       margin-bottom: 24px;
       align-items: center;
-      font-family: "Inter", "Helvetica Neue", sans-serif;
+      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
       :nth-of-type(1),
       :nth-of-type(2) {
@@ -68,9 +72,11 @@ export const styles = {
     padding-top: 96px;
     line-height: 22px;
     text-align: center;
-    font-family: "Inter", "Helvetica Neue", sans-serif;
+    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
   `,
   exportview: css`
+    width: 400px;
+    background: red;
     padding: 24px;
   `,
 };

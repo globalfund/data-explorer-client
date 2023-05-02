@@ -13,7 +13,7 @@ const Button = styled((props) => <button type="button" {...props} />)`
   border-radius: 20px;
   background: #231d2c;
   text-transform: unset;
-  font-family: "Inter", "Helvetica Neue", sans-serif;
+  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
   &:hover {
     cursor: pointer;
@@ -59,7 +59,7 @@ export const Message = (props: MessageProps) => {
           font-weight: bold;
           line-height: 20px;
           margin-bottom: 15px;
-          font-family: "Inter", "Helvetica Neue", sans-serif;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
         {get(cmsData, "componentsCookieDialog.title", "")}
