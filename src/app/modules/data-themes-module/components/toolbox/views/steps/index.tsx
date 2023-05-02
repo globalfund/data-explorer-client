@@ -179,7 +179,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (history.location.pathname === stepPaths[8] && direction === "next") {
+      if (history.location.pathname === stepPaths[7] && direction === "next") {
         // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
         history.push(stepPaths[0]);
         return;
@@ -398,7 +398,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
           />
         </AccordionDetails>
       </Accordion>
-      <Accordion
+      {/* <Accordion
         square
         expanded={expanded === 7 && !collapsed}
         onChange={handleChange(8)}
@@ -424,7 +424,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
         <AccordionDetails>
           <DataThemesToolBoxExport rawViz={props.rawViz} />
         </AccordionDetails>
-      </Accordion>
+      </Accordion> */}
       <div
         css={`
           bottom: 0;
@@ -448,7 +448,7 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
             !props.forceNextEnabled
           }
         >
-          {activePanels[activeTabIndex][activeVizIndex] === 7
+          {activePanels[activeTabIndex][activeVizIndex] === 6
             ? "Preview"
             : "Next"}
         </Button>
