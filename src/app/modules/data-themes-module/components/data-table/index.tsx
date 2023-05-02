@@ -8,6 +8,12 @@ import {
   getColumnsFromData,
   DataThemesDataTableProps,
 } from "app/modules/data-themes-module/components/data-table/data";
+import StatisticalTable from "app/components/Table/Statistical/table";
+import {
+  barChartdata,
+  tableToolBoxData,
+} from "app/components/Table/Statistical/table/data";
+import { ChartRepresentationProps } from "app/components/Table/Statistical/table/StatisticalRepresentations";
 
 export function DataThemesDataTable(props: DataThemesDataTableProps) {
   const containerEl = React.useRef<HTMLDivElement>(null);
@@ -18,7 +24,46 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     columnKey: "_id",
     direction: "ASC",
   });
+  const getColumns = (
+    data: { [key: string]: number | string | null | boolean }[]
+  ) => {
+    let columns = [];
+    for (let key in data[0]) {
+      columns.push({ key: key, type: typeof data[0][key] });
+    }
+    return columns;
+  };
+  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
+  //table chart details
+  const domRef = React.useRef<HTMLDivElement>(null);
+  const [renderedChartMappedData, setRenderedChartMappedData] =
+    React.useState<{ bars: string; size: string }[]>(barChartdata);
 
+  const [visualOptions, setVisualOptions] = React.useState({
+    barWidth: 15.84,
+    background: "transparent",
+    color: "#000000",
+    splitLineY: false,
+    width: "100%",
+    height: 100,
+    marginBottom: 20,
+    showXAxis: true,
+    realTimeSort: false,
+    xAxisLineColor: "#ADB5BD",
+    xAxisLabelColor: "#262C34",
+    barRadius: [2, 2, 0, 0],
+    xAxisLabelInterval: (index: number) => {
+      return index === 0 || index === renderedChartMappedData.length - 1;
+    },
+  });
+
+  const chartOptions: ChartRepresentationProps = {
+    containerId: "common-chart-render-containerr",
+    domRef,
+    visualOptions,
+    renderedChartMappedData,
+    setRenderedChartMappedData,
+  };
   const handleSort = React.useCallback((newSorts: SortColumn[]) => {
     if (newSorts.length === 0) {
       setSort({
@@ -34,8 +79,8 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     setData(
       props.data?.map(
         (item: { [key: string]: number | string | null }, index: number) => ({
-          ...item,
           _id: index + 1,
+          ...item,
         })
       )
     );
@@ -56,26 +101,21 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
 
         > div {
           height: 100%;
-          background: #fff;
           border-style: none;
 
           * {
-            border-color: #98a1aa;
             outline: none !important;
           }
         }
       `}
     >
-      <DataGrid
-        rows={data || [{ ["key"]: "" }]}
-        rowHeight={48}
-        headerRowHeight={88}
-        sortColumns={[sort]}
-        onSortColumnsChange={handleSort}
-        columns={getColumnsFromData(
-          props.data,
-          containerEl.current?.getBoundingClientRect().width
-        )}
+      <StatisticalTable
+        tableData={data}
+        setTableData={setData}
+        columns={getColumns(data)}
+        placeUnderSubHeader
+        columnDetails={columnDetails}
+        chartOptions={chartOptions}
       />
     </div>
   );

@@ -41,24 +41,29 @@ export function useDataThemesEchart() {
 
   function echartsBarchart(data: any, visualOptions: any) {
     const {
-      // artboard
-      // height,
       background,
-      // margins
+
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
-      // chart options
-      // orientation,
-      // Tooltip
+
       showTooltip,
       isMonetaryValue,
       label,
-      // legend,
-      // legendHoverLink,
+
       barWidth,
       stack,
+
+      realTimeSort,
+      color,
+      splitLineY,
+      barRadius,
+      xAxisLineColor,
+      showXAxis,
+      focus,
+      xAxisLabelColor,
+      xAxisLabelInterval,
     } = visualOptions;
 
     const bars = data.map((d: any) => d.bars);
@@ -76,8 +81,32 @@ export function useDataThemesEchart() {
       //   show: legend,
 
       // },
-      xAxis: { data: bars },
-      yAxis: { type: "value" },
+      xAxis: {
+        data: bars,
+        show: true,
+        type: "category",
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          lineStyle: {
+            color: xAxisLineColor,
+          },
+        },
+        axisLabel: {
+          show: true,
+          color: xAxisLabelColor,
+          interval: xAxisLabelInterval,
+        },
+      },
+      yAxis: {
+        type: "value",
+        show: true,
+        splitLine: {
+          show: splitLineY ?? true,
+        },
+      },
+
       // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
       // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
       backgroundColor: background,
@@ -88,7 +117,11 @@ export function useDataThemesEchart() {
           type: "bar",
 
           data: sizes,
-          realtimeSort: true,
+          realtimeSort: realTimeSort ?? true,
+          itemStyle: {
+            color: color,
+            borderRadius: barRadius,
+          },
           // legendHoverLink: legendHoverLink,
           stack: stack ? "Total" : undefined,
 
@@ -306,6 +339,8 @@ export function useDataThemesEchart() {
       linksOpacity,
       nodeAlign,
       orient,
+      draggable,
+      showEdgeLabels,
       // Labels
       showLabels,
       labelRotate,
@@ -315,7 +350,7 @@ export function useDataThemesEchart() {
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
-
+    //ex
     let nodes: { name: string }[] = [];
     data.forEach((d: any) => {
       nodes.push({ name: d.source });
@@ -333,12 +368,16 @@ export function useDataThemesEchart() {
           height,
           orient,
           nodeAlign,
+          draggable,
           top: marginTop,
           left: marginLeft,
           right: marginRight,
           bottom: marginBottom,
           nodeGap: nodesPadding,
           nodeWidth: nodesWidth,
+          edgeLabel: {
+            show: showEdgeLabels,
+          },
           emphasis: {
             focus: "adjacency",
           },
@@ -347,6 +386,7 @@ export function useDataThemesEchart() {
             color: "source",
             opacity: linksOpacity,
           },
+
           label: {
             show: showLabels,
             rotate: labelRotate,
@@ -421,28 +461,41 @@ export function useDataThemesEchart() {
       showLabels,
       labelFontSize,
       showBreadcrumbs,
+      upperLabel,
       // tooltip
       showTooltip,
       isMonetaryValue,
+      nodeClick,
     } = visualOptions;
-
+    const newdata = data.map(
+      (item: { name: string; path: string; value: number; link: string }) => {
+        return { ...item, link: "https://peaktrades.org" };
+      }
+    );
+    console.log(data, "treemap");
     const option = {
       backgroundColor: background,
       series: [
         {
           name: "All",
           type: "treemap",
-          data,
+
+          data: newdata,
           width,
           height,
+
           top: marginTop,
           left: marginLeft,
           right: marginRight,
           bottom: marginBottom,
           leafDepth: 1,
+          nodeClick,
           label: {
             show: showLabels,
             fontSize: labelFontSize,
+          },
+          upperLabel: {
+            show: upperLabel,
           },
           breadcrumb: {
             show: showBreadcrumbs,
