@@ -67,6 +67,7 @@ export function useChartsRawData(props: {
   const [dataTypes, setDataTypes] = React.useState([]);
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
+  const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
 
   const appliedFilters = useStoreState(
@@ -108,6 +109,7 @@ export function useChartsRawData(props: {
       .then((response: AxiosResponse) => {
         setSampleData(response.data.sample);
         setDataTypes(response.data.dataTypes);
+        setDataTotalCount(response.data.count);
         setEnabledFilterOptionGroups(response.data.filterOptionGroups);
         if (extraLoader) {
           extraLoader.style.display = "none";
@@ -254,6 +256,7 @@ export function useChartsRawData(props: {
     dataTypes,
     sampleData,
     isEditMode,
+    dataTotalCount,
     loadDataset,
     loadDataFromAPI,
   };

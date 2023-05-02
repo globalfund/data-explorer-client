@@ -27,13 +27,14 @@ export const CssSnackbar = withStyles({
     },
   },
 })(Snackbar);
+
 export default function PreviewFragment(props: Props) {
   const [openToolboxPanel, setOpenToolboxPanel] = useState(true);
   const onCloseBtnClick = () => {
     setOpenToolboxPanel(!openToolboxPanel);
   };
 
-  const { loadDataset, sampleData } = useChartsRawData({
+  const { loadDataset, sampleData, dataTotalCount } = useChartsRawData({
     visualOptions: () => {},
     setVisualOptions: () => {},
     setChartFromAPI: () => {},
@@ -51,11 +52,13 @@ export default function PreviewFragment(props: Props) {
   });
 
   React.useEffect(() => {
-    setSnackbarState({ ...snackbarState, open: true });
-    setTimeout(() => {
-      setSnackbarState({ ...snackbarState, open: false });
-    }, 5000);
-  }, []);
+    if (dataTotalCount > 0) {
+      setSnackbarState({ ...snackbarState, open: true });
+      setTimeout(() => {
+        setSnackbarState({ ...snackbarState, open: false });
+      }, 10000);
+    }
+  }, [dataTotalCount]);
 
   return (
     <div>
@@ -91,7 +94,7 @@ export default function PreviewFragment(props: Props) {
         }}
         open={snackbarState.open}
         onClose={() => setSnackbarState({ ...snackbarState, open: false })}
-        message={`${sampleData.length} rows have been successfully parsed!`}
+        message={`${dataTotalCount} rows have been successfully parsed!`}
         key={snackbarState.vertical + snackbarState.horizontal}
       />
     </div>
