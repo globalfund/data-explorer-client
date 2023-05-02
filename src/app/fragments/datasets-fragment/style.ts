@@ -65,6 +65,8 @@ export const uploadAreacss = css`
       font-family: "GothamNarrow-Book";
       text-transform: uppercase;
     }
+  }
+  label {
     :hover {
       opacity: 0.9;
     }

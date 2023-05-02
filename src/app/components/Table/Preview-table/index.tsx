@@ -6,20 +6,11 @@ import {
   TableHead,
   TableCell,
   TableRow,
-  makeStyles,
-  Grid,
-  Checkbox,
-  Container,
 } from "@material-ui/core";
 import React, { useState } from "react";
 
-import { ReactComponent as SortIcon } from "../../assets/sort.svg";
-import { v4 } from "uuid";
-import { tablecss } from "app/modules/dataset-detail-module/component/table/style";
-import {
-  dummyDatasetData,
-  tHeadData,
-} from "app/modules/dataset-detail-module/data";
+import { ReactComponent as SortIcon } from "../../../fragments/datasets-fragment/assets/sort.svg";
+
 import { previewTablecss } from "./style";
 
 interface PreviewTableProps {

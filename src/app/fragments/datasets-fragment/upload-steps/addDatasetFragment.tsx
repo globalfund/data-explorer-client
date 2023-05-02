@@ -7,12 +7,18 @@ import {
 import { ReactComponent as UploadIcon } from "app/fragments/datasets-fragment/assets/upload.svg";
 import { ReactComponent as LocalUploadIcon } from "app/fragments/datasets-fragment/assets/local-upload.svg";
 import { ReactComponent as GoogleDriveIcon } from "app/fragments/datasets-fragment/assets/google-drive.svg";
+import { Tooltip } from "@material-ui/core";
 
 interface Props {
   handleNext: () => void;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 export default function AddDatasetFragment(props: Props) {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    props.setFile(e.target.files?.[0] || null);
+    props.handleNext();
+  };
   return (
     <div css={uploadDatasetcss}>
       <div>
@@ -54,14 +60,21 @@ export default function AddDatasetFragment(props: Props) {
             id="local-upload"
             type="file"
             hidden
-            onChange={props.handleNext}
+            onChange={handleFileChange}
           />
           <label htmlFor="local-upload">
             <LocalUploadIcon /> <p>Local upload</p>
           </label>
-          <button type="button">
-            <GoogleDriveIcon /> <p>Connect to google drive</p>
-          </button>
+          <Tooltip title="Not yet implemented">
+            <button
+              type="button"
+              css={`
+                opacity: 0.6;
+              `}
+            >
+              <GoogleDriveIcon /> <p>Connect to google drive</p>
+            </button>
+          </Tooltip>
         </div>
         <Box height={80} />
         <p>

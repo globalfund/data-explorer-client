@@ -1,12 +1,28 @@
 import { Box } from "@material-ui/core";
+import { useChartsRawData } from "app/hooks/useChartsRawData";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import DatasetTable from "app/modules/dataset-detail-module/component/table/datasetTable";
 import DatasetTableOverview from "app/modules/dataset-detail-module/component/table/datasetTableOverview";
 import { dataSetsCss } from "app/modules/datasets-module/style";
 import React from "react";
 import { Link } from "react-router-dom";
+import { DatasetDataTable } from "../component/data-table";
 
-export default function FinishedFragment() {
+interface Props {
+  datasetId: string;
+}
+export default function FinishedFragment(props: Props) {
+  const { loadDataset, sampleData } = useChartsRawData({
+    visualOptions: () => {},
+    setVisualOptions: () => {},
+    setChartFromAPI: () => {},
+    chartFromAPI: null,
+  });
+
+  React.useEffect(() => {
+    loadDataset(`data-themes/sample-data/${props.datasetId}`);
+  }, [props.datasetId]);
+
   return (
     <div css={dataSetsCss}>
       <PageTopSpacer />
@@ -21,32 +37,27 @@ export default function FinishedFragment() {
           width: 100%;
         `}
       >
-        <p
+        <h1
           css={`
+            color: #231d2c;
             font-weight: 500;
+            font-size: 48px;
+            margin-top: 13px;
           `}
         >
-          Uploaded datasets
-        </p>
-        <p
-          css={`
-            margin-top: -8px;
-          `}
-        >
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
-        </p>
-        <Box height={30} />
+          Finished
+        </h1>
 
-        <DatasetTable />
-        <Box height={40} />
+        <Box height={22} />
+
+        <DatasetDataTable data={sampleData} />
+
         <div
           css={`
             display: flex;
             justify-content: flex-end;
             width: 100%;
+            margin-top: 0;
           `}
         >
           <Link to="/">
