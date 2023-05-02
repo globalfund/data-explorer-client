@@ -243,7 +243,10 @@ export default function ChartModule() {
   }, [chartType, loading]);
 
   React.useEffect(() => {
-    loadDatasets({ storeInCrudData: true });
+    loadDatasets({
+      storeInCrudData: true,
+      filterString: `filter={"where":{"name":{"like":".*","options":"i"}},"order":"createdDate desc"}`,
+    });
     if (page !== "new") {
       loadChart({ getId: page });
     } else {
