@@ -42,6 +42,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
       return [...tempPrev];
     });
   }
+
   React.useEffect(() => {
     if (props.reportType === "advanced") {
       const rowOne = v4();
@@ -58,6 +59,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={0}
               forceSelectedType="oneByFive"
               deleteFrame={() => deleteFrame(rowOne)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -76,6 +78,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={1}
               forceSelectedType="oneByOne"
               deleteFrame={() => deleteFrame(rowTwo)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -94,6 +97,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={2}
               forceSelectedType="oneToFour"
               deleteFrame={() => deleteFrame(rowThree)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -112,6 +116,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={3}
               forceSelectedType="oneByOne"
               deleteFrame={() => deleteFrame(rowFour)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -130,6 +135,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={4}
               forceSelectedType="oneByThree"
               deleteFrame={() => deleteFrame(rowFive)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -176,6 +182,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                   deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
                   setFramesArray={props.setFramesArray}
+                  handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
                   handleRowFrameItemAddition={props.handleRowFrameItemAddition}
                   handleRowFrameStructureTypeSelection={
                     props.handleRowFrameStructureTypeSelection
@@ -191,6 +198,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}
             setRowStructureType={setRowStructuretype}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
@@ -225,6 +233,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
                 rowId={id}
                 rowIndex={tempIndex + 1}
                 deleteFrame={props.deleteFrame}
+                handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
                 handleRowFrameItemAddition={props.handleRowFrameItemAddition}
                 handleRowFrameStructureTypeSelection={
                   props.handleRowFrameStructureTypeSelection

@@ -2,6 +2,8 @@ import React from "react";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
+import Tooltip from "@material-ui/core/Tooltip";
+import { ResetIcon } from "app/assets/icons/Reset";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useLocation, useParams } from "react-router-dom";
@@ -17,10 +19,8 @@ interface RowStructureDisplayProps {
   height: string;
   rowIndex: number;
   rowId: string;
-
   selectedType: string;
   deleteFrame: (id: string) => void;
-
   selectedTypeHistory: string[];
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
@@ -35,6 +35,7 @@ interface RowStructureDisplayProps {
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
   ) => void;
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   previewItems?: (string | object)[];
 }
 
@@ -128,17 +129,16 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           </div>
         )}
         {props.rowStructureDetailItems.map((row, index) => (
-          <>
-            <Box
-              key={`${row.rowId}-${index}`}
-              width={row.width}
-              itemIndex={index}
-              height={props.height}
-              rowId={props.rowId}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              previewItem={get(props.previewItems, `[${index}]`, undefined)}
-            />
-          </>
+          <Box
+            key={`${row.rowId}-${index}`}
+            width={row.width}
+            itemIndex={index}
+            height={props.height}
+            rowId={props.rowId}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+            previewItem={get(props.previewItems, `[${index}]`, undefined)}
+          />
         ))}
       </div>
     </div>
@@ -150,6 +150,7 @@ const Box = (props: {
   height: string;
   rowId: string;
   itemIndex: number;
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,
@@ -225,6 +226,7 @@ const Box = (props: {
           css={`
             overflow: auto;
             background: #fff;
+            position: relative;
             width: ${props.width}};
             height: ${props.height};
             max-height: ${props.height};
@@ -234,6 +236,27 @@ const Box = (props: {
             }
           `}
         >
+          {!viewOnlyMode && (
+            <Tooltip title="Reset">
+              <IconButton
+                onClick={() => {
+                  setDisplayChart(false);
+                  setChartId(null);
+                  setDisplayTextBox(false);
+                  setTextContent(EditorState.createEmpty());
+                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+                }}
+                css={`
+                  top: 12px;
+                  z-index: 1;
+                  right: 12px;
+                  position: absolute;
+                `}
+              >
+                <ResetIcon />
+              </IconButton>
+            </Tooltip>
+          )}
           <RichEditor
             fullWidth
             textContent={textContent}
@@ -249,14 +272,34 @@ const Box = (props: {
         <div
           key={chartId}
           css={`
-            background: #fff;
-            box-sizing: border-box;
             padding: 24px;
-
+            background: #fff;
+            position: relative;
             width: ${props.width};
             height: ${props.height};
           `}
         >
+          {!viewOnlyMode && (
+            <Tooltip title="Reset">
+              <IconButton
+                onClick={() => {
+                  setDisplayChart(false);
+                  setChartId(null);
+                  setDisplayTextBox(false);
+                  setTextContent(EditorState.createEmpty());
+                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+                }}
+                css={`
+                  top: 12px;
+                  z-index: 1;
+                  right: 12px;
+                  position: absolute;
+                `}
+              >
+                <ResetIcon />
+              </IconButton>
+            </Tooltip>
+          )}
           <ReportChartWrapper id={chartId} />
         </div>
       );

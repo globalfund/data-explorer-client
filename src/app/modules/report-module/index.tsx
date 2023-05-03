@@ -1,5 +1,6 @@
 import React from "react";
 import { v4 } from "uuid";
+import filter from "lodash/filter";
 import Box from "@material-ui/core/Box";
 import { DndProvider } from "react-dnd";
 import Container from "@material-ui/core/Container";
@@ -54,7 +55,6 @@ export default function ReportModule() {
     React.useState(headerDetails);
 
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
-  const [updatePickedCharts, setUpdatePickedCharts] = React.useState(false);
 
   const handleRowFrameItemAddition = (
     rowId: string,
@@ -63,13 +63,32 @@ export default function ReportModule() {
     itemContentType: "text" | "divider" | "chart"
   ) => {
     setFramesArray((prev) => {
-      let tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = prev.map((item) => ({ ...item }));
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];
       }
       tempPrev[frameId].content[itemIndex] = itemContent;
       tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
+    });
+  };
+
+  const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
+    setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      if (tempPrev[frameId].contentTypes[itemIndex] === "chart") {
+        const chartId = tempPrev[frameId].content[itemIndex] as string;
+        setPickedCharts((prevPickedCharts) =>
+          filter(prevPickedCharts, (chart: string) => chart !== chartId)
+        );
+      }
+      tempPrev[frameId].content[itemIndex] = null;
+      tempPrev[frameId].contentTypes[itemIndex] = null;
       return [...tempPrev];
     });
   };
@@ -115,7 +134,7 @@ export default function ReportModule() {
         break;
     }
     setFramesArray((prev) => {
-      let tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = prev.map((item) => ({ ...item }));
 
       tempPrev[rowIndex].content = content;
       tempPrev[rowIndex].contentTypes = contentTypes;
@@ -126,7 +145,7 @@ export default function ReportModule() {
 
   const deleteFrame = (id: string) => {
     setFramesArray((prev) => {
-      let tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = prev.map((item) => ({ ...item }));
       const frameId = tempPrev.findIndex((frame) => frame.id === id);
       const contentArr = tempPrev[frameId].content;
 
@@ -149,6 +168,7 @@ export default function ReportModule() {
           rowId={id}
           deleteFrame={deleteFrame}
           handleRowFrameItemAddition={handleRowFrameItemAddition}
+          handleRowFrameItemRemoval={handleRowFrameItemRemoval}
           handleRowFrameStructureTypeSelection={
             handleRowFrameStructureTypeSelection
           }
@@ -227,6 +247,7 @@ export default function ReportModule() {
             rowId={id}
             deleteFrame={deleteFrame}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
+            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
@@ -408,6 +429,7 @@ export default function ReportModule() {
             setFramesArray={setFramesArray}
             setHeaderDetails={setHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
+            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
@@ -424,6 +446,7 @@ export default function ReportModule() {
             setHeaderDetails={setHeaderDetails}
             setAppliedHeaderDetails={setAppliedHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
+            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }

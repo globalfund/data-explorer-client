@@ -87,6 +87,7 @@ export function ReportPreviewView() {
               rowIndex={index}
               deleteFrame={() => {}}
               forceSelectedType={rowFrame.structure ?? undefined}
+              handleRowFrameItemRemoval={() => {}}
               handleRowFrameItemAddition={() => {}}
               handleRowFrameStructureTypeSelection={() => {}}
               previewItems={rowFrame.items}

@@ -12,7 +12,7 @@ interface Props {
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   deleteFrame: (id: string) => void;
-
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,
@@ -46,6 +46,7 @@ export default function AddRowFrameButton(props: Props) {
           <RowFrame
             rowId={id}
             rowIndex={props.framesArray.length}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             deleteFrame={props.deleteFrame}
             handleRowFrameStructureTypeSelection={

@@ -44,6 +44,7 @@ export interface ReportCreateViewProps {
       dateColor: string;
     }>
   >;
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,
@@ -71,6 +72,7 @@ export interface PlaceholderProps {
   disableAddrowStructureButton?: boolean;
   deleteFrame: (id: string) => void;
   rowId: string;
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,

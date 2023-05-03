@@ -112,6 +112,7 @@ export function ReportEditView(props: ReportEditViewProps) {
             rowId={id}
             deleteFrame={deleteFrame}
             forceSelectedType={rowFrame.structure ?? undefined}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
@@ -162,6 +163,7 @@ export function ReportEditView(props: ReportEditViewProps) {
                   deleteFrame={deleteFrame}
                   framesArray={props.framesArray}
                   setFramesArray={props.setFramesArray}
+                  handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
                   handleRowFrameItemAddition={props.handleRowFrameItemAddition}
                   handleRowFrameStructureTypeSelection={
                     props.handleRowFrameStructureTypeSelection
@@ -176,6 +178,7 @@ export function ReportEditView(props: ReportEditViewProps) {
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}
             setRowStructureType={setRowStructuretype}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
