@@ -339,6 +339,7 @@ function getPolarBarConfig(data: any, cmsData: any) {
       data: data.keys,
       type: "category",
       axisLabel: {
+        interval: 0,
         formatter: (value: any, index: number) => {
           const nValue = data.values[index];
           return `${value}\n${formatLargeAmountsWithPrefix(nValue).replace(
