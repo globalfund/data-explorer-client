@@ -115,13 +115,13 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             <div
               css={`
                 width: 23px;
+                cursor: grab;
                 display: flex;
                 align-items: center;
                 background: #adb5bd;
                 border-radius: 3.45px;
-                transform: matrix(-1, 0, 0, 1, 0, 0);
-
                 justify-content: center;
+                transform: matrix(-1, 0, 0, 1, 0, 0);
               `}
             >
               <RowFrameHandleAdornment />

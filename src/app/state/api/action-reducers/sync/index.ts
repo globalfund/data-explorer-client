@@ -239,3 +239,42 @@ export const DataSourceSnackbarVisibilityState: DataSourceSnackbarVisibilityStat
       state.value = payload;
     }),
   };
+
+export interface ReportOrderStateModel {
+  value: {
+    order: string[];
+    hasChanged: boolean;
+  };
+  setValue: Action<
+    ReportOrderStateModel,
+    {
+      order: string[];
+      hasChanged: boolean;
+    }
+  >;
+  clear: Action<ReportOrderStateModel>;
+}
+
+export const ReportOrderState: ReportOrderStateModel = {
+  value: {
+    order: [],
+    hasChanged: false,
+  },
+  setValue: action(
+    (
+      state,
+      payload: {
+        order: string[];
+        hasChanged: boolean;
+      }
+    ) => {
+      state.value = payload;
+    }
+  ),
+  clear: action((state) => {
+    state.value = {
+      order: [],
+      hasChanged: false,
+    };
+  }),
+};

@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
+import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
 import RowFrame, {
@@ -171,27 +172,30 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           `}
         >
           <Box height={50} />
-          {props.framesArray.map((frame) => {
-            return (
-              <div key={frame.id}>
-                <div>{frame.frame}</div>
-                <Box height={38} />
-                <PlaceHolder
-                  rowId={frame.id}
-                  index={frame.id}
-                  deleteFrame={deleteFrame}
-                  framesArray={props.framesArray}
-                  setFramesArray={props.setFramesArray}
-                  handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-                  handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-                  handleRowFrameStructureTypeSelection={
-                    props.handleRowFrameStructureTypeSelection
-                  }
-                />
-              </div>
-            );
-          })}
-
+          <ReportOrderContainer enabled childrenData={props.framesArray}>
+            {props.framesArray.map((frame) => {
+              return (
+                <div key={frame.id}>
+                  <div>{frame.frame}</div>
+                  <Box height={38} />
+                  <PlaceHolder
+                    rowId={frame.id}
+                    index={frame.id}
+                    deleteFrame={deleteFrame}
+                    framesArray={props.framesArray}
+                    setFramesArray={props.setFramesArray}
+                    handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+                    handleRowFrameItemAddition={
+                      props.handleRowFrameItemAddition
+                    }
+                    handleRowFrameStructureTypeSelection={
+                      props.handleRowFrameStructureTypeSelection
+                    }
+                  />
+                </div>
+              );
+            })}
+          </ReportOrderContainer>
           <AddRowFrameButton
             deleteFrame={deleteFrame}
             framesArray={props.framesArray}

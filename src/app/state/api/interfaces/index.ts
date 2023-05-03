@@ -21,6 +21,7 @@ import {
   DataSourceSnackbarVisibilityStateModel,
   DataSourceStateModel,
   PageHeaderVizDrilldownsStateModel,
+  ReportOrderStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelAllocationsPeriodStateModel,
   ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
@@ -380,6 +381,7 @@ export interface StoreModel {
     ReportDelete: ApiCallModel;
     ReportDuplicate: ApiCallModel;
     ReportGetList: ApiCallModel;
+    orderData: ReportOrderStateModel;
   };
   search: {
     charts: ApiCallModel;

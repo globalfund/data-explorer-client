@@ -260,6 +260,14 @@ export default function ReportModule() {
     ]);
   };
 
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+
+  const reportOrderClear = useStoreActions(
+    (actions) => actions.reports.orderData.clear
+  );
+
   const onSave = () => {
     if (!isPreviewSaveEnabled) {
       alert("Please add content to all rows");
@@ -279,14 +287,18 @@ export default function ReportModule() {
             ? appliedHeaderDetails.description.getCurrentContent()
             : EditorState.createEmpty().getCurrentContent()
         ),
-        rows: framesArray.map((frame) => ({
-          structure: frame.structure,
-          items: frame.content.map((item, index) =>
-            frame.contentTypes[index] === "text"
-              ? convertToRaw((item as EditorState).getCurrentContent())
-              : item
-          ),
-        })),
+        rows: framesArray
+          .sort(function (a, b) {
+            return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
+          })
+          .map((frame) => ({
+            structure: frame.structure,
+            items: frame.content.map((item, index) =>
+              frame.contentTypes[index] === "text"
+                ? convertToRaw((item as EditorState).getCurrentContent())
+                : item
+            ),
+          })),
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
@@ -298,6 +310,7 @@ export default function ReportModule() {
   React.useEffect(() => {
     return () => {
       reportEditClear();
+      reportOrderClear();
       reportCreateClear();
     };
   }, []);
@@ -324,6 +337,7 @@ export default function ReportModule() {
         reportCreateData.id.length > 0) ||
       reportEditSuccess
     ) {
+      reportOrderClear();
       const id = reportCreateSuccess ? reportCreateData.id : page;
       history.push(`/report/${id}`);
     }
