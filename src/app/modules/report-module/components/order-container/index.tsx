@@ -177,7 +177,7 @@ export function ReportOrderContainer(props: Props) {
         content: child,
       }))
     );
-  }, [props.children.length]);
+  }, [props.childrenData]);
 
   useUpdateEffect(() => {
     setOrderData({

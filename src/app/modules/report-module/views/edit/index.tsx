@@ -153,7 +153,7 @@ export function ReportEditView(props: ReportEditViewProps) {
         >
           <Box height={50} />
           <ReportOrderContainer enabled childrenData={props.framesArray}>
-            {props.framesArray.map((frame, index) => {
+            {props.framesArray.map((frame) => {
               return (
                 <div key={frame.id}>
                   <div>{frame.frame}</div>

@@ -278,13 +278,11 @@ export default function ReportModule() {
       patchId: page === "new" ? undefined : page,
       values: {
         name: reportName,
-        showHeader: appliedHeaderDetails.showHeader,
-        title: appliedHeaderDetails.showHeader
-          ? appliedHeaderDetails.title
-          : undefined,
+        showHeader: headerDetails.showHeader,
+        title: headerDetails.showHeader ? headerDetails.title : undefined,
         subTitle: convertToRaw(
-          appliedHeaderDetails.showHeader
-            ? appliedHeaderDetails.description.getCurrentContent()
+          headerDetails.showHeader
+            ? headerDetails.description.getCurrentContent()
             : EditorState.createEmpty().getCurrentContent()
         ),
         rows: framesArray
