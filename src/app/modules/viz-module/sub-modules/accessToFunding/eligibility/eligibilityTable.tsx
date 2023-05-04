@@ -16,12 +16,12 @@ interface EligibilityTableProps {
   setSearch: (value: string) => void;
   setSortBy: (value: string) => void;
   title: string;
+  forceExpand?: boolean;
 }
 
 export function EligibilityTable(props: EligibilityTableProps) {
   return (
     <SimpleTable
-      forceExpand
       search={props.search}
       sortBy={props.sortBy}
       rows={props.data}
@@ -29,6 +29,7 @@ export function EligibilityTable(props: EligibilityTableProps) {
       columns={props.columns}
       onSearchChange={props.setSearch}
       onSortByChange={props.setSortBy}
+      forceExpand={props.forceExpand}
       multiVizPageDataKey="eligibility"
     />
   );

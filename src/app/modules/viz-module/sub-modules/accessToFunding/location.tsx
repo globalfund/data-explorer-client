@@ -155,7 +155,10 @@ export default function LocationAccessToFundingWrapper(props: Props) {
               </p>
             </div>
             <Box height="50px" />
-            <AccessToFundingEligibilityTableWrapper code={props.code} />
+            <AccessToFundingEligibilityTableWrapper
+              forceExpand
+              code={props.code}
+            />
           </div>
         )}
         <div>

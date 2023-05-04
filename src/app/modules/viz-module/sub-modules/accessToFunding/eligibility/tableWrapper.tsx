@@ -18,6 +18,7 @@ import { EligibilityTable } from "app/modules/viz-module/sub-modules/accessToFun
 
 interface Props {
   code?: string;
+  forceExpand?: boolean;
 }
 
 export function AccessToFundingEligibilityTableWrapper(props: Props) {
@@ -123,7 +124,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     if (appliedFilters.diseaseBurden.length > 0) {
       filterStr.push(`diseaseBurden=${appliedFilters.diseaseBurden.join(",")}`);
     }
-    if (cycle !== "All") {
+    if (cycle !== "All" && props.code) {
       filterStr.push(
         `cycles=${(cycle || "").replace("-20", "-")}${
           cycle === "2002-2013" ? ",null" : ""
@@ -328,6 +329,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
         setSortBy={setSortBy}
         columns={columns}
         title={props.code ? cycle || "" : ""}
+        forceExpand={props.forceExpand}
       />
       <TablePagination
         page={page}
