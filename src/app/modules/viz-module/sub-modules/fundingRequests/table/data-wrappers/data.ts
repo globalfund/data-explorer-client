@@ -50,6 +50,10 @@ export const fundingRequestColumns = [
         name: "",
       },
       {
+        key: "portfolioCategory",
+        name: "",
+      },
+      {
         key: "board",
         name: "",
       },
@@ -63,6 +67,7 @@ export const cellData = [
   "Approach",
   "TRP Window ",
   "TRP Outcome",
+  "Portfolio Categorization",
   "Board Approval",
 ];
 

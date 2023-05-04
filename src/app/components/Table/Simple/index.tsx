@@ -45,7 +45,9 @@ function Row(props: {
   const [open, setOpen] = React.useState(Boolean(props.forceExpand));
 
   const firstColBig =
-    props.columns[0].key !== "year" ? props.columns.length > 3 : false;
+    props.columns[0].key !== "year" && props.columns[0].key !== "level1"
+      ? props.columns.length > 3
+      : false;
 
   const firstColumnWidth = firstColBig ? "30%" : "";
   const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;

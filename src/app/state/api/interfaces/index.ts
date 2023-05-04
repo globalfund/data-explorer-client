@@ -228,6 +228,7 @@ export interface StoreModel {
     GrantCycles: ApiCallModel;
   };
   FundingRequestsTRPWindowCodelist: ApiCallModel;
+  FundingRequestsPortfolioCategoryCodelist: ApiCallModel;
   // partner detail api
   PartnerDetailInfo: ApiCallModel;
   PartnerDetailDisbursementsTreemap: ApiCallModel;

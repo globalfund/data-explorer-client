@@ -18,3 +18,9 @@ export const TRPWindowCodelist: ApiCallModel = {
     `${process.env.REACT_APP_API}/funding-requests/trp-window/codelist`
   ),
 };
+
+export const PortfolioCategoryCodelist: ApiCallModel = {
+  ...APIModel(
+    `${process.env.REACT_APP_API}/funding-requests/portfolio-categories/codelist`
+  ),
+};

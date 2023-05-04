@@ -60,7 +60,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
   );
   const fetchData = useStoreActions((store) => store.Allocations.fetch);
   const isLoading = useStoreState((state) => state.Allocations.loading);
-  const colors = ["#E4EBF8", "#C9CAD4", "#F1ECEC"];
+  const colors = ["#252C34", "#C9CAD4", "#595D70"];
 
   React.useEffect(() => {
     return () => {
@@ -124,7 +124,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           </div>
           {grantCycles.map((c) => (
             <div key={c} css={chipcss(cycle === c)} onClick={() => setCycle(c)}>
-              {c.replace("-", "/")}
+              {c}
             </div>
           ))}
         </div>

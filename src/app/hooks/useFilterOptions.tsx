@@ -22,6 +22,7 @@ export interface UseFilterOptionsReturn {
   "Disease Burden": FilterGroupOptionModel[];
   "Eligibility Years": FilterGroupOptionModel[];
   "TRP Window": FilterGroupOptionModel[];
+  "Portfolio Categorization": FilterGroupOptionModel[];
 }
 
 export function useFilterOptions(
@@ -113,6 +114,13 @@ export function useFilterOptions(
     get(state.FundingRequestsTRPWindowCodelist, "data.data", [])
   );
 
+  const getFundingRequestsPortfolioCategoryCodelist = useStoreActions(
+    (store) => store.FundingRequestsPortfolioCategoryCodelist.fetch
+  );
+  const FundingRequestsPortfolioCategoryCodelist = useStoreState((state) =>
+    get(state.FundingRequestsPortfolioCategoryCodelist, "data.data", [])
+  );
+
   React.useEffect(() => {
     if (props.loadFilterOptions) {
       if (locations.length === 0) {
@@ -138,6 +146,7 @@ export function useFilterOptions(
       getEligibilityYearOptions({});
       getEligibilityDiseaseBurdenCodelist({});
       getFundingRequestsTRPWindowCodelist({});
+      getFundingRequestsPortfolioCategoryCodelist({});
     }
   }, []);
 
@@ -160,6 +169,7 @@ export function useFilterOptions(
         value: item,
       })),
       "TRP Window": FundingRequestsTRPWindowCodelist,
+      "Portfolio Categorization": FundingRequestsPortfolioCategoryCodelist,
     };
   }
 

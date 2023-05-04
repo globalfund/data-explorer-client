@@ -5,7 +5,6 @@ import find from "lodash/find";
 import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import { Link } from "react-router-dom";
-import { useUpdateEffect } from "react-use";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
 import Collapse from "@material-ui/core/Collapse";
@@ -59,15 +58,18 @@ const useRowStyles = makeStyles({
 
 function Row(props: {
   row: FundingTableRow;
+  index: number;
   columns: FundingTableColumn[];
   paddingLeft: number;
   visibleColumnsIndexes: number[];
   forceExpand?: boolean;
 }) {
   const classes = useRowStyles();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(props.forceExpand);
 
-  const [rowSelected, setRowSelected] = React.useState("parent");
+  const [rowSelected, setRowSelected] = React.useState(
+    props.forceExpand ? "child" : "parent"
+  );
 
   const secondLevelRow = !find(props.columns, { key: "name" });
 
@@ -75,7 +77,7 @@ function Row(props: {
 
   return (
     <React.Fragment>
-      {thirdLevelRow && (
+      {thirdLevelRow && props.index === 0 && (
         <TableRow>
           {cellData2.map((name, index) => (
             <TableCell
@@ -256,78 +258,85 @@ function Row(props: {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Table>
               <TableBody>
-                {rowSelected === "child" && (
-                  <TableRow>
-                    {cellData.map((name, index) => (
-                      <TableCell
-                        key={v4()}
-                        css={`
-                          text-align: center;
-                          padding: 16px 10px;
-                          // padding-left: ${index === 0 ? "4rem" : "auto"};
-                          ${tablecell}
-                        `}
-                      >
-                        <div
+                {rowSelected === "child" &&
+                  props.index === 0 &&
+                  !secondLevelRow && (
+                    <TableRow>
+                      {cellData.map((name, index) => (
+                        <TableCell
+                          key={v4()}
                           css={`
-                            width: 100%;
-                            display: flex;
-                            align-items: center;
-                            flex-direction: row;
-                            justify-content: center;
+                            text-align: center;
+                            padding: 16px 10px;
+                            // padding-left: ${index === 0 ? "4rem" : "auto"};
+                            ${tablecell}
                           `}
                         >
                           <div
                             css={`
-                              gap: 12px;
+                              width: 100%;
                               display: flex;
                               align-items: center;
                               flex-direction: row;
                               justify-content: center;
-                              font-weight: bold;
-                              font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                                sans-serif;
-
-                              > * {
-                                @supports (-webkit-touch-callout: none) and
-                                  (not (translate: none)) {
-                                  &:not(:last-child) {
-                                    margin-right: 12px;
-                                  }
-                                }
-                              }
-
-                              > svg {
-                                transition: transform 0.1s ease-in-out;
-                                transform: rotate(${open ? "0deg" : "-180deg"});
-                              }
                             `}
                           >
-                            {name}
+                            <div
+                              css={`
+                                gap: 12px;
+                                display: flex;
+                                align-items: center;
+                                flex-direction: row;
+                                justify-content: center;
+                                font-weight: bold;
+                                font-family: "GothamNarrow-Bold",
+                                  "Helvetica Neue", sans-serif;
+
+                                > * {
+                                  @supports (-webkit-touch-callout: none) and
+                                    (not (translate: none)) {
+                                    &:not(:last-child) {
+                                      margin-right: 12px;
+                                    }
+                                  }
+                                }
+
+                                > svg {
+                                  transition: transform 0.1s ease-in-out;
+                                  transform: rotate(
+                                    ${open ? "0deg" : "-180deg"}
+                                  );
+                                }
+                              `}
+                            >
+                              {name}
+                            </div>
                           </div>
-                        </div>
-                      </TableCell>
-                    ))}
-                  </TableRow>
-                )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  )}
                 {props.row.children &&
-                  props.row.children.map((child: FundingTableRow) =>
-                    (
-                      filter(
-                        props.columns,
-                        (c) => c.col
-                      ) as FundingTableColumn[]
-                    ).map((childCol) => {
-                      return (
-                        <Row
-                          row={child}
-                          key={child.name}
-                          paddingLeft={props.paddingLeft + 2}
-                          columns={childCol.col as FundingTableColumn[]}
-                          visibleColumnsIndexes={props.visibleColumnsIndexes}
-                        />
-                      );
-                    })
+                  props.row.children.map(
+                    (child: FundingTableRow, index: number) =>
+                      (
+                        filter(
+                          props.columns,
+                          (c) => c.col
+                        ) as FundingTableColumn[]
+                      ).map((childCol) => {
+                        return (
+                          <Row
+                            row={child}
+                            index={index}
+                            key={child.name}
+                            forceExpand={props.forceExpand}
+                            paddingLeft={props.paddingLeft + 2}
+                            columns={childCol.col as FundingTableColumn[]}
+                            visibleColumnsIndexes={props.visibleColumnsIndexes}
+                          />
+                        );
+                      })
                   )}
               </TableBody>
             </Table>
@@ -374,18 +383,6 @@ export function FundingRequestTable(props: FundingTableProps) {
     );
   }, [props.columns]);
 
-  useUpdateEffect(() => {
-    setTimeout(() => {
-      if (props.forceExpand) {
-        const rows = document.querySelectorAll("#funding-requests-table-row");
-        if (rows.length > 0) {
-          // @ts-ignore
-          rows[0].click();
-        }
-      }
-    }, 500);
-  }, [props.rows]);
-
   const visibleColumnsIndexes = filter(toolbarCols, { checked: true }).map(
     (c) => c.index
   );
@@ -406,64 +403,67 @@ export function FundingRequestTable(props: FundingTableProps) {
       />
       <TableContainer>
         <Table>
-          <TableHead>
-            <TableRow>
-              {props.columns.map(
-                (column: FundingTableColumn, index: number) => {
-                  let icon = undefined;
-                  if (
-                    sortBySplits.length > 1 &&
-                    sortBySplits[0] === column.key
-                  ) {
-                    if (sortBySplits[1] === "DESC") {
-                      icon = <ArrowDownward />;
-                    } else {
-                      icon = <ArrowUpward />;
+          {!props.forceExpand && (
+            <TableHead>
+              <TableRow>
+                {props.columns.map(
+                  (column: FundingTableColumn, index: number) => {
+                    let icon = undefined;
+                    if (
+                      sortBySplits.length > 1 &&
+                      sortBySplits[0] === column.key
+                    ) {
+                      if (sortBySplits[1] === "DESC") {
+                        icon = <ArrowDownward />;
+                      } else {
+                        icon = <ArrowUpward />;
+                      }
                     }
-                  }
-                  return (
-                    <TableCell
-                      key={column.key}
-                      css={`
-                        padding: 16px 10px;
-                        ${index === 0 ? "padding-left: 40px;" : ""}
+                    return (
+                      <TableCell
+                        key={column.key}
+                        css={`
+                          padding: 16px 10px;
+                          ${index === 0 ? "padding-left: 40px;" : ""}
 
-                        > button {
-                          ${tablecell}
-                          padding-left: 0;
-                          text-transform: none;
+                          > button {
+                            ${tablecell}
+                            padding-left: 0;
+                            text-transform: none;
 
-                          > span {
-                            font-size: 16px;
-                            font-weight: bold;
-                            justify-content: flex-start;
-                            font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                              sans-serif;
+                            > span {
+                              font-size: 16px;
+                              font-weight: bold;
+                              justify-content: flex-start;
+                              font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                                sans-serif;
+                            }
                           }
-                        }
-                      `}
-                    >
-                      <Button
-                        onClick={() => onSortByChange(column.key)}
-                        endIcon={icon}
+                        `}
                       >
-                        {column.name}
-                      </Button>
-                    </TableCell>
-                  );
-                }
-              )}
-            </TableRow>
-          </TableHead>
+                        <Button
+                          onClick={() => onSortByChange(column.key)}
+                          endIcon={icon}
+                        >
+                          {column.name}
+                        </Button>
+                      </TableCell>
+                    );
+                  }
+                )}
+              </TableRow>
+            </TableHead>
+          )}
           <TableBody>
             {props.rows.map((row: FundingTableRow, index: number) => (
               <Row
                 key={row.name}
                 row={row}
+                index={index}
                 columns={props.columns}
                 visibleColumnsIndexes={visibleColumnsIndexes}
                 paddingLeft={props.paddingLeft}
-                forceExpand={props.forceExpand && index === 0}
+                forceExpand={props.forceExpand}
               />
             ))}
           </TableBody>

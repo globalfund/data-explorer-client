@@ -176,6 +176,7 @@ import {
   EligibilityLocation,
   FundingRequestsTable,
   GrantCycles,
+  PortfolioCategoryCodelist,
   TRPWindowCodelist,
 } from "../api/action-reducers/locationDetail/accessToFunding";
 import { FundingRequestsTableGeneric } from "../api/action-reducers/viz/fundingRequests";
@@ -294,6 +295,7 @@ const storeContent: StoreModel = {
     GrantCycles: persist(GrantCycles),
   },
   FundingRequestsTRPWindowCodelist: persist(TRPWindowCodelist),
+  FundingRequestsPortfolioCategoryCodelist: persist(PortfolioCategoryCodelist),
   // partner detail api
   PartnerDetailInfo: persist(PartnerDetailInfo),
   PartnerDetailDisbursementsTreemap: persist(PartnerDetailDisbursementsTreemap),

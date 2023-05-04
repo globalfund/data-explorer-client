@@ -1,4 +1,5 @@
 import React from "react";
+import max from "lodash/max";
 import { useMeasure } from "react-use";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
@@ -9,6 +10,7 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { NoDataAllocations } from "../../allocations/components/nodata";
 import { getKeysPercentages } from "app/modules/viz-module/sub-modules/allocations/data";
+
 interface Props {
   total: number;
   keys: string[];
@@ -21,14 +23,17 @@ export default function RadialChart(props: Props) {
 
   const [ref, { width }] = useMeasure<HTMLDivElement>();
 
+  const maxValue = max(props.values);
   const [keysPercentagesColors, setKeysPercentagesColors] = React.useState<{
     percentages: number[];
     colors: string[];
-  }>(getKeysPercentages(props.total, props.values));
+  }>(getKeysPercentages(maxValue ? maxValue * 1.2 : props.total, props.values));
 
   React.useEffect(() => {
-    setKeysPercentagesColors(getKeysPercentages(props.total, props.values));
-  }, [props.total, props.values]);
+    setKeysPercentagesColors(
+      getKeysPercentages(maxValue ? maxValue * 1.2 : props.total, props.values)
+    );
+  }, [props.values]);
 
   if (props.isLoading) {
     return (
@@ -92,13 +97,11 @@ export default function RadialChart(props: Props) {
           },
           total: {
             show: false,
-            fontFamily: "GothamNarrow-Bold",
-            formatter: () => formatFinancialValue(props.total),
           },
         },
       },
     },
-    colors: ["#E4EBF8", "#C9CAD4", "#F1ECEC"],
+    colors: ["#252C34", "#C9CAD4", "#595D70"],
     labels: props.keys,
     legend: {
       show: true,

@@ -50,6 +50,7 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
   }>({
     components: [],
     trpWindows: [],
+    portfolioCategories: [],
   });
   const [expandedGroup, setExpandedGroup] =
     React.useState<FilterGroupProps | null>(null);
@@ -61,11 +62,15 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
     {
       name: "TRP Window",
     },
+    {
+      name: "Portfolio Categorization",
+    },
   ];
 
   const groupAppliedFiltersPathKey = {
     Components: "components",
     "TRP Window": "trpWindows",
+    "Portfolio Categorization": "portfolioCategories",
   };
 
   function reloadData() {
@@ -81,6 +86,11 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
     }
     if (appliedFilters.trpWindows.length > 0) {
       filterStr.push(`trpWindows=${appliedFilters.trpWindows.join(",")}`);
+    }
+    if (appliedFilters.portfolioCategories.length > 0) {
+      filterStr.push(
+        `portfolioCategories=${appliedFilters.portfolioCategories.join(",")}`
+      );
     }
     if (cycle !== "All") {
       filterStr.push(`cycles=${cycle}`);
@@ -107,108 +117,107 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
   );
 
   return (
-    <>
+    <div
+      css={`
+        position: relative;
+      `}
+    >
+      {isLoading && <PageLoader inLoader />}
       <div
+        role="button"
+        tabIndex={-1}
         css={`
-          position: relative;
-        `}
-      >
-        {isLoading && <PageLoader inLoader />}
-        <div
-          role="button"
-          tabIndex={-1}
-          css={`
-            top: 32%;
-            color: #fff;
-            width: 16px;
-            height: 133px;
-            z-index: 1;
-            display: flex;
-            cursor: pointer;
-            position: absolute;
-            background: #262c34;
-            align-items: center;
-            flex-direction: column;
-            justify-content: center;
-            border-radius: 10px 0px 0px 10px;
-            transition: all 0.2s ease-in-out;
+          top: 32%;
+          color: #fff;
+          width: 16px;
+          height: 133px;
+          z-index: 1;
+          display: flex;
+          cursor: pointer;
+          position: absolute;
+          background: #262c34;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
+          border-radius: 10px 0px 0px 10px;
+          transition: all 0.2s ease-in-out;
 
-            right: ${openToolboxPanel ? "48%" : 0};
+          right: ${openToolboxPanel ? "48%" : 0};
 
-            &:hover {
-              background: #13183f;
+          &:hover {
+            background: #13183f;
+          }
+
+          > svg {
+            transform: rotate(${!openToolboxPanel ? "-" : ""}90deg);
+            > path {
+              fill: #fff;
             }
+          }
+        `}
+        onClick={() => setOpenToolboxPanel(!openToolboxPanel)}
+      >
+        <TriangleXSIcon />
+      </div>
+      <Slide direction="left" in={openToolboxPanel}>
+        <div
+          css={`
+            z-index: 4;
+            right: -8px;
+            width: 600px;
+            height: 100%;
+            min-height: 700px;
+            position: absolute;
+            background: #f5f5f7;
+            visibility: visible !important;
+            overflow-y: auto;
 
-            > svg {
-              transform: rotate(${!openToolboxPanel ? "-" : ""}90deg);
-              > path {
-                fill: #fff;
-              }
+            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+            border-radius: 20px;
+            ::-webkit-scrollbar {
+              display: none;
+            }
+            @media (max-width: 767px) {
+              width: 100vw;
+              box-shadow: none;
+              overflow-y: auto;
             }
           `}
-          onClick={() => setOpenToolboxPanel(!openToolboxPanel)}
         >
-          <TriangleXSIcon />
-        </div>
-        <Slide direction="left" in={openToolboxPanel}>
           <div
             css={`
-              z-index: 4;
-              right: -8px;
-              width: 600px;
-              height: 400px;
-              position: absolute;
-              background: #f5f5f7;
-              visibility: visible !important;
-              overflow-y: auto;
+              width: 100%;
 
-              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-              border-radius: 20px;
-              ::-webkit-scrollbar {
-                display: none;
-              }
-              @media (max-width: 767px) {
-                width: 100vw;
-                box-shadow: none;
-                overflow-y: auto;
-              }
+              display: flex;
+
+              flex-direction: column;
             `}
           >
-            <div
-              css={`
-                width: 100%;
-
-                display: flex;
-
-                flex-direction: column;
-              `}
-            >
-              <ToolBoxPanelFilters
-                groups={filterGroups}
-                expandedGroup={expandedGroup}
-                appliedFilters={appliedFilters}
-                setExpandedGroup={setExpandedGroup}
-                setAppliedFilters={setAppliedFilters}
-                defaultAppliedFilters={{
-                  components: [],
-                  trpWindows: [],
-                }}
-                groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
-              />
-            </div>
+            <ToolBoxPanelFilters
+              groups={filterGroups}
+              expandedGroup={expandedGroup}
+              appliedFilters={appliedFilters}
+              setExpandedGroup={setExpandedGroup}
+              setAppliedFilters={setAppliedFilters}
+              defaultAppliedFilters={{
+                components: [],
+                trpWindows: [],
+              }}
+              groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
+            />
           </div>
-        </Slide>
-        <Table
-          forceExpand
-          search={search}
-          sortBy={sortBy}
-          data={data}
-          setSearch={setSearch}
-          setSortBy={setSortBy}
-          columns={fundingRequestColumns}
-          title={cycle || ""}
-        />
-      </div>
-    </>
+        </div>
+      </Slide>
+      <Table
+        forceExpand
+        search={search}
+        sortBy={sortBy}
+        data={data}
+        setSearch={setSearch}
+        setSortBy={setSortBy}
+        columns={fundingRequestColumns}
+        title={cycle || ""}
+      />
+    </div>
   );
 }

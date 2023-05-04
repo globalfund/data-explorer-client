@@ -806,7 +806,7 @@ export function exportCSV(
       if (multiVizPageDataKey === "fundingRequest") {
         data.forEach((item: any) => {
           item.children.forEach((subItem: any) => {
-            subItem.children.forEach((subSubItem: any) => {
+            if (subItem.children.length === 0) {
               csvData.push({
                 location: item.name,
                 component: subItem.component,
@@ -816,9 +816,26 @@ export function exportCSV(
                 outcome: subItem.outcome,
                 gac: subItem.gac,
                 board: subItem.board,
-                grant: subSubItem.grant1,
+                portfolioCategory: subItem.portfolioCategory,
               });
-            });
+            } else {
+              subItem.children.forEach((subSubItem: any) => {
+                csvData.push({
+                  location: item.name,
+                  component: subSubItem.component,
+                  date: subItem.approach,
+                  approach: subItem.approach,
+                  window: subItem.window,
+                  outcome: subItem.outcome,
+                  board: subItem.board,
+                  portfolioCategory: subItem.portfolioCategory,
+                  grant: subSubItem.grant1,
+                  gac: subSubItem.gac,
+                  start: subSubItem.start,
+                  end: subSubItem.end,
+                });
+              });
+            }
           });
         });
         return {
@@ -826,7 +843,6 @@ export function exportCSV(
           filename: "access-to-funding-funding-requests.csv",
           headers: [
             { label: "Location", key: "location" },
-            { label: "Application ID", key: "id" },
             { label: "Submission date", key: "date" },
             { label: "Component", key: "component" },
             { label: "Approach", key: "approach" },
@@ -834,7 +850,11 @@ export function exportCSV(
             { label: "TRP Outcome", key: "outcome" },
             { label: "GAC Meeting", key: "gac" },
             { label: "Board approval", key: "board" },
-            { label: "Grant Number (Start date - End date)", key: "grant" },
+            { label: "Portfolio Categorization", key: "portfolioCategory" },
+            { label: "GAC Meeting", key: "gac" },
+            { label: "Grant", key: "grant" },
+            { label: "Starting date", key: "start" },
+            { label: "End date", key: "end" },
           ],
         };
       }

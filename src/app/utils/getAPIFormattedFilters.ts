@@ -74,6 +74,11 @@ export function getAPIFormattedFilters(
   if (appliedFilters.trpWindows.length > 0) {
     filterArray.push(`trpWindows=${appliedFilters.trpWindows.join(",")}`);
   }
+  if (appliedFilters.portfolioCategories.length > 0) {
+    filterArray.push(
+      `portfolioCategories=${appliedFilters.portfolioCategories.join(",")}`
+    );
+  }
 
   return filterArray.join("&");
 }

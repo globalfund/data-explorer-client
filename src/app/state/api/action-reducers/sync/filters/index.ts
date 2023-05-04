@@ -14,6 +14,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   donorCategories: [] as string[],
   donorSubCategories: [] as string[],
   trpWindows: [] as string[],
+  portfolioCategories: [] as string[],
 };
 
 export interface AppliedFiltersModel {
@@ -29,6 +30,7 @@ export interface AppliedFiltersModel {
   donorCategories: string[];
   donorSubCategories: string[];
   trpWindows: string[];
+  portfolioCategories: string[];
 }
 
 export interface AppliedFiltersStateModel {
@@ -56,6 +58,8 @@ export interface AppliedFiltersStateModel {
   setDonorSubCategories: Action<AppliedFiltersStateModel, string[]>;
   trpWindows: string[];
   setTrpWindows: Action<AppliedFiltersStateModel, string[]>;
+  setPortfolioCategories: Action<AppliedFiltersStateModel, string[]>;
+  portfolioCategories: string[];
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
   appliedFiltersCount: number;
@@ -122,6 +126,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.trpWindows = payload;
     state.appliedFiltersCount += payload.length;
   }),
+  portfolioCategories: [],
+  setPortfolioCategories: action((state, payload: string[]) => {
+    state.portfolioCategories = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   setAll: action((state, payload: AppliedFiltersModel) => {
     state.locations = payload.locations;
     state.components = payload.components;
@@ -134,6 +143,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donorCategories = payload.donorCategories;
     state.donorSubCategories = payload.donorSubCategories;
     state.trpWindows = payload.trpWindows;
+    state.portfolioCategories = payload.portfolioCategories;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +
@@ -146,6 +156,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.donorCategories.length +
       payload.donorSubCategories.length +
       payload.trpWindows.length;
+    payload.portfolioCategories.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

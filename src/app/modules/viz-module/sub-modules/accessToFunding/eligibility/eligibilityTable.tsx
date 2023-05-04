@@ -21,6 +21,7 @@ interface EligibilityTableProps {
 export function EligibilityTable(props: EligibilityTableProps) {
   return (
     <SimpleTable
+      forceExpand
       search={props.search}
       sortBy={props.sortBy}
       rows={props.data}
