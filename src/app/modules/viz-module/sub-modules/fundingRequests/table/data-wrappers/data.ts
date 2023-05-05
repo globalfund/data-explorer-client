@@ -5,7 +5,7 @@ export const fundingRequestColumns = [
     col: [
       {
         key: "component",
-        name: "",
+        name: "Component",
         col: [
           {
             key: "gac",
@@ -35,27 +35,27 @@ export const fundingRequestColumns = [
       },
       {
         key: "date",
-        name: "",
+        name: "Submission Date",
       },
       {
         key: "approach",
-        name: "",
+        name: "Approach",
       },
       {
         key: "window",
-        name: "",
+        name: "TRP Window",
       },
       {
         key: "outcome",
-        name: "",
+        name: "TRP Outcome",
       },
       {
         key: "portfolioCategory",
-        name: "",
+        name: "Portfolio Categorization",
       },
       {
         key: "board",
-        name: "",
+        name: "Board Approval",
       },
     ],
   },
@@ -65,7 +65,7 @@ export const cellData = [
   "Component",
   "Submission date",
   "Approach",
-  "TRP Window ",
+  "TRP Window",
   "TRP Outcome",
   "Portfolio Categorization",
   "Board Approval",

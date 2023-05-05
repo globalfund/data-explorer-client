@@ -212,10 +212,12 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
         forceExpand
         search={search}
         sortBy={sortBy}
-        data={data}
+        data={props.code ? get(data, "[0].children", []) : data}
         setSearch={setSearch}
         setSortBy={setSortBy}
-        columns={fundingRequestColumns}
+        columns={
+          props.code ? fundingRequestColumns[0].col : fundingRequestColumns
+        }
         title={cycle || ""}
       />
     </div>

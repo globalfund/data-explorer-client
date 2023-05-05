@@ -403,57 +403,55 @@ export function FundingRequestTable(props: FundingTableProps) {
       />
       <TableContainer>
         <Table>
-          {!props.forceExpand && (
-            <TableHead>
-              <TableRow>
-                {props.columns.map(
-                  (column: FundingTableColumn, index: number) => {
-                    let icon = undefined;
-                    if (
-                      sortBySplits.length > 1 &&
-                      sortBySplits[0] === column.key
-                    ) {
-                      if (sortBySplits[1] === "DESC") {
-                        icon = <ArrowDownward />;
-                      } else {
-                        icon = <ArrowUpward />;
-                      }
+          <TableHead>
+            <TableRow>
+              {props.columns.map(
+                (column: FundingTableColumn, index: number) => {
+                  let icon = undefined;
+                  if (
+                    sortBySplits.length > 1 &&
+                    sortBySplits[0] === column.key
+                  ) {
+                    if (sortBySplits[1] === "DESC") {
+                      icon = <ArrowDownward />;
+                    } else {
+                      icon = <ArrowUpward />;
                     }
-                    return (
-                      <TableCell
-                        key={column.key}
-                        css={`
-                          padding: 16px 10px;
-                          ${index === 0 ? "padding-left: 40px;" : ""}
-
-                          > button {
-                            ${tablecell}
-                            padding-left: 0;
-                            text-transform: none;
-
-                            > span {
-                              font-size: 16px;
-                              font-weight: bold;
-                              justify-content: flex-start;
-                              font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                                sans-serif;
-                            }
-                          }
-                        `}
-                      >
-                        <Button
-                          onClick={() => onSortByChange(column.key)}
-                          endIcon={icon}
-                        >
-                          {column.name}
-                        </Button>
-                      </TableCell>
-                    );
                   }
-                )}
-              </TableRow>
-            </TableHead>
-          )}
+                  return (
+                    <TableCell
+                      key={column.key}
+                      css={`
+                        padding: 16px 10px;
+                        ${index === 0 ? "padding-left: 40px;" : ""}
+
+                        > button {
+                          ${tablecell}
+                          padding-left: 0;
+                          text-transform: none;
+
+                          > span {
+                            font-size: 16px;
+                            font-weight: bold;
+                            justify-content: flex-start;
+                            font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                              sans-serif;
+                          }
+                        }
+                      `}
+                    >
+                      <Button
+                        onClick={() => onSortByChange(column.key)}
+                        endIcon={icon}
+                      >
+                        {column.name}
+                      </Button>
+                    </TableCell>
+                  );
+                }
+              )}
+            </TableRow>
+          </TableHead>
           <TableBody>
             {props.rows.map((row: FundingTableRow, index: number) => (
               <Row

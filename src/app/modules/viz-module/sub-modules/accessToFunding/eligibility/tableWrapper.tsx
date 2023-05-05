@@ -32,7 +32,9 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
   );
 
   const [search, setSearch] = React.useState("");
-  const [sortBy, setSortBy] = React.useState("level1 ASC");
+  const [sortBy, setSortBy] = React.useState(
+    `level1 ${props.code ? "DESC" : "ASC"}`
+  );
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
@@ -216,6 +218,30 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     ];
   }
 
+  let formattedData: SimpleTableRow[] = [];
+  if (props.code && props.forceExpand) {
+    if (selectedAggregate === "componentName") {
+      data.forEach((row) => {
+        formattedData.push({
+          ...row,
+          children: row.children?.map((child) => ({
+            level1: child.level1,
+            ...child.children?.[0],
+          })),
+        });
+      });
+    } else {
+      columns[0] = { name: "Year", key: "level1" };
+      data.forEach((row) => {
+        row.children?.forEach((child) => {
+          formattedData.push(child);
+        });
+      });
+    }
+  } else {
+    formattedData = data;
+  }
+
   return (
     <div
       css={`
@@ -324,7 +350,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
       <EligibilityTable
         search={search}
         sortBy={sortBy}
-        data={data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+        data={formattedData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
         setSearch={setSearch}
         setSortBy={setSortBy}
         columns={columns}
