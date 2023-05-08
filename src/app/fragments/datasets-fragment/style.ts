@@ -34,16 +34,25 @@ export const uploadDatasetcss = css`
   }
 `;
 
-export const uploadAreacss = css`
+export const uploadAreacss = (isDragActive: boolean, disabled?: boolean) => css`
   height: 529px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  background-color: ${isDragActive && !disabled ? "#c4c4c4" : "#ffffff"};
+  background-image: ${isDragActive && !disabled
+    ? `url(
+              "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='163' height='163' viewBox='0 0 20 20'%3E%3Cg %3E%3Cpolygon fill='%23ffffff' points='20 10 10 0 0 0 20 20'/%3E%3Cpolygon fill='%23ffffff' points='0 10 0 20 10 20'/%3E%3C/g%3E%3C/svg%3E"
+            )`
+    : "unset"};
+  &:hover {
+    cursor: ${!isDragActive && !disabled ? "pointer" : "default"};
+  }
   p {
     text-align: center;
   }
-  background: #ffffff;
   button,
   label {
     border: none;

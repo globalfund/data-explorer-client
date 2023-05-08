@@ -123,6 +123,7 @@ export default function DatasetUploadSteps() {
           <AddDatasetFragment
             handleNext={handleNext}
             setFile={setSelectedFile}
+            disabled={false}
           />
         );
       case 1:
@@ -153,6 +154,7 @@ export default function DatasetUploadSteps() {
           <AddDatasetFragment
             handleNext={handleNext}
             setFile={setSelectedFile}
+            disabled={false}
           />
         );
     }
