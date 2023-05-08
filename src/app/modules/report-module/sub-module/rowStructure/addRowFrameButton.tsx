@@ -65,53 +65,52 @@ export default function AddRowFrameButton(props: Props) {
       disableAddRowStructureButton: false,
     });
   };
+
   return (
-    <>
+    <div
+      css={`
+        width: 100%;
+      `}
+    >
       <div
         css={`
           width: 100%;
+          height: 48px;
+          display: flex;
+          background: #fff;
+          justify-content: center;
+          border: 1px dashed #adb5bd;
         `}
       >
+        <IconButton
+          onClick={handleAddrowStructureBlock}
+          disableRipple={true}
+          disabled={props.rowStructureType.disableAddRowStructureButton}
+          onMouseEnter={() => setDisplayTooltip(true)}
+          onMouseLeave={() => setDisplayTooltip(false)}
+        >
+          <PlusIcon />
+        </IconButton>
+      </div>
+      {displayTooltip && (
         <div
           css={`
-            border: 1px dashed #adb5bd;
-            width: 100%;
-            height: 48px;
+            background-color: #626262;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: "GothamNarrow-Book";
             display: flex;
             justify-content: center;
+            align-items: center;
+            width: 127px;
+            height: 23px;
+            margin: auto;
+            color: white;
           `}
         >
-          <IconButton
-            onClick={handleAddrowStructureBlock}
-            disableRipple={true}
-            disabled={props.rowStructureType.disableAddRowStructureButton}
-            onMouseEnter={() => setDisplayTooltip(true)}
-            onMouseLeave={() => setDisplayTooltip(false)}
-          >
-            <PlusIcon />
-          </IconButton>
+          <p>Add new row frame</p>
         </div>
-
-        {displayTooltip && (
-          <div
-            css={`
-              background-color: #626262;
-              border-radius: 4px;
-              font-size: 12px;
-              font-family: "GothamNarrow-Book";
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 127px;
-              height: 23px;
-              margin: auto;
-              color: white;
-            `}
-          >
-            <p>Add new row frame</p>
-          </div>
-        )}
-      </div>
-    </>
+      )}
+    </div>
   );
 }

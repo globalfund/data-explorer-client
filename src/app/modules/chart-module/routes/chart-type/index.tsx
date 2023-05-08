@@ -60,7 +60,9 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
             {echartTypes(false).map((ct: ChartTypeModel) => (
               <Grid item xs={12} sm={6} md={4} key={ct.id}>
                 <div
-                  onClick={ct.id == "" ? () => {} : onChartTypeChange(ct.id)}
+                  onClick={
+                    ct.label === "" ? () => {} : onChartTypeChange(ct.id)
+                  }
                   css={`
                     width: 100%;
                     height: 64px;
@@ -74,11 +76,11 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
                     border: 1px solid
                       ${chartType === ct.id ? "#262c34" : "#dfe3e6"};
 
-                    ${ct.id === "" &&
+                    ${ct.label === "" &&
                     `pointer-events: none;background: #f1f3f5;`}
 
                     &:hover {
-                      cursor: ${ct.id !== "" ? "pointer" : "auto"};
+                      cursor: ${ct.label !== "" ? "pointer" : "auto"};
                       background: #cfd4da;
                       border-color: #262c34;
                     }

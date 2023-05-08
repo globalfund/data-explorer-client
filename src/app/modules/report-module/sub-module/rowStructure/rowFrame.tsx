@@ -321,22 +321,19 @@ export default function RowFrame(props: RowFrameProps) {
             `}
             onClick={() => {
               props.deleteFrame(props.rowId);
-              setSelectedType(
-                selectedTypeHistory[selectedTypeHistory.length - 2]
-              );
             }}
           >
             <CloseIcon />
           </IconButton>
           <div
             css={`
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              column-gap: 50px;
-              flex-wrap: wrap;
               width: 92%;
               margin: auto;
+              display: flex;
+              flex-wrap: wrap;
+              column-gap: 50px;
+              align-items: center;
+              justify-content: center;
             `}
           >
             <OneByOne
@@ -381,13 +378,15 @@ const OneByOne = (props: IRowStructureType) => {
   return (
     <div css={blockcss} onClick={handleClick}>
       <p>1/1</p>
-      <div
-        css={`
-          background: #dfe3e6;
-          height: 56px;
-          width: 94px;
-        `}
-      ></div>
+      <div>
+        <div
+          css={`
+            background: #dfe3e6;
+            height: 56px;
+            width: 94px;
+          `}
+        />
+      </div>
     </div>
   );
 };
@@ -625,7 +624,7 @@ export function Divider(props: {
         css={`
           width: 100%;
           margin: 20px 0;
-          border: 1px solid #e4e4e4;
+          border: 2px solid #cfd4da;
         `}
       />
     </div>

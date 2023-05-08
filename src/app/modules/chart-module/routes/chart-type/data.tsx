@@ -65,7 +65,7 @@ export const echartTypes = (big: boolean) => {
     },
 
     {
-      id: "",
+      id: "placeholder1",
       label: "",
       icon: <></>,
       categories: [],
@@ -73,7 +73,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder2",
       label: "",
       icon: <></>,
       categories: [],
@@ -81,7 +81,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder3",
       label: "",
       icon: <></>,
       categories: [],
@@ -89,7 +89,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder4",
       label: "",
       icon: <></>,
       categories: [],
@@ -97,7 +97,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder5",
       label: "",
       icon: <></>,
       categories: [],
@@ -105,7 +105,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder6",
       label: "",
       icon: <></>,
       categories: [],
@@ -113,7 +113,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder7",
       label: "",
       icon: <></>,
       categories: [],
@@ -121,7 +121,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder8",
       label: "",
       icon: <></>,
       categories: [],
@@ -129,7 +129,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder9",
       label: "",
       icon: <></>,
       categories: [],
@@ -137,7 +137,7 @@ export const echartTypes = (big: boolean) => {
       description: "",
     },
     {
-      id: "",
+      id: "placeholder10",
       label: "",
       icon: <></>,
       categories: [],

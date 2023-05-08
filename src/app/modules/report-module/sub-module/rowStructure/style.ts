@@ -6,6 +6,14 @@ export const blockcss = css`
   align-items: center;
   flex-direction: column;
 
+  &:hover {
+    > div {
+      > div {
+        background: #231d2c;
+      }
+    }
+  }
+
   p {
     color: #495057;
     font-size: 12px;
@@ -17,6 +25,7 @@ export const blockcss = css`
 export const containercss = css`
   width: 100%;
   height: 252px;
+  background: #fff;
   padding: 5px 40px;
   position: relative;
   border: 1px dashed #adb5bd;

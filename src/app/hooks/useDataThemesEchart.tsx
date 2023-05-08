@@ -1,4 +1,6 @@
 import React from "react";
+import get from "lodash/get";
+import filter from "lodash/filter";
 import uniqBy from "lodash/uniqBy";
 import * as echarts from "echarts/core";
 import { CanvasRenderer } from "echarts/renderers";
@@ -211,7 +213,7 @@ export function useDataThemesEchart() {
       },
       xAxis: {
         type: "category",
-        data: data.xAxisValues,
+        data: data.xAxisValues || [],
         zlevel: -1,
         z: -1,
       },
@@ -222,18 +224,23 @@ export function useDataThemesEchart() {
       },
       legend: {
         show: showLegend,
-        data: data.lines.map((d: any) => d[0]),
+        data: filter(
+          get(data, "lines", []).map((d: any) => d[0]),
+          (d: any) => d !== null
+        ),
       },
       // backgroundColor: background,
       backgroundColor: "transparent",
-      series: data.lines.map((d: any) => ({
-        type: "line",
-        name: d[0],
-        data: d[1].map((l: any) => l.y),
-        stack: stack ? "Total" : undefined,
-        z: -1,
-        zlevel: -1,
-      })),
+      series: filter(get(data, "lines", []), (l: any) => l !== null).map(
+        (d: any) => ({
+          type: "line",
+          name: d[0],
+          data: d[1].map((l: any) => l.y),
+          stack: stack ? "Total" : undefined,
+          z: -1,
+          zlevel: -1,
+        })
+      ),
       tooltip: {
         trigger: showTooltip ? "axis" : "none",
         confine: true,

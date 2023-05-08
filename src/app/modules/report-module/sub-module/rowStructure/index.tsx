@@ -2,8 +2,6 @@ import React from "react";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
-import Tooltip from "@material-ui/core/Tooltip";
-import { ResetIcon } from "app/assets/icons/Reset";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useLocation, useParams } from "react-router-dom";
@@ -66,6 +64,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     <div
       css={`
         width: 100%;
+        margin-bottom: ${!viewOnlyMode ? "0px" : "50px"};
       `}
     >
       <div
@@ -237,25 +236,23 @@ const Box = (props: {
           `}
         >
           {!viewOnlyMode && (
-            <Tooltip title="Reset">
-              <IconButton
-                onClick={() => {
-                  setDisplayChart(false);
-                  setChartId(null);
-                  setDisplayTextBox(false);
-                  setTextContent(EditorState.createEmpty());
-                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
-                }}
-                css={`
-                  top: 12px;
-                  z-index: 1;
-                  right: 12px;
-                  position: absolute;
-                `}
-              >
-                <ResetIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton
+              onClick={() => {
+                setDisplayChart(false);
+                setChartId(null);
+                setDisplayTextBox(false);
+                setTextContent(EditorState.createEmpty());
+                props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+              }}
+              css={`
+                top: 12px;
+                z-index: 1;
+                right: 12px;
+                position: absolute;
+              `}
+            >
+              <DeleteIcon />
+            </IconButton>
           )}
           <RichEditor
             fullWidth
@@ -280,25 +277,23 @@ const Box = (props: {
           `}
         >
           {!viewOnlyMode && (
-            <Tooltip title="Reset">
-              <IconButton
-                onClick={() => {
-                  setDisplayChart(false);
-                  setChartId(null);
-                  setDisplayTextBox(false);
-                  setTextContent(EditorState.createEmpty());
-                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
-                }}
-                css={`
-                  top: 12px;
-                  z-index: 1;
-                  right: 12px;
-                  position: absolute;
-                `}
-              >
-                <ResetIcon />
-              </IconButton>
-            </Tooltip>
+            <IconButton
+              onClick={() => {
+                setDisplayChart(false);
+                setChartId(null);
+                setDisplayTextBox(false);
+                setTextContent(EditorState.createEmpty());
+                props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+              }}
+              css={`
+                top: 12px;
+                z-index: 1;
+                right: 12px;
+                position: absolute;
+              `}
+            >
+              <DeleteIcon />
+            </IconButton>
           )}
           <ReportChartWrapper id={chartId} />
         </div>
@@ -353,15 +348,15 @@ const Box = (props: {
     >
       <p
         css={`
-          font-weight: 325;
-          font-size: 8.65512px;
-          color: #495057;
-          text-align: center;
-          display: flex;
           width: 100%;
           height: 100%;
-          justify-content: center;
+          display: flex;
+          color: #495057;
+          font-size: 12px;
+          font-weight: 400;
+          text-align: center;
           align-items: center;
+          justify-content: center;
         `}
       >
         {isOver ? "Release to drop" : "Drag and drop content here"}

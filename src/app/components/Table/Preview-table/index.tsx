@@ -71,56 +71,54 @@ export default function PreviewTable(props: PreviewTableProps) {
               >
                 {props.columns.map((val, index) => {
                   return (
-                    <>
-                      <TableCell
-                        key={val.key}
-                        css={`
-                          border-left: ${index == 0 ? "none" : "auto"};
-                        `}
-                      >
-                        {index !== 0 && (
+                    <TableCell
+                      key={val.key}
+                      css={`
+                        border-left: ${index == 0 ? "none" : "auto"};
+                      `}
+                    >
+                      {index !== 0 && (
+                        <div
+                          css={`
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            gap: 1rem;
+                          `}
+                        >
                           <div
                             css={`
-                              display: flex;
-                              justify-content: space-between;
+                              width: 25px;
+                              height: 25px;
+                              border-radius: 50%;
+                              padding: 3px;
+                              display: none;
+                              justify-content: center;
                               align-items: center;
-                              gap: 1rem;
+                              background: #ffffff;
                             `}
                           >
-                            <div
-                              css={`
-                                width: 25px;
-                                height: 25px;
-                                border-radius: 50%;
-                                padding: 3px;
-                                display: none;
-                                justify-content: center;
-                                align-items: center;
-                                background: #ffffff;
-                              `}
-                            >
-                              <p>{val.type === "string" ? "Aa" : "#"}</p>
-                            </div>
-
-                            <p
-                              css={`
-                                text-align: left;
-                                line-height: 17px;
-                                text-overflow: ellipsis;
-                                white-space: nowrap;
-                                overflow: clip;
-                                max-width: 220px;
-                              `}
-                            >
-                              {val.key}
-                            </p>
-                            <IconButton>
-                              <SortIcon />
-                            </IconButton>
+                            <p>{val.type === "string" ? "Aa" : "#"}</p>
                           </div>
-                        )}
-                      </TableCell>
-                    </>
+
+                          <p
+                            css={`
+                              text-align: left;
+                              line-height: 17px;
+                              text-overflow: ellipsis;
+                              white-space: nowrap;
+                              overflow: clip;
+                              max-width: 220px;
+                            `}
+                          >
+                            {val.key}
+                          </p>
+                          <IconButton>
+                            <SortIcon />
+                          </IconButton>
+                        </div>
+                      )}
+                    </TableCell>
                   );
                 })}
               </TableRow>
@@ -133,31 +131,29 @@ export default function PreviewTable(props: PreviewTableProps) {
                     background: #fff;
                   `}
                 >
-                  <>
-                    {props.columns.map((val, index) => (
-                      <TableCell
-                        key={val.key}
+                  {props.columns.map((val, index) => (
+                    <TableCell
+                      key={val.key}
+                      css={`
+                        background: ${index === 0
+                          ? "rgba(218, 218, 248, 0.3)"
+                          : "#fff"};
+                      `}
+                    >
+                      <p
                         css={`
-                          background: ${index === 0
-                            ? "rgba(218, 218, 248, 0.3)"
-                            : "#fff"};
+                          text-overflow: ellipsis;
+                          white-space: nowrap;
+                          overflow: clip;
+                          max-width: 220px;
+                          min-width: ${index === 0 ? "30px" : "auto"};
+                          text-align: ${index === 0 ? "center" : "left"};
                         `}
                       >
-                        <p
-                          css={`
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            overflow: clip;
-                            max-width: 220px;
-                            min-width: ${index === 0 ? "30px" : "auto"};
-                            text-align: ${index === 0 ? "center" : "left"};
-                          `}
-                        >
-                          {data[val.key]}
-                        </p>
-                      </TableCell>
-                    ))}
-                  </>
+                        {data[val.key]}
+                      </p>
+                    </TableCell>
+                  ))}
                 </TableRow>
               ))}
             </TableBody>
