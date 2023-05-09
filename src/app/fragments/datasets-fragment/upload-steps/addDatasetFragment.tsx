@@ -14,6 +14,7 @@ import {
   FileRejection,
   useDropzone,
 } from "react-dropzone";
+import { formatBytes } from "app/utils/formatBytes";
 
 interface Props {
   disabled: boolean;
@@ -58,6 +59,17 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
       props.handleNext();
     }
   }, [acceptedFiles]);
+
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+    <li key={file.name}>
+      {file.name} - {formatBytes(file.size)}
+      <ul>
+        {errors.map((e) => (
+          <li key={e.code}>{e.message}</li>
+        ))}
+      </ul>
+    </li>
+  ));
   return (
     <>
       <DropZone
@@ -68,9 +80,11 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
         fileRejections={fileRejections}
         acceptedFiles={acceptedFiles}
       />
+      {fileRejections.length > 0 && fileRejectionItems}
     </>
   );
 }
+
 interface DropzoneProps extends Props {
   getRootProps: (props?: DropzoneRootProps) => DropzoneRootProps;
   getInputProps: (props?: DropzoneInputProps) => DropzoneInputProps;
@@ -94,7 +108,7 @@ export const DropZone = (props: DropzoneProps) => {
           <p>Add your file</p>
         </div>
         <div css={uploadAreacss(props.isDragActive)}>
-          {!props.disabled && <input {...props.getInputProps()} />}
+          <input {...props.getInputProps()} />
           {!props.isDragActive && (
             <>
               <UploadIcon
@@ -129,12 +143,6 @@ export const DropZone = (props: DropzoneProps) => {
                   gap: 1rem;
                 `}
               >
-                {/* <input
-                  id="local-upload"
-                  type="file"
-                  hidden
-                  // onChange={props.handleFileChange}
-                /> */}
                 <label htmlFor="local-upload">
                   <LocalUploadIcon /> <p>Local upload</p>
                 </label>
