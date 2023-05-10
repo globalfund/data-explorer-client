@@ -4,9 +4,9 @@ import useTitle from "react-use/lib/useTitle";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
+import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { DataThemesDataTable } from "app/modules/data-themes-module/components/data-table";
-import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 
 interface ChartBuilderPreviewProps {
   loading: boolean;

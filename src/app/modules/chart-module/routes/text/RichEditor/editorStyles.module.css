@@ -1,6 +1,6 @@
 .editor {
   left: 0;
-  padding: 16px 26px;
+  padding: 24px;
   position: relative;
   align-self: flex-start;
   border: none;
@@ -11,7 +11,7 @@
 
 .editorPreview {
   left: 0;
-  padding: 16px 26px;
+  padding: 24px;
   position: relative;
   align-self: flex-start;
   border: none;

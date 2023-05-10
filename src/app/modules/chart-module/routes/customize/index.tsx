@@ -44,7 +44,7 @@ export function ChartBuilderCustomize(props: ChartBuilderCustomizeProps) {
   }, [containerRef]);
 
   if ((dataset === null && !props.loading) || isEmpty(mapping)) {
-    history.push(`/chart/${page}/data`);
+    history.push(`/chart/${page}/preview-data`);
   }
 
   return (

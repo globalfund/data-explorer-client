@@ -12,7 +12,7 @@ interface Props {
   rowStructureType: IRowFrameStructure;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   deleteFrame: (id: string) => void;
-
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,
@@ -46,6 +46,7 @@ export default function AddRowFrameButton(props: Props) {
           <RowFrame
             rowId={id}
             rowIndex={props.framesArray.length}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             deleteFrame={props.deleteFrame}
             handleRowFrameStructureTypeSelection={
@@ -64,53 +65,55 @@ export default function AddRowFrameButton(props: Props) {
       disableAddRowStructureButton: false,
     });
   };
+
   return (
-    <>
+    <div
+      css={`
+        width: 100%;
+      `}
+    >
       <div
         css={`
           width: 100%;
+          display: flex;
+          padding: 3px 0;
+          background: #fff;
+          justify-content: center;
+          border: 1px dashed #adb5bd;
         `}
       >
-        <div
+        <IconButton
+          disableRipple
+          onClick={handleAddrowStructureBlock}
+          onMouseEnter={() => setDisplayTooltip(true)}
+          onMouseLeave={() => setDisplayTooltip(false)}
+          disabled={props.rowStructureType.disableAddRowStructureButton}
           css={`
-            border: 1px dashed #adb5bd;
-            width: 100%;
-            height: 48px;
-            display: flex;
-            justify-content: center;
+            padding: 4px;
           `}
         >
-          <IconButton
-            onClick={handleAddrowStructureBlock}
-            disableRipple={true}
-            disabled={props.rowStructureType.disableAddRowStructureButton}
-            onMouseEnter={() => setDisplayTooltip(true)}
-            onMouseLeave={() => setDisplayTooltip(false)}
-          >
-            <PlusIcon />
-          </IconButton>
-        </div>
-
-        {displayTooltip && (
-          <div
-            css={`
-              background-color: #626262;
-              border-radius: 4px;
-              font-size: 12px;
-              font-family: "GothamNarrow-Book";
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              width: 127px;
-              height: 23px;
-              margin: auto;
-              color: white;
-            `}
-          >
-            <p>Add new row frame</p>
-          </div>
-        )}
+          <PlusIcon />
+        </IconButton>
       </div>
-    </>
+      {displayTooltip && (
+        <div
+          css={`
+            background-color: #626262;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: "GothamNarrow-Book";
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 127px;
+            height: 23px;
+            margin: auto;
+            color: white;
+          `}
+        >
+          <p>Add new row frame</p>
+        </div>
+      )}
+    </div>
   );
 }

@@ -39,6 +39,22 @@ export default function ReportsGrid() {
       .catch((error) => console.log(error));
   };
 
+  const handleDuplicate = (index: number) => {
+    const id = reports[index].id;
+    if (!id) {
+      return;
+    }
+    axios
+      .get(`${process.env.REACT_APP_API}/report/duplicate/${id}`)
+      .then(() => {
+        loadReports({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "DELETE") {
       setEnableButton(true);
@@ -73,6 +89,7 @@ export default function ReportsGrid() {
               viz={<ReportIcon />}
               date={data.createdDate}
               handleDelete={() => handleModal(index)}
+              handleDuplicate={() => handleDuplicate(index)}
             />
           </Grid>
         ))}

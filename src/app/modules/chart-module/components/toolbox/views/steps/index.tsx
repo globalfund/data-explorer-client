@@ -15,9 +15,8 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import { PrimaryButton } from "app/components/Styled/button";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
-import { ChartToolBoxMapping } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Mapping";
 import { ChartToolBoxLock } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Lock";
-import { ChartToolBoxExport } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Export";
+import { ChartToolBoxMapping } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Mapping";
 import { ChartToolBoxFilters } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Filters";
 import { ChartToolBoxChartType } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/ChartType";
 import { ChartToolBoxCustomize } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Customize";
@@ -165,7 +164,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (direction === "next" && activePanels === 7) {
+      if (direction === "next" && activePanels === 6) {
         props.save();
         return;
       }
@@ -194,11 +193,10 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
     <div>
       <div
         css={`
+          width: 400px;
+          overflow-y: scroll;
           height: calc(100vh - ${!props.filtersView ? 93 : 105}px);
 
-          width: 400px;
-
-          overflow-y: scroll;
           ::-webkit-scrollbar {
             display: none;
           }
@@ -383,6 +381,9 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
           square
           expanded={expanded === 6 && !collapsed}
           onChange={handleChange(7)}
+          css={`
+            border-bottom: 1px solid #c0c7d2;
+          `}
         >
           <AccordionSummary
             id="step6-header"
@@ -398,25 +399,6 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
               visualOptions={props.visualOptions}
               setVisualOptions={props.setVisualOptions}
             />
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === 7 && !collapsed}
-          onChange={handleChange(8)}
-          // css={`
-          //   border-bottom: 1px solid #c0c7d2;
-          // `}
-        >
-          <AccordionSummary
-            id="step7-header"
-            aria-controls="step7-content"
-            expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
-          >
-            <div>7</div> Export
-          </AccordionSummary>
-          <AccordionDetails>
-            <ChartToolBoxExport rawViz={props.rawViz} />
           </AccordionDetails>
         </Accordion>
       </div>
@@ -441,7 +423,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
             !props.forceNextEnabled
           }
         >
-          {activePanels === 7 ? "Save" : "Next"}
+          {activePanels === 6 ? "Save" : "Next"}
         </Button>
       </div>
     </div>

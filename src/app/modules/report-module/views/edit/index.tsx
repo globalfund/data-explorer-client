@@ -11,6 +11,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import { ReportEditViewProps } from "app/modules/report-module/views/edit/data";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
+import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
 import RowFrame, {
@@ -112,6 +113,7 @@ export function ReportEditView(props: ReportEditViewProps) {
             rowId={id}
             deleteFrame={deleteFrame}
             forceSelectedType={rowFrame.structure ?? undefined}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
@@ -150,32 +152,38 @@ export function ReportEditView(props: ReportEditViewProps) {
           `}
         >
           <Box height={50} />
-          {props.framesArray.map((frame, index) => {
-            return (
-              <div key={frame.id}>
-                <div>{frame.frame}</div>
-                <Box height={38} />
+          <ReportOrderContainer enabled childrenData={props.framesArray}>
+            {props.framesArray.map((frame) => {
+              return (
+                <div key={frame.id}>
+                  <div>{frame.frame}</div>
+                  <Box height={38} />
 
-                <PlaceHolder
-                  index={frame.id}
-                  rowId={frame.id}
-                  deleteFrame={deleteFrame}
-                  framesArray={props.framesArray}
-                  setFramesArray={props.setFramesArray}
-                  handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-                  handleRowFrameStructureTypeSelection={
-                    props.handleRowFrameStructureTypeSelection
-                  }
-                />
-              </div>
-            );
-          })}
+                  <PlaceHolder
+                    index={frame.id}
+                    rowId={frame.id}
+                    deleteFrame={deleteFrame}
+                    framesArray={props.framesArray}
+                    setFramesArray={props.setFramesArray}
+                    handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+                    handleRowFrameItemAddition={
+                      props.handleRowFrameItemAddition
+                    }
+                    handleRowFrameStructureTypeSelection={
+                      props.handleRowFrameStructureTypeSelection
+                    }
+                  />
+                </div>
+              );
+            })}
+          </ReportOrderContainer>
           <AddRowFrameButton
             deleteFrame={deleteFrame}
             framesArray={props.framesArray}
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}
             setRowStructureType={setRowStructuretype}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection

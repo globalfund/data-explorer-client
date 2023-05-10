@@ -75,7 +75,7 @@ export function ReportPreviewView() {
                 key={index}
                 css={`
                   margin: 0;
-                  border: 1px solid #e4e4e4;
+                  border: 2px solid #cfd4da;
                 `}
               />
             );
@@ -87,6 +87,7 @@ export function ReportPreviewView() {
               rowIndex={index}
               deleteFrame={() => {}}
               forceSelectedType={rowFrame.structure ?? undefined}
+              handleRowFrameItemRemoval={() => {}}
               handleRowFrameItemAddition={() => {}}
               handleRowFrameStructureTypeSelection={() => {}}
               previewItems={rowFrame.items}

@@ -17,10 +17,8 @@ interface RowStructureDisplayProps {
   height: string;
   rowIndex: number;
   rowId: string;
-
   selectedType: string;
   deleteFrame: (id: string) => void;
-
   selectedTypeHistory: string[];
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
@@ -35,6 +33,7 @@ interface RowStructureDisplayProps {
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
   ) => void;
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   previewItems?: (string | object)[];
 }
 
@@ -65,6 +64,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     <div
       css={`
         width: 100%;
+        margin-bottom: ${!viewOnlyMode ? "0px" : "50px"};
       `}
     >
       <div
@@ -114,13 +114,13 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             <div
               css={`
                 width: 23px;
+                cursor: grab;
                 display: flex;
                 align-items: center;
                 background: #adb5bd;
                 border-radius: 3.45px;
-                transform: matrix(-1, 0, 0, 1, 0, 0);
-
                 justify-content: center;
+                transform: matrix(-1, 0, 0, 1, 0, 0);
               `}
             >
               <RowFrameHandleAdornment />
@@ -128,17 +128,16 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           </div>
         )}
         {props.rowStructureDetailItems.map((row, index) => (
-          <>
-            <Box
-              key={`${row.rowId}-${index}`}
-              width={row.width}
-              itemIndex={index}
-              height={props.height}
-              rowId={props.rowId}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              previewItem={get(props.previewItems, `[${index}]`, undefined)}
-            />
-          </>
+          <Box
+            key={`${row.rowId}-${index}`}
+            width={row.width}
+            itemIndex={index}
+            height={props.height}
+            rowId={props.rowId}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+            previewItem={get(props.previewItems, `[${index}]`, undefined)}
+          />
         ))}
       </div>
     </div>
@@ -150,6 +149,7 @@ const Box = (props: {
   height: string;
   rowId: string;
   itemIndex: number;
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,
@@ -225,6 +225,7 @@ const Box = (props: {
           css={`
             overflow: auto;
             background: #fff;
+            position: relative;
             width: ${props.width}};
             height: ${props.height};
             max-height: ${props.height};
@@ -234,6 +235,25 @@ const Box = (props: {
             }
           `}
         >
+          {!viewOnlyMode && (
+            <IconButton
+              onClick={() => {
+                setDisplayChart(false);
+                setChartId(null);
+                setDisplayTextBox(false);
+                setTextContent(EditorState.createEmpty());
+                props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+              }}
+              css={`
+                top: 12px;
+                z-index: 1;
+                right: 12px;
+                position: absolute;
+              `}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
           <RichEditor
             fullWidth
             textContent={textContent}
@@ -249,14 +269,32 @@ const Box = (props: {
         <div
           key={chartId}
           css={`
-            background: #fff;
-            box-sizing: border-box;
             padding: 24px;
-
+            background: #fff;
+            position: relative;
             width: ${props.width};
             height: ${props.height};
           `}
         >
+          {!viewOnlyMode && (
+            <IconButton
+              onClick={() => {
+                setDisplayChart(false);
+                setChartId(null);
+                setDisplayTextBox(false);
+                setTextContent(EditorState.createEmpty());
+                props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+              }}
+              css={`
+                top: 12px;
+                z-index: 1;
+                right: 12px;
+                position: absolute;
+              `}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
           <ReportChartWrapper id={chartId} />
         </div>
       );
@@ -310,15 +348,17 @@ const Box = (props: {
     >
       <p
         css={`
-          font-weight: 325;
-          font-size: 8.65512px;
-          color: #495057;
-          text-align: center;
-          display: flex;
+          margin: 0;
           width: 100%;
           height: 100%;
-          justify-content: center;
+          display: flex;
+          padding: 24px;
+          color: #495057;
+          font-size: 14px;
+          font-weight: 400;
+          text-align: center;
           align-items: center;
+          justify-content: center;
         `}
       >
         {isOver ? "Release to drop" : "Drag and drop content here"}

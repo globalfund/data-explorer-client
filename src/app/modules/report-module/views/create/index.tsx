@@ -5,6 +5,7 @@ import { useRecoilValue } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
+import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
 import RowFrame, {
@@ -42,6 +43,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
       return [...tempPrev];
     });
   }
+
   React.useEffect(() => {
     if (props.reportType === "advanced") {
       const rowOne = v4();
@@ -58,6 +60,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={0}
               forceSelectedType="oneByFive"
               deleteFrame={() => deleteFrame(rowOne)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -76,6 +79,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={1}
               forceSelectedType="oneByOne"
               deleteFrame={() => deleteFrame(rowTwo)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -94,6 +98,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={2}
               forceSelectedType="oneToFour"
               deleteFrame={() => deleteFrame(rowThree)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -112,6 +117,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={3}
               forceSelectedType="oneByOne"
               deleteFrame={() => deleteFrame(rowFour)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -130,6 +136,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               rowIndex={4}
               forceSelectedType="oneByThree"
               deleteFrame={() => deleteFrame(rowFive)}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
               handleRowFrameItemAddition={props.handleRowFrameItemAddition}
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
@@ -165,32 +172,37 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           `}
         >
           <Box height={50} />
-          {props.framesArray.map((frame) => {
-            return (
-              <div key={frame.id}>
-                <div>{frame.frame}</div>
-                <Box height={38} />
-                <PlaceHolder
-                  rowId={frame.id}
-                  index={frame.id}
-                  deleteFrame={deleteFrame}
-                  framesArray={props.framesArray}
-                  setFramesArray={props.setFramesArray}
-                  handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-                  handleRowFrameStructureTypeSelection={
-                    props.handleRowFrameStructureTypeSelection
-                  }
-                />
-              </div>
-            );
-          })}
-
+          <ReportOrderContainer enabled childrenData={props.framesArray}>
+            {props.framesArray.map((frame) => {
+              return (
+                <div key={frame.id}>
+                  <div>{frame.frame}</div>
+                  <Box height={38} />
+                  <PlaceHolder
+                    rowId={frame.id}
+                    index={frame.id}
+                    deleteFrame={deleteFrame}
+                    framesArray={props.framesArray}
+                    setFramesArray={props.setFramesArray}
+                    handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+                    handleRowFrameItemAddition={
+                      props.handleRowFrameItemAddition
+                    }
+                    handleRowFrameStructureTypeSelection={
+                      props.handleRowFrameStructureTypeSelection
+                    }
+                  />
+                </div>
+              );
+            })}
+          </ReportOrderContainer>
           <AddRowFrameButton
             deleteFrame={deleteFrame}
             framesArray={props.framesArray}
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}
             setRowStructureType={setRowStructuretype}
+            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
@@ -225,6 +237,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
                 rowId={id}
                 rowIndex={tempIndex + 1}
                 deleteFrame={props.deleteFrame}
+                handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
                 handleRowFrameItemAddition={props.handleRowFrameItemAddition}
                 handleRowFrameStructureTypeSelection={
                   props.handleRowFrameStructureTypeSelection

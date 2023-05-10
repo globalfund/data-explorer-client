@@ -5,7 +5,6 @@ import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
 import { itemSpacing, containerGap } from "app/modules/report-module/data";
 import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
-import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
@@ -131,6 +130,7 @@ export interface RowFrameProps {
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart"
   ) => void;
+  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameStructureTypeSelection: (
     rowIndex: number,
     structure:
@@ -177,6 +177,7 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[0]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
       />
@@ -193,6 +194,7 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[1]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
       />
@@ -209,6 +211,7 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[2]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
       />
@@ -225,6 +228,7 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[3]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
       />
@@ -241,6 +245,7 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[4]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
       />
@@ -257,6 +262,7 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[5]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
       />
@@ -273,6 +279,7 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[6]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
       />
@@ -314,22 +321,19 @@ export default function RowFrame(props: RowFrameProps) {
             `}
             onClick={() => {
               props.deleteFrame(props.rowId);
-              setSelectedType(
-                selectedTypeHistory[selectedTypeHistory.length - 2]
-              );
             }}
           >
             <CloseIcon />
           </IconButton>
           <div
             css={`
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              column-gap: 50px;
-              flex-wrap: wrap;
               width: 92%;
               margin: auto;
+              display: flex;
+              flex-wrap: wrap;
+              column-gap: 50px;
+              align-items: center;
+              justify-content: center;
             `}
           >
             <OneByOne
@@ -374,13 +378,15 @@ const OneByOne = (props: IRowStructureType) => {
   return (
     <div css={blockcss} onClick={handleClick}>
       <p>1/1</p>
-      <div
-        css={`
-          background: #dfe3e6;
-          height: 56px;
-          width: 94px;
-        `}
-      ></div>
+      <div>
+        <div
+          css={`
+            background: #dfe3e6;
+            height: 56px;
+            width: 94px;
+          `}
+        />
+      </div>
     </div>
   );
 };
@@ -618,7 +624,7 @@ export function Divider(props: {
         css={`
           width: 100%;
           margin: 20px 0;
-          border: 1px solid #e4e4e4;
+          border: 2px solid #cfd4da;
         `}
       />
     </div>

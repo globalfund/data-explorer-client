@@ -1,5 +1,6 @@
 import React from "react";
 import { v4 } from "uuid";
+import filter from "lodash/filter";
 import Box from "@material-ui/core/Box";
 import { DndProvider } from "react-dnd";
 import Container from "@material-ui/core/Container";
@@ -36,9 +37,9 @@ export default function ReportModule() {
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
-  const [reportType, setReportType] = React.useState<"basic" | "advanced">(
-    "basic"
-  );
+  const [reportType, setReportType] = React.useState<
+    "basic" | "advanced" | "ai"
+  >("basic");
   const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
 
   const [headerDetails, setHeaderDetails] = React.useState({
@@ -54,7 +55,6 @@ export default function ReportModule() {
     React.useState(headerDetails);
 
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
-  const [updatePickedCharts, setUpdatePickedCharts] = React.useState(false);
 
   const handleRowFrameItemAddition = (
     rowId: string,
@@ -63,13 +63,32 @@ export default function ReportModule() {
     itemContentType: "text" | "divider" | "chart"
   ) => {
     setFramesArray((prev) => {
-      let tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = prev.map((item) => ({ ...item }));
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];
       }
       tempPrev[frameId].content[itemIndex] = itemContent;
       tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
+    });
+  };
+
+  const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
+    setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      if (tempPrev[frameId].contentTypes[itemIndex] === "chart") {
+        const chartId = tempPrev[frameId].content[itemIndex] as string;
+        setPickedCharts((prevPickedCharts) =>
+          filter(prevPickedCharts, (chart: string) => chart !== chartId)
+        );
+      }
+      tempPrev[frameId].content[itemIndex] = null;
+      tempPrev[frameId].contentTypes[itemIndex] = null;
       return [...tempPrev];
     });
   };
@@ -115,7 +134,7 @@ export default function ReportModule() {
         break;
     }
     setFramesArray((prev) => {
-      let tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = prev.map((item) => ({ ...item }));
 
       tempPrev[rowIndex].content = content;
       tempPrev[rowIndex].contentTypes = contentTypes;
@@ -126,7 +145,7 @@ export default function ReportModule() {
 
   const deleteFrame = (id: string) => {
     setFramesArray((prev) => {
-      let tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = prev.map((item) => ({ ...item }));
       const frameId = tempPrev.findIndex((frame) => frame.id === id);
       const contentArr = tempPrev[frameId].content;
 
@@ -149,6 +168,7 @@ export default function ReportModule() {
           rowId={id}
           deleteFrame={deleteFrame}
           handleRowFrameItemAddition={handleRowFrameItemAddition}
+          handleRowFrameItemRemoval={handleRowFrameItemRemoval}
           handleRowFrameStructureTypeSelection={
             handleRowFrameStructureTypeSelection
           }
@@ -210,7 +230,7 @@ export default function ReportModule() {
 
   const handleSetButtonActive = (
     active: boolean,
-    type: "basic" | "advanced"
+    type: "basic" | "advanced" | "ai"
   ) => {
     setButtonActive(active);
     setReportType(type);
@@ -227,6 +247,7 @@ export default function ReportModule() {
             rowId={id}
             deleteFrame={deleteFrame}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
+            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
@@ -239,6 +260,14 @@ export default function ReportModule() {
     ]);
   };
 
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+
+  const reportOrderClear = useStoreActions(
+    (actions) => actions.reports.orderData.clear
+  );
+
   const onSave = () => {
     if (!isPreviewSaveEnabled) {
       alert("Please add content to all rows");
@@ -249,23 +278,25 @@ export default function ReportModule() {
       patchId: page === "new" ? undefined : page,
       values: {
         name: reportName,
-        showHeader: appliedHeaderDetails.showHeader,
-        title: appliedHeaderDetails.showHeader
-          ? appliedHeaderDetails.title
-          : undefined,
+        showHeader: headerDetails.showHeader,
+        title: headerDetails.showHeader ? headerDetails.title : undefined,
         subTitle: convertToRaw(
-          appliedHeaderDetails.showHeader
-            ? appliedHeaderDetails.description.getCurrentContent()
+          headerDetails.showHeader
+            ? headerDetails.description.getCurrentContent()
             : EditorState.createEmpty().getCurrentContent()
         ),
-        rows: framesArray.map((frame) => ({
-          structure: frame.structure,
-          items: frame.content.map((item, index) =>
-            frame.contentTypes[index] === "text"
-              ? convertToRaw((item as EditorState).getCurrentContent())
-              : item
-          ),
-        })),
+        rows: framesArray
+          .sort(function (a, b) {
+            return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
+          })
+          .map((frame) => ({
+            structure: frame.structure,
+            items: frame.content.map((item, index) =>
+              frame.contentTypes[index] === "text"
+                ? convertToRaw((item as EditorState).getCurrentContent())
+                : item
+            ),
+          })),
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
@@ -277,6 +308,7 @@ export default function ReportModule() {
   React.useEffect(() => {
     return () => {
       reportEditClear();
+      reportOrderClear();
       reportCreateClear();
     };
   }, []);
@@ -303,6 +335,7 @@ export default function ReportModule() {
         reportCreateData.id.length > 0) ||
       reportEditSuccess
     ) {
+      reportOrderClear();
       const id = reportCreateSuccess ? reportCreateData.id : page;
       history.push(`/report/${id}`);
     }
@@ -318,7 +351,7 @@ export default function ReportModule() {
         forceEnablePreviewSave={isPreviewSaveEnabled}
         name={page !== "new" && !view ? reportGetData.name : reportName}
       />
-      {view && view !== "preview" && (
+      {view && view !== "preview" && view !== "initial" && (
         <ReportRightPanel
           open={rightPanelOpen}
           currentView={view}
@@ -408,6 +441,7 @@ export default function ReportModule() {
             setFramesArray={setFramesArray}
             setHeaderDetails={setHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
+            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
@@ -424,6 +458,7 @@ export default function ReportModule() {
             setHeaderDetails={setHeaderDetails}
             setAppliedHeaderDetails={setAppliedHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
+            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }

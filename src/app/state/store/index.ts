@@ -6,6 +6,7 @@ import {
   DataSourceSnackbarVisibilityState,
   DataSourceState,
   PageHeaderVizDrilldownsState,
+  ReportOrderState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
   ToolBoxPanelBudgetFlowDrilldownSelectors,
@@ -475,6 +476,7 @@ const storeContent: StoreModel = {
     ReportDelete: persist(ReportDelete),
     ReportDuplicate: persist(ReportDuplicate),
     ReportGetList: persist(ReportGetList),
+    orderData: persist(ReportOrderState),
   },
   search: {
     charts: persist(GlobalSearchCharts),

@@ -3,9 +3,9 @@ import { css } from "styled-components/macro";
 export const headerBlockcss = {
   container: (backgroundColor: string, titleColor: string) => css`
     width: 100%;
-    padding: 60px 0;
+    height: 215px;
+    padding: 35px 0;
     position: relative;
-    height: 262px;
     background: ${backgroundColor};
 
     input {

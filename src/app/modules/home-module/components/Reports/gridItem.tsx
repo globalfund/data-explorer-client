@@ -5,14 +5,16 @@ import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
+import { ReactComponent as DuplicateIcon } from "app/modules/home-module/assets/duplicate.svg";
 
 interface Props {
+  date: Date;
+  id?: string;
   title: string;
   descr: string;
-  date: Date;
   viz: JSX.Element;
   handleDelete?: (id: string) => void;
-  id?: string;
+  handleDuplicate?: (id: string) => void;
 }
 
 export default function GridItem(props: Props) {
@@ -108,34 +110,52 @@ export default function GridItem(props: Props) {
         <div>
           <div
             css={`
-              position: fixed;
-              height: 100vh;
-              width: 100vw;
               top: 0;
-              bottom: 0;
               left: 0;
-              right: 0;
-
               z-index: 1;
+              width: 100vw;
+              height: 100vh;
+              position: fixed;
             `}
             onClick={showMenuOptions}
           />
           <div
             css={`
-              background: #f4f4f4;
-              border-radius: 13px;
-              z-index: 2;
-              width: 128px;
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              gap: 1rem;
-              position: absolute;
-              right: 3%;
               top: 30%;
-              padding: 7px 0;
+              gap: 1rem;
+              right: 3%;
+              z-index: 2;
+              width: 160px;
+              display: flex;
+              padding: 6px 15px;
+              position: absolute;
+              background: #f4f4f4;
+              align-items: center;
+              border-radius: 100px;
+              justify-content: center;
             `}
           >
+            <div>
+              <IconButton
+                css={`
+                  padding: 0;
+                `}
+                onClick={() => {
+                  props.handleDuplicate?.(props.id as string);
+                  setMenuOptionsDisplay(false);
+                }}
+              >
+                <DuplicateIcon
+                  css={`
+                    cursor: pointer;
+
+                    :hover {
+                      opacity: 0.5;
+                    }
+                  `}
+                />
+              </IconButton>
+            </div>
             <div>
               <Link to={`/report/${props.id}/edit`}>
                 <EditIcon
