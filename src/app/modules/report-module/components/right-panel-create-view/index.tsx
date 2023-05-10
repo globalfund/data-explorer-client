@@ -1,30 +1,32 @@
 import React from "react";
-import moment from "moment";
+import find from "lodash/find";
+import { useDrag } from "react-dnd";
 import { EditorState } from "draft-js";
-import { SetterOrUpdater, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import Paper from "@material-ui/core/Paper";
 import MuiButton from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { SearchIcon } from "app/assets/icons/Search";
-import { DragPreviewImage, useDrag } from "react-dnd";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
-import { ReactComponent as DividerIcon } from "../../asset/dividerIcon.svg";
+import HeaderIcon from "app/modules/report-module/asset/HeaderIcon";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import GridItem from "app/modules/home-module/components/Charts/gridItem";
+import EditHeaderIcon from "app/modules/report-module/asset/EditHeaderIcon";
+import TextPreviewImg from "app/modules/report-module/asset/textPreview.svg";
+import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import DividerPreviewImg from "app/modules/report-module/asset/dividerPreview.svg";
+import HeaderPreviewImg from "app/modules/report-module/asset/headerPreviewImg.svg";
+import RowFramePreviewImg from "app/modules/report-module/asset/rowframePreview.svg";
+import { ReactComponent as DividerIcon } from "app/modules/report-module/asset/dividerIcon.svg";
+import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
 import {
   isDividerOrRowFrameDraggingAtom,
   reportRightPanelViewAtom,
 } from "app/state/recoil/atoms";
-import HeaderIcon from "app/modules/report-module/asset/HeaderIcon";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import EditHeaderIcon from "app/modules/report-module/asset/EditHeaderIcon";
-import TextPreviewImg from "app/modules/report-module/asset/textPreview.svg";
-import DividerPreviewImg from "app/modules/report-module/asset/dividerPreview.svg";
-import HeaderPreviewImg from "app/modules/report-module/asset/headerPreviewImg.svg";
-import RowFramePreviewImg from "app/modules/report-module/asset/rowframePreview.svg";
-import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
 
 const Button = withStyles(() => ({
   root: {
@@ -105,6 +107,7 @@ export const ReportElementsType = {
   TEXT: "text",
   DIVIDER: "divider",
   CHART: "chart",
+  HEADER: "header",
 };
 
 interface IHeaderDeatils {
@@ -132,6 +135,12 @@ export function ReportRightPanelCreateView(props: Props) {
   );
 
   const elementItemDetails = [
+    {
+      elementType: ReportElementsType.HEADER,
+      leftIcon: <HeaderIcon />,
+      previewImg: HeaderPreviewImg,
+      name: "Header",
+    },
     {
       elementType: ReportElementsType.ROWFRAME,
       leftIcon: <ArrowRightAltIcon />,
@@ -216,16 +225,16 @@ export function ReportRightPanelCreateView(props: Props) {
             }
           `}
         >
-          {props.showHeaderItem && (
-            <ElementItem
-              name="Header"
-              elementType="header"
-              leftIcon={<HeaderIcon />}
-              previewImg={HeaderPreviewImg}
-            />
-          )}
           {elementItemDetails.map((item) => (
-            <ElementItem key={item.elementType} {...item} />
+            <ElementItem
+              key={item.elementType}
+              {...item}
+              disabled={
+                item.elementType === ReportElementsType.HEADER
+                  ? !props.showHeaderItem
+                  : false
+              }
+            />
           ))}
         </div>
       )}
@@ -391,15 +400,15 @@ function ReportRightPanelCreateViewChartList(props: {
       >
         {chartList.map((chart) => (
           <ChartItem
-            key={chart.id}
-            pickedCharts={props.pickedCharts}
-            setPickedCharts={props.setPickedCharts}
             id={chart.id}
+            key={chart.id}
             name={chart.name}
             vizType={chart.vizType}
             datasetId={chart.datasetId}
             createdDate={chart.createdDate}
+            pickedCharts={props.pickedCharts}
             elementType={ReportElementsType.CHART}
+            setPickedCharts={props.setPickedCharts}
           />
         ))}
       </div>
@@ -412,8 +421,9 @@ function ElementItem(props: {
   previewImg: string;
   elementType: string;
   name: string;
+  disabled?: boolean;
 }) {
-  const [{ isDragging }, drag, preview] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: props.elementType,
     item: {
       type: props.elementType,
@@ -439,25 +449,32 @@ function ElementItem(props: {
   }, [isDragging]);
 
   return (
-    <>
-      <DragPreviewImage connect={preview} src={props.previewImg} />
-      <div ref={drag}>
-        {props.leftIcon}
-        {props.name}
-      </div>
-    </>
+    <div
+      ref={drag}
+      css={`
+        border: 1px solid ${isDragging ? "#6061E5" : "transparent"};
+
+        &:hover {
+          border-color: #6061e5;
+        }
+      `}
+      style={props.disabled ? { opacity: 0.5, pointerEvents: "none" } : {}}
+    >
+      {props.leftIcon}
+      {props.name}
+    </div>
   );
 }
 
 function ChartItem(props: {
-  elementType: string;
-  pickedCharts: string[];
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   id: string;
   name: string;
   vizType: string;
   datasetId: string;
+  elementType: string;
   createdDate: string;
+  pickedCharts: string[];
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const nullRef = React.useRef(null);
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -477,75 +494,46 @@ function ChartItem(props: {
     },
   }));
 
+  const getIcon = (vizType: string) => {
+    const type = find(echartTypes(true), { id: vizType });
+    if (type) {
+      return type.icon;
+    }
+    return echartTypes(true)[0].icon;
+  };
+
+  const added = props.pickedCharts.includes(props.id);
+
   return (
-    <>
-      <div
-        ref={props.pickedCharts.includes(props.id) ? nullRef : drag}
-        css={`
+    <div
+      ref={added ? nullRef : drag}
+      css={`
+        width: 100%;
+        font-size: 12px;
+        background: #fff;
+        user-select: none;
+        cursor: ${added ? "auto" : "grab"};
+        border: 1px solid ${isDragging && !added ? "#6061E5" : "#fff"};
+
+        ${!added &&
+        `&:hover {
+          border-color: #6061e5;
+        }`}
+
+        > div {
           width: 100%;
-          cursor: ${props.pickedCharts.includes(props.id) ? "auto" : "grab"};
-          font-size: 12px;
-          background: #fff;
-          user-select: none;
-          padding: 16px 25px;
-
-          > div {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: space-between;
-
-            :first-of-type {
-              font-size: 14px;
-            }
-          }
-        `}
-      >
-        <div>
-          <span
-            css={`
-              width: 300px;
-              display: flex;
-              margin-top: 0;
-              overflow: hidden;
-              flex-direction: row;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              justify-content: space-between;
-            `}
-          >
-            <b>{props.name}</b>
-            {props.pickedCharts.includes(props.id) && (
-              <span
-                css={`
-                  color: #000;
-                  height: 17px;
-                  font-size: 12px;
-                  padding: 0 10px;
-                  line-height: 14px;
-                  border-radius: 10px;
-                  border: 1px solid #000;
-                `}
-              >
-                Added
-              </span>
-            )}
-          </span>
-        </div>
-        <div>
-          <div>Chart type</div>
-          <div>{props.vizType}</div>
-        </div>
-        <div>
-          <div>Dataset</div>
-          <div>{props.datasetId}</div>
-        </div>
-        <div>
-          <div>Creation date</div>
-          <div>{moment(props.createdDate).format("DD-MM-YYYY")}</div>
-        </div>
-      </div>
-    </>
+        }
+      `}
+    >
+      <GridItem
+        id={props.id}
+        path={props.name}
+        title={props.name}
+        date={props.createdDate}
+        viz={getIcon(props.vizType)}
+        descr="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+      />
+    </div>
   );
 }
 

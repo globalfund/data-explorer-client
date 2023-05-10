@@ -348,11 +348,13 @@ const Box = (props: {
     >
       <p
         css={`
+          margin: 0;
           width: 100%;
           height: 100%;
           display: flex;
+          padding: 24px;
           color: #495057;
-          font-size: 12px;
+          font-size: 14px;
           font-weight: 400;
           text-align: center;
           align-items: center;
