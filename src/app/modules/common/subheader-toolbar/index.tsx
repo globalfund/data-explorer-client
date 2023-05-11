@@ -32,6 +32,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
 import { Tooltip } from "@material-ui/core";
+import { ExportChartButton } from "./exportButton";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -369,7 +370,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                         </svg>
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="save">
+                    <Tooltip title="Save">
                       <IconButton
                         onClick={onSave}
                         disabled={
@@ -390,15 +391,18 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                 )}
                 {page !== "new" && !view && props.pageType === "chart" && (
                   <React.Fragment>
-                    <IconButton>
-                      <SaveAlt htmlColor="#262c34" />
-                    </IconButton>
-                    <IconButton>
-                      <FileCopyIcon htmlColor="#262c34" />
-                    </IconButton>
-                    <IconButton onClick={handleClick}>
-                      <ShareIcon htmlColor="#262c34" />
-                    </IconButton>
+                    <ExportChartButton rawViz={props.rawViz} />
+
+                    <Tooltip title="Copy">
+                      <IconButton>
+                        <FileCopyIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Share">
+                      <IconButton onClick={handleClick}>
+                        <ShareIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
                     <Popover
                       id={id}
                       open={open}
@@ -441,24 +445,30 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                         </CopyToClipboard>
                       </div>
                     </Popover>
-                    <IconButton
-                      component={Link}
-                      to={`/${props.pageType}/${page}/${"customize"}`}
-                    >
-                      <EditIcon htmlColor="#262c34" />
-                    </IconButton>
-                    <IconButton onClick={handleChartDelete}>
-                      <DeleteIcon htmlColor="#262c34" />
-                    </IconButton>
+                    <Tooltip title="Edit">
+                      <IconButton
+                        component={Link}
+                        to={`/${props.pageType}/${page}/${"customize"}`}
+                      >
+                        <EditIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton onClick={handleChartDelete}>
+                        <DeleteIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
                   </React.Fragment>
                 )}
                 {page !== "new" && !view && props.pageType !== "chart" && (
-                  <IconButton
-                    component={Link}
-                    to={`/${props.pageType}/${page}/${"edit"}`}
-                  >
-                    <EditIcon htmlColor="#262c34" />
-                  </IconButton>
+                  <Tooltip title="Edit">
+                    <IconButton
+                      component={Link}
+                      to={`/${props.pageType}/${page}/${"edit"}`}
+                    >
+                      <EditIcon htmlColor="#262c34" />
+                    </IconButton>
+                  </Tooltip>
                 )}
               </div>
             </div>

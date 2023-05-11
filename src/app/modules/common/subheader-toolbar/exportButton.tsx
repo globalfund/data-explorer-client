@@ -1,56 +1,12 @@
+import { IconButton, Tooltip } from "@material-ui/core";
+import { SaveAlt } from "@material-ui/icons";
+import { type } from "os";
 import React from "react";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withStyles } from "@material-ui/core/styles";
-import Menu, { MenuProps } from "@material-ui/core/Menu";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { styles } from "app/modules/chart-module/components/exporter/styles";
-
-export const StyledMenu = withStyles({
-  paper: {
-    width: "100px",
-    marginTop: "8px",
-    borderRadius: "18px",
-    backgroundColor: "#DFE3E6",
-  },
-  list: {
-    padding: 0,
-  },
-})((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "left",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "left",
-    }}
-    autoFocus={false}
-    {...props}
-  />
-));
-
-export const StyledMenuItem = withStyles(() => ({
-  root: {
-    width: "100%",
-    height: "37px",
-    color: "#373D43",
-    fontSize: "14px",
-    padding: "6px 12px",
-    "&:hover": {
-      color: "#fff",
-      backgroundColor: "#262C34",
-    },
-    "&:not(:last-child)": {
-      borderBottom: "1px solid #C0C7D2",
-    },
-  },
-  selected: {
-    backgroundColor: "#262C34 !important",
-  },
-}))(MenuItem);
+import {
+  StyledMenu,
+  StyledMenuItem,
+} from "app/modules/chart-module/components/exporter";
 
 function downloadBlob(url: string, filename: string) {
   // Create a new anchor element
@@ -61,7 +17,7 @@ function downloadBlob(url: string, filename: string) {
   return a;
 }
 
-export function ChartExporter(props: { rawViz: any }) {
+export function ExportChartButton(props: { rawViz: any }) {
   const [name, setName] = React.useState("Viz");
   const [type, setType] = React.useState<".svg" | ".png" | ".jpg">(".svg");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
@@ -129,44 +85,38 @@ export function ChartExporter(props: { rawViz: any }) {
   const open = Boolean(anchorEl);
 
   return (
-    <div css={styles.container}>
-      <div css={styles.inputContainer(open)}>
-        <input
-          type="text"
-          value={name}
-          onChange={handleNameChange}
-          onBlur={handleInputBlur}
-        />
-        <button onClick={handleClick}>
-          {type}
-          <TriangleXSIcon />
-        </button>
-        <StyledMenu
-          keepMounted
-          open={open}
-          anchorEl={anchorEl}
-          onClose={handleClose}
+    <>
+      <Tooltip title="Export">
+        <IconButton onClick={handleClick}>
+          <SaveAlt htmlColor="#262c34" />
+        </IconButton>
+      </Tooltip>
+
+      <StyledMenu
+        keepMounted
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+      >
+        <StyledMenuItem
+          selected={type === ".svg"}
+          onClick={() => handleTypeChange(".svg")}
         >
-          <StyledMenuItem
-            selected={type === ".svg"}
-            onClick={() => handleTypeChange(".svg")}
-          >
-            .svg
-          </StyledMenuItem>
-          <StyledMenuItem
-            selected={type === ".png"}
-            onClick={() => handleTypeChange(".png")}
-          >
-            .png
-          </StyledMenuItem>
-          <StyledMenuItem
-            selected={type === ".jpg"}
-            onClick={() => handleTypeChange(".jpg")}
-          >
-            .jpg
-          </StyledMenuItem>
-        </StyledMenu>
-      </div>
-    </div>
+          .svg
+        </StyledMenuItem>
+        <StyledMenuItem
+          selected={type === ".png"}
+          onClick={() => handleTypeChange(".png")}
+        >
+          .png
+        </StyledMenuItem>
+        <StyledMenuItem
+          selected={type === ".jpg"}
+          onClick={() => handleTypeChange(".jpg")}
+        >
+          .jpg
+        </StyledMenuItem>
+      </StyledMenu>
+    </>
   );
 }

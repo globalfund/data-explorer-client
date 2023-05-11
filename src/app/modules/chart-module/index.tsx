@@ -269,6 +269,7 @@ export default function ChartModule() {
         visualOptions={visualOptions}
         name={chartName}
         setName={setChartName}
+        rawViz={rawViz}
       />
       <ChartModuleToolBox
         rawViz={rawViz}
