@@ -1,33 +1,50 @@
-import { useChartsRawData } from "app/hooks/useChartsRawData";
-import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
-import { CommonChart } from "app/modules/chart-module/components/common-chart";
-import { ChartRenderedItem } from "app/modules/chart-module/data";
-
-import { get, isEmpty } from "lodash";
 import React from "react";
+import maxBy from "lodash/maxBy";
+import isEqual from "lodash/isEqual";
+import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
+
+export interface ChartRepresentationProps {
+  data: any;
+  containerId: string;
+}
 
 export const ProgressBar = (props: { progress: string; label: string }) => {
   return (
     <div
       css={`
-        width: 171px;
+        width: 100%;
+        min-width: 171px;
       `}
     >
       <div
         css={`
           width: 100%;
           display: flex;
-          justify-content: space-between;
           color: #262c34;
-          height: 35px;
+          margin-bottom: 4px;
+          justify-content: space-between;
+
+          > p {
+            margin: 0;
+          }
         `}
       >
-        <p>{props.label}</p>
-        <p>{props.progress}</p>
+        <p
+          css={`
+            overflow: clip;
+            max-width: 150px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          `}
+        >
+          {props.label}
+        </p>
+        <p>{parseFloat(props.progress).toFixed(2).replace(".00", "")}%</p>
       </div>
       <div
         css={`
-          width: 171px;
+          width: 100%;
           height: 5px;
           background: #d9d9d9;
           border-radius: 50px;
@@ -40,73 +57,49 @@ export const ProgressBar = (props: { progress: string; label: string }) => {
             height: 100%;
             width: ${props.progress};
           `}
-        ></div>
+        />
       </div>
     </div>
   );
 };
 
-export interface ChartRepresentationProps {
-  visualOptions: any;
-  domRef: React.RefObject<HTMLDivElement>;
-  containerId: string;
-  renderedChartMappedData: any;
-  setRenderedChartMappedData: React.Dispatch<React.SetStateAction<any[]>>;
-}
-export const BarChartRepresentaion = (props: ChartRepresentationProps) => {
-  const domRef = React.useRef<HTMLDivElement>(null);
+export const BarChartRepresentation = (props: ChartRepresentationProps) => {
   const { render } = useDataThemesEchart();
-
-  const renderedChartSsr = false;
-  const renderedChart = "";
+  const domRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
-    if (domRef && domRef.current && !isEmpty(props.visualOptions)) {
+    if (domRef && domRef.current) {
       try {
-        const loader = document.getElementById("chart-placeholder");
-
-        new Promise((resolve, reject) => {
-          try {
-            if (loader) {
-              loader.style.display = "flex";
-            }
-            if (renderedChartSsr) {
-              const element = document.createElement("div");
-              element.innerHTML = renderedChart.trim();
-              // @ts-ignore
-              domRef.current.appendChild(element.firstChild || element);
-            } else {
-              render(
-                props.renderedChartMappedData,
-                // @ts-ignore
-                domRef.current,
-                "echartsBarchart",
-                props.visualOptions,
-                props.containerId
-              );
-            }
-            resolve(1);
-          } catch (e) {
-            if (process.env.NODE_ENV === "development") {
-              console.log("chart error", e);
-            }
-
-            if (loader) {
-              loader.style.display = "none";
-            }
-            reject(0);
-          }
-        })
-          .then(() => {
-            if (loader) {
-              loader.style.display = "none";
-            }
-          })
-          .catch(() => {
-            if (loader) {
-              loader.style.display = "none";
-            }
-          });
+        const max = maxBy(props.data, "value");
+        render(
+          props.data.map((item: any) => ({
+            bars: item.name,
+            size: item.value,
+          })),
+          // @ts-ignore
+          domRef.current,
+          "echartsBarchart",
+          {
+            width: 200,
+            height: 140,
+            barWidth: 15.84,
+            marginBottom: 20,
+            showXAxis: true,
+            color: "#000000",
+            splitLineY: false,
+            showTooltip: true,
+            realTimeSort: false,
+            xAxisLabelFontSize: 10,
+            barRadius: [2, 2, 0, 0],
+            xAxisLineColor: "#ADB5BD",
+            background: "transparent",
+            xAxisLabelColor: "#262C34",
+            xAxisLabelInterval: (index: number) => {
+              return isEqual(props.data[index], max);
+            },
+          },
+          props.containerId
+        );
       } catch (e) {
         while (domRef.current.firstChild) {
           domRef.current.removeChild(domRef.current.firstChild);
@@ -116,32 +109,21 @@ export const BarChartRepresentaion = (props: ChartRepresentationProps) => {
         }
       }
     }
-  }, [
-    props.visualOptions,
-    "",
-    renderedChartSsr,
-    props.renderedChartMappedData,
-  ]);
+  }, [props.data]);
+
   return (
     <div
+      id={props.containerId}
+      ref={domRef}
       css={`
-        width: 100%;
+        width: 200px;
+        height: 140px;
       `}
-    >
-      <div
-        id={props.containerId}
-        ref={domRef}
-        css={`
-          height: ${props.visualOptions.height}px;
-          width: ${props.visualOptions.width}px;
-          margin-top: 20px;
-        `}
-      ></div>
-    </div>
+    />
   );
 };
 
-export const TotalValues = () => {
+export const TotalValues = (props: { value: number }) => {
   return (
     <div
       css={`
@@ -151,7 +133,7 @@ export const TotalValues = () => {
       `}
     >
       <p>
-        <b>1,599,200</b> unique values
+        <b>{formatFinancialValue(props.value, true)}</b> unique values
       </p>
     </div>
   );

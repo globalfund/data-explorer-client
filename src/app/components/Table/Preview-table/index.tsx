@@ -1,44 +1,36 @@
-import {
-  IconButton,
-  TableBody,
-  Table,
-  TableContainer,
-  TableHead,
-  TableCell,
-  TableRow,
-} from "@material-ui/core";
-import React, { useState } from "react";
-
-import { ReactComponent as SortIcon } from "../../../fragments/datasets-fragment/assets/sort.svg";
-
-import { previewTablecss } from "./style";
+import React from "react";
+import Table from "@material-ui/core/Table";
+import TableRow from "@material-ui/core/TableRow";
+import TableBody from "@material-ui/core/TableBody";
+import TableHead from "@material-ui/core/TableHead";
+import TableCell from "@material-ui/core/TableCell";
+import IconButton from "@material-ui/core/IconButton";
+import TableContainer from "@material-ui/core/TableContainer";
+import { previewTablecss } from "app/components/Table/Preview-table/style";
 import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
-
-import { ChartRepresentationProps } from "app/components/Table/Preview-table/StatisticalRepresentations";
+import { ReactComponent as SortIcon } from "app/fragments/datasets-fragment/assets/sort.svg";
 import StatisticalTableToolBox, {
   ColumnDetailsProps,
 } from "app/components/Table/Preview-table/StatisticalTableToolBox";
 
 interface PreviewTableProps {
-  columns: { [key: string]: string }[];
-  tableData: { [key: string]: number | string | null | boolean }[];
-  setTableData: React.Dispatch<
-    React.SetStateAction<{ [key: string]: number | string | null | boolean }[]>
-  >;
   placeUnderSubHeader?: boolean;
   columnDetails: ColumnDetailsProps;
-  chartOptions: ChartRepresentationProps;
+  columns: { [key: string]: string }[];
+  tableData: { [key: string]: number | string | null | boolean }[];
+  dataStats: {
+    name: string;
+    type: "bar" | "percentage" | "unique";
+    data: { name: string; value: number }[];
+  }[];
 }
 
 export default function PreviewTable(props: PreviewTableProps) {
-  const [tableRows, setTableRows] = useState(props.tableData);
-  React.useEffect(() => {
-    setTableRows([{ id: "viz", type: "component" }, ...props.tableData]);
-  }, [props.tableData]);
-  const [toolboxDisplay, setToolboxDisplay] = useState(false);
-  const handleToolBoxDisplay = () => {
-    setToolboxDisplay(true);
-  };
+  const [toolboxDisplay, setToolboxDisplay] = React.useState(false);
+
+  // const handleToolBoxDisplay = () => {
+  //   setToolboxDisplay(true);
+  // };
 
   return (
     <>
@@ -79,6 +71,8 @@ export default function PreviewTable(props: PreviewTableProps) {
           <Table css={previewTablecss}>
             <TableHead
               css={`
+                top: 0;
+                position: sticky;
                 background: #dadaf8;
               `}
             >
@@ -122,12 +116,13 @@ export default function PreviewTable(props: PreviewTableProps) {
 
                           <p
                             css={`
-                              text-align: left;
-                              line-height: 17px;
-                              text-overflow: ellipsis;
-                              white-space: nowrap;
+                              margin: 0;
                               overflow: clip;
                               max-width: 220px;
+                              text-align: left;
+                              line-height: 17px;
+                              white-space: nowrap;
+                              text-overflow: ellipsis;
                             `}
                           >
                             <b>{val.key}</b>
@@ -143,60 +138,58 @@ export default function PreviewTable(props: PreviewTableProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {tableRows?.map((data, rowIndex) => (
+              <TableRow
+                css={`
+                  top: 54px;
+                  position: sticky;
+                  background: #f4f4f4;
+                `}
+              >
+                {props.dataStats.map((val) => (
+                  <TableCell
+                    key={val.name}
+                    css={`
+                      color: #000;
+                      font-size: 12px;
+                      // cursor: pointer;
+                      background: #f4f4f4;
+                    `}
+                    // onClick={handleToolBoxDisplay}
+                  >
+                    {val.name !== "ID" && (
+                      <div
+                        css={`
+                          background: #f4f4f4;
+                        `}
+                      >
+                        <StatisticDisplay type={val.type} data={val.data} />
+                      </div>
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+              {props.tableData.map((data) => (
                 <TableRow
                   key={Object.values(data).join("-")}
                   css={`
-                    background: ${rowIndex === 0 ? "#F4F4F4" : "#fff"};
+                    background: #fff;
                   `}
                 >
                   {props.columns.map((val, index) => (
-                    <TableCell
-                      key={val.key}
-                      css={`
-                        background: ${rowIndex === 0 ? "#F4F4F4" : "#fff"};
-                        color: ${rowIndex === 0
-                          ? "#000"
-                          : "rgba(0, 0, 0, 0.87)"};
-                        font-size: 12px;
-                        cursor: ${rowIndex === 0 ? "pointer" : "auto"};
-                      `}
-                      onClick={() => {
-                        if (rowIndex === 0 && index !== 0) {
-                          handleToolBoxDisplay();
-                        }
-                      }}
-                    >
-                      {rowIndex === 0 ? (
-                        <div
-                          css={`
-                            background: "#F4F4F4";
-                          `}
-                        >
-                          {index == 0 ? (
-                            ""
-                          ) : (
-                            <StatisticDisplay
-                              position={index}
-                              chartOptions={props.chartOptions}
-                            />
-                          )}{" "}
-                        </div>
-                      ) : (
-                        <p
-                          css={`
-                            text-overflow: ellipsis;
-                            white-space: nowrap;
-                            overflow: clip;
-
-                            max-width: 220px;
-                            min-width: ${index === 0 ? "30px" : "auto"};
-                            text-align: ${index === 0 ? "center" : "left"};
-                          `}
-                        >
-                          {data[val.key]}
-                        </p>
-                      )}
+                    <TableCell key={val.key}>
+                      <p
+                        css={`
+                          margin: 0;
+                          overflow: clip;
+                          max-width: 220px;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          min-width: ${index === 0 ? "30px" : "auto"};
+                          text-align: ${index === 0 ? "center" : "left"};
+                        `}
+                      >
+                        {data[val.key]}
+                      </p>
                     </TableCell>
                   ))}
                 </TableRow>

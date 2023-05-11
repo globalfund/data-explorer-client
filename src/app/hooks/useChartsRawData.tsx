@@ -65,6 +65,7 @@ export function useChartsRawData(props: {
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const [dataTypes, setDataTypes] = React.useState([]);
+  const [dataStats, setDataStats] = React.useState([]);
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
@@ -107,6 +108,7 @@ export function useChartsRawData(props: {
         },
       })
       .then((response: AxiosResponse) => {
+        setDataStats(response.data.stats);
         setSampleData(response.data.sample);
         setDataTypes(response.data.dataTypes);
         setDataTotalCount(response.data.count);
@@ -119,6 +121,7 @@ export function useChartsRawData(props: {
       })
       .catch((error: AxiosError) => {
         console.log(error);
+        setDataStats([]);
         setSampleData([]);
         if (extraLoader) {
           extraLoader.style.display = "none";
@@ -254,6 +257,7 @@ export function useChartsRawData(props: {
   return {
     loading,
     dataTypes,
+    dataStats,
     sampleData,
     isEditMode,
     dataTotalCount,

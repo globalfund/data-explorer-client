@@ -57,14 +57,14 @@ export default function StatisticalTableToolBox(props: Props) {
     },
   });
 
-  const chartOption: ChartRepresentationProps = {
-    containerId: "toolbox-chart-render-container",
+  // const chartOption: ChartRepresentationProps = {
+  //   containerId: "toolbox-chart-render-container",
 
-    domRef,
-    visualOptions,
-    renderedChartMappedData,
-    setRenderedChartMappedData,
-  };
+  //   domRef,
+  //   visualOptions,
+  //   renderedChartMappedData,
+  //   setRenderedChartMappedData,
+  // };
 
   return (
     <div
@@ -137,10 +137,10 @@ export default function StatisticalTableToolBox(props: Props) {
         `}
       >
         <h4>Distribution</h4>
-        <StatisticDisplay
+        {/* <StatisticDisplay
           position={props.position}
           chartOptions={chartOption}
-        />
+        /> */}
       </div>
       <div
         css={`

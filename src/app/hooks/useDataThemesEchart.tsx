@@ -59,7 +59,7 @@ export function useDataThemesEchart() {
       splitLineY,
       barRadius,
       xAxisLineColor,
-      showXAxis,
+      xAxisLabelFontSize,
       focus,
       xAxisLabelColor,
       xAxisLabelInterval,
@@ -91,8 +91,9 @@ export function useDataThemesEchart() {
         },
         axisLabel: {
           show: true,
-          color: xAxisLabelColor,
-          interval: xAxisLabelInterval,
+          color: xAxisLabelColor || "#000",
+          fontSize: xAxisLabelFontSize || 12,
+          interval: xAxisLabelInterval || "auto",
         },
       },
       yAxis: {
