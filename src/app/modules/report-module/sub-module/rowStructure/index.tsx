@@ -11,6 +11,8 @@ import { ReactComponent as EditIcon } from "app/modules/report-module/asset/edit
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
+import { useRecoilState } from "recoil";
+import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -42,9 +44,12 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const { page } = useParams<{ page: string }>();
 
   const [handleDisplay, setHandleDisplay] = React.useState(false);
+  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
 
   const viewOnlyMode =
-    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
+    (page !== "new" &&
+      get(location.pathname.split("/"), "[3]", "") !== "edit") ||
+    reportPreviewMode;
 
   const handlers = viewOnlyMode
     ? {}
@@ -167,9 +172,12 @@ const Box = (props: {
   const [textContent, setTextContent] = React.useState<EditorState>(
     EditorState.createEmpty()
   );
+  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
 
   const viewOnlyMode =
-    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
+    (page !== "new" &&
+      get(location.pathname.split("/"), "[3]", "") !== "edit") ||
+    reportPreviewMode;
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: [ReportElementsType.TEXT, ReportElementsType.CHART],

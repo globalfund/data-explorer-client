@@ -26,6 +26,8 @@ import {
   useParams,
   Redirect,
 } from "react-router-dom";
+import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
 
 export default function ReportModule() {
   const history = useHistory();
@@ -41,7 +43,7 @@ export default function ReportModule() {
     "basic"
   );
   const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
-
+  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -351,7 +353,7 @@ export default function ReportModule() {
         forceEnablePreviewSave={isPreviewSaveEnabled}
         name={page !== "new" && !view ? reportGetData.name : reportName}
       />
-      {view && view !== "preview" && (
+      {view && view !== "preview" && !reportPreviewMode && (
         <ReportRightPanel
           open={rightPanelOpen}
           currentView={view}
