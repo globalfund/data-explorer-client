@@ -1,94 +1,96 @@
-import { Box } from "@material-ui/core";
-import { useChartsRawData } from "app/hooks/useChartsRawData";
-import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import DatasetTable from "app/modules/dataset-detail-module/component/table/datasetTable";
-import DatasetTableOverview from "app/modules/dataset-detail-module/component/table/datasetTableOverview";
-import { dataSetsCss } from "app/modules/datasets-module/style";
 import React from "react";
+import find from "lodash/find";
 import { Link } from "react-router-dom";
-import { DatasetDataTable } from "../component/data-table";
+import { dataSetsCss } from "app/modules/datasets-module/style";
+import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { DatasetDataTable } from "app/fragments/datasets-fragment/component/data-table";
 
 interface Props {
+  data: any[];
+  stats: any[];
   datasetId: string;
 }
-export default function FinishedFragment(props: Props) {
-  const { loadDataset, sampleData } = useChartsRawData({
-    visualOptions: () => {},
-    setVisualOptions: () => {},
-    setChartFromAPI: () => {},
-    chartFromAPI: null,
-  });
 
-  React.useEffect(() => {
-    loadDataset(`data-themes/sample-data/${props.datasetId}`);
-  }, [props.datasetId]);
+export default function FinishedFragment(props: Props) {
+  const datasets = useStoreState(
+    (state) => state.dataThemes.DatasetGetList.crudData as any[]
+  );
+  const setDataset = useStoreActions(
+    (actions) => actions.charts.dataset.setValue
+  );
+
+  const description = find(
+    datasets,
+    (d: any) => d.id === props.datasetId
+  )?.description;
+
+  function handleCreateNewChart() {
+    setDataset(props.datasetId);
+  }
 
   return (
     <div css={dataSetsCss}>
       <PageTopSpacer />
-
       <div
         css={`
-          color: #231d2c;
-          font-family: "GothamNarrow-Book";
-          font-style: normal;
-          font-weight: 500;
-          font-size: 14px;
           width: 100%;
+          color: #231d2c;
+          font-size: 14px;
+          font-weight: 500;
+          font-style: normal;
+          font-family: "GothamNarrow-Book";
         `}
       >
-        <h1
-          css={`
-            color: #231d2c;
-            font-weight: 500;
-            font-size: 48px;
-            margin-top: 13px;
-          `}
-        >
-          Finished
-        </h1>
-
-        <Box height={22} />
-
-        <DatasetDataTable data={sampleData} />
-
         <div
           css={`
-            display: flex;
-            justify-content: flex-end;
-            width: 100%;
-            margin-top: 0;
+            color: #231d2c;
+            font-size: 14px;
+            line-height: 19px;
+            margin-bottom: 17px;
           `}
         >
-          <Link to="/">
+          {description}
+        </div>
+        <div
+          css={`
+            width: 100%;
+            display: flex;
+            margin-bottom: 12px;
+            justify-content: flex-end;
+          `}
+        >
+          <Link to="/chart/new/data">
             <button
               css={`
-                background: #231d2c;
+                color: #fff;
                 width: 100%;
-                border-radius: 30px;
-                padding: 12px 27px;
+                width: 200px;
                 height: 41px;
-                font-weight: 500;
                 font-size: 14px;
-                border: none;
+                font-weight: 700;
+                padding: 12px 27px;
+                background: #231d2c;
+                border-radius: 30px;
+                text-transform: uppercase;
+                font-family: "GothamNarrow-Bold";
                 outline: none;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 248px;
                 cursor: pointer;
-                color: #fff;
 
-                text-transform: uppercase;
                 :hover {
                   opacity: 0.8;
                 }
               `}
+              onClick={handleCreateNewChart}
             >
-              Return to main page
+              create new chart
             </button>
           </Link>
         </div>
+        <DatasetDataTable data={props.data} stats={props.stats} />
       </div>
     </div>
   );

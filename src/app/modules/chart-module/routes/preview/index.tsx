@@ -13,6 +13,11 @@ interface ChartBuilderPreviewProps {
   data: {
     [key: string]: string | number | null;
   }[];
+  stats: {
+    name: string;
+    type: "percentage" | "bar" | "unique";
+    data: { name: string; value: number }[];
+  }[];
   filterOptionGroups: FilterGroupModel[];
   loadDataset: (endpoint: string) => Promise<boolean>;
 }
@@ -37,7 +42,7 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
     <div css={commonStyles.container}>
       {props.loading && <PageLoader />}
       <div css={commonStyles.innercontainer}>
-        <DataThemesDataTable data={props.data} />
+        <DataThemesDataTable data={props.data} stats={props.stats} />
       </div>
     </div>
   );
