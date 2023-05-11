@@ -7,11 +7,14 @@ import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import GridItem from "app/modules/home-module/components/Charts/gridItem";
 import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ChartAddnewCard from "app/modules/home-module/components/Charts/chartAddNewCard";
+import { useHistory } from "react-router-dom";
 
 const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
 export default function ChartsGrid() {
+  const history = useHistory();
+  const historyState = history.location.state as { chartId: string };
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -23,10 +26,17 @@ export default function ChartsGrid() {
     (actions) => actions.charts.ChartGetList.fetch
   );
 
-  const handleDelete = (index: number) => {
+  React.useEffect(() => {
+    if (historyState?.chartId) {
+      setModalDisplay(true);
+    }
+  }, [historyState?.chartId]);
+
+  const handleDelete = (index?: number, chartID?: string) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = charts[index].id;
+    const id = chartID || charts[index as number].id;
+
     if (!id) {
       return;
     }
@@ -89,6 +99,7 @@ export default function ChartsGrid() {
       </Grid>
       <DeleteChartDialog
         cardId={cardId}
+        chartId={historyState?.chartId}
         modalDisplay={modalDisplay}
         enableButton={enableButton}
         handleDelete={handleDelete}

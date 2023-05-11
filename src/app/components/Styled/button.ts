@@ -3,7 +3,6 @@ import styled from "styled-components/macro";
 interface Props {
   light?: boolean;
   dark?: boolean;
-  grey?: boolean;
 }
 export const PrimaryButton = styled.button<Props>`
   background: ${(props) =>
