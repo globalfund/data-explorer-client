@@ -6,6 +6,10 @@ import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
+import SaveAlt from "@material-ui/icons/SaveAlt";
+
 import Divider from "@material-ui/core/Divider";
 import Popover from "@material-ui/core/Popover";
 import { LinkIcon } from "app/assets/icons/Link";
@@ -13,8 +17,12 @@ import ShareIcon from "@material-ui/icons/Share";
 import Snackbar from "@material-ui/core/Snackbar";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
+
 import CopyToClipboard from "react-copy-to-clipboard";
-import { homeDisplayAtom } from "app/state/recoil/atoms";
+import {
+  homeDisplayAtom,
+  unSavedReportPreviewMode,
+} from "app/state/recoil/atoms";
 import { PageLoader } from "app/modules/common/page-loader";
 import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
@@ -23,6 +31,7 @@ import { styles } from "app/modules/common/subheader-toolbar/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
+import { Tooltip } from "@material-ui/core";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -78,7 +87,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const [_, setHomeTab] = useRecoilState(homeDisplayAtom);
-
+  const [reportPreviewMode, setReportPreviewMode] = useRecoilState(
+    unSavedReportPreviewMode
+  );
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
@@ -232,6 +243,38 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
+  const handleChartDelete = () => {
+    setHomeTab("charts");
+    history.push({
+      pathname: "/",
+      state: { chartId: page },
+    });
+  };
+
+  const handlePreviewMode = () => {
+    if (props.pageType === "report") {
+      if (page === "new") {
+        setReportPreviewMode(true);
+      } else {
+        history.push(`/${props.pageType}/${page}/preview`);
+      }
+    } else {
+      history.push(`/${props.pageType}/${page}/preview`);
+    }
+  };
+
+  const handleBackToEdit = () => {
+    if (props.pageType === "report") {
+      if (page === "new") {
+        setReportPreviewMode(false);
+      } else {
+        history.push(`/${props.pageType}/${page}/${"edit"}`);
+      }
+    } else {
+      history.push(`/${props.pageType}/${page}/${"edit"}`);
+    }
+  };
+
   return (
     <div css={styles.container}>
       {createOrEditChartLoading && <PageLoader />}
@@ -286,105 +329,138 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
             />
           )}
           {view !== "initial" && (
-            <div css={styles.iconbtns}>
-              <IconButton onClick={handleClick}>
-                <ShareIcon htmlColor="#262c34" />
-              </IconButton>
-              <Popover
-                id={id}
-                open={open}
-                anchorEl={anchorEl}
-                onClose={handleClose}
-                anchorOrigin={{
-                  vertical: "bottom",
-                  horizontal: "right",
-                }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
-                css={`
-                  .MuiPaper-root {
-                    border-radius: 10px;
-                    background: #495057;
-                  }
-                `}
-              >
-                <div css={styles.sharePopup}>
-                  <FormControlLabel
-                    value="public-theme"
-                    label="Public theme"
-                    labelPlacement="start"
-                    control={
-                      <Switch
-                        color="primary"
-                        checked={isPublicTheme}
-                        onChange={() => setIsPublicTheme(!isPublicTheme)}
-                      />
-                    }
-                  />
-                  <Divider />
-                  <CopyToClipboard
-                    text={window.location.href}
-                    onCopy={handleCopy}
-                  >
-                    <Button startIcon={<LinkIcon />}>Copy link</Button>
-                  </CopyToClipboard>
-                </div>
-              </Popover>
-              {(page === "new" || view) && (
-                <React.Fragment>
+            <div css={styles.endContainer}>
+              {(view === "preview" || reportPreviewMode) &&
+                props.pageType !== "chart" && (
+                  <>
+                    <button
+                      onClick={handleBackToEdit}
+                      css={styles.backToEdit}
+                      type="button"
+                    >
+                      <EditIcon htmlColor="#fff" />
+                      Go back to editing
+                    </button>
+                  </>
+                )}
+              <div css={styles.iconbtns}>
+                {(page === "new" || view) && (
+                  <React.Fragment>
+                    <Tooltip title="Preview">
+                      <IconButton
+                        onClick={handlePreviewMode}
+                        disabled={
+                          props.forceEnablePreviewSave
+                            ? !props.forceEnablePreviewSave
+                            : !isPreviewEnabled
+                        }
+                        css={`
+                          :disabled {
+                            opacity: 0.5;
+                          }
+                        `}
+                      >
+                        <svg width="20" height="19" viewBox="0 0 20 19">
+                          <rect width="20" height="19" rx="3" fill="#262C34" />
+                          <path
+                            fill="#EFEFEF"
+                            d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
+                          />
+                        </svg>
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="save">
+                      <IconButton
+                        onClick={onSave}
+                        disabled={
+                          props.forceEnablePreviewSave
+                            ? !props.forceEnablePreviewSave
+                            : !isSavedEnabled
+                        }
+                        css={`
+                          :disabled {
+                            opacity: 0.5;
+                          }
+                        `}
+                      >
+                        <SaveIcon htmlColor="#262c34" />
+                      </IconButton>
+                    </Tooltip>
+                  </React.Fragment>
+                )}
+                {page !== "new" && !view && props.pageType === "chart" && (
+                  <React.Fragment>
+                    <IconButton>
+                      <SaveAlt htmlColor="#262c34" />
+                    </IconButton>
+                    <IconButton>
+                      <FileCopyIcon htmlColor="#262c34" />
+                    </IconButton>
+                    <IconButton onClick={handleClick}>
+                      <ShareIcon htmlColor="#262c34" />
+                    </IconButton>
+                    <Popover
+                      id={id}
+                      open={open}
+                      anchorEl={anchorEl}
+                      onClose={handleClose}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      css={`
+                        .MuiPaper-root {
+                          border-radius: 10px;
+                          background: #495057;
+                        }
+                      `}
+                    >
+                      <div css={styles.sharePopup}>
+                        <FormControlLabel
+                          value="public-theme"
+                          label="Public theme"
+                          labelPlacement="start"
+                          control={
+                            <Switch
+                              color="primary"
+                              checked={isPublicTheme}
+                              onChange={() => setIsPublicTheme(!isPublicTheme)}
+                            />
+                          }
+                        />
+                        <Divider />
+                        <CopyToClipboard
+                          text={window.location.href}
+                          onCopy={handleCopy}
+                        >
+                          <Button startIcon={<LinkIcon />}>Copy link</Button>
+                        </CopyToClipboard>
+                      </div>
+                    </Popover>
+                    <IconButton
+                      component={Link}
+                      to={`/${props.pageType}/${page}/${"customize"}`}
+                    >
+                      <EditIcon htmlColor="#262c34" />
+                    </IconButton>
+                    <IconButton onClick={handleChartDelete}>
+                      <DeleteIcon htmlColor="#262c34" />
+                    </IconButton>
+                  </React.Fragment>
+                )}
+                {page !== "new" && !view && props.pageType !== "chart" && (
                   <IconButton
                     component={Link}
-                    to={`/${props.pageType}/${page}/preview`}
-                    disabled={
-                      props.forceEnablePreviewSave
-                        ? !props.forceEnablePreviewSave
-                        : !isPreviewEnabled
-                    }
-                    css={`
-                      :disabled {
-                        opacity: 0.5;
-                      }
-                    `}
-                  >
-                    <svg width="20" height="19" viewBox="0 0 20 19">
-                      <rect width="20" height="19" rx="3" fill="#262C34" />
-                      <path
-                        fill="#EFEFEF"
-                        d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
-                      />
-                    </svg>
-                  </IconButton>
-                  <IconButton
-                    onClick={onSave}
-                    disabled={
-                      props.forceEnablePreviewSave
-                        ? !props.forceEnablePreviewSave
-                        : !isSavedEnabled
-                    }
-                    css={`
-                      :disabled {
-                        opacity: 0.5;
-                      }
-                    `}
-                  >
-                    <SaveIcon htmlColor="#262c34" />
-                  </IconButton>
-                </React.Fragment>
-              )}
-              {page !== "new" && !view && (
-                <React.Fragment>
-                  <IconButton
-                    component={Link}
-                    to={`/${props.pageType}/${page}/${
-                      props.pageType === "chart" ? "customize" : "edit"
-                    }`}
+                    to={`/${props.pageType}/${page}/${"edit"}`}
                   >
                     <EditIcon htmlColor="#262c34" />
                   </IconButton>
-                </React.Fragment>
-              )}
+                )}
+              </div>
             </div>
           )}
         </div>

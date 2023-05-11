@@ -35,6 +35,23 @@ export const styles = {
       padding: 13px 16px 0 16px;
     }
   `,
+  backToEdit: css`
+    height: 36px;
+    background: #231d2c;
+    border-radius: 30px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 6px 27px;
+    gap: 10px;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    color: white;
+    text-decoration: none;
+  `,
   sharePopup: css`
     width: 240px;
     display: flex;
@@ -94,10 +111,14 @@ export const styles = {
       background: #f1f3f5;
     }
   `,
-  iconbtns: css`
-    right: 29px;
+  endContainer: css`
     display: flex;
+    right: 29px;
     position: absolute;
+    gap: 13px;
+  `,
+  iconbtns: css`
+    display: flex;
     flex-direction: row;
 
     > a,
