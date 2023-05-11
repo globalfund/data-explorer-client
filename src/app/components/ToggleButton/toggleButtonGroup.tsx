@@ -32,7 +32,6 @@ export default function ToggleButtons(props: Props) {
           font-size: 12px;
           font-weight: 700;
           text-transform: capitalize;
-          font-family: "GothamNarrow-Bold";
         }
       `}
     >

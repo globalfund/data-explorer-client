@@ -117,13 +117,13 @@ export default function GridItem(props: Props) {
               gap: 1rem;
               right: 3%;
               z-index: 2;
-              width: 128px;
+              width: 110px;
               display: flex;
-              padding: 7px 0;
+              padding: 6px 15px;
               position: absolute;
-              border-radius: 13px;
               background: #f4f4f4;
               align-items: center;
+              border-radius: 100px;
               justify-content: center;
             `}
           >
