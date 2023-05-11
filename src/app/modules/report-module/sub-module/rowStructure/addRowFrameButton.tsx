@@ -75,19 +75,22 @@ export default function AddRowFrameButton(props: Props) {
       <div
         css={`
           width: 100%;
-          height: 48px;
           display: flex;
+          padding: 3px 0;
           background: #fff;
           justify-content: center;
           border: 1px dashed #adb5bd;
         `}
       >
         <IconButton
+          disableRipple
           onClick={handleAddrowStructureBlock}
-          disableRipple={true}
-          disabled={props.rowStructureType.disableAddRowStructureButton}
           onMouseEnter={() => setDisplayTooltip(true)}
           onMouseLeave={() => setDisplayTooltip(false)}
+          disabled={props.rowStructureType.disableAddRowStructureButton}
+          css={`
+            padding: 4px;
+          `}
         >
           <PlusIcon />
         </IconButton>

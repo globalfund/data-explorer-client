@@ -39,9 +39,9 @@ export default function ReportModule() {
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
-  const [reportType, setReportType] = React.useState<"basic" | "advanced">(
-    "basic"
-  );
+  const [reportType, setReportType] = React.useState<
+    "basic" | "advanced" | "ai"
+  >("basic");
   const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
   const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
   const [headerDetails, setHeaderDetails] = React.useState({
@@ -232,7 +232,7 @@ export default function ReportModule() {
 
   const handleSetButtonActive = (
     active: boolean,
-    type: "basic" | "advanced"
+    type: "basic" | "advanced" | "ai"
   ) => {
     setButtonActive(active);
     setReportType(type);
@@ -353,21 +353,24 @@ export default function ReportModule() {
         forceEnablePreviewSave={isPreviewSaveEnabled}
         name={page !== "new" && !view ? reportGetData.name : reportName}
       />
-      {view && view !== "preview" && !reportPreviewMode && (
-        <ReportRightPanel
-          open={rightPanelOpen}
-          currentView={view}
-          pickedCharts={pickedCharts}
-          setPickedCharts={setPickedCharts}
-          headerDetails={headerDetails}
-          setHeaderDetails={setHeaderDetails}
-          appliedHeaderDetails={appliedHeaderDetails}
-          setAppliedHeaderDetails={setAppliedHeaderDetails}
-          onOpen={() => setRightPanelOpen(true)}
-          onClose={() => setRightPanelOpen(false)}
-          showHeaderItem={!headerDetails.showHeader}
-        />
-      )}
+      {view &&
+        view !== "preview" &&
+        !reportPreviewMode &&
+        view !== "initial" && (
+          <ReportRightPanel
+            open={rightPanelOpen}
+            currentView={view}
+            pickedCharts={pickedCharts}
+            setPickedCharts={setPickedCharts}
+            headerDetails={headerDetails}
+            setHeaderDetails={setHeaderDetails}
+            appliedHeaderDetails={appliedHeaderDetails}
+            setAppliedHeaderDetails={setAppliedHeaderDetails}
+            onOpen={() => setRightPanelOpen(true)}
+            onClose={() => setRightPanelOpen(false)}
+            showHeaderItem={!headerDetails.showHeader}
+          />
+        )}
       <div
         css={`
           width: 100%;

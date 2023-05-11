@@ -5,6 +5,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
 import { ReactComponent as EditIcon } from "../../assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
+import { ReactComponent as DuplicateIcon } from "../../assets/duplicate.svg";
 
 interface Props {
   id: string;
@@ -14,6 +15,7 @@ interface Props {
   date: string;
   viz: React.ReactNode;
   handleDelete?: (id: string) => void;
+  handleDuplicate?: (id: string) => void;
 }
 
 export default function GridItem(props: Props) {
@@ -98,15 +100,17 @@ export default function GridItem(props: Props) {
         >
           {props.viz}
         </div>
-        <IconButton
-          css={`
-            padding: 0;
-            margin-top: -30px;
-          `}
-          onClick={showMenuOptions}
-        >
-          <MenuIcon />
-        </IconButton>
+        {props.handleDelete && (
+          <IconButton
+            css={`
+              padding: 0;
+              margin-top: -30px;
+            `}
+            onClick={showMenuOptions}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
       </div>
       <div
         css={`
@@ -141,16 +145,37 @@ export default function GridItem(props: Props) {
               gap: 1rem;
               right: 3%;
               z-index: 2;
-              width: 128px;
+              width: 160px;
               display: flex;
-              padding: 7px 0;
+              padding: 6px 15px;
               position: absolute;
-              border-radius: 13px;
               background: #f4f4f4;
               align-items: center;
+              border-radius: 100px;
               justify-content: center;
             `}
           >
+            <div>
+              <IconButton
+                css={`
+                  padding: 0;
+                `}
+                onClick={() => {
+                  props.handleDuplicate?.(props.id as string);
+                  setMenuOptionsDisplay(false);
+                }}
+              >
+                <DuplicateIcon
+                  css={`
+                    cursor: pointer;
+
+                    :hover {
+                      opacity: 0.5;
+                    }
+                  `}
+                />
+              </IconButton>
+            </div>
             <div>
               <Link to={`/chart/${props.id}/customize`}>
                 <EditIcon

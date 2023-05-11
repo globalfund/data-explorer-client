@@ -40,12 +40,12 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   }
 
   & [class*="MuiSnackbarContent-root"] {
-    width: 550px;
+    width: 640px;
     display: flex;
-    padding: 0 32px;
+    padding: 0 78px;
+    background: #fff;
     flex-wrap: nowrap;
-    background: #f1f3f5;
-    border-radius: 25px;
+    border-radius: 12px;
     justify-content: space-between;
     box-shadow: 0 8px 17px -4px rgba(130, 142, 148, 0.35),
       0 0 4px 0 rgba(130, 142, 148, 0.16), 0 0 2px 0 rgba(130, 142, 148, 0.12);
@@ -66,15 +66,12 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   & [class*="MuiSnackbarContent-action"] {
     > button {
       color: #fff;
-      padding: 10px;
       cursor: pointer;
       font-size: 14px;
-      font-weight: 700;
       border-style: none;
+      padding: 12px 27px;
       background: #262c34;
       border-radius: 20px;
-      box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-      font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
   }
 
@@ -236,6 +233,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         createChartData.id.length > 0) ||
       editChartSuccess
     ) {
+      setShowSnackbar(
+        `Chart ${
+          view !== undefined && page !== "new" ? "saved" : "created"
+        } successfully!`
+      );
       const id = createChartSuccess ? createChartData.id : page;
       history.push(`/chart/${id}`);
     }
@@ -280,22 +282,22 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     <div css={styles.container}>
       {createOrEditChartLoading && <PageLoader />}
       <InfoSnackbar
-        data-testid="data-theme-snackbar"
+        data-testid="create-chart-snackbar"
         onClose={() => setShowSnackbar(null)}
         open={showSnackbar !== null && showSnackbar !== ""}
       >
         <SnackbarContent
           message={showSnackbar}
-          aria-describedby="data-theme-snackbar-content"
+          aria-describedby="create-chart-snackbar-content"
           action={
             <button
               onClick={() => {
                 setShowSnackbar(null);
-                setHomeTab("charts");
-                history.push("/");
+                setHomeTab("reports");
+                history.push("/report/new/initial");
               }}
             >
-              Go to my charts
+              CREATE NEW REPORT
             </button>
           }
         />
