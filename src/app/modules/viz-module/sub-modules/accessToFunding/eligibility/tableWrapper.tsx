@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import lodash from "lodash";
+import orderBy from "lodash/orderBy";
 
 import { useDebounce } from "react-use";
 import { useRecoilValue } from "recoil";
@@ -244,7 +244,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
     formattedData = data;
   }
   const sortedData = formattedData.map((data) => {
-    const sort = lodash.orderBy(data.children, ["level1"], ["desc"]);
+    const sort = orderBy(data.children, ["level1"], ["desc"]);
     return { ...data, children: sort };
   });
 
