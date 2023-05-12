@@ -3,12 +3,12 @@ import CloseOutlined from "@material-ui/icons/ClearOutlined";
 import { createStyles, IconButton, makeStyles, Modal } from "@material-ui/core";
 
 interface Props {
-  cardId: number;
-  reportId?: string;
+  cardId?: number;
+
   modalDisplay: boolean;
   enableButton: boolean;
-  handleDelete: (id: number, reportId: string) => void;
-  setModalDisplay: (value: boolean) => void;
+  handleDelete: (id: number) => void;
+  setModalDisplay: (value: any) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -116,9 +116,7 @@ export default function DeleteReportDialog(props: Props) {
         >
           <button
             type="button"
-            onClick={() =>
-              props.handleDelete(props.cardId, props.reportId as string)
-            }
+            onClick={() => props.handleDelete(props.cardId as number)}
             disabled={!props.enableButton}
             css={`
               background: ${props.enableButton ? "#231D2C" : "#e4e4e4"};

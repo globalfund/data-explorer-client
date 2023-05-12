@@ -11,8 +11,6 @@ import { useHistory } from "react-router-dom";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 
 export default function ReportsGrid() {
-  const history = useHistory();
-  const historyState = history.location.state as { reportId: string };
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -24,16 +22,11 @@ export default function ReportsGrid() {
   const loadReports = useStoreActions(
     (actions) => actions.reports.ReportGetList.fetch
   );
-  React.useEffect(() => {
-    if (historyState?.reportId) {
-      setModalDisplay(true);
-    }
-  }, [historyState?.reportId]);
 
-  const handleDelete = (index?: number, reportId?: string) => {
+  const handleDelete = (index?: number) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = reportId || reports[index as number].id;
+    const id = reports[index as number].id;
     if (!id) {
       return;
     }
@@ -105,7 +98,6 @@ export default function ReportsGrid() {
       </Grid>
       <DeleteReportDialog
         cardId={cardId}
-        reportId={historyState?.reportId}
         modalDisplay={modalDisplay}
         enableButton={enableButton}
         handleDelete={handleDelete}

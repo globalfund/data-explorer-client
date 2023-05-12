@@ -38,6 +38,8 @@ import {
   CssSnackbar,
   ISnackbarState,
 } from "app/fragments/datasets-fragment/upload-steps/previewFragment";
+import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
+import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -88,6 +90,11 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
 export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
+  const [modalDisplay, setModalDisplay] = React.useState({
+    report: false,
+    chart: false,
+  });
+  const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
   const [_, setHomeTab] = useRecoilState(homeDisplayAtom);
   const [reportPreviewMode, setReportPreviewMode] = useRecoilState(
@@ -118,6 +125,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   );
   const loadReports = useStoreActions(
     (actions) => actions.reports.ReportGetList.fetch
+  );
+  const loadCharts = useStoreActions(
+    (actions) => actions.charts.ChartGetList.fetch
   );
   const loadedChart = useStoreState(
     (state) =>
@@ -159,6 +169,15 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setName(event.target.value);
+  };
+  const handleDeleteModalInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    if (e.target.value === "DELETE") {
+      setEnableButton(true);
+    } else {
+      setEnableButton(false);
+    }
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -260,20 +279,54 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const handleDelete = () => {
+  const handleModalDisplay = () => {
     if (props.pageType === "chart") {
-      setHomeTab("charts");
-      history.push({
-        pathname: "/",
-        state: { chartId: page },
+      setModalDisplay({
+        ...modalDisplay,
+        chart: true,
       });
     } else {
-      setHomeTab("reports");
-      history.push({
-        pathname: "/",
-        state: { reportId: page },
+      setModalDisplay({
+        ...modalDisplay,
+        report: true,
       });
     }
+  };
+
+  const handleDelete = () => {
+    setEnableButton(false);
+    if (props.pageType === "report") {
+      setModalDisplay({
+        ...modalDisplay,
+        report: false,
+      });
+      axios
+        .delete(`${process.env.REACT_APP_API}/report/${page}`)
+        .then(() => {
+          loadReports({
+            storeInCrudData: true,
+            filterString: "filter[order]=createdDate desc",
+          });
+        })
+        .catch((error) => console.log(error));
+      setHomeTab("reports");
+    } else {
+      setModalDisplay({
+        ...modalDisplay,
+        chart: false,
+      });
+      axios
+        .delete(`${process.env.REACT_APP_API}/chart/${page}`)
+        .then(() => {
+          loadCharts({
+            storeInCrudData: true,
+            filterString: "filter[order]=createdDate desc",
+          });
+        })
+        .catch((error) => console.log(error));
+      setHomeTab("charts");
+    }
+    history.push("/");
   };
 
   const handleDuplicate = () => {
@@ -496,22 +549,12 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                      <IconButton onClick={handleDelete}>
+                      <IconButton onClick={handleModalDisplay}>
                         <DeleteIcon htmlColor="#262c34" />
                       </IconButton>
                     </Tooltip>
                   </React.Fragment>
                 )}
-                {/* {page !== "new" && !view && props.pageType !== "chart" && (
-                  <Tooltip title="Edit">
-                    <IconButton
-                      component={Link}
-                      to={`/${props.pageType}/${page}/${"edit"}`}
-                    >
-                      <EditIcon htmlColor="#262c34" />
-                    </IconButton>
-                  </Tooltip>
-                )} */}
               </div>
             </div>
           )}
@@ -526,6 +569,20 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         onClose={() => setSnackbarState({ ...snackbarState, open: false })}
         message={`Report has been duplicated successfully!`}
         key={snackbarState.vertical + snackbarState.horizontal}
+      />
+      <DeleteReportDialog
+        modalDisplay={modalDisplay.report}
+        enableButton={enableButton}
+        handleDelete={handleDelete}
+        setModalDisplay={setModalDisplay}
+        handleInputChange={handleDeleteModalInputChange}
+      />
+      <DeleteChartDialog
+        modalDisplay={modalDisplay.chart}
+        enableButton={enableButton}
+        handleDelete={handleDelete}
+        setModalDisplay={setModalDisplay}
+        handleInputChange={handleDeleteModalInputChange}
       />
     </div>
   );

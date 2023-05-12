@@ -13,8 +13,6 @@ const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
 export default function ChartsGrid() {
-  const history = useHistory();
-  const historyState = history.location.state as { chartId: string };
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -26,16 +24,10 @@ export default function ChartsGrid() {
     (actions) => actions.charts.ChartGetList.fetch
   );
 
-  React.useEffect(() => {
-    if (historyState?.chartId) {
-      setModalDisplay(true);
-    }
-  }, [historyState?.chartId]);
-
-  const handleDelete = (index?: number, chartID?: string) => {
+  const handleDelete = (index?: number) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = chartID || charts[index as number].id;
+    const id = charts[index as number].id;
 
     if (!id) {
       return;
@@ -116,7 +108,6 @@ export default function ChartsGrid() {
       </Grid>
       <DeleteChartDialog
         cardId={cardId}
-        chartId={historyState?.chartId}
         modalDisplay={modalDisplay}
         enableButton={enableButton}
         handleDelete={handleDelete}
