@@ -326,7 +326,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         .catch((error) => console.log(error));
       setHomeTab("charts");
     }
-    history.push("/");
+    history.replace("/");
   };
 
   const handleDuplicate = () => {
