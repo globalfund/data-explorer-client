@@ -74,7 +74,7 @@ export function ReportPreviewView() {
               <hr
                 key={index}
                 css={`
-                  margin: 0;
+                  margin: 0 0 50px 0;
                   border: 2px solid #cfd4da;
                 `}
               />

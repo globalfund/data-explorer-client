@@ -60,7 +60,7 @@ export function ReportChartWrapper(props: Props) {
     }
   }, [loadedChart]);
 
-  const { loadDataFromAPI } = useChartsRawData({
+  const { loadDataFromAPI, loading } = useChartsRawData({
     visualOptions,
     setVisualOptions,
     setChartFromAPI,
@@ -91,6 +91,22 @@ export function ReportChartWrapper(props: Props) {
     containerRef.current?.clientWidth,
     containerRef.current?.clientHeight,
   ]);
+
+  if (!loading && !chartFromAPI) {
+    return (
+      <div
+        css={`
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `}
+      >
+        Chart not found
+      </div>
+    );
+  }
 
   return (
     <div

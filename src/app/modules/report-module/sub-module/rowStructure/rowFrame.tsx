@@ -623,7 +623,7 @@ export function Divider(props: {
       <hr
         css={`
           width: 100%;
-          margin: 20px 0;
+          margin: 0 0 50px 0;
           border: 2px solid #cfd4da;
         `}
       />
