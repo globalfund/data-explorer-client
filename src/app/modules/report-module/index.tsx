@@ -406,27 +406,22 @@ export default function ReportModule() {
             />
             <div
               css={`
+                width: 100%;
                 display: flex;
+                padding-right: 20px;
                 justify-content: flex-end;
-                width: 86%;
-                /* height: 40vh; */
-                transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                width: ${rightPanelOpen
-                  ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                  : "100%"};
               `}
             >
               <div
                 css={`
-                  width: 19%;
-                  padding-right: 20px;
                   color: #fff;
+                  width: 200px;
                 `}
               >
                 <PrimaryButton
-                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
                   disabled={!buttonActive}
                   onClick={handleNextButton}
+                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
                 >
                   use template
                 </PrimaryButton>
