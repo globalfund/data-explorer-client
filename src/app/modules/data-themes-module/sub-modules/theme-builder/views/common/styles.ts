@@ -13,7 +13,7 @@ export const styles = {
     align-self: flex-start;
     padding: 136px 42px 0 0;
     min-height: calc(100vh - 144px);
-    width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
+    width: calc(100vw - ((100vw - 1280px) / 2) - 390px);
 
     @media (max-width: 1280px) {
       width: calc(100vw - 400px);

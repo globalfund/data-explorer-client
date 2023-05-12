@@ -18,7 +18,7 @@ export interface IFramesArray {
 
 export interface ReportCreateViewProps {
   open: boolean;
-  reportType: "basic" | "advanced";
+  reportType: "basic" | "advanced" | "ai";
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;

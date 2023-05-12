@@ -6,7 +6,7 @@ import { ReactComponent as AddNewImage } from "../../assets/add-img.svg";
 export default function ReportAddnewCard() {
   const history = useHistory();
 
-  const goToDatasetUpload = () => {
+  const action = () => {
     history.push("/report/new/initial");
   };
 
@@ -14,51 +14,50 @@ export default function ReportAddnewCard() {
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <div
         css={`
-          background: #ffffff;
           width: 296px;
           height: 125px;
-          padding-left: 0.8rem;
-          padding-right: 0.8rem;
-
-          padding-top: 0.2rem;
+          background: #fff;
+          padding: 12px 16px;
         `}
       >
         <h4
           css={`
-            margin-top: 4px;
-            margin-bottom: 1px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            font-family: "GothamNarrow-Bold";
           `}
         >
           Create new Report
         </h4>
         <div
           css={`
+            gap: 14px;
             display: flex;
-            justify-content: start;
             align-items: center;
-            /* cursor: pointer; */
-            gap: 0.8rem;
+            justify-content: start;
           `}
         >
           <IconButton
-            onClick={goToDatasetUpload}
+            onClick={action}
             css={`
               padding: 2px;
             `}
           >
             <AddNewImage />
           </IconButton>
-          <p
+          <hr
             css={`
-              border: 1px solid #231d2c;
-              height: 49px;
+              margin: 0;
+              height: 50px;
+              background: #231d2c;
             `}
           />
           <p
             css={`
+              margin: 0;
               color: #495057;
-              font-weight: 325;
               font-size: 12px;
+              font-weight: 325;
               line-height: 15px;
             `}
           >

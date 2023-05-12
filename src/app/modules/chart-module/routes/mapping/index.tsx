@@ -182,9 +182,6 @@ function ChartBuilderMappingDimension(
       isOver: monitor.isOver(),
     }),
     drop: (item: any) => {
-      console.log("drop 1");
-      console.log("drop 1 item", item);
-      console.log("drop 1 dimension", dimension);
       const mappingFromStorage = get(
         JSON.parse(
           sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""

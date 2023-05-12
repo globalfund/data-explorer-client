@@ -29,7 +29,9 @@ export default function SimpleSelect(props: Props) {
         width={props.width}
       >
         {props.menuItems.map((item) => (
-          <MenuItem value={item.value}>{item.label}</MenuItem>
+          <MenuItem key={item.value} value={item.value}>
+            {item.label}
+          </MenuItem>
         ))}
       </StyledSelect>
     </div>

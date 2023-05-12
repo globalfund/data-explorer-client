@@ -31,8 +31,7 @@ export default function GridItem(props: Props) {
         color: #262c34;
         background: #fff;
         position: relative;
-        padding: 0rem 1.2rem;
-        padding-bottom: 0.5rem;
+        padding: 12px 16px;
         flex-direction: column;
         justify-content: space-between;
       `}
@@ -47,18 +46,18 @@ export default function GridItem(props: Props) {
         <div
           css={`
             width: 90%;
-            height: 80px;
+            height: 77px;
             word-wrap: break-word;
           `}
         >
           <p
             css={`
+              margin-top: 0;
               font-size: 14px;
-              line-height: 16px;
-              margin-bottom: 6px;
               overflow: hidden;
-              text-overflow: ellipsis;
+              margin-bottom: 2px;
               white-space: nowrap;
+              text-overflow: ellipsis;
             `}
           >
             <b>{props.title}</b>
@@ -73,19 +72,17 @@ export default function GridItem(props: Props) {
             {props.descr}
           </p>
         </div>
-        <div>
-          {props.showMenu && (
-            <IconButton
-              css={`
-                padding: 0;
-                margin-top: 14px;
-              `}
-              onClick={showMenuOptions}
-            >
-              <MenuIcon />
-            </IconButton>
-          )}
-        </div>
+        {props.showMenu && (
+          <IconButton
+            css={`
+              padding: 0;
+              margin-top: 5px;
+            `}
+            onClick={showMenuOptions}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
       </div>
       <div
         css={`
@@ -120,13 +117,13 @@ export default function GridItem(props: Props) {
               gap: 1rem;
               right: 3%;
               z-index: 2;
-              width: 128px;
+              width: 110px;
               display: flex;
-              padding: 7px 0;
+              padding: 6px 15px;
               position: absolute;
-              border-radius: 13px;
               background: #f4f4f4;
               align-items: center;
+              border-radius: 100px;
               justify-content: center;
             `}
           >

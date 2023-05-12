@@ -1,20 +1,16 @@
-import {
-  Box,
-  ClickAwayListener,
-  Slide,
-  useMediaQuery,
-} from "@material-ui/core";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
-
-import { isTouchDevice } from "app/utils/isTouchDevice";
 import React from "react";
-import DataParsingOptions from "./dataParsingOptions";
+import Slide from "@material-ui/core/Slide";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import DataParsingOptions from "app/fragments/datasets-fragment/component/dataParserToolBox/dataParsingOptions";
 
 interface Props {
   open: boolean;
   handleNext: () => void;
   onCloseBtnClick: (value?: boolean) => void;
 }
+
 export default function DataParserToolBox(props: Props) {
   const isMobile = useMediaQuery("(max-width: 767px)");
 
@@ -97,7 +93,6 @@ export default function DataParserToolBox(props: Props) {
                 </div>
               )}
             </div>
-
             <div
               css={`
                 padding-right: 9%;

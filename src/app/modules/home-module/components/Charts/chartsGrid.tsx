@@ -41,6 +41,22 @@ export default function ChartsGrid() {
       .catch((error) => console.log(error));
   };
 
+  const handleDuplicate = (index: number) => {
+    const id = charts[index].id;
+    if (!id) {
+      return;
+    }
+    axios
+      .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`)
+      .then(() => {
+        loadCharts({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.value === "DELETE") {
       setEnableButton(true);
@@ -83,6 +99,7 @@ export default function ChartsGrid() {
               path={`/chart/${c.id}`}
               viz={getIcon(c.vizType)}
               handleDelete={() => handleModal(index)}
+              handleDuplicate={() => handleDuplicate(index)}
             />
           </Grid>
         ))}

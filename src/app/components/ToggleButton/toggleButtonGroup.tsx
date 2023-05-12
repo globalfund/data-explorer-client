@@ -26,22 +26,23 @@ export default function ToggleButtons(props: Props) {
       onChange={handleAlignment}
       css={`
         border: none;
-        p {
+
+        span {
+          color: #fff;
           font-size: 12px;
-          font-weight: 600;
+          font-weight: 700;
           text-transform: capitalize;
-          font-family: "GothamNarrow-Book";
         }
       `}
     >
       <ToggleButton value="data" aria-label="data">
-        <p>Data</p>
+        Data
       </ToggleButton>
       <ToggleButton value="charts" aria-label="charts">
-        <p>Charts</p>
+        Charts
       </ToggleButton>
       <ToggleButton value="reports" aria-label="reports">
-        <p>Reports</p>
+        Reports
       </ToggleButton>
     </ToggleButtonGroup>
   );

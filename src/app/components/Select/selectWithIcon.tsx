@@ -30,6 +30,7 @@ export function SelectWithIcon(props: Props) {
       >
         {props.menuItems.map((item) => (
           <MenuItem
+            key={item.value}
             value={item.value}
             css={`
               display: flex;

@@ -238,10 +238,7 @@ export function ChartToolBoxSelectDataset(
             key={item.id}
             disableTouchRipple
             selected={dataset === item.id}
-            onClick={handleItemClick(
-              `data-themes/sample-data/${item.id}`,
-              item.id
-            )}
+            onClick={handleItemClick(`chart/sample-data/${item.id}`, item.id)}
           >
             {item.name}
           </StyledMenuItem>
