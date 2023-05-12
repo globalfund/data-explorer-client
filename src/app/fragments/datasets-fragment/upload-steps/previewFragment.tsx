@@ -12,7 +12,7 @@ interface Props {
   handleNext: () => void;
 }
 
-interface ISnackbarState {
+export interface ISnackbarState {
   open: boolean;
   vertical: "top" | "bottom";
   horizontal: "left" | "center" | "right";

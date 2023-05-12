@@ -33,6 +33,11 @@ import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
 import { Tooltip } from "@material-ui/core";
 import { ExportChartButton } from "./exportButton";
+import axios from "axios";
+import {
+  CssSnackbar,
+  ISnackbarState,
+} from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -111,6 +116,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
   );
+  const loadReports = useStoreActions(
+    (actions) => actions.reports.ReportGetList.fetch
+  );
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
@@ -142,6 +150,12 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const editChartClear = useStoreActions(
     (actions) => actions.charts.ChartUpdate.clear
   );
+
+  const [snackbarState, setSnackbarState] = React.useState<ISnackbarState>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setName(event.target.value);
@@ -246,14 +260,38 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
 
-  const handleChartDelete = () => {
-    setHomeTab("charts");
-    history.push({
-      pathname: "/",
-      state: { chartId: page },
-    });
+  const handleDelete = () => {
+    if (props.pageType === "chart") {
+      setHomeTab("charts");
+      history.push({
+        pathname: "/",
+        state: { chartId: page },
+      });
+    } else {
+      setHomeTab("reports");
+      history.push({
+        pathname: "/",
+        state: { reportId: page },
+      });
+    }
   };
 
+  const handleDuplicate = () => {
+    if (props.pageType === "report")
+      axios
+        .get(`${process.env.REACT_APP_API}/report/duplicate/${page}`)
+        .then(() => {
+          loadReports({
+            storeInCrudData: true,
+            filterString: "filter[order]=createdDate desc",
+          });
+          setSnackbarState({
+            ...snackbarState,
+            open: true,
+          });
+        })
+        .catch((error) => console.log(error));
+  };
   const handlePreviewMode = () => {
     if (props.pageType === "report") {
       if (page === "new") {
@@ -391,12 +429,12 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                     </Tooltip>
                   </React.Fragment>
                 )}
-                {page !== "new" && !view && props.pageType === "chart" && (
+                {page !== "new" && !view && (
                   <React.Fragment>
                     <ExportChartButton rawViz={props.rawViz} />
 
-                    <Tooltip title="Copy">
-                      <IconButton>
+                    <Tooltip title="Duplicate">
+                      <IconButton onClick={handleDuplicate}>
                         <FileCopyIcon htmlColor="#262c34" />
                       </IconButton>
                     </Tooltip>
@@ -450,19 +488,21 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                     <Tooltip title="Edit">
                       <IconButton
                         component={Link}
-                        to={`/${props.pageType}/${page}/${"customize"}`}
+                        to={`/${props.pageType}/${page}/${
+                          props.pageType === "chart" ? "customize" : "edit"
+                        }`}
                       >
                         <EditIcon htmlColor="#262c34" />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
-                      <IconButton onClick={handleChartDelete}>
+                      <IconButton onClick={handleDelete}>
                         <DeleteIcon htmlColor="#262c34" />
                       </IconButton>
                     </Tooltip>
                   </React.Fragment>
                 )}
-                {page !== "new" && !view && props.pageType !== "chart" && (
+                {/* {page !== "new" && !view && props.pageType !== "chart" && (
                   <Tooltip title="Edit">
                     <IconButton
                       component={Link}
@@ -471,12 +511,22 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                       <EditIcon htmlColor="#262c34" />
                     </IconButton>
                   </Tooltip>
-                )}
+                )} */}
               </div>
             </div>
           )}
         </div>
       </Container>
+      <CssSnackbar
+        anchorOrigin={{
+          vertical: snackbarState.vertical,
+          horizontal: snackbarState.horizontal,
+        }}
+        open={snackbarState.open}
+        onClose={() => setSnackbarState({ ...snackbarState, open: false })}
+        message={`Report has been duplicated successfully!`}
+        key={snackbarState.vertical + snackbarState.horizontal}
+      />
     </div>
   );
 }
