@@ -136,7 +136,7 @@ export default function DataParsingOptions(props: Props) {
       <Box height={155} />
       <div css={buttonFlexcss}>
         <button type="button" onClick={props.handleNext}>
-          Save
+          Apply
         </button>
       </div>
       <Box height={85} />

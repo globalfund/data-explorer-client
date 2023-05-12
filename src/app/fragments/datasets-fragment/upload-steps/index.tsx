@@ -1,16 +1,16 @@
 import React from "react";
+import axios from "axios";
+import { useUpdateEffect } from "react-use";
 import Container from "@material-ui/core/Container";
+import { useStoreActions } from "app/state/store/hooks";
+import { useChartsRawData } from "app/hooks/useChartsRawData";
 import { stepcss } from "app/fragments/datasets-fragment/style";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import MetaData, {
-  IFormDetails,
-} from "app/fragments/datasets-fragment/upload-steps/metaData";
+import MetaData from "app/fragments/datasets-fragment/upload-steps/metaData";
 import Processing from "app/fragments/datasets-fragment/upload-steps/processing";
 import PreviewFragment from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 import FinishedFragment from "app/fragments/datasets-fragment/upload-steps/finishedFragment";
 import AddDatasetFragment from "app/fragments/datasets-fragment/upload-steps/addDatasetFragment";
-import axios from "axios";
-import { useStoreActions } from "app/state/store/hooks";
 
 export default function DatasetUploadSteps() {
   const [activeStep, setActiveStep] = React.useState<number>(0);
@@ -19,11 +19,7 @@ export default function DatasetUploadSteps() {
   const [uploadSuccess, setUploadSuccess] = React.useState(false);
   const [processingError, setProcessingError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
-
   const [datasetId, setDatasetId] = React.useState("");
-  const loadDatasets = useStoreActions(
-    (actions) => actions.dataThemes.DatasetGetList.fetch
-  );
   const [formDetails, setFormDetails] = React.useState({
     name: "",
     description: "",
@@ -38,6 +34,22 @@ export default function DatasetUploadSteps() {
     "Preview",
     "Finished",
   ];
+
+  const loadDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.fetch
+  );
+
+  const { loadDataset, sampleData, dataTotalCount, dataStats } =
+    useChartsRawData({
+      visualOptions: () => {},
+      setVisualOptions: () => {},
+      setChartFromAPI: () => {},
+      chartFromAPI: null,
+    });
+
+  useUpdateEffect(() => {
+    loadDataset(`chart/sample-data/${datasetId}`);
+  }, [datasetId]);
 
   const handleNext = () => {
     const newActiveStep = activeStep + 1;
@@ -57,11 +69,9 @@ export default function DatasetUploadSteps() {
     }
   };
 
-  const onSubmit = async (data: IFormDetails) => {
+  const onSubmit = async () => {
     // Post the dataset
-
     handleNext();
-
     setUploading(true);
     axios
       .post(`${process.env.REACT_APP_API}/datasets`, formDetails, {
@@ -123,6 +133,7 @@ export default function DatasetUploadSteps() {
           <AddDatasetFragment
             handleNext={handleNext}
             setFile={setSelectedFile}
+            disabled={false}
           />
         );
       case 1:
@@ -143,16 +154,27 @@ export default function DatasetUploadSteps() {
         );
       case 3:
         return (
-          <PreviewFragment handleNext={handleNext} datasetId={datasetId} />
+          <PreviewFragment
+            handleNext={handleNext}
+            data={sampleData}
+            stats={dataStats}
+            dataTotalCount={dataTotalCount}
+          />
         );
       case 4:
-        return <FinishedFragment datasetId={datasetId} />;
-
+        return (
+          <FinishedFragment
+            data={sampleData}
+            stats={dataStats}
+            datasetId={datasetId}
+          />
+        );
       default:
         return (
           <AddDatasetFragment
             handleNext={handleNext}
             setFile={setSelectedFile}
+            disabled={false}
           />
         );
     }

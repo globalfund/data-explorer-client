@@ -51,7 +51,7 @@ export function DataThemesBuilderPreview(props: DataThemesBuilderPreviewProps) {
     <div css={commonStyles.container}>
       {props.loading && <PageLoader />}
       <div css={commonStyles.innercontainer}>
-        <DataThemesDataTable data={props.data} />
+        {/* <DataThemesDataTable data={props.data} /> */}
       </div>
     </div>
   );

@@ -10,14 +10,12 @@ import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modu
 import DatasetAddnewCard from "app/modules/home-module/components/Datasets/datasetAddNewCard";
 
 export default function DatasetsGrid() {
-  const [data, setData] = React.useState<Dataset[]>([]);
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
 
   const handleDelete = (id: string) => {
-    const newData = data.filter((data) => data.id !== id);
-    setData(newData);
+    deleteDataset(id);
     setModalDisplay(false);
     setEnableButton(false);
   };

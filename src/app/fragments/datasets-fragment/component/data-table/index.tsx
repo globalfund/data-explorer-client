@@ -1,34 +1,31 @@
 import React from "react";
 import orderBy from "lodash/orderBy";
 import { useUpdateEffect } from "react-use";
-import DataGrid, { SortColumn } from "react-data-grid";
-
-import {
-  getColumnsFromData,
-  DataThemesDataTableProps,
-} from "app/modules/data-themes-module/components/data-table/data";
+import { SortColumn } from "react-data-grid";
 import PreviewTable from "app/components/Table/Preview-table";
+import { tableToolBoxData } from "app/components/Table/Preview-table/data";
+import { DataThemesDataTableProps } from "app/modules/data-themes-module/components/data-table/data";
+
+const getColumns = (
+  data: { [key: string]: number | string | null | boolean }[]
+) => {
+  let columns = [];
+  for (let key in data?.[0]) {
+    columns.push({ key: key, type: typeof data[0][key] });
+  }
+  return columns;
+};
 
 export function DatasetDataTable(props: DataThemesDataTableProps) {
   const containerEl = React.useRef<HTMLDivElement>(null);
-  const [data, setData] = React.useState<
-    { [key: string]: number | string | null | boolean }[]
-  >([]);
-
-  const getColumns = (
-    data: { [key: string]: number | string | null | boolean }[]
-  ) => {
-    let columns = [];
-    for (let key in data?.[0]) {
-      columns.push({ key: key, type: typeof data[0][key] });
-    }
-    return columns;
-  };
-
+  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
   const [sort, setSort] = React.useState<SortColumn>({
     columnKey: "_id",
     direction: "ASC",
   });
+  const [data, setData] = React.useState<
+    { [key: string]: number | string | null | boolean }[]
+  >([]);
 
   const handleSort = React.useCallback((newSorts: SortColumn[]) => {
     if (newSorts.length === 0) {
@@ -42,14 +39,7 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
   }, []);
 
   React.useEffect(() => {
-    setData(
-      props.data?.map(
-        (item: { [key: string]: number | string | null }, index: number) => ({
-          ...item,
-          _id: index + 1,
-        })
-      )
-    );
+    setData(props.data);
   }, [props.data]);
 
   useUpdateEffect(() => {
@@ -63,7 +53,6 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
       ref={containerEl}
       css={`
         width: 100%;
-        height: calc(100vh - 312px);
 
         > div {
           background: #fff;
@@ -78,8 +67,10 @@ export function DatasetDataTable(props: DataThemesDataTableProps) {
     >
       <PreviewTable
         tableData={data}
-        setTableData={setData}
+        placeUnderSubHeader
+        dataStats={props.stats}
         columns={getColumns(data)}
+        columnDetails={columnDetails}
       />
     </div>
   );

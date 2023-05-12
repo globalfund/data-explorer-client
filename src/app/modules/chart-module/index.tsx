@@ -5,8 +5,8 @@ import { DndProvider } from "react-dnd";
 import { useSessionStorage } from "react-use";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import { Switch, Route, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { Switch, Route, useParams, useHistory } from "react-router-dom";
 import {
   getOptionsConfig,
   getDefaultOptionsValues,
@@ -38,6 +38,7 @@ import {
 } from "app/modules/chart-module/data";
 
 export default function ChartModule() {
+  const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const [chartFromAPI, setChartFromAPI] =
@@ -52,6 +53,7 @@ export default function ChartModule() {
   const {
     loading,
     dataTypes,
+    dataStats,
     sampleData,
     isEditMode,
     loadDataset,
@@ -228,6 +230,11 @@ export default function ChartModule() {
   }
 
   React.useEffect(() => {
+    if (dataset) {
+      loadDataset(`/chart/sample-data/${dataset}`).then(() => {
+        history.push(`/chart/${page}/preview-data`);
+      });
+    }
     return () => {
       document.body.style.background =
         "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%)";
@@ -374,6 +381,7 @@ export default function ChartModule() {
               loading={loading}
               data={sampleData}
               loadDataset={loadDataset}
+              stats={dataStats}
               filterOptionGroups={filterOptionGroups}
             />
           </Route>

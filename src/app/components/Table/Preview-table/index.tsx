@@ -1,35 +1,48 @@
-import {
-  IconButton,
-  TableBody,
-  Table,
-  TableContainer,
-  TableHead,
-  TableCell,
-  TableRow,
-} from "@material-ui/core";
-import React, { useState } from "react";
-
-import { ReactComponent as SortIcon } from "../../../fragments/datasets-fragment/assets/sort.svg";
-
-import { previewTablecss } from "./style";
+import React from "react";
+import Table from "@material-ui/core/Table";
+import TableRow from "@material-ui/core/TableRow";
+import TableBody from "@material-ui/core/TableBody";
+import TableHead from "@material-ui/core/TableHead";
+import TableCell from "@material-ui/core/TableCell";
+import IconButton from "@material-ui/core/IconButton";
+import TableContainer from "@material-ui/core/TableContainer";
+import { previewTablecss } from "app/components/Table/Preview-table/style";
+import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
+import { ReactComponent as SortIcon } from "app/fragments/datasets-fragment/assets/sort.svg";
+import StatisticalTableToolBox, {
+  ColumnDetailsProps,
+} from "app/components/Table/Preview-table/StatisticalTableToolBox";
 
 interface PreviewTableProps {
+  placeUnderSubHeader?: boolean;
+  columnDetails: ColumnDetailsProps;
   columns: { [key: string]: string }[];
   tableData: { [key: string]: number | string | null | boolean }[];
-  setTableData: React.Dispatch<
-    React.SetStateAction<{ [key: string]: number | string | null | boolean }[]>
-  >;
+  dataStats: {
+    name: string;
+    type: "bar" | "percentage" | "unique";
+    data: { name: string; value: number }[];
+  }[];
 }
 
 export default function PreviewTable(props: PreviewTableProps) {
+  const [toolboxDisplay, setToolboxDisplay] = React.useState(false);
+
+  // const handleToolBoxDisplay = () => {
+  //   setToolboxDisplay(true);
+  // };
+
   return (
     <>
-      <div>
+      <div
+        css={`
+          height: 100%;
+        `}
+      >
         <TableContainer
           css={`
             width: inherit;
-            height: 480px;
-            overflow: auto;
+            height: 593px;
             &::-webkit-scrollbar {
               height: 12px;
               border-radius: 23px;
@@ -39,13 +52,11 @@ export default function PreviewTable(props: PreviewTableProps) {
             }
             &::-webkit-scrollbar-track {
               background: #fff;
-              border: 1px solid #e4e4e4;
 
               padding: 0 0.5rem;
             }
             &::-webkit-scrollbar-track:horizontal {
               border-right: none;
-              border-radius: 0px 0px 0px 6px;
             }
             &::-webkit-scrollbar-thumb {
               background: #231d2c;
@@ -54,19 +65,20 @@ export default function PreviewTable(props: PreviewTableProps) {
 
               background-clip: content-box;
             }
+            overflow: auto;
           `}
         >
           <Table css={previewTablecss}>
             <TableHead
               css={`
-                background: rgba(218, 218, 248, 0.3);
+                top: 0;
+                position: sticky;
+                background: #dadaf8;
               `}
             >
               <TableRow
                 css={`
-                  border: 1px solid #e4e4e4;
                   padding: 0rem 0.4rem;
-                  height: 42px;
                 `}
               >
                 {props.columns.map((val, index) => {
@@ -75,6 +87,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                       key={val.key}
                       css={`
                         border-left: ${index == 0 ? "none" : "auto"};
+                        border-top-left-radius: ${index == 0 ? "5px" : "0"};
                       `}
                     >
                       {index !== 0 && (
@@ -92,26 +105,27 @@ export default function PreviewTable(props: PreviewTableProps) {
                               height: 25px;
                               border-radius: 50%;
                               padding: 3px;
-                              display: none;
                               justify-content: center;
+                              display: flex;
                               align-items: center;
                               background: #ffffff;
                             `}
                           >
-                            <p>{val.type === "string" ? "Aa" : "#"}</p>
+                            {val.type === "string" ? "Aa" : "#"}
                           </div>
 
                           <p
                             css={`
-                              text-align: left;
-                              line-height: 17px;
-                              text-overflow: ellipsis;
-                              white-space: nowrap;
+                              margin: 0;
                               overflow: clip;
                               max-width: 220px;
+                              text-align: left;
+                              line-height: 17px;
+                              white-space: nowrap;
+                              text-overflow: ellipsis;
                             `}
                           >
-                            {val.key}
+                            <b>{val.key}</b>
                           </p>
                           <IconButton>
                             <SortIcon />
@@ -124,7 +138,37 @@ export default function PreviewTable(props: PreviewTableProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.tableData?.map((data, index) => (
+              <TableRow
+                css={`
+                  top: 54px;
+                  position: sticky;
+                  background: #f4f4f4;
+                `}
+              >
+                {props.dataStats.map((val) => (
+                  <TableCell
+                    key={val.name}
+                    css={`
+                      color: #000;
+                      font-size: 12px;
+                      // cursor: pointer;
+                      background: #f4f4f4;
+                    `}
+                    // onClick={handleToolBoxDisplay}
+                  >
+                    {val.name !== "ID" && (
+                      <div
+                        css={`
+                          background: #f4f4f4;
+                        `}
+                      >
+                        <StatisticDisplay type={val.type} data={val.data} />
+                      </div>
+                    )}
+                  </TableCell>
+                ))}
+              </TableRow>
+              {props.tableData.map((data) => (
                 <TableRow
                   key={Object.values(data).join("-")}
                   css={`
@@ -132,20 +176,14 @@ export default function PreviewTable(props: PreviewTableProps) {
                   `}
                 >
                   {props.columns.map((val, index) => (
-                    <TableCell
-                      key={val.key}
-                      css={`
-                        background: ${index === 0
-                          ? "rgba(218, 218, 248, 0.3)"
-                          : "#fff"};
-                      `}
-                    >
+                    <TableCell key={val.key}>
                       <p
                         css={`
-                          text-overflow: ellipsis;
-                          white-space: nowrap;
+                          margin: 0;
                           overflow: clip;
                           max-width: 220px;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
                           min-width: ${index === 0 ? "30px" : "auto"};
                           text-align: ${index === 0 ? "center" : "left"};
                         `}
@@ -160,6 +198,14 @@ export default function PreviewTable(props: PreviewTableProps) {
           </Table>
         </TableContainer>
       </div>
+      {toolboxDisplay && (
+        <StatisticalTableToolBox
+          {...props.columnDetails}
+          position={2}
+          handleClose={() => setToolboxDisplay(false)}
+          placeUnderSubHeader={props.placeUnderSubHeader as boolean}
+        />
+      )}
     </>
   );
 }

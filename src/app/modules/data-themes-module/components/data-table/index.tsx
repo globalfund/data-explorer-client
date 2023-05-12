@@ -2,19 +2,17 @@
 import React from "react";
 import orderBy from "lodash/orderBy";
 import { useUpdateEffect } from "react-use";
-import DataGrid, { SortColumn } from "react-data-grid";
-/* third-party */
-import {
-  getColumnsFromData,
-  DataThemesDataTableProps,
-} from "app/modules/data-themes-module/components/data-table/data";
+import { SortColumn } from "react-data-grid";
+/* project */
 import PreviewTable from "app/components/Table/Preview-table";
+import { tableToolBoxData } from "app/components/Table/Preview-table/data";
+import { DataThemesDataTableProps } from "app/modules/data-themes-module/components/data-table/data";
 
 export function DataThemesDataTable(props: DataThemesDataTableProps) {
-  const containerEl = React.useRef<HTMLDivElement>(null);
   const [data, setData] = React.useState<
     { [key: string]: number | string | null | boolean }[]
   >([]);
+  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
 
   const getColumns = (
     data: { [key: string]: number | string | null | boolean }[]
@@ -27,14 +25,14 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
   };
 
   const [sort, setSort] = React.useState<SortColumn>({
-    columnKey: "_id",
+    columnKey: "",
     direction: "ASC",
   });
 
   const handleSort = React.useCallback((newSorts: SortColumn[]) => {
     if (newSorts.length === 0) {
       setSort({
-        columnKey: "_id",
+        columnKey: "",
         direction: "ASC",
       });
     } else {
@@ -43,14 +41,7 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
   }, []);
 
   React.useEffect(() => {
-    setData(
-      props.data?.map(
-        (item: { [key: string]: number | string | null }, index: number) => ({
-          ...item,
-          _id: index + 1,
-        })
-      )
-    );
+    setData(props.data);
   }, [props.data]);
 
   useUpdateEffect(() => {
@@ -61,9 +52,8 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
 
   return (
     <div
-      ref={containerEl}
       css={`
-        width: calc(100% - 24px);
+        width: 100%;
         height: calc(100vh - 225px);
         margin-top: -1rem;
 
@@ -80,20 +70,11 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     >
       <PreviewTable
         tableData={data}
-        setTableData={setData}
+        placeUnderSubHeader
+        dataStats={props.stats}
         columns={getColumns(data)}
+        columnDetails={columnDetails}
       />
-      {/* <DataGrid
-        rows={data}
-        rowHeight={48}
-        headerRowHeight={88}
-        sortColumns={[sort]}
-        onSortColumnsChange={handleSort}
-        columns={getColumnsFromData(
-          props.data,
-          containerEl.current?.getBoundingClientRect().width
-        )}
-      /> */}
     </div>
   );
 }
