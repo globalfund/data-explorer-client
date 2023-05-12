@@ -381,24 +381,11 @@ export default function ReportModule() {
         <Route path="/report/:page/initial">
           <Container maxWidth="lg">
             <Box height={50} />
-            <div
-              css={`
-                transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                width: ${rightPanelOpen
-                  ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                  : "100%"};
-
-                @media (max-width: 1280px) {
-                  width: calc(100vw - 400px);
-                }
-              `}
-            >
-              <ReportInitialView
-                resetFrames={resetFrames}
-                buttonActive={buttonActive}
-                setButtonActive={handleSetButtonActive}
-              />
-            </div>
+            <ReportInitialView
+              resetFrames={resetFrames}
+              buttonActive={buttonActive}
+              setButtonActive={handleSetButtonActive}
+            />
             <div
               css={`
                 height: calc(100vh - 450px);
