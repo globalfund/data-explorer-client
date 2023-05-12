@@ -47,7 +47,7 @@ interface Props {
 export default function HeaderBlock(props: Props) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "header",
@@ -130,9 +130,7 @@ export default function HeaderBlock(props: Props) {
       )}
       {...handlers}
     >
-      {(handleDisplay ||
-        currentView === "editHeader" ||
-        !reportPreviewMode) && (
+      {(handleDisplay || currentView === "editHeader") && (
         <div
           css={`
             top: 0;

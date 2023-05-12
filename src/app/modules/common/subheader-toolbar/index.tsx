@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import isEmpty from "lodash/isEmpty";
 import { useRecoilState } from "recoil";
 import styled from "styled-components/macro";
@@ -6,40 +7,36 @@ import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
-import DeleteIcon from "@material-ui/icons/Delete";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
-import SaveAlt from "@material-ui/icons/SaveAlt";
-
-import Divider from "@material-ui/core/Divider";
+import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
-import { LinkIcon } from "app/assets/icons/Link";
+import Divider from "@material-ui/core/Divider";
 import ShareIcon from "@material-ui/icons/Share";
+import { LinkIcon } from "app/assets/icons/Link";
 import Snackbar from "@material-ui/core/Snackbar";
+import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
-
 import CopyToClipboard from "react-copy-to-clipboard";
-import {
-  homeDisplayAtom,
-  unSavedReportPreviewMode,
-} from "app/state/recoil/atoms";
+import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { PageLoader } from "app/modules/common/page-loader";
 import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { styles } from "app/modules/common/subheader-toolbar/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
+import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
-import { Tooltip } from "@material-ui/core";
-import { ExportChartButton } from "./exportButton";
-import axios from "axios";
+import { ExportChartButton } from "app/modules/common/subheader-toolbar/exportButton";
 import {
   CssSnackbar,
   ISnackbarState,
 } from "app/fragments/datasets-fragment/upload-steps/previewFragment";
-import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
+import {
+  homeDisplayAtom,
+  unSavedReportPreviewMode,
+} from "app/state/recoil/atoms";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -345,6 +342,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         })
         .catch((error) => console.log(error));
   };
+
   const handlePreviewMode = () => {
     if (props.pageType === "report") {
       if (page === "new") {
@@ -370,7 +368,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   };
 
   return (
-    <div css={styles.container}>
+    <div id="subheader-toolbar" css={styles.container}>
       {createOrEditChartLoading && <PageLoader />}
       <InfoSnackbar
         data-testid="create-chart-snackbar"
@@ -484,8 +482,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                 )}
                 {page !== "new" && !view && (
                   <React.Fragment>
-                    <ExportChartButton rawViz={props.rawViz} />
-
+                    <ExportChartButton />
                     <Tooltip title="Duplicate">
                       <IconButton onClick={handleDuplicate}>
                         <FileCopyIcon htmlColor="#262c34" />

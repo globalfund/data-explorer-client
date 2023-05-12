@@ -230,7 +230,7 @@ export default function ChartModule() {
   }
 
   React.useEffect(() => {
-    if (dataset) {
+    if (page === "new" && dataset) {
       loadDataset(`/chart/sample-data/${dataset}`).then(() => {
         history.push(`/chart/${page}/preview-data`);
       });

@@ -45,7 +45,7 @@ export function ReportPreviewView() {
   }, []);
 
   return (
-    <div>
+    <div id="export-container">
       <HeaderBlock
         previewMode
         headerDetails={{
