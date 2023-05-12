@@ -1,7 +1,7 @@
 import React from "react";
 import { v4 } from "uuid";
 import { useDrop } from "react-dnd";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
@@ -18,9 +18,11 @@ import {
 import {
   IRowFrameStructure,
   isDividerOrRowFrameDraggingAtom,
+  unSavedReportPreviewMode,
 } from "app/state/recoil/atoms";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
+  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -154,7 +156,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
   return (
     <div>
       <HeaderBlock
-        previewMode={false}
+        previewMode={reportPreviewMode}
         headerDetails={{ ...props.headerDetails, createdDate: new Date() }}
         setHeaderDetails={props.setHeaderDetails}
       />
@@ -162,7 +164,9 @@ export function ReportCreateView(props: ReportCreateViewProps) {
         <div
           css={`
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-            width: ${props.open
+            width: ${reportPreviewMode
+              ? "100%"
+              : props.open
               ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
               : "100%"};
 
@@ -196,18 +200,20 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               );
             })}
           </ReportOrderContainer>
-          <AddRowFrameButton
-            deleteFrame={deleteFrame}
-            framesArray={props.framesArray}
-            rowStructureType={rowStructureType}
-            setFramesArray={props.setFramesArray}
-            setRowStructureType={setRowStructuretype}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            handleRowFrameStructureTypeSelection={
-              props.handleRowFrameStructureTypeSelection
-            }
-          />
+          {!reportPreviewMode && (
+            <AddRowFrameButton
+              deleteFrame={deleteFrame}
+              framesArray={props.framesArray}
+              rowStructureType={rowStructureType}
+              setFramesArray={props.setFramesArray}
+              setRowStructureType={setRowStructuretype}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+            />
+          )}
           <Box height={45} />
         </div>
       </Container>

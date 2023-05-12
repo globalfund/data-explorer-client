@@ -33,7 +33,7 @@ export const useStyles = makeStyles(() =>
   })
 );
 
-export default function DeleteChartDialog(props: Props) {
+export default function DeleteReportDialog(props: Props) {
   const classes = useStyles();
 
   return (
@@ -69,14 +69,14 @@ export default function DeleteChartDialog(props: Props) {
               margin-bottom: 0px;
             `}
           >
-            Delete chart
+            Delete report
           </p>
           <p
             css={`
               margin-top: 3px;
             `}
           >
-            Absolutely sure you want to delete the chart(s)? <br />{" "}
+            Absolutely sure you want to delete the report(s)? <br />{" "}
             <b>This action is irreversible!</b>
           </p>
           <div

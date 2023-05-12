@@ -66,3 +66,7 @@ export const isDividerOrRowFrameDraggingAtom = atom<boolean>({
   key: "isDividerOrRowFrameDraggingAtom",
   default: false,
 });
+export const unSavedReportPreviewMode = atom<boolean>({
+  key: "unSavedReportPreviewMode",
+  default: false,
+});

@@ -5,4 +5,5 @@ export interface SubheaderToolbarProps {
   pageType: "chart" | "report";
   setName: (name: string) => void;
   forceEnablePreviewSave?: boolean;
+  rawViz?: any;
 }

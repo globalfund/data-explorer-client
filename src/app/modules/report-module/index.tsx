@@ -26,6 +26,8 @@ import {
   useParams,
   Redirect,
 } from "react-router-dom";
+import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
+import { useRecoilState } from "recoil";
 
 export default function ReportModule() {
   const history = useHistory();
@@ -41,7 +43,7 @@ export default function ReportModule() {
     "basic" | "advanced" | "ai"
   >("basic");
   const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
-
+  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -351,21 +353,24 @@ export default function ReportModule() {
         forceEnablePreviewSave={isPreviewSaveEnabled}
         name={page !== "new" && !view ? reportGetData.name : reportName}
       />
-      {view && view !== "preview" && view !== "initial" && (
-        <ReportRightPanel
-          open={rightPanelOpen}
-          currentView={view}
-          pickedCharts={pickedCharts}
-          setPickedCharts={setPickedCharts}
-          headerDetails={headerDetails}
-          setHeaderDetails={setHeaderDetails}
-          appliedHeaderDetails={appliedHeaderDetails}
-          setAppliedHeaderDetails={setAppliedHeaderDetails}
-          onOpen={() => setRightPanelOpen(true)}
-          onClose={() => setRightPanelOpen(false)}
-          showHeaderItem={!headerDetails.showHeader}
-        />
-      )}
+      {view &&
+        view !== "preview" &&
+        !reportPreviewMode &&
+        view !== "initial" && (
+          <ReportRightPanel
+            open={rightPanelOpen}
+            currentView={view}
+            pickedCharts={pickedCharts}
+            setPickedCharts={setPickedCharts}
+            headerDetails={headerDetails}
+            setHeaderDetails={setHeaderDetails}
+            appliedHeaderDetails={appliedHeaderDetails}
+            setAppliedHeaderDetails={setAppliedHeaderDetails}
+            onOpen={() => setRightPanelOpen(true)}
+            onClose={() => setRightPanelOpen(false)}
+            showHeaderItem={!headerDetails.showHeader}
+          />
+        )}
       <div
         css={`
           width: 100%;
@@ -376,24 +381,11 @@ export default function ReportModule() {
         <Route path="/report/:page/initial">
           <Container maxWidth="lg">
             <Box height={50} />
-            <div
-              css={`
-                transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                width: ${rightPanelOpen
-                  ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                  : "100%"};
-
-                @media (max-width: 1280px) {
-                  width: calc(100vw - 400px);
-                }
-              `}
-            >
-              <ReportInitialView
-                resetFrames={resetFrames}
-                buttonActive={buttonActive}
-                setButtonActive={handleSetButtonActive}
-              />
-            </div>
+            <ReportInitialView
+              resetFrames={resetFrames}
+              buttonActive={buttonActive}
+              setButtonActive={handleSetButtonActive}
+            />
             <div
               css={`
                 height: calc(100vh - 450px);
@@ -401,27 +393,22 @@ export default function ReportModule() {
             />
             <div
               css={`
+                width: 100%;
                 display: flex;
+                padding-right: 20px;
                 justify-content: flex-end;
-                width: 86%;
-                /* height: 40vh; */
-                transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                width: ${rightPanelOpen
-                  ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                  : "100%"};
               `}
             >
               <div
                 css={`
-                  width: 19%;
-                  padding-right: 20px;
                   color: #fff;
+                  width: 200px;
                 `}
               >
                 <PrimaryButton
-                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
                   disabled={!buttonActive}
                   onClick={handleNextButton}
+                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
                 >
                   use template
                 </PrimaryButton>

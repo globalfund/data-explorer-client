@@ -7,6 +7,8 @@ import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import GridItem from "app/modules/home-module/components/Reports/gridItem";
 import ReportAddnewCard from "app/modules/home-module/components/Reports/reportAddNewCard";
 import { ReactComponent as ReportIcon } from "app/modules/home-module/assets/reports-img.svg";
+import { useHistory } from "react-router-dom";
+import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 
 export default function ReportsGrid() {
   const [cardId, setCardId] = React.useState<number>(0);
@@ -21,10 +23,10 @@ export default function ReportsGrid() {
     (actions) => actions.reports.ReportGetList.fetch
   );
 
-  const handleDelete = (index: number) => {
+  const handleDelete = (index?: number) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = reports[index].id;
+    const id = reports[index as number].id;
     if (!id) {
       return;
     }
@@ -94,7 +96,7 @@ export default function ReportsGrid() {
           </Grid>
         ))}
       </Grid>
-      <DeleteChartDialog
+      <DeleteReportDialog
         cardId={cardId}
         modalDisplay={modalDisplay}
         enableButton={enableButton}

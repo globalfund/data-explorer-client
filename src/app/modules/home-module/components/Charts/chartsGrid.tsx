@@ -7,6 +7,7 @@ import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import GridItem from "app/modules/home-module/components/Charts/gridItem";
 import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ChartAddnewCard from "app/modules/home-module/components/Charts/chartAddNewCard";
+import { useHistory } from "react-router-dom";
 
 const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
@@ -23,10 +24,11 @@ export default function ChartsGrid() {
     (actions) => actions.charts.ChartGetList.fetch
   );
 
-  const handleDelete = (index: number) => {
+  const handleDelete = (index?: number) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = charts[index].id;
+    const id = charts[index as number].id;
+
     if (!id) {
       return;
     }

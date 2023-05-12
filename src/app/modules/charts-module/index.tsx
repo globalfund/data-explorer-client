@@ -84,14 +84,6 @@ export default function ChartsGrid() {
             </Grid>
           ))}
         </Grid>
-        <DeleteChartDialog
-          cardId={cardId}
-          enableButton={enableButton}
-          handleDelete={handleDelete}
-          handleInputChange={handleInputChange}
-          modalDisplay={modalDisplay}
-          setModalDisplay={setModalDisplay}
-        />
       </Container>
     </>
   );
