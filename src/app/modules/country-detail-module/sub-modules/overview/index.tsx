@@ -154,7 +154,14 @@ export function LocationDetailOverviewModule(props: Props) {
                   }
                 `}
               >
-                <b>Coordinating Mechanism Contacts</b>
+                <b>
+                  {" "}
+                  {get(
+                    cmsData,
+                    "modulesCountryDetail.mechanismContactsLabel",
+                    ""
+                  )}
+                </b>
                 <ChevronRight />
               </button>
               <Collapse in={contactsExpanded}>
@@ -279,7 +286,12 @@ export function LocationDetailOverviewModule(props: Props) {
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
-                Principal Recipients in {locationInfoData.locationName}
+                {get(
+                  cmsData,
+                  "modulesCountryDetail.PrincipalRecipientsLabel",
+                  ""
+                )}{" "}
+                {locationInfoData.locationName}
               </div>
               <div
                 css={`
@@ -357,7 +369,10 @@ export function LocationDetailOverviewModule(props: Props) {
             `}
           >
             <div>
-              <h3>Country overview description</h3>
+              <h3>
+                {" "}
+                {get(cmsData, "modulesCountryDetail.countryOverviewTitle", "")}
+              </h3>
               {parse(countrySummaryCMSData)}
               {notesDisclaimersCMSData && parse(notesDisclaimersCMSData)}
             </div>
@@ -399,14 +414,14 @@ export function LocationDetailOverviewModule(props: Props) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              Investment
+              {get(cmsData, "modulesCountryDetail.investments", "")}
             </div>
             <div
               css={`
                 font-size: 12px;
               `}
             >
-              Comparison between disbursed, commited and signed amounts
+              {get(cmsData, "modulesCountryDetail.radialVizDescription", "")}
             </div>
             <InvestmentsRadialViz />
           </div>

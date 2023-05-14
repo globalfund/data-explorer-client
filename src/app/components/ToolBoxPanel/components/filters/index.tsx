@@ -12,6 +12,7 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
 import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];
@@ -19,7 +20,7 @@ interface ToolBoxPanelFiltersProps {
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
-
+  const cmsData = useCMSData({ returnData: true });
   const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
@@ -95,7 +96,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               }
             `}
           >
-            <b>Filters</b>
+            <b>{get(cmsData, "componentsSidebar.filters", "")}</b>
             <Button
               endIcon={<ResetIcon />}
               onClick={resetAllFilters}
@@ -103,7 +104,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
                 text-transform: capitalize;
               `}
             >
-              Reset filters
+              {get(cmsData, "componentsSidebar.resetFilters", "")}
             </Button>
           </div>
           {props.groups.map((group: FilterGroupProps) => (

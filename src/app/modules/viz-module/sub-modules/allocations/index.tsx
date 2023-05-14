@@ -30,6 +30,7 @@ import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface AllocationsModuleProps {
   code?: string;
@@ -39,7 +40,7 @@ interface AllocationsModuleProps {
 
 export function AllocationsModule(props: AllocationsModuleProps) {
   useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const selectedPeriod = useStoreState(
@@ -480,7 +481,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           </span>
           <BudgetsTreemap
             data={dataDrilldownLevel}
-            tooltipValueLabel="Allocation"
+            tooltipValueLabel={get(
+              cmsData,
+              "componentsChartsBudgets.treemapTooltipAllocation",
+              ""
+            )}
             onNodeClick={(node: string) => {
               const name = node.split("-")[0];
               const code = getIso3FromName(name);
@@ -539,7 +544,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         `}
       >
-        Allocations | {selectedPeriod}
+        {get(cmsData, "componentsChartsInvestments.allocations", "")}{" "}
+        {selectedPeriod}
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
 

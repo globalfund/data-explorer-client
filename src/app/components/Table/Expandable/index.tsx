@@ -21,6 +21,8 @@ import {
   ExpandableTableRowDocProps,
   ExpandableTableRowProps,
 } from "app/components/Table/Expandable/data";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 const useRowStyles = makeStyles({
   root: {
@@ -200,6 +202,7 @@ function Row(props: {
 
 export function ExpandableTable(props: ExpandableTableProps) {
   const [toolbarCols, setToolbarCols] = React.useState<TableToolbarCols[]>([]);
+  const cmsData = useCMSData({ returnData: true });
 
   function onColumnViewSelectionChange(e: React.ChangeEvent<HTMLInputElement>) {
     const updatedToolbarCols = [...toolbarCols];
@@ -219,7 +222,7 @@ export function ExpandableTable(props: ExpandableTableProps) {
   return (
     <TableContainer>
       <TableToolbar
-        title="Documents"
+        title={get(cmsData, "componentsTable.documents", "")}
         search={props.search}
         columns={toolbarCols}
         onSearchChange={props.onSearchChange}

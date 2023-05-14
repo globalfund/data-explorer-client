@@ -146,7 +146,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipValueLabel="Budget"
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           xsTooltipData={xsTooltipData}
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
@@ -173,7 +173,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipValueLabel="Budget"
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected}
           onNodeClick={(node: string) => {

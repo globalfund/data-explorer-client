@@ -5,6 +5,8 @@ import { Search } from "app/modules/grants-module/components/Search";
 import { ResultListItemModel } from "app/modules/results-module/data";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { ResultsList } from "app/modules/results-module/components/List";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 export const DataList = (props: {
   isLoading: boolean;
@@ -15,6 +17,7 @@ export const DataList = (props: {
   openToolboxPanel: boolean;
   pushValue: number;
 }) => {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <>
       {props.isLoading && <PageLoader />}
@@ -52,7 +55,7 @@ export const DataList = (props: {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Year {props.selectedYear}
+            {get(cmsData, "ModulesResult.year", "")} {props.selectedYear}
           </div>
         </div>
         <div css="width: 100%;height: 25px;" />

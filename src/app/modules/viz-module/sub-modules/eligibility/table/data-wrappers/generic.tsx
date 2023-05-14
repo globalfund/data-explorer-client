@@ -14,6 +14,7 @@ import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility/table";
+import { useCMSData } from "app/hooks/useCMSData";
 
 function getTableData(data: DotChartModel[]): SimpleTableRow[] {
   const updatedTableData: SimpleTableRow[] = [];
@@ -34,7 +35,7 @@ function getTableData(data: DotChartModel[]): SimpleTableRow[] {
 
 export function GenericEligibilityWrapper() {
   useTitle("The Data Explorer - Eligibility");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const [search, setSearch] = React.useState("");
@@ -170,7 +171,7 @@ export function GenericEligibilityWrapper() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Year {selectedYear}
+          {get(cmsData, "componentsChartsEligibility.year", "")} {selectedYear}
         </div>
       </div>
       <div css="width: 100%;height: 25px;" />

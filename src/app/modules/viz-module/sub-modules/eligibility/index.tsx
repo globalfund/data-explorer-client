@@ -11,10 +11,11 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { DotChart } from "app/components/Charts/Eligibility/DotChart";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function EligibilityModule() {
   useTitle("The Data Explorer - Eligibility");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
@@ -71,7 +72,7 @@ export function EligibilityModule() {
   return (
     <DotChart
       data={data}
-      aggregateBy="componentName"
+      aggregateBy={get(cmsData, "componentsChartsEligibility.aggregateBy", "")}
       selectedYear={selectedYear}
     />
   );

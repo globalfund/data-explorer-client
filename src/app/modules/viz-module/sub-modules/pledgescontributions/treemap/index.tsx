@@ -18,10 +18,11 @@ import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTreemap() {
   useTitle("The Data Explorer - Pledges & Contributions/Treemap");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
@@ -160,7 +161,7 @@ export function PledgesContributionsTreemap() {
               }
             `}
           >
-            Donors {valueType}s
+            {get(cmsData, "componentsChartsPledges.donors", "")} {valueType}s
           </div>
           <div css="font-weight: normal;">
             {formatFinancialValue(totalBudget)}

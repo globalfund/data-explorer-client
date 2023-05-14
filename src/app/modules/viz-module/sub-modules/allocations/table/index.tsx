@@ -9,6 +9,7 @@ import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface AllocationsTableProps {
   code?: string;
@@ -18,7 +19,7 @@ interface AllocationsTableProps {
 
 export function AllocationsTableModule(props: AllocationsTableProps) {
   useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
-
+  const cmsData = useCMSData({ returnData: true });
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState("name ASC");
 
@@ -86,7 +87,7 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
 
   return (
     <SimpleTable
-      title="Allocations"
+      title={get(cmsData, "componentsTable.allocationTitle", "")}
       search={search}
       sortBy={sortBy}
       rows={data}

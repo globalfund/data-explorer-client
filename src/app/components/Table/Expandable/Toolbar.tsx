@@ -16,6 +16,7 @@ import ViewColumnIcon from "@material-ui/icons/ViewColumnOutlined";
 import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface TableToolbarProps {
   title: string;
@@ -29,7 +30,7 @@ export function TableToolbar(props: TableToolbarProps) {
   const location = useLocation();
   const params = useParams<{ code?: string }>();
   const vizData = useGetAllVizData();
-
+  const cmsData = useCMSData({ returnData: true });
   const searchInputRef = React.useRef<HTMLInputElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -249,7 +250,7 @@ export function TableToolbar(props: TableToolbarProps) {
               margin-bottom: 20px;
             `}
           >
-            Show columns
+            {get(cmsData, "componentsTable.showColumns", "")}
           </div>
           <FormGroup>
             {props.columns.map((c, index) => (

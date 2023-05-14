@@ -2,8 +2,11 @@ import React from "react";
 import get from "lodash/get";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function AllocationsPeriods() {
+  const cmsData = useCMSData({ returnData: true });
+
   const dataPeriodOptions = useStoreState(
     (state) => get(state.AllocationsPeriods.data, "data", []) as string[]
   );
@@ -22,7 +25,7 @@ export function AllocationsPeriods() {
 
   return (
     <ToolBoxPanelAggregateBy
-      title="Period"
+      title={get(cmsData, "componentsSidebar.aggregateByPeriod", "")}
       selected={selectedPeriod}
       setSelected={setSelectedPeriod}
       options={dataPeriodOptions.map((period: string) => ({

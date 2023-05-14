@@ -21,6 +21,8 @@ import {
   FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
 import { appColors } from "app/theme";
+import { get } from "lodash";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
@@ -29,7 +31,7 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
-
+  const cmsData = useCMSData({ returnData: true });
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
   const [expandedGroup] = useRecoilState(filterExpandedGroup);
   const {
@@ -461,7 +463,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Apply
+            {get(cmsData, "componentsSidebar.applyButton", "")}
           </button>
         </>
       )}

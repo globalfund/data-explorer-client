@@ -4,6 +4,8 @@ import React from "react";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 interface InvestmentsTableProps {
   search: string;
@@ -15,13 +17,14 @@ interface InvestmentsTableProps {
 }
 
 export function InvestmentsTable(props: InvestmentsTableProps) {
+  const csmData = useCMSData({ returnData: true });
   if (props.isLoading) {
     return <PageLoader />;
   }
 
   return (
     <SimpleTable
-      title="Investments"
+      title={get(csmData, "componentsChartsInvestments.tableTitle", "")}
       rows={props.data}
       search={props.search}
       sortBy={props.sortBy}

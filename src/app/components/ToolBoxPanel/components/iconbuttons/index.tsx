@@ -17,6 +17,7 @@ import { exportView } from "app/utils/exportView";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
+import { useCMSData } from "app/hooks/useCMSData";
 
 const locationsToNotShowImageExport = [
   "/viz/disbursements/map",
@@ -108,6 +109,8 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
   const location = useLocation();
   const csvLinkRef = React.useRef<any>();
   const params = useParams<{ code?: string }>();
+  const cmsData = useCMSData({ returnData: true });
+
   const vizData = useGetAllVizData();
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [allAvailableGrants, setAllAvailableGrants] = React.useState([]);
@@ -172,7 +175,7 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
             font-size: 12px !important;
           `}
         >
-          CSV
+          {get(cmsData, "componentsSidebar.csvIcon", "")}
         </CSVLink>
       </StyledMenuItem>,
     ];
@@ -215,7 +218,7 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
             padding: 6px 12px !important;
           `}
         >
-          CSV
+          {get(cmsData, "componentsSidebar.csvIcon", "")}
         </div>
       </StyledMenuItem>,
     ];
@@ -253,7 +256,7 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
             padding: 6px 12px !important;
           `}
         >
-          PNG
+          {get(cmsData, "componentsSidebar.pngIcon", "")}
         </div>
       </StyledMenuItem>
     );
@@ -284,7 +287,7 @@ export function ToolBoxPanelIconButtons(props: ToolBoxPanelIconButtonsProps) {
             padding: 6px 12px !important;
           `}
         >
-          SVG
+          {get(cmsData, "componentsSidebar.svgIcon", "")}
         </div>
       </StyledMenuItem>
     );

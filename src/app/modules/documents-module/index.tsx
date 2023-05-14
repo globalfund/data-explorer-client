@@ -16,12 +16,14 @@ import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
   const vizWrapperRef = React.useRef(null);
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   const addDataPathSteps = useStoreActions(
@@ -125,7 +127,9 @@ export default function DocumentsModule() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader title="Documents" />
+      <PageHeader
+        title={get(cmsData, "componentsPageHeader.tabDocuments", "")}
+      />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}

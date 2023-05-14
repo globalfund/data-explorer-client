@@ -15,10 +15,11 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsGeoMap() {
   useTitle("The Data Explorer - Pledges & Contributions GeoMap");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const valueType = useStoreState(
@@ -185,7 +186,7 @@ export function PledgesContributionsGeoMap() {
               justify-content: space-between;
             `}
           >
-            <div>0 USD</div>
+            <div>{get(cmsData, "componentsChartsGeomap.minRange")}</div>
             <div>{formatFinancialValue(maxValue)}</div>
           </div>
         </div>
@@ -226,7 +227,7 @@ export function PledgesContributionsGeoMap() {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            N/A
+            {get(cmsData, "componentsChartsGeomap.notAvailable")}
           </div>
         </div>
       </div>

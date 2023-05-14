@@ -13,10 +13,11 @@ import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTable() {
   useTitle("The Data Explorer - Pledges & Contributions Table");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const [page, setPage] = React.useState(0);
@@ -125,7 +126,7 @@ export function PledgesContributionsTable() {
   return (
     <>
       <SimpleTable
-        title="Pledges & Contributions"
+        title={get(cmsData, "componentsTable.pledgesTitle", "")}
         search={search}
         sortBy={sortBy}
         rows={data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}

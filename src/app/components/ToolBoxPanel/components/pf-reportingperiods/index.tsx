@@ -5,6 +5,8 @@ import useMeasure from "react-use/lib/useMeasure";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 export interface PerformanceFrameworkReportingPeriodsProps {
   periods: string[][];
@@ -14,7 +16,7 @@ export function PerformanceFrameworkReportingPeriods(
   props: PerformanceFrameworkReportingPeriodsProps
 ) {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
-
+  const cmsData = useCMSData({ returnData: true });
   const setSelected = useStoreActions(
     (store) => store.ToolBoxPanelPFPeriodState.setValue
   );
@@ -53,7 +55,7 @@ export function PerformanceFrameworkReportingPeriods(
         }
       `}
     >
-      <b>Reporting Period</b>
+      <b>{get(cmsData, "componentsSidebar.reportingPeriodLabel", "")}</b>
       <div
         ref={ref}
         css={`

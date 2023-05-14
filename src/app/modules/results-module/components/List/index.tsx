@@ -16,6 +16,8 @@ import {
   ResultsListProps,
   ResultListItemModel,
 } from "app/modules/results-module/data";
+import { get } from "lodash";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function ResultsList(props: ResultsListProps) {
   return (
@@ -33,6 +35,7 @@ export function ResultsList(props: ResultsListProps) {
 
 function ResultsListItem(props: ResultListItemModel) {
   const history = useHistory();
+  const cmsData = useCMSData({ returnData: true });
   const [expand, setExpand] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
@@ -100,7 +103,7 @@ function ResultsListItem(props: ResultListItemModel) {
               }
             >
               <TriangleXSIcon />
-              <div>See more</div>
+              <div> {get(cmsData, "ModulesResult.seeMore", "")}</div>
             </div>
           </React.Fragment>
         )}
@@ -116,7 +119,7 @@ function ResultsListItem(props: ResultListItemModel) {
               }}
             >
               <TriangleXSIcon />
-              <div>See more</div>
+              <div>{get(cmsData, "ModulesResult.seeMore", "")}</div>
             </div>
             <div css={locationlist}>
               {props.geoLocations.map(

@@ -15,6 +15,8 @@ import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 export interface ToolBoxPanelProps {
   open: boolean;
@@ -29,6 +31,7 @@ export interface ToolBoxPanelProps {
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
   const fabBtnRef = React.useRef<any>(null);
+  const cmsData = useCMSData({ returnData: true });
 
   const [expandedGroup] = useRecoilState(filterExpandedGroup);
 
@@ -184,7 +187,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     font-family: GothamNarrow-Bold;
                   `}
                 >
-                  Toolbox
+                  {get(cmsData, "componentsSidebar.toolbox", "")}
                 </div>
                 <IconButton
                   css={`

@@ -14,6 +14,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { InvestmentsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface Props {
   code?: string;
@@ -23,7 +24,7 @@ interface Props {
 
 export function InvestmentsGeoMap(props: Props) {
   useTitle("The Data Explorer - Investments/Map");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   // api call & data
@@ -227,7 +228,14 @@ export function InvestmentsGeoMap(props: Props) {
                 justify-content: space-between;
               `}
             >
-              <div>0 USD</div>
+              <div>
+                {" "}
+                {get(
+                  cmsData,
+                  "componentsChartsInvestments.defaultFinancialValue",
+                  ""
+                )}
+              </div>
               <div>{formatFinancialValue(maxValue)}</div>
             </div>
           </div>
@@ -268,7 +276,7 @@ export function InvestmentsGeoMap(props: Props) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              N/A
+              {get(cmsData, "componentsChartsInvestments.notAvailable", "")}
             </div>
           </div>
         </div>

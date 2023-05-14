@@ -15,9 +15,12 @@ import {
   GrantListItemModel,
 } from "app/modules/grants-module/data";
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 export function GrantsList(props: GrantsListProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <Grid container spacing={2}>
@@ -224,7 +227,7 @@ export function GrantsList(props: GrantsListProps) {
               <div css={row(18, "bold", 24)}>{item.title}</div>
               <div css={row(14, "normal")} style={{ margin: "0 0 32px 0" }}>
                 <div>
-                  Principal Recipient:{" "}
+                  {get(cmsData, "modulesGrants.principalRecipient", "")}:{" "}
                   <b>
                     {item.recipientName}
                     {item.recipientShortName && ` (${item.recipientShortName})`}
@@ -280,7 +283,7 @@ export function GrantsList(props: GrantsListProps) {
                             sans-serif;
                         `}
                       >
-                        Disbursed ·{" "}
+                        {get(cmsData, "modulesGrants.disbursed", "")}·{" "}
                         {((item.disbursed * 100) / item.committed).toFixed(2)}%
                       </div>
                       <div>{formatFinancialValue(item.disbursed)}</div>
@@ -319,7 +322,7 @@ export function GrantsList(props: GrantsListProps) {
                             sans-serif;
                         `}
                       >
-                        Committed
+                        {get(cmsData, "modulesGrants.committed", "")}
                       </div>
                       <div>{formatFinancialValue(item.committed)}</div>
                     </div>
@@ -338,7 +341,7 @@ export function GrantsList(props: GrantsListProps) {
                             sans-serif;
                         `}
                       >
-                        Signed
+                        {get(cmsData, "modulesGrants.signed", "")}
                       </div>
                       <div>{formatFinancialValue(item.signed)}</div>
                     </div>

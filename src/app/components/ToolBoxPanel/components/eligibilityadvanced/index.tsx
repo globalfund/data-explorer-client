@@ -3,8 +3,11 @@ import { appColors } from "app/theme";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 export function ToolBoxPanelEligibilityAdvanced() {
+  const cmsData = useCMSData({ returnData: true });
   const checked = useStoreState(
     (state) => state.ToolBoxPanelEligibilityAdvancedCheckboxState.value
   );
@@ -46,7 +49,7 @@ export function ToolBoxPanelEligibilityAdvanced() {
         }
       `}
     >
-      <b>Advanced</b>
+      <b>{get(cmsData, "componentsSidebar.advancedLabel", "")}</b>
       <FormControlLabel
         control={
           <Checkbox
@@ -56,7 +59,7 @@ export function ToolBoxPanelEligibilityAdvanced() {
             onChange={handleChange}
           />
         }
-        label="Show disease burden and income level"
+        label={get(cmsData, "componentsSidebar.showDiseaseLabel", "")}
       />
     </div>
   );

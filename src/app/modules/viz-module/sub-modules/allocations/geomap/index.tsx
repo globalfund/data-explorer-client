@@ -11,6 +11,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface Props {
   code?: string;
@@ -20,6 +21,7 @@ export function AllocationsGeoMap(props: Props) {
   useTitle(
     `The Data Explorer -${props.code ? ` ${props.code}` : ""} Allocations`
   );
+  const cmsData = useCMSData({ returnData: true });
   // api call & data
   const fetchData = useStoreActions((store) => store.AllocationsGeomap.fetch);
   const data = useStoreState(
@@ -153,7 +155,10 @@ export function AllocationsGeoMap(props: Props) {
             `}
           >
             <div>
-              <b>Allocations | {selectedPeriod}</b>
+              <b>
+                {get(cmsData, "componentsChartsInvestments.notAvailable", "")}{" "}
+                {selectedPeriod}
+              </b>
             </div>
             <div
               css={`
@@ -174,7 +179,13 @@ export function AllocationsGeoMap(props: Props) {
                 justify-content: space-between;
               `}
             >
-              <div>0 USD</div>
+              <div>
+                {get(
+                  cmsData,
+                  "componentsChartsInvestments.defaultFinancialValue",
+                  ""
+                )}
+              </div>
               <div>{formatFinancialValue(maxValue)}</div>
             </div>
           </div>
@@ -209,7 +220,9 @@ export function AllocationsGeoMap(props: Props) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             />
-            <div>N/A</div>
+            <div>
+              {get(cmsData, "componentsChartsInvestments.notAvailable", "")}
+            </div>
           </div>
         </div>
       )}

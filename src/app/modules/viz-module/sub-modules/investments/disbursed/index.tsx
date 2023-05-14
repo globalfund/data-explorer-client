@@ -18,6 +18,8 @@ import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
+import { get } from "lodash";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];
@@ -72,7 +74,7 @@ export function InvestmentsDisbursedModule(
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   const history = useHistory();
-
+  const cmsData = useCMSData({ returnData: true });
   const [treemapData, setTreemapData] = React.useState<
     DisbursementsTreemapDataItem[]
   >(props.data);
@@ -289,7 +291,8 @@ export function InvestmentsDisbursedModule(
                 }
               `}
             >
-              Investments - {props.type || "Disbursement"}
+              {get(cmsData, "componentsChartsInvestments.investments", "")}{" "}
+              {props.type || "Disbursement"}
             </div>
             <div css="font-weight: normal; margin-top: -6px;">
               {formatFinancialValue(totalValue)}
@@ -298,7 +301,11 @@ export function InvestmentsDisbursedModule(
         )}
         {isMobile && (
           <Grid item xs={12} css="font-size: 12px !important;">
-            <b>Total amount: {formatFinancialValue(totalValue)}</b>
+            <b>
+              {" "}
+              {get(cmsData, "componentsChartsInvestments.totalAmount", "")}{" "}
+              {formatFinancialValue(totalValue)}
+            </b>
           </Grid>
         )}
       </Grid>

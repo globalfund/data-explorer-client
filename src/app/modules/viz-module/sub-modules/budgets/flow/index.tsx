@@ -17,6 +17,8 @@ import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { useCMSData } from "app/hooks/useCMSData";
+import { get } from "lodash";
 
 interface BudgetsFlowModuleProps {
   nodes: {
@@ -57,7 +59,7 @@ interface BudgetsFlowModuleProps {
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
-
+  const cmsData = useCMSData({ returnData: true });
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
@@ -158,7 +160,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipValueLabel="Budget"
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           xsTooltipData={xsTooltipData}
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
@@ -188,8 +190,8 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipKeyLabel="Grant"
-          tooltipValueLabel="Budget"
+          tooltipKeyLabel={get(cmsData, "componentsChartsBudgets.grant", "")}
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected.id}
           onNodeClick={(node: string) => {
@@ -239,7 +241,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           margin-top: -9px;
         `}
       >
-        <b>Budget</b>
+        <b>{get(cmsData, "componentsChartsBudgets.budget", "")} </b>
         <p
           css={`
             margin-top: -6px;

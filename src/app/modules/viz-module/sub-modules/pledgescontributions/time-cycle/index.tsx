@@ -14,10 +14,11 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const [vizLevel, setVizLevel] = React.useState(0);
@@ -187,7 +188,11 @@ export function PledgesContributionsTimeCycleModule() {
           </span>
           <BudgetsTreemap
             data={dataDrilldownLevel}
-            tooltipValueLabel="Amount"
+            tooltipValueLabel={get(
+              cmsData,
+              "componentsChartsBudgets.amount",
+              ""
+            )}
             onNodeClick={(node: string, x: number, y: number) => {}}
           />
         </React.Fragment>

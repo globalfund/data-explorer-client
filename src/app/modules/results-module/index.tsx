@@ -17,11 +17,13 @@ import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { ResultListItemModel } from "app/modules/results-module/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import { useCMSData } from "app/hooks/useCMSData";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
+  const cmsData = useCMSData({ returnData: true });
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
@@ -145,7 +147,7 @@ export default function ResultsModule() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader title="Results" />
+      <PageHeader title={get(cmsData, "componentsPageHeader.results", "")} />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}
