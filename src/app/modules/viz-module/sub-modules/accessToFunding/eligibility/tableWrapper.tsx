@@ -302,7 +302,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
               width: 600px;
               height: 100%;
               overflow-y: auto;
-              min-height: 700px;
+
               position: absolute;
               background: #f5f5f7;
               border-radius: 20px;

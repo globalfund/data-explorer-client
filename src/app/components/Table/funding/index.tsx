@@ -391,6 +391,7 @@ export function FundingRequestTable(props: FundingTableProps) {
     <div
       css={`
         display: relative;
+        min-height: 600px;
       `}
     >
       <TableToolbar
