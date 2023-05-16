@@ -2,7 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
-import { useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import Pagination from "@material-ui/lab/Pagination";
@@ -27,6 +27,8 @@ import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import GrantsGrid from "app/modules/grants-module/grid";
+import GrantsTable from "app/modules/grants-module/table";
 
 interface GrantsModuleProps {
   code?: string;
@@ -51,6 +53,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
         : ""
     } ${get(cmsData, "modulesGrants.titleEnd", "")}`
   );
+  const [sortBy, setSortBy] = React.useState("grants ASC");
+
   const vizWrapperRef = React.useRef(null);
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
@@ -212,51 +216,37 @@ export default function GrantsModule(props: GrantsModuleProps) {
           <PageTopSpacer />
         </>
       )}
-      <div
-        css={`
-          align-self: flex-start;
-          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
-        `}
-        ref={vizWrapperRef}
-      >
-        <Search
-          value={props.search || search}
-          setValue={props.setSearch || setSearch}
-        />
-        <div css="width: 100%;height: 25px;" />
-        {data.length === 0 ? <NoDataLabel /> : <GrantsList listitems={data} />}
-        <div css="width: 100%;height: 25px;" />
-        {data.length > 0 && (
-          <Pagination
+      <Switch>
+        <Route path="/grants/grid">
+          <GrantsGrid
+            data={data}
+            handleChange={handleChange}
+            isToolboxOvervlayVisible={isToolboxOvervlayVisible}
+            openToolboxPanel={openToolboxPanel}
             page={page}
-            size="large"
-            count={pages}
-            onChange={handleChange}
-            css={`
-              > ul {
-                justify-content: center;
-              }
-            `}
+            pages={pages}
+            pushValue={pushValue}
+            search={search}
+            setSearch={setSearch}
+            setSearchProps={props.setSearch}
+            vizWrapperRef={vizWrapperRef}
           />
-        )}
-      </div>
-      <div css="width: 100%;height: 56px;" />
-      <div
-        css={`
-          left: 0;
-          top: 48px;
-          z-index: 15;
-          width: 100%;
-          height: 100%;
-          position: fixed;
-          background: rgba(35, 35, 35, 0.5);
-          opacity: ${isToolboxOvervlayVisible()};
-          visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
-          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
-            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
-        `}
-      />
+        </Route>
+        <Route path="/grants/table">
+          <GrantsTable
+            data={data}
+            reloadData={reloadData}
+            isLoading={isLoading}
+            search={search}
+            setSearch={setSearch}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            isToolboxOvervlayVisible={isToolboxOvervlayVisible}
+            openToolboxPanel={openToolboxPanel}
+            pushValue={pushValue}
+          />
+        </Route>
+      </Switch>
     </div>
   );
 }

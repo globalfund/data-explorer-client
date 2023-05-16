@@ -830,7 +830,7 @@ export function exportCSV(
         filename: `pledges-contributions-${options.selectedAggregation.toLowerCase()}.csv`,
         headers,
       };
-    case "/grants":
+    case "/grants/grid":
       return {
         data,
         filename: "grants.csv",

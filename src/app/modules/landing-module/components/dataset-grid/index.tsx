@@ -264,7 +264,11 @@ export function LandingDatasetGrid() {
         />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem title={grText} link="/grants" description={grDescription} />
+        <GridItem
+          title={grText}
+          link="/grants/grid"
+          description={grDescription}
+        />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem

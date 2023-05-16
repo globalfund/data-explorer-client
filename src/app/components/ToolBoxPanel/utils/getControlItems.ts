@@ -132,6 +132,18 @@ const views = {
       link: "/viz/grants/list",
     },
   ],
+  mainGrants: [
+    {
+      label: "Grid",
+      value: "Grid",
+      link: "/grants/grid",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/grants/table",
+    },
+  ],
   "pledges-contributions": [
     {
       label: "Treemap",
@@ -217,6 +229,13 @@ export function getControlItems(
   views: ViewModel[];
   aggregates: ViewModel[];
 } {
+  if (pathname === `/grants/${subType}`) {
+    return {
+      views: get(views, "mainGrants", []),
+      aggregates: [],
+    };
+  }
+
   if (detailPageCode) {
     const detailPageParam = pathname.split("/")[1];
     let alteredViews = get(views, vizType, []).map((view: ViewModel) => ({
@@ -230,6 +249,7 @@ export function getControlItems(
           )
         : view.link,
     }));
+
     if (detailPageParam === "grant") {
       alteredViews = filter(
         alteredViews,

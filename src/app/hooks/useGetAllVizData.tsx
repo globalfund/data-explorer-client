@@ -407,7 +407,7 @@ export function useGetAllVizData() {
     // Location Results
     "/location/<code>/results": resultsList,
     // Grants
-    "/grants": grantsList,
+    "/grants/grid": grantsList,
     // Results
     "/results": resultsList,
     // Documents

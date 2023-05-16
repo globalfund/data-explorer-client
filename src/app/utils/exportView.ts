@@ -42,7 +42,7 @@ function getFileName(
       return `pledges-contributions-${options.donorMapView
         .toLowerCase()
         .replace(/ /g, "-")}`;
-    case "/grants":
+    case "/grants/grid":
       return "grants";
     case "/viz/grants":
       return "grants";

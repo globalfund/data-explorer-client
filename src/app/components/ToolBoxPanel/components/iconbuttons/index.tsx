@@ -33,7 +33,7 @@ const locationsToNotShowImageExport = [
   "/viz/pledges-contributions/map",
   "/viz/budgets/map",
   "/viz/allocations/map",
-  "/grants",
+  "/grants/grid",
   "/viz/grants",
   "/location/<code>/grants",
   "/results",
