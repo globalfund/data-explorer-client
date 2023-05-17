@@ -100,7 +100,7 @@ export default function PartnerDetail() {
     if (
       partnerInfoData &&
       partnerInfoData.partnerName &&
-      !dataPathSteps.find((item) => item.id === partnerInfoData.partnerName)
+      !dataPathSteps.find((item) => item.id === "partner")
     ) {
       addDataPathSteps([
         {
@@ -188,6 +188,7 @@ export default function PartnerDetail() {
               type="Signed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
+              partnerName={partnerInfoData.partnerName}
             />
           </Route>
           <Route path={`/partner/${params.code}/signed/table`}>

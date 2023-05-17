@@ -34,6 +34,7 @@ interface InvestmentsDisbursedModuleProps {
   toolboxOpen?: boolean;
   setOpenToolboxPanel?: (value: boolean) => void;
   codeParam?: string;
+  partnerName?: string;
   isGrantDetail?: boolean;
   isPartnerDetail?: boolean;
   isLocationDetail?: boolean;
@@ -125,7 +126,7 @@ export function InvestmentsDisbursedModule(
         addDataPathSteps([
           {
             id: "partner",
-            name: props.codeParam || "Partner",
+            name: props.partnerName || "Partner",
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
