@@ -2,7 +2,6 @@ import React from "react";
 import { appColors } from "app/theme";
 
 export const TableIcon = () => {
-  console.log(appColors.COMMON.SECONDARY_COLOR_13);
   return (
     <svg width="24" height="24" viewBox="0 0 24 24">
       <path
