@@ -9,6 +9,7 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
   listitem,
   row,
+  rowText,
 } from "app/modules/grants-module/components/List/styles";
 import {
   GrantsListProps,
@@ -146,7 +147,12 @@ export function GrantsList(props: GrantsListProps) {
           <Grid item key={item.id} xs={12} sm={6} md={6}>
             <Link to={`/grant/${item.id}`} css={listitem}>
               {/* 1st row */}
-              <div css={row(14, "normal")}>
+
+              <div
+                css={`
+                  ${row(14, "normal")}
+                `}
+              >
                 <div>
                   <div>
                     <b>{item.status}</b>
@@ -221,16 +227,45 @@ export function GrantsList(props: GrantsListProps) {
                 </div>
               </div>
               {/* 2nd row */}
-              <div css={row(18, "bold", 24)}>{item.title}</div>
-              <div css={row(14, "normal")} style={{ margin: "0 0 32px 0" }}>
-                <div>
-                  Principal Recipient:{" "}
-                  <b>
-                    {item.recipientName}
-                    {item.recipientShortName && ` (${item.recipientShortName})`}
-                  </b>
+              <div
+                css={`
+                  height: 70px;
+                  border-bottom: 1px solid ${appColors.GRANT_LIST.DIVIDER};
+                `}
+              >
+                <div
+                  css={`
+                    ${row(12, "normal")} align-items: center;
+                    margin: 0;
+                    height: 20px;
+                  `}
+                >
+                  <b>Principal Recipient:</b>{" "}
+                  <p css={rowText}>{item.recipientName}</p>
+                </div>
+
+                <div
+                  css={`
+                    ${row(12, "normal")} align-items: center;
+                    margin: 0;
+                    height: 20px;
+                  `}
+                >
+                  <b>Cycle:</b> <p css={rowText}></p>
+                </div>
+                <div
+                  css={`
+                    ${row(12, "normal")} align-items: center;
+                    margin: 0;
+                    height: 20px;
+                  `}
+                >
+                  <b>Start / end date:</b> <p css={rowText}></p>
                 </div>
               </div>
+
+              <div css={row(14, "bold", 20)}>{item.title}</div>
+
               {/* 3rd row */}
               {isMobile ? (
                 <div>
@@ -303,44 +338,6 @@ export function GrantsList(props: GrantsListProps) {
                             .PROGRESS_BAR_COLOR};
                         `}
                       />
-                    </div>
-                    <div
-                      css={`
-                        width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                      `}
-                    >
-                      <div
-                        css={`
-                          font-weight: bold;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
-                        `}
-                      >
-                        Committed
-                      </div>
-                      <div>{formatFinancialValue(item.committed)}</div>
-                    </div>
-                    <div
-                      css={`
-                        width: 100%;
-                        display: flex;
-                        flex-direction: row;
-                        justify-content: space-between;
-                      `}
-                    >
-                      <div
-                        css={`
-                          font-weight: bold;
-                          font-family: "GothamNarrow-Bold", "Helvetica Neue",
-                            sans-serif;
-                        `}
-                      >
-                        Signed
-                      </div>
-                      <div>{formatFinancialValue(item.signed)}</div>
                     </div>
                   </div>
                 </div>

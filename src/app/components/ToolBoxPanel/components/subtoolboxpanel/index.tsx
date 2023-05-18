@@ -182,7 +182,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
     eligibilityAdvancedSelection,
     performanceFrameworkPeriodSelected,
   ]);
-
+  const isGrants = history.location.pathname.indexOf("/grants") > -1;
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
   const isResultsPage = history.location.pathname.indexOf("/results") > -1;
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
@@ -195,6 +195,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             history.location.pathname.indexOf("/overview") === -1 && (
               <GrantImplementationPeriods />
             )}
+          {isGrants && <GrantImplementationPeriods />}
           {controlItems.views.length > 0 && !isMobile && (
             <ToolBoxPanelControlRow
               title="Views"

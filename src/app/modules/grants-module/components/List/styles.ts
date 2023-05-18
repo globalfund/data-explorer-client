@@ -36,3 +36,12 @@ export const row = (size: number, style: string, lineHeight?: number) => css`
   font-family: "GothamNarrow-${style === "bold" ? "Bold" : "Book"}",
     "Helvetica Neue", sans-serif;
 `;
+
+export const rowText = css`
+  width: 230px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin: 0;
+  text-align: right;
+`;
