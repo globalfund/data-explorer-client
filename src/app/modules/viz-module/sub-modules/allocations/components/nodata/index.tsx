@@ -4,8 +4,8 @@ import { appColors } from "app/theme";
 export function NoDataAllocations() {
   return (
     <svg
-      width="617"
-      height="589"
+      width="480"
+      height="580"
       viewBox="0 0 617 589"
       fill="none"
       css={`
