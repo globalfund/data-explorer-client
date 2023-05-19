@@ -35,5 +35,9 @@ module.exports = () => {
         ignore: ["./node_modules/mapbox-gl/dist/mapbox-gl.js"],
       },
     },
+
+    webpackDevServer: {
+      port: process.env.PORT || 3000,
+    },
   };
 };
