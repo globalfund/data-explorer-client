@@ -41,6 +41,8 @@ REACT_APP_USE_DEFAULT_DATASETS=<boolean true or false>
 
 `REACT_APP_USE_DEFAULT_DATASETS`: is the setting to determine whether or not we use the Global Fund default datasets, or external datasets.
 
+`PORT`: can be used to specify on which port to run the client.
+
 ---
 
 In the project directory, you can run:
