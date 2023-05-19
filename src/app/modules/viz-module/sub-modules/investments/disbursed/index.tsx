@@ -126,7 +126,7 @@ export function InvestmentsDisbursedModule(
         addDataPathSteps([
           {
             id: "partner",
-            name: props.partnerName || "Partner",
+            name: props.partnerName as string,
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
