@@ -10,12 +10,12 @@ import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsGeoMap() {
   useTitle("The Data Explorer - Pledges & Contributions GeoMap");

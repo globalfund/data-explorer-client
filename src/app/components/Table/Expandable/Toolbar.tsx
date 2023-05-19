@@ -6,6 +6,7 @@ import { exportCSV } from "app/utils/exportCSV";
 import Toolbar from "@material-ui/core/Toolbar";
 import Popover from "@material-ui/core/Popover";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreState } from "app/state/store/hooks";
@@ -16,7 +17,6 @@ import ViewColumnIcon from "@material-ui/icons/ViewColumnOutlined";
 import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface TableToolbarProps {
   title: string;

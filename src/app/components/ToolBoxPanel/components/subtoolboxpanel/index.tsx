@@ -1,9 +1,12 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useParams, useHistory } from "react-router-dom";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ResultsYear } from "app/components/ToolBoxPanel/components/resultsyear";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
@@ -24,9 +27,6 @@ import {
   ViewModel,
   getControlItems,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import { useRecoilState } from "recoil";
-import { filterExpandedGroup } from "app/state/recoil/atoms";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface SubToolBoxPanelProps {
   filterGroups: FilterGroupProps[];

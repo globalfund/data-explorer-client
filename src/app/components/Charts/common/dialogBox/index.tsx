@@ -1,11 +1,11 @@
 import React from "react";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreActions } from "app/state/store/hooks";
 import {
   overlaycss,
   modalContainercss,
 } from "app/components/Charts/common/dialogBox/style";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 interface Props {
   display: {

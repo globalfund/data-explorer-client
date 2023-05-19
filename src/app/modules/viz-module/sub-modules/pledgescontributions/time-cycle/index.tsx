@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
@@ -14,7 +15,6 @@ import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");

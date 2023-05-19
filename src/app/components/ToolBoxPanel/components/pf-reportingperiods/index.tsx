@@ -1,12 +1,12 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import useMeasure from "react-use/lib/useMeasure";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
-import { appColors } from "app/theme";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 export interface PerformanceFrameworkReportingPeriodsProps {
   periods: string[][];

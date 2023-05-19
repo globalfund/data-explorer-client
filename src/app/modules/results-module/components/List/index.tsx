@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
@@ -16,8 +18,6 @@ import {
   ResultsListProps,
   ResultListItemModel,
 } from "app/modules/results-module/data";
-import { get } from "lodash";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function ResultsList(props: ResultsListProps) {
   return (

@@ -1,7 +1,10 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import { useMediaQuery } from "@material-ui/core";
+import { useCMSData } from "app/hooks/useCMSData";
 import { RatingIcon } from "app/assets/icons/Rating";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
@@ -14,9 +17,6 @@ import {
   GrantsListProps,
   GrantListItemModel,
 } from "app/modules/grants-module/data";
-import { appColors } from "app/theme";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 export function GrantsList(props: GrantsListProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");

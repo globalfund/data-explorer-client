@@ -9,6 +9,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
@@ -17,7 +18,6 @@ import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { ResultListItemModel } from "app/modules/results-module/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");

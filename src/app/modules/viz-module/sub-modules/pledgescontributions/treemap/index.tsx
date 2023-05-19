@@ -12,13 +12,13 @@ import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { appColors } from "app/theme";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTreemap() {
   useTitle("The Data Explorer - Pledges & Contributions/Treemap");

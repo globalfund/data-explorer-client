@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import remove from "lodash/remove";
 import isEqual from "lodash/isEqual";
+import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
 import findIndex from "lodash/findIndex";
+import { useCMSData } from "app/hooks/useCMSData";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
@@ -20,9 +23,6 @@ import {
   FilterGroupProps,
   FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { appColors } from "app/theme";
-import { get } from "lodash";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;

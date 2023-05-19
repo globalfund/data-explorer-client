@@ -1,10 +1,10 @@
 import React from "react";
+import get from "lodash/get";
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import Checkbox from "@material-ui/core/Checkbox";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 export function ToolBoxPanelEligibilityAdvanced() {
   const cmsData = useCMSData({ returnData: true });

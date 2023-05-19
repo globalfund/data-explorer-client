@@ -1,21 +1,19 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];

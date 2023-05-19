@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
 import useTitle from "react-use/lib/useTitle";
+import { useCMSData } from "app/hooks/useCMSData";
 import useDebounce from "react-use/lib/useDebounce";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -9,7 +10,6 @@ import useUpdateEffect from "react-use/lib/useUpdateEffect";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface AllocationsTableProps {
   code?: string;

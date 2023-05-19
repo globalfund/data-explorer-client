@@ -1,10 +1,12 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
+import get from "lodash/get";
 import { appColors } from "app/theme";
 import Fab from "@material-ui/core/Fab";
 import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { FiltersIcon } from "app/assets/icons/Filters";
 import { useUnmount, useUpdateEffect } from "react-use";
 import { isTouchDevice } from "app/utils/isTouchDevice";
@@ -15,8 +17,6 @@ import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
 import { ToolBoxPanelIconButtons } from "app/components/ToolBoxPanel/components/iconbuttons";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 export interface ToolBoxPanelProps {
   open: boolean;

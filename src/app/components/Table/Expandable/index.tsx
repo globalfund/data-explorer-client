@@ -1,8 +1,10 @@
 import React from "react";
+import get from "lodash/get";
 import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import Table from "@material-ui/core/Table";
+import { useCMSData } from "app/hooks/useCMSData";
 import Collapse from "@material-ui/core/Collapse";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
@@ -21,8 +23,6 @@ import {
   ExpandableTableRowDocProps,
   ExpandableTableRowProps,
 } from "app/components/Table/Expandable/data";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 const useRowStyles = makeStyles({
   root: {

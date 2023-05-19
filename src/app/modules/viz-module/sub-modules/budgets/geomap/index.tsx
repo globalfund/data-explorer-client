@@ -10,12 +10,12 @@ import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface Props {
   code?: string;

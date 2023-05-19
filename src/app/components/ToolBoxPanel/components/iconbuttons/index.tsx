@@ -4,6 +4,7 @@ import get from "lodash/get";
 import { CSVLink } from "react-csv";
 import { appColors } from "app/theme";
 import Snackbar from "@material-ui/core/Snackbar";
+import { useCMSData } from "app/hooks/useCMSData";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useStoreState } from "app/state/store/hooks";
 import IconButton from "@material-ui/core/IconButton";
@@ -17,7 +18,6 @@ import { exportView } from "app/utils/exportView";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
-import { useCMSData } from "app/hooks/useCMSData";
 
 const locationsToNotShowImageExport = [
   "/viz/disbursements/map",

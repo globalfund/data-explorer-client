@@ -4,6 +4,7 @@ import isEqual from "lodash/isEqual";
 import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
 import Button from "@material-ui/core/Button";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
@@ -12,7 +13,6 @@ import { defaultAppliedFilters } from "app/state/api/action-reducers/sync/filter
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { FilterGroup } from "app/components/ToolBoxPanel/components/filters/common/group";
 import { ExpandedFilterGroup } from "app/components/ToolBoxPanel/components/filters/common/expandedgroup";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface ToolBoxPanelFiltersProps {
   groups: FilterGroupProps[];

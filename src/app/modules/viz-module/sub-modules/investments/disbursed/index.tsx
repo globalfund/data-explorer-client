@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
@@ -12,14 +13,13 @@ import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import { get } from "lodash";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface InvestmentsDisbursedModuleProps {
   data: DisbursementsTreemapDataItem[];

@@ -7,11 +7,11 @@ import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { DotChart } from "app/components/Charts/Eligibility/DotChart";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function EligibilityModule() {
   useTitle("The Data Explorer - Eligibility");

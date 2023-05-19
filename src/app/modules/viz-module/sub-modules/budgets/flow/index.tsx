@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
@@ -10,6 +11,7 @@ import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
@@ -17,8 +19,6 @@ import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 interface BudgetsFlowModuleProps {
   nodes: {

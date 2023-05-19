@@ -9,12 +9,12 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityTable } from "app/modules/viz-module/sub-modules/eligibility/table";
-import { useCMSData } from "app/hooks/useCMSData";
 
 function getTableData(data: DotChartModel[]): SimpleTableRow[] {
   const updatedTableData: SimpleTableRow[] = [];

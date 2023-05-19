@@ -9,11 +9,11 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function PledgesContributionsTable() {
   useTitle("The Data Explorer - Pledges & Contributions Table");

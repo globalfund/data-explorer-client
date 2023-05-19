@@ -1,8 +1,8 @@
 import React from "react";
 import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export function AllocationsPeriods() {
   const cmsData = useCMSData({ returnData: true });

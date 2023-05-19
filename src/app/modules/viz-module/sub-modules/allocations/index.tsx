@@ -12,6 +12,7 @@ import ReactApexCharts from "react-apexcharts";
 import { useTitle, useMeasure } from "react-use";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { getIso3FromName } from "app/utils/getIso3FromName";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -30,7 +31,6 @@ import {
   getKeysPercentages,
   AllocationsTreemapDataItem,
 } from "app/modules/viz-module/sub-modules/allocations/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface AllocationsModuleProps {
   code?: string;

@@ -7,6 +7,7 @@ import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -16,7 +17,6 @@ import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import { useCMSData } from "app/hooks/useCMSData";
 
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");

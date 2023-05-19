@@ -1,10 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import { useParams, useHistory } from "react-router-dom";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface GrantDetailPeriod {
   number: number;

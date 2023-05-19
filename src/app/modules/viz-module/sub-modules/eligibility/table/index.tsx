@@ -1,14 +1,14 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import {
   SimpleTableRow,
   SimpleTableColumn,
 } from "app/components/Table/Simple/data";
-import { useCMSData } from "app/hooks/useCMSData";
-import { get } from "lodash";
 
 interface EligibilityTableProps {
   search: string;
