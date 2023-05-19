@@ -96,22 +96,6 @@ export default function PartnerDetail() {
     return 0;
   }
 
-  useUpdateEffect(() => {
-    if (
-      partnerInfoData &&
-      partnerInfoData.partnerName &&
-      !dataPathSteps.find((item) => item.id === "partner")
-    ) {
-      addDataPathSteps([
-        {
-          id: "partner",
-          name: partnerInfoData.partnerName,
-          path: location.pathname,
-        },
-      ]);
-    }
-  }, [partnerInfoData]);
-
   return (
     <div
       css={`
