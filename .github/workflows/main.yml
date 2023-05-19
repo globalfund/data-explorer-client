@@ -39,3 +39,4 @@ jobs:
             "@semantic-release/github"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          RUNNER_DEBUG: 1
