@@ -7,6 +7,7 @@ import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -22,6 +23,7 @@ export default function DocumentsModule() {
   const vizWrapperRef = React.useRef(null);
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   const addDataPathSteps = useStoreActions(
@@ -125,7 +127,9 @@ export default function DocumentsModule() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader title="Documents" />
+      <PageHeader
+        title={get(cmsData, "componentsPageHeader.tabDocuments", "")}
+      />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}

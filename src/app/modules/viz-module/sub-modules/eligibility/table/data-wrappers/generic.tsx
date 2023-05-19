@@ -9,6 +9,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -34,7 +35,7 @@ function getTableData(data: DotChartModel[]): SimpleTableRow[] {
 
 export function GenericEligibilityWrapper() {
   useTitle("The Data Explorer - Eligibility");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const [search, setSearch] = React.useState("");
@@ -170,7 +171,7 @@ export function GenericEligibilityWrapper() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Year {selectedYear}
+          {get(cmsData, "componentsChartsEligibility.year", "")} {selectedYear}
         </div>
       </div>
       <div css="width: 100%;height: 25px;" />

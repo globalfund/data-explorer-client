@@ -165,7 +165,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             {isMobile && (
               <Grid item xs={12} css="font-size: 12px !important;">
                 <b>
-                  {get(cmsData, "componentsChartsInvestments.totalAmount", "")}:{" "}
+                  {get(cmsData, "componentsChartsInvestments.totalAmount", "")}{" "}
                   {formatFinancialValue(totalInvestmentValue)}
                 </b>
               </Grid>
@@ -185,7 +185,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   `}
                 >
-                  Investments - {props.type || "Disbursement"}
+                  {get(cmsData, "componentsChartsInvestments.investments", "")}{" "}
+                  {props.type || "Disbursement"}
                 </div>
                 <div css="font-weight: normal;">
                   {formatFinancialValue(totalInvestmentValue)}

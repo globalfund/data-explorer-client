@@ -1,10 +1,12 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
+import get from "lodash/get";
 import { appColors } from "app/theme";
 import Fab from "@material-ui/core/Fab";
 import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { FiltersIcon } from "app/assets/icons/Filters";
 import { useUnmount, useUpdateEffect } from "react-use";
 import { isTouchDevice } from "app/utils/isTouchDevice";
@@ -29,6 +31,7 @@ export interface ToolBoxPanelProps {
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
   const fabBtnRef = React.useRef<any>(null);
+  const cmsData = useCMSData({ returnData: true });
 
   const [expandedGroup] = useRecoilState(filterExpandedGroup);
 
@@ -184,7 +187,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
                     font-family: GothamNarrow-Bold;
                   `}
                 >
-                  Toolbox
+                  {get(cmsData, "componentsSidebar.toolbox", "")}
                 </div>
                 <IconButton
                   css={`

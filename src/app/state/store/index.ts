@@ -170,6 +170,9 @@ import {
   DataPathStepsState,
 } from "../api/action-reducers/sync/dataPath";
 import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
+import componentsSidebar from "../api/action-reducers/cms/componentsSidebar";
+import componentsTable from "../api/action-reducers/cms/componentsTable";
+import componentsDialogBox from "../api/action-reducers/cms/componentsDialogBox";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -337,6 +340,9 @@ const storeContent: StoreModel = {
   // CMS API
   cms: {
     componentsAppBar: persist(componentsAppBar),
+    componentsTable: persist(componentsTable),
+    componentsDialogBox: persist(componentsDialogBox),
+
     componentsChartsBudgets: persist(componentsChartsBudgets),
     componentsChartsCommon: persist(componentsChartsCommon),
     componentsChartsEligibility: persist(componentsChartsEligibility),
@@ -358,6 +364,7 @@ const storeContent: StoreModel = {
     ),
     componentsSearch: persist(componentsSearch),
     componentsSlideInPanel: persist(componentsSlideInPanel),
+    componentsSidebar: persist(componentsSidebar),
     modulesLanding: persist(modulesLanding),
     modulesAbout: persist(modulesAbout),
     modulesCommon: persist(modulesCommon),

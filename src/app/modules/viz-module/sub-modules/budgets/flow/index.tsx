@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import sumBy from "lodash/sumBy";
 import filter from "lodash/filter";
@@ -10,6 +11,7 @@ import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
@@ -57,7 +59,7 @@ interface BudgetsFlowModuleProps {
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
-
+  const cmsData = useCMSData({ returnData: true });
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
@@ -158,7 +160,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipValueLabel="Budget"
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           xsTooltipData={xsTooltipData}
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
@@ -188,8 +190,8 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipKeyLabel="Grant"
-          tooltipValueLabel="Budget"
+          tooltipKeyLabel={get(cmsData, "componentsChartsBudgets.grant", "")}
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected.id}
           onNodeClick={(node: string) => {
@@ -239,7 +241,7 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
           margin-top: -9px;
         `}
       >
-        <b>Budget</b>
+        <b>{get(cmsData, "componentsChartsBudgets.budget", "")} </b>
         <p
           css={`
             margin-top: -6px;
