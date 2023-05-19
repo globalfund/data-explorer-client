@@ -197,8 +197,15 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
           overflow-y: scroll;
           height: calc(100vh - ${!props.filtersView ? 93 : 105}px);
 
-          ::-webkit-scrollbar {
-            display: none;
+          &::-webkit-scrollbar {
+            width: 5px;
+            background: #231d2c;
+          }
+          &::-webkit-scrollbar-track {
+            background: #dfe3e6;
+          }
+          &::-webkit-scrollbar-thumb {
+            background: #231d2c;
           }
         `}
       >
