@@ -13,6 +13,7 @@ interface Props {
   code: string;
   toolboxOpen?: boolean;
   type: "Disbursed" | "Signed" | "Commitment";
+  partnerName?: string;
 }
 
 export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
@@ -114,6 +115,7 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
       isDrilldownLoading={false}
       setVizSelected={setVizSelected}
       toolboxOpen={props.toolboxOpen}
+      partnerName={props.partnerName}
     />
   );
 }

@@ -36,6 +36,7 @@ interface InvestmentsDisbursedModuleProps {
   toolboxOpen?: boolean;
   setOpenToolboxPanel?: (value: boolean) => void;
   codeParam?: string;
+  partnerName?: string;
   isGrantDetail?: boolean;
   isPartnerDetail?: boolean;
   isLocationDetail?: boolean;
@@ -122,27 +123,46 @@ export function InvestmentsDisbursedModule(
         ]);
       } else if (
         props.isPartnerDetail &&
-        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
+        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1) &&
+        props.partnerName
       ) {
         addDataPathSteps([
           {
             id: "partner",
-            name: props.codeParam || "Partner",
+            name: props.partnerName as string,
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
       }
-      if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
-      ) {
-        addDataPathSteps([
-          {
-            id: uniqueId(),
-            name: `Grant Implementation: ${props.type}`,
-            path: `${history.location.pathname}${history.location.search}`,
-          },
-        ]);
+      if (props.isPartnerDetail) {
+        if (
+          props.partnerName &&
+          (dataPathSteps.length === 0 ||
+            !find(dataPathSteps, {
+              name: `Grant Implementation: ${props.type}`,
+            }))
+        ) {
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: `Grant Implementation: ${props.type}`,
+              path: `${history.location.pathname}${history.location.search}`,
+            },
+          ]);
+        }
+      } else {
+        if (
+          dataPathSteps.length === 0 ||
+          !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
+        ) {
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: `Grant Implementation: ${props.type}`,
+              path: `${history.location.pathname}${history.location.search}`,
+            },
+          ]);
+        }
       }
     }
     if (props.vizLevel > 0 && props.vizSelected) {
@@ -158,7 +178,7 @@ export function InvestmentsDisbursedModule(
         },
       ]);
     }
-  }, [props.vizLevel, props.vizSelected]);
+  }, [props.vizLevel, props.vizSelected, props.partnerName]);
 
   const setToolboxPanelDisbursementsSliderMaxValue = useStoreActions(
     (store) => store.ToolBoxPanelDisbursementsSliderValues.setMax
