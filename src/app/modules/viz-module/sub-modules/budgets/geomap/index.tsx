@@ -10,6 +10,7 @@ import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -27,7 +28,7 @@ export function BudgetsGeoMap(props: Props) {
   useTitle(`The Data Explorer -${props.code ? ` ${props.code}` : ""} Budgets`);
 
   const history = useHistory();
-
+  const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   // api call & data
@@ -184,7 +185,9 @@ export function BudgetsGeoMap(props: Props) {
             `}
           >
             <div>
-              <b>Budgets</b>
+              <b>
+                {get(cmsData, "componentsChartsBudgets.geomapLabelBudgets", "")}
+              </b>
             </div>
             <div
               css={`
@@ -205,7 +208,9 @@ export function BudgetsGeoMap(props: Props) {
                 justify-content: space-between;
               `}
             >
-              <div>0 USD</div>
+              <div>
+                {get(cmsData, "componentsChartsBudgets.geomapDefaultValue", "")}
+              </div>
               <div>{formatFinancialValue(maxValue)}</div>
             </div>
           </div>
@@ -246,7 +251,7 @@ export function BudgetsGeoMap(props: Props) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              N/A
+              {get(cmsData, "componentsChartsBudgets.notAvailable", "")}
             </div>
           </div>
         </div>

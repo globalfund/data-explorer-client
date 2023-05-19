@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
@@ -12,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
@@ -72,7 +74,7 @@ export function InvestmentsDisbursedModule(
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   const history = useHistory();
-
+  const cmsData = useCMSData({ returnData: true });
   const [treemapData, setTreemapData] = React.useState<
     DisbursementsTreemapDataItem[]
   >(props.data);
@@ -289,7 +291,8 @@ export function InvestmentsDisbursedModule(
                 }
               `}
             >
-              Investments - {props.type || "Disbursement"}
+              {get(cmsData, "componentsChartsInvestments.investments", "")}{" "}
+              {props.type || "Disbursement"}
             </div>
             <div css="font-weight: normal; margin-top: -6px;">
               {formatFinancialValue(totalValue)}
@@ -298,7 +301,11 @@ export function InvestmentsDisbursedModule(
         )}
         {isMobile && (
           <Grid item xs={12} css="font-size: 12px !important;">
-            <b>Total amount: {formatFinancialValue(totalValue)}</b>
+            <b>
+              {" "}
+              {get(cmsData, "componentsChartsInvestments.totalAmount", "")}{" "}
+              {formatFinancialValue(totalValue)}
+            </b>
           </Grid>
         )}
       </Grid>

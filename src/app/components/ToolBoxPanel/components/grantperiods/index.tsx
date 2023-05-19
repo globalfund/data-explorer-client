@@ -1,6 +1,7 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
 import { useParams, useHistory } from "react-router-dom";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
@@ -14,6 +15,7 @@ interface GrantDetailPeriod {
 export function GrantImplementationPeriods() {
   const history = useHistory();
   const params = useParams<{ code: string; period: string; vizType: string }>();
+  const cmsData = useCMSData({ returnData: true });
 
   const periods = useStoreState(
     (state) =>
@@ -42,7 +44,7 @@ export function GrantImplementationPeriods() {
 
   return (
     <ToolBoxPanelAggregateBy
-      title="Implementation Period"
+      title={get(cmsData, "componentsSidebar.aggregateByIP", "")}
       setSelected={onSelectedPeriodChange}
       selected={`${selectedPeriod.startDate} - ${selectedPeriod.endDate}`}
       options={periods.map((p: GrantDetailPeriod) => ({

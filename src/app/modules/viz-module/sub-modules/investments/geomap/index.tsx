@@ -9,6 +9,7 @@ import useTitle from "react-use/lib/useTitle";
 import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -23,7 +24,7 @@ interface Props {
 
 export function InvestmentsGeoMap(props: Props) {
   useTitle("The Data Explorer - Investments/Map");
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   // api call & data
@@ -227,7 +228,14 @@ export function InvestmentsGeoMap(props: Props) {
                 justify-content: space-between;
               `}
             >
-              <div>0 USD</div>
+              <div>
+                {" "}
+                {get(
+                  cmsData,
+                  "componentsChartsInvestments.defaultFinancialValue",
+                  ""
+                )}
+              </div>
               <div>{formatFinancialValue(maxValue)}</div>
             </div>
           </div>
@@ -268,7 +276,7 @@ export function InvestmentsGeoMap(props: Props) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              N/A
+              {get(cmsData, "componentsChartsInvestments.notAvailable", "")}
             </div>
           </div>
         </div>
