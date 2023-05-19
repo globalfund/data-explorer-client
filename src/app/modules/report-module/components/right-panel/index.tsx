@@ -17,7 +17,8 @@ export function ReportRightPanel(props: ReportRightPanelProps) {
             role="button"
             tabIndex={-1}
             css={`
-              top: 38%;
+              top: calc((100% - 98px) / 2);
+
               left: -16px;
               color: #fff;
               width: 16px;
