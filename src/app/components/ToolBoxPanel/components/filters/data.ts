@@ -215,6 +215,7 @@ export const pathnameToFilterGroups = {
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods" &&
       fg.name !== "Document Types" &&
       fg.name !== "Portfolio Categorization" &&
       fg.name !== "TRP Window"
@@ -362,6 +363,7 @@ export const pathnameToFilterGroups = {
     filtergroups,
     (fg: FilterGroupProps) =>
       fg.name !== "Donors" &&
+      fg.name !== "Replenishment Periods" &&
       fg.name !== "Document Types" &&
       fg.name !== "Portfolio Categorization" &&
       fg.name !== "TRP Window"
