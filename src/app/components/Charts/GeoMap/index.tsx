@@ -137,7 +137,8 @@ export function GeoMap(props: GeoMapProps) {
   const [allocationsPinMarkerHoverInfo, setAllocationsPinMarkerHoverInfo] =
     React.useState<AllocationsGeoMapPinMarker | null>(null);
   const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
-
+  const tooltipHeight =
+    document.getElementById("geomap-tooltip")?.clientHeight || 310;
   React.useEffect(() => {
     if (isSmallScreen) {
       setViewport({
@@ -676,6 +677,7 @@ export function GeoMap(props: GeoMapProps) {
         (isHovering || isMobile || isTouchDevice()) &&
         props.type === "investments" && (
           <div
+            id="geomap-tooltip"
             css={`
               z-index: 100;
               width: 350px;
@@ -683,8 +685,9 @@ export function GeoMap(props: GeoMapProps) {
               position: absolute;
               background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y > 565
-                ? hoverInfo.y / 3.3
+              /* top: ${0}; */
+              top: ${hoverInfo.y > 0
+                ? hoverInfo.y - tooltipHeight - 50
                 : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
 
@@ -753,15 +756,17 @@ export function GeoMap(props: GeoMapProps) {
         (isHovering || isMobile || isTouchDevice()) &&
         (props.type === "allocations" || props.type === "budgets") && (
           <div
+            id="geomap-tooltip"
             css={`
               z-index: 100;
               width: 350px;
               padding: 20px;
               position: absolute;
+
               background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y > 600
-                ? hoverInfo.y / 2.3
+              top: ${hoverInfo.y > 0
+                ? hoverInfo.y - tooltipHeight - 50
                 : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
 
@@ -830,6 +835,7 @@ export function GeoMap(props: GeoMapProps) {
         (isHovering || isMobile || isTouchDevice()) &&
         props.type === "donors" && (
           <div
+            id="geomap-tooltip"
             css={`
               z-index: 100;
               width: 350px;
@@ -837,8 +843,8 @@ export function GeoMap(props: GeoMapProps) {
               position: absolute;
               background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y > 565
-                ? hoverInfo.y / 3.3
+              top: ${hoverInfo.y > 0
+                ? hoverInfo.y - tooltipHeight - 50
                 : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
 
