@@ -41,24 +41,29 @@ export function useDataThemesEchart() {
 
   function echartsBarchart(data: any, visualOptions: any) {
     const {
-      // artboard
-      // height,
       background,
-      // margins
+
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
-      // chart options
-      // orientation,
-      // Tooltip
+
       showTooltip,
       isMonetaryValue,
       label,
-      // legend,
-      // legendHoverLink,
+
       barWidth,
       stack,
+
+      realTimeSort,
+      color,
+      splitLineY,
+      barRadius,
+      xAxisLineColor,
+      showXAxis,
+      focus,
+      xAxisLabelColor,
+      xAxisLabelInterval,
     } = visualOptions;
 
     const bars = data.map((d: any) => d.bars);
@@ -76,8 +81,32 @@ export function useDataThemesEchart() {
       //   show: legend,
 
       // },
-      xAxis: { data: bars },
-      yAxis: { type: "value" },
+      xAxis: {
+        data: bars,
+        show: true,
+        type: "category",
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          lineStyle: {
+            color: xAxisLineColor,
+          },
+        },
+        axisLabel: {
+          show: true,
+          color: xAxisLabelColor,
+          interval: xAxisLabelInterval,
+        },
+      },
+      yAxis: {
+        type: "value",
+        show: true,
+        splitLine: {
+          show: splitLineY ?? true,
+        },
+      },
+
       // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
       // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
       backgroundColor: background,
@@ -88,7 +117,11 @@ export function useDataThemesEchart() {
           type: "bar",
 
           data: sizes,
-          realtimeSort: true,
+          realtimeSort: realTimeSort ?? true,
+          itemStyle: {
+            color: color,
+            borderRadius: barRadius,
+          },
           // legendHoverLink: legendHoverLink,
           stack: stack ? "Total" : undefined,
 
