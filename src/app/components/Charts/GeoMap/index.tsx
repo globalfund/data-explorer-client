@@ -686,7 +686,7 @@ export function GeoMap(props: GeoMapProps) {
               background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
               /* top: ${0}; */
-              top: ${hoverInfo.y > 0
+              top: ${hoverInfo.y > 550
                 ? hoverInfo.y - tooltipHeight - 50
                 : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
@@ -765,7 +765,7 @@ export function GeoMap(props: GeoMapProps) {
 
               background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y > 0
+              top: ${hoverInfo.y > 550
                 ? hoverInfo.y - tooltipHeight - 50
                 : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
@@ -843,7 +843,7 @@ export function GeoMap(props: GeoMapProps) {
               position: absolute;
               background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y > 0
+              top: ${hoverInfo.y > 550
                 ? hoverInfo.y - tooltipHeight - 50
                 : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
