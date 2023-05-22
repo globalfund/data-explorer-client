@@ -1,19 +1,19 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -41,7 +41,7 @@ export function InvestmentsTimeCycleModule(
   props: InvestmentsTimeCycleModuleProps
 ) {
   const history = useHistory();
-
+  const cmsData = useCMSData({ returnData: true });
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
@@ -152,7 +152,11 @@ export function InvestmentsTimeCycleModule(
         <BudgetsTreemap
           data={props.drilldownData}
           xsTooltipData={xsTooltipData}
-          tooltipValueLabel="Disbursements"
+          tooltipValueLabel={get(
+            cmsData,
+            "componentsChartsInvestments.disbursements",
+            ""
+          )}
           setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string, _x: number, _y: number) => {
             if (props.setDrilldownVizSelected) {
@@ -178,7 +182,11 @@ export function InvestmentsTimeCycleModule(
         <BudgetsTreemap
           data={props.drilldown2Data}
           xsTooltipData={xsTooltipData}
-          tooltipValueLabel="Disbursements"
+          tooltipValueLabel={get(
+            cmsData,
+            "componentsChartsInvestments.disbursements",
+            ""
+          )}
           setXsTooltipData={setXsTooltipData}
           onNodeClick={(node: string, _x: number, _y: number) => {
             const idSplits = node.split("-");

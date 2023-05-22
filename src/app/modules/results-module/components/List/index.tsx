@@ -1,8 +1,10 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
@@ -33,6 +35,7 @@ export function ResultsList(props: ResultsListProps) {
 
 function ResultsListItem(props: ResultListItemModel) {
   const history = useHistory();
+  const cmsData = useCMSData({ returnData: true });
   const [expand, setExpand] = React.useState(false);
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
@@ -100,7 +103,7 @@ function ResultsListItem(props: ResultListItemModel) {
               }
             >
               <TriangleXSIcon />
-              <div>See more</div>
+              <div> {get(cmsData, "ModulesResult.seeMore", "")}</div>
             </div>
           </React.Fragment>
         )}
@@ -116,7 +119,7 @@ function ResultsListItem(props: ResultListItemModel) {
               }}
             >
               <TriangleXSIcon />
-              <div>See more</div>
+              <div>{get(cmsData, "ModulesResult.seeMore", "")}</div>
             </div>
             <div css={locationlist}>
               {props.geoLocations.map(

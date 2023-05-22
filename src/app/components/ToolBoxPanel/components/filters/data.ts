@@ -1,4 +1,4 @@
-import { filter } from "lodash";
+import filter from "lodash/filter";
 
 export interface FilterGroupOptionModel {
   label: string;

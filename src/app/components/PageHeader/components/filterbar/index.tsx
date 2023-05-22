@@ -105,7 +105,9 @@ export function MobileFilterBar() {
 
   return (
     <div css={styles.container}>
-      <div css={styles.label}>Your selections</div>
+      <div css={styles.label}>
+        {get(cmsData, "componentsPageHeader.mobileFilterBar", "")}
+      </div>
       <div css={styles.chipsContainer}>
         {chips.map((chip: any) => {
           return <Chip {...chip} key={chip.type} onDelete={onDelete} />;

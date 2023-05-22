@@ -1,6 +1,8 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import {
@@ -19,6 +21,7 @@ interface EligibilityTableProps {
 }
 
 export function EligibilityTable(props: EligibilityTableProps) {
+  const cmsData = useCMSData({ returnData: true });
   if (props.isLoading) {
     return <PageLoader />;
   }
@@ -28,7 +31,7 @@ export function EligibilityTable(props: EligibilityTableProps) {
       search={props.search}
       sortBy={props.sortBy}
       rows={props.data}
-      title="Eligibility"
+      title={get(cmsData, "componentsTable.eligibiltyTitle", "")}
       columns={props.columns}
       onSearchChange={props.setSearch}
       onSortByChange={props.setSortBy}

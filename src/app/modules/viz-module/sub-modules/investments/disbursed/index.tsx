@@ -1,5 +1,6 @@
 /* third-party */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import maxBy from "lodash/maxBy";
 import sumBy from "lodash/sumBy";
@@ -12,6 +13,7 @@ import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
@@ -34,6 +36,7 @@ interface InvestmentsDisbursedModuleProps {
   toolboxOpen?: boolean;
   setOpenToolboxPanel?: (value: boolean) => void;
   codeParam?: string;
+  partnerName?: string;
   isGrantDetail?: boolean;
   isPartnerDetail?: boolean;
   isLocationDetail?: boolean;
@@ -72,7 +75,7 @@ export function InvestmentsDisbursedModule(
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   const history = useHistory();
-
+  const cmsData = useCMSData({ returnData: true });
   const [treemapData, setTreemapData] = React.useState<
     DisbursementsTreemapDataItem[]
   >(props.data);
@@ -120,27 +123,46 @@ export function InvestmentsDisbursedModule(
         ]);
       } else if (
         props.isPartnerDetail &&
-        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
+        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1) &&
+        props.partnerName
       ) {
         addDataPathSteps([
           {
             id: "partner",
-            name: props.codeParam || "Partner",
+            name: props.partnerName as string,
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
       }
-      if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
-      ) {
-        addDataPathSteps([
-          {
-            id: uniqueId(),
-            name: `Grant Implementation: ${props.type}`,
-            path: `${history.location.pathname}${history.location.search}`,
-          },
-        ]);
+      if (props.isPartnerDetail) {
+        if (
+          props.partnerName &&
+          (dataPathSteps.length === 0 ||
+            !find(dataPathSteps, {
+              name: `Grant Implementation: ${props.type}`,
+            }))
+        ) {
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: `Grant Implementation: ${props.type}`,
+              path: `${history.location.pathname}${history.location.search}`,
+            },
+          ]);
+        }
+      } else {
+        if (
+          dataPathSteps.length === 0 ||
+          !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
+        ) {
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: `Grant Implementation: ${props.type}`,
+              path: `${history.location.pathname}${history.location.search}`,
+            },
+          ]);
+        }
       }
     }
     if (props.vizLevel > 0 && props.vizSelected) {
@@ -156,7 +178,7 @@ export function InvestmentsDisbursedModule(
         },
       ]);
     }
-  }, [props.vizLevel, props.vizSelected]);
+  }, [props.vizLevel, props.vizSelected, props.partnerName]);
 
   const setToolboxPanelDisbursementsSliderMaxValue = useStoreActions(
     (store) => store.ToolBoxPanelDisbursementsSliderValues.setMax
@@ -289,7 +311,8 @@ export function InvestmentsDisbursedModule(
                 }
               `}
             >
-              Investments - {props.type || "Disbursement"}
+              {get(cmsData, "componentsChartsInvestments.investments", "")}{" "}
+              {props.type || "Disbursement"}
             </div>
             <div css="font-weight: normal; margin-top: -6px;">
               {formatFinancialValue(totalValue)}
@@ -298,7 +321,11 @@ export function InvestmentsDisbursedModule(
         )}
         {isMobile && (
           <Grid item xs={12} css="font-size: 12px !important;">
-            <b>Total amount: {formatFinancialValue(totalValue)}</b>
+            <b>
+              {" "}
+              {get(cmsData, "componentsChartsInvestments.totalAmount", "")}{" "}
+              {formatFinancialValue(totalValue)}
+            </b>
           </Grid>
         )}
       </Grid>

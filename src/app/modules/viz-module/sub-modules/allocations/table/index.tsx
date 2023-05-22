@@ -2,6 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import filter from "lodash/filter";
 import useTitle from "react-use/lib/useTitle";
+import { useCMSData } from "app/hooks/useCMSData";
 import useDebounce from "react-use/lib/useDebounce";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -18,7 +19,7 @@ interface AllocationsTableProps {
 
 export function AllocationsTableModule(props: AllocationsTableProps) {
   useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
-
+  const cmsData = useCMSData({ returnData: true });
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState("name ASC");
 
@@ -86,7 +87,7 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
 
   return (
     <SimpleTable
-      title="Allocations"
+      title={get(cmsData, "componentsTable.allocationTitle", "")}
       search={search}
       sortBy={sortBy}
       rows={data}

@@ -27,7 +27,8 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Year {props.indexValue}
+        {get(cmsData, "componentsChartsInvestments.year", "")}{" "}
+        {props.indexValue}
       </div>
       <div
         css={`

@@ -4,6 +4,7 @@ import isEqual from "lodash/isEqual";
 import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
 import Button from "@material-ui/core/Button";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useFilterOptions } from "app/hooks/useFilterOptions";
@@ -19,7 +20,7 @@ interface ToolBoxPanelFiltersProps {
 
 export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
   const filterOptions = useFilterOptions({ returnFilterOptions: true });
-
+  const cmsData = useCMSData({ returnData: true });
   const [expandedGroup, setExpandedGroup] = useRecoilState(filterExpandedGroup);
   const actions = useStoreActions((store) => store.AppliedFiltersState);
   const data = useStoreState((state) => state.AppliedFiltersState);
@@ -95,7 +96,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
               }
             `}
           >
-            <b>Filters</b>
+            <b>{get(cmsData, "componentsSidebar.filters", "")}</b>
             <Button
               endIcon={<ResetIcon />}
               onClick={resetAllFilters}
@@ -103,7 +104,7 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
                 text-transform: capitalize;
               `}
             >
-              Reset filters
+              {get(cmsData, "componentsSidebar.resetFilters", "")}
             </Button>
           </div>
           {props.groups.map((group: FilterGroupProps) => (
