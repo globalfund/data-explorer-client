@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+
 import Box from "@material-ui/core/Box";
 import { useRecoilState } from "recoil";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -180,12 +181,9 @@ export default function LocationAccessToFundingWrapper(props: Props) {
               values={values}
               keys={keys}
               isLoading={isLoading}
+              colors={colors}
             />
-            <div
-              css={`
-                /* background: pink; */
-              `}
-            >
+            <div>
               <div>
                 <p
                   css={`

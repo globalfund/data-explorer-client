@@ -1,5 +1,6 @@
 import React from "react";
 import max from "lodash/max";
+import maxBy from "lodash/maxBy";
 import { useMeasure } from "react-use";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
@@ -10,12 +11,14 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { NoDataAllocations } from "../../allocations/components/nodata";
 import { getKeysPercentages } from "app/modules/viz-module/sub-modules/allocations/data";
+import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
 
 interface Props {
   total: number;
   keys: string[];
   values: number[];
   isLoading: boolean;
+  colors: string[];
 }
 
 export default function RadialChart(props: Props) {
@@ -34,6 +37,54 @@ export default function RadialChart(props: Props) {
       getKeysPercentages(maxValue ? maxValue * 1.2 : props.total, props.values)
     );
   }, [props.values]);
+
+  const polarBarChartLabels = props.keys.map((key) => ({
+    label: key,
+  }));
+  const polarBarChartSizes = keysPercentagesColors.percentages.map((value) => ({
+    size: value,
+  }));
+  const polarBarChartColors = props.colors.map((color) => ({
+    itemStyles: {
+      color,
+    },
+  }));
+
+  const polarBarChartData = polarBarChartLabels.map((data, index) => {
+    return {
+      ...data,
+      ...polarBarChartSizes[index],
+      ...polarBarChartColors[index],
+    };
+  });
+
+  const { render } = useDataThemesEchart();
+  const domRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (domRef && domRef.current) {
+      try {
+        const max = maxBy(polarBarChartData, "value");
+        render(
+          polarBarChartData,
+          // @ts-ignore
+          domRef.current,
+          "echartsPolarBar",
+          {
+            height: 378,
+          },
+          "chart-container-id"
+        );
+      } catch (e) {
+        while (domRef.current.firstChild) {
+          domRef.current.removeChild(domRef.current.firstChild);
+        }
+        if (process.env.NODE_ENV === "development") {
+          console.log("chart error", e);
+        }
+      }
+    }
+  }, [polarBarChartData]);
 
   if (props.isLoading) {
     return (
@@ -163,7 +214,15 @@ export default function RadialChart(props: Props) {
         }
       `}
     >
-      <div ref={ref} id="allocations-radial-bar">
+      <div
+        id={"chart-container-id"}
+        ref={domRef}
+        css={`
+          width: 378px;
+          height: 378px;
+        `}
+      />
+      {/* <div ref={ref} id="allocations-radial-bar">
         {props.total === 0 ? (
           <div css="display: flex;justify-content: center;">
             <NoDataLabel />
@@ -178,7 +237,7 @@ export default function RadialChart(props: Props) {
             width={480}
           />
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
