@@ -5,6 +5,7 @@ import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { useDebounce, useUpdateEffect } from "react-use";
+import TablePagination from "@material-ui/core/TablePagination";
 
 interface TableProps {
   search: string;
@@ -19,13 +20,12 @@ interface GrantsTableProps extends TableProps {
   isToolboxOvervlayVisible(): 0 | 1;
   openToolboxPanel: boolean;
   reloadData: (resetPage?: boolean) => void;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  pages: number;
+  page: number;
 }
 
 function Table(props: TableProps) {
-  if (props.isLoading) {
-    return <PageLoader />;
-  }
-
   return (
     <SimpleTable
       title="Grants"
@@ -44,7 +44,7 @@ function Table(props: TableProps) {
 
 export const GrantsTable = (props: GrantsTableProps) => {
   const [sortBy, setSortBy] = React.useState("grants ASC");
-
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   useUpdateEffect(() => {
     if (props.search.length === 0) {
       props.reloadData();
@@ -61,9 +61,19 @@ export const GrantsTable = (props: GrantsTableProps) => {
     [props.search]
   );
 
-  if (props.isLoading) {
-    return <PageLoader />;
-  }
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    props.setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    props.setPage(0);
+  };
 
   return (
     <>
@@ -85,7 +95,8 @@ export const GrantsTable = (props: GrantsTableProps) => {
           setSortBy={setSortBy}
         />
       </div>
-      <div css="width: 100%;height: 56px;" />
+
+      <div css="width: 100%;height: 26px;" />
       <div
         css={`
           left: 0;
@@ -103,6 +114,32 @@ export const GrantsTable = (props: GrantsTableProps) => {
             opacity 225ms cubic-bezier(0, 0, 0.2, 1);
         `}
       />
+      <div
+        css={`
+          display: flex;
+          width: 100%;
+          justify-content: flex-start;
+        `}
+      >
+        <TablePagination
+          page={props.page}
+          component="div"
+          count={props.pages}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          css={`
+            @media (min-width: 768px) {
+              .MuiTablePagination-toolbar {
+                padding-left: 40px;
+              }
+              .MuiTablePagination-spacer {
+                display: none;
+              }
+            }
+          `}
+        />
+      </div>
     </>
   );
 };

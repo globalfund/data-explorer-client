@@ -21,9 +21,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { GrantListItemModel } from "app/modules/grants-module/data";
-import { Search } from "app/modules/grants-module/components/Search";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { GrantsList } from "app/modules/grants-module/components/List";
+
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
@@ -77,6 +75,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const data = useStoreState(
     (state) => get(state.GrantsList.data, "data", []) as GrantListItemModel[]
   );
+
   const totalDataCount = useStoreState((state) =>
     get(state.GrantsList.data, "count", 0)
   );
@@ -235,6 +234,9 @@ export default function GrantsModule(props: GrantsModuleProps) {
         <Route path="/grants/table">
           <GrantsTable
             data={data}
+            pages={pages}
+            page={page}
+            setPage={setPage}
             reloadData={reloadData}
             isLoading={isLoading}
             search={search}
