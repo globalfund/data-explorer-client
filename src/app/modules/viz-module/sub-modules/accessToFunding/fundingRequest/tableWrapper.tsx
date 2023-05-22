@@ -165,8 +165,8 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
             z-index: 4;
             right: -8px;
             width: 600px;
+
             height: 100%;
-            min-height: 700px;
             position: absolute;
             background: #f5f5f7;
             visibility: visible !important;

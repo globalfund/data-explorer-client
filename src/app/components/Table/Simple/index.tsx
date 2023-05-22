@@ -105,6 +105,11 @@ function Row(props: {
               key={column.key}
               css={`
                 ${tablecell}
+                font-weight: ${props.row.children ? 700 : "normal"};
+                font-family: "GothamNarrow-${props.row.children
+                    ? "Bold"
+                    : "Book"}",
+                  "Helvetica Neue", sans-serif;
                 width: calc(${columnWidthCalc});
                 ${index === 0
                   ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth}`
@@ -130,9 +135,7 @@ function Row(props: {
                     display: flex;
                     align-items: center;
                     flex-direction: row;
-                    font-weight: ${index === 0 ? "bold" : "normal"};
-                    font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
-                      "Helvetica Neue", sans-serif;
+
                     color: ${column.valueToColorMap
                       ? column.valueToColorMap[value]
                       : "inherit"};
@@ -238,36 +241,45 @@ export function SimpleTable(props: SimpleTableProps) {
 
   return (
     <React.Fragment>
-      <TableToolbar
-        title={props.title}
-        search={props.search}
-        columns={toolbarCols}
-        onSearchChange={props.onSearchChange}
-        multiVizPageDataKey={props.multiVizPageDataKey}
-        onColumnViewSelectionChange={onColumnViewSelectionChange}
-      />
-      <TableContainer>
-        <Table aria-label="Simple table">
-          <TableHead>
-            <TableRow>
-              {filter(
-                props.columns,
-                (_c, index) => visibleColumnsIndexes.indexOf(index) > -1
-              ).map((column: SimpleTableColumn, index: number) => {
-                let icon = undefined;
-                const monetaryColumn =
-                  column.name.indexOf("(USD)") > -1 || column.name === "Grants";
-                if (sortBySplits.length > 1 && sortBySplits[0] === column.key) {
-                  if (sortBySplits[1] === "DESC") {
-                    icon = <ArrowDownward />;
-                  } else {
-                    icon = <ArrowUpward />;
+      <div
+        css={`
+          min-height: 600px;
+        `}
+      >
+        <TableToolbar
+          title={props.title}
+          search={props.search}
+          columns={toolbarCols}
+          onSearchChange={props.onSearchChange}
+          multiVizPageDataKey={props.multiVizPageDataKey}
+          onColumnViewSelectionChange={onColumnViewSelectionChange}
+        />
+        <TableContainer>
+          <Table aria-label="Simple table">
+            <TableHead>
+              <TableRow>
+                {filter(
+                  props.columns,
+                  (_c, index) => visibleColumnsIndexes.indexOf(index) > -1
+                ).map((column: SimpleTableColumn, index: number) => {
+                  let icon = undefined;
+                  const monetaryColumn =
+                    column.name.indexOf("(USD)") > -1 ||
+                    column.name === "Grants";
+                  if (
+                    sortBySplits.length > 1 &&
+                    sortBySplits[0] === column.key
+                  ) {
+                    if (sortBySplits[1] === "DESC") {
+                      icon = <ArrowDownward />;
+                    } else {
+                      icon = <ArrowUpward />;
+                    }
                   }
-                }
-                return (
-                  <TableCell
-                    key={column.key}
-                    css={`
+                  return (
+                    <TableCell
+                      key={column.key}
+                      css={`
                       ${index === 0 ? "padding-left: 40px;" : ""}
                       ${monetaryColumn ? "text-align: right;" : ""}
 
@@ -285,33 +297,34 @@ export function SimpleTable(props: SimpleTableProps) {
                         }
                       }
                     `}
-                  >
-                    <Button
-                      onClick={() => onSortByChange(column.key)}
-                      endIcon={icon}
                     >
-                      {column.name}
-                    </Button>
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {props.rows.map((row: SimpleTableRow) => (
-              <Row
-                key={row.name}
-                row={row}
-                columns={props.columns}
-                forceExpand={props.forceExpand}
-                formatNumbers={props.formatNumbers}
-                visibleColumnsIndexes={visibleColumnsIndexes}
-              />
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      <div css="width: 100%;height: 25px;" />
+                      <Button
+                        onClick={() => onSortByChange(column.key)}
+                        endIcon={icon}
+                      >
+                        {column.name}
+                      </Button>
+                    </TableCell>
+                  );
+                })}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {props.rows.map((row: SimpleTableRow) => (
+                <Row
+                  key={row.name}
+                  row={row}
+                  columns={props.columns}
+                  forceExpand={props.forceExpand}
+                  formatNumbers={props.formatNumbers}
+                  visibleColumnsIndexes={visibleColumnsIndexes}
+                />
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <div css="width: 100%;height: 25px;" />
+      </div>
     </React.Fragment>
   );
 }

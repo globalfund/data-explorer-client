@@ -1,6 +1,8 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import orderBy from "lodash/orderBy";
+
 import { useDebounce } from "react-use";
 import { useRecoilValue } from "recoil";
 import Slide from "@material-ui/core/Slide";
@@ -154,7 +156,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
 
   const [,] = useDebounce(
     () => {
-      if (search.length > 0) {
+      if (search.length > 0 || search === "") {
         reloadData();
       }
     },
@@ -241,6 +243,10 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
   } else {
     formattedData = data;
   }
+  const sortedData = formattedData.map((data) => {
+    const sort = orderBy(data.children, ["level1"], ["desc"]);
+    return { ...data, children: sort };
+  });
 
   return (
     <div
@@ -296,7 +302,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
               width: 600px;
               height: 100%;
               overflow-y: auto;
-              min-height: 700px;
+
               position: absolute;
               background: #f5f5f7;
               border-radius: 20px;
@@ -350,7 +356,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
       <EligibilityTable
         search={search}
         sortBy={sortBy}
-        data={formattedData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+        data={sortedData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
         setSearch={setSearch}
         setSortBy={setSortBy}
         columns={columns}
