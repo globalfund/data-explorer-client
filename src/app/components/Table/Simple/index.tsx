@@ -23,6 +23,7 @@ import {
   SimpleTableProps,
   SimpleTableRow,
 } from "app/components/Table/Simple/data";
+import { useHistory } from "react-router-dom";
 
 const useRowStyles = makeStyles({
   root: {
@@ -40,32 +41,42 @@ function Row(props: {
   visibleColumnsIndexes: number[];
   formatNumbers?: boolean;
   forceExpand?: boolean;
+  title: string;
 }) {
   const classes = useRowStyles();
   const [open, setOpen] = React.useState(Boolean(props.forceExpand));
-
+  const history = useHistory();
   const firstColumnWidth = props.columns.length > 3 ? "30%" : "";
   const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;
-  const columnWidthCalc = `${props.columns.length > 3 ? "70%" : "100%"} / ${
-    props.columns.length
-  }`;
+  const columnWidthCalc =
+    props.title === "Grants"
+      ? "85%"
+      : `${props.columns.length > 3 ? "70%" : "100%"} / ${
+          props.columns.length
+        }`;
+
+  const handleRowClick = () => {
+    if (props.row.children) {
+      setOpen(!open);
+    }
+    if (props.title === "Grants") {
+      const value = get(props.row, "id", "");
+      history.push(`/grant/${value}`);
+    }
+  };
 
   return (
     <React.Fragment>
       <TableRow
         className={classes.root}
-        onClick={() => {
-          if (props.row.children) {
-            setOpen(!open);
-          }
-        }}
+        onClick={handleRowClick}
         css={`
           transition: background 0.2s ease-in-out;
           background: ${props.paddingLeft
             ? appColors.TABLE.ROW_BACKGROUND_COLOR_1
             : appColors.TABLE.ROW_BACKGROUND_COLOR_2};
 
-          ${props.row.children
+          ${props.row.children || props.title === "Grants"
             ? `
           :hover {
             cursor: pointer;
@@ -121,9 +132,13 @@ function Row(props: {
                 <div
                   css={`
                     gap: 12px;
-                    display: flex;
+                    display: ${props.title == "Grants" ? "block" : "flex"};
                     align-items: center;
                     flex-direction: row;
+                    max-width: 500px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
                     font-weight: ${index === 0 ? "bold" : "normal"};
                     font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
                       "Helvetica Neue", sans-serif;
@@ -172,6 +187,7 @@ function Row(props: {
                       row={child}
                       key={child.name}
                       paddingLeft={40}
+                      title={props.title}
                       columns={props.columns}
                       forceExpand={props.forceExpand}
                       formatNumbers={props.formatNumbers}
@@ -292,6 +308,7 @@ export function SimpleTable(props: SimpleTableProps) {
               <Row
                 key={row.name}
                 row={row}
+                title={props.title}
                 columns={props.columns}
                 forceExpand={props.forceExpand}
                 formatNumbers={props.formatNumbers}
