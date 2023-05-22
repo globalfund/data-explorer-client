@@ -269,9 +269,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     );
 
     fetchData({
-      filterString: `periods=${selectedPeriod}${
-        filterString.length > 0 ? `&${filterString}` : ""
-      }`,
+      filterString:
+        selectedPeriod !== "All"
+          ? `periods=${selectedPeriod}${
+              filterString.length > 0 ? `&${filterString}` : ""
+            }`
+          : "",
     });
   }, [props.code, appliedFilters, selectedPeriod]);
 
@@ -309,9 +312,13 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         )
           .split(",")
           .map((s: string) => `'${s}'`)
-          .join(",")})&periods=${selectedPeriod}${
-          filterString.length > 0 ? `&${filterString}` : ""
-        }`,
+          .join(",")})${
+          selectedPeriod !== "All"
+            ? `&periods=${selectedPeriod}${
+                filterString.length > 0 ? `&${filterString}` : ""
+              }`
+            : ""
+        }${filterString.length > 0 ? `&${filterString}` : ""}`,
       });
     } else {
       [...items].forEach((item: Element) => {
