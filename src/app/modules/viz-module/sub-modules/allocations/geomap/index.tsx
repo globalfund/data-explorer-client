@@ -76,9 +76,12 @@ export function AllocationsGeoMap(props: Props) {
     );
     if (geomapView === "countries") {
       fetchData({
-        filterString: `periods=${selectedPeriod}${
-          filterString.length > 0 ? `&${filterString}` : ""
-        }`,
+        filterString:
+          selectedPeriod !== "All"
+            ? `periods=${selectedPeriod}${
+                filterString.length > 0 ? `&${filterString}` : ""
+              }`
+            : "",
       });
     } else if (geomapView === "multicountries") {
       fetchMCData({ filterString });

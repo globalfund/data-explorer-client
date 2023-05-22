@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import get from "lodash/get";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
@@ -8,19 +8,22 @@ export function AllocationsPeriods() {
     (state) => get(state.AllocationsPeriods.data, "data", []) as string[]
   );
 
-  const minMaxPeriod = `${
-    dataPeriodOptions[dataPeriodOptions.length - 1].split("-")[1]
-  } - ${dataPeriodOptions[0].split("-")[0]}`;
-
-  const [periodList, setPeriodList] = React.useState(
-    dataPeriodOptions.map((period: string) => ({
+  const [periodList, setPeriodList] = React.useState([
+    { label: "All", value: "All" },
+    ...dataPeriodOptions.map((period: string) => ({
       label: period,
       value: period,
-    }))
-  );
+    })),
+  ]);
 
-  useEffect(() => {
-    setPeriodList([...periodList, { label: "All", value: minMaxPeriod }]);
+  React.useEffect(() => {
+    setPeriodList([
+      { label: "All", value: "All" },
+      ...dataPeriodOptions.map((period: string) => ({
+        label: period,
+        value: period,
+      })),
+    ]);
   }, []);
 
   const selectedPeriod = useStoreState(
