@@ -234,7 +234,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
         <Route path="/grants/table">
           <GrantsTable
             data={data}
-            pages={pages}
+            pages={totalDataCount}
             page={page}
             setPage={setPage}
             reloadData={reloadData}

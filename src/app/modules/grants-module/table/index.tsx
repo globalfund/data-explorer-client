@@ -65,7 +65,7 @@ export const GrantsTable = (props: GrantsTableProps) => {
     _event: React.MouseEvent<HTMLButtonElement> | null,
     newPage: number
   ) => {
-    props.setPage(newPage);
+    props.setPage(newPage + 1);
   };
 
   const handleChangeRowsPerPage = (
@@ -122,7 +122,7 @@ export const GrantsTable = (props: GrantsTableProps) => {
         `}
       >
         <TablePagination
-          page={props.page}
+          page={props.page - 1}
           component="div"
           count={props.pages}
           rowsPerPage={rowsPerPage}
