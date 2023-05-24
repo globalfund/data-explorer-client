@@ -141,10 +141,11 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
         {props.filtersView && (
           <div
             css={`
-              height: calc(100vh - 101px);
-              position: relative;
               width: 400px;
               overflow-y: scroll;
+              position: relative;
+              height: calc(100vh - 97px);
+
               ::-webkit-scrollbar {
                 display: none;
               }

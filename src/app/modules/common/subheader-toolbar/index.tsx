@@ -167,6 +167,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setName(event.target.value);
   };
+
   const handleDeleteModalInputChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
