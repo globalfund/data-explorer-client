@@ -21,12 +21,16 @@ import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import DividerPreviewImg from "app/modules/report-module/asset/dividerPreview.svg";
 import HeaderPreviewImg from "app/modules/report-module/asset/headerPreviewImg.svg";
 import RowFramePreviewImg from "app/modules/report-module/asset/rowframePreview.svg";
+import { ReactComponent as AddNewImage } from "app/modules/home-module/assets/add-img.svg";
+
 import { ReactComponent as DividerIcon } from "app/modules/report-module/asset/dividerIcon.svg";
 import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
 import {
   isDividerOrRowFrameDraggingAtom,
   reportRightPanelViewAtom,
 } from "app/state/recoil/atoms";
+import { IconButton } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 const Button = withStyles(() => ({
   root: {
@@ -398,6 +402,7 @@ function ReportRightPanelCreateViewChartList(props: {
           }
         `}
       >
+        <CreateChartCard />
         {chartList.map((chart) => (
           <ChartItem
             id={chart.id}
@@ -466,6 +471,67 @@ function ElementItem(props: {
   );
 }
 
+function CreateChartCard() {
+  const history = useHistory();
+  const action = () => {
+    history.push("/chart/new/data");
+  };
+  return (
+    <div>
+      <div
+        css={`
+          background: #f2f7fd;
+          box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+          height: 125px;
+          padding-left: 27px;
+          display: flex;
+          justify-content: flex-start;
+          gap: 12px;
+          align-items: center;
+          position: relative;
+        `}
+      >
+        <div>
+          <IconButton onClick={action}>
+            <AddNewImage />
+          </IconButton>
+        </div>
+        <div
+          css={`
+            border: 1px solid #231d2c;
+            height: 49px;
+            width: 0px;
+          `}
+        />
+
+        <div
+          css={`
+            h1 {
+              font-family: "GothamNarrow-Bold", sans-serif;
+              color: #262c34;
+              font-size: 18px;
+              line-height: 20px;
+              margin: 0;
+              font-weight: bold;
+            }
+            p {
+              font-family: "GothamNarrow", sans-serif;
+              color: #495057;
+              font-size: 10px;
+              line-height: 15px;
+              letter-spacing: 0.5px;
+              margin: 0;
+              margin-top: 4px;
+            }
+          `}
+        >
+          <h1>New chart</h1>
+          <p>Create a new chart in your library</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 function ChartItem(props: {
   id: string;
   name: string;
