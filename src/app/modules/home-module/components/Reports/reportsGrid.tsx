@@ -3,12 +3,12 @@ import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import { ReportModel } from "app/modules/report-module/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import GridItem from "app/modules/home-module/components/Reports/gridItem";
 import ReportAddnewCard from "app/modules/home-module/components/Reports/reportAddNewCard";
 import { ReactComponent as ReportIcon } from "app/modules/home-module/assets/reports-img.svg";
-import { useHistory } from "react-router-dom";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
+import ReformedGridItem from "./reformedGridItem";
+import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
+import { Box } from "@material-ui/core";
 
 export default function ReportsGrid() {
   const [cardId, setCardId] = React.useState<number>(0);
@@ -76,23 +76,23 @@ export default function ReportsGrid() {
       filterString: "filter[order]=createdDate desc",
     });
   }, []);
-
+  console.log(reports);
   return (
     <>
       <Grid container spacing={2}>
-        <ReportAddnewCard />
         {reports.map((data, index) => (
-          <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
-            <GridItem
+          <Grid item key={data.id} xs={12} sm={6} md={4} lg={4}>
+            <ReformedGridItem
               id={data.id}
               key={data.id}
               title={data.name}
               descr={data.title}
-              viz={<ReportIcon />}
+              viz={<ColoredReportIcon />}
               date={data.createdDate}
               handleDelete={() => handleModal(index)}
               handleDuplicate={() => handleDuplicate(index)}
             />
+            <Box height={16} />
           </Grid>
         ))}
       </Grid>
