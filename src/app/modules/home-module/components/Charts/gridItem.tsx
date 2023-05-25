@@ -14,6 +14,7 @@ interface Props {
   descr: string;
   date: string;
   viz: React.ReactNode;
+  added?: boolean;
   handleDelete?: (id: string) => void;
   handleDuplicate?: (id: string) => void;
 }
@@ -88,16 +89,44 @@ export default function GridItem(props: Props) {
         </div>
         <div
           css={`
-            width: 74px;
-            height: 74px;
-            margin-top: 2px;
-
-            path {
-              fill: #868a9d;
-            }
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
           `}
         >
-          {props.viz}
+          {props.added && (
+            <p
+              css={`
+                border: 1px solid #000000;
+                border-radius: 10px;
+                font-size: 12px;
+                height: 17px;
+                width: 57px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                font-family: "GothamNarrow", sans-serif;
+              `}
+            >
+              Added
+            </p>
+          )}
+
+          <div
+            css={`
+              width: 74px;
+              height: 74px;
+              margin-top: 2px;
+
+              path {
+                fill: #868a9d;
+              }
+            `}
+          >
+            {props.viz}
+          </div>
         </div>
         {props.handleDelete && (
           <IconButton
@@ -116,7 +145,7 @@ export default function GridItem(props: Props) {
           display: flex;
           font-size: 12px;
           justify-content: space-between;
-
+          margin-top: -2px;
           > p {
             margin: 0;
           }

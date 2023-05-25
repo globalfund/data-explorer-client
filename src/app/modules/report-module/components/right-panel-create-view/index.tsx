@@ -597,6 +597,7 @@ function ChartItem(props: {
         title={props.name}
         date={props.createdDate}
         viz={getIcon(props.vizType)}
+        added={added}
         descr="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
     </div>
