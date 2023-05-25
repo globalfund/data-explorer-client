@@ -87,7 +87,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           <div
             css={`
               top: -4px;
-              left: -4rem;
+              left: -3rem;
               display: flex;
               position: absolute;
               height: calc(100% + 8px);
@@ -99,22 +99,41 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                 align-items: center;
                 flex-direction: column;
                 justify-content: center;
+                margin-right: 12px;
               `}
             >
-              <IconButton
-                onClick={() => {
-                  props.setSelectedTypeHistory([
-                    ...props.selectedTypeHistory,
-                    props.selectedType,
-                    "",
-                  ]);
-                }}
+              <div
+                css={`
+                  background: #adb5bd;
+                  border-radius: 100px;
+                  height: 53px;
+                  width: 22px;
+                  display: flex;
+                  justify-content: space-around;
+                  align-items: center;
+                  flex-direction: column;
+
+                  padding-bottom: 2px;
+                  button {
+                    padding: 4px;
+                  }
+                `}
               >
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => props.deleteFrame(props.rowId)}>
-                <DeleteIcon />
-              </IconButton>
+                <IconButton
+                  onClick={() => {
+                    props.setSelectedTypeHistory([
+                      ...props.selectedTypeHistory,
+                      props.selectedType,
+                      "",
+                    ]);
+                  }}
+                >
+                  <EditIcon />
+                </IconButton>
+                <IconButton onClick={() => props.deleteFrame(props.rowId)}>
+                  <DeleteIcon />
+                </IconButton>
+              </div>
             </div>
             <div
               css={`
