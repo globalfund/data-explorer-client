@@ -16,6 +16,7 @@ import {
 import { AccessToFundingRequestTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/fundingRequest/tableWrapper";
 import { AccessToFundingEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/eligibility/tableWrapper";
 import { Link } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 
 interface Props {
   code: string;
@@ -24,6 +25,8 @@ interface Props {
 }
 
 export default function LocationAccessToFundingWrapper(props: Props) {
+  const cmsData = useCMSData({ returnData: true });
+
   const [cycle, setCycle] = useRecoilState(locationAccessToFundingCycleAtom);
 
   const grantCycles = useStoreState(
@@ -87,11 +90,12 @@ export default function LocationAccessToFundingWrapper(props: Props) {
   return (
     <>
       <div css={descriptioncss}>
+        <Box height={30} />
         <h1>
           <b>Access to Funding</b>
         </h1>
         <h3>
-          <b>Eligibility, Allocation & Funding Requests</b>
+          <b>Allocation, Funding Requests & Eligibility</b>
         </h3>
         <p>
           Eligibility for Global Fund support is determined by the income
@@ -130,37 +134,8 @@ export default function LocationAccessToFundingWrapper(props: Props) {
         </div>
       </div>
       <div css={vizcss}>
-        {props.code.length === 3 && (
-          <div>
-            <h4>
-              <b>Eligibility </b>
-            </h4>
-            <hr />
-            <div css={descriptioncss}>
-              <p>
-                Below are the components which are eligible for an allocation
-                for the selected allocation period, according to the Global Fund
-                Eligibility Policy. Eligibility does not guarantee a funding
-                allocation. Learn more about Eligibility{" "}
-                <a
-                  target="_blank"
-                  href="https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/"
-                >
-                  here
-                </a>{" "}
-                or{" "}
-                <Link to={`/viz/eligibility/table?locations=${props.code}`}>
-                  see the full history of eligibility for this country.
-                </Link>
-              </p>
-            </div>
-            <Box height="50px" />
-            <AccessToFundingEligibilityTableWrapper
-              forceExpand
-              code={props.code}
-            />
-          </div>
-        )}
+        <Box height={35} />
+
         <div>
           <h4>
             <b>Allocation</b>
@@ -263,12 +238,58 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             <b>Funding Requests</b>
           </h4>
           <hr />
+          <div
+            css={`
+              width: 90%;
+              margin: 0 auto;
+              font-size: 14px;
+              line-height: 17px;
+              text-align: center;
+            `}
+          >
+            {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}
+          </div>
+          <div css="width: 100%;height: 25px;" />
+
           <AccessToFundingRequestTableWrapper
             code={props.code}
             codeParam={props.codeParam}
             filterGroups={props.filterGroups}
           />
         </div>
+        {props.code.length === 3 && (
+          <div>
+            <Box height={35} />
+
+            <h4>
+              <b>Eligibility </b>
+            </h4>
+            <hr />
+            <div css={descriptioncss}>
+              <p>
+                Below are the components which are eligible for an allocation
+                for the selected allocation period, according to the Global Fund
+                Eligibility Policy. Eligibility does not guarantee a funding
+                allocation. Learn more about Eligibility{" "}
+                <a
+                  target="_blank"
+                  href="https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/"
+                >
+                  here
+                </a>{" "}
+                or{" "}
+                <Link to={`/viz/eligibility/table?locations=${props.code}`}>
+                  see the full history of eligibility for this country.
+                </Link>
+              </p>
+            </div>
+            <Box height="50px" />
+            <AccessToFundingEligibilityTableWrapper
+              forceExpand
+              code={props.code}
+            />
+          </div>
+        )}
       </div>
       <Box height={25} />
     </>

@@ -14,6 +14,7 @@ import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filt
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { Table } from "app/modules/viz-module/sub-modules/accessToFunding/fundingRequest/table";
 import { fundingRequestColumns } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/data";
+import TablePagination from "@material-ui/core/TablePagination";
 
 interface Props {
   code: string;
@@ -34,6 +35,25 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
         []
       ) as SimpleTableRow[]
   );
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  console.log(data, "data");
 
   const fetchData = useStoreActions(
     (store) => store.LocationAccessToFunding.FundingRequestsTable.fetch
@@ -212,13 +232,38 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
         forceExpand
         search={search}
         sortBy={sortBy}
-        data={props.code ? get(data, "[0].children", []) : data}
+        data={
+          props.code
+            ? get(data, "[0].children", []).slice(
+                page * rowsPerPage,
+                (page + 1) * rowsPerPage
+              )
+            : data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
+        }
         setSearch={setSearch}
         setSortBy={setSortBy}
         columns={
           props.code ? fundingRequestColumns[0].col : fundingRequestColumns
         }
         title={cycle || ""}
+      />
+      <TablePagination
+        page={page}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        css={`
+          @media (min-width: 768px) {
+            .MuiTablePagination-toolbar {
+              padding-left: 40px;
+            }
+            .MuiTablePagination-spacer {
+              display: none;
+            }
+          }
+        `}
       />
     </div>
   );
