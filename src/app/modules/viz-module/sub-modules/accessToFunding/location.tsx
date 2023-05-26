@@ -135,7 +135,6 @@ export default function LocationAccessToFundingWrapper(props: Props) {
       </div>
       <div css={vizcss}>
         <Box height={35} />
-
         <div>
           <h4>
             <b>Allocation</b>
@@ -145,6 +144,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             css={`
               gap: 1rem;
               display: flex;
+              min-height: 500px;
               position: relative;
               align-items: center;
               justify-content: space-evenly;
@@ -156,81 +156,79 @@ export default function LocationAccessToFundingWrapper(props: Props) {
               keys={keys}
               isLoading={isLoading}
             />
-            <div
-              css={`
-                /* background: pink; */
-              `}
-            >
+            {!isLoading && (
               <div>
-                <p
-                  css={`
-                    font-size: 24px;
-                    color: #252c34;
-                    text-align: center;
-                    margin-bottom: 0px;
-                  `}
-                >
-                  <b>{formatFinancialValue(total)}</b>
-                </p>
-                <p
-                  css={`
-                    font-size: 14px;
-                    color: #252c34;
-                    text-align: center;
-                    margin-top: 5px;
-                  `}
-                >
-                  Allocated to {locationInfoData.locationName} for{" "}
-                  <b>{cycle}</b>
-                </p>
-              </div>
-              <div
-                css={`
-                  gap: 2rem;
-                  margin: auto;
-                  display: flex;
-                  margin-top: 3rem;
-                  text-align: center;
-                  align-items: center;
-                  justify-content: center;
-                `}
-              >
-                {values.map((val, index) => (
-                  <div
-                    key={keys[index]}
+                <div>
+                  <p
                     css={`
-                      display: flex;
-                      align-items: center;
-                      flex-direction: column;
-                      justify-content: center;
+                      font-size: 24px;
+                      color: #252c34;
+                      text-align: center;
+                      margin-bottom: 0px;
                     `}
                   >
+                    <b>{formatFinancialValue(total)}</b>
+                  </p>
+                  <p
+                    css={`
+                      font-size: 14px;
+                      color: #252c34;
+                      text-align: center;
+                      margin-top: 5px;
+                    `}
+                  >
+                    Allocated to {locationInfoData.locationName} for{" "}
+                    <b>{cycle}</b>
+                  </p>
+                </div>
+                <div
+                  css={`
+                    gap: 2rem;
+                    margin: auto;
+                    display: flex;
+                    margin-top: 3rem;
+                    text-align: center;
+                    align-items: center;
+                    justify-content: center;
+                  `}
+                >
+                  {values.map((val, index) => (
                     <div
+                      key={keys[index]}
                       css={`
-                        width: 31px;
-                        height: 31px;
-                        border-radius: 50%;
-                        background: ${colors[index]};
-                      `}
-                    />
-                    <p
-                      css={`
-                        font-size: 18px;
+                        display: flex;
+                        align-items: center;
+                        flex-direction: column;
+                        justify-content: center;
                       `}
                     >
-                      <b>
-                        {formatLargeAmountsWithPrefix(val)
-                          .replace("$", "")
-                          .replace("bln", "billion")
-                          .replace("mln", "million")}
-                        <br />
-                        {keys[index]}
-                      </b>
-                    </p>
-                  </div>
-                ))}
+                      <div
+                        css={`
+                          width: 31px;
+                          height: 31px;
+                          border-radius: 50%;
+                          background: ${colors[index]};
+                        `}
+                      />
+                      <p
+                        css={`
+                          font-size: 18px;
+                        `}
+                      >
+                        <b>
+                          {formatLargeAmountsWithPrefix(val)
+                            .replace("$", "")
+                            .replace("bln", "billion")
+                            .replace("mln", "million")}
+                          <br />
+                          {keys[index]}
+                        </b>
+                      </p>
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div>

@@ -53,8 +53,6 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
     setPage(0);
   };
 
-  console.log(data, "data");
-
   const fetchData = useStoreActions(
     (store) => store.LocationAccessToFunding.FundingRequestsTable.fetch
   );
