@@ -1,23 +1,19 @@
 import React from "react";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
+import { useRecoilState } from "recoil";
 import { useDebounce } from "react-use";
+import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
+import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
-
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
-import { useRecoilState } from "recoil";
-import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
-import axios from "axios";
-import { Tooltip } from "@material-ui/core";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -49,7 +45,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const { page } = useParams<{ page: string }>();
 
   const [handleDisplay, setHandleDisplay] = React.useState(false);
-  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
 
   const viewOnlyMode =
     (page !== "new" &&
@@ -171,20 +167,18 @@ const Box = (props: {
   const location = useLocation();
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
-
+  const [chartId, setChartId] = React.useState<string | null>(null);
   const [displayChart, setDisplayChart] = React.useState(false);
   const [displayTextBox, setDisplayTextBox] = React.useState(false);
   const [textContent, setTextContent] = React.useState<EditorState>(
     EditorState.createEmpty()
   );
 
-  const [chartId, setChartId] = React.useState<string | null>(null);
-
   const handleEditChart = () => {
-    history.push(`/chart/${chartId}/edit`);
+    history.push(`/chart/${chartId}/customize`);
   };
 
-  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
 
   const viewOnlyMode =
     (page !== "new" &&
