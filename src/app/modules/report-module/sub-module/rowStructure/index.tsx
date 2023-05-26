@@ -1,18 +1,19 @@
 import React from "react";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
+import { useRecoilState } from "recoil";
 import { useDebounce } from "react-use";
+import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
-import { useLocation, useParams } from "react-router-dom";
+import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
-import { useRecoilState } from "recoil";
-import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -44,7 +45,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const { page } = useParams<{ page: string }>();
 
   const [handleDisplay, setHandleDisplay] = React.useState(false);
-  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
 
   const viewOnlyMode =
     (page !== "new" &&
@@ -164,15 +165,20 @@ const Box = (props: {
   previewItem?: string | any;
 }) => {
   const location = useLocation();
+  const history = useHistory();
   const { page } = useParams<{ page: string }>();
-
-  const [displayChart, setDisplayChart] = React.useState(false);
   const [chartId, setChartId] = React.useState<string | null>(null);
+  const [displayChart, setDisplayChart] = React.useState(false);
   const [displayTextBox, setDisplayTextBox] = React.useState(false);
   const [textContent, setTextContent] = React.useState<EditorState>(
     EditorState.createEmpty()
   );
-  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
+
+  const handleEditChart = () => {
+    history.push(`/chart/${chartId}/customize`);
+  };
+
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
 
   const viewOnlyMode =
     (page !== "new" &&
@@ -285,23 +291,42 @@ const Box = (props: {
           `}
         >
           {!viewOnlyMode && (
-            <IconButton
-              onClick={() => {
-                setDisplayChart(false);
-                setChartId(null);
-                setDisplayTextBox(false);
-                setTextContent(EditorState.createEmpty());
-                props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
-              }}
-              css={`
-                top: 12px;
-                z-index: 1;
-                right: 12px;
-                position: absolute;
-              `}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                onClick={() => {
+                  setDisplayChart(false);
+                  setChartId(null);
+                  setDisplayTextBox(false);
+                  setTextContent(EditorState.createEmpty());
+                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+                }}
+                css={`
+                  top: 12px;
+                  z-index: 1;
+                  right: 12px;
+                  position: absolute;
+                  padding: 4px;
+                `}
+              >
+                <Tooltip title="Delete Chart">
+                  <DeleteIcon />
+                </Tooltip>
+              </IconButton>
+              <IconButton
+                onClick={handleEditChart}
+                css={`
+                  top: 12px;
+                  z-index: 1;
+                  right: 39px;
+                  position: absolute;
+                  padding: 4px;
+                `}
+              >
+                <Tooltip title="Edit Chart">
+                  <EditIcon />
+                </Tooltip>
+              </IconButton>
+            </div>
           )}
           <ReportChartWrapper id={chartId} />
         </div>
