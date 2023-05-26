@@ -4,15 +4,20 @@ import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
-import { useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
+
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import { useRecoilState } from "recoil";
 import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
+import axios from "axios";
+import { Tooltip } from "@material-ui/core";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -164,14 +169,50 @@ const Box = (props: {
   previewItem?: string | any;
 }) => {
   const location = useLocation();
+  const history = useHistory();
   const { page } = useParams<{ page: string }>();
 
   const [displayChart, setDisplayChart] = React.useState(false);
-  const [chartId, setChartId] = React.useState<string | null>(null);
   const [displayTextBox, setDisplayTextBox] = React.useState(false);
   const [textContent, setTextContent] = React.useState<EditorState>(
     EditorState.createEmpty()
   );
+
+  const [chartId, setChartId] = React.useState<string | null>(null);
+  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
+  const loadCharts = useStoreActions(
+    (actions) => actions.charts.ChartGetList.fetch
+  );
+
+  const loadedChart = useStoreState(
+    (state) =>
+      (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
+  );
+
+  const handleEditChart = () => {
+    if (loadedChart.public) {
+      history.push(`/chart/${loadedChart.id}/edit`);
+    } else {
+      axios
+        .get(`${process.env.REACT_APP_API}/chart/duplicate/${chartId}`)
+        .then(() => {
+          loadCharts({
+            storeInCrudData: true,
+            filterString: "filter[order]=createdDate desc",
+          });
+          // setSnackbarState({
+          //   ...snackbarState,
+          //   open: true,
+          // });
+        })
+        .catch((error) => console.log(error));
+    }
+  };
+
+  React.useEffect(() => {
+    loadChart({ getId: chartId as string });
+  }, [chartId]);
+
   const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
 
   const viewOnlyMode =
@@ -285,23 +326,42 @@ const Box = (props: {
           `}
         >
           {!viewOnlyMode && (
-            <IconButton
-              onClick={() => {
-                setDisplayChart(false);
-                setChartId(null);
-                setDisplayTextBox(false);
-                setTextContent(EditorState.createEmpty());
-                props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
-              }}
-              css={`
-                top: 12px;
-                z-index: 1;
-                right: 12px;
-                position: absolute;
-              `}
-            >
-              <DeleteIcon />
-            </IconButton>
+            <div>
+              <IconButton
+                onClick={() => {
+                  setDisplayChart(false);
+                  setChartId(null);
+                  setDisplayTextBox(false);
+                  setTextContent(EditorState.createEmpty());
+                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+                }}
+                css={`
+                  top: 12px;
+                  z-index: 1;
+                  right: 12px;
+                  position: absolute;
+                  padding: 4px;
+                `}
+              >
+                <Tooltip title="Delete Chart">
+                  <DeleteIcon />
+                </Tooltip>
+              </IconButton>
+              <IconButton
+                onClick={handleEditChart}
+                css={`
+                  top: 12px;
+                  z-index: 1;
+                  right: 39px;
+                  position: absolute;
+                  padding: 4px;
+                `}
+              >
+                <Tooltip title="Edit Chart">
+                  <EditIcon />
+                </Tooltip>
+              </IconButton>
+            </div>
           )}
           <ReportChartWrapper id={chartId} />
         </div>
