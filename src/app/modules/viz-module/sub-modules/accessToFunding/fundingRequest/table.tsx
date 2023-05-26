@@ -19,8 +19,6 @@ interface FundingRequestTableProps {
 }
 
 export function Table(props: FundingRequestTableProps) {
-  const cmsData = useCMSData({ returnData: true });
-
   return (
     <div>
       <FundingRequestTable
@@ -35,19 +33,6 @@ export function Table(props: FundingRequestTableProps) {
         paddingLeft={2}
         forceExpand={props.forceExpand}
       />
-      <div css="width: 100%;height: 25px;" />
-      <div
-        css={`
-          width: 90%;
-          margin: 0 auto;
-          font-size: 14px;
-          line-height: 17px;
-          text-align: center;
-        `}
-      >
-        {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}
-      </div>
-      <div css="width: 100%;height: 25px;" />
     </div>
   );
 }

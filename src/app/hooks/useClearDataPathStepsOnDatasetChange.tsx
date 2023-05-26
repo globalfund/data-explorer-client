@@ -92,7 +92,6 @@ export function useClearDataPathStepsOnDatasetChange() {
         if (newDataPathSteps.length > 0) {
           newDataPathSteps[newDataPathSteps.length - 1].path =
             location.pathname;
-          console.log("newDataPathSteps", newDataPathSteps);
           setDataPathSteps(newDataPathSteps);
         }
       }

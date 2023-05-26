@@ -464,11 +464,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               selected={vizSelected || ""}
               onChange={(value: string) => {
                 const prevValue = vizSelected || "";
-                console.log("prevValue", prevValue);
                 const fItemIndex = findIndex(dataPathSteps, {
                   vizSelected: { id: prevValue, filterStr: prevValue },
                 });
-                console.log("fItemIndex", fItemIndex);
                 setVizSelected(value);
                 let newDataPathSteps = [...dataPathSteps];
                 if (fItemIndex > -1) {
