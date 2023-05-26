@@ -99,7 +99,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                 align-items: center;
                 flex-direction: column;
                 justify-content: center;
-                margin-right: 12px;
+                margin-right: 7px;
               `}
             >
               <div
