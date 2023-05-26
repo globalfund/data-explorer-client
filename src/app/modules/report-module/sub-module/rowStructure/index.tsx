@@ -179,39 +179,10 @@ const Box = (props: {
   );
 
   const [chartId, setChartId] = React.useState<string | null>(null);
-  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
-  const loadCharts = useStoreActions(
-    (actions) => actions.charts.ChartGetList.fetch
-  );
-
-  const loadedChart = useStoreState(
-    (state) =>
-      (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
-  );
 
   const handleEditChart = () => {
-    if (loadedChart.public) {
-      history.push(`/chart/${loadedChart.id}/edit`);
-    } else {
-      axios
-        .get(`${process.env.REACT_APP_API}/chart/duplicate/${chartId}`)
-        .then(() => {
-          loadCharts({
-            storeInCrudData: true,
-            filterString: "filter[order]=createdDate desc",
-          });
-          // setSnackbarState({
-          //   ...snackbarState,
-          //   open: true,
-          // });
-        })
-        .catch((error) => console.log(error));
-    }
+    history.push(`/chart/${chartId}/edit`);
   };
-
-  React.useEffect(() => {
-    loadChart({ getId: chartId as string });
-  }, [chartId]);
 
   const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
 
