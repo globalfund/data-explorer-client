@@ -43,7 +43,7 @@ export default function ReportModule() {
     "basic" | "advanced" | "ai"
   >("basic");
   const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
-  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),

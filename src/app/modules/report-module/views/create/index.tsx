@@ -22,7 +22,7 @@ import {
 } from "app/state/recoil/atoms";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
-  const [reportPreviewMode, __] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,

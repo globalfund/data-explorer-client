@@ -229,6 +229,22 @@ export default function ChartModule() {
     }
   }
 
+  function getForceEnabledPreviewValue(param?: string) {
+    if (param === "preview") {
+      return true;
+    }
+    if (param === "mapping") {
+      const { updRequiredFields, updErrors, updMinValuesFields } =
+        getRequiredFieldsAndErrors(mapping, dimensions);
+      return (
+        updRequiredFields.length === 0 &&
+        updErrors.length === 0 &&
+        updMinValuesFields.length === 0
+      );
+    }
+    return false;
+  }
+
   React.useEffect(() => {
     if (page === "new" && dataset) {
       loadDataset(`/chart/sample-data/${dataset}`).then(() => {
@@ -277,6 +293,7 @@ export default function ChartModule() {
         name={chartName}
         setName={setChartName}
         rawViz={rawViz}
+        forceEnablePreviewSave={getForceEnabledPreviewValue(view)}
       />
       <ChartModuleToolBox
         rawViz={rawViz}
