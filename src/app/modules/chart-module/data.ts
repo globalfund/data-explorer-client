@@ -109,6 +109,7 @@ export interface ChartAPIModel {
   vizOptions: any;
   appliedFilters: { [key: string]: any[] };
   createdDate: Date;
+  public?: boolean;
 }
 
 export interface ChartRenderedItem {
