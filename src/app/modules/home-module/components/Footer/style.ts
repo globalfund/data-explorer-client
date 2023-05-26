@@ -1,26 +1,29 @@
 import { css } from "styled-components/macro";
 
 export const homeFootercss = css`
-  background-color: white;
-  height: 64px;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  height: 92px;
   display: flex;
-  justify-content: flex-start;
+  background: #fff;
   align-items: center;
+  justify-content: flex-start;
+
   ul {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    font-size: 12px;
-    font-family: "Inter", sans-serif;
     gap: 30px;
     padding: 0;
-    color: #000000;
+    color: #000;
+    display: flex;
+    font-size: 12px;
+    align-items: center;
+    justify-content: flex-start;
+    font-family: "Inter", sans-serif;
   }
+
   li {
     list-style-type: none;
+
+    a {
+      color: #000;
+      text-decoration: none;
+    }
   }
 `;

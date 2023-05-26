@@ -1,19 +1,20 @@
-import { Container, Grid, Paper } from "@material-ui/core";
 import React from "react";
-import { homeFootercss } from "./style";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import { homeFootercss } from "app/modules/home-module/components/Footer/style";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
 import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
 
 export default function HomeFooter() {
   return (
     <div css={homeFootercss}>
-      <Container maxWidth="lg">
-        <Grid
-          container
-          alignContent="space-between"
-          alignItems="center"
-          css={``}
-        >
+      <Container
+        maxWidth="lg"
+        css={`
+          padding: 0;
+        `}
+      >
+        <Grid container alignContent="space-between" alignItems="center">
           <Grid
             item
             lg={9}
@@ -37,13 +38,19 @@ export default function HomeFooter() {
                   `}
                 >
                   <CopyIcon />
-                </span>{" "}
+                </span>
                 2023 DX All Rights Reserved
               </li>
-              <li>Email: contact@dataxplorer.org </li>
-              <li>Tel: +3120 213 4466 </li>
-              <li>Privacy </li>
-              <li>Terms and conditions </li>
+              <li>
+                <a href="mailto:contact@dataxplorer.org">
+                  Email: contact@dataxplorer.org
+                </a>
+              </li>
+              <li>
+                <a href="tel:0031202134466">Tel: +3120 213 4466</a>
+              </li>
+              <li>Privacy</li>
+              <li>Terms and conditions</li>
             </ul>
           </Grid>
           <Grid

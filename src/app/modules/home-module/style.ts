@@ -2,7 +2,6 @@ import { css } from "styled-components/macro";
 
 export const turnsDataCss = css`
   margin-top: 60px;
-  position: relative;
   padding: 0;
   @media screen and (max-width: 768px) {
     justify-content: center;
@@ -81,18 +80,20 @@ export const rowFlexCss = css`
 
 export const bottomLeftEllipseCss = css`
   position: absolute;
-  left: -20%;
+  left: 0;
   bottom: 0;
 `;
+
 export const bottomRightEllipseCss = css`
   position: absolute;
-  right: -17%;
+  right: 0;
   bottom: 0;
 `;
+
 export const TopRightEllipseCss = css`
   position: absolute;
   top: 0;
-  right: -20%;
+  right: 0;
   z-index: -1;
 `;
 

@@ -99,6 +99,7 @@ export default function HomeModule() {
     <React.Fragment>
       <div
         css={`
+          position: relative;
           background: linear-gradient(
             180deg,
             rgba(255, 255, 255, 0) 0%,
@@ -106,7 +107,12 @@ export default function HomeModule() {
           );
         `}
       >
-        <Container maxWidth="lg" css={``}>
+        <Container
+          maxWidth="lg"
+          css={`
+            padding: 0;
+          `}
+        >
           <Grid
             container
             spacing={6}
@@ -115,7 +121,11 @@ export default function HomeModule() {
             alignContent="flex-start"
           >
             <Grid item lg={5} md={12} sm={12} xs={12}>
-              <div>
+              <div
+                css={`
+                  max-width: 450px;
+                `}
+              >
                 <h1>Turns data into impact</h1>
                 <Box height={34} />
                 <p>
@@ -156,14 +166,19 @@ export default function HomeModule() {
                 alt="dataset-detail-img"
                 css={datsetDetailImgcss}
               />
-              <BottomLeftEllipse css={bottomLeftEllipseCss} />
-              <BottomRightEllipse css={bottomRightEllipseCss} />
-              <TopRightEllipse css={TopRightEllipseCss} />
             </Grid>
           </Grid>
         </Container>
+        <BottomLeftEllipse css={bottomLeftEllipseCss} />
+        <BottomRightEllipse css={bottomRightEllipseCss} />
+        <TopRightEllipse css={TopRightEllipseCss} />
       </div>
-      <Container maxWidth="lg">
+      <Container
+        maxWidth="lg"
+        css={`
+          padding: 0;
+        `}
+      >
         <Box height={52} />
         <Box css={featuredAssetsCss}>
           <h3>Explore featured assets in DX:</h3>
@@ -251,7 +266,6 @@ export default function HomeModule() {
         </Box>
         <div>{displayGrid()}</div>
       </Container>
-
       <Box height={100} />
       <HomeFooter />
     </React.Fragment>

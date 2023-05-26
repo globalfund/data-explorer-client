@@ -191,7 +191,12 @@ export function AppBar() {
       >
         {isMobile && getMobilePageHeader()}
         {!isMobile && (
-          <Container maxWidth="lg">
+          <Container
+            maxWidth="lg"
+            css={`
+              padding: 0;
+            `}
+          >
             <Grid
               container
               css={headercss}
