@@ -95,7 +95,7 @@ export function MainRoutes() {
           <DatasetsModule />
         </Route>
 
-        <Route exact path="/grants/:subType">
+        <Route exact path="/grants/:subType?">
           <GrantsModule />
         </Route>
 
