@@ -58,7 +58,7 @@ export const datasets: DatasetItemModel[] = [
   },
   {
     name: "",
-    link: "/grants/grid",
+    link: "/grants",
     group: "Grants",
     preview: <GrantsListPreview />,
   },

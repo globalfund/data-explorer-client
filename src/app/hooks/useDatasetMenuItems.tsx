@@ -113,7 +113,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
             }
           }
         `}
-        to={`/grants/grid${location.search}`}
+        to={`/grants${location.search}`}
       >
         Grants
       </Link>

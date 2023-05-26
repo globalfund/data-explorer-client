@@ -136,7 +136,7 @@ const views = {
     {
       label: "Grid",
       value: "Grid",
-      link: "/grants/grid",
+      link: "/grants",
     },
     {
       label: "Table",
