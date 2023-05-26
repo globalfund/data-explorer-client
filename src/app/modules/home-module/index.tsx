@@ -97,55 +97,73 @@ export default function HomeModule() {
 
   return (
     <React.Fragment>
-      <Container maxWidth="lg" css={``}>
-        <Grid container spacing={6} css={turnsDataCss} alignItems="center">
-          <Grid item lg={5} md={12} sm={12} xs={12}>
-            <div>
-              <h1>Turns data into impact</h1>
-              <Box height={34} />
-              <p>
-                <b>
-                  Dx drives better business outcomes and intelligent customer
-                  experiences with insights everywhere,
-                  <br /> for everyone.
-                </b>
-              </p>
-              <Box height={52} />
-              <div
-                css={`
-                  ${rowFlexCss} gap: 32px;
-                  width: 100%;
-                `}
-              >
-                <button>CREATE REPORT</button>
-                <button>EXPLORE REPORTS</button>
-              </div>
-            </div>
-          </Grid>
+      <div
+        css={`
+          background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0) 0%,
+            #f2f7fd 100%
+          );
+        `}
+      >
+        <Container maxWidth="lg" css={``}>
           <Grid
-            item
-            lg={7}
-            md={12}
-            sm={12}
-            xs={12}
-            css={`
-              display: flex;
-              justify-content: flex-end;
-              @media screen and (max-width: 1024px) {
-                justify-content: center;
-              }
-            `}
+            container
+            spacing={6}
+            css={turnsDataCss}
+            alignItems="center"
+            alignContent="flex-start"
           >
-            <img
-              src={DatasetDetailImage}
-              alt="dataset-detail-img"
-              css={datsetDetailImgcss}
-            />
-            <BottomLeftEllipse css={bottomLeftEllipseCss} />
-            <BottomRightEllipse css={bottomRightEllipseCss} />
-            <TopRightEllipse css={TopRightEllipseCss} />
+            <Grid item lg={5} md={12} sm={12} xs={12}>
+              <div>
+                <h1>Turns data into impact</h1>
+                <Box height={34} />
+                <p>
+                  <b>
+                    Dx drives better business outcomes and intelligent customer
+                    experiences with insights everywhere,
+                    <br /> for everyone.
+                  </b>
+                </p>
+                <Box height={52} />
+                <div
+                  css={`
+                    ${rowFlexCss} gap: 32px;
+                    width: 100%;
+                  `}
+                >
+                  <button>CREATE REPORT</button>
+                  <button>EXPLORE REPORTS</button>
+                </div>
+              </div>
+            </Grid>
+            <Grid
+              item
+              lg={7}
+              md={12}
+              sm={12}
+              xs={12}
+              css={`
+                display: flex;
+                justify-content: flex-end;
+                @media screen and (max-width: 1257px) {
+                  justify-content: center;
+                }
+              `}
+            >
+              <img
+                src={DatasetDetailImage}
+                alt="dataset-detail-img"
+                css={datsetDetailImgcss}
+              />
+              <BottomLeftEllipse css={bottomLeftEllipseCss} />
+              <BottomRightEllipse css={bottomRightEllipseCss} />
+              <TopRightEllipse css={TopRightEllipseCss} />
+            </Grid>
           </Grid>
-        </Grid>
+        </Container>
+      </div>
+      <Container maxWidth="lg">
         <Box height={52} />
         <Box css={featuredAssetsCss}>
           <h3>Explore featured assets in DX:</h3>
@@ -161,6 +179,9 @@ export default function HomeModule() {
           >
             <Grid item lg={6} md={6} sm={6}>
               <StyledTabs
+                css={`
+                  margin-left: 5px;
+                `}
                 TabIndicatorProps={{
                   style: {
                     bottom: "12px",

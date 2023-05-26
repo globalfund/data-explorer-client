@@ -3,11 +3,12 @@ import { css } from "styled-components/macro";
 export const turnsDataCss = css`
   margin-top: 60px;
   position: relative;
+  padding: 0;
   @media screen and (max-width: 768px) {
     justify-content: center;
     align-items: center;
   }
-  background-color: yellow;
+
   h1 {
     font-family: "Gotham Narrow Bold", sans-serif;
     font-weight: 700;
@@ -16,6 +17,7 @@ export const turnsDataCss = css`
     text-align: center;
     color: #231d2c;
     margin: 0;
+    padding: 0;
   }
 
   p {
@@ -25,6 +27,8 @@ export const turnsDataCss = css`
     line-height: 22px;
     text-align: center;
     margin: 0;
+    display: flex;
+    justify-content: center;
   }
 
   button,
