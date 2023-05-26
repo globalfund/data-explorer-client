@@ -249,7 +249,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           >
             {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}
           </div>
-          <div css="width: 100%;height: 25px;" />
+          <div css="width: 100%;height: 40px;" />
 
           <AccessToFundingRequestTableWrapper
             code={props.code}
