@@ -8,6 +8,8 @@ import GridItem from "app/modules/home-module/components/Datasets/gridItem";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import DatasetAddnewCard from "app/modules/home-module/components/Datasets/datasetAddNewCard";
+import ReformedGridItem from "./reformedGridItem";
+import { Box } from "@material-ui/core";
 
 export default function DatasetsGrid() {
   const [cardId, setCardId] = React.useState<string>("");
@@ -68,10 +70,9 @@ export default function DatasetsGrid() {
   return (
     <>
       <Grid container spacing={2}>
-        <DatasetAddnewCard />
         {(datasets?.slice(0, 15) || []).map((data, index) => (
-          <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
-            <GridItem
+          <Grid item key={data.id} xs={12} sm={6} md={4} lg={4}>
+            <ReformedGridItem
               date={data.createdDate}
               descr={data.description}
               path={"#"}
@@ -79,6 +80,7 @@ export default function DatasetsGrid() {
               showMenu
               handleDelete={() => handleModal(data.id)}
             />
+            <Box height={16} />
           </Grid>
         ))}
       </Grid>
