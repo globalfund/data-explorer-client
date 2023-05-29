@@ -51,13 +51,14 @@ export default function GrantsModule(props: GrantsModuleProps) {
         : ""
     } ${get(cmsData, "modulesGrants.titleEnd", "")}`
   );
-  const [sortBy, setSortBy] = React.useState("grants ASC");
 
   const vizWrapperRef = React.useRef(null);
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const [sortBy, setSortBy] = React.useState("id ASC");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
     props.search || search,
@@ -87,6 +88,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
   };
 
   const reloadData = (resetPage?: boolean) => {
+    const sortByField = sortBy.split(" ")[0];
+    const sortByDirection = sortBy.split(" ")[1];
     const filterString = getAPIFormattedFilters(
       props.code && props.detailFilterType
         ? {
@@ -98,10 +101,15 @@ export default function GrantsModule(props: GrantsModuleProps) {
           }
         : appliedFilters,
       {
+        orderBy:
+          sortByField === "id"
+            ? `grantAgreementStatusTypeName asc, grantAgreementNumber ${sortByDirection}`
+            : `grantAgreementStatusTypeName asc, grantAgreementTitle ${sortByDirection}`,
+        rowsPerPage,
         page: resetPage ? 1 : page,
         search:
           (props.search || search).length > 0
-            ? props.search || search
+            ? props.search ?? search
             : undefined,
       }
     );
@@ -142,14 +150,14 @@ export default function GrantsModule(props: GrantsModuleProps) {
   }, [props.search, search]);
 
   React.useEffect(() => {
-    setPages(Math.floor(totalDataCount / 10) + 1);
+    setPages(Math.floor(totalDataCount / rowsPerPage) + 1);
   }, [totalDataCount]);
 
   useUpdateEffect(() => {
     if (!isLoading) {
       reloadData();
     }
-  }, [page, appliedFilters]);
+  }, [page, sortBy, rowsPerPage, appliedFilters]);
 
   useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
@@ -246,6 +254,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
             isToolboxOvervlayVisible={isToolboxOvervlayVisible}
             openToolboxPanel={openToolboxPanel}
             pushValue={pushValue}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
           />
         </Route>
       </Switch>

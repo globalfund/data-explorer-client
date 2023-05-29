@@ -1,11 +1,10 @@
 /* third-party */
 import React from "react";
-/* project */
-import { SimpleTable } from "app/components/Table/Simple";
-import { PageLoader } from "app/modules/common/page-loader";
-import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { useDebounce, useUpdateEffect } from "react-use";
 import TablePagination from "@material-ui/core/TablePagination";
+/* project */
+import { SimpleTable } from "app/components/Table/Simple";
+import { SimpleTableRow } from "app/components/Table/Simple/data";
 
 interface TableProps {
   search: string;
@@ -15,14 +14,19 @@ interface TableProps {
   setSearch: (value: string) => void;
   setSortBy: (value: string) => void;
 }
+
 interface GrantsTableProps extends TableProps {
+  page: number;
+  pages: number;
+  sortBy: string;
   pushValue: number;
-  isToolboxOvervlayVisible(): 0 | 1;
+  rowsPerPage: number;
   openToolboxPanel: boolean;
+  isToolboxOvervlayVisible(): 0 | 1;
   reloadData: (resetPage?: boolean) => void;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  pages: number;
-  page: number;
+  setSortBy: React.Dispatch<React.SetStateAction<string>>;
+  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 function Table(props: TableProps) {
@@ -43,8 +47,6 @@ function Table(props: TableProps) {
 }
 
 export const GrantsTable = (props: GrantsTableProps) => {
-  const [sortBy, setSortBy] = React.useState("grants ASC");
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   useUpdateEffect(() => {
     if (props.search.length === 0) {
       props.reloadData();
@@ -71,8 +73,8 @@ export const GrantsTable = (props: GrantsTableProps) => {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    props.setPage(0);
+    props.setRowsPerPage(parseInt(event.target.value, 10));
+    props.setPage(1);
   };
 
   return (
@@ -89,13 +91,12 @@ export const GrantsTable = (props: GrantsTableProps) => {
         <Table
           data={props.data}
           search={props.search}
-          sortBy={sortBy}
+          sortBy={props.sortBy}
           isLoading={props.isLoading}
           setSearch={props.setSearch}
-          setSortBy={setSortBy}
+          setSortBy={props.setSortBy}
         />
       </div>
-
       <div css="width: 100%;height: 26px;" />
       <div
         css={`
@@ -125,7 +126,7 @@ export const GrantsTable = (props: GrantsTableProps) => {
           page={props.page - 1}
           component="div"
           count={props.pages}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={props.rowsPerPage}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
           css={`
@@ -143,4 +144,5 @@ export const GrantsTable = (props: GrantsTableProps) => {
     </>
   );
 };
+
 export default GrantsTable;
