@@ -1,9 +1,9 @@
 import React from "react";
-import { Search } from "app/modules/grants-module/components/Search";
-import { GrantListItemModel } from "../data";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { GrantsList } from "../components/List";
 import Pagination from "@material-ui/lab/Pagination";
+import { GrantListItemModel } from "app/modules/grants-module/data";
+import { Search } from "app/modules/grants-module/components/Search";
+import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { GrantsList } from "app/modules/grants-module/components/List";
 
 interface GrantsGridProps {
   openToolboxPanel: boolean;
@@ -18,6 +18,7 @@ interface GrantsGridProps {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
   data: GrantListItemModel[];
 }
+
 export default function GrantsGrid(props: GrantsGridProps) {
   return (
     <>
@@ -32,8 +33,8 @@ export default function GrantsGrid(props: GrantsGridProps) {
         ref={props.vizWrapperRef}
       >
         <Search
-          value={props.search || props.search}
-          setValue={props.setSearchProps || props.setSearch}
+          value={props.search}
+          setValue={props.setSearchProps ?? props.setSearch}
         />
         <div css="width: 100%;height: 25px;" />
         {props.data.length === 0 ? (
