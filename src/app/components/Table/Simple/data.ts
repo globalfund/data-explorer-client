@@ -15,6 +15,7 @@ export interface SimpleTableProps {
   forceExpand?: boolean;
   rows: SimpleTableRow[];
   formatNumbers?: boolean;
+
   columns: SimpleTableColumn[];
   onSearchChange: (value: string) => void;
   onSortByChange: (value: string) => void;

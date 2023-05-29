@@ -14,6 +14,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import ViewColumnIcon from "@material-ui/icons/ViewColumnOutlined";
+
 import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
@@ -22,6 +23,7 @@ interface TableToolbarProps {
   title: string;
   search: string;
   columns: TableToolbarCols[];
+
   onSearchChange: (value: string) => void;
   onColumnViewSelectionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
@@ -207,6 +209,7 @@ export function TableToolbar(props: TableToolbarProps) {
             </CSVLink>
           </IconButton>
         )}
+
         <IconButton
           onClick={(e) => setAnchorEl(e.currentTarget)}
           css={`
