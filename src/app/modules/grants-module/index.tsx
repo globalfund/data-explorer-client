@@ -216,7 +216,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
         </>
       )}
       <Switch>
-        <Route path="/grants/grid">
+        <Route exact path="/grants">
           <GrantsGrid
             data={data}
             handleChange={handleChange}

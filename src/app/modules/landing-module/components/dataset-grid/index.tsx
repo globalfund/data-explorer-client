@@ -274,10 +274,10 @@ export function LandingDatasetGrid() {
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={grText}
-          link="/grants/grid"
+          link="/grants"
           description={grDescription}
           iconLinks={[
-            { icon: <GridIcon />, link: "/grants/grid" },
+            { icon: <GridIcon />, link: "/grants" },
             { icon: <TableIcon />, link: "/grants/table" },
           ]}
         />

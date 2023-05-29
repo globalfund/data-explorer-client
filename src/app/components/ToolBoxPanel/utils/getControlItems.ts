@@ -136,7 +136,7 @@ const views = {
     {
       label: "Grid",
       value: "Grid",
-      link: "/grants/grid",
+      link: "/grants",
     },
     {
       label: "Table",
@@ -229,13 +229,15 @@ export function getControlItems(
   views: ViewModel[];
   aggregates: ViewModel[];
 } {
-  if (pathname === `/grants/${subType}`) {
+  if (
+    (pathname === "/grants" || pathname === "/grants/table") &&
+    !detailPageCode
+  ) {
     return {
       views: get(views, "mainGrants", []),
       aggregates: [],
     };
   }
-
   if (detailPageCode) {
     const detailPageParam = pathname.split("/")[1];
     let alteredViews = get(views, vizType, []).map((view: ViewModel) => ({
