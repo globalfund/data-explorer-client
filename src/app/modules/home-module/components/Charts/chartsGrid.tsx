@@ -1,17 +1,18 @@
 import React from "react";
 import axios from "axios";
 import find from "lodash/find";
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import useDebounce from "react-use/lib/useDebounce";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
-import ReformedGridItem from "./reformedGridItem";
-import { Box } from "@material-ui/core";
+import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 
 const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
-export default function ChartsGrid() {
+export default function ChartsGrid(props: { searchStr: string }) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -79,12 +80,28 @@ export default function ChartsGrid() {
     return coloredEchartTypes()[0].icon;
   };
 
-  React.useEffect(() => {
+  function loadData(searchStr: string) {
+    const value =
+      searchStr.length > 0
+        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+        : "";
     loadCharts({
       storeInCrudData: true,
-      filterString: "filter[order]=createdDate desc",
+      filterString: `filter={${value}"order":"createdDate desc"}`,
     });
+  }
+
+  React.useEffect(() => {
+    loadData(props.searchStr);
   }, []);
+
+  const [,] = useDebounce(
+    () => {
+      loadData(props.searchStr);
+    },
+    500,
+    [props.searchStr]
+  );
 
   return (
     <>

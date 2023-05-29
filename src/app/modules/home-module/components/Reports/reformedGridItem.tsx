@@ -8,18 +8,13 @@ interface Props {
   id?: string;
   title: string;
   descr: string;
+  color: string;
   viz: JSX.Element;
   handleDelete?: (id: string) => void;
   handleDuplicate?: (id: string) => void;
 }
 
 export default function ReformedGridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-
-  const showMenuOptions = () => {
-    setMenuOptionsDisplay(!menuOptionsDisplay);
-  };
-
   return (
     <div
       css={`
@@ -91,6 +86,10 @@ export default function ReformedGridItem(props: Props) {
           margin-top: 4px;
           position: absolute;
           bottom: -8px;
+
+          rect:nth-of-type(2) {
+            fill: ${props.color || "#231d2c"};
+          }
         `}
       >
         {props.viz}
@@ -109,7 +108,6 @@ export default function ReformedGridItem(props: Props) {
         `}
       >
         <ClockIcon />
-
         <p>{moment(props.date).format("DD-MM-YYYY")}</p>
       </div>
     </div>

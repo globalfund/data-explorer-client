@@ -32,7 +32,7 @@ export const turnsDataCss = css`
 
   button,
   a {
-    padding: 12px 27px;
+    padding: 9px 27px;
     height: 41px;
     border-radius: 30px;
     outline: none;
@@ -42,15 +42,11 @@ export const turnsDataCss = css`
     font-weight: 700;
     font-size: 14px;
     text-transform: uppercase;
+    text-decoration: none;
+
     :hover {
       opacity: 0.8;
       cursor: pointer;
-    }
-    :nth-of-type(1) {
-      background: #6061e5;
-    }
-    :nth-of-type(2) {
-      background: #e492bd;
     }
   }
 `;

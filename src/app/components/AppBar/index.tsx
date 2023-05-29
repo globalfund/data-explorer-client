@@ -240,7 +240,7 @@ export function AppBar() {
                   </NavLink>
                 </div>
                 <div css={navLinkcss("")}>
-                  <NavLink to="#" onClick={() => handlePath("charts")}>
+                  <NavLink to="/" onClick={() => handlePath("reports")}>
                     <b>Explore Reports</b>
                   </NavLink>
                 </div>
@@ -261,7 +261,7 @@ export function AppBar() {
                 </div>
 
                 <div css={loginBtn}>
-                  <Link to="/onboarding/login">Create report</Link>
+                  <Link to="/report/new/initial">Create report</Link>
                 </div>
               </Grid>
             </Grid>
