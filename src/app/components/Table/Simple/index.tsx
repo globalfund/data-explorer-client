@@ -48,12 +48,9 @@ function Row(props: {
   const history = useHistory();
   const firstColumnWidth = props.columns.length > 3 ? "30%" : "";
   const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;
-  const columnWidthCalc =
-    props.title === "Grants"
-      ? "85%"
-      : `${props.columns.length > 3 ? "70%" : "100%"} / ${
-          props.columns.length
-        }`;
+  const columnWidthCalc = `${props.columns.length > 3 ? "70%" : "100%"} / ${
+    props.columns.length
+  }`;
 
   const handleRowClick = () => {
     if (props.row.children) {
@@ -110,7 +107,10 @@ function Row(props: {
               key={column.key}
               css={`
                 ${tablecell}
-                width: calc(${columnWidthCalc});
+                width:${props.title === "Grants"
+                  ? "auto"
+                  : `calc(${columnWidthCalc})`};
+                max-width: 800px;
                 ${index === 0
                   ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth}`
                   : ""}
@@ -118,7 +118,7 @@ function Row(props: {
             >
               <div
                 css={`
-                  width: 100%;
+                  width: ${props.title === "Grants" ? "90%" : "100%"};
                   display: flex;
                   align-items: center;
                   flex-direction: row;
@@ -135,7 +135,6 @@ function Row(props: {
                     display: ${props.title == "Grants" ? "block" : "flex"};
                     align-items: center;
                     flex-direction: row;
-                    max-width: 500px;
                     overflow: hidden;
                     white-space: nowrap;
                     text-overflow: ellipsis;
@@ -276,7 +275,6 @@ export function SimpleTable(props: SimpleTableProps) {
                     css={`
                       ${index === 0 ? "padding-left: 40px;" : ""}
                       ${monetaryColumn ? "text-align: right;" : ""}
-
                       > button {
                         ${tablecell}
                         text-transform: none;
@@ -290,6 +288,8 @@ export function SimpleTable(props: SimpleTableProps) {
                             sans-serif;
                         }
                       }
+
+
                     `}
                   >
                     <Button
