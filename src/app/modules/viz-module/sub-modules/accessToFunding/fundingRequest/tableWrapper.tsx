@@ -138,6 +138,8 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
     <div
       css={`
         position: relative;
+        overflow: hidden;
+        padding: 10px;
       `}
     >
       {isLoading && <PageLoader inLoader />}
@@ -160,7 +162,7 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
           border-radius: 10px 0px 0px 10px;
           transition: all 0.2s ease-in-out;
 
-          right: ${openToolboxPanel ? "48%" : 0};
+          right: ${openToolboxPanel ? "49.4%" : 0};
 
           &:hover {
             background: #13183f;
@@ -177,55 +179,55 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
       >
         <TriangleXSIcon />
       </div>
-      <Slide direction="left" in={openToolboxPanel}>
+      <div
+        css={`
+          z-index: 4;
+          right: -8px;
+          width: 600px;
+          margin-right: ${openToolboxPanel ? "15px" : "-600px"};
+          margin-top: 0.1%;
+          height: 95%;
+          overflow-y: auto;
+          transition: all 0.2s ease-in-out;
+          position: absolute;
+          background: #f5f5f7;
+          border-radius: 20px;
+          visibility: visible !important;
+          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+          ::-webkit-scrollbar {
+            display: none;
+          }
+          @media (max-width: 767px) {
+            width: 100vw;
+            box-shadow: none;
+            overflow-y: auto;
+          }
+        `}
+      >
         <div
           css={`
-            z-index: 4;
-            right: -8px;
-            width: 600px;
+            width: 100%;
 
-            height: 100%;
-            position: absolute;
-            background: #f5f5f7;
-            visibility: visible !important;
-            overflow-y: auto;
+            display: flex;
 
-            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-            border-radius: 20px;
-            ::-webkit-scrollbar {
-              display: none;
-            }
-            @media (max-width: 767px) {
-              width: 100vw;
-              box-shadow: none;
-              overflow-y: auto;
-            }
+            flex-direction: column;
           `}
         >
-          <div
-            css={`
-              width: 100%;
-
-              display: flex;
-
-              flex-direction: column;
-            `}
-          >
-            <ToolBoxPanelFilters
-              groups={filterGroups}
-              expandedGroup={expandedGroup}
-              appliedFilters={appliedFilters}
-              setExpandedGroup={setExpandedGroup}
-              setAppliedFilters={setAppliedFilters}
-              defaultAppliedFilters={{
-                components: [],
-                trpWindows: [],
-              }}
-              groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
-            />
-          </div>
+          <ToolBoxPanelFilters
+            groups={filterGroups}
+            expandedGroup={expandedGroup}
+            appliedFilters={appliedFilters}
+            setExpandedGroup={setExpandedGroup}
+            setAppliedFilters={setAppliedFilters}
+            defaultAppliedFilters={{
+              components: [],
+              trpWindows: [],
+            }}
+            groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
+          />
         </div>
-      </Slide>
+      </div>
+
       <Table
         forceExpand
         search={search}
