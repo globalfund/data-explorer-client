@@ -88,7 +88,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           <div
             css={`
               top: -4px;
-              left: -4rem;
+              left: -3rem;
               display: flex;
               position: absolute;
               height: calc(100% + 8px);
@@ -100,22 +100,53 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                 align-items: center;
                 flex-direction: column;
                 justify-content: center;
+                margin-right: 7px;
               `}
             >
-              <IconButton
-                onClick={() => {
-                  props.setSelectedTypeHistory([
-                    ...props.selectedTypeHistory,
-                    props.selectedType,
-                    "",
-                  ]);
-                }}
+              <div
+                css={`
+                  background: #adb5bd;
+                  border-radius: 100px;
+                  height: 53px;
+                  width: 22px;
+                  display: flex;
+                  justify-content: space-around;
+                  align-items: center;
+                  flex-direction: column;
+
+                  padding-bottom: 2px;
+                  button {
+                    padding: 4px;
+                    :hover {
+                      background: transparent;
+                      svg {
+                        path {
+                          fill: #fff;
+                        }
+                      }
+                    }
+                  }
+                `}
               >
-                <EditIcon />
-              </IconButton>
-              <IconButton onClick={() => props.deleteFrame(props.rowId)}>
-                <DeleteIcon />
-              </IconButton>
+                <IconButton
+                  onClick={() => {
+                    props.setSelectedTypeHistory([
+                      ...props.selectedTypeHistory,
+                      props.selectedType,
+                      "",
+                    ]);
+                  }}
+                >
+                  <Tooltip title="Edit" placement="right">
+                    <EditIcon />
+                  </Tooltip>
+                </IconButton>
+                <IconButton onClick={() => props.deleteFrame(props.rowId)}>
+                  <Tooltip title="Delete" placement="right">
+                    <DeleteIcon />
+                  </Tooltip>
+                </IconButton>
+              </div>
             </div>
             <div
               css={`
@@ -306,6 +337,18 @@ const Box = (props: {
                   right: 12px;
                   position: absolute;
                   padding: 4px;
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: #adb5bd;
+                  :hover {
+                    background: #adb5bd;
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                  }
                 `}
               >
                 <Tooltip title="Delete Chart">
@@ -320,6 +363,18 @@ const Box = (props: {
                   right: 39px;
                   position: absolute;
                   padding: 4px;
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: #adb5bd;
+                  :hover {
+                    background: #adb5bd;
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                  }
                 `}
               >
                 <Tooltip title="Edit Chart">
