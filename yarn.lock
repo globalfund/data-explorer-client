@@ -10913,6 +10913,11 @@ react-error-overlay@^6.0.10:
   resolved "https://registry.npmjs.org/react-error-overlay/-/react-error-overlay-6.0.10.tgz"
   integrity sha512-mKR90fX7Pm5seCOfz8q9F+66VCc1PGsWSBxKbITjfKVQHMNF2zudxHnMdJiB1fRCb+XsbQV9sO9DCkgsMQgBIA==
 
+react-google-drive-picker@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/react-google-drive-picker/-/react-google-drive-picker-1.2.2.tgz#93b6ad36f76744bc8a235c7070adb9c6fb7c69f5"
+  integrity sha512-x30mYkt9MIwPCgL+fyK75HZ8E6G5L/WGW0bfMG6kbD4NG2kmdlmV9oH5lPa6P6d46y9hj5Y3btAMrZd4JRRkSA==
+
 react-grid-carousel@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/react-grid-carousel/-/react-grid-carousel-1.0.1.tgz"
