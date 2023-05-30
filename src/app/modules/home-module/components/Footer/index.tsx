@@ -1,0 +1,71 @@
+import React from "react";
+import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
+import { homeFootercss } from "app/modules/home-module/components/Footer/style";
+import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
+import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
+
+export default function HomeFooter() {
+  return (
+    <div css={homeFootercss}>
+      <Container
+        maxWidth="lg"
+        css={`
+          padding: 0;
+        `}
+      >
+        <Grid container alignContent="space-between" alignItems="center">
+          <Grid
+            item
+            lg={9}
+            md={9}
+            css={`
+              display: flex;
+              justify-content: flex-start;
+            `}
+          >
+            <ul>
+              <li
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 8px;
+                `}
+              >
+                <span
+                  css={`
+                    margin-top: 6px;
+                  `}
+                >
+                  <CopyIcon />
+                </span>
+                2023 DX All Rights Reserved
+              </li>
+              <li>
+                <a href="mailto:contact@dataxplorer.org">
+                  Email: contact@dataxplorer.org
+                </a>
+              </li>
+              <li>
+                <a href="tel:0031202134466">Tel: +3120 213 4466</a>
+              </li>
+              <li>Privacy</li>
+              <li>Terms and conditions</li>
+            </ul>
+          </Grid>
+          <Grid
+            item
+            lg={3}
+            md={3}
+            css={`
+              display: flex;
+              justify-content: flex-end;
+            `}
+          >
+            <LogoIcon />
+          </Grid>
+        </Grid>
+      </Container>
+    </div>
+  );
+}

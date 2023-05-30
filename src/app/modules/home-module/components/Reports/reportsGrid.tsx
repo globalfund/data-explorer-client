@@ -1,16 +1,15 @@
 import React from "react";
 import axios from "axios";
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import useDebounce from "react-use/lib/useDebounce";
 import { ReportModel } from "app/modules/report-module/data";
+import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import GridItem from "app/modules/home-module/components/Reports/gridItem";
-import ReportAddnewCard from "app/modules/home-module/components/Reports/reportAddNewCard";
-import { ReactComponent as ReportIcon } from "app/modules/home-module/assets/reports-img.svg";
-import { useHistory } from "react-router-dom";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
+import ReformedGridItem from "app/modules/home-module/components/Reports/reformedGridItem";
 
-export default function ReportsGrid() {
+export default function ReportsGrid(props: { searchStr: string }) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -70,29 +69,46 @@ export default function ReportsGrid() {
     setModalDisplay(true);
   };
 
-  React.useEffect(() => {
+  function loadData(searchStr: string) {
+    const value =
+      searchStr.length > 0
+        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+        : "";
     loadReports({
       storeInCrudData: true,
-      filterString: "filter[order]=createdDate desc",
+      filterString: `filter={${value}"order":"createdDate desc"}`,
     });
+  }
+
+  React.useEffect(() => {
+    loadData(props.searchStr);
   }, []);
+
+  const [,] = useDebounce(
+    () => {
+      loadData(props.searchStr);
+    },
+    500,
+    [props.searchStr]
+  );
 
   return (
     <>
       <Grid container spacing={2}>
-        <ReportAddnewCard />
         {reports.map((data, index) => (
-          <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
-            <GridItem
+          <Grid item key={data.id} xs={12} sm={6} md={4} lg={4}>
+            <ReformedGridItem
               id={data.id}
               key={data.id}
               title={data.name}
               descr={data.title}
-              viz={<ReportIcon />}
               date={data.createdDate}
+              viz={<ColoredReportIcon />}
+              color={data.backgroundColor}
               handleDelete={() => handleModal(index)}
               handleDuplicate={() => handleDuplicate(index)}
             />
+            <Box height={16} />
           </Grid>
         ))}
       </Grid>

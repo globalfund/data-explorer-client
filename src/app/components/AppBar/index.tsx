@@ -12,9 +12,15 @@ import { homeDisplayAtom } from "app/state/recoil/atoms";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronLeft from "@material-ui/icons/ChevronLeft";
-import { headercss, loginBtn } from "app/components/AppBar/style";
+import {
+  headercss,
+  loginBtn,
+  logocss,
+  navLinkcss,
+} from "app/components/AppBar/style";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
 import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
+import { Grid } from "@material-ui/core";
 
 const TextHeader = (label: string) => (
   <h2
@@ -185,81 +191,80 @@ export function AppBar() {
       >
         {isMobile && getMobilePageHeader()}
         {!isMobile && (
-          <Container maxWidth="lg">
-            <div css={headercss}>
-              <div
+          <Container
+            maxWidth="lg"
+            css={`
+              padding: 0;
+            `}
+          >
+            <Grid
+              container
+              css={headercss}
+              alignContent="space-between"
+              alignItems="center"
+            >
+              <Grid
+                item
+                lg={3}
+                md={2}
+                sm={2}
                 css={`
                   gap: 180px;
                   display: flex;
                   align-items: center;
                 `}
               >
-                <NavLink
-                  to="/"
-                  css={`
-                    display: flex;
-                    padding-top: 5px;
-                    margin-right: 64px;
-                    justify-content: center;
-                  `}
-                >
+                <NavLink to="/" css={logocss}>
                   <img
                     src="/logo.svg"
                     alt={get(cmsData, "componentsAppBar.logoAlt", "")}
                   />
                 </NavLink>
-                <div
-                  css={`
-                    gap: 2.5rem;
-                    display: flex;
-                    justify-content: center;
-                  `}
-                >
-                  <div
-                    css={`
-                      a {
-                        color: ${display === "data"
-                          ? "#CEA8BC !important"
-                          : "#231D2C"};
-                      }
-                    `}
-                  >
-                    <NavLink to="/" onClick={() => handlePath("data")}>
-                      <b>Data</b>
-                    </NavLink>
-                  </div>
-                  <div
-                    css={`
-                      a {
-                        color: ${display === "charts"
-                          ? "#CEA8BC !important"
-                          : "#231D2C"};
-                      }
-                    `}
-                  >
-                    <NavLink to="/" onClick={() => handlePath("charts")}>
-                      <b>Charts</b>
-                    </NavLink>
-                  </div>
-                  <div
-                    css={`
-                      a {
-                        color: ${display === "reports"
-                          ? "#CEA8BC !important"
-                          : "#231D2C"};
-                      }
-                    `}
-                  >
-                    <Link to="/" onClick={() => handlePath("reports")}>
-                      <b>Reports</b>
-                    </Link>
-                  </div>
+              </Grid>
+
+              <Grid
+                item
+                lg={9}
+                md={10}
+                sm={10}
+                css={`
+                  display: flex;
+                  align-items: center;
+                  justify-content: flex-end;
+                  gap: 20px;
+                `}
+              >
+                <div css={navLinkcss("")}>
+                  <NavLink to="#" onClick={() => handlePath("data")}>
+                    <b>Why Dx?</b>
+                  </NavLink>
                 </div>
-              </div>
-              <div css={loginBtn}>
-                <Link to="/onboarding/login">Log in</Link>
-              </div>
-            </div>
+                <div css={navLinkcss("")}>
+                  <NavLink to="/" onClick={() => handlePath("reports")}>
+                    <b>Explore Reports</b>
+                  </NavLink>
+                </div>
+                <div css={navLinkcss("")}>
+                  <Link to="#" onClick={() => handlePath("reports")}>
+                    <b>About</b>
+                  </Link>
+                </div>
+                <div css={navLinkcss("")}>
+                  <Link to="#" onClick={() => handlePath("reports")}>
+                    <b>Cases </b>
+                  </Link>
+                </div>
+                <div css={navLinkcss("")}>
+                  <Link to="#" onClick={() => handlePath("reports")}>
+                    <b>Contact </b>
+                  </Link>
+                </div>
+
+                <div css={loginBtn}>
+                  <Link to="/report/new/initial">Create report</Link>
+                </div>
+              </Grid>
+            </Grid>
           </Container>
         )}
       </Toolbar>

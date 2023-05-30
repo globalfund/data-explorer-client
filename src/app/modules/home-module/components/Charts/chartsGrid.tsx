@@ -1,18 +1,18 @@
 import React from "react";
 import axios from "axios";
 import find from "lodash/find";
+import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import useDebounce from "react-use/lib/useDebounce";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import GridItem from "app/modules/home-module/components/Charts/gridItem";
-import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
-import ChartAddnewCard from "app/modules/home-module/components/Charts/chartAddNewCard";
-import { useHistory } from "react-router-dom";
+import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 
 const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
-export default function ChartsGrid() {
+export default function ChartsGrid(props: { searchStr: string }) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -73,27 +73,42 @@ export default function ChartsGrid() {
   };
 
   const getIcon = (vizType: string) => {
-    const type = find(echartTypes(true), { id: vizType });
+    const type = find(coloredEchartTypes(), { id: vizType });
     if (type) {
       return type.icon;
     }
-    return echartTypes(true)[0].icon;
+    return coloredEchartTypes()[0].icon;
   };
 
-  React.useEffect(() => {
+  function loadData(searchStr: string) {
+    const value =
+      searchStr.length > 0
+        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+        : "";
     loadCharts({
       storeInCrudData: true,
-      filterString: "filter[order]=createdDate desc",
+      filterString: `filter={${value}"order":"createdDate desc"}`,
     });
+  }
+
+  React.useEffect(() => {
+    loadData(props.searchStr);
   }, []);
+
+  const [,] = useDebounce(
+    () => {
+      loadData(props.searchStr);
+    },
+    500,
+    [props.searchStr]
+  );
 
   return (
     <>
       <Grid container spacing={2}>
-        <ChartAddnewCard />
         {charts.map((c, index) => (
-          <Grid item key={c.id} xs={12} sm={6} md={4} lg={3}>
-            <GridItem
+          <Grid item key={c.id} xs={12} sm={6} md={6} lg={4}>
+            <ReformedGridItem
               id={c.id}
               title={c.name}
               descr={description}
@@ -103,6 +118,7 @@ export default function ChartsGrid() {
               handleDelete={() => handleModal(index)}
               handleDuplicate={() => handleDuplicate(index)}
             />
+            <Box height={16} />
           </Grid>
         ))}
       </Grid>

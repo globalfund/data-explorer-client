@@ -3,9 +3,7 @@ import { css } from "styled-components/macro";
 export const headercss = css`
   width: 100%;
   height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+
   background-color: #f2f7fd;
 
   a {
@@ -38,8 +36,14 @@ export const headercss = css`
     position: absolute; */
   }
 `;
+export const logocss = css`
+  display: flex;
+  padding-top: 5px;
+  margin-right: 64px;
+  justify-content: center;
+`;
 export const loginBtn = css`
-  height: 33.58px;
+  height: 34px;
   padding: 9.792px 35.496px;
   background: #dadaf8;
   border-radius: 24.48px;
@@ -47,7 +51,7 @@ export const loginBtn = css`
   justify-content: center;
   align-items: center;
   color: #231d2c;
-
+  margin-left: 16px;
   text-transform: uppercase;
   border: none;
   outline: none;
@@ -62,5 +66,11 @@ export const loginBtn = css`
     &:hover {
       color: #231d2c;
     }
+  }
+`;
+
+export const navLinkcss = (display: string) => css`
+  a {
+    color: ${display === "data" ? "#CEA8BC !important" : "#231D2C"};
   }
 `;
