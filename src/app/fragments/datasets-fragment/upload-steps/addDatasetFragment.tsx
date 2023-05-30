@@ -15,6 +15,8 @@ import {
   useDropzone,
 } from "react-dropzone";
 import { formatBytes } from "app/utils/formatBytes";
+import useDrivePicker from "react-google-drive-picker";
+import { PickerCallback } from "react-google-drive-picker/dist/typeDefs";
 
 interface Props {
   disabled: boolean;
@@ -101,6 +103,29 @@ interface DropzoneProps extends Props {
 }
 
 export const DropZone = (props: DropzoneProps) => {
+  const [openPicker] = useDrivePicker();
+  const [data, setData] = React.useState<PickerCallback | null>(null);
+
+  function getTokenAndOpenPicker() {
+    openPicker({
+      clientId: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
+      developerKey: process.env.REACT_APP_GOOGLE_API_DEV_KEY as string,
+      viewId: "FOLDERS",
+      supportDrives: true,
+
+      setSelectFolderEnabled: true,
+      callbackFunction: (d: PickerCallback) => {
+        console.log(d);
+
+        setData(d);
+      },
+    });
+  }
+
+  function handleOpenPicker(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    getTokenAndOpenPicker();
+  }
   return (
     <>
       <div css={uploadDatasetcss} {...props.getRootProps()}>
@@ -146,16 +171,10 @@ export const DropZone = (props: DropzoneProps) => {
                 <label htmlFor="local-upload">
                   <LocalUploadIcon /> <p>Local upload</p>
                 </label>
-                <Tooltip title="Not yet implemented">
-                  <button
-                    type="button"
-                    css={`
-                      opacity: 0.6;
-                    `}
-                  >
-                    <GoogleDriveIcon /> <p>Connect to google drive</p>
-                  </button>
-                </Tooltip>
+
+                <button type="button" onClick={handleOpenPicker}>
+                  <GoogleDriveIcon /> <p>Connect to google drive</p>
+                </button>
               </div>
               <Box height={80} />
               <p>
