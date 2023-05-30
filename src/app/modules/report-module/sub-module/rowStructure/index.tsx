@@ -117,6 +117,14 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                   padding-bottom: 2px;
                   button {
                     padding: 4px;
+                    :hover {
+                      background: transparent;
+                      svg {
+                        path {
+                          fill: #fff;
+                        }
+                      }
+                    }
                   }
                 `}
               >
@@ -129,10 +137,14 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                     ]);
                   }}
                 >
-                  <EditIcon />
+                  <Tooltip title="Edit" placement="right">
+                    <EditIcon />
+                  </Tooltip>
                 </IconButton>
                 <IconButton onClick={() => props.deleteFrame(props.rowId)}>
-                  <DeleteIcon />
+                  <Tooltip title="Delete" placement="right">
+                    <DeleteIcon />
+                  </Tooltip>
                 </IconButton>
               </div>
             </div>
@@ -325,6 +337,18 @@ const Box = (props: {
                   right: 12px;
                   position: absolute;
                   padding: 4px;
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: #adb5bd;
+                  :hover {
+                    background: #adb5bd;
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                  }
                 `}
               >
                 <Tooltip title="Delete Chart">
@@ -339,6 +363,18 @@ const Box = (props: {
                   right: 39px;
                   position: absolute;
                   padding: 4px;
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: #adb5bd;
+                  :hover {
+                    background: #adb5bd;
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                  }
                 `}
               >
                 <Tooltip title="Edit Chart">
