@@ -1,22 +1,24 @@
 import React from "react";
 import get from "lodash/get";
+import { Link } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import { useRecoilState } from "recoil";
+import { HIV } from "app/assets/icons/HIV";
+import { useCMSData } from "app/hooks/useCMSData";
+import { Malaria } from "app/assets/icons/Malaria";
+import { Tuberculosis } from "app/assets/icons/TB";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { locationAccessToFundingCycleAtom } from "app/state/recoil/atoms";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
-import RadialChart from "app/modules/viz-module/sub-modules/accessToFunding/allocations/radialChart";
+import { AccessToFundingRequestTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/fundingRequest/tableWrapper";
+import { AccessToFundingEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/eligibility/tableWrapper";
 import {
   vizcss,
   chipcss,
   descriptioncss,
 } from "app/modules/viz-module/sub-modules/accessToFunding/style";
-import { AccessToFundingRequestTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/fundingRequest/tableWrapper";
-import { AccessToFundingEligibilityTableWrapper } from "app/modules/viz-module/sub-modules/accessToFunding/eligibility/tableWrapper";
-import { Link } from "react-router-dom";
-import { useCMSData } from "app/hooks/useCMSData";
 
 interface Props {
   code: string;
@@ -63,7 +65,19 @@ export default function LocationAccessToFundingWrapper(props: Props) {
   );
   const fetchData = useStoreActions((store) => store.Allocations.fetch);
   const isLoading = useStoreState((state) => state.Allocations.loading);
-  const colors = ["#252C34", "#C9CAD4", "#595D70"];
+
+  function getAllocationIcon(key: string) {
+    if (key === "HIV") {
+      return <HIV />;
+    }
+    if (key === "Malaria") {
+      return <Malaria />;
+    }
+    if (key === "Tuberculosis") {
+      return <Tuberculosis />;
+    }
+    return null;
+  }
 
   React.useEffect(() => {
     return () => {
@@ -142,20 +156,13 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           <hr />
           <div
             css={`
-              gap: 1rem;
               display: flex;
-              min-height: 500px;
+              min-height: 350px;
               position: relative;
               align-items: center;
-              justify-content: space-evenly;
+              justify-content: center;
             `}
           >
-            <RadialChart
-              total={total}
-              values={values}
-              keys={keys}
-              isLoading={isLoading}
-            />
             {!isLoading && (
               <div>
                 <div>
@@ -183,10 +190,10 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                 </div>
                 <div
                   css={`
-                    gap: 2rem;
+                    gap: 100px;
                     margin: auto;
                     display: flex;
-                    margin-top: 3rem;
+                    margin-top: 40px;
                     text-align: center;
                     align-items: center;
                     justify-content: center;
@@ -202,17 +209,11 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                         justify-content: center;
                       `}
                     >
+                      {getAllocationIcon(keys[index])}
                       <div
                         css={`
-                          width: 31px;
-                          height: 31px;
-                          border-radius: 50%;
-                          background: ${colors[index]};
-                        `}
-                      />
-                      <p
-                        css={`
-                          font-size: 18px;
+                          font-size: 24px;
+                          margin-top: 10px;
                         `}
                       >
                         <b>
@@ -220,10 +221,9 @@ export default function LocationAccessToFundingWrapper(props: Props) {
                             .replace("$", "")
                             .replace("bln", "billion")
                             .replace("mln", "million")}
-                          <br />
-                          {keys[index]}
                         </b>
-                      </p>
+                      </div>
+                      {keys[index]}
                     </div>
                   ))}
                 </div>
@@ -235,7 +235,11 @@ export default function LocationAccessToFundingWrapper(props: Props) {
           <h4>
             <b>Funding Requests</b>
           </h4>
-          <hr />
+          <hr
+            css={`
+              margin-bottom: 48px;
+            `}
+          />
           <div
             css={`
               width: 90%;
@@ -248,7 +252,6 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}
           </div>
           <div css="width: 100%;height: 40px;" />
-
           <AccessToFundingRequestTableWrapper
             code={props.code}
             codeParam={props.codeParam}
@@ -258,11 +261,14 @@ export default function LocationAccessToFundingWrapper(props: Props) {
         {props.code.length === 3 && (
           <div>
             <Box height={35} />
-
             <h4>
               <b>Eligibility </b>
             </h4>
-            <hr />
+            <hr
+              css={`
+                margin-bottom: 48px;
+              `}
+            />
             <div css={descriptioncss}>
               <p>
                 Below are the components which are eligible for an allocation

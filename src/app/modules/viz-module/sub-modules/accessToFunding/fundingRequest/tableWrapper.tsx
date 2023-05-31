@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import orderBy from "lodash/orderBy";
 import { useDebounce } from "react-use";
 import { useRecoilValue } from "recoil";
 import Slide from "@material-ui/core/Slide";
@@ -8,13 +9,13 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import TablePagination from "@material-ui/core/TablePagination";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
 import { locationAccessToFundingCycleAtom } from "app/state/recoil/atoms";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { Table } from "app/modules/viz-module/sub-modules/accessToFunding/fundingRequest/table";
 import { fundingRequestColumns } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/data";
-import TablePagination from "@material-ui/core/TablePagination";
 
 interface Props {
   code: string;
@@ -23,46 +24,13 @@ interface Props {
 }
 
 export function AccessToFundingRequestTableWrapper(props: Props) {
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [page, setPage] = React.useState(0);
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState("");
-
-  const data = useStoreState(
-    (state) =>
-      get(
-        state.LocationAccessToFunding.FundingRequestsTable.data,
-        "data",
-        []
-      ) as SimpleTableRow[]
-  );
-
-  const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-
-  const handleChangePage = (
-    _event: React.MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const fetchData = useStoreActions(
-    (store) => store.LocationAccessToFunding.FundingRequestsTable.fetch
-  );
-
-  const isLoading = useStoreState(
-    (state) => state.LocationAccessToFunding.FundingRequestsTable.loading
-  );
-
-  const cycle = useRecoilValue(locationAccessToFundingCycleAtom);
-
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(false);
+  const [expandedGroup, setExpandedGroup] =
+    React.useState<FilterGroupProps | null>(null);
   const [appliedFilters, setAppliedFilters] = React.useState<{
     [key: string]: string[];
   }>({
@@ -70,8 +38,6 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
     trpWindows: [],
     portfolioCategories: [],
   });
-  const [expandedGroup, setExpandedGroup] =
-    React.useState<FilterGroupProps | null>(null);
 
   const filterGroups = [
     {
@@ -90,6 +56,39 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
     "TRP Window": "trpWindows",
     "Portfolio Categorization": "portfolioCategories",
   };
+
+  const cycle = useRecoilValue(locationAccessToFundingCycleAtom);
+
+  const data = useStoreState(
+    (state) =>
+      get(
+        state.LocationAccessToFunding.FundingRequestsTable.data,
+        "data",
+        []
+      ) as SimpleTableRow[]
+  );
+
+  const isLoading = useStoreState(
+    (state) => state.LocationAccessToFunding.FundingRequestsTable.loading
+  );
+
+  const fetchData = useStoreActions(
+    (store) => store.LocationAccessToFunding.FundingRequestsTable.fetch
+  );
+
+  function handleChangePage(
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) {
+    setPage(newPage);
+  }
+
+  function handleChangeRowsPerPage(
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  }
 
   function reloadData() {
     const filterStr: string[] = [`locations=${props.code}`];
@@ -117,6 +116,20 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
       filterString: filterStr.join("&"),
     });
   }
+
+  const tableData = React.useMemo(() => {
+    if (props.code) {
+      const result = get(data, "[0].children", []).slice(
+        page * rowsPerPage,
+        (page + 1) * rowsPerPage
+      );
+      if (sortBy.length > 0) {
+        return result;
+      }
+      return orderBy(result, "children", "desc");
+    }
+    return data.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  }, [data, page, rowsPerPage, sortBy]);
 
   React.useEffect(() => {
     if ((props.code && cycle) || !props.code) {
@@ -227,25 +240,17 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
           />
         </div>
       </div>
-
       <Table
         forceExpand
         search={search}
         sortBy={sortBy}
-        data={
-          props.code
-            ? get(data, "[0].children", []).slice(
-                page * rowsPerPage,
-                (page + 1) * rowsPerPage
-              )
-            : data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)
-        }
+        data={tableData}
         setSearch={setSearch}
         setSortBy={setSortBy}
         columns={
           props.code ? fundingRequestColumns[0].col : fundingRequestColumns
         }
-        title={cycle || ""}
+        title={cycle ? "Funding Requests" : ""}
       />
       <TablePagination
         page={page}

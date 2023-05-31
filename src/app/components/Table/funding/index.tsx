@@ -24,6 +24,7 @@ import {
   cellData,
   cellData2,
 } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/data";
+import IconChevronRight from "app/assets/icons/IconChevronRight";
 
 export interface FundingTableRow {
   [key: string]: any;
@@ -83,10 +84,12 @@ function Row(props: {
             <TableCell
               key={v4()}
               css={`
+                padding: 9px;
                 text-align: center;
-                padding: 16px 10px;
+                background: #f5f5f7;
                 // padding-left: ${index === 0 ? "4rem" : "auto"};
                 ${tablecell}
+                font-size: 10px;
               `}
             >
               <div
@@ -95,7 +98,7 @@ function Row(props: {
                   display: flex;
                   align-items: center;
                   flex-direction: row;
-                  justify-content: center;
+                  // justify-content: center;
                 `}
               >
                 <div
@@ -104,7 +107,7 @@ function Row(props: {
                     display: flex;
                     align-items: center;
                     flex-direction: row;
-                    justify-content: center;
+                    // justify-content: center;
                     font-weight: bold;
                     font-family: "GothamNarrow-Bold", "Helvetica Neue",
                       sans-serif;
@@ -148,7 +151,8 @@ function Row(props: {
         }}
         css={`
           transition: background 0.2s ease-in-out;
-          background: ${props.row.children ? "#f5f5f7" : "#fff"};
+          background: ${props.row.children ? "#fff" : "#f5f5f7"};
+          ${thirdLevelRow ? "background: #fafafa;" : ""}
 
           ${props.row.children
             ? `
@@ -172,12 +176,13 @@ function Row(props: {
           <TableCell
             key={v4()}
             css={`
-              text-align: center;
-              padding: 16px 10px;
+              // text-align: center;
+              padding: ${thirdLevelRow ? "9px" : "16px"};
               ${index === 0 && !secondLevelRow
                 ? `padding-left: ${props.paddingLeft}rem;`
                 : ""}
               ${tablecell}
+              font-size: ${thirdLevelRow ? "10px" : "12px"};
             `}
           >
             <div
@@ -197,7 +202,7 @@ function Row(props: {
                   align-items: center;
                   flex-direction: row;
                   font-weight: ${props.row.children ? "bold" : "normal"};
-                  justify-content: ${secondLevelRow ? "center" : "initial"};
+                  // justify-content: ${secondLevelRow ? "center" : "initial"};
                   font-family: "GothamNarrow-${props.row.children
                       ? "Bold"
                       : "Book"}",
@@ -213,15 +218,18 @@ function Row(props: {
                   }
 
                   > svg {
-                    margin-left: -12px;
                     transition: transform 0.1s ease-in-out;
-                    transform: rotate(${open ? "0deg" : "-180deg"});
+                    transform: rotate(${open ? "-90deg" : "90deg"});
+
+                    > path {
+                      fill: ${appColors.TABLE.ROW_TEXT_COLOR};
+                    }
                   }
                 `}
               >
                 {index === 0 &&
                   props.row.children &&
-                  props.row.children.length > 0 && <TriangleXSIcon />}
+                  props.row.children.length > 0 && <IconChevronRight />}
                 {column.key === "grant" ? (
                   <Link
                     css={`
@@ -278,7 +286,7 @@ function Row(props: {
                               display: flex;
                               align-items: center;
                               flex-direction: row;
-                              justify-content: center;
+                              // justify-content: center;
                             `}
                           >
                             <div
@@ -287,7 +295,7 @@ function Row(props: {
                                 display: flex;
                                 align-items: center;
                                 flex-direction: row;
-                                justify-content: center;
+                                // justify-content: center;
                                 font-weight: bold;
                                 font-family: "GothamNarrow-Bold",
                                   "Helvetica Neue", sans-serif;
@@ -392,6 +400,16 @@ export function FundingRequestTable(props: FundingTableProps) {
       css={`
         display: relative;
         min-height: 600px;
+
+        .MuiToolbar-root {
+          padding: 0 24px;
+          min-height: 48px;
+          max-height: 48px;
+          background: ${appColors.COMMON.SECONDARY_COLOR_7};
+
+          > div:first-of-type {
+            font-size: 14px;
+          }
       `}
     >
       <TableToolbar
@@ -423,8 +441,9 @@ export function FundingRequestTable(props: FundingTableProps) {
                     <TableCell
                       key={column.key}
                       css={`
-                        padding: 16px 10px;
-                        ${index === 0 ? "padding-left: 40px;" : ""}
+                        padding: 16px;
+                        background: #f5f5f7;
+                        // ${index === 0 ? "padding-left: 40px;" : ""}
 
                         > button {
                           ${tablecell}
@@ -432,7 +451,7 @@ export function FundingRequestTable(props: FundingTableProps) {
                           text-transform: none;
 
                           > span {
-                            font-size: 16px;
+                            font-size: 12px;
                             font-weight: bold;
                             justify-content: flex-start;
                             font-family: "GothamNarrow-Bold", "Helvetica Neue",
