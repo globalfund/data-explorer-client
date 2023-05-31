@@ -2,6 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import orderBy from "lodash/orderBy";
 import uniqueId from "lodash/uniqueId";
 import { useHistory } from "react-router-dom";
 import { useDebounce, useTitle } from "react-use";
@@ -92,6 +93,14 @@ export function GenericFundingRequestWrapper() {
     setPage(0);
   };
 
+  const tableData = React.useMemo(() => {
+    const result = data.map((item) => ({
+      ...item,
+      children: orderBy(item.children, "children", "desc"),
+    }));
+    return result.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+  }, [data, page, rowsPerPage, sortBy]);
+
   if (isLoading) {
     return <PageLoader />;
   }
@@ -124,7 +133,7 @@ export function GenericFundingRequestWrapper() {
         </div>
       </div>
       <Table
-        data={data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)}
+        data={tableData}
         search={search}
         sortBy={sortBy}
         isLoading={isLoading}

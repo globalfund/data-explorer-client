@@ -13,6 +13,7 @@ export interface SimpleTableProps {
   title: string;
   search: string;
   sortBy: string;
+  condensed?: boolean;
   forceExpand?: boolean;
   rows: SimpleTableRow[];
   formatNumbers?: boolean;

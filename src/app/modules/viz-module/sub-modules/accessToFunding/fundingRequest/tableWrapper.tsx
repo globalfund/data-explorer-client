@@ -128,7 +128,11 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
       }
       return orderBy(result, "children", "desc");
     }
-    return data.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
+    const result = data.map((item) => ({
+      ...item,
+      children: orderBy(item.children, "children", "desc"),
+    }));
+    return result.slice(page * rowsPerPage, (page + 1) * rowsPerPage);
   }, [data, page, rowsPerPage, sortBy]);
 
   React.useEffect(() => {

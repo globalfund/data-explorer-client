@@ -15,16 +15,15 @@ import TableCell from "@material-ui/core/TableCell";
 import { makeStyles } from "@material-ui/core/styles";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Simple/styles";
+import IconChevronRight from "app/assets/icons/IconChevronRight";
 import { TableToolbar } from "app/components/Table/Expandable/Toolbar";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import {
   cellData,
   cellData2,
 } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/data";
-import IconChevronRight from "app/assets/icons/IconChevronRight";
 
 export interface FundingTableRow {
   [key: string]: any;
@@ -278,6 +277,8 @@ function Row(props: {
                             padding: 16px 10px;
                             // padding-left: ${index === 0 ? "4rem" : "auto"};
                             ${tablecell}
+                            font-size: 12px;
+                            background: #f5f5f7;
                           `}
                         >
                           <div
@@ -410,6 +411,7 @@ export function FundingRequestTable(props: FundingTableProps) {
           > div:first-of-type {
             font-size: 14px;
           }
+        }
       `}
     >
       <TableToolbar

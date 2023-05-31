@@ -17,6 +17,7 @@ interface EligibilityTableProps {
   setSortBy: (value: string) => void;
   title: string;
   forceExpand?: boolean;
+  isLocation?: boolean;
 }
 
 export function EligibilityTable(props: EligibilityTableProps) {
@@ -31,6 +32,7 @@ export function EligibilityTable(props: EligibilityTableProps) {
       onSortByChange={props.setSortBy}
       forceExpand={props.forceExpand}
       multiVizPageDataKey="eligibility"
+      condensed={props.isLocation}
     />
   );
 }

@@ -361,6 +361,7 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
         data={sortedData.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
         setSearch={setSearch}
         setSortBy={setSortBy}
+        isLocation={props.code !== undefined}
         columns={columns}
         title={props.code ? "Eligibility" : ""}
         forceExpand={props.forceExpand}

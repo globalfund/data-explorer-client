@@ -40,6 +40,7 @@ function Row(props: {
   visibleColumnsIndexes: number[];
   formatNumbers?: boolean;
   forceExpand?: boolean;
+  condensed?: boolean;
 }) {
   const classes = useRowStyles();
   const [open, setOpen] = React.useState(Boolean(props.forceExpand));
@@ -67,7 +68,7 @@ function Row(props: {
         }}
         css={`
           transition: background 0.2s ease-in-out;
-          background: ${props.paddingLeft
+          background: ${props.paddingLeft || props.condensed
             ? appColors.TABLE.ROW_BACKGROUND_COLOR_1
             : appColors.TABLE.ROW_BACKGROUND_COLOR_2};
 
@@ -112,8 +113,9 @@ function Row(props: {
                   "Helvetica Neue", sans-serif;
                 width: calc(${columnWidthCalc});
                 ${index === 0
-                  ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth}`
+                  ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth};`
                   : ""}
+                ${props.condensed ? "font-size: 12px;" : ""}
               `}
             >
               <div
@@ -185,6 +187,7 @@ function Row(props: {
                       key={child.name}
                       paddingLeft={40}
                       columns={props.columns}
+                      condensed={props.condensed}
                       forceExpand={props.forceExpand}
                       formatNumbers={props.formatNumbers}
                       visibleColumnsIndexes={props.visibleColumnsIndexes}
@@ -244,6 +247,18 @@ export function SimpleTable(props: SimpleTableProps) {
       <div
         css={`
           min-height: 600px;
+
+          ${props.condensed &&
+          `.MuiToolbar-root {
+            padding: 0 24px;
+            min-height: 48px;
+            max-height: 48px;
+            background: ${appColors.COMMON.SECONDARY_COLOR_7};
+
+            > div:first-of-type {
+              font-size: 14px;
+            }
+          }`}
         `}
       >
         <TableToolbar
@@ -257,7 +272,13 @@ export function SimpleTable(props: SimpleTableProps) {
         <TableContainer>
           <Table aria-label="Simple table">
             <TableHead>
-              <TableRow>
+              <TableRow
+                css={
+                  props.condensed
+                    ? `background: ${appColors.TABLE.ROW_BACKGROUND_COLOR_2};`
+                    : ""
+                }
+              >
                 {filter(
                   props.columns,
                   (_c, index) => visibleColumnsIndexes.indexOf(index) > -1
@@ -289,7 +310,7 @@ export function SimpleTable(props: SimpleTableProps) {
                         padding-${monetaryColumn ? "right" : "left"}: 0;
 
                         > span {
-                          font-size: 16px;
+                          ${props.condensed ? "font-size: 12px;" : ""}
                           font-weight: bold;
                           justify-content: flex-start;
                           font-family: "GothamNarrow-Bold", "Helvetica Neue",
@@ -315,6 +336,7 @@ export function SimpleTable(props: SimpleTableProps) {
                   key={row.name}
                   row={row}
                   columns={props.columns}
+                  condensed={props.condensed}
                   forceExpand={props.forceExpand}
                   formatNumbers={props.formatNumbers}
                   visibleColumnsIndexes={visibleColumnsIndexes}
