@@ -284,6 +284,7 @@ export function useDataThemesEchart() {
       ),
       tooltip: {
         show: showTooltip,
+        trigger: "axis",
 
         confine: true,
         valueFormatter: (value: number | string) =>

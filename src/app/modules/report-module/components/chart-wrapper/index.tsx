@@ -65,7 +65,6 @@ export function ReportChartWrapper(props: Props) {
     setVisualOptions,
     setChartFromAPI,
     chartFromAPI,
-    inChartWrapper: true,
   });
 
   React.useEffect(() => {
@@ -92,6 +91,21 @@ export function ReportChartWrapper(props: Props) {
     containerRef.current?.clientHeight,
   ]);
 
+  if (loading || chartFromAPI === null) {
+    return (
+      <div
+        css={`
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `}
+      >
+        loading...
+      </div>
+    );
+  }
   if (!loading && !chartFromAPI) {
     return (
       <div
