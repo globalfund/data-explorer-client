@@ -143,3 +143,16 @@ export const iconButtonCss = (active?: boolean) => css`
     }
   }
 `;
+
+export const sortByItemCss = (active: boolean) => css`
+  color: #231d2c;
+  font-size: 12px;
+  padding: 8px 22px;
+  font-family: "GothamNarrow-Book", sans-serif;
+  background: ${active ? "#f1f3f5" : "transparent"};
+
+  &:hover {
+    cursor: pointer;
+    background: #f1f3f5;
+  }
+`;
