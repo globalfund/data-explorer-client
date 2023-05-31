@@ -17,6 +17,7 @@ import {
 import { formatBytes } from "app/utils/formatBytes";
 import useDrivePicker from "react-google-drive-picker";
 import { PickerCallback } from "react-google-drive-picker/dist/typeDefs";
+import axios from "axios";
 
 interface Props {
   disabled: boolean;
@@ -25,10 +26,12 @@ interface Props {
 interface DragAndDropProps {
   disabled: boolean;
   handleNext: () => void;
-  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  setFile: React.Dispatch<React.SetStateAction<File | string | null>>;
 }
 
 export default function AddDatasetFragment(props: DragAndDropProps) {
+  const [openPicker] = useDrivePicker();
+
   const ACCEPTED_FILES = {
     "text/csv": [".csv"],
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
@@ -56,11 +59,39 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
   } = useDropzone({ onDrop, accept: ACCEPTED_FILES });
 
   useEffect(() => {
-    props.setFile(acceptedFiles[0]);
     if (acceptedFiles.length > 0) {
+      props.setFile(acceptedFiles[0]);
+
       props.handleNext();
     }
   }, [acceptedFiles]);
+
+  function getTokenAndOpenPicker() {
+    openPicker({
+      clientId: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
+      developerKey: process.env.REACT_APP_GOOGLE_API_DEV_KEY as string,
+      viewId: "DOCS",
+      supportDrives: true,
+      token: "",
+      setSelectFolderEnabled: true,
+      callbackFunction: (d: PickerCallback) => {
+        console.log(d);
+        axios({
+          url: d.docs[0].url, //your url
+          method: "GET",
+          responseType: "blob", // important
+        }).then((response) => {
+          props.setFile(response.data);
+          props.handleNext();
+        });
+      },
+    });
+  }
+
+  function handleOpenPicker(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    getTokenAndOpenPicker();
+  }
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
     <li key={file.name}>
@@ -81,6 +112,7 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
         isDragActive={isDragActive}
         fileRejections={fileRejections}
         acceptedFiles={acceptedFiles}
+        handleOpenPicker={handleOpenPicker}
       />
       {fileRejections.length > 0 && fileRejectionItems}
     </>
@@ -100,32 +132,10 @@ interface DropzoneProps extends Props {
   draggedFiles?: File[];
   rootRef?: React.RefObject<HTMLElement>;
   inputRef?: React.RefObject<HTMLInputElement>;
+  handleOpenPicker(e: React.MouseEvent<HTMLButtonElement>): void;
 }
 
 export const DropZone = (props: DropzoneProps) => {
-  const [openPicker] = useDrivePicker();
-  const [data, setData] = React.useState<PickerCallback | null>(null);
-
-  function getTokenAndOpenPicker() {
-    openPicker({
-      clientId: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
-      developerKey: process.env.REACT_APP_GOOGLE_API_DEV_KEY as string,
-      viewId: "FOLDERS",
-      supportDrives: true,
-
-      setSelectFolderEnabled: true,
-      callbackFunction: (d: PickerCallback) => {
-        console.log(d);
-
-        setData(d);
-      },
-    });
-  }
-
-  function handleOpenPicker(e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation();
-    getTokenAndOpenPicker();
-  }
   return (
     <>
       <div css={uploadDatasetcss} {...props.getRootProps()}>
@@ -172,7 +182,7 @@ export const DropZone = (props: DropzoneProps) => {
                   <LocalUploadIcon /> <p>Local upload</p>
                 </label>
 
-                <button type="button" onClick={handleOpenPicker}>
+                <button type="button" onClick={props.handleOpenPicker}>
                   <GoogleDriveIcon /> <p>Connect to google drive</p>
                 </button>
               </div>
