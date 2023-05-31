@@ -170,9 +170,10 @@ export function useChartsRawData(props: {
           setDataset(chart.datasetId);
           setChartFromAPI(chart);
         }
-        if (chart === null || chart === undefined) {
+        if (response.data === null || response.data === undefined) {
           setNotFound(true);
         }
+
         setLoading(false);
       })
       .catch((error) => {
