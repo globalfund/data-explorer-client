@@ -12,6 +12,13 @@ export interface PageHeaderTabProps {
 
 export interface RouteTabProps extends TabProps {
   onlyLink?: boolean;
+  search?: any;
+  params?: {
+    tab: string;
+    code: string;
+    period: string;
+    vizType: string;
+  };
 }
 
 export const countryDetailTabs: TabProps[] = [

@@ -130,8 +130,26 @@ const styles = {
 };
 
 export function RouteTab(props: RouteTabProps) {
-  if (props.onlyLink) {
-    return <NavLink to={props.url || ""}>{props.name}</NavLink>;
+  if (props.onlyLink && props.params) {
+    return (
+      <NavLink
+        to={
+          formatTabUrlWithParams(
+            {
+              name: props.name,
+              url: props.url,
+              tabs: props.tabs,
+              index: props.index,
+              isActive: props.isActive,
+            },
+            props.search,
+            props.params
+          ).url ?? ""
+        }
+      >
+        {props.name}
+      </NavLink>
+    );
   }
 
   return (
