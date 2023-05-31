@@ -68,6 +68,7 @@ export function useChartsRawData(props: {
   const [dataStats, setDataStats] = React.useState([]);
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
+  const [notFound, setNotFound] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
 
@@ -169,7 +170,9 @@ export function useChartsRawData(props: {
           setDataset(chart.datasetId);
           setChartFromAPI(chart);
         }
-
+        if (chart === null || chart === undefined) {
+          setNotFound(true);
+        }
         setLoading(false);
       })
       .catch((error) => {
@@ -256,6 +259,7 @@ export function useChartsRawData(props: {
 
   return {
     loading,
+    notFound,
     dataTypes,
     dataStats,
     sampleData,
