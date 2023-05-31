@@ -291,14 +291,14 @@ export function MobileViewControl(props: MobileViewControlProps) {
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? appColors.MOBILE_VIEWS_CONTROL.LINK_BACKGROUND_COLOR
-                  : appColors.MOBILE_VIEWS_CONTROL
-                      .LINK_BACKGROUND_SELECTED_COLOR};
+                  ? appColors.MOBILE_VIEWS_CONTROL
+                      .LINK_BACKGROUND_SELECTED_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL.LINK_BACKGROUND_COLOR};
 
                 path {
                   fill: ${selectedView === option.value
-                    ? appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_COLOR
-                    : appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_SELECTED_COLOR};
+                    ? appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_SELECTED_COLOR
+                    : appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_COLOR};
                 }
               `}
             >
