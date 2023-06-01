@@ -30,7 +30,33 @@ interface DragAndDropProps {
 }
 
 export default function AddDatasetFragment(props: DragAndDropProps) {
-  const [openPicker] = useDrivePicker();
+  const [openPicker, authResponse] = useDrivePicker();
+  const [fileData, setFileData] = React.useState<PickerCallback | null>(null);
+
+  React.useEffect(() => {
+    if (authResponse?.access_token && fileData?.docs) {
+      console.log("Google upload!!");
+      axios({
+        url: `https://www.googleapis.com/drive/v3/files/${fileData?.docs[0].id}?alt=media`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authResponse?.access_token}`,
+          "Content-Type": "application/vnd.google-apps.document",
+        },
+        responseType: "blob", // important
+      }).then((response) => {
+        console.log(response.data, "response.data");
+        const b = response.data;
+        // b.lastModifiedDate = new Date();
+        // b.name = fileData?.docs[0].name;
+        const file = new File([b], fileData?.docs[0].name, { type: b.type });
+
+        console.log(file, "file");
+        props.setFile(file);
+        props.handleNext();
+      });
+    }
+  }, [authResponse, fileData]);
 
   const ACCEPTED_FILES = {
     "text/csv": [".csv"],
@@ -76,14 +102,7 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
       setSelectFolderEnabled: true,
       callbackFunction: (d: PickerCallback) => {
         console.log(d);
-        axios({
-          url: d.docs[0].url, //your url
-          method: "GET",
-          responseType: "blob", // important
-        }).then((response) => {
-          props.setFile(response.data);
-          props.handleNext();
-        });
+        setFileData(d);
       },
     });
   }
