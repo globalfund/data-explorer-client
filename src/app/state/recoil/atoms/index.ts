@@ -87,7 +87,7 @@ export const createChartFromReportAtom = atom<{
 export const persistedReportStateAtom = atom<{
   headerDetails: {
     title: string;
-    description: RawDraftContentState;
+    description: EditorState;
     showHeader: boolean;
     backgroundColor: string;
     titleColor: string;
@@ -99,7 +99,7 @@ export const persistedReportStateAtom = atom<{
   default: {
     headerDetails: {
       title: "",
-      description: convertToRaw(EditorState.createEmpty().getCurrentContent()),
+      description: EditorState.createEmpty(),
       showHeader: true,
       backgroundColor: "#252c34",
       titleColor: "#ffffff",
@@ -107,5 +107,5 @@ export const persistedReportStateAtom = atom<{
       dateColor: "#ffffff",
     },
   },
-  effects_UNSTABLE: [persistAtom],
+  // effects_UNSTABLE: [persistAtom],
 });
