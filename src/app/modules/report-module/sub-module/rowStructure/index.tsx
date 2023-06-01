@@ -77,7 +77,6 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         {...handlers}
         css={`
           width: 100%;
-          padding: 4px;
           display: flex;
           gap: ${props.gap};
           border: ${border};

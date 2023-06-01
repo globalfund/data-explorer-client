@@ -75,22 +75,24 @@ export const rowFlexCss = css`
 `;
 
 export const bottomLeftEllipseCss = css`
-  position: absolute;
   left: 0;
   bottom: 0;
+  z-index: -1;
+  position: absolute;
 `;
 
 export const bottomRightEllipseCss = css`
-  position: absolute;
   right: 0;
   bottom: 0;
+  z-index: -1;
+  position: absolute;
 `;
 
 export const TopRightEllipseCss = css`
-  position: absolute;
   top: 0;
   right: 0;
   z-index: -1;
+  position: absolute;
 `;
 
 export const searchInputCss = (openSearch: boolean) => css`

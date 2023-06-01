@@ -90,7 +90,7 @@ export default function DatasetsGrid(props: {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
-          {(datasets?.slice(0, 15) || []).map((data, index) => (
+          {(datasets || []).map((data, index) => (
             <Grid item key={data.id} xs={12} sm={6} md={4} lg={4}>
               <ReformedGridItem
                 date={data.createdDate}

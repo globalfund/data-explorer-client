@@ -156,12 +156,7 @@ export default function HomeModule() {
           );
         `}
       >
-        <Container
-          maxWidth="lg"
-          css={`
-            padding: 0;
-          `}
-        >
+        <Container maxWidth="lg">
           <Grid
             container
             spacing={6}
@@ -240,7 +235,6 @@ export default function HomeModule() {
         maxWidth="lg"
         ref={exploreViewRef}
         css={`
-          padding: 0;
           min-height: calc(100vh - 668px);
         `}
       >
