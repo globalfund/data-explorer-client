@@ -7,7 +7,7 @@ import {
 import { ReactComponent as UploadIcon } from "app/fragments/datasets-fragment/assets/upload.svg";
 import { ReactComponent as LocalUploadIcon } from "app/fragments/datasets-fragment/assets/local-upload.svg";
 import { ReactComponent as GoogleDriveIcon } from "app/fragments/datasets-fragment/assets/google-drive.svg";
-import { Tooltip } from "@material-ui/core";
+
 import {
   DropzoneRootProps,
   DropzoneInputProps,
@@ -35,7 +35,6 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
 
   React.useEffect(() => {
     if (authResponse?.access_token && fileData?.docs) {
-      console.log("Google upload!!");
       axios({
         url: `https://www.googleapis.com/drive/v3/files/${fileData?.docs[0].id}?alt=media`,
         method: "GET",
@@ -47,11 +46,7 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
       }).then((response) => {
         console.log(response.data, "response.data");
         const b = response.data;
-        // b.lastModifiedDate = new Date();
-        // b.name = fileData?.docs[0].name;
         const file = new File([b], fileData?.docs[0].name, { type: b.type });
-
-        console.log(file, "file");
         props.setFile(file);
         props.handleNext();
       });
@@ -87,7 +82,6 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
   useEffect(() => {
     if (acceptedFiles.length > 0) {
       props.setFile(acceptedFiles[0]);
-
       props.handleNext();
     }
   }, [acceptedFiles]);
