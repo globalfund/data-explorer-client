@@ -145,7 +145,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                   background: #f4f4f4;
                 `}
               >
-                {props.dataStats.map((val) => (
+                {props.dataStats?.map((val) => (
                   <TableCell
                     key={val.name}
                     css={`

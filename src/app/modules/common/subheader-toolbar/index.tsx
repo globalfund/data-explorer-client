@@ -34,8 +34,9 @@ import {
   ISnackbarState,
 } from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 import {
+  createChartFromReportAtom,
   homeDisplayAtom,
-  unSavedReportPreviewMode,
+  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
@@ -94,8 +95,12 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
   const [_, setHomeTab] = useRecoilState(homeDisplayAtom);
+  const [createChartFromReport, setCreateChartFromReport] = useRecoilState(
+    createChartFromReportAtom
+  );
+
   const [reportPreviewMode, setReportPreviewMode] = useRecoilState(
-    unSavedReportPreviewMode
+    unSavedReportPreviewModeAtom
   );
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
@@ -218,8 +223,18 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         values: chart,
       });
     }
-  };
+    //completes chart creation, returns back to persisted report view
+    if (createChartFromReport) {
+      setCreateChartFromReport({
+        ...createChartFromReport,
+        state: false,
+      });
 
+      history.push(
+        `/report/${createChartFromReport.page}/${createChartFromReport.view}`
+      );
+    }
+  };
   React.useEffect(() => {
     return () => {
       createChartClear();
@@ -270,7 +285,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         } successfully!`
       );
       const id = createChartSuccess ? createChartData.id : page;
-      history.push(`/chart/${id}`);
+      if (createChartFromReport.view === "") {
+        history.push(`/chart/${id}`);
+      }
     }
   }, [createChartSuccess, editChartSuccess, createChartData]);
 
@@ -380,15 +397,19 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           message={showSnackbar}
           aria-describedby="create-chart-snackbar-content"
           action={
-            <button
-              onClick={() => {
-                setShowSnackbar(null);
-                setHomeTab("reports");
-                history.push("/report/new/initial");
-              }}
-            >
-              CREATE NEW REPORT
-            </button>
+            <>
+              {createChartFromReport.view === "" && (
+                <button
+                  onClick={() => {
+                    setShowSnackbar(null);
+                    setHomeTab("reports");
+                    history.push("/report/new/initial");
+                  }}
+                >
+                  CREATE NEW REPORT
+                </button>
+              )}
+            </>
           }
         />
       </InfoSnackbar>

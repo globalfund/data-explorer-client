@@ -1,3 +1,4 @@
+import { convertToRaw, EditorState, RawDraftContentState } from "draft-js";
 import { atom, RecoilState } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
@@ -66,7 +67,45 @@ export const isDividerOrRowFrameDraggingAtom = atom<boolean>({
   key: "isDividerOrRowFrameDraggingAtom",
   default: false,
 });
-export const unSavedReportPreviewMode = atom<boolean>({
-  key: "unSavedReportPreviewMode",
+export const unSavedReportPreviewModeAtom = atom<boolean>({
+  key: "unSavedReportPreviewModeAtom",
   default: false,
+});
+export const createChartFromReportAtom = atom<{
+  state: boolean;
+  view: string;
+  page: string;
+}>({
+  key: "createChartFromReportAtom",
+  default: {
+    state: false,
+    view: "",
+    page: "",
+  },
+});
+
+export const persistedReportStateAtom = atom<{
+  headerDetails: {
+    title: string;
+    description: RawDraftContentState;
+    showHeader: boolean;
+    backgroundColor: string;
+    titleColor: string;
+    descriptionColor: string;
+    dateColor: string;
+  };
+}>({
+  key: "reportCreateStateAtom",
+  default: {
+    headerDetails: {
+      title: "",
+      description: convertToRaw(EditorState.createEmpty().getCurrentContent()),
+      showHeader: true,
+      backgroundColor: "#252c34",
+      titleColor: "#ffffff",
+      descriptionColor: "#ffffff",
+      dateColor: "#ffffff",
+    },
+  },
+  effects_UNSTABLE: [persistAtom],
 });

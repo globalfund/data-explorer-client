@@ -18,11 +18,11 @@ import {
 import {
   IRowFrameStructure,
   isDividerOrRowFrameDraggingAtom,
-  unSavedReportPreviewMode,
+  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,

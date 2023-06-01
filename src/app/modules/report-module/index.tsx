@@ -26,7 +26,10 @@ import {
   useParams,
   Redirect,
 } from "react-router-dom";
-import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
+import {
+  persistedReportStateAtom,
+  unSavedReportPreviewModeAtom,
+} from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 
 export default function ReportModule() {
@@ -43,7 +46,10 @@ export default function ReportModule() {
     "basic" | "advanced" | "ai"
   >("basic");
   const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
+  const [persistedReportState, setPersistedReportState] = useRecoilState(
+    persistedReportStateAtom
+  );
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -53,6 +59,11 @@ export default function ReportModule() {
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
+
+  React.useEffect(() => {
+    setHeaderDetails(persistedReportState.headerDetails);
+  }, [persistedReportState]);
+
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
 

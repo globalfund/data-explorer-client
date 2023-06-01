@@ -26,11 +26,13 @@ import { ReactComponent as AddNewImage } from "app/modules/home-module/assets/ad
 import { ReactComponent as DividerIcon } from "app/modules/report-module/asset/dividerIcon.svg";
 import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
 import {
+  createChartFromReportAtom,
   isDividerOrRowFrameDraggingAtom,
+  persistedReportStateAtom,
   reportRightPanelViewAtom,
 } from "app/state/recoil/atoms";
 import { IconButton } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 
 const Button = withStyles(() => ({
   root: {
@@ -246,6 +248,7 @@ export function ReportRightPanelCreateView(props: Props) {
         <ReportRightPanelCreateViewChartList
           pickedCharts={props.pickedCharts}
           setPickedCharts={props.setPickedCharts}
+          headerDetails={props.headerDetails}
         />
       )}
       {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
@@ -263,6 +266,7 @@ const sortByOptions = [
 function ReportRightPanelCreateViewChartList(props: {
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
+  headerDetails: IHeaderDeatils;
 }) {
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
@@ -402,7 +406,7 @@ function ReportRightPanelCreateViewChartList(props: {
           }
         `}
       >
-        <CreateChartCard />
+        <CreateChartCard headerDetails={props.headerDetails} />
         {chartList.map((chart) => (
           <ChartItem
             id={chart.id}
@@ -471,9 +475,41 @@ function ElementItem(props: {
   );
 }
 
-function CreateChartCard() {
+function CreateChartCard(props: { headerDetails: IHeaderDeatils }) {
+  const { page, view } = useParams<{
+    page: string;
+    view: string;
+  }>();
+
+  const setDataset = useStoreActions(
+    (actions) => actions.charts.dataset.setValue
+  );
+  const setLoadedChart = useStoreActions(
+    (state) => state.charts.ChartGet.setCrudData
+  );
+  const setCreateChartData = useStoreActions(
+    (state) => state.charts.ChartCreate.setCrudData
+  );
+  const [persistedReportState, setPersistedReportState] = useRecoilState(
+    persistedReportStateAtom
+  );
+  const [_, setCreateChartFromReport] = useRecoilState(
+    createChartFromReportAtom
+  );
   const history = useHistory();
   const action = () => {
+    setCreateChartFromReport({
+      state: true,
+      view,
+      page,
+    });
+    setDataset(null);
+    setLoadedChart(null);
+    setCreateChartData(null);
+    setPersistedReportState({
+      ...persistedReportState,
+      headerDetails: props.headerDetails,
+    });
     history.push("/chart/new/data");
   };
   return (
