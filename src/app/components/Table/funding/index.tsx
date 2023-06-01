@@ -265,66 +265,62 @@ function Row(props: {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Table>
               <TableBody>
-                {rowSelected === "child" &&
-                  props.index === 0 &&
-                  !secondLevelRow && (
-                    <TableRow>
-                      {cellData.map((name, index) => (
-                        <TableCell
-                          key={v4()}
+                {rowSelected === "child" && !secondLevelRow && (
+                  <TableRow>
+                    {cellData.map((name, index) => (
+                      <TableCell
+                        key={v4()}
+                        css={`
+                          text-align: center;
+                          padding: 16px 10px;
+                          // padding-left: ${index === 0 ? "4rem" : "auto"};
+                          ${tablecell}
+                          font-size: 12px;
+                          background: #f5f5f7;
+                        `}
+                      >
+                        <div
                           css={`
-                            text-align: center;
-                            padding: 16px 10px;
-                            // padding-left: ${index === 0 ? "4rem" : "auto"};
-                            ${tablecell}
-                            font-size: 12px;
-                            background: #f5f5f7;
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            flex-direction: row;
+                            // justify-content: center;
                           `}
                         >
                           <div
                             css={`
-                              width: 100%;
+                              gap: 12px;
                               display: flex;
                               align-items: center;
                               flex-direction: row;
                               // justify-content: center;
-                            `}
-                          >
-                            <div
-                              css={`
-                                gap: 12px;
-                                display: flex;
-                                align-items: center;
-                                flex-direction: row;
-                                // justify-content: center;
-                                font-weight: bold;
-                                font-family: "GothamNarrow-Bold",
-                                  "Helvetica Neue", sans-serif;
+                              font-weight: bold;
+                              font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                                sans-serif;
 
-                                > * {
-                                  @supports (-webkit-touch-callout: none) and
-                                    (not (translate: none)) {
-                                    &:not(:last-child) {
-                                      margin-right: 12px;
-                                    }
+                              > * {
+                                @supports (-webkit-touch-callout: none) and
+                                  (not (translate: none)) {
+                                  &:not(:last-child) {
+                                    margin-right: 12px;
                                   }
                                 }
+                              }
 
-                                > svg {
-                                  transition: transform 0.1s ease-in-out;
-                                  transform: rotate(
-                                    ${open ? "0deg" : "-180deg"}
-                                  );
-                                }
-                              `}
-                            >
-                              {name}
-                            </div>
+                              > svg {
+                                transition: transform 0.1s ease-in-out;
+                                transform: rotate(${open ? "0deg" : "-180deg"});
+                              }
+                            `}
+                          >
+                            {name}
                           </div>
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  )}
+                        </div>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                )}
                 {props.row.children &&
                   props.row.children.map(
                     (child: FundingTableRow, index: number) =>
