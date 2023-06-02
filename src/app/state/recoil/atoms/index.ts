@@ -85,27 +85,53 @@ export const createChartFromReportAtom = atom<{
 });
 
 export const persistedReportStateAtom = atom<{
+  reportName: string;
   headerDetails: {
     title: string;
-    description: EditorState;
+    description: string;
     showHeader: boolean;
     backgroundColor: string;
     titleColor: string;
     descriptionColor: string;
     dateColor: string;
   };
+  appliedHeaderDetails: {
+    title: string;
+    description: string;
+    showHeader: boolean;
+    backgroundColor: string;
+    titleColor: string;
+    descriptionColor: string;
+    dateColor: string;
+  };
+  framesArray: string;
 }>({
   key: "reportCreateStateAtom",
   default: {
+    reportName: "My First Report",
     headerDetails: {
       title: "",
-      description: EditorState.createEmpty(),
+      description: JSON.stringify(
+        convertToRaw(EditorState.createEmpty().getCurrentContent())
+      ),
       showHeader: true,
       backgroundColor: "#252c34",
       titleColor: "#ffffff",
       descriptionColor: "#ffffff",
       dateColor: "#ffffff",
     },
+    appliedHeaderDetails: {
+      title: "",
+      description: JSON.stringify(
+        convertToRaw(EditorState.createEmpty().getCurrentContent())
+      ),
+      showHeader: true,
+      backgroundColor: "#252c34",
+      titleColor: "#ffffff",
+      descriptionColor: "#ffffff",
+      dateColor: "#ffffff",
+    },
+    framesArray: JSON.stringify([]),
   },
-  // effects_UNSTABLE: [persistAtom],
+  effects_UNSTABLE: [persistAtom],
 });

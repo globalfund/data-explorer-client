@@ -161,7 +161,7 @@ export function useChartsRawData(props: {
         const chart = response.data || {};
 
         if (!isEmpty(chart)) {
-          setAllAppliedFilters(chart.appliedFilters);
+          setAllAppliedFilters(chart.appliedFilters || {});
           setEnabledFilterOptionGroups(chart.enabledFilterOptionGroups);
           setVisualOptions(chart.vizOptions);
           setMapping(chart.mapping);
