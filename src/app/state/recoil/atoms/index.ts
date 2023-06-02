@@ -53,7 +53,7 @@ export const cmsDataAtom = atom({
 
 export const homeDisplayAtom = atom<"data" | "charts" | "reports">({
   key: "homeDisplayAtom",
-  default: "data",
+  default: "reports",
 });
 
 export const reportRightPanelViewAtom = atom<

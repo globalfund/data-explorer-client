@@ -238,7 +238,7 @@ export default createTheme({
     },
     MuiTab: {
       wrapper: {
-        color: ProjectPalette.common.black,
+        color: "inherit",
         fontWeight: 600,
         fontSize: "14px",
       },
