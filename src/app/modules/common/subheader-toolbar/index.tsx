@@ -45,13 +45,14 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   }
 
   & [class*="MuiSnackbarContent-root"] {
-    width: 640px;
+    width: 100%;
     display: flex;
     padding: 0 78px;
     background: #fff;
     flex-wrap: nowrap;
     border-radius: 12px;
-    justify-content: space-between;
+    gap: ${(props) => (props.gap ? "0px" : "84px")};
+    justify-content: center;
     box-shadow: 0 8px 17px -4px rgba(130, 142, 148, 0.35),
       0 0 4px 0 rgba(130, 142, 148, 0.16), 0 0 2px 0 rgba(130, 142, 148, 0.12);
 
@@ -224,7 +225,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       });
     }
     //completes chart creation, returns back to persisted report view
-    if (createChartFromReport) {
+    if (createChartFromReport.state) {
       setCreateChartFromReport({
         ...createChartFromReport,
         state: false,
@@ -389,6 +390,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     <div id="subheader-toolbar" css={styles.container}>
       {createOrEditChartLoading && <PageLoader />}
       <InfoSnackbar
+        gap={createChartFromReport.view !== ""}
         data-testid="create-chart-snackbar"
         onClose={() => setShowSnackbar(null)}
         open={showSnackbar !== null && showSnackbar !== ""}

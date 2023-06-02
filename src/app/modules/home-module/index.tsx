@@ -1,11 +1,15 @@
 /* third-party */
 import React from "react";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import useTitle from "react-use/lib/useTitle";
 import Container from "@material-ui/core/Container";
 /* project */
 import { Search } from "app/components/Search";
-import { homeDisplayAtom } from "app/state/recoil/atoms";
+import {
+  createChartFromReportAtom,
+  homeDisplayAtom,
+  persistedReportStateAtom,
+} from "app/state/recoil/atoms";
 import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
 import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
@@ -15,6 +19,16 @@ export default function HomeModule() {
   useTitle("DX DataXplorer");
 
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+  const clearPersistedReportState = useResetRecoilState(
+    persistedReportStateAtom
+  );
+  const clearCreateChartFromReportState = useResetRecoilState(
+    createChartFromReportAtom
+  );
+  React.useEffect(() => {
+    clearPersistedReportState();
+    clearCreateChartFromReportState();
+  }, []);
 
   const displayGrid = () => {
     switch (display) {

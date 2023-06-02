@@ -1,7 +1,7 @@
 import React from "react";
 import find from "lodash/find";
 import { useDrag } from "react-dnd";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { useRecoilState } from "recoil";
 import Paper from "@material-ui/core/Paper";
 import MuiButton from "@material-ui/core/Button";
@@ -33,6 +33,7 @@ import {
 } from "app/state/recoil/atoms";
 import { IconButton } from "@material-ui/core";
 import { useHistory, useParams } from "react-router-dom";
+import { IFramesArray } from "../../views/create/data";
 
 const Button = withStyles(() => ({
   root: {
@@ -133,6 +134,8 @@ interface Props {
   setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
   headerDetails: IHeaderDeatils;
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
+  framesArray: IFramesArray[];
+  reportName: string;
 }
 
 export function ReportRightPanelCreateView(props: Props) {
@@ -249,6 +252,9 @@ export function ReportRightPanelCreateView(props: Props) {
           pickedCharts={props.pickedCharts}
           setPickedCharts={props.setPickedCharts}
           headerDetails={props.headerDetails}
+          framesArray={props.framesArray}
+          reportName={props.reportName}
+          appliedHeaderDetails={props.appliedHeaderDetails}
         />
       )}
       {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
@@ -267,6 +273,9 @@ function ReportRightPanelCreateViewChartList(props: {
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
   headerDetails: IHeaderDeatils;
+  appliedHeaderDetails: IHeaderDeatils;
+  framesArray: IFramesArray[];
+  reportName: string;
 }) {
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
@@ -406,7 +415,12 @@ function ReportRightPanelCreateViewChartList(props: {
           }
         `}
       >
-        <CreateChartCard headerDetails={props.headerDetails} />
+        <CreateChartCard
+          headerDetails={props.headerDetails}
+          framesArray={props.framesArray}
+          reportName={props.reportName}
+          appliedHeaderDetails={props.appliedHeaderDetails}
+        />
         {chartList.map((chart) => (
           <ChartItem
             id={chart.id}
@@ -475,7 +489,14 @@ function ElementItem(props: {
   );
 }
 
-function CreateChartCard(props: { headerDetails: IHeaderDeatils }) {
+function CreateChartCard(props: {
+  reportName: string;
+  headerDetails: IHeaderDeatils;
+  appliedHeaderDetails: IHeaderDeatils;
+  framesArray: IFramesArray[];
+}) {
+  const history = useHistory();
+
   const { page, view } = useParams<{
     page: string;
     view: string;
@@ -496,7 +517,9 @@ function CreateChartCard(props: { headerDetails: IHeaderDeatils }) {
   const [_, setCreateChartFromReport] = useRecoilState(
     createChartFromReportAtom
   );
-  const history = useHistory();
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
   const action = () => {
     setCreateChartFromReport({
       state: true,
@@ -506,9 +529,42 @@ function CreateChartCard(props: { headerDetails: IHeaderDeatils }) {
     setDataset(null);
     setLoadedChart(null);
     setCreateChartData(null);
+    //set persisted report state to current report state
     setPersistedReportState({
       ...persistedReportState,
-      headerDetails: props.headerDetails,
+      reportName: props.reportName,
+      headerDetails: {
+        ...props.headerDetails,
+        description: JSON.stringify(
+          convertToRaw(props.headerDetails.description.getCurrentContent())
+        ),
+      },
+      appliedHeaderDetails: {
+        ...props.appliedHeaderDetails,
+        description: JSON.stringify(
+          convertToRaw(
+            props.appliedHeaderDetails.description.getCurrentContent()
+          )
+        ),
+      },
+
+      framesArray: JSON.stringify(
+        props.framesArray
+          .sort(function (a, b) {
+            return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
+          })
+          .map((frame) => ({
+            id: frame.id,
+            structure: frame.structure,
+            content: frame.content,
+            contentTypes: frame.contentTypes,
+            items: frame.content.map((item, index) =>
+              frame.contentTypes[index] === "text"
+                ? convertToRaw((item as EditorState).getCurrentContent())
+                : item
+            ),
+          }))
+      ),
     });
     history.push("/chart/new/data");
   };

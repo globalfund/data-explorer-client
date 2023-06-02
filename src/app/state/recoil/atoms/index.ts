@@ -82,6 +82,7 @@ export const createChartFromReportAtom = atom<{
     view: "",
     page: "",
   },
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const persistedReportStateAtom = atom<{
