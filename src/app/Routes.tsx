@@ -9,6 +9,10 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { RouteWithAppBar } from "app/utils/RouteWithAppBar";
 
 const HomeModule = lazy(() => import("app/modules/home-module"));
+const CasesModule = lazy(
+  () => import("app/modules/home-module/sub-modules/cases")
+);
+
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const ChartsModule = lazy(() => import("app/modules/charts-module"));
@@ -34,6 +38,9 @@ export function MainRoutes() {
         </Route>
         <RouteWithAppBar exact path="/">
           <HomeModule />
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/cases">
+          <CasesModule />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/report/:page/:view?">
           <ReportModule />

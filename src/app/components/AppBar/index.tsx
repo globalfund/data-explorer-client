@@ -114,7 +114,7 @@ export function AppBar() {
   const [openSearch, setOpenSearch] = React.useState(false);
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
+  const navLocation = location.pathname.split("/").join("");
   function handleClick(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
   }
@@ -229,27 +229,27 @@ export function AppBar() {
                   gap: 20px;
                 `}
               >
-                <div css={navLinkcss("")}>
+                <div css={navLinkcss("", navLocation)}>
                   <NavLink to="#" onClick={() => handlePath("data")}>
                     <b>Why Dx?</b>
                   </NavLink>
                 </div>
-                <div css={navLinkcss("")}>
+                <div css={navLinkcss("", navLocation)}>
                   <NavLink to="/" onClick={() => handlePath("reports")}>
                     <b>Explore Reports</b>
                   </NavLink>
                 </div>
-                <div css={navLinkcss("")}>
+                <div css={navLinkcss("", navLocation)}>
                   <Link to="#" onClick={() => handlePath("reports")}>
                     <b>About</b>
                   </Link>
                 </div>
-                <div css={navLinkcss("")}>
-                  <Link to="#" onClick={() => handlePath("reports")}>
+                <div css={navLinkcss("cases", navLocation)}>
+                  <Link to="/cases" onClick={() => handlePath("reports")}>
                     <b>Cases </b>
                   </Link>
                 </div>
-                <div css={navLinkcss("")}>
+                <div css={navLinkcss("", navLocation)}>
                   <Link to="#" onClick={() => handlePath("reports")}>
                     <b>Contact </b>
                   </Link>
