@@ -11,10 +11,10 @@ export const fundingRequestColumns = [
             key: "gac",
             name: "",
           },
-          {
-            key: "board",
-            name: "",
-          },
+          // {
+          //   key: "board",
+          //   name: "",
+          // },
           {
             key: "grant",
             name: "",
@@ -72,7 +72,7 @@ export const cellData = [
 
 export const cellData2 = [
   "GAC Meeting",
-  "Board Approval",
+  // "Board Approval",
   "Grant",
   "Starting Date",
   "End Date",
