@@ -86,6 +86,9 @@ export function InvestmentsDisbursedModule(
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
+  );
 
   const totalValue = React.useMemo(
     () => sumBy(props.data, "value"),
@@ -234,10 +237,12 @@ export function InvestmentsDisbursedModule(
               .split("-")
               .slice(0, node.split("-").length - 1)
               .join("-");
-            setReRouteDialog({
-              display: true,
-              code,
-            });
+            // setReRouteDialog({
+            //   display: true,
+            //   code,
+            // });
+            clearDataPathSteps();
+            history.push(`/grant/${code}/period/${clickthroughPath}`);
           }}
         />
       );

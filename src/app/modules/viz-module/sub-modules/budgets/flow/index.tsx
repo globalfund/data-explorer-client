@@ -70,6 +70,9 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
+  );
 
   const totalBudget: number = React.useMemo(() => {
     return sumBy(filter(props.links, { source: "Budgets" }), "value");
@@ -199,10 +202,12 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
                 .replace(idSplits[0], "")
                 .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
-              setReRouteDialog({
-                display: true,
-                code,
-              });
+              // setReRouteDialog({
+              //   display: true,
+              //   code,
+              // });
+              clearDataPathSteps();
+              history.push(`/grant/${code}/period/budgets/flow`);
             }
           }}
         />

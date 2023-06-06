@@ -56,6 +56,9 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
   );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
+  );
 
   const [reRouteDialog, setReRouteDialog] = React.useState({
     display: false,
@@ -183,10 +186,12 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
                 .replace(idSplits[0], "")
                 .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
-              setReRouteDialog({
-                display: true,
-                code,
-              });
+              // setReRouteDialog({
+              //   display: true,
+              //   code,
+              // });
+              clearDataPathSteps();
+              history.push(`/grant/${code}/period/budgets/time-cycle`);
             }
           }}
         />

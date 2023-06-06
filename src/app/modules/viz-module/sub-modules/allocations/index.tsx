@@ -96,6 +96,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const fetchPeriodOptionsData = useStoreActions(
     (store) => store.AllocationsPeriods.fetch
   );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -491,10 +494,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             onNodeClick={(node: string) => {
               const name = node.split("-")[0];
               const code = getIso3FromName(name);
-              setReRouteDialog({
-                display: true,
-                code,
-              });
+              // setReRouteDialog({
+              //     display: true,
+              //     code,
+              //   });
+              clearDataPathSteps();
+              history.push(`/location/${code}/overview`);
             }}
           />
         </React.Fragment>
