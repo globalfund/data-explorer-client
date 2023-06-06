@@ -21,25 +21,32 @@ export const chipcss = (active: boolean) => css`
 export const descriptioncss = css`
   text-align: center;
   font-family: "Gotham Narrow";
+
   p {
-    font-weight: 325;
-    font-size: 14px;
-    color: #000000;
-    width: 60%;
+    color: #000;
+    width: 100%;
     margin: auto;
+    font-size: 14px;
+    font-weight: 400;
     line-height: 17px;
+
+    a {
+      font-weight: 700;
+    }
   }
+
   h1 {
-    font-weight: 700;
-    font-size: 24px;
     color: #252c34;
+    font-size: 24px;
+    font-weight: 700;
     margin-bottom: 0px;
   }
+
   h3 {
-    font-weight: 400;
-    font-size: 18px;
     color: #252c34;
     margin-top: 3px;
+    font-size: 18px;
+    font-weight: 400;
   }
 `;
 

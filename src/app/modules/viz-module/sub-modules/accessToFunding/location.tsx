@@ -111,13 +111,13 @@ export default function LocationAccessToFundingWrapper(props: Props) {
         <h3>
           <b>Allocation, Funding Requests & Eligibility</b>
         </h3>
-        <p>
-          Eligibility for Global Fund support is determined by the income
-          classification and disease burden of a country or region. Resources
-          are allocated to eligible countries or regions with the highest
-          disease burden, the least economic capacity, and where key and
-          vulnerable populations are disproportionately affected by the three
-          diseases.
+        <p style={{ width: "60%" }}>
+          The Global Fund allocates funding to eligible countries every three
+          years. Countries access these funds by developing Funding Requests
+          which are informed by country dialogues. Information on the current
+          status of Funding Requests is found below. For those interested in
+          participating in country dialogue, the “Overview” tab above includes
+          contact information for the Country Coordinating Mechanism.
         </p>
       </div>
       <Box height={25} />
@@ -271,10 +271,14 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             />
             <div css={descriptioncss}>
               <p>
-                Below are the components which are eligible for an allocation
-                for the selected allocation period, according to the Global Fund
-                Eligibility Policy. Eligibility does not guarantee a funding
-                allocation. Learn more about Eligibility{" "}
+                Eligibility for funding from the Global Fund is determined by
+                country income classification and disease burden for HIV,
+                tuberculosis and malaria. Below are the components which are
+                eligible for an allocation for the selected allocation period,
+                according to the Global Fund Eligibility Policy. Eligibility for
+                the 2023-2025 Allocation Period was determined in 2022 and
+                documented in the 2023 Eligibility List. Eligibility does not
+                guarantee a funding allocation. Learn more about Eligibility{" "}
                 <a
                   target="_blank"
                   href="https://www.theglobalfund.org/en/applying-for-funding/understand-and-prepare/eligibility/"
