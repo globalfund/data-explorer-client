@@ -155,8 +155,8 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.donors.length +
       payload.donorCategories.length +
       payload.donorSubCategories.length +
-      payload.trpWindows.length;
-    payload.portfolioCategories.length;
+      payload.trpWindows.length +
+      payload.portfolioCategories.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

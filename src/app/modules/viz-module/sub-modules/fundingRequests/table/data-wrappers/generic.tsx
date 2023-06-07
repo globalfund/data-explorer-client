@@ -66,12 +66,17 @@ export function GenericFundingRequestWrapper() {
   }, []);
 
   function reloadData() {
-    const filterString = getAPIFormattedFilters(appliedFilters, {
+    let filterString = getAPIFormattedFilters(appliedFilters, {
       search,
       sortBy,
     });
+    if (filterString.length > 0) {
+      filterString = `&${filterString}`;
+    } else {
+      filterString = "";
+    }
     fetchData({
-      filterString: `${filterString.length > 0 ? `&${filterString}` : ""}`,
+      filterString,
     });
   }
 

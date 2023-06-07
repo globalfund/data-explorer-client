@@ -64,7 +64,7 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
     }
   });
   const data = useStoreState((state) => {
-    let compData = state.DisbursementsTimeCycle.data;
+    let compData;
     switch (props.type) {
       case "Signed":
         compData = state.SignedTimeCycle.data;

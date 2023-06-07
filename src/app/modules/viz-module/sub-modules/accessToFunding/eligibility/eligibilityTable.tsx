@@ -2,7 +2,6 @@
 import React from "react";
 /* project */
 import { SimpleTable } from "app/components/Table/Simple";
-import { PageLoader } from "app/modules/common/page-loader";
 import {
   SimpleTableRow,
   SimpleTableColumn,

@@ -262,7 +262,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
+    let filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
@@ -270,13 +270,16 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         : appliedFilters
     );
+    if (filterString.length > 0) {
+      filterString = `&${filterString}`;
+    } else {
+      filterString = "";
+    }
 
     fetchData({
       filterString:
         selectedPeriod !== "All"
-          ? `periods=${selectedPeriod}${
-              filterString.length > 0 ? `&${filterString}` : ""
-            }`
+          ? `periods=${selectedPeriod}${filterString}`
           : "",
     });
   }, [props.code, appliedFilters, selectedPeriod]);
@@ -299,7 +302,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         }
       });
-      const filterString = getAPIFormattedFilters(
+      let filterString = getAPIFormattedFilters(
         props.code
           ? {
               ...appliedFilters,
@@ -307,6 +310,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             }
           : appliedFilters
       );
+      if (filterString.length > 0) {
+        filterString = `&${filterString}`;
+      } else {
+        filterString = "";
+      }
       fetchDrilldownLevelData({
         filterString: `levelParam=component/componentName in (${(vizSelected ===
         "Total"
@@ -317,11 +325,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           .map((s: string) => `'${s}'`)
           .join(",")})${
           selectedPeriod !== "All"
-            ? `&periods=${selectedPeriod}${
-                filterString.length > 0 ? `&${filterString}` : ""
-              }`
+            ? `&periods=${selectedPeriod}${filterString}`
             : ""
-        }${filterString.length > 0 ? `&${filterString}` : ""}`,
+        }${filterString}`,
       });
     } else {
       [...items].forEach((item: Element) => {

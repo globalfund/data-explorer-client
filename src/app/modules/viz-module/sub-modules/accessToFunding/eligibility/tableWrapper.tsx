@@ -5,7 +5,6 @@ import orderBy from "lodash/orderBy";
 
 import { useDebounce } from "react-use";
 import { useRecoilValue } from "recoil";
-import Slide from "@material-ui/core/Slide";
 import TablePagination from "@material-ui/core/TablePagination";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -243,9 +242,9 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
   } else {
     formattedData = data;
   }
-  const sortedData = formattedData.map((data) => {
-    const sort = orderBy(data.children, ["level1"], ["desc"]);
-    return { ...data, children: sort };
+  const sortedData = formattedData.map((fdata) => {
+    const sort = orderBy(fdata.children, ["level1"], ["desc"]);
+    return { ...fdata, children: sort };
   });
 
   return (

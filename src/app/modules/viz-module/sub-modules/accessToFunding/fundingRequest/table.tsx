@@ -1,6 +1,4 @@
 import React from "react";
-import get from "lodash/get";
-import { useCMSData } from "app/hooks/useCMSData";
 import {
   FundingTableRow,
   FundingTableColumn,

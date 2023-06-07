@@ -184,7 +184,6 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
 
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
   const isResultsPage = history.location.pathname.indexOf("/results") > -1;
-  const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
 
   return (
     <>

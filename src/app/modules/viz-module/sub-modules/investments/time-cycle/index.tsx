@@ -7,13 +7,11 @@ import { TreeMapNodeDatum } from "@nivo/treemap";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
 import { getIso3FromName, getNameFromIso3 } from "app/utils/getIso3FromName";
 import { InvestmentsTimeCycle } from "app/components/Charts/Investments/TimeCycle";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
-import { DisbursementsTreemap } from "app/components/Charts/Investments/Disbursements";
-import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
-import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 
 interface InvestmentsTimeCycleModuleProps {
   data: Record<string, unknown>[];
@@ -24,7 +22,7 @@ interface InvestmentsTimeCycleModuleProps {
   setVizLevel: (vizLevel: number) => void;
   vizSelected: string | undefined;
   setDrilldownVizSelected?: (vizSelected: string | undefined) => void;
-  drilldownVizSelected?: string | undefined;
+  drilldownVizSelected?: string;
   setVizSelected: (vizSelected: string | undefined) => void;
   type?: string;
   toolboxOpen?: boolean;

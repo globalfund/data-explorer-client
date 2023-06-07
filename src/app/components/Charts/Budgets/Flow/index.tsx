@@ -1,8 +1,6 @@
 import React from "react";
 import get from "lodash/get";
-import sumBy from "lodash/sumBy";
 import uniqBy from "lodash/uniqBy";
-import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
