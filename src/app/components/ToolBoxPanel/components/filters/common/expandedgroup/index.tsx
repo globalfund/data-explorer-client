@@ -410,8 +410,10 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
             `}
           />
           <div
+            id="scrollable-div"
             css={`
               overflow-y: auto;
+              height: calc(100% - 190px);
               max-height: calc(100% - 190px);
 
               @media (max-width: 767px) {

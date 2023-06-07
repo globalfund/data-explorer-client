@@ -326,10 +326,15 @@ export function AccessToFundingEligibilityTableWrapper(props: Props) {
           <div
             css={`
               width: 100%;
-
+              height: 100%;
               display: flex;
-
+              max-height: 100%;
               flex-direction: column;
+
+              #scrollable-div {
+                height: calc(100% - 260px);
+                max-height: calc(100% - 260px);
+              }
             `}
           >
             <ToolBoxPanelAggregateBy

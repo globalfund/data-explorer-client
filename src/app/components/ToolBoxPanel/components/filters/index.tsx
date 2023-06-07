@@ -95,8 +95,8 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
         width: 100%;
         height: 100%;
         display: flex;
-        max-height: 100%;
-        overflow-y: auto;
+        // max-height: 100%;
+        // overflow-y: auto;
         padding: 15px 25px;
         flex-direction: column;
 
