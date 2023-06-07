@@ -191,7 +191,6 @@ export default function GrantsModule(props: GrantsModuleProps) {
         justify-content: center;
       `}
     >
-      {props.detailFilterType !== "partners" && <BreadCrumbs />}
       {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
