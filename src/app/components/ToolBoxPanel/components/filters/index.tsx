@@ -221,8 +221,11 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
             }
             setAppliedFilters={
               props.setAppliedFilters
-                ? (filters: string[]) =>
-                    setGroupAppliedFilters(expandedGroupValue.name, filters)
+                ? (filters: string[]) => {
+                    if (expandedGroupValue) {
+                      setGroupAppliedFilters(expandedGroupValue.name, filters);
+                    }
+                  }
                 : undefined
             }
           />
