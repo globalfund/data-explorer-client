@@ -61,7 +61,7 @@ export const SmallEllipseCss = css`
 
 export const TabCardEllipseCss = css`
   top: 7%;
-  right: 23%;
+  right: 25%;
   z-index: -1;
   position: absolute;
 `;

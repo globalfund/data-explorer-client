@@ -12,6 +12,9 @@ const HomeModule = lazy(() => import("app/modules/home-module"));
 const CasesModule = lazy(
   () => import("app/modules/home-module/sub-modules/cases")
 );
+const ContactModule = lazy(
+  () => import("app/modules/home-module/sub-modules/contact")
+);
 
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
@@ -41,6 +44,9 @@ export function MainRoutes() {
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/cases">
           <CasesModule />
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/contact">
+          <ContactModule />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/report/:page/:view?">
           <ReportModule />

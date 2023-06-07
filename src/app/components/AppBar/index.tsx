@@ -229,17 +229,17 @@ export function AppBar() {
                   gap: 20px;
                 `}
               >
-                <div css={navLinkcss("", navLocation)}>
+                <div css={navLinkcss("why-dx", navLocation)}>
                   <NavLink to="#" onClick={() => handlePath("data")}>
                     <b>Why Dx?</b>
                   </NavLink>
                 </div>
-                <div css={navLinkcss("", navLocation)}>
+                <div css={navLinkcss("explore", navLocation)}>
                   <NavLink to="/" onClick={() => handlePath("reports")}>
                     <b>Explore Reports</b>
                   </NavLink>
                 </div>
-                <div css={navLinkcss("", navLocation)}>
+                <div css={navLinkcss("about", navLocation)}>
                   <Link to="#" onClick={() => handlePath("reports")}>
                     <b>About</b>
                   </Link>
@@ -249,8 +249,8 @@ export function AppBar() {
                     <b>Cases </b>
                   </Link>
                 </div>
-                <div css={navLinkcss("", navLocation)}>
-                  <Link to="#" onClick={() => handlePath("reports")}>
+                <div css={navLinkcss("contact", navLocation)}>
+                  <Link to="/contact" onClick={() => handlePath("reports")}>
                     <b>Contact </b>
                   </Link>
                 </div>

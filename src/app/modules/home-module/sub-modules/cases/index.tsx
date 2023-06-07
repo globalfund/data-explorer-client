@@ -60,7 +60,7 @@ export const StyledTabs = withStyles({
   },
 })(Tabs);
 
-export default function Cases() {
+export default function CasesModule() {
   const [displayTab, setDisplayTab] = React.useState<
     "about" | "grants" | "budgets" | "performance"
   >("about");

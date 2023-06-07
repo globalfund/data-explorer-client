@@ -88,13 +88,13 @@ export const AboutTabCard = () => {
       they are and what they achieve by providing pledge and contribution data,
       grant financial data, and results data at global, regional and country
       levels.
-      <br /> <br /> Visit{" "}
+      <br /> <br />
       <a
         href="https://data.theglobalfund.org/"
         rel="noreferrer noopener"
         target="_blank"
       >
-        the Global Fund Data Explorer
+        Visit the Global Fund Data Explorer
       </a>
     </div>
   );
