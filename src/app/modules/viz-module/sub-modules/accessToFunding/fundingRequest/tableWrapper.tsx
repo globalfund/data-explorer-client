@@ -224,9 +224,9 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
         <div
           css={`
             width: 100%;
-
+            height: 100%;
             display: flex;
-
+            max-height: 100%;
             flex-direction: column;
           `}
         >
@@ -239,6 +239,7 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
             defaultAppliedFilters={{
               components: [],
               trpWindows: [],
+              portfolioCategories: [],
             }}
             groupAppliedFiltersPathKey={groupAppliedFiltersPathKey}
           />
