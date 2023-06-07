@@ -283,7 +283,11 @@ function PageHeaderTabWDropdown(props: TabProps) {
               disableTouchRipple
               css={`
                 border-bottom-style: none;
-
+                background: ${appColors.TABS.ITEM_BACKGROUND_COLOR};
+                li {
+                  width: 100%;
+                  border-radius: 0 !important;
+                }
                 > a {
                   background: ${appColors.TABS.ITEM_BACKGROUND_COLOR};
 
