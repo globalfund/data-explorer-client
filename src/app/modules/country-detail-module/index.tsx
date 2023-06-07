@@ -121,7 +121,7 @@ export default function CountryDetail() {
       !isMobile &&
       !openToolboxPanel &&
       params.vizType !== "overview" &&
-      !(location.pathname.indexOf("access-to-funding") > -1)
+      location.pathname.indexOf("access-to-funding") <= -1
     ) {
       setOpenToolboxPanel(true);
     } else {
@@ -358,7 +358,7 @@ export default function CountryDetail() {
           }
         `}
       />
-      {!(location.pathname.indexOf("access-to-funding") > -1) && (
+      {location.pathname.indexOf("access-to-funding") <= -1 && (
         <ToolBoxPanel
           isLocationDetail
           open={openToolboxPanel}

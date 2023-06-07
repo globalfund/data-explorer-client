@@ -216,7 +216,7 @@ export function InvestmentsDisbursedModule(
             _x: number,
             _y: number,
             code?: string,
-            name?: string
+            _name?: string
           ) => {
             if (props.allowDrilldown) {
               props.setVizLevel(1);

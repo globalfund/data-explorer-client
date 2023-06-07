@@ -82,12 +82,11 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
     return <React.Fragment />;
   }
 
-  const expandedGroupValue =
-    props.expandedGroup !== undefined
-      ? props.expandedGroup
-      : expandedGroup
-      ? expandedGroup
-      : null;
+  let expandedGroupValue =
+    props.expandedGroup !== undefined ? props.expandedGroup : null;
+  if (expandedGroupValue === null && expandedGroup) {
+    expandedGroupValue = expandedGroup;
+  }
 
   return (
     <div

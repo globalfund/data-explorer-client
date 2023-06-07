@@ -4,7 +4,6 @@ import get from "lodash/get";
 import orderBy from "lodash/orderBy";
 import { useDebounce } from "react-use";
 import { useRecoilValue } from "recoil";
-import Slide from "@material-ui/core/Slide";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -118,8 +117,9 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
   }
 
   const tableData = React.useMemo(() => {
+    let result;
     if (props.code) {
-      const result = get(data, "[0].children", []).slice(
+      result = get(data, "[0].children", []).slice(
         page * rowsPerPage,
         (page + 1) * rowsPerPage
       );
@@ -128,7 +128,7 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
       }
       return orderBy(result, "children", "desc");
     }
-    const result = data.map((item) => ({
+    result = data.map((item) => ({
       ...item,
       children: orderBy(item.children, "children", "desc"),
     }));
