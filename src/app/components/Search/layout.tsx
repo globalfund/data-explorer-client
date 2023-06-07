@@ -26,6 +26,8 @@ import {
   mobilecontainer,
   mobilebackbutton,
 } from "app/components/Search/styles";
+import { CloseIcon } from "app/assets/icons/Close";
+import { IconButton } from "@material-ui/core";
 
 interface SearchLayoutProps {
   value: string;
@@ -283,6 +285,25 @@ export function SearchLayout(props: SearchLayoutProps) {
             props.setValue(e.target.value)
           }
         />
+        <IconButton
+          onClick={() => {
+            props.setValue("");
+          }}
+          css={`
+            padding: 0px;
+            margin-right: 16px;
+            :hover {
+              background: transparent;
+            }
+            svg {
+              path {
+                fill: rgba(0, 0, 0, 0.26);
+              }
+            }
+          `}
+        >
+          <CloseIcon />
+        </IconButton>
         <SearchIcon />
         {open && (
           <ClickAwayListener
