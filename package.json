@@ -137,7 +137,8 @@
     "build": "craco build",
     "test": "craco test",
     "eject": "craco eject",
-    "upgrade-all": "yarn-upgrade-all"
+    "upgrade-all": "yarn-upgrade-all",
+    "docker": "yarn link '@rawgraphs/rawgraphs-charts' && craco start"
   },
   "browserslist": {
     "production": [

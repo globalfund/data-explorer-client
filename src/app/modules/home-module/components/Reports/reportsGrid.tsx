@@ -6,10 +6,15 @@ import useDebounce from "react-use/lib/useDebounce";
 import { ReportModel } from "app/modules/report-module/data";
 import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import ReformedGridItem from "app/modules/home-module/components/Reports/reformedGridItem";
 
-export default function ReportsGrid(props: { searchStr: string }) {
+export default function ReportsGrid(props: {
+  sortBy: string;
+  searchStr: string;
+  tableView: boolean;
+}) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -69,49 +74,61 @@ export default function ReportsGrid(props: { searchStr: string }) {
     setModalDisplay(true);
   };
 
-  function loadData(searchStr: string) {
+  function loadData(searchStr: string, sortByStr: string) {
     const value =
       searchStr.length > 0
         ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     loadReports({
       storeInCrudData: true,
-      filterString: `filter={${value}"order":"createdDate desc"}`,
+      filterString: `filter={${value}"order":"${sortByStr} desc"}`,
     });
   }
 
   React.useEffect(() => {
-    loadData(props.searchStr);
+    loadData(props.searchStr, props.sortBy);
   }, []);
 
   const [,] = useDebounce(
     () => {
-      loadData(props.searchStr);
+      loadData(props.searchStr, props.sortBy);
     },
     500,
-    [props.searchStr]
+    [props.searchStr, props.sortBy]
   );
 
   return (
     <>
-      <Grid container spacing={2}>
-        {reports.map((data, index) => (
-          <Grid item key={data.id} xs={12} sm={6} md={4} lg={4}>
-            <ReformedGridItem
-              id={data.id}
-              key={data.id}
-              title={data.name}
-              descr={data.title}
-              date={data.createdDate}
-              viz={<ColoredReportIcon />}
-              color={data.backgroundColor}
-              handleDelete={() => handleModal(index)}
-              handleDuplicate={() => handleDuplicate(index)}
-            />
-            <Box height={16} />
-          </Grid>
-        ))}
-      </Grid>
+      {!props.tableView && (
+        <Grid container spacing={2}>
+          {reports.map((data, index) => (
+            <Grid item key={data.id} xs={12} sm={6} md={4} lg={4}>
+              <ReformedGridItem
+                id={data.id}
+                key={data.id}
+                title={data.name}
+                descr={data.title}
+                date={data.createdDate}
+                viz={<ColoredReportIcon />}
+                color={data.backgroundColor}
+                handleDelete={() => handleModal(index)}
+                handleDuplicate={() => handleDuplicate(index)}
+              />
+              <Box height={16} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+      {props.tableView && (
+        <HomepageTable
+          data={reports.map((data) => ({
+            id: data.id,
+            name: data.name,
+            description: data.title,
+            createdDate: data.createdDate,
+          }))}
+        />
+      )}
       <DeleteReportDialog
         cardId={cardId}
         modalDisplay={modalDisplay}

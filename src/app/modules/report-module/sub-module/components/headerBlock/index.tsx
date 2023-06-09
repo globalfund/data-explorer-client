@@ -8,16 +8,14 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
-import {
-  reportRightPanelViewAtom,
-  unSavedReportPreviewMode,
-} from "app/state/recoil/atoms";
+import { reportRightPanelViewAtom } from "app/state/recoil/atoms";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as ClockIcon } from "app/modules/report-module/asset/clock-img.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { headerBlockcss } from "app/modules/report-module/sub-module/components/headerBlock/style";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
+import { Tooltip } from "@material-ui/core";
 
 interface Props {
   previewMode: boolean;
@@ -47,7 +45,6 @@ interface Props {
 export default function HeaderBlock(props: Props) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "header",
@@ -137,6 +134,7 @@ export default function HeaderBlock(props: Props) {
             left: 0;
             height: 100%;
             display: flex;
+            gap: 4px;
             position: absolute;
           `}
         >
@@ -159,22 +157,36 @@ export default function HeaderBlock(props: Props) {
               align-items: center;
               flex-direction: column;
               justify-content: center;
-
-              svg {
-                path {
-                  fill: #fff;
-                }
-                circle {
-                  stroke: #fff;
+              background: #adb5bd;
+              border-radius: 100px;
+              margin: auto;
+              width: 22px;
+              height: 53px;
+              button {
+                padding: 4px;
+                :hover {
+                  background: transparent;
+                  svg {
+                    path {
+                      fill: #fff;
+                    }
+                    circle {
+                      stroke: #fff;
+                    }
+                  }
                 }
               }
             `}
           >
             <IconButton onClick={onEdit} id="edit-header-icon">
-              <EditIcon />
+              <Tooltip title="Edit" placement="right">
+                <EditIcon />
+              </Tooltip>
             </IconButton>
             <IconButton onClick={onRemove} id="delete-header-icon">
-              <DeleteIcon />
+              <Tooltip title="Remove header" placement="right">
+                <DeleteIcon />
+              </Tooltip>
             </IconButton>
           </div>
         </div>

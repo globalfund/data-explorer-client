@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import useTitle from "react-use/lib/useTitle";
 import {
   Tab,
@@ -11,9 +11,16 @@ import {
   Container,
   withStyles,
   IconButton,
+  Popover,
 } from "@material-ui/core";
 /* project */
-import { homeDisplayAtom } from "app/state/recoil/atoms";
+import { Search } from "app/components/Search";
+import {
+  createChartFromReportAtom,
+  homeDisplayAtom,
+  persistedReportStateAtom,
+} from "app/state/recoil/atoms";
+import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
@@ -35,16 +42,18 @@ import {
   iconButtonCss,
   rowFlexCss,
   searchInputCss,
+  sortByItemCss,
   turnsDataCss,
 } from "app/modules/home-module/style";
 
-const StyledTab = withStyles((theme) => ({
+const StyledTab = withStyles(() => ({
   root: {
     "&.MuiButtonBase-root": {
       "&.MuiTab-root": {
         width: "fit-content",
         minWidth: "fit-content",
         padding: "0px ",
+        textTransform: "none",
       },
     },
     "&.MuiTab-textColorPrimary": {
@@ -70,13 +79,33 @@ const StyledTabs = withStyles({
 export default function HomeModule() {
   useTitle("DX DataXplorer");
 
+  const [tableView, setTableView] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
+  const [sortValue, setSortValue] = React.useState("createdDate");
+  const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
+    React.useState<HTMLButtonElement | null>(null);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
   const exploreViewRef = React.useRef<HTMLDivElement>(null);
 
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+  const clearPersistedReportState = useResetRecoilState(
+    persistedReportStateAtom
+  );
+  const clearCreateChartFromReportState = useResetRecoilState(
+    createChartFromReportAtom
+  );
+  React.useEffect(() => {
+    clearPersistedReportState();
+    clearCreateChartFromReportState();
+  }, []);
+
+  const sortOptions = [
+    { label: "Last updated", value: "updatedDate" },
+    { label: "Created date", value: "createdDate" },
+    { label: "Name", value: "name" },
+  ];
 
   const handleChange = (
     event: React.ChangeEvent<{}>,
@@ -89,23 +118,47 @@ export default function HomeModule() {
     setSearchValue(e.target.value);
   };
 
-  const displayGrid = (searchStr: string) => {
+  const displayGrid = (searchStr: string, sortByStr: string) => {
     switch (display) {
       case "data":
-        return <DatasetsGrid searchStr={searchStr} />;
+        return (
+          <DatasetsGrid
+            sortBy={sortByStr}
+            searchStr={searchStr}
+            tableView={tableView}
+          />
+        );
       case "charts":
-        return <ChartsGrid searchStr={searchStr} />;
+        return (
+          <ChartsGrid
+            sortBy={sortByStr}
+            searchStr={searchStr}
+            tableView={tableView}
+          />
+        );
       case "reports":
-        return <ReportsGrid searchStr={searchStr} />;
+        return (
+          <ReportsGrid
+            sortBy={sortByStr}
+            searchStr={searchStr}
+            tableView={tableView}
+          />
+        );
       default:
         break;
     }
   };
 
-  const exporeReportClick = () => {
+  const exploreReportClick = () => {
     setDisplay("reports");
     exploreViewRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
+  const handleCloseSortPopover = () => {
+    setSortPopoverAnchorEl(null);
+  };
+
+  const openSortPopover = Boolean(sortPopoverAnchorEl);
 
   return (
     <React.Fragment>
@@ -119,12 +172,7 @@ export default function HomeModule() {
           );
         `}
       >
-        <Container
-          maxWidth="lg"
-          css={`
-            padding: 0;
-          `}
-        >
+        <Container maxWidth="lg">
           <Grid
             container
             spacing={6}
@@ -163,7 +211,7 @@ export default function HomeModule() {
                     CREATE REPORT
                   </Link>
                   <button
-                    onClick={exporeReportClick}
+                    onClick={exploreReportClick}
                     css={`
                       background: #e492bd;
                     `}
@@ -203,14 +251,13 @@ export default function HomeModule() {
         maxWidth="lg"
         ref={exploreViewRef}
         css={`
-          padding: 0;
           min-height: calc(100vh - 668px);
         `}
       >
         <Box height={52} />
         <Box css={featuredAssetsCss}>
-          <h3>Explore featured assets in DX:</h3>
-          <Box height={22} />
+          <h3>Featured assets in DX:</h3>
+          <Box height={20} />
           <Grid
             container
             alignContent="space-between"
@@ -236,9 +283,9 @@ export default function HomeModule() {
                 textColor="primary"
                 className="Home-MuiTabs-flexContainer"
               >
-                <StyledTab label="Data" value={"data"} />
-                <StyledTab label="Charts" value={"charts"} />
-                <StyledTab label="Reports" value={"reports"} />
+                <StyledTab label="Data" value="data" />
+                <StyledTab label="Charts" value="charts" />
+                <StyledTab label="Reports" value="reports" />
               </StyledTabs>
             </Grid>
             <Grid item lg={6} md={6} sm={6}>
@@ -292,18 +339,73 @@ export default function HomeModule() {
                     <SearchIcon />
                   </IconButton>
                 </div>
-                <IconButton css={iconButtonCss()}>
+                <IconButton
+                  onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                    setSortPopoverAnchorEl(
+                      sortPopoverAnchorEl ? null : event.currentTarget
+                    );
+                  }}
+                  css={iconButtonCss(openSortPopover)}
+                >
                   <SortIcon />
                 </IconButton>
-                <IconButton css={iconButtonCss()}>
+                <Popover
+                  open={openSortPopover}
+                  anchorEl={sortPopoverAnchorEl}
+                  onClose={handleCloseSortPopover}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                  css={`
+                    .MuiPaper-root {
+                      border-radius: 5px;
+                    }
+                  `}
+                >
+                  <div
+                    css={`
+                      color: #fff;
+                      font-size: 12px;
+                      padding: 8px 22px;
+                      background: #231d2c;
+                      font-family: "GothamNarrow-Bold", "Helvetica Neue",
+                        sans-serif;
+                    `}
+                  >
+                    Sort by
+                  </div>
+                  {sortOptions.map((option) => (
+                    <div
+                      key={option.label}
+                      css={sortByItemCss(sortValue === option.value)}
+                      onClick={() => {
+                        setSortValue(option.value);
+                        handleCloseSortPopover();
+                      }}
+                    >
+                      {option.label}
+                    </div>
+                  ))}
+                </Popover>
+                <IconButton
+                  onClick={() => {
+                    setTableView(!tableView);
+                  }}
+                  css={iconButtonCss(tableView)}
+                >
                   <GridIcon />
                 </IconButton>
               </div>
             </Grid>
           </Grid>
-          <Box height={22} />
+          <Box height={20} />
         </Box>
-        <div>{displayGrid(searchValue)}</div>
+        <div>{displayGrid(searchValue, sortValue)}</div>
       </Container>
       <Box height={100} />
       <HomeFooter />
