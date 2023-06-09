@@ -28,6 +28,8 @@ interface TableToolbarProps {
 
 export function TableToolbar(props: TableToolbarProps) {
   const location = useLocation();
+  const isEligibilityTable = location.pathname.includes("eligibility/table");
+
   const params = useParams<{ code?: string }>();
   const vizData = useGetAllVizData();
 
@@ -119,6 +121,7 @@ export function TableToolbar(props: TableToolbarProps) {
           type="text"
           ref={searchInputRef}
           value={props.search}
+          placeholder={isEligibilityTable ? "e.g Kenya" : ""}
           onChange={(e) => props.onSearchChange(e.target.value)}
           css={`
             height: 32px;

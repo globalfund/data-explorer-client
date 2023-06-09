@@ -23,6 +23,7 @@ import {
   SimpleTableProps,
   SimpleTableRow,
 } from "app/components/Table/Simple/data";
+import { useLocation } from "react-router-dom";
 
 const useRowStyles = makeStyles({
   root: {
@@ -41,10 +42,25 @@ function Row(props: {
   formatNumbers?: boolean;
   forceExpand?: boolean;
   condensed?: boolean;
+  rowIndex: number;
+  parentIndex: null | number;
 }) {
   const classes = useRowStyles();
-  const [open, setOpen] = React.useState(Boolean(props.forceExpand));
+  const location = useLocation();
+  const isEligibilityTable = location.pathname.includes("eligibility/table");
+  let rowExpanded = Boolean(props.forceExpand);
+  if (isEligibilityTable) {
+    if (props.parentIndex === 0) {
+      if (
+        (props.rowIndex === 0 || props.rowIndex === 1) &&
+        props.row.children
+      ) {
+        rowExpanded = true;
+      }
+    }
+  }
 
+  const [open, setOpen] = React.useState(rowExpanded);
   const firstColBig =
     props.columns[0].key !== "year" && props.columns[0].key !== "level1"
       ? props.columns.length > 3
@@ -181,9 +197,11 @@ function Row(props: {
             <Table>
               <TableBody>
                 {props.row.children &&
-                  props.row.children.map((child: SimpleTableRow) => (
+                  props.row.children.map((child: SimpleTableRow, index) => (
                     <Row
                       row={child}
+                      rowIndex={index}
+                      parentIndex={props.rowIndex}
                       key={child.name}
                       paddingLeft={40}
                       columns={props.columns}
@@ -331,10 +349,12 @@ export function SimpleTable(props: SimpleTableProps) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {props.rows.map((row: SimpleTableRow) => (
+              {props.rows.map((row: SimpleTableRow, index: number) => (
                 <Row
                   key={row.name}
                   row={row}
+                  rowIndex={index}
+                  parentIndex={index}
                   columns={props.columns}
                   condensed={props.condensed}
                   forceExpand={props.forceExpand}
