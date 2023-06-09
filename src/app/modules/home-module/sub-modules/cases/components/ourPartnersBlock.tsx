@@ -24,7 +24,6 @@ export default function OurPartnersBlock() {
           css={`
             font-size: 24px;
             line-height: 29px;
-            margin-top: 16px;
           `}
         >
           <b>Our partners</b>

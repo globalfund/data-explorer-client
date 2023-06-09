@@ -67,8 +67,8 @@ export const TabCardEllipseCss = css`
 `;
 export const quotesEllipseCss = css`
   top: 3%;
-  left: -0.1%;
-  z-index: 0;
+  left: -5.1%;
+  z-index: -1;
   position: absolute;
 `;
 
@@ -80,7 +80,7 @@ export const useDXcss = css`
     font-size: 48px;
     line-height: 58px;
     text-align: center;
-    font-family: "Gotham Narrow Bold", sans-serif;
+    font-weight: bold;
   }
   h3 {
     font-size: 24px;
@@ -97,18 +97,20 @@ export const useDXcss = css`
 
 export const quotecss = css`
   position: relative;
+  z-index: 1;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px 0;
   margin-top: 97px;
   width: 78%;
-  font-family: "Inter", sans-serif;
   p {
     font-weight: 500;
     font-size: 48px;
     line-height: 58px;
     text-align: center;
+    font-family: "Inter", sans-serif;
+
     margin: 0;
   }
   img {
@@ -125,6 +127,7 @@ export const quotecss = css`
       font-size: 16px;
       line-height: 19px;
       text-align: center;
+      font-family: "Inter", sans-serif !important;
     }
   }
 `;
