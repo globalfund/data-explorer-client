@@ -1,4 +1,5 @@
 import { EditorState } from "draft-js";
+import { IFramesArray } from "../../views/create/data";
 
 export interface IHeaderDeatils {
   title: string;
@@ -21,4 +22,6 @@ export interface ReportRightPanelProps {
   setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
   headerDetails: IHeaderDeatils;
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
+  framesArray: IFramesArray[];
+  reportName: string;
 }

@@ -70,6 +70,8 @@ export function ReportRightPanel(props: ReportRightPanelProps) {
             setHeaderDetails={props.setHeaderDetails}
             appliedHeaderDetails={props.appliedHeaderDetails}
             setAppliedHeaderDetails={props.setAppliedHeaderDetails}
+            framesArray={props.framesArray}
+            reportName={props.reportName}
           />
         )}
       </div>
