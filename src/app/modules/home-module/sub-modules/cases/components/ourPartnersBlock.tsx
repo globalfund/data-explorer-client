@@ -19,25 +19,22 @@ export default function OurPartnersBlock() {
         }
       `}
     >
-      <div>
-        <h4
-          css={`
-            font-size: 24px;
-            line-height: 29px;
-          `}
-        >
-          <b>Our partners</b>
-        </h4>
-      </div>
-      <div>
-        <img src={GFLogo} alt="globalfund_logo" />
-      </div>
-      <div>
-        <img src={MFALogo} alt="mfa-finland-logo" />
-      </div>
-      <div>
-        <img src={IatiLogo} alt="iati-logo" />
-      </div>
+      <h4
+        css={`
+          font-size: 24px;
+          line-height: 29px;
+          margin: 0;
+          padding: 0;
+        `}
+      >
+        <b>Our partners</b>
+      </h4>
+
+      <img src={GFLogo} alt="globalfund_logo" />
+
+      <img src={MFALogo} alt="mfa-finland-logo" />
+
+      <img src={IatiLogo} alt="iati-logo" />
     </div>
   );
 }

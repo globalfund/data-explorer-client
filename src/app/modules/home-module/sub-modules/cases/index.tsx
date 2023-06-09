@@ -13,6 +13,7 @@ import QuoteBlock from "./components/quoteBlock";
 import OurPartnersBlock from "./components/ourPartnersBlock";
 import DXBlock from "./components/useDXBlock";
 import EmpowerBlock from "./components/empowerBlock";
+import SwipeableViews from "react-swipeable-views";
 
 export const StyledTab = withStyles(() => ({
   root: {
@@ -61,30 +62,20 @@ export const StyledTabs = withStyles({
 })(Tabs);
 
 export default function CasesModule() {
-  const [displayTab, setDisplayTab] = React.useState<
-    "about" | "grants" | "budgets" | "performance"
-  >("about");
+  const [displayTab, setDisplayTab] = React.useState<number>(0);
   const handleChange = (
-    event: React.ChangeEvent<{}>,
-    newValue: "about" | "grants" | "budgets" | "performance"
+    event: React.ChangeEvent<{}> | null,
+    newValue: number
   ) => {
     setDisplayTab(newValue);
   };
 
-  const displayCard = () => {
-    switch (displayTab) {
-      case "about":
-        return <AboutTabCard />;
-      case "grants":
-        return <GrantsTabCard />;
-      case "budgets":
-        return <BudgetsTabCard />;
-      case "performance":
-        return <PerformanceTabCard />;
-      default:
-        break;
-    }
-  };
+  const cards = [
+    <AboutTabCard />,
+    <GrantsTabCard />,
+    <BudgetsTabCard />,
+    <PerformanceTabCard />,
+  ];
   return (
     <>
       <EmpowerBlock />
@@ -124,13 +115,20 @@ export default function CasesModule() {
               textColor="primary"
               className="Home-MuiTabs-flexContainer"
             >
-              <StyledTab label="About" value="about" />
-              <StyledTab label="Grants" value="grants" />
-              <StyledTab label="Budgets" value="budgets" />
-              <StyledTab label="Performance" value="performance" />
+              <StyledTab label="About" value={0} />
+              <StyledTab label="Grants" value={1} />
+              <StyledTab label="Budgets" value={2} />
+              <StyledTab label="Performance" value={3} />
             </StyledTabs>
-
-            {displayCard()}
+            <SwipeableViews
+              index={displayTab}
+              onChangeIndex={(index) => handleChange(null, index)}
+              style={{ margin: "5rem 0 10rem 0" }}
+            >
+              {cards.map((card, index) => (
+                <div key={index}>{card}</div>
+              ))}
+            </SwipeableViews>
           </Grid>
           <QuoteBlock />
         </Grid>
