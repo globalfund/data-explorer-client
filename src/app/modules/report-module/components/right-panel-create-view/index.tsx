@@ -1,7 +1,7 @@
 import React from "react";
 import find from "lodash/find";
 import { useDrag } from "react-dnd";
-import { EditorState } from "draft-js";
+import { EditorState, convertToRaw } from "draft-js";
 import { useRecoilState } from "recoil";
 import Paper from "@material-ui/core/Paper";
 import MuiButton from "@material-ui/core/Button";
@@ -21,12 +21,19 @@ import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import DividerPreviewImg from "app/modules/report-module/asset/dividerPreview.svg";
 import HeaderPreviewImg from "app/modules/report-module/asset/headerPreviewImg.svg";
 import RowFramePreviewImg from "app/modules/report-module/asset/rowframePreview.svg";
+import { ReactComponent as AddNewImage } from "app/modules/home-module/assets/add-img.svg";
+
 import { ReactComponent as DividerIcon } from "app/modules/report-module/asset/dividerIcon.svg";
 import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
 import {
+  createChartFromReportAtom,
   isDividerOrRowFrameDraggingAtom,
+  persistedReportStateAtom,
   reportRightPanelViewAtom,
 } from "app/state/recoil/atoms";
+import { IconButton } from "@material-ui/core";
+import { useHistory, useParams } from "react-router-dom";
+import { IFramesArray } from "../../views/create/data";
 
 const Button = withStyles(() => ({
   root: {
@@ -127,6 +134,8 @@ interface Props {
   setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
   headerDetails: IHeaderDeatils;
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
+  framesArray: IFramesArray[];
+  reportName: string;
 }
 
 export function ReportRightPanelCreateView(props: Props) {
@@ -242,6 +251,10 @@ export function ReportRightPanelCreateView(props: Props) {
         <ReportRightPanelCreateViewChartList
           pickedCharts={props.pickedCharts}
           setPickedCharts={props.setPickedCharts}
+          headerDetails={props.headerDetails}
+          framesArray={props.framesArray}
+          reportName={props.reportName}
+          appliedHeaderDetails={props.appliedHeaderDetails}
         />
       )}
       {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
@@ -259,6 +272,10 @@ const sortByOptions = [
 function ReportRightPanelCreateViewChartList(props: {
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
+  headerDetails: IHeaderDeatils;
+  appliedHeaderDetails: IHeaderDeatils;
+  framesArray: IFramesArray[];
+  reportName: string;
 }) {
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
@@ -398,6 +415,12 @@ function ReportRightPanelCreateViewChartList(props: {
           }
         `}
       >
+        <CreateChartCard
+          headerDetails={props.headerDetails}
+          framesArray={props.framesArray}
+          reportName={props.reportName}
+          appliedHeaderDetails={props.appliedHeaderDetails}
+        />
         {chartList.map((chart) => (
           <ChartItem
             id={chart.id}
@@ -466,6 +489,141 @@ function ElementItem(props: {
   );
 }
 
+function CreateChartCard(props: {
+  reportName: string;
+  headerDetails: IHeaderDeatils;
+  appliedHeaderDetails: IHeaderDeatils;
+  framesArray: IFramesArray[];
+}) {
+  const history = useHistory();
+
+  const { page, view } = useParams<{
+    page: string;
+    view: string;
+  }>();
+
+  const setDataset = useStoreActions(
+    (actions) => actions.charts.dataset.setValue
+  );
+  const setLoadedChart = useStoreActions(
+    (state) => state.charts.ChartGet.setCrudData
+  );
+  const setCreateChartData = useStoreActions(
+    (state) => state.charts.ChartCreate.setCrudData
+  );
+  const [persistedReportState, setPersistedReportState] = useRecoilState(
+    persistedReportStateAtom
+  );
+  const [_, setCreateChartFromReport] = useRecoilState(
+    createChartFromReportAtom
+  );
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+  const action = () => {
+    setCreateChartFromReport({
+      state: true,
+      view,
+      page,
+    });
+    setDataset(null);
+    setLoadedChart(null);
+    setCreateChartData(null);
+    //set persisted report state to current report state
+    setPersistedReportState({
+      ...persistedReportState,
+      reportName: props.reportName,
+      headerDetails: {
+        ...props.headerDetails,
+        description: JSON.stringify(
+          convertToRaw(props.headerDetails.description.getCurrentContent())
+        ),
+      },
+      appliedHeaderDetails: {
+        ...props.appliedHeaderDetails,
+        description: JSON.stringify(
+          convertToRaw(
+            props.appliedHeaderDetails.description.getCurrentContent()
+          )
+        ),
+      },
+
+      framesArray: JSON.stringify(
+        props.framesArray
+          .sort(function (a, b) {
+            return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
+          })
+          .map((frame) => ({
+            id: frame.id,
+            structure: frame.structure,
+            content: frame.content,
+            contentTypes: frame.contentTypes,
+            items: frame.content.map((item, index) =>
+              frame.contentTypes[index] === "text"
+                ? convertToRaw((item as EditorState).getCurrentContent())
+                : item
+            ),
+          }))
+      ),
+    });
+    history.push("/chart/new/data");
+  };
+  return (
+    <div>
+      <div
+        css={`
+          background: #f2f7fd;
+          box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
+          height: 125px;
+          padding-left: 27px;
+          display: flex;
+          justify-content: flex-start;
+          gap: 12px;
+          align-items: center;
+          position: relative;
+        `}
+      >
+        <div>
+          <IconButton onClick={action}>
+            <AddNewImage />
+          </IconButton>
+        </div>
+        <div
+          css={`
+            border: 1px solid #231d2c;
+            height: 49px;
+            width: 0px;
+          `}
+        />
+
+        <div
+          css={`
+            h1 {
+              font-family: "GothamNarrow-Bold", sans-serif;
+              color: #262c34;
+              font-size: 18px;
+              line-height: 20px;
+              margin: 0;
+              font-weight: bold;
+            }
+            p {
+              font-family: "GothamNarrow", sans-serif;
+              color: #495057;
+              font-size: 10px;
+              line-height: 15px;
+              letter-spacing: 0.5px;
+              margin: 0;
+              margin-top: 4px;
+            }
+          `}
+        >
+          <h1>New chart</h1>
+          <p>Create a new chart in your library</p>
+        </div>
+      </div>
+    </div>
+  );
+}
 function ChartItem(props: {
   id: string;
   name: string;
@@ -531,6 +689,7 @@ function ChartItem(props: {
         title={props.name}
         date={props.createdDate}
         viz={getIcon(props.vizType)}
+        added={added}
         descr="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
       />
     </div>

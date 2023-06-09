@@ -271,6 +271,7 @@ export function useDataThemesEchart() {
       },
       // backgroundColor: background,
       backgroundColor: "transparent",
+
       series: filter(get(data, "lines", []), (l: any) => l !== null).map(
         (d: any) => ({
           type: "line",
@@ -282,7 +283,9 @@ export function useDataThemesEchart() {
         })
       ),
       tooltip: {
-        trigger: showTooltip ? "axis" : "none",
+        show: showTooltip,
+        trigger: "axis",
+
         confine: true,
         valueFormatter: (value: number | string) =>
           isMonetaryValue
