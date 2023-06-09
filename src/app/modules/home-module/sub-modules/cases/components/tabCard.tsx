@@ -49,6 +49,7 @@ export default function TabCard(props: {
             font-size: 24px;
             line-height: 29px;
             margin: 0;
+            margin-bottom: 11px;
           }
           p {
             font-family: "Gotham Narrow Light", sans-serif;
