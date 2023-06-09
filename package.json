@@ -70,6 +70,7 @@
     "react-dom": "^17.0.2",
     "react-draggable": "^4.4.3",
     "react-dropzone": "^14.2.3",
+    "react-google-drive-picker": "^1.2.2",
     "react-grid-carousel": "^1.0.1",
     "react-hook-form": "^7.43.9",
     "react-indexed-db": "^1.0.12",
