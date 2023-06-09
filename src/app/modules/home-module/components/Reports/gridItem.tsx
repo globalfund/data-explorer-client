@@ -6,6 +6,7 @@ import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.
 import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
 import { ReactComponent as DuplicateIcon } from "app/modules/home-module/assets/duplicate.svg";
+import { Tooltip } from "@material-ui/core";
 
 interface Props {
   date: Date;
@@ -136,65 +137,67 @@ export default function GridItem(props: Props) {
               gap: 1rem;
               right: 3%;
               z-index: 2;
-              width: 160px;
+
               display: flex;
-              padding: 6px 15px;
+              height: 38px;
+              width: 143px;
               position: absolute;
-              background: #f4f4f4;
-              align-items: center;
+              background: #adb5bd;
               border-radius: 100px;
+              align-items: center;
               justify-content: center;
+              a {
+                :hover {
+                  svg {
+                    path {
+                      fill: #fff;
+                    }
+                  }
+                }
+              }
+              button {
+                padding: 4px;
+                :hover {
+                  background: transparent;
+                  svg {
+                    path {
+                      fill: #fff;
+                    }
+                  }
+                }
+              }
             `}
           >
             <div>
               <IconButton
-                css={`
-                  padding: 0;
-                `}
                 onClick={() => {
                   props.handleDuplicate?.(props.id as string);
                   setMenuOptionsDisplay(false);
                 }}
               >
-                <DuplicateIcon
-                  css={`
-                    cursor: pointer;
-
-                    :hover {
-                      opacity: 0.5;
-                    }
-                  `}
-                />
+                <Tooltip title="Duplicate">
+                  <DuplicateIcon />
+                </Tooltip>
               </IconButton>
             </div>
             <div>
               <Link to={`/report/${props.id}/edit`}>
-                <EditIcon
-                  css={`
-                    cursor: pointer;
-                    margin-top: 6px;
-                    :hover {
-                      opacity: 0.5;
-                    }
-                  `}
-                />
+                <Tooltip title="Edit">
+                  <EditIcon
+                    css={`
+                      margin-top: 4px;
+                    `}
+                  />
+                </Tooltip>
               </Link>
             </div>
             <div>
               <IconButton
-                css={`
-                  padding: 0;
-                `}
                 onClick={() => props.handleDelete?.(props.id as string)}
               >
-                <DeleteIcon
-                  css={`
-                    cursor: pointer;
-                    :hover {
-                      opacity: 0.5;
-                    }
-                  `}
-                />
+                <Tooltip title="Delete">
+                  <DeleteIcon />
+                </Tooltip>
               </IconButton>
             </div>
           </div>

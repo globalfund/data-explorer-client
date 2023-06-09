@@ -40,7 +40,6 @@ import {
 export default function ChartModule() {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
-
   const [chartFromAPI, setChartFromAPI] =
     React.useState<ChartRenderedItem | null>(null);
   const [visualOptions, setVisualOptions] = useSessionStorage<any>(

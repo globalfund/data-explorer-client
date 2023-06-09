@@ -6,13 +6,18 @@ import Grid from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
+import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 
 const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
-export default function ChartsGrid(props: { searchStr: string }) {
+export default function ChartsGrid(props: {
+  sortBy: string;
+  searchStr: string;
+  tableView: boolean;
+}) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -80,24 +85,24 @@ export default function ChartsGrid(props: { searchStr: string }) {
     return coloredEchartTypes()[0].icon;
   };
 
-  function loadData(searchStr: string) {
+  function loadData(searchStr: string, sortByStr: string) {
     const value =
       searchStr.length > 0
         ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     loadCharts({
       storeInCrudData: true,
-      filterString: `filter={${value}"order":"createdDate desc"}`,
+      filterString: `filter={${value}"order":"${sortByStr} desc"}`,
     });
   }
 
   React.useEffect(() => {
-    loadData(props.searchStr);
+    loadData(props.searchStr, props.sortBy);
   }, []);
 
   const [,] = useDebounce(
     () => {
-      loadData(props.searchStr);
+      loadData(props.searchStr, props.sortBy);
     },
     500,
     [props.searchStr]
@@ -105,23 +110,35 @@ export default function ChartsGrid(props: { searchStr: string }) {
 
   return (
     <>
-      <Grid container spacing={2}>
-        {charts.map((c, index) => (
-          <Grid item key={c.id} xs={12} sm={6} md={6} lg={4}>
-            <ReformedGridItem
-              id={c.id}
-              title={c.name}
-              descr={description}
-              date={c.createdDate}
-              path={`/chart/${c.id}`}
-              viz={getIcon(c.vizType)}
-              handleDelete={() => handleModal(index)}
-              handleDuplicate={() => handleDuplicate(index)}
-            />
-            <Box height={16} />
-          </Grid>
-        ))}
-      </Grid>
+      {!props.tableView && (
+        <Grid container spacing={2}>
+          {charts.map((c, index) => (
+            <Grid item key={c.id} xs={12} sm={6} md={6} lg={4}>
+              <ReformedGridItem
+                id={c.id}
+                title={c.name}
+                descr={description}
+                date={c.createdDate}
+                path={`/chart/${c.id}`}
+                viz={getIcon(c.vizType)}
+                handleDelete={() => handleModal(index)}
+                handleDuplicate={() => handleDuplicate(index)}
+              />
+              <Box height={16} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+      {props.tableView && (
+        <HomepageTable
+          data={charts.map((data) => ({
+            id: data.id,
+            name: data.name,
+            description: data.title,
+            createdDate: data.createdDate,
+          }))}
+        />
+      )}
       <DeleteChartDialog
         cardId={cardId}
         modalDisplay={modalDisplay}

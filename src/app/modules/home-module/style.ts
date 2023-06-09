@@ -75,22 +75,24 @@ export const rowFlexCss = css`
 `;
 
 export const bottomLeftEllipseCss = css`
-  position: absolute;
   left: 0;
   bottom: 0;
+  z-index: -1;
+  position: absolute;
 `;
 
 export const bottomRightEllipseCss = css`
-  position: absolute;
   right: 0;
   bottom: 0;
+  z-index: -1;
+  position: absolute;
 `;
 
 export const TopRightEllipseCss = css`
-  position: absolute;
   top: 0;
   right: 0;
   z-index: -1;
+  position: absolute;
 `;
 
 export const searchInputCss = (openSearch: boolean) => css`
@@ -141,5 +143,18 @@ export const iconButtonCss = (active?: boolean) => css`
     svg > g > rect {
       fill: #dadaf8;
     }
+  }
+`;
+
+export const sortByItemCss = (active: boolean) => css`
+  color: #231d2c;
+  font-size: 12px;
+  padding: 8px 22px;
+  font-family: "GothamNarrow-Book", sans-serif;
+  background: ${active ? "#f1f3f5" : "transparent"};
+
+  &:hover {
+    cursor: pointer;
+    background: #f1f3f5;
   }
 `;

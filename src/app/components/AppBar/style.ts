@@ -36,12 +36,14 @@ export const headercss = css`
     position: absolute; */
   }
 `;
+
 export const logocss = css`
   display: flex;
   padding-top: 5px;
   margin-right: 64px;
   justify-content: center;
 `;
+
 export const loginBtn = css`
   height: 34px;
   padding: 9.792px 35.496px;

@@ -5,7 +5,10 @@ import { useUpdateEffect } from "react-use";
 import { useParams } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
+import {
+  IRowFrameStructure,
+  persistedReportStateAtom,
+} from "app/state/recoil/atoms";
 import { PlaceHolder } from "app/modules/report-module/views/create";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
@@ -17,10 +20,11 @@ import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure
 import RowFrame, {
   Divider,
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+import { useRecoilState } from "recoil";
 
 export function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
-
+  const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -69,63 +73,65 @@ export function ReportEditView(props: ReportEditViewProps) {
   }, []);
 
   useUpdateEffect(() => {
-    props.setName(reportData.name);
-    props.setHeaderDetails({
-      title: reportData.title,
-      showHeader: reportData.showHeader,
-      description: EditorState.createWithContent(
-        convertFromRaw(reportData.subTitle as any)
-      ),
-      backgroundColor: reportData.backgroundColor,
-      titleColor: reportData.titleColor,
-      descriptionColor: reportData.descriptionColor,
-      dateColor: reportData.dateColor,
-    });
-    props.setAppliedHeaderDetails({
-      title: reportData.title,
-      showHeader: reportData.showHeader,
-      description: EditorState.createWithContent(
-        convertFromRaw(reportData.subTitle as any)
-      ),
-      backgroundColor: reportData.backgroundColor,
-      titleColor: reportData.titleColor,
-      descriptionColor: reportData.descriptionColor,
-      dateColor: reportData.dateColor,
-    });
-    const newFrameArray = reportData.rows.map((rowFrame, index) => {
-      const content = rowFrame.items;
-      const contentTypes = rowFrame.items.map((item) =>
-        typeof item === "object" ? "text" : "chart"
-      );
-      const isDivider =
-        content &&
-        content.length === 1 &&
-        content[0] === ReportElementsType.DIVIDER;
-      const id = v4();
-      return {
-        id,
-        structure: rowFrame.structure,
-        frame: isDivider ? (
-          <Divider delete={deleteFrame} dividerId={id} />
-        ) : (
-          <RowFrame
-            rowIndex={index}
-            rowId={id}
-            deleteFrame={deleteFrame}
-            forceSelectedType={rowFrame.structure ?? undefined}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            handleRowFrameStructureTypeSelection={
-              props.handleRowFrameStructureTypeSelection
-            }
-            previewItems={rowFrame.items}
-          />
+    if (JSON.parse(persistedReportState.framesArray || "[]").length < 1) {
+      props.setName(reportData.name);
+      props.setHeaderDetails({
+        title: reportData.title,
+        showHeader: reportData.showHeader,
+        description: EditorState.createWithContent(
+          convertFromRaw(reportData.subTitle as any)
         ),
-        content,
-        contentTypes,
-      };
-    });
-    props.setFramesArray(newFrameArray);
+        backgroundColor: reportData.backgroundColor,
+        titleColor: reportData.titleColor,
+        descriptionColor: reportData.descriptionColor,
+        dateColor: reportData.dateColor,
+      });
+      props.setAppliedHeaderDetails({
+        title: reportData.title,
+        showHeader: reportData.showHeader,
+        description: EditorState.createWithContent(
+          convertFromRaw(reportData.subTitle as any)
+        ),
+        backgroundColor: reportData.backgroundColor,
+        titleColor: reportData.titleColor,
+        descriptionColor: reportData.descriptionColor,
+        dateColor: reportData.dateColor,
+      });
+      const newFrameArray = reportData.rows.map((rowFrame, index) => {
+        const content = rowFrame.items;
+        const contentTypes = rowFrame.items.map((item) =>
+          typeof item === "object" ? "text" : "chart"
+        );
+        const isDivider =
+          content &&
+          content.length === 1 &&
+          content[0] === ReportElementsType.DIVIDER;
+        const id = v4();
+        return {
+          id,
+          structure: rowFrame.structure,
+          frame: isDivider ? (
+            <Divider delete={deleteFrame} dividerId={id} />
+          ) : (
+            <RowFrame
+              rowIndex={index}
+              rowId={id}
+              deleteFrame={deleteFrame}
+              forceSelectedType={rowFrame.structure ?? undefined}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+              previewItems={rowFrame.items}
+            />
+          ),
+          content,
+          contentTypes,
+        };
+      });
+      props.setFramesArray(newFrameArray);
+    }
   }, [reportData]);
 
   return (
