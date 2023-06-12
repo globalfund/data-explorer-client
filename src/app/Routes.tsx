@@ -16,7 +16,9 @@ const ContactModule = lazy(
   () => import("app/modules/home-module/sub-modules/contact")
 );
 
-const AboutModule = lazy(() => import("app/modules/about-module"));
+const AboutModule = lazy(
+  () => import("app/modules/home-module/sub-modules/about")
+);
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const ChartsModule = lazy(() => import("app/modules/charts-module"));
 const ChartModule = lazy(() => import("app/modules/chart-module"));
