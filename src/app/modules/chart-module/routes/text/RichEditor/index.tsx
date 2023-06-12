@@ -76,6 +76,12 @@ export const RichEditor = (props: {
           border-left: 4px solid #262c34;
         }
 
+        .public-DraftEditorPlaceholder-hasFocus {
+          .public-DraftEditorPlaceholder-inner {
+            opacity: 0.5;
+          }
+        }
+
         .public-DraftEditorPlaceholder-inner {
           position: absolute;
         }

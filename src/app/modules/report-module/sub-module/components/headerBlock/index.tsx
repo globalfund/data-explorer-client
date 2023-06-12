@@ -215,6 +215,7 @@ export default function HeaderBlock(props: Props) {
               min-width: 600px;
               line-height: 16.8px;
               background: inherit;
+              position: relative;
               letter-spacing: 0.692603px;
               ${props.previewMode && "pointer-events: none;"}
 
