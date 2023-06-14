@@ -120,7 +120,15 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
         padding-right: 15px;
         flex-direction: column;
         max-height: calc(100vh - 273px);
-
+        &::-webkit-scrollbar {
+          display: none;
+        }
+        &::-webkit-scrollbar-track {
+          display: none;
+        }
+        &::-webkit-scrollbar-thumb {
+          display: none;
+        }
         * {
           font-size: 14px;
           font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;

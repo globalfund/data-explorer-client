@@ -1,15 +1,18 @@
-import { Box, Snackbar, withStyles } from "@material-ui/core";
-import React, { useState } from "react";
+import React from "react";
+import Box from "@material-ui/core/Box";
+import { withStyles } from "@material-ui/core";
+import Snackbar from "@material-ui/core/Snackbar";
 import DataParserToolBox from "../component/dataParserToolBox";
-import { useChartsRawData } from "app/hooks/useChartsRawData";
-import { DatasetDataTable } from "../component/data-table";
+import { DatasetDataTable } from "app/fragments/datasets-fragment/component/data-table";
 
 interface Props {
+  data: any[];
+  stats: any[];
+  dataTotalCount: number;
   handleNext: () => void;
-  datasetId: string;
 }
 
-interface ISnackbarState {
+export interface ISnackbarState {
   open: boolean;
   vertical: "top" | "bottom";
   horizontal: "left" | "center" | "right";
@@ -29,36 +32,25 @@ export const CssSnackbar = withStyles({
 })(Snackbar);
 
 export default function PreviewFragment(props: Props) {
-  const [openToolboxPanel, setOpenToolboxPanel] = useState(true);
-  const onCloseBtnClick = () => {
-    setOpenToolboxPanel(!openToolboxPanel);
-  };
-
-  const { loadDataset, sampleData, dataTotalCount } = useChartsRawData({
-    visualOptions: () => {},
-    setVisualOptions: () => {},
-    setChartFromAPI: () => {},
-    chartFromAPI: null,
-  });
-
-  React.useEffect(() => {
-    loadDataset(`data-themes/sample-data/${props.datasetId}`);
-  }, [props.datasetId]);
-
+  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
   const [snackbarState, setSnackbarState] = React.useState<ISnackbarState>({
     open: false,
     vertical: "bottom",
     horizontal: "center",
   });
 
+  const onCloseBtnClick = () => {
+    setOpenToolboxPanel(!openToolboxPanel);
+  };
+
   React.useEffect(() => {
-    if (dataTotalCount > 0) {
+    if (props.dataTotalCount > 0) {
       setSnackbarState({ ...snackbarState, open: true });
       setTimeout(() => {
         setSnackbarState({ ...snackbarState, open: false });
       }, 10000);
     }
-  }, [dataTotalCount]);
+  }, [props.dataTotalCount]);
 
   return (
     <div>
@@ -79,14 +71,13 @@ export default function PreviewFragment(props: Props) {
           width: ${openToolboxPanel ? `calc(100% - 217px)` : "100%"};
         `}
       >
-        <DatasetDataTable data={sampleData} />
+        <DatasetDataTable data={props.data} stats={props.stats} />
       </div>
       <DataParserToolBox
         onCloseBtnClick={onCloseBtnClick}
         open={openToolboxPanel}
         handleNext={props.handleNext}
       />
-
       <CssSnackbar
         anchorOrigin={{
           vertical: snackbarState.vertical,
@@ -94,7 +85,7 @@ export default function PreviewFragment(props: Props) {
         }}
         open={snackbarState.open}
         onClose={() => setSnackbarState({ ...snackbarState, open: false })}
-        message={`${dataTotalCount} rows have been successfully parsed!`}
+        message={`${props.dataTotalCount} rows have been successfully parsed!`}
         key={snackbarState.vertical + snackbarState.horizontal}
       />
     </div>

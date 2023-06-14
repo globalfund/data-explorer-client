@@ -3,11 +3,12 @@ import CloseOutlined from "@material-ui/icons/ClearOutlined";
 import { createStyles, IconButton, makeStyles, Modal } from "@material-ui/core";
 
 interface Props {
-  cardId: number;
+  cardId?: number;
+
   modalDisplay: boolean;
   enableButton: boolean;
   handleDelete: (id: number) => void;
-  setModalDisplay: (value: boolean) => void;
+  setModalDisplay: (value: any) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -115,7 +116,7 @@ export default function DeleteChartDialog(props: Props) {
         >
           <button
             type="button"
-            onClick={() => props.handleDelete(props.cardId)}
+            onClick={() => props.handleDelete(props.cardId as number)}
             disabled={!props.enableButton}
             css={`
               background: ${props.enableButton ? "#231D2C" : "#e4e4e4"};

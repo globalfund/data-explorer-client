@@ -1,31 +1,42 @@
+import { ReactComponent as AITemplateImg } from "../../asset/aiTemplate-img.svg";
 import { ReactComponent as BlankTemplateImg } from "../../asset/blankTemplate-img.svg";
 import { ReactComponent as AdvancedTemplateImg } from "../../asset/advancedTemplate-img.svg";
 
 export interface ReportInitialViewProps {
   buttonActive: boolean;
   resetFrames: () => void;
-  setButtonActive: (active: boolean, type: "basic" | "advanced") => void;
+  setButtonActive: (active: boolean, type: "basic" | "advanced" | "ai") => void;
 }
 
-export interface ReportSearchResultModel {
+export interface ReportTemplateModel {
   name: string;
   description: string;
-  value: "basic" | "advanced";
   templateImg: React.ReactNode;
+  value: "basic" | "advanced" | "ai";
+  available?: boolean;
 }
 
-export const searchResultOptions: ReportSearchResultModel[] = [
+export const templates: ReportTemplateModel[] = [
   {
     name: "Basic template report",
     description: "A basic template to create your report",
     value: "basic",
     templateImg: <BlankTemplateImg />,
+    available: true,
   },
   {
     name: "Advanced template report",
     description: "An advanced template to create your report",
     value: "advanced",
     templateImg: <AdvancedTemplateImg />,
+    available: true,
+  },
+  {
+    name: "AI-powered template",
+    description: "Use AI to create your report",
+    value: "ai",
+    templateImg: <AITemplateImg />,
+    available: false,
   },
 ];
 
@@ -36,18 +47,21 @@ export const TemplateItem = ({
   currentValue,
   handleClick,
   templateImg,
-}: ReportSearchResultModel & {
+  available,
+}: ReportTemplateModel & {
   currentValue: string;
   handleClick: () => void;
 }) => {
   return (
     <div
       css={`
+        height: 125px;
+        position: relative;
         padding: 12px 16px;
         background: #f2f7fd;
+        pointer-events: ${available ? "auto" : "none"};
         border: 1px solid ${value === currentValue ? "#6061e5" : "transparent"};
-        width: 89%;
-        height: 125px;
+
         &:hover {
           cursor: pointer;
           border-color: #6061e5;
@@ -82,9 +96,24 @@ export const TemplateItem = ({
           {description}
         </p>
       </div>
-
       <div />
       <div>{templateImg}</div>
+      {!available && (
+        <div
+          css={`
+            top: 16px;
+            right: 14px;
+            font-size: 12px;
+            padding: 1px 6px;
+            line-height: 14px;
+            position: absolute;
+            border-radius: 10px;
+            border: 1px solid #000;
+          `}
+        >
+          Coming soon!
+        </div>
+      )}
     </div>
   );
 };

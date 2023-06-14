@@ -1,11 +1,13 @@
 import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
 import Box from "@material-ui/core/Box";
+import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
 import { useParams } from "react-router-dom";
+import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
 import { PlaceHolder } from "app/modules/report-module/views/create";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
@@ -17,16 +19,31 @@ import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure
 import RowFrame, {
   Divider,
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+import {
+  IRowFrameStructure,
+  reportContentWidthsAtom,
+  persistedReportStateAtom,
+  reportContentContainerWidth,
+} from "app/state/recoil/atoms";
 
 export function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
 
+  const { ref, width } = useResizeObserver<HTMLDivElement>();
+
+  const [containerWidth, setContainerWidth] = useRecoilState(
+    reportContentContainerWidth
+  );
+
+  const [persistedReportState] = useRecoilState(persistedReportStateAtom);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
       rowType: "",
       disableAddRowStructureButton: false,
     });
+
+  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
 
   const fetchReportData = useStoreActions(
     (actions) => actions.reports.ReportGet.fetch
@@ -61,72 +78,101 @@ export function ReportEditView(props: ReportEditViewProps) {
     ) as string[][];
     let pickedItems: string[] = [];
 
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
-      pickedItems = [...pickedItems, ...item];
+    for (const element of items) {
+      pickedItems = [...pickedItems, ...element];
     }
     props.setPickedCharts(pickedItems);
+
+    return () => {
+      props.setStopInitializeFramesWidth(false);
+    };
   }, []);
 
+  React.useEffect(() => {
+    if (width && width !== containerWidth) {
+      setContainerWidth(width);
+    }
+  }, [width]);
+
   useUpdateEffect(() => {
-    props.setName(reportData.name);
-    props.setHeaderDetails({
-      title: reportData.title,
-      showHeader: reportData.showHeader,
-      description: EditorState.createWithContent(
-        convertFromRaw(reportData.subTitle as any)
-      ),
-      backgroundColor: reportData.backgroundColor,
-      titleColor: reportData.titleColor,
-      descriptionColor: reportData.descriptionColor,
-      dateColor: reportData.dateColor,
-    });
-    props.setAppliedHeaderDetails({
-      title: reportData.title,
-      showHeader: reportData.showHeader,
-      description: EditorState.createWithContent(
-        convertFromRaw(reportData.subTitle as any)
-      ),
-      backgroundColor: reportData.backgroundColor,
-      titleColor: reportData.titleColor,
-      descriptionColor: reportData.descriptionColor,
-      dateColor: reportData.dateColor,
-    });
-    const newFrameArray = reportData.rows.map((rowFrame, index) => {
-      const content = rowFrame.items;
-      const contentTypes = rowFrame.items.map((item) =>
-        typeof item === "object" ? "text" : "chart"
-      );
-      const isDivider =
-        content &&
-        content.length === 1 &&
-        content[0] === ReportElementsType.DIVIDER;
-      const id = v4();
-      return {
-        id,
-        structure: rowFrame.structure,
-        frame: isDivider ? (
-          <Divider delete={deleteFrame} dividerId={id} />
-        ) : (
-          <RowFrame
-            rowIndex={index}
-            rowId={id}
-            deleteFrame={deleteFrame}
-            forceSelectedType={rowFrame.structure ?? undefined}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            handleRowFrameStructureTypeSelection={
-              props.handleRowFrameStructureTypeSelection
-            }
-            previewItems={rowFrame.items}
-          />
+    if (JSON.parse(persistedReportState.framesArray || "[]").length < 1) {
+      props.setName(reportData.name);
+      props.setHeaderDetails({
+        title: reportData.title,
+        showHeader: reportData.showHeader,
+        description: EditorState.createWithContent(
+          convertFromRaw(reportData.subTitle as any)
         ),
-        content,
-        contentTypes,
-      };
-    });
-    props.setFramesArray(newFrameArray);
+        backgroundColor: reportData.backgroundColor,
+        titleColor: reportData.titleColor,
+        descriptionColor: reportData.descriptionColor,
+        dateColor: reportData.dateColor,
+      });
+      props.setAppliedHeaderDetails({
+        title: reportData.title,
+        showHeader: reportData.showHeader,
+        description: EditorState.createWithContent(
+          convertFromRaw(reportData.subTitle as any)
+        ),
+        backgroundColor: reportData.backgroundColor,
+        titleColor: reportData.titleColor,
+        descriptionColor: reportData.descriptionColor,
+        dateColor: reportData.dateColor,
+      });
+      const newFrameArray = reportData.rows.map((rowFrame, index) => {
+        const content = rowFrame.items;
+        const contentTypes = rowFrame.items.map((item) =>
+          typeof item === "object" ? "text" : "chart"
+        );
+        const isDivider =
+          content &&
+          content.length === 1 &&
+          content[0] === ReportElementsType.DIVIDER;
+        const id = v4();
+        return {
+          id,
+          structure: rowFrame.structure,
+          frame: isDivider ? (
+            <Divider delete={deleteFrame} dividerId={id} />
+          ) : (
+            <RowFrame
+              rowIndex={index}
+              rowId={id}
+              deleteFrame={deleteFrame}
+              forceSelectedType={rowFrame.structure ?? undefined}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+              previewItems={rowFrame.items}
+              handleRowFrameItemResize={props.handleRowFrameItemResize}
+            />
+          ),
+          content,
+          contentWidths: [],
+          contentTypes,
+        };
+      });
+      props.setFramesArray(newFrameArray);
+    }
   }, [reportData]);
+
+  React.useEffect(() => {
+    if (!props.stopInitializeFramesWidth) {
+      const contentWidths = props.framesArray.map((frame, index) => {
+        return {
+          id: frame.id,
+          widths: get(
+            reportData,
+            `contentWidths[${index}].widths`,
+            get(frame, "contentWidths", [])
+          ),
+        };
+      });
+      setReportContentWidths(contentWidths);
+    }
+  }, [props.framesArray, reportData.contentWidths]);
 
   return (
     <div>
@@ -140,6 +186,8 @@ export function ReportEditView(props: ReportEditViewProps) {
       />
       <Container maxWidth="lg">
         <div
+          ref={ref}
+          id="content-container"
           css={`
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
             width: ${props.open
@@ -172,6 +220,7 @@ export function ReportEditView(props: ReportEditViewProps) {
                     handleRowFrameStructureTypeSelection={
                       props.handleRowFrameStructureTypeSelection
                     }
+                    handleRowFrameItemResize={props.handleRowFrameItemResize}
                   />
                 </div>
               );
@@ -188,6 +237,7 @@ export function ReportEditView(props: ReportEditViewProps) {
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={props.handleRowFrameItemResize}
           />
           <Box height={45} />
         </div>

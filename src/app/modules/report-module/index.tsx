@@ -1,14 +1,17 @@
 import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
 import filter from "lodash/filter";
 import Box from "@material-ui/core/Box";
 import { DndProvider } from "react-dnd";
+import { useRecoilState } from "recoil";
+import cloneDeep from "lodash/cloneDeep";
 import Container from "@material-ui/core/Container";
-import { EditorState, convertToRaw } from "draft-js";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
 import { PrimaryButton } from "app/components/Styled/button";
 import { NoMatchPage } from "app/modules/common/no-match-page";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { ReportEditView } from "app/modules/report-module/views/edit";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
@@ -17,8 +20,17 @@ import { ReportCreateView } from "app/modules/report-module/views/create";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
-import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
+import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
+import RowFrame, {
+  Divider,
+} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+import {
+  reportContentWidthsAtom,
+  ReportContentWidthsType,
+  persistedReportStateAtom,
+  unSavedReportPreviewModeAtom,
+} from "app/state/recoil/atoms";
 import {
   Route,
   Switch,
@@ -27,21 +39,51 @@ import {
   Redirect,
 } from "react-router-dom";
 
+interface RowFrameProps {
+  structure:
+    | "oneByOne"
+    | "oneByTwo"
+    | "oneByThree"
+    | "oneByFour"
+    | "oneByFive"
+    | "oneToFour"
+    | "fourToOne"
+    | null;
+  items: (string | object)[];
+  id: string;
+  content: (string | object | null)[];
+  contentTypes: ("text" | "divider" | "chart" | null)[];
+}
+
 export default function ReportModule() {
   const history = useHistory();
   const { page, view } = useParams<{
     page: string;
     view: "initial" | "edit" | "create" | "preview";
   }>();
-
+  const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
-  const [reportType, setReportType] = React.useState<"basic" | "advanced">(
-    "basic"
-  );
-  const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
+  const [reportType, setReportType] = React.useState<
+    "basic" | "advanced" | "ai"
+  >("basic");
 
+  const localReportState = JSON.parse(persistedReportState.framesArray);
+
+  let localPickedCharts: string[] = [];
+  localReportState.map((data: any, index: number) => {
+    return data.contentTypes.map((item: any, index: number) => {
+      if (item === "chart") {
+        localPickedCharts.push(data.content[index]);
+      }
+    });
+  });
+  const [pickedCharts, setPickedCharts] = React.useState<any[]>(
+    localPickedCharts || []
+  );
+
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -51,10 +93,16 @@ export default function ReportModule() {
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
+
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
-
+  const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
+    React.useState(false);
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
+
+  const [reportContentWidths, setReportContentWidths] = useRecoilState(
+    reportContentWidthsAtom
+  );
 
   const handleRowFrameItemAddition = (
     rowId: string,
@@ -70,6 +118,74 @@ export default function ReportModule() {
       }
       tempPrev[frameId].content[itemIndex] = itemContent;
       tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
+    });
+  };
+
+  const alignFramesWContentWidths = (framesArr: IFramesArray[]) => {
+    let contentWidths: {
+      id: string;
+      widths: number[];
+    }[] = [];
+    framesArr.forEach((frame) => {
+      contentWidths.push({
+        id: frame.id,
+        widths: frame.contentWidths.length === 0 ? [100] : frame.contentWidths,
+      });
+    });
+    setReportContentWidths(contentWidths);
+  };
+
+  const handleRowFrameItemResize = (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    reportContentWidths: ReportContentWidthsType[]
+  ) => {
+    setFramesArray((prev) => {
+      if (!stopInitializeFramesWidth) {
+        setStopInitializeFramesWidth(true);
+      }
+      const tempPrev = cloneDeep(prev);
+      tempPrev.sort(
+        (a, b) => reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id)
+      );
+      const frameIndex = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameIndex === -1) {
+        return prev;
+      }
+      const contentContainer = document.getElementById("content-container");
+      const percentage = (width / contentContainer!.offsetWidth) * 100;
+      tempPrev[frameIndex].contentWidths[itemIndex] = percentage;
+      if (tempPrev[frameIndex].content.length > 1) {
+        const remainingWidth = 100 - percentage;
+        tempPrev[frameIndex].content.forEach((_, index) => {
+          if (index !== itemIndex) {
+            tempPrev[frameIndex].contentWidths[index] =
+              remainingWidth / (tempPrev[frameIndex].content.length - 1);
+          }
+        });
+      }
+      tempPrev.forEach((frame, index) => {
+        const indexContentWidths: number[] = get(
+          reportContentWidths,
+          `[${index}].widths`,
+          []
+        );
+        if (
+          frame.content.length !== frame.contentWidths.length &&
+          indexContentWidths.length
+        ) {
+          indexContentWidths.forEach((w, i) => {
+            if (!frame.contentWidths[i]) {
+              tempPrev[index].contentWidths[i] = w;
+            }
+          });
+        }
+      });
+      if (view === "edit") {
+        alignFramesWContentWidths(tempPrev);
+      }
       return [...tempPrev];
     });
   };
@@ -107,28 +223,42 @@ export default function ReportModule() {
   ) => {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
+    let contentWidths: number[] = [];
     switch (structure) {
       case "oneByOne":
         content = [null];
         contentTypes = [null];
+        contentWidths = [100];
         break;
-      case "oneByTwo":
-      case "fourToOne":
       case "oneByTwo":
         content = [null, null];
         contentTypes = [null, null];
+        contentWidths = [50, 50];
         break;
       case "oneByThree":
         content = [null, null, null];
         contentTypes = [null, null, null];
+        contentWidths = [33, 33, 33];
         break;
       case "oneByFour":
         content = [null, null, null, null];
         contentTypes = [null, null, null, null];
+        contentWidths = [20, 20, 20, 20];
         break;
       case "oneByFive":
         content = [null, null, null, null, null];
         contentTypes = [null, null, null, null, null];
+        contentWidths = [20, 20, 20, 20, 20];
+        break;
+      case "fourToOne":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [75, 25];
+        break;
+      case "oneToFour":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [25, 75];
         break;
       default:
         break;
@@ -138,7 +268,20 @@ export default function ReportModule() {
 
       tempPrev[rowIndex].content = content;
       tempPrev[rowIndex].contentTypes = contentTypes;
+      tempPrev[rowIndex].contentWidths = contentWidths;
       tempPrev[rowIndex].structure = structure;
+      if (view === "edit") {
+        const newReportContentWidths = cloneDeep(reportContentWidths);
+        if (newReportContentWidths[rowIndex]) {
+          newReportContentWidths[rowIndex].widths = contentWidths;
+        } else {
+          newReportContentWidths.push({
+            id: tempPrev[rowIndex].id,
+            widths: contentWidths,
+          });
+        }
+        setReportContentWidths(newReportContentWidths);
+      }
       return [...tempPrev];
     });
   };
@@ -172,13 +315,90 @@ export default function ReportModule() {
           handleRowFrameStructureTypeSelection={
             handleRowFrameStructureTypeSelection
           }
+          handleRowFrameItemResize={handleRowFrameItemResize}
         />
       ),
       content: [],
+      contentWidths: [],
       contentTypes: [],
       structure: null,
     },
   ]);
+
+  React.useEffect(() => {
+    if (view !== "edit") {
+      alignFramesWContentWidths(framesArray);
+    }
+  }, [framesArray, view]);
+
+  React.useEffect(() => {
+    if (view === "edit" && !rightPanelOpen) {
+      setRightPanelOpen(true);
+    }
+  }, [view]);
+
+  //sets report state to persisted report state
+  React.useEffect(() => {
+    setReportName(persistedReportState.reportName || "My First Report");
+    setHeaderDetails({
+      ...persistedReportState.headerDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.headerDetails.description)
+        )
+      ),
+    });
+
+    setAppliedHeaderDetails({
+      ...persistedReportState.appliedHeaderDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.appliedHeaderDetails.description)
+        )
+      ),
+    });
+
+    const localFramesArray =
+      JSON.parse(persistedReportState.framesArray || "[]").length > 0
+        ? JSON.parse(persistedReportState.framesArray).map(
+            (rowFrame: RowFrameProps, index: number) => {
+              const isDivider =
+                rowFrame.content &&
+                rowFrame.content.length === 1 &&
+                rowFrame.content[0] === ReportElementsType.DIVIDER;
+              return {
+                id: rowFrame.id,
+
+                frame: isDivider ? (
+                  <Divider delete={deleteFrame} dividerId={id} />
+                ) : (
+                  <RowFrame
+                    key={rowFrame.id}
+                    rowId={rowFrame.id}
+                    rowIndex={index}
+                    forceSelectedType={rowFrame.structure ?? undefined}
+                    deleteFrame={deleteFrame}
+                    handleRowFrameItemAddition={handleRowFrameItemAddition}
+                    handleRowFrameItemRemoval={handleRowFrameItemRemoval}
+                    handleRowFrameStructureTypeSelection={
+                      handleRowFrameStructureTypeSelection
+                    }
+                    previewItems={rowFrame.items}
+                    handleRowFrameItemResize={handleRowFrameItemResize}
+                  />
+                ),
+                content: rowFrame.content,
+                contentTypes: rowFrame.contentTypes,
+                structure: rowFrame.structure,
+              };
+            }
+          )
+        : framesArray;
+
+    setFramesArray(localFramesArray);
+  }, [persistedReportState]);
 
   const reportCreateData = useStoreState(
     (state) =>
@@ -230,7 +450,7 @@ export default function ReportModule() {
 
   const handleSetButtonActive = (
     active: boolean,
-    type: "basic" | "advanced"
+    type: "basic" | "advanced" | "ai"
   ) => {
     setButtonActive(active);
     setReportType(type);
@@ -251,9 +471,11 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={handleRowFrameItemResize}
           />
         ),
         content: [],
+        contentWidths: [],
         contentTypes: [],
         structure: null,
       },
@@ -286,9 +508,7 @@ export default function ReportModule() {
             : EditorState.createEmpty().getCurrentContent()
         ),
         rows: framesArray
-          .sort(function (a, b) {
-            return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
-          })
+          .sort((a, b) => reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id))
           .map((frame) => ({
             structure: frame.structure,
             items: frame.content.map((item, index) =>
@@ -300,6 +520,7 @@ export default function ReportModule() {
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
+        contentWidths: reportContentWidths,
         dateColor: appliedHeaderDetails.dateColor,
       },
     });
@@ -310,6 +531,8 @@ export default function ReportModule() {
       reportEditClear();
       reportOrderClear();
       reportCreateClear();
+      setPickedCharts([]);
+      setReportContentWidths([]);
     };
   }, []);
 
@@ -341,6 +564,14 @@ export default function ReportModule() {
     }
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
 
+  React.useEffect(() => {
+    console.log("framesArray", framesArray);
+  }, [framesArray]);
+
+  React.useEffect(() => {
+    console.log("reportContentWidths", reportContentWidths);
+  }, [reportContentWidths]);
+
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
@@ -351,21 +582,26 @@ export default function ReportModule() {
         forceEnablePreviewSave={isPreviewSaveEnabled}
         name={page !== "new" && !view ? reportGetData.name : reportName}
       />
-      {view && view !== "preview" && (
-        <ReportRightPanel
-          open={rightPanelOpen}
-          currentView={view}
-          pickedCharts={pickedCharts}
-          setPickedCharts={setPickedCharts}
-          headerDetails={headerDetails}
-          setHeaderDetails={setHeaderDetails}
-          appliedHeaderDetails={appliedHeaderDetails}
-          setAppliedHeaderDetails={setAppliedHeaderDetails}
-          onOpen={() => setRightPanelOpen(true)}
-          onClose={() => setRightPanelOpen(false)}
-          showHeaderItem={!headerDetails.showHeader}
-        />
-      )}
+      {view &&
+        view !== "preview" &&
+        !reportPreviewMode &&
+        view !== "initial" && (
+          <ReportRightPanel
+            open={rightPanelOpen}
+            currentView={view}
+            pickedCharts={pickedCharts}
+            setPickedCharts={setPickedCharts}
+            headerDetails={headerDetails}
+            setHeaderDetails={setHeaderDetails}
+            appliedHeaderDetails={appliedHeaderDetails}
+            setAppliedHeaderDetails={setAppliedHeaderDetails}
+            onOpen={() => setRightPanelOpen(true)}
+            onClose={() => setRightPanelOpen(false)}
+            showHeaderItem={!headerDetails.showHeader}
+            framesArray={framesArray}
+            reportName={reportName}
+          />
+        )}
       <div
         css={`
           width: 100%;
@@ -376,24 +612,11 @@ export default function ReportModule() {
         <Route path="/report/:page/initial">
           <Container maxWidth="lg">
             <Box height={50} />
-            <div
-              css={`
-                transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                width: ${rightPanelOpen
-                  ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                  : "100%"};
-
-                @media (max-width: 1280px) {
-                  width: calc(100vw - 400px);
-                }
-              `}
-            >
-              <ReportInitialView
-                resetFrames={resetFrames}
-                buttonActive={buttonActive}
-                setButtonActive={handleSetButtonActive}
-              />
-            </div>
+            <ReportInitialView
+              resetFrames={resetFrames}
+              buttonActive={buttonActive}
+              setButtonActive={handleSetButtonActive}
+            />
             <div
               css={`
                 height: calc(100vh - 450px);
@@ -401,27 +624,22 @@ export default function ReportModule() {
             />
             <div
               css={`
+                width: 100%;
                 display: flex;
+                padding-right: 20px;
                 justify-content: flex-end;
-                width: 86%;
-                /* height: 40vh; */
-                transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-                width: ${rightPanelOpen
-                  ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
-                  : "100%"};
               `}
             >
               <div
                 css={`
-                  width: 19%;
-                  padding-right: 20px;
                   color: #fff;
+                  width: 200px;
                 `}
               >
                 <PrimaryButton
-                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
                   disabled={!buttonActive}
                   onClick={handleNextButton}
+                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
                 >
                   use template
                 </PrimaryButton>
@@ -445,6 +663,7 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={handleRowFrameItemResize}
           />
         </Route>
         <Route path="/report/:page/edit">
@@ -462,6 +681,9 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={handleRowFrameItemResize}
+            stopInitializeFramesWidth={stopInitializeFramesWidth}
+            setStopInitializeFramesWidth={setStopInitializeFramesWidth}
           />
         </Route>
         <Route path="/report/:page">

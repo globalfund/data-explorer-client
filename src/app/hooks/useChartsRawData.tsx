@@ -65,8 +65,10 @@ export function useChartsRawData(props: {
   const { page, view } = useParams<{ page: string; view?: string }>();
 
   const [dataTypes, setDataTypes] = React.useState([]);
+  const [dataStats, setDataStats] = React.useState([]);
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
+  const [notFound, setNotFound] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
 
@@ -107,6 +109,7 @@ export function useChartsRawData(props: {
         },
       })
       .then((response: AxiosResponse) => {
+        setDataStats(response.data.stats);
         setSampleData(response.data.sample);
         setDataTypes(response.data.dataTypes);
         setDataTotalCount(response.data.count);
@@ -119,6 +122,7 @@ export function useChartsRawData(props: {
       })
       .catch((error: AxiosError) => {
         console.log(error);
+        setDataStats([]);
         setSampleData([]);
         if (extraLoader) {
           extraLoader.style.display = "none";
@@ -158,13 +162,16 @@ export function useChartsRawData(props: {
         const chart = response.data || {};
 
         if (!isEmpty(chart)) {
-          setAllAppliedFilters(chart.appliedFilters);
+          setAllAppliedFilters(chart.appliedFilters || {});
           setEnabledFilterOptionGroups(chart.enabledFilterOptionGroups);
           setVisualOptions(chart.vizOptions);
           setMapping(chart.mapping);
           setSelectedChartType(chart.vizType);
           setDataset(chart.datasetId);
           setChartFromAPI(chart);
+        }
+        if (response.data === null || response.data === undefined) {
+          setNotFound(true);
         }
 
         setLoading(false);
@@ -253,7 +260,9 @@ export function useChartsRawData(props: {
 
   return {
     loading,
+    notFound,
     dataTypes,
+    dataStats,
     sampleData,
     isEditMode,
     dataTotalCount,

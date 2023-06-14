@@ -54,6 +54,15 @@ export function useDataThemesEchart() {
       // chart options
       // orientation,
       // Tooltip
+      realTimeSort,
+      color,
+      splitLineY,
+      barRadius,
+      xAxisLineColor,
+      xAxisLabelFontSize,
+      focus,
+      xAxisLabelColor,
+      xAxisLabelInterval,
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
@@ -68,8 +77,32 @@ export function useDataThemesEchart() {
         right: marginRight,
         bottom: marginBottom,
       },
-      xAxis: { data: bars },
-      yAxis: { type: "value" },
+      xAxis: {
+        data: bars,
+        show: true,
+        type: "category",
+        axisTick: {
+          show: false,
+        },
+        axisLine: {
+          lineStyle: {
+            color: xAxisLineColor,
+          },
+        },
+        axisLabel: {
+          show: true,
+          color: xAxisLabelColor || "#000",
+          fontSize: xAxisLabelFontSize || 12,
+          interval: xAxisLabelInterval || "auto",
+        },
+      },
+      yAxis: {
+        type: "value",
+        show: true,
+        splitLine: {
+          show: splitLineY ?? true,
+        },
+      },
       // xAxis: orientation === "horizontal" ? { type: "value" } : { data: bars },
       // yAxis: orientation === "vertical" ? { type: "value" } : { data: bars },
       // backgroundColor: background,
@@ -80,7 +113,14 @@ export function useDataThemesEchart() {
           // height,
           type: "bar",
           data: sizes,
-          realtimeSort: true,
+          realtimeSort: realTimeSort ?? true,
+          itemStyle: {
+            color: color,
+            borderRadius: barRadius,
+          },
+          emphasis: {
+            focus,
+          },
         },
       ],
       tooltip: {
@@ -231,6 +271,7 @@ export function useDataThemesEchart() {
       },
       // backgroundColor: background,
       backgroundColor: "transparent",
+
       series: filter(get(data, "lines", []), (l: any) => l !== null).map(
         (d: any) => ({
           type: "line",
@@ -242,7 +283,9 @@ export function useDataThemesEchart() {
         })
       ),
       tooltip: {
-        trigger: showTooltip ? "axis" : "none",
+        show: showTooltip,
+        trigger: "axis",
+
         confine: true,
         valueFormatter: (value: number | string) =>
           isMonetaryValue

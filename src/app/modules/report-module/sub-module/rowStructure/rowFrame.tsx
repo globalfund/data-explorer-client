@@ -1,5 +1,6 @@
 import React from "react";
 import get from "lodash/get";
+import { useRecoilValue } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
@@ -9,22 +10,28 @@ import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/clo
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import {
+  ReportContentWidthsType,
+  reportContentWidthsAtom,
+} from "app/state/recoil/atoms";
+import {
   blockcss,
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
 
-const rowStructureDetailItems = [
-  [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%" }],
+const _rowStructureDetailItems = [
+  [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
   [
     {
       rowType: "oneByTwo",
       rowId: "oneByTwo-1",
       width: `calc(50% - ${itemSpacing})`,
+      factor: 0.5,
     },
     {
       rowType: "oneByTwo",
       rowId: "oneByTwo-2",
       width: `calc(50% - ${itemSpacing})`,
+      factor: 0.5,
     },
   ],
   [
@@ -32,16 +39,19 @@ const rowStructureDetailItems = [
       rowType: "oneByThree",
       rowId: "oneByThree-1",
       width: `calc(100% / 3 - ${itemSpacing})`,
+      factor: 0.33,
     },
     {
       rowType: "oneByThree",
       rowId: "oneByThree-2",
       width: `calc(100% / 3 - ${itemSpacing})`,
+      factor: 0.33,
     },
     {
       rowType: "oneByThree",
       rowId: "oneByThree-3",
       width: `calc(100% / 3 - ${itemSpacing})`,
+      factor: 0.33,
     },
   ],
   [
@@ -49,21 +59,25 @@ const rowStructureDetailItems = [
       rowType: "oneByFour",
       rowId: "oneByFour-1",
       width: `calc(100% / 4 - ${itemSpacing})`,
+      factor: 0.25,
     },
     {
       rowType: "oneByFour",
       rowId: "oneByFour-2",
       width: `calc(100% / 4 - ${itemSpacing})`,
+      factor: 0.25,
     },
     {
       rowType: "oneByFour",
       rowId: "oneByFour-3",
       width: `calc(100% / 4 - ${itemSpacing})`,
+      factor: 0.25,
     },
     {
       rowType: "oneByFour",
       rowId: "oneByFour-4",
       width: `calc(100% / 4 - ${itemSpacing})`,
+      factor: 0.25,
     },
   ],
   [
@@ -71,26 +85,31 @@ const rowStructureDetailItems = [
       rowType: "oneByFive",
       rowId: "oneByFive-1",
       width: `calc(100% / 5 - ${itemSpacing})`,
+      factor: 0.2,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-2",
       width: `calc(100% / 5 - ${itemSpacing})`,
+      factor: 0.2,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-3",
       width: `calc(100% / 5 - ${itemSpacing})`,
+      factor: 0.2,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-4",
       width: `calc(100% / 5 - ${itemSpacing})`,
+      factor: 0.2,
     },
     {
       rowType: "oneByFive",
       rowId: "oneByFive-5",
       width: `calc(100% / 5 - ${itemSpacing})`,
+      factor: 0.2,
     },
   ],
   [
@@ -98,11 +117,13 @@ const rowStructureDetailItems = [
       rowType: "oneToFour",
       rowId: "oneToFour-1",
       width: `calc(20% - ${itemSpacing})`,
+      factor: 0.2,
     },
     {
       rowType: "oneToFour",
       rowId: "oneToFour-2",
       width: `calc(80% - ${itemSpacing})`,
+      factor: 0.8,
     },
   ],
   [
@@ -110,11 +131,13 @@ const rowStructureDetailItems = [
       rowType: "fourToOne",
       rowId: "fourToOne-1",
       width: `calc(80% - ${itemSpacing})`,
+      factor: 0.8,
     },
     {
       rowType: "fourToOne",
       rowId: "fourToOne-2",
       width: `calc(20% - ${itemSpacing})`,
+      factor: 0.2,
     },
   ],
 ];
@@ -143,6 +166,12 @@ export interface RowFrameProps {
       | "oneToFour"
       | "fourToOne"
   ) => void;
+  handleRowFrameItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    reportContentWidths: ReportContentWidthsType[]
+  ) => void;
   previewItems?: (string | object)[];
 }
 
@@ -155,136 +184,67 @@ export default function RowFrame(props: RowFrameProps) {
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType || ""
   );
-
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
   >([""]);
+  const [rowStructureDetailItems, setRowStructureDetailItems] = React.useState<
+    {
+      rowId: string;
+      width: number;
+      rowType: string;
+      factor: number;
+    }[][]
+  >([]);
+
+  const onContentContainerResize = () => {
+    const contentContainer = document.getElementById("content-container");
+    if (contentContainer) {
+      const contentContainerWidth = contentContainer.offsetWidth;
+      const newItems = _rowStructureDetailItems.map((item) => {
+        const items = item.map((subitem) => ({
+          ...subitem,
+          width: contentContainerWidth * subitem.factor,
+        }));
+        return items;
+      });
+      setRowStructureDetailItems(newItems);
+    }
+  };
+
+  const reportContentWidths = useRecoilValue(reportContentWidthsAtom);
+
+  const onRowBoxItemResize = (
+    rowId: string,
+    itemIndex: number,
+    width: number
+  ) => {
+    props.handleRowFrameItemResize(
+      rowId,
+      itemIndex,
+      width,
+      reportContentWidths
+    );
+  };
 
   React.useEffect(() => {
     setSelectedType(selectedTypeHistory[selectedTypeHistory.length - 1]);
   }, [selectedTypeHistory]);
 
-  const checkSelectedType = {
-    oneByOne: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height="400px"
-        rowId={props.rowId}
-        rowIndex={props.rowIndex}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[0]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-      />
-    ),
-    oneByTwo: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height="420px"
-        rowIndex={props.rowIndex}
-        rowId={props.rowId}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[1]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-      />
-    ),
-    oneByThree: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height="460px"
-        rowId={props.rowId}
-        rowIndex={props.rowIndex}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[2]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-      />
-    ),
-    oneByFour: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height="122px"
-        rowId={props.rowId}
-        rowIndex={props.rowIndex}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[3]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-      />
-    ),
-    oneByFive: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height="121px"
-        rowId={props.rowId}
-        rowIndex={props.rowIndex}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[4]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-      />
-    ),
-    oneToFour: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height="400px"
-        rowId={props.rowId}
-        rowIndex={props.rowIndex}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[5]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-      />
-    ),
-    fourToOne: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height="400px"
-        rowIndex={props.rowIndex}
-        rowId={props.rowId}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[6]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-      />
-    ),
-  };
+  React.useEffect(() => {
+    const contentContainer = document.getElementById("content-container");
+    if (contentContainer) {
+      onContentContainerResize();
+      contentContainer.addEventListener("resize", onContentContainerResize);
+    }
+    return () => {
+      if (contentContainer) {
+        contentContainer.removeEventListener(
+          "resize",
+          onContentContainerResize
+        );
+      }
+    };
+  }, []);
 
   React.useEffect(() => {
     if (props.forceSelectedType) {
@@ -305,6 +265,139 @@ export default function RowFrame(props: RowFrameProps) {
         | "fourToOne"
     );
   }, [selectedType]);
+
+  const contentContainer = document.getElementById("content-container");
+  if (!contentContainer || rowStructureDetailItems.length === 0)
+    return <div>loading</div>;
+
+  const checkSelectedType = {
+    oneByOne: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={400}
+        rowId={props.rowId}
+        rowIndex={props.rowIndex}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[0]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+      />
+    ),
+    oneByTwo: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={420}
+        rowIndex={props.rowIndex}
+        rowId={props.rowId}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[1]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+      />
+    ),
+    oneByThree: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={460}
+        rowId={props.rowId}
+        rowIndex={props.rowIndex}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[2]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+      />
+    ),
+    oneByFour: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={122}
+        rowId={props.rowId}
+        rowIndex={props.rowIndex}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[3]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+      />
+    ),
+    oneByFive: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={121}
+        rowId={props.rowId}
+        rowIndex={props.rowIndex}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[4]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+      />
+    ),
+    oneToFour: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={400}
+        rowId={props.rowId}
+        rowIndex={props.rowIndex}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[5]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+      />
+    ),
+    fourToOne: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={400}
+        rowIndex={props.rowIndex}
+        rowId={props.rowId}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[6]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+      />
+    ),
+  };
 
   return (
     <>
@@ -623,7 +716,7 @@ export function Divider(props: {
       <hr
         css={`
           width: 100%;
-          margin: 20px 0;
+          margin: 0 0 50px 0;
           border: 2px solid #cfd4da;
         `}
       />

@@ -15,6 +15,7 @@ import { ReactComponent as ClockIcon } from "app/modules/report-module/asset/clo
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { headerBlockcss } from "app/modules/report-module/sub-module/components/headerBlock/style";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
+import { Tooltip } from "@material-ui/core";
 
 interface Props {
   previewMode: boolean;
@@ -109,6 +110,7 @@ export default function HeaderBlock(props: Props) {
       <div
         ref={drop}
         css={`
+          z-index: 1;
           width: 100%;
           height: 50px;
           position: absolute;
@@ -133,6 +135,7 @@ export default function HeaderBlock(props: Props) {
             left: 0;
             height: 100%;
             display: flex;
+            gap: 4px;
             position: absolute;
           `}
         >
@@ -155,22 +158,36 @@ export default function HeaderBlock(props: Props) {
               align-items: center;
               flex-direction: column;
               justify-content: center;
-
-              svg {
-                path {
-                  fill: #fff;
-                }
-                circle {
-                  stroke: #fff;
+              background: #adb5bd;
+              border-radius: 100px;
+              margin: auto;
+              width: 22px;
+              height: 53px;
+              button {
+                padding: 4px;
+                :hover {
+                  background: transparent;
+                  svg {
+                    path {
+                      fill: #fff;
+                    }
+                    circle {
+                      stroke: #fff;
+                    }
+                  }
                 }
               }
             `}
           >
             <IconButton onClick={onEdit} id="edit-header-icon">
-              <EditIcon />
+              <Tooltip title="Edit" placement="right">
+                <EditIcon />
+              </Tooltip>
             </IconButton>
             <IconButton onClick={onRemove} id="delete-header-icon">
-              <DeleteIcon />
+              <Tooltip title="Remove header" placement="right">
+                <DeleteIcon />
+              </Tooltip>
             </IconButton>
           </div>
         </div>
@@ -199,6 +216,7 @@ export default function HeaderBlock(props: Props) {
               min-width: 600px;
               line-height: 16.8px;
               background: inherit;
+              position: relative;
               letter-spacing: 0.692603px;
               ${props.previewMode && "pointer-events: none;"}
 

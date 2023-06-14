@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700&display=swap");
+
 @font-face {
   font-family: "GothamNarrow-Light";
   src: url("app/assets/fonts/subset-GothamNarrow-Light.eot");
@@ -71,6 +73,7 @@
 body {
   margin: 0;
   width: 100vw;
+  overflow-x: hidden;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   transition: background 0.2s ease-in-out;
@@ -84,15 +87,6 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-}
-
-#root::-webkit-scrollbar {
-  width: 6px;
-  border-radius: 4px;
-  background: #f4f4f4;
-}
-#root::-webkit-scrollbar-track {
-  background: #262c34;
 }
 
 * {
@@ -109,7 +103,7 @@ body {
   border-radius: 20px;
   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 }
-#rb-dropdown-menu{
+#rb-dropdown-menu {
   z-index: 10;
 }
 
@@ -175,4 +169,3 @@ input[type="text"] {
   color: #262c34;
   background: #f1f3f5;
 }
-

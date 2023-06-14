@@ -5,6 +5,8 @@ import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
 import { ReactComponent as EditIcon } from "../../assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
+import { ReactComponent as DuplicateIcon } from "../../assets/duplicate.svg";
+import { Tooltip } from "@material-ui/core";
 
 interface Props {
   id: string;
@@ -13,7 +15,9 @@ interface Props {
   descr: string;
   date: string;
   viz: React.ReactNode;
+  added?: boolean;
   handleDelete?: (id: string) => void;
+  handleDuplicate?: (id: string) => void;
 }
 
 export default function GridItem(props: Props) {
@@ -32,8 +36,7 @@ export default function GridItem(props: Props) {
         color: #262c34;
         background: #fff;
         position: relative;
-        padding: 0rem 1.2rem;
-        padding-bottom: 0.5rem;
+        padding: 12px 16px;
         flex-direction: column;
         justify-content: space-between;
       `}
@@ -41,7 +44,7 @@ export default function GridItem(props: Props) {
       <div
         css={`
           display: flex;
-          align-items: center;
+          align-items: flex-start;
           justify-content: space-between;
 
           a {
@@ -60,27 +63,26 @@ export default function GridItem(props: Props) {
             <p
               css={`
                 font-size: 14px;
-                margin-top: 8px;
+                margin-top: 6px;
                 overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
                 margin-bottom: 0;
+                white-space: nowrap;
+                text-overflow: ellipsis;
               `}
             >
               <b>{props.title}</b>
             </p>
           </Link>
-
           <p
             css={`
               font-size: 10px;
-              line-height: 12px;
               margin-top: 1px;
+              overflow: hidden;
+              line-height: 12px;
               display: -webkit-box;
               -webkit-line-clamp: 3;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
               text-overflow: ellipsis;
+              -webkit-box-orient: vertical;
             `}
           >
             {props.descr}
@@ -88,32 +90,63 @@ export default function GridItem(props: Props) {
         </div>
         <div
           css={`
-            margin-top: 12px;
-            width: 74px;
-            height: 74px;
-            path {
-              fill: #868a9d;
-            }
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
           `}
         >
-          {props.viz}
+          {props.added && (
+            <p
+              css={`
+                border: 1px solid #000000;
+                border-radius: 10px;
+                font-size: 12px;
+                height: 17px;
+                width: 57px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin: 0;
+                font-family: "GothamNarrow", sans-serif;
+              `}
+            >
+              Added
+            </p>
+          )}
+
+          <div
+            css={`
+              width: 74px;
+              height: 74px;
+              margin-top: 2px;
+
+              path {
+                fill: #868a9d;
+              }
+            `}
+          >
+            {props.viz}
+          </div>
         </div>
-        <IconButton
-          css={`
-            padding: 0;
-            margin-top: -30px;
-          `}
-          onClick={showMenuOptions}
-        >
-          <MenuIcon />
-        </IconButton>
+        {props.handleDelete && (
+          <IconButton
+            css={`
+              padding: 0;
+              margin-top: 5px;
+            `}
+            onClick={showMenuOptions}
+          >
+            <MenuIcon />
+          </IconButton>
+        )}
       </div>
       <div
         css={`
           display: flex;
           font-size: 12px;
           justify-content: space-between;
-
+          margin-top: -2px;
           > p {
             margin: 0;
           }
@@ -141,44 +174,67 @@ export default function GridItem(props: Props) {
               gap: 1rem;
               right: 3%;
               z-index: 2;
-              width: 128px;
+
               display: flex;
-              padding: 7px 0;
+              height: 38px;
+              width: 143px;
               position: absolute;
-              border-radius: 13px;
-              background: #f4f4f4;
+              background: #adb5bd;
+              border-radius: 100px;
               align-items: center;
               justify-content: center;
+              a {
+                :hover {
+                  svg {
+                    path {
+                      fill: #fff;
+                    }
+                  }
+                }
+              }
+              button {
+                padding: 4px;
+                :hover {
+                  background: transparent;
+                  svg {
+                    path {
+                      fill: #fff;
+                    }
+                  }
+                }
+              }
             `}
           >
             <div>
+              <IconButton
+                onClick={() => {
+                  props.handleDuplicate?.(props.id as string);
+                  setMenuOptionsDisplay(false);
+                }}
+              >
+                <Tooltip title="Duplicate">
+                  <DuplicateIcon />
+                </Tooltip>
+              </IconButton>
+            </div>
+            <div>
               <Link to={`/chart/${props.id}/customize`}>
-                <EditIcon
-                  css={`
-                    cursor: pointer;
-                    margin-top: 6px;
-                    :hover {
-                      opacity: 0.5;
-                    }
-                  `}
-                />
+                <Tooltip title="Edit">
+                  <EditIcon
+                    css={`
+                      margin-top: 4px;
+                    `}
+                  />
+                </Tooltip>
               </Link>
             </div>
             <div>
               <IconButton
-                css={`
-                  padding: 0;
-                `}
                 onClick={() => props.handleDelete?.(props.id as string)}
               >
-                <DeleteIcon
-                  css={`
-                    cursor: pointer;
-                    :hover {
-                      opacity: 0.5;
-                    }
-                  `}
-                />
+                <Tooltip title="Delete">
+                  <DeleteIcon />
+                </Tooltip>
               </IconButton>
             </div>
           </div>

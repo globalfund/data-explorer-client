@@ -19,8 +19,10 @@ export const headerBlockcss = {
       line-height: 48px;
       background: inherit;
 
-      :disabled {
-        color: ${titleColor};
+      &:focus {
+        &::placeholder {
+          opacity: 0.5;
+        }
       }
 
       ::placeholder {

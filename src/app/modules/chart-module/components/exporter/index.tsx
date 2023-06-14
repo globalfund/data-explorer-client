@@ -5,7 +5,7 @@ import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { styles } from "app/modules/chart-module/components/exporter/styles";
 
-const StyledMenu = withStyles({
+export const StyledMenu = withStyles({
   paper: {
     width: "100px",
     marginTop: "8px",
@@ -32,7 +32,7 @@ const StyledMenu = withStyles({
   />
 ));
 
-const StyledMenuItem = withStyles(() => ({
+export const StyledMenuItem = withStyles(() => ({
   root: {
     width: "100%",
     height: "37px",

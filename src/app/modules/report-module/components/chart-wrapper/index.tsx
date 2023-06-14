@@ -60,12 +60,11 @@ export function ReportChartWrapper(props: Props) {
     }
   }, [loadedChart]);
 
-  const { loadDataFromAPI } = useChartsRawData({
+  const { loadDataFromAPI, loading, notFound } = useChartsRawData({
     visualOptions,
     setVisualOptions,
     setChartFromAPI,
     chartFromAPI,
-    inChartWrapper: true,
   });
 
   React.useEffect(() => {
@@ -92,6 +91,37 @@ export function ReportChartWrapper(props: Props) {
     containerRef.current?.clientHeight,
   ]);
 
+  if (notFound) {
+    return (
+      <div
+        css={`
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `}
+      >
+        Chart not found
+      </div>
+    );
+  }
+
+  if (loading || chartFromAPI === null) {
+    return (
+      <div
+        css={`
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        `}
+      >
+        <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
+      </div>
+    );
+  }
   return (
     <div
       ref={containerRef}

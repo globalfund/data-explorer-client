@@ -1,9 +1,11 @@
 import React from "react";
 import { v4 } from "uuid";
 import { useDrop } from "react-dnd";
-import { useRecoilValue } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+import useResizeObserver from "use-resize-observer";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { GridColumns } from "app/modules/report-module/components/grid-columns";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
@@ -17,10 +19,18 @@ import {
 } from "app/modules/report-module/views/create/data";
 import {
   IRowFrameStructure,
+  reportContentContainerWidth,
+  unSavedReportPreviewModeAtom,
   isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
+  const { ref, width } = useResizeObserver<HTMLDivElement>();
+
+  const [containerWidth, setContainerWidth] = useRecoilState(
+    reportContentContainerWidth
+  );
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -65,9 +75,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
           content: [null, null, null, null, null],
+          contentWidths: [20, 20, 20, 20, 20],
           contentTypes: [null, null, null, null, null],
           structure: "oneByFive",
         },
@@ -84,9 +96,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
           content: [null],
+          contentWidths: [100],
           contentTypes: [null],
           structure: "oneByOne",
         },
@@ -103,9 +117,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
           content: [null, null],
+          contentWidths: [50, 50],
           contentTypes: [null, null],
           structure: "oneToFour",
         },
@@ -122,9 +138,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
           content: [null],
+          contentWidths: [100],
           contentTypes: [null],
           structure: "oneByOne",
         },
@@ -141,9 +159,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
           content: [null, null, null],
+          contentWidths: [33, 33, 33],
           contentTypes: [null, null, null],
           structure: "oneByThree",
         },
@@ -151,18 +171,29 @@ export function ReportCreateView(props: ReportCreateViewProps) {
     }
   }, [props.reportType]);
 
+  React.useEffect(() => {
+    if (width && width !== containerWidth) {
+      setContainerWidth(width);
+    }
+  }, [width]);
+
   return (
     <div>
       <HeaderBlock
-        previewMode={false}
+        previewMode={reportPreviewMode}
         headerDetails={{ ...props.headerDetails, createdDate: new Date() }}
         setHeaderDetails={props.setHeaderDetails}
       />
       <Container maxWidth="lg">
         <div
+          ref={ref}
+          id="content-container"
           css={`
+            position: relative;
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-            width: ${props.open
+            width: ${reportPreviewMode
+              ? "100%"
+              : props.open
               ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
               : "100%"};
 
@@ -191,24 +222,29 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                     handleRowFrameStructureTypeSelection={
                       props.handleRowFrameStructureTypeSelection
                     }
+                    handleRowFrameItemResize={props.handleRowFrameItemResize}
                   />
                 </div>
               );
             })}
           </ReportOrderContainer>
-          <AddRowFrameButton
-            deleteFrame={deleteFrame}
-            framesArray={props.framesArray}
-            rowStructureType={rowStructureType}
-            setFramesArray={props.setFramesArray}
-            setRowStructureType={setRowStructuretype}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            handleRowFrameStructureTypeSelection={
-              props.handleRowFrameStructureTypeSelection
-            }
-          />
+          {!reportPreviewMode && (
+            <AddRowFrameButton
+              deleteFrame={deleteFrame}
+              framesArray={props.framesArray}
+              rowStructureType={rowStructureType}
+              setFramesArray={props.setFramesArray}
+              setRowStructureType={setRowStructuretype}
+              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+              handleRowFrameStructureTypeSelection={
+                props.handleRowFrameStructureTypeSelection
+              }
+              handleRowFrameItemResize={props.handleRowFrameItemResize}
+            />
+          )}
           <Box height={45} />
+          <GridColumns />
         </div>
       </Container>
     </div>
@@ -242,9 +278,11 @@ export const PlaceHolder = (props: PlaceholderProps) => {
                 handleRowFrameStructureTypeSelection={
                   props.handleRowFrameStructureTypeSelection
                 }
+                handleRowFrameItemResize={props.handleRowFrameItemResize}
               />
             ),
             content: [],
+            contentWidths: [],
             contentTypes: [],
             structure: null,
           });
@@ -258,6 +296,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
             id,
             frame: <Divider delete={props.deleteFrame} dividerId={id} />,
             content: ["divider"],
+            contentWidths: [],
             contentTypes: ["divider"],
             structure: null,
           });
@@ -270,18 +309,16 @@ export const PlaceHolder = (props: PlaceholderProps) => {
   const isItemDragging = useRecoilValue(isDividerOrRowFrameDraggingAtom);
 
   return (
-    <>
-      <div
-        ref={drop}
-        css={`
-          width: 100%;
-          height: 20px;
-          margin: 10px 0;
-          display: ${isItemDragging ? "block" : "none"};
-          border: 1px ${isItemDragging ? "dashed" : "none"} #adb5bd;
-          background-color: #262c34;
-        `}
-      />
-    </>
+    <div
+      ref={drop}
+      css={`
+        width: 100%;
+        height: 20px;
+        margin: 10px 0;
+        display: ${isItemDragging ? "block" : "none"};
+        border: 1px ${isItemDragging ? "dashed" : "none"} #adb5bd;
+        background-color: #262c34;
+      `}
+    />
   );
 };
