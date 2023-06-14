@@ -48,6 +48,7 @@ export default function BreadCrumbs() {
         z-index: 10;
         position: sticky;
         margin-top: 3rem;
+
         background: ${document.body.style.background};
       `}
     >
