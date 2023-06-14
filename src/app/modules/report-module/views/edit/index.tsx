@@ -16,17 +16,14 @@ import HeaderBlock from "app/modules/report-module/sub-module/components/headerB
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
-import {
-  IRowFrameStructure,
-  reportContentWidthsAtom,
-  reportContentContainerWidth,
-} from "app/state/recoil/atoms";
 import RowFrame, {
   Divider,
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
   IRowFrameStructure,
+  reportContentWidthsAtom,
   persistedReportStateAtom,
+  reportContentContainerWidth,
 } from "app/state/recoil/atoms";
 
 export function ReportEditView(props: ReportEditViewProps) {

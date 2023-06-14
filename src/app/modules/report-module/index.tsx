@@ -373,6 +373,7 @@ export default function ReportModule() {
                       handleRowFrameStructureTypeSelection
                     }
                     previewItems={rowFrame.items}
+                    handleRowFrameItemResize={handleRowFrameItemResize}
                   />
                 ),
                 content: rowFrame.content,
