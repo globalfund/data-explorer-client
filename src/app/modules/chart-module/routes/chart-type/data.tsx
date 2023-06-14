@@ -1,3 +1,4 @@
+import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bignumber";
 import BarChartIcon from "app/assets/icons/data-themes-chart-types/bar";
 import GeomapChartIcon from "app/assets/icons/data-themes-chart-types/geomap";
 import LineChartIcon from "app/assets/icons/data-themes-chart-types/line";
@@ -63,7 +64,15 @@ export const echartTypes = (big: boolean) => {
       description:
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
     },
-
+    {
+      id: "bigNumber",
+      label: "Big number",
+      icon: <BigNumberIcon />,
+      categories: ["Hierarchies", "Proportions"],
+      ssr: true,
+      description:
+        "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
+    },
     {
       id: "placeholder1",
       label: "",
@@ -98,14 +107,6 @@ export const echartTypes = (big: boolean) => {
     },
     {
       id: "placeholder5",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder6",
       label: "",
       icon: <></>,
       categories: [],

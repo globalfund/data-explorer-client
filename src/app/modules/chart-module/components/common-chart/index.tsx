@@ -53,7 +53,9 @@ export function CommonChart(props: Props) {
         const element = document.createElement("div");
         element.innerHTML = props.renderedChart.trim();
         const newRawViz = domRef.current.appendChild(
-          element.firstChild || element
+          chartType === "bigNumber"
+            ? element.children[0].children[0].children[0]
+            : element.firstChild || element
         );
         props.setRawViz && props.setRawViz(newRawViz);
       } catch (e) {
@@ -123,6 +125,10 @@ export function CommonChart(props: Props) {
         css={`
           overflow-x: auto;
           margin-top: 40px;
+
+          ${chartType === "bigNumber" &&
+          window.location.pathname.indexOf("/chart/") > -1 &&
+          `transform: scale(2);transform-origin: left top;`}
 
           * {
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;

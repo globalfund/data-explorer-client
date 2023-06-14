@@ -134,6 +134,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             itemIndex={index}
             height={props.height}
             rowId={props.rowId}
+            rowType={row.rowType}
             handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             previewItem={get(props.previewItems, `[${index}]`, undefined)}
@@ -149,6 +150,7 @@ const Box = (props: {
   height: string;
   rowId: string;
   itemIndex: number;
+  rowType: string;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
@@ -269,8 +271,8 @@ const Box = (props: {
         <div
           key={chartId}
           css={`
-            padding: 24px;
-            background: #fff;
+            ${props.rowType !== "oneByFive" &&
+            "padding: 24px;background: #fff;"}
             position: relative;
             width: ${props.width};
             height: ${props.height};
@@ -286,10 +288,11 @@ const Box = (props: {
                 props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
               }}
               css={`
-                top: 12px;
                 z-index: 1;
-                right: 12px;
+                padding: 0;
                 position: absolute;
+                top: ${props.rowType !== "oneByFive" ? "24px" : "0px"};
+                right: ${props.rowType !== "oneByFive" ? "24px" : "0px"};
               `}
             >
               <DeleteIcon />
