@@ -551,14 +551,6 @@ export default function ReportModule() {
     }
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
 
-  React.useEffect(() => {
-    console.log("framesArray", framesArray);
-  }, [framesArray]);
-
-  React.useEffect(() => {
-    console.log("reportContentWidths", reportContentWidths);
-  }, [reportContentWidths]);
-
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
