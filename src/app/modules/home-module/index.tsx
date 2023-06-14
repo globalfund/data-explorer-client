@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
-import { useRecoilState } from "recoil";
 import useTitle from "react-use/lib/useTitle";
 import {
   Tab,
@@ -14,7 +14,13 @@ import {
   Popover,
 } from "@material-ui/core";
 /* project */
-import { homeDisplayAtom } from "app/state/recoil/atoms";
+import { Search } from "app/components/Search";
+import {
+  createChartFromReportAtom,
+  homeDisplayAtom,
+  persistedReportStateAtom,
+} from "app/state/recoil/atoms";
+import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
@@ -84,6 +90,16 @@ export default function HomeModule() {
   const exploreViewRef = React.useRef<HTMLDivElement>(null);
 
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+  const clearPersistedReportState = useResetRecoilState(
+    persistedReportStateAtom
+  );
+  const clearCreateChartFromReportState = useResetRecoilState(
+    createChartFromReportAtom
+  );
+  React.useEffect(() => {
+    clearPersistedReportState();
+    clearCreateChartFromReportState();
+  }, []);
 
   const sortOptions = [
     { label: "Last updated", value: "updatedDate" },

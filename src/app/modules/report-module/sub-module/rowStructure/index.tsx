@@ -2,13 +2,14 @@ import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import { useDrop } from "react-dnd";
-import { useRecoilState, useRecoilValue } from "recoil";
 import { useDebounce } from "react-use";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { unSavedReportPreviewModeAtom } from "app/state/recoil/atoms";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
@@ -55,8 +56,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
 
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
   const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
     (page !== "new" &&
@@ -214,7 +215,7 @@ const Box = (props: {
   };
 
   const containerWidth = useRecoilValue(reportContentContainerWidth);
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [isResizing, setIsResizing] = useRecoilState(
     reportContentIsResizingAtom
   );

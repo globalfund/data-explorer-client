@@ -7,11 +7,11 @@ import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
 import cloneDeep from "lodash/cloneDeep";
 import Container from "@material-ui/core/Container";
-import { EditorState, convertToRaw } from "draft-js";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
 import { PrimaryButton } from "app/components/Styled/button";
 import { NoMatchPage } from "app/modules/common/no-match-page";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { ReportEditView } from "app/modules/report-module/views/edit";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
@@ -20,12 +20,16 @@ import { ReportCreateView } from "app/modules/report-module/views/create";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
-import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
+import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
+import RowFrame, {
+  Divider,
+} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
   reportContentWidthsAtom,
   ReportContentWidthsType,
-  unSavedReportPreviewMode,
+  persistedReportStateAtom,
+  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -35,21 +39,51 @@ import {
   Redirect,
 } from "react-router-dom";
 
+interface RowFrameProps {
+  structure:
+    | "oneByOne"
+    | "oneByTwo"
+    | "oneByThree"
+    | "oneByFour"
+    | "oneByFive"
+    | "oneToFour"
+    | "fourToOne"
+    | null;
+  items: (string | object)[];
+  id: string;
+  content: (string | object | null)[];
+  contentTypes: ("text" | "divider" | "chart" | null)[];
+}
+
 export default function ReportModule() {
   const history = useHistory();
   const { page, view } = useParams<{
     page: string;
     view: "initial" | "edit" | "create" | "preview";
   }>();
-
+  const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
   const [reportType, setReportType] = React.useState<
     "basic" | "advanced" | "ai"
   >("basic");
-  const [pickedCharts, setPickedCharts] = React.useState<any[]>([]);
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
+
+  const localReportState = JSON.parse(persistedReportState.framesArray);
+
+  let localPickedCharts: string[] = [];
+  localReportState.map((data: any, index: number) => {
+    return data.contentTypes.map((item: any, index: number) => {
+      if (item === "chart") {
+        localPickedCharts.push(data.content[index]);
+      }
+    });
+  });
+  const [pickedCharts, setPickedCharts] = React.useState<any[]>(
+    localPickedCharts || []
+  );
+
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -59,6 +93,7 @@ export default function ReportModule() {
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
+
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
@@ -289,6 +324,67 @@ export default function ReportModule() {
       setRightPanelOpen(true);
     }
   }, [view]);
+  //sets report state to persisted report state
+  React.useEffect(() => {
+    setReportName(persistedReportState.reportName || "My First Report");
+    setHeaderDetails({
+      ...persistedReportState.headerDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.headerDetails.description)
+        )
+      ),
+    });
+
+    setAppliedHeaderDetails({
+      ...persistedReportState.appliedHeaderDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.appliedHeaderDetails.description)
+        )
+      ),
+    });
+
+    const localFramesArray =
+      JSON.parse(persistedReportState.framesArray || "[]").length > 0
+        ? JSON.parse(persistedReportState.framesArray).map(
+            (rowFrame: RowFrameProps, index: number) => {
+              const isDivider =
+                rowFrame.content &&
+                rowFrame.content.length === 1 &&
+                rowFrame.content[0] === ReportElementsType.DIVIDER;
+              return {
+                id: rowFrame.id,
+
+                frame: isDivider ? (
+                  <Divider delete={deleteFrame} dividerId={id} />
+                ) : (
+                  <RowFrame
+                    key={rowFrame.id}
+                    rowId={rowFrame.id}
+                    rowIndex={index}
+                    forceSelectedType={rowFrame.structure ?? undefined}
+                    deleteFrame={deleteFrame}
+                    handleRowFrameItemAddition={handleRowFrameItemAddition}
+                    handleRowFrameItemRemoval={handleRowFrameItemRemoval}
+                    handleRowFrameStructureTypeSelection={
+                      handleRowFrameStructureTypeSelection
+                    }
+                    previewItems={rowFrame.items}
+                  />
+                ),
+                content: rowFrame.content,
+                contentTypes: rowFrame.contentTypes,
+                structure: rowFrame.structure,
+              };
+            }
+          )
+        : framesArray;
+
+    setFramesArray(localFramesArray);
+  }, [persistedReportState]);
 
   const reportCreateData = useStoreState(
     (state) =>
@@ -488,6 +584,8 @@ export default function ReportModule() {
             onOpen={() => setRightPanelOpen(true)}
             onClose={() => setRightPanelOpen(false)}
             showHeaderItem={!headerDetails.showHeader}
+            framesArray={framesArray}
+            reportName={reportName}
           />
         )}
       <div

@@ -8,10 +8,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
-import {
-  reportRightPanelViewAtom,
-  unSavedReportPreviewMode,
-} from "app/state/recoil/atoms";
+import { reportRightPanelViewAtom } from "app/state/recoil/atoms";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as ClockIcon } from "app/modules/report-module/asset/clock-img.svg";
@@ -48,7 +45,6 @@ interface Props {
 export default function HeaderBlock(props: Props) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "header",
@@ -220,6 +216,7 @@ export default function HeaderBlock(props: Props) {
               min-width: 600px;
               line-height: 16.8px;
               background: inherit;
+              position: relative;
               letter-spacing: 0.692603px;
               ${props.previewMode && "pointer-events: none;"}
 

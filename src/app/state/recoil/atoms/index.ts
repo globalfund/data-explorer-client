@@ -1,5 +1,6 @@
 import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
+import { convertToRaw, EditorState } from "draft-js";
 
 export interface IRowFrameStructure {
   rowType:
@@ -90,4 +91,75 @@ export const reportContentIsResizingAtom = atom<boolean>({
 export const reportContentContainerWidth = atom<number>({
   key: "reportContentContainerWidth",
   default: 0,
+});
+
+export const unSavedReportPreviewModeAtom = atom<boolean>({
+  key: "unSavedReportPreviewModeAtom",
+  default: false,
+});
+
+export const createChartFromReportAtom = atom<{
+  state: boolean;
+  view: string;
+  page: string;
+}>({
+  key: "createChartFromReportAtom",
+  default: {
+    state: false,
+    view: "",
+    page: "",
+  },
+  effects_UNSTABLE: [persistAtom],
+});
+
+export const persistedReportStateAtom = atom<{
+  reportName: string;
+  headerDetails: {
+    title: string;
+    description: string;
+    showHeader: boolean;
+    backgroundColor: string;
+    titleColor: string;
+    descriptionColor: string;
+    dateColor: string;
+  };
+  appliedHeaderDetails: {
+    title: string;
+    description: string;
+    showHeader: boolean;
+    backgroundColor: string;
+    titleColor: string;
+    descriptionColor: string;
+    dateColor: string;
+  };
+  framesArray: string;
+}>({
+  key: "reportCreateStateAtom",
+  default: {
+    reportName: "My First Report",
+    headerDetails: {
+      title: "",
+      description: JSON.stringify(
+        convertToRaw(EditorState.createEmpty().getCurrentContent())
+      ),
+      showHeader: true,
+      backgroundColor: "#252c34",
+      titleColor: "#ffffff",
+      descriptionColor: "#ffffff",
+      dateColor: "#ffffff",
+    },
+    appliedHeaderDetails: {
+      title: "",
+      description: JSON.stringify(
+        convertToRaw(EditorState.createEmpty().getCurrentContent())
+      ),
+      showHeader: true,
+      backgroundColor: "#252c34",
+      titleColor: "#ffffff",
+      descriptionColor: "#ffffff",
+      dateColor: "#ffffff",
+    },
+    framesArray: JSON.stringify([]),
+  },
+  effects_UNSTABLE: [persistAtom],
 });

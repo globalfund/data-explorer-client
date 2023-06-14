@@ -34,8 +34,9 @@ import {
   ISnackbarState,
 } from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 import {
+  createChartFromReportAtom,
   homeDisplayAtom,
-  unSavedReportPreviewMode,
+  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
@@ -44,13 +45,14 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   }
 
   & [class*="MuiSnackbarContent-root"] {
-    width: 640px;
+    width: 100%;
     display: flex;
     padding: 0 78px;
     background: #fff;
     flex-wrap: nowrap;
     border-radius: 12px;
-    justify-content: space-between;
+    gap: ${(props) => (props.gap ? "0px" : "84px")};
+    justify-content: center;
     box-shadow: 0 8px 17px -4px rgba(130, 142, 148, 0.35),
       0 0 4px 0 rgba(130, 142, 148, 0.16), 0 0 2px 0 rgba(130, 142, 148, 0.12);
 
@@ -94,8 +96,12 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
   const [_, setHomeTab] = useRecoilState(homeDisplayAtom);
+  const [createChartFromReport, setCreateChartFromReport] = useRecoilState(
+    createChartFromReportAtom
+  );
+
   const [reportPreviewMode, setReportPreviewMode] = useRecoilState(
-    unSavedReportPreviewMode
+    unSavedReportPreviewModeAtom
   );
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
@@ -218,8 +224,18 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         values: chart,
       });
     }
-  };
+    //completes chart creation, returns back to persisted report view
+    if (createChartFromReport.state) {
+      setCreateChartFromReport({
+        ...createChartFromReport,
+        state: false,
+      });
 
+      history.push(
+        `/report/${createChartFromReport.page}/${createChartFromReport.view}`
+      );
+    }
+  };
   React.useEffect(() => {
     return () => {
       createChartClear();
@@ -270,7 +286,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         } successfully!`
       );
       const id = createChartSuccess ? createChartData.id : page;
-      history.push(`/chart/${id}`);
+      if (createChartFromReport.view === "") {
+        history.push(`/chart/${id}`);
+      }
     }
   }, [createChartSuccess, editChartSuccess, createChartData]);
 
@@ -372,6 +390,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     <div id="subheader-toolbar" css={styles.container}>
       {createOrEditChartLoading && <PageLoader />}
       <InfoSnackbar
+        gap={createChartFromReport.view !== ""}
         data-testid="create-chart-snackbar"
         onClose={() => setShowSnackbar(null)}
         open={showSnackbar !== null && showSnackbar !== ""}
@@ -380,15 +399,19 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           message={showSnackbar}
           aria-describedby="create-chart-snackbar-content"
           action={
-            <button
-              onClick={() => {
-                setShowSnackbar(null);
-                setHomeTab("reports");
-                history.push("/report/new/initial");
-              }}
-            >
-              CREATE NEW REPORT
-            </button>
+            <>
+              {createChartFromReport.view === "" && (
+                <button
+                  onClick={() => {
+                    setShowSnackbar(null);
+                    setHomeTab("reports");
+                    history.push("/report/new/initial");
+                  }}
+                >
+                  CREATE NEW REPORT
+                </button>
+              )}
+            </>
           }
         />
       </InfoSnackbar>

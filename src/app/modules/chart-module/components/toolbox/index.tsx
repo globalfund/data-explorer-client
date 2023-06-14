@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import isEmpty from "lodash/isEmpty";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import MuiButton from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -12,6 +12,8 @@ import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { ChartToolBoxProps } from "app/modules/chart-module/components/toolbox/data";
 import { ChartToolBoxSteps } from "app/modules/chart-module/components/toolbox/views/steps";
 import { ChartToolBoxPreview } from "app/modules/chart-module/components/toolbox/views/preview";
+import { useRecoilState } from "recoil";
+import { createChartFromReportAtom } from "app/state/recoil/atoms";
 
 const Button = withStyles(() => ({
   root: {
@@ -40,7 +42,7 @@ const Button = withStyles(() => ({
 
 export function ChartModuleToolBox(props: ChartToolBoxProps) {
   const { page, view } = useParams<{ page: string; view?: string }>();
-
+  const history = useHistory();
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
@@ -68,6 +70,9 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   const editChart = useStoreActions(
     (actions) => actions.charts.ChartUpdate.patch
   );
+  const [createChartFromReport, setCreateChartFromReport] = useRecoilState(
+    createChartFromReportAtom
+  );
 
   function onSave() {
     const chart = {
@@ -88,6 +93,17 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
       createChart({
         values: chart,
       });
+    }
+    //Completes chart creation , returns to persisted report state
+    if (createChartFromReport) {
+      setCreateChartFromReport({
+        ...createChartFromReport,
+        state: false,
+      });
+
+      history.push(
+        `/report/${createChartFromReport.page}/${createChartFromReport.view}`
+      );
     }
   }
 

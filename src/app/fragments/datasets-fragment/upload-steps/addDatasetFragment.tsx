@@ -7,7 +7,7 @@ import {
 import { ReactComponent as UploadIcon } from "app/fragments/datasets-fragment/assets/upload.svg";
 import { ReactComponent as LocalUploadIcon } from "app/fragments/datasets-fragment/assets/local-upload.svg";
 import { ReactComponent as GoogleDriveIcon } from "app/fragments/datasets-fragment/assets/google-drive.svg";
-import { Tooltip } from "@material-ui/core";
+
 import {
   DropzoneRootProps,
   DropzoneInputProps,
@@ -15,6 +15,9 @@ import {
   useDropzone,
 } from "react-dropzone";
 import { formatBytes } from "app/utils/formatBytes";
+import useDrivePicker from "react-google-drive-picker";
+import { PickerCallback } from "react-google-drive-picker/dist/typeDefs";
+import axios from "axios";
 
 interface Props {
   disabled: boolean;
@@ -23,10 +26,33 @@ interface Props {
 interface DragAndDropProps {
   disabled: boolean;
   handleNext: () => void;
-  setFile: React.Dispatch<React.SetStateAction<File | null>>;
+  setFile: React.Dispatch<React.SetStateAction<File | string | null>>;
 }
 
 export default function AddDatasetFragment(props: DragAndDropProps) {
+  const [openPicker, authResponse] = useDrivePicker();
+  const [fileData, setFileData] = React.useState<PickerCallback | null>(null);
+
+  React.useEffect(() => {
+    if (authResponse?.access_token && fileData?.docs) {
+      axios({
+        url: `https://www.googleapis.com/drive/v3/files/${fileData?.docs[0].id}?alt=media`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${authResponse?.access_token}`,
+          "Content-Type": "application/vnd.google-apps.document",
+        },
+        responseType: "blob", // important
+      }).then((response) => {
+        console.log(response.data, "response.data");
+        const b = response.data;
+        const file = new File([b], fileData?.docs[0].name, { type: b.type });
+        props.setFile(file);
+        props.handleNext();
+      });
+    }
+  }, [authResponse, fileData]);
+
   const ACCEPTED_FILES = {
     "text/csv": [".csv"],
     "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": [
@@ -54,11 +80,31 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
   } = useDropzone({ onDrop, accept: ACCEPTED_FILES });
 
   useEffect(() => {
-    props.setFile(acceptedFiles[0]);
     if (acceptedFiles.length > 0) {
+      props.setFile(acceptedFiles[0]);
       props.handleNext();
     }
   }, [acceptedFiles]);
+
+  function getTokenAndOpenPicker() {
+    openPicker({
+      clientId: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
+      developerKey: process.env.REACT_APP_GOOGLE_API_DEV_KEY as string,
+      viewId: "DOCS",
+      supportDrives: true,
+      token: "",
+      setSelectFolderEnabled: true,
+      callbackFunction: (d: PickerCallback) => {
+        console.log(d);
+        setFileData(d);
+      },
+    });
+  }
+
+  function handleOpenPicker(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    getTokenAndOpenPicker();
+  }
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
     <li key={file.name}>
@@ -79,6 +125,7 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
         isDragActive={isDragActive}
         fileRejections={fileRejections}
         acceptedFiles={acceptedFiles}
+        handleOpenPicker={handleOpenPicker}
       />
       {fileRejections.length > 0 && fileRejectionItems}
     </>
@@ -98,6 +145,7 @@ interface DropzoneProps extends Props {
   draggedFiles?: File[];
   rootRef?: React.RefObject<HTMLElement>;
   inputRef?: React.RefObject<HTMLInputElement>;
+  handleOpenPicker(e: React.MouseEvent<HTMLButtonElement>): void;
 }
 
 export const DropZone = (props: DropzoneProps) => {
@@ -146,16 +194,10 @@ export const DropZone = (props: DropzoneProps) => {
                 <label htmlFor="local-upload">
                   <LocalUploadIcon /> <p>Local upload</p>
                 </label>
-                <Tooltip title="Not yet implemented">
-                  <button
-                    type="button"
-                    css={`
-                      opacity: 0.6;
-                    `}
-                  >
-                    <GoogleDriveIcon /> <p>Connect to google drive</p>
-                  </button>
-                </Tooltip>
+
+                <button type="button" onClick={props.handleOpenPicker}>
+                  <GoogleDriveIcon /> <p>Connect to google drive</p>
+                </button>
               </div>
               <Box height={80} />
               <p>

@@ -19,9 +19,9 @@ import {
 } from "app/modules/report-module/views/create/data";
 import {
   IRowFrameStructure,
-  isDividerOrRowFrameDraggingAtom,
   reportContentContainerWidth,
-  unSavedReportPreviewMode,
+  unSavedReportPreviewModeAtom,
+  isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
@@ -30,7 +30,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
   const [containerWidth, setContainerWidth] = useRecoilState(
     reportContentContainerWidth
   );
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewMode);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
