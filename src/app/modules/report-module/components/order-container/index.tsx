@@ -4,6 +4,7 @@ import { useUpdateEffect } from "react-use";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from "dnd-core";
 import { useStoreActions } from "app/state/store/hooks";
+import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 
 interface Item {
   id: string;
@@ -25,8 +26,6 @@ interface DragItem {
 
 const ItemTypes = {
   CARD: "card",
-  padding: "2rem",
-  border: "1px dashed gray",
 };
 
 const style = {
@@ -115,12 +114,27 @@ function ItemComponent(props: ItemComponentProps) {
   drag(drop(ref));
 
   return (
-    <div
-      ref={ref}
-      id={`item-${id}`}
-      data-handler-id={handlerId}
-      style={{ ...style, opacity }}
-    >
+    <div style={{ ...style, opacity }}>
+      <div
+        ref={ref}
+        id={`item-${id}`}
+        data-handler-id={handlerId}
+        css={`
+          top: -4px;
+          left: -4rem;
+          width: 23px;
+          cursor: grab;
+          display: flex;
+          position: absolute;
+          align-items: center;
+          background: #adb5bd;
+          border-radius: 3.45px;
+          justify-content: center;
+          height: calc(100% - 38px + 8px);
+        `}
+      >
+        <RowFrameHandleAdornment />
+      </div>
       {content}
     </div>
   );
@@ -135,8 +149,8 @@ interface Props {
 export function ReportOrderContainer(props: Props) {
   const [items, setItems] = React.useState(
     props.children.map((child: React.ReactNode, index: number) => ({
-      id: props.childrenData[index].id,
       content: child,
+      id: props.childrenData[index].id,
     }))
   );
 
@@ -150,7 +164,7 @@ export function ReportOrderContainer(props: Props) {
         update(prevItems, {
           $splice: [
             [dragIndex, 1],
-            [hoverIndex, 0, prevItems[dragIndex] as Item],
+            [hoverIndex, 0, prevItems[dragIndex]],
           ],
         })
       );
@@ -173,8 +187,8 @@ export function ReportOrderContainer(props: Props) {
   useUpdateEffect(() => {
     setItems(
       props.children.map((child: React.ReactNode, index: number) => ({
-        id: props.childrenData[index].id,
         content: child,
+        id: props.childrenData[index].id,
       }))
     );
   }, [props.childrenData]);

@@ -1,11 +1,13 @@
 import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
 import Box from "@material-ui/core/Box";
+import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
 import { useParams } from "react-router-dom";
+import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
 import { PlaceHolder } from "app/modules/report-module/views/create";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
@@ -14,6 +16,11 @@ import HeaderBlock from "app/modules/report-module/sub-module/components/headerB
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
+import {
+  IRowFrameStructure,
+  reportContentWidthsAtom,
+  reportContentContainerWidth,
+} from "app/state/recoil/atoms";
 import RowFrame, {
   Divider,
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
@@ -21,12 +28,20 @@ import RowFrame, {
 export function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
 
+  const { ref, width } = useResizeObserver<HTMLDivElement>();
+
+  const [containerWidth, setContainerWidth] = useRecoilState(
+    reportContentContainerWidth
+  );
+
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
       rowType: "",
       disableAddRowStructureButton: false,
     });
+
+  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
 
   const fetchReportData = useStoreActions(
     (actions) => actions.reports.ReportGet.fetch
@@ -61,12 +76,21 @@ export function ReportEditView(props: ReportEditViewProps) {
     ) as string[][];
     let pickedItems: string[] = [];
 
-    for (let i = 0; i < items.length; i++) {
-      const item = items[i];
-      pickedItems = [...pickedItems, ...item];
+    for (const element of items) {
+      pickedItems = [...pickedItems, ...element];
     }
     props.setPickedCharts(pickedItems);
+
+    return () => {
+      props.setStopInitializeFramesWidth(false);
+    };
   }, []);
+
+  React.useEffect(() => {
+    if (width && width !== containerWidth) {
+      setContainerWidth(width);
+    }
+  }, [width]);
 
   useUpdateEffect(() => {
     props.setName(reportData.name);
@@ -119,14 +143,28 @@ export function ReportEditView(props: ReportEditViewProps) {
               props.handleRowFrameStructureTypeSelection
             }
             previewItems={rowFrame.items}
+            handleRowFrameItemResize={props.handleRowFrameItemResize}
           />
         ),
         content,
+        contentWidths: [],
         contentTypes,
       };
     });
     props.setFramesArray(newFrameArray);
   }, [reportData]);
+
+  React.useEffect(() => {
+    if (!props.stopInitializeFramesWidth) {
+      const contentWidths = props.framesArray.map((frame, index) => {
+        return {
+          id: frame.id,
+          widths: get(reportData, `contentWidths[${index}].widths`, []),
+        };
+      });
+      setReportContentWidths(contentWidths);
+    }
+  }, [props.framesArray, reportData.contentWidths]);
 
   return (
     <div>
@@ -140,6 +178,8 @@ export function ReportEditView(props: ReportEditViewProps) {
       />
       <Container maxWidth="lg">
         <div
+          ref={ref}
+          id="content-container"
           css={`
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
             width: ${props.open
@@ -172,6 +212,7 @@ export function ReportEditView(props: ReportEditViewProps) {
                     handleRowFrameStructureTypeSelection={
                       props.handleRowFrameStructureTypeSelection
                     }
+                    handleRowFrameItemResize={props.handleRowFrameItemResize}
                   />
                 </div>
               );
@@ -188,6 +229,7 @@ export function ReportEditView(props: ReportEditViewProps) {
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={props.handleRowFrameItemResize}
           />
           <Box height={45} />
         </div>

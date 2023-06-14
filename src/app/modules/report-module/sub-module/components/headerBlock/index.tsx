@@ -114,6 +114,7 @@ export default function HeaderBlock(props: Props) {
       <div
         ref={drop}
         css={`
+          z-index: 1;
           width: 100%;
           height: 50px;
           position: absolute;

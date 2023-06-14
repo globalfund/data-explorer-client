@@ -1,8 +1,11 @@
 import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
 import filter from "lodash/filter";
 import Box from "@material-ui/core/Box";
 import { DndProvider } from "react-dnd";
+import { useRecoilState } from "recoil";
+import cloneDeep from "lodash/cloneDeep";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertToRaw } from "draft-js";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -20,14 +23,17 @@ import { ReportInitialView } from "app/modules/report-module/views/initial";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
 import {
+  reportContentWidthsAtom,
+  ReportContentWidthsType,
+  unSavedReportPreviewMode,
+} from "app/state/recoil/atoms";
+import {
   Route,
   Switch,
   useHistory,
   useParams,
   Redirect,
 } from "react-router-dom";
-import { unSavedReportPreviewMode } from "app/state/recoil/atoms";
-import { useRecoilState } from "recoil";
 
 export default function ReportModule() {
   const history = useHistory();
@@ -55,8 +61,13 @@ export default function ReportModule() {
   });
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
-
+  const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
+    React.useState(false);
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
+
+  const [reportContentWidths, setReportContentWidths] = useRecoilState(
+    reportContentWidthsAtom
+  );
 
   const handleRowFrameItemAddition = (
     rowId: string,
@@ -72,6 +83,74 @@ export default function ReportModule() {
       }
       tempPrev[frameId].content[itemIndex] = itemContent;
       tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
+    });
+  };
+
+  const alignFramesWContentWidths = (framesArr: IFramesArray[]) => {
+    let contentWidths: {
+      id: string;
+      widths: number[];
+    }[] = [];
+    framesArr.forEach((frame) => {
+      contentWidths.push({
+        id: frame.id,
+        widths: frame.contentWidths.length === 0 ? [100] : frame.contentWidths,
+      });
+    });
+    setReportContentWidths(contentWidths);
+  };
+
+  const handleRowFrameItemResize = (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    reportContentWidths: ReportContentWidthsType[]
+  ) => {
+    setFramesArray((prev) => {
+      if (!stopInitializeFramesWidth) {
+        setStopInitializeFramesWidth(true);
+      }
+      const tempPrev = cloneDeep(prev);
+      tempPrev.sort(
+        (a, b) => reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id)
+      );
+      const frameIndex = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameIndex === -1) {
+        return prev;
+      }
+      const contentContainer = document.getElementById("content-container");
+      const percentage = (width / contentContainer!.offsetWidth) * 100;
+      tempPrev[frameIndex].contentWidths[itemIndex] = percentage;
+      if (tempPrev[frameIndex].content.length > 1) {
+        const remainingWidth = 100 - percentage;
+        tempPrev[frameIndex].content.forEach((_, index) => {
+          if (index !== itemIndex) {
+            tempPrev[frameIndex].contentWidths[index] =
+              remainingWidth / (tempPrev[frameIndex].content.length - 1);
+          }
+        });
+      }
+      tempPrev.forEach((frame, index) => {
+        const indexContentWidths: number[] = get(
+          reportContentWidths,
+          `[${index}].widths`,
+          []
+        );
+        if (
+          frame.content.length !== frame.contentWidths.length &&
+          indexContentWidths.length
+        ) {
+          indexContentWidths.forEach((w, i) => {
+            if (!frame.contentWidths[i]) {
+              tempPrev[index].contentWidths[i] = w;
+            }
+          });
+        }
+      });
+      if (view === "edit") {
+        alignFramesWContentWidths(tempPrev);
+      }
       return [...tempPrev];
     });
   };
@@ -109,28 +188,42 @@ export default function ReportModule() {
   ) => {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
+    let contentWidths: number[] = [];
     switch (structure) {
       case "oneByOne":
         content = [null];
         contentTypes = [null];
+        contentWidths = [100];
         break;
-      case "oneByTwo":
-      case "fourToOne":
       case "oneByTwo":
         content = [null, null];
         contentTypes = [null, null];
+        contentWidths = [50, 50];
         break;
       case "oneByThree":
         content = [null, null, null];
         contentTypes = [null, null, null];
+        contentWidths = [33, 33, 33];
         break;
       case "oneByFour":
         content = [null, null, null, null];
         contentTypes = [null, null, null, null];
+        contentWidths = [20, 20, 20, 20];
         break;
       case "oneByFive":
         content = [null, null, null, null, null];
         contentTypes = [null, null, null, null, null];
+        contentWidths = [20, 20, 20, 20, 20];
+        break;
+      case "fourToOne":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [75, 25];
+        break;
+      case "oneToFour":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [25, 75];
         break;
       default:
         break;
@@ -140,6 +233,7 @@ export default function ReportModule() {
 
       tempPrev[rowIndex].content = content;
       tempPrev[rowIndex].contentTypes = contentTypes;
+      tempPrev[rowIndex].contentWidths = contentWidths;
       tempPrev[rowIndex].structure = structure;
       return [...tempPrev];
     });
@@ -174,13 +268,27 @@ export default function ReportModule() {
           handleRowFrameStructureTypeSelection={
             handleRowFrameStructureTypeSelection
           }
+          handleRowFrameItemResize={handleRowFrameItemResize}
         />
       ),
       content: [],
+      contentWidths: [],
       contentTypes: [],
       structure: null,
     },
   ]);
+
+  React.useEffect(() => {
+    if (view !== "edit") {
+      alignFramesWContentWidths(framesArray);
+    }
+  }, [framesArray, view]);
+
+  React.useEffect(() => {
+    if (view === "edit" && !rightPanelOpen) {
+      setRightPanelOpen(true);
+    }
+  }, [view]);
 
   const reportCreateData = useStoreState(
     (state) =>
@@ -253,9 +361,11 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={handleRowFrameItemResize}
           />
         ),
         content: [],
+        contentWidths: [],
         contentTypes: [],
         structure: null,
       },
@@ -288,9 +398,7 @@ export default function ReportModule() {
             : EditorState.createEmpty().getCurrentContent()
         ),
         rows: framesArray
-          .sort(function (a, b) {
-            return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
-          })
+          .sort((a, b) => reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id))
           .map((frame) => ({
             structure: frame.structure,
             items: frame.content.map((item, index) =>
@@ -302,6 +410,7 @@ export default function ReportModule() {
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
+        contentWidths: reportContentWidths,
         dateColor: appliedHeaderDetails.dateColor,
       },
     });
@@ -312,6 +421,8 @@ export default function ReportModule() {
       reportEditClear();
       reportOrderClear();
       reportCreateClear();
+      setPickedCharts([]);
+      setReportContentWidths([]);
     };
   }, []);
 
@@ -342,6 +453,14 @@ export default function ReportModule() {
       history.push(`/report/${id}`);
     }
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
+
+  React.useEffect(() => {
+    console.log("framesArray", framesArray);
+  }, [framesArray]);
+
+  React.useEffect(() => {
+    console.log("reportContentWidths", reportContentWidths);
+  }, [reportContentWidths]);
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -432,6 +551,7 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={handleRowFrameItemResize}
           />
         </Route>
         <Route path="/report/:page/edit">
@@ -449,6 +569,9 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={handleRowFrameItemResize}
+            stopInitializeFramesWidth={stopInitializeFramesWidth}
+            setStopInitializeFramesWidth={setStopInitializeFramesWidth}
           />
         </Route>
         <Route path="/report/:page">

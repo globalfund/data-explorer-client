@@ -1,4 +1,4 @@
-import { atom, RecoilState } from "recoil";
+import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 export interface IRowFrameStructure {
@@ -66,7 +66,28 @@ export const isDividerOrRowFrameDraggingAtom = atom<boolean>({
   key: "isDividerOrRowFrameDraggingAtom",
   default: false,
 });
+
 export const unSavedReportPreviewMode = atom<boolean>({
   key: "unSavedReportPreviewMode",
   default: false,
+});
+
+export interface ReportContentWidthsType {
+  id: string;
+  widths: number[];
+}
+
+export const reportContentWidthsAtom = atom<ReportContentWidthsType[]>({
+  key: "reportContentWidths",
+  default: [],
+});
+
+export const reportContentIsResizingAtom = atom<boolean>({
+  key: "reportContentIsResizing",
+  default: false,
+});
+
+export const reportContentContainerWidth = atom<number>({
+  key: "reportContentContainerWidth",
+  default: 0,
 });
