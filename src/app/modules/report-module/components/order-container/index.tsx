@@ -29,7 +29,6 @@ const ItemTypes = {
 };
 
 const style = {
-  cursor: "pointer",
   transform: "translate(0px, 0px)",
 };
 

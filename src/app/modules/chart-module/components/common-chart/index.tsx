@@ -2,7 +2,6 @@ import React from "react";
 import { useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { useDataThemesEchart } from "app/hooks/useDataThemesEchart";
-import { CHART_DEFAULT_WIDTH } from "app/modules/chart-module/data";
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 
 interface Props {

@@ -163,7 +163,11 @@ export function ReportEditView(props: ReportEditViewProps) {
       const contentWidths = props.framesArray.map((frame, index) => {
         return {
           id: frame.id,
-          widths: get(reportData, `contentWidths[${index}].widths`, []),
+          widths: get(
+            reportData,
+            `contentWidths[${index}].widths`,
+            get(frame, "contentWidths", [])
+          ),
         };
       });
       setReportContentWidths(contentWidths);

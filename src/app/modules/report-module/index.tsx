@@ -270,6 +270,18 @@ export default function ReportModule() {
       tempPrev[rowIndex].contentTypes = contentTypes;
       tempPrev[rowIndex].contentWidths = contentWidths;
       tempPrev[rowIndex].structure = structure;
+      if (view === "edit") {
+        const newReportContentWidths = cloneDeep(reportContentWidths);
+        if (newReportContentWidths[rowIndex]) {
+          newReportContentWidths[rowIndex].widths = contentWidths;
+        } else {
+          newReportContentWidths.push({
+            id: tempPrev[rowIndex].id,
+            widths: contentWidths,
+          });
+        }
+        setReportContentWidths(newReportContentWidths);
+      }
       return [...tempPrev];
     });
   };
@@ -324,6 +336,7 @@ export default function ReportModule() {
       setRightPanelOpen(true);
     }
   }, [view]);
+
   //sets report state to persisted report state
   React.useEffect(() => {
     setReportName(persistedReportState.reportName || "My First Report");
@@ -550,6 +563,14 @@ export default function ReportModule() {
       history.push(`/report/${id}`);
     }
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
+
+  React.useEffect(() => {
+    console.log("framesArray", framesArray);
+  }, [framesArray]);
+
+  React.useEffect(() => {
+    console.log("reportContentWidths", reportContentWidths);
+  }, [reportContentWidths]);
 
   return (
     <DndProvider backend={HTML5Backend}>
