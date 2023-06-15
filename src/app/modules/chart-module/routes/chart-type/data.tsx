@@ -1,4 +1,3 @@
-import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bignumber";
 import BarChartIcon from "app/assets/icons/data-themes-chart-types/bar";
 import ColoredBarChartIcon from "app/assets/icons/data-themes-chart-types/coloredBarChart";
 
@@ -13,7 +12,9 @@ import ColoredSankeyChartIcon from "app/assets/icons/data-themes-chart-types/col
 
 import TreeMapIcon from "app/assets/icons/data-themes-chart-types/treemap";
 import ColoredTreeMapIcon from "app/assets/icons/data-themes-chart-types/coloredTreemap";
-import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
+
+import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
+import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/coloredBigNumber";
 
 export interface ChartBuilderChartTypeProps {
   loading: boolean;
@@ -210,7 +211,7 @@ export const coloredEchartTypes = () => {
       label: "Big Number diagram",
       icon: <ColoredBigNumberIcon />,
       categories: ["Hierarchies", "Proportions"],
-      ssr: false,
+      ssr: true,
       description:
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
     },

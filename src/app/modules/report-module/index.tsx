@@ -52,6 +52,7 @@ interface RowFrameProps {
   items: (string | object)[];
   id: string;
   content: (string | object | null)[];
+  contentWidths: ReportContentWidthsType[];
   contentTypes: ("text" | "divider" | "chart" | null)[];
 }
 
@@ -390,6 +391,7 @@ export default function ReportModule() {
                   />
                 ),
                 content: rowFrame.content,
+                contentWidths: rowFrame.contentWidths,
                 contentTypes: rowFrame.contentTypes,
                 structure: rowFrame.structure,
               };
@@ -563,14 +565,6 @@ export default function ReportModule() {
       history.push(`/report/${id}`);
     }
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
-
-  React.useEffect(() => {
-    console.log("framesArray", framesArray);
-  }, [framesArray]);
-
-  React.useEffect(() => {
-    console.log("reportContentWidths", reportContentWidths);
-  }, [reportContentWidths]);
 
   return (
     <DndProvider backend={HTML5Backend}>

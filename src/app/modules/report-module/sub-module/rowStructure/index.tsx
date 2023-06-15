@@ -371,9 +371,9 @@ const Box = (props: {
           <div
             css={`
               height: 100%;
-              padding: 24px;
               background: #fff;
               position: relative;
+              padding: ${props.rowType === "oneByFive" ? "0" : "24px"};
             `}
           >
             {!viewOnlyMode && (

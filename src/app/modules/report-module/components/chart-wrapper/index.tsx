@@ -65,6 +65,7 @@ export function ReportChartWrapper(props: Props) {
     setVisualOptions,
     setChartFromAPI,
     chartFromAPI,
+    inChartWrapper: true,
   });
 
   React.useEffect(() => {
@@ -122,6 +123,7 @@ export function ReportChartWrapper(props: Props) {
       </div>
     );
   }
+
   return (
     <div
       ref={containerRef}

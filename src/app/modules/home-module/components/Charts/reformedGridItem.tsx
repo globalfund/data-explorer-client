@@ -88,28 +88,34 @@ export default function ReformedGridItem(props: Props) {
       </div>
       <div
         css={`
-          width: 74px;
-          height: 74px;
-          margin-top: 2px;
-        `}
-      >
-        {props.viz}
-      </div>
-      <div
-        css={`
           display: flex;
-          font-size: 12px;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 3px;
-          > p {
-            margin: 0;
-          }
+          flex-direction: row;
+          align-items: flex-end;
+          justify-content: space-between;
         `}
       >
-        <ClockIcon />
-
-        <p>{moment(props.date).format("DD-MM-YYYY")}</p>
+        <div
+          css={`
+            margin-top: 2px;
+          `}
+        >
+          {props.viz}
+        </div>
+        <div
+          css={`
+            display: flex;
+            font-size: 12px;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 3px;
+            > p {
+              margin: 0;
+            }
+          `}
+        >
+          <ClockIcon />
+          <p>{moment(props.date).format("MMMM YYYY")}</p>
+        </div>
       </div>
     </div>
   );
