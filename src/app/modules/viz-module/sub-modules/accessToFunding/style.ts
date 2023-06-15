@@ -31,6 +31,7 @@ export const descriptioncss = css`
     line-height: 17px;
 
     a {
+      color: #252c34;
       font-weight: 700;
     }
   }
