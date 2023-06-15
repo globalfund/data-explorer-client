@@ -26,6 +26,7 @@ import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 
 interface GrantsModuleProps {
   code?: string;
@@ -193,6 +194,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
       {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
+          <BreadCrumbs />
           <PageHeader title={get(cmsData, "modulesGrants.titleShort", "")} />
           <ToolBoxPanel
             open={openToolboxPanel}
