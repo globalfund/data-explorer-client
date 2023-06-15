@@ -11,6 +11,8 @@ import { PageLoader } from "app/modules/common/page-loader";
 
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 import { InvestmentsRadialViz } from "app/modules/country-detail-module/sub-modules/overview/components/radial";
+import { ComponentIcon } from "app/assets/icons/Component";
+import { LocationIcon } from "app/assets/icons/Location";
 
 export function GrantDetailOverviewModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -76,12 +78,11 @@ export function GrantDetailOverviewModule() {
       `}
     >
       <React.Fragment>
-        {/* {isSmallScreen && detailsBlock} */}
         <Grid
           item
           xs={12}
           lg={8}
-          md={8}
+          md={7}
           css={`
             > div {
               h3 {
@@ -110,8 +111,7 @@ export function GrantDetailOverviewModule() {
           >
             <div>
               <h3> Goals</h3>
-              To ensure that Albania remains a low prevalence country for TB and
-              HIV
+              <p>No data available</p>
             </div>
             <div
               css={`
@@ -120,22 +120,13 @@ export function GrantDetailOverviewModule() {
             >
               {" "}
               <h3>Objectives</h3>
-              Objectives Ensure sustainable response to HIV through
-              strengthening coordination, leadership and financial and political
-              commitment of the Government To ensure equitable access to high
-              quality TB and HIV prevention, treatment, care and support with a
-              focus on key affected populations (MSM, PWID, SW, PLWHA and other
-              vulnerable people most affected by the HIV and TB epidemic) To
-              strengthen the health and community systems that enable
-              needs-based, evidence-based and cost-effective prevention
-              interventions for key populations mostly affected by the HIV and
-              TB epidemic.
+              <p> No data available</p>
             </div>
           </div>
         </Grid>
       </React.Fragment>
 
-      <Grid item container xs={12} lg={4} md={7}>
+      <Grid item container xs={12} lg={4} md={5}>
         <Grid
           item
           xs={12}
@@ -150,10 +141,9 @@ export function GrantDetailOverviewModule() {
               justify-content: space-between;
               align-items: flex-start;
               border-bottom: 0.5px solid #dfe3e6;
-              /* background: pink; */
+
               padding-left: 20px;
               padding-bottom: 10px;
-              width: 90%;
             `}
           >
             <div
@@ -169,11 +159,18 @@ export function GrantDetailOverviewModule() {
                   color: #262c34;
                   font-weight: 400;
                   font-size: 14px;
+                  margin-bottom: 0;
                 `}
               >
                 <b>Fund Portfolio Manager</b>
               </p>
-              <p>{grantInfoData.manager.name}</p>
+              <p
+                css={`
+                  margin-top: -4px;
+                `}
+              >
+                {grantInfoData.manager.name}
+              </p>
               <p
                 css={`
                   font-weight: 325;
@@ -213,7 +210,6 @@ export function GrantDetailOverviewModule() {
               padding-bottom: 3px;
               border-bottom: 0.5px solid #dfe3e6;
 
-              width: 90%;
               p {
                 font-size: 12px;
                 color: #262c34;
@@ -222,12 +218,45 @@ export function GrantDetailOverviewModule() {
             `}
           >
             <div>
-              <p>
+              <p
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 7px;
+                `}
+              >
+                <span
+                  css={`
+                    svg {
+                      width: 15px;
+                      height: 21px;
+                      margin-top: 4px;
+                    }
+                  `}
+                >
+                  {" "}
+                  <LocationIcon />
+                </span>{" "}
                 Location: <b>{grantInfoData.location}</b>
               </p>
             </div>
             <div>
-              <p>
+              <p
+                css={`
+                  display: flex;
+                  align-items: center;
+                  gap: 7px;
+                `}
+              >
+                <span
+                  css={`
+                    svg {
+                      margin-top: 4px;
+                    }
+                  `}
+                >
+                  <ComponentIcon />
+                </span>
                 Component: <b>{grantInfoData.component}</b>{" "}
               </p>
             </div>
@@ -235,6 +264,7 @@ export function GrantDetailOverviewModule() {
           <div
             css={`
               padding-left: 20px;
+              width: 95%;
             `}
           >
             <p
@@ -294,6 +324,7 @@ export function GrantDetailOverviewModule() {
           <div
             css={`
               padding-left: 20px;
+              width: 95%;
             `}
           >
             <p
@@ -331,7 +362,6 @@ export function GrantDetailOverviewModule() {
         <Grid
           item
           xs={12}
-          // md={7}
           css={`
             @media (min-width: 1280px) {
               margin-top: 20px;
