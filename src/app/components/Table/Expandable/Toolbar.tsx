@@ -79,6 +79,7 @@ export function TableToolbar(props: TableToolbarProps) {
         }
       `}
     >
+      <div></div>
       <div
         css={`
           font-size: 18px;
@@ -225,6 +226,9 @@ export function TableToolbar(props: TableToolbarProps) {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
+        container={() =>
+          document.getElementById("simple-table-id") as HTMLElement
+        }
         anchorOrigin={{
           vertical: "bottom",
           horizontal: "right",
