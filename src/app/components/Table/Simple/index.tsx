@@ -99,8 +99,8 @@ function Row(props: {
           let formattedValue =
             props.formatNumbers &&
             !Number.isNaN(parseInt(value)) &&
-            column.name.indexOf("(USD)") > -1
-              ? formatFinancialValue(value, true)
+            column.name.indexOf("Component/Location") === -1
+              ? `${formatFinancialValue(value, true)} USD`
               : value;
           return (
             <TableCell
@@ -123,7 +123,7 @@ function Row(props: {
                   align-items: center;
                   flex-direction: row;
                   justify-content: ${!Number.isNaN(parseInt(value)) &&
-                  (column.name.indexOf("(USD)") > -1 ||
+                  (column.name.indexOf("Component/Location") === -1 ||
                     column.name === "Grants")
                     ? "flex-end"
                     : "flex-start"};
@@ -261,7 +261,8 @@ export function SimpleTable(props: SimpleTableProps) {
               ).map((column: SimpleTableColumn, index: number) => {
                 let icon = undefined;
                 const monetaryColumn =
-                  column.name.indexOf("(USD)") > -1 || column.name === "Grants";
+                  column.name.indexOf("Component/Location") === -1 ||
+                  column.name === "Grants";
                 if (sortBySplits.length > 1 && sortBySplits[0] === column.key) {
                   if (sortBySplits[1] === "DESC") {
                     icon = <ArrowDownward />;

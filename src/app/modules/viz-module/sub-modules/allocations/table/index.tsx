@@ -79,7 +79,7 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
     data.length > 0
       ? filter(Object.keys(data[0]), (key) => key !== "children").map(
           (key) => ({
-            name: key === "name" ? "Component/Location" : `${key} (USD)`,
+            name: key === "name" ? "Component/Location" : `${key}`,
             key,
           })
         )
