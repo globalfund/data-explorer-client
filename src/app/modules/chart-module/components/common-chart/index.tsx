@@ -127,7 +127,14 @@ export function CommonChart(props: Props) {
 
           ${chartType === "bigNumber" &&
           window.location.pathname.indexOf("/chart/") > -1 &&
-          `transform: scale(2);transform-origin: left top;`}
+          `
+            transform: scale(2);
+            transform-origin: left top;
+
+            > div {
+              width: 135px;
+            }
+          `}
 
           * {
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
