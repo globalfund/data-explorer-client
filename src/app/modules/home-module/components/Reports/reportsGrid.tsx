@@ -106,13 +106,13 @@ export default function ReportsGrid(props: {
               <ReformedGridItem
                 id={data.id}
                 key={data.id}
-                title={data.name}
-                descr={data.title}
+                descr={data.name}
                 date={data.createdDate}
                 viz={<ColoredReportIcon />}
                 color={data.backgroundColor}
                 handleDelete={() => handleModal(index)}
                 handleDuplicate={() => handleDuplicate(index)}
+                title={data.title.length > 0 ? data.title : data.name}
               />
               <Box height={16} />
             </Grid>
