@@ -7,19 +7,18 @@ import { useCMSData } from "app/hooks/useCMSData";
 
 export const NoMatchPage = () => {
   const cmsData = useCMSData({ returnData: true });
-  const isLoading = document.getElementById("general-loader");
 
   return (
     <div
       css={`
         width: 100%;
         height: 100%;
+        display: flex;
         position: relative;
         align-items: center;
         flex-direction: column;
         justify-content: center;
         padding: 100px 50px 50px 50px;
-        display: ${isLoading ? "none" : "flex"};
       `}
     >
       <div
