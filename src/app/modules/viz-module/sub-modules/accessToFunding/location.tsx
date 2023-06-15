@@ -114,10 +114,17 @@ export default function LocationAccessToFundingWrapper(props: Props) {
         <p style={{ width: "60%" }}>
           The Global Fund allocates funding to eligible countries every three
           years. Countries access these funds by developing Funding Requests
-          which are informed by country dialogues. Information on the current
-          status of Funding Requests is found below. For those interested in
-          participating in country dialogue, the “Overview” tab above includes
-          contact information for the Country Coordinating Mechanism.
+          which are informed by{" "}
+          <a
+            target="_blank"
+            href="https://www.theglobalfund.org/en/funding-model/throughout-the-cycle/country-dialogue"
+          >
+            country dialogues
+          </a>
+          . Information on the current status of Funding Requests is found
+          below. For those interested in participating in country dialogue, the
+          “Overview” tab above includes contact information for the Country
+          Coordinating Mechanism.
         </p>
       </div>
       <Box height={25} />
@@ -127,7 +134,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
             text-align: center;
           `}
         >
-          <b>Cycle</b>
+          <b>Allocation Period</b>
         </p>
         <div
           css={`
