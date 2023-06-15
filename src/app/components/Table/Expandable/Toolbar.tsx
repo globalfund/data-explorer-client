@@ -59,6 +59,13 @@ export function TableToolbar(props: TableToolbarProps) {
   );
 
   React.useEffect(() => {
+    if (searchInputRef.current && isEligibilityTable) {
+      setOpenSearch(true);
+      searchInputRef.current.focus();
+    }
+  }, [searchInputRef, isEligibilityTable]);
+
+  React.useEffect(() => {
     if (props.search.length > 0 && !openSearch) {
       setOpenSearch(true);
     }
