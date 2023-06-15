@@ -230,7 +230,7 @@ export function AppBar() {
                 `}
               >
                 <div css={navLinkcss("why-dx", navLocation)}>
-                  <NavLink to="#" onClick={() => handlePath("data")}>
+                  <NavLink to="/why-dx" onClick={() => handlePath("data")}>
                     <b>Why Dx?</b>
                   </NavLink>
                 </div>
