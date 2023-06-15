@@ -2,8 +2,8 @@
 import React from "react";
 import get from "lodash/get";
 import orderBy from "lodash/orderBy";
-import { useDebounce } from "react-use";
 import { useRecoilValue } from "recoil";
+import { useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -140,6 +140,12 @@ export function AccessToFundingRequestTableWrapper(props: Props) {
       reloadData();
     }
   }, [props.code, appliedFilters, sortBy, cycle]);
+
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
 
   const [,] = useDebounce(
     () => {
