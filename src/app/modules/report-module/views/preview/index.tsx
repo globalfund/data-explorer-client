@@ -41,7 +41,9 @@ export function ReportPreviewView() {
   }, [page]);
 
   React.useEffect(() => {
-    setReportContentWidths(reportData.contentWidths);
+    if (reportData.contentWidths) {
+      setReportContentWidths(reportData.contentWidths);
+    }
   }, [reportData.contentWidths]);
 
   React.useEffect(() => {
