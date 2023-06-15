@@ -79,7 +79,6 @@ export function TableToolbar(props: TableToolbarProps) {
         }
       `}
     >
-      <div></div>
       <div
         css={`
           font-size: 18px;

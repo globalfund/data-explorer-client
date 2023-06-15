@@ -24,7 +24,6 @@ import {
   SimpleTableRow,
 } from "app/components/Table/Simple/data";
 import { useHistory } from "react-router-dom";
-import { Popover, Typography } from "@material-ui/core";
 
 const useRowStyles = makeStyles({
   root: {
