@@ -175,7 +175,7 @@ export function AppBar() {
           css={`
             gap: 32px;
             width: 100%;
-            height: 48px;
+            height: 45px;
             display: flex;
             flex-direction: row;
             align-items: center;
