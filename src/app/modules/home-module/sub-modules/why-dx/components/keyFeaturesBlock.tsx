@@ -1,5 +1,5 @@
-import { Grid } from "@material-ui/core";
 import React from "react";
+import Grid from "@material-ui/core/Grid";
 import { ReactComponent as AIPoweredImg } from "app/modules/home-module/assets/whydx-ai-powered-illustration.svg";
 import { ReactComponent as CharVizImg } from "app/modules/home-module/assets/whydx-chartviz-illustration.svg";
 import { ReactComponent as OpenSourceImg } from "app/modules/home-module/assets/whydx-opensource-illustration.svg";

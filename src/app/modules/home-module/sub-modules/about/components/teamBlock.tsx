@@ -75,7 +75,7 @@ export default function TeamBlock() {
         <Grid item xs={12} sm={6} md={4}>
           <TeamCard
             img={KennyAvi}
-            name="Data Engineer"
+            name="Kennet Z. Porter"
             role="UI/UX & Data Visualisation Designer"
           />
         </Grid>{" "}

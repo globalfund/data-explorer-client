@@ -24,6 +24,7 @@ export const empowercss = css`
     color: #495057;
     font-size: 18px;
     line-height: 22px;
+    text-align: center;
     font-family: "Gotham Narrow Bold", sans-serif;
   }
   div {
