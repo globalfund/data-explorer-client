@@ -36,8 +36,10 @@ import {
 import {
   createChartFromReportAtom,
   homeDisplayAtom,
+  persistedReportStateAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
+import { EditorState, convertToRaw } from "draft-js";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -103,6 +105,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const [reportPreviewMode, setReportPreviewMode] = useRecoilState(
     unSavedReportPreviewModeAtom
   );
+  const [persistedReportState, setPersistedReportState] = useRecoilState(
+    persistedReportStateAtom
+  );
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
@@ -126,9 +131,13 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
   );
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
   const loadReports = useStoreActions(
     (actions) => actions.reports.ReportGetList.fetch
   );
+
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
@@ -367,6 +376,43 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       if (page === "new") {
         setReportPreviewMode(true);
       } else {
+        setReportPreviewMode(true);
+        setPersistedReportState({
+          ...persistedReportState,
+          reportName: props.reportName,
+          headerDetails: {
+            ...props.headerDetails,
+            description: JSON.stringify(
+              convertToRaw(props.headerDetails.description.getCurrentContent())
+            ),
+          },
+          appliedHeaderDetails: {
+            ...props.appliedHeaderDetails,
+            description: JSON.stringify(
+              convertToRaw(
+                props.appliedHeaderDetails.description.getCurrentContent()
+              )
+            ),
+          },
+
+          framesArray: JSON.stringify(
+            props.framesArray
+              .sort(function (a, b) {
+                return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
+              })
+              .map((frame) => ({
+                id: frame.id,
+                structure: frame.structure,
+                content: frame.content,
+                contentTypes: frame.contentTypes,
+                items: frame.content.map((item, index) =>
+                  frame.contentTypes[index] === "text"
+                    ? convertToRaw((item as EditorState).getCurrentContent())
+                    : item
+                ),
+              }))
+          ),
+        });
         history.push(`/${props.pageType}/${page}/preview`);
       }
     } else {

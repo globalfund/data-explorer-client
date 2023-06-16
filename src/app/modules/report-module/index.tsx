@@ -441,7 +441,6 @@ export default function ReportModule() {
       history.push(`/report/${id}`);
     }
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
-
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
@@ -451,6 +450,10 @@ export default function ReportModule() {
         setName={setReportName}
         forceEnablePreviewSave={isPreviewSaveEnabled}
         name={page !== "new" && !view ? reportGetData.name : reportName}
+        reportName={reportName}
+        appliedHeaderDetails={appliedHeaderDetails}
+        framesArray={framesArray}
+        headerDetails={headerDetails}
       />
       {view &&
         view !== "preview" &&
