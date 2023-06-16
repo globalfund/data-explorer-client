@@ -32,6 +32,7 @@ export const benefitscss = css`
     margin-top: 14px;
   }
 `;
+
 export const firstColcss = css`
   display: grid;
   grid-template-rows: 42.45% 55.5%;
@@ -41,10 +42,10 @@ export const firstColcss = css`
     flex-direction: column;
     justify-content: flex-end;
     padding-left: 19px;
-    padding-right: 9px;
+    padding-right: 19px;
   }
   div:nth-child(1) {
-    width: 607px;
+    width: 580px;
     height: 363px;
     background: #6061e5;
     border-radius: 16px;
@@ -56,7 +57,7 @@ export const firstColcss = css`
     }
   }
   div:nth-child(2) {
-    width: 607px;
+    width: 580px;
     height: 475px;
     background: #dadaf8;
     border-radius: 16px;
@@ -68,6 +69,7 @@ export const firstColcss = css`
     }
   }
 `;
+
 export const secondColcss = css`
   display: grid;
   grid-template-rows: auto auto;
@@ -77,7 +79,7 @@ export const secondColcss = css`
     flex-direction: column;
     justify-content: flex-end;
     padding-left: 19px;
-    padding-right: 9px;
+    padding-right: 19px;
 
     h3 {
       color: #fff;
@@ -87,20 +89,20 @@ export const secondColcss = css`
     }
   }
   div:nth-child(1) {
-    width: 296px;
+    width: 323px;
     height: 274px;
     background: #359c96;
     border-radius: 16px;
   }
   div:nth-child(2) {
-    width: 296px;
+    width: 323px;
     height: 273px;
     background: #231d2c;
     border-radius: 16px;
   }
 
   div:nth-child(3) {
-    width: 296px;
+    width: 323px;
     height: 273px;
     background: #e492bd;
     border-radius: 16px;
@@ -116,7 +118,7 @@ export const thirdColcss = css`
     flex-direction: column;
     justify-content: flex-end;
     padding-left: 19px;
-    padding-right: 9px;
+    padding-right: 19px;
   }
   div:nth-child(1) {
     width: 296px;

@@ -19,17 +19,16 @@ export default function KeyFeaturesBlock() {
           color: #000000;
         }
         h4 {
-          font-weight: 350;
           font-size: 36px;
           line-height: 20px;
-          font-family: "Gotham Narrow", sans-serif;
+          font-family: "GothamNarrow-Bold", sans-serif;
           margin-bottom: 25px;
           margin-top: 0;
 
           color: #231d2c;
         }
         p {
-          font-family: "Gotham Narrow", sans-serif;
+          font-family: "GothamNarrow-Book", sans-serif;
           font-weight: 325;
           font-size: 20px;
           line-height: 20px;

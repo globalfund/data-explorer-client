@@ -1,37 +1,37 @@
 import { css } from "styled-components/macro";
 
 export const empowercss = css`
-  position: relative;
   display: flex;
+  position: relative;
+  align-items: center;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  padding: 113px 0 55px 0;
   font-family: "Gotham Narrow Bold", sans-serif;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
 
-  padding: 113px 0;
   h1 {
-    font-family: "Gotham Narrow Bold", sans-serif;
+    margin-top: 0;
     color: #231d2c;
     font-size: 40px;
     line-height: 48px;
     text-align: center;
-    margin-top: 0;
     margin-bottom: 36px;
+    font-family: "Gotham Narrow Bold", sans-serif;
   }
   p {
+    margin-top: 0;
+    color: #495057;
     font-size: 18px;
     line-height: 22px;
     font-family: "Gotham Narrow Bold", sans-serif;
-    color: #495057;
-    margin-top: 0;
   }
   div {
-    margin-top: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     gap: 34px;
+    display: flex;
+    margin-top: 40px;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
@@ -41,17 +41,20 @@ export const TopRightEllipseCss = css`
   z-index: 1;
   position: absolute;
 `;
+
 export const BottomRightEllipseCss = css`
   bottom: 0%;
   right: 0;
   /* z-index: 1; */
   position: absolute;
 `;
+
 export const BottomLeftEllipseCss = css`
   bottom: 0%;
   left: 0;
   position: absolute;
 `;
+
 export const SmallEllipseCss = css`
   top: 218.2px;
   right: 10%;
@@ -65,6 +68,7 @@ export const TabCardEllipseCss = css`
   z-index: -1;
   position: absolute;
 `;
+
 export const quotesEllipseCss = css`
   top: 3%;
   left: -5.1%;
