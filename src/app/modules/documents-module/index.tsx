@@ -189,7 +189,7 @@ export default function DocumentsModule() {
       <div
         css={`
           left: 0;
-          top: 48px;
+          top: 45px;
           z-index: 15;
           width: 100%;
           height: 100%;

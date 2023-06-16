@@ -30,7 +30,7 @@ function Providers(props: ProviderProps) {
                   maxWidth="lg"
                   css={`
                     padding: 0 24px;
-                    min-height: calc(100vh - 48px);
+                    min-height: calc(100vh - 45px);
 
                     @media (max-width: 767px) {
                       padding: 0 16px;
