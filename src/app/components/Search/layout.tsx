@@ -7,8 +7,10 @@ import findIndex from "lodash/findIndex";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
+import { CloseIcon } from "app/assets/icons/Close";
 import { SearchIcon } from "app/assets/icons/Search";
 import { withStyles } from "@material-ui/core/styles";
+import IconButton from "@material-ui/core/IconButton";
 import { categories } from "app/components/Search/data";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -100,6 +102,8 @@ const StyledMenuItem = withStyles(() => ({
 export function SearchLayout(props: SearchLayoutProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const cmsData = useCMSData({ returnData: true });
+
+  const inputRef = React.useRef<HTMLInputElement>(null);
 
   const [data, setData] = React.useState<SearchResultModel[]>([]);
   const [open, setOpen] = React.useState(
@@ -276,6 +280,7 @@ export function SearchLayout(props: SearchLayoutProps) {
           type="text"
           css={input}
           tabIndex={0}
+          ref={inputRef}
           value={props.value}
           placeholder={get(cmsData, "componentsSearch.placeholder", "")}
           autoFocus={props.forceFocus}
@@ -283,6 +288,30 @@ export function SearchLayout(props: SearchLayoutProps) {
             props.setValue(e.target.value)
           }
         />
+        {props.value.length > 0 && (
+          <IconButton
+            onClick={() => {
+              props.setValue("");
+              if (inputRef.current) {
+                inputRef.current.focus();
+              }
+            }}
+            css={`
+              padding: 0px;
+              margin-right: 16px;
+              :hover {
+                background: transparent;
+              }
+              svg {
+                path {
+                  fill: rgba(0, 0, 0, 0.26);
+                }
+              }
+            `}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
         <SearchIcon />
         {open && (
           <ClickAwayListener
