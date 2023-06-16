@@ -71,8 +71,8 @@ export const loginBtn = css`
   }
 `;
 
-export const navLinkcss = (display: string) => css`
+export const navLinkcss = (display: string, location: string) => css`
   a {
-    color: ${display === "data" ? "#CEA8BC !important" : "#231D2C"};
+    color: ${display === location ? "#CEA8BC !important" : "#231D2C"};
   }
 `;
