@@ -2,6 +2,7 @@ import { css } from "styled-components/macro";
 
 export const empowercss = css`
   display: flex;
+  height: 445px;
   position: relative;
   align-items: center;
   flex-direction: column;
@@ -20,7 +21,7 @@ export const empowercss = css`
     font-family: "Gotham Narrow Bold", sans-serif;
   }
   p {
-    margin-top: 0;
+    margin: 0;
     color: #495057;
     font-size: 18px;
     line-height: 22px;

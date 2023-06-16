@@ -13,21 +13,33 @@ import {
   BottomRightEllipseCss,
 } from "app/modules/home-module/sub-modules/cases/style";
 
-export default function EmpowerBlock() {
+export default function EmpowerBlock(props: { alternativeText?: boolean }) {
   return (
     <Grid container css={empowercss}>
       <h1>
-        DataXplorer turns data into impact
-        <br />
-        within just a few minutes
+        {props.alternativeText ? (
+          <>
+            DataXplorer turns data into impact
+            <br />
+            within just a few minutes
+          </>
+        ) : (
+          "Empower people with meaningful data"
+        )}
       </h1>
       <p>
         <b>
-          DataXplorer is an AI-powered purpose-driven data exploration solution
-          built with the
-          <br />
-          goal of making the visual representation of data easy and powerful for
-          everyone.
+          {props.alternativeText ? (
+            <>
+              DataXplorer is an AI-powered purpose-driven data exploration
+              solution built with the
+              <br />
+              goal of making the visual representation of data easy and powerful
+              for everyone.
+            </>
+          ) : (
+            "AI-powered solution to communicate your data with more impact"
+          )}
         </b>
       </p>
       <div>
