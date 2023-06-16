@@ -71,6 +71,15 @@ export function TableToolbar(props: TableToolbarProps) {
     }
   }, [props.search]);
 
+  function handleScroll() {
+    setAnchorEl(null);
+  }
+
+  React.useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+    return () => document.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <Toolbar
       css={`
@@ -237,6 +246,7 @@ export function TableToolbar(props: TableToolbarProps) {
         </IconButton>
       </div>
       <Popover
+        disableScrollLock
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}
