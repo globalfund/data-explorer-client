@@ -102,7 +102,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     createChartFromReportAtom
   );
 
-  const [reportPreviewMode, setReportPreviewMode] = useRecoilState(
+  const [__, setReportPreviewMode] = useRecoilState(
     unSavedReportPreviewModeAtom
   );
   const [persistedReportState, setPersistedReportState] = useRecoilState(
