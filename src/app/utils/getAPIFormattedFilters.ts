@@ -6,6 +6,8 @@ export function getAPIFormattedFilters(
     page?: number;
     search?: string;
     sortBy?: string;
+    orderBy?: string;
+    rowsPerPage?: number;
   }
 ): string {
   const filterArray: string[] = [];
@@ -19,6 +21,12 @@ export function getAPIFormattedFilters(
     }
     if (extraParams.sortBy && extraParams.sortBy.length > 0) {
       filterArray.push(`sortBy=${extraParams.sortBy}`);
+    }
+    if (extraParams.orderBy && extraParams.orderBy.length > 0) {
+      filterArray.push(`orderBy=${extraParams.orderBy}`);
+    }
+    if (extraParams.rowsPerPage && extraParams.rowsPerPage > 0) {
+      filterArray.push(`pageSize=${extraParams.rowsPerPage}`);
     }
   }
 
