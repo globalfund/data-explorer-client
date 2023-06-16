@@ -10,9 +10,9 @@ import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
-import { InvestmentsRadialViz } from "app/modules/country-detail-module/sub-modules/overview/components/radial";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { LocationIcon } from "app/assets/icons/Location";
+import { InvestmentRadialViz } from "../../radial";
 
 export function GrantDetailOverviewModule() {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -385,7 +385,7 @@ export function GrantDetailOverviewModule() {
             >
               comparison between disbursed, committed and signed amount
             </div>
-            <InvestmentsRadialViz />
+            <InvestmentRadialViz />
           </div>
         </Grid>
       </Grid>
