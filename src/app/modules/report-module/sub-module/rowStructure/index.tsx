@@ -211,9 +211,7 @@ const Box = (props: {
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
-    (page !== "new" &&
-      get(location.pathname.split("/"), "[3]", "") !== "edit") ||
-    reportPreviewMode;
+    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: [ReportElementsType.TEXT, ReportElementsType.CHART],

@@ -198,7 +198,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               );
             })}
           </ReportOrderContainer>
-          {!reportPreviewMode && (
+          {
             <AddRowFrameButton
               deleteFrame={deleteFrame}
               framesArray={props.framesArray}
@@ -211,7 +211,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                 props.handleRowFrameStructureTypeSelection
               }
             />
-          )}
+          }
           <Box height={45} />
         </div>
       </Container>
