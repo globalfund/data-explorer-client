@@ -1,19 +1,23 @@
-import { Box, Container, Grid, Tab, Tabs, withStyles } from "@material-ui/core";
 import React from "react";
-
+import Box from "@material-ui/core/Box";
+import Tab from "@material-ui/core/Tab";
+import Grid from "@material-ui/core/Grid";
+import Tabs from "@material-ui/core/Tabs";
+import SwipeableViews from "react-swipeable-views";
+import Container from "@material-ui/core/Container";
+import withStyles from "@material-ui/core/styles/withStyles";
+import HomeFooter from "app/modules/home-module/components/Footer";
+import DXBlock from "app/modules/home-module/sub-modules/cases/components/useDXBlock";
+import QuoteBlock from "app/modules/home-module/sub-modules/cases/components/quoteBlock";
+import EmpowerBlock from "app/modules/home-module/sub-modules/cases/components/empowerBlock";
+import OurPartnersBlock from "app/modules/home-module/sub-modules/cases/components/ourPartnersBlock";
+import BestDecisionBlock from "app/modules/home-module/sub-modules/cases/components/bestDecisionBlock";
 import {
   AboutTabCard,
   BudgetsTabCard,
   GrantsTabCard,
   PerformanceTabCard,
 } from "app/modules/home-module/sub-modules/cases/components/tabCard";
-import HomeFooter from "app/modules/home-module/components/Footer";
-import BestDecisionBlock from "./components/bestDecisionBlock";
-import QuoteBlock from "./components/quoteBlock";
-import OurPartnersBlock from "./components/ourPartnersBlock";
-import DXBlock from "./components/useDXBlock";
-import EmpowerBlock from "./components/empowerBlock";
-import SwipeableViews from "react-swipeable-views";
 
 export const StyledTab = withStyles(() => ({
   root: {
@@ -63,6 +67,7 @@ export const StyledTabs = withStyles({
 
 export default function CasesModule() {
   const [displayTab, setDisplayTab] = React.useState<number>(0);
+
   const handleChange = (
     event: React.ChangeEvent<{}> | null,
     newValue: number
@@ -76,6 +81,7 @@ export default function CasesModule() {
     <BudgetsTabCard />,
     <PerformanceTabCard />,
   ];
+
   return (
     <>
       <EmpowerBlock />
@@ -123,7 +129,7 @@ export default function CasesModule() {
             <SwipeableViews
               index={displayTab}
               onChangeIndex={(index) => handleChange(null, index)}
-              style={{ margin: "5rem 0 10rem 0" }}
+              style={{ margin: "55px 0 110px 0" }}
             >
               {cards.map((card, index) => (
                 <div key={index}>{card}</div>

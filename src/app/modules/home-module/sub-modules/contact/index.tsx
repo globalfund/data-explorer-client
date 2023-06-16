@@ -144,6 +144,11 @@ export default function ContactModule() {
             text-align: center;
             color: #231d2c;
             font-family: "Gotham Narrow", sans-serif;
+
+            a {
+              color: #231d2c;
+              text-decoration: none;
+            }
           `}
         >
           {DXLogo}
@@ -166,14 +171,15 @@ export default function ContactModule() {
               margin-bottom: 0px;
             `}
           >
-            E-mail: contact@dataxplorer.org
+            E-mail:{" "}
+            <a href="mailto:contact@dataxplorer.org">contact@dataxplorer.org</a>
           </p>
           <p
             css={`
               margin-top: 8px;
             `}
           >
-            Tel: +3120 213 4466{" "}
+            Tel: <a href="tel:0031202134466">+3120 213 4466</a>
           </p>
         </div>
         <Box height={100} />

@@ -107,7 +107,6 @@ export const quotecss = css`
   justify-content: center;
   align-items: center;
   padding: 20px 0;
-  margin-top: 97px;
   width: 78%;
   p {
     font-weight: 500;

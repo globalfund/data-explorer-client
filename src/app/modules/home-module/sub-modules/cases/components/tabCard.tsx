@@ -1,4 +1,3 @@
-import { Grid } from "@material-ui/core";
 import React from "react";
 import AboutCard from "app/modules/home-module/assets/about-card.png";
 import GrantsCard from "app/modules/home-module/assets/grants-card.png";
@@ -21,7 +20,6 @@ export default function TabCard(props: {
           z-index: 1;
           background: linear-gradient(180deg, #a4a0ff -61.62%, #f8fcfc 114.5%);
           border-radius: 29px;
-          margin-top: 41px;
           width: 100%;
           display: flex;
           justify-content: center;
@@ -117,7 +115,13 @@ export const GrantsTabCard = () => {
       All collected grant data is presented via the Data Explorer.
       <br />
       <br />
-      LiveView of the Grant Implementation on the Global Fund Data Explorer
+      <a
+        target="_blank"
+        href="https://data.theglobalfund.org/location/KEN/grants"
+      >
+        LiveView
+      </a>{" "}
+      of the Grant Implementation on the Global Fund Data Explorer
     </p>
   );
   return (
@@ -137,10 +141,19 @@ export const BudgetsTabCard = () => {
       review and implementation of Global Fund-supported programs. It
       establishes clear eligibility criteria for grant expenditures and
       requirements for monitoring and financial reporting obligations.
-      <br /> <br /> All collected financial reporting data on budgets including
+      <br />
+      <br /> All collected financial reporting data on budgets including
       investment landscapes and corresponding cost categories is presented via
-      the Data Explorer.\n\nLiveView of the Budget Flow on the Global Fund Data
-      Explorer
+      the Data Explorer.
+      <br />
+      <br />
+      <a
+        target="_blank"
+        href="https://data.theglobalfund.org/location/KEN/budgets/flow"
+      >
+        LiveView
+      </a>{" "}
+      of the Budget Flow on the Global Fund Data Explorer
     </p>
   );
   return (
@@ -152,16 +165,27 @@ export const BudgetsTabCard = () => {
     />
   );
 };
+
 export const PerformanceTabCard = () => {
   const description = (
     <p>
       The Global Fund requires countries to report grant performance indicators
       on funded programs. The data provided by national monitoring and
       evaluation systems is critical to informing decision-making on the part of
-      both implementers and funders.\n\nAll collected performance data on funded
-      programs is presented via the Data Explorer.
+      both implementers and funders.
       <br />
-      <br /> LiveView of the XXXX
+      <br />
+      All collected performance data on funded programs is presented via the
+      Data Explorer.
+      <br />
+      <br />
+      <a
+        target="_blank"
+        href="https://data.theglobalfund.org/grant/KEN-H-TNT/3/targets-results"
+      >
+        LiveView
+      </a>{" "}
+      of the Performance Framework
     </p>
   );
   return (

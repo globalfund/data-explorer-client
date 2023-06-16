@@ -1,18 +1,18 @@
-import { Box, Grid } from "@material-ui/core";
 import React from "react";
-import { ReactComponent as BtmRightEllipse } from "app/modules/home-module/assets/about-right-full-ellipse.svg";
-import { ReactComponent as BtmLeftEllipse } from "app/modules/home-module/assets/about-btm-left-ellipse.svg";
-import { ReactComponent as BtmEllipse } from "app/modules/home-module/assets/about-btm-ellipse.svg";
-import { ReactComponent as BtmRightSmEllipse } from "app/modules/home-module/assets/about-right-small-ellipse.svg";
+import Grid from "@material-ui/core/Grid";
 import SiemAvi from "app/modules/home-module/assets/siem.png";
-import VeronikaAvi from "app/modules/home-module/assets/veronika.png";
-import EmmanuellaAvi from "app/modules/home-module/assets/emmanuella.png";
 import JohnAvi from "app/modules/home-module/assets/john.png";
-import StefanosAvi from "app/modules/home-module/assets/stefanos.png";
+import KennyAvi from "app/modules/home-module/assets/kenny.png";
 import AylinAvi from "app/modules/home-module/assets/aylin.png";
 import SylvanAvi from "app/modules/home-module/assets/sylvan.png";
-import KennyAvi from "app/modules/home-module/assets/kenny.png";
-import { subParagraphcss } from "../style";
+import VeronikaAvi from "app/modules/home-module/assets/veronika.png";
+import StefanosAvi from "app/modules/home-module/assets/stefanos.png";
+import EmmanuellaAvi from "app/modules/home-module/assets/emmanuella.png";
+import { subParagraphcss } from "app/modules/home-module/sub-modules/about/style";
+import { ReactComponent as BtmEllipse } from "app/modules/home-module/assets/about-btm-ellipse.svg";
+import { ReactComponent as BtmLeftEllipse } from "app/modules/home-module/assets/about-btm-left-ellipse.svg";
+import { ReactComponent as BtmRightEllipse } from "app/modules/home-module/assets/about-right-full-ellipse.svg";
+import { ReactComponent as BtmRightSmEllipse } from "app/modules/home-module/assets/about-right-small-ellipse.svg";
 
 export default function TeamBlock() {
   return (
