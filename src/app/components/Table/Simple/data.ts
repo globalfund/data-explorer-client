@@ -7,6 +7,9 @@ export interface SimpleTableColumn {
   name: string;
   key: string;
   valueToColorMap?: { [key: string]: string };
+  isMonetary?: {
+    currency: string;
+  };
 }
 
 export interface SimpleTableProps {

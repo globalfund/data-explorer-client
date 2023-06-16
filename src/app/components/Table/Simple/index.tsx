@@ -114,8 +114,8 @@ function Row(props: {
           let formattedValue =
             props.formatNumbers &&
             !Number.isNaN(parseInt(value)) &&
-            column.name.indexOf("(USD)") > -1
-              ? formatFinancialValue(value, true)
+            column.isMonetary
+              ? formatFinancialValue(value)
               : value;
           return (
             <TableCell
@@ -141,8 +141,7 @@ function Row(props: {
                   align-items: center;
                   flex-direction: row;
                   justify-content: ${!Number.isNaN(parseInt(value)) &&
-                  (column.name.indexOf("(USD)") > -1 ||
-                    column.name === "Grants")
+                  (column.isMonetary || column.name === "Grants")
                     ? "flex-end"
                     : "flex-start"};
                 `}
@@ -303,8 +302,7 @@ export function SimpleTable(props: SimpleTableProps) {
                 ).map((column: SimpleTableColumn, index: number) => {
                   let icon = undefined;
                   const monetaryColumn =
-                    column.name.indexOf("(USD)") > -1 ||
-                    column.name === "Grants";
+                    column.isMonetary || column.name === "Grants";
                   if (
                     sortBySplits.length > 1 &&
                     sortBySplits[0] === column.key
