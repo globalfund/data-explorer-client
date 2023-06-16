@@ -2,11 +2,7 @@ import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import IconButton from "@material-ui/core/IconButton";
-import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
-import { ReactComponent as EditIcon } from "../../assets/edit.svg";
-import { ReactComponent as DeleteIcon } from "../../assets/delete.svg";
-import { ReactComponent as DuplicateIcon } from "../../assets/duplicate.svg";
-import { Tooltip } from "@material-ui/core";
+import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 
 interface Props {
   id: string;
@@ -21,12 +17,6 @@ interface Props {
 }
 
 export default function GridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-
-  const showMenuOptions = () => {
-    setMenuOptionsDisplay(!menuOptionsDisplay);
-  };
-
   return (
     <div
       css={`
@@ -44,35 +34,60 @@ export default function GridItem(props: Props) {
       <div
         css={`
           display: flex;
-          align-items: flex-start;
+          align-items: center;
           justify-content: space-between;
 
           a {
             color: inherit;
             text-decoration: none;
+            width: calc(100% - 70px);
           }
+        `}
+      >
+        <Link to={`/chart/${props.id}`}>
+          <p
+            css={`
+              margin: 0;
+              font-size: 14px;
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            `}
+          >
+            <b>{props.title}</b>
+          </p>
+        </Link>
+        {props.added && (
+          <p
+            css={`
+              margin: 0;
+              width: 57px;
+              height: 17px;
+              display: flex;
+              font-size: 12px;
+              border-radius: 10px;
+              align-items: center;
+              border: 1px solid #000;
+              justify-content: center;
+              font-family: "GothamNarrow", sans-serif;
+            `}
+          >
+            Added
+          </p>
+        )}
+      </div>
+      <div
+        css={`
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
         `}
       >
         <div
           css={`
             width: 60%;
-            margin-top: -7px;
           `}
         >
-          <Link to={`/chart/${props.id}`}>
-            <p
-              css={`
-                font-size: 14px;
-                margin-top: 6px;
-                overflow: hidden;
-                margin-bottom: 0;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-              `}
-            >
-              <b>{props.title}</b>
-            </p>
-          </Link>
           <p
             css={`
               font-size: 10px;
@@ -90,56 +105,35 @@ export default function GridItem(props: Props) {
         </div>
         <div
           css={`
+            width: 60px;
+            height: 50px;
             display: flex;
+            align-items: center;
             flex-direction: column;
             justify-content: center;
-            align-items: center;
           `}
         >
-          {props.added && (
-            <p
-              css={`
-                border: 1px solid #000000;
-                border-radius: 10px;
-                font-size: 12px;
-                height: 17px;
-                width: 57px;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 0;
-                font-family: "GothamNarrow", sans-serif;
-              `}
-            >
-              Added
-            </p>
-          )}
-
           <div
             css={`
-              width: 74px;
-              height: 74px;
-              margin-top: 2px;
+              width: fit-content;
+              height: fit-content;
 
-              path {
-                fill: #868a9d;
+              svg {
+                transform: scale(0.7);
+
+                &#big-number {
+                  transform: scale(1);
+                }
+
+                path {
+                  fill: #868a9d;
+                }
               }
             `}
           >
             {props.viz}
           </div>
         </div>
-        {props.handleDelete && (
-          <IconButton
-            css={`
-              padding: 0;
-              margin-top: 5px;
-            `}
-            onClick={showMenuOptions}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
       </div>
       <div
         css={`
@@ -155,91 +149,6 @@ export default function GridItem(props: Props) {
         <p>Creation date</p>
         <p>{moment(props.date).format("DD-MM-YYYY")}</p>
       </div>
-      {menuOptionsDisplay && (
-        <React.Fragment>
-          <div
-            css={`
-              top: 0;
-              left: 0;
-              z-index: 1;
-              width: 100vw;
-              height: 100vh;
-              position: fixed;
-            `}
-            onClick={showMenuOptions}
-          />
-          <div
-            css={`
-              top: 30%;
-              gap: 1rem;
-              right: 3%;
-              z-index: 2;
-
-              display: flex;
-              height: 38px;
-              width: 143px;
-              position: absolute;
-              background: #adb5bd;
-              border-radius: 100px;
-              align-items: center;
-              justify-content: center;
-              a {
-                :hover {
-                  svg {
-                    path {
-                      fill: #fff;
-                    }
-                  }
-                }
-              }
-              button {
-                padding: 4px;
-                :hover {
-                  background: transparent;
-                  svg {
-                    path {
-                      fill: #fff;
-                    }
-                  }
-                }
-              }
-            `}
-          >
-            <div>
-              <IconButton
-                onClick={() => {
-                  props.handleDuplicate?.(props.id as string);
-                  setMenuOptionsDisplay(false);
-                }}
-              >
-                <Tooltip title="Duplicate">
-                  <DuplicateIcon />
-                </Tooltip>
-              </IconButton>
-            </div>
-            <div>
-              <Link to={`/chart/${props.id}/customize`}>
-                <Tooltip title="Edit">
-                  <EditIcon
-                    css={`
-                      margin-top: 4px;
-                    `}
-                  />
-                </Tooltip>
-              </Link>
-            </div>
-            <div>
-              <IconButton
-                onClick={() => props.handleDelete?.(props.id as string)}
-              >
-                <Tooltip title="Delete">
-                  <DeleteIcon />
-                </Tooltip>
-              </IconButton>
-            </div>
-          </div>
-        </React.Fragment>
-      )}
     </div>
   );
 }

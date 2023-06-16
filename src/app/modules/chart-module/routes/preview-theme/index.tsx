@@ -104,7 +104,11 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
               const element = document.createElement("div");
               element.innerHTML = props.renderedChart.trim();
               // @ts-ignore
-              domRef.current.appendChild(element.firstChild || element);
+              domRef.current.appendChild(
+                selectedChartType === "bigNumber"
+                  ? element.children[0].children[0].children[0]
+                  : element.firstChild || element
+              );
             } else {
               render(
                 props.renderedChartMappedData,
@@ -195,7 +199,6 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
       >
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
-
       <div css={commonStyles.previewInnercontainer(props.editable)}>
         <div
           ref={containerRef}
@@ -212,6 +215,11 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
               ${props.renderedChartSsr
                 ? `overflow-x: auto;`
                 : `height: ${get(visualOptions, "height", 500)}px;`}
+
+              ${selectedChartType === "bigNumber" &&
+              window.location.pathname.indexOf("/chart/") > -1 &&
+              `transform: scale(2);transform-origin: left top;`}
+
 
               * {
                 font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;

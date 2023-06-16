@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import { useDrop } from "react-dnd";
 import isEmpty from "lodash/isEmpty";
 import uniqueId from "lodash/uniqueId";
@@ -29,6 +30,7 @@ import {
   ChartBuilderMappingProps,
   typeIcon,
 } from "app/modules/chart-module/routes/mapping/data";
+import { useDebounce } from "react-use";
 
 export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   useTitle("DX DataXplorer - Mapping");
@@ -105,6 +107,9 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
     history.push(`/chart/${page}/data`);
   }
 
+  const nonStaticDimensions = filter(props.dimensions, (d: any) => !d.static);
+  const staticDimensions = filter(props.dimensions, (d: any) => d.static);
+
   return (
     <div css={commonStyles.container}>
       <div css={commonStyles.innercontainer}>
@@ -121,7 +126,7 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
               margin-bottom: 16px;
             `}
           >
-            <b> Chart variables</b>
+            <b>Chart variables</b>
           </div>
           <Grid
             container
@@ -131,8 +136,39 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
               position: relative;
             `}
           >
-            {props.dimensions.map((dimension: any) => (
+            {nonStaticDimensions.map((dimension: any) => (
               <ChartBuilderMappingDimension
+                key={dimension.id}
+                dimension={dimension}
+                dataTypes={props.dataTypes}
+                replaceDimension={replaceDimension}
+              />
+            ))}
+          </Grid>
+          <div
+            css={`
+              width: 100%;
+              height: 45px;
+            `}
+          />
+          <div
+            css={`
+              font-size: 14px;
+              margin-bottom: 16px;
+            `}
+          >
+            <b>Display settings</b>
+          </div>
+          <Grid
+            container
+            spacing={2}
+            css={`
+              z-index: 1030;
+              position: relative;
+            `}
+          >
+            {staticDimensions.map((dimension: any) => (
+              <ChartBuilderMappingDimensionStatic
                 key={dimension.id}
                 dimension={dimension}
                 dataTypes={props.dataTypes}
@@ -189,8 +225,6 @@ function ChartBuilderMappingDimension(
         "data.value",
         {}
       ) as { [key: string]: any };
-
-      console.log(mappingFromStorage);
 
       const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
       if (item.type === "column") {
@@ -283,7 +317,6 @@ function ChartBuilderMappingDimension(
 
   const onMove = React.useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      console.log("onMove");
       let nextConfig;
       if (dimensionMapping.config) {
         nextConfig = {
@@ -535,5 +568,139 @@ function ChartBuilderMappingMessage(props: ChartBuilderMappingMessageProps) {
         </React.Fragment>
       )}
     </div>
+  );
+}
+
+function ChartBuilderMappingDimensionStatic(
+  props: ChartBuilderMappingDimensionProps
+) {
+  const { dimension } = props;
+
+  const mapping = useStoreState((state) => state.charts.mapping.value);
+
+  const setMapping = useStoreActions(
+    (actions) => actions.charts.mapping.setValue
+  );
+
+  const [value, setValue] = React.useState(
+    get(mapping, `${dimension.id}.value[0]`, "")
+  );
+
+  const onValueChange = (value: string) => {
+    const mappingFromStorage = get(
+      JSON.parse(
+        sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
+      ),
+      "data.value",
+      {}
+    ) as { [key: string]: any };
+    const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
+    setMapping({
+      [dimension.id]: {
+        ids: (localDimensionMapping.ids || []).concat(uniqueId()),
+        value: [value],
+        isValid: true,
+        mappedType: "string",
+      },
+    });
+  };
+  const [,] = useDebounce(() => onValueChange(value), 1000, [value]);
+
+  return (
+    <Grid item xs={12} sm={6} md={4}>
+      <div
+        css={`
+          width: 100%;
+          display: flex;
+          padding: 16px;
+          min-height: 118px;
+          border-radius: 11px;
+          background: #f1f3f5;
+          flex-direction: column;
+          justify-content: center;
+        `}
+      >
+        <div
+          css={`
+            width: 100%;
+            display: flex;
+            margin-bottom: 4px;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+          `}
+        >
+          <div
+            css={`
+              width: 72px;
+              opacity: 0.5;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+            `}
+          >
+            {dimension.validTypes.map((type: "string" | "number" | "date") => (
+              <span
+                key={type}
+                css={`
+                  width: 16px;
+                  height: 16px;
+                  background-size: contain;
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-image: url(${typeIcon[type]});
+
+                  &:not(:last-child) {
+                    margin-right: 8px;
+                  }
+                `}
+              />
+            ))}
+          </div>
+          <div
+            css={`
+              font-size: 14px;
+            `}
+          >
+            {dimension.name}
+          </div>
+          <div
+            css={`
+              width: 72px;
+              color: #ef1320;
+              font-size: 32px;
+              text-align: right;
+              margin-bottom: -12px;
+              visibility: ${dimension.required ? "visible" : "hidden"};
+            `}
+          >
+            *
+          </div>
+        </div>
+        <textarea
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          css={`
+            width: 100%;
+            min-height: 40px;
+            resize: vertical;
+            padding: 14px 8px;
+            border-radius: 11px;
+            border: 1px solid #231d2c;
+          `}
+        />
+        <div
+          css={`
+            color: #231d2c;
+            font-size: 12px;
+            margin-top: 2px;
+            font-weight: 400;
+            line-height: 15px;
+          `}
+        >
+          The {dimension.name} must be between 6 and 50 characters in length.
+        </div>
+      </div>
+    </Grid>
   );
 }
