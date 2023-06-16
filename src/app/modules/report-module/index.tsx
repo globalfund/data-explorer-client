@@ -79,7 +79,6 @@ export default function ReportModule() {
     localPickedCharts || []
   );
 
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -455,26 +454,23 @@ export default function ReportModule() {
         framesArray={framesArray}
         headerDetails={headerDetails}
       />
-      {view &&
-        view !== "preview" &&
-        !reportPreviewMode &&
-        view !== "initial" && (
-          <ReportRightPanel
-            open={rightPanelOpen}
-            currentView={view}
-            pickedCharts={pickedCharts}
-            setPickedCharts={setPickedCharts}
-            headerDetails={headerDetails}
-            setHeaderDetails={setHeaderDetails}
-            appliedHeaderDetails={appliedHeaderDetails}
-            setAppliedHeaderDetails={setAppliedHeaderDetails}
-            onOpen={() => setRightPanelOpen(true)}
-            onClose={() => setRightPanelOpen(false)}
-            showHeaderItem={!headerDetails.showHeader}
-            framesArray={framesArray}
-            reportName={reportName}
-          />
-        )}
+      {view && view !== "preview" && view !== "initial" && (
+        <ReportRightPanel
+          open={rightPanelOpen}
+          currentView={view}
+          pickedCharts={pickedCharts}
+          setPickedCharts={setPickedCharts}
+          headerDetails={headerDetails}
+          setHeaderDetails={setHeaderDetails}
+          appliedHeaderDetails={appliedHeaderDetails}
+          setAppliedHeaderDetails={setAppliedHeaderDetails}
+          onOpen={() => setRightPanelOpen(true)}
+          onClose={() => setRightPanelOpen(false)}
+          showHeaderItem={!headerDetails.showHeader}
+          framesArray={framesArray}
+          reportName={reportName}
+        />
+      )}
       <div
         css={`
           width: 100%;

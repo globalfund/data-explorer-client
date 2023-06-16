@@ -39,9 +39,17 @@ export function ReportPreviewView() {
     (actions) => actions.reports.ReportGet.clear
   );
 
+  const [reportPreviewData, setReportPreviewData] = React.useState(reportData);
+
   React.useEffect(() => {
     fetchReportData({ getId: page });
   }, [page]);
+
+  React.useEffect(() => {
+    if (!reportPreviewMode) {
+      setReportPreviewData(reportData);
+    }
+  }, [reportData]);
 
   React.useEffect(() => {
     return () => {
@@ -50,13 +58,12 @@ export function ReportPreviewView() {
       reportCreateClear();
     };
   }, []);
-  const [reportPreviewData, setReportPreviewData] = React.useState(reportData);
 
   React.useEffect(() => {
     if (reportPreviewMode) {
-      console.log("reportPreviewMode", reportPreviewMode);
       setReportPreviewData({
         ...reportPreviewData,
+
         title: persistedReportState.headerDetails.title,
         showHeader: persistedReportState.headerDetails.showHeader,
         backgroundColor: persistedReportState.headerDetails.backgroundColor,
@@ -64,6 +71,7 @@ export function ReportPreviewView() {
         descriptionColor: persistedReportState.headerDetails.descriptionColor,
         dateColor: persistedReportState.headerDetails.dateColor,
         rows: JSON.parse(persistedReportState.framesArray || "[]"),
+        subTitle: JSON.parse(persistedReportState.headerDetails.description),
       });
     }
   }, [persistedReportState]);

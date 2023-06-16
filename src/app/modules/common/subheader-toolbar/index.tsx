@@ -373,48 +373,44 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   const handlePreviewMode = () => {
     if (props.pageType === "report") {
-      if (page === "new") {
-        setReportPreviewMode(true);
-      } else {
-        setReportPreviewMode(true);
-        setPersistedReportState({
-          ...persistedReportState,
-          reportName: props.reportName,
-          headerDetails: {
-            ...props.headerDetails,
-            description: JSON.stringify(
-              convertToRaw(props.headerDetails.description.getCurrentContent())
-            ),
-          },
-          appliedHeaderDetails: {
-            ...props.appliedHeaderDetails,
-            description: JSON.stringify(
-              convertToRaw(
-                props.appliedHeaderDetails.description.getCurrentContent()
-              )
-            ),
-          },
-
-          framesArray: JSON.stringify(
-            props.framesArray
-              .sort(function (a, b) {
-                return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
-              })
-              .map((frame) => ({
-                id: frame.id,
-                structure: frame.structure,
-                content: frame.content,
-                contentTypes: frame.contentTypes,
-                items: frame.content.map((item, index) =>
-                  frame.contentTypes[index] === "text"
-                    ? convertToRaw((item as EditorState).getCurrentContent())
-                    : item
-                ),
-              }))
+      setReportPreviewMode(true);
+      setPersistedReportState({
+        ...persistedReportState,
+        reportName: props.reportName,
+        headerDetails: {
+          ...props.headerDetails,
+          description: JSON.stringify(
+            convertToRaw(props.headerDetails.description.getCurrentContent())
           ),
-        });
-        history.push(`/${props.pageType}/${page}/preview`);
-      }
+        },
+        appliedHeaderDetails: {
+          ...props.appliedHeaderDetails,
+          description: JSON.stringify(
+            convertToRaw(
+              props.appliedHeaderDetails.description.getCurrentContent()
+            )
+          ),
+        },
+
+        framesArray: JSON.stringify(
+          props.framesArray
+            .sort(function (a, b) {
+              return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
+            })
+            .map((frame) => ({
+              id: frame.id,
+              structure: frame.structure,
+              content: frame.content,
+              contentTypes: frame.contentTypes,
+              items: frame.content.map((item, index) =>
+                frame.contentTypes[index] === "text"
+                  ? convertToRaw((item as EditorState).getCurrentContent())
+                  : item
+              ),
+            }))
+        ),
+      });
+      history.push(`/${props.pageType}/${page}/preview`);
     } else {
       history.push(`/${props.pageType}/${page}/preview`);
     }
@@ -423,7 +419,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const handleBackToEdit = () => {
     if (props.pageType === "report") {
       if (page === "new") {
-        setReportPreviewMode(false);
+        history.push(`/report/new/create`);
       } else {
         history.push(`/${props.pageType}/${page}/${"edit"}`);
       }
@@ -492,19 +488,18 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           )}
           {view !== "initial" && (
             <div css={styles.endContainer}>
-              {(view === "preview" || reportPreviewMode) &&
-                props.pageType !== "chart" && (
-                  <>
-                    <button
-                      onClick={handleBackToEdit}
-                      css={styles.backToEdit}
-                      type="button"
-                    >
-                      <EditIcon htmlColor="#fff" />
-                      Go back to editing
-                    </button>
-                  </>
-                )}
+              {view === "preview" && props.pageType !== "chart" && (
+                <>
+                  <button
+                    onClick={handleBackToEdit}
+                    css={styles.backToEdit}
+                    type="button"
+                  >
+                    <EditIcon htmlColor="#fff" />
+                    Go back to editing
+                  </button>
+                </>
+              )}
               <div css={styles.iconbtns}>
                 {(page === "new" || view) && (
                   <React.Fragment>
