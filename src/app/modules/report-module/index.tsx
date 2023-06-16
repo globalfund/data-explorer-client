@@ -28,10 +28,7 @@ import {
   useParams,
   Redirect,
 } from "react-router-dom";
-import {
-  persistedReportStateAtom,
-  unSavedReportPreviewModeAtom,
-} from "app/state/recoil/atoms";
+import { persistedReportStateAtom } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import { ReportElementsType } from "./components/right-panel-create-view";
 

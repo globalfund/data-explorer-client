@@ -1,12 +1,10 @@
 import React from "react";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
-import { useRecoilState } from "recoil";
 import { useDebounce } from "react-use";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
-import { unSavedReportPreviewModeAtom } from "app/state/recoil/atoms";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
@@ -45,12 +43,9 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const { page } = useParams<{ page: string }>();
 
   const [handleDisplay, setHandleDisplay] = React.useState(false);
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
-    (page !== "new" &&
-      get(location.pathname.split("/"), "[3]", "") !== "edit") ||
-    reportPreviewMode;
+    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
 
   const handlers = viewOnlyMode
     ? {}
@@ -207,8 +202,6 @@ const Box = (props: {
   const handleEditChart = () => {
     history.push(`/chart/${chartId}/customize`);
   };
-
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
     page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";

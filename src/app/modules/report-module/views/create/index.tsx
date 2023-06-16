@@ -1,7 +1,7 @@
 import React from "react";
 import { v4 } from "uuid";
 import { useDrop } from "react-dnd";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilValue } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
@@ -18,11 +18,9 @@ import {
 import {
   IRowFrameStructure,
   isDividerOrRowFrameDraggingAtom,
-  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
