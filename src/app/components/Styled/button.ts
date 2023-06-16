@@ -31,3 +31,21 @@ export const GreyedButton = styled(PrimaryButton)`
   background: #dfe3e6;
   border: 1px solid #ffffff;
 `;
+
+export const HomePrimaryButton = styled.button`
+  padding: 9px 27px;
+  height: 41px;
+  border-radius: 30px;
+  outline: none;
+  border: none;
+  color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  text-transform: uppercase;
+  background: ${(props) => (props.color ? props.color : "inherit")};
+  :hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+`;
