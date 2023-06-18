@@ -34,6 +34,7 @@ import {
 } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import { ReportElementsType } from "./components/right-panel-create-view";
+import AITemplate from "./views/ai-template";
 
 interface RowFrameProps {
   structure:
@@ -55,7 +56,7 @@ export default function ReportModule() {
   const history = useHistory();
   const { page, view } = useParams<{
     page: string;
-    view: "initial" | "edit" | "create" | "preview";
+    view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
   const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
   const [buttonActive, setButtonActive] = React.useState(false);
@@ -322,19 +323,13 @@ export default function ReportModule() {
     (actions) => actions.reports.ReportUpdate.clear
   );
 
-  const handleNextButton = () => {
-    if (buttonActive) {
-      history.push(`/report/${page}/create`);
-      setButtonActive(false);
-    }
-  };
-
-  const handleSetButtonActive = (
-    active: boolean,
-    type: "basic" | "advanced" | "ai"
-  ) => {
-    setButtonActive(active);
+  const handleSetButtonActive = (type: "basic" | "advanced" | "ai") => {
     setReportType(type);
+    if (type === "ai") {
+      history.push(`/report/${page}/ai-template`);
+    } else {
+      history.push(`/report/${page}/create`);
+    }
   };
 
   const resetFrames = () => {
@@ -445,17 +440,20 @@ export default function ReportModule() {
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
-      <SubheaderToolbar
-        pageType="report"
-        onReportSave={onSave}
-        setName={setReportName}
-        forceEnablePreviewSave={isPreviewSaveEnabled}
-        name={page !== "new" && !view ? reportGetData.name : reportName}
-      />
+      {view !== "ai-template" && (
+        <SubheaderToolbar
+          pageType="report"
+          onReportSave={onSave}
+          setName={setReportName}
+          forceEnablePreviewSave={isPreviewSaveEnabled}
+          name={page !== "new" && !view ? reportGetData.name : reportName}
+        />
+      )}
       {view &&
         view !== "preview" &&
         !reportPreviewMode &&
-        view !== "initial" && (
+        view !== "initial" &&
+        view !== "ai-template" && (
           <ReportRightPanel
             open={rightPanelOpen}
             currentView={view}
@@ -475,7 +473,7 @@ export default function ReportModule() {
       <div
         css={`
           width: 100%;
-          height: 98px;
+          height: ${view === "ai-template" ? "40px" : "98px"};
         `}
       />
       <Switch>
@@ -484,7 +482,6 @@ export default function ReportModule() {
             <Box height={50} />
             <ReportInitialView
               resetFrames={resetFrames}
-              buttonActive={buttonActive}
               setButtonActive={handleSetButtonActive}
             />
             <div
@@ -492,30 +489,10 @@ export default function ReportModule() {
                 height: calc(100vh - 450px);
               `}
             />
-            <div
-              css={`
-                width: 100%;
-                display: flex;
-                padding-right: 20px;
-                justify-content: flex-end;
-              `}
-            >
-              <div
-                css={`
-                  color: #fff;
-                  width: 200px;
-                `}
-              >
-                <PrimaryButton
-                  disabled={!buttonActive}
-                  onClick={handleNextButton}
-                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
-                >
-                  use template
-                </PrimaryButton>
-              </div>
-            </div>
           </Container>
+        </Route>
+        <Route path="/report/:page/ai-template">
+          <AITemplate />
         </Route>
         <Route path="/report/:page/create">
           <ReportCreateView

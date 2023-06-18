@@ -463,44 +463,53 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                 {(page === "new" || view) && (
                   <React.Fragment>
                     <Tooltip title="Preview">
-                      <IconButton
-                        onClick={handlePreviewMode}
-                        disabled={
-                          props.forceEnablePreviewSave
-                            ? !props.forceEnablePreviewSave
-                            : !isPreviewEnabled
-                        }
-                        css={`
-                          :disabled {
-                            opacity: 0.5;
+                      <span>
+                        <IconButton
+                          onClick={handlePreviewMode}
+                          disabled={
+                            props.forceEnablePreviewSave
+                              ? !props.forceEnablePreviewSave
+                              : !isPreviewEnabled
                           }
-                        `}
-                      >
-                        <svg width="20" height="19" viewBox="0 0 20 19">
-                          <rect width="20" height="19" rx="3" fill="#262C34" />
-                          <path
-                            fill="#EFEFEF"
-                            d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
-                          />
-                        </svg>
-                      </IconButton>
+                          css={`
+                            :disabled {
+                              opacity: 0.5;
+                            }
+                          `}
+                        >
+                          <svg width="20" height="19" viewBox="0 0 20 19">
+                            <rect
+                              width="20"
+                              height="19"
+                              rx="3"
+                              fill="#262C34"
+                            />
+                            <path
+                              fill="#EFEFEF"
+                              d="M14 9L6.5 13.3301L6.5 4.66987L14 9Z"
+                            />
+                          </svg>
+                        </IconButton>
+                      </span>
                     </Tooltip>
                     <Tooltip title="Save">
-                      <IconButton
-                        onClick={onSave}
-                        disabled={
-                          props.forceEnablePreviewSave
-                            ? !props.forceEnablePreviewSave
-                            : !isSavedEnabled
-                        }
-                        css={`
-                          :disabled {
-                            opacity: 0.5;
+                      <span>
+                        <IconButton
+                          onClick={onSave}
+                          disabled={
+                            props.forceEnablePreviewSave
+                              ? !props.forceEnablePreviewSave
+                              : !isSavedEnabled
                           }
-                        `}
-                      >
-                        <SaveIcon htmlColor="#262c34" />
-                      </IconButton>
+                          css={`
+                            :disabled {
+                              opacity: 0.5;
+                            }
+                          `}
+                        >
+                          <SaveIcon htmlColor="#262c34" />
+                        </IconButton>
+                      </span>
                     </Tooltip>
                   </React.Fragment>
                 )}
