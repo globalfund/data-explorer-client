@@ -14,6 +14,7 @@ export default function ReportsGrid(props: {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
+  showMenuButton: boolean;
 }) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
@@ -113,6 +114,7 @@ export default function ReportsGrid(props: {
                 handleDelete={() => handleModal(index)}
                 handleDuplicate={() => handleDuplicate(index)}
                 title={data.title.length > 0 ? data.title : data.name}
+                showMenuButton={props.showMenuButton}
               />
               <Box height={16} />
             </Grid>
