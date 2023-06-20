@@ -118,7 +118,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   );
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
-  console.log("mapping", mapping);
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const appliedFilters = useStoreState(
     (state) => state.charts.appliedFilters.value
