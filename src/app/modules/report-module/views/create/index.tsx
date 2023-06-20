@@ -65,6 +65,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
             />
           ),
           content: [null, null, null, null, null],
@@ -84,6 +85,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
             />
           ),
           content: [null],
@@ -103,6 +105,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
             />
           ),
           content: [null, null],
@@ -122,6 +125,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
             />
           ),
           content: [null],
@@ -141,6 +145,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
             />
           ),
           content: [null, null, null],
@@ -191,6 +196,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                     handleRowFrameStructureTypeSelection={
                       props.handleRowFrameStructureTypeSelection
                     }
+                    handlePersistReportState={props.handlePersistReportState}
                   />
                 </div>
               );
@@ -208,6 +214,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
             />
           }
           <Box height={45} />
@@ -244,6 +251,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
                 handleRowFrameStructureTypeSelection={
                   props.handleRowFrameStructureTypeSelection
                 }
+                handlePersistReportState={props.handlePersistReportState}
               />
             ),
             content: [],

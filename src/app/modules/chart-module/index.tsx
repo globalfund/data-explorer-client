@@ -36,7 +36,7 @@ import {
   ChartRenderedItem,
   defaultChartOptions,
 } from "app/modules/chart-module/data";
-import { IHeaderDeatils } from "../report-module/components/right-panel/data";
+import { IHeaderDetails } from "../report-module/components/right-panel/data";
 
 export default function ChartModule() {
   const history = useHistory();
@@ -294,9 +294,9 @@ export default function ChartModule() {
         setName={setChartName}
         rawViz={rawViz}
         forceEnablePreviewSave={getForceEnabledPreviewValue(view)}
-        appliedHeaderDetails={{} as IHeaderDeatils}
+        appliedHeaderDetails={{} as IHeaderDetails}
         framesArray={[]}
-        headerDetails={{} as IHeaderDeatils}
+        headerDetails={{} as IHeaderDetails}
         reportName=""
       />
       <ChartModuleToolBox

@@ -27,7 +27,6 @@ export function CommonChart(props: Props) {
   const { render } = useDataThemesEchart();
 
   const domRef = React.useRef<HTMLDivElement>(null);
-
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
   useUpdateEffectOnce(() => {

@@ -118,6 +118,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   );
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
+  console.log("mapping", mapping);
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const appliedFilters = useStoreState(
     (state) => state.charts.appliedFilters.value
@@ -233,16 +234,20 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         values: chart,
       });
     }
+
     //completes chart creation, returns back to persisted report view
     if (createChartFromReport.state) {
       setCreateChartFromReport({
         ...createChartFromReport,
         state: false,
       });
-
-      history.push(
-        `/report/${createChartFromReport.page}/${createChartFromReport.view}`
-      );
+      if (createChartFromReport.view === undefined) {
+        history.push(`/report/${createChartFromReport.page}/edit`);
+      } else {
+        history.push(
+          `/report/${createChartFromReport.page}/${createChartFromReport.view}`
+        );
+      }
     }
   };
   React.useEffect(() => {

@@ -160,7 +160,8 @@ export function useChartsRawData(props: {
       )
       .then((response) => {
         const chart = response.data || {};
-
+        console.log(chart, "chart");
+        console.log(response.data, "");
         if (!isEmpty(chart)) {
           setAllAppliedFilters(chart.appliedFilters || {});
           setEnabledFilterOptionGroups(chart.enabledFilterOptionGroups);

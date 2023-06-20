@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { v4 } from "uuid";
 import filter from "lodash/filter";
 import Box from "@material-ui/core/Box";
@@ -31,6 +31,7 @@ import {
 import { persistedReportStateAtom } from "app/state/recoil/atoms";
 import { useRecoilState } from "recoil";
 import { ReportElementsType } from "./components/right-panel-create-view";
+import { IHeaderDetails } from "./components/right-panel/data";
 
 interface RowFrameProps {
   structure:
@@ -50,11 +51,19 @@ interface RowFrameProps {
 
 export default function ReportModule() {
   const history = useHistory();
+  const reportOrderRef = useRef<string[]>([]);
+  const framesArrayRef = useRef<IFramesArray[]>([]);
+  const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+  const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+  const reportNameRef = useRef<string>("");
+
   const { page, view } = useParams<{
     page: string;
     view: "initial" | "edit" | "create" | "preview";
   }>();
-  const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
+  const [persistedReportState, setPersistedReportState] = useRecoilState(
+    persistedReportStateAtom
+  );
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
@@ -193,7 +202,51 @@ export default function ReportModule() {
     });
   };
 
+  const handlePersistReportState = () => {
+    //does not have up to date values of states so we use refs
+    setPersistedReportState({
+      ...persistedReportState,
+      reportName: reportNameRef.current,
+      headerDetails: {
+        ...headerDetailsRef.current,
+        description: JSON.stringify(
+          convertToRaw(headerDetailsRef.current.description.getCurrentContent())
+        ),
+      },
+      appliedHeaderDetails: {
+        ...AppliedHeaderDetailsRef.current,
+        description: JSON.stringify(
+          convertToRaw(
+            AppliedHeaderDetailsRef.current.description.getCurrentContent()
+          )
+        ),
+      },
+
+      framesArray: JSON.stringify(
+        framesArrayRef.current
+          .sort(function (a, b) {
+            return (
+              reportOrderRef.current.indexOf(a.id) -
+              reportOrderRef.current.indexOf(b.id)
+            );
+          })
+          .map((frame) => ({
+            id: frame.id,
+            structure: frame.structure,
+            content: frame.content,
+            contentTypes: frame.contentTypes,
+            items: frame.content.map((item, index) =>
+              frame.contentTypes[index] === "text"
+                ? convertToRaw((item as EditorState).getCurrentContent())
+                : item
+            ),
+          }))
+      ),
+    });
+  };
+
   const id = v4();
+
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
     {
       id,
@@ -207,6 +260,7 @@ export default function ReportModule() {
           handleRowFrameStructureTypeSelection={
             handleRowFrameStructureTypeSelection
           }
+          handlePersistReportState={handlePersistReportState}
         />
       ),
       content: [],
@@ -264,6 +318,7 @@ export default function ReportModule() {
                       handleRowFrameStructureTypeSelection
                     }
                     previewItems={rowFrame.items}
+                    handlePersistReportState={handlePersistReportState}
                   />
                 ),
                 content: rowFrame.content,
@@ -318,6 +373,21 @@ export default function ReportModule() {
     (actions) => actions.reports.ReportUpdate.clear
   );
 
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+
+  //get current value of states for handlePersistReportState function
+  reportOrderRef.current = reportOrder;
+  headerDetailsRef.current = headerDetails;
+  AppliedHeaderDetailsRef.current = appliedHeaderDetails;
+  framesArrayRef.current = framesArray;
+  reportNameRef.current = reportName;
+
+  const reportOrderClear = useStoreActions(
+    (actions) => actions.reports.orderData.clear
+  );
+
   const handleNextButton = () => {
     if (buttonActive) {
       history.push(`/report/${page}/create`);
@@ -348,6 +418,7 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handlePersistReportState={handlePersistReportState}
           />
         ),
         content: [],
@@ -356,14 +427,6 @@ export default function ReportModule() {
       },
     ]);
   };
-
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
-
-  const reportOrderClear = useStoreActions(
-    (actions) => actions.reports.orderData.clear
-  );
 
   const onSave = () => {
     if (!isPreviewSaveEnabled) {
@@ -437,6 +500,7 @@ export default function ReportModule() {
       history.push(`/report/${id}`);
     }
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
+
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
@@ -529,6 +593,7 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handlePersistReportState={handlePersistReportState}
           />
         </Route>
         <Route path="/report/:page/edit">
@@ -543,6 +608,7 @@ export default function ReportModule() {
             setAppliedHeaderDetails={setAppliedHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
             handleRowFrameItemRemoval={handleRowFrameItemRemoval}
+            handlePersistReportState={handlePersistReportState}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }

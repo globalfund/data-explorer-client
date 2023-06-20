@@ -95,15 +95,18 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
       });
     }
     //Completes chart creation , returns to persisted report state
-    if (createChartFromReport) {
+    if (createChartFromReport.state) {
       setCreateChartFromReport({
         ...createChartFromReport,
         state: false,
       });
-
-      history.push(
-        `/report/${createChartFromReport.page}/${createChartFromReport.view}`
-      );
+      if (createChartFromReport.view === undefined) {
+        history.push(`/report/${createChartFromReport.page}/edit`);
+      } else {
+        history.push(
+          `/report/${createChartFromReport.page}/${createChartFromReport.view}`
+        );
+      }
     }
   }
 

@@ -117,7 +117,7 @@ export const ReportElementsType = {
   HEADER: "header",
 };
 
-interface IHeaderDeatils {
+interface IHeaderDetails {
   title: string;
   showHeader: boolean;
   description: EditorState;
@@ -130,10 +130,10 @@ interface Props {
   showHeaderItem: boolean;
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
-  appliedHeaderDetails: IHeaderDeatils;
-  setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
-  headerDetails: IHeaderDeatils;
-  setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
+  appliedHeaderDetails: IHeaderDetails;
+  setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
+  headerDetails: IHeaderDetails;
+  setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   framesArray: IFramesArray[];
   reportName: string;
 }
@@ -272,8 +272,8 @@ const sortByOptions = [
 function ReportRightPanelCreateViewChartList(props: {
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
-  headerDetails: IHeaderDeatils;
-  appliedHeaderDetails: IHeaderDeatils;
+  headerDetails: IHeaderDetails;
+  appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
   reportName: string;
 }) {
@@ -296,6 +296,7 @@ function ReportRightPanelCreateViewChartList(props: {
   };
 
   React.useEffect(() => {
+    console.log("loaded");
     loadChartList({
       storeInCrudData: true,
       filterString: `filter={"where":{"name":{"like":"${search}.*","options":"i"}},"order":"${sortBy.value}"}`,
@@ -491,8 +492,8 @@ function ElementItem(props: {
 
 function CreateChartCard(props: {
   reportName: string;
-  headerDetails: IHeaderDeatils;
-  appliedHeaderDetails: IHeaderDeatils;
+  headerDetails: IHeaderDetails;
+  appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
 }) {
   const history = useHistory();

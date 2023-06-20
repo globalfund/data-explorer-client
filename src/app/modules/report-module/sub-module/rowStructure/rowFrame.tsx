@@ -144,6 +144,7 @@ export interface RowFrameProps {
       | "fourToOne"
   ) => void;
   previewItems?: (string | object)[];
+  handlePersistReportState: () => void;
 }
 
 export interface IRowStructureType {
@@ -180,6 +181,11 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        handlePersistReportState={props.handlePersistReportState}
+        // appliedHeaderDetails={props.appliedHeaderDetails}
+        // headerDetails={props.headerDetails}
+        // reportName={props.reportName}
+        // framesArray={props.framesArray}
       />
     ),
     oneByTwo: (
@@ -197,6 +203,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneByThree: (
@@ -214,6 +221,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneByFour: (
@@ -231,6 +239,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneByFive: (
@@ -248,6 +257,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneToFour: (
@@ -265,6 +275,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     fourToOne: (
@@ -282,6 +293,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
   };

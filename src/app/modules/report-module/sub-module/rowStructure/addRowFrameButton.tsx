@@ -13,6 +13,7 @@ interface Props {
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   deleteFrame: (id: string) => void;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
+  handlePersistReportState: () => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,
@@ -52,6 +53,7 @@ export default function AddRowFrameButton(props: Props) {
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
             }
+            handlePersistReportState={props.handlePersistReportState}
           />
         ),
         content: [],

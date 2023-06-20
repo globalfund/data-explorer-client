@@ -1,4 +1,4 @@
-import { IHeaderDeatils } from "app/modules/report-module/components/right-panel/data";
+import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 
 export interface SubheaderToolbarProps {
@@ -10,7 +10,7 @@ export interface SubheaderToolbarProps {
   forceEnablePreviewSave?: boolean;
   rawViz?: any;
   reportName: string;
-  headerDetails: IHeaderDeatils;
-  appliedHeaderDetails: IHeaderDeatils;
+  headerDetails: IHeaderDetails;
+  appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
 }

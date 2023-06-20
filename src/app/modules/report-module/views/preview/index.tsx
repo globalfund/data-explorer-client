@@ -123,6 +123,7 @@ export function ReportPreviewView() {
               handleRowFrameItemAddition={() => {}}
               handleRowFrameStructureTypeSelection={() => {}}
               previewItems={rowFrame.items}
+              handlePersistReportState={() => {}}
             />
           );
         })}
