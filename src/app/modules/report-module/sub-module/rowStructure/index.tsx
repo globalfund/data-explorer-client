@@ -4,7 +4,7 @@ import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
-import { EditorState, convertFromRaw } from "draft-js";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
@@ -12,6 +12,9 @@ import { ReactComponent as EditIcon } from "app/modules/report-module/asset/edit
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useRecoilState } from "recoil";
+import { createChartFromReportAtom } from "app/state/recoil/atoms";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -36,6 +39,7 @@ interface RowStructureDisplayProps {
   ) => void;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   previewItems?: (string | object)[];
+  handlePersistReportState: () => void;
 }
 
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
@@ -168,6 +172,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
             handleRowFrameItemAddition={props.handleRowFrameItemAddition}
             previewItem={get(props.previewItems, `[${index}]`, undefined)}
+            handlePersistReportState={props.handlePersistReportState}
           />
         ))}
       </div>
@@ -180,6 +185,8 @@ const Box = (props: {
   height: string;
   rowId: string;
   itemIndex: number;
+  handlePersistReportState: () => void;
+
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
@@ -191,7 +198,23 @@ const Box = (props: {
 }) => {
   const location = useLocation();
   const history = useHistory();
-  const { page } = useParams<{ page: string }>();
+  const { page, view } = useParams<{ page: string; view: string }>();
+  const setDataset = useStoreActions(
+    (actions) => actions.charts.dataset.setValue
+  );
+  const setLoadedChart = useStoreActions(
+    (state) => state.charts.ChartGet.setCrudData
+  );
+  const setCreateChartData = useStoreActions(
+    (state) => state.charts.ChartCreate.setCrudData
+  );
+
+  const [_, setCreateChartFromReport] = useRecoilState(
+    createChartFromReportAtom
+  );
+  const resetMapping = useStoreActions(
+    (actions) => actions.charts.mapping.reset
+  );
   const [chartId, setChartId] = React.useState<string | null>(null);
   const [displayChart, setDisplayChart] = React.useState(false);
   const [displayTextBox, setDisplayTextBox] = React.useState(false);
@@ -200,6 +223,19 @@ const Box = (props: {
   );
 
   const handleEditChart = () => {
+    setCreateChartFromReport({
+      state: true,
+      view,
+      page,
+    });
+    setDataset(null);
+    setLoadedChart(null);
+    setCreateChartData(null);
+    resetMapping();
+
+    //set persisted report state to current report state
+    props.handlePersistReportState();
+
     history.push(`/chart/${chartId}/customize`);
   };
 
