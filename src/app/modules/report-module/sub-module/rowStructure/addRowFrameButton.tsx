@@ -1,10 +1,13 @@
 import React from "react";
 import { v4 } from "uuid";
 import IconButton from "@material-ui/core/IconButton";
-import { IRowFrameStructure } from "app/state/recoil/atoms";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import { ReactComponent as PlusIcon } from "app/modules/report-module/asset/addButton.svg";
+import {
+  IRowFrameStructure,
+  ReportContentWidthsType,
+} from "app/state/recoil/atoms";
 
 interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
@@ -31,6 +34,12 @@ interface Props {
       | "oneToFour"
       | "fourToOne"
   ) => void;
+  handleRowFrameItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    reportContentWidths: ReportContentWidthsType[]
+  ) => void;
 }
 
 export default function AddRowFrameButton(props: Props) {
@@ -52,9 +61,11 @@ export default function AddRowFrameButton(props: Props) {
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
             }
+            handleRowFrameItemResize={props.handleRowFrameItemResize}
           />
         ),
         content: [],
+        contentWidths: [],
         contentTypes: [],
         structure: null,
       },

@@ -6,6 +6,7 @@ import {
   echartsLinechart,
   echartsSankey,
   echartsTreemap,
+  bigNumber,
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-charts";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
@@ -16,6 +17,7 @@ export const charts = {
   echartsLinechart,
   echartsSankey,
   echartsTreemap,
+  bigNumber,
 };
 
 export const CHART_DEFAULT_WIDTH = 1000;
@@ -98,6 +100,7 @@ export const defaultChartOptions = {
       default: 0,
     },
   },
+  bigNumber: {},
 };
 
 export interface ChartAPIModel {

@@ -90,7 +90,7 @@ export default function ReformedGridItem(props: Props) {
         `}
       >
         <ClockIcon />
-        <p>{moment(props.date).format("DD-MM-YYYY")}</p>
+        <p>{moment(props.date).format("MMMM YYYY")}</p>
       </div>
     </div>
   );

@@ -1,8 +1,10 @@
 import { EditorState } from "draft-js";
+import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
 export interface IFramesArray {
   id: string;
   frame: JSX.Element;
+  contentWidths: number[];
   content: (object | string | null)[];
   contentTypes: ("text" | "divider" | "chart" | null)[];
   structure:
@@ -63,6 +65,12 @@ export interface ReportCreateViewProps {
       | "oneToFour"
       | "fourToOne"
   ) => void;
+  handleRowFrameItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    reportContentWidths: ReportContentWidthsType[]
+  ) => void;
 }
 
 export interface PlaceholderProps {
@@ -90,5 +98,11 @@ export interface PlaceholderProps {
       | "oneByFive"
       | "oneToFour"
       | "fourToOne"
+  ) => void;
+  handleRowFrameItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    reportContentWidths: ReportContentWidthsType[]
   ) => void;
 }
