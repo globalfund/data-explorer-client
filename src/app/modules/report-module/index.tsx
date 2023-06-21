@@ -81,9 +81,14 @@ export default function ReportModule() {
       }
     });
   });
+
   const [pickedCharts, setPickedCharts] = React.useState<any[]>(
     localPickedCharts || []
   );
+
+  React.useEffect(() => {
+    setPickedCharts(localPickedCharts);
+  }, [persistedReportState]);
 
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
