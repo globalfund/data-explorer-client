@@ -98,7 +98,7 @@ export default function GridItem(props: Props) {
         `}
       >
         <p>Creation date</p>
-        <p>{moment(props.date).format("DD-MM-YYYY")}</p>
+        <p>{moment(props.date).format("MMMM YYYY")}</p>
       </div>
       {menuOptionsDisplay && (
         <React.Fragment>

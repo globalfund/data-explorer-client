@@ -264,7 +264,6 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
                   <PrimaryButton
                     dark
                     onClick={() => history.push("/dataset-upload")}
-                    disabled={history.location.pathname === stepPaths[2]}
                   >
                     add new dataset
                   </PrimaryButton>

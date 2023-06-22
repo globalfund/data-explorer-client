@@ -99,7 +99,7 @@ export function HomepageTable(props: {
               <TableCell>{data.name}</TableCell>
               <TableCell>{data.description}</TableCell>
               <TableCell>
-                {moment(data.createdDate).format("DD-MM-YYYY")}
+                {moment(data.createdDate).format("MMMM YYYY")}
               </TableCell>
             </TableRow>
           ))}

@@ -12,7 +12,9 @@ import ColoredSankeyChartIcon from "app/assets/icons/data-themes-chart-types/col
 
 import TreeMapIcon from "app/assets/icons/data-themes-chart-types/treemap";
 import ColoredTreeMapIcon from "app/assets/icons/data-themes-chart-types/coloredTreemap";
-import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
+
+import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
+import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/coloredBigNumber";
 
 export interface ChartBuilderChartTypeProps {
   loading: boolean;
@@ -73,7 +75,15 @@ export const echartTypes = (big: boolean) => {
       description:
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
     },
-
+    {
+      id: "bigNumber",
+      label: "Big number",
+      icon: <BigNumberIcon />,
+      categories: ["Hierarchies", "Proportions"],
+      ssr: true,
+      description:
+        "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
+    },
     {
       id: "placeholder1",
       label: "",
@@ -108,14 +118,6 @@ export const echartTypes = (big: boolean) => {
     },
     {
       id: "placeholder5",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder6",
       label: "",
       icon: <></>,
       categories: [],
@@ -209,7 +211,7 @@ export const coloredEchartTypes = () => {
       label: "Big Number diagram",
       icon: <ColoredBigNumberIcon />,
       categories: ["Hierarchies", "Proportions"],
-      ssr: false,
+      ssr: true,
       description:
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
     },

@@ -558,6 +558,7 @@ function CreateChartCard(props: {
             id: frame.id,
             structure: frame.structure,
             content: frame.content,
+            contentWidths: frame.contentWidths,
             contentTypes: frame.contentTypes,
             items: frame.content.map((item, index) =>
               frame.contentTypes[index] === "text"

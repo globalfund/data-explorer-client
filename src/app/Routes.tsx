@@ -9,7 +9,21 @@ import { RouteWithAppBar } from "app/utils/RouteWithAppBar";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 
 const HomeModule = lazy(() => import("app/modules/home-module"));
-const AboutModule = lazy(() => import("app/modules/about-module"));
+const CasesModule = lazy(
+  () => import("app/modules/home-module/sub-modules/cases")
+);
+const ContactModule = lazy(
+  () => import("app/modules/home-module/sub-modules/contact")
+);
+
+const AboutModule = lazy(
+  () => import("app/modules/home-module/sub-modules/about")
+);
+const WhyDXModule = lazy(
+  () => import("app/modules/home-module/sub-modules/why-dx")
+);
+const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
+const ChartsModule = lazy(() => import("app/modules/charts-module"));
 const ChartModule = lazy(() => import("app/modules/chart-module"));
 const ReportModule = lazy(() => import("app/modules/report-module"));
 const DatasetUploadSteps = lazy(
@@ -27,6 +41,15 @@ export function MainRoutes() {
       <Switch>
         <RouteWithAppBar exact path="/">
           <HomeModule />
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/cases">
+          <CasesModule />
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/contact">
+          <ContactModule />
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/why-dx">
+          <WhyDXModule />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/report/:page/:view?">
           <ReportModule />

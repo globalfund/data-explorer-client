@@ -65,6 +65,7 @@ export function ReportChartWrapper(props: Props) {
     setVisualOptions,
     setChartFromAPI,
     chartFromAPI,
+    inChartWrapper: true,
   });
 
   React.useEffect(() => {
@@ -122,6 +123,7 @@ export function ReportChartWrapper(props: Props) {
       </div>
     );
   }
+
   return (
     <div
       ref={containerRef}
@@ -157,14 +159,16 @@ export function ReportChartWrapper(props: Props) {
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
 
-      <h4
-        css={`
-          margin: 0;
-          margin-bottom: 12px;
-        `}
-      >
-        {chartName}
-      </h4>
+      {renderedChartType !== "bigNumber" && (
+        <h4
+          css={`
+            margin: 0;
+            margin-bottom: 12px;
+          `}
+        >
+          {chartName}
+        </h4>
+      )}
       <CommonChart
         withHeader
         chartId={props.id}
