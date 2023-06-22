@@ -73,7 +73,6 @@ export default function ReportModule() {
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
-  console.log("persistedReportState", persistedReportState);
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
@@ -95,7 +94,6 @@ export default function ReportModule() {
   const [pickedCharts, setPickedCharts] = React.useState<any[]>(
     localPickedCharts || []
   );
-  console.log(pickedCharts, "pickedCharts");
   React.useEffect(() => {
     setPickedCharts(localPickedCharts);
   }, [persistedReportState]);
@@ -110,7 +108,6 @@ export default function ReportModule() {
     dateColor: "#ffffff",
   });
 
-  console.log(headerDetails, "headerDetails");
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
@@ -147,7 +144,8 @@ export default function ReportModule() {
     framesArr.forEach((frame) => {
       contentWidths.push({
         id: frame.id,
-        widths: frame.contentWidths.length === 0 ? [100] : frame.contentWidths,
+        widths:
+          frame.contentWidths?.length === 0 ? [100] : frame?.contentWidths,
       });
     });
     setReportContentWidths(contentWidths);
