@@ -16,7 +16,7 @@ export function ReportInitialView(props: ReportInitialViewProps) {
   };
 
   React.useEffect(() => {
-    props.resetFrames();
+    props.resetReport();
   }, []);
 
   return (

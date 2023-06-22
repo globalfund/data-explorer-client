@@ -73,6 +73,7 @@ export default function ReportModule() {
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
+  console.log("persistedReportState", persistedReportState);
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
@@ -94,7 +95,7 @@ export default function ReportModule() {
   const [pickedCharts, setPickedCharts] = React.useState<any[]>(
     localPickedCharts || []
   );
-
+  console.log(pickedCharts, "pickedCharts");
   React.useEffect(() => {
     setPickedCharts(localPickedCharts);
   }, [persistedReportState]);
@@ -109,6 +110,7 @@ export default function ReportModule() {
     dateColor: "#ffffff",
   });
 
+  console.log(headerDetails, "headerDetails");
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
@@ -533,7 +535,7 @@ export default function ReportModule() {
     setReportType(type);
   };
 
-  const resetFrames = () => {
+  const resetReport = () => {
     const id = v4();
     setFramesArray([
       {
@@ -558,6 +560,17 @@ export default function ReportModule() {
         structure: null,
       },
     ]);
+    setPickedCharts([]);
+    setHeaderDetails({
+      title: "",
+      description: EditorState.createEmpty(),
+      showHeader: true,
+      backgroundColor: "#252c34",
+      titleColor: "#ffffff",
+      descriptionColor: "#ffffff",
+      dateColor: "#ffffff",
+    });
+    setReportName("My First Report");
   };
 
   const onSave = () => {
@@ -676,7 +689,7 @@ export default function ReportModule() {
           <Container maxWidth="lg">
             <Box height={50} />
             <ReportInitialView
-              resetFrames={resetFrames}
+              resetReport={resetReport}
               buttonActive={buttonActive}
               setButtonActive={handleSetButtonActive}
             />
