@@ -94,6 +94,7 @@ export default function ReportModule() {
   const [pickedCharts, setPickedCharts] = React.useState<any[]>(
     localPickedCharts || []
   );
+
   React.useEffect(() => {
     setPickedCharts(localPickedCharts);
   }, [persistedReportState]);
@@ -349,6 +350,8 @@ export default function ReportModule() {
             structure: frame.structure,
             content: frame.content,
             contentTypes: frame.contentTypes,
+            contentWidths: frame.contentWidths,
+
             items: frame.content.map((item, index) =>
               frame.contentTypes[index] === "text"
                 ? convertToRaw((item as EditorState).getCurrentContent())
@@ -746,6 +749,7 @@ export default function ReportModule() {
             open={rightPanelOpen}
             setName={setReportName}
             setPickedCharts={setPickedCharts}
+            localPickedCharts={localPickedCharts}
             framesArray={framesArray}
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}
