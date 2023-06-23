@@ -73,15 +73,17 @@ export function ReportEditView(props: ReportEditViewProps) {
   }, [page]);
 
   React.useEffect(() => {
-    const items = reportData.rows.map((rowFrame, index) =>
-      rowFrame.items.filter((item) => typeof item === "string")
-    ) as string[][];
-    let pickedItems: string[] = [];
+    if (props.localPickedCharts.length === 0) {
+      const items = reportData.rows.map((rowFrame, index) =>
+        rowFrame.items.filter((item) => typeof item === "string")
+      ) as string[][];
+      let pickedItems: string[] = [];
 
-    for (const element of items) {
-      pickedItems = [...pickedItems, ...element];
+      for (const element of items) {
+        pickedItems = [...pickedItems, ...element];
+      }
+      props.setPickedCharts(pickedItems);
     }
-    props.setPickedCharts(pickedItems);
 
     return () => {
       props.setStopInitializeFramesWidth(false);
