@@ -609,11 +609,6 @@ export default function ReportModule() {
               resetFrames={resetFrames}
               setButtonActive={handleSetButtonActive}
             />
-            <div
-              css={`
-                height: calc(100vh - 450px);
-              `}
-            />
           </Container>
         </Route>
         <Route path="/report/:page/ai-template">

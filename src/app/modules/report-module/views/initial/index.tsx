@@ -21,19 +21,16 @@ import { IconButton, Popover } from "@material-ui/core";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
 
 export function ReportInitialView(props: ReportInitialViewProps) {
-  const [openSearch, setOpenSearch] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
-  const [sortValue, setSortValue] = React.useState("createdDate");
   const [tableView, setTableView] = React.useState(false);
-
+  const [searchValue, setSearchValue] = React.useState("");
+  const [openSearch, setOpenSearch] = React.useState(false);
+  const [sortValue, setSortValue] = React.useState("createdDate");
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
+
   const inputRef = React.useRef<HTMLInputElement>(null);
 
   const openSortPopover = Boolean(sortPopoverAnchorEl);
-  const handleCloseSortPopover = () => {
-    setSortPopoverAnchorEl(null);
-  };
 
   const sortOptions = [
     { label: "Last updated", value: "updatedDate" },
@@ -44,8 +41,13 @@ export function ReportInitialView(props: ReportInitialViewProps) {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
   };
+
   const handleTemplateSelected = (option: ReportTemplateModel) => {
     props.setButtonActive(option.value);
+  };
+
+  const handleCloseSortPopover = () => {
+    setSortPopoverAnchorEl(null);
   };
 
   React.useEffect(() => {

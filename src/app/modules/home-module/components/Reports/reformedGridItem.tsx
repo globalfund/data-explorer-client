@@ -1,12 +1,14 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
-import { IconButton, Tooltip } from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
+import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
+import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 import { ReactComponent as DuplicateIcon } from "app/modules/home-module/assets/duplicate.svg";
+
 interface Props {
   date: Date;
   id?: string;
@@ -25,11 +27,12 @@ export default function ReformedGridItem(props: Props) {
   const showMenuOptions = () => {
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
+
   return (
     <div
       css={`
         width: 100%;
-        height: 220px;
+        height: ${props.showMenuButton ? "162" : "220"}px;
         display: flex;
         color: #262c34;
         background: #fff;
@@ -112,6 +115,12 @@ export default function ReformedGridItem(props: Props) {
           rect:nth-of-type(2) {
             fill: ${props.color || "#231d2c"};
           }
+
+          ${props.showMenuButton &&
+          `
+            transform: scale(0.7);
+            transform-origin: left bottom;
+          `}
         `}
       >
         {props.viz}
