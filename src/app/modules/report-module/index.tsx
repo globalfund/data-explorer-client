@@ -131,7 +131,7 @@ export default function ReportModule() {
     framesArr.forEach((frame) => {
       contentWidths.push({
         id: frame.id,
-        widths: frame.contentWidths.length === 0 ? [100] : frame.contentWidths,
+        widths: frame.contentWidths?.length === 0 ? [100] : frame.contentWidths,
       });
     });
     setReportContentWidths(contentWidths);
