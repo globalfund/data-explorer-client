@@ -2,8 +2,28 @@ import React from "react";
 import Grid from "@material-ui/core/Grid";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { emailValidation } from "app/utils/emailValidation";
-import NewsLetterImg from "app/modules/report-module/asset/ai-newsletter.svg";
 import { ReactComponent as MailImg } from "app/modules/report-module/asset/mail-img.svg";
+import { ReactComponent as TopEllipse } from "app/modules/report-module/asset/ai-newsletter-top-ellipse.svg";
+import { ReactComponent as BigEllipse } from "app/modules/report-module/asset/ai-newsletter-big-ellipse.svg";
+import { ReactComponent as MidEllipse } from "app/modules/report-module/asset/ai-newsletter-md-btm-ellipse.svg";
+import { ReactComponent as BtmGreenEllipse } from "app/modules/report-module/asset/ai-newsletter-btm-green-ellipse.svg";
+import { ReactComponent as BtmPurpleEllipse } from "app/modules/report-module/asset/ai-newsletter-sm-purple-ellispe.svg";
+import { ReactComponent as ReportIllustration } from "app/modules/report-module/asset/report-illustration.svg";
+import { ReactComponent as DatasetIllustration } from "app/modules/report-module/asset/dataset-illustration.svg";
+import { ReactComponent as ChartIllustration } from "app/modules/report-module/asset/chart-illustration.svg";
+import {
+  bigEllipsecss,
+  btmGreenEllipsecss,
+  btmPurpleEllipsecss,
+  chartIllustrationcss,
+  datasetIllustrationcss,
+  midEllipsecss,
+  newsletterIllustrationcss,
+  notSubscribedcss,
+  reportIllustrationcss,
+  subscribedcss,
+  topEllipsecss,
+} from "./style";
 
 export default function AITemplate() {
   const [email, setEmail] = React.useState("");
@@ -61,61 +81,35 @@ export default function AITemplate() {
           height: 100%;
         `}
       >
-        <div
-          css={`
-            width: 100%;
-            height: 100%;
-            img {
-              height: 100%;
-              width: 100%;
-              object-fit: cover;
-            }
-          `}
-        >
-          <img src={NewsLetterImg} alt="newsletter-img" />
-        </div>
-      </Grid>
-      <Grid item xs={12} md={6}>
-        {isSubscribed ? (
+        <div css={newsletterIllustrationcss}>
+          <h1>Subscribe to our newsletter</h1>
+          <p>
+            Want to be the first one to know when we launch our brand new
+            AI-powered template for reports? Don't miss out on this exciting
+            opportunity!
+          </p>
           <div
             css={`
+              position: relative;
               width: 100%;
-              height: 100%;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              padding-left: 40px;
-              padding-right: 48px;
             `}
           >
-            <div
-              css={`
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                b:nth-child(1),
-                b:nth-child(2) {
-                  text-align: center;
-                  font-weight: 325;
-                  font-size: 18px;
-                  line-height: 22px;
-                  color: #231d2c;
-                  font-family: "Gotham Narrow", sans-serif;
-                }
-                p {
-                  font-family: "Gotham Narrow", sans-serif;
+            <BigEllipse css={bigEllipsecss} />
+            <MidEllipse css={midEllipsecss} />
+            <BtmGreenEllipse css={btmGreenEllipsecss} />
+            <BtmPurpleEllipse css={btmPurpleEllipsecss} />
+            <DatasetIllustration css={datasetIllustrationcss} />
+            <ChartIllustration css={chartIllustrationcss} />
+            <ReportIllustration css={reportIllustrationcss} />
+          </div>
+          <TopEllipse css={topEllipsecss} />
+        </div>
+      </Grid>
 
-                  text-align: center;
-                }
-                p:last-child {
-                  font-size: 14px;
-                  color: #b6b6b6;
-                }
-              `}
-            >
+      <Grid item xs={12} md={6}>
+        {isSubscribed ? (
+          <div css={subscribedcss}>
+            <div>
               <MailImg />
               <div
                 css={`
@@ -138,42 +132,15 @@ export default function AITemplate() {
             </div>
           </div>
         ) : (
-          <div
-            css={`
-              width: 100%;
-              height: 100%;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: center;
-              padding-left: 40px;
-              padding-right: 48px;
-            `}
-          >
-            <div
-              css={`
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-              `}
-            >
+          <div css={notSubscribedcss}>
+            <div>
               <MailImg />
               <div
                 css={`
                   height: 47px;
                 `}
               />
-              <p
-                css={`
-                  text-align: center;
-                  font-weight: 325;
-                  font-size: 14px;
-                  line-height: 17px;
-                  font-family: "Gotham Narrow", sans-serif;
-                `}
-              >
+              <p>
                 Sign up now by entering your email below. Be among the first to
                 experience the future of <br />
                 reporting unfold right in your inbox. 🚀
@@ -189,35 +156,6 @@ export default function AITemplate() {
                   height: 47px;
                   width: 100%;
                   border-radius: 40px;
-                  input {
-                    background: #f7f7f7;
-                    border-top-left-radius: 40px;
-                    border-bottom-left-radius: 40px;
-                    outline: none;
-                    border: none;
-                    height: 100%;
-                    padding-left: 24px;
-                    width: 70%;
-                    font-size: 16px;
-                    font-family: "Inter", sans-serif;
-                    color: #000000;
-                  }
-                  button {
-                    background: #231d2c;
-                    border-radius: 0px 34.5px 34.5px 0px;
-                    outline: none;
-                    border: none;
-                    font-family: "Inter", sans-serif;
-                    font-size: 16px;
-                    line-height: 19px;
-                    color: #ffffff;
-                    height: 100%;
-                    width: 30%;
-                    :hover {
-                      cursor: pointer;
-                      opacity: 0.9;
-                    }
-                  }
                 `}
               >
                 <input
