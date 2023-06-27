@@ -6,6 +6,8 @@ import {
   ReportInitialViewProps,
   ReportTemplateModel,
 } from "app/modules/report-module/views/initial/data";
+import { persistedReportStateAtom } from "app/state/recoil/atoms";
+import { useResetRecoilState } from "recoil";
 
 export function ReportInitialView(props: ReportInitialViewProps) {
   const [currentValue, setCurrentValue] = React.useState<string>("");
@@ -14,9 +16,13 @@ export function ReportInitialView(props: ReportInitialViewProps) {
     setCurrentValue(option.value);
     props.setButtonActive(true, option.value);
   };
+  const clearPersistedReportState = useResetRecoilState(
+    persistedReportStateAtom
+  );
 
   React.useEffect(() => {
-    props.resetFrames();
+    clearPersistedReportState();
+    props.resetReport();
   }, []);
 
   return (

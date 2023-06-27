@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import filter from "lodash/filter";
@@ -39,6 +39,8 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import { IHeaderDetails } from "./components/right-panel/data";
+
 interface RowFrameProps {
   structure:
     | "oneByOne"
@@ -58,11 +60,20 @@ interface RowFrameProps {
 
 export default function ReportModule() {
   const history = useHistory();
+  const reportOrderRef = useRef<string[]>([]);
+  const framesArrayRef = useRef<IFramesArray[]>([]);
+  const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+  const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+  const reportNameRef = useRef<string>("");
+
   const { page, view } = useParams<{
     page: string;
     view: "initial" | "edit" | "create" | "preview";
   }>();
-  const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
+
+  const [persistedReportState, setPersistedReportState] = useRecoilState(
+    persistedReportStateAtom
+  );
   const [buttonActive, setButtonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
@@ -80,11 +91,15 @@ export default function ReportModule() {
       }
     });
   });
+
   const [pickedCharts, setPickedCharts] = React.useState<any[]>(
     localPickedCharts || []
   );
 
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
+  React.useEffect(() => {
+    setPickedCharts(localPickedCharts);
+  }, [persistedReportState]);
+
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -131,7 +146,8 @@ export default function ReportModule() {
     framesArr.forEach((frame) => {
       contentWidths.push({
         id: frame.id,
-        widths: frame.contentWidths?.length === 0 ? [100] : frame.contentWidths,
+        widths:
+          frame.contentWidths?.length === 0 ? [100] : frame?.contentWidths,
       });
     });
     setReportContentWidths(contentWidths);
@@ -302,7 +318,53 @@ export default function ReportModule() {
     });
   };
 
+  const handlePersistReportState = () => {
+    //does not have up to date values of states so we use refs
+    setPersistedReportState({
+      ...persistedReportState,
+      reportName: reportNameRef.current,
+      headerDetails: {
+        ...headerDetailsRef.current,
+        description: JSON.stringify(
+          convertToRaw(headerDetailsRef.current.description.getCurrentContent())
+        ),
+      },
+      appliedHeaderDetails: {
+        ...AppliedHeaderDetailsRef.current,
+        description: JSON.stringify(
+          convertToRaw(
+            AppliedHeaderDetailsRef.current.description.getCurrentContent()
+          )
+        ),
+      },
+
+      framesArray: JSON.stringify(
+        framesArrayRef.current
+          .sort(function (a, b) {
+            return (
+              reportOrderRef.current.indexOf(a.id) -
+              reportOrderRef.current.indexOf(b.id)
+            );
+          })
+          .map((frame) => ({
+            id: frame.id,
+            structure: frame.structure,
+            content: frame.content,
+            contentTypes: frame.contentTypes,
+            contentWidths: frame.contentWidths,
+
+            items: frame.content.map((item, index) =>
+              frame.contentTypes[index] === "text"
+                ? convertToRaw((item as EditorState).getCurrentContent())
+                : item
+            ),
+          }))
+      ),
+    });
+  };
+
   const id = v4();
+
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
     {
       id,
@@ -316,6 +378,7 @@ export default function ReportModule() {
           handleRowFrameStructureTypeSelection={
             handleRowFrameStructureTypeSelection
           }
+          handlePersistReportState={handlePersistReportState}
           handleRowFrameItemResize={handleRowFrameItemResize}
         />
       ),
@@ -387,6 +450,7 @@ export default function ReportModule() {
                       handleRowFrameStructureTypeSelection
                     }
                     previewItems={rowFrame.items}
+                    handlePersistReportState={handlePersistReportState}
                     handleRowFrameItemResize={handleRowFrameItemResize}
                   />
                 ),
@@ -443,6 +507,21 @@ export default function ReportModule() {
     (actions) => actions.reports.ReportUpdate.clear
   );
 
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+
+  //get current value of states for handlePersistReportState function
+  reportOrderRef.current = reportOrder;
+  headerDetailsRef.current = headerDetails;
+  AppliedHeaderDetailsRef.current = appliedHeaderDetails;
+  framesArrayRef.current = framesArray;
+  reportNameRef.current = reportName;
+
+  const reportOrderClear = useStoreActions(
+    (actions) => actions.reports.orderData.clear
+  );
+
   const handleNextButton = () => {
     if (buttonActive) {
       history.push(`/report/${page}/create`);
@@ -458,7 +537,7 @@ export default function ReportModule() {
     setReportType(type);
   };
 
-  const resetFrames = () => {
+  const resetReport = () => {
     const id = v4();
     setFramesArray([
       {
@@ -473,6 +552,7 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handlePersistReportState={handlePersistReportState}
             handleRowFrameItemResize={handleRowFrameItemResize}
           />
         ),
@@ -482,15 +562,18 @@ export default function ReportModule() {
         structure: null,
       },
     ]);
+    setPickedCharts([]);
+    setHeaderDetails({
+      title: "",
+      description: EditorState.createEmpty(),
+      showHeader: true,
+      backgroundColor: "#252c34",
+      titleColor: "#ffffff",
+      descriptionColor: "#ffffff",
+      dateColor: "#ffffff",
+    });
+    setReportName("My First Report");
   };
-
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
-
-  const reportOrderClear = useStoreActions(
-    (actions) => actions.reports.orderData.clear
-  );
 
   const onSave = () => {
     if (!isPreviewSaveEnabled) {
@@ -575,27 +658,28 @@ export default function ReportModule() {
         setName={setReportName}
         forceEnablePreviewSave={isPreviewSaveEnabled}
         name={page !== "new" && !view ? reportGetData.name : reportName}
+        reportName={reportName}
+        appliedHeaderDetails={appliedHeaderDetails}
+        framesArray={framesArray}
+        headerDetails={headerDetails}
       />
-      {view &&
-        view !== "preview" &&
-        !reportPreviewMode &&
-        view !== "initial" && (
-          <ReportRightPanel
-            open={rightPanelOpen}
-            currentView={view}
-            pickedCharts={pickedCharts}
-            setPickedCharts={setPickedCharts}
-            headerDetails={headerDetails}
-            setHeaderDetails={setHeaderDetails}
-            appliedHeaderDetails={appliedHeaderDetails}
-            setAppliedHeaderDetails={setAppliedHeaderDetails}
-            onOpen={() => setRightPanelOpen(true)}
-            onClose={() => setRightPanelOpen(false)}
-            showHeaderItem={!headerDetails.showHeader}
-            framesArray={framesArray}
-            reportName={reportName}
-          />
-        )}
+      {view && view !== "preview" && view !== "initial" && (
+        <ReportRightPanel
+          open={rightPanelOpen}
+          currentView={view}
+          pickedCharts={pickedCharts}
+          setPickedCharts={setPickedCharts}
+          headerDetails={headerDetails}
+          setHeaderDetails={setHeaderDetails}
+          appliedHeaderDetails={appliedHeaderDetails}
+          setAppliedHeaderDetails={setAppliedHeaderDetails}
+          onOpen={() => setRightPanelOpen(true)}
+          onClose={() => setRightPanelOpen(false)}
+          showHeaderItem={!headerDetails.showHeader}
+          framesArray={framesArray}
+          reportName={reportName}
+        />
+      )}
       <div
         css={`
           width: 100%;
@@ -607,7 +691,7 @@ export default function ReportModule() {
           <Container maxWidth="lg">
             <Box height={50} />
             <ReportInitialView
-              resetFrames={resetFrames}
+              resetReport={resetReport}
               buttonActive={buttonActive}
               setButtonActive={handleSetButtonActive}
             />
@@ -657,6 +741,7 @@ export default function ReportModule() {
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
+            handlePersistReportState={handlePersistReportState}
             handleRowFrameItemResize={handleRowFrameItemResize}
           />
         </Route>
@@ -665,6 +750,7 @@ export default function ReportModule() {
             open={rightPanelOpen}
             setName={setReportName}
             setPickedCharts={setPickedCharts}
+            localPickedCharts={localPickedCharts}
             framesArray={framesArray}
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}
@@ -672,6 +758,7 @@ export default function ReportModule() {
             setAppliedHeaderDetails={setAppliedHeaderDetails}
             handleRowFrameItemAddition={handleRowFrameItemAddition}
             handleRowFrameItemRemoval={handleRowFrameItemRemoval}
+            handlePersistReportState={handlePersistReportState}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }

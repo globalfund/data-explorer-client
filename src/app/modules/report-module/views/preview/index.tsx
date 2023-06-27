@@ -10,9 +10,15 @@ import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
+import {
+  persistedReportStateAtom,
+  unSavedReportPreviewModeAtom,
+} from "app/state/recoil/atoms";
 
 export function ReportPreviewView() {
   const { page } = useParams<{ page: string }>();
+  const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
+  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
 
@@ -36,9 +42,17 @@ export function ReportPreviewView() {
     (actions) => actions.reports.ReportGet.clear
   );
 
+  const [reportPreviewData, setReportPreviewData] = React.useState(reportData);
+
   React.useEffect(() => {
     fetchReportData({ getId: page });
   }, [page]);
+
+  React.useEffect(() => {
+    if (!reportPreviewMode) {
+      setReportPreviewData(reportData);
+    }
+  }, [reportData]);
 
   React.useEffect(() => {
     if (reportData.contentWidths) {
@@ -54,27 +68,44 @@ export function ReportPreviewView() {
     };
   }, []);
 
+  React.useEffect(() => {
+    if (reportPreviewMode) {
+      setReportPreviewData({
+        ...reportPreviewData,
+
+        title: persistedReportState.headerDetails.title,
+        showHeader: persistedReportState.headerDetails.showHeader,
+        backgroundColor: persistedReportState.headerDetails.backgroundColor,
+        titleColor: persistedReportState.headerDetails.titleColor,
+        descriptionColor: persistedReportState.headerDetails.descriptionColor,
+        dateColor: persistedReportState.headerDetails.dateColor,
+        rows: JSON.parse(persistedReportState.framesArray || "[]"),
+        subTitle: JSON.parse(persistedReportState.headerDetails.description),
+      });
+    }
+  }, [persistedReportState]);
+
   return (
     <div id="export-container">
       <HeaderBlock
         previewMode
         headerDetails={{
-          title: reportData.title,
-          showHeader: reportData.showHeader,
+          title: reportPreviewData.title,
+          showHeader: reportPreviewData.showHeader,
           description: EditorState.createWithContent(
-            convertFromRaw(reportData.subTitle)
+            convertFromRaw(reportPreviewData.subTitle)
           ),
-          backgroundColor: reportData.backgroundColor,
-          titleColor: reportData.titleColor,
-          descriptionColor: reportData.descriptionColor,
-          dateColor: reportData.dateColor,
-          createdDate: reportData.createdDate,
+          backgroundColor: reportPreviewData.backgroundColor,
+          titleColor: reportPreviewData.titleColor,
+          descriptionColor: reportPreviewData.descriptionColor,
+          dateColor: reportPreviewData.dateColor,
+          createdDate: reportPreviewData.createdDate,
         }}
         setHeaderDetails={() => {}}
       />
       <Container id="content-container" maxWidth="lg">
         <Box height={45} />
-        {reportData.rows.map((rowFrame, index) => {
+        {reportPreviewData.rows.map((rowFrame, index) => {
           if (
             rowFrame.items &&
             rowFrame.items.length === 1 &&
@@ -93,7 +124,7 @@ export function ReportPreviewView() {
           return (
             <RowFrame
               key={index}
-              rowId={reportData.id}
+              rowId={reportPreviewData.id}
               rowIndex={index}
               deleteFrame={() => {}}
               forceSelectedType={rowFrame.structure ?? undefined}
@@ -101,6 +132,7 @@ export function ReportPreviewView() {
               handleRowFrameItemAddition={() => {}}
               handleRowFrameStructureTypeSelection={() => {}}
               previewItems={rowFrame.items}
+              handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
             />
           );

@@ -173,6 +173,7 @@ export interface RowFrameProps {
     reportContentWidths: ReportContentWidthsType[]
   ) => void;
   previewItems?: (string | object)[];
+  handlePersistReportState: () => void;
 }
 
 export interface IRowStructureType {
@@ -287,6 +288,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneByTwo: (
@@ -305,6 +307,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneByThree: (
@@ -323,6 +326,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneByFour: (
@@ -341,6 +345,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneByFive: (
@@ -359,6 +364,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     oneToFour: (
@@ -377,6 +383,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
     fourToOne: (
@@ -395,6 +402,7 @@ export default function RowFrame(props: RowFrameProps) {
         handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
       />
     ),
   };
