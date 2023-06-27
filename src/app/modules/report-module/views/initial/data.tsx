@@ -5,7 +5,8 @@ import { ReactComponent as RightArrowIcon } from "../../asset/rightArrow.svg";
 ("");
 
 export interface ReportInitialViewProps {
-  resetFrames: () => void;
+  buttonActive: boolean;
+  resetReport: () => void;
   setButtonActive: (type: "basic" | "advanced" | "ai") => void;
 }
 

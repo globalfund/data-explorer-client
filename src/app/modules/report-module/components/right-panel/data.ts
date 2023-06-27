@@ -1,7 +1,7 @@
 import { EditorState } from "draft-js";
 import { IFramesArray } from "../../views/create/data";
 
-export interface IHeaderDeatils {
+export interface IHeaderDetails {
   title: string;
   showHeader: boolean;
   description: EditorState;
@@ -17,11 +17,11 @@ export interface ReportRightPanelProps {
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   showHeaderItem: boolean;
-  currentView: "initial" | "edit" | "create" | "preview";
-  appliedHeaderDetails: IHeaderDeatils;
-  setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
-  headerDetails: IHeaderDeatils;
-  setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDeatils>>;
+  currentView: "initial" | "edit" | "create" | "preview" | "ai-template";
+  appliedHeaderDetails: IHeaderDetails;
+  setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
+  headerDetails: IHeaderDetails;
+  setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   framesArray: IFramesArray[];
   reportName: string;
 }

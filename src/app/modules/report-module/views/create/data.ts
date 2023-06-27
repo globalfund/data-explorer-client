@@ -26,6 +26,7 @@ export interface ReportCreateViewProps {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   deleteFrame: (id: string) => void;
   framesArray: IFramesArray[];
+  handlePersistReportState: () => void;
   headerDetails: {
     title: string;
     showHeader: boolean;
@@ -80,6 +81,7 @@ export interface PlaceholderProps {
   disableAddrowStructureButton?: boolean;
   deleteFrame: (id: string) => void;
   rowId: string;
+  handlePersistReportState: () => void;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,

@@ -19,6 +19,8 @@ import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-
 
 import { IconButton, Popover } from "@material-ui/core";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
+import { persistedReportStateAtom } from "app/state/recoil/atoms";
+import { useResetRecoilState } from "recoil";
 
 export function ReportInitialView(props: ReportInitialViewProps) {
   const [openSearch, setOpenSearch] = React.useState(false);
@@ -47,9 +49,13 @@ export function ReportInitialView(props: ReportInitialViewProps) {
   const handleTemplateSelected = (option: ReportTemplateModel) => {
     props.setButtonActive(option.value);
   };
+  const clearPersistedReportState = useResetRecoilState(
+    persistedReportStateAtom
+  );
 
   React.useEffect(() => {
-    props.resetFrames();
+    clearPersistedReportState();
+    props.resetReport();
   }, []);
 
   return (

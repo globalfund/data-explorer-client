@@ -18,6 +18,7 @@ import {
   createChartFromReportAtom,
   homeDisplayAtom,
   persistedReportStateAtom,
+  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
@@ -83,9 +84,14 @@ export default function HomeModule() {
   const clearCreateChartFromReportState = useResetRecoilState(
     createChartFromReportAtom
   );
+
+  const [_, setReportPreviewMode] = useRecoilState(
+    unSavedReportPreviewModeAtom
+  );
   React.useEffect(() => {
     clearPersistedReportState();
     clearCreateChartFromReportState();
+    setReportPreviewMode(false);
   }, []);
 
   const [tableView, setTableView] = React.useState(false);
