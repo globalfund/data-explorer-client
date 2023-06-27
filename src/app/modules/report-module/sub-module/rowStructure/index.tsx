@@ -63,7 +63,9 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
-    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
+    (page !== "new" &&
+      get(location.pathname.split("/"), "[3]", "") !== "edit") ||
+    reportPreviewMode;
 
   const rowContentWidths = !viewOnlyMode
     ? find(reportContentWidths, { id: props.rowId })
@@ -256,7 +258,9 @@ const Box = (props: {
   );
 
   const viewOnlyMode =
-    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
+    (page !== "new" &&
+      get(location.pathname.split("/"), "[3]", "") !== "edit") ||
+    reportPreviewMode;
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: [ReportElementsType.TEXT, ReportElementsType.CHART],
@@ -306,7 +310,6 @@ const Box = (props: {
   );
 
   let width = `${props.width}%`;
-
   if (containerWidth) {
     width = `${
       containerWidth * (props.width / 100) -

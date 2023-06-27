@@ -406,6 +406,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
               structure: frame.structure,
               content: frame.content,
               contentTypes: frame.contentTypes,
+              contentWidths: frame.contentWidths,
               items: frame.content.map((item, index) =>
                 frame.contentTypes[index] === "text"
                   ? convertToRaw((item as EditorState).getCurrentContent())
@@ -422,6 +423,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   const handleBackToEdit = () => {
     if (props.pageType === "report") {
+      setReportPreviewMode(false);
       if (page === "new") {
         history.push(`/report/new/create`);
       } else {

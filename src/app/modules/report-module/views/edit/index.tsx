@@ -196,7 +196,6 @@ export function ReportEditView(props: ReportEditViewProps) {
             width: ${props.open
               ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
               : "100%"};
-
             @media (max-width: 1280px) {
               width: calc(100vw - 400px);
             }

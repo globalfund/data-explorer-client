@@ -70,6 +70,7 @@ export default function ReportModule() {
     page: string;
     view: "initial" | "edit" | "create" | "preview";
   }>();
+
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
