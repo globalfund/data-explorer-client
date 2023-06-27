@@ -1,13 +1,51 @@
-import { Grid } from "@material-ui/core";
 import React from "react";
-import { ReactComponent as MailImg } from "app/modules/report-module/asset/mail-img.svg";
+import Grid from "@material-ui/core/Grid";
+import axios, { AxiosError, AxiosResponse } from "axios";
+import { emailValidation } from "app/utils/emailValidation";
 import NewsLetterImg from "app/modules/report-module/asset/ai-newsletter.svg";
+import { ReactComponent as MailImg } from "app/modules/report-module/asset/mail-img.svg";
 
 export default function AITemplate() {
-  const [subscribed, setSubscribed] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [isSubscribed, setIsSubscribed] = React.useState(false);
+
   const handleSubscribeAction = () => {
-    setSubscribed(true);
+    if (emailValidation(email)) {
+      axios
+        .post(
+          `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.REACT_APP_HUBSPOT_PORTAL_ID}/${process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID}`,
+          {
+            portalId: process.env.REACT_APP_HUBSPOT_PORTAL_ID,
+            formGuid: process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID,
+            fields: [
+              {
+                name: "email",
+                value: email,
+              },
+            ],
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response: AxiosResponse) => {
+          if (response.status === 200) {
+            setEmail("");
+            setIsSubscribed(true);
+          }
+        })
+        .catch((error: AxiosError) => {
+          console.log(error.response);
+        });
+    }
   };
+
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+
   return (
     <Grid
       container
@@ -38,7 +76,7 @@ export default function AITemplate() {
         </div>
       </Grid>
       <Grid item xs={12} md={6}>
-        {subscribed ? (
+        {isSubscribed ? (
           <div
             css={`
               width: 100%;
@@ -182,7 +220,11 @@ export default function AITemplate() {
                   }
                 `}
               >
-                <input type="text" placeholder="Email address" />
+                <input
+                  type="text"
+                  placeholder="Email address"
+                  onChange={handleEmailChange}
+                />
                 <button type="button" onClick={handleSubscribeAction}>
                   SUBSCRIBE
                 </button>

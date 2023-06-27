@@ -700,11 +700,6 @@ export default function ReportModule() {
               buttonActive={buttonActive}
               setButtonActive={handleSetButtonActive}
             />
-            <div
-              css={`
-                height: calc(100vh - 450px);
-              `}
-            />
           </Container>
         </Route>
         <Route path="/report/:page/ai-template">
