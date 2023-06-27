@@ -96,6 +96,7 @@ export const reportContentContainerWidth = atom<number>({
 export const unSavedReportPreviewModeAtom = atom<boolean>({
   key: "unSavedReportPreviewModeAtom",
   default: false,
+  effects_UNSTABLE: [persistAtom],
 });
 
 export const createChartFromReportAtom = atom<{

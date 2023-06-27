@@ -4,7 +4,7 @@ import { ReactComponent as AdvancedTemplateImg } from "../../asset/advancedTempl
 
 export interface ReportInitialViewProps {
   buttonActive: boolean;
-  resetFrames: () => void;
+  resetReport: () => void;
   setButtonActive: (active: boolean, type: "basic" | "advanced" | "ai") => void;
 }
 

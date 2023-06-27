@@ -73,15 +73,17 @@ export function ReportEditView(props: ReportEditViewProps) {
   }, [page]);
 
   React.useEffect(() => {
-    const items = reportData.rows.map((rowFrame, index) =>
-      rowFrame.items.filter((item) => typeof item === "string")
-    ) as string[][];
-    let pickedItems: string[] = [];
+    if (props.localPickedCharts.length === 0) {
+      const items = reportData.rows.map((rowFrame, index) =>
+        rowFrame.items.filter((item) => typeof item === "string")
+      ) as string[][];
+      let pickedItems: string[] = [];
 
-    for (const element of items) {
-      pickedItems = [...pickedItems, ...element];
+      for (const element of items) {
+        pickedItems = [...pickedItems, ...element];
+      }
+      props.setPickedCharts(pickedItems);
     }
-    props.setPickedCharts(pickedItems);
 
     return () => {
       props.setStopInitializeFramesWidth(false);
@@ -145,6 +147,7 @@ export function ReportEditView(props: ReportEditViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
               previewItems={rowFrame.items}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
@@ -193,7 +196,6 @@ export function ReportEditView(props: ReportEditViewProps) {
             width: ${props.open
               ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
               : "100%"};
-
             @media (max-width: 1280px) {
               width: calc(100vw - 400px);
             }
@@ -220,6 +222,7 @@ export function ReportEditView(props: ReportEditViewProps) {
                     handleRowFrameStructureTypeSelection={
                       props.handleRowFrameStructureTypeSelection
                     }
+                    handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
                   />
                 </div>
@@ -237,6 +240,7 @@ export function ReportEditView(props: ReportEditViewProps) {
             handleRowFrameStructureTypeSelection={
               props.handleRowFrameStructureTypeSelection
             }
+            handlePersistReportState={props.handlePersistReportState}
             handleRowFrameItemResize={props.handleRowFrameItemResize}
           />
           <Box height={45} />

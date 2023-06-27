@@ -19,6 +19,7 @@ import {
   createChartFromReportAtom,
   homeDisplayAtom,
   persistedReportStateAtom,
+  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
 import HomeFooter from "app/modules/home-module/components/Footer";
@@ -90,6 +91,10 @@ export default function HomeModule() {
   const exploreViewRef = React.useRef<HTMLDivElement>(null);
 
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+  const [_, setReportPreviewMode] = useRecoilState(
+    unSavedReportPreviewModeAtom
+  );
+
   const clearPersistedReportState = useResetRecoilState(
     persistedReportStateAtom
   );
@@ -99,6 +104,7 @@ export default function HomeModule() {
   React.useEffect(() => {
     clearPersistedReportState();
     clearCreateChartFromReportState();
+    setReportPreviewMode(false);
   }, []);
 
   const sortOptions = [

@@ -75,6 +75,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
@@ -96,6 +97,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
@@ -117,6 +119,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
@@ -138,6 +141,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
@@ -159,6 +163,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
           ),
@@ -180,7 +185,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
   return (
     <div>
       <HeaderBlock
-        previewMode={reportPreviewMode}
+        previewMode={false}
         headerDetails={{ ...props.headerDetails, createdDate: new Date() }}
         setHeaderDetails={props.setHeaderDetails}
       />
@@ -191,9 +196,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           css={`
             position: relative;
             transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-            width: ${reportPreviewMode
-              ? "100%"
-              : props.open
+            width: ${props.open
               ? "calc(100vw - ((100vw - 1280px) / 2) - 400px - 50px)"
               : "100%"};
 
@@ -222,13 +225,14 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                     handleRowFrameStructureTypeSelection={
                       props.handleRowFrameStructureTypeSelection
                     }
+                    handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
                   />
                 </div>
               );
             })}
           </ReportOrderContainer>
-          {!reportPreviewMode && (
+          {
             <AddRowFrameButton
               deleteFrame={deleteFrame}
               framesArray={props.framesArray}
@@ -240,9 +244,10 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               handleRowFrameStructureTypeSelection={
                 props.handleRowFrameStructureTypeSelection
               }
+              handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
             />
-          )}
+          }
           <Box height={45} />
           <GridColumns />
         </div>
@@ -278,6 +283,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
                 handleRowFrameStructureTypeSelection={
                   props.handleRowFrameStructureTypeSelection
                 }
+                handlePersistReportState={props.handlePersistReportState}
                 handleRowFrameItemResize={props.handleRowFrameItemResize}
               />
             ),

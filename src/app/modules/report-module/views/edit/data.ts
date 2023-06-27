@@ -6,8 +6,10 @@ export interface ReportEditViewProps {
   open: boolean;
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
+  localPickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
   setName: React.Dispatch<React.SetStateAction<string>>;
+  handlePersistReportState: () => void;
   headerDetails: {
     title: string;
     showHeader: boolean;
