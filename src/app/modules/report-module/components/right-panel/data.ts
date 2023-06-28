@@ -17,7 +17,7 @@ export interface ReportRightPanelProps {
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   showHeaderItem: boolean;
-  currentView: "initial" | "edit" | "create" | "preview";
+  currentView: "initial" | "edit" | "create" | "preview" | "ai-template";
   appliedHeaderDetails: IHeaderDetails;
   setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   headerDetails: IHeaderDetails;

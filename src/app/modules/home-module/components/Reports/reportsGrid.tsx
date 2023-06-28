@@ -14,6 +14,7 @@ export default function ReportsGrid(props: {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
+  showMenuButton: boolean;
 }) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
@@ -77,7 +78,7 @@ export default function ReportsGrid(props: {
   function loadData(searchStr: string, sortByStr: string) {
     const value =
       searchStr.length > 0
-        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+        ? `"where":{"title":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     loadReports({
       storeInCrudData: true,
@@ -102,7 +103,14 @@ export default function ReportsGrid(props: {
       {!props.tableView && (
         <Grid container spacing={2}>
           {reports.map((data, index) => (
-            <Grid item key={data.id} xs={12} sm={6} md={4} lg={4}>
+            <Grid
+              item
+              key={data.id}
+              xs={12}
+              sm={6}
+              md={4}
+              lg={props.showMenuButton ? 3 : 4}
+            >
               <ReformedGridItem
                 id={data.id}
                 key={data.id}
@@ -110,6 +118,7 @@ export default function ReportsGrid(props: {
                 date={data.createdDate}
                 viz={<ColoredReportIcon />}
                 color={data.backgroundColor}
+                showMenuButton={props.showMenuButton}
                 handleDelete={() => handleModal(index)}
                 handleDuplicate={() => handleDuplicate(index)}
                 title={data.title.length > 0 ? data.title : data.name}

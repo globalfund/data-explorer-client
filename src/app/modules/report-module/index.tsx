@@ -9,7 +9,6 @@ import cloneDeep from "lodash/cloneDeep";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
-import { PrimaryButton } from "app/components/Styled/button";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { ReportEditView } from "app/modules/report-module/views/edit";
@@ -29,7 +28,6 @@ import {
   reportContentWidthsAtom,
   ReportContentWidthsType,
   persistedReportStateAtom,
-  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -39,6 +37,7 @@ import {
   Redirect,
 } from "react-router-dom";
 
+import AITemplate from "app/modules/report-module/views/ai-template";
 import { IHeaderDetails } from "./components/right-panel/data";
 
 interface RowFrameProps {
@@ -68,7 +67,7 @@ export default function ReportModule() {
 
   const { page, view } = useParams<{
     page: string;
-    view: "initial" | "edit" | "create" | "preview";
+    view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
 
   const [persistedReportState, setPersistedReportState] = useRecoilState(
@@ -522,19 +521,13 @@ export default function ReportModule() {
     (actions) => actions.reports.orderData.clear
   );
 
-  const handleNextButton = () => {
-    if (buttonActive) {
-      history.push(`/report/${page}/create`);
-      setButtonActive(false);
-    }
-  };
-
-  const handleSetButtonActive = (
-    active: boolean,
-    type: "basic" | "advanced" | "ai"
-  ) => {
-    setButtonActive(active);
+  const handleSetButtonActive = (type: "basic" | "advanced" | "ai") => {
     setReportType(type);
+    if (type === "ai") {
+      history.push(`/report/${page}/ai-template`);
+    } else {
+      history.push(`/report/${page}/create`);
+    }
   };
 
   const resetReport = () => {
@@ -652,38 +645,43 @@ export default function ReportModule() {
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
-      <SubheaderToolbar
-        pageType="report"
-        onReportSave={onSave}
-        setName={setReportName}
-        forceEnablePreviewSave={isPreviewSaveEnabled}
-        name={page !== "new" && !view ? reportGetData.name : reportName}
-        reportName={reportName}
-        appliedHeaderDetails={appliedHeaderDetails}
-        framesArray={framesArray}
-        headerDetails={headerDetails}
-      />
-      {view && view !== "preview" && view !== "initial" && (
-        <ReportRightPanel
-          open={rightPanelOpen}
-          currentView={view}
-          pickedCharts={pickedCharts}
-          setPickedCharts={setPickedCharts}
-          headerDetails={headerDetails}
-          setHeaderDetails={setHeaderDetails}
-          appliedHeaderDetails={appliedHeaderDetails}
-          setAppliedHeaderDetails={setAppliedHeaderDetails}
-          onOpen={() => setRightPanelOpen(true)}
-          onClose={() => setRightPanelOpen(false)}
-          showHeaderItem={!headerDetails.showHeader}
-          framesArray={framesArray}
+      {view !== "ai-template" && (
+        <SubheaderToolbar
+          pageType="report"
+          onReportSave={onSave}
+          setName={setReportName}
+          forceEnablePreviewSave={isPreviewSaveEnabled}
+          name={page !== "new" && !view ? reportGetData.name : reportName}
           reportName={reportName}
+          appliedHeaderDetails={appliedHeaderDetails}
+          framesArray={framesArray}
+          headerDetails={headerDetails}
         />
       )}
+      {view &&
+        view !== "preview" &&
+        view !== "initial" &&
+        view !== "ai-template" && (
+          <ReportRightPanel
+            open={rightPanelOpen}
+            currentView={view}
+            pickedCharts={pickedCharts}
+            setPickedCharts={setPickedCharts}
+            headerDetails={headerDetails}
+            setHeaderDetails={setHeaderDetails}
+            appliedHeaderDetails={appliedHeaderDetails}
+            setAppliedHeaderDetails={setAppliedHeaderDetails}
+            onOpen={() => setRightPanelOpen(true)}
+            onClose={() => setRightPanelOpen(false)}
+            showHeaderItem={!headerDetails.showHeader}
+            framesArray={framesArray}
+            reportName={reportName}
+          />
+        )}
       <div
         css={`
           width: 100%;
-          height: 98px;
+          height: ${view === "ai-template" ? "40px" : "98px"};
         `}
       />
       <Switch>
@@ -695,35 +693,10 @@ export default function ReportModule() {
               buttonActive={buttonActive}
               setButtonActive={handleSetButtonActive}
             />
-            <div
-              css={`
-                height: calc(100vh - 450px);
-              `}
-            />
-            <div
-              css={`
-                width: 100%;
-                display: flex;
-                padding-right: 20px;
-                justify-content: flex-end;
-              `}
-            >
-              <div
-                css={`
-                  color: #fff;
-                  width: 200px;
-                `}
-              >
-                <PrimaryButton
-                  disabled={!buttonActive}
-                  onClick={handleNextButton}
-                  color={buttonActive ? "#231D2C" : "#E4E4E4"}
-                >
-                  use template
-                </PrimaryButton>
-              </div>
-            </div>
           </Container>
+        </Route>
+        <Route path="/report/:page/ai-template">
+          <AITemplate />
         </Route>
         <Route path="/report/:page/create">
           <ReportCreateView
