@@ -14,14 +14,12 @@ import {
   Popover,
 } from "@material-ui/core";
 /* project */
-import { Search } from "app/components/Search";
 import {
   createChartFromReportAtom,
   homeDisplayAtom,
   persistedReportStateAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
-import ToggleButtons from "app/components/ToggleButton/toggleButtonGroup";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
@@ -79,6 +77,22 @@ const StyledTabs = withStyles({
 
 export default function HomeModule() {
   useTitle("DX DataXplorer");
+  // clear persisted state
+  const clearPersistedReportState = useResetRecoilState(
+    persistedReportStateAtom
+  );
+  const clearCreateChartFromReportState = useResetRecoilState(
+    createChartFromReportAtom
+  );
+
+  const [_, setReportPreviewMode] = useRecoilState(
+    unSavedReportPreviewModeAtom
+  );
+  React.useEffect(() => {
+    clearPersistedReportState();
+    clearCreateChartFromReportState();
+    setReportPreviewMode(false);
+  }, []);
 
   const [tableView, setTableView] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
@@ -91,21 +105,6 @@ export default function HomeModule() {
   const exploreViewRef = React.useRef<HTMLDivElement>(null);
 
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
-  const [_, setReportPreviewMode] = useRecoilState(
-    unSavedReportPreviewModeAtom
-  );
-
-  const clearPersistedReportState = useResetRecoilState(
-    persistedReportStateAtom
-  );
-  const clearCreateChartFromReportState = useResetRecoilState(
-    createChartFromReportAtom
-  );
-  React.useEffect(() => {
-    clearPersistedReportState();
-    clearCreateChartFromReportState();
-    setReportPreviewMode(false);
-  }, []);
 
   const sortOptions = [
     { label: "Last updated", value: "updatedDate" },
@@ -148,6 +147,7 @@ export default function HomeModule() {
             sortBy={sortByStr}
             searchStr={searchStr}
             tableView={tableView}
+            showMenuButton={false}
           />
         );
       default:
