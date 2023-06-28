@@ -103,6 +103,11 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
             if (props.renderedChartSsr) {
               const element = document.createElement("div");
               element.innerHTML = props.renderedChart.trim();
+              if (domRef.current?.firstChild) {
+                while (domRef.current.firstChild) {
+                  domRef.current.removeChild(domRef.current.firstChild);
+                }
+              }
               // @ts-ignore
               domRef.current.appendChild(
                 selectedChartType === "bigNumber"
@@ -218,7 +223,14 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
 
               ${selectedChartType === "bigNumber" &&
               window.location.pathname.indexOf("/chart/") > -1 &&
-              `transform: scale(2);transform-origin: left top;`}
+              `
+                  transform: scale(2);
+                  transform-origin: left top;
+      
+                  > div {
+                    width: 135px;
+                  }
+                `}
 
 
               * {
