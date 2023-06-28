@@ -90,7 +90,7 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
     openPicker({
       clientId: process.env.REACT_APP_GOOGLE_API_CLIENT_ID as string,
       developerKey: process.env.REACT_APP_GOOGLE_API_DEV_KEY as string,
-      viewId: "DOCS",
+      viewId: "SPREADSHEETS",
       supportDrives: true,
       token: "",
       setSelectFolderEnabled: true,
