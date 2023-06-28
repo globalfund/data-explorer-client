@@ -30,6 +30,7 @@ export const newsletterIllustrationcss = css`
     width: 100%;
   }
 `;
+
 export const subscribedcss = css`
   width: 100%;
   height: 100%;
@@ -119,12 +120,14 @@ export const notSubscribedcss = css`
     }
   }
 `;
+
 export const bigEllipsecss = css`
   position: absolute;
   z-index: -1;
   top: -40px;
   left: -8%;
 `;
+
 export const midEllipsecss = css`
   position: absolute;
   z-index: -1;
@@ -138,6 +141,7 @@ export const btmGreenEllipsecss = css`
   top: 23rem;
   left: 52%;
 `;
+
 export const btmPurpleEllipsecss = css`
   position: absolute;
   z-index: -1;
@@ -151,12 +155,14 @@ export const datasetIllustrationcss = css`
   top: 13rem;
   left: 24%;
 `;
+
 export const chartIllustrationcss = css`
   position: absolute;
   z-index: 2;
   top: 6rem;
   left: 40%;
 `;
+
 export const reportIllustrationcss = css`
   position: absolute;
   z-index: 1;
@@ -166,6 +172,6 @@ export const reportIllustrationcss = css`
 
 export const topEllipsecss = css`
   position: absolute;
-  top: 5%;
+  top: 0;
   right: 0%;
 `;

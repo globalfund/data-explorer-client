@@ -9,7 +9,6 @@ import cloneDeep from "lodash/cloneDeep";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
-import { PrimaryButton } from "app/components/Styled/button";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { ReportEditView } from "app/modules/report-module/views/edit";
@@ -29,7 +28,6 @@ import {
   reportContentWidthsAtom,
   ReportContentWidthsType,
   persistedReportStateAtom,
-  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -532,13 +530,6 @@ export default function ReportModule() {
     }
   };
 
-  const handleNextButton = () => {
-    if (buttonActive) {
-      history.push(`/report/${page}/create`);
-      setButtonActive(false);
-    }
-  };
-
   const resetReport = () => {
     const id = v4();
     setFramesArray([
@@ -654,17 +645,19 @@ export default function ReportModule() {
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
-      <SubheaderToolbar
-        pageType="report"
-        onReportSave={onSave}
-        setName={setReportName}
-        forceEnablePreviewSave={isPreviewSaveEnabled}
-        name={page !== "new" && !view ? reportGetData.name : reportName}
-        reportName={reportName}
-        appliedHeaderDetails={appliedHeaderDetails}
-        framesArray={framesArray}
-        headerDetails={headerDetails}
-      />
+      {view !== "ai-template" && (
+        <SubheaderToolbar
+          pageType="report"
+          onReportSave={onSave}
+          setName={setReportName}
+          forceEnablePreviewSave={isPreviewSaveEnabled}
+          name={page !== "new" && !view ? reportGetData.name : reportName}
+          reportName={reportName}
+          appliedHeaderDetails={appliedHeaderDetails}
+          framesArray={framesArray}
+          headerDetails={headerDetails}
+        />
+      )}
       {view &&
         view !== "preview" &&
         view !== "initial" &&
