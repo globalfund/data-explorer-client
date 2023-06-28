@@ -118,6 +118,7 @@ export default function ReformedGridItem(props: Props) {
 
           ${props.showMenuButton &&
           `
+            bottom: -5px;
             transform: scale(0.7);
             transform-origin: left bottom;
           `}
