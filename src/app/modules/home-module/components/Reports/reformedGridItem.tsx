@@ -24,7 +24,9 @@ interface Props {
 export default function ReformedGridItem(props: Props) {
   const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
 
-  const showMenuOptions = () => {
+  const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
 
@@ -41,8 +43,13 @@ export default function ReformedGridItem(props: Props) {
         padding: 12px 16px;
         text-decoration: none;
         flex-direction: column;
+        border: 1px solid #fff;
         align-items: space-between;
         justify-content: space-between;
+
+        &:hover {
+          border-color: #6061e5;
+        }
       `}
     >
       <div
@@ -97,8 +104,7 @@ export default function ReformedGridItem(props: Props) {
         {props.showMenuButton && (
           <IconButton
             css={`
-              padding: 0;
-              margin-top: 4px;
+              margin: -9px -13px 0 0;
             `}
             onClick={showMenuOptions}
           >
@@ -146,17 +152,6 @@ export default function ReformedGridItem(props: Props) {
       </div>
       {menuOptionsDisplay && (
         <div>
-          <div
-            css={`
-              top: 0;
-              left: 0;
-              z-index: 1;
-              width: 100vw;
-              height: 100vh;
-              position: fixed;
-            `}
-            onClick={showMenuOptions}
-          />
           <div
             css={`
               top: 44px;

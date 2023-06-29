@@ -33,21 +33,15 @@ export default function WhyDX() {
             `}
           />
           <KeyFeaturesBlock />
-
           <div
             css={`
               height: 130px;
             `}
           />
-
           <TryUsBlock />
-          <div
-            css={`
-              height: 147px;
-            `}
-          />
         </Container>
       </div>
+      <div css="width: 100%;height: 232px" />
       <HomeFooter />
     </>
   );

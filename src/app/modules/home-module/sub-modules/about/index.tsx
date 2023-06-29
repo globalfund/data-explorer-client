@@ -64,6 +64,7 @@ export default function AboutModule() {
 
         <TeamBlock />
       </Container>
+      <div css="width: 100%;height: 232px" />
       <HomeFooter />
     </>
   );

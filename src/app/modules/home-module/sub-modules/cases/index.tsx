@@ -140,8 +140,8 @@ export default function CasesModule() {
         </Grid>
         <Box height={150} />
         <BestDecisionBlock />
-        <Box height={150} />
       </Container>
+      <div css="width: 100%;height: 232px" />
       <HomeFooter />
     </>
   );

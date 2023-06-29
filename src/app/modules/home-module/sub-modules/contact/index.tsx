@@ -182,8 +182,8 @@ export default function ContactModule() {
             Tel: <a href="tel:0031202134466">+3120 213 4466</a>
           </p>
         </div>
-        <Box height={100} />
       </Container>
+      <div css="width: 100%;height: 232px" />
       <HomeFooter />
     </>
   );

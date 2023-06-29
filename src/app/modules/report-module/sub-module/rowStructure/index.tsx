@@ -351,10 +351,20 @@ const Box = (props: {
     }
   };
 
+  const textResizableRef = React.useRef<HTMLDivElement>(null);
+
   React.useEffect(() => {
-    const container = document.getElementById("resizable-container");
-    if (displayTextBox && container && container?.offsetHeight > props.height) {
-      onResizeStop({} as MouseEvent, "bottom", container, {} as NumberSize);
+    if (
+      displayTextBox &&
+      textResizableRef.current &&
+      textResizableRef.current?.offsetHeight > props.height
+    ) {
+      props.onRowBoxItemResize(
+        props.rowId,
+        props.itemIndex,
+        parseInt(width.replace("%", ""), 10) + 30,
+        textResizableRef.current.offsetHeight
+      );
     }
   }, [displayTextBox, textContent]);
 
@@ -382,7 +392,7 @@ const Box = (props: {
             }
           `}
         >
-          <div id="resizable-container">
+          <div ref={textResizableRef}>
             {!viewOnlyMode && (
               <IconButton
                 onClick={() => {

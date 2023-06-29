@@ -15,6 +15,7 @@ import { LinkIcon } from "app/assets/icons/Link";
 import Snackbar from "@material-ui/core/Snackbar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
+import { EditorState, convertToRaw } from "draft-js";
 import IconButton from "@material-ui/core/IconButton";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
@@ -29,17 +30,13 @@ import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
 import { ExportChartButton } from "app/modules/common/subheader-toolbar/exportButton";
+import { ISnackbarState } from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 import {
-  CssSnackbar,
-  ISnackbarState,
-} from "app/fragments/datasets-fragment/upload-steps/previewFragment";
-import {
-  createChartFromReportAtom,
   homeDisplayAtom,
   persistedReportStateAtom,
+  createChartFromReportAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
-import { EditorState, convertToRaw } from "draft-js";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -113,6 +110,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
   const [isPreviewEnabled, setIsPreviewEnabled] = React.useState(false);
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
+  const [duplicatedReportId, setDuplicatedReportId] = React.useState<
+    string | null
+  >(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -249,6 +249,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       }
     }
   };
+
   React.useEffect(() => {
     return () => {
       createChartClear();
@@ -362,11 +363,12 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     if (props.pageType === "report")
       axios
         .get(`${process.env.REACT_APP_API}/report/duplicate/${page}`)
-        .then(() => {
+        .then((response) => {
           loadReports({
             storeInCrudData: true,
             filterString: "filter[order]=createdDate desc",
           });
+          setDuplicatedReportId(response.data.id);
           setSnackbarState({
             ...snackbarState,
             open: true,
@@ -637,7 +639,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           )}
         </div>
       </Container>
-      <CssSnackbar
+      <InfoSnackbar
         anchorOrigin={{
           vertical: snackbarState.vertical,
           horizontal: snackbarState.horizontal,
@@ -646,6 +648,17 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         onClose={() => setSnackbarState({ ...snackbarState, open: false })}
         message={`Report has been duplicated successfully!`}
         key={snackbarState.vertical + snackbarState.horizontal}
+        action={
+          <button
+            onClick={() => {
+              setSnackbarState({ ...snackbarState, open: false });
+              history.push(`/report/${duplicatedReportId}`);
+              setDuplicatedReportId(null);
+            }}
+          >
+            GO TO REPORT
+          </button>
+        }
       />
       <DeleteReportDialog
         modalDisplay={modalDisplay.report}

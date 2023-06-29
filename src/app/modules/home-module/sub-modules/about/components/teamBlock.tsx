@@ -39,9 +39,8 @@ export default function TeamBlock() {
         container
         spacing={3}
         css={`
-          position: relative;
           z-index: 1;
-          margin-bottom: 143px;
+          position: relative;
         `}
       >
         <Grid item xs={12} sm={6} md={4}>

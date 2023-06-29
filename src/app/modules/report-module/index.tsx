@@ -179,6 +179,7 @@ export default function ReportModule() {
     reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => {
+    console.log("handleRowFrameItemResize", width, height);
     setFramesArray((prev) => {
       if (!stopInitializeFramesWidth) {
         setStopInitializeFramesWidth(true);
