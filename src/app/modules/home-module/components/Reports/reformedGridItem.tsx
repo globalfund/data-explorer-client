@@ -29,7 +29,8 @@ export default function ReformedGridItem(props: Props) {
   };
 
   return (
-    <div
+    <Link
+      to={`/report/${props.id}`}
       css={`
         width: 100%;
         height: ${props.showMenuButton ? "162" : "220"}px;
@@ -38,9 +39,10 @@ export default function ReformedGridItem(props: Props) {
         background: #fff;
         position: relative;
         padding: 12px 16px;
+        text-decoration: none;
         flex-direction: column;
-        justify-content: space-between;
         align-items: space-between;
+        justify-content: space-between;
       `}
     >
       <div
@@ -61,22 +63,20 @@ export default function ReformedGridItem(props: Props) {
             margin-top: -7px;
           `}
         >
-          <Link to={`/report/${props.id}`}>
-            <p
-              css={`
-                font-size: 18px;
-                line-height: 22px;
-                font-family: "Gotham Narrow Bold", sans-serif;
-                margin-top: 8px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-                margin-bottom: 0;
-              `}
-            >
-              <b>{props.title}</b>
-            </p>
-          </Link>
+          <p
+            css={`
+              font-size: 18px;
+              line-height: 22px;
+              font-family: "Gotham Narrow Bold", sans-serif;
+              margin-top: 8px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+              margin-bottom: 0;
+            `}
+          >
+            <b>{props.title}</b>
+          </p>
           <p
             css={`
               font-size: 12px;
@@ -229,6 +229,6 @@ export default function ReformedGridItem(props: Props) {
           </div>
         </div>
       )}
-    </div>
+    </Link>
   );
 }

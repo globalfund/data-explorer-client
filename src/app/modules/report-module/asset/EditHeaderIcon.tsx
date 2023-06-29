@@ -8,7 +8,7 @@ const EditHeaderIcon = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <g clip-path="url(#clip0_9603_150988)">
+    <g clipPath="url(#clip0_9603_150988)">
       <path
         d="M0.75 23.25H23.25V0.75H0.75V23.25ZM2.25 2.25H21.75V21.75H2.25V2.25Z"
         fill="black"

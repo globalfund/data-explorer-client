@@ -7,7 +7,7 @@ export default function Icon() {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_10995_252409)">
+      <g clipPath="url(#clip0_10995_252409)">
         <rect
           x="-24"
           y="-16.999"
@@ -22,7 +22,7 @@ export default function Icon() {
           x2="193.71"
           y2="21.9765"
           stroke="#CBCBCB"
-          stroke-width="0.177923"
+          strokeWidth="0.177923"
         />
         <line
           x1="-14.8162"
@@ -30,7 +30,7 @@ export default function Icon() {
           x2="193.71"
           y2="52.0458"
           stroke="#CBCBCB"
-          stroke-width="0.177923"
+          strokeWidth="0.177923"
         />
         <line
           x1="-14.8162"
@@ -38,7 +38,7 @@ export default function Icon() {
           x2="193.71"
           y2="85.1391"
           stroke="#CBCBCB"
-          stroke-width="0.177923"
+          strokeWidth="0.177923"
         />
         <rect
           x="0.129639"

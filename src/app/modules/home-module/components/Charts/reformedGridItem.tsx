@@ -23,7 +23,8 @@ export default function ReformedGridItem(props: Props) {
   };
 
   return (
-    <div
+    <Link
+      to={`/chart/${props.id}`}
       css={`
         width: 100%;
         height: 220px;
@@ -32,6 +33,7 @@ export default function ReformedGridItem(props: Props) {
         background: #fff;
         position: relative;
         padding: 12px 16px;
+        text-decoration: none;
         flex-direction: column;
         justify-content: space-between;
       `}
@@ -54,21 +56,19 @@ export default function ReformedGridItem(props: Props) {
             margin-top: -7px;
           `}
         >
-          <Link to={`/chart/${props.id}`}>
-            <p
-              css={`
-                font-size: 18px;
-                font-family: "Gotham Narrow Bold", sans-serif;
-                margin-top: 6px;
-                overflow: hidden;
-                margin-bottom: 0;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-              `}
-            >
-              <b>{props.title}</b>
-            </p>
-          </Link>
+          <p
+            css={`
+              font-size: 18px;
+              font-family: "Gotham Narrow Bold", sans-serif;
+              margin-top: 6px;
+              overflow: hidden;
+              margin-bottom: 0;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+            `}
+          >
+            <b>{props.title}</b>
+          </p>
           <p
             css={`
               font-size: 12px;
@@ -117,6 +117,6 @@ export default function ReformedGridItem(props: Props) {
           <p>{moment(props.date).format("MMMM YYYY")}</p>
         </div>
       </div>
-    </div>
+    </Link>
   );
 }
