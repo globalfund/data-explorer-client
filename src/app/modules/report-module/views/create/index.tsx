@@ -20,7 +20,6 @@ import {
 import {
   IRowFrameStructure,
   reportContentContainerWidth,
-  unSavedReportPreviewModeAtom,
   isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
 
@@ -30,7 +29,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
   const [containerWidth, setContainerWidth] = useRecoilState(
     reportContentContainerWidth
   );
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
+
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -81,6 +80,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           ),
           content: [null, null, null, null, null],
           contentWidths: [20, 20, 20, 20, 20],
+          contentHeights: [121, 121, 121, 121, 121],
           contentTypes: [null, null, null, null, null],
           structure: "oneByFive",
         },
@@ -103,6 +103,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           ),
           content: [null],
           contentWidths: [100],
+          contentHeights: [400],
           contentTypes: [null],
           structure: "oneByOne",
         },
@@ -124,7 +125,8 @@ export function ReportCreateView(props: ReportCreateViewProps) {
             />
           ),
           content: [null, null],
-          contentWidths: [50, 50],
+          contentWidths: [20, 80],
+          contentHeights: [400, 400],
           contentTypes: [null, null],
           structure: "oneToFour",
         },
@@ -147,6 +149,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           ),
           content: [null],
           contentWidths: [100],
+          contentHeights: [400],
           contentTypes: [null],
           structure: "oneByOne",
         },
@@ -169,6 +172,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           ),
           content: [null, null, null],
           contentWidths: [33, 33, 33],
+          contentHeights: [460, 460, 460],
           contentTypes: [null, null, null],
           structure: "oneByThree",
         },
@@ -289,6 +293,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
             ),
             content: [],
             contentWidths: [],
+            contentHeights: [],
             contentTypes: [],
             structure: null,
           });
@@ -303,6 +308,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
             frame: <Divider delete={props.deleteFrame} dividerId={id} />,
             content: ["divider"],
             contentWidths: [],
+            contentHeights: [],
             contentTypes: ["divider"],
             structure: null,
           });

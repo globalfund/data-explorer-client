@@ -83,6 +83,16 @@ export const reportContentWidthsAtom = atom<ReportContentWidthsType[]>({
   default: [],
 });
 
+export interface ReportContentHeightsType {
+  id: string;
+  heights: number[];
+}
+
+export const reportContentHeightsAtom = atom<ReportContentHeightsType[]>({
+  key: "reportContentHeights",
+  default: [],
+});
+
 export const reportContentIsResizingAtom = atom<boolean>({
   key: "reportContentIsResizing",
   default: false,

@@ -27,6 +27,10 @@ export interface ReportModel {
     id: string;
     widths: number[];
   }[];
+  contentHeights: {
+    id: string;
+    heights: number[];
+  }[];
   dateColor: string;
 }
 
@@ -43,6 +47,7 @@ export const emptyReport: ReportModel = {
   titleColor: "#ffffff",
   descriptionColor: "#ffffff",
   contentWidths: [],
+  contentHeights: [],
   dateColor: "#ffffff",
 };
 

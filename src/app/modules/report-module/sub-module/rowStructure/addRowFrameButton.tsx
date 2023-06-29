@@ -39,7 +39,8 @@ interface Props {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
 }
 
@@ -68,6 +69,7 @@ export default function AddRowFrameButton(props: Props) {
         ),
         content: [],
         contentWidths: [],
+        contentHeights: [],
         contentTypes: [],
         structure: null,
       },

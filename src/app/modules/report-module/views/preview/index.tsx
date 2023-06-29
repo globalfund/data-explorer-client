@@ -4,13 +4,14 @@ import Box from "@material-ui/core/Box";
 import { useParams } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
-import { reportContentWidthsAtom } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
+  reportContentWidthsAtom,
+  reportContentHeightsAtom,
   persistedReportStateAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
@@ -21,6 +22,7 @@ export function ReportPreviewView() {
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
+  const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
 
   const reportData = useStoreState(
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
@@ -57,6 +59,12 @@ export function ReportPreviewView() {
   React.useEffect(() => {
     if (reportData.contentWidths) {
       setReportContentWidths(reportData.contentWidths);
+    }
+  }, [reportData.contentWidths]);
+
+  React.useEffect(() => {
+    if (reportData.contentHeights) {
+      setReportContentHeights(reportData.contentHeights);
     }
   }, [reportData.contentWidths]);
 

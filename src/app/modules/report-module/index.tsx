@@ -28,6 +28,7 @@ import {
   reportContentWidthsAtom,
   ReportContentWidthsType,
   persistedReportStateAtom,
+  reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -73,7 +74,7 @@ export default function ReportModule() {
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
-  const [buttonActive, setButtonActive] = React.useState(false);
+  const [buttonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
   const [reportType, setReportType] = React.useState<
@@ -83,7 +84,7 @@ export default function ReportModule() {
   const localReportState = JSON.parse(persistedReportState.framesArray);
 
   let localPickedCharts: string[] = [];
-  localReportState.map((data: any, index: number) => {
+  localReportState.map((data: any) => {
     return data.contentTypes.map((item: any, index: number) => {
       if (item === "chart") {
         localPickedCharts.push(data.content[index]);
@@ -119,6 +120,10 @@ export default function ReportModule() {
     reportContentWidthsAtom
   );
 
+  const [reportContentHeights, setReportContentHeights] = useRecoilState(
+    reportContentHeightsAtom
+  );
+
   const handleRowFrameItemAddition = (
     rowId: string,
     itemIndex: number,
@@ -152,11 +157,27 @@ export default function ReportModule() {
     setReportContentWidths(contentWidths);
   };
 
+  const alignFramesWContentHeights = (framesArr: IFramesArray[]) => {
+    let contentHeights: {
+      id: string;
+      heights: number[];
+    }[] = [];
+    framesArr.forEach((frame) => {
+      contentHeights.push({
+        id: frame.id,
+        heights:
+          frame.contentHeights?.length === 0 ? [] : frame?.contentHeights,
+      });
+    });
+    setReportContentHeights(contentHeights);
+  };
+
   const handleRowFrameItemResize = (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => {
     setFramesArray((prev) => {
       if (!stopInitializeFramesWidth) {
@@ -199,8 +220,10 @@ export default function ReportModule() {
           });
         }
       });
+      tempPrev[frameIndex].contentHeights[itemIndex] = height;
       if (view === "edit") {
         alignFramesWContentWidths(tempPrev);
+        alignFramesWContentHeights(tempPrev);
       }
       return [...tempPrev];
     });
@@ -240,41 +263,49 @@ export default function ReportModule() {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
     let contentWidths: number[] = [];
+    let contentHeights: number[] = [];
     switch (structure) {
       case "oneByOne":
         content = [null];
         contentTypes = [null];
         contentWidths = [100];
+        contentHeights = [400];
         break;
       case "oneByTwo":
         content = [null, null];
         contentTypes = [null, null];
         contentWidths = [50, 50];
+        contentHeights = [420, 420];
         break;
       case "oneByThree":
         content = [null, null, null];
         contentTypes = [null, null, null];
         contentWidths = [33, 33, 33];
+        contentHeights = [460, 460, 460];
         break;
       case "oneByFour":
         content = [null, null, null, null];
         contentTypes = [null, null, null, null];
         contentWidths = [20, 20, 20, 20];
+        contentHeights = [122, 122, 122, 122];
         break;
       case "oneByFive":
         content = [null, null, null, null, null];
         contentTypes = [null, null, null, null, null];
         contentWidths = [20, 20, 20, 20, 20];
+        contentHeights = [121, 121, 121, 121, 121];
         break;
       case "fourToOne":
         content = [null, null];
         contentTypes = [null, null];
-        contentWidths = [75, 25];
+        contentWidths = [80, 20];
+        contentHeights = [400, 400];
         break;
       case "oneToFour":
         content = [null, null];
         contentTypes = [null, null];
-        contentWidths = [25, 75];
+        contentWidths = [20, 80];
+        contentHeights = [400, 400];
         break;
       default:
         break;
@@ -285,9 +316,12 @@ export default function ReportModule() {
       tempPrev[rowIndex].content = content;
       tempPrev[rowIndex].contentTypes = contentTypes;
       tempPrev[rowIndex].contentWidths = contentWidths;
+      tempPrev[rowIndex].contentHeights = contentHeights;
       tempPrev[rowIndex].structure = structure;
       if (view === "edit") {
         const newReportContentWidths = cloneDeep(reportContentWidths);
+        const newReportContentHeights = cloneDeep(reportContentHeights);
+
         if (newReportContentWidths[rowIndex]) {
           newReportContentWidths[rowIndex].widths = contentWidths;
         } else {
@@ -296,7 +330,18 @@ export default function ReportModule() {
             widths: contentWidths,
           });
         }
+
+        if (newReportContentHeights[rowIndex]) {
+          newReportContentHeights[rowIndex].heights = contentHeights;
+        } else {
+          newReportContentHeights.push({
+            id: tempPrev[rowIndex].id,
+            heights: contentHeights,
+          });
+        }
+
         setReportContentWidths(newReportContentWidths);
+        setReportContentHeights(newReportContentHeights);
       }
       return [...tempPrev];
     });
@@ -383,6 +428,7 @@ export default function ReportModule() {
       ),
       content: [],
       contentWidths: [],
+      contentHeights: [],
       contentTypes: [],
       structure: null,
     },
@@ -391,6 +437,7 @@ export default function ReportModule() {
   React.useEffect(() => {
     if (view !== "edit") {
       alignFramesWContentWidths(framesArray);
+      alignFramesWContentHeights(framesArray);
     }
   }, [framesArray, view]);
 
@@ -551,6 +598,7 @@ export default function ReportModule() {
         ),
         content: [],
         contentWidths: [],
+        contentHeights: [],
         contentTypes: [],
         structure: null,
       },
@@ -599,6 +647,7 @@ export default function ReportModule() {
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
         contentWidths: reportContentWidths,
+        contentHeights: reportContentHeights,
         dateColor: appliedHeaderDetails.dateColor,
       },
     });
@@ -611,6 +660,7 @@ export default function ReportModule() {
       reportCreateClear();
       setPickedCharts([]);
       setReportContentWidths([]);
+      setReportContentHeights([]);
     };
   }, []);
 

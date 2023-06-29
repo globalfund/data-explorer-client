@@ -77,12 +77,18 @@ export function ReportChartWrapper(props: Props) {
   React.useEffect(() => {
     const visualOptionsWidth = get(visualOptions, "width", 0);
     const containerWidth = containerRef.current?.clientWidth;
+    const visualOptionsHeight = get(visualOptions, "height", 0);
+    const containerHeight = containerRef.current?.clientHeight;
 
-    if (containerRef.current && visualOptionsWidth !== containerWidth) {
+    if (
+      containerRef.current &&
+      (visualOptionsWidth !== containerWidth ||
+        visualOptionsHeight !== containerHeight)
+    ) {
       const tmpVisualOptions = {
         ...visualOptions,
         width: containerWidth,
-        height: containerRef.current?.clientHeight,
+        height: containerHeight,
       };
       setVisualOptions(tmpVisualOptions);
     }

@@ -47,6 +47,7 @@ export function ReportInitialView(props: ReportInitialViewProps) {
   const handleTemplateSelected = (option: ReportTemplateModel) => {
     props.setButtonActive(option.value);
   };
+
   const clearPersistedReportState = useResetRecoilState(
     persistedReportStateAtom
   );

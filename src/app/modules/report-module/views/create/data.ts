@@ -5,6 +5,7 @@ export interface IFramesArray {
   id: string;
   frame: JSX.Element;
   contentWidths: number[];
+  contentHeights: number[];
   content: (object | string | null)[];
   contentTypes: ("text" | "divider" | "chart" | null)[];
   structure:
@@ -70,7 +71,8 @@ export interface ReportCreateViewProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
 }
 
@@ -105,6 +107,7 @@ export interface PlaceholderProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
 }

@@ -24,6 +24,7 @@ import {
   reportContentWidthsAtom,
   persistedReportStateAtom,
   reportContentContainerWidth,
+  reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 
 export function ReportEditView(props: ReportEditViewProps) {
@@ -44,6 +45,7 @@ export function ReportEditView(props: ReportEditViewProps) {
     });
 
   const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
+  const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
 
   const fetchReportData = useStoreActions(
     (actions) => actions.reports.ReportGet.fetch
@@ -154,6 +156,7 @@ export function ReportEditView(props: ReportEditViewProps) {
           ),
           content,
           contentWidths: [],
+          contentHeights: [],
           contentTypes,
         };
       });
@@ -173,9 +176,20 @@ export function ReportEditView(props: ReportEditViewProps) {
           ),
         };
       });
+      const contentHeights = props.framesArray.map((frame, index) => {
+        return {
+          id: frame.id,
+          heights: get(
+            reportData,
+            `contentHeights[${index}].heights`,
+            get(frame, "contentHeights", [])
+          ),
+        };
+      });
       setReportContentWidths(contentWidths);
+      setReportContentHeights(contentHeights);
     }
-  }, [props.framesArray, reportData.contentWidths]);
+  }, [props.framesArray, reportData.contentWidths, reportData.contentHeights]);
 
   return (
     <div>

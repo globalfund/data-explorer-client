@@ -7,22 +7,22 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import IconButton from "@material-ui/core/IconButton";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import { EditorState, convertFromRaw } from "draft-js";
+import { useStoreActions } from "app/state/store/hooks";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
-import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { useRecoilState, useRecoilValue } from "recoil";
-import { createChartFromReportAtom } from "app/state/recoil/atoms";
 import {
   reportContentWidthsAtom,
-  unSavedReportPreviewModeAtom,
+  createChartFromReportAtom,
   reportContentIsResizingAtom,
   reportContentContainerWidth,
+  unSavedReportPreviewModeAtom,
+  reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 
 interface RowStructureDisplayProps {
@@ -50,7 +50,12 @@ interface RowStructureDisplayProps {
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
-  onRowBoxItemResize: (rowId: string, itemIndex: number, width: number) => void;
+  onRowBoxItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    height: number
+  ) => void;
 }
 
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
@@ -60,6 +65,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
   const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
+  const [reportContentHeights] = useRecoilState(reportContentHeightsAtom);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
@@ -70,6 +76,10 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const rowContentWidths = !viewOnlyMode
     ? find(reportContentWidths, { id: props.rowId })
     : get(reportContentWidths, `[${props.rowIndex}]`, { widths: [] });
+
+  const rowContentHeights = !viewOnlyMode
+    ? find(reportContentHeights, { id: props.rowId })
+    : get(reportContentHeights, `[${props.rowIndex}]`, { heights: [] });
 
   const handlers = viewOnlyMode
     ? {}
@@ -90,6 +100,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       {...handlers}
       css={`
         width: 100%;
+        height: 100%;
         position: relative;
         margin-bottom: ${!viewOnlyMode ? "0px" : "50px"};
       `}
@@ -162,6 +173,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       <div
         css={`
           width: 100%;
+          height: 100%;
           display: flex;
           overflow: hidden;
           gap: ${props.gap};
@@ -172,8 +184,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           <Box
             key={`${row.rowId}-${index}`}
             width={get(rowContentWidths, `widths.[${index}]`, "fit-content")}
+            height={get(rowContentHeights, `heights.[${index}]`, props.height)}
             itemIndex={index}
-            height={props.height}
             rowId={props.rowId}
             rowType={row.rowType}
             onRowBoxItemResize={props.onRowBoxItemResize}
@@ -195,7 +207,6 @@ const Box = (props: {
   rowId: string;
   itemIndex: number;
   handlePersistReportState: () => void;
-
   rowType: string;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
@@ -206,7 +217,12 @@ const Box = (props: {
   ) => void;
   rowItemsCount: number;
   previewItem?: string | any;
-  onRowBoxItemResize: (rowId: string, itemIndex: number, width: number) => void;
+  onRowBoxItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    height: number
+  ) => void;
 }) => {
   const location = useLocation();
   const history = useHistory();
@@ -324,7 +340,8 @@ const Box = (props: {
     _delta: NumberSize
   ) => {
     let newWidth = elementRef.offsetWidth;
-    props.onRowBoxItemResize(props.rowId, props.itemIndex, newWidth);
+    let newHeight = elementRef.offsetHeight;
+    props.onRowBoxItemResize(props.rowId, props.itemIndex, newWidth, newHeight);
     setIsResizing(false);
   };
 
@@ -334,22 +351,30 @@ const Box = (props: {
     }
   };
 
+  React.useEffect(() => {
+    const container = document.getElementById("resizable-container");
+    if (displayTextBox && container && container?.offsetHeight > props.height) {
+      onResizeStop({} as MouseEvent, "bottom", container, {} as NumberSize);
+    }
+  }, [displayTextBox, textContent]);
+
   const content = React.useMemo(() => {
     if (displayTextBox) {
       return (
         <Resizable
           grid={[5, 5]}
-          bounds="parent"
           onResize={onResize}
           onResizeStop={onResizeStop}
-          size={{ width: width, height: props.height }}
+          size={{ width: width, height: `${props.height}px` }}
+          maxWidth={!viewOnlyMode ? containerWidth : undefined}
           enable={{
             right: !viewOnlyMode,
+            bottom: !viewOnlyMode,
+            bottomRight: !viewOnlyMode,
           }}
           css={`
-            overflow-y: auto;
             background: #fff;
-            overflow-x: hidden;
+            overflow: hidden;
             position: relative;
 
             div {
@@ -357,7 +382,7 @@ const Box = (props: {
             }
           `}
         >
-          <div>
+          <div id="resizable-container">
             {!viewOnlyMode && (
               <IconButton
                 onClick={() => {
@@ -377,14 +402,12 @@ const Box = (props: {
                 <DeleteIcon />
               </IconButton>
             )}
-            <div>
-              <RichEditor
-                fullWidth
-                textContent={textContent}
-                editMode={!viewOnlyMode}
-                setTextContent={setTextContent}
-              />
-            </div>
+            <RichEditor
+              fullWidth
+              textContent={textContent}
+              editMode={!viewOnlyMode}
+              setTextContent={setTextContent}
+            />
           </div>
         </Resizable>
       );
@@ -394,12 +417,14 @@ const Box = (props: {
       return (
         <Resizable
           key={chartId}
-          bounds="parent"
           onResize={onResize}
           onResizeStop={onResizeStop}
-          size={{ width: width, height: props.height }}
+          size={{ width: width, height: `${props.height}px` }}
+          maxWidth={!viewOnlyMode ? containerWidth : undefined}
           enable={{
             right: !viewOnlyMode,
+            bottom: !viewOnlyMode,
+            bottomRight: !viewOnlyMode,
           }}
         >
           <div
