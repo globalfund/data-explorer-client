@@ -127,6 +127,7 @@ export function AppBar() {
     switch (location.pathname) {
       case "/about":
         return TextHeader(get(cmsData, "componentsAppBar.about", ""));
+
       case "/datasets":
         return (
           <React.Fragment>
@@ -268,6 +269,28 @@ export function AppBar() {
                         )
                       )}
                     </StyledMenu>
+
+                    <NavLink
+                      to="/reports"
+                      css={`
+                        color: ${appColors.APPBAR.LINK_COLOR};
+                        font-size: 14px;
+                        font-weight: bold;
+                        letter-spacing: 0.5px;
+                        text-decoration: none;
+
+                        &:hover {
+                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                        }
+
+                        &.active {
+                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                        }
+                      `}
+                    >
+                      Reports
+                    </NavLink>
+
                     <NavLink
                       to="/about"
                       css={`
