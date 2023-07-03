@@ -23,6 +23,7 @@ import {
   reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
   reportContentHeightsAtom,
+  isChartDraggingAtom,
 } from "app/state/recoil/atoms";
 
 interface RowStructureDisplayProps {
@@ -237,9 +238,10 @@ const Box = (props: {
     (state) => state.charts.ChartCreate.setCrudData
   );
 
-  const [_, setCreateChartFromReport] = useRecoilState(
-    createChartFromReportAtom
-  );
+  const isChartDragging = useRecoilValue(isChartDraggingAtom);
+
+  const setCreateChartFromReport = useRecoilState(createChartFromReportAtom)[1];
+
   const resetMapping = useStoreActions(
     (actions) => actions.charts.mapping.reset
   );
@@ -279,7 +281,10 @@ const Box = (props: {
     reportPreviewMode;
 
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: [ReportElementsType.TEXT, ReportElementsType.CHART],
+    accept:
+      props.rowType === "oneByFive"
+        ? [ReportElementsType.TEXT, ReportElementsType.BIG_NUMBER]
+        : [ReportElementsType.TEXT, ReportElementsType.CHART],
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -295,7 +300,10 @@ const Box = (props: {
         );
         setDisplayTextBox(true);
         setDisplayChart(false);
-      } else if (item.type === ReportElementsType.CHART) {
+      } else if (
+        item.type === ReportElementsType.CHART ||
+        item.type === ReportElementsType.BIG_NUMBER
+      ) {
         props.handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
@@ -558,15 +566,24 @@ const Box = (props: {
     }
   }, [chartId, displayChart]);
 
+  let border = "none";
+  if (isOver) {
+    border = "1px solid #231d2c";
+  } else if (isChartDragging === "bigNumber" && props.rowType === "oneByFive") {
+    border = "1px dashed #231d2c";
+  } else if (isChartDragging === "chart" && props.rowType !== "oneByFive") {
+    border = "1px dashed #231d2c";
+  }
+
   return content ? (
     content
   ) : (
     <div
       css={`
         width: ${width};
+        border: ${border};
         background: #dfe3e6;
         height: ${props.height}px;
-        border: ${isOver ? "1px solid #231D2C" : "none"};
       `}
       ref={drop}
     >

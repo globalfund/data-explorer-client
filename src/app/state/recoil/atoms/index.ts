@@ -63,6 +63,11 @@ export const reportRightPanelViewAtom = atom<
   default: "elements",
 });
 
+export const isChartDraggingAtom = atom<"chart" | "bigNumber" | null>({
+  key: "isChartDraggingAtom",
+  default: null,
+});
+
 export const isDividerOrRowFrameDraggingAtom = atom<boolean>({
   key: "isDividerOrRowFrameDraggingAtom",
   default: false,

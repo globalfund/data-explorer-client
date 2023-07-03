@@ -32,6 +32,7 @@ import {
   reportRightPanelViewAtom,
   createChartFromReportAtom,
   isDividerOrRowFrameDraggingAtom,
+  isChartDraggingAtom,
 } from "app/state/recoil/atoms";
 
 const Button = withStyles(() => ({
@@ -112,8 +113,9 @@ export const ReportElementsType = {
   ROWFRAME: "rowFrame",
   TEXT: "text",
   DIVIDER: "divider",
-  CHART: "chart",
   HEADER: "header",
+  CHART: "chart",
+  BIG_NUMBER: "bigNumber",
 };
 
 interface IHeaderDetails {
@@ -430,8 +432,12 @@ function ReportRightPanelCreateViewChartList(props: {
             datasetId={chart.datasetId}
             createdDate={chart.createdDate}
             pickedCharts={props.pickedCharts}
-            elementType={ReportElementsType.CHART}
             setPickedCharts={props.setPickedCharts}
+            elementType={
+              (chart.vizType === "bigNumber"
+                ? ReportElementsType.BIG_NUMBER
+                : ReportElementsType.CHART) as "chart" | "bigNumber"
+            }
           />
         ))}
       </div>
@@ -514,9 +520,7 @@ function CreateChartCard(props: {
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
-  const [_, setCreateChartFromReport] = useRecoilState(
-    createChartFromReportAtom
-  );
+  const setCreateChartFromReport = useRecoilState(createChartFromReportAtom)[1];
   const reportOrder = useStoreState(
     (state) => state.reports.orderData.value.order
   );
@@ -631,9 +635,9 @@ function ChartItem(props: {
   name: string;
   vizType: string;
   datasetId: string;
-  elementType: string;
   createdDate: string;
   pickedCharts: string[];
+  elementType: "chart" | "bigNumber";
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
 }) {
   const nullRef = React.useRef(null);
@@ -663,6 +667,16 @@ function ChartItem(props: {
   };
 
   const added = props.pickedCharts.includes(props.id);
+
+  const setIsChartDragging = useRecoilState(isChartDraggingAtom)[1];
+
+  React.useEffect(() => {
+    if (isDragging && !added) {
+      setIsChartDragging(props.elementType);
+    } else {
+      setIsChartDragging(null);
+    }
+  }, [isDragging]);
 
   return (
     <div

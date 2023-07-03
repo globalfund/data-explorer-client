@@ -287,7 +287,7 @@ export default function ReportModule() {
       case "oneByFour":
         content = [null, null, null, null];
         contentTypes = [null, null, null, null];
-        contentWidths = [20, 20, 20, 20];
+        contentWidths = [25, 25, 25, 25];
         contentHeights = [122, 122, 122, 122];
         break;
       case "oneByFive":
