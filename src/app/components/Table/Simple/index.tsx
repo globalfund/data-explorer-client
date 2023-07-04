@@ -49,8 +49,6 @@ function Row(props: {
   const history = useHistory();
   const classes = useRowStyles();
 
-  const [open, setOpen] = React.useState(rowExpanded);
-
   const isEligibilityTable = location.pathname.includes("eligibility/table");
 
   let rowExpanded = Boolean(props.forceExpand);
@@ -65,6 +63,8 @@ function Row(props: {
       }
     }
   }
+
+  const [open, setOpen] = React.useState(rowExpanded);
 
   const firstColBig =
     props.columns[0].key !== "year" && props.columns[0].key !== "level1"
