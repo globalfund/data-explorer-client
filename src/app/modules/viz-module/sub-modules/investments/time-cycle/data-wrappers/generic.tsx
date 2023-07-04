@@ -202,7 +202,7 @@ export function GenericInvestmentsTimeCycleWrapper(props: Props) {
         filterString = `barPeriod=${vizSelected}`;
       }
       fetchDrilldownData({ filterString });
-    } else if (drilldownVizSelected && vizLevel === 2) {
+    } else if (vizSelected && drilldownVizSelected && vizLevel === 2) {
       const splits = drilldownVizSelected.split("-");
       const location = getIso3FromName(splits[0]);
       const component = splits[1];
