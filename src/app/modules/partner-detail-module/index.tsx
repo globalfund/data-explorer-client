@@ -96,22 +96,6 @@ export default function PartnerDetail() {
     return 0;
   }
 
-  useUpdateEffect(() => {
-    if (
-      partnerInfoData &&
-      partnerInfoData.partnerName &&
-      !dataPathSteps.find((item) => item.id === partnerInfoData.partnerName)
-    ) {
-      addDataPathSteps([
-        {
-          id: "partner",
-          name: partnerInfoData.partnerName,
-          path: location.pathname,
-        },
-      ]);
-    }
-  }, [partnerInfoData]);
-
   return (
     <div
       css={`
@@ -188,6 +172,7 @@ export default function PartnerDetail() {
               type="Signed"
               code={paramCode}
               toolboxOpen={openToolboxPanel}
+              partnerName={partnerInfoData.partnerName}
             />
           </Route>
           <Route path={`/partner/${params.code}/signed/table`}>

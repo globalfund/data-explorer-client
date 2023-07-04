@@ -20,6 +20,18 @@ export function useCMSData(props: UseCMSDataProps) {
   const componentsAppBarCMSData = useStoreState(
     (state) => state.cms.componentsAppBar.data
   );
+  const componentsTableCMSAction = useStoreActions(
+    (actions) => actions.cms.componentsTable.fetch
+  );
+  const componentsTableCMSData = useStoreState(
+    (state) => state.cms.componentsTable.data
+  );
+  const componentsDialogBoxCMSAction = useStoreActions(
+    (actions) => actions.cms.componentsDialogBox.fetch
+  );
+  const componentsDialogBoxCMSData = useStoreState(
+    (state) => state.cms.componentsDialogBox.data
+  );
   const componentsChartsBudgetsCMSAction = useStoreActions(
     (actions) => actions.cms.componentsChartsBudgets.fetch
   );
@@ -122,6 +134,13 @@ export function useCMSData(props: UseCMSDataProps) {
   const componentsSlideInPanelCMSData = useStoreState(
     (state) => state.cms.componentsSlideInPanel.data
   );
+  const componentsSidebarCMSAction = useStoreActions(
+    (actions) => actions.cms.componentsSidebar.fetch
+  );
+  const componentsSidebarCMSData = useStoreState(
+    (state) => state.cms.componentsSidebar.data
+  );
+
   // MODULES
   const modulesAboutCMSAction = useStoreActions(
     (actions) => actions.cms.modulesAbout.fetch
@@ -176,6 +195,8 @@ export function useCMSData(props: UseCMSDataProps) {
     if (props.loadData) {
       // COMPONENTS
       componentsAppBarCMSAction({ isCMSfetch: true });
+      componentsTableCMSAction({ isCMSfetch: true });
+      componentsDialogBoxCMSAction({ isCMSfetch: true });
       componentsChartsBudgetsCMSAction({ isCMSfetch: true });
       componentsChartsCommonCMSAction({ isCMSfetch: true });
       componentsChartsEligibilityCMSAction({ isCMSfetch: true });
@@ -193,6 +214,7 @@ export function useCMSData(props: UseCMSDataProps) {
       componentsPerformanceFrameworkComponentsCMSAction({ isCMSfetch: true });
       componentsSearchCMSAction({ isCMSfetch: true });
       componentsSlideInPanelCMSAction({ isCMSfetch: true });
+      componentsSidebarCMSAction({ isCMSfetch: true });
       // MODULES
       modulesAboutCMSAction({ isCMSfetch: true });
       modulesCommonCMSAction({ isCMSfetch: true });
@@ -213,6 +235,14 @@ export function useCMSData(props: UseCMSDataProps) {
       {
         key: "componentsAppBar",
         data: componentsAppBarCMSData || {},
+      },
+      {
+        key: "componentsTable",
+        data: componentsTableCMSData || {},
+      },
+      {
+        key: "componentsDialogBox",
+        data: componentsDialogBoxCMSData || {},
       },
       {
         key: "componentsChartsBudgets",
@@ -281,6 +311,10 @@ export function useCMSData(props: UseCMSDataProps) {
       {
         key: "componentsSlideInPanel",
         data: componentsSlideInPanelCMSData || {},
+      },
+      {
+        key: "componentsSidebar",
+        data: componentsSidebarCMSData || {},
       },
       // MODULES
       {
@@ -351,6 +385,8 @@ export function useCMSData(props: UseCMSDataProps) {
   }, [
     // COMPONENTS
     componentsAppBarCMSData,
+    componentsTableCMSData,
+    componentsDialogBoxCMSData,
     componentsChartsBudgetsCMSData,
     componentsChartsCommonCMSData,
     componentsChartsEligibilityCMSData,
@@ -368,6 +404,7 @@ export function useCMSData(props: UseCMSDataProps) {
     componentsPerformanceFrameworkComponentsCMSData,
     componentsSearchCMSData,
     componentsSlideInPanelCMSData,
+    componentsSidebarCMSData,
     // MODULES
     modulesAboutCMSData,
     modulesCommonCMSData,

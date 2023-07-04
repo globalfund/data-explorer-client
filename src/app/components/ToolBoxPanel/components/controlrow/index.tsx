@@ -80,6 +80,11 @@ export function ToolBoxPanelControlRow(props: ToolBoxPanelControlRowProps) {
                       ? appColors.TOOLBOX.VIEWS_ICON_ACTIVE_COLOR
                       : appColors.TOOLBOX.VIEWS_ICON_COLOR};
                   }
+                  rect {
+                    fill: ${props.selected === option.value
+                      ? appColors.TOOLBOX.VIEWS_ICON_ACTIVE_COLOR
+                      : appColors.TOOLBOX.VIEWS_ICON_COLOR};
+                  }
 
                   &:hover {
                     color: ${appColors.COMMON.WHITE};

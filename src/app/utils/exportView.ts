@@ -42,6 +42,8 @@ function getFileName(
         .replace(/ /g, "-")}`;
     case "/grants":
       return "grants";
+    case "/grants/table":
+      return "grants";
     case "/viz/grants":
       return "grants";
     case "/results":

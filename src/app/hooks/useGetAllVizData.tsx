@@ -430,6 +430,7 @@ export function useGetAllVizData() {
     },
     // Grants
     "/grants": grantsList,
+    "/grants/table": grantsList,
     // Results
     "/results": resultsList,
     // Documents

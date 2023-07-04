@@ -12,6 +12,7 @@ import ReactApexCharts from "react-apexcharts";
 import { useTitle, useMeasure } from "react-use";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { getIso3FromName } from "app/utils/getIso3FromName";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -39,7 +40,7 @@ interface AllocationsModuleProps {
 
 export function AllocationsModule(props: AllocationsModuleProps) {
   useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
-
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
 
   const selectedPeriod = useStoreState(
@@ -496,7 +497,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           </span>
           <BudgetsTreemap
             data={dataDrilldownLevel}
-            tooltipValueLabel="Allocation"
+            tooltipValueLabel={get(
+              cmsData,
+              "componentsChartsBudgets.treemapTooltipAllocation",
+              ""
+            )}
             onNodeClick={(node: string) => {
               const name = node.split("-")[0];
               const code = getIso3FromName(name);
@@ -557,7 +562,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         `}
       >
-        Allocations | {selectedPeriod}
+        {get(cmsData, "componentsChartsInvestments.allocations", "")}{" "}
+        {selectedPeriod}
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
       {vizComponent}

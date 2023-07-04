@@ -1,9 +1,12 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useParams, useHistory } from "react-router-dom";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ResultsYear } from "app/components/ToolBoxPanel/components/resultsyear";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
@@ -23,8 +26,6 @@ import {
   ViewModel,
   getControlItems,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import { useRecoilState } from "recoil";
-import { filterExpandedGroup } from "app/state/recoil/atoms";
 
 interface SubToolBoxPanelProps {
   filterGroups: FilterGroupProps[];
@@ -39,6 +40,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
     vizType: string;
     subType?: string;
   }>();
+  const cmsData = useCMSData({ returnData: true });
+
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [selectedView, setSelectedView] = React.useState("");
   const [controlItems, setControlItems] = React.useState<{
@@ -195,7 +198,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             )}
           {controlItems.views.length > 0 && !isMobile && (
             <ToolBoxPanelControlRow
-              title="Views"
+              title={get(cmsData, "componentsSidebar.views", "")}
               selected={selectedView}
               options={controlItems.views}
               setSelected={setSelectedView}
@@ -213,7 +216,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             )}
           {controlItems.aggregates.length > 0 && (
             <ToolBoxPanelAggregateBy
-              title="Aggregate by"
+              title={get(cmsData, "componentsSidebar.aggregateBy", "")}
               selected={selectedAggregation}
               options={controlItems.aggregates}
               setSelected={setSelectedAggregation}
@@ -231,7 +234,7 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             (params.vizType === "budgets" && params.subType === "map")) && (
             // ""
             <ToolBoxPanelAggregateBy
-              title="Aggregate by"
+              title={get(cmsData, "componentsSidebar.aggregateBy", "")}
               selected={geomapView}
               setSelected={setGeomapView}
               options={[

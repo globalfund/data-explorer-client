@@ -9,6 +9,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
@@ -22,6 +23,7 @@ export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
+  const cmsData = useCMSData({ returnData: true });
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
@@ -145,7 +147,7 @@ export default function ResultsModule() {
       `}
     >
       <BreadCrumbs />
-      <PageHeader title="Results" />
+      <PageHeader title={get(cmsData, "componentsPageHeader.results", "")} />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}

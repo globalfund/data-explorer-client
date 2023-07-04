@@ -4,6 +4,7 @@ import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
+import { useHistory } from "react-router-dom";
 import Collapse from "@material-ui/core/Collapse";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
@@ -23,7 +24,6 @@ import {
   SimpleTableProps,
   SimpleTableRow,
 } from "app/components/Table/Simple/data";
-import { useLocation } from "react-router-dom";
 
 const useRowStyles = makeStyles({
   root: {
@@ -44,11 +44,17 @@ function Row(props: {
   condensed?: boolean;
   rowIndex: number;
   parentIndex: null | number;
+  title: string;
 }) {
+  const history = useHistory();
   const classes = useRowStyles();
-  const location = useLocation();
+
+  const [open, setOpen] = React.useState(rowExpanded);
+
   const isEligibilityTable = location.pathname.includes("eligibility/table");
+
   let rowExpanded = Boolean(props.forceExpand);
+
   if (isEligibilityTable) {
     if (props.parentIndex === 0) {
       if (
@@ -60,35 +66,42 @@ function Row(props: {
     }
   }
 
-  const [open, setOpen] = React.useState(rowExpanded);
   const firstColBig =
     props.columns[0].key !== "year" && props.columns[0].key !== "level1"
       ? props.columns.length > 3
       : false;
 
   const firstColumnWidth = firstColBig ? "30%" : "";
+
   const firstColumnPadding = props.paddingLeft ? props.paddingLeft : 40;
+
   const columnWidthCalc = `${firstColBig ? "70%" : "100%"} / ${
     props.columns.length
   }`;
+
+  const handleRowClick = () => {
+    if (props.row.children) {
+      setOpen(!open);
+    }
+    if (props.title === "Grants") {
+      const value = get(props.row, "id", "");
+      history.push(`/grant/${value}`);
+    }
+  };
 
   return (
     <React.Fragment>
       <TableRow
         id="simple-table-row"
         className={classes.root}
-        onClick={() => {
-          if (props.row.children) {
-            setOpen(!open);
-          }
-        }}
+        onClick={handleRowClick}
         css={`
           transition: background 0.2s ease-in-out;
           background: ${props.paddingLeft || props.condensed
             ? appColors.TABLE.ROW_BACKGROUND_COLOR_1
             : appColors.TABLE.ROW_BACKGROUND_COLOR_2};
 
-          ${props.row.children
+          ${props.row.children || props.title === "Grants"
             ? `
           :hover {
             cursor: pointer;
@@ -127,7 +140,10 @@ function Row(props: {
                     ? "Bold"
                     : "Book"}",
                   "Helvetica Neue", sans-serif;
-                width: calc(${columnWidthCalc});
+                width: ${props.title === "Grants"
+                  ? "auto"
+                  : `calc(${columnWidthCalc})`};
+                max-width: 800px;
                 ${index === 0
                   ? `padding-left: ${firstColumnPadding}px;width: ${firstColumnWidth};`
                   : ""}
@@ -136,7 +152,7 @@ function Row(props: {
             >
               <div
                 css={`
-                  width: 100%;
+                  width: ${props.title === "Grants" ? "90%" : "100%"};
                   display: flex;
                   align-items: center;
                   flex-direction: row;
@@ -149,13 +165,19 @@ function Row(props: {
                 <div
                   css={`
                     gap: 12px;
-                    display: flex;
+                    display: ${props.title == "Grants" ? "block" : "flex"};
                     align-items: center;
                     flex-direction: row;
 
                     color: ${column.valueToColorMap
                       ? column.valueToColorMap[value]
                       : "inherit"};
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    font-weight: ${index === 0 ? "bold" : "normal"};
+                    font-family: "GothamNarrow-${index === 0 ? "Bold" : "Book"}",
+                      "Helvetica Neue", sans-serif;
 
                     > * {
                       @supports (-webkit-touch-callout: none) and
@@ -203,6 +225,7 @@ function Row(props: {
                       parentIndex={props.rowIndex}
                       key={child.name}
                       paddingLeft={40}
+                      title={props.title}
                       columns={props.columns}
                       condensed={props.condensed}
                       forceExpand={props.forceExpand}
@@ -319,7 +342,6 @@ export function SimpleTable(props: SimpleTableProps) {
                       css={`
                       ${index === 0 ? "padding-left: 40px;" : ""}
                       ${monetaryColumn ? "text-align: right;" : ""}
-
                       > button {
                         ${tablecell}
                         text-transform: none;
@@ -333,6 +355,8 @@ export function SimpleTable(props: SimpleTableProps) {
                             sans-serif;
                         }
                       }
+
+
                     `}
                     >
                       <Button
@@ -353,6 +377,7 @@ export function SimpleTable(props: SimpleTableProps) {
                   row={row}
                   rowIndex={index}
                   parentIndex={index}
+                  title={props.title}
                   columns={props.columns}
                   condensed={props.condensed}
                   forceExpand={props.forceExpand}

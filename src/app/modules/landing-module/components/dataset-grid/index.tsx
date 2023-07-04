@@ -11,6 +11,7 @@ import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import { AllocationIcon } from "app/assets/icons/charts/Allocation";
 import { appColors } from "app/theme";
+import { GridIcon } from "app/assets/icons/charts/Grid";
 
 function GridItem(props: {
   link: string;
@@ -64,6 +65,7 @@ function GridItem(props: {
               display: flex;
               position: absolute;
               flex-direction: row;
+              align-items: center;
 
               > a {
                 padding-right: 10px;
@@ -79,9 +81,15 @@ function GridItem(props: {
                   > path {
                     fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
                   }
+                  rect {
+                    fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
+                  }
 
                   &:hover {
                     > path {
+                      fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
+                    }
+                    > rect {
                       fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
                     }
                   }
@@ -285,7 +293,15 @@ export function LandingDatasetGrid() {
         />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
-        <GridItem title={grText} link="/grants" description={grDescription} />
+        <GridItem
+          title={grText}
+          link="/grants"
+          description={grDescription}
+          iconLinks={[
+            { icon: <GridIcon />, link: "/grants" },
+            { icon: <TableIcon />, link: "/grants/table" },
+          ]}
+        />
       </Grid>
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem

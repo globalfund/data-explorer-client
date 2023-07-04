@@ -2,10 +2,9 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
-import { useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   useTitle,
@@ -16,17 +15,16 @@ import {
 /* project */
 import { appColors } from "app/theme";
 import { PageHeader } from "app/components/PageHeader";
+import GrantsGrid from "app/modules/grants-module/grid";
+import GrantsTable from "app/modules/grants-module/table";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { GrantListItemModel } from "app/modules/grants-module/data";
-import { Search } from "app/modules/grants-module/components/Search";
-import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { GrantsList } from "app/modules/grants-module/components/List";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 
 interface GrantsModuleProps {
   code?: string;
@@ -51,11 +49,14 @@ export default function GrantsModule(props: GrantsModuleProps) {
         : ""
     } ${get(cmsData, "modulesGrants.titleEnd", "")}`
   );
+
   const vizWrapperRef = React.useRef(null);
   const [page, setPage] = React.useState(1);
   const [pages, setPages] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const [sortBy, setSortBy] = React.useState("id ASC");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
   const { getAllAvailableGrants, loading } = useGetAllAvailableGrants(
     props.search || search,
@@ -73,6 +74,7 @@ export default function GrantsModule(props: GrantsModuleProps) {
   const data = useStoreState(
     (state) => get(state.GrantsList.data, "data", []) as GrantListItemModel[]
   );
+
   const totalDataCount = useStoreState((state) =>
     get(state.GrantsList.data, "count", 0)
   );
@@ -84,6 +86,8 @@ export default function GrantsModule(props: GrantsModuleProps) {
   };
 
   const reloadData = (resetPage?: boolean) => {
+    const sortByField = sortBy.split(" ")[0];
+    const sortByDirection = sortBy.split(" ")[1];
     const filterString = getAPIFormattedFilters(
       props.code && props.detailFilterType
         ? {
@@ -95,10 +99,15 @@ export default function GrantsModule(props: GrantsModuleProps) {
           }
         : appliedFilters,
       {
+        orderBy:
+          sortByField === "id"
+            ? `grantAgreementStatusTypeName asc, grantAgreementNumber ${sortByDirection}`
+            : `grantAgreementStatusTypeName asc, grantAgreementTitle ${sortByDirection}`,
+        rowsPerPage,
         page: resetPage ? 1 : page,
         search:
           (props.search || search).length > 0
-            ? props.search || search
+            ? props.search ?? search
             : undefined,
       }
     );
@@ -139,14 +148,14 @@ export default function GrantsModule(props: GrantsModuleProps) {
   }, [props.search, search]);
 
   React.useEffect(() => {
-    setPages(Math.floor(totalDataCount / 10) + 1);
+    setPages(Math.floor(totalDataCount / rowsPerPage) + 1);
   }, [totalDataCount]);
 
   useUpdateEffect(() => {
     if (!isLoading) {
       reloadData();
     }
-  }, [page, appliedFilters]);
+  }, [page, sortBy, rowsPerPage, appliedFilters]);
 
   useUpdateEffect(() => setOpenToolboxPanel(!isMobile), [isMobile]);
 
@@ -212,51 +221,42 @@ export default function GrantsModule(props: GrantsModuleProps) {
           <PageTopSpacer />
         </>
       )}
-      <div
-        css={`
-          align-self: flex-start;
-          transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
-        `}
-        ref={vizWrapperRef}
-      >
-        <Search
-          value={props.search || search}
-          setValue={props.setSearch || setSearch}
-        />
-        <div css="width: 100%;height: 25px;" />
-        {data.length === 0 ? <NoDataLabel /> : <GrantsList listitems={data} />}
-        <div css="width: 100%;height: 25px;" />
-        {data.length > 0 && (
-          <Pagination
+      <Switch>
+        <Route exact path="/grants">
+          <GrantsGrid
+            data={data}
+            handleChange={handleChange}
+            isToolboxOvervlayVisible={isToolboxOvervlayVisible}
+            openToolboxPanel={openToolboxPanel}
             page={page}
-            size="large"
-            count={pages}
-            onChange={handleChange}
-            css={`
-              > ul {
-                justify-content: center;
-              }
-            `}
+            pages={pages}
+            pushValue={pushValue}
+            search={search}
+            setSearch={setSearch}
+            setSearchProps={props.setSearch}
+            vizWrapperRef={vizWrapperRef}
           />
-        )}
-      </div>
-      <div css="width: 100%;height: 56px;" />
-      <div
-        css={`
-          left: 0;
-          top: 45px;
-          z-index: 15;
-          width: 100%;
-          height: 100%;
-          position: fixed;
-          background: rgba(35, 35, 35, 0.5);
-          opacity: ${isToolboxOvervlayVisible()};
-          visibility: ${isToolboxOvervlayVisible() ? "visible" : "hidden"};
-          transition: visibility 225ms cubic-bezier(0, 0, 0.2, 1),
-            opacity 225ms cubic-bezier(0, 0, 0.2, 1);
-        `}
-      />
+        </Route>
+        <Route path="/grants/table">
+          <GrantsTable
+            data={data}
+            pages={totalDataCount}
+            page={page}
+            setPage={setPage}
+            reloadData={reloadData}
+            isLoading={isLoading}
+            search={search}
+            setSearch={setSearch}
+            sortBy={sortBy}
+            setSortBy={setSortBy}
+            isToolboxOvervlayVisible={isToolboxOvervlayVisible}
+            openToolboxPanel={openToolboxPanel}
+            pushValue={pushValue}
+            rowsPerPage={rowsPerPage}
+            setRowsPerPage={setRowsPerPage}
+          />
+        </Route>
+      </Switch>
     </div>
   );
 }

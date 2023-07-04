@@ -129,18 +129,22 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           onNodeClick={(node: string) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
-            addDataPathSteps([
-              {
-                // TODO: implement changes applied here to the other viz modules
-                id: uniqueId(),
-                name: node,
-                path: `${history.location.pathname}${history.location.search}`,
-                vizSelected: {
-                  id: node,
-                  filterStr: node,
+            if (
+              dataPathSteps.find((steps) => steps.name === node) === undefined
+            ) {
+              addDataPathSteps([
+                {
+                  // TODO: implement changes applied here to the other viz modules
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  vizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
                 },
-              },
-            ]);
+              ]);
+            }
           }}
         />
       );
@@ -148,7 +152,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipValueLabel="Budget"
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           xsTooltipData={xsTooltipData}
           data={props.dataDrilldownLevel1}
           setXsTooltipData={setXsTooltipData}
@@ -175,7 +179,7 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
       vizComponent = (
         <BudgetsTreemap
           isDrilldownTreemap
-          tooltipValueLabel="Budget"
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
           data={props.dataDrilldownLevel2}
           selectedNodeId={props.vizSelected}
           onNodeClick={(node: string) => {

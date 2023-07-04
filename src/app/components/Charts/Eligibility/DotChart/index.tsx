@@ -156,7 +156,7 @@ export function DotChart(props: DotChartProps) {
                   }
                 `}
               >
-                Eligibility
+                {get(cmsData, "componentsChartsEligibility.eligibility", "")}
               </div>
               <div
                 css={`

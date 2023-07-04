@@ -6,6 +6,7 @@ import { exportCSV } from "app/utils/exportCSV";
 import Toolbar from "@material-ui/core/Toolbar";
 import Popover from "@material-ui/core/Popover";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { useStoreState } from "app/state/store/hooks";
@@ -13,6 +14,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { useGetAllVizData } from "app/hooks/useGetAllVizData";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import ViewColumnIcon from "@material-ui/icons/ViewColumnOutlined";
+
 import { CommonPropTypes } from "react-csv/components/CommonPropTypes";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import { Checkbox, FormControlLabel, FormGroup } from "@material-ui/core";
@@ -32,7 +34,7 @@ export function TableToolbar(props: TableToolbarProps) {
 
   const params = useParams<{ code?: string }>();
   const vizData = useGetAllVizData();
-
+  const cmsData = useCMSData({ returnData: true });
   const searchInputRef = React.useRef<HTMLInputElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -234,6 +236,7 @@ export function TableToolbar(props: TableToolbarProps) {
             </CSVLink>
           </IconButton>
         )}
+
         <IconButton
           onClick={(e) => setAnchorEl(e.currentTarget)}
           css={`
@@ -278,7 +281,7 @@ export function TableToolbar(props: TableToolbarProps) {
               margin-bottom: 20px;
             `}
           >
-            Show columns
+            {get(cmsData, "componentsTable.showColumns", "")}
           </div>
           <FormGroup>
             {props.columns.map((c, index) => (

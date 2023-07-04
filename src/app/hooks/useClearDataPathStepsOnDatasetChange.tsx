@@ -23,6 +23,7 @@ const irrelevantPaths = [
   "/about",
   "/datasets",
   "/grants",
+  "/grants/table",
   "/results",
   "/documents",
 ];

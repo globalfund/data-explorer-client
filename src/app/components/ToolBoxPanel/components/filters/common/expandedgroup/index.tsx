@@ -1,11 +1,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import remove from "lodash/remove";
 import isEqual from "lodash/isEqual";
+import { appColors } from "app/theme";
 import { useRecoilState } from "recoil";
 import findIndex from "lodash/findIndex";
+import { useCMSData } from "app/hooks/useCMSData";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
@@ -20,7 +23,6 @@ import {
   FilterGroupProps,
   FilterOptionProps,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { appColors } from "app/theme";
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
@@ -32,7 +34,7 @@ interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
-
+  const cmsData = useCMSData({ returnData: true });
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
   const [expandedGroup] = useRecoilState(filterExpandedGroup);
   const {
@@ -479,7 +481,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Apply
+            {get(cmsData, "componentsSidebar.applyButton", "")}
           </button>
         </>
       )}

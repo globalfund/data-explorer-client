@@ -7,6 +7,7 @@ import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";
 import { AllocationIcon } from "app/assets/icons/charts/Allocation";
 import { ViewModel } from "app/components/ToolBoxPanel/utils/getControlItems";
+import { GridIcon } from "app/assets/icons/charts/Grid";
 
 export function getChartIcon(view: ViewModel) {
   switch (view.value) {
@@ -22,6 +23,8 @@ export function getChartIcon(view: ViewModel) {
       return <MapIcon />;
     case "Table":
       return <TableIcon />;
+    case "Grid":
+      return <GridIcon />;
     case "List":
       return <TableIcon />;
     case "Flow":

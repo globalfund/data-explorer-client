@@ -271,6 +271,9 @@ export interface StoreModel {
   // CMS
   cms: {
     componentsAppBar: CMSApiCallModel;
+    componentsTable: CMSApiCallModel;
+    componentsDialogBox: CMSApiCallModel;
+
     componentsChartsBudgets: CMSApiCallModel;
     componentsChartsCommon: CMSApiCallModel;
     componentsChartsEligibility: CMSApiCallModel;
@@ -288,6 +291,8 @@ export interface StoreModel {
     componentsPerformanceFrameworkComponents: CMSApiCallModel;
     componentsSearch: CMSApiCallModel;
     componentsSlideInPanel: CMSApiCallModel;
+    componentsSidebar: CMSApiCallModel;
+
     modulesLanding: CMSApiCallModel;
     modulesAbout: CMSApiCallModel;
     modulesCommon: CMSApiCallModel;
