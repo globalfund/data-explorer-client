@@ -127,18 +127,22 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           onNodeClick={(node: string) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
-            addDataPathSteps([
-              {
-                // TODO: implement changes applied here to the other viz modules
-                id: uniqueId(),
-                name: node,
-                path: `${history.location.pathname}${history.location.search}`,
-                vizSelected: {
-                  id: node,
-                  filterStr: node,
+            if (
+              dataPathSteps.find((steps) => steps.name === node) === undefined
+            ) {
+              addDataPathSteps([
+                {
+                  // TODO: implement changes applied here to the other viz modules
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  vizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
                 },
-              },
-            ]);
+              ]);
+            }
           }}
         />
       );
