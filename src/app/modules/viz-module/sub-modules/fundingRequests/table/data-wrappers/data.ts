@@ -57,6 +57,10 @@ export const fundingRequestColumns = [
         key: "portfolioCategory",
         name: "Portfolio Categorization",
       },
+      {
+        key: "documents",
+        name: "",
+      },
     ],
   },
 ];

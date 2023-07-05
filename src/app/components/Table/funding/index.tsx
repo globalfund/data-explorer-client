@@ -5,19 +5,23 @@ import find from "lodash/find";
 import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import { Link } from "react-router-dom";
+import Menu from "@material-ui/core/Menu";
 import Table from "@material-ui/core/Table";
 import Button from "@material-ui/core/Button";
+import MenuItem from "@material-ui/core/MenuItem";
 import Collapse from "@material-ui/core/Collapse";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import IconButton from "@material-ui/core/IconButton";
 import { makeStyles } from "@material-ui/core/styles";
 import ArrowUpward from "@material-ui/icons/ArrowUpward";
 import ArrowDownward from "@material-ui/icons/ArrowDownward";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Simple/styles";
 import IconChevronRight from "app/assets/icons/IconChevronRight";
+import { CloudDownloadIcon } from "app/assets/icons/CloudDownload";
 import { TableToolbar } from "app/components/Table/Expandable/Toolbar";
 import { TableToolbarCols } from "app/components/Table/Expandable/data";
 import {
@@ -46,6 +50,55 @@ export interface FundingTableProps {
   onSearchChange: (value: string) => void;
   onSortByChange: (value: string) => void;
 }
+
+const FRIconDownload = (props: {
+  documents: {
+    url: string;
+    name: string;
+  }[];
+}) => {
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event: React.MouseEvent<any>) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  if (props.documents.length === 0) {
+    return <React.Fragment />;
+  }
+
+  return (
+    <React.Fragment>
+      <IconButton onClick={handleClick}>
+        <CloudDownloadIcon />
+      </IconButton>
+      <Menu
+        keepMounted
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        open={Boolean(anchorEl)}
+      >
+        {props.documents.map((item) => (
+          <MenuItem
+            key={item.name}
+            component="a"
+            href={item.url}
+            target="_blank"
+            onClick={handleClose}
+          >
+            {item.name}
+          </MenuItem>
+        ))}
+      </Menu>
+    </React.Fragment>
+  );
+};
 
 const useRowStyles = makeStyles({
   root: {
@@ -229,7 +282,10 @@ function Row(props: {
                 {index === 0 &&
                   props.row.children &&
                   props.row.children.length > 0 && <IconChevronRight />}
-                {column.key === "grant" ? (
+                {column.key !== "grant" &&
+                  column.key !== "documents" &&
+                  get(props.row, column.key, "")}
+                {column.key === "grant" && (
                   <Link
                     css={`
                       color: ${appColors.TABLE.ROW_TEXT_COLOR};
@@ -242,8 +298,9 @@ function Row(props: {
                   >
                     {get(props.row, column.key, "")}
                   </Link>
-                ) : (
-                  get(props.row, column.key, "")
+                )}
+                {column.key === "documents" && (
+                  <FRIconDownload documents={get(props.row, column.key, [])} />
                 )}
               </div>
             </div>

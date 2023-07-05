@@ -47,7 +47,6 @@ export default function BreadCrumbs() {
         top: 45px;
         z-index: 10;
         position: sticky;
-        margin-top: 3rem;
         background: ${appColors.COMMON.WHITE};
       `}
     >

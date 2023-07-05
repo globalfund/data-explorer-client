@@ -177,6 +177,7 @@ export function AppBar() {
             width: 100%;
             height: 45px;
             display: flex;
+            min-height: 45px;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;
@@ -299,6 +300,8 @@ export function AppBar() {
                   <IconButton
                     onClick={() => setOpenSearch(!openSearch)}
                     css={`
+                      width: 45px;
+                      height: 45px;
                       margin-right: -12px;
                     `}
                   >
@@ -333,6 +336,8 @@ export function AppBar() {
         href="https://github.com/globalfund/data-explorer-client"
         css={`
           right: 0;
+          width: 45px;
+          height: 45px;
           position: absolute;
 
           path {
