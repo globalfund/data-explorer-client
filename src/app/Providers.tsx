@@ -28,6 +28,7 @@ function Providers(props: ProviderProps) {
                 <AppBar />
                 <Container
                   maxWidth="lg"
+                  className="main-container"
                   css={`
                     padding: 0 24px;
                     min-height: calc(100vh - 48px);

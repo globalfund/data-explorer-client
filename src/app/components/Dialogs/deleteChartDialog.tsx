@@ -5,10 +5,11 @@ import { createStyles, IconButton, makeStyles, Modal } from "@material-ui/core";
 interface Props {
   cardId?: number;
 
-  modalDisplay: boolean;
+  modalType: string;
+
   enableButton: boolean;
   handleDelete: (id: number) => void;
-  setModalDisplay: (value: any) => void;
+  setModalType: (value: any) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -38,9 +39,9 @@ export default function DeleteChartDialog(props: Props) {
 
   return (
     <Modal
-      open={props.modalDisplay}
+      open={props.modalType === "delete"}
       className={classes.modal}
-      onClose={() => props.setModalDisplay(false)}
+      onClose={() => props.setModalType("")}
     >
       <div className={classes.paper}>
         <div
@@ -50,7 +51,7 @@ export default function DeleteChartDialog(props: Props) {
           `}
         >
           <IconButton
-            onClick={() => props.setModalDisplay(false)}
+            onClick={() => props.setModalType("")}
             css={`
               position: absolute;
               right: -93px;

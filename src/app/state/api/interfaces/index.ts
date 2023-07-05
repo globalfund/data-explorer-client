@@ -1,6 +1,7 @@
 import { Action, Thunk } from "easy-peasy";
 import {
   PageHeaderVizDrilldownsStateModel,
+  ReportOrderStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelAllocationsPeriodStateModel,
   ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
@@ -47,13 +48,42 @@ import {
 import {
   DataPathActiveStepStateModel,
   DataPathStepsStateModel,
-} from "../action-reducers/sync/dataPath";
+} from "app/state/api/action-reducers/sync/dataPath";
+import {
+  DataThemesActivePanelsStateModel,
+  DataThemesEnabledFilterOptionGroupsStateModel,
+  DataThemesIdsStateModel,
+  DataThemesIndexStateModel,
+  DataThemesMappingStateModel,
+  DataThemesPublicStateModel,
+  DataThemesStepChartTypeStateModel,
+  DataThemesStepSelectionsStateModel,
+  DataThemesTabDeletedStateModel,
+  DataThemesTextContentStateModel,
+  DataThemesTitlesStateModel,
+  DataThemesVizDeletedStateModel,
+  DataThemesVizDuplicatedStateModel,
+  DataThemesVizOrderStateModel,
+} from "app/state/api/action-reducers/sync/data-themes";
+import { DataThemesAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/data-themes/filters";
+import {
+  ChartsActivePanelsStateModel,
+  ChartsChartTypeStateModel,
+  ChartsDatasetStateModel,
+  ChartsEnabledFilterOptionGroupsStateModel,
+  ChartsMappingStateModel,
+} from "app/state/api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersStateModel } from "../action-reducers/sync/charts/filters";
 
 export interface RequestValues<T> {
   values?: T;
+  getId?: string;
+  patchId?: string;
+  deleteId?: string;
   addOnData?: boolean;
   isCMSfetch?: boolean;
   filterString?: string;
+  storeInCrudData?: boolean;
 }
 
 export interface ResponseData<T> {
@@ -72,7 +102,11 @@ export interface ApiModel<QueryModel, ResponseModel> {
   loading: boolean;
   success: boolean;
   data: ResponseData<ResponseModel> | null | ResponseData<ResponseModel>[];
+  crudData: object | object[] | null;
+
   setData: Action<ApiModel<QueryModel, ResponseModel>, any>;
+  setCrudData: Action<ApiModel<QueryModel, object | object[] | null>, any>;
+
   errorData: Errors | null;
   onError: Action<ApiModel<QueryModel, ResponseModel>, Errors>;
   setSuccess: Action<ApiModel<QueryModel, ResponseModel>>;
@@ -80,10 +114,16 @@ export interface ApiModel<QueryModel, ResponseModel> {
     ApiModel<QueryModel, ResponseModel>,
     ResponseData<ResponseModel> | ResponseData<ResponseModel>[]
   >;
+  onSuccessCrudData: Action<
+    ApiModel<QueryModel, ResponseModel>,
+    ResponseData<ResponseModel> | ResponseData<ResponseModel>[]
+  >;
   onRequest: Action<ApiModel<QueryModel, ResponseModel>>;
   fetch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
   clear: Action<ApiModel<QueryModel, ResponseModel>>;
   post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
+  patch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
+  delete: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
 // todo: add all available filters
@@ -238,6 +278,65 @@ export interface StoreModel {
   StatusFilterOptions: ApiCallModel;
   ReplenishmentPeriodFilterOptions: ApiCallModel;
   DonorFilterOptions: ApiCallModel;
+
+  //data themes api
+
+  dataThemes: {
+    activeTabIndex: DataThemesIndexStateModel;
+    activeVizIndex: DataThemesIndexStateModel;
+    ids: DataThemesIdsStateModel;
+    activePanels: DataThemesActivePanelsStateModel;
+    titles: DataThemesTitlesStateModel;
+    textContent: DataThemesTextContentStateModel;
+    sync: {
+      stepSelections: DataThemesStepSelectionsStateModel;
+      chartType: DataThemesStepChartTypeStateModel;
+      mapping: DataThemesMappingStateModel;
+      public: DataThemesPublicStateModel;
+      vizOrderData: DataThemesVizOrderStateModel;
+      vizDeleted: DataThemesVizDeletedStateModel;
+      vizDuplicated: DataThemesVizDuplicatedStateModel;
+      tabDeleted: DataThemesTabDeletedStateModel;
+      enabledFilterOptionGroups: DataThemesEnabledFilterOptionGroupsStateModel;
+    };
+    appliedFilters: DataThemesAppliedFiltersStateModel;
+    DataThemeGet: ApiCallModel;
+    DataThemeCreate: ApiCallModel;
+    DataThemeUpdate: ApiCallModel;
+    DataThemeDelete: ApiCallModel;
+    DataThemeDuplicate: ApiCallModel;
+    DataThemeGetList: ApiCallModel;
+    DatasetGetList: ApiCallModel;
+    DatasetCreate: ApiCallModel;
+  };
+
+  //charts api
+
+  charts: {
+    ChartGet: ApiCallModel;
+    ChartCreate: ApiCallModel;
+    ChartUpdate: ApiCallModel;
+    ChartDelete: ApiCallModel;
+    ChartDuplicate: ApiCallModel;
+    ChartGetList: ApiCallModel;
+    activePanels: ChartsActivePanelsStateModel;
+    dataset: ChartsDatasetStateModel;
+    mapping: ChartsMappingStateModel;
+    chartType: ChartsChartTypeStateModel;
+    appliedFilters: ChartsAppliedFiltersStateModel;
+    enabledFilterOptionGroups: ChartsEnabledFilterOptionGroupsStateModel;
+  };
+  //reports api
+
+  reports: {
+    ReportGet: ApiCallModel;
+    ReportCreate: ApiCallModel;
+    ReportUpdate: ApiCallModel;
+    ReportDelete: ApiCallModel;
+    ReportDuplicate: ApiCallModel;
+    ReportGetList: ApiCallModel;
+    orderData: ReportOrderStateModel;
+  };
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
   ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;

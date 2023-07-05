@@ -4,6 +4,7 @@ import { StoreModel } from "app/state/api/interfaces";
 import { AppliedFiltersState } from "app/state/api/action-reducers/sync/filters";
 import {
   PageHeaderVizDrilldownsState,
+  ReportOrderState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
   ToolBoxPanelBudgetFlowDrilldownSelectors,
@@ -163,16 +164,68 @@ import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCount
 import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
-import countrySummary from "../api/action-reducers/cms/countrySummary";
-import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
+import countrySummary from "app/state/api/action-reducers/cms/countrySummary";
+import notesAndDisclaimers from "app/state/api/action-reducers/cms/notesAndDisclaimers";
 import {
   DataPathActiveStep,
   DataPathStepsState,
-} from "../api/action-reducers/sync/dataPath";
-import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
-import componentsSidebar from "../api/action-reducers/cms/componentsSidebar";
-import componentsTable from "../api/action-reducers/cms/componentsTable";
-import componentsDialogBox from "../api/action-reducers/cms/componentsDialogBox";
+} from "app/state/api/action-reducers/sync/dataPath";
+import PledgesContributionsTable from "app/state/api/action-reducers/viz/pledgesContributionsTable";
+import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
+import componentsTable from "app/state/api/action-reducers/cms/componentsTable";
+import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDialogBox";
+import {
+  DataThemesActivePanelsState,
+  DataThemesEnabledFilterOptionGroupsState,
+  DataThemesIdsState,
+  DataThemesIndexState,
+  DataThemesMappingState,
+  DataThemesPublicState,
+  DataThemesStepChartTypeState,
+  DataThemesStepSelectionsState,
+  DataThemesTabDeletedState,
+  DataThemesTextContentState,
+  DataThemesTitlesState,
+  DataThemesVizDeletedState,
+  DataThemesVizDuplicatedState,
+  DataThemesVizIndexState,
+  DataThemesVizOrderState,
+} from "app/state/api/action-reducers/sync/data-themes";
+import {
+  ChartsActivePanelsState,
+  ChartsDatasetState,
+  ChartsMappingState,
+  ChartsChartTypeState,
+  ChartsEnabledFilterOptionGroupsState,
+} from "../api/action-reducers/sync/charts";
+import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
+import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
+import {
+  DataThemeCreate,
+  DataThemeDelete,
+  DataThemeDuplicate,
+  DataThemeGet,
+  DataThemeGetList,
+  DataThemeUpdate,
+  DatasetCreate,
+  DatasetGetList,
+} from "app/state/api/action-reducers/data-themes";
+import {
+  ChartGet,
+  ChartCreate,
+  ChartUpdate,
+  ChartDelete,
+  ChartDuplicate,
+  ChartGetList,
+} from "../api/action-reducers/charts";
+import {
+  ReportGet,
+  ReportCreate,
+  ReportUpdate,
+  ReportDelete,
+  ReportDuplicate,
+  ReportGetList,
+} from "../api/action-reducers/reports";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -374,6 +427,63 @@ const storeContent: StoreModel = {
     modulesGrants: persist(modulesGrants),
     countrySummary: persist(countrySummary),
     notesAndDisclaimers: persist(notesAndDisclaimers),
+  },
+
+  //data themes api
+  dataThemes: {
+    activeTabIndex: persist(DataThemesIndexState),
+    activeVizIndex: persist(DataThemesVizIndexState),
+    ids: persist(DataThemesIdsState),
+    activePanels: persist(DataThemesActivePanelsState),
+    titles: persist(DataThemesTitlesState),
+    textContent: persist(DataThemesTextContentState),
+    sync: {
+      stepSelections: persist(DataThemesStepSelectionsState),
+      chartType: persist(DataThemesStepChartTypeState),
+      mapping: persist(DataThemesMappingState),
+      public: persist(DataThemesPublicState),
+      vizOrderData: persist(DataThemesVizOrderState),
+      vizDeleted: persist(DataThemesVizDeletedState),
+      vizDuplicated: persist(DataThemesVizDuplicatedState),
+      tabDeleted: persist(DataThemesTabDeletedState),
+      enabledFilterOptionGroups: persist(
+        DataThemesEnabledFilterOptionGroupsState
+      ),
+    },
+    appliedFilters: persist(DataThemesAppliedFiltersState),
+    DataThemeGet: persist(DataThemeGet),
+    DataThemeCreate: persist(DataThemeCreate),
+    DataThemeUpdate: persist(DataThemeUpdate),
+    DataThemeDelete: persist(DataThemeDelete),
+    DataThemeDuplicate: persist(DataThemeDuplicate),
+    DataThemeGetList: persist(DataThemeGetList),
+    DatasetGetList: persist(DatasetGetList),
+    DatasetCreate: persist(DatasetCreate),
+  },
+  //charts api
+  charts: {
+    ChartGet: persist(ChartGet),
+    ChartCreate: persist(ChartCreate),
+    ChartUpdate: persist(ChartUpdate),
+    ChartDelete: persist(ChartDelete),
+    ChartDuplicate: persist(ChartDuplicate),
+    ChartGetList: persist(ChartGetList),
+    activePanels: persist(ChartsActivePanelsState),
+    dataset: persist(ChartsDatasetState),
+    mapping: persist(ChartsMappingState),
+    chartType: persist(ChartsChartTypeState),
+    appliedFilters: persist(ChartsAppliedFiltersState),
+    enabledFilterOptionGroups: persist(ChartsEnabledFilterOptionGroupsState),
+  },
+  //reports api
+  reports: {
+    ReportGet: persist(ReportGet),
+    ReportCreate: persist(ReportCreate),
+    ReportUpdate: persist(ReportUpdate),
+    ReportDelete: persist(ReportDelete),
+    ReportDuplicate: persist(ReportDuplicate),
+    ReportGetList: persist(ReportGetList),
+    orderData: persist(ReportOrderState),
   },
 };
 
