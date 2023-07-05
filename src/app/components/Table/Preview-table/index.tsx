@@ -90,48 +90,45 @@ export default function PreviewTable(props: PreviewTableProps) {
                         border-top-left-radius: ${index == 0 ? "5px" : "0"};
                       `}
                     >
-                      {index !== 0 && (
+                      <div
+                        css={`
+                          display: flex;
+                          justify-content: space-between;
+                          align-items: center;
+                          gap: 1rem;
+                        `}
+                      >
                         <div
                           css={`
+                            width: 25px;
+                            height: 25px;
+                            border-radius: 50%;
+                            padding: 3px;
+                            justify-content: center;
                             display: flex;
-                            justify-content: space-between;
                             align-items: center;
-                            gap: 1rem;
+                            background: #ffffff;
                           `}
                         >
-                          <div
-                            css={`
-                              width: 25px;
-                              height: 25px;
-                              border-radius: 50%;
-                              padding: 3px;
-                              justify-content: center;
-                              display: flex;
-                              align-items: center;
-                              background: #ffffff;
-                            `}
-                          >
-                            {val.type === "string" ? "Aa" : "#"}
-                          </div>
-
-                          <p
-                            css={`
-                              margin: 0;
-                              overflow: clip;
-                              max-width: 220px;
-                              text-align: left;
-                              line-height: 17px;
-                              white-space: nowrap;
-                              text-overflow: ellipsis;
-                            `}
-                          >
-                            <b>{val.key}</b>
-                          </p>
-                          <IconButton>
-                            <SortIcon />
-                          </IconButton>
+                          {val.type === "string" ? "Aa" : "#"}
                         </div>
-                      )}
+                        <p
+                          css={`
+                            margin: 0;
+                            overflow: clip;
+                            max-width: 220px;
+                            text-align: left;
+                            line-height: 17px;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                          `}
+                        >
+                          <b>{val.key}</b>
+                        </p>
+                        <IconButton>
+                          <SortIcon />
+                        </IconButton>
+                      </div>
                     </TableCell>
                   );
                 })}
