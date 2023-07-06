@@ -52,8 +52,6 @@ export function InvestmentRadialViz() {
     colors: string[];
   }>(getKeysPercentages(total, values));
 
-  console.log(keysPercentagesColors.percentages, "percentages");
-
   React.useEffect(() => {
     const newTotal =
       grantInfoData.investments.committed +

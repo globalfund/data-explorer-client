@@ -1,22 +1,24 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import { appColors } from "app/theme";
+import { Link } from "react-router-dom";
+import Grid from "@material-ui/core/Grid";
 import { useStoreState } from "app/state/store/hooks";
-import { Grid, useMediaQuery } from "@material-ui/core";
 /* project */
 import { useCMSData } from "app/hooks/useCMSData";
-
-import { PageLoader } from "app/modules/common/page-loader";
-
-import { ratingValues } from "app/components/Charts/PerformanceRating/data";
-import { ComponentIcon } from "app/assets/icons/Component";
 import { LocationIcon } from "app/assets/icons/Location";
-import { InvestmentRadialViz } from "../../radial";
+import { ComponentIcon } from "app/assets/icons/Component";
+import { PageLoader } from "app/modules/common/page-loader";
+import { ratingValues } from "app/components/Charts/PerformanceRating/data";
+import { InvestmentRadialViz } from "app/modules/grant-detail-module/components/radial";
 
 export function GrantDetailOverviewModule() {
-  const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
+
   const isLoading = useStoreState((state) => state.GrantDetailInfo.loading);
+
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
       title: "",
@@ -42,7 +44,13 @@ export function GrantDetailOverviewModule() {
       },
     })
   );
-  const cmsData = useCMSData({ returnData: true });
+  const goalsObjectives = useStoreState(
+    (state) =>
+      get(state.GrantDetailPeriodGoalsObjectives, "data.data", []) as {
+        name: string;
+        type: string;
+      }[]
+  );
 
   React.useEffect(() => {
     document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_2;
@@ -77,55 +85,51 @@ export function GrantDetailOverviewModule() {
         }
       `}
     >
-      <React.Fragment>
-        <Grid
-          item
-          xs={12}
-          lg={8}
-          md={7}
-          css={`
-            > div {
-              h3 {
-                margin-top: 0px;
-                font-size: 14px;
-                font-weight: 700;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              }
-
-              h4 {
-                font-size: 12px;
-                font-weight: 700;
-                font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-              }
-
-              p {
-                font-size: 14px;
-              }
+      <Grid
+        item
+        xs={12}
+        lg={8}
+        md={7}
+        css={`
+          > div {
+            h3 {
+              margin-top: 0px;
+              font-size: 14px;
+              font-weight: 700;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             }
-          `}
-        >
+
+            h4 {
+              font-size: 12px;
+              font-weight: 700;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            }
+
+            p {
+              font-size: 14px;
+            }
+          }
+        `}
+      >
+        <div>
+          <div>
+            <h3>Goals</h3>
+            {filter(goalsObjectives, { type: "Goal" }).map((item) => (
+              <p key={item.name}>{item.name}</p>
+            ))}
+          </div>
           <div
             css={`
-              height: 344px;
+              margin-top: 2%;
             `}
           >
-            <div>
-              <h3> Goals</h3>
-              <p>No data available</p>
-            </div>
-            <div
-              css={`
-                margin-top: 2%;
-              `}
-            >
-              {" "}
-              <h3>Objectives</h3>
-              <p> No data available</p>
-            </div>
+            <h3>Objectives</h3>
+            {filter(goalsObjectives, { type: "Objective" }).map((item) => (
+              <p key={item.name}>{item.name}</p>
+            ))}
           </div>
-        </Grid>
-      </React.Fragment>
-
+        </div>
+      </Grid>
       <Grid item container xs={12} lg={4} md={5}>
         <Grid
           item
@@ -162,7 +166,13 @@ export function GrantDetailOverviewModule() {
                   margin-bottom: 0;
                 `}
               >
-                <b>Fund Portfolio Manager</b>
+                <b>
+                  {get(
+                    cmsData,
+                    "modulesGrantDetail.fundManager",
+                    "Fund Portfolio Manager"
+                  )}
+                </b>
               </p>
               <p
                 css={`
@@ -171,15 +181,17 @@ export function GrantDetailOverviewModule() {
               >
                 {grantInfoData.manager.name}
               </p>
-              <p
+              <a
                 css={`
-                  font-weight: 325;
-                  font-size: 10px;
                   color: #000;
+                  font-size: 10px;
+                  cursor: pointer;
+                  text-decoration: underline;
                 `}
+                href={`mailto:${grantInfoData.manager.email}`}
               >
                 {grantInfoData.manager.email}
-              </p>
+              </a>
             </div>
             <div>
               <p
@@ -190,7 +202,13 @@ export function GrantDetailOverviewModule() {
                   margin: 0;
                 `}
               >
-                <b>Grant Status</b>
+                <b>
+                  {get(
+                    cmsData,
+                    "modulesGrantDetail.grantStatus",
+                    "Grant Status"
+                  )}
+                </b>
               </p>
               <p
                 css={`
@@ -234,10 +252,10 @@ export function GrantDetailOverviewModule() {
                     }
                   `}
                 >
-                  {" "}
                   <LocationIcon />
-                </span>{" "}
-                Location: <b>{grantInfoData.location}</b>
+                </span>
+                {get(cmsData, "modulesGrantDetail.location", "Location")}{" "}
+                <b>{grantInfoData.location}</b>
               </p>
             </div>
             <div>
@@ -257,7 +275,8 @@ export function GrantDetailOverviewModule() {
                 >
                   <ComponentIcon />
                 </span>
-                Component: <b>{grantInfoData.component}</b>{" "}
+                {get(cmsData, "modulesGrantDetail.component", "Component")}{" "}
+                <b>{grantInfoData.component}</b>
               </p>
             </div>
           </div>
@@ -273,7 +292,7 @@ export function GrantDetailOverviewModule() {
                 font-size: 14px; ;
               `}
             >
-              <b>Rating</b>
+              {get(cmsData, "modulesGrantDetail.lowestRating", "Rating")}
             </p>
             <div
               css={`
@@ -335,28 +354,20 @@ export function GrantDetailOverviewModule() {
                 margin-bottom: 0;
               `}
             >
-              <b>Principal Recipient:</b>{" "}
+              <b>Principal Recipient:</b>
             </p>
-            <p
+            <Link
               css={`
-                color: #000000;
-                font-weight: 325;
+                color: #000;
                 font-size: 12px;
+                cursor: pointer;
+                text-decoration: underline;
               `}
+              to={`/partner/${grantInfoData.principalRecipient.code}/investments`}
             >
-              {grantInfoData.principalRecipient.name}({" "}
-              {grantInfoData.principalRecipient.shortName}){" "}
-            </p>
-            <p
-              css={`
-                color: #000000;
-                font-weight: 325;
-                font-size: 12px;
-              `}
-            >
-              {grantInfoData.principalRecipient.name}({" "}
-              {grantInfoData.principalRecipient.shortName}){" "}
-            </p>
+              {grantInfoData.principalRecipient.name} (
+              {grantInfoData.principalRecipient.shortName})
+            </Link>
           </div>
         </Grid>
         <Grid

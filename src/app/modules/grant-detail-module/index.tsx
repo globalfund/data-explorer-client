@@ -59,6 +59,10 @@ export default function GrantDetail() {
     (store) => store.GrantDetailInfo.fetch
   );
 
+  const fetchGoalsObjectives = useStoreActions(
+    (store) => store.GrantDetailPeriodGoalsObjectives.fetch
+  );
+
   const periods = useStoreState(
     (state) =>
       get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
@@ -115,6 +119,9 @@ export default function GrantDetail() {
 
   React.useEffect(() => {
     fetchGrantPeriodInfoData({
+      filterString: `grantNumber=${params.code}&IPnumber=${params.period}`,
+    });
+    fetchGoalsObjectives({
       filterString: `grantNumber=${params.code}&IPnumber=${params.period}`,
     });
   }, [params.period]);
