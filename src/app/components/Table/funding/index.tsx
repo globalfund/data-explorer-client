@@ -54,7 +54,7 @@ export interface FundingTableProps {
 const FRIconDownload = (props: {
   documents: {
     url: string;
-    name: string;
+    lang: string;
   }[];
 }) => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -69,6 +69,15 @@ const FRIconDownload = (props: {
     setAnchorEl(null);
   };
 
+  const handleScroll = () => {
+    setAnchorEl(null);
+  };
+
+  React.useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+    return () => document.removeEventListener("scroll", handleScroll);
+  }, []);
+
   if (props.documents.length === 0) {
     return <React.Fragment />;
   }
@@ -80,19 +89,24 @@ const FRIconDownload = (props: {
       </IconButton>
       <Menu
         keepMounted
+        disableScrollLock
         anchorEl={anchorEl}
         onClose={handleClose}
         open={Boolean(anchorEl)}
       >
         {props.documents.map((item) => (
           <MenuItem
-            key={item.name}
+            key={item.lang}
             component="a"
             href={item.url}
             target="_blank"
             onClick={handleClose}
+            css={`
+              font-size: 12px;
+              text-decoration: none;
+            `}
           >
-            {item.name}
+            {item.lang}
           </MenuItem>
         ))}
       </Menu>

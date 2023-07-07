@@ -104,7 +104,6 @@ export default function LocationAccessToFundingWrapper(props: Props) {
   return (
     <>
       <div css={descriptioncss}>
-        <Box height={30} />
         <h1>
           <b>Access to Funding</b>
         </h1>
