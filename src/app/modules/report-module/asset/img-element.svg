@@ -1,0 +1,10 @@
+<svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="filled/image/collections" clip-path="url(#clip0_9500_156457)">
+<path id="Vector" d="M110 80V20C110 14.5 105.5 10 100 10H40C34.5 10 30 14.5 30 20V80C30 85.5 34.5 90 40 90H100C105.5 90 110 85.5 110 80ZM55 60L65.15 73.55L80 55L100 80H40L55 60ZM10 30V100C10 105.5 14.5 110 20 110H90V100H20V30H10Z" fill="#DFE3E5"/>
+</g>
+<defs>
+<clipPath id="clip0_9500_156457">
+<rect width="120" height="120" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import update from "immutability-helper";
 import { useUpdateEffect } from "react-use";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from "dnd-core";
 import { useStoreActions } from "app/state/store/hooks";
-import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
+import RowFrameHandleAdornment from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 
 interface Item {
   id: string;
   content: React.ReactNode;
+  isHandleOpen: boolean;
 }
 
 interface ItemComponentProps {
@@ -16,6 +17,7 @@ interface ItemComponentProps {
   index: number;
   content: React.ReactNode;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
+  isHandleOpen: boolean;
 }
 
 interface DragItem {
@@ -32,9 +34,15 @@ const style = {
   transform: "translate(0px, 0px)",
 };
 
-function ItemComponent(props: ItemComponentProps) {
-  const { id, content, index, moveCard } = props;
-
+function Handle(props: {
+  id: string;
+  index: number;
+  moveCard: (dragIndex: number, hoverIndex: number) => void;
+  top: string;
+  left: string;
+  radius: string;
+  setOpacity: React.Dispatch<React.SetStateAction<number>>;
+}) {
   const ref = React.useRef<HTMLDivElement>(null);
 
   const [{ handlerId }, drop] = useDrop<
@@ -53,7 +61,7 @@ function ItemComponent(props: ItemComponentProps) {
         return;
       }
       const dragIndex = item.index;
-      const hoverIndex = index;
+      const hoverIndex = props.index;
 
       // Don't replace items with themselves
       if (dragIndex === hoverIndex) {
@@ -88,7 +96,7 @@ function ItemComponent(props: ItemComponentProps) {
       }
 
       // Time to actually perform the action
-      moveCard(dragIndex, hoverIndex);
+      props.moveCard(dragIndex, hoverIndex);
 
       // Note: we're mutating the monitor item here!
       // Generally it's better to avoid mutations,
@@ -101,40 +109,79 @@ function ItemComponent(props: ItemComponentProps) {
   const [{ isDragging }, drag] = useDrag({
     type: ItemTypes.CARD,
     item: () => {
-      return { id, index };
+      return { id: props.id, index: props.index };
     },
     collect: (monitor: any) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
-  const opacity = isDragging ? 0.5 : 1;
+  useEffect(() => {
+    props.setOpacity(isDragging ? 0.5 : 1);
+  }, [isDragging]);
 
   drag(drop(ref));
+  return (
+    <div
+      ref={ref}
+      id={`item-${props.id}`}
+      data-handler-id={handlerId}
+      css={`
+        top: ${props.top};
+        left: ${props.left};
+        position: absolute;
+        z-index: 3;
+        height: calc(100% - 38px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+        background-color: #252c34;
+        width: 19px;
+        border-radius: ${props.radius};
+      `}
+    >
+      <img src={RowFrameHandleAdornment} alt="rowframeHandleAdornment" />
+    </div>
+  );
+}
+
+function ItemComponent(props: ItemComponentProps) {
+  const { id, content, index, moveCard } = props;
+
+  const [opacity, setOpacity] = useState(1);
 
   return (
-    <div style={{ ...style, opacity }}>
-      <div
-        ref={ref}
-        id={`item-${id}`}
-        data-handler-id={handlerId}
-        css={`
-          top: -4px;
-          left: -4rem;
-          width: 23px;
-          cursor: grab;
-          display: flex;
-          position: absolute;
-          align-items: center;
-          background: #adb5bd;
-          border-radius: 3.45px;
-          justify-content: center;
-          height: calc(100% - 38px + 8px);
-        `}
-      >
-        <RowFrameHandleAdornment />
-      </div>
+    <div
+      style={{ ...style, opacity }}
+      css={`
+        height: 100%;
+      `}
+    >
+      {props.isHandleOpen ? (
+        <Handle
+          id={id}
+          index={index}
+          moveCard={moveCard}
+          top="0"
+          left="0"
+          radius="20px 0px 0px 20px"
+          setOpacity={setOpacity}
+        />
+      ) : null}
+
       {content}
+      {props.isHandleOpen ? (
+        <Handle
+          id={id}
+          index={index}
+          moveCard={moveCard}
+          top="0"
+          left="99%"
+          radius="0 20px 20px 0"
+          setOpacity={setOpacity}
+        />
+      ) : null}
     </div>
   );
 }
@@ -150,6 +197,7 @@ export function ReportOrderContainer(props: Props) {
     props.children.map((child: React.ReactNode, index: number) => ({
       content: child,
       id: props.childrenData[index].id,
+      isHandleOpen: props.childrenData[index].isHandleOpen,
     }))
   );
 
@@ -179,6 +227,7 @@ export function ReportOrderContainer(props: Props) {
         id={item.id}
         content={item.content}
         moveCard={moveCard}
+        isHandleOpen={item.isHandleOpen}
       />
     );
   }, []);
@@ -188,6 +237,7 @@ export function ReportOrderContainer(props: Props) {
       props.children.map((child: React.ReactNode, index: number) => ({
         content: child,
         id: props.childrenData[index].id,
+        isHandleOpen: props.childrenData[index].isHandleOpen,
       }))
     );
   }, [props.childrenData]);

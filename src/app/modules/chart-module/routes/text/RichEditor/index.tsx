@@ -26,6 +26,7 @@ import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
 export const RichEditor = (props: {
   editMode: boolean;
   fullWidth?: boolean;
+  fullHeight?: boolean;
   placeholder?: string;
   invertColors?: boolean;
   textContent: EditorState;
@@ -52,15 +53,20 @@ export const RichEditor = (props: {
   const focus = (): void => {
     editor.current?.focus();
   };
+  React.useEffect(() => {
+    editor.current?.focus();
+  }, []);
 
   return (
     <div
       className={
         props.editMode ? editorStyles.editor : editorStyles.editorPreview
       }
-      onClick={focus}
       css={`
         ${!props.fullWidth && "max-width: 800px !important;"}
+        ${!props.fullHeight && "height: 100% !important;"}
+        position:static;
+        background: white;
 
         h1,
         h2 {

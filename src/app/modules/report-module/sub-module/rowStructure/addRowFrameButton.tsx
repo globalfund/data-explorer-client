@@ -22,7 +22,7 @@ interface Props {
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
   handleRowFrameStructureTypeSelection: (
     rowIndex: number,
@@ -32,9 +32,10 @@ interface Props {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
       | "oneToFour"
       | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,
@@ -42,6 +43,7 @@ interface Props {
     width: number,
     reportContentWidths: ReportContentWidthsType[]
   ) => void;
+  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
 const DarkTooltip = withStyles(() => ({
   tooltip: {
@@ -50,8 +52,6 @@ const DarkTooltip = withStyles(() => ({
 }))(Tooltip);
 
 export default function AddRowFrameButton(props: Props) {
-  const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
-
   const handleAddrowStructureBlock = () => {
     const id = v4();
     props.setFramesArray([
@@ -70,12 +70,14 @@ export default function AddRowFrameButton(props: Props) {
             }
             handlePersistReportState={props.handlePersistReportState}
             handleRowFrameItemResize={props.handleRowFrameItemResize}
+            toggleRowFrameHandle={props.toggleRowFrameHandle}
           />
         ),
         content: [],
         contentWidths: [],
         contentTypes: [],
         structure: null,
+        isHandleOpen: false,
       },
     ]);
     props.setRowStructureType({

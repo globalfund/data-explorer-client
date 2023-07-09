@@ -9,7 +9,10 @@ export default function MenuOptions(props: {
   showMenuOptions: (id?: string) => void;
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   handleModal: (id: string) => void;
+  menuOptionsDisplay: boolean;
   id: string;
+  top?: string;
+  right?: string;
 }) {
   return (
     <div>
@@ -26,12 +29,14 @@ export default function MenuOptions(props: {
       />
       <div
         css={`
-          top: 3%;
-          right: 12%;
+          top: ${props.top ? props.top : "3%"};
+          right: ${props.right ? props.right : "12%"};
           z-index: 2;
 
           height: 38px;
-          width: 104px;
+          width: ${props.menuOptionsDisplay ? "104px" : "0px"};
+          opacity: ${props.menuOptionsDisplay ? "1" : "0"};
+          transition: width 0.3s ease-in-out;
           position: absolute;
           background: #cfd4da;
           border-radius: 100px;

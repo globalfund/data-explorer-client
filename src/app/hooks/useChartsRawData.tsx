@@ -150,7 +150,7 @@ export function useChartsRawData(props: {
     setLoading(true);
     axios
       .post(
-        `${process.env.REACT_APP_API}/chart/${chartId || page}/render`,
+        `${process.env.REACT_APP_API_DX}/chart/${chartId || page}/render`,
         body,
         {
           headers: {

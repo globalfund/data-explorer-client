@@ -1,8 +1,7 @@
 .toolbar {
-  left: 50%;
   transform: translate(-50%) scale(0);
   position: fixed;
-  background: #262c34;
+  background: #F1F3F5;
   border-radius: 8px;
   z-index: 2;
   box-sizing: border-box;

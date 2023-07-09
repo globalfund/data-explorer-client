@@ -14,9 +14,10 @@ export interface ReportModel {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
       | "oneToFour"
-      | "fourToOne";
+      | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo";
     items: (object | string)[];
   }[];
   createdDate: Date;
@@ -47,4 +48,4 @@ export const emptyReport: ReportModel = {
 };
 
 export const itemSpacing = "30px";
-export const containerGap = "60px";
+export const containerGap = "32px";

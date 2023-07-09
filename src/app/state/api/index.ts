@@ -57,7 +57,9 @@ export const APIModel = <QueryModel, ResponseModel>(
     actions.onRequest();
     axios
       .get(
-        `${url}${query.filterString ? "?" : ""}${query.filterString ?? ""}`,
+        `${url}${query.getId ? `/${query.getId}` : ""}${
+          query.filterString ? "?" : ""
+        }${query.filterString ?? ""}`,
         {
           headers: {
             "Content-Type": "application/json",

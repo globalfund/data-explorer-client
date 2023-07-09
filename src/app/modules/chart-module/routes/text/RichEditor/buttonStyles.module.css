@@ -1,8 +1,8 @@
 .button {
   border: 0;
-  color: #fff;
+  color: #231D2C;
   font-size: 18px;
-  background: #262c34;
+  background: #F1F3F5;
   height: 34px;
   width: 32px;
   border-radius: 8px;
@@ -10,7 +10,7 @@
 }
 
 .button svg {
-  fill: #fff;
+  fill: #231D2C;
   padding-top: 5px;
 }
 

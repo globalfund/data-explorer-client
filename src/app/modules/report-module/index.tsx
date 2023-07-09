@@ -40,7 +40,6 @@ import {
 
 import AITemplate from "app/modules/report-module/views/ai-template";
 import { IHeaderDetails } from "./components/right-panel/data";
-import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { useUpdateEffect } from "react-use";
 
 interface RowFrameProps {
@@ -395,7 +394,6 @@ export default function ReportModule() {
     if (view !== "edit") {
       alignFramesWContentWidths(framesArray);
     }
-    console.log("framesArray", framesArray);
   }, [framesArray, view]);
 
   React.useEffect(() => {

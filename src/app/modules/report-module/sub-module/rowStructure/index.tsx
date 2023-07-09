@@ -28,7 +28,6 @@ import {
 import { overlaycss } from "./style";
 import ReportActionDialog from "app/modules/report-module/components/actionDialog";
 import ImageBox from "app/modules/report-module/components/imageBox";
-import { set } from "lodash";
 
 interface RowStructureDisplayProps {
   gap: string;

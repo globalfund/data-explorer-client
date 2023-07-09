@@ -51,9 +51,7 @@ export function ReportsTable(props: {
       <Table
         css={`
           border-spacing: 0;
-          /* border-style: hidden; */
-          /* border-collapse: collapse; */
-          /* border-radius: 16px; */
+
           tr > td {
             overflow: hidden;
             white-space: nowrap;

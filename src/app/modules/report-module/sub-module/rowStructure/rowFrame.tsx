@@ -17,6 +17,8 @@ import {
   blockcss,
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
+import { MoreVert } from "@material-ui/icons";
+import { set } from "lodash";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -80,38 +82,7 @@ const _rowStructureDetailItems = [
       factor: 0.25,
     },
   ],
-  [
-    {
-      rowType: "oneByFive",
-      rowId: "oneByFive-1",
-      width: `calc(100% / 5 - ${itemSpacing})`,
-      factor: 0.2,
-    },
-    {
-      rowType: "oneByFive",
-      rowId: "oneByFive-2",
-      width: `calc(100% / 5 - ${itemSpacing})`,
-      factor: 0.2,
-    },
-    {
-      rowType: "oneByFive",
-      rowId: "oneByFive-3",
-      width: `calc(100% / 5 - ${itemSpacing})`,
-      factor: 0.2,
-    },
-    {
-      rowType: "oneByFive",
-      rowId: "oneByFive-4",
-      width: `calc(100% / 5 - ${itemSpacing})`,
-      factor: 0.2,
-    },
-    {
-      rowType: "oneByFive",
-      rowId: "oneByFive-5",
-      width: `calc(100% / 5 - ${itemSpacing})`,
-      factor: 0.2,
-    },
-  ],
+
   [
     {
       rowType: "oneToFour",
@@ -140,6 +111,36 @@ const _rowStructureDetailItems = [
       factor: 0.2,
     },
   ],
+
+  [
+    {
+      rowType: "twoToThree",
+      rowId: "twoToThree-1",
+      width: `calc(40% - ${itemSpacing})`,
+      factor: 0.4,
+    },
+    {
+      rowType: "twoToThree",
+      rowId: "twoToThree-2",
+      width: `calc(60% - ${itemSpacing})`,
+      factor: 0.6,
+    },
+  ],
+
+  [
+    {
+      rowType: "threeTotwo",
+      rowId: "threeTotwo-1",
+      width: `calc(60% - ${itemSpacing})`,
+      factor: 0.6,
+    },
+    {
+      rowType: "threeTotwo",
+      rowId: "threeTotwo-2",
+      width: `calc(40% - ${itemSpacing})`,
+      factor: 0.4,
+    },
+  ],
 ];
 
 export interface RowFrameProps {
@@ -151,7 +152,7 @@ export interface RowFrameProps {
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameStructureTypeSelection: (
@@ -162,9 +163,10 @@ export interface RowFrameProps {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
       | "oneToFour"
       | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,
@@ -174,6 +176,7 @@ export interface RowFrameProps {
   ) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
+  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
 
 export interface IRowStructureType {
@@ -211,6 +214,8 @@ export default function RowFrame(props: RowFrameProps) {
       setRowStructureDetailItems(newItems);
     }
   };
+
+  console.log("rowStructureDetailItems", rowStructureDetailItems);
 
   const reportContentWidths = useRecoilValue(reportContentWidthsAtom);
 
@@ -261,9 +266,10 @@ export default function RowFrame(props: RowFrameProps) {
         | "oneByTwo"
         | "oneByThree"
         | "oneByFour"
-        | "oneByFive"
         | "oneToFour"
         | "fourToOne"
+        | "twoToThree"
+        | "threeToTwo"
     );
   }, [selectedType]);
 
@@ -275,7 +281,7 @@ export default function RowFrame(props: RowFrameProps) {
     oneByOne: (
       <RowstructureDisplay
         gap={containerGap}
-        height={400}
+        height={316}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -289,12 +295,13 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
       />
     ),
     oneByTwo: (
       <RowstructureDisplay
         gap={containerGap}
-        height={420}
+        height={316}
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
@@ -308,12 +315,13 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
       />
     ),
     oneByThree: (
       <RowstructureDisplay
         gap={containerGap}
-        height={460}
+        height={316}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -327,12 +335,13 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
       />
     ),
     oneByFour: (
       <RowstructureDisplay
         gap={containerGap}
-        height={122}
+        height={316}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -346,12 +355,14 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
       />
     ),
-    oneByFive: (
+
+    oneToFour: (
       <RowstructureDisplay
         gap={containerGap}
-        height={121}
+        height={316}
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
@@ -365,14 +376,15 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
       />
     ),
-    oneToFour: (
+    fourToOne: (
       <RowstructureDisplay
         gap={containerGap}
-        height={400}
-        rowId={props.rowId}
+        height={316}
         rowIndex={props.rowIndex}
+        rowId={props.rowId}
         selectedType={selectedType}
         deleteFrame={props.deleteFrame}
         setSelectedType={setSelectedType}
@@ -384,12 +396,13 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
       />
     ),
-    fourToOne: (
+    twoToThree: (
       <RowstructureDisplay
         gap={containerGap}
-        height={400}
+        height={316}
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
@@ -403,6 +416,27 @@ export default function RowFrame(props: RowFrameProps) {
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
+      />
+    ),
+    threeToTwo: (
+      <RowstructureDisplay
+        gap={containerGap}
+        height={316}
+        rowIndex={props.rowIndex}
+        rowId={props.rowId}
+        selectedType={selectedType}
+        deleteFrame={props.deleteFrame}
+        setSelectedType={setSelectedType}
+        selectedTypeHistory={selectedTypeHistory}
+        setSelectedTypeHistory={setSelectedTypeHistory}
+        rowStructureDetailItems={rowStructureDetailItems[7]}
+        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
+        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        previewItems={props.previewItems}
+        onRowBoxItemResize={onRowBoxItemResize}
+        handlePersistReportState={props.handlePersistReportState}
+        toggleRowFrameHandle={props.toggleRowFrameHandle}
       />
     ),
   };
@@ -428,11 +462,12 @@ export default function RowFrame(props: RowFrameProps) {
           </IconButton>
           <div
             css={`
-              width: 92%;
+              width: 75%;
               margin: auto;
-              display: flex;
-              flex-wrap: wrap;
-              column-gap: 50px;
+              display: grid;
+              grid-template-columns: auto auto auto auto;
+              /* flex-wrap: wrap; */
+              column-gap: 65px;
               align-items: center;
               justify-content: center;
             `}
@@ -453,15 +488,23 @@ export default function RowFrame(props: RowFrameProps) {
               selectedType={selectedType}
               setSelectedType={setSelectedType}
             />
-            <OneByFive
+            {/* <OneByFive
               selectedType={selectedType}
               setSelectedType={setSelectedType}
-            />
+            /> */}
             <OneToFour
               selectedType={selectedType}
               setSelectedType={setSelectedType}
             />
             <FourToOne
+              selectedType={selectedType}
+              setSelectedType={setSelectedType}
+            />
+            <TwoToThree
+              selectedType={selectedType}
+              setSelectedType={setSelectedType}
+            />
+            <ThreeToTwo
               selectedType={selectedType}
               setSelectedType={setSelectedType}
             />
@@ -484,7 +527,7 @@ const OneByOne = (props: IRowStructureType) => {
           css={`
             background: #dfe3e6;
             height: 56px;
-            width: 94px;
+            width: 95px;
           `}
         />
       </div>
@@ -503,8 +546,8 @@ const OneByTwo = (props: IRowStructureType) => {
         css={`
           display: grid;
           grid-template-columns: auto auto;
-          gap: 15px;
-          width: 103px;
+          gap: 7.8px;
+          width: 95px;
           div {
             background: #dfe3e6;
             height: 56px;
@@ -528,8 +571,8 @@ const OneByThree = (props: IRowStructureType) => {
       <div
         css={`
           display: grid;
-          grid-template-columns: 29.4% auto auto;
-          gap: 6.3px;
+          grid-template-columns: 29px 26px 26px;
+          gap: 8px;
           width: 109px;
           div {
             background: #dfe3e6;
@@ -555,44 +598,15 @@ const OneByFour = (props: IRowStructureType) => {
       <div
         css={`
           display: grid;
-          grid-template-columns: 25px 23px 23px 23px;
-          gap: 8px;
-          width: 116px;
+          grid-template-columns: 19.2px 17.65px 17.65px 17.65px;
+          gap: 7.6px;
+          width: 95px;
           div {
             background: #dfe3e6;
             height: 56px;
           }
         `}
       >
-        <div />
-        <div />
-        <div />
-        <div />
-      </div>
-    </div>
-  );
-};
-
-const OneByFive = (props: IRowStructureType) => {
-  const handleClick = () => {
-    props.setSelectedType("oneByFive");
-  };
-  return (
-    <div css={blockcss} onClick={handleClick}>
-      <p>1/5</p>
-      <div
-        css={`
-          display: grid;
-          grid-template-columns: 19px 18px 18px 18px 18px;
-          gap: 5px;
-          width: 116px;
-          div {
-            background: #dfe3e6;
-            height: 56px;
-          }
-        `}
-      >
-        <div />
         <div />
         <div />
         <div />
@@ -612,9 +626,9 @@ const OneToFour = (props: IRowStructureType) => {
       <div
         css={`
           display: grid;
-          grid-template-columns: 25% 75%;
-          gap: 7px;
-          width: 116px;
+          grid-template-columns: 28px 61px;
+          gap: 9px;
+          width: 95px;
           div {
             background: #dfe3e6;
             height: 56px;
@@ -638,9 +652,59 @@ const FourToOne = (props: IRowStructureType) => {
       <div
         css={`
           display: grid;
-          grid-template-columns: 75% 25%;
-          gap: 7px;
-          width: 116px;
+          grid-template-columns: 72% 18%;
+          gap: 9px;
+          width: 95px;
+          div {
+            background: #dfe3e6;
+            height: 56px;
+          }
+        `}
+      >
+        <div />
+        <div />
+      </div>
+    </div>
+  );
+};
+const TwoToThree = (props: IRowStructureType) => {
+  const handleClick = () => {
+    props.setSelectedType("twoToThree");
+  };
+  return (
+    <div css={blockcss} onClick={handleClick}>
+      <p>2/3</p>
+      <div
+        css={`
+          display: grid;
+          grid-template-columns: 28px 61px;
+          gap: 11px;
+          width: 95px;
+          div {
+            background: #dfe3e6;
+            height: 56px;
+          }
+        `}
+      >
+        <div />
+        <div />
+      </div>
+    </div>
+  );
+};
+const ThreeToTwo = (props: IRowStructureType) => {
+  const handleClick = () => {
+    props.setSelectedType("threeToTwo");
+  };
+  return (
+    <div css={blockcss} onClick={handleClick}>
+      <p>3/2</p>
+      <div
+        css={`
+          display: grid;
+          grid-template-columns: 61px 28px;
+          gap: 11px;
+          width: 95px;
           div {
             background: #dfe3e6;
             height: 56px;
@@ -661,66 +725,71 @@ export function Divider(props: {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
 
-  const [handleDisplay, setHandleDisplay] = React.useState(false);
+  const [menuDisplay, setMenuDisplay] = React.useState(false);
 
   const viewOnlyMode =
     page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
 
-  const handlers = viewOnlyMode
-    ? {}
-    : {
-        onMouseEnter: () => setHandleDisplay(true),
-        onMouseLeave: () => setHandleDisplay(false),
-      };
-
   return (
     <div
-      {...handlers}
       css={`
         width: 100%;
         padding: 4px;
         display: flex;
         position: relative;
+        button {
+          padding: 0;
+          svg {
+            width: 20px;
+            height: 20px;
+          }
+        }
       `}
     >
-      {handleDisplay && (
-        <div
+      <div>
+        {menuDisplay && (
+          <IconButton
+            css={`
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 36px;
+              height: 36px;
+              border-radius: 100px;
+              background: #cfd4da;
+              top: -4px;
+              left: -6rem;
+              position: absolute;
+            `}
+            onClick={() => props.delete(props.dividerId)}
+          >
+            <DeleteIcon fontSize={"inherit"} />
+          </IconButton>
+        )}
+
+        <IconButton
+          onClick={() => {
+            setMenuDisplay(!menuDisplay);
+          }}
           css={`
-            top: -4px;
-            left: -4rem;
             display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 100px;
+            background: #cfd4da;
+            color: #262c34;
+            border: ${menuDisplay ? "1px solid #262c34" : "none"};
+            top: -4px;
+            left: -3.15rem;
             position: absolute;
-            height: calc(100% + 8px);
           `}
         >
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: center;
-            `}
-          >
-            <IconButton onClick={() => props.delete(props.dividerId)}>
-              <DeleteIcon />
-            </IconButton>
-          </div>
-          <div
-            css={`
-              width: 23px;
-              display: flex;
-              align-items: center;
-              background: #adb5bd;
-              border-radius: 3.45px;
-              transform: matrix(-1, 0, 0, 1, 0, 0);
+          <MoreVert color="inherit" />
+        </IconButton>
+      </div>
 
-              justify-content: center;
-            `}
-          >
-            <RowFrameHandleAdornment />
-          </div>
-        </div>
-      )}
       <hr
         css={`
           width: 100%;

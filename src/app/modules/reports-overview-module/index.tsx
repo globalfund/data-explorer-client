@@ -13,7 +13,6 @@ export default function ReportsOverviewModule() {
   const cmsData = useCMSData({ returnData: true });
   const [tableView, setTableView] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
-  const [openSearch, setOpenSearch] = React.useState(false);
   const [sortValue, setSortValue] = React.useState("createdDate");
   return (
     <div css={container}>

@@ -148,6 +148,74 @@ interface Props {
   reportName: string;
 }
 
+const dummyChartList = [
+  {
+    id: "",
+
+    name: "Allocation Viz",
+    description: "Allocations amounts for countries by disease",
+    dataset: "Budgets",
+    chartType: "Doughnut",
+    createdDate: "10/10/2022",
+    editedDate: "25/03/2023",
+    vizType: "echartsBarchart",
+    datasetId: "chart.datasetId",
+    pickedCharts: [],
+  },
+  {
+    id: "",
+
+    name: "Sales Overview",
+    description: "Sales performance overview",
+    dataset: "Sales Data",
+    chartType: "Bar",
+    createdDate: "15/11/2022",
+    editedDate: "20/04/2023",
+    vizType: "echartsBarchart",
+    datasetId: "chart.datasetId",
+    pickedCharts: [],
+  },
+  {
+    id: "",
+
+    name: "User Activity",
+    description: "User activity on the website",
+    dataset: "User Data",
+    chartType: "Line",
+    createdDate: "05/09/2022",
+    editedDate: "12/02/2023",
+    vizType: "echartsBarchart",
+    datasetId: "chart.datasetId",
+    pickedCharts: [],
+  },
+  {
+    id: "",
+
+    name: "Product Inventory",
+    description: "Inventory status of products",
+    dataset: "Inventory Data",
+    chartType: "Pie",
+    createdDate: "30/07/2022",
+    editedDate: "05/01/2023",
+    vizType: "echartsBarchart",
+    datasetId: "chart.datasetId",
+    pickedCharts: [],
+  },
+  {
+    id: "",
+
+    name: "Expense Breakdown",
+    description: "Breakdown of expenses by category",
+    dataset: "Expense Data",
+    chartType: "Area",
+    createdDate: "20/12/2022",
+    editedDate: "10/03/2023",
+    vizType: "echartsBarchart",
+    datasetId: "chart.datasetId",
+    pickedCharts: [],
+  },
+];
+
 export function ReportRightPanelCreateView(props: Props) {
   const [currentView, setCurrentView] = useRecoilState(
     reportRightPanelViewAtom
@@ -215,246 +283,290 @@ export function ReportRightPanelCreateView(props: Props) {
   }, [props.headerDetails.showHeader]);
 
   return (
-    <div
-      css={`
-        width: 100%;
-        display: flex;
-        height: 100%;
-        flex-direction: column;
-      `}
-    >
+    <>
       <div
         css={`
           width: 100%;
           display: flex;
-          height: 67px;
-          background: #fff;
-          align-items: center;
-          button {
-            padding: 20px;
-            height: 100%;
-          }
-        `}
-      >
-        <IconButton
-          onClick={() => setCurrentView("elements")}
-          css={`
-            border-radius: 0px 0px 8px 0px;
-
-            ${currentView === "elements" &&
-            "background: #F5F5F7; border-radius: 8px 8px 0px 0px; "}
-          `}
-        >
-          {currentView === "elements" ? (
-            <ActiveElementsIcon />
-          ) : (
-            <ElementsIcon />
-          )}
-        </IconButton>
-        <IconButton
-          onClick={() => setCurrentView("charts")}
-          css={`
-            border-radius: 0px 0px 0px 8px;
-            ${currentView === "charts" &&
-            "background-color: #F5F5F7; border-radius: 8px 8px 0px 0px;"}
-          `}
-        >
-          {currentView === "charts" ? <ActiveChartIcon /> : <ChartIcon />}
-        </IconButton>
-
-        <IconButton
-          onClick={() => setCurrentView("media")}
-          css={`
-            ${currentView === "media" &&
-            "background: #F5F5F7; border-radius:0px; "}
-            border-radius: 0px 0px 0px 8px;
-          `}
-        >
-          {currentView === "media" ? <ActiveMediaIcon /> : <MediaIcon />}
-        </IconButton>
-      </div>
-      <div
-        css={`
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          padding-bottom: 3px;
-          padding-top: 4px;
-
-          border-bottom: 1px solid #dfe3e5;
-          width: 90%;
-          margin-left: 5%;
-
-          p {
-            font-size: 14px;
-            font-family: "Gotham Narrow", sans-serif;
-            color: #262c34;
-            text-transform: capitalize;
-          }
+          height: 100%;
+          flex-direction: column;
+          position: relative;
         `}
       >
         <div
           css={`
-            width: 23px;
-            height: 23px;
-            border-radius: 23px;
-            background: #252c34;
-            color: #fff;
-            font-size: 14px;
+            width: 100%;
             display: flex;
-            justify-content: center;
+            height: 67px;
+            background: #fff;
             align-items: center;
+            button {
+              padding: 20px;
+              height: 100%;
+            }
           `}
         >
-          {currentView === "elements"
-            ? "1"
-            : currentView === "charts"
-            ? "2"
-            : currentView === "media" && "3"}
+          <IconButton
+            onClick={() => setCurrentView("elements")}
+            css={`
+              border-radius: 0px 0px 8px 0px;
+
+              ${currentView === "elements" &&
+              "background: #F5F5F7; border-radius: 8px 8px 0px 0px; "}
+            `}
+          >
+            {currentView === "elements" ? (
+              <ActiveElementsIcon />
+            ) : (
+              <ElementsIcon />
+            )}
+          </IconButton>
+          <IconButton
+            onClick={() => setCurrentView("charts")}
+            css={`
+              border-radius: 0px 0px 0px 8px;
+              ${currentView === "charts" &&
+              "background-color: #F5F5F7; border-radius: 8px 8px 0px 0px;"}
+            `}
+          >
+            {currentView === "charts" ? <ActiveChartIcon /> : <ChartIcon />}
+          </IconButton>
+
+          <IconButton
+            onClick={() => setCurrentView("media")}
+            css={`
+              ${currentView === "media" &&
+              "background: #F5F5F7; border-radius:0px; "}
+              border-radius: 0px 0px 0px 8px;
+            `}
+          >
+            {currentView === "media" ? <ActiveMediaIcon /> : <MediaIcon />}
+          </IconButton>
         </div>
-        <div>
-          <p>{currentView}</p>
+        <div
+          css={`
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 3px;
+            padding-top: 4px;
+
+            border-bottom: 1px solid #dfe3e5;
+            width: 90%;
+            margin-left: 5%;
+
+            p {
+              font-size: 14px;
+              font-family: "Gotham Narrow", sans-serif;
+              color: #262c34;
+              text-transform: capitalize;
+            }
+          `}
+        >
+          <div
+            css={`
+              width: 23px;
+              height: 23px;
+              border-radius: 23px;
+              background: #252c34;
+              color: #fff;
+              font-size: 14px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            `}
+          >
+            {currentView === "elements"
+              ? "1"
+              : currentView === "charts"
+              ? "2"
+              : currentView === "media" && "3"}
+          </div>
+          <div>
+            <p>{currentView}</p>
+          </div>
         </div>
+        <div
+          css={`
+            height: 16px;
+          `}
+        />
+
+        {currentView === "elements" && (
+          <>
+            <div
+              css={`
+                width: 100%;
+                display: flex;
+                user-select: none;
+                flex-direction: column;
+
+                > div {
+                  width: 90%;
+                  cursor: grab;
+                  height: 64px;
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  padding: 0 8px 0 16px;
+                  background-color: #dfe3e5;
+                  border-radius: 8px;
+                  margin: 8px auto;
+                  p {
+                    margin: 0px;
+                    line-height: normal;
+                    font-size: 12px;
+                  }
+                  b {
+                    font-size: 14px;
+                    line-height: normal;
+                    margin: 0;
+                  }
+                  &:hover {
+                    background: #252c34;
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                    b,
+                    p {
+                      color: #fff;
+                    }
+                  }
+                }
+              `}
+            >
+              {elementItemDetails.map((item) => (
+                <ElementItem
+                  key={item.elementType}
+                  {...item}
+                  disabled={
+                    item.elementType === ReportElementsType.HEADER
+                      ? !props.showHeaderItem
+                      : false
+                  }
+                />
+              ))}
+            </div>
+          </>
+        )}
+        {currentView === "charts" && (
+          <ReportRightPanelCreateViewChartList
+            pickedCharts={props.pickedCharts}
+            setPickedCharts={props.setPickedCharts}
+            headerDetails={props.headerDetails}
+            framesArray={props.framesArray}
+            reportName={props.reportName}
+            appliedHeaderDetails={props.appliedHeaderDetails}
+          />
+        )}
+        {currentView === "media" && (
+          <>
+            <div
+              css={`
+                width: 100%;
+                display: flex;
+                user-select: none;
+                flex-direction: column;
+                background: transparent;
+
+                > div {
+                  width: 90%;
+                  cursor: grab;
+                  height: 64px;
+                  display: flex;
+                  align-items: center;
+                  gap: 16px;
+                  padding: 0 8px 0 16px;
+                  background: #dfe3e5;
+                  border-radius: 8px;
+                  margin: 8px auto;
+
+                  p {
+                    margin: 0px;
+                    line-height: normal;
+                    font-size: 12px;
+                  }
+                  b {
+                    font-size: 14px;
+                    line-height: normal;
+                    margin: 0;
+                  }
+                  &:hover {
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                    background: #252c34;
+                    b,
+                    p {
+                      color: #fff;
+                    }
+                  }
+                }
+              `}
+            >
+              {mediaItemDetails.map((item) => (
+                <ElementItem
+                  key={item.elementType}
+                  {...item}
+                  disabled={
+                    item.elementType === ReportElementsType.HEADER
+                      ? !props.showHeaderItem
+                      : false
+                  }
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
       </div>
       <div
         css={`
-          height: 16px;
+          display: flex;
+          gap: 8px;
+          position: absolute;
+          bottom: 0%;
+          left: 2%;
+          z-index: 2;
+          height: 70px;
+
+          background: #f5f5f7;
+          button {
+            outline: none;
+            border: none;
+            border-radius: 8px;
+            width: 188px;
+            height: 48px;
+            background: #dfe3e5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-family: "Gotham Narrow", sans-serif;
+            :nth-child(1) {
+              background: #dfe3e5;
+              color: #262c34;
+            }
+            :nth-child(2) {
+              background: #262c34;
+              color: #fff;
+            }
+            &:hover {
+              opacity: 0.9;
+              cursor: pointer;
+            }
+          }
         `}
-      />
-
-      {currentView === "elements" && (
-        <>
-          <div
-            css={`
-              width: 100%;
-              display: flex;
-              user-select: none;
-              flex-direction: column;
-
-              > div {
-                width: 90%;
-                cursor: grab;
-                height: 64px;
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                padding: 0 8px 0 16px;
-                background-color: #dfe3e5;
-                border-radius: 8px;
-                margin: 8px auto;
-                p {
-                  margin: 0px;
-                  line-height: normal;
-                  font-size: 12px;
-                }
-                b {
-                  font-size: 14px;
-                  line-height: normal;
-                  margin: 0;
-                }
-                &:hover {
-                  background: #252c34;
-                  svg {
-                    path {
-                      fill: #fff;
-                    }
-                  }
-                  b,
-                  p {
-                    color: #fff;
-                  }
-                }
-              }
-            `}
-          >
-            {elementItemDetails.map((item) => (
-              <ElementItem
-                key={item.elementType}
-                {...item}
-                disabled={
-                  item.elementType === ReportElementsType.HEADER
-                    ? !props.showHeaderItem
-                    : false
-                }
-              />
-            ))}
-          </div>
-        </>
-      )}
-      {currentView === "charts" && (
-        <ReportRightPanelCreateViewChartList
-          pickedCharts={props.pickedCharts}
-          setPickedCharts={props.setPickedCharts}
-          headerDetails={props.headerDetails}
-          framesArray={props.framesArray}
-          reportName={props.reportName}
-          appliedHeaderDetails={props.appliedHeaderDetails}
-        />
-      )}
-      {currentView === "media" && (
-        <>
-          <div
-            css={`
-              width: 100%;
-              display: flex;
-              user-select: none;
-              flex-direction: column;
-              background: transparent;
-
-              > div {
-                width: 90%;
-                cursor: grab;
-                height: 64px;
-                display: flex;
-                align-items: center;
-                gap: 16px;
-                padding: 0 8px 0 16px;
-                background: #dfe3e5;
-                border-radius: 8px;
-                margin: 8px auto;
-
-                p {
-                  margin: 0px;
-                  line-height: normal;
-                  font-size: 12px;
-                }
-                b {
-                  font-size: 14px;
-                  line-height: normal;
-                  margin: 0;
-                }
-                &:hover {
-                  svg {
-                    path {
-                      fill: #fff;
-                    }
-                  }
-                  background: #252c34;
-                  b,
-                  p {
-                    color: #fff;
-                  }
-                }
-              }
-            `}
-          >
-            {mediaItemDetails.map((item) => (
-              <ElementItem
-                key={item.elementType}
-                {...item}
-                disabled={
-                  item.elementType === ReportElementsType.HEADER
-                    ? !props.showHeaderItem
-                    : false
-                }
-              />
-            ))}
-          </div>
-        </>
-      )}
-
-      {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
-    </div>
+      >
+        <button>Cancel </button>
+        <button>Save</button>
+      </div>
+    </>
   );
 }
 
@@ -492,7 +604,6 @@ function ReportRightPanelCreateViewChartList(props: {
   };
 
   React.useEffect(() => {
-    console.log("loaded");
     loadChartList({
       storeInCrudData: true,
       filterString: `filter={"where":{"name":{"like":"${search}.*","options":"i"}},"order":"${sortBy.value}"}`,
@@ -595,6 +706,7 @@ function ReportRightPanelCreateViewChartList(props: {
           overflow-y: auto;
           padding: 18px 23px;
           flex-direction: column;
+          margin-bottom: 100px;
 
           height: calc(100vh - 48px - 50px - 52px - 60px);
           max-height: calc(100vh - 48px - 50px - 52px - 60px);
@@ -613,24 +725,23 @@ function ReportRightPanelCreateViewChartList(props: {
           }
         `}
       >
-        <ChartItem
-          id={""}
-          key={""}
-          name={"Allocation Viz"}
-          description="Allocations amounts for countries by disease"
-          dataset="Budgets"
-          chartType="Doughnut"
-          createdDate="10/10/2022"
-          editedDate="25/03/2023"
-          vizType={"echartsBarchart"}
-          datasetId={"chart.datasetId"}
-          pickedCharts={props.pickedCharts}
-          elementType={ReportElementsType.CHART}
-          setPickedCharts={props.setPickedCharts}
-        />
-        {/* {chartList.map((chart) => (
-        
-        ))} */}
+        {chartList.map((chart, index) => (
+          <ChartItem
+            id={chart.id}
+            key={index}
+            name={chart.name}
+            description={chart.description}
+            dataset={chart.dataset}
+            chartType={chart.chartType}
+            createdDate={chart.createdDate}
+            editedDate={chart.editedDate}
+            vizType={chart.vizType}
+            datasetId={chart.datasetId}
+            pickedCharts={props.pickedCharts}
+            elementType={ReportElementsType.CHART}
+            setPickedCharts={props.setPickedCharts}
+          />
+        ))}
       </div>
     </React.Fragment>
   );
@@ -759,6 +870,11 @@ function ChartItem(props: {
             b,
             p {
               color: #fff;
+            }
+            svg {
+              path {
+                fill: #fff;
+              }
             }
           }
           padding: 16px;
