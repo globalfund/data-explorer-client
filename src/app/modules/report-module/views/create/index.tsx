@@ -56,128 +56,6 @@ export function ReportCreateView(props: ReportCreateViewProps) {
   }
 
   React.useEffect(() => {
-    if (props.reportType === "advanced") {
-      const rowOne = v4();
-      const rowTwo = v4();
-      const rowThree = v4();
-      const rowFour = v4();
-      const rowFive = v4();
-      props.setFramesArray([
-        {
-          id: rowOne,
-          frame: (
-            <RowFrame
-              rowId={rowOne}
-              rowIndex={0}
-              forceSelectedType="oneByFive"
-              deleteFrame={() => deleteFrame(rowOne)}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content: [null, null, null, null, null],
-          contentWidths: [20, 20, 20, 20, 20],
-          contentTypes: [null, null, null, null, null],
-          structure: "oneByFive",
-        },
-        {
-          id: rowTwo,
-          frame: (
-            <RowFrame
-              rowId={rowTwo}
-              rowIndex={1}
-              forceSelectedType="oneByOne"
-              deleteFrame={() => deleteFrame(rowTwo)}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content: [null],
-          contentWidths: [100],
-          contentTypes: [null],
-          structure: "oneByOne",
-        },
-        {
-          id: rowThree,
-          frame: (
-            <RowFrame
-              rowId={rowThree}
-              rowIndex={2}
-              forceSelectedType="oneToFour"
-              deleteFrame={() => deleteFrame(rowThree)}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content: [null, null],
-          contentWidths: [50, 50],
-          contentTypes: [null, null],
-          structure: "oneToFour",
-        },
-        {
-          id: rowFour,
-          frame: (
-            <RowFrame
-              rowId={rowFour}
-              rowIndex={3}
-              forceSelectedType="oneByOne"
-              deleteFrame={() => deleteFrame(rowFour)}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content: [null],
-          contentWidths: [100],
-          contentTypes: [null],
-          structure: "oneByOne",
-        },
-        {
-          id: rowFive,
-          frame: (
-            <RowFrame
-              rowId={rowFive}
-              rowIndex={4}
-              forceSelectedType="oneByThree"
-              deleteFrame={() => deleteFrame(rowFive)}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content: [null, null, null],
-          contentWidths: [33, 33, 33],
-          contentTypes: [null, null, null],
-          structure: "oneByThree",
-        },
-      ]);
-    }
-  }, [props.reportType]);
-
-  React.useEffect(() => {
     if (width && width !== containerWidth) {
       setContainerWidth(width);
     }
@@ -228,6 +106,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                     }
                     handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
+                    toggleRowFrameHandle={props.toggleRowFrameHandle}
                   />
                 </div>
               );
@@ -247,6 +126,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
               }
               handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
+              toggleRowFrameHandle={props.toggleRowFrameHandle}
             />
           }
           <Box height={45} />
@@ -320,12 +200,14 @@ export const PlaceHolder = (props: PlaceholderProps) => {
                 }
                 handlePersistReportState={props.handlePersistReportState}
                 handleRowFrameItemResize={props.handleRowFrameItemResize}
+                toggleRowFrameHandle={props.toggleRowFrameHandle}
               />
             ),
             content: [],
             contentWidths: [],
             contentTypes: [],
             structure: null,
+            isHandleOpen: false,
           });
           return [...prev];
         });
@@ -340,6 +222,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
             contentWidths: [],
             contentTypes: ["divider"],
             structure: null,
+            isHandleOpen: false,
           });
           return [...prev];
         });

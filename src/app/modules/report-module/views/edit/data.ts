@@ -41,12 +41,13 @@ export interface ReportEditViewProps {
       dateColor: string;
     }>
   >;
+  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameItemAddition: (
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
   handleRowFrameStructureTypeSelection: (
     rowIndex: number,
@@ -56,9 +57,10 @@ export interface ReportEditViewProps {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
       | "oneToFour"
       | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,

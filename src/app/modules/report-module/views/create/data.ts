@@ -6,16 +6,18 @@ export interface IFramesArray {
   frame: JSX.Element;
   contentWidths: number[];
   content: (object | string | null)[];
-  contentTypes: ("text" | "divider" | "chart" | null)[];
+  isHandleOpen: boolean;
+  contentTypes: ("text" | "divider" | "chart" | "image" | null)[];
   structure:
     | null
     | "oneByOne"
     | "oneByTwo"
     | "oneByThree"
     | "oneByFour"
-    | "oneByFive"
     | "oneToFour"
-    | "fourToOne";
+    | "fourToOne"
+    | "twoToThree"
+    | "threeToTwo";
 }
 
 export interface ReportCreateViewProps {
@@ -52,7 +54,7 @@ export interface ReportCreateViewProps {
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
   handleRowFrameStructureTypeSelection: (
     rowIndex: number,
@@ -62,9 +64,10 @@ export interface ReportCreateViewProps {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
       | "oneToFour"
       | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,
@@ -72,6 +75,7 @@ export interface ReportCreateViewProps {
     width: number,
     reportContentWidths: ReportContentWidthsType[]
   ) => void;
+  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
 
 export interface PlaceholderProps {
@@ -87,7 +91,7 @@ export interface PlaceholderProps {
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
   handleRowFrameStructureTypeSelection: (
     rowIndex: number,
@@ -97,9 +101,10 @@ export interface PlaceholderProps {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
       | "oneToFour"
       | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,
@@ -107,4 +112,5 @@ export interface PlaceholderProps {
     width: number,
     reportContentWidths: ReportContentWidthsType[]
   ) => void;
+  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }

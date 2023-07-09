@@ -134,6 +134,7 @@ export function ReportPreviewView() {
               previewItems={rowFrame.items}
               handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
+              toggleRowFrameHandle={() => {}}
             />
           );
         })}

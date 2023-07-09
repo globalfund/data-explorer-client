@@ -150,11 +150,13 @@ export function ReportEditView(props: ReportEditViewProps) {
               handlePersistReportState={props.handlePersistReportState}
               previewItems={rowFrame.items}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
+              toggleRowFrameHandle={props.toggleRowFrameHandle}
             />
           ),
           content,
           contentWidths: [],
           contentTypes,
+          isHandleOpen: false,
         };
       });
       props.setFramesArray(newFrameArray);
@@ -224,6 +226,7 @@ export function ReportEditView(props: ReportEditViewProps) {
                     }
                     handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
+                    toggleRowFrameHandle={props.toggleRowFrameHandle}
                   />
                 </div>
               );
@@ -242,6 +245,7 @@ export function ReportEditView(props: ReportEditViewProps) {
             }
             handlePersistReportState={props.handlePersistReportState}
             handleRowFrameItemResize={props.handleRowFrameItemResize}
+            toggleRowFrameHandle={props.toggleRowFrameHandle}
           />
           <Box height={45} />
         </div>

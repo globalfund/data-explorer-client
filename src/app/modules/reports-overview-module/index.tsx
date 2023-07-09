@@ -9,7 +9,7 @@ import { container, subtitle } from "app/modules/landing-module/styles";
 import Toolbar from "app/modules/reports-overview-module/components/toolbar";
 import ReportsGrid from "./components/reportsGrid";
 
-export default function ReportsModule() {
+export default function ReportsOverviewModule() {
   const cmsData = useCMSData({ returnData: true });
   const [tableView, setTableView] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");

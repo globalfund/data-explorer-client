@@ -143,6 +143,7 @@ export function GridItem(props: {
           setModalType={props.setModalType}
           showMenuOptions={showMenuOptions}
           handleModal={props.handleModal}
+          menuOptionsDisplay={menuOptionsDisplay}
           id={props.id}
         />
       )}
