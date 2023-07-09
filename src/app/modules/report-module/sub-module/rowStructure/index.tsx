@@ -18,12 +18,17 @@ import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-mo
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { createChartFromReportAtom } from "app/state/recoil/atoms";
+import { MoreVert, FileCopy } from "@material-ui/icons";
 import {
   reportContentWidthsAtom,
   unSavedReportPreviewModeAtom,
   reportContentIsResizingAtom,
   reportContentContainerWidth,
 } from "app/state/recoil/atoms";
+import { overlaycss } from "./style";
+import ReportActionDialog from "app/modules/report-module/components/actionDialog";
+import ImageBox from "app/modules/report-module/components/imageBox";
+import { set } from "lodash";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -45,21 +50,89 @@ interface RowStructureDisplayProps {
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
   onRowBoxItemResize: (rowId: string, itemIndex: number, width: number) => void;
+  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
 
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
 
-  const [handleDisplay, setHandleDisplay] = React.useState(false);
+  const [handleDisplay, setHandleDisplay] = React.useState(true);
+  const [rowButtonsDisplay, setRowButtonsDisplay] = React.useState(false);
+  const [modalDisplay, setModalDisplay] = React.useState(false);
+  const [modalType, setModalType] = React.useState<
+    "edit-row" | "delete-row" | ""
+  >("");
+  const [modalTitle, setModalTitle] = React.useState("");
+  const [modalSubtitle, setModalSubtitle] =
+    React.useState<React.ReactNode>(null);
+  const [modalDescription, setModalDescription] = React.useState("");
+  const [modalButtonTitle, setModalButtonTitle] = React.useState("");
 
-  const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
+  const handleModalDisplay = () => {
+    if (modalType === "delete-row") {
+      setModalTitle("Delete row frame");
+      setModalSubtitle(
+        <>
+          <p>
+            <b>
+              Proceed with caution!
+              <br /> No turning back after this action
+            </b>
+          </p>
+        </>
+      );
+      setModalDescription(
+        "Are you going to delete your row frame? You will permanently delete all the content placed."
+      );
+      setModalButtonTitle("Delete");
+    } else if (modalType === "edit-row") {
+      setModalTitle("Edit row frame");
+      setModalSubtitle(
+        <>
+          <p>
+            <b>
+              Proceed with caution!
+              <br /> You might lose content in placeholders
+            </b>
+          </p>
+        </>
+      );
+      setModalDescription(
+        "TGF Data Explorer platform will try to fit your current content in your new placeholder row estructure. Please save your changes before proceeding."
+      );
+      setModalButtonTitle("Edit row");
+    }
+  };
+
+  const handleModalAction = () => {
+    if (modalType === "delete-row") {
+      props.deleteFrame(props.rowId);
+    } else if (modalType === "edit-row") {
+      props.toggleRowFrameHandle(props.rowId, false);
+
+      props.setSelectedTypeHistory([
+        ...props.selectedTypeHistory,
+        props.selectedType,
+        "",
+      ]);
+    }
+    setModalDisplay(false);
+  };
+
+  React.useEffect(() => {
+    handleModalDisplay();
+  }, [modalType]);
+
+  const [reportContentWidths, setReportContentWidths] = useRecoilState(
+    reportContentWidthsAtom
+  );
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
@@ -71,19 +144,29 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     ? find(reportContentWidths, { id: props.rowId })
     : get(reportContentWidths, `[${props.rowIndex}]`, { widths: [] });
 
+  const setDefaultRowContentWidths = () => {
+    const widths = props.rowStructureDetailItems.map((row) => row.width);
+    setReportContentWidths((prev) => [
+      ...prev,
+      {
+        id: props.rowId,
+        widths,
+      },
+    ]);
+  };
+
+  React.useEffect(() => {
+    setDefaultRowContentWidths();
+  }, []);
+
   const handlers = viewOnlyMode
     ? {}
     : {
         onMouseEnter: () => {
           setHandleDisplay(true);
         },
-        onMouseLeave: () => setHandleDisplay(false),
+        // onMouseLeave: () => setHandleDisplay(false),
       };
-
-  const border =
-    !viewOnlyMode && handleDisplay
-      ? "0.722415px dashed  #ADB5BD"
-      : "0.722415px dashed transparent";
 
   return (
     <div
@@ -98,64 +181,102 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         <div
           css={`
             width: 32px;
-            left: -32px;
+            left: -50px;
+            bottom: 0px;
             display: flex;
             position: absolute;
-            height: calc(100% + 8px);
           `}
         >
+          <div css={overlaycss} onClick={() => setHandleDisplay(false)} />
           <div
             css={`
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: center;
+              padding: 0 0px;
             `}
           >
-            <div
-              css={`
-                background: #adb5bd;
-                border-radius: 100px;
-                height: 53px;
-                width: 22px;
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                flex-direction: column;
+            {rowButtonsDisplay && (
+              <div
+                css={`
+                  display: flex;
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: center;
+                `}
+              >
+                <div
+                  css={`
+                    background: #cfd4da;
+                    border-radius: 100px;
+                    height: 70px;
+                    width: 36px;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    flex-direction: column;
 
-                padding-bottom: 2px;
-                button {
-                  padding: 4px;
-                  :hover {
-                    background: transparent;
-                    svg {
-                      path {
-                        fill: #fff;
+                    padding-bottom: 2px;
+                    button {
+                      padding: 4px;
+                      svg {
+                        width: 20px;
+                        height: 20px;
+                        path {
+                          fill: #262c34;
+                        }
+                      }
+                      :hover {
+                        background: transparent;
                       }
                     }
-                  }
-                }
+                  `}
+                >
+                  <IconButton
+                    onClick={() => {
+                      setModalType("edit-row");
+                      setModalDisplay(true);
+                    }}
+                  >
+                    <Tooltip title="Edit row" placement="right">
+                      <EditIcon />
+                    </Tooltip>
+                  </IconButton>
+
+                  <IconButton
+                    onClick={() => {
+                      setModalType("delete-row");
+                      setModalDisplay(true);
+                    }}
+                  >
+                    <Tooltip title="Delete row" placement="right">
+                      <DeleteIcon />
+                    </Tooltip>
+                  </IconButton>
+                </div>
+              </div>
+            )}
+            <div
+              css={`
+                height: 8px;
+              `}
+            />
+
+            <IconButton
+              onClick={() => {
+                setRowButtonsDisplay(!rowButtonsDisplay);
+                props.toggleRowFrameHandle(props.rowId, !rowButtonsDisplay);
+              }}
+              css={`
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 36px;
+                height: 36px;
+                border-radius: 100px;
+                border: ${rowButtonsDisplay ? "1px solid #262c34" : "none"};
+                background: #cfd4da;
               `}
             >
-              <IconButton
-                onClick={() => {
-                  props.setSelectedTypeHistory([
-                    ...props.selectedTypeHistory,
-                    props.selectedType,
-                    "",
-                  ]);
-                }}
-              >
-                <Tooltip title="Edit" placement="right">
-                  <EditIcon />
-                </Tooltip>
-              </IconButton>
-              <IconButton onClick={() => props.deleteFrame(props.rowId)}>
-                <Tooltip title="Delete" placement="right">
-                  <DeleteIcon />
-                </Tooltip>
-              </IconButton>
-            </div>
+              <MoreVert />
+            </IconButton>
           </div>
         </div>
       )}
@@ -163,9 +284,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         css={`
           width: 100%;
           display: flex;
-          overflow: hidden;
+          height: 100%;
           gap: ${props.gap};
-          border: ${border};
         `}
       >
         {props.rowStructureDetailItems.map((row, index) => (
@@ -185,6 +305,16 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           />
         ))}
       </div>
+      <ReportActionDialog
+        modalDisplay={modalDisplay}
+        buttonTitle={modalButtonTitle}
+        description={modalDescription}
+        subtitle={modalSubtitle}
+        title={modalTitle}
+        action={handleModalAction}
+        modalType={modalType}
+        setModalDisplay={setModalDisplay}
+      />
     </div>
   );
 }
@@ -202,7 +332,7 @@ const Box = (props: {
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
   rowItemsCount: number;
   previewItem?: string | any;
@@ -229,9 +359,19 @@ const Box = (props: {
   );
   const [chartId, setChartId] = React.useState<string | null>(null);
   const [displayChart, setDisplayChart] = React.useState(false);
+  const [displayImageBox, setDisplayImageBox] = React.useState(false);
+  const [displayDeleteElementModal, setDisplayDeleteElementModal] =
+    React.useState({
+      type: "",
+      display: false,
+    });
   const [displayTextBox, setDisplayTextBox] = React.useState(false);
+  const [boxMenuButtonOpened, setBoxMenuButtonOpened] = React.useState(false);
   const [textContent, setTextContent] = React.useState<EditorState>(
     EditorState.createEmpty()
+  );
+  const [imageFile, setImageFile] = React.useState<{ image: File }>(
+    {} as { image: File }
   );
 
   const handleEditChart = () => {
@@ -250,6 +390,26 @@ const Box = (props: {
 
     history.push(`/chart/${chartId}/customize`);
   };
+  const handleDisplayDeleteElementModal = (type: string) => {
+    setBoxMenuButtonOpened(!boxMenuButtonOpened);
+    setDisplayDeleteElementModal({
+      type: type,
+      display: true,
+    });
+  };
+  const handleDeleteElement = () => {
+    props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+    setDisplayChart(false);
+    setChartId(null);
+    setDisplayTextBox(false);
+    setDisplayImageBox(false);
+    setImageFile({} as { image: File });
+    setTextContent(EditorState.createEmpty());
+    setDisplayDeleteElementModal({
+      ...displayDeleteElementModal,
+      display: false,
+    });
+  };
 
   const containerWidth = useRecoilValue(reportContentContainerWidth);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
@@ -263,7 +423,11 @@ const Box = (props: {
     reportPreviewMode;
 
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: [ReportElementsType.TEXT, ReportElementsType.CHART],
+    accept: [
+      ReportElementsType.TEXT,
+      ReportElementsType.CHART,
+      ReportElementsType.IMAGE,
+    ],
     collect: (monitor) => ({
       isOver: monitor.isOver(),
       canDrop: monitor.canDrop(),
@@ -279,6 +443,19 @@ const Box = (props: {
         );
         setDisplayTextBox(true);
         setDisplayChart(false);
+        setDisplayImageBox(false);
+      } else if (item.type === ReportElementsType.IMAGE) {
+        props.handleRowFrameItemAddition(
+          props.rowId,
+          props.itemIndex,
+          imageFile as object,
+          "image"
+        );
+        setDisplayImageBox(true);
+        setDisplayTextBox(false);
+        setDisplayChart(false);
+
+        monitor.getDropResult();
       } else if (item.type === ReportElementsType.CHART) {
         props.handleRowFrameItemAddition(
           props.rowId,
@@ -289,6 +466,8 @@ const Box = (props: {
         setChartId(item.value);
         setDisplayChart(true);
         setDisplayTextBox(false);
+        setDisplayImageBox(false);
+
         monitor.getDropResult();
       }
     },
@@ -311,10 +490,7 @@ const Box = (props: {
 
   let width = `${props.width}%`;
   if (containerWidth) {
-    width = `${
-      containerWidth * (props.width / 100) -
-      ((props.rowItemsCount - 1) * 60) / props.rowItemsCount
-    }px`;
+    width = `${containerWidth * (props.width / 100)}px`;
   }
 
   const onResizeStop = (
@@ -341,6 +517,7 @@ const Box = (props: {
           grid={[5, 5]}
           bounds="parent"
           onResize={onResize}
+          className="re-resizeable"
           onResizeStop={onResizeStop}
           size={{ width: width, height: props.height }}
           enable={{
@@ -350,8 +527,22 @@ const Box = (props: {
             overflow-y: auto;
             background: #fff;
             overflow-x: hidden;
-            position: relative;
+            position: static;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
 
+            &:focus-within,
+            &:hover {
+              border: 1px solid #262c34;
+            }
+
+            .public-DraftEditorPlaceholder-inner {
+              position: absolute;
+              color: #dfe3e5;
+              font-family: "Gotham Narrow", sans-serif;
+              font-weight: 400;
+              font-size: 16px;
+            }
             div {
               ${viewOnlyMode && "cursor: default;"}
             }
@@ -359,23 +550,53 @@ const Box = (props: {
         >
           <div>
             {!viewOnlyMode && (
-              <IconButton
-                onClick={() => {
-                  setDisplayChart(false);
-                  setChartId(null);
-                  setDisplayTextBox(false);
-                  setTextContent(EditorState.createEmpty());
-                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
-                }}
-                css={`
-                  top: 12px;
-                  z-index: 1;
-                  right: 12px;
-                  position: absolute;
-                `}
-              >
-                <DeleteIcon />
-              </IconButton>
+              <>
+                <IconButton
+                  css={`
+                    bottom: 12px;
+                    z-index: 2;
+                    right: 18px;
+                    position: absolute;
+                    background: ${boxMenuButtonOpened ? "#262C34" : "#cfd4da"};
+                    width: 24px;
+                    height: 24px;
+                    color: ${boxMenuButtonOpened ? "#fff" : "#000000"};
+                    font-size: 18px;
+                    &:hover {
+                      background: #262c34;
+                      color: #fff;
+                    }
+                  `}
+                  onClick={() => {
+                    setBoxMenuButtonOpened(!boxMenuButtonOpened);
+                    console.log("clicked");
+                  }}
+                >
+                  <MoreVert color="inherit" fontSize="inherit" />
+                </IconButton>
+                {boxMenuButtonOpened && (
+                  <IconButton
+                    onClick={() => {
+                      handleDisplayDeleteElementModal("text box");
+                    }}
+                    css={`
+                      width: 24px;
+                      height: 24px;
+                      padding: 7px;
+                      bottom: 12px;
+                      background: #e5e8eb;
+                      color: #262c34;
+                      font-size: 24px;
+
+                      z-index: 4;
+                      right: 50px;
+                      position: absolute;
+                    `}
+                  >
+                    <DeleteIcon color="inherit" fontSize="inherit" />
+                  </IconButton>
+                )}
+              </>
             )}
             <div>
               <RichEditor
@@ -383,6 +604,7 @@ const Box = (props: {
                 textContent={textContent}
                 editMode={!viewOnlyMode}
                 setTextContent={setTextContent}
+                fullHeight
               />
             </div>
           </div>
@@ -407,73 +629,58 @@ const Box = (props: {
               height: 100%;
               background: #fff;
               position: relative;
+              border-radius: 20px;
+              box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
               padding: ${props.rowType === "oneByFive" ? "0" : "24px"};
             `}
           >
             {!viewOnlyMode && (
-              <div>
+              <>
                 <IconButton
+                  css={`
+                    bottom: 12px;
+                    z-index: 2;
+                    right: 18px;
+                    position: absolute;
+                    background: ${boxMenuButtonOpened ? "#262C34" : "#cfd4da"};
+                    width: 24px;
+                    height: 24px;
+                    color: ${boxMenuButtonOpened ? "#fff" : "#000000"};
+                    font-size: 18px;
+                    &:hover {
+                      background: #262c34;
+                      color: #fff;
+                    }
+                  `}
                   onClick={() => {
-                    setDisplayChart(false);
-                    setChartId(null);
-                    setDisplayTextBox(false);
-                    setTextContent(EditorState.createEmpty());
-                    props.handleRowFrameItemRemoval(
-                      props.rowId,
-                      props.itemIndex
-                    );
+                    setBoxMenuButtonOpened(!boxMenuButtonOpened);
                   }}
-                  css={`
-                    top: 12px;
-                    z-index: 1;
-                    right: 12px;
-                    position: absolute;
-                    padding: 4px;
-                    width: 22px;
-                    height: 22px;
-                    border-radius: 50%;
-                    background: #adb5bd;
-                    :hover {
-                      background: #adb5bd;
-                      svg {
-                        path {
-                          fill: #fff;
-                        }
-                      }
-                    }
-                  `}
                 >
-                  <Tooltip title="Delete Chart">
-                    <DeleteIcon />
-                  </Tooltip>
+                  <MoreVert color="inherit" fontSize="inherit" />
                 </IconButton>
-                <IconButton
-                  onClick={handleEditChart}
-                  css={`
-                    top: 12px;
-                    z-index: 1;
-                    right: 39px;
-                    position: absolute;
-                    padding: 4px;
-                    width: 22px;
-                    height: 22px;
-                    border-radius: 50%;
-                    background: #adb5bd;
-                    :hover {
-                      background: #adb5bd;
-                      svg {
-                        path {
-                          fill: #fff;
-                        }
-                      }
-                    }
-                  `}
-                >
-                  <Tooltip title="Edit Chart">
-                    <EditIcon />
-                  </Tooltip>
-                </IconButton>
-              </div>
+                {boxMenuButtonOpened && (
+                  <IconButton
+                    onClick={() => {
+                      handleDisplayDeleteElementModal("chart");
+                    }}
+                    css={`
+                      width: 24px;
+                      height: 24px;
+                      padding: 7px;
+                      bottom: 12px;
+                      background: #e5e8eb;
+                      color: #262c34;
+                      font-size: 24px;
+
+                      z-index: 4;
+                      right: 50px;
+                      position: absolute;
+                    `}
+                  >
+                    <DeleteIcon color="inherit" fontSize="inherit" />
+                  </IconButton>
+                )}
+              </>
             )}
             <ReportChartWrapper id={chartId} />
           </div>
@@ -481,13 +688,98 @@ const Box = (props: {
       );
     }
 
+    if (displayImageBox) {
+      return (
+        <Resizable
+          key={chartId}
+          bounds="parent"
+          onResize={onResize}
+          onResizeStop={onResizeStop}
+          className="re-resizeable"
+          size={{ width: width, height: props.height }}
+          enable={{
+            right: !viewOnlyMode,
+          }}
+          css={`
+            overflow-y: auto;
+            background: #fff;
+            overflow-x: hidden;
+            position: static;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
+
+            &:focus-within,
+            &:hover {
+              border: 1px solid #262c34;
+            }
+
+            div {
+              ${viewOnlyMode && "cursor: default;"}
+            }
+          `}
+        >
+          {!viewOnlyMode && (
+            <>
+              <IconButton
+                css={`
+                  bottom: 12px;
+                  z-index: 2;
+                  right: 18px;
+                  position: absolute;
+                  background: ${boxMenuButtonOpened ? "#262C34" : "#cfd4da"};
+                  width: 24px;
+                  height: 24px;
+                  color: ${boxMenuButtonOpened ? "#fff" : "#000000"};
+                  font-size: 18px;
+                  &:hover {
+                    background: #262c34;
+                    color: #fff;
+                  }
+                `}
+                onClick={() => {
+                  setBoxMenuButtonOpened(!boxMenuButtonOpened);
+                }}
+              >
+                <MoreVert color="inherit" fontSize="inherit" />
+              </IconButton>
+              {boxMenuButtonOpened && (
+                <IconButton
+                  onClick={() => {
+                    handleDisplayDeleteElementModal("image");
+                  }}
+                  css={`
+                    width: 24px;
+                    height: 24px;
+                    padding: 7px;
+                    bottom: 12px;
+                    background: #e5e8eb;
+                    color: #262c34;
+                    font-size: 24px;
+
+                    z-index: 4;
+                    right: 50px;
+                    position: absolute;
+                  `}
+                >
+                  <DeleteIcon color="inherit" fontSize="inherit" />
+                </IconButton>
+              )}
+            </>
+          )}
+          <ImageBox setImageFile={setImageFile} />
+        </Resizable>
+      );
+    }
+
     return null;
   }, [
     displayTextBox,
+    boxMenuButtonOpened,
     displayChart,
     chartId,
     textContent,
     viewOnlyMode,
+    displayImageBox,
     width,
     props.height,
   ]);
@@ -498,6 +790,7 @@ const Box = (props: {
         setChartId(props.previewItem);
         setDisplayChart(true);
         setDisplayTextBox(false);
+        setDisplayImageBox(true);
       } else {
         if (props.previewItem.getCurrentContent) {
           setTextContent(props.previewItem);
@@ -508,6 +801,7 @@ const Box = (props: {
         }
         setDisplayTextBox(true);
         setDisplayChart(false);
+        setDisplayImageBox(false);
       }
     }
   }, [props.previewItem]);
@@ -524,14 +818,34 @@ const Box = (props: {
   }, [chartId, displayChart]);
 
   return content ? (
-    content
+    <>
+      {content}
+      <ReportActionDialog
+        modalDisplay={displayDeleteElementModal.display}
+        buttonTitle={"delete"}
+        description={`Current ${displayDeleteElementModal.type} will be deleted from this placeholder. 
+    Drag and drop your new ${displayDeleteElementModal.type}  in the empty placeholder to complete your report.`}
+        subtitle={`Delete ${displayDeleteElementModal.type} from this 
+    placeholder`}
+        title={"Delete element?"}
+        action={handleDeleteElement}
+        modalType={""}
+        setModalDisplay={() =>
+          setDisplayDeleteElementModal({
+            ...displayDeleteElementModal,
+            display: false,
+          })
+        }
+      />
+    </>
   ) : (
     <div
       css={`
         width: ${width};
-        background: #dfe3e6;
+        background: #fff;
         height: ${props.height}px;
-        border: ${isOver ? "1px solid #231D2C" : "none"};
+        border-radius: 20px;
+        box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
       `}
       ref={drop}
     >
