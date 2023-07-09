@@ -137,3 +137,8 @@ input[type="text"] {
   appearance: none;
   -webkit-appearance: none;
 }
+
+.re-resizeable{
+  flex-shrink: 1 !important;
+  
+}

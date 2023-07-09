@@ -89,12 +89,13 @@ export default function DuplicateReportDialog(props: Props) {
           </p>
           <div
             css={`
-              margin-top: 27px;
+              height: 45px;
             `}
-          >
+          />
+          <div>
             <input
               type="text"
-              placeholder='Type "DELETE" to confirm'
+              placeholder="My Finance Report 2020 (Copy)"
               onChange={props.handleInputChange}
               css={`
                 border-radius: 16px;
@@ -103,7 +104,14 @@ export default function DuplicateReportDialog(props: Props) {
                 background: #f1f3f5;
                 height: 32.59px;
                 width: 100%;
+                font-family: "Inter", sans-serif;
+                font-size: 14px;
+                color: #2e4063;
+
                 padding-left: 19px !important;
+                ::placeholder {
+                  color: #2e4063;
+                }
               `}
             />
           </div>
@@ -111,9 +119,8 @@ export default function DuplicateReportDialog(props: Props) {
             css={`
               display: flex;
               justify-content: flex-end;
-              margin-top: 20px;
+              margin-top: 25px;
               gap: 13px;
-              padding-right: 1rem;
               button {
                 font-size: 14px;
                 font-family: "Inter", sans-serif;

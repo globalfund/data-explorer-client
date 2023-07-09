@@ -44,7 +44,8 @@ export function ReportsTable(props: {
   return (
     <TableContainer
       css={`
-        border-radius: 8px;
+        border-radius: 16px;
+        border: 1px solid #dfe3e5;
       `}
     >
       <Table
@@ -52,8 +53,7 @@ export function ReportsTable(props: {
           border-spacing: 0;
           /* border-style: hidden; */
           /* border-collapse: collapse; */
-          border-radius: 16px;
-          border: 1px solid #dfe3e5;
+          /* border-radius: 16px; */
           tr > td {
             overflow: hidden;
             white-space: nowrap;
@@ -77,10 +77,8 @@ export function ReportsTable(props: {
         <TableHead
           css={`
             background: #f5f5f7;
-            border-radius: 16px;
             > tr > th {
               font-size: 14px;
-              border-radius: 16px;
 
               font-family: "GothamNarrow-Bold", sans-serif;
             }
@@ -106,7 +104,7 @@ export function ReportsTable(props: {
               key={index}
               css={`
                 &:hover {
-                  cursor: pointer
+                  cursor: pointer;
                   background: #dfe3e5;
                 }
               `}
@@ -156,11 +154,9 @@ export function ReportsTable(props: {
                 </IconButton>
                 {data.menuOptionsDisplay && (
                   <MenuOptions
-                    css={`
-                      top: 25%;
-                      right: 32%;
-                      position: absolute;
-                    `}
+                    top="24%"
+                    right="32%"
+                    menuOptionsDisplay={data.menuOptionsDisplay}
                     setModalType={props.setModalType}
                     showMenuOptions={() => handleMenuOptionsDisplay(index)}
                     handleModal={() => props.handleModal(index)}

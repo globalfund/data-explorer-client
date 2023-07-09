@@ -5,7 +5,6 @@ interface Props {
   cardId?: number;
 
   modalType: string;
-  enableButton: boolean;
   handleDelete: (id: number) => void;
   setModalType: (value: any) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -89,31 +88,16 @@ export default function DeleteReportDialog(props: Props) {
           </p>
           <div
             css={`
-              margin-top: 27px;
+              height: 70px;
             `}
-          >
-            <input
-              type="text"
-              placeholder='Type "DELETE" to confirm'
-              onChange={props.handleInputChange}
-              css={`
-                border-radius: 16px;
-                border: none;
-                outline: none;
-                background: #f1f3f5;
-                height: 32.59px;
-                width: 100%;
-                padding-left: 19px !important;
-              `}
-            />
-          </div>
+          />
+
           <div
             css={`
               display: flex;
               justify-content: flex-end;
               margin-top: 20px;
               gap: 13px;
-              padding-right: 1rem;
               button {
                 font-size: 14px;
                 font-family: "Inter", sans-serif;
@@ -137,9 +121,8 @@ export default function DeleteReportDialog(props: Props) {
             <button
               type="button"
               onClick={() => props.handleDelete(props.cardId as number)}
-              disabled={!props.enableButton}
               css={`
-                background: ${props.enableButton ? "#FA7355" : "#262C34"};
+                background: #fa7355;
                 border-radius: 8px;
                 width: 108px;
                 height: 32.59px;

@@ -40,6 +40,8 @@ import {
 
 import AITemplate from "app/modules/report-module/views/ai-template";
 import { IHeaderDetails } from "./components/right-panel/data";
+import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
+import { useUpdateEffect } from "react-use";
 
 interface RowFrameProps {
   structure:
@@ -125,7 +127,7 @@ export default function ReportModule() {
     rowId: string,
     itemIndex: number,
     itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
+    itemContentType: "text" | "divider" | "chart" | "image"
   ) => {
     setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
@@ -235,9 +237,10 @@ export default function ReportModule() {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
       | "oneToFour"
       | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo"
   ) => {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
@@ -261,13 +264,9 @@ export default function ReportModule() {
       case "oneByFour":
         content = [null, null, null, null];
         contentTypes = [null, null, null, null];
-        contentWidths = [20, 20, 20, 20];
+        contentWidths = [25, 25, 25, 25];
         break;
-      case "oneByFive":
-        content = [null, null, null, null, null];
-        contentTypes = [null, null, null, null, null];
-        contentWidths = [20, 20, 20, 20, 20];
-        break;
+
       case "fourToOne":
         content = [null, null];
         contentTypes = [null, null];
@@ -278,9 +277,20 @@ export default function ReportModule() {
         contentTypes = [null, null];
         contentWidths = [25, 75];
         break;
+      case "twoToThree":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [40, 60];
+        break;
+      case "threeToTwo":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [60, 40];
+        break;
       default:
         break;
     }
+
     setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
 
@@ -315,6 +325,19 @@ export default function ReportModule() {
       });
 
       tempPrev.splice(frameId, 1);
+      return [...tempPrev];
+    });
+  };
+
+  const toggleRowFrameHandle = (rowId: string, state: boolean) => {
+    setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+
+      tempPrev[frameId].isHandleOpen = state;
       return [...tempPrev];
     });
   };
@@ -368,10 +391,11 @@ export default function ReportModule() {
 
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([]);
 
-  React.useEffect(() => {
+  useUpdateEffect(() => {
     if (view !== "edit") {
       alignFramesWContentWidths(framesArray);
     }
+    console.log("framesArray", framesArray);
   }, [framesArray, view]);
 
   React.useEffect(() => {
@@ -431,6 +455,7 @@ export default function ReportModule() {
                     previewItems={rowFrame.items}
                     handlePersistReportState={handlePersistReportState}
                     handleRowFrameItemResize={handleRowFrameItemResize}
+                    toggleRowFrameHandle={toggleRowFrameHandle}
                   />
                 ),
                 content: rowFrame.content,
@@ -527,12 +552,14 @@ export default function ReportModule() {
             }
             handlePersistReportState={handlePersistReportState}
             handleRowFrameItemResize={handleRowFrameItemResize}
+            toggleRowFrameHandle={toggleRowFrameHandle}
           />
         ),
         content: [],
         contentWidths: [],
         contentTypes: [],
         structure: null,
+        isHandleOpen: false,
       },
     ]);
     setPickedCharts([]);
@@ -720,6 +747,7 @@ export default function ReportModule() {
               }
               handlePersistReportState={handlePersistReportState}
               handleRowFrameItemResize={handleRowFrameItemResize}
+              toggleRowFrameHandle={toggleRowFrameHandle}
             />
           </Route>
           <Route path="/report/:page/edit">
@@ -742,6 +770,7 @@ export default function ReportModule() {
               handleRowFrameItemResize={handleRowFrameItemResize}
               stopInitializeFramesWidth={stopInitializeFramesWidth}
               setStopInitializeFramesWidth={setStopInitializeFramesWidth}
+              toggleRowFrameHandle={toggleRowFrameHandle}
             />
           </Route>
           <Route path="/report/:page">

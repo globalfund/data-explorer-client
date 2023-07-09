@@ -83,7 +83,6 @@ export default function ReportsGrid(props: {
         cardId={cardId}
         modalType={modalType}
         setModalType={setModalType}
-        enableButton={enableButton}
         handleDelete={handleDelete}
         handleInputChange={handleInputChange}
       />

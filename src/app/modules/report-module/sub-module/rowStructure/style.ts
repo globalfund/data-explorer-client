@@ -24,10 +24,12 @@ export const blockcss = css`
 
 export const containercss = css`
   width: 100%;
-  height: 252px;
+  /* height: 259px; */
   background: #d9d9d900;
-  padding: 5px 40px;
+  padding: 5px 40px 35px 40px;
+
   position: relative;
+  border-radius: 8px;
   border: 1px dashed #adb5bd;
 
   p {
@@ -36,4 +38,13 @@ export const containercss = css`
     line-height: 15px;
     text-align: center;
   }
+`;
+
+export const overlaycss = css`
+  /* position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent; */
 `;

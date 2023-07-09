@@ -651,7 +651,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       />
       <DeleteReportDialog
         modalType={modalDisplay.report}
-        enableButton={enableButton}
         handleDelete={handleDelete}
         setModalType={setModalDisplay}
         handleInputChange={handleDeleteModalInputChange}

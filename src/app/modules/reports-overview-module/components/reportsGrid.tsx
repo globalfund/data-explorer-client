@@ -44,6 +44,12 @@ export default function ReportsGrid(props: {
     setModalType("");
     setEnableButton(false);
   };
+  React.useEffect(() => {
+    document.body.style.background = "white";
+    return () => {
+      document.body.style.background = "#f5f5f7";
+    };
+  }, []);
   console.log(tableData, "tableData");
 
   return (
@@ -83,7 +89,6 @@ export default function ReportsGrid(props: {
         cardId={cardId}
         modalType={modalType}
         setModalType={setModalType}
-        enableButton={enableButton}
         handleDelete={handleDelete}
         handleInputChange={handleInputChange}
       />
