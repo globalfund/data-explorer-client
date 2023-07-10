@@ -1,6 +1,6 @@
 import React from "react";
 import get from "lodash/get";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
@@ -11,6 +11,7 @@ import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/de
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import {
   ReportContentWidthsType,
+  chartHolderAtom,
   reportContentWidthsAtom,
 } from "app/state/recoil/atoms";
 import {
@@ -182,12 +183,20 @@ export interface RowFrameProps {
 export interface IRowStructureType {
   selectedType: string;
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
+  isHoldingChartValue: {
+    state: boolean;
+    chartId: string;
+  };
+  setIsHoldingChartValue: (value: { state: boolean; chartId: string }) => void;
 }
 
 export default function RowFrame(props: RowFrameProps) {
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType || ""
   );
+  const [isHoldingChartValue, setIsHoldingChartValue] =
+    useRecoilState(chartHolderAtom);
+
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
   >([""]);
@@ -214,8 +223,6 @@ export default function RowFrame(props: RowFrameProps) {
       setRowStructureDetailItems(newItems);
     }
   };
-
-  console.log("rowStructureDetailItems", rowStructureDetailItems);
 
   const reportContentWidths = useRecoilValue(reportContentWidthsAtom);
 
@@ -475,38 +482,51 @@ export default function RowFrame(props: RowFrameProps) {
             <OneByOne
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
             <OneByTwo
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
             <OneByThree
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
             <OneByFour
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
-            {/* <OneByFive
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-            /> */}
+
             <OneToFour
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
             <FourToOne
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
             <TwoToThree
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
             <ThreeToTwo
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              isHoldingChartValue={isHoldingChartValue}
+              setIsHoldingChartValue={setIsHoldingChartValue}
             />
           </div>
         </div>
@@ -518,6 +538,12 @@ export default function RowFrame(props: RowFrameProps) {
 const OneByOne = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("oneByOne");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>
@@ -538,6 +564,12 @@ const OneByOne = (props: IRowStructureType) => {
 const OneByTwo = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("oneByTwo");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>
@@ -564,6 +596,12 @@ const OneByTwo = (props: IRowStructureType) => {
 const OneByThree = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("oneByThree");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>
@@ -591,6 +629,12 @@ const OneByThree = (props: IRowStructureType) => {
 const OneByFour = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("oneByFour");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>
@@ -619,6 +663,12 @@ const OneByFour = (props: IRowStructureType) => {
 const OneToFour = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("oneToFour");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>
@@ -645,6 +695,12 @@ const OneToFour = (props: IRowStructureType) => {
 const FourToOne = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("fourToOne");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>
@@ -670,6 +726,12 @@ const FourToOne = (props: IRowStructureType) => {
 const TwoToThree = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("twoToThree");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>
@@ -695,6 +757,12 @@ const TwoToThree = (props: IRowStructureType) => {
 const ThreeToTwo = (props: IRowStructureType) => {
   const handleClick = () => {
     props.setSelectedType("threeToTwo");
+    if (props.isHoldingChartValue.chartId !== "") {
+      props.setIsHoldingChartValue({
+        ...props.isHoldingChartValue,
+        state: true,
+      });
+    }
   };
   return (
     <div css={blockcss} onClick={handleClick}>

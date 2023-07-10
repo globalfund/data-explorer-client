@@ -17,7 +17,10 @@ import { ReportElementsType } from "app/modules/report-module/components/right-p
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useRecoilState, useRecoilValue } from "recoil";
-import { createChartFromReportAtom } from "app/state/recoil/atoms";
+import {
+  chartHolderAtom,
+  createChartFromReportAtom,
+} from "app/state/recoil/atoms";
 import { MoreVert, FileCopy } from "@material-ui/icons";
 import {
   reportContentWidthsAtom,
@@ -25,7 +28,6 @@ import {
   reportContentIsResizingAtom,
   reportContentContainerWidth,
 } from "app/state/recoil/atoms";
-import { overlaycss } from "./style";
 import ReportActionDialog from "app/modules/report-module/components/actionDialog";
 import ImageBox from "app/modules/report-module/components/imageBox";
 
@@ -186,7 +188,6 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             position: absolute;
           `}
         >
-          <div css={overlaycss} onClick={() => setHandleDisplay(false)} />
           <div
             css={`
               padding: 0 0px;
@@ -353,6 +354,9 @@ const Box = (props: {
   const [_, setCreateChartFromReport] = useRecoilState(
     createChartFromReportAtom
   );
+  const [isHoldingChartValue, setIsHoldingChartValue] =
+    useRecoilState(chartHolderAtom);
+
   const resetMapping = useStoreActions(
     (actions) => actions.charts.mapping.reset
   );
@@ -604,6 +608,7 @@ const Box = (props: {
                 editMode={!viewOnlyMode}
                 setTextContent={setTextContent}
                 fullHeight
+                focusOnMount={true}
               />
             </div>
           </div>
@@ -616,6 +621,7 @@ const Box = (props: {
         <Resizable
           key={chartId}
           bounds="parent"
+          className="re-resizeable"
           onResize={onResize}
           onResizeStop={onResizeStop}
           size={{ width: width, height: props.height }}
@@ -804,6 +810,17 @@ const Box = (props: {
       }
     }
   }, [props.previewItem]);
+  console.log(isHoldingChartValue, "isHoldingChartValue");
+  React.useEffect(() => {
+    if (isHoldingChartValue.state && props.itemIndex == 0) {
+      setDisplayChart(true);
+      setChartId(isHoldingChartValue.chartId);
+      setIsHoldingChartValue({
+        state: false,
+        chartId: "",
+      });
+    }
+  }, [isHoldingChartValue.state]);
 
   React.useEffect(() => {
     if (displayChart && chartId) {

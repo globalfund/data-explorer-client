@@ -7,10 +7,14 @@ import { ReactComponent as PlusIcon } from "app/modules/report-module/asset/add-
 import {
   IRowFrameStructure,
   ReportContentWidthsType,
+  chartHolderAtom,
 } from "app/state/recoil/atoms";
 import { Tooltip, withStyles } from "@material-ui/core";
+import { useDrop } from "react-dnd";
+import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
+import { useRecoilState } from "recoil";
 
-interface Props {
+interface AddRowFrameProps {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
   rowStructureType: IRowFrameStructure;
@@ -51,7 +55,8 @@ const DarkTooltip = withStyles(() => ({
   },
 }))(Tooltip);
 
-export default function AddRowFrameButton(props: Props) {
+export default function AddRowFrameButton(props: AddRowFrameProps) {
+  const [_, setIsHoldingChartValue] = useRecoilState(chartHolderAtom);
   const handleAddrowStructureBlock = () => {
     const id = v4();
     props.setFramesArray([
@@ -86,12 +91,32 @@ export default function AddRowFrameButton(props: Props) {
       disableAddRowStructureButton: false,
     });
   };
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: [ReportElementsType.ROWFRAME, ReportElementsType.CHART],
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+      item: monitor.getItem(),
+    }),
+    drop: (item: any, monitor) => {
+      if (item.type === ReportElementsType.ROWFRAME) {
+        handleAddrowStructureBlock();
+      } else if (item.type === ReportElementsType.CHART) {
+        setIsHoldingChartValue({
+          state: false,
+          chartId: item.value,
+        });
+        handleAddrowStructureBlock();
+      }
+    },
+  }));
 
   return (
     <div
       css={`
         width: 100%;
       `}
+      ref={drop}
     >
       <DarkTooltip title="Add new row frame" placement="bottom" color="pink">
         <div

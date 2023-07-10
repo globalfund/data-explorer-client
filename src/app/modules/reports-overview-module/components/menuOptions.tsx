@@ -58,16 +58,14 @@ export default function MenuOptions(props: {
         `}
       >
         <div>
-          <Link to={`/report/${props.id}/edit`}>
-            <Tooltip title="Edit">
-              <EditIcon
-                color="inherit"
-                css={`
-                  margin-top: 4px;
-                `}
-              />
-            </Tooltip>
-          </Link>
+          <Tooltip title="Edit">
+            <EditIcon
+              color="inherit"
+              css={`
+                margin-top: 4px;
+              `}
+            />
+          </Tooltip>
         </div>
         <div>
           <IconButton
