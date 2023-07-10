@@ -39,7 +39,6 @@ export function ReportsTable(props: {
     });
     props.setTableData(newData);
   };
-  console.log(props.data, "props.data");
 
   return (
     <TableContainer

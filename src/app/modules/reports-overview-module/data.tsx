@@ -1,6 +1,8 @@
+import { AllocationIcon } from "app/assets/icons/charts/Allocation";
 import { BarIcon } from "app/assets/icons/charts/Bar";
 import { DotIcon } from "app/assets/icons/charts/Dot";
 import { MapIcon } from "app/assets/icons/charts/Map";
+import { NetworkIcon } from "app/assets/icons/charts/Network";
 import { RadialIcon } from "app/assets/icons/charts/Radial";
 import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TableIcon } from "app/assets/icons/charts/Table";
@@ -17,7 +19,7 @@ export const dummyReportsdata = [
     },
     iconLinks: [
       {
-        icon: <RadialIcon />,
+        icon: <AllocationIcon />,
         link: "#",
       },
       {
@@ -69,7 +71,7 @@ export const dummyReportsdata = [
     description: { __html: "Allocations amounts for countries by disease" },
     iconLinks: [
       {
-        icon: <RadialIcon />,
+        icon: <AllocationIcon />,
         link: "#",
       },
       {

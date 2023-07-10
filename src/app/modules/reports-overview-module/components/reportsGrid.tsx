@@ -50,7 +50,6 @@ export default function ReportsGrid(props: {
       document.body.style.background = "#f5f5f7";
     };
   }, []);
-  console.log(tableData, "tableData");
 
   return (
     <>

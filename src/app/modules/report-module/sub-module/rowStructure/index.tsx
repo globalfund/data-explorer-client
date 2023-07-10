@@ -572,7 +572,6 @@ const Box = (props: {
                   `}
                   onClick={() => {
                     setBoxMenuButtonOpened(!boxMenuButtonOpened);
-                    console.log("clicked");
                   }}
                 >
                   <MoreVert color="inherit" fontSize="inherit" />
@@ -810,7 +809,6 @@ const Box = (props: {
       }
     }
   }, [props.previewItem]);
-  console.log(isHoldingChartValue, "isHoldingChartValue");
   React.useEffect(() => {
     if (isHoldingChartValue.state && props.itemIndex == 0) {
       setDisplayChart(true);

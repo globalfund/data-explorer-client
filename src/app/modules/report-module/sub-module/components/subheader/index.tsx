@@ -58,7 +58,6 @@ export default function Subheader(props: SubheaderProps) {
                   type="text"
                   value={"My First Report"}
                   css={styles.titleInput}
-                  onChange={(e) => console.log(e.target.value)}
                   style={
                     props.previewMode
                       ? {

@@ -44,7 +44,6 @@ export default function ReportsGrid(props: {
     setModalType("");
     setEnableButton(false);
   };
-  console.log(tableData, "tableData");
 
   return (
     <>
