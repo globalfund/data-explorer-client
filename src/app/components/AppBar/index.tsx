@@ -162,14 +162,45 @@ export function AppBar() {
         flex-direction: row;
       `}
     >
-      <Container
-        maxWidth="lg"
-        css={`
-          @media (max-width: 1300px) {
-            padding-right: 42px;
-          }
-        `}
-      >
+      {isMobile && (
+        <Container
+          maxWidth="lg"
+          css={`
+            @media (max-width: 1300px) {
+              padding-right: 42px;
+            }
+          `}
+        >
+          <Toolbar
+            disableGutters
+            variant="dense"
+            css={`
+              gap: 32px;
+              width: 100%;
+              height: 48px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+
+              @media (min-width: 768px) {
+                #search-container {
+                  padding: 3px 20px;
+                  align-items: center;
+                }
+
+                #search-results-container {
+                  top: 40px;
+                  box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+                }
+              }
+            `}
+          >
+            {getMobilePageHeader()}
+          </Toolbar>
+        </Container>
+      )}
+      {!isMobile && (
         <Toolbar
           disableGutters
           variant="dense"
@@ -177,6 +208,9 @@ export function AppBar() {
             gap: 32px;
             width: 100%;
             height: 48px;
+            padding-left: 225px;
+            padding-right: 105px;
+            margin: auto;
             display: flex;
             flex-direction: row;
             align-items: center;
@@ -195,176 +229,199 @@ export function AppBar() {
             }
           `}
         >
-          {isMobile && getMobilePageHeader()}
-          {!isMobile && (
-            <div
-              css={`
-                width: 100%;
-                height: 100%;
-                display: flex;
-                flex-direction: row;
-                align-items: center;
-                justify-content: space-between;
-              `}
-            >
+          <div
+            css={`
+              width: 100%;
+              height: 100%;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+            `}
+          >
+            <NavLink to="/" css="display: flex;margin-right: 52px;">
+              <img
+                src="/gflogo.png"
+                width={295}
+                height={24}
+                alt={get(cmsData, "componentsAppBar.logoAlt", "")}
+              />
+            </NavLink>
+
+            {(location.pathname === "/" || !openSearch) && (
               <div
                 css={`
-                  height: 100%;
                   display: flex;
-                  flex-direction: row;
+                  gap: 32px;
+                `}
+              >
+                <div
+                  id="appbar-datasets"
+                  onClick={handleClick}
+                  css={`
+                    height: 100%;
+                    display: flex;
+                    color: ${anchorEl
+                      ? appColors.APPBAR.LINK_ACTIVE_COLOR
+                      : appColors.APPBAR.LINK_COLOR};
+                    cursor: pointer;
+                    font-size: 14px;
+                    font-weight: bold;
+                    align-items: center;
+                    letter-spacing: 0.5px;
+                    text-decoration: none;
+
+                    &:hover {
+                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                    }
+                  `}
+                >
+                  Datasets
+                </div>
+                <StyledMenu
+                  keepMounted
+                  disableScrollLock
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  open={Boolean(anchorEl)}
+                  id="appbar-datasets-menu"
+                >
+                  {datasetMenuItems.map(
+                    (item: React.ReactChild, itemIndex: number) => (
+                      <StyledMenuItem
+                        disableRipple
+                        key={itemIndex}
+                        disableTouchRipple
+                      >
+                        {item}
+                      </StyledMenuItem>
+                    )
+                  )}
+                </StyledMenu>
+
+                <NavLink
+                  to="/reports"
+                  css={`
+                    color: ${appColors.APPBAR.LINK_COLOR};
+                    font-size: 14px;
+                    font-weight: bold;
+                    letter-spacing: 0.5px;
+                    text-decoration: none;
+
+                    &:hover {
+                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                    }
+
+                    &.active {
+                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                    }
+                  `}
+                >
+                  Reports
+                </NavLink>
+
+                <NavLink
+                  to="/charts"
+                  css={`
+                    color: ${appColors.APPBAR.LINK_COLOR};
+                    font-size: 14px;
+                    font-weight: bold;
+                    letter-spacing: 0.5px;
+                    text-decoration: none;
+
+                    &:hover {
+                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                    }
+
+                    &.active {
+                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                    }
+                  `}
+                >
+                  Charts
+                </NavLink>
+              </div>
+            )}
+
+            {location.pathname !== "/" && (
+              <div
+                css={`
+                  display: flex;
+                  gap: 32px;
                   align-items: center;
                 `}
               >
-                <NavLink to="/" css="display: flex;margin-right: 52px;">
-                  <img
-                    src="/gflogo.png"
-                    width={295}
-                    height={24}
-                    alt={get(cmsData, "componentsAppBar.logoAlt", "")}
-                  />
+                <NavLink
+                  to="/about"
+                  css={`
+                    color: ${appColors.APPBAR.LINK_COLOR};
+                    font-size: 14px;
+                    font-weight: bold;
+                    letter-spacing: 0.5px;
+                    text-decoration: none;
+
+                    &:hover {
+                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                    }
+
+                    &.active {
+                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                    }
+                  `}
+                >
+                  {get(cmsData, "componentsAppBar.about", "")}
                 </NavLink>
-                {(location.pathname === "/" || !openSearch) && (
-                  <React.Fragment>
-                    <div
-                      id="appbar-datasets"
-                      onClick={handleClick}
-                      css={`
-                        height: 100%;
-                        display: flex;
-                        color: ${anchorEl
-                          ? appColors.APPBAR.LINK_ACTIVE_COLOR
-                          : appColors.APPBAR.LINK_COLOR};
-                        cursor: pointer;
-                        font-size: 14px;
-                        font-weight: bold;
-                        margin-right: 32px;
-                        align-items: center;
-                        letter-spacing: 0.5px;
-                        text-decoration: none;
-
-                        &:hover {
-                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                        }
-                      `}
-                    >
-                      Datasets
-                    </div>
-                    <StyledMenu
-                      keepMounted
-                      disableScrollLock
-                      anchorEl={anchorEl}
-                      onClose={handleClose}
-                      open={Boolean(anchorEl)}
-                      id="appbar-datasets-menu"
-                    >
-                      {datasetMenuItems.map(
-                        (item: React.ReactChild, itemIndex: number) => (
-                          <StyledMenuItem
-                            disableRipple
-                            key={itemIndex}
-                            disableTouchRipple
-                          >
-                            {item}
-                          </StyledMenuItem>
-                        )
-                      )}
-                    </StyledMenu>
-
-                    <NavLink
-                      to="/reports"
-                      css={`
-                        color: ${appColors.APPBAR.LINK_COLOR};
-                        font-size: 14px;
-                        font-weight: bold;
-                        letter-spacing: 0.5px;
-                        text-decoration: none;
-
-                        &:hover {
-                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                        }
-
-                        &.active {
-                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                        }
-                      `}
-                    >
-                      Reports
-                    </NavLink>
-
-                    <NavLink
-                      to="/about"
-                      css={`
-                        color: ${appColors.APPBAR.LINK_COLOR};
-                        font-size: 14px;
-                        font-weight: bold;
-                        letter-spacing: 0.5px;
-                        text-decoration: none;
-
-                        &:hover {
-                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                        }
-
-                        &.active {
-                          color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                        }
-                      `}
-                    >
-                      {get(cmsData, "componentsAppBar.about", "")}
-                    </NavLink>
-                  </React.Fragment>
-                )}
-              </div>
-              {location.pathname !== "/" && (
-                <React.Fragment>
-                  {openSearch && (
-                    <Search hocClose={() => setOpenSearch(false)} />
-                  )}
-                  <IconButton
-                    onClick={() => setOpenSearch(!openSearch)}
-                    css={`
-                      margin-right: -12px;
-                    `}
-                  >
-                    {openSearch ? (
-                      <CloseIcon
-                        htmlColor={appColors.APPBAR.SEARCH_CLOSE_ICON_COLOR}
+                {openSearch && <Search hocClose={() => setOpenSearch(false)} />}
+                <IconButton
+                  onClick={() => setOpenSearch(!openSearch)}
+                  css={`
+                    margin-right: -12px;
+                  `}
+                >
+                  {openSearch ? (
+                    <CloseIcon
+                      htmlColor={appColors.APPBAR.SEARCH_CLOSE_ICON_COLOR}
+                    />
+                  ) : (
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                      <circle
+                        cx="12"
+                        cy="12"
+                        r="12"
+                        fill={appColors.APPBAR.SEARCH_ICON_BACKGROUND_COLOR}
                       />
-                    ) : (
-                      <svg width="24" height="24" viewBox="0 0 24 24">
-                        <circle
-                          cx="12"
-                          cy="12"
-                          r="12"
-                          fill={appColors.APPBAR.SEARCH_ICON_BACKGROUND_COLOR}
-                        />
-                        <path
-                          fill={appColors.APPBAR.SEARCH_ICON_COLOR}
-                          d="M14.472 13.4131H13.9143L13.7167 13.2226C14.4084 12.4178 14.8249 11.3731 14.8249 10.2367C14.8249 7.70256 12.7708 5.64844 10.2367 5.64844C7.70256 5.64844 5.64844 7.70256 5.64844 10.2367C5.64844 12.7708 7.70256 14.8249 10.2367 14.8249C11.3731 14.8249 12.4178 14.4084 13.2226 13.7167L13.4131 13.9143V14.472L16.9426 17.9943L17.9943 16.9426L14.472 13.4131ZM10.2367 13.4131C8.47903 13.4131 7.0602 11.9943 7.0602 10.2367C7.0602 8.47903 8.47903 7.0602 10.2367 7.0602C11.9943 7.0602 13.4131 8.47903 13.4131 10.2367C13.4131 11.9943 11.9943 13.4131 10.2367 13.4131Z"
-                        />
-                      </svg>
-                    )}
-                  </IconButton>
-                </React.Fragment>
-              )}
-            </div>
-          )}
+                      <path
+                        fill={appColors.APPBAR.SEARCH_ICON_COLOR}
+                        d="M14.472 13.4131H13.9143L13.7167 13.2226C14.4084 12.4178 14.8249 11.3731 14.8249 10.2367C14.8249 7.70256 12.7708 5.64844 10.2367 5.64844C7.70256 5.64844 5.64844 7.70256 5.64844 10.2367C5.64844 12.7708 7.70256 14.8249 10.2367 14.8249C11.3731 14.8249 12.4178 14.4084 13.2226 13.7167L13.4131 13.9143V14.472L16.9426 17.9943L17.9943 16.9426L14.472 13.4131ZM10.2367 13.4131C8.47903 13.4131 7.0602 11.9943 7.0602 10.2367C7.0602 8.47903 8.47903 7.0602 10.2367 7.0602C11.9943 7.0602 13.4131 8.47903 13.4131 10.2367C13.4131 11.9943 11.9943 13.4131 10.2367 13.4131Z"
+                      />
+                    </svg>
+                  )}
+                </IconButton>
+                <button
+                  type="button"
+                  css={`
+                    font-size: 12px;
+                    font-family: "Gotham Narrow", sans-serif;
+                    width: 88px;
+                    height: 24px;
+                    padding: 4px 24px;
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                    border-radius: 50px;
+                    background: #fff;
+                    border: none;
+                    outline: none;
+                    color: #252c34;
+                  `}
+                >
+                  <b>Account</b>
+                </button>
+              </div>
+            )}
+          </div>
         </Toolbar>
-      </Container>
-      <IconButton
-        target="_blank"
-        id="github-linkbtn"
-        href="https://github.com/globalfund/data-explorer-client"
-        css={`
-          right: 0;
-          position: absolute;
-
-          path {
-            fill: ${appColors.COMMON.WHITE};
-          }
-        `}
-      >
-        <GitHubIcon />
-      </IconButton>
+      )}
     </MUIAppBar>
   );
 }
