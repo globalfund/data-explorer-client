@@ -298,21 +298,28 @@ export function ReportRightPanelCreateView(props: Props) {
             width: 100%;
             display: flex;
             height: 67px;
-            background: #fff;
+            background: #f5f5f7;
             align-items: center;
             button {
               padding: 20px;
               height: 100%;
+              :hover {
+                background: transparent;
+                border-radius: none;
+              }
             }
           `}
         >
           <IconButton
+            disableRipple
             onClick={() => setCurrentView("elements")}
             css={`
-              border-radius: 0px 0px 8px 0px;
-
-              ${currentView === "elements" &&
-              "background: #F5F5F7; border-radius: 8px 8px 0px 0px; "}
+              ${currentView === "elements"
+                ? "background: transparent;"
+                : currentView === "charts"
+                ? "background-color: #fff; border-radius: 0px 0px 8px 0px;"
+                : currentView === "media" &&
+                  "background-color: #fff; border-radius: 0px 0px 0px 0px;"}
             `}
           >
             {currentView === "elements" ? (
@@ -322,27 +329,48 @@ export function ReportRightPanelCreateView(props: Props) {
             )}
           </IconButton>
           <IconButton
+            disableRipple
             onClick={() => setCurrentView("charts")}
             css={`
-              border-radius: 0px 0px 0px 8px;
-              ${currentView === "charts" &&
-              "background-color: #F5F5F7; border-radius: 8px 8px 0px 0px;"}
+              ${currentView === "elements"
+                ? "background-color: #fff; border-radius: 0px 0px 0px 8px;"
+                : currentView === "charts"
+                ? "background-color: transparent;"
+                : currentView === "media" &&
+                  "background-color: #fff; border-radius: 0px 0px 8px 0px;"}
             `}
           >
             {currentView === "charts" ? <ActiveChartIcon /> : <ChartIcon />}
           </IconButton>
 
           <IconButton
+            disableRipple
             onClick={() => setCurrentView("media")}
             css={`
-              ${currentView === "media" &&
-              "background: #F5F5F7; border-radius:0px; "}
-              border-radius: 0px 0px 0px 8px;
+              ${currentView === "elements"
+                ? "background-color: #fff; border-radius: 0px 0px 0px 0px;"
+                : currentView === "charts"
+                ? "background-color: #fff; border-radius: 0px 0px 0px 8px"
+                : currentView === "media" && "background: transparent;"}
             `}
           >
             {currentView === "media" ? <ActiveMediaIcon /> : <MediaIcon />}
           </IconButton>
+
+          <div
+            css={`
+              ${currentView === "elements"
+                ? "background-color: #fff;"
+                : currentView === "charts"
+                ? "background-color: #fff; "
+                : currentView === "media" &&
+                  "background: #fff; border-radius: 0px 0px 0px 8px;"}
+              width: 100%;
+              height: 100%;
+            `}
+          ></div>
         </div>
+
         <div
           css={`
             display: flex;
@@ -820,9 +848,6 @@ function ChartItem(props: {
     }),
     end: (item, monitor) => {
       const dropped = monitor.didDrop();
-      if (dropped) {
-        props.setPickedCharts((prev) => [...prev, item.value]);
-      }
     },
   }));
 
