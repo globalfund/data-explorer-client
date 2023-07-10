@@ -31,6 +31,7 @@ export const RichEditor = (props: {
   invertColors?: boolean;
   textContent: EditorState;
   setTextContent: (value: EditorState) => void;
+  focusOnMount?: boolean;
 }): ReactElement => {
   const linkPlugin = createLinkPlugin();
   const [plugins, InlineToolbar] = useMemo(() => {
@@ -54,11 +55,14 @@ export const RichEditor = (props: {
     editor.current?.focus();
   };
   React.useEffect(() => {
-    editor.current?.focus();
+    if (props.focusOnMount) {
+      editor.current?.focus();
+    }
   }, []);
 
   return (
     <div
+      onClick={focus}
       className={
         props.editMode ? editorStyles.editor : editorStyles.editorPreview
       }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import moment from "moment";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
@@ -6,18 +6,11 @@ import { EditorState } from "draft-js";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
 import { reportRightPanelViewAtom } from "app/state/recoil/atoms";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
-import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as ClockIcon } from "app/modules/report-module/asset/clock-img.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { headerBlockcss } from "app/modules/report-module/sub-module/components/headerBlock/style";
-import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
-import { Tooltip } from "@material-ui/core";
-import TabButtons from "./tabButtons";
-
 interface Props {
   previewMode: boolean;
   headerDetails: {
@@ -78,6 +71,11 @@ export default function HeaderBlock(props: Props) {
         onMouseLeave: () => setHandleDisplay(false),
       };
 
+  const titleRef = useRef<HTMLInputElement | null>(null);
+
+  React.useEffect(() => {
+    titleRef.current?.focus();
+  }, []);
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -134,6 +132,7 @@ export default function HeaderBlock(props: Props) {
         <div css={headerBlockcss.innerContainer}>
           <div>
             <input
+              ref={titleRef}
               name="title"
               type="text"
               placeholder="Add title"

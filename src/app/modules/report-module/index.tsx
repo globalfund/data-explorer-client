@@ -706,13 +706,7 @@ export default function ReportModule() {
           height: ${view === "ai-template" ? "40px" : "98px"};
         `}
       />
-      <div
-        css={`
-          /* background: pink;
-          width: ${rightPanelOpen ? "calc(100% - 400px)" : "100%"};
-          transition: width 0.3s ease-in-out; */
-        `}
-      >
+      <div>
         <Switch>
           <Route path="/report/:page/initial">
             <Container maxWidth="lg">
