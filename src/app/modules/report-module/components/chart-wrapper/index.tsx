@@ -169,6 +169,7 @@ export function ReportChartWrapper(props: Props) {
           {chartName}
         </h4>
       )}
+
       <CommonChart
         withHeader
         chartId={props.id}

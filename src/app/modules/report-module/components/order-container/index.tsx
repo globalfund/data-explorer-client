@@ -34,15 +34,31 @@ const style = {
   transform: "translate(0px, 0px)",
 };
 
-function Handle(props: {
-  id: string;
-  index: number;
-  moveCard: (dragIndex: number, hoverIndex: number) => void;
-  top: string;
-  left: string;
-  radius: string;
-  setOpacity: React.Dispatch<React.SetStateAction<number>>;
-}) {
+function Handle(props: { top: string; left: string; radius: string }) {
+  return (
+    <div
+      css={`
+        top: ${props.top};
+        left: ${props.left};
+        position: absolute;
+        z-index: 3;
+        height: calc(100% - 38px);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: grab;
+        background-color: #252c34;
+        width: 19px;
+        border-radius: ${props.radius};
+      `}
+    >
+      <img src={RowFrameHandleAdornment} alt="rowframeHandleAdornment" />
+    </div>
+  );
+}
+
+function ItemComponent(props: ItemComponentProps) {
+  const { id, content, index, moveCard } = props;
   const ref = React.useRef<HTMLDivElement>(null);
 
   const [{ handlerId }, drop] = useDrop<
@@ -115,72 +131,26 @@ function Handle(props: {
       isDragging: monitor.isDragging(),
     }),
   });
-
-  useEffect(() => {
-    props.setOpacity(isDragging ? 0.5 : 1);
-  }, [isDragging]);
-
   drag(drop(ref));
-  return (
-    <div
-      ref={ref}
-      id={`item-${props.id}`}
-      data-handler-id={handlerId}
-      css={`
-        top: ${props.top};
-        left: ${props.left};
-        position: absolute;
-        z-index: 3;
-        height: calc(100% - 38px);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: grab;
-        background-color: #252c34;
-        width: 19px;
-        border-radius: ${props.radius};
-      `}
-    >
-      <img src={RowFrameHandleAdornment} alt="rowframeHandleAdornment" />
-    </div>
-  );
-}
 
-function ItemComponent(props: ItemComponentProps) {
-  const { id, content, index, moveCard } = props;
-
-  const [opacity, setOpacity] = useState(1);
-
+  const opacity = isDragging ? 0 : 1;
   return (
     <div
       style={{ ...style, opacity }}
       css={`
         height: 100%;
       `}
+      id={`item-${props.id}`}
+      data-handler-id={handlerId}
+      ref={ref}
     >
       {props.isHandleOpen ? (
-        <Handle
-          id={id}
-          index={index}
-          moveCard={moveCard}
-          top="0"
-          left="0"
-          radius="20px 0px 0px 20px"
-          setOpacity={setOpacity}
-        />
+        <Handle top="0" left="0" radius="20px 0px 0px 20px" />
       ) : null}
 
       {content}
       {props.isHandleOpen ? (
-        <Handle
-          id={id}
-          index={index}
-          moveCard={moveCard}
-          top="0"
-          left="99%"
-          radius="0 20px 20px 0"
-          setOpacity={setOpacity}
-        />
+        <Handle top="0" left="99%" radius="0 20px 20px 0" />
       ) : null}
     </div>
   );

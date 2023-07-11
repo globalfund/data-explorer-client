@@ -331,6 +331,13 @@ export default function ReportModule() {
   const toggleRowFrameHandle = (rowId: string, state: boolean) => {
     setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
+
+      tempPrev.sort(
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
+      );
+
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];
