@@ -145,13 +145,6 @@ export function InvestmentsDisbursedModule(
               name: `Grant Implementation: ${props.type}`,
             }))
         ) {
-          addDataPathSteps([
-            {
-              id: uniqueId(),
-              name: `Grant Implementation: ${props.type}`,
-              path: `${history.location.pathname}${history.location.search}`,
-            },
-          ]);
         }
       } else {
         if (
