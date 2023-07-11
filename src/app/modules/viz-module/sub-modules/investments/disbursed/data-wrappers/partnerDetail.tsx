@@ -2,7 +2,6 @@
 import React from "react";
 import get from "lodash/get";
 import isEqual from "lodash/isEqual";
-import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";

@@ -21,7 +21,6 @@ const Container = styled.div`
   align-items: center;
   flex-direction: column;
   justify-content: center;
-  height: calc(100vh - 45px);
 `;
 
 export const LoadingComp = styled.div`
@@ -33,8 +32,13 @@ export const LoadingComp = styled.div`
     props.inLoader ? "100%" : "100vh"};
   z-index: 100000;
   position: ${(props: { inLoader?: boolean }) =>
-    props.inLoader ? "static" : "fixed"};
+    props.inLoader ? "absolute" : "fixed"};
   background: rgba(0, 0, 0, 0.2);
+
+  > div {
+    height: ${(props: { inLoader?: boolean }) =>
+      props.inLoader ? "100%" : "calc(100vh - 45px)"};
+  }
 `;
 
 export const PageLoader = (props: { inLoader?: boolean }) => {

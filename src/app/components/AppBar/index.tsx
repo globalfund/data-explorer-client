@@ -212,6 +212,7 @@ export function AppBar() {
             padding-right: 105px;
             margin: auto;
             display: flex;
+            min-height: 45px;
             flex-direction: row;
             align-items: center;
             justify-content: space-between;

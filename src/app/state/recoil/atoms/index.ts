@@ -198,5 +198,9 @@ export const persistedReportStateAtom = atom<{
     },
     framesArray: JSON.stringify([]),
   },
+});
+export const locationAccessToFundingCycleAtom = atom<string | null>({
+  key: "locationAccessToFundingCycleAtom",
+  default: null,
   effects_UNSTABLE: [persistAtom],
 });

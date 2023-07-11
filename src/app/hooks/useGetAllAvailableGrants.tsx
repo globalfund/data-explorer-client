@@ -28,7 +28,7 @@ export function useGetAllAvailableGrants(
         search: search.length > 0 ? search : undefined,
       }
     );
-    return await axios
+    return axios
       .get(
         `${process.env.REACT_APP_API}/grants?${
           `${filterString}&pageSize=0` ?? `pageSize=0`

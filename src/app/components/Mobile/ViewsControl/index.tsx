@@ -227,12 +227,45 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 </StyledMenuItem>
               )
             )}
-          {props.tabs &&
-            props.tabs.map((tab: TabProps) => (
+          {(props.tabs ?? []).map((tab: TabProps) => {
+            if (tab.tabs) {
+              const result = tab.tabs.map((subTab: TabProps) => (
+                <StyledMenuItem
+                  disableRipple
+                  key={subTab.name}
+                  disableTouchRipple
+                >
+                  <RouteTab
+                    {...subTab}
+                    onlyLink
+                    search={location.search}
+                    params={{
+                      tab: "",
+                      code: params.code ?? "",
+                      period: params.period ?? "",
+                      vizType: params.vizType ?? "",
+                    }}
+                  />
+                </StyledMenuItem>
+              ));
+              return [...result];
+            }
+            return (
               <StyledMenuItem disableRipple key={tab.name} disableTouchRipple>
-                <RouteTab {...tab} onlyLink />
+                <RouteTab
+                  {...tab}
+                  onlyLink
+                  search={location.search}
+                  params={{
+                    tab: "",
+                    code: params.code ?? "",
+                    period: params.period ?? "",
+                    vizType: params.vizType ?? "",
+                  }}
+                />
               </StyledMenuItem>
-            ))}
+            );
+          })}
         </StyledMenu>
       </div>
       <div
@@ -258,14 +291,14 @@ export function MobileViewControl(props: MobileViewControlProps) {
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? appColors.MOBILE_VIEWS_CONTROL.LINK_BACKGROUND_COLOR
-                  : appColors.MOBILE_VIEWS_CONTROL
-                      .LINK_BACKGROUND_SELECTED_COLOR};
+                  ? appColors.MOBILE_VIEWS_CONTROL
+                      .LINK_BACKGROUND_SELECTED_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL.LINK_BACKGROUND_COLOR};
 
                 path {
                   fill: ${selectedView === option.value
-                    ? appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_COLOR
-                    : appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_SELECTED_COLOR};
+                    ? appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_SELECTED_COLOR
+                    : appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_COLOR};
                 }
               `}
             >

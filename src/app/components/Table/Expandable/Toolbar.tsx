@@ -23,13 +23,15 @@ interface TableToolbarProps {
   title: string;
   search: string;
   columns: TableToolbarCols[];
-
+  multiVizPageDataKey?: string;
   onSearchChange: (value: string) => void;
   onColumnViewSelectionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function TableToolbar(props: TableToolbarProps) {
   const location = useLocation();
+  const isEligibilityTable = location.pathname.includes("eligibility/table");
+
   const params = useParams<{ code?: string }>();
   const vizData = useGetAllVizData();
   const cmsData = useCMSData({ returnData: true });
@@ -59,10 +61,26 @@ export function TableToolbar(props: TableToolbarProps) {
   );
 
   React.useEffect(() => {
+    if (searchInputRef.current && isEligibilityTable) {
+      setOpenSearch(true);
+      searchInputRef.current.focus();
+    }
+  }, [searchInputRef, isEligibilityTable]);
+
+  React.useEffect(() => {
     if (props.search.length > 0 && !openSearch) {
       setOpenSearch(true);
     }
   }, [props.search]);
+
+  function handleScroll() {
+    setAnchorEl(null);
+  }
+
+  React.useEffect(() => {
+    document.addEventListener("scroll", handleScroll);
+    return () => document.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
     <Toolbar
@@ -121,6 +139,7 @@ export function TableToolbar(props: TableToolbarProps) {
           type="text"
           ref={searchInputRef}
           value={props.search}
+          placeholder={isEligibilityTable ? "e.g Kenya" : ""}
           onChange={(e) => props.onSearchChange(e.target.value)}
           css={`
             height: 32px;
@@ -178,24 +197,32 @@ export function TableToolbar(props: TableToolbarProps) {
               asyncOnClick
               onClick={(_, done) => {
                 new Promise((resolve) => {
+                  let data = get(
+                    vizData,
+                    location.pathname.replace(`/${params.code}`, "/<code>"),
+                    []
+                  );
+                  if (
+                    props.multiVizPageDataKey &&
+                    data[props.multiVizPageDataKey]
+                  ) {
+                    data = get(data, props.multiVizPageDataKey, []);
+                  }
                   setCSVLinkData(
                     exportCSV(
                       location.pathname
                         .replace("/location/", "/viz/")
                         .replace("/grant/", "/viz/")
                         .replace(`/${params.code}`, ""),
-                      get(
-                        vizData,
-                        location.pathname.replace(`/${params.code}`, "/<code>"),
-                        []
-                      ),
+                      data,
                       {
                         selectedAggregation,
                         donorMapView,
                         investmentsMapView,
                         isDetail: params.code !== undefined,
                         resultsSelectedYear,
-                      }
+                      },
+                      props.multiVizPageDataKey
                     )
                   );
                   resolve({});
@@ -222,6 +249,7 @@ export function TableToolbar(props: TableToolbarProps) {
         </IconButton>
       </div>
       <Popover
+        disableScrollLock
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={() => setAnchorEl(null)}

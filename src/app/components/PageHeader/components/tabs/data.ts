@@ -12,6 +12,13 @@ export interface PageHeaderTabProps {
 
 export interface RouteTabProps extends TabProps {
   onlyLink?: boolean;
+  search?: any;
+  params?: {
+    tab: string;
+    code: string;
+    period: string;
+    vizType: string;
+  };
 }
 
 export const countryDetailTabs: TabProps[] = [
@@ -21,16 +28,7 @@ export const countryDetailTabs: TabProps[] = [
   },
   {
     name: "Access to Funding",
-    tabs: [
-      {
-        name: "Eligibility",
-        url: "/location/<code>/eligibility/table",
-      },
-      {
-        name: "Allocation",
-        url: "/location/<code>/allocations",
-      },
-    ],
+    url: "/location/<code>/access-to-funding",
   },
   {
     name: "Grant Implementation",

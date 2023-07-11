@@ -44,6 +44,7 @@ import {
   CMSApiModulesGrants,
   CMSApiCountrySummary,
   CMSApiNotesAndDisclaimers,
+  CMSApiModulesFundingRequests,
 } from "app/state/api/interfaces/cms";
 import {
   DataPathActiveStepStateModel,
@@ -171,6 +172,7 @@ export type CMSApiCallModel = ApiModel<
   | CMSApiModulesGrants
   | CMSApiCountrySummary
   | CMSApiNotesAndDisclaimers
+  | CMSApiModulesFundingRequests
 >;
 
 export interface CMSApiCallParams {}
@@ -188,6 +190,8 @@ export interface StoreModel {
   Eligibility: ApiCallModel;
   EligibilityTable: ApiCallModel;
   EligibilityYears: ApiCallModel;
+  EligibilityStatusCodelist: ApiCallModel;
+  EligibilityDiseaseBurdenCodelist: ApiCallModel;
   BudgetsFlow: ApiCallModel;
   BudgetsFlowDrilldownLevel1: ApiCallModel;
   BudgetsFlowDrilldownLevel2: ApiCallModel;
@@ -221,6 +225,7 @@ export interface StoreModel {
   ResultsList: ApiCallModel;
   ResultsStats: ApiCallModel;
   ResultsYears: ApiCallModel;
+  FundingRequestsTable: ApiCallModel;
   // global search
   GlobalSearch: ApiCallModel;
   // grant detail api
@@ -257,6 +262,13 @@ export interface StoreModel {
   LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   LocationDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   LocationGrants: ApiCallModel;
+  LocationAccessToFunding: {
+    EligibilityTable: ApiCallModel;
+    FundingRequestsTable: ApiCallModel;
+    GrantCycles: ApiCallModel;
+  };
+  FundingRequestsTRPWindowCodelist: ApiCallModel;
+  FundingRequestsPortfolioCategoryCodelist: ApiCallModel;
   // partner detail api
   PartnerDetailInfo: ApiCallModel;
   PartnerDetailDisbursementsTreemap: ApiCallModel;
@@ -387,6 +399,7 @@ export interface StoreModel {
     modulesDatasets: CMSApiCallModel;
     modulesGrantDetail: CMSApiCallModel;
     modulesGrants: CMSApiCallModel;
+    modulesFundingRequests: CMSApiCallModel;
     countrySummary: CMSApiCallModel;
     notesAndDisclaimers: CMSApiCallModel;
   };

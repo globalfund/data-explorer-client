@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
 import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
+import { useStoreActions } from "app/state/store/hooks";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMousePosition from "app/hooks/useMousePosition";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
@@ -63,6 +64,9 @@ export function GrantsViz(props: GrantsVizProps) {
     component: string;
     rating: string | null;
   } | null>(null);
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
+  );
   const components = uniq(data.map((item: any) => item.component));
   const yearItemWidth = (width - 120) / 2 / datayears.length;
   const allValues: number[] = [];
@@ -136,11 +140,15 @@ export function GrantsViz(props: GrantsVizProps) {
           {(isMobile || isTouchDevice()) && (
             <Button
               onTouchStart={() => {
-                setReRouteDialog({
-                  ...reRouteDialog,
-                  code: `${hoveredNode.number}`,
-                  clickthroughPath: `${hoveredNode.name}`,
-                });
+                // setReRouteDialog({
+                //   ...reRouteDialog,
+                //   code: `${hoveredNode.number}`,
+                //   clickthroughPath: `${hoveredNode.name}`,
+                // });
+                clearDataPathSteps();
+                history.push(
+                  `/grant/${hoveredNode.number}/${hoveredNode.name}/overview`
+                );
               }}
               css={`
                 width: 100%;
@@ -252,6 +260,7 @@ export function GrantsViz(props: GrantsVizProps) {
 }
 
 export function ComponentRadarThingies(props: any) {
+  const history = useHistory();
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   /*
@@ -491,11 +500,14 @@ export function ComponentRadarThingies(props: any) {
                             <div
                               onClick={() => {
                                 if (!isMobile && !isTouchDevice()) {
-                                  props.setReRouteDialog({
-                                    display: true,
-                                    code: item.name,
-                                    clickthroughPath: subItem.name,
-                                  });
+                                  // props.setReRouteDialog({
+                                  //   display: true,
+                                  //   code: item.name,
+                                  //   clickthroughPath: subItem.name,
+                                  // });
+                                  history.push(
+                                    `/grant/${item.name}/${subItem.name}/overview`
+                                  );
                                 }
                               }}
                               onMouseLeave={() => {

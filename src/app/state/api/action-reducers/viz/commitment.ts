@@ -20,5 +20,5 @@ export const CommitmentTimeCycleDrilldown: ApiCallModel = {
 };
 
 export const CommitmentTimeCycleDrilldown2: ApiCallModel = {
-  ...APIModel(`${process.env.REACT_APP_API}/commitment/treemap/drilldown`),
+  ...APIModel(`${process.env.REACT_APP_API}/commitment/time-cycle/drilldown/2`),
 };

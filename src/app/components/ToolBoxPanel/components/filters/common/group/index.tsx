@@ -13,6 +13,8 @@ import { appColors } from "app/theme";
 
 interface FilterGroupCompProps extends FilterGroupModel {
   expandGroup: () => void;
+  appliedFilters?: string[];
+  setAppliedFilters?: (filters: string[]) => void;
 }
 
 export function FilterGroup(props: FilterGroupCompProps) {
@@ -68,7 +70,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
       });
     }
     let newAppliedFilters = filter(
-      appliedFilters,
+      props.appliedFilters || appliedFilters,
       (af: string) => af !== option
     );
     if (allOptionSubOptions.length > 0) {
@@ -77,7 +79,11 @@ export function FilterGroup(props: FilterGroupCompProps) {
         (af: string) => !find(allOptionSubOptions, (so) => so.value === af)
       );
     }
-    setAppliedFilters(newAppliedFilters);
+    if (props.setAppliedFilters) {
+      props.setAppliedFilters(newAppliedFilters);
+    } else {
+      setAppliedFilters(newAppliedFilters);
+    }
     if (setAppliedFiltersChildren && appliedFiltersChildren) {
       let newAppliedFiltersChildren = [...appliedFiltersChildren];
       newAppliedFiltersChildren = filter(
@@ -172,7 +178,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
         </IconButton>
       </div>
       {[
-        ...appliedFilters,
+        ...(props.appliedFilters || appliedFilters),
         ...(appliedFiltersChildren || []),
         ...(appliedFiltersGrandChildren || []),
       ].length > 0 && (
@@ -213,7 +219,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
           `}
         >
           {[
-            ...appliedFilters,
+            ...(props.appliedFilters || appliedFilters),
             ...(appliedFiltersChildren || []),
             ...(appliedFiltersGrandChildren || []),
           ].map((option: string) => {
