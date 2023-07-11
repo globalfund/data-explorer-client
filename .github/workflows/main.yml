@@ -24,7 +24,6 @@ jobs:
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         with:
-          semantic_version: 18
           branches: |
             [
               "main",
