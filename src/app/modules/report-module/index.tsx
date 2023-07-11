@@ -179,21 +179,22 @@ export default function ReportModule() {
     reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => {
-    console.log("handleRowFrameItemResize", width, height);
     setFramesArray((prev) => {
       if (!stopInitializeFramesWidth) {
         setStopInitializeFramesWidth(true);
       }
       const tempPrev = cloneDeep(prev);
       tempPrev.sort(
-        (a, b) => reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id)
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
       );
       const frameIndex = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameIndex === -1) {
         return prev;
       }
       const contentContainer = document.getElementById("content-container");
-      const percentage = (width / contentContainer!.offsetWidth) * 100;
+      const percentage = ((width + 30) / contentContainer!.offsetWidth) * 100;
       tempPrev[frameIndex].contentWidths[itemIndex] = percentage;
       if (tempPrev[frameIndex].content.length > 1) {
         const remainingWidth = 100 - percentage;
