@@ -1,6 +1,9 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import useMeasure from "react-use/lib/useMeasure";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import Draggable, { DraggableEvent, DraggableData } from "react-draggable";
@@ -13,7 +16,7 @@ export function PerformanceFrameworkReportingPeriods(
   props: PerformanceFrameworkReportingPeriodsProps
 ) {
   const [ref, { width }] = useMeasure<HTMLDivElement>();
-
+  const cmsData = useCMSData({ returnData: true });
   const setSelected = useStoreActions(
     (store) => store.ToolBoxPanelPFPeriodState.setValue
   );
@@ -25,7 +28,7 @@ export function PerformanceFrameworkReportingPeriods(
     const newSelectedIndex =
       props.periods.length -
       (width - data.lastX) / (width / props.periods.length);
-    setSelected(newSelectedIndex);
+    setSelected(Math.round(newSelectedIndex));
   }
 
   return (
@@ -36,7 +39,8 @@ export function PerformanceFrameworkReportingPeriods(
         display: flex;
         padding: 15px 25px;
         flex-direction: column;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -51,7 +55,7 @@ export function PerformanceFrameworkReportingPeriods(
         }
       `}
     >
-      <b>Reporting Period</b>
+      <b>{get(cmsData, "componentsSidebar.reportingPeriodLabel", "")}</b>
       <div
         ref={ref}
         css={`
@@ -61,7 +65,7 @@ export function PerformanceFrameworkReportingPeriods(
           margin-top: 50px;
           position: relative;
           flex-direction: row;
-          background: #495057;
+          background: ${appColors.TOOLBOX.REPORTING_PERIODS_BACKGROUND_COLOR};
           border-radius: 20px;
 
           > div:not(:first-child) {
@@ -76,7 +80,7 @@ export function PerformanceFrameworkReportingPeriods(
                 height: 4px;
                 content: "";
                 position: absolute;
-                background: #c7cdd1;
+                background: ${appColors.COMMON.SECONDARY_COLOR_11};
               }
             }
 
@@ -87,7 +91,7 @@ export function PerformanceFrameworkReportingPeriods(
               height: 4px;
               content: "";
               position: absolute;
-              background: #c7cdd1;
+              background: ${appColors.COMMON.SECONDARY_COLOR_11};
             }
 
             > div {
@@ -120,8 +124,8 @@ export function PerformanceFrameworkReportingPeriods(
             css={`
               top: -2px;
               z-index: 15;
-              background: #fff;
               cursor: ew-resize;
+              background: ${appColors.COMMON.WHITE};
               border-radius: 4px;
               position: absolute;
               height: calc(100% + 4px);

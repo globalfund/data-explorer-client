@@ -1,21 +1,25 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React from "react";
+import React, { useState } from "react";
 import get from "lodash/get";
 import max from "lodash/max";
 import uniq from "lodash/uniq";
 import minBy from "lodash/minBy";
 import maxBy from "lodash/maxBy";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import { useMeasure } from "react-use";
 import { useHistory } from "react-router-dom";
 import { css } from "styled-components/macro";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
+import { useStoreActions } from "app/state/store/hooks";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import useMousePosition from "app/hooks/useMousePosition";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { GrantsRadialTooltip } from "app/components/Charts/Grants/components/tooltip";
 import {
@@ -29,6 +33,7 @@ import {
 // TODO: discuss with Dafei what should happen when only 1 component is in the data.
 // TODO: the labels are a bit iffy when there are 5 components. -> create an algorithm that calculates the middle of the pie.
 export function GrantsViz(props: GrantsVizProps) {
+  const cmsData = useCMSData({ returnData: true });
   const { data } = props;
   const history = useHistory();
   const { x, y } = useMousePosition();
@@ -40,6 +45,15 @@ export function GrantsViz(props: GrantsVizProps) {
   for (let i = hYear; i >= lYear; i--) {
     datayears.push(i);
   }
+  const [reRouteDialog, setReRouteDialog] = useState<{
+    display: boolean;
+    code: string;
+    clickthroughPath?: string;
+  }>({
+    display: false,
+    code: "",
+    clickthroughPath: "",
+  });
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: number;
     title: string;
@@ -50,6 +64,9 @@ export function GrantsViz(props: GrantsVizProps) {
     component: string;
     rating: string | null;
   } | null>(null);
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
+  );
   const components = uniq(data.map((item: any) => item.component));
   const yearItemWidth = (width - 120) / 2 / datayears.length;
   const allValues: number[] = [];
@@ -66,17 +83,28 @@ export function GrantsViz(props: GrantsVizProps) {
 
   return (
     <React.Fragment>
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(
+              `/grant/${reRouteDialog.code}/${reRouteDialog.clickthroughPath}/overview`
+            )
+          }
+        />
+      )}
       {hoveredNode && (
         <div
           css={`
             z-index: 101;
             width: 320px;
             padding: 20px;
-            color: #262c34;
+            color: ${appColors.GRANTS.TOOLTIP_COLOR};
             top: ${y + 12}px;
             left: ${x + 12}px;
             position: absolute;
-            background: #f5f5f7;
+            background: ${appColors.GRANTS.TOOLTIP_BACKGROUND_COLOR};
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
 
@@ -84,8 +112,8 @@ export function GrantsViz(props: GrantsVizProps) {
               top: 30vh;
               left: 16px;
               position: fixed;
-              background: #fff;
               width: calc(100vw - 32px);
+              background: ${appColors.GRANTS.MOBILE_TOOLTIP_BACKGROUND_COLOR};
             }
           `}
         >
@@ -112,6 +140,12 @@ export function GrantsViz(props: GrantsVizProps) {
           {(isMobile || isTouchDevice()) && (
             <Button
               onTouchStart={() => {
+                // setReRouteDialog({
+                //   ...reRouteDialog,
+                //   code: `${hoveredNode.number}`,
+                //   clickthroughPath: `${hoveredNode.name}`,
+                // });
+                clearDataPathSteps();
                 history.push(
                   `/grant/${hoveredNode.number}/${hoveredNode.name}/overview`
                 );
@@ -119,23 +153,25 @@ export function GrantsViz(props: GrantsVizProps) {
               css={`
                 width: 100%;
                 margin-top: 20px;
-                background: #dfe3e6;
                 border-radius: 22px;
+                background: ${appColors.GRANTS
+                  .MOBILE_TOOLTIP_BUTTON_BACKGROUND_COLOR};
 
                 &:hover {
-                  background: #dfe3e6;
+                  background: ${appColors.GRANTS
+                    .MOBILE_TOOLTIP_BUTTON_BACKGROUND_HOVER_COLOR};
                 }
 
                 > span {
-                  color: #262c34;
                   font-size: 14px;
                   font-weight: bold;
                   text-transform: none;
+                  color: ${appColors.GRANTS.MOBILE_TOOLTIP_BUTTON_COLOR};
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 }
               `}
             >
-              Grant detail page
+              {get(cmsData, "componentsChartsGrants.grantsDetailPage", "")}
             </Button>
           )}
         </div>
@@ -148,7 +184,6 @@ export function GrantsViz(props: GrantsVizProps) {
           height: ${width / 2}px;
           margin-top: 100px;
           position: relative;
-          //border-bottom: 1px solid #c7cdd1;
           border-top-left-radius: ${width * 2}px;
           border-top-right-radius: ${width * 2}px;
 
@@ -160,15 +195,11 @@ export function GrantsViz(props: GrantsVizProps) {
         <div
           id="rc-outline"
           css={`
-            //top: -60px;
-            //left: -60px;
             position: absolute;
             width: ${width}px;
-            //width: ${width + 120}px;
-            border: 1px solid #60647e;
+            border: 1px solid ${appColors.GRANTS.OUTLINE_COLOR};
             border-bottom-style: none;
             border-bottom: none;
-            // height: ${(width + 120) / 2}px;
             height: ${width / 2}px;
             border-top-left-radius: ${width * 2}px;
             border-top-right-radius: ${width * 2}px;
@@ -208,6 +239,7 @@ export function GrantsViz(props: GrantsVizProps) {
                 setHoveredNode={setHoveredNode}
                 rotateDeg={180 / components.length}
                 maxDisbursementValue={maxDisbursementValue}
+                setReRouteDialog={setReRouteDialog}
               />
             );
           })}
@@ -218,7 +250,7 @@ export function GrantsViz(props: GrantsVizProps) {
               width: 100%;
               z-index: 15;
               position: absolute;
-              background-color: #c7cdd1;
+              background-color: ${appColors.COMMON.SECONDARY_COLOR_11};
             `}
           />
         </div>
@@ -230,12 +262,6 @@ export function GrantsViz(props: GrantsVizProps) {
 export function ComponentRadarThingies(props: any) {
   const history = useHistory();
   const isMobile = useMediaQuery("(max-width: 767px)");
-
-  // let nOfImplementationPeriodsInComponent = 0;
-  // for (let i = 0; i < props.items.length; i++) {
-  //   nOfImplementationPeriodsInComponent +=
-  //     props.items[i].implementationPeriods.length;
-  // }
 
   /*
      These are the degrees we take into consideration with upcoming calculations.
@@ -292,7 +318,8 @@ export function ComponentRadarThingies(props: any) {
         border-top-left-radius: ${props.width * 2}px;
         border-top-right-radius: ${props.width * 2}px;
         transform: rotate(${props.index * props.rotateDeg}deg);
-        border-bottom: 1px ${props.index === 0 ? "solid" : "none"} #c7cdd1;
+        border-bottom: 1px ${props.index === 0 ? "solid" : "none"}
+          ${appColors.GRANTS.COMPONENT_DIVIDER_COLOR};
       `}
     >
       {props.datayears.map((year: number, index: number) => {
@@ -320,7 +347,7 @@ export function ComponentRadarThingies(props: any) {
               align-items: baseline;
               width: ${itemwidth}px;
               justify-content: center;
-              border: 1px solid #c7cdd1;
+              border: 1px solid ${appColors.GRANTS.COMPONENT_DIVIDER_COLOR};
               height: ${itemwidth / 2}px;
               border-top-left-radius: ${itemwidth * 2}px;
               border-top-right-radius: ${itemwidth * 2}px;
@@ -334,7 +361,7 @@ export function ComponentRadarThingies(props: any) {
               &:before {
                 right: -12px;
                 bottom: -35px;
-                color: #262c34;
+                color: ${appColors.GRANTS.TEXT_COLOR};
                 font-size: 10px;
                 position: absolute;
                 content: ${showLabel ? `"${year}"` : ""};
@@ -344,7 +371,7 @@ export function ComponentRadarThingies(props: any) {
               &:after {
                 left: -12px;
                 bottom: -35px;
-                color: #262c34;
+                color: ${appColors.GRANTS.TEXT_COLOR};
                 font-size: 10px;
                 position: absolute;
                 content: ${showLabel ? `"${year}"` : ""};
@@ -352,9 +379,8 @@ export function ComponentRadarThingies(props: any) {
 
               ${index + 1 === props.datayears.length
                 ? `
-              // bottom: -1px;
-              background: #fff;
-              border-bottom: 1px solid #fff;
+              background: ${appColors.COMMON.WHITE};
+              border-bottom: 1px solid ${appColors.COMMON.WHITE};
               border-style: ${showGrid ? "solid" : "none"};
               `
                 : ""}
@@ -392,138 +418,147 @@ export function ComponentRadarThingies(props: any) {
                 const points = pointsOnCircle(radius, angle);
 
                 return (
-                  <div
-                    key={subItem.name}
-                    id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}`}
-                    css={`
-                      width: 100%;
-                      height: 100%;
-                      position: absolute;
-                      //bottom: ${(props.datayears.length - index - 1) * 10}px;
-                      opacity: ${props.hoveredNode &&
-                      props.hoveredNode.title !== item.title
-                        ? 0.4
-                        : 1};
-                    `}
-                  >
+                  <>
                     <div
+                      key={subItem.name}
+                      id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}`}
                       css={`
                         width: 100%;
                         height: 100%;
-                        position: relative;
-                        top: ${points.y}px;
-                        left: ${radius + points.x}px;
+                        position: absolute;
+                        /* bottom: ${(props.datayears.length - index - 1) *
+                        10}px; */
+                        opacity: ${props.hoveredNode &&
+                        props.hoveredNode.title !== item.title
+                          ? 0.4
+                          : 1};
                       `}
                     >
                       <div
                         css={`
-                          bottom: 0;
-                          // left: -3px;
-                          position: absolute;
-                          height: ${itemHeight}px;
-                          transform-origin: bottom;
-                          // Without default 90deg addition, we would have our starting point on top of the circle.
-                          // This is not what we want, see angleRange comment.
-                          transform: rotate(${90 + angle}deg);
+                          width: 100%;
+                          height: 100%;
+                          position: relative;
+                          top: ${points.y}px;
+                          left: ${radius + points.x}px;
                         `}
                       >
-                        <hr
-                          id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-line`}
-                          css={`
-                            margin: 0;
-                            z-index: 1;
-                            left: -1px;
-                            height: 100%;
-                            border-width: 1px;
-                            position: absolute;
-                            border-color: #13183f;
-                            border-style: none none none
-                              ${get(
-                                statusBorderStyle,
-                                subItem.status,
-                                statusBorderStyle["Administratively Closed"]
-                              )};
-                          `}
-                        />
                         <div
-                          id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation`}
                           css={`
-                            z-index: 2;
-                            height: 100%;
-                            position: relative;
-
-                            * {
-                              z-index: 2;
-                            }
+                            bottom: 0;
+                            // left: -3px;
+                            position: absolute;
+                            height: ${itemHeight}px;
+                            transform-origin: bottom;
+                            // Without default 90deg addition, we would have our starting point on top of the circle.
+                            // This is not what we want, see angleRange comment.
+                            transform: rotate(${90 + angle}deg);
                           `}
                         >
-                          <div
-                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-start`}
+                          <hr
+                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-line`}
                             css={`
-                              left: -2px;
-                              width: 4px;
-                              height: 4px;
-                              border-radius: 50%;
+                              margin: 0;
+                              z-index: 1;
+                              left: -1px;
+                              height: 100%;
+                              border-width: 1px;
                               position: absolute;
-                              background: #495057;
-                              bottom: ${startHeight}px;
+                              border-color: ${appColors.GRANTS.ITEM_LINE_COLOR};
+                              border-style: none none none
+                                ${get(
+                                  statusBorderStyle,
+                                  subItem.status,
+                                  statusBorderStyle["Administratively Closed"]
+                                )};
                             `}
                           />
                           <div
-                            onClick={() => {
-                              if (!isMobile && !isTouchDevice()) {
-                                history.push(
-                                  `/grant/${item.name}/${subItem.name}/overview`
-                                );
+                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation`}
+                            css={`
+                              z-index: 2;
+                              height: 100%;
+                              position: relative;
+
+                              * {
+                                z-index: 2;
                               }
-                            }}
-                            onMouseLeave={() => {
-                              if (!isMobile && !isTouchDevice()) {
-                                props.setHoveredNode(null);
-                              }
-                            }}
-                            onMouseEnter={() => {
-                              if (!isMobile && !isTouchDevice()) {
+                            `}
+                          >
+                            <div
+                              id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-start`}
+                              css={`
+                                left: -2px;
+                                width: 4px;
+                                height: 4px;
+                                border-radius: 50%;
+                                position: absolute;
+                                background: ${appColors.GRANTS.ITEM_LINE_COLOR};
+                                bottom: ${startHeight}px;
+                              `}
+                            />
+                            <div
+                              onClick={() => {
+                                if (!isMobile && !isTouchDevice()) {
+                                  // props.setReRouteDialog({
+                                  //   display: true,
+                                  //   code: item.name,
+                                  //   clickthroughPath: subItem.name,
+                                  // });
+                                  history.push(
+                                    `/grant/${item.name}/${subItem.name}/overview`
+                                  );
+                                }
+                              }}
+                              onMouseLeave={() => {
+                                if (!isMobile && !isTouchDevice()) {
+                                  props.setHoveredNode(null);
+                                }
+                              }}
+                              onMouseEnter={() => {
+                                if (!isMobile && !isTouchDevice()) {
+                                  props.setHoveredNode({
+                                    ...subItem,
+                                    component: item.component,
+                                    title: item.title || item.name,
+                                    number: item.name,
+                                  });
+                                }
+                              }}
+                              onTouchStart={(
+                                e: React.TouchEvent<HTMLDivElement>
+                              ) => {
+                                e.stopPropagation();
                                 props.setHoveredNode({
                                   ...subItem,
                                   component: item.component,
                                   title: item.title || item.name,
                                   number: item.name,
                                 });
-                              }
-                            }}
-                            onTouchStart={(
-                              e: React.TouchEvent<HTMLDivElement>
-                            ) => {
-                              e.stopPropagation();
-                              props.setHoveredNode({
-                                ...subItem,
-                                component: item.component,
-                                title: item.title || item.name,
-                                number: item.name,
-                              });
-                            }}
-                            id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-end`}
-                            css={`
-                              top: 0;
-                              cursor: pointer;
-                              width: ${size}px;
-                              height: ${size}px;
-                              border-radius: 50%;
-                              position: absolute;
-                              left: -${size / 2}px;
-                              border: 1px solid #495057;
-                              background: ${get(
-                                ratingColor,
-                                subItem.rating,
-                                ratingColor.None
-                              )};
-                            `}
-                          />
+                              }}
+                              id={`rc-${props.name}-${year}-grant${itemIndex}-period${subItemIndex}-implementation-end`}
+                              css={`
+                                top: 0;
+                                cursor: pointer;
+                                width: ${size}px;
+                                height: ${size}px;
+                                border-radius: 50%;
+                                position: absolute;
+                                left: -${size / 2}px;
+                                border: 1px solid
+                                  ${appColors.GRANTS.ITEM_LINE_COLOR};
+                                background: ${get(
+                                  ratingColor,
+                                  subItem.rating,
+                                  ratingColor.None
+                                )};
+                              `}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  </>
                 );
               });
             })}
@@ -565,7 +600,7 @@ export function ComponentDividers(props: any) {
               border-style: solid none none none;
               border-color: ${index + 1 === components.length
                 ? "transparent"
-                : "#c7cdd1"};
+                : appColors.GRANTS.COMPONENT_DIVIDER_COLOR};
 
               &:after {
                 //left: ${width / 2}px;
@@ -588,6 +623,8 @@ export function ComponentDividers(props: any) {
 }
 
 export const RadialChartLegend = (props: any) => {
+  const cmsData = useCMSData({ returnData: true });
+
   const header = css`
     font-weight: bold;
     font-size: 12px;
@@ -641,14 +678,14 @@ export const RadialChartLegend = (props: any) => {
     height: 38px;
     width: 38px;
     border-radius: 50%;
-    border: 1px solid #000;
-    background-color: #ffc107;
+    border: 1px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
+    background-color: ${appColors.GRANTS.LATEST_RATING_COLOR_3};
 
     ::after {
       content: " ";
       display: block;
       height: 0.5px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
       transform: translate(17px, -1px);
       opacity: 0.2;
     }
@@ -657,7 +694,7 @@ export const RadialChartLegend = (props: any) => {
       content: " ";
       display: block;
       height: 0.5px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
       transform: translate(-5px, 17px);
       width: 59px;
       opacity: 0.3;
@@ -665,7 +702,7 @@ export const RadialChartLegend = (props: any) => {
   `;
 
   const line = css`
-    border: 1px solid #262c34;
+    border: 1px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin: 0;
     height: calc(100% - 38px);
   `;
@@ -682,7 +719,7 @@ export const RadialChartLegend = (props: any) => {
       display: block;
       height: 0.5px;
       width: 35px;
-      border-top: 0.5px solid #262c34;
+      border-top: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
       opacity: 0.2;
     }
   `;
@@ -690,21 +727,21 @@ export const RadialChartLegend = (props: any) => {
   const solid = css`
     max-width: 83px;
     margin: 0;
-    border: 1px solid #262c34;
+    border: 1px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin-bottom: 7px;
   `;
 
   const dashed = css`
     max-width: 83px;
     margin: 0;
-    border: 1px dashed #262c34;
+    border: 1px dashed ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin-bottom: 7px;
   `;
 
   const dotted = css`
     max-width: 83px;
     margin: 0;
-    border: 1px dotted #262c34;
+    border: 1px dotted ${appColors.GRANTS.ITEM_LINE_COLOR};
     margin-bottom: 7px;
   `;
 
@@ -736,7 +773,9 @@ export const RadialChartLegend = (props: any) => {
           justify-content: center;
         `}
       >
-        <div css={header}>Implementation Period</div>
+        <div css={header}>
+          {get(cmsData, "componentsChartsGrants.implementationPeriod", "")}
+        </div>
         <div css={implementationPeriodContainer}>
           <div css={implementationPeriod}>
             <div css={end} />
@@ -750,7 +789,7 @@ export const RadialChartLegend = (props: any) => {
                   transform: translateY(-8px);
                 `}
               >
-                Implementation End
+                {get(cmsData, "componentsChartsGrants.implementationEnd", "")}
               </div>
 
               <div
@@ -760,7 +799,10 @@ export const RadialChartLegend = (props: any) => {
                   line-height: normal;
                 `}
               >
-                Size of the circle: {`\n`} Disbursements {`\n`} (Max value{" "}
+                {get(cmsData, "componentsChartsGrants.circleSize", "")} {`\n`}{" "}
+                {get(cmsData, "componentsChartsGrants.circleContent", "")}{" "}
+                {`\n`} (
+                {get(cmsData, "componentsChartsGrants.circleMaxValue", "")}{" "}
                 {formatFinancialValue(props.maxValue)})
               </div>
             </div>
@@ -769,13 +811,11 @@ export const RadialChartLegend = (props: any) => {
                 transform: translateY(6px);
               `}
             >
-              Implementation Start
+              {get(cmsData, "componentsChartsGrants.implementationStart", "")}
             </div>
           </div>
         </div>
-        <div css={note}>
-          *One grant could contains Multiple Implementation Periods
-        </div>
+        <div css={note}>{get(cmsData, "componentsChartsGrants.note", "")}</div>
       </div>
       <div
         css={`
@@ -796,7 +836,9 @@ export const RadialChartLegend = (props: any) => {
             justify-content: center;
           `}
         >
-          <div css={header}>Latest Rating color code</div>
+          <div css={header}>
+            L{get(cmsData, "componentsChartsGrants.latestRatingColor", "")}
+          </div>
           <div
             css={`
               width: 100%;
@@ -825,13 +867,13 @@ export const RadialChartLegend = (props: any) => {
                 height: 10px;
                 position: relative;
                 border-radius: 50%;
-                border: 0.5px solid #262c34;
+                border: 0.5px solid ${appColors.GRANTS.ITEM_LINE_COLOR};
 
                 &:before {
                   width: 40px;
                   left: -16px;
                   bottom: -25px;
-                  color: #495057;
+                  color: ${appColors.GRANTS.TEXT_COLOR};
                   font-size: 12px;
                   position: absolute;
                   text-align: center;
@@ -841,7 +883,7 @@ export const RadialChartLegend = (props: any) => {
           >
             <div
               css={`
-                background: #fff;
+                background: ${appColors.COMMON.WHITE};
                 &:before {
                   content: "None";
                 }
@@ -849,7 +891,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #3b873e;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_1};
                 &:before {
                   content: "A1";
                 }
@@ -857,7 +899,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #7bc67e;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_2};
                 &:before {
                   content: "A2";
                 }
@@ -865,7 +907,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #ffab00;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_3};
                 &:before {
                   content: "B1";
                 }
@@ -873,7 +915,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #ff6d00;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_4};
                 &:before {
                   content: "B2";
                 }
@@ -881,7 +923,7 @@ export const RadialChartLegend = (props: any) => {
             />
             <div
               css={`
-                background: #e57373;
+                background: ${appColors.GRANTS.LATEST_RATING_COLOR_5};
                 &:before {
                   content: "C";
                 }
@@ -897,13 +939,21 @@ export const RadialChartLegend = (props: any) => {
           `}
         >
           <div css="width: 100%;height: 15px;" />
-          <div css={header}>Grant Status</div>
+          <div css={header}>
+            {get(cmsData, "componentsChartsGrants.grantStatus", "")}
+          </div>
           <hr css={solid} />
-          <div css={body}>Active</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.active", "")}
+          </div>
           <hr css={dashed} />
-          <div css={body}>In closure</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.closure", "")}
+          </div>
           <hr css={dotted} />
-          <div css={body}>Administratly Closed</div>
+          <div css={body}>
+            {get(cmsData, "componentsChartsGrants.closed", "")}
+          </div>
         </div>
       </div>
     </div>

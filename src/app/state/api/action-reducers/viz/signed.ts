@@ -18,3 +18,7 @@ export const SignedTimeCycle: ApiCallModel = {
 export const SignedTimeCycleDrilldown: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/signed/time-cycle/drilldown`),
 };
+
+export const SignedTimeCycleDrilldown2: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/signed/treemap/drilldown`),
+};

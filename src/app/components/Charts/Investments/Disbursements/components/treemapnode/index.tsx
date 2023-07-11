@@ -7,6 +7,7 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { DisbursementsTreemap } from "../..";
 import { isTouchDevice } from "app/utils/isTouchDevice";
+import { appColors } from "app/theme";
 
 const containercss = (
   hover: boolean,
@@ -23,7 +24,9 @@ const containercss = (
   align-items: flex-start;
   transition: background 0.2s ease-in-out;
   overflow: ${!hover ? "visible" : "hidden"};
-  color: ${isChildTreemap ? "#fff" : "#262C34"};
+  color: ${isChildTreemap
+    ? appColors.TREEMAP.CHILD_NODE_COLOR
+    : appColors.TREEMAP.NODE_COLOR};
   cursor: ${isChildTreemap ? "pointer" : "default"};
 
   > div {
@@ -32,9 +35,9 @@ const containercss = (
   }
 
   @media (max-width: 767px) {
-    color: #fff;
     font-size: 10px;
-    background: #595c70;
+    color: ${appColors.TREEMAP.MOBILE_NODE_COLOR};
+    background: ${appColors.TREEMAP.MOBILE_NODE_BACKGROUND_COLOR};
   }
 `;
 
@@ -74,7 +77,8 @@ export function TreeemapNode(props: any) {
             `${node.data.code || node.id}-${node.data.tooltip.header}`,
             node.x + props.parentNodeCoords.x,
             node.y + props.parentNodeCoords.y,
-            node.data.code
+            node.data.code,
+            node.data.name
           );
         }
       }}
@@ -107,7 +111,8 @@ export function TreeemapNode(props: any) {
                 : "normal"};
               font-family: "GothamNarrow-${hasChildren || node.data._children
                   ? "Bold"
-                  : "Book"}", "Helvetica Neue", sans-serif;
+                  : "Book"}",
+                "Helvetica Neue", sans-serif;
             `}
           >
             {node.data.name}

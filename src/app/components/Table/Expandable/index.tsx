@@ -1,5 +1,10 @@
 import React from "react";
+import get from "lodash/get";
+import filter from "lodash/filter";
+import { appColors } from "app/theme";
+import findIndex from "lodash/findIndex";
 import Table from "@material-ui/core/Table";
+import { useCMSData } from "app/hooks/useCMSData";
 import Collapse from "@material-ui/core/Collapse";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
@@ -11,7 +16,9 @@ import DownloadIcon from "@material-ui/icons/CloudDownload";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import TableContainer from "@material-ui/core/TableContainer";
 import { tablecell } from "app/components/Table/Expandable/styles";
+import { TableToolbar } from "app/components/Table/Expandable/Toolbar";
 import {
+  TableToolbarCols,
   ExpandableTableProps,
   ExpandableTableRowDocProps,
   ExpandableTableRowProps,
@@ -21,7 +28,7 @@ const useRowStyles = makeStyles({
   root: {
     "& > *": {
       userSelect: "none",
-      borderBottom: "1px solid #DFE3E6",
+      borderBottom: `1px solid ${appColors.TABLE.BORDER_BOTTOM_COLOR}`,
     },
   },
 });
@@ -48,21 +55,23 @@ function Row(props: {
           }
         }}
         css={`
-          background: #f5f5f7;
           transition: background 0.2s ease-in-out;
+          background: ${props.paddingLeft
+            ? appColors.TABLE.ROW_BACKGROUND_COLOR_1
+            : appColors.TABLE.ROW_BACKGROUND_COLOR_2};
 
           ${row.link || props.row.docCategories || props.row.docs
             ? `
           :hover {
             cursor: pointer;
-            background: #13183F;
+            background: ${appColors.TABLE.ROW_BACKGROUND_HOVER_COLOR};
 
             > td {
-              color: #fff;
+              color: ${appColors.TABLE.ROW_TEXT_HOVER_COLOR};
             }
             
             path {
-              fill: #fff;
+              fill: ${appColors.TABLE.ROW_TEXT_HOVER_COLOR};
             }
           }
           `
@@ -73,7 +82,7 @@ function Row(props: {
           css={`
             ${tablecell}
             width: 70%;
-            padding-left: ${props.paddingLeft}px;
+            padding-left: ${props.paddingLeft || 40}px;
           `}
         >
           <div
@@ -112,28 +121,36 @@ function Row(props: {
                 <TriangleXSIcon />
               )}
               <div
-                css={`
+                css={
+                  row.link
+                    ? ""
+                    : `
                   font-weight: bold;
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                `}
+                `
+                }
               >
                 {row.name}
               </div>
             </div>
-            {row.link && <DownloadIcon />}
           </div>
         </TableCell>
         <TableCell
           css={`
             ${tablecell}
             width: 30%;
+            padding-left: ${row.link ? 48 : 55}px;
 
             @media (max-width: 767px) {
               text-align: right;
             }
           `}
         >
-          {row.count}
+          {row.link ? (
+            <DownloadIcon htmlColor={appColors.TABLE.DOWNLOAD_ICON_COLOR} />
+          ) : (
+            row.count
+          )}
         </TableCell>
       </TableRow>
       <TableRow
@@ -158,7 +175,7 @@ function Row(props: {
                         key={category.name}
                         row={category}
                         forceExpand={props.forceExpand}
-                        paddingLeft={!isMobile ? 50 : 40}
+                        paddingLeft={!isMobile ? 62 : 40}
                       />
                     )
                   )}
@@ -171,7 +188,7 @@ function Row(props: {
                         link: doc.link,
                       }}
                       forceExpand={props.forceExpand}
-                      paddingLeft={!isMobile ? 72 : 62}
+                      paddingLeft={!isMobile ? 85 : 62}
                     />
                   ))}
               </TableBody>
@@ -184,26 +201,56 @@ function Row(props: {
 }
 
 export function ExpandableTable(props: ExpandableTableProps) {
+  const [toolbarCols, setToolbarCols] = React.useState<TableToolbarCols[]>([]);
+  const cmsData = useCMSData({ returnData: true });
+
+  function onColumnViewSelectionChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const updatedToolbarCols = [...toolbarCols];
+    const fColIndex = findIndex(toolbarCols, { name: e.target.name });
+    if (fColIndex > -1) {
+      updatedToolbarCols[fColIndex].checked = e.target.checked;
+      setToolbarCols(updatedToolbarCols);
+    }
+  }
+
+  React.useEffect(() => {
+    setToolbarCols(
+      props.columns.map((c, index) => ({ name: c, checked: true, index }))
+    );
+  }, [props.columns]);
+
   return (
     <TableContainer>
+      <TableToolbar
+        title={get(cmsData, "componentsTable.documents", "")}
+        search={props.search}
+        columns={toolbarCols}
+        onSearchChange={props.onSearchChange}
+        onColumnViewSelectionChange={onColumnViewSelectionChange}
+      />
       <Table aria-label="Expandable table">
         <TableHead>
           <TableRow>
-            {props.columns.map((column: string, index: number) => (
-              <TableCell
-                style={
-                  index === 0
-                    ? {
-                        paddingLeft: 40,
-                      }
-                    : {}
-                }
-                css={tablecell}
-                key={column}
-              >
-                <b>{column}</b>
-              </TableCell>
-            ))}
+            {filter(toolbarCols, { checked: true }).map(
+              (column: TableToolbarCols, index: number) => (
+                <TableCell
+                  style={
+                    index === 0
+                      ? {
+                          fontSize: 16,
+                          paddingLeft: 40,
+                        }
+                      : {
+                          fontSize: 16,
+                        }
+                  }
+                  css={tablecell}
+                  key={column.name}
+                >
+                  <b>{column.name}</b>
+                </TableCell>
+              )
+            )}
           </TableRow>
         </TableHead>
         <TableBody>

@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 import { useUpdateEffect } from "react-use";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -17,18 +18,35 @@ interface Props {
 
 export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Investments/Time cycle");
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
+    dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr
   );
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
+  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
     string | undefined
-  >(undefined);
+  >(dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr);
+  const [vizLevel, setVizLevel] = React.useState(0);
+
+  React.useEffect(() => {
+    const newVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (!isEqual(newVizSelected, vizSelected)) {
+      setVizSelected(newVizSelected);
+    }
+    if (!isEqual(newDrilldownVizSelected, drilldownVizSelected)) {
+      setDrilldownVizSelected(newDrilldownVizSelected);
+    }
+    if (newDrilldownVizSelected) {
+      setVizLevel(2);
+    } else if (newVizSelected) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -144,20 +162,16 @@ export function PartnerDetailInvestmentsTimeCycleWrapper(props: Props) {
   return (
     <InvestmentsTimeCycleModule
       data={data}
+      isPartnerDetail
       type={props.type}
       isDrilldownLoading={isDrilldownLoading}
+      codeParam={props.code}
       drilldownData={drilldownData}
       isLoading={isLoading}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       vizSelected={vizSelected}
       setVizSelected={setVizSelected}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
-      setVizPrevTranslation={setVizPrevTranslation}
       toolboxOpen={props.toolboxOpen}
     />
   );

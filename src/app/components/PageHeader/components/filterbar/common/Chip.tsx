@@ -1,5 +1,6 @@
 import React from "react";
 import sortBy from "lodash/sortBy";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 import { Chip as MUIChip } from "@material-ui/core";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
@@ -8,12 +9,12 @@ import { ChipModel } from "app/components/PageHeader/components/filterbar/data";
 const chipstyle = css`
   && {
     height: unset;
-    color: #495057;
+    color: ${appColors.MOBILE_FILTER_BAR.CHIP_COLOR};
     font-size: 14px;
     min-height: 32px;
     line-height: 17px;
     font-weight: bold;
-    background-color: #dfe3e6;
+    background-color: ${appColors.MOBILE_FILTER_BAR.CHIP_BACKGROUND_COLOR};
 
     .MuiChip-label {
       padding-top: 7px;
@@ -22,7 +23,7 @@ const chipstyle = css`
     }
 
     .MuiChip-deleteIcon {
-      color: #495057;
+      color: ${appColors.MOBILE_FILTER_BAR.CHIP_DELETE_BUTTON_COLOR};
     }
 
     .MuiChip-label {

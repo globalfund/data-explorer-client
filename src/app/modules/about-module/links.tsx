@@ -3,12 +3,17 @@ import { Link } from "react-router-dom";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { PageHeader } from "app/components/PageHeader";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
+import { appColors } from "app/theme";
 
 export default function LinkList() {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
-        top: 158px;
+        top: 135px;
         position: sticky;
       `}
     >
@@ -20,7 +25,7 @@ export default function LinkList() {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Links
+        {get(cmsData, "modulesAbout.linksTitle", "")}
       </div>
       <div
         css={`
@@ -39,15 +44,15 @@ export default function LinkList() {
 
           > a {
             width: 100%;
-            color: #000;
+            color: ${appColors.ABOUT_PAGE.LINK_COLOR};
             font-size: 14px;
             padding: 10px 0;
             font-weight: bold;
             text-align: center;
-            background: #dfe3e6;
+            background: ${appColors.ABOUT_PAGE.LINK_BACKGROUND_COLOR};
             border-radius: 20px;
             text-decoration: none;
-            border: 1px solid #dfe3e6;
+            border: 1px solid ${appColors.ABOUT_PAGE.LINK_BORDER_COLOR};
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           }
@@ -58,35 +63,35 @@ export default function LinkList() {
           rel="noreferrer"
           href="https://www.theglobalfund.org/en/methodology/"
         >
-          Results Methodology
+          {get(cmsData, "modulesAbout.linksResultMethodology", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href="https://www.theglobalfund.org/en/legal/"
         >
-          Legal & Disclaimers
+          {get(cmsData, "modulesAbout.linksLegalDisclaimers", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href="https://www.theglobalfund.org/en/site/privacy-statement/"
         >
-          Privacy Statements
+          {get(cmsData, "modulesAbout.linksPrivacyStatements", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href={`mailto:website@theglobalfund.org?subject=Data Explorer Feedback - URL: ${window.location}&body=User Feedback: `}
         >
-          Feedback
+          {get(cmsData, "modulesAbout.linksFeedback", "")}
         </a>
         <a
           target="_blank"
           rel="noreferrer"
           href="https://data-service.theglobalfund.org/file_download/covid_approved_funding_report/pdf"
         >
-          COVID-19
+          {get(cmsData, "modulesAbout.linksCovid", "")}
         </a>
       </div>
     </div>

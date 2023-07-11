@@ -1,6 +1,10 @@
 import React from "react";
+import get from "lodash/get";
+import orderBy from "lodash/orderBy";
+import { appColors } from "app/theme";
 import Button from "@material-ui/core/Button";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
@@ -12,8 +16,8 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
-        background: #f5f5f7;
+        color: ${appColors.BUDGETS_FLOW.TOOLTIP_COLOR};
+        background: ${appColors.BUDGETS_FLOW.TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
       `}
     >
@@ -44,14 +48,16 @@ export function BudgetsFlowTooltip(props: BudgetsFlowTooltipProps) {
 }
 
 export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <div
       css={`
         padding: 25px;
-        color: #262c34;
-        background: #fff;
+        color: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_COLOR};
+        background: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
         box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
+        z-index: 2500;
       `}
     >
       {props.onClose && (
@@ -62,7 +68,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
             justify-content flex-end;
 
             path {
-              fill: #2E4063;
+              fill: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_CLOSE_ICON_COLOR};
             }
           `}
         >
@@ -89,7 +95,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           padding-bottom: 16px;
           align-items: flex-end;
           justify-content: space-between;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -112,7 +118,7 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -135,21 +141,29 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
               &:nth-of-type(1) {
-                width: 50%;
+                width: 40%;
                 text-align: start;
               }
 
               &:nth-of-type(2) {
-                width: 50%;
+                width: 20%;
+                text-align: right;
+              }
+
+              &:nth-of-type(3) {
+                width: 40%;
                 text-align: right;
               }
             }
           `}
         >
-          <div>Component</div>
-          <div>Budget</div>
+          <div>
+            {get(cmsData, "componentsChartsBudgets.flowTooltipComponent", "")}
+          </div>
+          <div>{get(cmsData, "componentsChartsInvestments.grants", "")}</div>
+          <div>{get(cmsData, "componentsChartsBudgets.budget", "")}</div>
         </div>
-        {props.components.map((stat: any) => (
+        {orderBy(props.components, "value", "desc").map((stat: any) => (
           <div
             key={stat.id}
             css={`
@@ -161,18 +175,24 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
 
               > div {
                 &:nth-of-type(1) {
-                  width: 50%;
+                  width: 40%;
                   text-align: start;
                 }
 
                 &:nth-of-type(2) {
-                  width: 50%;
+                  width: 20%;
+                  text-align: right;
+                }
+
+                &:nth-of-type(3) {
+                  width: 40%;
                   text-align: right;
                 }
               }
             `}
           >
             <div>{stat.id}</div>
+            <div>{stat.count}</div>
             <div>{formatFinancialValue(stat.value)}</div>
           </div>
         ))}
@@ -187,23 +207,27 @@ export function MobileBudgetsFlowTooltip(props: MobileBudgetsFlowTooltipProps) {
           css={`
             width: 100%;
             margin-top: 20px;
-            background: #dfe3e6;
             border-radius: 22px;
+            background: ${appColors.BUDGETS_FLOW
+              .MOBILE_TOOLTIP_DRILLDOWN_BACKGROUND_COLOR};
 
             &:hover {
-              background: #dfe3e6;
+              background: ${appColors.BUDGETS_FLOW
+                .MOBILE_TOOLTIP_DRILLDOWN_BACKGROUND_HOVER_COLOR};
             }
 
-            > span {
-              color: #262c34;
+            > span > div {
               font-size: 14px;
               font-weight: bold;
               text-transform: none;
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+              color: ${appColors.BUDGETS_FLOW.MOBILE_TOOLTIP_DRILLDOWN_COLOR};
             }
           `}
         >
-          Drill down
+          <div>
+            {get(cmsData, "componentsChartsBudgets.flowTooltipDrilldown", "")}
+          </div>
         </Button>
       )}
     </div>

@@ -1,15 +1,18 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import { appColors } from "app/theme";
+import findIndex from "lodash/findIndex";
 import { useMediaQuery } from "@material-ui/core";
 import { useTitle, useUpdateEffect } from "react-use";
-import { Switch, Route, useParams } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { grantDetailTabs } from "app/components/PageHeader/components/tabs/data";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
@@ -24,20 +27,54 @@ import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-modul
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
 
+interface GrantDetailPeriod {
+  number: number;
+  endDate: string;
+  startDate: string;
+}
+
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
+  const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
   const params = useParams<{ code: string; period: string; vizType: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(
     !isMobile && params.vizType !== "overview"
+  );
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
   );
 
   // api call & data
   const fetchGrantInfoData = useStoreActions(
     (store) => store.GrantDetailInfo.fetch
   );
+
+  const periods = useStoreState(
+    (state) =>
+      get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
+  );
+
+  const selectedPeriod = React.useMemo(() => {
+    return (
+      find(
+        periods,
+        (p: GrantDetailPeriod) => p.number.toString() === params.period
+      ) || { startDate: "", endDate: "" }
+    );
+  }, [periods, params.period]);
+
+  const formatPeriod = (date: string) => {
+    return date.split("-")[0];
+  };
+
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
       title: "",
@@ -66,7 +103,7 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
@@ -97,7 +134,7 @@ export default function GrantDetail() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   function isToolboxOvervlayVisible() {
@@ -106,7 +143,46 @@ export default function GrantDetail() {
     return 0;
   }
 
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+  useUpdateEffect(() => {
+    if (
+      grantInfoData &&
+      grantInfoData.code &&
+      !dataPathSteps.find((item) => item.id === "grant")
+    ) {
+      addDataPathSteps([
+        {
+          id: "grant",
+          name: `${params.code} - ${formatPeriod(
+            selectedPeriod.startDate
+          )} - ${formatPeriod(selectedPeriod.endDate)}`,
+          path: location.pathname,
+        },
+      ]);
+    }
+  }, [grantInfoData]);
+
+  useUpdateEffect(() => {
+    const value = `${params.code} - ${formatPeriod(
+      selectedPeriod.startDate
+    )} - ${formatPeriod(selectedPeriod.endDate)}`;
+    const fIndex = findIndex(dataPathSteps, {
+      id: "grant",
+    });
+    if (fIndex > -1) {
+      const newDataPathSteps = [...dataPathSteps];
+      newDataPathSteps[fIndex].name = value;
+      newDataPathSteps[fIndex].path = location.pathname;
+      setDataPathSteps(newDataPathSteps);
+    } else {
+      addDataPathSteps([
+        {
+          id: "grant",
+          name: value,
+          path: location.pathname,
+        },
+      ]);
+    }
+  }, [selectedPeriod]);
 
   return (
     <div
@@ -119,21 +195,9 @@ export default function GrantDetail() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        isDetail
-        title={grantInfoData.title}
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          {
-            name: params.code,
-          },
-        ]}
-        tabs={grantDetailTabs}
-      />
+      <BreadCrumbs />
+      <PageHeader isDetail tabs={grantDetailTabs} title={grantInfoData.title} />
+
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>
@@ -146,6 +210,7 @@ export default function GrantDetail() {
           />
         </React.Fragment>
       )}
+
       <div
         id="export-view-div"
         css={`
@@ -237,7 +302,7 @@ export default function GrantDetail() {
               implementationPeriod={params.period}
             />
           </Route>
-          <Route
+          {/* <Route
             path={`/grant/${params.code}/${params.period}/signed/time-cycle`}
           >
             <GrantDetailInvestmentsTimeCycleWrapper
@@ -246,7 +311,7 @@ export default function GrantDetail() {
               toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
             />
-          </Route>
+          </Route> */}
           {/* Commitmeent */}
           <Route
             path={`/grant/${params.code}/${params.period}/commitment/treemap`}
@@ -282,12 +347,13 @@ export default function GrantDetail() {
           </Route>
           {/* Performance Framework */}
           <Route
-            path={`/grant/${params.code}/${params.period}/performance-framework`}
+            path={`/grant/${params.code}/${params.period}/targets-results`}
           >
             <PerformanceFrameworkModule
               code={params.code}
               toolboxOpen={openToolboxPanel}
               implementationPeriod={params.period}
+              setOpenToolboxPanel={setOpenToolboxPanel}
             />
           </Route>
         </Switch>
@@ -316,7 +382,7 @@ export default function GrantDetail() {
       <div
         css={`
           left: 0;
-          top: 48px;
+          top: 45px;
           z-index: 15;
           width: 100%;
           height: 100%;

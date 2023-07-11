@@ -1,11 +1,12 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const listitem = css`
   height: 100%;
   display: flex;
-  color: #262c34;
+  color: ${appColors.GRANT_LIST.ITEM_TEXT_COLOR};
   padding: 12px 20px;
-  background: #f5f5f7;
+  background: ${appColors.GRANT_LIST.ITEM_BACKGROUND_COLOR};
   border-radius: 20px;
   text-decoration: none;
   flex-direction: column;
@@ -14,11 +15,11 @@ export const listitem = css`
 
   &:hover {
     cursor: pointer;
-    background-color: #13183f;
+    background-color: ${appColors.GRANT_LIST.ITEM_BACKGROUND_HOVER_COLOR};
 
     * {
-      fill: #fff;
-      color: #fff;
+      fill: ${appColors.GRANT_LIST.ITEM_TEXT_HOVER_COLOR};
+      color: ${appColors.GRANT_LIST.ITEM_TEXT_HOVER_COLOR};
     }
   }
 `;

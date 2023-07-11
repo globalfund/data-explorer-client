@@ -1,22 +1,27 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
 import { FeatureCollection } from "geojson";
+import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
-import {
-  GeoMapPinMarker,
-  NO_DATA_COLOR,
-} from "app/components/Charts/GeoMap/data";
+import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
 export function PledgesContributionsGeoMap() {
   useTitle("The Data Explorer - Pledges & Contributions GeoMap");
+  const cmsData = useCMSData({ returnData: true });
+  const history = useHistory();
+
   const valueType = useStoreState(
     (state) => state.ToolBoxPanelDonorMapTypeState.value
   );
@@ -51,6 +56,28 @@ export function PledgesContributionsGeoMap() {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Resource Mobilization: Pledges & Contributions",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);
@@ -108,6 +135,7 @@ export function PledgesContributionsGeoMap() {
           margin-top: 20px;
           flex-direction: row;
           align-items: flex-end;
+          visibility: ${view === "Public Sector" ? "visible" : "hidden"};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -144,7 +172,11 @@ export function PledgesContributionsGeoMap() {
               width: 100%;
               height: 6px;
               border-radius: 20px;
-              background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
+              background: linear-gradient(
+                90deg,
+                ${appColors.GEOMAP.DATA_LAYER_COLOR_1} 0%,
+                ${appColors.GEOMAP.DATA_LAYER_COLOR_12} 100%
+              );
             `}
           />
           <div
@@ -154,7 +186,7 @@ export function PledgesContributionsGeoMap() {
               justify-content: space-between;
             `}
           >
-            <div>0 USD</div>
+            <div>{get(cmsData, "componentsChartsGeomap.minRange")}</div>
             <div>{formatFinancialValue(maxValue)}</div>
           </div>
         </div>
@@ -185,8 +217,8 @@ export function PledgesContributionsGeoMap() {
               width: 100%;
               height: 6px;
               border-radius: 20px;
-              border: 0.5px solid #c7cdd1;
-              background: ${NO_DATA_COLOR};
+              border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
+              background: ${appColors.GEOMAP.NO_DATA_LAYER_COLOR};
             `}
           />
           <div
@@ -195,7 +227,7 @@ export function PledgesContributionsGeoMap() {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            N/A
+            {get(cmsData, "componentsChartsGeomap.notAvailable")}
           </div>
         </div>
       </div>

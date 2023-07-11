@@ -1,31 +1,29 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import { InputNode, InputLink } from "@nivo/network";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { NetworkViz } from "app/components/Charts/Network";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
-import { TransitionContainer } from "app/components/TransitionContainer";
 import { PerformanceFrameworkExpandedView } from "app/components/PerformanceFrameworkExpandedView";
 import {
   PFIndicator,
   PFIndicatorResultIntervention,
 } from "app/components/PerformanceFrameworkExpandedView/data";
-import { filter } from "lodash";
 
 interface Props {
   code: string;
   toolboxOpen?: boolean;
   implementationPeriod: string;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function PerformanceFrameworkModule(props: Props) {
-  useTitle("The Data Explorer - Grant Performance Framework");
+  useTitle("The Data Explorer - Grant Targets and Results");
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -109,61 +107,35 @@ export function PerformanceFrameworkModule(props: Props) {
 
   React.useEffect(() => {
     if (vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
+      setVizDrilldowns([{ name: "Targets and Results-network" }]);
     }
     if (vizLevel === 1 && vizSelected) {
-      setVizDrilldowns([{ name: "Dataset" }, { name: vizSelected }]);
+      setVizDrilldowns([
+        { name: "Targets and Results-network" },
+        { name: vizSelected },
+      ]);
     }
   }, [vizLevel, vizSelected]);
 
   useUnmount(() => setVizDrilldowns([]));
 
-  if (isLoading) {
-    return <PageLoader />;
-  }
+  let vizComponent = <React.Fragment />;
 
-  return (
-    <div
-      css={`
-        width: 100%;
-
-        ${!vizSelected
-          ? `* {
-            overflow: visible !important;
-          }`
-          : ""}
-
-        #zoom-in-level {
-          > div {
-            background-color: #f5f5f7;
-          }
-        }
-      `}
-    >
-      <TransitionContainer vizScale={1} vizTranslation={vizTranslation}>
+  if (isLoading || isExpandLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (vizLevel === 0) {
+      vizComponent = (
         <NetworkViz
           data={{ nodes, links }}
-          selectedNodeId={vizSelected}
-          onNodeClick={(node: string, x: number, y: number) => {
+          onNodeClick={(node: string) => {
             setVizLevel(1);
             setVizSelected(node);
-            setVizTranslation({ x: x * -1, y: y * -1 });
           }}
         />
-      </TransitionContainer>
-      <SlideInContainer
-        bigHeader
-        enableOverflow
-        vizLevel={vizLevel}
-        selected={vizSelected}
-        loading={isExpandLoading}
-        toolboxOpen={props.toolboxOpen}
-        close={() => {
-          setVizLevel(0);
-          setVizSelected(undefined);
-          setVizTranslation({ x: 0, y: 0 });
-        }}
-      >
+      );
+    } else if (vizLevel === 1) {
+      vizComponent = (
         <PerformanceFrameworkExpandedView
           indicators={expandIndicators}
           setSelectedModule={setVizSelected}
@@ -174,7 +146,21 @@ export function PerformanceFrameworkModule(props: Props) {
             filterValue: node.id,
           }))}
         />
-      </SlideInContainer>
+      );
+    }
+  }
+
+  return (
+    <div
+      css={`
+        width: 100%;
+
+        * {
+          overflow: visible !important;
+        }
+      `}
+    >
+      {vizComponent}
     </div>
   );
 }

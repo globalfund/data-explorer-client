@@ -13,6 +13,7 @@ import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 import { EligibilityScatterplotDataModel } from "app/components/Charts/Eligibility/Scatterplot/data";
 import { DisbursementsTreemapDataItem } from "app/components/Charts/Investments/Disbursements/data";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
+import { SimpleTableRow } from "app/components/Table/Simple/data";
 
 export function useGetAllVizData() {
   const allocations = useStoreState((state) => ({
@@ -25,6 +26,9 @@ export function useGetAllVizData() {
         type: "FeatureCollection",
         features: get(state.AllocationsGeomap.data, "data", []),
       } as FeatureCollection)
+  );
+  const allocationsTable = useStoreState(
+    (state) => get(state.AllocationsTable.data, "data", []) as SimpleTableRow[]
   );
   const allocationsMCGeomap = useStoreState(
     (state) =>
@@ -208,6 +212,22 @@ export function useGetAllVizData() {
   const locationDetailDocuments = useStoreState(
     (state) => state.LocationDetailDocuments.data
   );
+  const locationDetailEligibility = useStoreState(
+    (state) =>
+      get(
+        state.LocationAccessToFunding.EligibilityTable.data,
+        "data",
+        []
+      ) as SimpleTableRow[]
+  );
+  const locationDetailFundingRequests = useStoreState(
+    (state) =>
+      get(
+        state.LocationAccessToFunding.FundingRequestsTable.data,
+        "data",
+        []
+      ) as SimpleTableRow[]
+  );
   const pledgesContributionsGeomap = useStoreState((state) => ({
     layers: {
       type: "FeatureCollection",
@@ -233,6 +253,10 @@ export function useGetAllVizData() {
         "data",
         []
       ) as BudgetsTreemapDataItem[]
+  );
+  const pledgesContributionsTable = useStoreState(
+    (state) =>
+      get(state.PledgesContributionsTable, "data.data", []) as SimpleTableRow[]
   );
   const resultsList = useStoreState(
     (state) => get(state.ResultsList.data, "data", []) as ResultListItemModel[]
@@ -284,6 +308,7 @@ export function useGetAllVizData() {
       countries: allocationsGeomap,
       multicountries: allocationsMCGeomap,
     },
+    "/viz/allocations/table": allocationsTable,
     // Budgets
     "/viz/budgets/flow": budgetsFlow,
     "/viz/budgets/time-cycle": budgetsTimeCycle,
@@ -306,7 +331,7 @@ export function useGetAllVizData() {
     },
     "/viz/signed/time-cycle": signedTimeCycle,
     "/viz/signed/treemap": signedTreemap,
-    "/viz/signed/table": signedTreemap,
+    "/viz/signed/table": disbursementsTreemap,
     // Commitment
     "/viz/commitment/map": {
       countries: disbursementsGeomap,
@@ -314,13 +339,13 @@ export function useGetAllVizData() {
     },
     "/viz/commitment/time-cycle": commitmentTimeCycle,
     "/viz/commitment/treemap": commitmentTreemap,
-    "/viz/commitment/table": commitmentTreemap,
+    "/viz/commitment/table": disbursementsTreemap,
     // Eligibility
     "/viz/eligibility": eligibility,
-    "/viz/eligibility/table": eligibility,
+    "/viz/eligibility/table": locationDetailEligibility,
     // Pledges & Contributions
     "/viz/pledges-contributions/map": pledgesContributionsGeomap,
-    "/viz/pledges-contributions/table": pledgesContributionsGeomap,
+    "/viz/pledges-contributions/table": pledgesContributionsTable,
     "/viz/pledges-contributions/treemap": pledgesContributionsTreemap,
     "/viz/pledges-contributions/time-cycle": pledgesContributionsTimeCycle,
     // Grant Budgets
@@ -345,15 +370,21 @@ export function useGetAllVizData() {
     // Grant Documents
     "/grant/<code>/documents": grantDetailDocuments,
     // Grant Performance Framework
-    "/grant/<code>/performance-framework": grantDetailPerformanceFramework,
+    "/grant/<code>/targets-results": grantDetailPerformanceFramework,
     // Grant Performance Rating
     "/grant/<code>/performance-rating": grantDetailPerformanceRating,
+    // Location Allocations
+    "/location/<code>/allocations/map": {
+      countries: allocationsGeomap,
+      multicountries: allocationsMCGeomap,
+    },
     // Location Eligibility
     "/location/<code>/eligibility": eligibilityCountry,
     "/location/<code>/eligibility/table": eligibilityCountry,
     // Location Disbursements
-    "/location/<code>/disbursements/treemap": locationDetailDisbursementsTreemap,
-    "/location/<code>/disbursements/table": locationDetailDisbursementsTreemap,
+    "/location/<code>/disbursements/treemap":
+      locationDetailDisbursementsTreemap,
+    "/location/<code>/disbursements/table": disbursementsTreemap,
     "/location/<code>/disbursements/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
@@ -361,7 +392,7 @@ export function useGetAllVizData() {
     "/location/<code>/disbursements/time-cycle": disbursementsTimeCycle,
     // Location Signed
     "/location/<code>/signed/treemap": locationDetailSignedTreemap,
-    "/location/<code>/signed/table": locationDetailSignedTreemap,
+    "/location/<code>/signed/table": disbursementsTreemap,
     "/location/<code>/signed/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
@@ -369,7 +400,7 @@ export function useGetAllVizData() {
     "/location/<code>/signed/time-cycle": disbursementsTimeCycle,
     // Location Commitment
     "/location/<code>/commitment/treemap": locationDetailCommitmentTreemap,
-    "/location/<code>/commitment/table": locationDetailCommitmentTreemap,
+    "/location/<code>/commitment/table": disbursementsTreemap,
     "/location/<code>/commitment/map": {
       countries: disbursementsGeomap,
       multicountries: disbursementsMCGeomap,
@@ -385,12 +416,21 @@ export function useGetAllVizData() {
     // Location Documents
     "/location/<code>/documents": locationDetailDocuments,
     // Location Allocation
-    "/location/<code>/allocation": allocations,
+    "/location/<code>/allocations": allocations,
     // Location Grants
     "/location/<code>/grants": grantsList,
     "/location/<code>/grants/list": grantsList,
+    // Location Results
+    "/location/<code>/results": resultsList,
+    // Location Access To Funding
+    "/location/<code>/access-to-funding": {
+      eligibility: locationDetailEligibility,
+      allocation: allocations,
+      fundingRequest: locationDetailFundingRequests,
+    },
     // Grants
     "/grants": grantsList,
+    "/grants/table": grantsList,
     // Results
     "/results": resultsList,
     // Documents

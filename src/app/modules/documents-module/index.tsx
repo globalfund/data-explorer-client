@@ -1,17 +1,19 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { Pagination } from "@material-ui/lab";
-import { useMediaQuery } from "@material-ui/core";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import TablePagination from "@material-ui/core/TablePagination";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
 import { DocumentsSubModule } from "app/modules/common/documents";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
@@ -19,10 +21,14 @@ import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/f
 export default function DocumentsModule() {
   useTitle("The Data Explorer - Documents");
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
+  const cmsData = useCMSData({ returnData: true });
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
+
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   // api call & data
   const fetchData = useStoreActions((store) => store.Documents.fetch);
@@ -30,12 +36,14 @@ export default function DocumentsModule() {
     (state) =>
       get(state.Documents.data, "data", []) as ExpandableTableRowProps[]
   );
-  const [page, setPage] = React.useState(1);
+
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const isLoading = useStoreState((state) => state.Documents.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   }, []);
 
   React.useEffect(() => {
@@ -65,6 +73,20 @@ export default function DocumentsModule() {
     [search]
   );
 
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   let pushValue = 0;
   const widthThreshold = (window.innerWidth - 1280) / 2;
 
@@ -73,7 +95,7 @@ export default function DocumentsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -82,6 +104,16 @@ export default function DocumentsModule() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+
+  React.useEffect(() => {
+    addDataPathSteps([
+      {
+        name: "Documents",
+        path: location.pathname,
+        id: "documents",
+      },
+    ]);
+  }, []);
 
   return (
     <div
@@ -94,16 +126,9 @@ export default function DocumentsModule() {
         justify-content: center;
       `}
     >
+      <BreadCrumbs />
       <PageHeader
-        title="Documents"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          { name: "Documents" },
-        ]}
+        title={get(cmsData, "componentsPageHeader.tabDocuments", "")}
       />
       <ToolBoxPanel
         open={openToolboxPanel}
@@ -128,50 +153,47 @@ export default function DocumentsModule() {
         `}
         ref={vizWrapperRef}
       >
-        {isSmallScreen ? (
-          <>
-            <DocumentsSubModule
-              data={data.slice((page - 1) * 9, page * 9)}
-              search={search}
-              setSearch={setSearch}
-              columns={["Location", "Documents"]}
-            />
-            <div>
-              <Pagination
-                css={`
-                  display: flex;
-                  justify-content: center;
-                `}
-                count={Math.ceil(data.length / 9)}
-                boundaryCount={Math.ceil(data.length / 18)}
-                page={page}
-                onChange={(event, val) => setPage(val)}
-              />
-            </div>
-            <div
-              css={`
-                width: 100%;
-                height: 25px;
+        <DocumentsSubModule
+          data={data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+          search={search}
+          setSearch={setSearch}
+          columns={["Location", "Documents"]}
+        />
+        <TablePagination
+          page={page}
+          component="div"
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          css={`
+            @media (min-width: 768px) {
+              .MuiTablePagination-toolbar {
+                padding-left: 40px;
+              }
+              .MuiTablePagination-spacer {
+                display: none;
+              }
+            }
+          `}
+        />
+        {isSmallScreen && (
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
 
-                @media (max-width: 767px) {
-                  height: 150px;
-                }
-              `}
-            />
-          </>
-        ) : (
-          <DocumentsSubModule
-            data={data}
-            search={search}
-            setSearch={setSearch}
-            columns={["Location", "Documents"]}
+              @media (max-width: 767px) {
+                height: 150px;
+              }
+            `}
           />
         )}
       </div>
       <div
         css={`
           left: 0;
-          top: 48px;
+          top: 45px;
           z-index: 15;
           width: 100%;
           height: 100%;

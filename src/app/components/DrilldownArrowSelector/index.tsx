@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import { css } from "styled-components/macro";
 import IconChevronRight from "app/assets/icons/IconChevronRight";
@@ -8,7 +9,7 @@ import IconChevronRight from "app/assets/icons/IconChevronRight";
 export const styles = {
   container: css`
     display: flex;
-    color: #262c34;
+    color: ${appColors.COMMON.PRIMARY_COLOR_1};
     font-size: 12px;
     font-weight: 400;
     text-align: center;
@@ -23,7 +24,7 @@ export const styles = {
 
       svg {
         path {
-          fill: #262c34;
+          fill: ${appColors.COMMON.PRIMARY_COLOR_1};
         }
       }
 
@@ -66,6 +67,7 @@ export function DrillDownArrowSelector(props: DrillDownArrowSelectorProps) {
     <div css={styles.container}>
       <span
         onClick={onPrevClick}
+        id="drilldown-arrow-selector-prev"
         data-cy="drilldown-arrow-selector-prev"
         css={selIndex === 0 ? styles.disableArrow : ""}
       >
@@ -76,6 +78,7 @@ export function DrillDownArrowSelector(props: DrillDownArrowSelectorProps) {
       </div>
       <span
         onClick={onNextClick}
+        id="drilldown-arrow-selector-next"
         data-cy="drilldown-arrow-selector-next"
         css={selIndex === props.options.length - 1 ? styles.disableArrow : ""}
       >

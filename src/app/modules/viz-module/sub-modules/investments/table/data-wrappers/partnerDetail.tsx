@@ -2,7 +2,7 @@
 import React from "react";
 import get from "lodash/get";
 import sumBy from "lodash/sumBy";
-import { useUpdateEffect } from "react-use";
+import { useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
@@ -54,6 +54,9 @@ function getTableData(data: DisbursementsTreemapDataItem[]): SimpleTableRow[] {
 }
 
 export function PartnerInvestmentsTableWrapper(props: Props) {
+  const [search, setSearch] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("grants ASC");
+
   const data = useStoreState((state) => {
     let compData = state.PartnerDetailDisbursementsTreemap.data;
     switch (props.type) {
@@ -100,23 +103,54 @@ export function PartnerInvestmentsTableWrapper(props: Props) {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
-  React.useEffect(() => {
+  function reloadData() {
     const filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
             partners: [...appliedFilters.partners, props.code],
           }
-        : appliedFilters
+        : appliedFilters,
+      { search, sortBy }
     );
     fetchData({ filterString });
-  }, [props.code, appliedFilters, props.type]);
+  }
+
+  React.useEffect(
+    () => reloadData(),
+    [props.code, appliedFilters, props.type, sortBy]
+  );
 
   useUpdateEffect(() => setTableData(getTableData(data)), [data]);
+
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
 
   if (isLoading) {
     return <PageLoader />;
   }
 
-  return <InvestmentsTable data={tableData} isLoading={isLoading} />;
+  return (
+    <InvestmentsTable
+      data={tableData}
+      search={search}
+      sortBy={sortBy}
+      isLoading={isLoading}
+      setSearch={setSearch}
+      setSortBy={setSortBy}
+    />
+  );
 }

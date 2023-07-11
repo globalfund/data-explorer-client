@@ -7,8 +7,6 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { DocumentsSubModule } from "app/modules/common/documents";
 import { ExpandableTableRowProps } from "app/components/Table/Expandable/data";
-import { useMediaQuery } from "@material-ui/core";
-import { Pagination } from "@material-ui/lab";
 
 interface GrantDetailDocumentsModuleProps {
   code: string;
@@ -57,35 +55,8 @@ export function GrantDetailDocumentsModule(
     [search]
   );
 
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
-  const [page, setPage] = React.useState(1);
-
   if (isLoading) {
     return <PageLoader />;
-  }
-  if (isSmallScreen) {
-    return (
-      <>
-        <DocumentsSubModule
-          data={data.slice((page - 1) * 9, page * 9)}
-          search={search}
-          setSearch={setSearch}
-          columns={["Location", "Documents"]}
-        />
-        <div>
-          <Pagination
-            css={`
-              display: flex;
-              justify-content: center;
-            `}
-            count={Math.ceil(data.length / 9)}
-            boundaryCount={Math.ceil(data.length / 18)}
-            page={page}
-            onChange={(event, val) => setPage(val)}
-          />
-        </div>
-      </>
-    );
   }
 
   return (

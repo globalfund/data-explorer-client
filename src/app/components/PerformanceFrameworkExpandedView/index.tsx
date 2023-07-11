@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 import { ResultsTable } from "app/components/PerformanceFrameworkExpandedView/components/ResultsTable";
 import { ArrowSelector } from "app/components/PerformanceFrameworkExpandedView/components/ArrowSelector";
@@ -57,15 +58,18 @@ const styles = {
     &::-webkit-scrollbar {
       width: 1px;
       height: 3px;
-      background: #ededf6;
+      background: ${appColors.NETWORK
+        .EXPANDED_VIEW_TABS_LIST_SCROLLBAR_BACKGROUND_COLOR};
     }
     &::-webkit-scrollbar-track {
       border-radius: 4px;
-      background: #ededf6;
+      background: ${appColors.NETWORK
+        .EXPANDED_VIEW_TABS_LIST_SCROLLBAR_TRACK_BACKGROUND_COLOR};
     }
     &::-webkit-scrollbar-thumb {
       border-radius: 4px;
-      background: #2e4063;
+      background: ${appColors.NETWORK
+        .EXPANDED_VIEW_TABS_LIST_SCROLLBAR_THUMB_BACKGROUND_COLOR};
     }
   `,
   tabcss: (active: boolean) => css`
@@ -78,10 +82,14 @@ const styles = {
     white-space: nowrap;
     align-items: center;
     text-decoration: none;
-    color: ${active ? "#fff" : "#13183F"};
+    color: ${active
+      ? appColors.NETWORK.EXPANDED_VIEW_TAB_ITEM_ACTIVE_COLOR
+      : appColors.NETWORK.EXPANDED_VIEW_TAB_ITEM_COLOR};
     transition: background 0.2s ease-in-out;
     font-weight: ${active ? "bold" : "normal"};
-    background: ${active ? "#495057" : "#C7CDD1"};
+    background: ${active
+      ? appColors.NETWORK.EXPANDED_VIEW_TAB_ITEM_BACKGROUND_ACTIVE_COLOR
+      : appColors.NETWORK.EXPANDED_VIEW_TAB_ITEM_BACKGROUND_COLOR};
     font-family: "GothamNarrow-${active ? "Bold" : "Book"}", "Helvetica Neue",
       sans-serif;
 
@@ -95,9 +103,9 @@ const styles = {
     }
 
     &:hover {
-      color: #fff;
+      color: ${appColors.NETWORK.EXPANDED_VIEW_TAB_ITEM_COLOR};
       font-weight: bold;
-      background: #495057;
+      background: ${appColors.NETWORK.EXPANDED_VIEW_TAB_ITEM_ACTIVE_COLOR};
       font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
     }
 
@@ -134,7 +142,7 @@ export function PerformanceFrameworkExpandedView(
       </div>
       <div
         css={`
-          border-bottom: 1px solid #adb5bd;
+          border-bottom: 1px solid ${appColors.NETWORK.TABLE_BORDER_COLOR};
 
           @media (max-width: 767px) {
             border-bottom-style: none;

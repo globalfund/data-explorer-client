@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 import { useUpdateEffect } from "react-use";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -13,15 +14,40 @@ interface Props {
   code?: string;
   toolboxOpen?: boolean;
   type: "Disbursed" | "Signed" | "Commitment";
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function GenericInvestmentsDisbursedWrapper(props: Props) {
-  const [vizLevel, setVizLevel] = React.useState(0);
   const isMobile = useMediaQuery("(max-width: 767px)");
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
+    dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr
   );
+  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
+    string | undefined
+  >(dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr);
+  const [vizLevel, setVizLevel] = React.useState(0);
+
+  React.useEffect(() => {
+    const newVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (!isEqual(newVizSelected, vizSelected)) {
+      setVizSelected(newVizSelected);
+    }
+    if (!isEqual(newDrilldownVizSelected, drilldownVizSelected)) {
+      setDrilldownVizSelected(newDrilldownVizSelected);
+    }
+    if (newDrilldownVizSelected) {
+      setVizLevel(2);
+    } else if (newVizSelected) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -100,6 +126,12 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
         return state.DisbursementsTreemapDrilldown.loading;
     }
   });
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
@@ -119,16 +151,19 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
     if (vizSelected) {
       const splits = vizSelected.split("-");
       let filterString = "";
-      if (splits.length > 0) {
+      if (splits.length > 1) {
         if (!isMobile) {
           const locations = [...appliedFilters.locations];
+          const components = [...appliedFilters.components];
           if (props.code) {
             locations.push(props.code);
           }
           locations.push(splits[0]);
+          components.push(splits[1]);
           filterString = getAPIFormattedFilters({
             ...appliedFilters,
             locations,
+            components,
           });
         } else {
           const locations = [...appliedFilters.locations];
@@ -148,6 +183,20 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
     }
   }, [vizSelected]);
 
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (dataPathActiveStep.vizSelected) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        clearDataPathActiveStep();
+      } else if (!dataPathActiveStep.vizSelected && vizSelected) {
+        setVizLevel(0);
+        setVizSelected(undefined);
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
+
   return (
     <InvestmentsDisbursedModule
       data={data}
@@ -159,10 +208,9 @@ export function GenericInvestmentsDisbursedWrapper(props: Props) {
       vizSelected={vizSelected}
       drilldownData={drilldownData}
       setVizSelected={setVizSelected}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       isDrilldownLoading={isDrilldownLoading}
       toolboxOpen={props.toolboxOpen}
+      setOpenToolboxPanel={props.setOpenToolboxPanel}
     />
   );
 }

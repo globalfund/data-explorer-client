@@ -1,5 +1,6 @@
 import React from "react";
 import find from "lodash/find";
+import { appColors } from "app/theme";
 import Button from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { withStyles } from "@material-ui/core/styles";
@@ -7,13 +8,13 @@ import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useParams, useHistory, Link } from "react-router-dom";
 import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
 import { RouteTab } from "app/components/PageHeader/components/tabs";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { TabProps } from "app/components/PageHeader/components/tabs/data";
 import { getChartIcon } from "app/components/ToolBoxPanel/utils/getChartIcon";
 import {
   ViewModel,
   getControlItems,
 } from "app/components/ToolBoxPanel/utils/getControlItems";
-import IconChevronRight from "app/assets/icons/IconChevronRight";
 
 interface MobileViewControlProps {
   tabs?: TabProps[];
@@ -23,19 +24,22 @@ const StyledMenu = withStyles({
   paper: {
     minWidth: 220,
     borderRadius: 10,
-    border: "1px solid #d3d4d5",
+    border: `1px solid ${appColors.MOBILE_VIEWS_CONTROL.MENU_PAPER_BORDER_COLOR}`,
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 10,
-      background: "#262c34",
+      background:
+        appColors.MOBILE_VIEWS_CONTROL.MENU_SCROLLBAR_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-track": {
       borderRadius: 10,
-      background: "#dfe3e6",
+      background:
+        appColors.MOBILE_VIEWS_CONTROL.MENU_SCROLLBAR_TRACK_BACKGROUND_COLOR,
     },
     "&::-webkit-scrollbar-thumb": {
       borderRadius: 10,
-      background: "#262c34",
+      background:
+        appColors.MOBILE_VIEWS_CONTROL.MENU_SCROLLBAR_THUMB_BACKGROUND_COLOR,
     },
   },
   list: {
@@ -59,17 +63,17 @@ const StyledMenu = withStyles({
   />
 ));
 
-export const StyledMenuItem = withStyles((theme) => ({
+export const StyledMenuItem = withStyles(() => ({
   root: {
     padding: 0,
     minHeight: 0,
     width: "100%",
-    borderBottom: "1px solid #DFE3E6",
+    borderBottom: `1px solid ${appColors.MOBILE_VIEWS_CONTROL.MENU_ITEM_BORDER_COLOR}`,
     "& a": {
       width: "100%",
       fontSize: "14px",
-      color: "#262c34",
-      padding: "6px 12px",
+      color: appColors.MOBILE_VIEWS_CONTROL.MENU_ITEM_COLOR,
+      padding: "10px 12px",
       textDecoration: "none",
     },
   },
@@ -91,6 +95,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
   }>(
     getControlItems(
       params.vizType,
+      params.subType,
       history.location.pathname,
       params.code,
       params.period
@@ -121,6 +126,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
       setControlItems(
         getControlItems(
           params.vizType,
+          params.subType,
           history.location.pathname,
           params.code,
           params.period
@@ -129,10 +135,10 @@ export function MobileViewControl(props: MobileViewControlProps) {
     [params.vizType]
   );
 
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
+  React.useEffect(
+    () => setSelectedView(getSelectedView()),
+    [controlItems.views, history.location.pathname]
+  );
 
   React.useEffect(() => {
     if (anchorEl) {
@@ -151,9 +157,9 @@ export function MobileViewControl(props: MobileViewControlProps) {
   return (
     <div
       css={`
+        z-index: 3;
         width: 100%;
         display: flex;
-        // margin-top: 15px;
         flex-direction: row;
         align-items: center;
         justify-content: space-between;
@@ -166,23 +172,25 @@ export function MobileViewControl(props: MobileViewControlProps) {
           css={`
             font-size: 14px;
             font-weight: bold;
-            padding: 7px 16px;
+            padding: 6px 16px;
             border-radius: 20px;
-            background: #dfe3e6;
             text-transform: capitalize;
             max-width: calc(50vw - 32px);
             font-family: "GothamNarrow-Bold", sans-serif;
+            background: ${appColors.MOBILE_VIEWS_CONTROL
+              .BUTTON_BACKGROUND_COLOR};
 
             &:hover {
-              background: #dfe3e6;
+              background: ${appColors.MOBILE_VIEWS_CONTROL
+                .BUTTON_BACKGROUND_HOVER_COLOR};
             }
 
             svg {
               margin-left: 10px;
               transition: all 0.2s ease-in-out;
-              transform: rotate(${anchorEl ? "-" : ""}90deg);
+              transform: rotate(${anchorEl ? "180" : "0"}deg);
               > path {
-                fill: #262c34;
+                fill: ${appColors.COMMON.SECONDARY_COLOR_7};
               }
             }
           `}
@@ -195,21 +203,21 @@ export function MobileViewControl(props: MobileViewControlProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            {params.vizType}
+            {params.vizType.replace("-", " & ")}
           </span>{" "}
-          <IconChevronRight />
+          <KeyboardArrowDownIcon />
         </Button>
         <StyledMenu
           keepMounted
+          disableScrollLock
           anchorEl={anchorEl}
           id="breadcrumb-menu"
           onClose={handleClose}
           open={Boolean(anchorEl)}
         >
           {!props.tabs &&
-            datasetMenuItems
-              .slice(1)
-              .map((item: React.ReactChild, itemIndex: number) => (
+            datasetMenuItems.map(
+              (item: React.ReactChild, itemIndex: number) => (
                 <StyledMenuItem
                   disableRipple
                   key={itemIndex}
@@ -217,13 +225,47 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 >
                   {item}
                 </StyledMenuItem>
-              ))}
-          {props.tabs &&
-            props.tabs.map((tab: TabProps) => (
+              )
+            )}
+          {(props.tabs ?? []).map((tab: TabProps) => {
+            if (tab.tabs) {
+              const result = tab.tabs.map((subTab: TabProps) => (
+                <StyledMenuItem
+                  disableRipple
+                  key={subTab.name}
+                  disableTouchRipple
+                >
+                  <RouteTab
+                    {...subTab}
+                    onlyLink
+                    search={location.search}
+                    params={{
+                      tab: "",
+                      code: params.code ?? "",
+                      period: params.period ?? "",
+                      vizType: params.vizType ?? "",
+                    }}
+                  />
+                </StyledMenuItem>
+              ));
+              return [...result];
+            }
+            return (
               <StyledMenuItem disableRipple key={tab.name} disableTouchRipple>
-                <RouteTab {...tab} onlyLink />
+                <RouteTab
+                  {...tab}
+                  onlyLink
+                  search={location.search}
+                  params={{
+                    tab: "",
+                    code: params.code ?? "",
+                    period: params.period ?? "",
+                    vizType: params.vizType ?? "",
+                  }}
+                />
               </StyledMenuItem>
-            ))}
+            );
+          })}
         </StyledMenu>
       </div>
       <div
@@ -249,11 +291,14 @@ export function MobileViewControl(props: MobileViewControlProps) {
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#495057"
-                  : "#dfe3e6"};
+                  ? appColors.MOBILE_VIEWS_CONTROL
+                      .LINK_BACKGROUND_SELECTED_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL.LINK_BACKGROUND_COLOR};
 
                 path {
-                  fill: ${selectedView === option.value ? "#fff" : "#868A9D"};
+                  fill: ${selectedView === option.value
+                    ? appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_SELECTED_COLOR
+                    : appColors.MOBILE_VIEWS_CONTROL.LINK_ICON_COLOR};
                 }
               `}
             >
@@ -274,14 +319,17 @@ export function MobileViewControl(props: MobileViewControlProps) {
                 flex-direction: row;
                 border-radius: 20px;
                 align-items: center;
-                color: ${selectedView === option.value ? "#fff" : "#495057"};
+                color: ${selectedView === option.value
+                  ? appColors.MOBILE_VIEWS_CONTROL.BUTTON_SELECTED_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL.BUTTON_COLOR};
                 ${index === 0 ? "border-radius: 20px 0 0 20px;" : ""}
                 ${index === controlItems.views.length - 1
                   ? "border-radius: 0 20px 20px 0;"
                   : ""}
                 background: ${selectedView === option.value
-                  ? "#495057"
-                  : "#dfe3e6"};
+                  ? appColors.MOBILE_VIEWS_CONTROL
+                      .BUTTON_BACKGROUND_SELECTED_COLOR
+                  : appColors.MOBILE_VIEWS_CONTROL.BUTTON_BACKGROUND_COLOR};
               `}
             >
               {option.label}

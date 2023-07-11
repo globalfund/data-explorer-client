@@ -9,9 +9,12 @@ import {
   FilterGroupModel,
   FilterGroupOptionModel,
 } from "app/components/ToolBoxPanel/components/filters/data";
+import { appColors } from "app/theme";
 
 interface FilterGroupCompProps extends FilterGroupModel {
   expandGroup: () => void;
+  appliedFilters?: string[];
+  setAppliedFilters?: (filters: string[]) => void;
 }
 
 export function FilterGroup(props: FilterGroupCompProps) {
@@ -30,16 +33,84 @@ export function FilterGroup(props: FilterGroupCompProps) {
   });
 
   function onFilterRemove(option: string) {
-    setAppliedFilters(filter(appliedFilters, (af: string) => af !== option));
-    if (setAppliedFiltersChildren && appliedFiltersChildren) {
-      setAppliedFiltersChildren(
-        filter(appliedFiltersChildren, (af: string) => af !== option)
+    let fAppliedFilterOption: FilterGroupOptionModel | undefined;
+    props.options.every((o) => {
+      if (o.value === option) {
+        fAppliedFilterOption = o;
+        return false;
+      } else if (o.subOptions) {
+        o.subOptions.every((so) => {
+          if (so.value === option) {
+            fAppliedFilterOption = so;
+            return false;
+          } else if (so.subOptions) {
+            so.subOptions.every((sso) => {
+              if (sso.value === option) {
+                fAppliedFilterOption = sso;
+                return false;
+              }
+            });
+          }
+        });
+        if (fAppliedFilterOption) {
+          return false;
+        }
+      }
+    });
+    const allOptionSubOptions: FilterGroupOptionModel[] = [];
+    if (fAppliedFilterOption && fAppliedFilterOption.subOptions) {
+      allOptionSubOptions.push(fAppliedFilterOption);
+      fAppliedFilterOption.subOptions.forEach((so) => {
+        allOptionSubOptions.push(so);
+        if (so.subOptions) {
+          so.subOptions.forEach((sso) => {
+            allOptionSubOptions.push(sso);
+          });
+        }
+      });
+    }
+    let newAppliedFilters = filter(
+      props.appliedFilters || appliedFilters,
+      (af: string) => af !== option
+    );
+    if (allOptionSubOptions.length > 0) {
+      newAppliedFilters = filter(
+        newAppliedFilters,
+        (af: string) => !find(allOptionSubOptions, (so) => so.value === af)
       );
     }
-    if (setAppliedFiltersGrandChildren && appliedFiltersGrandChildren) {
-      setAppliedFiltersGrandChildren(
-        filter(appliedFiltersGrandChildren, (af: string) => af !== option)
+    if (props.setAppliedFilters) {
+      props.setAppliedFilters(newAppliedFilters);
+    } else {
+      setAppliedFilters(newAppliedFilters);
+    }
+    if (setAppliedFiltersChildren && appliedFiltersChildren) {
+      let newAppliedFiltersChildren = [...appliedFiltersChildren];
+      newAppliedFiltersChildren = filter(
+        newAppliedFiltersChildren,
+        (af: string) => af !== option
       );
+      if (allOptionSubOptions.length > 0) {
+        newAppliedFiltersChildren = filter(
+          newAppliedFiltersChildren,
+          (af: string) => !find(allOptionSubOptions, (so) => so.value === af)
+        );
+      }
+      setAppliedFiltersChildren(newAppliedFiltersChildren);
+    }
+    if (setAppliedFiltersGrandChildren && appliedFiltersGrandChildren) {
+      let newAppliedFilterGrandChildren = [...appliedFiltersGrandChildren];
+      newAppliedFilterGrandChildren = filter(
+        newAppliedFilterGrandChildren,
+        (af: string) => af !== option
+      );
+      if (allOptionSubOptions.length > 0) {
+        newAppliedFilterGrandChildren = filter(
+          newAppliedFilterGrandChildren,
+          (af: string) => !find(allOptionSubOptions, (so) => so.value === af)
+        );
+      }
+      setAppliedFiltersGrandChildren(newAppliedFilterGrandChildren);
     }
   }
 
@@ -72,7 +143,8 @@ export function FilterGroup(props: FilterGroupCompProps) {
         display: flex;
         padding: 15px 0;
         flex-direction: column;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -106,7 +178,7 @@ export function FilterGroup(props: FilterGroupCompProps) {
         </IconButton>
       </div>
       {[
-        ...appliedFilters,
+        ...(props.appliedFilters || appliedFilters),
         ...(appliedFiltersChildren || []),
         ...(appliedFiltersGrandChildren || []),
       ].length > 0 && (
@@ -131,20 +203,23 @@ export function FilterGroup(props: FilterGroupCompProps) {
 
             &::-webkit-scrollbar {
               height: 4px;
-              background: #495057;
+              background: ${appColors.TOOLBOX
+                .FILTERS_SCROLLBAR_BACKGROUND_COLOR};
             }
             &::-webkit-scrollbar-track {
               border-radius: 4px;
-              background: #f5f5f7;
+              background: ${appColors.TOOLBOX
+                .FILTERS_SCROLLBAR_TRACK_BACKGROUND_COLOR};
             }
             &::-webkit-scrollbar-thumb {
               border-radius: 4px;
-              background: #495057;
+              background: ${appColors.TOOLBOX
+                .FILTERS_SCROLLBAR_THUMB_BACKGROUND_COLOR};
             }
           `}
         >
           {[
-            ...appliedFilters,
+            ...(props.appliedFilters || appliedFilters),
             ...(appliedFiltersChildren || []),
             ...(appliedFiltersGrandChildren || []),
           ].map((option: string) => {
@@ -155,9 +230,9 @@ export function FilterGroup(props: FilterGroupCompProps) {
                 css={`
                   gap: 6px;
                   display: flex;
-                  color: #495057;
+                  color: ${appColors.TOOLBOX.FILTER_PILL_TEXT_COLOR};
                   font-size: 10px;
-                  background: #fff;
+                  background: ${appColors.TOOLBOX.FILTER_PILL_BACKGROUND_COLOR};
                   padding: 5px 10px;
                   border-radius: 20px;
                   flex-direction: row;

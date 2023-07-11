@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import useMousePosition from "app/hooks/useMousePosition";
 import {
   diseaseBurdens,
@@ -31,28 +32,18 @@ const nodeBorderStyle = {
 };
 
 const nodeColor = {
-  Eligible: "#11AD6B",
-  "Not Eligible": "#FA7355",
-  "Transition Funding": "#FFD646",
+  Eligible: appColors.ELIGIBILITY.ELIGIBLE_COLOR,
+  "Not Eligible": appColors.ELIGIBILITY.NOT_ELIGIBLE_COLOR,
+  "Transition Funding": appColors.ELIGIBILITY.TRANSITION_FUNDING_COLOR,
 };
 
 const nodeBorder = {
-  Eligible: "#1B2127",
-  "Not Eligible": "#1B2127",
-  "Transition Funding": "#1B2127",
+  Eligible: appColors.ELIGIBILITY.ITEM_BORDER_COLOR,
+  "Not Eligible": appColors.ELIGIBILITY.ITEM_BORDER_COLOR,
+  "Transition Funding": appColors.ELIGIBILITY.ITEM_BORDER_COLOR,
 };
 
 export const backCircleRadius = [23, 38, 53, 68, 83, 97, 112];
-
-// const backCircleColor = [
-//   "transparent",
-//   "#70777E",
-//   "#98A1AA",
-//   "#C7CDD1",
-//   "#DFE3E6",
-//   "#F5F5F7",
-//   "#FFFFFF",
-// ];
 
 export function ScatterplotNode(props: ScatterplotNodeProps) {
   const { x, y } = useMousePosition();
@@ -80,13 +71,18 @@ export function ScatterplotNode(props: ScatterplotNodeProps) {
     >
       {props.showExtraData && (
         <circle
-          fill="#fff"
+          fill={appColors.COMMON.WHITE}
           cx={props.x}
           cy={props.y}
-          r={backCircleRadius[props.data.diseaseBurden] / 2}
+          r={
+            props.data.diseaseBurden !== undefined &&
+            props.data.diseaseBurden > -1
+              ? backCircleRadius[props.data.diseaseBurden] / 2
+              : 0
+          }
           css={`
             z-index: 1;
-            stroke: #262c34;
+            stroke: ${appColors.COMMON.PRIMARY_COLOR_1};
             stroke-width: 0.5px;
           `}
         />

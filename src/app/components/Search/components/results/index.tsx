@@ -1,34 +1,29 @@
 import React from "react";
 import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
+import { getIcon } from "app/components/Search/icons";
 import { HashLink as Link } from "react-router-hash-link";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import { SearchResultModel } from "app/components/Search/components/results/data";
 import {
-  SearchResultsTabModel,
-  SearchResultModel,
-} from "app/components/Search/components/results/data";
-import {
-  tab as tabcss,
-  tabs,
+  noresults,
   container,
   result as resultcss,
   results as resultscss,
-  noresults,
 } from "app/components/Search/components/results/styles";
 
 interface SearchResultsProps {
-  results: SearchResultsTabModel[];
-  activeTab: number;
-  setActiveTab: (value: number) => void;
   loading: boolean;
+  results: SearchResultModel[];
 }
 
 export function SearchResults(props: SearchResultsProps) {
-  const results = get(props.results, `[${props.activeTab}].results`, []);
+  const cmsData = useCMSData({ returnData: true });
   const hasLoaded = useStoreState((state) => state.GlobalSearch.success);
 
   return (
-    <div css={container}>
+    <div css={container} id="search-results-container">
       {props.loading && (
         <LinearProgress
           css={`
@@ -46,31 +41,17 @@ export function SearchResults(props: SearchResultsProps) {
           `}
         />
       )}
-      <div css={tabs}>
-        {props.results.map((tab: SearchResultsTabModel, index: number) => (
-          <div
-            role="button"
-            key={tab.name}
-            tabIndex={index + 1}
-            css={tabcss(index === props.activeTab)}
-            onClick={() => props.setActiveTab(index)}
-            onKeyDown={() => props.setActiveTab(index)}
-          >
-            {tab.results.length} {tab.name}
-          </div>
-        ))}
-      </div>
       <div css={resultscss}>
-        {results.map((result: SearchResultModel) => {
+        {props.results.map((result: SearchResultModel) => {
           if (result.link.indexOf("http") > -1) {
             return (
-              <a href={result.link} css={resultcss} key={result.value}>
-                {result.type && result.type.length > 0 && (
-                  <div>{result.type}</div>
-                )}
-                <div>
-                  <b>{result.label}</b>
-                </div>
+              <a
+                css={resultcss}
+                key={result.value}
+                onClick={() => window.open(result.link, "_blank")}
+              >
+                {result.type && result.type.length > 0 && getIcon(result.type)}
+                <div>{result.label}</div>
               </a>
             );
           }
@@ -90,19 +71,21 @@ export function SearchResults(props: SearchResultsProps) {
                 });
               }}
             >
-              {result.type && result.type.length > 0 && (
-                <div>{result.type}</div>
-              )}
-              <div>
-                <b>{result.label}</b>
-              </div>
+              {result.type && result.type.length > 0 && getIcon(result.type)}
+              <div>{result.label}</div>
             </Link>
           );
         })}
-        {results.length === 0 && !props.loading && hasLoaded && (
-          <div css={noresults}>No results found.</div>
+        {props.results.length === 0 && !props.loading && hasLoaded && (
+          <div css={noresults}>
+            {get(cmsData, "componentsSearch.noResults", "")}
+          </div>
         )}
-        {props.loading && <div css={noresults}>Loading...</div>}
+        {props.loading && (
+          <div css={noresults}>
+            {get(cmsData, "componentsSearch.loading", "")}
+          </div>
+        )}
       </div>
     </div>
   );

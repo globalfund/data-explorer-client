@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
@@ -8,21 +9,23 @@ import { Switch, Route, useParams, useLocation } from "react-router-dom";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
+import { AllocationsTableModule } from "app/modules/viz-module/sub-modules/allocations/table";
+import { EligibilityTableModuleWrapper } from "app/modules/viz-module/sub-modules/eligibility/table";
 import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
 import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
-import { GenericEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
+import { GenericFundingRequestWrapper } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/generic";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import {
@@ -33,13 +36,12 @@ import {
 export default function VizModule() {
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
   const isMobile = useMediaQuery("(max-width: 767px)");
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   }, []);
 
   React.useEffect(() => {
@@ -58,10 +60,11 @@ export default function VizModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 420 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   function isToolboxOvervlayVisible() {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
@@ -79,29 +82,8 @@ export default function VizModule() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="Finance"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          {
-            name: `${params.vizType
-              .slice(0, 1)
-              .toUpperCase()}${params.vizType.slice(1)}${
-              params.subType ? " · " : ""
-            }${
-              params.subType
-                ? `${params.subType
-                    .slice(0, 1)
-                    .toUpperCase()}${params.subType.slice(1)}`
-                : ""
-            }`,
-          },
-        ]}
-      />
+      <BreadCrumbs />
+      <PageHeader title={params.vizType.replace("-", " & ")} />
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>
@@ -127,10 +109,16 @@ export default function VizModule() {
         <Switch>
           {/* Budgets */}
           <Route path="/viz/budgets/flow">
-            <GenericBudgetsFlowWrapper toolboxOpen={openToolboxPanel} />
+            <GenericBudgetsFlowWrapper
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path="/viz/budgets/time-cycle">
-            <GenericBudgetsTimeCycleWrapper toolboxOpen={openToolboxPanel} />
+            <GenericBudgetsTimeCycleWrapper
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           <Route path="/viz/budgets/map">
             <BudgetsGeoMap />
@@ -164,12 +152,12 @@ export default function VizModule() {
           <Route path="/viz/signed/table">
             <GenericInvestmentsTableWrapper />
           </Route>
-          <Route path="/viz/signed/time-cycle">
+          {/* <Route path="/viz/signed/time-cycle">
             <GenericInvestmentsTimeCycleWrapper
               type="Signed"
               toolboxOpen={openToolboxPanel}
             />
-          </Route>
+          </Route> */}
           <Route path="/viz/signed/map">
             <InvestmentsGeoMap type="Signed" />
           </Route>
@@ -196,14 +184,21 @@ export default function VizModule() {
           <Route path="/viz/allocations/map">
             <AllocationsGeoMap />
           </Route>
+          <Route path="/viz/allocations/table">
+            <AllocationsTableModule
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
+          </Route>
           <Route path="/viz/allocations">
-            <AllocationsModule toolboxOpen={openToolboxPanel} />
+            <AllocationsModule
+              toolboxOpen={openToolboxPanel}
+              setOpenToolboxPanel={setOpenToolboxPanel}
+            />
           </Route>
           {/* Pledges & Contributions */}
           <Route path="/viz/pledges-contributions/time-cycle">
-            <PledgesContributionsTimeCycleModule
-              toolboxOpen={openToolboxPanel}
-            />
+            <PledgesContributionsTimeCycleModule />
           </Route>
           <Route path="/viz/pledges-contributions/table">
             <PledgesContributionsTable />
@@ -216,10 +211,14 @@ export default function VizModule() {
           </Route>
           {/* Eligibility */}
           <Route path="/viz/eligibility/table">
-            <GenericEligibilityWrapper />
+            <EligibilityTableModuleWrapper />
           </Route>
           <Route path="/viz/eligibility">
             <EligibilityModule />
+          </Route>
+          {/* Funding Request */}
+          <Route path="/viz/funding-requests/table">
+            <GenericFundingRequestWrapper />
           </Route>
         </Switch>
       </div>
@@ -242,11 +241,14 @@ export default function VizModule() {
           location.pathname,
           filtergroups
         )}
+        css={`
+          z-index: 1;
+        `}
       />
       <div
         css={`
           left: 0;
-          top: 48px;
+          top: 45px;
           z-index: 15;
           width: 100%;
           height: 100%;

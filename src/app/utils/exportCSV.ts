@@ -20,7 +20,9 @@ export function exportCSV(
     investmentsMapView: string;
     donorMapView: string;
     isDetail: boolean;
-  }
+    resultsSelectedYear: string;
+  },
+  multiVizPageDataKey?: string
 ): CommonPropTypes {
   const csvData: any[] = [];
   const isComponent = options.selectedAggregation === "componentName";
@@ -614,44 +616,61 @@ export function exportCSV(
           { label: "Budget (USD)", key: "budget" },
         ],
       };
-    case "/viz/allocation":
-      data.keys.forEach((key: string, index: number) => {
-        csvData.push({
-          component: key,
-          value: data.values[index],
+    case "/viz/allocations/table":
+      data.forEach((item: any) => {
+        item.children.forEach((subItem: any) => {
+          const { name, ...otherProps } = subItem;
+          csvData.push({
+            component: item.name,
+            location: name,
+            ...otherProps,
+          });
         });
       });
+      let extraHeaders: { label: string; key: string }[] = [];
+      if (csvData.length > 0) {
+        extraHeaders = filter(
+          Object.keys(csvData[0]),
+          (key) => key !== "component" && key !== "location"
+        ).map((key) => ({
+          label: `${key[0].toUpperCase()}${key.slice(1)}`,
+          key,
+        }));
+      }
       return {
         data: csvData,
         filename: "allocations.csv",
         headers: [
           { label: "Component", key: "component" },
-          { label: "Allocation (USD)", key: "value" },
+          { label: "Location", key: "location" },
+          ...extraHeaders,
         ],
       };
     case "/viz/eligibility":
       if (options.isDetail) {
-        filter(data, (comp: any) => comp.id.trim().length > 0).forEach(
-          (comp: any) => {
-            comp.data.forEach((item: any) => {
-              csvData.push({
-                year: item.x,
-                component: item.y,
-                incomeLevel: get(
-                  incomeLevels,
-                  `[${item.incomeLevel}]`,
-                  item.incomeLevel
-                ),
-                diseaseBurden: get(
-                  diseaseBurdens,
-                  `[${item.diseaseBurden}]`,
-                  item.diseaseBurden
-                ),
-                eligibility: item.eligibility,
-              });
+        filter(
+          data,
+          (comp: any) =>
+            comp.id.toString() !== "dummy1" && comp.id.toString() !== "dummy2"
+        ).forEach((comp: any) => {
+          comp.data.forEach((item: any) => {
+            csvData.push({
+              year: item.x,
+              component: item.y,
+              incomeLevel: get(
+                incomeLevels,
+                `[${item.incomeLevel}]`,
+                item.incomeLevel
+              ),
+              diseaseBurden: get(
+                diseaseBurdens,
+                `[${item.diseaseBurden}]`,
+                item.diseaseBurden
+              ),
+              eligibility: item.eligibility,
             });
-          }
-        );
+          });
+        });
         return {
           data: csvData,
           filename: "location-eligibility.csv",
@@ -685,46 +704,28 @@ export function exportCSV(
         ],
       };
     case "/viz/eligibility/table":
-      if (options.isDetail) {
-        filter(data, (comp: any) => comp.id.trim().length > 0).forEach(
-          (comp: any) => {
-            comp.data.forEach((item: any) => {
-              csvData.push({
-                year: item.x,
-                component: item.y,
-                incomeLevel: get(
-                  incomeLevels,
-                  `[${item.incomeLevel}]`,
-                  item.incomeLevel
-                ),
-                diseaseBurden: get(
-                  diseaseBurdens,
-                  `[${item.diseaseBurden}]`,
-                  item.diseaseBurden
-                ),
-                eligibility: item.eligibility,
-              });
-            });
-          }
-        );
-        return {
-          data: csvData,
-          filename: "location-eligibility.csv",
-          headers: [
-            { label: "Year", key: "year" },
-            { label: "Component", key: "component" },
-            { label: "Income Level", key: "incomeLevel" },
-            { label: "Disease Burden", key: "diseaseBurden" },
-            { label: "Status", key: "eligibility" },
-          ],
-        };
-      }
       data.forEach((item: any) => {
-        item.items.forEach((subitem: any) => {
-          csvData.push({
-            [isComponent ? "component" : "location"]: item.name,
-            [!isComponent ? "component" : "location"]: subitem.name,
-            status: subitem.status,
+        item.children.forEach((subItem: any) => {
+          subItem.children.forEach((subSubItem: any) => {
+            csvData.push(
+              isComponent
+                ? {
+                    component: item.level1,
+                    year: subItem.level1,
+                    location: subSubItem.level2,
+                    status: subSubItem.eligibilityStatus,
+                    diseaseBurden: subSubItem.diseaseBurden,
+                    incomeLevel: subSubItem.incomeLevel,
+                  }
+                : {
+                    location: item.level1,
+                    year: subItem.level1,
+                    component: subSubItem.level2,
+                    status: subSubItem.eligibilityStatus,
+                    diseaseBurden: subSubItem.diseaseBurden,
+                    incomeLevel: subItem.incomeLevel,
+                  }
+            );
           });
         });
       });
@@ -732,12 +733,135 @@ export function exportCSV(
         data: csvData,
         filename: `eligibility-by-${
           isComponent ? "component" : "location"
-        }-${yearDropdownNode?.getAttribute("value")}.csv`,
-        headers: [
-          { label: "Component", key: "component" },
-          { label: "Location", key: "location" },
-          { label: "Status", key: "status" },
-        ],
+        }.csv`,
+        headers: isComponent
+          ? [
+              { label: "Component", key: "component" },
+              { label: "Year", key: "year" },
+              { label: "Location", key: "location" },
+              { label: "Status", key: "status" },
+              { label: "Disease Burden", key: "diseaseBurden" },
+              { label: "Income Level", key: "incomeLevel" },
+            ]
+          : [
+              { label: "Location", key: "location" },
+              { label: "Year", key: "year" },
+              { label: "Component", key: "component" },
+              { label: "Status", key: "status" },
+              { label: "Disease Burden", key: "diseaseBurden" },
+              { label: "Income Level", key: "incomeLevel" },
+            ],
+      };
+    case "/viz/access-to-funding":
+      if (multiVizPageDataKey === "eligibility") {
+        data.forEach((item: any) => {
+          item.children.forEach((subItem: any) => {
+            subItem.children.forEach((subSubItem: any) => {
+              csvData.push(
+                isComponent
+                  ? {
+                      component: item.level1,
+                      year: subItem.level1,
+                      location: subSubItem.level2,
+                      status: subSubItem.eligibilityStatus,
+                      diseaseBurden: subSubItem.diseaseBurden,
+                      incomeLevel: subSubItem.incomeLevel,
+                    }
+                  : {
+                      location: item.level1,
+                      year: subItem.level1,
+                      component: subSubItem.level2,
+                      status: subSubItem.eligibilityStatus,
+                      diseaseBurden: subSubItem.diseaseBurden,
+                      incomeLevel: subItem.incomeLevel,
+                    }
+              );
+            });
+          });
+        });
+        return {
+          data: csvData,
+          filename: `access-to-funding-eligibility-by-${
+            isComponent ? "component" : "location"
+          }.csv`,
+          headers: isComponent
+            ? [
+                { label: "Component", key: "component" },
+                { label: "Year", key: "year" },
+                { label: "Location", key: "location" },
+                { label: "Status", key: "status" },
+                { label: "Disease Burden", key: "diseaseBurden" },
+                { label: "Income Level", key: "incomeLevel" },
+              ]
+            : [
+                { label: "Location", key: "location" },
+                { label: "Year", key: "year" },
+                { label: "Component", key: "component" },
+                { label: "Status", key: "status" },
+                { label: "Disease Burden", key: "diseaseBurden" },
+                { label: "Income Level", key: "incomeLevel" },
+              ],
+        };
+      }
+      if (multiVizPageDataKey === "fundingRequest") {
+        data.forEach((item: any) => {
+          item.children.forEach((subItem: any) => {
+            if (subItem.children.length === 0) {
+              csvData.push({
+                location: item.name,
+                component: subItem.component,
+                date: subItem.approach,
+                approach: subItem.approach,
+                window: subItem.window,
+                outcome: subItem.outcome,
+                gac: subItem.gac,
+                board: subItem.board,
+                portfolioCategory: subItem.portfolioCategory,
+              });
+            } else {
+              subItem.children.forEach((subSubItem: any) => {
+                csvData.push({
+                  location: item.name,
+                  component: subSubItem.component,
+                  date: subItem.approach,
+                  approach: subItem.approach,
+                  window: subItem.window,
+                  outcome: subItem.outcome,
+                  board: subSubItem.board,
+                  portfolioCategory: subItem.portfolioCategory,
+                  grant: subSubItem.grant1,
+                  gac: subSubItem.gac,
+                  start: subSubItem.start,
+                  end: subSubItem.end,
+                });
+              });
+            }
+          });
+        });
+        return {
+          data: csvData,
+          filename: "access-to-funding-funding-requests.csv",
+          headers: [
+            { label: "Location", key: "location" },
+            { label: "Submission date", key: "date" },
+            { label: "Component", key: "component" },
+            { label: "Approach", key: "approach" },
+            { label: "TRP Window", key: "window" },
+            { label: "TRP Outcome", key: "outcome" },
+            { label: "GAC Meeting", key: "gac" },
+            { label: "Portfolio Categorization", key: "portfolioCategory" },
+            { label: "GAC Meeting", key: "gac" },
+            // { label: "Board approval", key: "board" },
+            { label: "Grant", key: "grant" },
+            { label: "Starting date", key: "start" },
+            { label: "End date", key: "end" },
+          ],
+        };
+      }
+      return {
+        data: [],
+        filename: "empty.csv",
+        headers: [],
       };
     case "/viz/pledges-contributions/time-cycle":
       data.forEach((item: any) => {
@@ -805,35 +929,20 @@ export function exportCSV(
         ],
       };
     case "/viz/pledges-contributions/table":
-      if (options.donorMapView === "Public Sector") {
-        data.layers.features.forEach((item: any) => {
-          if (item.properties && !isEmpty(item.properties.data)) {
-            csvData.push({
-              location: item.properties.name,
-              type: item.properties.data.amounts[0].label,
-              value: item.properties.data.amounts[0].value,
-            });
-          }
-        });
-      } else {
-        data.pins.map((pin: any) => {
-          csvData.push({
-            location: pin.geoName,
-            type: pin.amounts[0].label,
-            value: pin.amounts[0].value,
-          });
-        });
-      }
+      const headers =
+        data.length > 0
+          ? filter(Object.keys(data[0]), (key) => key !== "children").map(
+              (key) => ({
+                label:
+                  key === "name" ? options.selectedAggregation : `${key} (USD)`,
+                key,
+              })
+            )
+          : [];
       return {
-        data: csvData,
-        filename: `pledges-contributions-${options.donorMapView
-          .toLowerCase()
-          .replace(/ /g, "-")}.csv`,
-        headers: [
-          { label: "Donor", key: "location" },
-          { label: "Type", key: "type" },
-          { label: "Amount (USD)", key: "value" },
-        ],
+        data,
+        filename: `pledges-contributions-${options.selectedAggregation.toLowerCase()}.csv`,
+        headers,
       };
     case "/grants":
       return {
@@ -899,7 +1008,28 @@ export function exportCSV(
       });
       return {
         data: csvData,
-        filename: "results.csv",
+        filename: `results-${options.resultsSelectedYear}.csv`,
+        headers: [
+          { label: "Title", key: "title" },
+          { label: "Value", key: "value" },
+          { label: "Location", key: "location" },
+          { label: "Component", key: "component" },
+        ],
+      };
+    case "/viz/results":
+      data.forEach((item: any) => {
+        item.geoLocations.forEach((loc: any) => {
+          csvData.push({
+            title: item.title,
+            value: loc.value,
+            component: item.component,
+            location: loc.name,
+          });
+        });
+      });
+      return {
+        data: csvData,
+        filename: `results-${options.resultsSelectedYear}.csv`,
         headers: [
           { label: "Title", key: "title" },
           { label: "Value", key: "value" },

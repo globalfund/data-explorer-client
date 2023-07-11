@@ -1,16 +1,20 @@
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 
 export function InvestmentsTimeCycleTooltip(props: any) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.TIME_CYCLE.TOOLTIP_COLOR};
         min-width: 250px;
         padding: 16px 25px;
         position: relative;
-        background: #f5f5f7;
+        background: ${appColors.TIME_CYCLE.TOOLTIP_BACKGROUND_COLOR};
         border-radius: 20px;
       `}
     >
@@ -23,7 +27,8 @@ export function InvestmentsTimeCycleTooltip(props: any) {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
-        Year {props.indexValue}
+        {get(cmsData, "componentsChartsInvestments.year", "")}{" "}
+        {props.indexValue}
       </div>
       <div
         css={`
@@ -54,7 +59,7 @@ export function InvestmentsTimeCycleTooltip(props: any) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Total amount
+            {get(cmsData, "componentsChartsInvestments.totalAmount", "")}
           </div>
           <div>{formatFinancialValue(props.value as number)}</div>
         </div>

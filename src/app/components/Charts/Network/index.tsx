@@ -1,12 +1,19 @@
 import React from "react";
+import get from "lodash/get";
 import Grid from "@material-ui/core/Grid";
+import { useCMSData } from "app/hooks/useCMSData";
 import { ResponsiveNetwork } from "@nivo/network";
 import { useMediaQuery, Tooltip } from "@material-ui/core";
+import { NetworkVizProps } from "app/components/Charts/Network/data";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
-import { mockdata, NetworkVizProps } from "app/components/Charts/Network/data";
 import { AchievementRateLegend } from "app/components/Charts/Network/components/legends";
+import { appColors } from "app/theme";
 
 export function NetworkViz(props: NetworkVizProps) {
+  const cmsData = useCMSData({ returnData: true });
+  const isMobile = useMediaQuery("(max-width: 767px)");
+  const isSmallScreen = useMediaQuery("(max-width: 960px)");
+
   React.useEffect(() => {
     setTimeout(() => {
       const viz = document.getElementById("performance-framework-network");
@@ -18,7 +25,7 @@ export function NetworkViz(props: NetworkVizProps) {
             "path"
           );
           pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-          pathElement.setAttribute("stroke", "#262c34");
+          pathElement.setAttribute("stroke", appColors.COMMON.PRIMARY_COLOR_1);
           pathElement.setAttribute("strokeWidth", "0.5");
 
           const patternElement = document.createElementNS(
@@ -54,7 +61,7 @@ export function NetworkViz(props: NetworkVizProps) {
           stroke={node.borderColor}
           transform={`translate(${node.x}, ${node.y}) scale(1)`}
           css={
-            node.color === "#E2E2E2"
+            node.color === appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
               ? `fill: url(#diagonalHatch);`
               : `fill: ${node.color};`
           }
@@ -152,15 +159,12 @@ export function NetworkViz(props: NetworkVizProps) {
         strokeLinecap="round"
         stroke={
           props.selectedNodeId && props.selectedNodeId === link.source.id
-            ? "#495057"
-            : "#DFE3E6"
+            ? appColors.COMMON.PRIMARY_COLOR_1
+            : appColors.COMMON.SECONDARY_COLOR_7
         }
       />
     ));
   };
-
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
   return (
     <Grid container spacing={2}>
@@ -168,12 +172,12 @@ export function NetworkViz(props: NetworkVizProps) {
         <Grid item xs={12}>
           <div
             css={`
-              color: #262c34;
+              color: ${appColors.COMMON.PRIMARY_COLOR_1};
               font-weight: bold;
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Performance Framework
+            {get(cmsData, "componentsChartsNetwork.performanceFramework", "")}
           </div>
         </Grid>
       )}
@@ -209,15 +213,11 @@ export function NetworkViz(props: NetworkVizProps) {
             iterations={150}
             linkThickness={1}
             motionDamping={12}
-            linkColor="#DFE3E6"
+            linkColor={appColors.NETWORK.GRAPH_LINK_COLOR}
             nodeBorderWidth={1}
             motionStiffness={160}
-            nodes={
-              props.data.nodes.length > 0 ? props.data.nodes : mockdata.nodes
-            }
-            links={
-              props.data.links.length > 0 ? props.data.links : mockdata.links
-            }
+            nodes={props.data.nodes.length > 0 ? props.data.nodes : []}
+            links={props.data.links.length > 0 ? props.data.links : []}
             layers={[Links, Nodes]}
             nodeColor={(e: any) => e.color}
             linkDistance={(e: any) => e.distance}

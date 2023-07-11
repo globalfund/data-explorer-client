@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import { useHistory } from "react-router-dom";
+import isEqual from "lodash/isEqual";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -12,15 +12,38 @@ interface Props {
   code: string;
   toolboxOpen?: boolean;
   type: "Disbursed" | "Signed" | "Commitment";
+  partnerName?: string;
 }
 
 export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
-  const history = useHistory();
-  const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
+    dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr
   );
+  const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
+    string | undefined
+  >(dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr);
+  const [vizLevel, setVizLevel] = React.useState(0);
+
+  React.useEffect(() => {
+    const newVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (!isEqual(newVizSelected, vizSelected)) {
+      setVizSelected(newVizSelected);
+    }
+    if (!isEqual(newDrilldownVizSelected, drilldownVizSelected)) {
+      setDrilldownVizSelected(newDrilldownVizSelected);
+    }
+    if (newDrilldownVizSelected) {
+      setVizLevel(2);
+    } else if (newVizSelected) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions((store) => {
@@ -64,10 +87,6 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
-  function goToGrantDetail(code: string) {
-    history.push(`/grant/${code}/1/overview`);
-  }
-
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
       props.code
@@ -83,19 +102,19 @@ export function PartnerDetailInvestmentsDisbursedWrapper(props: Props) {
   return (
     <InvestmentsDisbursedModule
       data={data}
+      allowDrilldown
+      isPartnerDetail
       type={props.type}
       drilldownData={[]}
       vizLevel={vizLevel}
       isLoading={isLoading}
-      allowDrilldown={false}
+      codeParam={props.code}
       setVizLevel={setVizLevel}
       vizSelected={vizSelected}
       isDrilldownLoading={false}
-      onNodeClick={goToGrantDetail}
       setVizSelected={setVizSelected}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       toolboxOpen={props.toolboxOpen}
+      partnerName={props.partnerName}
     />
   );
 }

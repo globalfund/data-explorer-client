@@ -1,119 +1,158 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
 import filter from "lodash/filter";
-import orderBy from "lodash/orderBy";
-import { Feature, FeatureCollection } from "geojson";
-import { useTitle, useUpdateEffect } from "react-use";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
+import TablePagination from "@material-ui/core/TablePagination";
+import { useDebounce, useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import { SimpleTableRow } from "app/components/Table/Simple/data";
-import { GeoMapPinMarker } from "app/components/Charts/GeoMap/data";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-
-function getTableData(
-  data: {
-    layers: FeatureCollection;
-    pins: GeoMapPinMarker[];
-  },
-  mapView: string
-): SimpleTableRow[] {
-  const updatedTableData: SimpleTableRow[] = [];
-  if (mapView === "Public Sector") {
-    filter(
-      data.layers.features,
-      (feature: Feature) =>
-        get(feature.properties, "data.amounts[0].value", 0) > 0
-    ).forEach((feature: Feature) => {
-      updatedTableData.push({
-        name: get(feature.properties, "name", feature.id),
-        value: formatFinancialValue(
-          get(feature.properties, "data.amounts[0].value", 0),
-          true
-        ),
-      });
-    });
-  } else {
-    filter(data.pins, {
-      subType: mapView,
-    }).forEach((pin: GeoMapPinMarker) => {
-      updatedTableData.push({
-        name: pin.geoName,
-        value: formatFinancialValue(pin.amounts[0].value, true),
-      });
-    });
-  }
-  return orderBy(updatedTableData, "name", "asc");
-}
 
 export function PledgesContributionsTable() {
   useTitle("The Data Explorer - Pledges & Contributions Table");
+  const cmsData = useCMSData({ returnData: true });
+  const history = useHistory();
 
-  const layers = useStoreState(
-    (state) =>
-      ({
-        type: "FeatureCollection",
-        features: get(state.PledgesContributionsGeomap.data, "layers", []),
-      } as FeatureCollection)
-  );
-  const pins = useStoreState(
-    (state) =>
-      get(
-        state.PledgesContributionsGeomap.data,
-        "pins",
-        []
-      ) as GeoMapPinMarker[]
-  );
-
-  const valueType = useStoreState(
-    (state) => state.ToolBoxPanelDonorMapTypeState.value
-  );
-
-  const view = useStoreState(
-    (state) => state.ToolBoxPanelDonorMapViewState.value
-  );
-
-  const [tableData, setTableData] = React.useState<SimpleTableRow[]>([]);
+  const [page, setPage] = React.useState(0);
+  const [search, setSearch] = React.useState("");
+  const [sortBy, setSortBy] = React.useState("name ASC");
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const fetchData = useStoreActions(
-    (store) => store.PledgesContributionsGeomap.fetch
+    (store) => store.PledgesContributionsTable.fetch
   );
-
-  const data = useStoreState((state) => state.PledgesContributionsGeomap.data);
-
+  const data = useStoreState(
+    (state) =>
+      get(state.PledgesContributionsTable, "data.data", []) as SimpleTableRow[]
+  );
   const isLoading = useStoreState(
-    (state) => state.PledgesContributionsGeomap.loading
+    (state) => state.PledgesContributionsTable.loading
   );
-
+  const selectedAggregation = useStoreState(
+    (state) => state.ToolBoxPanelAggregateByState.value
+  );
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
-  React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(appliedFilters);
+  function reloadData() {
+    const filterString = getAPIFormattedFilters(appliedFilters, {
+      search,
+      sortBy,
+    });
     fetchData({
-      filterString: `valueType=${valueType}${
+      filterString: `aggregateBy=${selectedAggregation || "Donor"}${
         filterString.length > 0 ? `&${filterString}` : ""
       }`,
     });
-  }, [valueType, appliedFilters]);
+  }
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   React.useEffect(() => {
-    setTableData(getTableData({ layers, pins }, view));
-  }, [data, view]);
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Resource Mobilization: Pledges & Contributions",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
+
+  React.useEffect(
+    () => reloadData(),
+    [selectedAggregation, appliedFilters, sortBy]
+  );
+
+  useUpdateEffect(() => {
+    if (search.length === 0) {
+      reloadData();
+    }
+  }, [search]);
+
+  const [,] = useDebounce(
+    () => {
+      if (search.length > 0) {
+        reloadData();
+      }
+    },
+    500,
+    [search]
+  );
+
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement> | null,
+    newPage: number
+  ) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
 
   if (isLoading) {
     return <PageLoader />;
   }
 
+  const columns =
+    data.length > 0
+      ? filter(Object.keys(data[0]), (key) => key !== "children").map(
+          (key) => ({
+            name: key === "name" ? selectedAggregation : `${key} (USD)`,
+            key,
+          })
+        )
+      : [];
+
   return (
-    <SimpleTable
-      rows={tableData}
-      columns={[
-        { name: "Donor", key: "name" },
-        { name: `${valueType} (USD)`, key: "value" },
-      ]}
-    />
+    <>
+      <SimpleTable
+        title={get(cmsData, "componentsTable.pledgesTitle", "")}
+        search={search}
+        sortBy={sortBy}
+        rows={data.slice(page * rowsPerPage, (page + 1) * rowsPerPage)}
+        onSearchChange={setSearch}
+        onSortByChange={setSortBy}
+        formatNumbers
+        columns={columns}
+      />
+      <TablePagination
+        page={page}
+        component="div"
+        count={data.length}
+        rowsPerPage={rowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+        css={`
+          @media (min-width: 768px) {
+            .MuiTablePagination-toolbar {
+              padding-left: 40px;
+            }
+            .MuiTablePagination-spacer {
+              display: none;
+            }
+          }
+        `}
+      />
+    </>
   );
 }

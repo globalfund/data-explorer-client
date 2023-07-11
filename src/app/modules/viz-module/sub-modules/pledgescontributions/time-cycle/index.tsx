@@ -2,28 +2,26 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import { useTitle, useUnmount, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { Dropdown } from "app/components/Dropdown";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { PledgesContributionsTimeCycle } from "app/components/Charts/PledgesContributions/TimeCycle";
 import { PledgesContributionsTreemapDataItem } from "app/components/Charts/PledgesContributions/TimeCycle/data";
 
-interface Props {
-  toolboxOpen?: boolean;
-}
-
-export function PledgesContributionsTimeCycleModule(props: Props) {
+export function PledgesContributionsTimeCycleModule() {
   useTitle("The Data Explorer - Pledges & Contributions/Time cycle");
+  const cmsData = useCMSData({ returnData: true });
+  const history = useHistory();
+
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizScale, setVizScale] = React.useState(1);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
@@ -62,13 +60,31 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
-  );
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
+  React.useEffect(() => {
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Resource Mobilization: Pledges & Contributions",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Resource Mobilization: Pledges & Contributions",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
+  }, []);
 
   React.useEffect(() => {
     if (vizLevel === 0) {
@@ -78,7 +94,7 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
       const splits = vizSelected.split("-");
       if (splits.length > 1) {
         setVizDrilldowns([
-          { name: "Dataset" },
+          { name: "Pledges & Contributions-treemap" },
           { name: `${splits[0]}-${splits[1]}` },
         ]);
       }
@@ -89,42 +105,6 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
     const filterString = getAPIFormattedFilters(appliedFilters);
     fetchData({ filterString });
   }, [appliedFilters]);
-
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const viz = document.getElementById("pledges-contributions-time-cycle");
-  //     if (viz) {
-  //       const svgs = viz.getElementsByTagName("svg");
-  //       if (svgs.length > 1) {
-  //         const pathElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "path"
-  //         );
-  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-  //         pathElement.setAttribute("stroke", "#13183F");
-  //         pathElement.setAttribute("strokeWidth", "1");
-
-  //         const patternElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "pattern"
-  //         );
-  //         patternElement.setAttribute("id", "diagonalHatch");
-  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-  //         patternElement.setAttribute("width", "4");
-  //         patternElement.setAttribute("height", "4");
-  //         patternElement.appendChild(pathElement);
-
-  //         const defsElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "defs"
-  //         );
-  //         defsElement.appendChild(patternElement);
-
-  //         svgs[1].appendChild(defsElement);
-  //       }
-  //     }
-  //   }, 1000);
-  // }, []);
 
   useUpdateEffect(() => {
     if (vizSelected) {
@@ -143,8 +123,81 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
 
   useUnmount(() => setVizDrilldowns([]));
 
-  if (isLoading) {
-    return <PageLoader />;
+  let vizComponent = <React.Fragment />;
+
+  if (isLoading || isDrilldownLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (vizLevel === 0) {
+      vizComponent = (
+        <PledgesContributionsTimeCycle
+          data={data}
+          vizCompData={vizCompData}
+          setVizCompData={setVizCompData}
+          onNodeClick={(node: string) => {
+            setVizLevel(1);
+            setVizSelected(node);
+          }}
+        />
+      );
+    } else if (vizLevel === 1) {
+      vizComponent = (
+        <React.Fragment>
+          <span
+            css={`
+              gap: 40px;
+              width: 100%;
+              display: flex;
+              margin-bottom: 20px;
+              flex-direction: row;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 40px;
+                  }
+                }
+              }
+            `}
+          >
+            <DrillDownArrowSelector
+              selected={`${(vizSelected || "").split("-")[0]}-${
+                (vizSelected || "").split("-")[1]
+              }`}
+              options={vizCompData.map((item: any) => item.data.indexValue)}
+              onChange={(value: string) => {
+                const splits = (vizSelected as string).split("-");
+                if (splits.length > 2) {
+                  const newSelected = `${value}-${splits[2]}`;
+                  setVizSelected(newSelected);
+                }
+              }}
+            />
+            <Dropdown
+              options={["pledge", "contribution"]}
+              value={(vizSelected || "").split("-")[2]}
+              handleChange={(value: string) => {
+                const splits = (vizSelected as string).split("-");
+                if (splits.length > 2) {
+                  const newSelected = `${splits[0]}-${splits[1]}-${value}`;
+                  setVizSelected(newSelected);
+                }
+              }}
+            />
+          </span>
+          <BudgetsTreemap
+            data={dataDrilldownLevel}
+            tooltipValueLabel={get(
+              cmsData,
+              "componentsChartsBudgets.amount",
+              ""
+            )}
+            onNodeClick={(node: string, x: number, y: number) => {}}
+          />
+        </React.Fragment>
+      );
+    }
   }
 
   return (
@@ -153,108 +206,12 @@ export function PledgesContributionsTimeCycleModule(props: Props) {
       css={`
         width: 100%;
 
-        ${!vizSelected
-          ? `* {
-      overflow: visible !important;
-    }`
-          : ""}
+        * {
+          overflow: visible !important;
+        }
       `}
     >
-      <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
-        <PledgesContributionsTimeCycle
-          data={data}
-          vizCompData={vizCompData}
-          selectedNodeId={vizSelected}
-          setVizCompData={setVizCompData}
-          onNodeClick={(node: string, x: number, y: number) => {
-            setVizLevel(1);
-            setVizSelected(node);
-            setVizTranslation({ x: x * -1, y: 0 });
-          }}
-        />
-      </TransitionContainer>
-      <SlideInContainer
-        vizLevel={vizLevel}
-        selected={vizSelected}
-        loading={isDrilldownLoading}
-        toolboxOpen={props.toolboxOpen}
-        close={() => {
-          setVizLevel(0);
-          setVizSelected(undefined);
-          setVizTranslation({ x: 0, y: 0 });
-        }}
-      >
-        <span
-          css={`
-            gap: 40px;
-            width: 100%;
-            display: flex;
-            margin-bottom: 20px;
-            flex-direction: row;
-
-            > * {
-              @supports (-webkit-touch-callout: none) and
-                (not (translate: none)) {
-                &:not(:last-child) {
-                  margin-right: 40px;
-                }
-              }
-            }
-          `}
-        >
-          <DrillDownArrowSelector
-            selected={`${(vizSelected || "").split("-")[0]}-${
-              (vizSelected || "").split("-")[1]
-            }`}
-            options={vizCompData.map((item: any) => item.data.indexValue)}
-            onChange={(value: string) => {
-              const splits = (vizSelected as string).split("-");
-              if (splits.length > 2) {
-                const newSelected = `${value}-${splits[2]}`;
-                setVizSelected(newSelected);
-                const fVizNodeComp = find(
-                  vizCompData,
-                  (item: any) =>
-                    `${item.data.indexValue}-${item.data.id}` === newSelected
-                ) as any;
-                if (fVizNodeComp) {
-                  setVizTranslation({
-                    x: (fVizNodeComp.x - 100) * -1,
-                    y: 0,
-                  });
-                }
-              }
-            }}
-          />
-          <Dropdown
-            options={["pledge", "contribution"]}
-            value={(vizSelected || "").split("-")[2]}
-            handleChange={(value: string) => {
-              const splits = (vizSelected as string).split("-");
-              if (splits.length > 2) {
-                const newSelected = `${splits[0]}-${splits[1]}-${value}`;
-                setVizSelected(newSelected);
-                const fVizNodeComp = find(
-                  vizCompData,
-                  (item: any) =>
-                    `${item.data.indexValue}-${item.data.id}` === newSelected
-                ) as any;
-                if (fVizNodeComp) {
-                  setVizTranslation({
-                    x: (fVizNodeComp.x - 100) * -1,
-                    y: 0,
-                  });
-                }
-              }
-            }}
-          />
-        </span>
-        <BudgetsTreemap
-          data={dataDrilldownLevel}
-          tooltipValueLabel="Amount"
-          onNodeClick={(node: string, x: number, y: number) => {}}
-        />
-      </SlideInContainer>
+      {vizComponent}
     </div>
   );
 }

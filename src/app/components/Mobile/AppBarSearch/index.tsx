@@ -14,11 +14,11 @@ import {
 /* project */
 import { SearchLayout } from "app/components/Search/layout";
 import { SearchResultsTabModel } from "app/components/Search/components/results/data";
+import { appColors } from "app/theme";
 
 export function MobileAppbarSearch() {
   const history = useHistory();
   const [open, setOpen] = React.useState(false);
-  const [activeTab, setActiveTab] = React.useState(0);
   const [storedValue, setStoredValue] = useSessionStorage(
     "stored-search-string",
     ""
@@ -43,10 +43,17 @@ export function MobileAppbarSearch() {
   }, [history]);
 
   useUpdateEffect(() => {
+    const gihubBtn = document.getElementById("github-linkbtn");
     if (open) {
       document.body.style.overflowY = "hidden";
+      if (gihubBtn) {
+        gihubBtn.style.display = "none";
+      }
     } else {
       document.body.style.overflowY = "auto";
+      if (gihubBtn) {
+        gihubBtn.style.display = "inherit";
+      }
     }
   }, [open]);
 
@@ -81,7 +88,7 @@ export function MobileAppbarSearch() {
           `}
           onClick={() => setOpen(!open)}
         >
-          <SearchIcon htmlColor="#fff" />
+          <SearchIcon htmlColor={appColors.COMMON.COMMON_ICON_COLOR} />
         </IconButton>
       )}
       {open && (
@@ -106,9 +113,8 @@ export function MobileAppbarSearch() {
             results={data}
             loading={isLoading}
             setValue={setValue}
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
             onClose={() => setOpen(false)}
+            setStoredValue={setStoredValue}
           />
         </div>
       )}

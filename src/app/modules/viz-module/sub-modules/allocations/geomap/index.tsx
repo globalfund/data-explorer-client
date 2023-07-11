@@ -1,18 +1,17 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import {
-  AllocationsGeoMapPinMarker,
-  NO_DATA_COLOR,
-} from "app/components/Charts/GeoMap/data";
+import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -22,6 +21,7 @@ export function AllocationsGeoMap(props: Props) {
   useTitle(
     `The Data Explorer -${props.code ? ` ${props.code}` : ""} Allocations`
   );
+  const cmsData = useCMSData({ returnData: true });
   // api call & data
   const fetchData = useStoreActions((store) => store.AllocationsGeomap.fetch);
   const data = useStoreState(
@@ -68,7 +68,7 @@ export function AllocationsGeoMap(props: Props) {
   }, []);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
+    let filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
@@ -76,11 +76,17 @@ export function AllocationsGeoMap(props: Props) {
           }
         : appliedFilters
     );
+    if (filterString.length > 0) {
+      filterString = `&${filterString}`;
+    } else {
+      filterString = "";
+    }
     if (geomapView === "countries") {
       fetchData({
-        filterString: `periods=${selectedPeriod}${
-          filterString.length > 0 ? `&${filterString}` : ""
-        }`,
+        filterString:
+          selectedPeriod !== "All"
+            ? `periods=${selectedPeriod}${filterString}`
+            : "",
       });
     } else if (geomapView === "multicountries") {
       fetchMCData({ filterString });
@@ -102,6 +108,7 @@ export function AllocationsGeoMap(props: Props) {
     >
       <GeoMap
         allowClickthrough
+        clickthroughPath="allocations"
         type="allocations"
         data={
           geomapView === "countries"
@@ -154,14 +161,21 @@ export function AllocationsGeoMap(props: Props) {
             `}
           >
             <div>
-              <b>Allocations | {selectedPeriod}</b>
+              <b>
+                {get(cmsData, "componentsChartsInvestments.notAvailable", "")}{" "}
+                {selectedPeriod}
+              </b>
             </div>
             <div
               css={`
                 width: 100%;
                 height: 6px;
                 border-radius: 20px;
-                background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
+                background: linear-gradient(
+                  90deg,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_1} 0%,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_12} 100%
+                );
               `}
             />
             <div
@@ -171,7 +185,13 @@ export function AllocationsGeoMap(props: Props) {
                 justify-content: space-between;
               `}
             >
-              <div>0 USD</div>
+              <div>
+                {get(
+                  cmsData,
+                  "componentsChartsInvestments.defaultFinancialValue",
+                  ""
+                )}
+              </div>
               <div>{formatFinancialValue(maxValue)}</div>
             </div>
           </div>
@@ -201,12 +221,14 @@ export function AllocationsGeoMap(props: Props) {
                 height: 6px;
                 font-weight: bold;
                 border-radius: 20px;
-                border: 0.5px solid #c7cdd1;
-                background: ${NO_DATA_COLOR};
+                border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
+                background: ${appColors.GEOMAP.NO_DATA_LAYER_COLOR};
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             />
-            <div>N/A</div>
+            <div>
+              {get(cmsData, "componentsChartsInvestments.notAvailable", "")}
+            </div>
           </div>
         </div>
       )}

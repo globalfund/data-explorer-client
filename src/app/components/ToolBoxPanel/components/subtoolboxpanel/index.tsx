@@ -1,14 +1,16 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
+import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useParams, useHistory } from "react-router-dom";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ResultsYear } from "app/components/ToolBoxPanel/components/resultsyear";
 import { ToolBoxPanelFilters } from "app/components/ToolBoxPanel/components/filters";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
-import { EligibilityYear } from "app/components/ToolBoxPanel/components/eligibilityyear";
 import { ToolBoxPanelControlRow } from "app/components/ToolBoxPanel/components/controlrow";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 import { ToolBoxPanelDonorViews } from "app/components/ToolBoxPanel/components/donormapviews";
@@ -18,6 +20,8 @@ import { GrantImplementationPeriods } from "app/components/ToolBoxPanel/componen
 import { ToolBoxPanelDisbursementsSlider } from "app/components/ToolBoxPanel/components/disbursementslider";
 import { ToolBoxPanelEligibilityAdvanced } from "app/components/ToolBoxPanel/components/eligibilityadvanced";
 import { PerformanceFrameworkReportingPeriods } from "app/components/ToolBoxPanel/components/pf-reportingperiods";
+import { ToolBoxPanelBudgetFlowLevelSelectors } from "app/components/ToolBoxPanel/components/budgetflowlevelselectors";
+import { ToolBoxPanelBudgetTimeCycleYearSelector } from "app/components/ToolBoxPanel/components/budgettimecycleyearselector";
 import {
   ViewModel,
   getControlItems,
@@ -36,6 +40,8 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
     vizType: string;
     subType?: string;
   }>();
+  const cmsData = useCMSData({ returnData: true });
+
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [selectedView, setSelectedView] = React.useState("");
   const [controlItems, setControlItems] = React.useState<{
@@ -44,11 +50,14 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
   }>(
     getControlItems(
       params.vizType,
+      params.subType,
       history.location.pathname,
       params.code,
       params.period
     )
   );
+
+  const [expandedGroup] = useRecoilState(filterExpandedGroup);
 
   // aggregateBy control const
   const setSelectedAggregation = useStoreActions(
@@ -109,6 +118,11 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
   // applied filters
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  // viz drilldowns
+  const vizDrilldowns = useStoreState(
+    (state) => state.PageHeaderVizDrilldownsState.value
+  );
+
   function getSelectedView() {
     let view: ViewModel | undefined;
     if (params.code) {
@@ -132,18 +146,19 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
       setControlItems(
         getControlItems(
           params.vizType,
+          params.subType,
           history.location.pathname,
           params.code,
           params.period
         )
       ),
-    [params.vizType]
+    [params.vizType, history.location.pathname, params.code, params.period]
   );
 
-  React.useEffect(() => setSelectedView(getSelectedView()), [
-    controlItems.views,
-    history.location.pathname,
-  ]);
+  React.useEffect(
+    () => setSelectedView(getSelectedView()),
+    [controlItems.views, history.location.pathname]
+  );
 
   React.useEffect(() => {
     setSelectedAggregation(
@@ -172,82 +187,93 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
 
   const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
   const isResultsPage = history.location.pathname.indexOf("/results") > -1;
-  const isLocationDetail = history.location.pathname.indexOf("/location/") > -1;
 
   return (
     <>
-      {isGrantDetail &&
-        history.location.pathname.indexOf("/overview") === -1 && (
-          <GrantImplementationPeriods />
-        )}
-      {controlItems.views.length > 0 && !isMobile && (
-        <ToolBoxPanelControlRow
-          title="Views"
-          selected={selectedView}
-          options={controlItems.views}
-          setSelected={setSelectedView}
-        />
+      {!expandedGroup && (
+        <>
+          {isGrantDetail &&
+            history.location.pathname.indexOf("/overview") === -1 && (
+              <GrantImplementationPeriods />
+            )}
+          {controlItems.views.length > 0 && !isMobile && (
+            <ToolBoxPanelControlRow
+              title={get(cmsData, "componentsSidebar.views", "")}
+              selected={selectedView}
+              options={controlItems.views}
+              setSelected={setSelectedView}
+            />
+          )}
+          {params.vizType === "budgets" &&
+            params.subType === "flow" &&
+            vizDrilldowns.length === 2 && (
+              <ToolBoxPanelBudgetFlowLevelSelectors />
+            )}
+          {params.vizType === "budgets" &&
+            params.subType === "time-cycle" &&
+            vizDrilldowns.length === 2 && (
+              <ToolBoxPanelBudgetTimeCycleYearSelector />
+            )}
+          {controlItems.aggregates.length > 0 && (
+            <ToolBoxPanelAggregateBy
+              title={get(cmsData, "componentsSidebar.aggregateBy", "")}
+              selected={selectedAggregation}
+              options={controlItems.aggregates}
+              setSelected={setSelectedAggregation}
+            />
+          )}
+          {(params.vizType === "allocations" ||
+            params.vizType === "allocation") &&
+            params.subType !== "table" && <AllocationsPeriods />}
+          {isResultsPage && <ResultsYear />}
+          {(((params.vizType === "commitment" ||
+            params.vizType === "disbursements" ||
+            params.vizType === "signed") &&
+            params.subType === "map") ||
+            (params.vizType === "allocations" && params.subType === "map") ||
+            (params.vizType === "budgets" && params.subType === "map")) && (
+            // ""
+            <ToolBoxPanelAggregateBy
+              title={get(cmsData, "componentsSidebar.aggregateBy", "")}
+              selected={geomapView}
+              setSelected={setGeomapView}
+              options={[
+                { label: "Countries", value: "countries" },
+                { label: "Multi-countries", value: "multicountries" },
+              ]}
+            />
+          )}
+          {params.vizType === "pledges-contributions" &&
+            params.subType === "map" && (
+              <React.Fragment>
+                <ToolBoxPanelDonorViews />
+              </React.Fragment>
+            )}
+          {params.vizType === "pledges-contributions" &&
+            (params.subType === "map" || params.subType === "treemap") && (
+              <React.Fragment>
+                <ToolBoxPanelDonorMapTypes />
+              </React.Fragment>
+            )}
+          {params.code && params.vizType === "eligibility" && (
+            <ToolBoxPanelEligibilityAdvanced />
+          )}
+          {params.code &&
+            params.period &&
+            params.vizType === "targets-results" && (
+              <PerformanceFrameworkReportingPeriods
+                periods={performanceFrameworkPeriods}
+              />
+            )}
+          {(params.vizType === "commitment" ||
+            params.vizType === "disbursements" ||
+            params.vizType === "signed" ||
+            params.vizType === "pledges-contributions") &&
+            params.subType === "treemap" && (
+              <ToolBoxPanelDisbursementsSlider label={params.vizType} />
+            )}
+        </>
       )}
-      {controlItems.aggregates.length > 0 && (
-        <ToolBoxPanelAggregateBy
-          title="Aggregate by"
-          selected={selectedAggregation}
-          options={controlItems.aggregates}
-          setSelected={setSelectedAggregation}
-        />
-      )}
-      {(params.vizType === "allocations" ||
-        params.vizType === "allocation") && <AllocationsPeriods />}
-      {params.vizType === "eligibility" && !isLocationDetail && (
-        <EligibilityYear />
-      )}
-      {isResultsPage && <ResultsYear />}
-      {(((params.vizType === "commitment" ||
-        params.vizType === "disbursements" ||
-        params.vizType === "signed") &&
-        params.subType === "map") ||
-        (params.vizType === "allocations" && params.subType === "map") ||
-        (params.vizType === "budgets" && params.subType === "map")) && (
-        <ToolBoxPanelAggregateBy
-          title="Aggregate by"
-          selected={geomapView}
-          setSelected={setGeomapView}
-          options={[
-            { label: "Countries", value: "countries" },
-            { label: "Multi-countries", value: "multicountries" },
-          ]}
-        />
-      )}
-      {params.vizType === "pledges-contributions" &&
-        (params.subType === "map" || params.subType === "table") && (
-          <React.Fragment>
-            <ToolBoxPanelDonorViews />
-          </React.Fragment>
-        )}
-      {params.vizType === "pledges-contributions" &&
-        (params.subType === "map" ||
-          params.subType === "table" ||
-          params.subType === "treemap") && (
-          <React.Fragment>
-            <ToolBoxPanelDonorMapTypes />
-          </React.Fragment>
-        )}
-      {params.code && params.vizType === "eligibility" && (
-        <ToolBoxPanelEligibilityAdvanced />
-      )}
-      {params.code &&
-        params.period &&
-        params.vizType === "performance-framework" && (
-          <PerformanceFrameworkReportingPeriods
-            periods={performanceFrameworkPeriods}
-          />
-        )}
-      {(params.vizType === "commitment" ||
-        params.vizType === "disbursements" ||
-        params.vizType === "signed") &&
-        params.subType === "treemap" && (
-          <ToolBoxPanelDisbursementsSlider label={params.vizType} />
-        )}
       {!isGrantDetail && <ToolBoxPanelFilters groups={props.filterGroups} />}
     </>
   );

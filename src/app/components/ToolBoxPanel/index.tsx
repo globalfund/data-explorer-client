@@ -2,15 +2,17 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
 import Fab from "@material-ui/core/Fab";
+import { useRecoilState } from "recoil";
 import { useHistory } from "react-router-dom";
-import { useStoreState } from "app/state/store/hooks";
+import { useCMSData } from "app/hooks/useCMSData";
 import { FiltersIcon } from "app/assets/icons/Filters";
 import { useUnmount, useUpdateEffect } from "react-use";
 import { isTouchDevice } from "app/utils/isTouchDevice";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import { useMediaQuery, IconButton, Slide } from "@material-ui/core";
 import { FilterGroupProps } from "app/components/ToolBoxPanel/components/filters/data";
 import { SubToolBoxPanel } from "app/components/ToolBoxPanel/components/subtoolboxpanel";
@@ -23,18 +25,18 @@ export interface ToolBoxPanelProps {
   isLocationDetail?: boolean;
   filterGroups: FilterGroupProps[];
   onCloseBtnClick: (value?: boolean) => void;
+  getAllAvailableGrants?: () => Promise<any>;
 }
 
 export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const history = useHistory();
-  const fabBtnRef = React.useRef(null);
+  const fabBtnRef = React.useRef<any>(null);
+  const cmsData = useCMSData({ returnData: true });
+
+  const [expandedGroup] = useRecoilState(filterExpandedGroup);
+
   const [visibleVScrollbar, setVisibleVScrollbar] = React.useState(
     document.body.scrollHeight > document.body.clientHeight
-  );
-
-  // viz drilldown items
-  const vizDrilldowns = useStoreState(
-    (state) => state.PageHeaderVizDrilldownsState.value
   );
 
   React.useLayoutEffect(() => {
@@ -52,6 +54,8 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
 
+  const isPartnerDetail = history.location.pathname.indexOf("/partner/") > -1;
+
   useUpdateEffect(() => {
     if (isMobile) {
       if (props.open) {
@@ -66,59 +70,28 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 133;
+  let top = 168;
 
-  if (
-    !props.isGrantDetail &&
-    !props.isLocationDetail &&
-    vizDrilldowns.length === 0
-  ) {
+  if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {
-      top = 149;
+      top = 92;
       if (isMobile) {
-        top = 161;
+        top = 148;
       }
-    } else {
-      top = 133;
     }
   }
-  if (isSmallScreen && vizDrilldowns.length > 0) {
-    top = 185;
-    if (isMobile) {
-      top = 196;
-    }
-    if (props.isGrantDetail) {
-      top = 206;
-      if (isMobile) {
-        top = 139;
-      }
-    }
-    if (props.isLocationDetail) {
-      top = 222;
-      if (isMobile) {
-        top = 196;
-      }
-    }
-  } else if (isSmallScreen) {
+  if (isSmallScreen) {
     if (props.isGrantDetail) {
       top = 168;
       if (isMobile) {
-        top = 104;
+        top = 149;
       }
     }
-    if (props.isLocationDetail) {
-      top = 187;
-      if (isMobile) {
-        top = 161;
-      }
-    }
-  } else if (vizDrilldowns.length > 0) {
-    if (props.isGrantDetail) {
-      top = 203;
-    } else if (props.isLocationDetail) {
-      top = 203;
-    } else {
+    if (props.isLocationDetail || isPartnerDetail) {
       top = 168;
+      if (isMobile) {
+        top = 148;
+      }
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
     top = 168;
@@ -126,183 +99,140 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
 
   return (
     <React.Fragment>
-      <ClickAwayListener
-        onClickAway={(event: React.MouseEvent<Document, MouseEvent>) => {
-          if (
-            props.open &&
-            get(event.target, "tagName", "") !== "A" &&
-            get(event.target, "id", "") !== "page-header-toolbox-btn" &&
-            get(event.target, "id", "") !== "result-see-more-button"
-          ) {
-            if (props.vizWrapperRef) {
-              if (!props.vizWrapperRef.current.contains(event.target)) {
-                if (
-                  fabBtnRef &&
-                  fabBtnRef.current &&
-                  (fabBtnRef.current as any).contains(event.target)
-                ) {
-                  return;
-                }
-                props.onCloseBtnClick();
-              }
-            } else {
-              props.onCloseBtnClick();
+      <Slide direction="left" in={props.open}>
+        <div
+          css={`
+            right: 0;
+            z-index: 20;
+            width: 400px;
+            top: ${top}px;
+            position: fixed;
+            background: ${appColors.TOOLBOX.BACKGROUND_COLOR};
+            height: calc(100vh - ${top}px);
+            visibility: visible !important;
+            box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
+
+            @media (max-width: 767px) {
+              width: 100vw;
+              box-shadow: none;
+              overflow-y: auto;
+              height: calc(100vh - ${top + 56}px);
             }
-          }
-        }}
-      >
-        <Slide direction="left" in={props.open}>
+          `}
+        >
           <div
             css={`
-              right: 0;
-              z-index: 20;
-              width: 400px;
-              top: ${top}px;
-              position: fixed;
-              background: #f5f5f7;
-              height: calc(100vh - ${top}px);
-              visibility: visible !important;
-              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.6);
-
-              @media (max-width: 767px) {
-                width: 100vw;
-                box-shadow: none;
-                overflow-y: auto;
-                height: calc(100vh - ${top + 56}px);
-              }
+              width: 100%;
+              height: 100%;
+              display: flex;
+              position: relative;
+              flex-direction: column;
             `}
           >
-            <div
-              css={`
-                width: 100%;
-                height: 100%;
-                display: flex;
-                position: relative;
-                flex-direction: column;
-              `}
-            >
-              {!isSmallScreen && !isMobile && (
+            {!isMobile && (
+              <div
+                role="button"
+                tabIndex={-1}
+                css={`
+                  top: 38%;
+                  color: ${appColors.TOOLBOX.BUTTON_COLOR};
+                  width: 16px;
+                  height: 133px;
+                  display: flex;
+                  cursor: pointer;
+                  position: absolute;
+                  background: ${appColors.TOOLBOX.BUTTON_BACKGROUND_COLOR};
+                  align-items: center;
+                  flex-direction: column;
+                  justify-content: center;
+                  border-radius: 10px 0px 0px 10px;
+                  transition: background 0.2s ease-in-out;
+                  // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
+                  // ${isTouchDevice() ? `left: -16px;` : ""}
+                  left: -16px;
+
+                  &:hover {
+                    background: ${appColors.TOOLBOX
+                      .BUTTON_BACKGROUND_HOVER_COLOR};
+                  }
+
+                  > svg {
+                    transform: rotate(${!props.open ? "-" : ""}90deg);
+                    > path {
+                      fill: ${appColors.COMMON.WHITE};
+                    }
+                  }
+                `}
+                onClick={() => props.onCloseBtnClick()}
+              >
+                <TriangleXSIcon />
+              </div>
+            )}
+            {isMobile && (
+              <div
+                css={`
+                  width: 100%;
+                  padding: 16px;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: space-between;
+                  border-bottom: 1px solid
+                    ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
+                `}
+              >
                 <div
-                  role="button"
-                  tabIndex={-1}
                   css={`
-                    top: 38%;
-                    color: #fff;
-                    width: 16px;
-                    height: 133px;
-                    display: flex;
-                    cursor: pointer;
-                    position: absolute;
-                    background: #495057;
-                    align-items: center;
-                    flex-direction: column;
-                    justify-content: center;
-                    border-radius: 10px 0px 0px 10px;
-                    transition: background 0.2s ease-in-out;
-                    // left: -${!visibleVScrollbar || props.open ? 16 : 22}px;
-                    // ${isTouchDevice() ? `left: -16px;` : ""}
-                    left: -16px;
-
-                    &:hover {
-                      background: #13183f;
-                    }
-
-                    > svg {
-                      transform: rotate(${!props.open ? "-" : ""}90deg);
-                      > path {
-                        fill: #fff;
-                      }
-                    }
+                    font-size: 18px;
+                    font-weight: bold;
+                    font-family: GothamNarrow-Bold;
+                  `}
+                >
+                  {get(cmsData, "componentsSidebar.toolbox", "")}
+                </div>
+                <IconButton
+                  css={`
+                    width: 14px;
+                    height: 14px;
                   `}
                   onClick={() => props.onCloseBtnClick()}
                 >
-                  <TriangleXSIcon />
-                </div>
-              )}
-              {isSmallScreen && !isMobile && (
-                <div
-                  css={`
-                    width: 100%;
-                    height: 24px;
-                    background-color: #373d43;
-                  `}
-                >
-                  <IconButton
-                    css={`
-                      width: 12px;
-                      height: 12px;
-                    `}
-                    onClick={() => props.onCloseBtnClick()}
-                  >
-                    <CloseOutlinedIcon
-                      htmlColor="#ffffff"
-                      viewBox=" -4 -4 30 30"
-                    />
-                  </IconButton>
-                </div>
-              )}
-              {isMobile && (
-                <div
-                  css={`
-                    width: 100%;
-                    padding: 16px;
-                    display: flex;
-                    flex-direction: row;
-                    justify-content: space-between;
-                    border-bottom: 1px solid #dfe3e6;
-                  `}
-                >
-                  <div
-                    css={`
-                      font-size: 18px;
-                      font-weight: bold;
-                      font-family: GothamNarrow-Bold;
-                    `}
-                  >
-                    Toolbox
-                  </div>
-                  <IconButton
-                    css={`
-                      width: 14px;
-                      height: 14px;
-                    `}
-                    onClick={() => props.onCloseBtnClick()}
-                  >
-                    <CloseOutlinedIcon
-                      htmlColor="#2E4063"
-                      viewBox=" -4 -4 30 30"
-                    />
-                  </IconButton>
-                </div>
-              )}
-              <ToolBoxPanelIconButtons />
-              <SubToolBoxPanel
-                filterGroups={props.filterGroups}
-                closePanel={props.onCloseBtnClick}
+                  <CloseOutlinedIcon
+                    htmlColor={appColors.COMMON.PRIMARY_COLOR_1}
+                    viewBox=" -4 -4 30 30"
+                  />
+                </IconButton>
+              </div>
+            )}
+            {!expandedGroup && (
+              <ToolBoxPanelIconButtons
+                getAllAvailableGrants={props.getAllAvailableGrants}
               />
-            </div>
+            )}
+            <SubToolBoxPanel
+              filterGroups={props.filterGroups}
+              closePanel={props.onCloseBtnClick}
+            />
           </div>
-        </Slide>
-      </ClickAwayListener>
+        </div>
+      </Slide>
       {isMobile && (
         <div
           ref={fabBtnRef}
           css={`
+            z-index: 4;
             right: 20px;
-            z-index: 100;
             bottom: 70px;
             position: fixed;
 
             > button {
               box-shadow: none;
+              width: 48px;
+              height: 48px;
             }
           `}
+          onClick={() => props.onCloseBtnClick()}
         >
-          <Fab
-            color="primary"
-            aria-label="filters"
-            onClick={() => props.onCloseBtnClick()}
-          >
+          <Fab color="primary" aria-label="filters">
             <FiltersIcon />
           </Fab>
         </div>

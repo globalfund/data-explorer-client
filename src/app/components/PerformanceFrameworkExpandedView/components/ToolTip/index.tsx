@@ -1,8 +1,11 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 import { IconButton } from "@material-ui/core";
 import Tooltip from "@material-ui/core/Tooltip";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 import {
@@ -17,12 +20,14 @@ const styles = {
     width: 267px;
     display: flex;
     padding: 15px;
-    color: #262c34;
+    color: ${appColors.NETWORK.TOOLTIP_CONTAINER_COLOR};
     font-size: 12px;
     position: relative;
     border-radius: 20px;
     flex-direction: column;
-    background: ${showAggrs ? "#495057" : "#fff"};
+    background: ${showAggrs
+      ? appColors.NETWORK.TOOLTIP_CONTAINER_BACKGROUND_COLOR_1
+      : appColors.NETWORK.TOOLTIP_CONTAINER_BACKGROUND_COLOR_2};
 
     > * {
       @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -42,7 +47,7 @@ const styles = {
   bottombtn: (showAggrs: boolean) => css`
     left: 0;
     gap: 15px;
-    color: #fff;
+    color: ${appColors.NETWORK.TOOLTIP_BOTTOM_BUTTON_TEXT_COLOR};
     width: 267px;
     display: flex;
     cursor: pointer;
@@ -50,8 +55,9 @@ const styles = {
     padding: 10px 15px;
     flex-direction: row;
     align-items: center;
-    background: #495057;
-    border-bottom: 1px solid #fff;
+    background: ${appColors.NETWORK.TOOLTIP_BOTTOM_BUTTON_BACKGROUND_COLOR};
+    border-bottom: 1px solid
+      ${appColors.NETWORK.TOOLTIP_BOTTOM_BUTTON_BORDER_COLOR};
     ${showAggrs ? "top" : "bottom"}: 0;
     border-bottom-style: ${showAggrs ? "solid" : "none"};
     border-radius: ${showAggrs ? "20px 20px 0px 0px" : "0px 0px 20px 20px"};
@@ -68,7 +74,7 @@ const styles = {
       transform: rotate(${showAggrs ? 180 : 0}deg);
 
       > path {
-        fill: #fff;
+        fill: ${appColors.COMMON.WHITE};
       }
     }
 
@@ -83,7 +89,7 @@ const styles = {
 
       svg {
         path {
-          fill: #fff;
+          fill: ${appColors.COMMON.WHITE};
         }
       }
     }
@@ -104,11 +110,11 @@ const styles = {
 
     > hr {
       width: 100%;
-      border-color: #c7cdd1;
+      border-color: ${appColors.COMMON.SECONDARY_COLOR_11};
     }
 
     > div {
-      color: #fff;
+      color: ${appColors.COMMON.WHITE};
       display: flex;
       flex-direction: row;
 
@@ -128,7 +134,7 @@ const styles = {
           transform: scale(0.7);
 
           path {
-            fill: #fff;
+            fill: ${appColors.COMMON.WHITE};
           }
         }
       }
@@ -159,6 +165,7 @@ interface IndicatorToolTipProps {
 
 export function IndicatorToolTip(props: IndicatorToolTipProps) {
   const [showAggrs, setShowAggrs] = React.useState(false);
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <Tooltip
@@ -171,7 +178,11 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
               <div css={styles.header}>
                 <div>
                   <b>
-                    Reporting period:
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipPeriod",
+                      ""
+                    )}
                     <br />
                     {props.data.period}
                   </b>
@@ -181,13 +192,34 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
                 </IconButton>
               </div>
               <div>
-                <b>Is Indicator reversed?</b>: {props.data.isReversed}
+                <b>
+                  {get(
+                    cmsData,
+                    "componentsPerformanceFrameworkComponents.toolTipIndicator",
+                    ""
+                  )}
+                </b>
+                : {props.data.isReversed}
               </div>
               <div>
-                <b>Aggregation type</b>: {props.data.aggregationType}
+                <b>
+                  {get(
+                    cmsData,
+                    "componentsPerformanceFrameworkComponents.toolTipAggregationType",
+                    ""
+                  )}
+                </b>
+                : {props.data.aggregationType}
               </div>
               <div>
-                <b>Coverage</b>: {props.data.coverage}
+                <b>
+                  {get(
+                    cmsData,
+                    "componentsPerformanceFrameworkComponents.toolTipCoverage",
+                    ""
+                  )}
+                </b>
+                : {props.data.coverage}
               </div>
               <div
                 css={`
@@ -220,7 +252,19 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
               onClick={() => setShowAggrs(!showAggrs)}
             >
               <TriangleXSIcon />
-              <div>{showAggrs ? "Back" : "See Disaggregations"}</div>
+              <div>
+                {showAggrs
+                  ? get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipBack",
+                      ""
+                    )
+                  : get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipSeeDisaggregations",
+                      ""
+                    )}
+              </div>
               {showAggrs && (
                 <IconButton size="small" onClick={() => props.close()}>
                   <CloseIcon />
@@ -239,6 +283,7 @@ export function IndicatorToolTip(props: IndicatorToolTipProps) {
 
 function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
   const [showDetails, setShowDetails] = React.useState(false);
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div css={styles.aggregation}>
@@ -260,12 +305,24 @@ function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
             <React.Fragment key={value.category}>
               <div>
                 <div>
-                  <div>Category</div>
+                  <div>
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipCategory",
+                      ""
+                    )}
+                  </div>
                   <br />
                   <div>{value.category}</div>
                 </div>
                 <div>
-                  <div>Baseline</div>
+                  <div>
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipBaseline",
+                      ""
+                    )}
+                  </div>
                   <br />
                   <div css="width: fit-content;">
                     {value.baseline.numerator || value.baseline.denominator ? (
@@ -280,7 +337,13 @@ function AggregationRow(props: PFIndicatorResultDisaggregationGroup) {
                   </div>
                 </div>
                 <div>
-                  <div>Reported</div>
+                  <div>
+                    {get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.toolTipReported",
+                      ""
+                    )}
+                  </div>
                   <br />
                   <div css="width: fit-content;">
                     {value.reported.numerator || value.reported.denominator ? (

@@ -5,6 +5,9 @@ export function getAPIFormattedFilters(
   extraParams?: {
     page?: number;
     search?: string;
+    sortBy?: string;
+    orderBy?: string;
+    rowsPerPage?: number;
   }
 ): string {
   const filterArray: string[] = [];
@@ -15,6 +18,15 @@ export function getAPIFormattedFilters(
     }
     if (extraParams.search && extraParams.search.length > 0) {
       filterArray.push(`q=${extraParams.search}`);
+    }
+    if (extraParams.sortBy && extraParams.sortBy.length > 0) {
+      filterArray.push(`sortBy=${extraParams.sortBy}`);
+    }
+    if (extraParams.orderBy && extraParams.orderBy.length > 0) {
+      filterArray.push(`orderBy=${extraParams.orderBy}`);
+    }
+    if (extraParams.rowsPerPage && extraParams.rowsPerPage > 0) {
+      filterArray.push(`pageSize=${extraParams.rowsPerPage}`);
     }
   }
 
@@ -38,8 +50,24 @@ export function getAPIFormattedFilters(
   if (appliedFilters.partners.length > 0) {
     filterArray.push(`partners=${appliedFilters.partners.join(",")}`);
   }
-  if (appliedFilters.donors.length > 0) {
-    filterArray.push(`donors=${appliedFilters.donors.join(",")}`);
+  if (appliedFilters.documentTypes.length > 0) {
+    filterArray.push(`documentTypes=${appliedFilters.documentTypes.join(",")}`);
+  }
+  if (
+    appliedFilters.donors.length > 0 ||
+    appliedFilters.donorSubCategories.length > 0
+  ) {
+    filterArray.push(
+      `donors=${[
+        ...appliedFilters.donors,
+        ...appliedFilters.donorSubCategories,
+      ].join(",")}`
+    );
+  }
+  if (appliedFilters.donorSubCategories.length > 0) {
+    filterArray.push(
+      `donorSubCategories=${appliedFilters.donorSubCategories.join(",")}`
+    );
   }
   if (appliedFilters.donorCategories.length > 0) {
     filterArray.push(
@@ -49,6 +77,14 @@ export function getAPIFormattedFilters(
   if (appliedFilters.replenishmentPeriods.length > 0) {
     filterArray.push(
       `periods=${appliedFilters.replenishmentPeriods.join(",")}`
+    );
+  }
+  if (appliedFilters.trpWindows.length > 0) {
+    filterArray.push(`trpWindows=${appliedFilters.trpWindows.join(",")}`);
+  }
+  if (appliedFilters.portfolioCategories.length > 0) {
+    filterArray.push(
+      `portfolioCategories=${appliedFilters.portfolioCategories.join(",")}`
     );
   }
 

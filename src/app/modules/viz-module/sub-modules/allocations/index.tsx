@@ -2,22 +2,26 @@
 import React from "react";
 import get from "lodash/get";
 import sum from "lodash/sum";
+import find from "lodash/find";
+import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
 import findIndex from "lodash/findIndex";
 import { ApexOptions } from "apexcharts";
+import { useHistory } from "react-router-dom";
 import ReactApexCharts from "react-apexcharts";
+import { useTitle, useMeasure } from "react-use";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { useTitle, useMeasure, useUnmount } from "react-use";
 /* project */
-import { InfoIcon } from "app/assets/icons/Info";
+import { useCMSData } from "app/hooks/useCMSData";
 import { isTouchDevice } from "app/utils/isTouchDevice";
+import { getIso3FromName } from "app/utils/getIso3FromName";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
 import { XsContainer } from "app/components/Charts/common/styles";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { TransitionContainer } from "app/components/TransitionContainer";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMetricPrefix";
@@ -31,13 +35,30 @@ import {
 interface AllocationsModuleProps {
   code?: string;
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
 }
 
 export function AllocationsModule(props: AllocationsModuleProps) {
   useTitle(`The Data Explorer -${props.code ? " Location" : ""} Allocations`);
+  const cmsData = useCMSData({ returnData: true });
+  const history = useHistory();
 
   const selectedPeriod = useStoreState(
     (state) => state.ToolBoxPanelAllocationsPeriodState.value
+  );
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+  const setDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.setSteps
+  );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
   );
 
   // api call & data
@@ -76,8 +97,8 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const fetchPeriodOptionsData = useStoreActions(
     (store) => store.AllocationsPeriods.fetch
   );
-  const setVizDrilldowns = useStoreActions(
-    (actions) => actions.PageHeaderVizDrilldownsState.setValue
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
@@ -89,12 +110,14 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     colors: string[];
   }>(getKeysPercentages(total, values));
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizScale, setVizScale] = React.useState(1);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
   const [vizSelected, setVizSelected] = React.useState<string | undefined>(
     undefined
   );
   const [xsTooltipData, setXsTooltipData] = React.useState<any | null>(null);
+  const [reRouteDialog, setReRouteDialog] = React.useState({
+    display: false,
+    code: "",
+  });
 
   const options: ApexOptions = {
     plotOptions: {
@@ -111,12 +134,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         track: {
           show: true,
           strokeWidth: "1px",
-          background: "#262C34",
+          background: appColors.ALLOCATIONS.RADIAL_TRACK_BACKGROUND_COLOR,
         },
         dataLabels: {
           name: {
             show: true,
-            color: "#262c34",
+            color: appColors.ALLOCATIONS.RADIAL_DATA_LABELS_COLOR,
             fontFamily: "GothamNarrow-Book",
           },
           value: {
@@ -156,6 +179,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         width: 0,
       },
       formatter: (seriesName: string, opts: any) => {
+        if (isMobile) {
+          return seriesName;
+        }
         return `${seriesName}: ${formatLargeAmountsWithPrefix(
           values[opts.seriesIndex]
         )}`;
@@ -193,7 +219,17 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         if (keySelected === "true") {
           setVizLevel(1);
           setVizSelected(key);
-          setVizTranslation({ x: -300, y: 0 });
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: key,
+              path: `${history.location.pathname}${history.location.search}`,
+              vizSelected: {
+                id: key,
+                filterStr: key,
+              },
+            },
+          ]);
         } else if (isMobile || isTouchDevice()) {
           setXsTooltipData({
             label: key,
@@ -210,14 +246,24 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         } else {
           setVizLevel(1);
           setVizSelected("Total");
-          setVizTranslation({ x: -300, y: 0 });
+          addDataPathSteps([
+            {
+              id: uniqueId(),
+              name: "Total",
+              path: `${history.location.pathname}${history.location.search}`,
+              vizSelected: {
+                id: "Total",
+                filterStr: "Total",
+              },
+            },
+          ]);
         }
       }
     }
   }
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
+    let filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
@@ -225,10 +271,17 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         : appliedFilters
     );
+    if (filterString.length > 0) {
+      filterString = `&${filterString}`;
+    } else {
+      filterString = "";
+    }
+
     fetchData({
-      filterString: `periods=${selectedPeriod}${
-        filterString.length > 0 ? `&${filterString}` : ""
-      }`,
+      filterString:
+        selectedPeriod !== "All"
+          ? `periods=${selectedPeriod}${filterString}`
+          : "",
     });
   }, [props.code, appliedFilters, selectedPeriod]);
 
@@ -239,11 +292,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   React.useEffect(() => {
     const items = document.getElementsByClassName("apexcharts-radial-series");
     if (vizSelected) {
-      setVizDrilldowns([
-        { name: "Dataset" },
-        { name: selectedPeriod },
-        { name: vizSelected },
-      ]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
@@ -255,7 +303,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         }
       });
-      const filterString = getAPIFormattedFilters(
+      let filterString = getAPIFormattedFilters(
         props.code
           ? {
               ...appliedFilters,
@@ -263,6 +311,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             }
           : appliedFilters
       );
+      if (filterString.length > 0) {
+        filterString = `&${filterString}`;
+      } else {
+        filterString = "";
+      }
       fetchDrilldownLevelData({
         filterString: `levelParam=component/componentName in (${(vizSelected ===
         "Total"
@@ -271,12 +324,13 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         )
           .split(",")
           .map((s: string) => `'${s}'`)
-          .join(",")})&periods=${selectedPeriod}${
-          filterString.length > 0 ? `&${filterString}` : ""
-        }`,
+          .join(",")})${
+          selectedPeriod !== "All"
+            ? `&periods=${selectedPeriod}${filterString}`
+            : ""
+        }${filterString}`,
       });
     } else {
-      setVizDrilldowns([{ name: "Dataset" }]);
       [...items].forEach((item: Element) => {
         const paths = item.getElementsByTagName("path");
         if (paths.length > 0) {
@@ -288,42 +342,24 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }, [vizSelected, selectedPeriod]);
 
   React.useEffect(() => {
-    setVizDrilldowns([{ name: "Dataset" }]);
+    if (vizLevel === 0) {
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Access to Funding: Allocations" })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Access to Funding: Allocations",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      }
+    }
+  }, [vizSelected]);
+
+  React.useEffect(() => {
     fetchPeriodOptionsData({});
-
-    // setTimeout(() => {
-    //   const viz = document.getElementById("allocations-radial-bar");
-    //   if (viz) {
-    //     const svgs = viz.getElementsByTagName("svg");
-    //     if (svgs.length > 1) {
-    //       const pathElement = document.createElementNS(
-    //         "http://www.w3.org/2000/svg",
-    //         "path"
-    //       );
-    //       pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-    //       pathElement.setAttribute("stroke", "#13183F");
-    //       pathElement.setAttribute("strokeWidth", "1");
-
-    //       const patternElement = document.createElementNS(
-    //         "http://www.w3.org/2000/svg",
-    //         "pattern"
-    //       );
-    //       patternElement.setAttribute("id", "diagonalHatch");
-    //       patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-    //       patternElement.setAttribute("width", "4");
-    //       patternElement.setAttribute("height", "4");
-    //       patternElement.appendChild(pathElement);
-
-    //       const defsElement = document.createElementNS(
-    //         "http://www.w3.org/2000/svg",
-    //         "defs"
-    //       );
-    //       defsElement.appendChild(patternElement);
-
-    //       svgs[1].appendChild(defsElement);
-    //     }
-    //   }
-    // }, 1000);
 
     window.addEventListener("click", onClick);
     window.addEventListener("touchstart", onClick);
@@ -333,10 +369,153 @@ export function AllocationsModule(props: AllocationsModuleProps) {
     };
   }, []);
 
-  useUnmount(() => setVizDrilldowns([]));
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (dataPathActiveStep.vizSelected) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        clearDataPathActiveStep();
+        addDataPathSteps([dataPathActiveStep]);
+      } else if (!dataPathActiveStep.vizSelected && vizSelected) {
+        setVizLevel(0);
+        setVizSelected(undefined);
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
 
-  if (isLoading) {
-    return <PageLoader />;
+  let vizComponent = <React.Fragment />;
+
+  if (isLoading || isDrilldownLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (vizLevel === 0) {
+      vizComponent = (
+        <div
+          css={`
+            @media (max-width: 767px) {
+              z-index: 2;
+              width: 100%;
+              position: relative;
+              padding-bottom: 100px;
+
+              #mobile-tooltip-container {
+                top: 30vh;
+                left: 16px;
+                width: calc(100% - 32px);
+              }
+            }
+          `}
+        >
+          <div
+            ref={ref}
+            id="allocations-radial-bar"
+            css={`
+              width: 100%;
+            `}
+          >
+            {total === 0 ? (
+              <div css="display: flex;justify-content: center;">
+                <NoDataLabel />
+                <NoDataAllocations />
+              </div>
+            ) : (
+              <ReactApexCharts
+                type="radialBar"
+                options={options}
+                height={isMobile ? 400 : 580}
+                series={keysPercentagesColors.percentages}
+              />
+            )}
+          </div>
+          {(isMobile || isTouchDevice()) && xsTooltipData && (
+            <XsContainer id="mobile-tooltip-container">
+              <div
+                css={`
+                  width: 95%;
+                `}
+              >
+                <AllocationsRadialMobileTooltip
+                  {...xsTooltipData}
+                  close={() => setXsTooltipData(null)}
+                  drilldown={() => {
+                    setVizLevel(1);
+                    setVizSelected(xsTooltipData.label);
+                  }}
+                />
+              </div>
+            </XsContainer>
+          )}
+        </div>
+      );
+    } else if (vizLevel === 1) {
+      vizComponent = (
+        <React.Fragment>
+          <span
+            css={`
+              gap: 40px;
+              width: 100%;
+              display: flex;
+              margin-bottom: 20px;
+              flex-direction: row;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 40px;
+                  }
+                }
+              }
+            `}
+          >
+            <DrillDownArrowSelector
+              options={[...keys, "Total"]}
+              selected={vizSelected || ""}
+              onChange={(value: string) => {
+                const prevValue = vizSelected || "";
+                const fItemIndex = findIndex(dataPathSteps, {
+                  vizSelected: { id: prevValue, filterStr: prevValue },
+                });
+                setVizSelected(value);
+                let newDataPathSteps = [...dataPathSteps];
+                if (fItemIndex > -1) {
+                  newDataPathSteps = dataPathSteps.slice(0, fItemIndex);
+                }
+                newDataPathSteps.push({
+                  id: uniqueId(),
+                  name: value,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  vizSelected: {
+                    id: value,
+                    filterStr: value,
+                  },
+                });
+                setDataPathSteps(newDataPathSteps);
+              }}
+            />
+          </span>
+          <BudgetsTreemap
+            data={dataDrilldownLevel}
+            tooltipValueLabel={get(
+              cmsData,
+              "componentsChartsBudgets.treemapTooltipAllocation",
+              ""
+            )}
+            onNodeClick={(node: string) => {
+              const name = node.split("-")[0];
+              const code = getIso3FromName(name);
+              // setReRouteDialog({
+              //     display: true,
+              //     code,
+              //   });
+              clearDataPathSteps();
+              history.push(`/location/${code}/overview`);
+            }}
+          />
+        </React.Fragment>
+      );
+    }
   }
 
   return (
@@ -345,126 +524,49 @@ export function AllocationsModule(props: AllocationsModuleProps) {
       css={`
         width: 100%;
 
-        ${!vizSelected
-          ? `* {
-      // overflow: visible !important;
-    }`
-          : ""}
-
         .apexcharts-radialbar-hollow {
           r: 75;
           z-index: 1;
           cursor: pointer;
           transition: fill 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          fill: ${vizSelected === "Total" ? "#cfd4da" : "transparent"};
+          fill: ${vizSelected === "Total"
+            ? appColors.ALLOCATIONS.RADIAL_CENTER_LABEL_HOVER_COLOR
+            : "transparent"};
 
           &:hover {
-            fill: #cfd4da;
+            fill: ${appColors.ALLOCATIONS.RADIAL_CENTER_LABEL_HOVER_COLOR};
           }
         }
       `}
     >
-      <TransitionContainer vizScale={vizScale} vizTranslation={vizTranslation}>
-        <div
-          ref={ref}
-          id="allocations-radial-bar"
-          css={`
-            width: 100%;
-          `}
-        >
-          <div
-            css={`
-              display: flex;
-              color: #262c34;
-              font-size: 14px;
-              font-weight: bold;
-              align-items: center;
-              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
-              > svg {
-                margin-left: 10px;
-              }
-            `}
-          >
-            Allocations | {selectedPeriod} <InfoIcon />
-          </div>
-          <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-          {total === 0 ? (
-            <div css="display: flex;justify-content: center;">
-              <NoDataLabel />
-              <NoDataAllocations />
-            </div>
-          ) : (
-            <ReactApexCharts
-              type="radialBar"
-              options={options}
-              height={isMobile ? 400 : 580}
-              series={keysPercentagesColors.percentages}
-            />
-          )}
-        </div>
-        {(isMobile || isTouchDevice()) && xsTooltipData && (
-          <XsContainer id="mobile-tooltip-container">
-            <div
-              css={`
-                width: 95%;
-              `}
-            >
-              <AllocationsRadialMobileTooltip
-                {...xsTooltipData}
-                close={() => setXsTooltipData(null)}
-                drilldown={() => {
-                  setVizLevel(1);
-                  setVizSelected(xsTooltipData.label);
-                  setVizTranslation({ x: -300, y: 0 });
-                }}
-              />
-            </div>
-          </XsContainer>
-        )}
-      </TransitionContainer>
-      <SlideInContainer
-        vizLevel={vizLevel}
-        selected={vizSelected}
-        loading={isDrilldownLoading}
-        toolboxOpen={props.toolboxOpen}
-        close={() => {
-          setVizLevel(0);
-          setVizScale(1);
-          setVizSelected(undefined);
-          setVizTranslation({ x: 0, y: 0 });
-        }}
-      >
-        <span
-          css={`
-            gap: 40px;
-            width: 100%;
-            display: flex;
-            margin-bottom: 20px;
-            flex-direction: row;
-
-            > * {
-              @supports (-webkit-touch-callout: none) and
-                (not (translate: none)) {
-                &:not(:last-child) {
-                  margin-right: 40px;
-                }
-              }
-            }
-          `}
-        >
-          <DrillDownArrowSelector
-            options={[...keys, "Total"]}
-            selected={vizSelected || ""}
-            onChange={(value: string) => setVizSelected(value)}
-          />
-        </span>
-        <BudgetsTreemap
-          data={dataDrilldownLevel}
-          tooltipValueLabel="Allocation"
-          onNodeClick={(node: string, x: number, y: number) => {}}
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={{ ...reRouteDialog, pageType: "location" }}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(`/location/${reRouteDialog.code}/overview`)
+          }
         />
-      </SlideInContainer>
+      )}
+      <div
+        css={`
+          display: flex;
+          color: ${appColors.ALLOCATIONS.TEXT_COLOR};
+          font-size: 14px;
+          font-weight: bold;
+          align-items: center;
+          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+          > svg {
+            margin-left: 10px;
+          }
+        `}
+      >
+        {get(cmsData, "componentsChartsInvestments.allocations", "")}{" "}
+        {selectedPeriod}
+      </div>
+      <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
+      {vizComponent}
     </div>
   );
 }

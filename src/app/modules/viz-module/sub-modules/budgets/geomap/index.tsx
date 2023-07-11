@@ -1,19 +1,21 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
+import { useHistory } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import {
-  AllocationsGeoMapPinMarker,
-  NO_DATA_COLOR,
-} from "app/components/Charts/GeoMap/data";
+import { AllocationsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -24,6 +26,9 @@ interface Props {
 
 export function BudgetsGeoMap(props: Props) {
   useTitle(`The Data Explorer -${props.code ? ` ${props.code}` : ""} Budgets`);
+
+  const history = useHistory();
+  const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
 
   // api call & data
@@ -50,6 +55,10 @@ export function BudgetsGeoMap(props: Props) {
   const geomapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
   );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   const isLoading = useStoreState(
     (state) => state.BudgetsGeomap.loading || state.BudgetsMCGeomap.loading
@@ -58,24 +67,46 @@ export function BudgetsGeoMap(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    let filterString = getAPIFormattedFilters(
-      props.code && props.detailFilterType
-        ? {
-            ...appliedFilters,
-            [props.detailFilterType]: [
-              ...get(appliedFilters, props.detailFilterType, []),
-              props.code,
-            ],
-          }
-        : appliedFilters
-    );
-    if (props.grantCode && props.grantPeriod) {
-      filterString = `grantId='${props.grantCode}'&IPnumber=${props.grantPeriod}`;
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: "Grant Implementation: Budgets" })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Grant Implementation: Budgets",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
     }
-    if (geomapView === "countries") {
-      fetchData({ filterString });
-    } else if (geomapView === "multicountries") {
-      fetchMCData({ filterString });
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      (history.location.search.length > 0 &&
+        appliedFilters.appliedFiltersCount > 0) ||
+      (history.location.search.length === 0 &&
+        appliedFilters.appliedFiltersCount === 0)
+    ) {
+      let filterString = getAPIFormattedFilters(
+        props.code && props.detailFilterType
+          ? {
+              ...appliedFilters,
+              [props.detailFilterType]: [
+                ...get(appliedFilters, props.detailFilterType, []),
+                props.code,
+              ],
+            }
+          : appliedFilters
+      );
+      if (props.grantCode && props.grantPeriod) {
+        filterString = `grantId='${props.grantCode}'&IPnumber=${props.grantPeriod}`;
+      }
+      if (geomapView === "countries") {
+        fetchData({ filterString });
+      } else if (geomapView === "multicountries") {
+        fetchMCData({ filterString });
+      }
     }
   }, [
     props.code,
@@ -83,6 +114,7 @@ export function BudgetsGeoMap(props: Props) {
     props.grantPeriod,
     appliedFilters,
     geomapView,
+    history.location.search,
   ]);
 
   if (isLoading) {
@@ -100,6 +132,7 @@ export function BudgetsGeoMap(props: Props) {
     >
       <GeoMap
         allowClickthrough
+        clickthroughPath="budgets/flow"
         type="budgets"
         data={
           geomapView === "countries"
@@ -152,14 +185,20 @@ export function BudgetsGeoMap(props: Props) {
             `}
           >
             <div>
-              <b>Budgets</b>
+              <b>
+                {get(cmsData, "componentsChartsBudgets.geomapLabelBudgets", "")}
+              </b>
             </div>
             <div
               css={`
                 width: 100%;
                 height: 6px;
                 border-radius: 20px;
-                background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
+                background: linear-gradient(
+                  90deg,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_1} 0%,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_12} 100%
+                );
               `}
             />
             <div
@@ -169,7 +208,9 @@ export function BudgetsGeoMap(props: Props) {
                 justify-content: space-between;
               `}
             >
-              <div>0 USD</div>
+              <div>
+                {get(cmsData, "componentsChartsBudgets.geomapDefaultValue", "")}
+              </div>
               <div>{formatFinancialValue(maxValue)}</div>
             </div>
           </div>
@@ -199,8 +240,8 @@ export function BudgetsGeoMap(props: Props) {
                 height: 6px;
                 font-weight: bold;
                 border-radius: 20px;
-                border: 0.5px solid #c7cdd1;
-                background: ${NO_DATA_COLOR};
+                border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
+                background: ${appColors.GEOMAP.NO_DATA_LAYER_COLOR};
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             />
@@ -210,7 +251,7 @@ export function BudgetsGeoMap(props: Props) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              N/A
+              {get(cmsData, "componentsChartsBudgets.notAvailable", "")}
             </div>
           </div>
         </div>

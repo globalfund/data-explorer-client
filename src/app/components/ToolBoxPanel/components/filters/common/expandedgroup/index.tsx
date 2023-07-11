@@ -1,15 +1,20 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import get from "lodash/get";
 import find from "lodash/find";
 import remove from "lodash/remove";
 import isEqual from "lodash/isEqual";
+import { appColors } from "app/theme";
+import { useRecoilState } from "recoil";
 import findIndex from "lodash/findIndex";
+import { useCMSData } from "app/hooks/useCMSData";
 import Checkbox from "@material-ui/core/Checkbox";
 import { ResetIcon } from "app/assets/icons/Reset";
 import { SearchIcon } from "app/assets/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { filterExpandedGroup } from "app/state/recoil/atoms";
 import { useAppliedFilters } from "app/hooks/useAppliedFilters";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import {
@@ -21,12 +26,17 @@ import {
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
+  appliedFilters?: string[];
+  expandedGroup?: FilterGroupProps | null;
+  setAppliedFilters?: (filters: string[]) => void;
 }
 
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
+  const cmsData = useCMSData({ returnData: true });
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
+  const [expandedGroup] = useRecoilState(filterExpandedGroup);
   const {
     appliedFilters,
     setAppliedFilters,
@@ -38,7 +48,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
     type: props.name,
   });
   const [tmpAppliedFilters, setTmpAppliedFilters] = React.useState([
-    ...appliedFilters,
+    ...(props.appliedFilters || appliedFilters),
   ]);
   const [tmpAppliedFiltersChildren, setTmpAppliedFiltersChildren] =
     React.useState([...(appliedFiltersChildren || [])]);
@@ -192,8 +202,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   }
 
   function handleApply() {
-    if (!isEqual(appliedFilters, tmpAppliedFilters)) {
-      setAppliedFilters(tmpAppliedFilters);
+    if (!isEqual(props.appliedFilters || appliedFilters, tmpAppliedFilters)) {
+      if (props.setAppliedFilters) {
+        props.setAppliedFilters(tmpAppliedFilters);
+      } else {
+        setAppliedFilters(tmpAppliedFilters);
+      }
     }
     if (
       setAppliedFiltersChildren &&
@@ -273,8 +287,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   }
 
   function resetFilters() {
-    if (appliedFilters.length > 0) {
-      setAppliedFilters([]);
+    if ((props.appliedFilters || appliedFilters).length > 0) {
+      if (props.setAppliedFilters) {
+        props.setAppliedFilters([]);
+      } else {
+        setAppliedFilters([]);
+      }
       setTmpAppliedFilters([]);
     }
     if (
@@ -295,156 +313,179 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
     }
   }
 
+  let expandedGroupValue =
+    props.expandedGroup !== undefined ? props.expandedGroup : null;
+  if (expandedGroupValue === null && expandedGroup) {
+    expandedGroupValue = expandedGroup;
+  }
+
   return (
-    <React.Fragment>
-      <div
-        css={`
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-        `}
-      >
-        <div
-          css={`
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+    <>
+      {expandedGroupValue && (
+        <>
+          <div
+            css={`
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+              justify-content: space-between;
+            `}
+          >
+            <div
+              css={`
+                display: flex;
+                flex-direction: row;
+                align-items: center;
 
-            > button {
-              transform: rotate(-90deg);
-            }
-          `}
-        >
-          <IconButton onClick={props.goBack}>
-            <TriangleXSIcon />
-          </IconButton>
-          {props.name}
-        </div>
-        <div>
-          <FormControlLabel
-            control={
-              <Checkbox
-                color="primary"
-                checked={allSelected}
-                onChange={handleChangeAll}
-                disabled={value.length > 0}
+                > button {
+                  transform: rotate(-90deg);
+                }
+              `}
+            >
+              <IconButton onClick={props.goBack}>
+                <TriangleXSIcon />
+              </IconButton>
+              {props.name}
+            </div>
+            <div>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    color="primary"
+                    checked={allSelected}
+                    onChange={handleChangeAll}
+                    disabled={value.length > 0}
+                  />
+                }
+                label="Select all"
               />
-            }
-            label="Select all"
+              <IconButton onClick={resetFilters}>
+                <ResetIcon />
+              </IconButton>
+            </div>
+          </div>
+          <div
+            css={`
+              width: 100%;
+              display: flex;
+              position: relative;
+              padding: 10px 20px;
+              border-radius: 20px;
+              background: ${appColors.TOOLBOX
+                .FILTERS_EXPANDED_GROUP_SEARCH_BACKGROUND_COLOR};
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+
+              path {
+                fill: ${appColors.TOOLBOX
+                  .FILTERS_EXPANDED_GROUP_SEARCH_ICON_COLOR};
+              }
+            `}
+          >
+            <input
+              type="text"
+              css={`
+                width: 100%;
+                outline: none;
+                color: ${appColors.TOOLBOX
+                  .FILTERS_EXPANDED_GROUP_SEARCH_TEXT_COLOR};
+                font-size: 14px;
+                border-style: none;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_EXPANDED_GROUP_SEARCH_BACKGROUND_COLOR};
+              `}
+              tabIndex={0}
+              value={value}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setValue(e.target.value)
+              }
+            />
+            <SearchIcon />
+          </div>
+          <div
+            css={`
+              width: 100%;
+              height: 25px;
+
+              border-bottom: 1px solid
+                ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
+            `}
           />
-          <IconButton onClick={resetFilters}>
-            <ResetIcon />
-          </IconButton>
-        </div>
-      </div>
-      <div
-        css={`
-          width: 100%;
-          display: flex;
-          position: relative;
-          padding: 10px 20px;
-          border-radius: 20px;
-          background: #dfe3e6;
-          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+          <div
+            id="scrollable-div"
+            css={`
+              overflow-y: auto;
+              height: calc(100% - 190px);
+              max-height: calc(100% - 190px);
 
-          path {
-            fill: #98a1aa;
-          }
-        `}
-      >
-        <input
-          type="text"
-          css={`
-            width: 100%;
-            outline: none;
-            color: #495057;
-            font-size: 14px;
-            border-style: none;
-            background: #dfe3e6;
-          `}
-          tabIndex={0}
-          value={value}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setValue(e.target.value)
-          }
-        />
-        <SearchIcon />
-      </div>
-      <div
-        css={`
-          width: 100%;
-          height: 25px;
-          border-bottom: 1px solid #dfe3e6;
-        `}
-      />
-      <div
-        css={`
-          overflow-y: auto;
-          max-height: calc(100% - 190px);
+              @media (max-width: 767px) {
+                max-height: unset;
+                overflow-y: unset;
+              }
 
-          @media (max-width: 767px) {
-            max-height: unset;
-            overflow-y: unset;
-          }
-
-          &::-webkit-scrollbar {
-            width: 4px;
-            border-radius: 4px;
-            background: #495057;
-          }
-          &::-webkit-scrollbar-track {
-            border-radius: 4px;
-            background: #f5f5f7;
-          }
-          &::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            background: #495057;
-          }
-        `}
-      >
-        {optionsToShow.map((option: FilterGroupOptionModel) => (
-          <FilterOption
-            {...option}
-            level={1}
-            key={option.value}
-            forceExpand={value.length > 0}
-            onOptionChange={onOptionChange}
-            selectedOptions={[
-              ...tmpAppliedFilters,
-              ...tmpAppliedFiltersChildren,
-              ...tmpAppliedFiltersGrandChildren,
-            ]}
-            selected={
-              find(
-                [...tmpAppliedFilters, ...tmpAppliedFiltersChildren],
-                (o: string) => o === option.value
-              ) !== undefined
-            }
-          />
-        ))}
-      </div>
-      <button
-        type="button"
-        onClick={handleApply}
-        css={`
-          color: #fff;
-          margin: 30px 0;
-          font-size: 14px;
-          cursor: pointer;
-          font-weight: bold;
-          width: fit-content;
-          padding: 10px 20px;
-          border-style: none;
-          border-radius: 20px;
-          background: #495057;
-          box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-        `}
-      >
-        Apply
-      </button>
-    </React.Fragment>
+              &::-webkit-scrollbar {
+                width: 4px;
+                border-radius: 4px;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_SCROLLBAR_BACKGROUND_COLOR};
+              }
+              &::-webkit-scrollbar-track {
+                border-radius: 4px;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_SCROLLBAR_TRACK_BACKGROUND_COLOR};
+              }
+              &::-webkit-scrollbar-thumb {
+                border-radius: 4px;
+                background: ${appColors.TOOLBOX
+                  .FILTERS_SCROLLBAR_THUMB_BACKGROUND_COLOR};
+              }
+            `}
+          >
+            {optionsToShow.map((option: FilterGroupOptionModel) => (
+              <FilterOption
+                {...option}
+                level={1}
+                key={option.value}
+                forceExpand={value.length > 0}
+                onOptionChange={onOptionChange}
+                selectedOptions={[
+                  ...tmpAppliedFilters,
+                  ...tmpAppliedFiltersChildren,
+                  ...tmpAppliedFiltersGrandChildren,
+                ]}
+                selected={
+                  find(
+                    [...tmpAppliedFilters, ...tmpAppliedFiltersChildren],
+                    (o: string) => o === option.value
+                  ) !== undefined
+                }
+              />
+            ))}
+          </div>
+          <button
+            type="button"
+            onClick={handleApply}
+            css={`
+              color: ${appColors.TOOLBOX
+                .FILTERS_EXPANDED_GROUP_APPLY_BUTTON_TEXT_COLOR};
+              margin: 30px 0;
+              font-size: 14px;
+              cursor: pointer;
+              font-weight: bold;
+              width: fit-content;
+              padding: 10px 20px;
+              border-style: none;
+              border-radius: 20px;
+              background: ${appColors.TOOLBOX
+                .FILTERS_EXPANDED_GROUP_APPLY_BUTTON_BACKGROUND_COLOR};
+              box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.05);
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            `}
+          >
+            {get(cmsData, "componentsSidebar.applyButton", "")}
+          </button>
+        </>
+      )}
+    </>
   );
 }
 
@@ -465,7 +506,8 @@ function FilterOption(props: FilterOptionProps) {
         width: 100%;
         display: flex;
         flex-direction: column;
-        border-bottom: 1px solid #dfe3e6;
+        border-bottom: 1px solid
+          ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
         border-bottom-style: ${props.subOptions ? "solid" : "none"};
       `}
     >

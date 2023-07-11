@@ -1,20 +1,12 @@
 import React from "react";
 import get from "lodash/get";
-import sumBy from "lodash/sumBy";
 import uniqBy from "lodash/uniqBy";
-import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import {
-  ResponsiveSankey,
-  SankeyLinkDatum,
-  SankeyNodeDatum,
-} from "@nivo/sankey";
-import { InfoIcon } from "app/assets/icons/Info";
-// import { isTouchDevice } from "app/utils/isTouchDevice";
+import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { XsContainer } from "app/components/Charts/common/styles";
-import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { getNodes } from "app/components/Charts/Budgets/Flow/components/node";
 import { NoDataBudgetsFlow } from "app/components/Charts/Budgets/Flow/components/nodata";
@@ -26,6 +18,11 @@ import {
   BudgetsFlowTooltip,
   MobileBudgetsFlowTooltip,
 } from "app/components/Charts/Budgets/Flow/components/tooltip";
+import {
+  ResponsiveSankey,
+  SankeyLinkDatum,
+  SankeyNodeDatum,
+} from "@nivo/sankey";
 
 const container = css`
   width: 100%;
@@ -72,15 +69,11 @@ const container = css`
 
 const header = css`
   > div {
-    color: #262c34;
+    color: ${appColors.COMMON.PRIMARY_COLOR_1};
     font-size: 14px;
-    font-weight: bold;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
     @media (max-width: 767px) {
       font-size: 10px;
-      font-weight: normal;
-      font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
     }
   }
 `;
@@ -114,53 +107,12 @@ const getNodeLabel = (label: string, matchesSm: boolean): string => {
 export function BudgetsFlow(props: BudgetsFlowProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const legends = getLegendItems(props.data.nodes);
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
-  const totalBudget = sumBy(
-    filter(props.data.links, { source: "Budgets" }),
-    "value"
-  );
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<MobileBudgetsFlowTooltipProps | null>(null);
 
-  // React.useEffect(() => {
-  //   const node = document.getElementById("sankey");
-  //   if (node) {
-  //     const vizsvgelem = node.querySelector("svg > g");
-  //     if (vizsvgelem) {
-  //       vizsvgelem
-  //         .querySelector("linearGradient")
-  //         ?.setAttribute("id", "genericlineargradient");
-  //     const paths = [...node.querySelectorAll("path")];
-  //     paths.forEach((path) => {
-  //       path.setAttribute("fill", "rgb(199, 205, 209)");
-  //     });
-  //     [...vizsvgelem.querySelectorAll("linearGradient")].forEach(
-  //       (lg, index) => {
-  //         if (index > 0) {
-  //           lg.remove();
-  //         }
-  //       }
-  //     );
-  //     }
-  //     const nodes = [...node.querySelectorAll("linearGradient")];
-  //     nodes.forEach((lg) => {
-  //       const elems = lg.getElementsByTagName("stop");
-  //       if (elems && elems.length === 2) {
-  //         elems[0].setAttribute("stop-color", "rgb(199, 205, 209)");
-  //         elems[1].setAttribute("stop-color", "rgba(199, 205, 209, 0.1)");
-  //       }
-  //     });
-  //   }
-  // }, [props.data]);
+  const cmsData = useCMSData({ returnData: true });
 
   const Nodes = (nProps: any) => {
-    if (
-      nProps.nodes.length > 0 &&
-      props.vizCompData.length !== nProps.nodes.length
-    ) {
-      props.setVizCompData(nProps.nodes);
-    }
     return getNodes(
       nProps.nodes,
       props.selectedNodeId,
@@ -170,15 +122,21 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
   };
 
   return (
-    <div data-cy="budgets-flow" id="sankey">
+    <div
+      data-cy="budgets-flow"
+      id="sankey"
+      css={`
+        position: relative;
+      `}
+    >
       <Grid
         container
         css={header}
-        alignItems="center"
+        alignItems="baseline"
         spacing={!isMobile ? 4 : undefined}
       >
         {!isMobile && (
-          <Grid item xs={12}>
+          <Grid item xs={12} sm={10} md={12}>
             <div
               css={`
                 gap: 24px;
@@ -206,7 +164,6 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                     align-items: center;
                     flex-direction: row;
                     font-weight: normal;
-
                     > * {
                       @supports (-webkit-touch-callout: none) and
                         (not (translate: none)) {
@@ -230,11 +187,6 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             </div>
           </Grid>
         )}
-        {isMobile && (
-          <Grid item xs={12} css="font-size: 12px !important;">
-            <b>Total amount: {formatFinancialValue(totalBudget)}</b>
-          </Grid>
-        )}
         <Grid item xs={3}>
           <div
             css={`
@@ -246,22 +198,17 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
               }
             `}
           >
-            Budget <InfoIcon />
+            {get(cmsData, "componentsChartsBudgets.budget", "")}
           </div>
-          {!isMobile && (
-            <div css="font-weight: normal;">
-              {formatFinancialValue(totalBudget)}
-            </div>
-          )}
         </Grid>
         <Grid item xs={3}>
-          Investment Landscape Level 1
+          {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel1", "")}
+        </Grid>
+        <Grid item xs={3} css="text-align: center;">
+          {get(cmsData, "componentsChartsBudgets.flowLandscapeLevel2", "")}
         </Grid>
         <Grid item xs={3} css="text-align: right;">
-          Investment Landscape Level 2
-        </Grid>
-        <Grid item xs={3} css="text-align: right;">
-          Cost category
+          {get(cmsData, "componentsChartsBudgets.flowCostCategory", "")}
         </Grid>
       </Grid>
       {props.data.links.length === 0 ? (
@@ -273,7 +220,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
         <div css={container} id="sankeyviz">
           <ResponsiveSankey
             data={props.data}
-            colors={["#373D43"]}
+            colors={[appColors.COMMON.SECONDARY_COLOR_1]}
             // @ts-ignore
             layers={["links", Nodes, "labels"]}
             margin={{ top: 0, right: 0, bottom: 10, left: 0 }}
@@ -329,8 +276,9 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
                   borderRadius: 20,
                   padding: "16px 25px",
                   position: "relative",
-                  backgroundColor: "#f5f5f7",
                   display: isMobile ? "none" : "inherit",
+                  backgroundColor:
+                    appColors.BUDGETS_FLOW.TOOLTIP_BACKGROUND_COLOR,
                 },
               },
               labels: {
@@ -344,7 +292,7 @@ export function BudgetsFlow(props: BudgetsFlowProps) {
             <XsContainer id="mobile-tooltip-container">
               <div
                 css={`
-                  width: 95%;
+                  width: 100%;
                 `}
               >
                 <MobileBudgetsFlowTooltip

@@ -1,5 +1,8 @@
 import React from "react";
+import get from "lodash/get";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
   GeomapAllocationsTooltipProps,
@@ -8,10 +11,12 @@ import {
 } from "app/components/Charts/GeoMap/data";
 
 export function GeomapTooltip(props: GeomapTooltipProps) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.GEOMAP.TOOLTIP_COLOR};
       `}
     >
       <div
@@ -20,7 +25,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
@@ -33,7 +38,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -72,9 +77,18 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
-          <div>Grants</div>
-          <div>{props.investmentSubType || "Disbursements"}</div>
+          <div>
+            {get(cmsData, "componentsChartsGeomap.tooltipComponent", "")}
+          </div>
+          <div>{get(cmsData, "componentsChartsGeomap.tooltipGrants", "")}</div>
+          <div>
+            {props.investmentSubType ||
+              get(
+                cmsData,
+                "componentsChartsGeomap.tooltipDefaultInvestment",
+                ""
+              )}
+          </div>
         </div>
         {props.data.components.map((stat: any) => (
           <div
@@ -141,7 +155,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Disbursed
+            {get(cmsData, "componentsChartsGeomap.tooltipDisbursed", "")}
           </div>
           <div>{formatFinancialValue(props.data.disbursed)}</div>
         </div>
@@ -150,14 +164,15 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
             width: 100%;
             height: 5px;
             border-radius: 20px;
-            background: #c7cdd1;
+            background: ${appColors.GEOMAP
+              .TOOLTIP_PROGRESS_BAR_BACKGROUND_COLOR};
           `}
         >
           <div
             css={`
               height: 5px;
               border-radius: 20px;
-              background: #373d43;
+              background: ${appColors.GEOMAP.TOOLTIP_PROGRESS_BAR_COLOR};
               width: ${(props.data.disbursed * 100) / props.data.committed}%;
             `}
           />
@@ -176,7 +191,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Committed
+            {get(cmsData, "componentsChartsGeomap.committed", "")}
           </div>
           <div>{formatFinancialValue(props.data.committed)}</div>
         </div>
@@ -194,7 +209,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Signed
+            {get(cmsData, "componentsChartsGeomap.tooltipSigned", "")}
           </div>
           <div>{formatFinancialValue(props.data.signed)}</div>
         </div>
@@ -228,7 +243,7 @@ export function GeomapPinTooltip(props: {
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.GEOMAP.TOOLTIP_COLOR};
       `}
     >
       <div
@@ -237,7 +252,7 @@ export function GeomapPinTooltip(props: {
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
@@ -250,7 +265,7 @@ export function GeomapPinTooltip(props: {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.COMMON.SECONDARY_COLOR_7};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -288,7 +303,8 @@ export function GeomapPinTooltip(props: {
                 padding: 16px 0;
                 font-weight: bold;
                 line-height: 20px;
-                border-bottom: 1px solid #dfe3e6;
+                border-bottom: 1px solid
+                  ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
@@ -301,7 +317,8 @@ export function GeomapPinTooltip(props: {
                 font-size: 12px;
                 padding: 16px 0;
                 flex-direction: column;
-                border-bottom: 1px solid #dfe3e6;
+                border-bottom: 1px solid
+                  ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
 
                 > * {
                   @supports (-webkit-touch-callout: none) and
@@ -338,10 +355,12 @@ export function GeomapPinTooltip(props: {
 }
 
 export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.GEOMAP.TOOLTIP_COLOR};
       `}
     >
       <div
@@ -350,7 +369,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
         `}
       >
@@ -363,7 +382,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.GEOMAP.TOOLTIP_BORDER_COLOR};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -397,7 +416,9 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
+          <div>
+            {get(cmsData, "componentsChartsGeomap.tooltipComponent", "")}
+          </div>
           <div
             css={`
               text-transform: capitalize;
@@ -465,7 +486,7 @@ export function GeomapAllocationsTooltip(props: GeomapAllocationsTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Total
+            {get(cmsData, "componentsChartsGeomap.tooltipTotal", "")}
           </div>
           <div>{formatFinancialValue(props.data.value)}</div>
         </div>

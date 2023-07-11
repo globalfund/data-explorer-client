@@ -1,5 +1,9 @@
 import React from "react";
+import get from "lodash/get";
+import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import { SearchIcon } from "app/assets/icons/Search";
+import IconButton from "@material-ui/core/IconButton";
 import {
   container,
   input,
@@ -11,6 +15,7 @@ interface SearchLayoutProps {
 }
 
 export function SearchLayout(props: SearchLayoutProps) {
+  const cmsData = useCMSData({ returnData: true });
   return (
     <div css={container}>
       <input
@@ -18,12 +23,23 @@ export function SearchLayout(props: SearchLayoutProps) {
         css={input}
         tabIndex={0}
         value={props.value}
-        placeholder="Search"
+        placeholder={get(cmsData, "modulesGrants.searchPlaceholder", "")}
         onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           props.setValue(e.target.value)
         }
       />
-      <SearchIcon />
+      {props.value.length === 0 ? (
+        <SearchIcon />
+      ) : (
+        <IconButton
+          onClick={() => props.setValue("")}
+          css={`
+            padding: 0;
+          `}
+        >
+          <CloseIcon />
+        </IconButton>
+      )}
     </div>
   );
 }

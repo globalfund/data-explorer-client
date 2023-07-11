@@ -36,11 +36,11 @@ const views = {
       value: "Treemap",
       link: "/viz/signed/treemap",
     },
-    {
-      label: "Time cycle",
-      value: "Time cycle",
-      link: "/viz/signed/time-cycle",
-    },
+    // {
+    //   label: "Time cycle",
+    //   value: "Time cycle",
+    //   link: "/viz/signed/time-cycle",
+    // },
     {
       label: "Map",
       value: "Map",
@@ -114,6 +114,11 @@ const views = {
       value: "Map",
       link: "/viz/allocations/map",
     },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/viz/allocations/table",
+    },
   ],
   grants: [
     {
@@ -125,6 +130,18 @@ const views = {
       label: "List",
       value: "List",
       link: "/viz/grants/list",
+    },
+  ],
+  mainGrants: [
+    {
+      label: "Grid",
+      value: "Grid",
+      link: "/grants",
+    },
+    {
+      label: "Table",
+      value: "Table",
+      link: "/grants/table",
     },
   ],
   "pledges-contributions": [
@@ -152,48 +169,41 @@ const views = {
 };
 
 const aggregates = {
-  // investments: [
-  //   {
-  //     label: "Components",
-  //     value: "Components",
-  //   },
-  //   {
-  //     label: "Partners",
-  //     value: "Partners",
-  //   },
-  //   {
-  //     label: "Locations",
-  //     value: "Locations",
-  //   },
-  //   {
-  //     label: "Grants",
-  //     value: "Grants",
-  //   },
-  // ],
-  // budgets: [
-  //   {
-  //     label: "Components",
-  //     value: "Components",
-  //   },
-  //   {
-  //     label: "Locations",
-  //     value: "Locations",
-  //   },
-  // ],
-  eligibility: [
+  "allocations-table": [
+    {
+      label: "Locations",
+      value: "geographicArea.geographicAreaName",
+    },
+    {
+      label: "Components",
+      value: "component.componentName",
+    },
+  ],
+  "eligibility-table": [
+    {
+      label: "Locations",
+      value: "geographicAreaName",
+    },
     {
       label: "Components",
       value: "componentName",
     },
+  ],
+  "pledges-contributions-table": [
     {
-      label: "Locations",
-      value: "geographicAreaName",
+      label: "Donor",
+      value: "Donor",
+    },
+    {
+      label: "Period",
+      value: "Period",
     },
   ],
 };
 
 export function getControlItems(
   vizType: string,
+  subType: string | undefined,
   pathname: string,
   detailPageCode?: string,
   grantDetailPeriod?: string
@@ -201,6 +211,15 @@ export function getControlItems(
   views: ViewModel[];
   aggregates: ViewModel[];
 } {
+  if (
+    (pathname === "/grants" || pathname === "/grants/table") &&
+    !detailPageCode
+  ) {
+    return {
+      views: get(views, "mainGrants", []),
+      aggregates: [],
+    };
+  }
   if (detailPageCode) {
     const detailPageParam = pathname.split("/")[1];
     let alteredViews = get(views, vizType, []).map((view: ViewModel) => ({
@@ -214,6 +233,7 @@ export function getControlItems(
           )
         : view.link,
     }));
+
     if (detailPageParam === "grant") {
       alteredViews = filter(
         alteredViews,
@@ -225,11 +245,19 @@ export function getControlItems(
     }
     return {
       views: alteredViews,
-      aggregates: get(aggregates, vizType, []),
+      aggregates: get(
+        aggregates,
+        `${vizType}${subType ? "-" : ""}${subType}`,
+        []
+      ),
     };
   }
   return {
     views: get(views, vizType, []),
-    aggregates: get(aggregates, vizType, []),
+    aggregates: get(
+      aggregates,
+      `${vizType}${subType ? "-" : ""}${subType}`,
+      []
+    ),
   };
 }

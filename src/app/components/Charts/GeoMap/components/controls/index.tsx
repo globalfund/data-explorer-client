@@ -1,4 +1,5 @@
 import React from "react";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 import ZoomInIcon from "app/assets/icons/IconZoomIn";
 import ZoomOutIcon from "app/assets/icons/IconZoomOut";
@@ -9,10 +10,11 @@ interface GeoMapControlsProps {
 }
 
 const buttoncss = css`
-  display: flex;
+  z-index: 100;
   padding: 3px;
+  display: flex;
   cursor: pointer;
-  background: #fff;
+  background: ${appColors.COMMON.WHITE};
   border-radius: 5px;
   align-items: center;
   justify-content: center;
@@ -30,6 +32,11 @@ export function GeoMapControls(props: GeoMapControlsProps) {
         display: flex;
         position: absolute;
         flex-direction: column;
+
+        @media (max-width: 767px) {
+          left: 15px;
+          right: unset;
+        }
 
         > * {
           @supports (-webkit-touch-callout: none) and (not (translate: none)) {

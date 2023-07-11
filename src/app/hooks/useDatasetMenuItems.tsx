@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from "react";
+import { appColors } from "app/theme";
 import { Link, useLocation } from "react-router-dom";
 import { ArrowForwardIcon } from "app/assets/icons/ArrowForward";
 
@@ -24,9 +25,9 @@ function Expandable(props: ExpandableProps) {
         css={`
           width: 100%;
           display: flex;
-          color: #262c34;
+          color: ${appColors.APPBAR.DATASETS_MENU_ITEM_COLOR};
           font-size: 14px;
-          padding: 6px 12px;
+          padding: 10px 12px;
           align-items: center;
           justify-content: space-between;
 
@@ -35,24 +36,25 @@ function Expandable(props: ExpandableProps) {
             transform: rotate(${expanded ? "-" : ""}90deg) scale(0.5);
 
             > path {
-              fill: #13183f;
+              fill: ${appColors.APPBAR.DATASETS_MENU_ITEM_COLOR};
             }
           }
 
           @media (min-width: 768px) {
             &:hover {
-              color: #fff;
-              background: #495057;
+              color: ${appColors.COMMON.WHITE};
+              background: ${appColors.COMMON.PRIMARY_COLOR_1};
               transition: background 0.2s ease-in-out;
 
               > svg {
                 > path {
-                  fill: #fff;
+                  fill: ${appColors.COMMON.WHITE};
                 }
               }
             }
           }
         `}
+        id="appbar-expandable-item"
         onClick={() => setExpanded(!expanded)}
       >
         <b>{props.label}</b>
@@ -66,16 +68,16 @@ function Expandable(props: ExpandableProps) {
 
           a {
             width: 100%;
-            color: #495057;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             font-size: 14px;
-            padding: 6px 12px;
+            padding: 10px 15px;
             text-decoration: none;
-            border-top: 1px solid #dfe3e6;
 
             @media (min-width: 768px) {
               &:hover {
-                color: #fff;
-                background: #495057;
+                color: ${appColors.COMMON.WHITE};
+                font-weight: bold;
+                background: ${appColors.COMMON.PRIMARY_COLOR_1};
                 transition: background 0.2s ease-in-out;
               }
             }
@@ -91,93 +93,60 @@ function Expandable(props: ExpandableProps) {
 export function useDatasetMenuItems(): React.ReactChild[] {
   const location = useLocation();
   return [
-    <Link
-      to="/datasets"
-      css={`
-        width: 100%;
-        display: flex;
-        color: #262c34;
-        font-size: 14px;
-        padding: 6px 12px;
-        align-items: center;
-        text-decoration: none;
-
-        > svg {
-          margin-right: 16px;
-          transform: rotate(-180deg) scale(0.5);
-
-          > path {
-            fill: #13183f;
-          }
-        }
-
-        @media (min-width: 768px) {
-          &:hover {
-            color: #fff;
-            background: #495057;
-            transition: background 0.2s ease-in-out;
-
-            > svg {
-              > path {
-                fill: #fff;
-              }
-            }
-          }
-        }
-      `}
-    >
-      <ArrowForwardIcon />
-      <b>Datasets</b>
-    </Link>,
-    <Expandable label="Finance">
+    <Expandable label="Resource Mobilization">
       <Link to={`/viz/pledges-contributions/treemap${location.search}`}>
         Pledges & Contributions
       </Link>
+    </Expandable>,
+    <Expandable label="Access to Funding">
+      <Link to={`/viz/eligibility/table${location.search}`}>Eligibility</Link>
+      <Link to={`/viz/allocations${location.search}`}>Allocations</Link>
+      <Link to={`/viz/funding-requests/table${location.search}`}>
+        Funding Requests
+      </Link>
+    </Expandable>,
+    <Expandable label="Grant Implementation">
+      <Link
+        css={`
+          @media (min-width: 768px) {
+            &:hover {
+              color: ${appColors.COMMON.WHITE};
+              background: ${appColors.COMMON.PRIMARY_COLOR_1};
+              transition: background 0.2s ease-in-out;
+            }
+          }
+        `}
+        to={`/grants${location.search}`}
+      >
+        Grants
+      </Link>
       <Link to={`/viz/signed/treemap${location.search}`}>Signed Amounts</Link>
       <Link to={`/viz/commitment/treemap${location.search}`}>Commitments</Link>
-      <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
       <Link to={`/viz/disbursements/treemap${location.search}`}>
         Disbursements
       </Link>
-    </Expandable>,
-    <Expandable label="Access to Funding">
-      <Link to={`/viz/eligibility${location.search}`}>Eligibility</Link>
-      <Link to={`/viz/allocations${location.search}`}>Allocation</Link>
+      <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
     </Expandable>,
     <Link
       css={`
         @media (min-width: 768px) {
           &:hover {
-            color: #fff;
-            background: #495057;
-            transition: background 0.2s ease-in-out;
-          }
-        }
-      `}
-      to={`/grants${location.search}`}
-    >
-      <b>Grants</b>
-    </Link>,
-    <Link
-      css={`
-        @media (min-width: 768px) {
-          &:hover {
-            color: #fff;
-            background: #495057;
+            color: ${appColors.COMMON.WHITE};
+            background: ${appColors.COMMON.PRIMARY_COLOR_1};
             transition: background 0.2s ease-in-out;
           }
         }
       `}
       to={`/results${location.search}`}
     >
-      <b>Results</b>
+      <b>Annual Results</b>
     </Link>,
     <Link
       css={`
         @media (min-width: 768px) {
           &:hover {
-            color: #fff;
-            background: #495057;
+            color: ${appColors.COMMON.WHITE};
+            background: ${appColors.COMMON.PRIMARY_COLOR_1};
             transition: background 0.2s ease-in-out;
           }
         }

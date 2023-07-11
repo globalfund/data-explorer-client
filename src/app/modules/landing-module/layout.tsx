@@ -1,19 +1,21 @@
+/* third-party */
 import React from "react";
-import { Link } from "react-router-dom";
+import get from "lodash/get";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+/* project */
 import BigLogo from "app/assets/BigLogo";
 import { Search } from "app/components/Search";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { DatasetCarousel } from "app/components/DatasetCarousel";
+import { useCMSData } from "app/hooks/useCMSData";
+import { LandingDatasetGrid } from "app/modules/landing-module/components/dataset-grid";
 import {
   container,
   subtitle,
   datasetstitle,
-  datasetslink,
 } from "app/modules/landing-module/styles";
 
 export const LandingLayout = () => {
   const isMobile = useMediaQuery("(max-width: 767px)");
-
+  const cmsData = useCMSData({ returnData: true });
   return (
     <div css={container}>
       <div
@@ -31,15 +33,14 @@ export const LandingLayout = () => {
         `}
       >
         <BigLogo />
-        <div css={subtitle}>Free and open access to the Global Fund Data</div>
+        <div css={subtitle}>{get(cmsData, "modulesLanding.subTitle", "")}</div>
         <Search />
         {!isMobile && (
           <React.Fragment>
-            <div css={datasetstitle}>Explore the Datasets</div>
-            <DatasetCarousel />
-            <div css={datasetslink}>
-              <Link to="/datasets">View all</Link>
+            <div css={datasetstitle}>
+              {get(cmsData, "modulesLanding.datasetsTitle", "")}
             </div>
+            <LandingDatasetGrid />
           </React.Fragment>
         )}
       </div>

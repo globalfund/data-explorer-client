@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import isEqual from "lodash/isEqual";
 import { useTitle, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -15,22 +16,33 @@ interface Props {
 
 export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   useTitle("The Data Explorer - Location Budgets Time cycle");
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+
   const [vizLevel, setVizLevel] = React.useState(0);
-  const [vizTranslation, setVizTranslation] = React.useState({ x: 0, y: 0 });
-  const [vizPrevTranslation, setVizPrevTranslation] = React.useState({
-    x: 0,
-    y: 0,
-  });
-  const [vizSelected, setVizSelected] = React.useState<string | undefined>(
-    undefined
-  );
-  const [vizPrevSelected, setVizPrevSelected] = React.useState<
-    string | undefined
-  >(undefined);
   const [drilldownVizSelected, setDrilldownVizSelected] = React.useState<
     string | undefined
-  >(undefined);
-  const [vizCompData, setVizCompData] = React.useState([]);
+  >(dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr);
+
+  React.useEffect(() => {
+    const newVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.vizSelected?.filterStr;
+    const newDrilldownVizSelected =
+      dataPathSteps[dataPathSteps.length - 1]?.drilldownVizSelected?.filterStr;
+    if (!isEqual(newVizSelected, vizSelected)) {
+      setVizSelected(newVizSelected);
+    }
+    if (!isEqual(newDrilldownVizSelected, drilldownVizSelected)) {
+      setDrilldownVizSelected(newDrilldownVizSelected);
+    }
+    if (newDrilldownVizSelected) {
+      setVizLevel(2);
+    } else if (newVizSelected) {
+      setVizLevel(1);
+    } else {
+      setVizLevel(0);
+    }
+  }, [dataPathSteps]);
 
   // api call & data
   const fetchData = useStoreActions(
@@ -80,12 +92,25 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   const isDrilldown2Loading = useStoreState(
     (state) => state.LocationDetailBudgetsTimeCycleDrilldownLevel2.loading
   );
+  const setDrilldownLevelSelectors = useStoreActions(
+    (store) => store.ToolBoxPanelBudgetTimeCycleDrilldownYearSelector.setOptions
+  );
+  const vizSelected = useStoreState(
+    (state) =>
+      state.ToolBoxPanelBudgetTimeCycleDrilldownYearSelector.selectedOption
+  );
+  const setVizSelected = useStoreActions(
+    (actions) =>
+      actions.ToolBoxPanelBudgetTimeCycleDrilldownYearSelector.setSelectedOption
+  );
+  const dataPathActiveStep = useStoreState(
+    (state) => state.DataPathActiveStep.step
+  );
+  const clearDataPathActiveStep = useStoreActions(
+    (actions) => actions.DataPathActiveStep.clear
+  );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
-
-  const [drilldownPanelOptions, setDrilldownPanelOptions] = React.useState<
-    string[]
-  >(data.map((item: any) => item.year));
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(
@@ -139,28 +164,52 @@ export function LocationDetailGenericBudgetsTimeCycleWrapper(props: Props) {
   }, [drilldownVizSelected]);
 
   useUpdateEffect(() => {
-    setDrilldownPanelOptions(data.map((item: any) => item.year.toString()));
+    setDrilldownLevelSelectors(data.map((item: any) => item.year.toString()));
   }, [data]);
+
+  React.useEffect(() => {
+    if (dataPathActiveStep) {
+      if (
+        dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(1);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        clearDataPathActiveStep();
+      } else if (
+        dataPathActiveStep.vizSelected &&
+        dataPathActiveStep.drilldownVizSelected
+      ) {
+        setVizLevel(2);
+        setVizSelected(dataPathActiveStep.vizSelected.id);
+        setDrilldownVizSelected(dataPathActiveStep.drilldownVizSelected.id);
+        clearDataPathActiveStep();
+      } else if (
+        !dataPathActiveStep.vizSelected &&
+        !dataPathActiveStep.drilldownVizSelected &&
+        vizSelected &&
+        drilldownVizSelected
+      ) {
+        setVizLevel(0);
+        setVizSelected(undefined);
+        setDrilldownVizSelected(undefined);
+        clearDataPathActiveStep();
+      }
+    }
+  }, [dataPathActiveStep]);
 
   return (
     <BudgetsTimeCycleModule
       data={data}
+      isLocationDetail
       isLoading={isLoading}
       isDrilldownLoading={isDrilldownLoading || isDrilldown2Loading}
+      codeParam={props.code}
       vizLevel={vizLevel}
       setVizLevel={setVizLevel}
-      vizTranslation={vizTranslation}
-      setVizTranslation={setVizTranslation}
       vizSelected={vizSelected}
       setVizSelected={setVizSelected}
-      vizCompData={vizCompData}
-      setVizCompData={setVizCompData}
-      vizPrevSelected={vizPrevSelected}
-      setVizPrevSelected={setVizPrevSelected}
-      vizPrevTranslation={vizPrevTranslation}
-      drilldownPanelOptions={drilldownPanelOptions}
       setDrilldownVizSelected={setDrilldownVizSelected}
-      setVizPrevTranslation={setVizPrevTranslation}
       dataDrilldownLevel1={dataDrilldownLevel1}
       dataDrilldownLevel2={dataDrilldownLevel2}
       drilldownVizSelected={drilldownVizSelected}

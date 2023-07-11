@@ -1,5 +1,6 @@
 /* base */
 import React from "react";
+import { appColors } from "app/theme";
 import { useHoverDirty } from "react-use";
 import { useHistory } from "react-router-dom";
 import CloseIcon from "@material-ui/icons/Close";
@@ -16,9 +17,11 @@ import MapGL, {
 } from "react-map-gl";
 
 /* utils */
+import get from "lodash/get";
 import filter from "lodash/filter";
 import { lineString } from "@turf/helpers";
 import bezierSpline from "@turf/bezier-spline";
+import { useCMSData } from "app/hooks/useCMSData";
 
 /* components */
 import {
@@ -28,8 +31,6 @@ import {
   getMapPinIcons,
   InvestmentsGeoMapPinMarker,
   AllocationsGeoMapPinMarker,
-  NO_DATA_COLOR,
-  NO_DATA_BORDER_COLOR,
 } from "app/components/Charts/GeoMap/data";
 import {
   GeomapAllocationsTooltip,
@@ -43,6 +44,7 @@ import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
 import { GeoMapControls } from "app/components/Charts/GeoMap/components/controls";
 
 export function GeoMap(props: GeoMapProps) {
+  const cmsData = useCMSData({ returnData: true });
   const history = useHistory();
   const mapRef = React.useRef<React.Ref<MapRef>>();
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -77,21 +79,21 @@ export function GeoMap(props: GeoMapProps) {
       "line-width": 2,
       "line-color": {
         property: "value",
-        default: NO_DATA_BORDER_COLOR,
+        default: appColors.GEOMAP.NO_DATA_BORDER_COLOR,
         stops: [
-          [0, NO_DATA_BORDER_COLOR],
-          [1, NO_DATA_COLOR],
-          [2, NO_DATA_COLOR],
-          [3, NO_DATA_COLOR],
-          [4, NO_DATA_COLOR],
-          [5, NO_DATA_COLOR],
-          [6, NO_DATA_COLOR],
-          [7, NO_DATA_COLOR],
-          [8, NO_DATA_COLOR],
-          [9, NO_DATA_COLOR],
-          [10, NO_DATA_COLOR],
-          [11, NO_DATA_COLOR],
-          [12, NO_DATA_COLOR],
+          [0, appColors.GEOMAP.NO_DATA_BORDER_COLOR],
+          [1, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [2, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [3, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [4, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [5, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [6, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [7, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [8, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [9, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [10, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [11, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [12, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
         ],
       },
     },
@@ -101,21 +103,21 @@ export function GeoMap(props: GeoMapProps) {
     paint: {
       "fill-color": {
         property: "value",
-        default: NO_DATA_COLOR,
+        default: appColors.GEOMAP.NO_DATA_LAYER_COLOR,
         stops: [
-          [0, NO_DATA_COLOR],
-          [1, "#CDD4DF"],
-          [2, "#C0C7D2"],
-          [3, "#AFB6C1"],
-          [4, "#A0A7B1"],
-          [5, "#939AA4"],
-          [6, "#868D96"],
-          [7, "#787F88"],
-          [8, "#6B727B"],
-          [9, "#575E67"],
-          [10, "#444B53"],
-          [11, "#343B43"],
-          [12, "#252C34"],
+          [0, appColors.GEOMAP.NO_DATA_LAYER_COLOR],
+          [1, appColors.GEOMAP.DATA_LAYER_COLOR_1],
+          [2, appColors.GEOMAP.DATA_LAYER_COLOR_2],
+          [3, appColors.GEOMAP.DATA_LAYER_COLOR_3],
+          [4, appColors.GEOMAP.DATA_LAYER_COLOR_4],
+          [5, appColors.GEOMAP.DATA_LAYER_COLOR_5],
+          [6, appColors.GEOMAP.DATA_LAYER_COLOR_6],
+          [7, appColors.GEOMAP.DATA_LAYER_COLOR_7],
+          [8, appColors.GEOMAP.DATA_LAYER_COLOR_8],
+          [9, appColors.GEOMAP.DATA_LAYER_COLOR_9],
+          [10, appColors.GEOMAP.DATA_LAYER_COLOR_10],
+          [11, appColors.GEOMAP.DATA_LAYER_COLOR_11],
+          [12, appColors.GEOMAP.DATA_LAYER_COLOR_12],
         ],
       },
       "fill-opacity": [
@@ -128,20 +130,15 @@ export function GeoMap(props: GeoMapProps) {
   };
   const [hoverInfo, setHoverInfo] = React.useState<any>(null);
   const [prevHoverInfo, setPrevHoverInfo] = React.useState<any>(null);
-  const [
-    pinMarkerHoverInfo,
-    setPinMarkerHoverInfo,
-  ] = React.useState<GeoMapPinMarker | null>(null);
-  const [
-    investmentsPinMarkerHoverInfo,
-    setInvestmentsPinMarkerHoverInfo,
-  ] = React.useState<InvestmentsGeoMapPinMarker | null>(null);
-  const [
-    allocationsPinMarkerHoverInfo,
-    setAllocationsPinMarkerHoverInfo,
-  ] = React.useState<AllocationsGeoMapPinMarker | null>(null);
+  const [pinMarkerHoverInfo, setPinMarkerHoverInfo] =
+    React.useState<GeoMapPinMarker | null>(null);
+  const [investmentsPinMarkerHoverInfo, setInvestmentsPinMarkerHoverInfo] =
+    React.useState<InvestmentsGeoMapPinMarker | null>(null);
+  const [allocationsPinMarkerHoverInfo, setAllocationsPinMarkerHoverInfo] =
+    React.useState<AllocationsGeoMapPinMarker | null>(null);
   const [renderedLines, setRenderedLines] = React.useState<string[]>([]);
-
+  const tooltipHeight =
+    document.getElementById("geomap-tooltip")?.clientHeight || 310;
   React.useEffect(() => {
     if (isSmallScreen) {
       setViewport({
@@ -207,7 +204,7 @@ export function GeoMap(props: GeoMapProps) {
             },
             paint: {
               "line-width": 2,
-              "line-color": "#13183F",
+              "line-color": appColors.GEOMAP.LINE_COLOR,
               "line-dasharray": [3, 3],
             },
           });
@@ -294,7 +291,11 @@ export function GeoMap(props: GeoMapProps) {
         hoveredFeature.properties.iso_a3 &&
         hoveredFeature.properties.value > 0
       ) {
-        history.push(`/location/${hoveredFeature.properties.iso_a3}/overview`);
+        history.push(
+          `/location/${hoveredFeature.properties.iso_a3}/${
+            props.clickthroughPath || "overview"
+          }`
+        );
       }
     }
   }, []);
@@ -419,11 +420,12 @@ export function GeoMap(props: GeoMapProps) {
                 width: 350px;
                 padding: 20px;
                 position: absolute;
-                background: #f5f5f7;
                 border-radius: 20px;
+                background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
 
                 @media (max-width: 767px) {
-                  background: #fff;
+                  background: ${appColors.GEOMAP
+                    .MOBILE_TOOLTIP_BACKGROUND_COLOR};
                   width: calc(100vw - 32px);
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
                 }
@@ -437,7 +439,7 @@ export function GeoMap(props: GeoMapProps) {
                   justify-content flex-end;
 
                   path {
-                    fill: #2E4063;
+                    fill: ${appColors.COMMON.PRIMARY_COLOR_1};
                   }
                 `}
                 >
@@ -480,7 +482,7 @@ export function GeoMap(props: GeoMapProps) {
                       );
                     }}
                   >
-                    Go to detail page
+                    {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
                   </TooltipButton>
                 </div>
               )}
@@ -522,11 +524,12 @@ export function GeoMap(props: GeoMapProps) {
                 width: 350px;
                 padding: 20px;
                 position: absolute;
-                background: #f5f5f7;
                 border-radius: 20px;
+                background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
 
                 @media (max-width: 767px) {
-                  background: #fff;
+                  background: ${appColors.GEOMAP
+                    .MOBILE_TOOLTIP_BACKGROUND_COLOR};
                   width: calc(100vw - 32px);
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
                 }
@@ -540,7 +543,7 @@ export function GeoMap(props: GeoMapProps) {
                   justify-content flex-end;
 
                   path {
-                    fill: #2E4063;
+                    fill: ${appColors.COMMON.PRIMARY_COLOR_1}
                   }
                 `}
                 >
@@ -581,7 +584,7 @@ export function GeoMap(props: GeoMapProps) {
                       );
                     }}
                   >
-                    Go to detail page
+                    {get(cmsData, "componentsChartsGeomap.goToDetail", "")}
                   </TooltipButton>
                 </div>
               )}
@@ -623,11 +626,12 @@ export function GeoMap(props: GeoMapProps) {
                 width: 350px;
                 padding: 20px;
                 position: absolute;
-                background: #f5f5f7;
                 border-radius: 20px;
+                background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
 
                 @media (max-width: 767px) {
-                  background: #fff;
+                  background: ${appColors.GEOMAP
+                    .MOBILE_TOOLTIP_BACKGROUND_COLOR};
                   width: calc(100vw - 32px);
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
                 }
@@ -641,7 +645,7 @@ export function GeoMap(props: GeoMapProps) {
                     justify-content flex-end;
 
                     path {
-                      fill: #2E4063;
+                      fill: ${appColors.COMMON.PRIMARY_COLOR_1}
                     }
                   `}
                 >
@@ -661,26 +665,36 @@ export function GeoMap(props: GeoMapProps) {
             </div>
           </Popup>
         )}
-        <GeoMapControls onZoomIn={zoomIn} onZoomOut={zoomOut} />
+        <GeoMapControls
+          css={`
+            z-index: 200;
+          `}
+          onZoomIn={zoomIn}
+          onZoomOut={zoomOut}
+        />
       </MapGL>
       {hoverInfo &&
         (isHovering || isMobile || isTouchDevice()) &&
         props.type === "investments" && (
           <div
+            id="geomap-tooltip"
             css={`
               z-index: 100;
               width: 350px;
               padding: 20px;
               position: absolute;
-              background: #f5f5f7;
+              background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y + 50}px;
+              /* top: ${0}; */
+              top: ${hoverInfo.y > 550
+                ? hoverInfo.y - tooltipHeight - 50
+                : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
 
               @media (max-width: 767px) {
                 top: 29vh;
                 left: 16px;
-                background: #fff;
+                background: ${appColors.GEOMAP.MOBILE_TOOLTIP_BACKGROUND_COLOR};
                 width: calc(100vw - 32px);
                 box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
               }
@@ -694,7 +708,7 @@ export function GeoMap(props: GeoMapProps) {
             justify-content flex-end;
 
             path {
-              fill: #2E4063;
+              fill: ${appColors.COMMON.PRIMARY_COLOR_1}
             }
           `}
               >
@@ -732,7 +746,7 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  Location detail page
+                  {get(cmsData, "componentsChartsGeomap.locationDetail", "")}
                 </TooltipButton>
               </div>
             )}
@@ -742,20 +756,24 @@ export function GeoMap(props: GeoMapProps) {
         (isHovering || isMobile || isTouchDevice()) &&
         (props.type === "allocations" || props.type === "budgets") && (
           <div
+            id="geomap-tooltip"
             css={`
               z-index: 100;
               width: 350px;
               padding: 20px;
               position: absolute;
-              background: #f5f5f7;
+
+              background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y + 50}px;
+              top: ${hoverInfo.y > 550
+                ? hoverInfo.y - tooltipHeight - 50
+                : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
 
               @media (max-width: 767px) {
                 top: 29vh;
                 left: 16px;
-                background: #fff;
+                background: ${appColors.GEOMAP.MOBILE_TOOLTIP_BACKGROUND_COLOR};
                 width: calc(100vw - 32px);
                 box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
               }
@@ -769,7 +787,7 @@ export function GeoMap(props: GeoMapProps) {
             justify-content flex-end;
 
             path {
-              fill: #2E4063;
+              fill: ${appColors.COMMON.PRIMARY_COLOR_1}
             }
           `}
               >
@@ -807,7 +825,7 @@ export function GeoMap(props: GeoMapProps) {
                     );
                   }}
                 >
-                  Location detail page
+                  {get(cmsData, "componentsChartsGeomap.countryDetail", "")}
                 </TooltipButton>
               </div>
             )}
@@ -817,20 +835,23 @@ export function GeoMap(props: GeoMapProps) {
         (isHovering || isMobile || isTouchDevice()) &&
         props.type === "donors" && (
           <div
+            id="geomap-tooltip"
             css={`
               z-index: 100;
               width: 350px;
               padding: 20px;
               position: absolute;
-              background: #f5f5f7;
+              background: ${appColors.GEOMAP.TOOLTIP_BACKGROUND_COLOR};
               border-radius: 20px;
-              top: ${hoverInfo.y + 50}px;
+              top: ${hoverInfo.y > 550
+                ? hoverInfo.y - tooltipHeight - 50
+                : hoverInfo.y + 50}px;
               left: ${hoverInfo.x - 180}px;
 
               @media (max-width: 767px) {
                 top: 29vh;
                 left: 16px;
-                background: #fff;
+                background: ${appColors.GEOMAP.MOBILE_TOOLTIP_BACKGROUND_COLOR};
                 width: calc(100vw - 32px);
                 box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
               }
@@ -844,7 +865,7 @@ export function GeoMap(props: GeoMapProps) {
                 justify-content flex-end;
 
                 path {
-                  fill: #2E4063;
+                  fill: ${appColors.COMMON.PRIMARY_COLOR_1}
                 }
               `}
               >

@@ -29,8 +29,6 @@ function getFileName(
       return "allocations";
     case "/viz/allocations/map":
       return `allocations-${options.investmentsMapView}`;
-    case "/viz/allocation":
-      return "allocations";
     case "/viz/eligibility":
       if (options.isDetail) {
         return "location-eligibility";
@@ -43,6 +41,8 @@ function getFileName(
         .toLowerCase()
         .replace(/ /g, "-")}`;
     case "/grants":
+      return "grants";
+    case "/grants/table":
       return "grants";
     case "/viz/grants":
       return "grants";

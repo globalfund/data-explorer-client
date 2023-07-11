@@ -5,7 +5,6 @@ import filter from "lodash/filter";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
 import CloseIcon from "@material-ui/icons/Close";
-import { InfoIcon } from "app/assets/icons/Info";
 import Checkbox from "@material-ui/core/Checkbox";
 import IconButton from "@material-ui/core/IconButton";
 import { isTouchDevice } from "app/utils/isTouchDevice";
@@ -23,6 +22,9 @@ import {
   XsContainer,
 } from "app/components/Charts/common/styles";
 import { InvestmentsTimeCycleTooltip } from "./components/tooltip";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
+import { appColors } from "app/theme";
 
 function getKeysFromData(data: Record<string, unknown>[]) {
   if (data.length === 0) {
@@ -106,42 +108,6 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     }, 1000);
   }, [props.data]);
 
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const viz = document.getElementById("investments-time-cycle");
-  //     if (viz) {
-  //       const svgs = viz.getElementsByTagName("svg");
-  //       if (svgs.length > 1) {
-  //         const pathElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "path"
-  //         );
-  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-  //         pathElement.setAttribute("stroke", "#13183F");
-  //         pathElement.setAttribute("strokeWidth", "1");
-
-  //         const patternElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "pattern"
-  //         );
-  //         patternElement.setAttribute("id", "diagonalHatch");
-  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-  //         patternElement.setAttribute("width", "4");
-  //         patternElement.setAttribute("height", "4");
-  //         patternElement.appendChild(pathElement);
-
-  //         const defsElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "defs"
-  //         );
-  //         defsElement.appendChild(patternElement);
-
-  //         svgs[1].appendChild(defsElement);
-  //       }
-  //     }
-  //   }, 100);
-  // }, []);
-
   const Bars = (bprops: any) => {
     return bprops.bars.map((bar: any) => (
       <BarComponent
@@ -164,6 +130,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
     setXsTooltipData(null);
   }
 
+  const cmsData = useCMSData({ returnData: true });
+
   return (
     <React.Fragment>
       <div
@@ -185,10 +153,10 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
         <Grid
           container
           alignItems="center"
-          spacing={!isMobile ? 4 : 2}
+          spacing={!isMobile ? 0 : 2}
           css={`
             > div {
-              color: #262c34;
+              color: ${appColors.COMMON.PRIMARY_COLOR_1};
               font-size: 14px;
             }
           `}
@@ -197,7 +165,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
             {isMobile && (
               <Grid item xs={12} css="font-size: 12px !important;">
                 <b>
-                  Total amount: {formatFinancialValue(totalInvestmentValue)}
+                  {get(cmsData, "componentsChartsInvestments.totalAmount", "")}{" "}
+                  {formatFinancialValue(totalInvestmentValue)}
                 </b>
               </Grid>
             )}
@@ -216,7 +185,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   `}
                 >
-                  {props.type || "Disbursements"} <InfoIcon />
+                  {get(cmsData, "componentsChartsInvestments.investments", "")}{" "}
+                  {props.type || "Disbursement"}
                 </div>
                 <div css="font-weight: normal;">
                   {formatFinancialValue(totalInvestmentValue)}
@@ -327,13 +297,13 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
 
                 &::-webkit-scrollbar {
                   height: 5px;
-                  background: #262c34;
+                  background: ${appColors.COMMON.PRIMARY_COLOR_1};
                 }
                 &::-webkit-scrollbar-track {
-                  background: #dfe3e6;
+                  background: ${appColors.COMMON.SECONDARY_COLOR_7};
                 }
                 &::-webkit-scrollbar-thumb {
-                  background: #262c34;
+                  background: ${appColors.COMMON.PRIMARY_COLOR_1};
                 }
               }
             `}
@@ -344,8 +314,8 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 height: 620px;
 
                 @media (max-width: 767px) {
-                  height: 550px;
-                  width: ${props.data.length === 0 ? "100%" : "1000px"};
+                  height: 500px;
+                  width: ${props.data.length < 3 ? "100%" : "700px"};
                 }
               `}
             >
@@ -358,7 +328,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 motionDamping={15}
                 borderColor="inherit:darker(1.6)"
                 layers={["grid", "axes", Bars, "markers", "legends"]}
-                padding={isMobile ? 0.3 : 0.5}
+                padding={isMobile ? 0.6 : 0.5}
                 innerPadding={6}
                 data={props.data}
                 keys={
@@ -369,7 +339,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                 indexBy="year"
                 margin={{
                   top: !isMobile ? 60 : 20,
-                  right: !isMobile ? 30 : 70,
+                  right: !isMobile ? 0 : 70,
                   bottom: 50,
                   left: 70,
                 }}
@@ -413,11 +383,11 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     ticks: {
                       line: {
                         strokeWidth: 1,
-                        stroke: "#868E96",
+                        stroke: appColors.TIME_CYCLE.AXIS_GRID_COLOR,
                         strokeOpacity: 0.3,
                       },
                       text: {
-                        fill: "#262c34",
+                        fill: appColors.TIME_CYCLE.AXIS_COLOR,
                         fontSize: 12,
                       },
                     },
@@ -435,7 +405,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                   grid: {
                     line: {
                       strokeWidth: 1,
-                      stroke: "#868E96",
+                      stroke: appColors.TIME_CYCLE.AXIS_GRID_COLOR,
                       strokeOpacity: 0.3,
                     },
                   },
@@ -456,19 +426,22 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
               css={`
                 padding: 16px 25px;
                 position: relative;
-                background: #f5f5f7;
+                background: ${appColors.TIME_CYCLE
+                  .MOBILE_TOOLTIP_BACKGROUND_COLOR};
                 border-radius: 20px;
 
                 @media (max-width: 767px) {
                   padding: 25px;
-                  color: #262c34;
-                  background: #fff;
+                  color: ${appColors.TIME_CYCLE.MOBILE_TOOLTIP_COLOR};
+                  background: ${appColors.TIME_CYCLE
+                    .MOBILE_TOOLTIP_BACKGROUND_COLOR};
                   border-radius: 20px;
                   box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
 
                   > div {
                     padding: 0;
-                    background: #fff !important;
+                    background: ${appColors.TIME_CYCLE
+                      .MOBILE_TOOLTIP_BACKGROUND_COLOR} !important;
                   }
                 }
               `}
@@ -480,7 +453,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                   justify-content flex-end;
 
                   path {
-                    fill: #2E4063;
+                    fill: ${appColors.TIME_CYCLE.MOBILE_TOOLTIP_CLOSE_ICON_COLOR};
                   }
                 `}
               >
@@ -517,7 +490,7 @@ export function InvestmentsTimeCycle(props: InvestmentsTimeCycleProps) {
                     }
                   }}
                 >
-                  Drilldown
+                  {get(cmsData, "componentsChartsInvestments.drilldown", "")}
                 </TooltipButton>
               </div>
             </div>

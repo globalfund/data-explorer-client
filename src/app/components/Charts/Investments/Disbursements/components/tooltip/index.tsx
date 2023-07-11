@@ -1,11 +1,15 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import { useLocation } from "react-router-dom";
+import { useCMSData } from "app/hooks/useCMSData";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { TreemapTooltipProps } from "app/components/Charts/Investments/Disbursements/data";
 
 export function TreemapTooltip(props: TreemapTooltipProps) {
   const { data } = props.node;
   const { pathname } = useLocation();
+  const cmsData = useCMSData({ returnData: true });
 
   let type = "Disbursements";
 
@@ -18,9 +22,10 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
   return (
     <div
       css={`
-        color: #262c34;
+        color: ${appColors.TREEMAP.TOOLTIP_COLOR};
         min-width: 350px;
-        background: #f5f5f7;
+        max-width: 350px;
+        background: ${appColors.TREEMAP.TOOLTIP_BACKGROUND_COLOR};
 
         @media (max-width: 767px) {
           min-width: 0;
@@ -29,12 +34,14 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
     >
       <div
         css={`
+          width: 100%;
           font-size: 18px;
           font-weight: bold;
           line-height: 20px;
           padding-bottom: 16px;
-          border-bottom: 1px solid #dfe3e6;
+          text-overflow: break-word;
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+          border-bottom: 1px solid ${appColors.TREEMAP.TOOLTIP_BORDER_COLOR};
         `}
       >
         {data.tooltip.header}
@@ -46,7 +53,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
           font-size: 12px;
           padding: 16px 0;
           flex-direction: column;
-          border-bottom: 1px solid #dfe3e6;
+          border-bottom: 1px solid ${appColors.TREEMAP.TOOLTIP_BORDER_COLOR};
 
           > * {
             @supports (-webkit-touch-callout: none) and (not (translate: none)) {
@@ -85,8 +92,8 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             }
           `}
         >
-          <div>Component</div>
-          <div>Grants</div>
+          <div>{get(cmsData, "componentsChartsInvestments.component", "")}</div>
+          <div>{get(cmsData, "componentsChartsInvestments.grants", "")}</div>
           <div>{type}</div>
         </div>
         {data.tooltip.componentsStats.map((stat: any) => (
@@ -154,7 +161,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Disbursed
+            {get(cmsData, "componentsChartsInvestments.disbursed", "")}
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.disbursed)}
@@ -165,15 +172,16 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
             width: 100%;
             height: 5px;
             border-radius: 20px;
-            background: #c7cdd1;
+            background: ${appColors.TREEMAP
+              .TOOLTIP_PROGRESS_BAR_BACKGROUND_COLOR};
           `}
         >
           <div
             css={`
               height: 5px;
               border-radius: 20px;
-              background: #373d43;
               width: ${data.tooltip.percValue}%;
+              background: ${appColors.TREEMAP.TOOLTIP_PROGRESS_BAR_COLOR};
             `}
           />
         </div>
@@ -191,7 +199,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Committed
+            {get(cmsData, "componentsChartsInvestments.committed", "")}
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.committed)}
@@ -211,7 +219,7 @@ export function TreemapTooltip(props: TreemapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            Signed
+            {get(cmsData, "componentsChartsInvestments.signed", "")}
           </div>
           <div>
             {formatFinancialValue(data.tooltip.totalInvestments.signed)}

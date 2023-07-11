@@ -1,13 +1,8 @@
 // cc:application base#;application routes
 
+// base
 import React, { Suspense, lazy } from "react";
-import { useGA } from "app/hooks/useGA";
 import axios, { AxiosResponse } from "axios";
-import { useUrlFilters } from "app/hooks/useUrlFilters";
-import { V1RouteRedirections } from "app/utils/v1Routes";
-import { useScrollToTop } from "app/hooks/useScrollToTop";
-import { PageLoader } from "app/modules/common/page-loader";
-import { useFilterOptions } from "app/hooks/useFilterOptions";
 import {
   Route,
   Switch,
@@ -15,17 +10,26 @@ import {
   useHistory,
   RouteComponentProps,
 } from "react-router-dom";
-// import BigLogo from "app/assets/BigLogo";
-// import useCookie from "@devhammed/use-cookie";
-// import useMediaQuery from "@material-ui/core/useMediaQuery";
+// project
+import { useGA } from "app/hooks/useGA";
+import { useCMSData } from "app/hooks/useCMSData";
+import { useUrlFilters } from "app/hooks/useUrlFilters";
+import { V1RouteRedirections } from "app/utils/v1Routes";
+import { useScrollToTop } from "app/hooks/useScrollToTop";
+import { PageLoader } from "app/modules/common/page-loader";
+import { useFilterOptions } from "app/hooks/useFilterOptions";
+import { useClearDataPathStepsOnDatasetChange } from "app/hooks/useClearDataPathStepsOnDatasetChange";
 
+// modules
 const VizModule = lazy(() => import("app/modules/viz-module"));
 const AboutModule = lazy(() => import("app/modules/about-module"));
 const GrantsModule = lazy(() => import("app/modules/grants-module"));
 const ResultsModule = lazy(() => import("app/modules/results-module"));
+const SitemapModule = lazy(() => import("app/modules/sitemap-module/index"));
 const LandingModule = lazy(() => import("app/modules/landing-module"));
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const DocumentsModule = lazy(() => import("app/modules/documents-module"));
+
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
   () => import("app/modules/country-detail-module")
@@ -43,8 +47,16 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
       )
       .then((response: AxiosResponse) => {
         if (response.data.data && response.data.data.length > 0) {
+          let param = "overview";
+          if (props.match.params.vizType) {
+            if (props.match.params.subType) {
+              param = `${props.match.params.vizType}/${props.match.params.subType}`;
+            } else {
+              param = props.match.params.vizType;
+            }
+          }
           history.replace(
-            `/grant/${props.match.params.code}/${response.data.data[0].number}/overview`
+            `/grant/${props.match.params.code}/${response.data.data[0].number}/${param}`
           );
         } else {
           history.replace(`/grant/${props.match.params.code}/1/overview`);
@@ -58,69 +70,17 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 }
 
 export function MainRoutes() {
-  // const [showSMNotice, setShowSMNotice] = useCookie("showSMNotice", true);
-  useFilterOptions({});
+  useClearDataPathStepsOnDatasetChange();
+  useFilterOptions({
+    loadFilterOptions: true,
+  });
   useScrollToTop();
   useUrlFilters();
   useGA();
 
-  // const isMobile = useMediaQuery("(max-width: 767px)");
-
-  // if (isMobile && showSMNotice) {
-  //   return (
-  //     <div
-  //       css={`
-  //         width: 100vw;
-  //         height: 100vh;
-  //         display: flex;
-  //         font-size: 16px;
-  //         text-align: center;
-  //         align-items: center;
-  //         flex-direction: column;
-  //         justify-content: center;
-
-  //         > svg {
-  //           width: 90%;
-  //         }
-
-  //         > button {
-  //           color: #fff;
-  //           font-size: 14px;
-  //           appearance: none;
-  //           padding: 9px 16px;
-  //           font-weight: bold;
-  //           line-height: 20px;
-  //           background: #495057;
-  //           border-radius: 20px;
-  //           border-color: #495057;
-  //           text-transform: unset;
-  //         }
-  //       `}
-  //     >
-  //       <BigLogo />
-  //       <br />
-  //       App is not yet optimised for smaller screens.
-  //       <br />
-  //       <br />
-  //       <button
-  //         type="button"
-  //         onClick={() =>
-  //           setShowSMNotice(false, {
-  //             expires: 31556926, // 12 months
-  //             domain: "",
-  //             path: "",
-  //             secure: false,
-  //             httpOnly: false,
-  //             maxAge: 0,
-  //             sameSite: "",
-  //           })
-  //         }
-  //       >
-  //         Continue
-  //       </button>
-  //     </div>
-  //   );
-  // }
+  useCMSData({
+    loadData: true,
+  });
 
   return (
     <Suspense fallback={<PageLoader />}>
@@ -137,7 +97,7 @@ export function MainRoutes() {
           <DatasetsModule />
         </Route>
 
-        <Route exact path="/grants">
+        <Route exact path="/grants/:subType?">
           <GrantsModule />
         </Route>
 
@@ -149,6 +109,9 @@ export function MainRoutes() {
           <DocumentsModule />
         </Route>
 
+        <Route exact path="/get-sitemap">
+          <SitemapModule />
+        </Route>
         <Route exact path="/viz/:vizType/:subType?">
           <VizModule />
         </Route>
@@ -182,6 +145,14 @@ export function MainRoutes() {
         <Route
           exact
           path="/grant/:code"
+          render={(props: RouteComponentProps<any>) => (
+            <GrantPeriodRedirect {...props} />
+          )}
+        />
+
+        <Route
+          exact
+          path="/grant/:code/period/:vizType/:subType?"
           render={(props: RouteComponentProps<any>) => (
             <GrantPeriodRedirect {...props} />
           )}

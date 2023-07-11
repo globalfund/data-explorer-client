@@ -1,11 +1,13 @@
 import React from "react";
+import get from "lodash/get";
 import uniq from "lodash/uniq";
 import sumBy from "lodash/sumBy";
 import uniqBy from "lodash/uniqBy";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { ResponsiveBar } from "@nivo/bar";
-import { InfoIcon } from "app/assets/icons/Info";
+import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { getVizValueRange } from "app/utils/getVizValueRange";
 import { XsContainer } from "app/components/Charts/common/styles";
@@ -57,10 +59,8 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredXIndex, setHoveredXIndex] = React.useState(null);
   const [hoveredLegend, setHoveredLegend] = React.useState(null);
-  const [
-    xsTooltipData,
-    setXsTooltipData,
-  ] = React.useState<MobileBudgetsFlowTooltipProps | null>(null);
+  const [xsTooltipData, setXsTooltipData] =
+    React.useState<MobileBudgetsFlowTooltipProps | null>(null);
   const [keys, setKeys] = React.useState(getKeysFromData(props.data));
   const moneyAbbrRange = getVizValueRange(props.data, "budgetBarChart");
   const totalBudget = sumBy(props.data, "amount");
@@ -68,46 +68,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
 
   React.useEffect(() => setKeys(getKeysFromData(props.data)), [props.data]);
 
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     const viz = document.getElementById("budgets-time-cycle");
-  //     if (viz) {
-  //       const svgs = viz.getElementsByTagName("svg");
-  //       if (svgs.length > 1) {
-  //         const pathElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "path"
-  //         );
-  //         pathElement.setAttribute("d", "M-1,1 l2,-2 M0,4 l4,-4 M3,5 l2,-2");
-  //         pathElement.setAttribute("stroke", "#13183F");
-  //         pathElement.setAttribute("strokeWidth", "1");
-
-  //         const patternElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "pattern"
-  //         );
-  //         patternElement.setAttribute("id", "diagonalHatch");
-  //         patternElement.setAttribute("patternUnits", "userSpaceOnUse");
-  //         patternElement.setAttribute("width", "4");
-  //         patternElement.setAttribute("height", "4");
-  //         patternElement.appendChild(pathElement);
-
-  //         const defsElement = document.createElementNS(
-  //           "http://www.w3.org/2000/svg",
-  //           "defs"
-  //         );
-  //         defsElement.appendChild(patternElement);
-
-  //         svgs[1].appendChild(defsElement);
-  //       }
-  //     }
-  //   }, 100);
-  // }, []);
-
   const Bars = (bprops: any) => {
-    if (props.vizCompData.length !== bprops.bars.length) {
-      props.setVizCompData(bprops.bars);
-    }
     return bprops.bars.map((bar: any) => (
       <BarComponent
         {...bar}
@@ -124,6 +85,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
       />
     ));
   };
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <div
@@ -148,36 +110,17 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
         spacing={!isMobile ? 4 : 2}
         css={`
           > div {
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
           }
         `}
       >
         <Grid item xs={12} sm={12} md={3} lg={3} xl={3}>
-          {!isMobile && (
-            <React.Fragment>
-              <div
-                css={`
-                  display: flex;
-                  font-size: 14px;
-                  font-weight: bold;
-                  align-items: center;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
-                  > svg {
-                    margin-left: 10px;
-                  }
-                `}
-              >
-                Budget <InfoIcon />
-              </div>
-              <div css="font-weight: normal;">
-                {formatFinancialValue(totalBudget)}
-              </div>
-            </React.Fragment>
-          )}
           {isMobile && (
             <Grid item xs={12} css="font-size: 12px !important;">
-              <b>Total amount: {formatFinancialValue(totalBudget)}</b>
+              <b>
+                {get(cmsData, "componentsChartsBudgets.totalAmount", "")}{" "}
+                {formatFinancialValue(totalBudget)}
+              </b>
             </Grid>
           )}
         </Grid>
@@ -315,11 +258,11 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
               ticks: {
                 line: {
                   strokeWidth: 1,
-                  stroke: "#868E96",
+                  stroke: appColors.TIME_CYCLE.AXIS_COLOR,
                   strokeOpacity: 0.3,
                 },
                 text: {
-                  fill: "#262c34",
+                  fill: appColors.TIME_CYCLE.AXIS_TEXT_COLOR,
                   fontSize: 12,
                 },
               },
@@ -337,7 +280,7 @@ export function BudgetsTimeCycle(props: BudgetsTimeCycleProps) {
             grid: {
               line: {
                 strokeWidth: 1,
-                stroke: "#868E96",
+                stroke: appColors.TIME_CYCLE.AXIS_GRID_COLOR,
                 strokeOpacity: 0.3,
               },
             },

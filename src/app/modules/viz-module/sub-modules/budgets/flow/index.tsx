@@ -2,18 +2,22 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
-import { useUnmount } from "react-use";
+import sumBy from "lodash/sumBy";
+import filter from "lodash/filter";
+import uniqueId from "lodash/uniqueId";
+import Grid from "@material-ui/core/Grid";
 import { useHistory } from "react-router-dom";
 import { TreeMapNodeDatum } from "@nivo/treemap";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { Dropdown } from "app/components/Dropdown";
+import { appColors } from "app/theme";
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
-import { SlideInContainer } from "app/components/SlideInPanel";
+import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { BudgetsFlow } from "app/components/Charts/Budgets/Flow";
+import ReRouteDialogBox from "app/components/Charts/common/dialogBox";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { BudgetsTreemap } from "app/components/Charts/Budgets/Treemap";
-import { TransitionContainer } from "app/components/TransitionContainer";
-import { DrillDownArrowSelector } from "app/components/DrilldownArrowSelector";
 import { BudgetsTreemapDataItem } from "app/components/Charts/Budgets/Treemap/data";
 
 interface BudgetsFlowModuleProps {
@@ -30,73 +34,187 @@ interface BudgetsFlowModuleProps {
   isDrilldownLoading: boolean;
   vizLevel: number;
   setVizLevel: (vizLevel: number) => void;
-  vizTranslation: { x: number; y: number };
-  setVizTranslation: (obj: { x: number; y: number }) => void;
   vizSelected: { id: string | undefined; filterStr: string | undefined };
   setVizSelected: (vizSelected: {
     id: string | undefined;
     filterStr: string | undefined;
   }) => void;
-  vizCompData: any;
-  setVizCompData: (comps: any) => void;
-  vizPrevTranslation: { x: number; y: number };
-  // setVizPrevTranslation: (obj: { x: number; y: number }) => void;
   dataDrilldownLevel1: BudgetsTreemapDataItem[];
   dataDrilldownLevel2: BudgetsTreemapDataItem[];
   setDrilldownVizSelected: (obj: {
     id: string | undefined;
     filterStr: string | undefined;
   }) => void;
-  drilldownPanelOptions: {
-    name: string;
-    items: string[];
-  }[];
-  setVizPrevSelected: (vizPrevSelected: string | undefined) => void;
-  setVizPrevTranslation: (obj: { x: number; y: number }) => void;
-  vizPrevSelected: string | undefined;
-  drilldownVizSelected: string | undefined;
+  drilldownVizSelected: {
+    id: string | undefined;
+    filterStr: string | undefined;
+  };
   toolboxOpen?: boolean;
+  setOpenToolboxPanel?: (value: boolean) => void;
+  codeParam?: string;
+  isGrantDetail?: boolean;
+  isPartnerDetail?: boolean;
+  isLocationDetail?: boolean;
 }
 
 export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
   const history = useHistory();
-  const setVizDrilldowns = useStoreActions(
-    (actions) => actions.PageHeaderVizDrilldownsState.setValue
-  );
+  const cmsData = useCMSData({ returnData: true });
   const [xsTooltipData, setXsTooltipData] =
     React.useState<TreeMapNodeDatum | null>(null);
 
+  const [reRouteDialog, setReRouteDialog] = React.useState({
+    display: false,
+    code: "",
+  });
+
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
+  );
+
+  const totalBudget: number = React.useMemo(() => {
+    return sumBy(filter(props.links, { source: "Budgets" }), "value");
+  }, [props.links]);
+
   React.useEffect(() => {
     if (props.vizLevel === 0) {
-      setVizDrilldowns([{ name: "Dataset" }]);
-    }
-    if (props.vizLevel > 0 && props.vizSelected && props.vizSelected.id) {
-      const newDrilldowns = [
-        { name: "Dataset" },
-        { name: props.vizSelected.id },
-      ];
-      if (props.vizLevel === 2 && props.drilldownVizSelected) {
-        const idSplits = props.drilldownVizSelected.split("-");
-        const firstDrillDown = idSplits.length > 2 ? idSplits[2] : idSplits[1];
-        const secondDrillDown =
-          idSplits.length > 2 ? `${idSplits[0]}-${idSplits[1]}` : idSplits[0];
-        newDrilldowns.push(
+      if (
+        props.isGrantDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/grant/") > -1)
+      ) {
+        addDataPathSteps([
           {
-            name: firstDrillDown,
+            id: "grant",
+            name: props.codeParam || "Grant",
+            path: `${history.location.pathname}${history.location.search}`,
           },
+        ]);
+      } else if (
+        props.isLocationDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/location/") > -1)
+      ) {
+        addDataPathSteps([
           {
-            name: secondDrillDown,
-          }
-        );
+            id: "location",
+            name: props.codeParam
+              ? getNameFromIso3(props.codeParam)
+              : "Location",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      } else if (
+        props.isPartnerDetail &&
+        !find(dataPathSteps, (step) => step.path.indexOf("/partner/") > -1)
+      ) {
+        addDataPathSteps([
+          {
+            id: "partner",
+            name: props.codeParam || "Partner",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
       }
-      setVizDrilldowns(newDrilldowns);
+      if (
+        dataPathSteps.length === 0 ||
+        !find(dataPathSteps, { name: "Grant Implementation: Budgets" })
+      ) {
+        addDataPathSteps([
+          {
+            id: uniqueId(),
+            name: "Grant Implementation: Budgets",
+            path: `${history.location.pathname}${history.location.search}`,
+          },
+        ]);
+      }
     }
   }, [props.vizLevel, props.vizSelected, props.drilldownVizSelected]);
 
-  useUnmount(() => setVizDrilldowns([]));
+  let vizComponent = <React.Fragment />;
 
-  if (props.isLoading) {
-    return <PageLoader />;
+  if (props.isLoading || props.isDrilldownLoading) {
+    vizComponent = <PageLoader />;
+  } else {
+    if (props.vizLevel === 0) {
+      vizComponent = (
+        <BudgetsFlow
+          data={{
+            nodes: props.nodes,
+            links: props.links,
+          }}
+          onNodeClick={(node: { id: string; filterStr: string }) => {
+            props.setVizLevel(1);
+            props.setVizSelected(node);
+            addDataPathSteps([
+              {
+                id: uniqueId(),
+                name: node.id,
+                path: `${history.location.pathname}${history.location.search}`,
+                vizSelected: node,
+              },
+            ]);
+          }}
+        />
+      );
+    } else if (props.vizLevel === 1) {
+      vizComponent = (
+        <BudgetsTreemap
+          isDrilldownTreemap
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
+          xsTooltipData={xsTooltipData}
+          data={props.dataDrilldownLevel1}
+          setXsTooltipData={setXsTooltipData}
+          onNodeClick={(node: string) => {
+            if (props.setDrilldownVizSelected) {
+              props.setVizLevel(2);
+              props.setDrilldownVizSelected({
+                id: node,
+                filterStr: undefined,
+              });
+              addDataPathSteps([
+                {
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  drilldownVizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
+                },
+              ]);
+            }
+          }}
+        />
+      );
+    } else if (props.vizLevel === 2) {
+      vizComponent = (
+        <BudgetsTreemap
+          isDrilldownTreemap
+          tooltipKeyLabel={get(cmsData, "componentsChartsBudgets.grant", "")}
+          tooltipValueLabel={get(cmsData, "componentsChartsBudgets.budget", "")}
+          data={props.dataDrilldownLevel2}
+          selectedNodeId={props.vizSelected.id}
+          onNodeClick={(node: string) => {
+            if (props.drilldownVizSelected.id && !props.isGrantDetail) {
+              const idSplits = props.drilldownVizSelected.id.split("-");
+              let code = node
+                .replace(idSplits[0], "")
+                .replace(`-${idSplits[1]}`, "");
+              code = code.slice(0, code.length - 1);
+              // setReRouteDialog({
+              //   display: true,
+              //   code,
+              // });
+              clearDataPathSteps();
+              history.push(`/grant/${code}/period/budgets/flow`);
+            }
+          }}
+        />
+      );
+    }
   }
 
   return (
@@ -104,212 +222,40 @@ export function BudgetsFlowModule(props: BudgetsFlowModuleProps) {
       css={`
         width: 100%;
 
-        ${!props.vizSelected
-          ? `* {
-        overflow: visible !important;
-      }`
-          : ""}
-
-        ${props.links.length === 0
-          ? `
-            > div {
-              > div {
-                > div {
-                  > div {
-                    justify-content: center;
-                    display: flex !important;
-                  }
-                }
-              }
-            }
-          `
-          : ""}
+        * {
+          overflow: visible !important;
+        }
       `}
     >
-      <TransitionContainer vizScale={1} vizTranslation={props.vizTranslation}>
-        {(props.vizLevel === 0 || props.vizLevel === 1) && (
-          <BudgetsFlow
-            data={{
-              nodes: props.nodes,
-              links: props.links,
-            }}
-            selectedNodeId={props.vizSelected.id}
-            onNodeClick={(
-              node: { id: string; filterStr: string },
-              x: number,
-              y: number
-            ) => {
-              props.setVizLevel(1);
-              props.setVizSelected(node);
-              props.setVizTranslation({ x: x * -1, y: 0 });
-            }}
-            vizCompData={props.vizCompData}
-            setVizCompData={props.setVizCompData}
-          />
-        )}
-        {props.vizLevel === 2 && (
-          <BudgetsTreemap
-            tooltipValueLabel="Budget"
-            data={props.dataDrilldownLevel1}
-            onNodeClick={(node: string, x: number, y: number) => {
-              props.setVizLevel(2);
-              props.setVizPrevSelected(props.vizSelected.id);
-              props.setDrilldownVizSelected({ id: node, filterStr: undefined });
-              props.setVizPrevTranslation(props.vizTranslation);
-              props.setVizTranslation({ x: x * -1, y: 0 });
-            }}
-          />
-        )}
-      </TransitionContainer>
-      <SlideInContainer
-        vizLevel={props.vizLevel}
-        selected={props.vizSelected.id}
-        toolboxOpen={props.toolboxOpen}
-        loading={props.isDrilldownLoading}
-        close={() => {
-          props.setVizLevel(props.vizLevel - 1);
-          props.setVizTranslation({ x: 0, y: 0 });
-          if (props.vizLevel - 1 === 0) {
-            props.setVizSelected({ id: undefined, filterStr: undefined });
+      {reRouteDialog.display && (
+        <ReRouteDialogBox
+          display={reRouteDialog}
+          setDisplay={setReRouteDialog}
+          handleClick={() =>
+            history.push(`/grant/${reRouteDialog.code}/period/budgets/flow`)
           }
-          if (props.vizLevel - 1 === 0) {
-            props.setDrilldownVizSelected({
-              id: undefined,
-              filterStr: undefined,
-            });
-          }
-          props.setVizTranslation(
-            props.vizLevel === 1 ? { x: 0, y: 0 } : props.vizPrevTranslation
-          );
-        }}
+        />
+      )}
+      <Grid
+        item
+        xs={12}
+        sm={2}
+        css={`
+          font-size: 12px !important;
+          color: ${appColors.COMMON.PRIMARY_COLOR_1};
+          margin-top: -9px;
+        `}
       >
-        {props.vizLevel === 1 && (
-          <React.Fragment>
-            <span
-              css={`
-                gap: 40px;
-                width: 100%;
-                display: flex;
-                margin-bottom: 20px;
-                flex-direction: row;
-
-                > * {
-                  @supports (-webkit-touch-callout: none) and
-                    (not (translate: none)) {
-                    &:not(:last-child) {
-                      margin-right: 40px;
-                    }
-                  }
-                }
-              `}
-            >
-              <DrillDownArrowSelector
-                options={props.drilldownPanelOptions.map(
-                  (option: { name: string; items: string[] }) => option.name
-                )}
-                selected={get(
-                  find(
-                    props.drilldownPanelOptions,
-                    (option: { name: string; items: string[] }) =>
-                      option.items.indexOf(props.vizSelected.id as string) > -1
-                  ),
-                  "name",
-                  ""
-                )}
-                onChange={(value: string) => {
-                  const firstOfLevel = get(
-                    find(props.drilldownPanelOptions, { name: value }),
-                    "items[0]",
-                    null
-                  );
-                  if (firstOfLevel) {
-                    const fNode = find(props.nodes, { id: firstOfLevel }) as {
-                      id: string;
-                      filterStr: string;
-                    };
-                    if (fNode) {
-                      props.setVizSelected(fNode);
-                      const fVizNodeComp = find(props.vizCompData, {
-                        id: firstOfLevel,
-                      }) as any;
-                      if (fVizNodeComp) {
-                        props.setVizTranslation({
-                          x: (fVizNodeComp.x - 200) * -1,
-                          y: 0,
-                        });
-                      }
-                    }
-                  }
-                }}
-              />
-              <Dropdown
-                options={get(
-                  find(
-                    props.drilldownPanelOptions,
-                    (option: { name: string; items: string[] }) =>
-                      option.items.indexOf(props.vizSelected.id as string) > -1
-                  ),
-                  "items",
-                  []
-                )}
-                value={props.vizSelected.id as string}
-                handleChange={(value: string) => {
-                  const fNode = find(props.nodes, { id: value }) as {
-                    id: string;
-                    filterStr: string;
-                  };
-                  if (fNode) {
-                    props.setVizSelected(fNode);
-                    const fVizNodeComp = find(props.vizCompData, {
-                      id: value,
-                    }) as any;
-                    if (fVizNodeComp) {
-                      props.setVizTranslation({
-                        x: (fVizNodeComp.x - 200) * -1,
-                        y: 0,
-                      });
-                    }
-                  }
-                }}
-              />
-            </span>
-            <BudgetsTreemap
-              isDrilldownTreemap
-              tooltipValueLabel="Budget"
-              xsTooltipData={xsTooltipData}
-              data={props.dataDrilldownLevel1}
-              setXsTooltipData={setXsTooltipData}
-              onNodeClick={(node: string, x: number, y: number) => {
-                props.setVizLevel(2);
-                props.setVizPrevSelected(props.vizSelected.id);
-                props.setDrilldownVizSelected({
-                  id: node,
-                  filterStr: undefined,
-                });
-                props.setVizPrevTranslation(props.vizTranslation);
-                props.setVizTranslation({ x: x * -1, y: 0 });
-              }}
-            />
-          </React.Fragment>
-        )}
-        {props.vizLevel === 2 && (
-          <BudgetsTreemap
-            isDrilldownTreemap
-            tooltipKeyLabel="Grant"
-            tooltipValueLabel="Budget"
-            data={props.dataDrilldownLevel2}
-            selectedNodeId={props.vizSelected.id}
-            onNodeClick={(node: string, x: number, y: number) => {
-              if (props.drilldownVizSelected) {
-                const idSplits = props.drilldownVizSelected.split("-");
-                let code = node.replace(idSplits[0], "");
-                code = code.slice(0, code.length - 1);
-                history.push(`/grant/${code}`);
-              }
-            }}
-          />
-        )}
-      </SlideInContainer>
+        <b>{get(cmsData, "componentsChartsBudgets.budget", "")} </b>
+        <p
+          css={`
+            margin-top: -6px;
+          `}
+        >
+          {formatFinancialValue(totalBudget)}
+        </p>
+      </Grid>
+      {vizComponent}
     </div>
   );
 }

@@ -1,12 +1,18 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
+import Button from "@material-ui/core/Button";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState } from "app/state/store/hooks";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
+import { IndicatorToolTip } from "app/components/PerformanceFrameworkExpandedView/components/ToolTip";
+import { ArrowSelector } from "app/components/PerformanceFrameworkExpandedView/components/ArrowSelector";
 import {
   PFIndicator,
   PFIndicatorResult,
 } from "app/components/PerformanceFrameworkExpandedView/data";
-import { IndicatorToolTip } from "app/components/PerformanceFrameworkExpandedView/components/ToolTip";
-import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 
 const styles = {
   table: css`
@@ -24,8 +30,8 @@ const styles = {
     th {
       padding: 9px 0;
       text-align: start;
-      border-top: 1px solid #adb5bd;
-      border-bottom: 1px solid #adb5bd;
+      border-top: 1px solid ${appColors.NETWORK.TABLE_BORDER_COLOR};
+      border-bottom: 1px solid ${appColors.NETWORK.TABLE_BORDER_COLOR};
     }
   `,
   tablebody: css`
@@ -44,6 +50,13 @@ export function ResultsTable(props: PFIndicator) {
   const selected = useStoreState(
     (state) => state.ToolBoxPanelPFPeriodState.value
   );
+  const cmsData = useCMSData({ returnData: true });
+
+  const isMobile = useMediaQuery("(max-width: 767px)");
+
+  if (isMobile) {
+    return <MobileResultsTable {...props} />;
+  }
 
   return (
     <div
@@ -64,12 +77,48 @@ export function ResultsTable(props: PFIndicator) {
         <table css={styles.table}>
           <thead css={styles.tablehead}>
             <tr>
-              <th>Result type</th>
-              <th>Baseline</th>
-              <th>Target</th>
-              <th>Result</th>
-              <th>Achievement rate</th>
-              <th>Reporting periods</th>
+              <th>
+                {get(
+                  cmsData,
+                  "componentsPerformanceFrameworkComponents.resultsTableResultType",
+                  ""
+                )}
+              </th>
+              <th>
+                {get(
+                  cmsData,
+                  "componentsPerformanceFrameworkComponents.resultsTableBaseline",
+                  ""
+                )}
+              </th>
+              <th>
+                {get(
+                  cmsData,
+                  "componentsPerformanceFrameworkComponents.resultsTableTarget",
+                  ""
+                )}
+              </th>
+              <th>
+                {get(
+                  cmsData,
+                  "componentsPerformanceFrameworkComponents.resultsTableResult",
+                  ""
+                )}
+              </th>
+              <th>
+                {get(
+                  cmsData,
+                  "componentsPerformanceFrameworkComponents.resultsTableAchievementRate",
+                  ""
+                )}
+              </th>
+              <th>
+                {get(
+                  cmsData,
+                  "componentsPerformanceFrameworkComponents.resultsTableReportingPeriods",
+                  ""
+                )}
+              </th>
               <th> </th>
             </tr>
           </thead>
@@ -94,11 +143,14 @@ interface ResultsTableRowProps extends PFIndicatorResult {
 
 function ResultsTableRow(props: ResultsTableRowProps) {
   const [showTooltip, setShowTooltip] = React.useState(false);
+  const cmsData = useCMSData({ returnData: true });
 
   return (
     <tr
       css={`
-        background-color: ${props.selected ? "#cfd4da" : "transparent"};
+        background-color: ${props.selected
+          ? appColors.NETWORK.TABLE_ROW_SELECTED_COLOR
+          : appColors.NETWORK.TABLE_ROW_COLOR};
       `}
     >
       <td>{props.type}</td>
@@ -151,12 +203,9 @@ function ResultsTableRow(props: ResultsTableRowProps) {
                 width: 12px;
                 height: 12px;
                 border-radius: 50%;
-                background: ${props.color === "#E2E2E2"
-                  ? `repeating-linear-gradient(
-                    -45deg,
-                    #262c34 0 0.5px,
-                    #fff 1.5px 2px
-                    )`
+                background: ${props.color ===
+                appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
+                  ? appColors.NETWORK.TABLE_CIRCLE_INDICATOR_BACKGROUND_COLOR
                   : props.color};
               `}
             />
@@ -166,7 +215,13 @@ function ResultsTableRow(props: ResultsTableRowProps) {
               min-width: 30px;
             `}
           >
-            {props.achievementRate ? props.achievementRate : "N/A"}
+            {props.achievementRate
+              ? props.achievementRate
+              : get(
+                  cmsData,
+                  "componentsPerformanceFrameworkComponents.resultsTableNotAvailable",
+                  ""
+                )}
           </div>
         </div>
       </td>
@@ -177,9 +232,242 @@ function ResultsTableRow(props: ResultsTableRowProps) {
           show={showTooltip}
           close={() => setShowTooltip(false)}
         >
-          <span onClick={() => setShowTooltip(!showTooltip)}>More info</span>
+          <span onClick={() => setShowTooltip(!showTooltip)}>
+            {get(
+              cmsData,
+              "componentsPerformanceFrameworkComponents.resultsTableTooltip",
+              ""
+            )}
+          </span>
         </IndicatorToolTip>
       </td>
     </tr>
+  );
+}
+
+const mobileStyles = {
+  container: css`
+    width: 100%;
+    display: flex;
+    padding-top: 25px;
+    flex-direction: column;
+
+    > div {
+      display: flex;
+      padding: 5px 0;
+      flex-direction: row;
+      align-items: center;
+
+      > div:first-of-type {
+        width: 120px;
+      }
+    }
+  `,
+};
+
+function MobileResultsTable(props: PFIndicator) {
+  const cmsData = useCMSData({ returnData: true });
+  const selected = useStoreState(
+    (state) => state.ToolBoxPanelPFPeriodState.value
+  );
+  const [showTooltip, setShowTooltip] = React.useState(false);
+  const [localSelected, setLocalSelected] = React.useState(selected);
+  const [selectedItem, setSelectedItem] = React.useState<PFIndicatorResult>(
+    props.results[localSelected]
+  );
+
+  function onPeriodChange(indexStr: string) {
+    setLocalSelected(parseInt(indexStr, 10));
+  }
+
+  React.useEffect(() => {
+    setSelectedItem(props.results[localSelected]);
+  }, [localSelected]);
+
+  return (
+    <div
+      css={`
+        font-size: 12px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid ${appColors.COMMON.PRIMARY_COLOR_1};
+      `}
+    >
+      <b>Indicator: {props.name}</b>
+      <div css={mobileStyles.container}>
+        <div
+          css={`
+            > div:nth-of-type(2) {
+              margin-left: -13px;
+            }
+          `}
+        >
+          <div>
+            <b>
+              {get(
+                cmsData,
+                "componentsPerformanceFrameworkComponents.resultsTableReportingPeriods",
+                ""
+              )}
+            </b>
+          </div>
+          <ArrowSelector
+            onChange={onPeriodChange}
+            selected={selectedItem.period}
+            options={props.results.map(
+              (result: PFIndicatorResult, index: number) => ({
+                module: result.period,
+                filterValue: index.toString(),
+              })
+            )}
+          />
+        </div>
+        <div>
+          <div>
+            {get(
+              cmsData,
+              "componentsPerformanceFrameworkComponents.resultsTableResultType",
+              ""
+            )}
+          </div>
+          <div>{selectedItem.type}</div>
+        </div>
+        <div>
+          <div>
+            {get(
+              cmsData,
+              "componentsPerformanceFrameworkComponents.resultsTableBaseline",
+              ""
+            )}
+          </div>
+          <div>{selectedItem.baseline}</div>
+        </div>
+        <div>
+          <div>
+            {get(
+              cmsData,
+              "componentsPerformanceFrameworkComponents.resultsTableTarget",
+              ""
+            )}
+          </div>
+          <div>{selectedItem.target}</div>
+        </div>
+        <div>
+          <div>
+            {get(
+              cmsData,
+              "componentsPerformanceFrameworkComponents.resultsTableResult",
+              ""
+            )}
+          </div>
+          <div>{selectedItem.result}</div>
+        </div>
+        <div>
+          <div>
+            {get(
+              cmsData,
+              "componentsPerformanceFrameworkComponents.resultsTableAchievementRate",
+              ""
+            )}
+          </div>
+          <div
+            css={`
+              gap: 20px;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 20px;
+                  }
+                }
+              }
+            `}
+          >
+            <div
+              css={`
+                gap: 10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                > * {
+                  @supports (-webkit-touch-callout: none) and
+                    (not (translate: none)) {
+                    &:not(:last-child) {
+                      margin-right: 10px;
+                    }
+                  }
+                }
+
+                > svg {
+                  transform: rotate(90deg);
+                }
+              `}
+            >
+              <div
+                css={`
+                  min-width: 30px;
+                `}
+              >
+                {selectedItem.achievementRate
+                  ? selectedItem.achievementRate
+                  : get(
+                      cmsData,
+                      "componentsPerformanceFrameworkComponents.resultsTableNotAvailable",
+                      ""
+                    )}
+              </div>
+              <div
+                css={`
+                  width: 12px;
+                  height: 12px;
+                  border-radius: 50%;
+                  background: ${selectedItem.color ===
+                  appColors.COMMON.SELECTED_ITEM_VALUE_COLOR
+                    ? appColors.NETWORK.TABLE_CIRCLE_INDICATOR_BACKGROUND_COLOR
+                    : selectedItem.color};
+                `}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <IndicatorToolTip
+        show={showTooltip}
+        data={selectedItem}
+        close={() => setShowTooltip(false)}
+      >
+        <Button
+          onClick={() => setShowTooltip(!showTooltip)}
+          css={`
+            width: 100%;
+            margin-top: 20px;
+            background: ${appColors.NETWORK.TOOLTIP_BUTTON_BACKGROUND_COLOR};
+            border-radius: 22px;
+
+            &:hover {
+            background: ${appColors.NETWORK.TOOLTIP_BUTTON_BACKGROUND_COLOR};
+            }
+
+            > span {
+              color: ${appColors.NETWORK.TOOLTIP_BUTTON_TEXT_COLOR}
+              font-size: 14px;
+              font-weight: bold;
+              text-transform: none;
+              font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+            }
+          `}
+        >
+          {get(
+            cmsData,
+            "componentsPerformanceFrameworkComponents.resultsTableTooltip",
+            ""
+          )}
+        </Button>
+      </IndicatorToolTip>
+    </div>
   );
 }

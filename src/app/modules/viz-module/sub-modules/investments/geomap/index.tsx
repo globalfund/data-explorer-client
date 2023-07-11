@@ -1,18 +1,20 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
 import { FeatureCollection } from "geojson";
 import useTitle from "react-use/lib/useTitle";
+import { useHistory } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { GeoMap } from "app/components/Charts/GeoMap";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
-import {
-  InvestmentsGeoMapPinMarker,
-  NO_DATA_COLOR,
-} from "app/components/Charts/GeoMap/data";
+import { InvestmentsGeoMapPinMarker } from "app/components/Charts/GeoMap/data";
 
 interface Props {
   code?: string;
@@ -22,6 +24,9 @@ interface Props {
 
 export function InvestmentsGeoMap(props: Props) {
   useTitle("The Data Explorer - Investments/Map");
+  const cmsData = useCMSData({ returnData: true });
+  const history = useHistory();
+
   // api call & data
   const fetchData = useStoreActions((store) => store.DisbursementsGeomap.fetch);
   const data = useStoreState(
@@ -48,6 +53,10 @@ export function InvestmentsGeoMap(props: Props) {
   const geomapView = useStoreState(
     (state) => state.ToolBoxPanelInvestmentsMapViewState.value
   );
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   const isLoading = useStoreState(
     (state) =>
@@ -58,41 +67,76 @@ export function InvestmentsGeoMap(props: Props) {
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
-      props.code && props.detailFilterType
-        ? {
-            ...appliedFilters,
-            [props.detailFilterType]: [
-              ...get(appliedFilters, props.detailFilterType, []),
-              props.code,
-            ],
-          }
-        : appliedFilters
-    );
-    if (geomapView === "countries") {
-      fetchData({
-        filterString:
-          filterString.length > 0
-            ? `${filterString}&aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`
-            : `aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`,
-      });
-    } else if (geomapView === "multicountries") {
-      fetchMCData({
-        filterString:
-          filterString.length > 0
-            ? `${filterString}&aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`
-            : `aggregationField=${
-                props.type ? props.type.toLowerCase() : "disbursed"
-              }`,
-      });
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: `Grant Implementation: ${props.type}` })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: `Grant Implementation: ${props.type}`,
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
     }
-  }, [props.code, appliedFilters, geomapView, props.type]);
+  }, []);
+
+  React.useEffect(() => {
+    if (
+      (history.location.search.length > 0 &&
+        appliedFilters.appliedFiltersCount > 0) ||
+      (history.location.search.length === 0 &&
+        appliedFilters.appliedFiltersCount === 0)
+    ) {
+      const filterString = getAPIFormattedFilters(
+        props.code && props.detailFilterType
+          ? {
+              ...appliedFilters,
+              [props.detailFilterType]: [
+                ...get(appliedFilters, props.detailFilterType, []),
+                props.code,
+              ],
+            }
+          : appliedFilters
+      );
+      if (geomapView === "countries") {
+        fetchData({
+          filterString:
+            filterString.length > 0
+              ? `${filterString}&aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`
+              : `aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`,
+        });
+      } else if (geomapView === "multicountries") {
+        fetchMCData({
+          filterString:
+            filterString.length > 0
+              ? `${filterString}&aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`
+              : `aggregationField=${
+                  props.type ? props.type.toLowerCase() : "disbursed"
+                }`,
+        });
+      }
+    }
+  }, [
+    props.code,
+    appliedFilters,
+    geomapView,
+    props.type,
+    history.location.search,
+  ]);
+
+  let clickthroughPath = "signed/treemap";
+  if (props.type === "Committed") {
+    clickthroughPath = "commitment/treemap";
+  } else if (props.type === "Disbursed") {
+    clickthroughPath = "disbursements/treemap";
+  }
 
   if (isLoading) {
     return <PageLoader />;
@@ -109,6 +153,7 @@ export function InvestmentsGeoMap(props: Props) {
     >
       <GeoMap
         allowClickthrough
+        clickthroughPath={clickthroughPath}
         type="investments"
         data={
           geomapView === "countries"
@@ -169,7 +214,11 @@ export function InvestmentsGeoMap(props: Props) {
                 width: 100%;
                 height: 6px;
                 border-radius: 20px;
-                background: linear-gradient(90deg, #cdd4df 0%, #252c34 100%);
+                background: linear-gradient(
+                  90deg,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_1} 0%,
+                  ${appColors.GEOMAP.DATA_LAYER_COLOR_12} 100%
+                );
               `}
             />
             <div
@@ -179,7 +228,14 @@ export function InvestmentsGeoMap(props: Props) {
                 justify-content: space-between;
               `}
             >
-              <div>0 USD</div>
+              <div>
+                {" "}
+                {get(
+                  cmsData,
+                  "componentsChartsInvestments.defaultFinancialValue",
+                  ""
+                )}
+              </div>
               <div>{formatFinancialValue(maxValue)}</div>
             </div>
           </div>
@@ -210,8 +266,8 @@ export function InvestmentsGeoMap(props: Props) {
                 width: 100%;
                 height: 6px;
                 border-radius: 20px;
-                border: 0.5px solid #c7cdd1;
-                background: ${NO_DATA_COLOR};
+                border: 0.5px solid ${appColors.COMMON.SECONDARY_COLOR_7};
+                background: ${appColors.GEOMAP.NO_DATA_LAYER_COLOR};
               `}
             />
             <div
@@ -220,7 +276,7 @@ export function InvestmentsGeoMap(props: Props) {
                 font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
               `}
             >
-              N/A
+              {get(cmsData, "componentsChartsInvestments.notAvailable", "")}
             </div>
           </div>
         </div>

@@ -1,28 +1,29 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import { appColors } from "app/theme";
+import uniqueId from "lodash/uniqueId";
 import { useLocation } from "react-router-dom";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useTitle, useDebounce, useUpdateEffect } from "react-use";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { DataList } from "app/modules/results-module/datalist";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
-import { useDatasetMenuItems } from "app/hooks/useDatasetMenuItems";
+import { ResultListItemModel } from "app/modules/results-module/data";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import {
-  ResultListItemModel,
-  ResultsInfoContentStatsProps,
-} from "app/modules/results-module/data";
 
 export default function ResultsModule() {
   useTitle("The Data Explorer - Results");
   const location = useLocation();
   const vizWrapperRef = React.useRef(null);
-  const datasetMenuItems = useDatasetMenuItems();
+  const cmsData = useCMSData({ returnData: true });
   const [search, setSearch] = React.useState("");
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
@@ -42,10 +43,28 @@ export default function ResultsModule() {
   );
   const isLoading = useStoreState((state) => state.ResultsList.loading);
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   React.useEffect(() => {
-    document.body.style.background = "#fff";
+    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchYearOptionsData({});
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, {
+        name: "Annual Results",
+      })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Annual Results",
+          path: `${location.pathname}${location.search}`,
+        },
+      ]);
+    }
   }, []);
 
   React.useEffect(() => {
@@ -106,7 +125,7 @@ export default function ResultsModule() {
   } else if (widthThreshold < 0) {
     pushValue = 0;
   } else {
-    pushValue = 400 - widthThreshold;
+    pushValue = 450 - widthThreshold;
   }
 
   const isSmallScreen = useMediaQuery("(max-width: 960px)");
@@ -127,17 +146,8 @@ export default function ResultsModule() {
         justify-content: center;
       `}
     >
-      <PageHeader
-        title="Results"
-        breadcrumbs={[
-          { name: "Home", link: "/" },
-          {
-            name: "Datasets",
-            menuitems: datasetMenuItems,
-          },
-          { name: "Results" },
-        ]}
-      />
+      <BreadCrumbs />
+      <PageHeader title={get(cmsData, "componentsPageHeader.results", "")} />
       <ToolBoxPanel
         open={openToolboxPanel}
         vizWrapperRef={vizWrapperRef}
@@ -180,7 +190,7 @@ export default function ResultsModule() {
       <div
         css={`
           left: 0;
-          top: 48px;
+          top: 45px;
           z-index: 15;
           width: 100%;
           height: 100%;

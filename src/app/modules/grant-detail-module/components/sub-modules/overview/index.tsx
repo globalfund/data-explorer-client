@@ -1,9 +1,12 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import { appColors } from "app/theme";
+import { Link } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 import { Grid, useMediaQuery } from "@material-ui/core";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { LocationIcon } from "app/assets/icons/Location";
 import { ComponentIcon } from "app/assets/icons/Component";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -31,8 +34,14 @@ export function GrantDetailOverviewModule() {
         name: "",
         email: "",
       },
+      principalRecipient: {
+        code: "",
+        name: "",
+        shortName: "",
+      },
     })
   );
+  const cmsData = useCMSData({ returnData: true });
 
   if (isLoading) {
     return <PageLoader />;
@@ -47,7 +56,8 @@ export function GrantDetailOverviewModule() {
             font-size: 14px;
           `}
         >
-          <b>Grant status</b>: {grantInfoData.status}
+          <b>{get(cmsData, "modulesGrantDetail.grantStatus", "")}</b>{" "}
+          {grantInfoData.status}
         </div>
       </Grid>
       <Grid
@@ -70,7 +80,7 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Latest Rating
+          {get(cmsData, "modulesGrantDetail.lowestRating", "")}
         </div>
         <div
           css={`
@@ -101,7 +111,7 @@ export function GrantDetailOverviewModule() {
                 border-radius: 50%;
                 align-items: center;
                 justify-content: center;
-                border: 2px solid #262c34;
+                border: 2px solid ${appColors.COMMON.PRIMARY_COLOR_1};
                 opacity: ${(grantInfoData.rating || ratingValues[0]) === value
                   ? 1
                   : 0.3};
@@ -145,7 +155,8 @@ export function GrantDetailOverviewModule() {
         >
           <LocationIcon />
           <div>
-            Location: <b>{grantInfoData.location}</b>
+            {get(cmsData, "modulesGrantDetail.location", "")}{" "}
+            <b>{grantInfoData.location}</b>
           </div>
         </div>
         <div
@@ -153,7 +164,7 @@ export function GrantDetailOverviewModule() {
             gap: 6px;
             display: flex;
             font-size: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             flex-direction: row;
             align-items: center;
 
@@ -169,9 +180,48 @@ export function GrantDetailOverviewModule() {
         >
           <ComponentIcon />
           <div>
-            Component: <b>{grantInfoData.component}</b>
+            {get(cmsData, "modulesGrantDetail.component", "")}{" "}
+            <b>{grantInfoData.component}</b>
           </div>
         </div>
+        {grantInfoData.principalRecipient && (
+          <div
+            css={`
+              gap: 6px;
+              display: flex;
+              font-size: 12px;
+              margin-bottom: 20px;
+              flex-direction: row;
+              align-items: center;
+
+              > * {
+                @supports (-webkit-touch-callout: none) and
+                  (not (translate: none)) {
+                  &:not(:last-child) {
+                    margin-right: 6px;
+                  }
+                }
+              }
+            `}
+          >
+            <div>
+              Principal Recipient:{" "}
+              <Link
+                to={`/partner/${grantInfoData.principalRecipient.code}/investments`}
+                css={`
+                  color: ${appColors.GRANTS.DETAIL_LINK_COLOR};
+                  font-size: 12px;
+                `}
+              >
+                <b>
+                  {grantInfoData.principalRecipient.name}
+                  {grantInfoData.principalRecipient.shortName &&
+                    ` (${grantInfoData.principalRecipient.shortName})`}
+                </b>
+              </Link>
+            </div>
+          </div>
+        )}
       </Grid>
       <Grid
         item
@@ -193,14 +243,14 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Finance
+          {get(cmsData, "modulesGrantDetail.finance", "")}
         </div>
         <div
           css={`
             font-size: 12px;
           `}
         >
-          <b>Disbursed: </b>
+          <b>{get(cmsData, "modulesGrantDetail.disbursed", "")} </b>
           {formatFinancialValue(grantInfoData.investments.disbursed)}
         </div>
         <div
@@ -208,7 +258,7 @@ export function GrantDetailOverviewModule() {
             font-size: 12px;
           `}
         >
-          <b>Committed: </b>
+          <b>{get(cmsData, "modulesGrantDetail.committed", "")} </b>
           {formatFinancialValue(grantInfoData.investments.committed)}
         </div>
         <div
@@ -221,7 +271,7 @@ export function GrantDetailOverviewModule() {
             }
           `}
         >
-          <b>Signed: </b>
+          <b>{get(cmsData, "modulesGrantDetail.signed", "")} </b>
           {formatFinancialValue(grantInfoData.investments.signed)}
         </div>
       </Grid>
@@ -266,7 +316,7 @@ export function GrantDetailOverviewModule() {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           `}
         >
-          Fund Portfolio Manager
+          {get(cmsData, "modulesGrantDetail.fundManager", "")}
         </div>
         <div
           css={`
@@ -278,7 +328,7 @@ export function GrantDetailOverviewModule() {
         <a
           href={`mailto:${grantInfoData.manager.email}`}
           css={`
-            color: #000;
+            color: ${appColors.GRANTS.DETAIL_LINK_COLOR};
             font-size: 12px;
           `}
         >

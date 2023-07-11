@@ -6,6 +6,8 @@ import {
   PageHeaderVizDrilldownsState,
   ToolBoxPanelAggregateByState,
   ToolBoxPanelAllocationsPeriodState,
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
   ToolBoxPanelDisbursementsSliderValues,
   ToolBoxPanelDonorMapTypeState,
   ToolBoxPanelDonorMapViewState,
@@ -22,12 +24,16 @@ import Allocations, {
   AllocationsGeomap,
   AllocationsMCGeomap,
   AllocationsPeriods,
+  AllocationsTable,
 } from "app/state/api/action-reducers/viz/allocations";
 import BudgetsFlow, {
   BudgetsFlowDrilldownLevel1,
   BudgetsFlowDrilldownLevel2,
 } from "app/state/api/action-reducers/viz/budgetsFlow";
 import Eligibility, {
+  EligibilityDiseaseBurdenCodelist,
+  EligibilityStatusCodelist,
+  EligibilityTable,
   EligibilityYears,
 } from "app/state/api/action-reducers/viz/eligibility";
 import BudgetsTimeCycle, {
@@ -42,6 +48,7 @@ import DisbursementsTreemap, {
 } from "app/state/api/action-reducers/viz/disbursementsTreemap";
 import DisbursementsTimeCycle, {
   DisbursementsTimeCycleDrilldown,
+  DisbursementsTimeCycleDrilldown2,
 } from "app/state/api/action-reducers/viz/disbursementsTimeCycle";
 import PledgesContributionsGeomap from "app/state/api/action-reducers/viz/pledgesContributionsGeomap";
 import PledgesContributionsTimeCycle, {
@@ -111,11 +118,13 @@ import PartnerDetailBudgetsTimeCycle, {
 import SignedTreemap, {
   SignedTimeCycle,
   SignedTimeCycleDrilldown,
+  SignedTimeCycleDrilldown2,
   SignedTreemapDrilldown,
 } from "../api/action-reducers/viz/signed";
 import CommitmentTreemap, {
   CommitmentTimeCycle,
   CommitmentTimeCycleDrilldown,
+  CommitmentTimeCycleDrilldown2,
   CommitmentTreemapDrilldown,
 } from "../api/action-reducers/viz/commitment";
 import LocationDetailSignedTreemap from "../api/action-reducers/locationDetail/signedTreemap";
@@ -131,6 +140,51 @@ import PartnerDetailSignedTreemap, {
   PartnerDetailSignedTreemapDrilldown,
 } from "../api/action-reducers/partnerDetail/signedTreemap";
 
+import componentsAppBar from "app/state/api/action-reducers/cms/componentsAppBar";
+import componentsChartsBudgets from "app/state/api/action-reducers/cms/componentsChartsBudgets";
+import componentsChartsCommon from "app/state/api/action-reducers/cms/componentsChartsCommon";
+import componentsChartsEligibility from "app/state/api/action-reducers/cms/componentsChartsEligibility";
+import componentsChartsGeomap from "app/state/api/action-reducers/cms/componentsChartsGeomap";
+import componentsChartsGrants from "app/state/api/action-reducers/cms/componentsChartsGrants";
+import componentsChartsInvestments from "app/state/api/action-reducers/cms/componentsChartsInvestments";
+import componentsChartsNetwork from "app/state/api/action-reducers/cms/componentsChartsNetwork";
+import componentsChartsPerformanceRating from "app/state/api/action-reducers/cms/componentsChartsPerformanceRating";
+import componentsChartsPledges from "app/state/api/action-reducers/cms/componentsChartsPledges";
+import componentsCookieDialog from "app/state/api/action-reducers/cms/componentsCookieDialog";
+import componentsDatasetCarousel from "app/state/api/action-reducers/cms/componentsDatasetCarousel";
+import componentsInformationPanel from "app/state/api/action-reducers/cms/componentsInformationPanel";
+import componentsMobile from "app/state/api/action-reducers/cms/componentsMobile";
+import componentsPageHeader from "app/state/api/action-reducers/cms/componentsPageHeader";
+import componentsPerformanceFrameworkComponents from "app/state/api/action-reducers/cms/componentsPerformanceFrameworkComponents";
+import componentsSearch from "app/state/api/action-reducers/cms/componentsSearch";
+import componentsSlideInPanel from "app/state/api/action-reducers/cms/componentsSlideInPanel";
+import modulesLanding from "app/state/api/action-reducers/cms/modulesLanding";
+import modulesAbout from "app/state/api/action-reducers/cms/modulesAbout";
+import modulesCommon from "app/state/api/action-reducers/cms/modulesCommon";
+import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCountryDetail";
+import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
+import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
+import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
+import countrySummary from "../api/action-reducers/cms/countrySummary";
+import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
+import {
+  DataPathActiveStep,
+  DataPathStepsState,
+} from "../api/action-reducers/sync/dataPath";
+import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
+import {
+  EligibilityLocation,
+  FundingRequestsTable,
+  GrantCycles,
+  PortfolioCategoryCodelist,
+  TRPWindowCodelist,
+} from "../api/action-reducers/locationDetail/accessToFunding";
+import { FundingRequestsTableGeneric } from "../api/action-reducers/viz/fundingRequests";
+import modulesFundingRequests from "../api/action-reducers/cms/modulesFundingRequests";
+import componentsSidebar from "../api/action-reducers/cms/componentsSidebar";
+import componentsTable from "../api/action-reducers/cms/componentsTable";
+import componentsDialogBox from "../api/action-reducers/cms/componentsDialogBox";
+
 const storeContent: StoreModel = {
   // data viz api
   Documents: persist(Documents),
@@ -143,8 +197,12 @@ const storeContent: StoreModel = {
   AllocationsDrilldown: persist(AllocationsDrilldown),
   AllocationsGeomap: persist(AllocationsGeomap),
   AllocationsMCGeomap: persist(AllocationsMCGeomap),
+  AllocationsTable: persist(AllocationsTable),
   Eligibility: persist(Eligibility),
+  EligibilityTable: persist(EligibilityTable),
   EligibilityYears: persist(EligibilityYears),
+  EligibilityStatusCodelist: persist(EligibilityStatusCodelist),
+  EligibilityDiseaseBurdenCodelist: persist(EligibilityDiseaseBurdenCodelist),
   BudgetsGeomap: persist(BudgetsGeomap),
   BudgetsMCGeomap: persist(BudgetsMCGeomap),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
@@ -156,23 +214,28 @@ const storeContent: StoreModel = {
   DisbursementsTreemapDrilldown: persist(DisbursementsTreemapDrilldown),
   DisbursementsTimeCycle: persist(DisbursementsTimeCycle),
   DisbursementsTimeCycleDrilldown: persist(DisbursementsTimeCycleDrilldown),
+  DisbursementsTimeCycleDrilldown2: persist(DisbursementsTimeCycleDrilldown2),
   SignedTreemap: persist(SignedTreemap),
   SignedTreemapDrilldown: persist(SignedTreemapDrilldown),
   SignedTimeCycle: persist(SignedTimeCycle),
   SignedTimeCycleDrilldown: persist(SignedTimeCycleDrilldown),
+  SignedTimeCycleDrilldown2: persist(SignedTimeCycleDrilldown2),
   CommitmentTreemap: persist(CommitmentTreemap),
   CommitmentTreemapDrilldown: persist(CommitmentTreemapDrilldown),
   CommitmentTimeCycle: persist(CommitmentTimeCycle),
   CommitmentTimeCycleDrilldown: persist(CommitmentTimeCycleDrilldown),
+  CommitmentTimeCycleDrilldown2: persist(CommitmentTimeCycleDrilldown2),
   PledgesContributionsGeomap: persist(PledgesContributionsGeomap),
   PledgesContributionsTimeCycle: persist(PledgesContributionsTimeCycle),
   PledgesContributionsTimeCycleDrilldown: persist(
     PledgesContributionsTimeCycleDrilldown
   ),
   PledgesContributionsTreemap: persist(PledgesContributionsTreemap),
+  PledgesContributionsTable: persist(PledgesContributionsTable),
   ResultsList: persist(ResultsList),
   ResultsStats: persist(ResultsStats),
   ResultsYears: persist(ResultsYears),
+  FundingRequestsTable: persist(FundingRequestsTableGeneric),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // grant detail api
@@ -229,6 +292,13 @@ const storeContent: StoreModel = {
     LocationDetailBudgetsTimeCycleDrilldownLevel1
   ),
   LocationGrants: persist(LocationGrants),
+  LocationAccessToFunding: {
+    EligibilityTable: persist(EligibilityLocation),
+    FundingRequestsTable: persist(FundingRequestsTable),
+    GrantCycles: persist(GrantCycles),
+  },
+  FundingRequestsTRPWindowCodelist: persist(TRPWindowCodelist),
+  FundingRequestsPortfolioCategoryCodelist: persist(PortfolioCategoryCodelist),
   // partner detail api
   PartnerDetailInfo: persist(PartnerDetailInfo),
   PartnerDetailDisbursementsTreemap: persist(PartnerDetailDisbursementsTreemap),
@@ -283,6 +353,50 @@ const storeContent: StoreModel = {
   ToolBoxPanelEligibilityAdvancedCheckboxState: persist(
     ToolBoxPanelEligibilityAdvancedCheckboxState
   ),
+  ToolBoxPanelBudgetFlowDrilldownSelectors,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
+  // sync data path vars
+  DataPathSteps: persist(DataPathStepsState),
+  DataPathActiveStep: DataPathActiveStep,
+  // CMS API
+  cms: {
+    componentsAppBar: persist(componentsAppBar),
+    componentsTable: persist(componentsTable),
+    componentsDialogBox: persist(componentsDialogBox),
+
+    componentsChartsBudgets: persist(componentsChartsBudgets),
+    componentsChartsCommon: persist(componentsChartsCommon),
+    componentsChartsEligibility: persist(componentsChartsEligibility),
+    componentsChartsGeomap: persist(componentsChartsGeomap),
+    componentsChartsGrants: persist(componentsChartsGrants),
+    componentsChartsInvestments: persist(componentsChartsInvestments),
+    componentsChartsNetwork: persist(componentsChartsNetwork),
+    componentsChartsPerformanceRating: persist(
+      componentsChartsPerformanceRating
+    ),
+    componentsChartsPledges: persist(componentsChartsPledges),
+    componentsCookieDialog: persist(componentsCookieDialog),
+    componentsDatasetCarousel: persist(componentsDatasetCarousel),
+    componentsInformationPanel: persist(componentsInformationPanel),
+    componentsMobile: persist(componentsMobile),
+    componentsPageHeader: persist(componentsPageHeader),
+    componentsPerformanceFrameworkComponents: persist(
+      componentsPerformanceFrameworkComponents
+    ),
+    componentsSearch: persist(componentsSearch),
+    componentsSlideInPanel: persist(componentsSlideInPanel),
+    componentsSidebar: persist(componentsSidebar),
+    modulesLanding: persist(modulesLanding),
+    modulesAbout: persist(modulesAbout),
+    modulesCommon: persist(modulesCommon),
+    modulesCountryDetail: persist(modulesCountryDetail),
+    modulesDatasets: persist(modulesDatasets),
+    modulesGrantDetail: persist(modulesGrantDetail),
+    modulesGrants: persist(modulesGrants),
+    modulesFundingRequests: persist(modulesFundingRequests),
+    countrySummary: persist(countrySummary),
+    notesAndDisclaimers: persist(notesAndDisclaimers),
+  },
 };
 
 export const store = createStore(storeContent);

@@ -1,8 +1,11 @@
 import React from "react";
+import get from "lodash/get";
+import { useCMSData } from "app/hooks/useCMSData";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import { ToolBoxPanelAggregateBy } from "app/components/ToolBoxPanel/components/aggregateby";
 
 export function ToolBoxPanelDonorViews() {
+  const cmsData = useCMSData({ returnData: true });
   const checked = useStoreState(
     (state) => state.ToolBoxPanelDonorMapViewState.value
   );
@@ -12,7 +15,7 @@ export function ToolBoxPanelDonorViews() {
 
   return (
     <ToolBoxPanelAggregateBy
-      title="Aggregate by"
+      title={get(cmsData, "componentsSidebar.aggregateBy", "")}
       selected={checked}
       setSelected={setChecked}
       options={[

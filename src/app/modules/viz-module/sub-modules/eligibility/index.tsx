@@ -1,9 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import find from "lodash/find";
+import uniqueId from "lodash/uniqueId";
+import { useHistory } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
+import { useCMSData } from "app/hooks/useCMSData";
 import { PageLoader } from "app/modules/common/page-loader";
 import { DotChart } from "app/components/Charts/Eligibility/DotChart";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
@@ -11,17 +15,12 @@ import { DotChartModel } from "app/components/Charts/Eligibility/DotChart/data";
 
 export function EligibilityModule() {
   useTitle("The Data Explorer - Eligibility");
+  const cmsData = useCMSData({ returnData: true });
+  const history = useHistory();
 
+  const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const selectedYear = useStoreState(
     (state) => state.ToolBoxPanelEligibilityYearState.value
-  );
-
-  // aggregateBy control const
-  const aggregateBy = useStoreState(
-    (state) =>
-      (state.ToolBoxPanelAggregateByState.value.length > 0
-        ? state.ToolBoxPanelAggregateByState.value
-        : "componentName") as "componentName" | "geographicAreaName"
   );
 
   // api call & data
@@ -37,18 +36,34 @@ export function EligibilityModule() {
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
 
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
+
   React.useEffect(() => {
     fetchYearOptionsData({});
+    if (
+      dataPathSteps.length === 0 ||
+      !find(dataPathSteps, { name: "Access to Funding: Eligibility" })
+    ) {
+      addDataPathSteps([
+        {
+          id: uniqueId(),
+          name: "Access to Funding: Eligibility",
+          path: `${history.location.pathname}${history.location.search}`,
+        },
+      ]);
+    }
   }, []);
 
   React.useEffect(() => {
     const filterString = getAPIFormattedFilters(appliedFilters);
     fetchData({
-      filterString: `aggregateBy=${aggregateBy}&periods=${selectedYear}${
+      filterString: `aggregateBy=componentName&periods=${selectedYear}${
         filterString.length > 0 ? `&${filterString}` : ""
       }`,
     });
-  }, [aggregateBy, appliedFilters, selectedYear]);
+  }, [appliedFilters, selectedYear]);
 
   if (isLoading) {
     return <PageLoader />;
@@ -57,7 +72,7 @@ export function EligibilityModule() {
   return (
     <DotChart
       data={data}
-      aggregateBy={aggregateBy}
+      aggregateBy={get(cmsData, "componentsChartsEligibility.aggregateBy", "")}
       selectedYear={selectedYear}
     />
   );

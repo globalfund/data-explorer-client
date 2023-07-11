@@ -7,9 +7,7 @@ interface UseAppliedFiltersProps {
   type: string;
 }
 
-export function useAppliedFilters(
-  props: UseAppliedFiltersProps
-): {
+export function useAppliedFilters(props: UseAppliedFiltersProps): {
   setAppliedFilters: ActionCreator<string[]>;
   appliedFilters: string[];
   setAppliedFiltersChildren?: ActionCreator<string[]>;
@@ -46,6 +44,11 @@ export function useAppliedFilters(
         setAppliedFilters: actions.setStatus,
         appliedFilters: data.status,
       };
+    case "Document Types":
+      return {
+        setAppliedFilters: actions.setDocumentTypes,
+        appliedFilters: data.documentTypes,
+      };
     case "Replenishment Periods":
       return {
         setAppliedFilters: actions.setReplenishmentPeriods,
@@ -59,13 +62,25 @@ export function useAppliedFilters(
         return {
           setAppliedFilters: actions.setDonorCategories,
           appliedFilters: data.donorCategories,
-          setAppliedFiltersChildren: actions.setDonors,
-          appliedFiltersChildren: data.donors,
+          setAppliedFiltersChildren: actions.setDonorSubCategories,
+          appliedFiltersChildren: data.donorSubCategories,
+          setAppliedFiltersGrandChildren: actions.setDonors,
+          appliedFiltersGrandChildren: data.donors,
         };
       }
       return {
         setAppliedFilters: actions.setDonors,
         appliedFilters: data.donors,
+      };
+    case "TRP Window":
+      return {
+        setAppliedFilters: actions.setTrpWindows,
+        appliedFilters: data.trpWindows,
+      };
+    case "Portfolio Categorization":
+      return {
+        setAppliedFilters: actions.setPortfolioCategories,
+        appliedFilters: data.portfolioCategories,
       };
     case "All":
       return {
@@ -79,6 +94,8 @@ export function useAppliedFilters(
           ...data.status,
           ...data.donors,
           ...data.replenishmentPeriods,
+          ...data.trpWindows,
+          ...data.portfolioCategories,
         ],
       };
     default:

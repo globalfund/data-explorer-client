@@ -1,36 +1,37 @@
 import React from "react";
+import get from "lodash/get";
+import { appColors } from "app/theme";
 import Grid from "@material-ui/core/Grid";
 import { css } from "styled-components/macro";
-import { InfoIcon } from "app/assets/icons/Info";
 import CloseIcon from "@material-ui/icons/Close";
+import { useCMSData } from "app/hooks/useCMSData";
 import IconButton from "@material-ui/core/IconButton";
 import useMousePosition from "app/hooks/useMousePosition";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { NoDataLabel } from "app/components/Charts/common/nodatalabel";
+import { EligibilityType } from "app/components/Charts/Eligibility/Scatterplot/data";
 import {
   DotChartProps,
   DotChartModel,
 } from "app/components/Charts/Eligibility/DotChart/data";
-import { EligibilityType } from "../Scatterplot/data";
 
 const styles = {
   Eligible: css`
-    background: #11ad6b;
-    border: 1px solid #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_23};
+    border: 1px solid ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
   "Not Eligible": css`
-    background: #fa7355;
-    border: 1px dotted #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_15};
+    border: 1px dotted ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
   "Transition Funding": css`
-    background: #ffd646;
-    border: 1px dashed #1b2127;
+    background: ${appColors.GRAPH_COLORS.GRAPH_COLOR_18};
+    border: 1px dashed ${appColors.COMMON.PRIMARY_COLOR_1};
   `,
 };
 
 export function DotChart(props: DotChartProps) {
+  const cmsData = useCMSData({ returnData: true });
   const { x, y } = useMousePosition();
-  const isMobile = useMediaQuery("(max-width: 767px)");
   const [hoveredNode, setHoveredNode] = React.useState<{
     name: string;
     status: EligibilityType;
@@ -44,18 +45,18 @@ export function DotChart(props: DotChartProps) {
         <div
           css={`
             padding: 12px;
-            color: #262c34;
+            color: ${appColors.COMMON.PRIMARY_COLOR_1};
             position: fixed;
             top: ${y + 12}px;
             left: ${x + 12}px;
-            background: #f5f5f7;
+            background: ${appColors.COMMON.SECONDARY_COLOR_10};
             border-radius: 20px;
             box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.1);
 
             @media (max-width: 767px) {
               left: 16px;
               z-index: 1;
-              background: #fff;
+              background: ${appColors.COMMON.WHITE};
               width: calc(100vw - 32px);
               box-shadow: 0px 0px 10px rgba(152, 161, 170, 0.3);
             }
@@ -68,7 +69,7 @@ export function DotChart(props: DotChartProps) {
               justify-content: space-between;
 
               path {
-                fill: #2e4063;
+                fill: ${appColors.COMMON.PRIMARY_COLOR_1};
               }
             `}
           >
@@ -91,7 +92,7 @@ export function DotChart(props: DotChartProps) {
           </div>
         </div>
       )}
-      <Grid container spacing={2}>
+      <Grid container spacing={1}>
         <Grid
           item
           container
@@ -155,7 +156,7 @@ export function DotChart(props: DotChartProps) {
                   }
                 `}
               >
-                Eligibility
+                {get(cmsData, "componentsChartsEligibility.eligibility", "")}
               </div>
               <div
                 css={`
@@ -166,17 +167,9 @@ export function DotChart(props: DotChartProps) {
                   }
                 `}
               >
-                Year {props.selectedYear}
+                {get(cmsData, "componentsChartsEligibility.year", "")}{" "}
+                {props.selectedYear}
               </div>
-            </div>
-            <div
-              css={`
-                display: flex;
-                margin-left: 0px;
-                margin-right: 10px;
-              `}
-            >
-              <InfoIcon />
             </div>
           </div>
           <div
@@ -199,7 +192,7 @@ export function DotChart(props: DotChartProps) {
                   font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
                 `}
               >
-                Eligibility
+                {get(cmsData, "componentsChartsEligibility.eligibility", "")}
               </div>
               <div
                 css={`
@@ -232,7 +225,13 @@ export function DotChart(props: DotChartProps) {
                     ${styles.Eligible}
                   `}
                 />
-                <div>Eligible</div>
+                <div>
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.statusEligible",
+                    ""
+                  )}
+                </div>
               </div>
               <div
                 css={`
@@ -265,7 +264,13 @@ export function DotChart(props: DotChartProps) {
                     ${styles["Not Eligible"]}
                   `}
                 />
-                <div>Not Eligible</div>
+                <div>
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.statusNotEligible",
+                    ""
+                  )}
+                </div>
               </div>
               <div
                 css={`
@@ -299,7 +304,13 @@ export function DotChart(props: DotChartProps) {
                     ${styles["Transition Funding"]}
                   `}
                 />
-                <div>Transition Funding</div>
+                <div>
+                  {get(
+                    cmsData,
+                    "componentsChartsEligibility.statusTransitionFunding",
+                    ""
+                  )}
+                </div>
               </div>
             </div>
             {props.aggregateBy === "geographicAreaName" && (
@@ -319,7 +330,7 @@ export function DotChart(props: DotChartProps) {
                       sans-serif;
                   `}
                 >
-                  Country Name
+                  {get(cmsData, "componentsChartsEligibility.countryName", "")}
                 </div>
                 <div
                   css={`
@@ -356,7 +367,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      HIV
+                      {get(cmsData, "componentsChartsEligibility.hiv", "")}
                     </div>
                   </div>
                   <div>
@@ -376,7 +387,7 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Malaria
+                      {get(cmsData, "componentsChartsEligibility.malaria", "")}
                     </div>
                   </div>
                   {/* <div>
@@ -413,7 +424,11 @@ export function DotChart(props: DotChartProps) {
                         position: absolute;
                       `}
                     >
-                      Tuberculosis
+                      {get(
+                        cmsData,
+                        "componentsChartsEligibility.tuberculosis",
+                        ""
+                      )}
                     </div>
                   </div>
                 </div>
@@ -432,16 +447,7 @@ export function DotChart(props: DotChartProps) {
             }
           `}
         />
-        <Grid
-          item
-          container
-          sm={12}
-          md={10}
-          spacing={!isMobile ? 4 : 2}
-          css={`
-            padding-bottom: 50px !important;
-          `}
-        >
+        <Grid item container sm={12} md={10} spacing={2}>
           {props.data.length === 0 ? (
             <React.Fragment>
               <NoDataLabel />
@@ -464,11 +470,13 @@ export function DotChart(props: DotChartProps) {
                     </div>
                     <div
                       css={`
-                        gap: 24px;
+                        row-gap: 24px;
                         display: flex;
                         flex-wrap: wrap;
-                        padding-left: 5px;
-                        border-left: 1px solid #acafbc;
+                        column-gap: 12px;
+                        padding-left: 20px;
+                        border-left: 1px solid
+                          ${appColors.ELIGIBILITY.DOT_CHART_BORDER_COLOR};
 
                         > * {
                           @supports (-webkit-touch-callout: none) and
@@ -546,7 +554,8 @@ export function DotChart(props: DotChartProps) {
                         display: flex;
                         flex-wrap: wrap;
                         padding: 5px 0 5px 5px;
-                        border-left: 1px solid #acafbc;
+                        border-left: 1px solid
+                          ${appColors.ELIGIBILITY.DOT_CHART_BORDER_COLOR};
 
                         > * {
                           @supports (-webkit-touch-callout: none) and

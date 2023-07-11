@@ -3,6 +3,8 @@ import {
   PageHeaderVizDrilldownsStateModel,
   ToolBoxPanelAggregateByStateModel,
   ToolBoxPanelAllocationsPeriodStateModel,
+  ToolBoxPanelBudgetFlowDrilldownSelectorsModel,
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel,
   ToolBoxPanelDisbursementsSliderValuesModel,
   ToolBoxPanelDonorMapTypeStateModel,
   ToolBoxPanelDonorMapViewStateModel,
@@ -13,6 +15,40 @@ import {
   ToolBoxPanelResultsYearStateModel,
 } from "app/state/api/action-reducers/sync";
 import { AppliedFiltersStateModel } from "../action-reducers/sync/filters";
+import {
+  CMSApiComponentsAppBar,
+  CMSApiComponentsChartsBudgets,
+  CMSApiComponentsChartsCommon,
+  CMSApiComponentsChartsEligibility,
+  CMSApiComponentsChartsGeomap,
+  CMSApiComponentsChartsGrants,
+  CMSApiComponentsChartsInvestments,
+  CMSApiComponentsChartsNetwork,
+  CMSApiComponentsChartsPerformanceRating,
+  CMSApiComponentsChartsPledges,
+  CMSApiComponentsCookieDialog,
+  CMSApiComponentsDatasetCarousel,
+  CMSApiComponentsInformationPanel,
+  CMSApiComponentsMobile,
+  CMSApiComponentsPageHeader,
+  CMSApiComponentsPerformanceFrameworkComponents,
+  CMSApiComponentsSearch,
+  CMSApiComponentsSlideInPanel,
+  CMSApiModulesLanding,
+  CMSApiModulesAbout,
+  CMSApiModulesCommon,
+  CMSApiModulesCountryDetail,
+  CMSApiModulesDatasets,
+  CMSApiModulesGrantDetail,
+  CMSApiModulesGrants,
+  CMSApiCountrySummary,
+  CMSApiNotesAndDisclaimers,
+  CMSApiModulesFundingRequests,
+} from "app/state/api/interfaces/cms";
+import {
+  DataPathActiveStepStateModel,
+  DataPathStepsStateModel,
+} from "../action-reducers/sync/dataPath";
 
 export interface RequestValues<T> {
   values?: T;
@@ -48,6 +84,7 @@ export interface ApiModel<QueryModel, ResponseModel> {
   onRequest: Action<ApiModel<QueryModel, ResponseModel>>;
   fetch: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
   clear: Action<ApiModel<QueryModel, ResponseModel>>;
+  post: Thunk<ApiModel<QueryModel, ResponseModel>, RequestValues<QueryModel>>;
 }
 
 // todo: add all available filters
@@ -65,6 +102,41 @@ export type ApiCallModel = ApiModel<
   ApiResponseModel
 >;
 
+// CMS API Call model for
+export type CMSApiCallModel = ApiModel<
+  CMSApiCallParams,
+  | CMSApiComponentsAppBar
+  | CMSApiComponentsChartsBudgets
+  | CMSApiComponentsChartsCommon
+  | CMSApiComponentsChartsEligibility
+  | CMSApiComponentsChartsGeomap
+  | CMSApiComponentsChartsGrants
+  | CMSApiComponentsChartsInvestments
+  | CMSApiComponentsChartsNetwork
+  | CMSApiComponentsChartsPerformanceRating
+  | CMSApiComponentsChartsPledges
+  | CMSApiComponentsCookieDialog
+  | CMSApiComponentsDatasetCarousel
+  | CMSApiComponentsInformationPanel
+  | CMSApiComponentsMobile
+  | CMSApiComponentsPageHeader
+  | CMSApiComponentsPerformanceFrameworkComponents
+  | CMSApiComponentsSearch
+  | CMSApiComponentsSlideInPanel
+  | CMSApiModulesLanding
+  | CMSApiModulesAbout
+  | CMSApiModulesCommon
+  | CMSApiModulesCountryDetail
+  | CMSApiModulesDatasets
+  | CMSApiModulesGrantDetail
+  | CMSApiModulesGrants
+  | CMSApiCountrySummary
+  | CMSApiNotesAndDisclaimers
+  | CMSApiModulesFundingRequests
+>;
+
+export interface CMSApiCallParams {}
+
 export interface StoreModel {
   // data viz api
   Documents: ApiCallModel;
@@ -74,8 +146,12 @@ export interface StoreModel {
   AllocationsDrilldown: ApiCallModel;
   AllocationsGeomap: ApiCallModel;
   AllocationsMCGeomap: ApiCallModel;
+  AllocationsTable: ApiCallModel;
   Eligibility: ApiCallModel;
+  EligibilityTable: ApiCallModel;
   EligibilityYears: ApiCallModel;
+  EligibilityStatusCodelist: ApiCallModel;
+  EligibilityDiseaseBurdenCodelist: ApiCallModel;
   BudgetsFlow: ApiCallModel;
   BudgetsFlowDrilldownLevel1: ApiCallModel;
   BudgetsFlowDrilldownLevel2: ApiCallModel;
@@ -90,21 +166,26 @@ export interface StoreModel {
   DisbursementsTreemapDrilldown: ApiCallModel;
   DisbursementsTimeCycle: ApiCallModel;
   DisbursementsTimeCycleDrilldown: ApiCallModel;
+  DisbursementsTimeCycleDrilldown2: ApiCallModel;
   SignedTreemap: ApiCallModel;
   SignedTreemapDrilldown: ApiCallModel;
   SignedTimeCycle: ApiCallModel;
   SignedTimeCycleDrilldown: ApiCallModel;
+  SignedTimeCycleDrilldown2: ApiCallModel;
   CommitmentTreemap: ApiCallModel;
   CommitmentTreemapDrilldown: ApiCallModel;
   CommitmentTimeCycle: ApiCallModel;
   CommitmentTimeCycleDrilldown: ApiCallModel;
+  CommitmentTimeCycleDrilldown2: ApiCallModel;
   PledgesContributionsGeomap: ApiCallModel;
   PledgesContributionsTimeCycle: ApiCallModel;
   PledgesContributionsTimeCycleDrilldown: ApiCallModel;
   PledgesContributionsTreemap: ApiCallModel;
+  PledgesContributionsTable: ApiCallModel;
   ResultsList: ApiCallModel;
   ResultsStats: ApiCallModel;
   ResultsYears: ApiCallModel;
+  FundingRequestsTable: ApiCallModel;
   // global search
   GlobalSearch: ApiCallModel;
   // grant detail api
@@ -141,6 +222,13 @@ export interface StoreModel {
   LocationDetailBudgetsTimeCycleDrilldownLevel1: ApiCallModel;
   LocationDetailBudgetsTimeCycleDrilldownLevel2: ApiCallModel;
   LocationGrants: ApiCallModel;
+  LocationAccessToFunding: {
+    EligibilityTable: ApiCallModel;
+    FundingRequestsTable: ApiCallModel;
+    GrantCycles: ApiCallModel;
+  };
+  FundingRequestsTRPWindowCodelist: ApiCallModel;
+  FundingRequestsPortfolioCategoryCodelist: ApiCallModel;
   // partner detail api
   PartnerDetailInfo: ApiCallModel;
   PartnerDetailDisbursementsTreemap: ApiCallModel;
@@ -174,5 +262,46 @@ export interface StoreModel {
   ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
+  ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
+  ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;
+  // sync data path vars
+  DataPathSteps: DataPathStepsStateModel;
+  DataPathActiveStep: DataPathActiveStepStateModel;
+  // CMS
+  cms: {
+    componentsAppBar: CMSApiCallModel;
+    componentsTable: CMSApiCallModel;
+    componentsDialogBox: CMSApiCallModel;
+
+    componentsChartsBudgets: CMSApiCallModel;
+    componentsChartsCommon: CMSApiCallModel;
+    componentsChartsEligibility: CMSApiCallModel;
+    componentsChartsGeomap: CMSApiCallModel;
+    componentsChartsGrants: CMSApiCallModel;
+    componentsChartsInvestments: CMSApiCallModel;
+    componentsChartsNetwork: CMSApiCallModel;
+    componentsChartsPerformanceRating: CMSApiCallModel;
+    componentsChartsPledges: CMSApiCallModel;
+    componentsCookieDialog: CMSApiCallModel;
+    componentsDatasetCarousel: CMSApiCallModel;
+    componentsInformationPanel: CMSApiCallModel;
+    componentsMobile: CMSApiCallModel;
+    componentsPageHeader: CMSApiCallModel;
+    componentsPerformanceFrameworkComponents: CMSApiCallModel;
+    componentsSearch: CMSApiCallModel;
+    componentsSlideInPanel: CMSApiCallModel;
+    componentsSidebar: CMSApiCallModel;
+
+    modulesLanding: CMSApiCallModel;
+    modulesAbout: CMSApiCallModel;
+    modulesCommon: CMSApiCallModel;
+    modulesCountryDetail: CMSApiCallModel;
+    modulesDatasets: CMSApiCallModel;
+    modulesGrantDetail: CMSApiCallModel;
+    modulesGrants: CMSApiCallModel;
+    modulesFundingRequests: CMSApiCallModel;
+    countrySummary: CMSApiCallModel;
+    notesAndDisclaimers: CMSApiCallModel;
+  };
 }
