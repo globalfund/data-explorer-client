@@ -11,6 +11,24 @@ export function AllocationsPeriods() {
     (state) => get(state.AllocationsPeriods.data, "data", []) as string[]
   );
 
+  const [periodList, setPeriodList] = React.useState([
+    { label: "All", value: "All" },
+    ...dataPeriodOptions.map((period: string) => ({
+      label: period,
+      value: period,
+    })),
+  ]);
+
+  React.useEffect(() => {
+    setPeriodList([
+      { label: "All", value: "All" },
+      ...dataPeriodOptions.map((period: string) => ({
+        label: period,
+        value: period,
+      })),
+    ]);
+  }, []);
+
   const selectedPeriod = useStoreState(
     (state) => state.ToolBoxPanelAllocationsPeriodState.value
   );
@@ -28,10 +46,7 @@ export function AllocationsPeriods() {
       title={get(cmsData, "componentsSidebar.aggregateByPeriod", "")}
       selected={selectedPeriod}
       setSelected={setSelectedPeriod}
-      options={dataPeriodOptions.map((period: string) => ({
-        label: period,
-        value: period,
-      }))}
+      options={periodList}
     />
   );
 }

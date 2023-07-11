@@ -2,10 +2,9 @@
 import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
-import { Route, Switch, useLocation } from "react-router-dom";
 import { useCMSData } from "app/hooks/useCMSData";
 import { useMediaQuery } from "@material-ui/core";
-import Pagination from "@material-ui/lab/Pagination";
+import { Route, Switch, useLocation } from "react-router-dom";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
   useTitle,
@@ -16,17 +15,16 @@ import {
 /* project */
 import { appColors } from "app/theme";
 import { PageHeader } from "app/components/PageHeader";
+import GrantsGrid from "app/modules/grants-module/grid";
+import GrantsTable from "app/modules/grants-module/table";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageLoader } from "app/modules/common/page-loader";
-import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import BreadCrumbs from "app/components/Charts/common/breadcrumbs";
 import { GrantListItemModel } from "app/modules/grants-module/data";
-
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 import { useGetAllAvailableGrants } from "app/hooks/useGetAllAvailableGrants";
 import { pathnameToFilterGroups } from "app/components/ToolBoxPanel/components/filters/data";
-import GrantsGrid from "app/modules/grants-module/grid";
-import GrantsTable from "app/modules/grants-module/table";
 
 interface GrantsModuleProps {
   code?: string;
@@ -202,10 +200,10 @@ export default function GrantsModule(props: GrantsModuleProps) {
         justify-content: center;
       `}
     >
-      {props.detailFilterType !== "partners" && <BreadCrumbs />}
       {(isLoading || loading) && <PageLoader />}
       {!props.code && (
         <>
+          <BreadCrumbs />
           <PageHeader title={get(cmsData, "modulesGrants.titleShort", "")} />
           <ToolBoxPanel
             open={openToolboxPanel}

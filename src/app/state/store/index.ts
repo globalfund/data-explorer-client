@@ -31,6 +31,8 @@ import BudgetsFlow, {
   BudgetsFlowDrilldownLevel2,
 } from "app/state/api/action-reducers/viz/budgetsFlow";
 import Eligibility, {
+  EligibilityDiseaseBurdenCodelist,
+  EligibilityStatusCodelist,
   EligibilityTable,
   EligibilityYears,
 } from "app/state/api/action-reducers/viz/eligibility";
@@ -170,6 +172,15 @@ import {
   DataPathStepsState,
 } from "../api/action-reducers/sync/dataPath";
 import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
+import {
+  EligibilityLocation,
+  FundingRequestsTable,
+  GrantCycles,
+  PortfolioCategoryCodelist,
+  TRPWindowCodelist,
+} from "../api/action-reducers/locationDetail/accessToFunding";
+import { FundingRequestsTableGeneric } from "../api/action-reducers/viz/fundingRequests";
+import modulesFundingRequests from "../api/action-reducers/cms/modulesFundingRequests";
 import componentsSidebar from "../api/action-reducers/cms/componentsSidebar";
 import componentsTable from "../api/action-reducers/cms/componentsTable";
 import componentsDialogBox from "../api/action-reducers/cms/componentsDialogBox";
@@ -190,6 +201,8 @@ const storeContent: StoreModel = {
   Eligibility: persist(Eligibility),
   EligibilityTable: persist(EligibilityTable),
   EligibilityYears: persist(EligibilityYears),
+  EligibilityStatusCodelist: persist(EligibilityStatusCodelist),
+  EligibilityDiseaseBurdenCodelist: persist(EligibilityDiseaseBurdenCodelist),
   BudgetsGeomap: persist(BudgetsGeomap),
   BudgetsMCGeomap: persist(BudgetsMCGeomap),
   BudgetsTimeCycle: persist(BudgetsTimeCycle),
@@ -222,6 +235,7 @@ const storeContent: StoreModel = {
   ResultsList: persist(ResultsList),
   ResultsStats: persist(ResultsStats),
   ResultsYears: persist(ResultsYears),
+  FundingRequestsTable: persist(FundingRequestsTableGeneric),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // grant detail api
@@ -278,6 +292,13 @@ const storeContent: StoreModel = {
     LocationDetailBudgetsTimeCycleDrilldownLevel1
   ),
   LocationGrants: persist(LocationGrants),
+  LocationAccessToFunding: {
+    EligibilityTable: persist(EligibilityLocation),
+    FundingRequestsTable: persist(FundingRequestsTable),
+    GrantCycles: persist(GrantCycles),
+  },
+  FundingRequestsTRPWindowCodelist: persist(TRPWindowCodelist),
+  FundingRequestsPortfolioCategoryCodelist: persist(PortfolioCategoryCodelist),
   // partner detail api
   PartnerDetailInfo: persist(PartnerDetailInfo),
   PartnerDetailDisbursementsTreemap: persist(PartnerDetailDisbursementsTreemap),
@@ -372,6 +393,7 @@ const storeContent: StoreModel = {
     modulesDatasets: persist(modulesDatasets),
     modulesGrantDetail: persist(modulesGrantDetail),
     modulesGrants: persist(modulesGrants),
+    modulesFundingRequests: persist(modulesFundingRequests),
     countrySummary: persist(countrySummary),
     notesAndDisclaimers: persist(notesAndDisclaimers),
   },

@@ -72,6 +72,16 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
         setAppliedFilters: actions.setDonors,
         appliedFilters: data.donors,
       };
+    case "TRP Window":
+      return {
+        setAppliedFilters: actions.setTrpWindows,
+        appliedFilters: data.trpWindows,
+      };
+    case "Portfolio Categorization":
+      return {
+        setAppliedFilters: actions.setPortfolioCategories,
+        appliedFilters: data.portfolioCategories,
+      };
     case "All":
       return {
         setAppliedFilters: actions.setLocations,
@@ -84,6 +94,8 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
           ...data.status,
           ...data.donors,
           ...data.replenishmentPeriods,
+          ...data.trpWindows,
+          ...data.portfolioCategories,
         ],
       };
     default:

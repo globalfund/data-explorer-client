@@ -17,14 +17,15 @@ import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibilit
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
 import { AllocationsTableModule } from "app/modules/viz-module/sub-modules/allocations/table";
+import { EligibilityTableModuleWrapper } from "app/modules/viz-module/sub-modules/eligibility/table";
 import { PledgesContributionsTable } from "app/modules/viz-module/sub-modules/pledgescontributions/table";
 import { PledgesContributionsGeoMap } from "app/modules/viz-module/sub-modules/pledgescontributions/geomap";
 import { PledgesContributionsTreemap } from "app/modules/viz-module/sub-modules/pledgescontributions/treemap";
 import { GenericBudgetsFlowWrapper } from "app/modules/viz-module/sub-modules/budgets/flow/data-wrappers/generic";
-import { GenericEligibilityWrapper } from "app/modules/viz-module/sub-modules/eligibility/table/data-wrappers/generic";
 import { PledgesContributionsTimeCycleModule } from "app/modules/viz-module/sub-modules/pledgescontributions/time-cycle";
 import { GenericInvestmentsTableWrapper } from "app/modules/viz-module/sub-modules/investments/table/data-wrappers/generic";
 import { GenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/generic";
+import { GenericFundingRequestWrapper } from "app/modules/viz-module/sub-modules/fundingRequests/table/data-wrappers/generic";
 import { GenericInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/generic";
 import { GenericInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/generic";
 import {
@@ -210,10 +211,14 @@ export default function VizModule() {
           </Route>
           {/* Eligibility */}
           <Route path="/viz/eligibility/table">
-            <GenericEligibilityWrapper />
+            <EligibilityTableModuleWrapper />
           </Route>
           <Route path="/viz/eligibility">
             <EligibilityModule />
+          </Route>
+          {/* Funding Request */}
+          <Route path="/viz/funding-requests/table">
+            <GenericFundingRequestWrapper />
           </Route>
         </Switch>
       </div>
@@ -243,7 +248,7 @@ export default function VizModule() {
       <div
         css={`
           left: 0;
-          top: 48px;
+          top: 45px;
           z-index: 15;
           width: 100%;
           height: 100%;

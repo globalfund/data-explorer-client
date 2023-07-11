@@ -29,6 +29,8 @@ export function useUrlFilters(): null {
       const donorSubCategories = currentUrlParams.get("donorSubCategories");
       const donorCategories = currentUrlParams.get("donorCategories");
       const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+      const trpWindows = currentUrlParams.get("trpWindows");
+      const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
       if (locations) {
         updatedAppliedFilters.locations = locations.split(",");
@@ -64,6 +66,13 @@ export function useUrlFilters(): null {
       if (replenishmentPeriods) {
         updatedAppliedFilters.replenishmentPeriods =
           replenishmentPeriods.split(",");
+      }
+      if (trpWindows) {
+        updatedAppliedFilters.trpWindows = trpWindows.split(",");
+      }
+      if (portfolioCategories) {
+        updatedAppliedFilters.portfolioCategories =
+          portfolioCategories.split(",");
       }
 
       actions.setAll(updatedAppliedFilters);
@@ -138,6 +147,19 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("replenishmentPeriods");
     }
+    if (data.trpWindows.length > 0) {
+      currentUrlParams.set("trpWindows", data.trpWindows.join(","));
+    } else {
+      currentUrlParams.delete("trpWindows");
+    }
+    if (data.portfolioCategories.length > 0) {
+      currentUrlParams.set(
+        "portfolioCategories",
+        data.portfolioCategories.join(",")
+      );
+    } else {
+      currentUrlParams.delete("portfolioCategories");
+    }
 
     const queryString = decodeURIComponent(currentUrlParams.toString());
     history.push({
@@ -161,6 +183,8 @@ export function useUrlFilters(): null {
     const donorSubCategories = currentUrlParams.get("donorSubCategories");
     const donorCategories = currentUrlParams.get("donorCategories");
     const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
+    const trpWindows = currentUrlParams.get("trpWindows");
+    const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
     if (locations) {
       updatedAppliedFilters.locations = locations.split(",");
@@ -217,6 +241,17 @@ export function useUrlFilters(): null {
         replenishmentPeriods.split(",");
     } else if (updatedAppliedFilters.replenishmentPeriods.length > 0) {
       updatedAppliedFilters.replenishmentPeriods = [];
+    }
+    if (trpWindows) {
+      updatedAppliedFilters.trpWindows = trpWindows.split(",");
+    } else if (updatedAppliedFilters.trpWindows.length > 0) {
+      updatedAppliedFilters.trpWindows = [];
+    }
+    if (portfolioCategories) {
+      updatedAppliedFilters.portfolioCategories =
+        portfolioCategories.split(",");
+    } else if (updatedAppliedFilters.portfolioCategories.length > 0) {
+      updatedAppliedFilters.portfolioCategories = [];
     }
 
     if (!isEqual(data, updatedAppliedFilters)) {

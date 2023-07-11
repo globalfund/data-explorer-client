@@ -21,6 +21,7 @@ export interface EligibilityScatterplotDataItemModel {
 }
 
 export interface EligibilityScatterplotDataModel extends Serie {
+  id: string;
   data: EligibilityScatterplotDataItemModel[];
 }
 

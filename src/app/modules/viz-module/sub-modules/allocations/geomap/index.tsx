@@ -68,7 +68,7 @@ export function AllocationsGeoMap(props: Props) {
   }, []);
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
+    let filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
@@ -76,11 +76,17 @@ export function AllocationsGeoMap(props: Props) {
           }
         : appliedFilters
     );
+    if (filterString.length > 0) {
+      filterString = `&${filterString}`;
+    } else {
+      filterString = "";
+    }
     if (geomapView === "countries") {
       fetchData({
-        filterString: `periods=${selectedPeriod}${
-          filterString.length > 0 ? `&${filterString}` : ""
-        }`,
+        filterString:
+          selectedPeriod !== "All"
+            ? `periods=${selectedPeriod}${filterString}`
+            : "",
       });
     } else if (geomapView === "multicountries") {
       fetchMCData({ filterString });

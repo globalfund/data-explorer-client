@@ -24,7 +24,7 @@ interface InvestmentsTimeCycleModuleProps {
   setVizLevel: (vizLevel: number) => void;
   vizSelected: string | undefined;
   setDrilldownVizSelected?: (vizSelected: string | undefined) => void;
-  drilldownVizSelected?: string | undefined;
+  drilldownVizSelected?: string;
   setVizSelected: (vizSelected: string | undefined) => void;
   type?: string;
   toolboxOpen?: boolean;
@@ -53,6 +53,9 @@ export function InvestmentsTimeCycleModule(
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
   );
 
   React.useEffect(() => {
@@ -196,10 +199,12 @@ export function InvestmentsTimeCycleModule(
           onNodeClick={(node: string, _x: number, _y: number) => {
             const idSplits = node.split("-");
             const code = getIso3FromName(idSplits[0]);
-            setReRouteDialog({
-              display: true,
-              code,
-            });
+            // setReRouteDialog({
+            //   display: true,
+            //   code,
+            // });
+            clearDataPathSteps();
+            history.push(`/grant/${code}/period/${clickthroughPath}`);
           }}
         />
       );
