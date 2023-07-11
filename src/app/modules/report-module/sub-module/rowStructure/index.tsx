@@ -364,15 +364,26 @@ const Box = (props: {
   const resetMapping = useStoreActions(
     (actions) => actions.charts.mapping.reset
   );
-  const [chartId, setChartId] = React.useState<string | null>(null);
   const [initChartId, setInitChartId] = React.useState<string | null>(null);
+
+  const [chartId, setChartId] = React.useState<string | null>(null);
   const [displayChart, setDisplayChart] = React.useState(false);
   const [displayImageBox, setDisplayImageBox] = React.useState(false);
+  const [draggedChartName, setDraggedChartName] = React.useState("");
   const [displayDeleteElementModal, setDisplayDeleteElementModal] =
     React.useState({
       type: "",
       display: false,
+      modalType: "",
     });
+  const [modalContent, setModalContent] = React.useState({
+    buttonTitle: "delete",
+    description: `Current ${displayDeleteElementModal.type} will be deleted from this placeholder. 
+  Drag and drop your new ${displayDeleteElementModal.type}  in the empty placeholder to complete your report.`,
+    subtitle: `Delete ${displayDeleteElementModal.type} from this 
+  placeholder`,
+    title: "Delete element?",
+  });
   const [displayTextBox, setDisplayTextBox] = React.useState(false);
   const [boxMenuButtonOpened, setBoxMenuButtonOpened] = React.useState(false);
   const [textContent, setTextContent] = React.useState<EditorState>(
@@ -381,6 +392,30 @@ const Box = (props: {
   const [imageFile, setImageFile] = React.useState<{ image: File }>(
     {} as { image: File }
   );
+
+  const handleModalContentDisplay = () => {
+    if (displayDeleteElementModal.modalType === "replace-element") {
+      setModalContent({
+        buttonTitle: "replace",
+        description: `Current ${displayDeleteElementModal.type}  will be replaced with ${draggedChartName} in this placeholder.`,
+        title: "Replace element",
+        subtitle: `Replace current chart  with ${draggedChartName}?`,
+      });
+    } else {
+      setModalContent({
+        buttonTitle: "delete",
+        description: `Current ${displayDeleteElementModal.type} will be deleted from this placeholder. 
+      Drag and drop your new ${displayDeleteElementModal.type}  in the empty placeholder to complete your report.`,
+        subtitle: `Delete ${displayDeleteElementModal.type} from this 
+      placeholder`,
+        title: "Delete element?",
+      });
+    }
+  };
+
+  React.useEffect(() => {
+    handleModalContentDisplay();
+  }, [displayDeleteElementModal]);
 
   const handleEditChart = () => {
     setCreateChartFromReport({
@@ -403,12 +438,14 @@ const Box = (props: {
     setDisplayDeleteElementModal({
       type: type,
       display: true,
+      modalType: "delete-element",
     });
   };
   const handleDeleteElement = () => {
     props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
     setDisplayChart(false);
     setChartId(null);
+    setInitChartId(null);
     setDisplayTextBox(false);
     setDisplayImageBox(false);
     setImageFile({} as { image: File });
@@ -417,6 +454,24 @@ const Box = (props: {
       ...displayDeleteElementModal,
       display: false,
     });
+  };
+
+  const handleModalAction = () => {
+    if (displayDeleteElementModal.modalType === "replace-element") {
+      props.handleRowFrameItemAddition(
+        props.rowId,
+        props.itemIndex,
+        initChartId as string,
+        "chart"
+      );
+      setChartId(initChartId);
+      setDisplayDeleteElementModal({
+        ...displayDeleteElementModal,
+        display: false,
+      });
+    } else {
+      handleDeleteElement();
+    }
   };
 
   const containerWidth = useRecoilValue(reportContentContainerWidth);
@@ -465,6 +520,7 @@ const Box = (props: {
 
         monitor.getDropResult();
       } else if (item.type === ReportElementsType.CHART) {
+        setDraggedChartName(item.name);
         setInitChartId(item.value);
         setDisplayChart(true);
         setDisplayTextBox(false);
@@ -491,9 +547,14 @@ const Box = (props: {
   );
 
   useEffect(() => {
-    if (initChartId) {
+    if (initChartId && initChartId !== chartId) {
       if (chartId) {
-        setDisplayDeleteElementModal({ type: "chart", display: true });
+        setDisplayDeleteElementModal({
+          ...displayDeleteElementModal,
+          type: "chart",
+          display: true,
+          modalType: "replace-element",
+        });
       } else {
         props.handleRowFrameItemAddition(
           props.rowId,
@@ -825,6 +886,7 @@ const Box = (props: {
       }
     }
   }, [props.previewItem]);
+
   React.useEffect(() => {
     if (isHoldingChartValue.state && props.itemIndex == 0) {
       setDisplayChart(true);
@@ -852,20 +914,20 @@ const Box = (props: {
       {content}
       <ReportActionDialog
         modalDisplay={displayDeleteElementModal.display}
-        buttonTitle={"delete"}
-        description={`Current ${displayDeleteElementModal.type} will be deleted from this placeholder. 
-    Drag and drop your new ${displayDeleteElementModal.type}  in the empty placeholder to complete your report.`}
-        subtitle={`Delete ${displayDeleteElementModal.type} from this 
-    placeholder`}
-        title={"Delete element?"}
-        action={handleDeleteElement}
+        buttonTitle={modalContent.buttonTitle}
+        description={modalContent.description}
+        subtitle={modalContent.subtitle}
+        title={modalContent.title}
+        action={handleModalAction}
         modalType={""}
-        setModalDisplay={() =>
+        setModalDisplay={() => {
           setDisplayDeleteElementModal({
             ...displayDeleteElementModal,
             display: false,
-          })
-        }
+          });
+          setInitChartId(null);
+          setDraggedChartName("");
+        }}
       />
     </>
   ) : (

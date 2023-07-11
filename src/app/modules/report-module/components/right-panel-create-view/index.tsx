@@ -847,6 +847,7 @@ function ChartItem(props: {
     item: {
       type: props.elementType,
       value: props.id,
+      name: props.name,
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
