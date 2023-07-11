@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import { useDrop } from "react-dnd";
@@ -271,11 +271,15 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                 width: 36px;
                 height: 36px;
                 border-radius: 100px;
-                border: ${rowButtonsDisplay ? "1px solid #262c34" : "none"};
-                background: #cfd4da;
+                color: ${rowButtonsDisplay ? "#FFFFFF" : "#262C34"};
+                background: ${rowButtonsDisplay ? "#262C34" : "#cfd4da"};
+                &:hover {
+                  background: #262c34;
+                  color: #ffffff;
+                }
               `}
             >
-              <MoreVert />
+              <MoreVert color="inherit" />
             </IconButton>
           </div>
         </div>
@@ -361,6 +365,7 @@ const Box = (props: {
     (actions) => actions.charts.mapping.reset
   );
   const [chartId, setChartId] = React.useState<string | null>(null);
+  const [initChartId, setInitChartId] = React.useState<string | null>(null);
   const [displayChart, setDisplayChart] = React.useState(false);
   const [displayImageBox, setDisplayImageBox] = React.useState(false);
   const [displayDeleteElementModal, setDisplayDeleteElementModal] =
@@ -460,13 +465,7 @@ const Box = (props: {
 
         monitor.getDropResult();
       } else if (item.type === ReportElementsType.CHART) {
-        props.handleRowFrameItemAddition(
-          props.rowId,
-          props.itemIndex,
-          item.value,
-          "chart"
-        );
-        setChartId(item.value);
+        setInitChartId(item.value);
         setDisplayChart(true);
         setDisplayTextBox(false);
         setDisplayImageBox(false);
@@ -490,6 +489,22 @@ const Box = (props: {
     1000,
     [textContent]
   );
+
+  useEffect(() => {
+    if (initChartId) {
+      if (chartId) {
+        setDisplayDeleteElementModal({ type: "chart", display: true });
+      } else {
+        props.handleRowFrameItemAddition(
+          props.rowId,
+          props.itemIndex,
+          initChartId,
+          "chart"
+        );
+        setChartId(initChartId);
+      }
+    }
+  }, [initChartId]);
 
   let width = `${props.width}%`;
   if (containerWidth) {
@@ -629,6 +644,7 @@ const Box = (props: {
           }}
         >
           <div
+            ref={drop}
             css={`
               height: 100%;
               background: #fff;

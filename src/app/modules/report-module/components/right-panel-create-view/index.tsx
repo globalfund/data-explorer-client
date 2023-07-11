@@ -125,6 +125,7 @@ export const ReportElementsType = {
   HEADER: "header",
   IMAGE: "image",
   FILTER: "filter",
+  BIG_NUMBER: "bigNumber",
 };
 
 interface IHeaderDetails {
@@ -766,7 +767,11 @@ function ReportRightPanelCreateViewChartList(props: {
             vizType={chart.vizType}
             datasetId={chart.datasetId}
             pickedCharts={props.pickedCharts}
-            elementType={ReportElementsType.CHART}
+            elementType={
+              (chart.vizType === "bigNumber"
+                ? ReportElementsType.BIG_NUMBER
+                : ReportElementsType.CHART) as "chart" | "bigNumber"
+            }
             setPickedCharts={props.setPickedCharts}
           />
         ))}
