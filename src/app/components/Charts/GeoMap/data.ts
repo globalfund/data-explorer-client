@@ -8,6 +8,7 @@ import PRIVATEACCENT from "app/assets/geo-map-pins/private_accent.png";
 import PRIVATEWHITE from "app/assets/geo-map-pins/private.png";
 import MCACCENT from "app/assets/geo-map-pins/multicountry_accent.png";
 import MCWHITE from "app/assets/geo-map-pins/multicountry.png";
+import { getRandNoBetween0and1 } from "app/utils/getSecureRandomNumbers";
 
 export interface GeoMapPinMarker {
   id: string;
@@ -457,7 +458,7 @@ export function getRandomCountryData(
       setter({
         type: "FeatureCollection",
         features: data.features.map((item: Feature, index: number) => {
-          const value = index % 4 !== 0 ? Math.random() * 13 : 0;
+          const value = index % 4 !== 0 ? getRandNoBetween0and1() * 13 : 0;
           return {
             ...item,
             properties: {

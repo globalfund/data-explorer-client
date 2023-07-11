@@ -23,6 +23,7 @@ import {
   DataThemesBuilderPreviewThemePageProps,
   DataThemesBuilderPreviewThemeProps,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview-theme/data";
+import { getRandNoBetween0and1 } from "app/utils/getSecureRandomNumbers";
 
 export function DataThemesBuilderPreviewThemePage(
   props: DataThemesBuilderPreviewThemePageProps
@@ -178,7 +179,7 @@ export function DataThemesBuilderPreviewThemePage(
           <DataThemesTabOrderViz enabled={props.isEditMode}>
             {props.renderedCharts[activeTabIndex].map((_, vizIndex) => (
               <DataThemesBuilderPreviewTheme
-                key={Math.random().toString(36).substring(7)}
+                key={getRandNoBetween0and1().toString(36).substring(7)}
                 editable={props.isEditMode}
                 tabIndex={activeTabIndex}
                 vizIndex={vizIndex}

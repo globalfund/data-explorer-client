@@ -16,6 +16,7 @@ import {
   ChartBuilderPreviewThemeProps,
   ChartBuilderPreviewThemePageProps,
 } from "app/modules/chart-module/routes/preview-theme/data";
+import { getRandNoBetween0and1 } from "app/utils/getSecureRandomNumbers";
 
 export function ChartBuilderPreviewThemePage(
   props: ChartBuilderPreviewThemePageProps
@@ -42,7 +43,7 @@ export function ChartBuilderPreviewThemePage(
     <React.Fragment>
       {props.renderedCharts[0].map((_, vizIndex) => (
         <ChartBuilderPreviewTheme
-          key={Math.random().toString(36).substring(7)}
+          key={getRandNoBetween0and1().toString(36).substring(7)}
           editable={props.isEditMode}
           loading={props.loading}
           visualOptions={props.visualOptions}

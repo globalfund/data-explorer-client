@@ -8,6 +8,7 @@ import {
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 import { useStyles } from "./deleteChartDialog";
+import { getRandNoBetween0and1 } from "app/utils/getSecureRandomNumbers";
 
 interface Props {
   modalDisplay: boolean;
@@ -19,7 +20,7 @@ interface Props {
 }
 
 function rand() {
-  return Math.round(Math.random() * 20) - 10;
+  return Math.round(getRandNoBetween0and1() * 20) - 10;
 }
 
 function getModalStyle() {
