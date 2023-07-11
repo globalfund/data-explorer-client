@@ -253,6 +253,7 @@ export default function LocationAccessToFundingWrapper(props: Props) {
               font-size: 14px;
               line-height: 17px;
               text-align: center;
+              white-space: pre-line;
             `}
           >
             {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}

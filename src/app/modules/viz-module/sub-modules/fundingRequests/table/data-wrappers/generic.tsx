@@ -172,6 +172,7 @@ export function GenericFundingRequestWrapper() {
           font-size: 14px;
           line-height: 17px;
           text-align: center;
+          white-space: pre-line;
         `}
       >
         {get(cmsData, "modulesFundingRequests.tableDisclaimer", "")}
