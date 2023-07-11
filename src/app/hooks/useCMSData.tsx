@@ -184,6 +184,12 @@ export function useCMSData(props: UseCMSDataProps) {
   const modulesLandingCMSData = useStoreState(
     (state) => state.cms.modulesLanding.data
   );
+  const modulesFundingRequestsCMSAction = useStoreActions(
+    (actions) => actions.cms.modulesFundingRequests.fetch
+  );
+  const modulesFundingRequestsCMSData = useStoreState(
+    (state) => state.cms.modulesFundingRequests.data
+  );
 
   React.useEffect(() => {
     if (props.loadData) {
@@ -217,6 +223,7 @@ export function useCMSData(props: UseCMSDataProps) {
       modulesGrantDetailCMSAction({ isCMSfetch: true });
       modulesGrantsCMSAction({ isCMSfetch: true });
       modulesLandingCMSAction({ isCMSfetch: true });
+      modulesFundingRequestsCMSAction({ isCMSfetch: true });
     }
   }, []);
 
@@ -337,6 +344,10 @@ export function useCMSData(props: UseCMSDataProps) {
       {
         key: "modulesLanding",
         data: modulesLandingCMSData || {},
+      },
+      {
+        key: "modulesFundingRequests",
+        data: modulesFundingRequestsCMSData || {},
       },
     ];
     items.forEach((item) => {

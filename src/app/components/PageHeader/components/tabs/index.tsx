@@ -130,8 +130,26 @@ const styles = {
 };
 
 export function RouteTab(props: RouteTabProps) {
-  if (props.onlyLink) {
-    return <NavLink to={props.url || ""}>{props.name}</NavLink>;
+  if (props.onlyLink && props.params) {
+    return (
+      <NavLink
+        to={
+          formatTabUrlWithParams(
+            {
+              name: props.name,
+              url: props.url,
+              tabs: props.tabs,
+              index: props.index,
+              isActive: props.isActive,
+            },
+            props.search,
+            props.params
+          ).url ?? ""
+        }
+      >
+        {props.name}
+      </NavLink>
+    );
   }
 
   return (
@@ -265,7 +283,11 @@ function PageHeaderTabWDropdown(props: TabProps) {
               disableTouchRipple
               css={`
                 border-bottom-style: none;
-
+                background: ${appColors.TABS.ITEM_BACKGROUND_COLOR};
+                li {
+                  width: 100%;
+                  border-radius: 0 !important;
+                }
                 > a {
                   background: ${appColors.TABS.ITEM_BACKGROUND_COLOR};
 

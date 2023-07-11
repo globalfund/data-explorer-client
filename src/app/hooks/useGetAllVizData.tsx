@@ -212,6 +212,22 @@ export function useGetAllVizData() {
   const locationDetailDocuments = useStoreState(
     (state) => state.LocationDetailDocuments.data
   );
+  const locationDetailEligibility = useStoreState(
+    (state) =>
+      get(
+        state.LocationAccessToFunding.EligibilityTable.data,
+        "data",
+        []
+      ) as SimpleTableRow[]
+  );
+  const locationDetailFundingRequests = useStoreState(
+    (state) =>
+      get(
+        state.LocationAccessToFunding.FundingRequestsTable.data,
+        "data",
+        []
+      ) as SimpleTableRow[]
+  );
   const pledgesContributionsGeomap = useStoreState((state) => ({
     layers: {
       type: "FeatureCollection",
@@ -326,7 +342,7 @@ export function useGetAllVizData() {
     "/viz/commitment/table": disbursementsTreemap,
     // Eligibility
     "/viz/eligibility": eligibility,
-    "/viz/eligibility/table": eligibility,
+    "/viz/eligibility/table": locationDetailEligibility,
     // Pledges & Contributions
     "/viz/pledges-contributions/map": pledgesContributionsGeomap,
     "/viz/pledges-contributions/table": pledgesContributionsTable,
@@ -406,6 +422,12 @@ export function useGetAllVizData() {
     "/location/<code>/grants/list": grantsList,
     // Location Results
     "/location/<code>/results": resultsList,
+    // Location Access To Funding
+    "/location/<code>/access-to-funding": {
+      eligibility: locationDetailEligibility,
+      allocation: allocations,
+      fundingRequest: locationDetailFundingRequests,
+    },
     // Grants
     "/grants": grantsList,
     "/grants/table": grantsList,

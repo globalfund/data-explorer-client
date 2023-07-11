@@ -1,17 +1,15 @@
 import React from "react";
+import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import { useHistory } from "react-router-dom";
 import Timeline from "@material-ui/lab/Timeline";
-import IconButton from "@material-ui/core/IconButton";
 import { DrilldownModelUpdated } from "app/interfaces";
 import TimelineDot from "@material-ui/lab/TimelineDot";
 import TimelineItem from "@material-ui/lab/TimelineItem";
 import TimelineContent from "@material-ui/lab/TimelineContent";
-import CloseOutlinedIcon from "@material-ui/icons/CloseOutlined";
 import TimelineSeparator from "@material-ui/lab/TimelineSeparator";
 import TimelineConnector from "@material-ui/lab/TimelineConnector";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
-import { appColors } from "app/theme";
 
 export function DataPathPanel() {
   const history = useHistory();

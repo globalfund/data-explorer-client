@@ -101,6 +101,9 @@ export function useDatasetMenuItems(): React.ReactChild[] {
     <Expandable label="Access to Funding">
       <Link to={`/viz/eligibility/table${location.search}`}>Eligibility</Link>
       <Link to={`/viz/allocations${location.search}`}>Allocations</Link>
+      <Link to={`/viz/funding-requests/table${location.search}`}>
+        Funding Requests
+      </Link>
     </Expandable>,
     <Expandable label="Grant Implementation">
       <Link

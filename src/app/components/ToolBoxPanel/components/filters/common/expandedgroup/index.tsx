@@ -26,6 +26,9 @@ import {
 
 interface ExpandedFilterGroupProps extends FilterGroupModel, FilterGroupProps {
   goBack: () => void;
+  appliedFilters?: string[];
+  expandedGroup?: FilterGroupProps | null;
+  setAppliedFilters?: (filters: string[]) => void;
 }
 
 export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
@@ -45,7 +48,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
     type: props.name,
   });
   const [tmpAppliedFilters, setTmpAppliedFilters] = React.useState([
-    ...appliedFilters,
+    ...(props.appliedFilters || appliedFilters),
   ]);
   const [tmpAppliedFiltersChildren, setTmpAppliedFiltersChildren] =
     React.useState([...(appliedFiltersChildren || [])]);
@@ -199,8 +202,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   }
 
   function handleApply() {
-    if (!isEqual(appliedFilters, tmpAppliedFilters)) {
-      setAppliedFilters(tmpAppliedFilters);
+    if (!isEqual(props.appliedFilters || appliedFilters, tmpAppliedFilters)) {
+      if (props.setAppliedFilters) {
+        props.setAppliedFilters(tmpAppliedFilters);
+      } else {
+        setAppliedFilters(tmpAppliedFilters);
+      }
     }
     if (
       setAppliedFiltersChildren &&
@@ -280,8 +287,12 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   }
 
   function resetFilters() {
-    if (appliedFilters.length > 0) {
-      setAppliedFilters([]);
+    if ((props.appliedFilters || appliedFilters).length > 0) {
+      if (props.setAppliedFilters) {
+        props.setAppliedFilters([]);
+      } else {
+        setAppliedFilters([]);
+      }
       setTmpAppliedFilters([]);
     }
     if (
@@ -302,9 +313,15 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
     }
   }
 
+  let expandedGroupValue =
+    props.expandedGroup !== undefined ? props.expandedGroup : null;
+  if (expandedGroupValue === null && expandedGroup) {
+    expandedGroupValue = expandedGroup;
+  }
+
   return (
     <>
-      {expandedGroup && (
+      {expandedGroupValue && (
         <>
           <div
             css={`
@@ -393,10 +410,11 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
                 ${appColors.TOOLBOX.SECTION_BORDER_BOTTOM_COLOR};
             `}
           />
-
           <div
+            id="scrollable-div"
             css={`
               overflow-y: auto;
+              height: calc(100% - 190px);
               max-height: calc(100% - 190px);
 
               @media (max-width: 767px) {

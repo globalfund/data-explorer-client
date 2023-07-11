@@ -71,7 +71,9 @@ function GrantPeriodRedirect(props: RouteComponentProps<any>) {
 
 export function MainRoutes() {
   useClearDataPathStepsOnDatasetChange();
-  useFilterOptions({});
+  useFilterOptions({
+    loadFilterOptions: true,
+  });
   useScrollToTop();
   useUrlFilters();
   useGA();

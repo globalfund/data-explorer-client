@@ -11,7 +11,6 @@ import { useCMSData } from "app/hooks/useCMSData";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
-import { DrilldownModelUpdated } from "app/interfaces";
 import { PageLoader } from "app/modules/common/page-loader";
 import { getNameFromIso3 } from "app/utils/getIso3FromName";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
@@ -55,6 +54,9 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
+  );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
   );
 
   const [reRouteDialog, setReRouteDialog] = React.useState({
@@ -127,18 +129,22 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
           onNodeClick={(node: string) => {
             props.setVizLevel(1);
             props.setVizSelected(node);
-            addDataPathSteps([
-              {
-                // TODO: implement changes applied here to the other viz modules
-                id: uniqueId(),
-                name: node,
-                path: `${history.location.pathname}${history.location.search}`,
-                vizSelected: {
-                  id: node,
-                  filterStr: node,
+            if (
+              dataPathSteps.find((steps) => steps.name === node) === undefined
+            ) {
+              addDataPathSteps([
+                {
+                  // TODO: implement changes applied here to the other viz modules
+                  id: uniqueId(),
+                  name: node,
+                  path: `${history.location.pathname}${history.location.search}`,
+                  vizSelected: {
+                    id: node,
+                    filterStr: node,
+                  },
                 },
-              },
-            ]);
+              ]);
+            }
           }}
         />
       );
@@ -183,10 +189,12 @@ export function BudgetsTimeCycleModule(props: BudgetsTimeCycleModuleProps) {
                 .replace(idSplits[0], "")
                 .replace(`-${idSplits[1]}`, "");
               code = code.slice(0, code.length - 1);
-              setReRouteDialog({
-                display: true,
-                code,
-              });
+              // setReRouteDialog({
+              //   display: true,
+              //   code,
+              // });
+              clearDataPathSteps();
+              history.push(`/grant/${code}/period/budgets/time-cycle`);
             }
           }}
         />

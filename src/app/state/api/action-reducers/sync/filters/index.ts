@@ -13,6 +13,8 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   donors: [] as string[],
   donorCategories: [] as string[],
   donorSubCategories: [] as string[],
+  trpWindows: [] as string[],
+  portfolioCategories: [] as string[],
 };
 
 export interface AppliedFiltersModel {
@@ -27,6 +29,8 @@ export interface AppliedFiltersModel {
   donors: string[];
   donorCategories: string[];
   donorSubCategories: string[];
+  trpWindows: string[];
+  portfolioCategories: string[];
 }
 
 export interface AppliedFiltersStateModel {
@@ -52,6 +56,10 @@ export interface AppliedFiltersStateModel {
   setDonorCategories: Action<AppliedFiltersStateModel, string[]>;
   donorSubCategories: string[];
   setDonorSubCategories: Action<AppliedFiltersStateModel, string[]>;
+  trpWindows: string[];
+  setTrpWindows: Action<AppliedFiltersStateModel, string[]>;
+  setPortfolioCategories: Action<AppliedFiltersStateModel, string[]>;
+  portfolioCategories: string[];
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
   appliedFiltersCount: number;
@@ -113,6 +121,16 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donorSubCategories = payload;
     state.appliedFiltersCount += payload.length;
   }),
+  trpWindows: [],
+  setTrpWindows: action((state, payload: string[]) => {
+    state.trpWindows = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  portfolioCategories: [],
+  setPortfolioCategories: action((state, payload: string[]) => {
+    state.portfolioCategories = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   setAll: action((state, payload: AppliedFiltersModel) => {
     state.locations = payload.locations;
     state.components = payload.components;
@@ -124,6 +142,8 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donors = payload.donors;
     state.donorCategories = payload.donorCategories;
     state.donorSubCategories = payload.donorSubCategories;
+    state.trpWindows = payload.trpWindows;
+    state.portfolioCategories = payload.portfolioCategories;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +
@@ -133,7 +153,10 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.status.length +
       payload.replenishmentPeriods.length +
       payload.donors.length +
-      payload.donorCategories.length;
+      payload.donorCategories.length +
+      payload.donorSubCategories.length +
+      payload.trpWindows.length +
+      payload.portfolioCategories.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

@@ -44,11 +44,10 @@ export default function BreadCrumbs() {
     <div
       css={`
         left: 0;
-        top: 48px;
+        top: 45px;
         z-index: 10;
         position: sticky;
         margin-top: 3rem;
-
         background: ${document.body.style.background};
       `}
     >

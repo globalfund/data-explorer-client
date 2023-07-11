@@ -7,7 +7,10 @@ import useDebounce from "react-use/lib/useDebounce";
 import { SimpleTable } from "app/components/Table/Simple";
 import { PageLoader } from "app/modules/common/page-loader";
 import useUpdateEffect from "react-use/lib/useUpdateEffect";
-import { SimpleTableRow } from "app/components/Table/Simple/data";
+import {
+  SimpleTableColumn,
+  SimpleTableRow,
+} from "app/components/Table/Simple/data";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { getAPIFormattedFilters } from "app/utils/getAPIFormattedFilters";
 
@@ -75,12 +78,13 @@ export function AllocationsTableModule(props: AllocationsTableProps) {
     return <PageLoader />;
   }
 
-  const columns =
+  const columns: SimpleTableColumn[] =
     data.length > 0
       ? filter(Object.keys(data[0]), (key) => key !== "children").map(
           (key) => ({
-            name: key === "name" ? "Component/Location" : `${key} (USD)`,
+            name: key === "name" ? "Component/Location" : key,
             key,
+            isMonetary: key === "name" ? undefined : { currency: "USD" },
           })
         )
       : [];

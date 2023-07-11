@@ -93,7 +93,7 @@ export function PageHeader(props: PageHeaderProps) {
   }
 
   return (
-    <div css={styles.container(isAboutPage ? 48 : 104)}>
+    <div css={styles.container(isAboutPage ? 45 : 100)}>
       <Container maxWidth="lg" css={styles.innercontainer}>
         <Grid
           container

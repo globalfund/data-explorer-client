@@ -46,6 +46,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   const selectedPeriod = useStoreState(
     (state) => state.ToolBoxPanelAllocationsPeriodState.value
   );
+
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
@@ -95,6 +96,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   );
   const fetchPeriodOptionsData = useStoreActions(
     (store) => store.AllocationsPeriods.fetch
+  );
+  const clearDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.clear
   );
 
   const appliedFilters = useStoreState((state) => state.AppliedFiltersState);
@@ -259,7 +263,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
   }
 
   React.useEffect(() => {
-    const filterString = getAPIFormattedFilters(
+    let filterString = getAPIFormattedFilters(
       props.code
         ? {
             ...appliedFilters,
@@ -267,10 +271,17 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         : appliedFilters
     );
+    if (filterString.length > 0) {
+      filterString = `&${filterString}`;
+    } else {
+      filterString = "";
+    }
+
     fetchData({
-      filterString: `periods=${selectedPeriod}${
-        filterString.length > 0 ? `&${filterString}` : ""
-      }`,
+      filterString:
+        selectedPeriod !== "All"
+          ? `periods=${selectedPeriod}${filterString}`
+          : "",
     });
   }, [props.code, appliedFilters, selectedPeriod]);
 
@@ -292,7 +303,7 @@ export function AllocationsModule(props: AllocationsModuleProps) {
           }
         }
       });
-      const filterString = getAPIFormattedFilters(
+      let filterString = getAPIFormattedFilters(
         props.code
           ? {
               ...appliedFilters,
@@ -300,6 +311,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             }
           : appliedFilters
       );
+      if (filterString.length > 0) {
+        filterString = `&${filterString}`;
+      } else {
+        filterString = "";
+      }
       fetchDrilldownLevelData({
         filterString: `levelParam=component/componentName in (${(vizSelected ===
         "Total"
@@ -308,9 +324,11 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         )
           .split(",")
           .map((s: string) => `'${s}'`)
-          .join(",")})&periods=${selectedPeriod}${
-          filterString.length > 0 ? `&${filterString}` : ""
-        }`,
+          .join(",")})${
+          selectedPeriod !== "All"
+            ? `&periods=${selectedPeriod}${filterString}`
+            : ""
+        }${filterString}`,
       });
     } else {
       [...items].forEach((item: Element) => {
@@ -456,11 +474,9 @@ export function AllocationsModule(props: AllocationsModuleProps) {
               selected={vizSelected || ""}
               onChange={(value: string) => {
                 const prevValue = vizSelected || "";
-                console.log("prevValue", prevValue);
                 const fItemIndex = findIndex(dataPathSteps, {
                   vizSelected: { id: prevValue, filterStr: prevValue },
                 });
-                console.log("fItemIndex", fItemIndex);
                 setVizSelected(value);
                 let newDataPathSteps = [...dataPathSteps];
                 if (fItemIndex > -1) {
@@ -489,10 +505,12 @@ export function AllocationsModule(props: AllocationsModuleProps) {
             onNodeClick={(node: string) => {
               const name = node.split("-")[0];
               const code = getIso3FromName(name);
-              setReRouteDialog({
-                display: true,
-                code,
-              });
+              // setReRouteDialog({
+              //     display: true,
+              //     code,
+              //   });
+              clearDataPathSteps();
+              history.push(`/location/${code}/overview`);
             }}
           />
         </React.Fragment>
@@ -548,7 +566,6 @@ export function AllocationsModule(props: AllocationsModuleProps) {
         {selectedPeriod}
       </div>
       <div css="font-weight: normal;">{formatFinancialValue(total)}</div>
-
       {vizComponent}
     </div>
   );
