@@ -34,8 +34,8 @@ jobs:
               }
             ]
           extra_plugins: |
-            "@semantic-release/commit-analyzer"
-            "@semantic-release/release-notes-generator"
-            "@semantic-release/github"
+            "@semantic-release/commit-analyzer@9.0.2"
+            "@semantic-release/release-notes-generator@10.0.3"
+            "@semantic-release/github@8.1.0"
         env:
           GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
