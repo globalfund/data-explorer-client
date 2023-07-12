@@ -133,17 +133,18 @@ export function DataThemesToolBoxSelectDataset(
   const clearMapping = useStoreActions(
     (actions) => actions.dataThemes.sync.mapping.clearValue
   );
+  const datasetsFromApi = useStoreState(
+    (state) =>
+      get(
+        state,
+        "dataThemes.DatasetGetList.crudData",
+        DEFAULT_DATASETS
+      ) as DatasetListItemAPIModel[]
+  );
   const datasets =
     process.env.REACT_APP_USE_DEFAULT_DATASETS === "true"
       ? DEFAULT_DATASETS
-      : useStoreState(
-          (state) =>
-            get(
-              state,
-              "dataThemes.DatasetGetList.crudData",
-              DEFAULT_DATASETS
-            ) as DatasetListItemAPIModel[]
-        );
+      : datasetsFromApi;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

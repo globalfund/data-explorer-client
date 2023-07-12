@@ -120,6 +120,14 @@ export function ChartToolBoxSelectDataset(
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
+  const datasetsFromApi = useStoreState(
+    (state) =>
+      get(
+        state,
+        "dataThemes.DatasetGetList.crudData",
+        DEFAULT_DATASETS
+      ) as DatasetListItemAPIModel[]
+  );
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
@@ -129,14 +137,7 @@ export function ChartToolBoxSelectDataset(
   const datasets =
     process.env.REACT_APP_USE_DEFAULT_DATASETS === "true"
       ? DEFAULT_DATASETS
-      : useStoreState(
-          (state) =>
-            get(
-              state,
-              "dataThemes.DatasetGetList.crudData",
-              DEFAULT_DATASETS
-            ) as DatasetListItemAPIModel[]
-        );
+      : datasetsFromApi;
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
