@@ -150,14 +150,15 @@ export function GrantsList(props: GrantsListProps) {
 
               <div
                 css={`
-                  ${row(14, "normal")}
+                  ${row(12, "normal")}
+                  margin: 2 0;
+                  padding-left: 4px;
                 `}
               >
                 <div>
                   <div>
                     <b>{item.status}</b>
                   </div>
-                  <div>{item.id}</div>
                 </div>
                 <div
                   css={`
@@ -223,6 +224,21 @@ export function GrantsList(props: GrantsListProps) {
                   <div>
                     <b>{item.component}</b>
                     <ComponentIcon />
+                  </div>
+                </div>
+              </div>
+
+              <div
+                css={`
+                  ${row(14, "normal")}
+                  border-bottom: 1px solid ${appColors.GRANT_LIST.DIVIDER};
+                  color: #262c34;
+                  padding-bottom: 9px;
+                `}
+              >
+                <div>
+                  <div>
+                    <b> {item.id}</b>
                   </div>
                 </div>
               </div>
