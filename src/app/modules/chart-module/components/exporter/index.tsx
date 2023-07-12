@@ -68,41 +68,6 @@ export function ChartExporter(props: { rawViz: any }) {
     null
   );
 
-  const downloadSvg = React.useCallback(() => {
-    const svgString = new XMLSerializer().serializeToString(props.rawViz);
-    const DOMURL = window.URL || window.webkitURL || window;
-    const svg = new Blob([svgString], { type: "image/svg+xml;charset=utf-8" });
-    const url = DOMURL.createObjectURL(svg);
-    downloadBlob(url, `${name}${type}`);
-    DOMURL.revokeObjectURL(url);
-  }, [props.rawViz, type]);
-
-  const downloadImage = React.useCallback(
-    (format: "image/png" | "image/jpeg") => {
-      const svgString = new XMLSerializer().serializeToString(props.rawViz);
-      const DOMURL = window.URL || window.webkitURL || window;
-      const svg = new Blob([svgString], {
-        type: "image/svg+xml;charset=utf-8",
-      });
-      const url = DOMURL.createObjectURL(svg);
-      const canvas = document.createElement("canvas");
-      canvas.height = props.rawViz.clientHeight;
-      canvas.width = props.rawViz.clientWidth;
-      const ctx = canvas.getContext("2d");
-      const img = new Image();
-      img.onload = function () {
-        if (ctx) {
-          ctx.drawImage(img, 0, 0);
-        }
-        const dataUrl = canvas.toDataURL(format);
-        downloadBlob(dataUrl, `${name}${type}`);
-        DOMURL.revokeObjectURL(url);
-      };
-      img.src = url;
-    },
-    [props.rawViz, type]
-  );
-
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
   }

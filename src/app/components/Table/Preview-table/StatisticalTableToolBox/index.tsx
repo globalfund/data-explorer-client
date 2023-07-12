@@ -4,8 +4,6 @@ import { ReactComponent as CloseIcon } from "../../../../fragments/datasets-frag
 
 import { statisticalTableToolBoxStyle } from "./style";
 import { IconButton } from "@material-ui/core";
-import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
-import { ChartRepresentationProps } from "app/components/Table/Preview-table/StatisticalRepresentations";
 import { barChartdata } from "app/components/Table/Preview-table/data";
 
 export interface ColumnDetailsProps {
@@ -33,39 +31,6 @@ interface Props {
 }
 
 export default function StatisticalTableToolBox(props: Props) {
-  const domRef = React.useRef<HTMLDivElement>(null);
-  const [renderedChartMappedData, setRenderedChartMappedData] =
-    React.useState<{ bars: string; size: string }[]>(barChartdata);
-
-  const [visualOptions, setVisualOptions] = React.useState({
-    barWidth: 15.84,
-    background: "transparent",
-    color: "#000000",
-    splitLineY: false,
-    width: "219px",
-    height: 137,
-    marginBottom: 20,
-    marginTop: 20,
-    showXAxis: true,
-    realTimeSort: false,
-    xAxisLineColor: "#ADB5BD",
-    xAxisLabelColor: "#262C34",
-    barRadius: [2, 2, 0, 0],
-    focus: "self",
-    xAxisLabelInterval: (index: number) => {
-      return index === 0 || index === renderedChartMappedData.length - 1;
-    },
-  });
-
-  // const chartOption: ChartRepresentationProps = {
-  //   containerId: "toolbox-chart-render-container",
-
-  //   domRef,
-  //   visualOptions,
-  //   renderedChartMappedData,
-  //   setRenderedChartMappedData,
-  // };
-
   return (
     <div
       css={statisticalTableToolBoxStyle.container(props.placeUnderSubHeader)}
@@ -154,8 +119,9 @@ export default function StatisticalTableToolBox(props: Props) {
         >
           Correlations
         </h4>
-        {props.correlation.map((item) => (
+        {props.correlation.map((item, index) => (
           <div
+            key={`${item.name + index}`}
             css={`
               ${statisticalTableToolBoxStyle.row}
               border-bottom: 1px solid #dfe3e6;

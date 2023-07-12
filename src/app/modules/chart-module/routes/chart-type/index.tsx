@@ -35,11 +35,10 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
     setActivePanels(2);
   }, []);
 
-  const onChartTypeChange =
-    (chartTypeId: string) => (e: React.MouseEvent<HTMLDivElement>) => {
-      clearMapping();
-      setChartType(chartType === chartTypeId ? null : chartTypeId);
-    };
+  const onChartTypeChange = (chartTypeId: string) => () => {
+    clearMapping();
+    setChartType(chartType === chartTypeId ? null : chartTypeId);
+  };
 
   if (dataset === null && !props.loading) {
     history.push(`/chart/${page}/data`);

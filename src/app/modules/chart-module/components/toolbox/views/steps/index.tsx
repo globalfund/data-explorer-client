@@ -122,7 +122,7 @@ interface ChartToolBoxStepsProps {
 export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
-  const { data, loading, loadDataset, filterOptionGroups } = props;
+  const { data, loadDataset, filterOptionGroups } = props;
 
   const [collapsed, setCollapsed] = React.useState(false);
   const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
@@ -151,43 +151,40 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
     `/chart/${page}/export`,
   ];
 
-  const handleChange =
-    (panel: number) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
-      if (props.openPanel === panel - 1 && !collapsed) {
-        setCollapsed(true);
-      } else {
-        setCollapsed(false);
-        history.push(stepPaths[panel]);
-      }
-    };
+  const handleChange = (panel: number) => () => {
+    if (props.openPanel === panel - 1 && !collapsed) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+      history.push(stepPaths[panel]);
+    }
+  };
 
-  const onNavBtnClick =
-    (direction: "prev" | "next") =>
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (direction === "next" && activePanels === 6) {
-        props.save();
+  const onNavBtnClick = (direction: "prev" | "next") => () => {
+    if (direction === "next" && activePanels === 6) {
+      props.save();
+      return;
+    }
+    if (history.location.pathname === stepPaths[8] && direction === "next") {
+      // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
+      history.push(stepPaths[0]);
+      return;
+    }
+    const fStepPath = findIndex(
+      stepPaths,
+      (stepPath: string) => stepPath === history.location.pathname
+    );
+    if (fStepPath > -1) {
+      const newStepPathIndex =
+        direction === "prev" ? fStepPath - 1 : fStepPath + 1;
+      if (newStepPathIndex > stepPaths.length - 1) {
         return;
       }
-      if (history.location.pathname === stepPaths[8] && direction === "next") {
-        // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
-        history.push(stepPaths[0]);
-        return;
-      }
-      const fStepPath = findIndex(
-        stepPaths,
-        (stepPath: string) => stepPath === history.location.pathname
-      );
-      if (fStepPath > -1) {
-        const newStepPathIndex =
-          direction === "prev" ? fStepPath - 1 : fStepPath + 1;
-        if (newStepPathIndex > stepPaths.length - 1) {
-          return;
-        }
-        history.push(stepPaths[newStepPathIndex]);
-      }
-    };
+      history.push(stepPaths[newStepPathIndex]);
+    }
+  };
 
-  useUpdateEffect(() => setExpanded(props.openPanel || 0), [props.openPanel]);
+  useUpdateEffect(() => setExpanded(props.openPanel ?? 0), [props.openPanel]);
 
   return (
     <div>

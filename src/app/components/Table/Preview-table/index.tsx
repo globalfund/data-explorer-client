@@ -28,10 +28,6 @@ interface PreviewTableProps {
 export default function PreviewTable(props: PreviewTableProps) {
   const [toolboxDisplay, setToolboxDisplay] = React.useState(false);
 
-  // const handleToolBoxDisplay = () => {
-  //   setToolboxDisplay(true);
-  // };
-
   return (
     <>
       <div

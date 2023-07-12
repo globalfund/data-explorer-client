@@ -76,8 +76,7 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
       fromDimension: string,
       toDimension: string,
       fromIndex: number,
-      toIndex: number,
-      multiple?: boolean
+      toIndex: number
     ) => {
       const mappingFromStorage = get(
         JSON.parse(
@@ -295,15 +294,15 @@ function ChartBuilderMappingDimension(
         nextConfig = {
           ...dimensionMapping.config,
           aggregation: dimensionMapping.config.aggregation.filter(
-            (col: any, j: number) => j !== i
+            (j: number) => j !== i
           ),
         };
       }
 
       let nextDimensionMapping = {
         ...dimensionMapping,
-        ids: dimensionMapping.ids.filter((col: any, j: number) => j !== i),
-        value: dimensionMapping.value.filter((col: any, j: number) => j !== i),
+        ids: dimensionMapping.ids.filter((j: number) => j !== i),
+        value: dimensionMapping.value.filter((j: number) => j !== i),
         isValid: true,
         config: nextConfig,
       };
@@ -346,7 +345,6 @@ function ChartBuilderMappingDimension(
 
   const onChangeDimension = React.useCallback(
     (i: number, newCol: any) => {
-      // console.log("onChangeDimension");
       const defaulAggregation = dimension.aggregation
         ? getDefaultDimensionAggregation(dimension, dataTypes[newCol.id])
         : null;

@@ -4,9 +4,19 @@ interface Props {
   light?: boolean;
   dark?: boolean;
 }
+
 export const PrimaryButton = styled.button<Props>`
-  background: ${(props) =>
-    props.light ? "#E4E4E4" : props.dark ? "#231D2C" : props.color};
+  background: ${(props) => {
+    let result;
+    if (props.light) {
+      result = "#E4E4E4";
+    } else if (props.dark) {
+      result = "#231D2C";
+    } else {
+      result = props.color;
+    }
+    return result;
+  }};
   border-radius: 30px;
   border: none;
   outline: none;

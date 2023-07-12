@@ -14,19 +14,14 @@ export function filterDataThemesData(
     return rawData;
   }
 
-  const filteredData = filter(
-    rawData,
-    (item: { [key: string]: number | string | null }) => {
-      let valid = true;
-      filterKeys.forEach((filterKey: string) => {
-        if (!valid) {
-          return;
-        }
-        valid = appliedFilters[filterKey].indexOf(item[filterKey]) > -1;
-      });
-      return valid;
-    }
-  );
-
-  return filteredData;
+  return filter(rawData, (item: { [key: string]: number | string | null }) => {
+    let valid = true;
+    filterKeys.forEach((filterKey: string) => {
+      if (!valid) {
+        return;
+      }
+      valid = appliedFilters[filterKey].indexOf(item[filterKey]) > -1;
+    });
+    return valid;
+  });
 }

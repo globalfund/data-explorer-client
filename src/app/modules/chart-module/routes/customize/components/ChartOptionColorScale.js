@@ -159,7 +159,7 @@ const ChartOptionColorScale = ({
   const currentFinalScale = useMemo(() => {
     if (scaleType && interpolator) {
       const currentUserValues =
-        userValues && userValues.length
+       userValues?.length
           ? userValues
           : getDefaultUserValues(interpolator, scaleType);
       const valuesForFinalScale = getUserValuesForFinalScale(currentUserValues);
@@ -440,7 +440,7 @@ const ChartOptionColorScale = ({
         <div className="color-swatches-list">
           {userValues.map((userValue, i) => (
             <Row
-              key={i}
+              key={`${userValue.domain + i}`}
               className={`chart-option color-swatch ${
                 scaleType !== "ordinal" ? "not-ordinal" : "ordinal"
               }`}
@@ -451,7 +451,7 @@ const ChartOptionColorScale = ({
                     get(userValue, "domain") !== undefined && (
                       <span
                         className="nowrap text-truncate pr-2"
-                        title={userValue.domain && userValue.domain.toString()}
+                        title={ userValue.domain?.toString()}
                       >
                         {userValue.domain === ""
                           ? "[empty string]"

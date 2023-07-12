@@ -128,18 +128,6 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
         isOver: monitor.isOver() && monitor.getItem().type === "column",
       };
     },
-    // hover(item: any, monitor: any) {
-    //   console.log("hover");
-    //   if (!dimension || !onMove || !onChangeDimension || !replaceDimension)
-    //     return;
-    //   if (!dimension.multiple) {
-    //     return;
-    //   }
-    //   if (!ref.current) {
-    //     return;
-    //   }
-
-    //   const hoverIndex = index;
 
     //   //#TODO: for now we allow only dropping on "drop another dimension here" in case of multiple dimensions
     //   if (false && item.type === "column") {
@@ -197,8 +185,6 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
     //   }
     // },
     drop: (item: any) => {
-      // console.log("drop 2");
-      // console.log("drop 2 item", item);
       if (!dimension || !onMove || !onChangeDimension || !replaceDimension)
         return;
       if (!dimension.multiple) {
@@ -249,7 +235,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
 
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
-        background: ${props.backgroundColor || "#cfd4da"};
+        background: ${props.backgroundColor ?? "#cfd4da"};
         cursor: ${isDragging
           ? "grabbing"
           : !props.onDeleteItem
@@ -270,9 +256,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
           background-size: contain;
           background-position: center;
           background-repeat: no-repeat;
-          background-image: url(${typeIcon[
-            props.type as "string" | "number" | "date"
-          ]});
+          background-image: url(${typeIcon[props.type]});
         `}
       />
 
@@ -338,8 +322,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
                 <Dropdown.Item
                   key={aggregatorName}
                   onClick={() =>
-                    props.onChangeAggregation &&
-                    props.onChangeAggregation(index, aggregatorName)
+                    props.onChangeAggregation?.(index, aggregatorName)
                   }
                   css={`
                     color: #262c34;

@@ -1,10 +1,4 @@
-import {
-  createStyles,
-  IconButton,
-  makeStyles,
-  Modal,
-  Theme,
-} from "@material-ui/core";
+import { IconButton, Modal } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 import { useStyles } from "./deleteChartDialog";

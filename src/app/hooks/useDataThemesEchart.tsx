@@ -70,7 +70,7 @@ export function useDataThemesEchart() {
     const bars = data.map((d: any) => d.bars);
     const sizes = data.map((d: any) => d.size);
 
-    const option = {
+    return {
       grid: {
         top: marginTop,
         left: marginLeft,
@@ -135,16 +135,12 @@ export function useDataThemesEchart() {
         },
       },
     };
-
-    return option;
   }
 
   function echartsGeomap(data: any, visualOptions: any) {
     const {
       // artboard
       height,
-      background,
-      // margins
       marginTop,
       marginRight,
       marginBottom,
@@ -158,7 +154,7 @@ export function useDataThemesEchart() {
 
     const sizes = data.results.map((d: any) => d.value);
 
-    const option = {
+    return {
       tooltip: {
         trigger: showTooltip ? "item" : "none",
         showDelay: 0,
@@ -221,28 +217,21 @@ export function useDataThemesEchart() {
         },
       ],
     };
-
-    return option;
   }
 
   function echartsLinechart(data: any, visualOptions: any) {
     const {
-      // artboard
-      background,
-      // margins
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
-      // chart options
       stack,
       showLegend,
-      // Tooltip
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
 
-    const option = {
+    return {
       grid: {
         top: marginTop,
         left: marginLeft,
@@ -293,16 +282,12 @@ export function useDataThemesEchart() {
             : value,
       },
     };
-
-    return option;
   }
 
   function echartsSankey(data: any, visualOptions: any) {
     const {
       // artboard
       height,
-      background,
-      // margins
       marginTop,
       marginRight,
       marginBottom,
@@ -330,7 +315,7 @@ export function useDataThemesEchart() {
     });
     nodes = uniqBy(nodes, "name");
 
-    const option = {
+    return {
       // backgroundColor: background,
       backgroundColor: "transparent",
       series: [
@@ -410,8 +395,6 @@ export function useDataThemesEchart() {
         },
       },
     };
-
-    return option;
   }
 
   function echartsTreemap(data: any, visualOptions: any) {
@@ -419,7 +402,6 @@ export function useDataThemesEchart() {
       // artboard
       width,
       height,
-      background,
       // margins
       marginTop,
       marginRight,
@@ -434,7 +416,7 @@ export function useDataThemesEchart() {
       isMonetaryValue,
     } = visualOptions;
 
-    const option = {
+    return {
       // backgroundColor: background,
       backgroundColor: "transparent",
       series: [
@@ -472,8 +454,6 @@ export function useDataThemesEchart() {
         },
       },
     };
-
-    return option;
   }
 
   function render(

@@ -100,7 +100,7 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
 
   const [,] = useDebounce(
     () => {
-      props.setVisualOptions && props.setVisualOptions(visualOptions);
+      props.setVisualOptions?.(visualOptions);
     },
     500,
     [visualOptions]
@@ -191,10 +191,10 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
                   // the same approach is applied in option validation by the raw core lib
                   return def.repeatFor ? (
                     get(mapping, `[${def.repeatFor}].value`, []).map(
-                      (v: any, repeatIndex: number) => (
+                      (repeatIndex: number) => (
                         <WrapControlComponent
                           className="chart-option"
-                          key={optionId + repeatIndex}
+                          key={`${optionId + repeatIndex}`}
                           repeatIndex={repeatIndex}
                           {...def}
                           optionId={optionId}

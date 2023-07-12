@@ -1,6 +1,5 @@
 /* third-party */
 import React from "react";
-import get from "lodash/get";
 import find from "lodash/find";
 import filter from "lodash/filter";
 import IconButton from "@material-ui/core/IconButton";

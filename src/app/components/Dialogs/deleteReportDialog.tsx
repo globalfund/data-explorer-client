@@ -1,5 +1,5 @@
 import React from "react";
-import { createStyles, IconButton, makeStyles, Modal } from "@material-ui/core";
+import { createStyles, makeStyles, Modal } from "@material-ui/core";
 
 interface Props {
   cardId?: number;

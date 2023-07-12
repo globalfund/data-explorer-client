@@ -177,11 +177,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
     props.goBack();
   }
 
-  function onOptionChange(
-    checked: boolean,
-    option: FilterGroupOptionModel,
-    level: number
-  ) {
+  function onOptionChange(checked: boolean, option: FilterGroupOptionModel) {
     const tmp = [...tmpAppliedFilters];
     if (checked) {
       tmp.push(option.value);
