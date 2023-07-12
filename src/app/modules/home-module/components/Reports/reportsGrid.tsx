@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
@@ -121,7 +122,9 @@ export default function ReportsGrid(props: {
                 showMenuButton={props.showMenuButton}
                 handleDelete={() => handleModal(index)}
                 handleDuplicate={() => handleDuplicate(index)}
-                title={data.title.length > 0 ? data.title : data.name}
+                title={
+                  get(data, "title", "").length > 0 ? data.title : data.name
+                }
               />
               <Box height={16} />
             </Grid>
