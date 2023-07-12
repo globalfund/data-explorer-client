@@ -42,13 +42,14 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
   const [value, setValue] = React.useState("");
   const [allSelected, setAllSelected] = React.useState(false);
   const [optionsToShow, setOptionsToShow] = React.useState(props.options);
-
-  const activeTabIndex =
-    props.tabIndex ||
-    useStoreState((state) => state.dataThemes.activeTabIndex.value);
-  const activeVizIndex =
-    props.vizIndex ||
-    useStoreState((state) => state.dataThemes.activeVizIndex.value);
+  const activeTabIndexValue = useStoreState(
+    (state) => state.dataThemes.activeTabIndex.value
+  );
+  const activeVizIndexValue = useStoreState(
+    (state) => state.dataThemes.activeVizIndex.value
+  );
+  const activeTabIndex = props.tabIndex || activeTabIndexValue;
+  const activeVizIndex = props.vizIndex || activeVizIndexValue;
   const allAppliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );

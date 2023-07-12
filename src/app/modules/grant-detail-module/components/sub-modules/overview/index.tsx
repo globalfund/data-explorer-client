@@ -292,9 +292,7 @@ export function GrantDetailOverviewModule() {
               font-size: 12px;
               margin-bottom: 20px;
             `}
-          >
-            {/* {grantInfoData.description} */}
-          </div>
+          ></div>
         </Grid>
       )}
       <Grid

@@ -95,6 +95,8 @@
     "@types/react-router-dom": "^5.1.7",
     "@types/styled-components": "^5.1.9",
     "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
     "babel-plugin-macros": "^3.0.1",
     "babel-plugin-react-data-testid": "^0.2.0",
     "babel-plugin-styled-components": "^1.12.0",
