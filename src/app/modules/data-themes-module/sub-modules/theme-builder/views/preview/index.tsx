@@ -5,7 +5,6 @@ import { useStoreState, useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { DataThemesDataTable } from "app/modules/data-themes-module/components/data-table";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 
 interface DataThemesBuilderPreviewProps {

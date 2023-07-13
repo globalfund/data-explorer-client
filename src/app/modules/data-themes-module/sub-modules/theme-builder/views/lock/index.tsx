@@ -18,7 +18,7 @@ export function DataThemesBuilderLock(props: DataThemesBuilderLockProps) {
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
+  const setNextEnabled = React.useState<boolean>(false)[1];
 
   const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
   const activeTabIndex = useStoreState(

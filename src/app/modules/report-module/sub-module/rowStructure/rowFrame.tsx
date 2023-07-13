@@ -204,11 +204,10 @@ export default function RowFrame(props: RowFrameProps) {
     if (contentContainer) {
       const contentContainerWidth = contentContainer.offsetWidth;
       const newItems = _rowStructureDetailItems.map((item) => {
-        const items = item.map((subitem) => ({
+        return item.map((subitem) => ({
           ...subitem,
           width: contentContainerWidth * subitem.factor,
         }));
-        return items;
       });
       setRowStructureDetailItems(newItems);
     }
@@ -782,9 +781,6 @@ export function Divider(props: {
   const { page } = useParams<{ page: string }>();
 
   const [menuDisplay, setMenuDisplay] = React.useState(false);
-
-  const viewOnlyMode =
-    page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
 
   return (
     <div

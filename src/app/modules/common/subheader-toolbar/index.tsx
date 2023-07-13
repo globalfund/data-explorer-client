@@ -1,7 +1,7 @@
 import React from "react";
 import axios from "axios";
 import isEmpty from "lodash/isEmpty";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components/macro";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
@@ -31,7 +31,6 @@ import LinkIcon from "@material-ui/icons/Link";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import {
   createChartFromReportAtom,
-  persistedReportStateAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 import { CssSnackbar, ISnackbarState } from "app/components/Styled/snackbar";
@@ -92,16 +91,12 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   });
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
-  const [createChartFromReport, setCreateChartFromReport] = useRecoilState(
-    createChartFromReportAtom
-  );
+  const createChartFromReport = useRecoilValue(createChartFromReportAtom);
 
   const [__, setReportPreviewMode] = useRecoilState(
     unSavedReportPreviewModeAtom
   );
-  const [persistedReportState, setPersistedReportState] = useRecoilState(
-    persistedReportStateAtom
-  );
+
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
@@ -112,22 +107,14 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   );
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
-  const dataset = useStoreState((state) => state.charts.dataset.value);
-  const appliedFilters = useStoreState(
-    (state) => state.charts.appliedFilters.value
-  );
-  const enabledFilterOptionGroups = useStoreState(
-    (state) => state.charts.enabledFilterOptionGroups.value
-  );
+
   const activePanels = useStoreState(
     (state) => state.charts.activePanels.value
   );
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
   );
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
+
   const loadReports = useStoreActions(
     (actions) => actions.reports.ReportGetList.fetch
   );
@@ -154,12 +141,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       state.charts.ChartCreate.loading || state.charts.ChartUpdate.loading
   );
 
-  const createChart = useStoreActions(
-    (actions) => actions.charts.ChartCreate.post
-  );
-  const editChart = useStoreActions(
-    (actions) => actions.charts.ChartUpdate.patch
-  );
   const createChartClear = useStoreActions(
     (actions) => actions.charts.ChartCreate.clear
   );

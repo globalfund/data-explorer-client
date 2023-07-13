@@ -154,25 +154,23 @@ export function DataThemesToolBoxSelectDataset(
     setAnchorEl(null);
   };
 
-  const handleItemClick =
-    (endpoint: string, id: string) =>
-    (event: React.MouseEvent<HTMLElement>) => {
-      if (
-        id === stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset
-      ) {
-        return;
-      }
-      stepSelectionsActions.setStep1({
-        tab: activeTabIndex,
-        viz: activeVizIndex,
-        dataset: id,
-      });
-      clearMapping({ tab: activeTabIndex, viz: activeVizIndex });
-      handleClose();
-      loadDataset(endpoint).then(() => {
-        history.push(`/data-themes/${page}/preview-data`);
-      });
-    };
+  const handleItemClick = (endpoint: string, id: string) => () => {
+    if (
+      id === stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset
+    ) {
+      return;
+    }
+    stepSelectionsActions.setStep1({
+      tab: activeTabIndex,
+      viz: activeVizIndex,
+      dataset: id,
+    });
+    clearMapping({ tab: activeTabIndex, viz: activeVizIndex });
+    handleClose();
+    loadDataset(endpoint).then(() => {
+      history.push(`/data-themes/${page}/preview-data`);
+    });
+  };
 
   return (
     <div

@@ -188,10 +188,10 @@ export function DataThemesToolBoxCustomize(
                       mapping[activeTabIndex][activeVizIndex],
                       `[${def.repeatFor}].value`,
                       []
-                    ).map((v: any, repeatIndex: number) => (
+                    ).map((_v: any, repeatIndex: number) => (
                       <WrapControlComponent
                         className="chart-option"
-                        key={optionId + repeatIndex}
+                        key={`${optionId + repeatIndex}`}
                         repeatIndex={repeatIndex}
                         {...def}
                         optionId={optionId}

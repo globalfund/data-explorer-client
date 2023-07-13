@@ -61,7 +61,7 @@ function downloadBlob(url: string, filename: string) {
   return a;
 }
 
-export function ChartExporter(props: { rawViz: any }) {
+export function ChartExporter() {
   const [name, setName] = React.useState("Viz");
   const [type, setType] = React.useState<".svg" | ".png" | ".jpg">(".svg");
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(

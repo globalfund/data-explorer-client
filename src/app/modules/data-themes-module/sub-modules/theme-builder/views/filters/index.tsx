@@ -20,7 +20,7 @@ export function DataThemesBuilderFilters(props: DataThemesBuilderFiltersProps) {
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
+  const setNextEnabled = React.useState<boolean>(false)[1];
 
   const activeTabIndex = useStoreState(
     (state) => state.dataThemes.activeTabIndex.value

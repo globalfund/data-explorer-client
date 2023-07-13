@@ -42,7 +42,6 @@ export function handleReplaceLocalMapping(
   dataTypes: any,
   multiple = false
 ) {
-  // console.log(prev, fromDimension, fromIndex);
   const removedItem: { [key: string]: any } = {};
   removedItem.aggregation =
     prev[fromDimension]?.config?.aggregation?.[fromIndex];
@@ -76,13 +75,11 @@ export function handleReplaceLocalMapping(
       ),
     };
   }
-  const obj = {
+  return {
     ...prev,
     [fromDimension]: removeIndex(prev[fromDimension], fromIndex),
     [toDimension]: toDimensionMapping,
   };
-  // console.log(obj);
-  return obj;
 }
 
 function arrayMoveMutable(array: any, fromIndex: number, toIndex: number) {

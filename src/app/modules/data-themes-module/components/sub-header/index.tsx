@@ -21,10 +21,8 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { DataThemesTabs } from "app/modules/data-themes-module/components/tabs";
 import { styles } from "app/modules/data-themes-module/components/sub-header/styles";
 import { DataThemesPageSubHeaderProps } from "app/modules/data-themes-module/components/sub-header/data";
 import {
@@ -207,7 +205,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     setAnchorEl(null);
   }
 
-  function handleCopy(text: string, result: boolean) {
+  function handleCopy(_text: string, result: boolean) {
     setOpenSnackbar(result);
   }
 
@@ -231,7 +229,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
         tabIds.forEach((content, tabIndex) => {
           // Add an empty tab for each tab in the list
           tabs.push({ title: tabTitles[tabIndex], content: [] });
-          content.forEach((index, vizIndex) => {
+          content.forEach((vizIndex) => {
             // add a viz object for every viz in the current tab.
             let vizObject: any = {};
             if (vizIsTextContent[tabIndex][vizIndex]) {
@@ -283,7 +281,7 @@ export function DataThemesPageSubHeader(props: DataThemesPageSubHeaderProps) {
     let allTabsOK = true;
     if (tabIds.length > 0 && !props.previewMode) {
       tabIds.forEach((content, tabIndex) => {
-        content.forEach((contentViz, vizIndex) => {
+        content.forEach((_contentViz, vizIndex) => {
           if (!get(vizIsTextContent, `[${tabIndex}][${vizIndex}]`, null)) {
             if (
               !get(mapping, `[${tabIndex}][${vizIndex}]`, null) ||

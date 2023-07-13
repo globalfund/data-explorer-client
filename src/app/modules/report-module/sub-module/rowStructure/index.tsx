@@ -342,27 +342,11 @@ const Box = (props: {
   onRowBoxItemResize: (rowId: string, itemIndex: number, width: number) => void;
 }) => {
   const location = useLocation();
-  const history = useHistory();
-  const { page, view } = useParams<{ page: string; view: string }>();
-  const setDataset = useStoreActions(
-    (actions) => actions.charts.dataset.setValue
-  );
-  const setLoadedChart = useStoreActions(
-    (state) => state.charts.ChartGet.setCrudData
-  );
-  const setCreateChartData = useStoreActions(
-    (state) => state.charts.ChartCreate.setCrudData
-  );
+  const { page } = useParams<{ page: string; view: string }>();
 
-  const [_, setCreateChartFromReport] = useRecoilState(
-    createChartFromReportAtom
-  );
   const [isHoldingChartValue, setIsHoldingChartValue] =
     useRecoilState(chartHolderAtom);
 
-  const resetMapping = useStoreActions(
-    (actions) => actions.charts.mapping.reset
-  );
   const [initChartId, setInitChartId] = React.useState<string | null>(null);
 
   const [chartId, setChartId] = React.useState<string | null>(null);

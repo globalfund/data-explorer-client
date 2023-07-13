@@ -147,19 +147,17 @@ export function ChartToolBoxSelectDataset(
     setAnchorEl(null);
   };
 
-  const handleItemClick =
-    (endpoint: string, id: string) =>
-    (event: React.MouseEvent<HTMLElement>) => {
-      if (id === dataset) {
-        return;
-      }
-      setDataset(id);
-      resetMapping();
-      handleClose();
-      loadDataset(endpoint).then(() => {
-        history.push(`/chart/${page}/preview-data`);
-      });
-    };
+  const handleItemClick = (endpoint: string, id: string) => () => {
+    if (id === dataset) {
+      return;
+    }
+    setDataset(id);
+    resetMapping();
+    handleClose();
+    loadDataset(endpoint).then(() => {
+      history.push(`/chart/${page}/preview-data`);
+    });
+  };
 
   return (
     <div

@@ -6,7 +6,7 @@ import { convertToRaw } from "draft-js";
 import MuiButton from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
 import BarChartIcon from "@material-ui/icons/BarChart";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
@@ -116,7 +116,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
       tabIds.map((content, tabIndex) => {
         // Add an empty tab for each tab in the list
         tabs.push({ title: tabTitles[tabIndex], content: [] });
-        content.map((index, vizIndex) => {
+        content.forEach((vizIndex) => {
           // add a viz object for every viz in the current tab.
           let vizObject: any = {};
           if (vizIsTextContent[tabIndex][vizIndex]) {
@@ -164,7 +164,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
     let allTabsOK = true;
     if (tabIds.length > 0 && !props.previewMode) {
       tabIds.forEach((content, tabIndex) => {
-        content.forEach((contentViz, vizIndex) => {
+        content.forEach((_contentViz, vizIndex) => {
           if (!get(vizIsTextContent, `[${tabIndex}][${vizIndex}]`, null)) {
             if (
               !get(mapping, `[${tabIndex}][${vizIndex}]`, null) ||
@@ -187,7 +187,7 @@ export function DataThemesToolBox(props: DataThemesToolBoxProps) {
     }
     const newValue =
       (!props.loading &&
-        (props.data && props.data.length) > 0 &&
+        props.data?.length > 0 &&
         selectedChartType[activeTabIndex][activeVizIndex] !== "" &&
         selectedChartType[activeTabIndex][activeVizIndex] !== null &&
         !isEmpty(mapping[activeTabIndex][activeVizIndex]) &&

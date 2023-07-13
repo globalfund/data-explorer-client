@@ -53,18 +53,17 @@ export function DataThemesBuilderChartType(
     });
   }, []);
 
-  const onChartTypeChange =
-    (chartTypeId: string) => (e: React.MouseEvent<HTMLDivElement>) => {
-      clearMapping({ tab: activeTabIndex, viz: activeVizIndex });
-      setChartType({
-        tab: activeTabIndex,
-        viz: activeVizIndex,
-        value:
-          selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
-            ? null
-            : chartTypeId,
-      });
-    };
+  const onChartTypeChange = (chartTypeId: string) => () => {
+    clearMapping({ tab: activeTabIndex, viz: activeVizIndex });
+    setChartType({
+      tab: activeTabIndex,
+      viz: activeVizIndex,
+      value:
+        selectedChartType[activeTabIndex][activeVizIndex] === chartTypeId
+          ? null
+          : chartTypeId,
+    });
+  };
 
   if (
     stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset === null &&

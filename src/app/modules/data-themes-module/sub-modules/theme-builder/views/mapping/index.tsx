@@ -10,7 +10,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import {
   getTypeName,
-  chart as rawChart,
   getAggregatorNames,
   getDefaultDimensionAggregation,
   // @ts-ignore
@@ -199,9 +198,6 @@ function DataThemesBuilderMappingDimension(
       isOver: monitor.isOver(),
     }),
     drop: (item: any) => {
-      // console.log("drop 1");
-      // console.log("drop 1 item", item);
-      // console.log("drop 1 dimension", dimension);
       const mappingFromStorage = get(
         JSON.parse(
           sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
@@ -291,15 +287,15 @@ function DataThemesBuilderMappingDimension(
         nextConfig = {
           ...dimensionMapping.config,
           aggregation: dimensionMapping.config.aggregation.filter(
-            (col: any, j: number) => j !== i
+            (j: number) => j !== i
           ),
         };
       }
 
       let nextDimensionMapping = {
         ...dimensionMapping,
-        ids: dimensionMapping.ids.filter((col: any, j: number) => j !== i),
-        value: dimensionMapping.value.filter((col: any, j: number) => j !== i),
+        ids: dimensionMapping.ids.filter((j: number) => j !== i),
+        value: dimensionMapping.value.filter((j: number) => j !== i),
         isValid: true,
         config: nextConfig,
       };
@@ -351,7 +347,6 @@ function DataThemesBuilderMappingDimension(
 
   const onChangeDimension = React.useCallback(
     (i: number, newCol: any) => {
-      // console.log("onChangeDimension");
       const defaulAggregation = dimension.aggregation
         ? getDefaultDimensionAggregation(dimension, dataTypes[newCol.id])
         : null;

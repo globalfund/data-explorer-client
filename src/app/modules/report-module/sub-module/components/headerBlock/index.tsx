@@ -3,7 +3,7 @@ import moment from "moment";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
 import { EditorState } from "draft-js";
-import { useRecoilState, useSetRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import { useLocation, useParams } from "react-router-dom";
@@ -54,8 +54,6 @@ export default function HeaderBlock(props: Props) {
       });
     },
   }));
-
-  const setCurrentView = useSetRecoilState(reportRightPanelViewAtom);
 
   const setHandleDisplay = React.useState(false)[1];
 

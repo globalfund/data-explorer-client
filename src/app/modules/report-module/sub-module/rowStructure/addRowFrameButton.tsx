@@ -91,7 +91,7 @@ export default function AddRowFrameButton(props: AddRowFrameProps) {
       disableAddRowStructureButton: false,
     });
   };
-  const [{ isOver }, drop] = useDrop(() => ({
+  const [_dropContent, drop] = useDrop(() => ({
     accept: [ReportElementsType.ROWFRAME, ReportElementsType.CHART],
     collect: (monitor) => ({
       isOver: monitor.isOver(),

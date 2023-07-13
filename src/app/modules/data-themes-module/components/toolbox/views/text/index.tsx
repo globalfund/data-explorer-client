@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import MuiButton from "@material-ui/core/Button";
-import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
 /* project */

@@ -24,7 +24,7 @@ export function ChartToolBoxExport(props: ChartToolBoxExportProps) {
         }
       `}
     >
-      <ChartExporter rawViz={props.rawViz} />
+      <ChartExporter />
     </div>
   );
 }

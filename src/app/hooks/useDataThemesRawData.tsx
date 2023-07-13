@@ -225,7 +225,10 @@ export function useDataThemesRawData(props: {
         setTabsFromAPI(tabs);
 
         if (tabs.length > 0 && tabs[0].length > 0) {
-          for (let tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
+          let tabIndex = 0;
+          let vizIndex = 1;
+
+          for (tabIndex < tabs.length; tabIndex++; ) {
             // prepare the tabbed state
             if (tabIndex !== 0 && tabIds.length < tabs.length) {
               addTabId({ addPlaceholder: true });
@@ -240,11 +243,7 @@ export function useDataThemesRawData(props: {
               tmpVisualOptions.push([{}]);
             }
 
-            for (
-              let vizIndex = 1;
-              vizIndex < tabs[tabIndex].length;
-              vizIndex++
-            ) {
+            for (vizIndex < tabs[tabIndex].length; vizIndex++; ) {
               addVizId({ tabIndex: tabIndex });
               addVizActivePanel({ tabIndex: tabIndex });
               addVizChartType({ tabIndex: tabIndex });
@@ -256,9 +255,8 @@ export function useDataThemesRawData(props: {
               tmpVisualOptions[tabIndex].push({});
             }
           }
-          let tabIndex: number = 0;
+          // let tabIndex: number = 0;
           for (tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
-            let vizIndex: number = 0;
             for (vizIndex = 0; vizIndex < tabs[tabIndex].length; vizIndex++) {
               if ("content" in tabs[tabIndex][vizIndex]) {
                 const rawContent = tabs[tabIndex][vizIndex].content;
@@ -351,6 +349,7 @@ export function useDataThemesRawData(props: {
         extraLoader.style.display = "block";
       }
       const tabs: any[] = [];
+
       tabIds.forEach((content, tabIndex) => {
         // Add an empty tab for each tab in the list
         tabs.push({ title: tabTitles[tabIndex], content: [] });
@@ -384,8 +383,8 @@ export function useDataThemesRawData(props: {
           },
         })
         .then((response) => {
-          const tabs = response.data || [];
-          setTabsFromAPI(tabs);
+          const tabsFromAPI = response.data || [];
+          setTabsFromAPI(tabsFromAPI);
           setLoading(false);
           if (extraLoader) {
             extraLoader.style.display = "none";

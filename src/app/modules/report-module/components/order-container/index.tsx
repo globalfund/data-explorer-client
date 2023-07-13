@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import update from "immutability-helper";
 import { useUpdateEffect } from "react-use";
 import { useDrag, useDrop } from "react-dnd";
@@ -58,7 +58,7 @@ function Handle(props: { top: string; left: string; radius: string }) {
 }
 
 function ItemComponent(props: ItemComponentProps) {
-  const { id, content, index, moveCard } = props;
+  const { content } = props;
   const ref = React.useRef<HTMLDivElement>(null);
 
   const [{ handlerId }, drop] = useDrop<

@@ -118,7 +118,7 @@ export function DataThemesToolBoxMappingItem(
   const { index, dimension, onMove, onChangeDimension, replaceDimension } =
     props;
 
-  const [dropProps, drop] = useDrop(() => ({
+  const drop = useDrop(() => ({
     accept: ["column", "card"],
     collect: (monitor) => {
       if (!dimension || !onMove || !onChangeDimension || !replaceDimension)
@@ -197,8 +197,6 @@ export function DataThemesToolBoxMappingItem(
     //   }
     // },
     drop: (item: any) => {
-      // console.log("drop 2");
-      // console.log("drop 2 item", item);
       if (!dimension || !onMove || !onChangeDimension || !replaceDimension)
         return;
       if (!dimension.multiple) {
@@ -209,7 +207,7 @@ export function DataThemesToolBoxMappingItem(
         }
       }
     },
-  }));
+  }))[1];
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: dimension ? "card" : "column",
@@ -231,6 +229,17 @@ export function DataThemesToolBoxMappingItem(
   } else {
     drag(ref);
   }
+  const getCursorType = () => {
+    let cursorType;
+    if (isDragging) {
+      cursorType = "grabbing";
+    } else if (!props.onDeleteItem) {
+      cursorType = "grab";
+    } else {
+      cursorType = "default";
+    }
+    return cursorType;
+  };
 
   return (
     <div
@@ -246,12 +255,8 @@ export function DataThemesToolBoxMappingItem(
         border-radius: 25px;
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
-        background: ${props.backgroundColor || "#cfd4da"};
-        cursor: ${isDragging
-          ? "grabbing"
-          : !props.onDeleteItem
-          ? "grab"
-          : "default"};
+        background: ${props.backgroundColor ?? "#cfd4da"};
+        cursor: ${getCursorType()};
 
         &:last-child {
           margin-bottom: 0px;
@@ -267,9 +272,7 @@ export function DataThemesToolBoxMappingItem(
           background-size: contain;
           background-position: center;
           background-repeat: no-repeat;
-          background-image: url(${typeIcon[
-            props.type as "string" | "number" | "date"
-          ]});
+          background-image: url(${typeIcon[props.type]});
         `}
       />
       <div
@@ -333,8 +336,7 @@ export function DataThemesToolBoxMappingItem(
                 <Dropdown.Item
                   key={aggregatorName}
                   onClick={() =>
-                    props.onChangeAggregation &&
-                    props.onChangeAggregation(index, aggregatorName)
+                    props.onChangeAggregation?.(index, aggregatorName)
                   }
                   css={`
                     color: #262c34;

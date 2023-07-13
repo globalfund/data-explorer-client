@@ -5,15 +5,12 @@ import { useRecoilState } from "recoil";
 import Paper from "@material-ui/core/Paper";
 import MuiButton from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
-import { EditorState, convertToRaw } from "draft-js";
+import { EditorState } from "draft-js";
 import { SearchIcon } from "app/assets/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
-import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
-import ArrowRightAltIcon from "@material-ui/icons/ArrowRightAlt";
-import HeaderIcon from "app/modules/report-module/asset/HeaderIcon";
 import PhotoLibraryIcon from "@material-ui/icons/PhotoLibrary";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
@@ -22,18 +19,13 @@ import EditHeaderIcon from "app/modules/report-module/asset/EditHeaderIcon";
 import TextPreviewImg from "app/modules/report-module/asset/textPreview.svg";
 import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import DividerPreviewImg from "app/modules/report-module/asset/dividerPreview.svg";
-import HeaderPreviewImg from "app/modules/report-module/asset/headerPreviewImg.svg";
 import RowFramePreviewImg from "app/modules/report-module/asset/rowframePreview.svg";
-import { ReactComponent as AddNewImage } from "app/modules/report-module/asset/add-img.svg";
 import { ReactComponent as DividerIcon } from "app/modules/report-module/asset/dividerIcon.svg";
 import ChartOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
 import {
-  persistedReportStateAtom,
   reportRightPanelViewAtom,
-  createChartFromReportAtom,
   isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
-import { GridItem } from "app/modules/charts-overview-module/components/gridItem";
 import { ReactComponent as ChartIcon } from "app/modules/report-module/asset/chart-icon.svg";
 import { ReactComponent as MediaIcon } from "app/modules/report-module/asset/media-icon.svg";
 import { ReactComponent as ElementsIcon } from "app/modules/report-module/asset/elements-icon.svg";
@@ -283,6 +275,14 @@ export function ReportRightPanelCreateView(props: Props) {
     }
   }, [props.headerDetails.showHeader]);
 
+  const whiteBackgroundOnly = "background-color: #fff;";
+  const whiteBackgroundRoundedBottomRight =
+    whiteBackgroundOnly + " border-radius: 0px 0px 8px 0px;";
+  const whiteBackgroundRoundedBottomLeft =
+    whiteBackgroundOnly + " border-radius: 0px 0px 0px 8px;";
+  const whiteBackgroundNotRounded =
+    whiteBackgroundOnly + " border-radius: 0px 0px 0px 0px";
+
   return (
     <>
       <div
@@ -315,12 +315,17 @@ export function ReportRightPanelCreateView(props: Props) {
             disableRipple
             onClick={() => setCurrentView("elements")}
             css={`
-              ${currentView === "elements"
-                ? "background: transparent;"
-                : currentView === "charts"
-                ? "background-color: #fff; border-radius: 0px 0px 8px 0px;"
-                : currentView === "media" &&
-                  "background-color: #fff; border-radius: 0px 0px 0px 0px;"}
+              ${(() => {
+                if (currentView === "elements") {
+                  return "background: transparent;";
+                } else if (currentView === "charts") {
+                  return whiteBackgroundRoundedBottomRight;
+                } else if (currentView === "media") {
+                  return whiteBackgroundNotRounded;
+                } else {
+                  return "";
+                }
+              })()}
             `}
           >
             {currentView === "elements" ? (
@@ -333,12 +338,17 @@ export function ReportRightPanelCreateView(props: Props) {
             disableRipple
             onClick={() => setCurrentView("charts")}
             css={`
-              ${currentView === "elements"
-                ? "background-color: #fff; border-radius: 0px 0px 0px 8px;"
-                : currentView === "charts"
-                ? "background-color: transparent;"
-                : currentView === "media" &&
-                  "background-color: #fff; border-radius: 0px 0px 8px 0px;"}
+              ${(() => {
+                if (currentView === "elements") {
+                  return whiteBackgroundRoundedBottomLeft;
+                } else if (currentView === "charts") {
+                  return "background-color: transparent;";
+                } else if (currentView === "media") {
+                  return whiteBackgroundRoundedBottomRight;
+                } else {
+                  return "";
+                }
+              })()}
             `}
           >
             {currentView === "charts" ? <ActiveChartIcon /> : <ChartIcon />}
@@ -348,11 +358,17 @@ export function ReportRightPanelCreateView(props: Props) {
             disableRipple
             onClick={() => setCurrentView("media")}
             css={`
-              ${currentView === "elements"
-                ? "background-color: #fff; border-radius: 0px 0px 0px 0px;"
-                : currentView === "charts"
-                ? "background-color: #fff; border-radius: 0px 0px 0px 8px"
-                : currentView === "media" && "background: transparent;"}
+              ${(() => {
+                if (currentView === "elements") {
+                  return whiteBackgroundNotRounded;
+                } else if (currentView === "charts") {
+                  return whiteBackgroundRoundedBottomLeft;
+                } else if (currentView === "media") {
+                  return "background: transparent;";
+                } else {
+                  return "";
+                }
+              })()}
             `}
           >
             {currentView === "media" ? <ActiveMediaIcon /> : <MediaIcon />}
@@ -360,12 +376,17 @@ export function ReportRightPanelCreateView(props: Props) {
 
           <div
             css={`
-              ${currentView === "elements"
-                ? "background-color: #fff;"
-                : currentView === "charts"
-                ? "background-color: #fff; "
-                : currentView === "media" &&
-                  "background: #fff; border-radius: 0px 0px 0px 8px;"}
+              ${(() => {
+                if (currentView === "elements") {
+                  return "background-color: #fff;";
+                } else if (currentView === "charts") {
+                  return "background-color: #fff;";
+                } else if (currentView === "media") {
+                  return whiteBackgroundRoundedBottomLeft;
+                } else {
+                  return "";
+                }
+              })()}
               width: 100%;
               height: 100%;
             `}
@@ -405,11 +426,17 @@ export function ReportRightPanelCreateView(props: Props) {
               align-items: center;
             `}
           >
-            {currentView === "elements"
-              ? "1"
-              : currentView === "charts"
-              ? "2"
-              : currentView === "media" && "3"}
+            {(() => {
+              if (currentView === "elements") {
+                return "1";
+              } else if (currentView === "charts") {
+                return "2";
+              } else if (currentView === "media") {
+                return "3";
+              } else {
+                return "";
+              }
+            })()}
           </div>
           <div>
             <p>{currentView}</p>
@@ -852,9 +879,6 @@ function ChartItem(props: {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-    end: (item, monitor) => {
-      const dropped = monitor.didDrop();
-    },
   }));
 
   const getIcon = (vizType: string) => {

@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import update from "immutability-helper";
 import { useUpdateEffect } from "react-use";
 import { useDrag, useDrop } from "react-dnd";
@@ -150,7 +149,7 @@ export function DataThemesTabOrderViz(props: Props) {
         update(prevItems, {
           $splice: [
             [dragIndex, 1],
-            [hoverIndex, 0, prevItems[dragIndex] as Item],
+            [hoverIndex, 0, prevItems[dragIndex]],
           ],
         })
       );

@@ -2,7 +2,6 @@
 import React from "react";
 import orderBy from "lodash/orderBy";
 import { useUpdateEffect } from "react-use";
-import { SortColumn } from "react-data-grid";
 /* project */
 import PreviewTable from "app/components/Table/Preview-table";
 import { tableToolBoxData } from "app/components/Table/Preview-table/data";
@@ -15,11 +14,11 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
   const columnDetails = tableToolBoxData;
 
   const getColumns = (
-    data: { [key: string]: number | string | null | boolean }[]
+    colData: { [key: string]: number | string | null | boolean }[]
   ) => {
     let columns = [];
-    for (let key in data[0]) {
-      columns.push({ key: key, type: typeof data[0][key] });
+    for (let key in colData[0]) {
+      columns.push({ key: key, type: typeof colData[0][key] });
     }
     return columns;
   };

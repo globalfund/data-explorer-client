@@ -158,10 +158,9 @@ const ChartOptionColorScale = ({
 
   const currentFinalScale = useMemo(() => {
     if (scaleType && interpolator) {
-      const currentUserValues =
-        userValues && userValues.length
-          ? userValues
-          : getDefaultUserValues(interpolator, scaleType);
+      const currentUserValues = userValues?.length
+        ? userValues
+        : getDefaultUserValues(interpolator, scaleType);
       const valuesForFinalScale = getUserValuesForFinalScale(currentUserValues);
       return getCurrentFinalScale(interpolator, scaleType, valuesForFinalScale);
     }
@@ -438,60 +437,69 @@ const ChartOptionColorScale = ({
       {/* Scale color swatches */}
       {colorDataType && userValues && (
         <div className="color-swatches-list">
-          {userValues.map((userValue, i) => (
-            <Row
-              key={i}
-              className={`chart-option color-swatch ${
-                scaleType !== "ordinal" ? "not-ordinal" : "ordinal"
-              }`}
-            >
-              <Col xs={12}>
-                <div className="color-scale-item">
-                  {scaleType === "ordinal" &&
-                    get(userValue, "domain") !== undefined && (
-                      <span
-                        className="nowrap text-truncate pr-2"
-                        title={userValue.domain && userValue.domain.toString()}
-                      >
-                        {userValue.domain === ""
-                          ? "[empty string]"
-                          : userValue.domain.toString()}
-                      </span>
+          {userValues.map((userValue, i) => {
+            function getLabel(i) {
+              let label;
+              if (i === 0) {
+                label = "Start";
+              } else if (i === userValues.length - 1) {
+                label = "End";
+              } else {
+                label = "Middle";
+              }
+              return label;
+            }
+            return (
+              <Row
+                key={`${userValue.domain + i}`}
+                className={`chart-option color-swatch ${
+                  scaleType !== "ordinal" ? "not-ordinal" : "ordinal"
+                }`}
+              >
+                <Col xs={12}>
+                  <div className="color-scale-item">
+                    {scaleType === "ordinal" &&
+                      get(userValue, "domain") !== undefined && (
+                        <span
+                          className="nowrap text-truncate pr-2"
+                          title={userValue.domain?.toString()}
+                        >
+                          {userValue.domain === ""
+                            ? "[empty string]"
+                            : userValue.domain.toString()}
+                        </span>
+                      )}
+                    {scaleType !== "ordinal" && (
+                      <>
+                        <span className="nowrap">
+                          {getLabel(i)}
+                        </span>
+                        <input
+                          disabled={locked}
+                          type={getValueType(userValue.userDomain)}
+                          className="form-control text-field"
+                          value={getDatePickerValue(userValue)}
+                          onChange={(e) => {
+                            if (colorDataType === "date") {
+                              setUserValueDomain(i, new Date(e.target.value));
+                            } else {
+                              setUserValueDomain(i, e.target.value);
+                            }
+                          }}
+                        ></input>
+                      </>
                     )}
-                  {scaleType !== "ordinal" && (
-                    <>
-                      <span className="nowrap">
-                        {i === 0
-                          ? "Start"
-                          : i === userValues.length - 1
-                          ? "End"
-                          : "Middle"}
-                      </span>
-                      <input
-                        disabled={locked}
-                        type={getValueType(userValue.userDomain)}
-                        className="form-control text-field"
-                        value={getDatePickerValue(userValue)}
-                        onChange={(e) => {
-                          if (colorDataType === "date") {
-                            setUserValueDomain(i, new Date(e.target.value));
-                          } else {
-                            setUserValueDomain(i, e.target.value);
-                          }
-                        }}
-                      ></input>
-                    </>
-                  )}
-                  <InilineColorPicker
-                    color={userValue.userRange}
-                    onChange={(color) => {
-                      setUserValueRange(i, color);
-                    }}
-                  />
-                </div>
-              </Col>
-            </Row>
-          ))}
+                    <InilineColorPicker
+                      color={userValue.userRange}
+                      onChange={(color) => {
+                        setUserValueRange(i, color);
+                      }}
+                    />
+                  </div>
+                </Col>
+              </Row>
+            );
+          })}
           <Row>
             <Col className="d-flex justify-content-end">
               <ResetBtn resetScale={resetScale} />

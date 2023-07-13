@@ -1,5 +1,3 @@
-import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-
 export interface DataThemesPageSubHeaderProps {
   loading: boolean;
   visualOptions: any;
@@ -9,5 +7,5 @@ export interface DataThemesPageSubHeaderProps {
   tabsDisabled?: boolean;
   validMapping: boolean;
   deleteTab: (value: number) => void;
-  detailMode?: boolean
+  detailMode?: boolean;
 }

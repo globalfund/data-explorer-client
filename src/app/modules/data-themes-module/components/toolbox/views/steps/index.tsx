@@ -1,6 +1,5 @@
 /* third-party */
 import React from "react";
-import isEmpty from "lodash/isEmpty";
 import findIndex from "lodash/findIndex";
 import Tooltip from "@material-ui/core/Tooltip";
 import MuiButton from "@material-ui/core/Button";
@@ -22,9 +21,8 @@ import { DataThemesToolBoxFilters } from "app/modules/data-themes-module/compone
 import { DataThemesToolBoxChartType } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/ChartType";
 import { DataThemesToolBoxCustomize } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Customize";
 import { DataThemesToolBoxSelectDataset } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/SelectDataset";
-import { GreyedButton, PrimaryButton } from "app/components/Styled/button";
+import { PrimaryButton } from "app/components/Styled/button";
 import { Switch } from "@material-ui/core";
-import { Direction } from "react-range";
 
 export const Accordion = withStyles({
   root: {
@@ -124,16 +122,12 @@ interface DataThemesToolBoxStepsProps {
 export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
-  const { data, loading, loadDataset, filterOptionGroups } = props;
+  const { data, loadDataset, filterOptionGroups } = props;
 
   const [liveDataSwitch, setLiveDataSwitch] = React.useState(false);
   const [collapsed, setCollapsed] = React.useState(false);
-  const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
+  const [expanded, setExpanded] = React.useState<number>(props.openPanel ?? 0);
 
-  const mapping = useStoreState((state) => state.dataThemes.sync.mapping.value);
-  const selectedChartType = useStoreState(
-    (state) => state.dataThemes.sync.chartType.value
-  );
   const appliedFilters = useStoreState(
     (state) => state.dataThemes.appliedFilters.value
   );
@@ -146,9 +140,6 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
   );
   const activePanels = useStoreState(
     (state) => state.dataThemes.activePanels.value
-  );
-  const stepSelectionsData = useStoreState(
-    (state) => state.dataThemes.sync.stepSelections
   );
 
   Object.keys(appliedFilters[activeTabIndex][activeVizIndex] || {}).forEach(
@@ -170,39 +161,36 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
     `/data-themes/${page}/export`,
   ];
 
-  const handleChange =
-    (panel: number) => (event: React.ChangeEvent<{}>, isExpanded: boolean) => {
-      if (props.openPanel === panel - 1 && !collapsed) {
-        setCollapsed(true);
-      } else {
-        setCollapsed(false);
-        history.push(stepPaths[panel]);
-      }
-    };
+  const handleChange = (panel: number) => () => {
+    if (props.openPanel === panel - 1 && !collapsed) {
+      setCollapsed(true);
+    } else {
+      setCollapsed(false);
+      history.push(stepPaths[panel]);
+    }
+  };
 
-  const onNavBtnClick =
-    (direction: "prev" | "next") =>
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (history.location.pathname === stepPaths[8] && direction === "next") {
-        // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
-        history.push(stepPaths[0]);
+  const onNavBtnClick = (direction: "prev" | "next") => () => {
+    if (history.location.pathname === stepPaths[8] && direction === "next") {
+      // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
+      history.push(stepPaths[0]);
+      return;
+    }
+    const fStepPath = findIndex(
+      stepPaths,
+      (stepPath: string) => stepPath === history.location.pathname
+    );
+    if (fStepPath > -1) {
+      const newStepPathIndex =
+        direction === "prev" ? fStepPath - 1 : fStepPath + 1;
+      if (newStepPathIndex > stepPaths.length - 1) {
         return;
       }
-      const fStepPath = findIndex(
-        stepPaths,
-        (stepPath: string) => stepPath === history.location.pathname
-      );
-      if (fStepPath > -1) {
-        const newStepPathIndex =
-          direction === "prev" ? fStepPath - 1 : fStepPath + 1;
-        if (newStepPathIndex > stepPaths.length - 1) {
-          return;
-        }
-        history.push(stepPaths[newStepPathIndex]);
-      }
-    };
+      history.push(stepPaths[newStepPathIndex]);
+    }
+  };
 
-  useUpdateEffect(() => setExpanded(props.openPanel || 0), [props.openPanel]);
+  useUpdateEffect(() => setExpanded(props.openPanel ?? 0), [props.openPanel]);
 
   return (
     <div>

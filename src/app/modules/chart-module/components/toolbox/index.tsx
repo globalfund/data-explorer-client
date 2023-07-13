@@ -154,7 +154,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
 
         {props.exportView && props.rawViz && (
           <div css={styles.exportview}>
-            <ChartExporter rawViz={props.rawViz} />
+            <ChartExporter />
           </div>
         )}
         {props.filtersView && (

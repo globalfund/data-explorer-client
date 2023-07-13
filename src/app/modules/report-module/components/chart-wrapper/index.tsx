@@ -24,7 +24,7 @@ export function ReportChartWrapper(props: Props) {
   );
 
   const [chartName, setChartName] = React.useState<string>("");
-  const [rawViz, setRawViz] = React.useState<any>(null);
+  const setRawViz = React.useState<any>(null)[1];
   const [visualOptions, setVisualOptions] = React.useState({});
 
   const [chartFromAPI, setChartFromAPI] =

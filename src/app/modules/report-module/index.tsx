@@ -76,7 +76,7 @@ export default function ReportModule() {
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
-  const [buttonActive, setButtonActive] = React.useState(false);
+  const buttonActive = React.useState(false)[0];
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("My First Report");
   const [reportType, setReportType] = React.useState<
@@ -86,7 +86,7 @@ export default function ReportModule() {
   const localReportState = JSON.parse(persistedReportState.framesArray);
 
   let localPickedCharts: string[] = [];
-  localReportState.map((data: any, index: number) => {
+  localReportState.map((data: any, _i: number) => {
     return data.contentTypes.map((item: any, index: number) => {
       if (item === "chart") {
         localPickedCharts.push(data.content[index]);
@@ -159,7 +159,7 @@ export default function ReportModule() {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths_: ReportContentWidthsType[]
   ) => {
     setFramesArray((prev) => {
       if (!stopInitializeFramesWidth) {
@@ -187,7 +187,7 @@ export default function ReportModule() {
       }
       tempPrev.forEach((frame, index) => {
         const indexContentWidths: number[] = get(
-          reportContentWidths,
+          reportContentWidths_,
           `[${index}].widths`,
           []
         );
@@ -393,7 +393,7 @@ export default function ReportModule() {
     });
   };
 
-  const id = v4();
+  const uniqueID = v4();
 
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([]);
 
@@ -444,7 +444,7 @@ export default function ReportModule() {
                 id: rowFrame.id,
 
                 frame: isDivider ? (
-                  <Divider delete={deleteFrame} dividerId={id} />
+                  <Divider delete={deleteFrame} dividerId={uniqueID} />
                 ) : (
                   <RowFrame
                     key={rowFrame.id}
@@ -655,18 +655,18 @@ export default function ReportModule() {
   }, [reportCreateSuccess, reportEditSuccess, reportCreateData]);
 
   React.useEffect(() => {
-    const container = document.getElementsByClassName(
-      "main-container"
+    const containers = document.getElementsByClassName(
+      "main-containers"
     ) as HTMLCollectionOf<HTMLElement>;
     document.body.style.background = "#fff";
-    for (let i = 0; i < container.length; i++) {
-      container[i].style.maxWidth = "none";
-      container[i].style.paddingLeft = "0px";
+    for (const container of containers) {
+      container.style.maxWidth = "none";
+      container.style.paddingLeft = "0px";
     }
     return () => {
-      for (let i = 0; i < container.length; i++) {
-        container[i].style.maxWidth = "1280px";
-        container[i].style.padding = "0 24px";
+      for (const container of containers) {
+        container.style.maxWidth = "1280px";
+        container.style.padding = "0 24px";
       }
     };
   }, [location.pathname]);

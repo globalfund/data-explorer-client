@@ -39,16 +39,11 @@ import {
   routeToConfig,
   DataThemeRenderedTabItem,
 } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
-import { useMediaQuery } from "@material-ui/core";
-import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 
 export function DataThemesBuilder() {
   const history = useHistory();
-  const isMobile = useMediaQuery("(max-width: 767px)");
-  const vizWrapperRef = React.useRef(null);
 
   const { page, view } = useParams<{ page: string; view?: string }>();
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
   const [tabsFromAPI, setTabsFromAPI] = React.useState<
     DataThemeRenderedTabItem[][]
@@ -257,7 +252,7 @@ export function DataThemesBuilder() {
   const toolboxVisualOptions = React.useMemo(() => {
     let tmpVisualOptions: any = [...visualOptions];
     tmpVisualOptions.forEach((tab: any, tIndex: number) => {
-      tab.forEach((viz: any, vIndex: number) => {
+      tab.forEach((_viz: any, vIndex: number) => {
         if (!renderedChartsSsr[tIndex] || !renderedChartsSsr[tIndex][vIndex]) {
           delete tmpVisualOptions[tIndex][vIndex].width;
         }
@@ -358,12 +353,7 @@ export function DataThemesBuilder() {
     switch (param) {
       case "initial":
         return false;
-      case "data":
-        return (
-          stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset !==
-          null
-        );
-      case "preview-data":
+      case "data" || "preview-data":
         return (
           stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset !==
           null
@@ -431,7 +421,7 @@ export function DataThemesBuilder() {
         setSubTitle({ subTitle: loadedDataTheme.subTitle });
       }
       if (loadedDataTheme.tabs.length > 0) {
-        loadedDataTheme.tabs.forEach((tab, tabIndex) => {
+        loadedDataTheme.tabs.forEach((_tab, tabIndex) => {
           setTabTitle({
             tabIndex: tabIndex,
             tabTitle: loadedDataTheme.tabs[tabIndex].title,
