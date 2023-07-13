@@ -12,7 +12,7 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
   const [data, setData] = React.useState<
     { [key: string]: number | string | null | boolean }[]
   >([]);
-  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
+  const columnDetails = tableToolBoxData;
 
   const getColumns = (
     data: { [key: string]: number | string | null | boolean }[]
@@ -24,21 +24,10 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     return columns;
   };
 
-  const [sort, setSort] = React.useState<SortColumn>({
+  const sort = {
     columnKey: "",
     direction: "ASC",
-  });
-
-  const handleSort = React.useCallback((newSorts: SortColumn[]) => {
-    if (newSorts.length === 0) {
-      setSort({
-        columnKey: "",
-        direction: "ASC",
-      });
-    } else {
-      setSort(newSorts[newSorts.length - 1]);
-    }
-  }, []);
+  };
 
   React.useEffect(() => {
     setData(props.data);

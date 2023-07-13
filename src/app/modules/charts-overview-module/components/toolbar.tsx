@@ -25,7 +25,6 @@ export default function Toolbar(props: {
     React.useState<HTMLButtonElement | null>(null);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const exploreViewRef = React.useRef<HTMLDivElement>(null);
   const sortOptions = [
     { label: "Date", value: "date" },
     { label: "Label", value: "label" },

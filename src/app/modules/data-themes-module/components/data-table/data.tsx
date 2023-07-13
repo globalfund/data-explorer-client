@@ -1,10 +1,13 @@
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
 
+type DataType = number | string | null;
+type DatastatsType = "bar" | "percentage" | "unique";
+
 export interface DataThemesDataTableProps {
-  data: { [key: string]: number | string | null }[];
+  data: { [key: string]: DataType }[];
   stats: {
     name: string;
-    type: "percentage" | "bar" | "unique";
+    type: DatastatsType;
     data: { name: string; value: number }[];
   }[];
 }

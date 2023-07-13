@@ -12,9 +12,7 @@ import ReportsGrid from "./components/reportsGrid";
 export default function ReportsModule() {
   const cmsData = useCMSData({ returnData: true });
   const [tableView, setTableView] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
-  const [openSearch, setOpenSearch] = React.useState(false);
-  const [sortValue, setSortValue] = React.useState("createdDate");
+  const sortValue = "createdDate";
   return (
     <div css={container}>
       <div
@@ -43,11 +41,7 @@ export default function ReportsModule() {
           sortBy={sortValue}
           tableView={tableView}
         />
-        <ReportsGrid
-          searchStr={searchValue}
-          sortBy={sortValue}
-          tableView={tableView}
-        />
+        <ReportsGrid tableView={tableView} />
       </div>
     </div>
   );

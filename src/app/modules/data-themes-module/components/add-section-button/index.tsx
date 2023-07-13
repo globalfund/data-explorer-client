@@ -2,10 +2,8 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
 import { AddIcon } from "app/assets/icons/Add";
-import SearchIcon from "@material-ui/icons/Search";
 import IconButton from "@material-ui/core/IconButton";
 import BarChartIcon from "@material-ui/icons/BarChart";
-import DashboardIcon from "@material-ui/icons/Dashboard";
 import TextFieldsIcon from "@material-ui/icons/TextFields";
 /* project */
 import { useDataThemesAddSection } from "app/hooks/useDataThemesAddSection";

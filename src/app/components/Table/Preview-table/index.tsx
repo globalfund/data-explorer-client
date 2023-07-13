@@ -13,6 +13,9 @@ import StatisticalTableToolBox, {
   ColumnDetailsProps,
 } from "app/components/Table/Preview-table/StatisticalTableToolBox";
 
+type DatastatsType = "bar" | "percentage" | "unique";
+type StatsType = number | string | null;
+
 interface PreviewTableProps {
   placeUnderSubHeader?: boolean;
   columnDetails: ColumnDetailsProps;
@@ -20,7 +23,7 @@ interface PreviewTableProps {
   tableData: { [key: string]: number | string | null | boolean }[];
   dataStats: {
     name: string;
-    type: "bar" | "percentage" | "unique";
+    type: DatastatsType;
     data: { name: string; value: number }[];
   }[];
 }

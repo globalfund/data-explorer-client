@@ -80,7 +80,7 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
     ) => {
       const mappingFromStorage = get(
         JSON.parse(
-          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
         ),
         "data.value",
         {}
@@ -219,7 +219,7 @@ function ChartBuilderMappingDimension(
     drop: (item: any) => {
       const mappingFromStorage = get(
         JSON.parse(
-          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
         ),
         "data.value",
         {}
@@ -448,44 +448,43 @@ function ChartBuilderMappingDimension(
             *
           </div>
         </div>
-        {dimensionMapping.ids &&
-          dimensionMapping.ids.map((id: string, index: number) => {
-            const columnId = dimensionMapping.value[index];
-            let type = props.dataTypes[columnId];
-            const columnDataType = getTypeName(type);
-            const relatedAggregation = dimension?.aggregation
-              ? dimensionMapping.config.aggregation[index] ||
-                getDefaultDimensionAggregation(dimension, columnDataType)
-              : undefined;
-            const isValid =
-              dimension.validTypes?.length === 0 ||
-              dimension.validTypes?.includes(columnDataType);
+        {dimensionMapping.ids?.map((id: string, index: number) => {
+          const columnId = dimensionMapping.value[index];
+          let type = props.dataTypes[columnId];
+          const columnDataType = getTypeName(type);
+          const relatedAggregation = dimension?.aggregation
+            ? dimensionMapping.config.aggregation[index] ||
+              getDefaultDimensionAggregation(dimension, columnDataType)
+            : undefined;
+          const isValid =
+            dimension.validTypes?.length === 0 ||
+            dimension.validTypes?.includes(columnDataType);
 
-            if (typeof props.dataTypes[columnId] === "object") {
-              type = props.dataTypes[columnId].type;
-            }
+          if (typeof props.dataTypes[columnId] === "object") {
+            type = props.dataTypes[columnId].type;
+          }
 
-            return (
-              <ChartToolBoxMappingItem
-                key={id}
-                type={type}
-                testId={`mapping-item-${id}`}
-                index={index}
-                onMove={onMove}
-                isValid={isValid}
-                dimension={dimension}
-                dataTypeName={columnId}
-                aggregators={aggregators}
-                replaceDimension={replaceDimension}
-                onChangeDimension={onChangeDimension}
-                relatedAggregation={relatedAggregation}
-                onDeleteItem={() => onDeleteItem(index)}
-                onChangeAggregation={onChangeAggregation}
-                backgroundColor={isValid ? undefined : "#fa7355"}
-                marginBottom={!dimension.multiple ? "0px" : "16px"}
-              />
-            );
-          })}
+          return (
+            <ChartToolBoxMappingItem
+              key={id}
+              type={type}
+              testId={`mapping-item-${id}`}
+              index={index}
+              onMove={onMove}
+              isValid={isValid}
+              dimension={dimension}
+              dataTypeName={columnId}
+              aggregators={aggregators}
+              replaceDimension={replaceDimension}
+              onChangeDimension={onChangeDimension}
+              relatedAggregation={relatedAggregation}
+              onDeleteItem={() => onDeleteItem(index)}
+              onChangeAggregation={onChangeAggregation}
+              backgroundColor={isValid ? undefined : "#fa7355"}
+              marginBottom={!dimension.multiple ? "0px" : "16px"}
+            />
+          );
+        })}
         {(dimension.multiple ||
           get(dimensionMapping, "value", []).length === 0) && (
           <div
@@ -584,10 +583,10 @@ function ChartBuilderMappingDimensionStatic(
     get(mapping, `${dimension.id}.value[0]`, "")
   );
 
-  const onValueChange = (value: string) => {
+  const onValueChange = (val: string) => {
     const mappingFromStorage = get(
       JSON.parse(
-        sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
+        sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
       ),
       "data.value",
       {}
@@ -596,7 +595,7 @@ function ChartBuilderMappingDimensionStatic(
     setMapping({
       [dimension.id]: {
         ids: (localDimensionMapping.ids || []).concat(uniqueId()),
-        value: [value],
+        value: [val],
         isValid: true,
         mappedType: "string",
       },

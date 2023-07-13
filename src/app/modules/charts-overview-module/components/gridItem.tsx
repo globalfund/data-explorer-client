@@ -2,11 +2,7 @@ import { useState } from "react";
 import { appColors } from "app/theme";
 import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-// import DuplicateIcon from "@material-ui/icons/FileCopy";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import { IconButton, Tooltip } from "@material-ui/core";
-import { ReactComponent as DuplicateIcon } from "app/modules/reports-module/assets/copy-icon.svg";
+import { IconButton } from "@material-ui/core";
 import MenuOptions from "./menuOptions";
 
 export function GridItem(props: {
@@ -105,7 +101,7 @@ export function GridItem(props: {
           `}
         >
           {props.iconLinks.map((iconLink, index) => (
-            <Link to={iconLink.link} key={index}>
+            <Link to={iconLink.link} key={`${iconLink.link + index}`}>
               {iconLink.icon}
             </Link>
           ))}

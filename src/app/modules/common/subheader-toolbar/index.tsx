@@ -5,13 +5,11 @@ import { useRecoilState } from "recoil";
 import styled from "styled-components/macro";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
-import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
 import Divider from "@material-ui/core/Divider";
 import ShareIcon from "@material-ui/icons/Share";
-// import { LinkIcon } from "app/assets/icons/Link";
 import Snackbar from "@material-ui/core/Snackbar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
@@ -29,16 +27,13 @@ import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
 import { ExportChartButton } from "app/modules/common/subheader-toolbar/exportButton";
-import Edit from "@material-ui/icons/Edit";
 import LinkIcon from "@material-ui/icons/Link";
 import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
-
 import {
   createChartFromReportAtom,
   persistedReportStateAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
-import { EditorState, convertToRaw } from "draft-js";
 import { CssSnackbar, ISnackbarState } from "app/components/Styled/snackbar";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
@@ -200,7 +195,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     setAnchorEl(null);
   };
 
-  const handleCopy = (text: string, result: boolean) => {
+  const handleCopy = (_text: string, result: boolean) => {
     setOpenSnackbar(result);
   };
 
@@ -208,46 +203,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     setOpenSnackbar(false);
   };
 
-  const onSave = () => {
-    if (props.onReportSave) {
-      props.onReportSave();
-      return;
-    }
-    const chart = {
-      name: props.name,
-      vizType: selectedChartType,
-      mapping,
-      datasetId: dataset,
-      vizOptions: props.visualOptions || {},
-      appliedFilters,
-      enabledFilterOptionGroups,
-    };
-    if (view !== undefined && page !== "new") {
-      editChart({
-        patchId: page,
-        values: chart,
-      });
-    } else {
-      createChart({
-        values: chart,
-      });
-    }
-
-    //completes chart creation, returns back to persisted report view
-    if (createChartFromReport.state) {
-      setCreateChartFromReport({
-        ...createChartFromReport,
-        state: false,
-      });
-      if (createChartFromReport.view === undefined) {
-        history.push(`/report/${createChartFromReport.page}/edit`);
-      } else {
-        history.push(
-          `/report/${createChartFromReport.page}/${createChartFromReport.view}`
-        );
-      }
-    }
-  };
   React.useEffect(() => {
     return () => {
       createChartClear();
@@ -297,9 +252,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           view !== undefined && page !== "new" ? "saved" : "created"
         } successfully!`
       );
-      const id = createChartSuccess ? createChartData.id : page;
+      const chartId = createChartSuccess ? createChartData.id : page;
       if (createChartFromReport.view === "") {
-        history.push(`/chart/${id}`);
+        history.push(`/chart/${chartId}`);
       }
     }
   }, [createChartSuccess, editChartSuccess, createChartData]);
@@ -370,52 +325,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           });
         })
         .catch((error) => console.log(error));
-  };
-
-  const handlePreviewMode = () => {
-    if (props.pageType === "report") {
-      setReportPreviewMode(true);
-      setPersistedReportState({
-        ...persistedReportState,
-        reportName: props.reportName,
-        headerDetails: {
-          ...props.headerDetails,
-          description: JSON.stringify(
-            convertToRaw(props.headerDetails.description.getCurrentContent())
-          ),
-        },
-        appliedHeaderDetails: {
-          ...props.appliedHeaderDetails,
-          description: JSON.stringify(
-            convertToRaw(
-              props.appliedHeaderDetails.description.getCurrentContent()
-            )
-          ),
-        },
-
-        framesArray: JSON.stringify(
-          props.framesArray
-            .sort(function (a, b) {
-              return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
-            })
-            .map((frame) => ({
-              id: frame.id,
-              structure: frame.structure,
-              content: frame.content,
-              contentTypes: frame.contentTypes,
-              contentWidths: frame.contentWidths,
-              items: frame.content.map((item, index) =>
-                frame.contentTypes[index] === "text"
-                  ? convertToRaw((item as EditorState).getCurrentContent())
-                  : item
-              ),
-            }))
-        ),
-      });
-      history.push(`/${props.pageType}/${page}/preview`);
-    } else {
-      history.push(`/${props.pageType}/${page}/preview`);
-    }
   };
 
   const handleBackToEdit = () => {
@@ -519,7 +428,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                             }
                           `}
                         >
-                          <Edit />
+                          <EditIcon />
                         </IconButton>
                       </span>
                     </Tooltip>

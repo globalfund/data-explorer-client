@@ -11,16 +11,14 @@ function removeIndex(mapping: any, i: number) {
   if (mapping.config) {
     nextConfig = {
       ...mapping.config,
-      aggregation: mapping.config.aggregation.filter(
-        (col: any, j: number) => j !== i
-      ),
+      aggregation: mapping.config.aggregation.filter((j: number) => j !== i),
     };
   }
 
   return {
     ...mapping,
-    ids: mapping.ids.filter((col: any, j: number) => j !== i),
-    value: mapping.value.filter((col: any, j: number) => j !== i),
+    ids: mapping.ids.filter((j: number) => j !== i),
+    value: mapping.value.filter((j: number) => j !== i),
     config: nextConfig,
   };
 }
@@ -44,7 +42,6 @@ export function handleReplaceLocalMapping(
   dataTypes: any,
   multiple = false
 ) {
-  // console.log(prev, fromDimension, fromIndex);
   const removedItem: { [key: string]: any } = {};
   removedItem.aggregation =
     prev[fromDimension]?.config?.aggregation?.[fromIndex];
@@ -78,13 +75,11 @@ export function handleReplaceLocalMapping(
       ),
     };
   }
-  const obj = {
+  return {
     ...prev,
     [fromDimension]: removeIndex(prev[fromDimension], fromIndex),
     [toDimension]: toDimensionMapping,
   };
-  // console.log(obj);
-  return obj;
 }
 
 function arrayMoveMutable(array: any, fromIndex: number, toIndex: number) {
