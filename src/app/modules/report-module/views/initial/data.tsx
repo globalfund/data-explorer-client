@@ -2,7 +2,6 @@ import { ReactComponent as AITemplateImg } from "../../asset/aiTemplate-img.svg"
 import { ReactComponent as BlankTemplateImg } from "../../asset/blankTemplate-img.svg";
 import { ReactComponent as AdvancedTemplateImg } from "../../asset/advancedTemplate-img.svg";
 import { ReactComponent as RightArrowIcon } from "../../asset/rightArrow.svg";
-("");
 
 export interface ReportInitialViewProps {
   buttonActive: boolean;

@@ -3,7 +3,6 @@ import {
   Divider,
   FormControlLabel,
   IconButton,
-  Link,
   Popover,
   Switch,
 } from "@material-ui/core";
@@ -22,7 +21,7 @@ export default function Subheader(props: SubheaderProps) {
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
-  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const setOpenSnackbar = React.useState(false)[1];
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {
     setAnchorEl(event.currentTarget);
@@ -32,7 +31,7 @@ export default function Subheader(props: SubheaderProps) {
     setAnchorEl(null);
   }
 
-  function handleCopy(text: string, result: boolean) {
+  function handleCopy(_text: string, result: boolean) {
     setOpenSnackbar(result);
   }
 
@@ -99,13 +98,7 @@ export default function Subheader(props: SubheaderProps) {
                       value="public-theme"
                       label="Public theme"
                       labelPlacement="start"
-                      control={
-                        <Switch
-                          color="primary"
-                          //   checked={isPublicTheme}
-                          //   onChange={() => setIsPublicTheme(!isPublicTheme)}
-                        />
-                      }
+                      control={<Switch color="primary" />}
                     />
                     <Divider />
                     <CopyToClipboard

@@ -3,7 +3,7 @@ import moment from "moment";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
 import { EditorState } from "draft-js";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useSetRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import { useLocation, useParams } from "react-router-dom";
@@ -55,11 +55,9 @@ export default function HeaderBlock(props: Props) {
     },
   }));
 
-  const [currentView, setCurrentView] = useRecoilState(
-    reportRightPanelViewAtom
-  );
+  const setCurrentView = useSetRecoilState(reportRightPanelViewAtom);
 
-  const [handleDisplay, setHandleDisplay] = React.useState(false);
+  const setHandleDisplay = React.useState(false)[1];
 
   const viewOnlyMode =
     page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
@@ -90,17 +88,6 @@ export default function HeaderBlock(props: Props) {
     props.setHeaderDetails({
       ...props.headerDetails,
       description: text,
-    });
-  };
-
-  const onEdit = () => {
-    setCurrentView("editHeader");
-  };
-
-  const onRemove = () => {
-    props.setHeaderDetails({
-      ...props.headerDetails,
-      showHeader: false,
     });
   };
 

@@ -8,7 +8,6 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import {
   IRowFrameStructure,
   reportContentContainerWidth,
-  unSavedReportPreviewModeAtom,
   isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
 import { ReactComponent as LogoIcon } from "app/modules/report-module/asset/logo.svg";
@@ -31,7 +30,6 @@ export function ReportCreateView(props: ReportCreateViewProps) {
   const [containerWidth, setContainerWidth] = useRecoilState(
     reportContentContainerWidth
   );
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -181,7 +179,9 @@ export const PlaceHolder = (props: PlaceholderProps) => {
       canDrop: monitor.canDrop(),
       item: monitor.getItem(),
     }),
-    drop: (item: any, monitor) => {
+    drop: (item: any) => {
+      console.log(isOver, "isDropOver");
+
       if (item.type === ReportElementsType.ROWFRAME) {
         props.setFramesArray((prev) => {
           const tempIndex = prev.findIndex((frame) => frame.id === props.index);

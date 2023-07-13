@@ -1,6 +1,16 @@
 import { EditorState } from "draft-js";
 import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
+export type RowStructureType =
+  | null
+  | "oneByOne"
+  | "oneByTwo"
+  | "oneByThree"
+  | "oneByFour"
+  | "oneToFour"
+  | "fourToOne"
+  | "twoToThree"
+  | "threeToTwo";
 export interface IFramesArray {
   id: string;
   frame: JSX.Element;
@@ -8,16 +18,7 @@ export interface IFramesArray {
   content: (object | string | null)[];
   isHandleOpen: boolean;
   contentTypes: ("text" | "divider" | "chart" | "image" | null)[];
-  structure:
-    | null
-    | "oneByOne"
-    | "oneByTwo"
-    | "oneByThree"
-    | "oneByFour"
-    | "oneToFour"
-    | "fourToOne"
-    | "twoToThree"
-    | "threeToTwo";
+  structure: RowStructureType;
 }
 
 export interface ReportCreateViewProps {

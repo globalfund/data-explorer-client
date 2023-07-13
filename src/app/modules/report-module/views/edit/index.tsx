@@ -74,7 +74,7 @@ export function ReportEditView(props: ReportEditViewProps) {
 
   React.useEffect(() => {
     if (props.localPickedCharts.length === 0) {
-      const items = reportData.rows.map((rowFrame, index) =>
+      const items = reportData.rows.map((rowFrame) =>
         rowFrame.items.filter((item) => typeof item === "string")
       ) as string[][];
       let pickedItems: string[] = [];

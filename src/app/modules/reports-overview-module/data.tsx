@@ -2,8 +2,6 @@ import { AllocationIcon } from "app/assets/icons/charts/Allocation";
 import { BarIcon } from "app/assets/icons/charts/Bar";
 import { DotIcon } from "app/assets/icons/charts/Dot";
 import { MapIcon } from "app/assets/icons/charts/Map";
-import { NetworkIcon } from "app/assets/icons/charts/Network";
-import { RadialIcon } from "app/assets/icons/charts/Radial";
 import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import { TableIcon } from "app/assets/icons/charts/Table";
 import { TreemapIcon } from "app/assets/icons/charts/Treemap";

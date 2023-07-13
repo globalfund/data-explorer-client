@@ -2,17 +2,12 @@ import { Grid } from "@material-ui/core";
 import React from "react";
 import { dummyReportsdata } from "../data";
 import { ReportsTable } from "./Table";
-import moment from "moment";
 import { GridItem } from "./gridItem";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import DuplicateReportDialog from "app/components/Dialogs/duplicateReportDialog";
 import { v4 } from "uuid";
 
-export default function ReportsGrid(props: {
-  sortBy: string;
-  searchStr: string;
-  tableView: boolean;
-}) {
+export default function ReportsGrid(props: { tableView: boolean }) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalType, setModalType] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -39,8 +34,7 @@ export default function ReportsGrid(props: {
       setEnableButton(false);
     }
   };
-  const handleDelete = (id: number) => {
-    // deleteDataset(id);
+  const handleDelete = () => {
     setModalType("");
     setEnableButton(false);
   };
@@ -56,7 +50,14 @@ export default function ReportsGrid(props: {
       {!props.tableView && (
         <Grid container spacing={2}>
           {dummyReportsdata.map((data, index: number) => (
-            <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={3}
+              key={`${data.link + index}`}
+            >
               <GridItem
                 description={data.description}
                 link={data.link}

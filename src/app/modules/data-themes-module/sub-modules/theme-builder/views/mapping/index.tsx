@@ -16,8 +16,6 @@ import {
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
 /* project */
-import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
-import { CHART_DEFAULT_WIDTH } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 import { DataThemesToolBoxMappingItem } from "app/modules/data-themes-module/components/toolbox/views/steps/panels-content/Mapping";
 import {
@@ -41,8 +39,8 @@ export function DataThemesBuilderMapping(props: DataThemesBuilderMappingProps) {
 
   const containerRef = React.useRef<HTMLDivElement>(null);
 
-  const [nextEnabled, setNextEnabled] = React.useState<boolean>(false);
-  const [draggingId, setDraggingId] = React.useState<string | null>(null);
+  const setNextEnabled = React.useState<boolean>(false)[1];
+  const setDraggingId = React.useState<string | null>(null)[1];
 
   const activeTabIndex = useStoreState(
     (state) => state.dataThemes.activeTabIndex.value

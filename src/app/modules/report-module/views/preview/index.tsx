@@ -4,13 +4,13 @@ import Box from "@material-ui/core/Box";
 import { useParams } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
-import { reportContentWidthsAtom } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
+  reportContentWidthsAtom,
   persistedReportStateAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
@@ -113,7 +113,7 @@ export function ReportPreviewView() {
           ) {
             return (
               <hr
-                key={index}
+                key={`${"hr" + index}`}
                 css={`
                   margin: 0 0 50px 0;
                   border: 2px solid #cfd4da;
@@ -123,7 +123,7 @@ export function ReportPreviewView() {
           }
           return (
             <RowFrame
-              key={index}
+              key={`${"rowframe" + index}`}
               rowId={reportPreviewData.id}
               rowIndex={index}
               deleteFrame={() => {}}

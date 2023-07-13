@@ -1,9 +1,6 @@
 import { Box, Container, Grid } from "@material-ui/core";
-
 import React from "react";
-
 import BigNumber from "../components/bigNumber";
-import HeaderBlock from "../components/headerBlock";
 import Subheader from "../components/subheader";
 
 export default function ReportsOverview() {
@@ -13,8 +10,8 @@ export default function ReportsOverview() {
       <Box height={18} />
       <Container maxWidth="lg">
         <Grid container spacing={4}>
-          {[...Array(5).keys()].map((name) => (
-            <Grid item xs={12} md={6} lg>
+          {[...Array(5).keys()].map((index) => (
+            <Grid item xs={12} md={6} lg key={`${"key" + index}`}>
               <BigNumber />
             </Grid>
           ))}

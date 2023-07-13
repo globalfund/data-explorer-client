@@ -286,24 +286,20 @@ export function useDataThemesEchart() {
 
   function echartsSankey(data: any, visualOptions: any) {
     const {
-      // artboard
       height,
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
-      // chart options
       nodesWidth,
       nodesPadding,
       linksOpacity,
       nodeAlign,
       orient,
-      // Labels
       showLabels,
       labelRotate,
       labelPosition,
       labelFontSize,
-      // Tooltip
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
@@ -316,7 +312,6 @@ export function useDataThemesEchart() {
     nodes = uniqBy(nodes, "name");
 
     return {
-      // backgroundColor: background,
       backgroundColor: "transparent",
       series: [
         {
@@ -350,8 +345,7 @@ export function useDataThemesEchart() {
               if (splits.length === 1) {
                 return params.name;
               }
-              const text = splits.slice(1).join("-");
-              return text;
+              return splits.slice(1).join("-");
             },
           },
         },

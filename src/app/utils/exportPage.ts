@@ -6,7 +6,6 @@ export function exportPage(type: string, bgcolor: string) {
   if (!node) {
     node = document.getElementById("common-chart-render-container");
   }
-  // const filter = (n: any) => n.id !== "app-bar" && n.id !== "subheader-toolbar";
   if (type === "jpg") {
     domtoimage
       .toJpeg(node, { bgcolor })

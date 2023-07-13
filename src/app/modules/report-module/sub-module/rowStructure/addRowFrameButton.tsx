@@ -98,7 +98,8 @@ export default function AddRowFrameButton(props: AddRowFrameProps) {
       canDrop: monitor.canDrop(),
       item: monitor.getItem(),
     }),
-    drop: (item: any, monitor) => {
+    drop: (item: any) => {
+      console.log(drop, "isDropOver");
       if (item.type === ReportElementsType.ROWFRAME) {
         handleAddrowStructureBlock();
       } else if (item.type === ReportElementsType.CHART) {

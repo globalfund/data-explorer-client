@@ -1,6 +1,5 @@
 import { IconButton, Tooltip } from "@material-ui/core";
 import React from "react";
-import { Link } from "react-router-dom";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import { ReactComponent as DuplicateIcon } from "app/modules/reports-overview-module/assets/copy-icon.svg";

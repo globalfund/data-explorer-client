@@ -102,7 +102,7 @@ export function useChartsRawData(props: {
       extraLoader.style.display = "block";
     }
     setLoading(true);
-    return await axios
+    return axios
       .get(`${process.env.REACT_APP_API}/${endpoint}`, {
         headers: {
           "Content-Type": "application/json",

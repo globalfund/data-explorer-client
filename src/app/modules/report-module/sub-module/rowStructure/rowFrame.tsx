@@ -8,7 +8,6 @@ import { itemSpacing, containerGap } from "app/modules/report-module/data";
 import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
-import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import {
   ReportContentWidthsType,
   chartHolderAtom,
@@ -19,7 +18,7 @@ import {
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
 import { MoreVert } from "@material-ui/icons";
-import { set } from "lodash";
+import { RowStructureType } from "../../views/create/data";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -158,16 +157,7 @@ export interface RowFrameProps {
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handleRowFrameStructureTypeSelection: (
     rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneToFour"
-      | "fourToOne"
-      | "twoToThree"
-      | "threeToTwo"
+    structure: RowStructureType
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,
@@ -209,8 +199,8 @@ export default function RowFrame(props: RowFrameProps) {
     }[][]
   >([]);
 
+  let contentContainer = document.getElementById("content-container");
   const onContentContainerResize = () => {
-    const contentContainer = document.getElementById("content-container");
     if (contentContainer) {
       const contentContainerWidth = contentContainer.offsetWidth;
       const newItems = _rowStructureDetailItems.map((item) => {
@@ -244,7 +234,6 @@ export default function RowFrame(props: RowFrameProps) {
   }, [selectedTypeHistory]);
 
   React.useEffect(() => {
-    const contentContainer = document.getElementById("content-container");
     if (contentContainer) {
       onContentContainerResize();
       contentContainer.addEventListener("resize", onContentContainerResize);
@@ -280,7 +269,6 @@ export default function RowFrame(props: RowFrameProps) {
     );
   }, [selectedType]);
 
-  const contentContainer = document.getElementById("content-container");
   if (!contentContainer || rowStructureDetailItems.length === 0)
     return <div>loading</div>;
 

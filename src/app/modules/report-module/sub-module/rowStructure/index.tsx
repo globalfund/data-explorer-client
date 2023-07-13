@@ -7,22 +7,21 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import IconButton from "@material-ui/core/IconButton";
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import { EditorState, convertFromRaw } from "draft-js";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
-import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+
+import { useStoreActions } from "app/state/store/hooks";
 import { useRecoilState, useRecoilValue } from "recoil";
+
+import { MoreVert } from "@material-ui/icons";
 import {
   chartHolderAtom,
   createChartFromReportAtom,
-} from "app/state/recoil/atoms";
-import { MoreVert, FileCopy } from "@material-ui/icons";
-import {
   reportContentWidthsAtom,
   unSavedReportPreviewModeAtom,
   reportContentIsResizingAtom,
@@ -417,22 +416,6 @@ const Box = (props: {
     handleModalContentDisplay();
   }, [displayDeleteElementModal]);
 
-  const handleEditChart = () => {
-    setCreateChartFromReport({
-      state: true,
-      view,
-      page,
-    });
-    setDataset(null);
-    setLoadedChart(null);
-    setCreateChartData(null);
-    resetMapping();
-
-    //set persisted report state to current report state
-    props.handlePersistReportState();
-
-    history.push(`/chart/${chartId}/customize`);
-  };
   const handleDisplayDeleteElementModal = (type: string) => {
     setBoxMenuButtonOpened(!boxMenuButtonOpened);
     setDisplayDeleteElementModal({

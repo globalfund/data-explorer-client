@@ -1,8 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { useRecoilState } from "recoil";
 import Table from "@material-ui/core/Table";
-import { useHistory } from "react-router-dom";
 import TableRow from "@material-ui/core/TableRow";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,7 +9,6 @@ import TableContainer from "@material-ui/core/TableContainer";
 import MenuIcon from "@material-ui/icons/MoreVert";
 import { IconButton } from "@material-ui/core";
 import MenuOptions from "./menuOptions";
-import { set } from "lodash";
 
 export function ReportsTable(props: {
   handleModal: (id: number) => void;
@@ -25,7 +22,6 @@ export function ReportsTable(props: {
     menuOptionsDisplay: boolean;
   }[];
 }) {
-  const history = useHistory();
   const handleMenuOptionsDisplay = (id: number) => {
     const newData = props.data.map((data, index: number) => {
       if (index === id) {

@@ -4,7 +4,6 @@ import { ReactComponent as CloseIcon } from "../../../../fragments/datasets-frag
 
 import { statisticalTableToolBoxStyle } from "./style";
 import { IconButton } from "@material-ui/core";
-import { barChartdata } from "app/components/Table/Preview-table/data";
 
 export interface ColumnDetailsProps {
   columnName: string;
