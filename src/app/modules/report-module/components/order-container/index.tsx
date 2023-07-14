@@ -60,6 +60,7 @@ function Handle(props: { top: string; left: string; radius: string }) {
 function ItemComponent(props: ItemComponentProps) {
   const { content } = props;
   const ref = React.useRef<HTMLDivElement>(null);
+  const nullRef = React.useRef<HTMLDivElement>(null);
 
   const [{ handlerId }, drop] = useDrop<
     DragItem,
@@ -142,7 +143,7 @@ function ItemComponent(props: ItemComponentProps) {
       `}
       id={`item-${props.id}`}
       data-handler-id={handlerId}
-      ref={ref}
+      ref={props.isHandleOpen ? ref : nullRef}
     >
       {props.isHandleOpen ? (
         <Handle top="0" left="0" radius="20px 0px 0px 20px" />

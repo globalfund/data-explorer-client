@@ -27,7 +27,6 @@ export const headerBlockcss = {
   `,
   innerContainer: css`
     width: 100%;
-    margin-left: 13px;
   `,
   date: (dateColor: string) => css`
     gap: 0.7rem;

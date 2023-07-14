@@ -921,7 +921,13 @@ const Box = (props: {
           justify-content: center;
         `}
       >
-        {isOver ? "Release to drop" : "Drag and drop content here"}
+        {isOver ? (
+          <span>Release to drop</span>
+        ) : (
+          <span>
+            Drag and drop your elements and <br /> charts in the placeholders
+          </span>
+        )}
       </p>
     </div>
   );

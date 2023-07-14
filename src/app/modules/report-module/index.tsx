@@ -662,6 +662,7 @@ export default function ReportModule() {
     for (const container of containers) {
       container.style.maxWidth = "none";
       container.style.paddingLeft = "0px";
+      container.style.paddingRight = "0px";
     }
     return () => {
       for (const container of containers) {
