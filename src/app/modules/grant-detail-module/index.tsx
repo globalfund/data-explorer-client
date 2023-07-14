@@ -160,29 +160,6 @@ export default function GrantDetail() {
     }
   }, [grantInfoData, params.vizType]);
 
-  // useUpdateEffect(() => {
-  //   const value = `${params.code} - ${formatPeriod(
-  //     selectedPeriod.startDate
-  //   )} - ${formatPeriod(selectedPeriod.endDate)}`;
-  //   const fIndex = findIndex(dataPathSteps, {
-  //     id: "grant",
-  //   });
-  //   if (fIndex > -1) {
-  //     const newDataPathSteps = [...dataPathSteps];
-  //     newDataPathSteps[fIndex].name = value;
-  //     newDataPathSteps[fIndex].path = location.pathname;
-  //     setDataPathSteps(newDataPathSteps);
-  //   } else {
-  //     addDataPathSteps([
-  //       {
-  //         id: "grant",
-  //         name: value,
-  //         path: location.pathname,
-  //       },
-  //     ]);
-  //   }
-  // }, [selectedPeriod]);
-
   return (
     <div
       css={`
