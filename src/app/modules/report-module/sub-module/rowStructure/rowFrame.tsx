@@ -2,7 +2,6 @@ import React from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
-import { useLocation, useParams } from "react-router-dom";
 import { itemSpacing, containerGap } from "app/modules/report-module/data";
 import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
