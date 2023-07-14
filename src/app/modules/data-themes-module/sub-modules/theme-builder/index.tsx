@@ -353,11 +353,13 @@ export function DataThemesBuilder() {
     switch (param) {
       case "initial":
         return false;
-      case "data" || "preview-data":
+      case "data":
+      case "preview-data":
         return (
           stepSelectionsData.step1[activeTabIndex][activeVizIndex].dataset !==
           null
         );
+
       case "chart-type":
         return selectedChartType[activeTabIndex][activeVizIndex] !== null;
       case "export":
