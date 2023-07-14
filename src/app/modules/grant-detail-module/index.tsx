@@ -143,46 +143,45 @@ export default function GrantDetail() {
     return 0;
   }
 
-  useUpdateEffect(() => {
+  React.useEffect(() => {
     if (
       grantInfoData &&
       grantInfoData.code &&
       !dataPathSteps.find((item) => item.id === "grant")
     ) {
+      console.log("add grant");
       addDataPathSteps([
         {
           id: "grant",
-          name: `${params.code} - ${formatPeriod(
-            selectedPeriod.startDate
-          )} - ${formatPeriod(selectedPeriod.endDate)}`,
+          name: `Grant Implementation: Grants`,
           path: location.pathname,
         },
       ]);
     }
-  }, [grantInfoData]);
+  }, [grantInfoData, params.vizType]);
 
-  useUpdateEffect(() => {
-    const value = `${params.code} - ${formatPeriod(
-      selectedPeriod.startDate
-    )} - ${formatPeriod(selectedPeriod.endDate)}`;
-    const fIndex = findIndex(dataPathSteps, {
-      id: "grant",
-    });
-    if (fIndex > -1) {
-      const newDataPathSteps = [...dataPathSteps];
-      newDataPathSteps[fIndex].name = value;
-      newDataPathSteps[fIndex].path = location.pathname;
-      setDataPathSteps(newDataPathSteps);
-    } else {
-      addDataPathSteps([
-        {
-          id: "grant",
-          name: value,
-          path: location.pathname,
-        },
-      ]);
-    }
-  }, [selectedPeriod]);
+  // useUpdateEffect(() => {
+  //   const value = `${params.code} - ${formatPeriod(
+  //     selectedPeriod.startDate
+  //   )} - ${formatPeriod(selectedPeriod.endDate)}`;
+  //   const fIndex = findIndex(dataPathSteps, {
+  //     id: "grant",
+  //   });
+  //   if (fIndex > -1) {
+  //     const newDataPathSteps = [...dataPathSteps];
+  //     newDataPathSteps[fIndex].name = value;
+  //     newDataPathSteps[fIndex].path = location.pathname;
+  //     setDataPathSteps(newDataPathSteps);
+  //   } else {
+  //     addDataPathSteps([
+  //       {
+  //         id: "grant",
+  //         name: value,
+  //         path: location.pathname,
+  //       },
+  //     ]);
+  //   }
+  // }, [selectedPeriod]);
 
   return (
     <div
@@ -224,7 +223,7 @@ export default function GrantDetail() {
         <Switch>
           {/* Overview */}
           <Route path={`/grant/${params.code}/${params.period}/overview`}>
-            <GrantDetailOverviewModule />
+            <GrantDetailOverviewModule grantInfoData={grantInfoData} />
           </Route>
           {/* Budgets */}
           <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>

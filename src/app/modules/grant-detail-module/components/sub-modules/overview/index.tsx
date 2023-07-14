@@ -3,7 +3,7 @@ import React from "react";
 import get from "lodash/get";
 import { appColors } from "app/theme";
 import { Link } from "react-router-dom";
-import { useStoreState } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Grid, useMediaQuery } from "@material-ui/core";
 /* project */
 import { useCMSData } from "app/hooks/useCMSData";
@@ -12,10 +12,14 @@ import { ComponentIcon } from "app/assets/icons/Component";
 import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
+import { useUpdateEffect } from "react-use";
 
-export function GrantDetailOverviewModule() {
+export function GrantDetailOverviewModule(props: { grantInfoData: any }) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isLoading = useStoreState((state) => state.GrantDetailInfo.loading);
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
       title: "",
@@ -42,6 +46,17 @@ export function GrantDetailOverviewModule() {
     })
   );
   const cmsData = useCMSData({ returnData: true });
+
+  useUpdateEffect(() => {
+    console.log("add grant");
+    addDataPathSteps([
+      {
+        id: "grant-detail",
+        name: props.grantInfoData.title,
+        path: location.pathname,
+      },
+    ]);
+  }, [props.grantInfoData]);
 
   if (isLoading) {
     return <PageLoader />;
