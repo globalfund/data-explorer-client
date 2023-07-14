@@ -208,8 +208,7 @@ export function AppBar() {
             gap: 32px;
             width: 100%;
             height: 48px;
-            padding-left: 225px;
-            padding-right: 105px;
+
             margin: auto;
             display: flex;
             min-height: 45px;
@@ -230,121 +229,121 @@ export function AppBar() {
             }
           `}
         >
-          <div
-            css={`
-              width: 100%;
-              height: 100%;
-              display: flex;
-              flex-direction: row;
-              align-items: center;
-              justify-content: space-between;
-            `}
-          >
-            <NavLink to="/" css="display: flex;margin-right: 52px;">
-              <img
-                src="/gflogo.png"
-                width={295}
-                height={24}
-                alt={get(cmsData, "componentsAppBar.logoAlt", "")}
-              />
-            </NavLink>
+          <Container maxWidth="lg">
+            <div
+              css={`
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+              `}
+            >
+              <NavLink to="/" css="display: flex;margin-right: 52px;">
+                <img
+                  src="/gflogo.png"
+                  width={295}
+                  height={24}
+                  alt={get(cmsData, "componentsAppBar.logoAlt", "")}
+                />
+              </NavLink>
 
-            {(location.pathname === "/" || !openSearch) && (
-              <div
-                css={`
-                  display: flex;
-                  gap: 32px;
-                `}
-              >
+              {(location.pathname === "/" || !openSearch) && (
                 <div
-                  id="appbar-datasets"
-                  onClick={handleClick}
                   css={`
-                    height: 100%;
                     display: flex;
-                    color: ${anchorEl
-                      ? appColors.APPBAR.LINK_ACTIVE_COLOR
-                      : appColors.APPBAR.LINK_COLOR};
-                    cursor: pointer;
-                    font-size: 14px;
-                    font-weight: bold;
-                    align-items: center;
-                    letter-spacing: 0.5px;
-                    text-decoration: none;
-
-                    &:hover {
-                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                    }
+                    gap: 32px;
                   `}
                 >
-                  Datasets
+                  <div
+                    id="appbar-datasets"
+                    onClick={handleClick}
+                    css={`
+                      height: 100%;
+                      display: flex;
+                      color: ${anchorEl
+                        ? appColors.APPBAR.LINK_ACTIVE_COLOR
+                        : appColors.APPBAR.LINK_COLOR};
+                      cursor: pointer;
+                      font-size: 14px;
+                      font-weight: bold;
+                      align-items: center;
+                      letter-spacing: 0.5px;
+                      text-decoration: none;
+
+                      &:hover {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
+                    `}
+                  >
+                    Datasets
+                  </div>
+                  <StyledMenu
+                    keepMounted
+                    disableScrollLock
+                    anchorEl={anchorEl}
+                    onClose={handleClose}
+                    open={Boolean(anchorEl)}
+                    id="appbar-datasets-menu"
+                  >
+                    {datasetMenuItems.map(
+                      (item: React.ReactChild, itemIndex: number) => (
+                        <StyledMenuItem
+                          disableRipple
+                          key={itemIndex}
+                          disableTouchRipple
+                        >
+                          {item}
+                        </StyledMenuItem>
+                      )
+                    )}
+                  </StyledMenu>
+
+                  <NavLink
+                    to="/reports"
+                    css={`
+                      color: ${appColors.APPBAR.LINK_COLOR};
+                      font-size: 14px;
+                      font-weight: bold;
+                      letter-spacing: 0.5px;
+                      text-decoration: none;
+
+                      &:hover {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
+
+                      &.active {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
+                    `}
+                  >
+                    Reports
+                  </NavLink>
+
+                  <NavLink
+                    to="/charts"
+                    css={`
+                      color: ${appColors.APPBAR.LINK_COLOR};
+                      font-size: 14px;
+                      font-weight: bold;
+                      letter-spacing: 0.5px;
+                      text-decoration: none;
+
+                      &:hover {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
+
+                      &.active {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
+                    `}
+                  >
+                    Charts
+                  </NavLink>
                 </div>
-                <StyledMenu
-                  keepMounted
-                  disableScrollLock
-                  anchorEl={anchorEl}
-                  onClose={handleClose}
-                  open={Boolean(anchorEl)}
-                  id="appbar-datasets-menu"
-                >
-                  {datasetMenuItems.map(
-                    (item: React.ReactChild, itemIndex: number) => (
-                      <StyledMenuItem
-                        disableRipple
-                        key={itemIndex}
-                        disableTouchRipple
-                      >
-                        {item}
-                      </StyledMenuItem>
-                    )
-                  )}
-                </StyledMenu>
+              )}
 
-                <NavLink
-                  to="/reports"
-                  css={`
-                    color: ${appColors.APPBAR.LINK_COLOR};
-                    font-size: 14px;
-                    font-weight: bold;
-                    letter-spacing: 0.5px;
-                    text-decoration: none;
-
-                    &:hover {
-                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                    }
-
-                    &.active {
-                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                    }
-                  `}
-                >
-                  Reports
-                </NavLink>
-
-                <NavLink
-                  to="/charts"
-                  css={`
-                    color: ${appColors.APPBAR.LINK_COLOR};
-                    font-size: 14px;
-                    font-weight: bold;
-                    letter-spacing: 0.5px;
-                    text-decoration: none;
-
-                    &:hover {
-                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                    }
-
-                    &.active {
-                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                    }
-                  `}
-                >
-                  Charts
-                </NavLink>
-              </div>
-            )}
-
-            {location.pathname !== "/" && (
               <div
                 css={`
                   display: flex;
@@ -419,8 +418,8 @@ export function AppBar() {
                   <b>Account</b>
                 </button>
               </div>
-            )}
-          </div>
+            </div>
+          </Container>
         </Toolbar>
       )}
     </MUIAppBar>

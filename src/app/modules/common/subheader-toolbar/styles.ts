@@ -110,7 +110,7 @@ export const styles = {
   endContainer: css`
     display: flex;
     right: 104px;
-    position: absolute;
+
     gap: 13px;
   `,
   iconbtns: css`
