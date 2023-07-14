@@ -656,7 +656,7 @@ export default function ReportModule() {
 
   React.useEffect(() => {
     const containers = document.getElementsByClassName(
-      "main-containers"
+      "main-container"
     ) as HTMLCollectionOf<HTMLElement>;
     document.body.style.background = "#fff";
     for (const container of containers) {
