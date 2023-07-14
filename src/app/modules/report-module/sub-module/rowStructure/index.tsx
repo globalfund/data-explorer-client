@@ -8,20 +8,18 @@ import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReportChartWrapper } from "app/modules/report-module/components/chart-wrapper";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 
-import { useStoreActions } from "app/state/store/hooks";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { MoreVert } from "@material-ui/icons";
 import {
   chartHolderAtom,
-  createChartFromReportAtom,
   reportContentWidthsAtom,
   unSavedReportPreviewModeAtom,
   reportContentIsResizingAtom,

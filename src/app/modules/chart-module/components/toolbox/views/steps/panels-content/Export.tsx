@@ -7,7 +7,7 @@ interface ChartToolBoxExportProps {
   rawViz: any;
 }
 
-export function ChartToolBoxExport(props: ChartToolBoxExportProps) {
+export function ChartToolBoxExport() {
   return (
     <div
       className="chart-options"

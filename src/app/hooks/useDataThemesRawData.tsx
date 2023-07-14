@@ -255,7 +255,6 @@ export function useDataThemesRawData(props: {
               tmpVisualOptions[tabIndex].push({});
             }
           }
-          // let tabIndex: number = 0;
           for (tabIndex = 0; tabIndex < tabs.length; tabIndex++) {
             for (vizIndex = 0; vizIndex < tabs[tabIndex].length; vizIndex++) {
               if ("content" in tabs[tabIndex][vizIndex]) {
@@ -353,7 +352,7 @@ export function useDataThemesRawData(props: {
       tabIds.forEach((content, tabIndex) => {
         // Add an empty tab for each tab in the list
         tabs.push({ title: tabTitles[tabIndex], content: [] });
-        content.forEach((index, vizIndex) => {
+        content.forEach((_index, vizIndex) => {
           // add a viz object for every viz in the current tab.
           let vizObject: any = {};
           if (vizIsTextContent[tabIndex][vizIndex]) {
@@ -383,8 +382,8 @@ export function useDataThemesRawData(props: {
           },
         })
         .then((response) => {
-          const tabsFromAPI = response.data || [];
-          setTabsFromAPI(tabsFromAPI);
+          const tabsData = response.data || [];
+          setTabsFromAPI(tabsData);
           setLoading(false);
           if (extraLoader) {
             extraLoader.style.display = "none";

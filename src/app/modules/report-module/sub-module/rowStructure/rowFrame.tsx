@@ -1,5 +1,4 @@
 import React from "react";
-import get from "lodash/get";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
@@ -777,9 +776,6 @@ export function Divider(props: {
   dividerId: string;
   delete: (id: string) => void;
 }) {
-  const location = useLocation();
-  const { page } = useParams<{ page: string }>();
-
   const [menuDisplay, setMenuDisplay] = React.useState(false);
 
   return (

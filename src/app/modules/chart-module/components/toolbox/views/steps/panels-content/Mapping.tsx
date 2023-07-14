@@ -236,11 +236,15 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
         background: ${props.backgroundColor ?? "#cfd4da"};
-        cursor: ${isDragging
-          ? "grabbing"
-          : !props.onDeleteItem
-          ? "grab"
-          : "default"};
+        cursor: ${(() => {
+          if (isDragging) {
+            return "grabbing";
+          } else if (props.onDeleteItem) {
+            return "grab";
+          } else {
+            return "default";
+          }
+        })()};
 
         &:last-child {
           margin-bottom: 0px;

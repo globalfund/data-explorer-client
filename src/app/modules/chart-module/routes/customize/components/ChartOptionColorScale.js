@@ -94,8 +94,7 @@ const ChartOptionColorScale = ({
         !scaleType ||
         !interpolator ||
         !colorPresets[scaleType][interpolator] ||
-        !userValuesForFinalScale ||
-        !userValuesForFinalScale.length
+        !userValuesForFinalScale?.length
       ) {
         return;
       }
@@ -107,7 +106,7 @@ const ChartOptionColorScale = ({
         return;
       }
 
-      const previewScale = getColorScale(
+      return getColorScale(
         colorDataset, //the array of values of the dataset mapped on the color dimension
         colorDataType,
         scaleType, //
@@ -115,20 +114,17 @@ const ChartOptionColorScale = ({
         userValuesForFinalScale
       );
 
-      return previewScale;
+
     },
     [colorDataType, colorDataset]
   );
 
   const getDefaultUserValues = useCallback(
     (interpolator, scaleType) => {
-      if (!colorDataset.length || !colorDataType || !scaleType) {
+      if (!colorDataset.length || !colorDataType || !scaleType ||!colorPresets[scaleType][interpolator]) {
         return [];
       }
-      if (!colorPresets[scaleType][interpolator]) {
-        return [];
-      }
-
+      
       const domain = getColorDomain(colorDataset, colorDataType, scaleType);
 
       return getInitialScaleValues(domain, scaleType, interpolator).map(
