@@ -10,6 +10,7 @@ interface Item {
   id: string;
   content: React.ReactNode;
   isHandleOpen: boolean;
+  isAnyHandleOpen: boolean;
 }
 
 interface ItemComponentProps {
@@ -18,6 +19,7 @@ interface ItemComponentProps {
   content: React.ReactNode;
   moveCard: (dragIndex: number, hoverIndex: number) => void;
   isHandleOpen: boolean;
+  isAnyHandleOpen: boolean;
 }
 
 interface DragItem {
@@ -59,7 +61,9 @@ function Handle(props: { top: string; left: string; radius: string }) {
 
 function ItemComponent(props: ItemComponentProps) {
   const { content } = props;
-  const ref = React.useRef<HTMLDivElement>(null);
+  const dragRef = React.useRef<HTMLDivElement>(null);
+  const dropRef = React.useRef<HTMLDivElement>(null);
+
   const nullRef = React.useRef<HTMLDivElement>(null);
 
   const [{ handlerId }, drop] = useDrop<
@@ -74,7 +78,7 @@ function ItemComponent(props: ItemComponentProps) {
       };
     },
     hover(item: DragItem, monitor) {
-      if (!ref.current) {
+      if (!dropRef.current) {
         return;
       }
       const dragIndex = item.index;
@@ -86,7 +90,7 @@ function ItemComponent(props: ItemComponentProps) {
       }
 
       // Determine rectangle on screen
-      const hoverBoundingRect = ref.current?.getBoundingClientRect();
+      const hoverBoundingRect = dropRef.current?.getBoundingClientRect();
 
       // Get vertical middle
       const hoverMiddleY =
@@ -132,9 +136,20 @@ function ItemComponent(props: ItemComponentProps) {
       isDragging: monitor.isDragging(),
     }),
   });
-  drag(drop(ref));
+  drag(dragRef);
+  drop(dropRef);
 
   const opacity = isDragging ? 0 : 1;
+
+  let containerRef = nullRef;
+  if (props.isAnyHandleOpen) {
+    if (props.isHandleOpen) {
+      containerRef = dragRef;
+    } else {
+      containerRef = dropRef;
+    }
+  }
+
   return (
     <div
       style={{ ...style, opacity }}
@@ -143,7 +158,7 @@ function ItemComponent(props: ItemComponentProps) {
       `}
       id={`item-${props.id}`}
       data-handler-id={handlerId}
-      ref={props.isHandleOpen ? ref : nullRef}
+      ref={containerRef}
     >
       {props.isHandleOpen ? (
         <Handle top="0" left="0" radius="20px 0px 0px 20px" />
@@ -169,6 +184,9 @@ export function ReportOrderContainer(props: Props) {
       content: child,
       id: props.childrenData[index].id,
       isHandleOpen: props.childrenData[index].isHandleOpen,
+      isAnyHandleOpen:
+        props.childrenData.filter((childData) => childData.isHandleOpen)
+          .length > 0,
     }))
   );
 
@@ -199,6 +217,7 @@ export function ReportOrderContainer(props: Props) {
         content={item.content}
         moveCard={moveCard}
         isHandleOpen={item.isHandleOpen}
+        isAnyHandleOpen={item.isAnyHandleOpen}
       />
     );
   }, []);
@@ -209,6 +228,9 @@ export function ReportOrderContainer(props: Props) {
         content: child,
         id: props.childrenData[index].id,
         isHandleOpen: props.childrenData[index].isHandleOpen,
+        isAnyHandleOpen:
+          props.childrenData.filter((childData) => childData.isHandleOpen)
+            .length > 0,
       }))
     );
   }, [props.childrenData]);
