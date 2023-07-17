@@ -4,6 +4,7 @@ import IconButton from "@material-ui/core/IconButton";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import { ReactComponent as PlusIcon } from "app/modules/report-module/asset/add-img.svg";
+
 import {
   IRowFrameStructure,
   ReportContentWidthsType,
@@ -141,6 +142,14 @@ export default function AddRowFrameButton(props: AddRowFrameProps) {
               padding: 4px;
               &:hover {
                 background: transparent;
+                svg {
+                  border: 2px solid #252c34;
+                  border-radius: 50%;
+                  background: #252c34;
+                  path {
+                    fill: #dfe3e5;
+                  }
+                }
               }
               svg {
                 width: 24px;
