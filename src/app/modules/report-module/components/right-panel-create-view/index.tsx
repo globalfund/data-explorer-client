@@ -648,7 +648,7 @@ function ReportRightPanelCreateViewChartList(props: {
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const chartList = useStoreState(
-    (state) => (state.charts.ChartGetList.crudData || []) as any[]
+    (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
   const loadChartList = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
