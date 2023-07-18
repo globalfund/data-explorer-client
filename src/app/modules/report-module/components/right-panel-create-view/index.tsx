@@ -465,9 +465,10 @@ export function ReportRightPanelCreateView(props: Props) {
                   align-items: center;
                   gap: 16px;
                   padding: 0 8px 0 16px;
-                  background-color: #dfe3e5;
+                  background: #dfe3e5;
                   border-radius: 8px;
                   margin: 8px auto;
+                  transform: translate(0, 0);
                   p {
                     margin: 0px;
                     line-height: normal;
@@ -480,6 +481,7 @@ export function ReportRightPanelCreateView(props: Props) {
                   }
                   &:hover {
                     background: #252c34;
+
                     svg {
                       path {
                         fill: #fff;
@@ -538,6 +540,7 @@ export function ReportRightPanelCreateView(props: Props) {
                   background: #dfe3e5;
                   border-radius: 8px;
                   margin: 8px auto;
+                  transform: translate(0, 0);
 
                   p {
                     margin: 0px;
@@ -709,7 +712,6 @@ function ReportRightPanelCreateViewChartList(props: {
             text-transform: capitalize;
 
             svg {
-              /* margin-left: 10px; */
               transition: all 0.2s ease-in-out;
               transform: rotate(${anchorEl ? "180" : "0"}deg);
               > path {
@@ -781,10 +783,10 @@ function ReportRightPanelCreateViewChartList(props: {
           }
         `}
       >
-        {chartList.map((chart, index) => (
+        {chartList.map((chart) => (
           <ChartItem
             id={chart.id}
-            key={index}
+            key={chart.id}
             name={chart.name}
             description={chart.description}
             dataset={chart.dataset}
@@ -899,6 +901,7 @@ function ChartItem(props: {
         font-size: 12px;
         user-select: none;
         cursor: ${added ? "auto" : "grab"};
+        transform: translate(0, 0);
 
         ${!added &&
         `&:hover {
@@ -915,7 +918,8 @@ function ChartItem(props: {
           width: 352px;
           height: 125px;
           border-radius: 10px;
-          background: ${isDragging && !added ? "#252C34" : "#dfe3e5"};
+          background: ${isDragging && !added ? "#252C34" : "#DFE3E5"};
+
           b,
           p {
             ${isDragging && !added && "color: #fff;"}
@@ -938,7 +942,6 @@ function ChartItem(props: {
         <div
           css={`
             display: flex;
-            /* align-items: center; */
             justify-content: space-between;
             b {
               font-size: 14px;
