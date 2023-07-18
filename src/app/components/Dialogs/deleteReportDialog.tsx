@@ -3,7 +3,6 @@ import { createStyles, makeStyles, Modal } from "@material-ui/core";
 
 interface Props {
   cardId?: number;
-
   modalType: string;
   handleDelete: (id: number) => void;
   setModalType: (value: any) => void;

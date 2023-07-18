@@ -8,13 +8,12 @@ import IconButton from "@material-ui/core/IconButton";
 import TableContainer from "@material-ui/core/TableContainer";
 import { previewTablecss } from "app/components/Table/Preview-table/style";
 import StatisticDisplay from "app/components/Table/Preview-table/statisticDisplay";
-import { ReactComponent as SortIcon } from "app/fragments/datasets-fragment/assets/sort.svg";
 import StatisticalTableToolBox, {
   ColumnDetailsProps,
 } from "app/components/Table/Preview-table/StatisticalTableToolBox";
+import SortIcon from "app/assets/icons/Sort";
 
 type DatastatsType = "bar" | "percentage" | "unique";
-type StatsType = number | string | null;
 
 interface PreviewTableProps {
   placeUnderSubHeader?: boolean;

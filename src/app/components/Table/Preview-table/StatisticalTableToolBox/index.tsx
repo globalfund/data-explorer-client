@@ -1,9 +1,9 @@
 import React from "react";
-import { ReactComponent as ClockIcon } from "../../../../fragments/datasets-fragment/assets/clock-icon.svg";
-import { ReactComponent as CloseIcon } from "../../../../fragments/datasets-fragment/assets/close-icon.svg";
+import CloseIcon from "@material-ui/icons/Close";
 
 import { statisticalTableToolBoxStyle } from "./style";
 import { IconButton } from "@material-ui/core";
+import ClockIcon from "app/assets/icons/Clock";
 
 export interface ColumnDetailsProps {
   columnName: string;

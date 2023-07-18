@@ -6,12 +6,13 @@ import get from "lodash/get";
 import BigLogo from "app/assets/BigLogo";
 import { useCMSData } from "app/hooks/useCMSData";
 import { container, subtitle } from "app/modules/landing-module/styles";
-import Toolbar from "app/modules/reports-overview-module/components/toolbar";
 import ReportsGrid from "./components/reportsGrid";
+import OverviewToolbar from "../common/overview-toolbar";
 
 export default function ReportsOverviewModule() {
   const cmsData = useCMSData({ returnData: true });
   const [tableView, setTableView] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
   const sortValue = "createdDate";
   return (
     <div css={container}>
@@ -36,10 +37,15 @@ export default function ReportsOverviewModule() {
             height: 102px;
           `}
         />
-        <Toolbar
+        <OverviewToolbar
           setTableView={setTableView}
           sortBy={sortValue}
           tableView={tableView}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          buttonPath="/report/new/create"
+          buttonTitle="New Report"
+          title="Reports"
         />
         <ReportsGrid tableView={tableView} />
       </div>

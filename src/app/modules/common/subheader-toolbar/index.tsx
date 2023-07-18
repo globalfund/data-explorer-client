@@ -89,7 +89,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     report: "",
     chart: "",
   });
-  const [enableButton, setEnableButton] = React.useState<boolean>(false);
+  const [_, setEnableButton] = React.useState<boolean>(false);
 
   const createChartFromReport = useRecoilValue(createChartFromReportAtom);
 
@@ -547,7 +547,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       />
       <DeleteChartDialog
         modalType={modalDisplay.chart}
-        enableButton={enableButton}
         handleDelete={handleDelete}
         setModalType={setModalDisplay}
         handleInputChange={handleDeleteModalInputChange}

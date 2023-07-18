@@ -10,7 +10,7 @@ import MenuIcon from "@material-ui/icons/MoreVert";
 import { IconButton } from "@material-ui/core";
 import MenuOptions from "./menuOptions";
 
-export function ReportsTable(props: {
+export function ChartsTable(props: {
   handleModal: (id: number) => void;
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   setTableData: (data: any) => void;
@@ -39,16 +39,14 @@ export function ReportsTable(props: {
   return (
     <TableContainer
       css={`
-        border-radius: 8px;
+        border-radius: 16px;
+        border: 1px solid #dfe3e5;
       `}
     >
       <Table
         css={`
           border-spacing: 0;
-          /* border-style: hidden; */
-          /* border-collapse: collapse; */
-          border-radius: 16px;
-          border: 1px solid #dfe3e5;
+
           tr > td {
             overflow: hidden;
             white-space: nowrap;
@@ -72,10 +70,8 @@ export function ReportsTable(props: {
         <TableHead
           css={`
             background: #f5f5f7;
-            border-radius: 16px;
             > tr > th {
               font-size: 14px;
-              border-radius: 16px;
 
               font-family: "GothamNarrow-Bold", sans-serif;
             }
@@ -83,11 +79,11 @@ export function ReportsTable(props: {
         >
           <TableRow>
             <TableCell width="50px"></TableCell>
-            <TableCell width="250px">Report Name</TableCell>
-            <TableCell width="400px">Description</TableCell>
+            <TableCell width="250px">Chart name</TableCell>
+            <TableCell width="400px">Chart type</TableCell>
             <TableCell width="200px">Creation date</TableCell>
             <TableCell width="200px">Creation by</TableCell>
-            <TableCell width="200px">Visualisations</TableCell>
+            <TableCell width="200px">Reports used</TableCell>
             <TableCell width="550px"></TableCell>
           </TableRow>
         </TableHead>

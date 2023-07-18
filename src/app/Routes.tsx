@@ -32,7 +32,11 @@ const DocumentsModule = lazy(() => import("app/modules/documents-module"));
 const ReportsOverviewModule = lazy(
   () => import("app/modules/reports-overview-module")
 );
+const ChartsOverviewModule = lazy(
+  () => import("app/modules/charts-overview-module")
+);
 const ReportModule = lazy(() => import("app/modules/report-module"));
+const ChartModule = lazy(() => import("app/modules/chart-module"));
 
 const GrantDetailModule = lazy(() => import("app/modules/grant-detail-module"));
 const CountryDetailModule = lazy(
@@ -116,9 +120,15 @@ export function MainRoutes() {
         <Route exact path="/reports">
           <ReportsOverviewModule />
         </Route>
+        <Route exact path="/charts">
+          <ChartsOverviewModule />
+        </Route>
 
         <Route exact path={"/report/:page/:view?"}>
           <ReportModule />
+        </Route>
+        <Route exact path="/chart/:page/:view?">
+          <ChartModule />
         </Route>
 
         <Route exact path="/get-sitemap">

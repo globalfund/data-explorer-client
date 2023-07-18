@@ -7,7 +7,6 @@ import MUIAppBar from "@material-ui/core/AppBar";
 import CloseIcon from "@material-ui/icons/Close";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
-import GitHubIcon from "@material-ui/icons/GitHub";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
@@ -291,7 +290,7 @@ export function AppBar() {
                       (item: React.ReactChild, itemIndex: number) => (
                         <StyledMenuItem
                           disableRipple
-                          key={itemIndex}
+                          key={`${"index" + itemIndex}`}
                           disableTouchRipple
                         >
                           {item}

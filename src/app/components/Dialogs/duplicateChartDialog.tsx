@@ -4,7 +4,6 @@ import React from "react";
 interface Props {
   cardId?: number;
   modalType: string;
-  enableButton: boolean;
   handleDuplicate: (id: number) => void;
   setModalType: (value: any) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -28,7 +27,7 @@ export const useStyles = makeStyles(() =>
     },
   })
 );
-export default function DuplicateReportDialog(props: Props) {
+export default function DuplicateChartDialog(props: Props) {
   const classes = useStyles();
 
   return (
@@ -57,7 +56,7 @@ export default function DuplicateReportDialog(props: Props) {
               margin-top: 0px;
             `}
           >
-            Duplicate Report
+            Duplicate Chart
           </p>
           <p
             css={`
@@ -68,7 +67,7 @@ export default function DuplicateReportDialog(props: Props) {
               line-height: 20px;
             `}
           >
-            Duplicate your reports <br />
+            Duplicate your Charts <br />
             and create multiple variants
           </p>
           <p
@@ -82,8 +81,8 @@ export default function DuplicateReportDialog(props: Props) {
               width: 90%;
             `}
           >
-            This report will be duplicated in your library, please introduce a
-            name for the new report.
+            This chart will be duplicated in your library, please introduce a
+            name for the new chart.
           </p>
           <div
             css={`
@@ -93,7 +92,7 @@ export default function DuplicateReportDialog(props: Props) {
           <div>
             <input
               type="text"
-              placeholder="My Finance Report 2020 (Copy)"
+              placeholder="Chart 1 (Copy)"
               onChange={props.handleInputChange}
               css={`
                 border-radius: 16px;
@@ -142,9 +141,8 @@ export default function DuplicateReportDialog(props: Props) {
             <button
               type="button"
               onClick={() => props.handleDuplicate(props.cardId as number)}
-              disabled={!props.enableButton}
               css={`
-                background: ${props.enableButton ? "#FA7355" : "#262C34"};
+                background: #262c34;
                 border-radius: 8px;
                 width: 108px;
                 height: 32.59px;

@@ -6,12 +6,14 @@ import get from "lodash/get";
 import BigLogo from "app/assets/BigLogo";
 import { useCMSData } from "app/hooks/useCMSData";
 import { container, subtitle } from "app/modules/landing-module/styles";
-import Toolbar from "app/modules/reports-overview-module/components/toolbar";
-import ReportsGrid from "./components/reportsGrid";
+import OverviewToolbar from "app/modules/common/overview-toolbar";
+import ChartsGrid from "app/modules/charts-overview-module/components/chartsGrid";
 
-export default function ReportsModule() {
+export default function ChartsOverviewModule() {
   const cmsData = useCMSData({ returnData: true });
   const [tableView, setTableView] = React.useState(false);
+  const [searchValue, setSearchValue] = React.useState("");
+
   const sortValue = "createdDate";
   return (
     <div css={container}>
@@ -36,12 +38,21 @@ export default function ReportsModule() {
             height: 102px;
           `}
         />
-        <Toolbar
+        <OverviewToolbar
           setTableView={setTableView}
           sortBy={sortValue}
           tableView={tableView}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          buttonPath="/chart/new/data"
+          buttonTitle="New Chart"
+          title="Charts"
         />
-        <ReportsGrid tableView={tableView} />
+        <ChartsGrid
+          tableView={tableView}
+          searchValue={searchValue}
+          sortValue={sortValue}
+        />
       </div>
     </div>
   );

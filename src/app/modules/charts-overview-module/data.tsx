@@ -145,3 +145,31 @@ export const dummyReportsdata = [
     ],
   },
 ];
+
+export const vizTypes = [
+  {
+    icon: <TreemapIcon />,
+    type: "map",
+  },
+  {
+    icon: <RadialIcon />,
+    type: "radial",
+  },
+
+  {
+    icon: <TreemapIcon />,
+    type: "treemap",
+  },
+  {
+    icon: <DotIcon />,
+    type: "dot",
+  },
+  {
+    icon: <BarIcon />,
+    type: "bar",
+  },
+  {
+    icon: <SankeyIcon />,
+    type: "sankey",
+  },
+];

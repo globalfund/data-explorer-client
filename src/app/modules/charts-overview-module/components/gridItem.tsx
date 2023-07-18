@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { appColors } from "app/theme";
-import { Link } from "react-router-dom";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import { IconButton } from "@material-ui/core";
 import MenuOptions from "./menuOptions";
+import moment from "moment";
 
 export function GridItem(props: {
   link: string;
@@ -12,10 +12,8 @@ export function GridItem(props: {
   id: string;
   title: { __html: any };
   description: { __html: any };
-  iconLinks?: {
-    link: string;
-    icon: React.ReactElement;
-  }[];
+  createdDate: string;
+  viz: React.ReactNode;
 }) {
   const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
 
@@ -60,53 +58,38 @@ export function GridItem(props: {
     >
       <div dangerouslySetInnerHTML={props.title} />
       <div dangerouslySetInnerHTML={props.description} />
-      {props.iconLinks && (
-        <div
-          css={`
-            gap: 20px;
-            bottom: 20px;
-            position: absolute;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
 
-            > a {
-              padding-right: 10px;
-              display: inline-flex;
-              transform: scale(1.2);
+      <div
+        css={`
+          gap: 20px;
+          bottom: 20px;
+          position: absolute;
+          display: flex;
+          flex-direction: row;
+          align-items: center;
 
-              &:not(:last-child) {
-                border-right: 1px solid
-                  ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
+          > svg {
+            > path {
+              fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
+            }
+            rect {
+              fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
+            }
+
+            &:hover {
+              > path {
+                fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
               }
-
-              > svg {
-                > path {
-                  fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
-                }
-                rect {
-                  fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
-                }
-
-                &:hover {
-                  > path {
-                    fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
-                  }
-                  > rect {
-                    fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
-                  }
-                }
+              > rect {
+                fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
               }
             }
-          `}
-        >
-          {props.iconLinks.map((iconLink, index) => (
-            <Link to={iconLink.link} key={`${iconLink.link + index}`}>
-              {iconLink.icon}
-            </Link>
-          ))}
-        </div>
-      )}
+          }
+        `}
+      >
+        {props.viz}
+      </div>
+
       <div
         css={`
           position: absolute;
@@ -120,7 +103,7 @@ export function GridItem(props: {
           }
         `}
       >
-        <p>Last edited - 11/10/2022</p>
+        <p>{moment(props.createdDate).format("L")}</p>
       </div>
       <IconButton
         onClick={showMenuOptions}

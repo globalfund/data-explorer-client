@@ -15,10 +15,15 @@ import {
 } from "app/modules/reports-overview-module/style";
 import { Link } from "react-router-dom";
 
-export default function Toolbar(props: {
+export default function OverviewToolbar(props: {
   sortBy: string;
   tableView: boolean;
   setTableView: React.Dispatch<React.SetStateAction<boolean>>;
+  title: string;
+  buttonTitle: string;
+  buttonPath: string;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+  searchValue: string;
 }) {
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
@@ -32,11 +37,10 @@ export default function Toolbar(props: {
     { label: "Title", value: "title" },
   ];
   const [openSearch, setOpenSearch] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
   const [sortValue, setSortValue] = React.useState("date");
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
+    props.setSearchValue(e.target.value);
   };
 
   const handleCloseSortPopover = () => {
@@ -68,7 +72,7 @@ export default function Toolbar(props: {
           `}
         >
           {" "}
-          Reports
+          {props.title}
         </h4>
       </Grid>
       <Grid item lg={9} md={6} sm={6}>
@@ -90,13 +94,13 @@ export default function Toolbar(props: {
               <input
                 type="text"
                 ref={inputRef}
-                value={searchValue}
+                value={props.searchValue}
                 placeholder="eg. Kenya"
                 onChange={handleSearch}
               />
               <IconButton
                 onClick={() => {
-                  setSearchValue("");
+                  props.setSearchValue("");
                   setOpenSearch(false);
                 }}
                 css={`
@@ -249,7 +253,7 @@ export default function Toolbar(props: {
             </div>
           </Popover>
           <Link
-            to={"/report/new/create"}
+            to={props.buttonPath}
             css={`
               outline: none;
               border: none;
@@ -270,7 +274,7 @@ export default function Toolbar(props: {
               font-family: "Gotham Narrow", sans-serif;
             `}
           >
-            New Report
+            {props.buttonTitle}
           </Link>
         </div>
       </Grid>
