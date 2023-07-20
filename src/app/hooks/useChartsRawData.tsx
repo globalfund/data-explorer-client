@@ -1,6 +1,7 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import isEmpty from "lodash/isEmpty";
 import { useParams } from "react-router-dom";
 import { useMount, useUpdateEffect } from "react-use";
@@ -150,7 +151,7 @@ export function useChartsRawData(props: {
     setLoading(true);
     axios
       .post(
-        `${process.env.REACT_APP_API}/chart/${chartId || page}/render`,
+        `${process.env.REACT_APP_API}/chart/${chartId ?? page}/render`,
         body,
         {
           headers: {
@@ -214,11 +215,27 @@ export function useChartsRawData(props: {
       if (extraLoader) {
         extraLoader.style.display = "block";
       }
+      const dimensionKeys =
+        chartFromAPI?.dimensions?.map((item: any) => item.id) || [];
+      const validMappingKeys = filter(
+        Object.keys(mapping),
+        (key: string) => dimensionKeys.indexOf(key) > -1
+      );
+      let validMapping = {};
+      if (validMappingKeys.length === 0) {
+        validMapping = mapping;
+      }
+      validMappingKeys.forEach((key: string) => {
+        validMapping = {
+          ...validMapping,
+          [key]: mapping[key],
+        };
+      });
       const body = {
         rows: [
           [
             {
-              mapping,
+              mapping: validMapping,
               vizType: selectedChartType,
               datasetId: dataset,
               vizOptions: visualOptions,
