@@ -56,7 +56,7 @@ export default function OverviewToolbar(props: {
   return (
     <Grid
       container
-      spacing={2}
+      alignItems="center"
       css={`
         width: 100%;
       `}

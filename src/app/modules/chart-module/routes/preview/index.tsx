@@ -7,6 +7,9 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { DataThemesDataTable } from "app/modules/data-themes-module/components/data-table";
+import { get } from "lodash";
+import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
+import { DEFAULT_DATASETS } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/SelectDataset";
 
 interface ChartBuilderPreviewProps {
   loading: boolean;
@@ -26,6 +29,16 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
   useTitle("DX DataXplorer - Data");
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
+  const datasetsFromApi = useStoreState(
+    (state) =>
+      get(
+        state,
+        "dataThemes.DatasetGetList.crudData",
+        DEFAULT_DATASETS
+      ) as DatasetListItemAPIModel[]
+  );
+  const datasetName = datasetsFromApi.find((d) => d.id === dataset)?.name;
+
   const setActivePanels = useStoreActions(
     (state) => state.charts.activePanels.setValue
   );
@@ -42,6 +55,7 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
     <div css={commonStyles.container}>
       {props.loading && <PageLoader />}
       <div css={commonStyles.innercontainer}>
+        <p>{datasetName} Dataset</p>
         <DataThemesDataTable data={props.data} stats={props.stats} />
       </div>
     </div>

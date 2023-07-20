@@ -14,6 +14,9 @@ import { ChartToolBoxSteps } from "app/modules/chart-module/components/toolbox/v
 import { ChartToolBoxPreview } from "app/modules/chart-module/components/toolbox/views/preview";
 import { useRecoilState } from "recoil";
 import { createChartFromReportAtom } from "app/state/recoil/atoms";
+import ToolboxNav, { ToolboxNavType } from "./views/steps/navbar";
+import { Slide, useMediaQuery } from "@material-ui/core";
+import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
 
 const Button = withStyles(() => ({
   root: {
@@ -44,7 +47,8 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   const { page, view } = useParams<{ page: string; view?: string }>();
   const history = useHistory();
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
-
+  const [activeStep, setActiveStep] =
+    React.useState<ToolboxNavType>("selectDataset");
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const appliedFilters = useStoreState(
@@ -73,6 +77,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   const [createChartFromReport, setCreateChartFromReport] = useRecoilState(
     createChartFromReportAtom
   );
+  const isMobile = useMediaQuery("(max-width: 767px)");
 
   function onSave() {
     const chart = {
@@ -133,61 +138,110 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
 
   return (
     <>
-      <div css={styles.container(props.filtersView)}>
-        {props.dataSteps && (
-          <ChartToolBoxSteps
-            data={props.data}
-            rawViz={props.rawViz}
-            loading={props.loading}
-            dataTypes={props.dataTypes}
-            openPanel={props.openPanel}
-            mappedData={props.mappedData}
-            loadDataset={props.loadDataset}
-            visualOptions={props.visualOptions}
-            forceNextEnabled={props.forceNextEnabled}
-            setVisualOptions={props.setVisualOptions}
-            filterOptionGroups={props.filterOptionGroups}
-            filtersView={props.filtersView}
-            save={onSave}
-          />
-        )}
-
-        {props.exportView && props.rawViz && (
-          <div css={styles.exportview}>
-            <ChartExporter />
-          </div>
-        )}
-        {props.filtersView && (
-          <div
-            css={`
-              width: 400px;
-              overflow-y: scroll;
-              position: relative;
-              height: calc(100vh - 97px);
-
-              ::-webkit-scrollbar {
-                display: none;
-              }
-            `}
-          >
-            <ChartToolBoxPreview
-              loadDataFromAPI={props.loadDataFromAPI}
+      <Slide
+        direction="left"
+        in={props.openToolbox}
+        style={{ visibility: "visible" }}
+      >
+        <div css={styles.container(props.filtersView)}>
+          {!isMobile && (
+            <div
+              role="button"
+              tabIndex={-1}
+              css={`
+                top: calc((100% - 98px) / 2);
+                left: -16px;
+                color: #fff;
+                width: 16px;
+                height: 133px;
+                display: flex;
+                cursor: pointer;
+                position: absolute;
+                background: #231d2c;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                border-radius: 10px 0px 0px 10px;
+                transition: background 0.2s ease-in-out;
+                &:hover {
+                  background: #13183f;
+                }
+                > svg {
+                  transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
+                  > path {
+                    fill: #fff;
+                  }
+                }
+              `}
+              onClick={() => {
+                if (props.openToolbox) {
+                  props.onClose();
+                } else {
+                  props.onOpen();
+                }
+              }}
+            >
+              <TriangleXSIcon />
+            </div>
+          )}
+          <ToolboxNav activeStep={activeStep} setActiveStep={setActiveStep} />
+          {props.dataSteps && (
+            <ChartToolBoxSteps
+              activeStep={activeStep}
+              data={props.data}
+              rawViz={props.rawViz}
+              loading={props.loading}
+              dataTypes={props.dataTypes}
+              openPanel={props.openPanel}
+              mappedData={props.mappedData}
+              loadDataset={props.loadDataset}
+              visualOptions={props.visualOptions}
+              forceNextEnabled={props.forceNextEnabled}
+              setVisualOptions={props.setVisualOptions}
               filterOptionGroups={props.filterOptionGroups}
+              filtersView={props.filtersView}
+              save={onSave}
+              dimensions={props.dimensions}
             />
-            {isSavedEnabled && props.isEditMode && (
-              <div
-                css={`
-                  bottom: 0;
-                  width: 100%;
-                  position: absolute;
-                `}
-              >
-                <Button onClick={onSave}>Save</Button>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+
+          {props.exportView && props.rawViz && (
+            <div css={styles.exportview}>
+              <ChartExporter />
+            </div>
+          )}
+          {props.filtersView && (
+            <div
+              css={`
+                width: 400px;
+                overflow-y: scroll;
+                position: relative;
+                height: calc(100vh - 97px);
+
+                ::-webkit-scrollbar {
+                  display: none;
+                }
+              `}
+            >
+              <ChartToolBoxPreview
+                loadDataFromAPI={props.loadDataFromAPI}
+                filterOptionGroups={props.filterOptionGroups}
+              />
+              {isSavedEnabled && props.isEditMode && (
+                <div
+                  css={`
+                    bottom: 0;
+                    width: 100%;
+                    position: absolute;
+                  `}
+                >
+                  <Button onClick={onSave}>Save</Button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </Slide>
     </>
   );
 }

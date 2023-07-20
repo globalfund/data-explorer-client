@@ -35,35 +35,30 @@ export default function PreviewTable(props: PreviewTableProps) {
       <div
         css={`
           height: 100%;
+          overflow: auto;
         `}
       >
         <TableContainer
           css={`
+            height: 100%;
             width: inherit;
-            height: 593px;
+            border-radius: 8px;
+            border: 1px solid #dfe3e5;
             &::-webkit-scrollbar {
-              height: 12px;
+              height: 5px;
               border-radius: 23px;
-              width: 12px;
-
+              width: 5px;
               background: #231d2c;
             }
             &::-webkit-scrollbar-track {
               background: #fff;
+            }
 
-              padding: 0 0.5rem;
-            }
-            &::-webkit-scrollbar-track:horizontal {
-              border-right: none;
-            }
             &::-webkit-scrollbar-thumb {
               background: #231d2c;
               border-radius: 23px;
               border: 3px solid transparent;
-
-              background-clip: content-box;
             }
-            overflow: auto;
           `}
         >
           <Table css={previewTablecss}>
@@ -71,7 +66,7 @@ export default function PreviewTable(props: PreviewTableProps) {
               css={`
                 top: 0;
                 position: sticky;
-                background: #dadaf8;
+                background: #dfe3e5;
               `}
             >
               <TableRow
@@ -140,7 +135,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                 css={`
                   top: 54px;
                   position: sticky;
-                  background: #f4f4f4;
+                  background: #f9f9f9;
                 `}
               >
                 {props.dataStats?.map((val) => (
@@ -150,14 +145,14 @@ export default function PreviewTable(props: PreviewTableProps) {
                       color: #000;
                       font-size: 12px;
                       // cursor: pointer;
-                      background: #f4f4f4;
+                      background: #f9f9f9;
                     `}
                     // onClick={handleToolBoxDisplay}
                   >
                     {val.name !== "ID" && (
                       <div
                         css={`
-                          background: #f4f4f4;
+                          background: #f9f9f9;
                         `}
                       >
                         <StatisticDisplay type={val.type} data={val.data} />

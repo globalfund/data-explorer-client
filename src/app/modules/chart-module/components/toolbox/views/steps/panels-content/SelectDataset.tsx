@@ -2,76 +2,15 @@ import React from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import Button from "@material-ui/core/Button";
-import MenuItem from "@material-ui/core/MenuItem";
-import { withStyles } from "@material-ui/core/styles";
+
 import { useHistory, useParams } from "react-router-dom";
-import Menu, { MenuProps } from "@material-ui/core/Menu";
+
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
+import SubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
 
-const StyledMenu = withStyles({
-  paper: {
-    width: "352px",
-    marginTop: "8px",
-    borderRadius: "18px",
-    backgroundColor: "#DFE3E6",
-    "&::-webkit-scrollbar": {
-      width: 5,
-      borderRadius: 10,
-      background: "#262c34",
-    },
-    "&::-webkit-scrollbar-track": {
-      borderRadius: 10,
-      background: "#dfe3e6",
-    },
-    "&::-webkit-scrollbar-thumb": {
-      borderRadius: 10,
-      background: "#262c34",
-    },
-  },
-  list: {
-    padding: 0,
-    maxHeight: 450,
-  },
-})((props: MenuProps) => (
-  <Menu
-    elevation={0}
-    getContentAnchorEl={null}
-    anchorOrigin={{
-      vertical: "bottom",
-      horizontal: "left",
-    }}
-    transformOrigin={{
-      vertical: "top",
-      horizontal: "left",
-    }}
-    autoFocus={false}
-    {...props}
-  />
-));
-
-const StyledMenuItem = withStyles(() => ({
-  root: {
-    width: "100%",
-    height: "37px",
-    color: "#373D43",
-    fontSize: "14px",
-    padding: "6px 12px",
-    "&:hover": {
-      color: "#fff",
-      backgroundColor: "#262C34",
-    },
-    "&:not(:last-child)": {
-      borderBottom: "1px solid #C0C7D2",
-    },
-  },
-  selected: {
-    backgroundColor: "#262C34 !important",
-  },
-}))(MenuItem);
-
-const DEFAULT_DATASETS = [
+export const DEFAULT_DATASETS = [
   {
     name: "Pledges & Contributions",
     id: "pledges-contributions",
@@ -111,13 +50,40 @@ interface ChartToolBoxSelectDatasetProps {
   loadDataset: (endpoint: string) => Promise<boolean>;
 }
 
-export function ChartToolBoxSelectDataset(
-  props: ChartToolBoxSelectDatasetProps
-) {
+export const DatasetPanel = (props: {
+  loadDataset: (endpoint: string) => Promise<boolean>;
+  expanded: number;
+}) => {
+  return (
+    <div>
+      <SubHeader name="Select Dataset" level={1} />
+      <div
+        css={`
+          border-radius: 11px;
+          background: #dfe3e5;
+          height: 100%;
+          max-height: 391px;
+          transition: all 0.2s ease-in-out;
+          padding: 16px 19px;
+          margin-top: 16px;
+          width: 90%;
+          margin-left: 26px;
+        `}
+      >
+        <ChartToolBoxSelectDataset
+          loadDataset={props.loadDataset}
+          expanded={props.expanded === 1}
+        />
+      </div>
+    </div>
+  );
+};
+
+function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
   const history = useHistory();
   const { page } = useParams<{ page: string }>();
   const { loadDataset } = props;
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [displayDatasets, setDisplayDatasets] = React.useState(true);
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const datasetsFromApi = useStoreState(
@@ -139,18 +105,21 @@ export function ChartToolBoxSelectDataset(
       ? DEFAULT_DATASETS
       : datasetsFromApi;
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
+  const isDatasetSelected = find(datasets, { id: dataset });
+
+  const handleClick = () => {
+    setDisplayDatasets(!displayDatasets);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setDisplayDatasets(false);
   };
 
   const handleItemClick = (endpoint: string, id: string) => () => {
     if (id === dataset) {
       return;
     }
+    setDisplayDatasets(false);
     setDataset(id);
     resetMapping();
     handleClose();
@@ -192,11 +161,17 @@ export function ChartToolBoxSelectDataset(
           font-size: 14px;
           padding: 12px 16px;
           flex-direction: row;
-          height: 44px;
-          border-radius: 24px;
-          background: #cfd4da;
+          height: 31px;
+          border-radius: 36px;
+          border: ${isDatasetSelected && !displayDatasets
+            ? "none"
+            : "0.722px dashed #262c34"};
+          background: ${isDatasetSelected && !displayDatasets
+            ? "#262c34"
+            : "#dfe3e5"};
           text-transform: capitalize;
           justify-content: space-between;
+          color: ${isDatasetSelected && !displayDatasets ? "#fff" : "#868e96"};
 
           &:hover {
             background: #cfd4da;
@@ -205,9 +180,11 @@ export function ChartToolBoxSelectDataset(
           svg {
             margin-left: 10px;
             transition: all 0.2s ease-in-out;
-            transform: rotate(${anchorEl ? "180" : "0"}deg);
+            transform: rotate(${displayDatasets ? "180" : "0"}deg);
             > path {
-              fill: #262c34;
+              fill: ${isDatasetSelected && !displayDatasets
+                ? "#fff"
+                : "#262c34"};
             }
           }
         `}
@@ -220,29 +197,35 @@ export function ChartToolBoxSelectDataset(
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
           `}
         >
-          {get(find(datasets, { id: dataset }), "name", "Datasets")}
+          {get(isDatasetSelected, "name", "Select Dataset")}
         </span>
         <KeyboardArrowDownIcon />
       </Button>
-      <StyledMenu
-        keepMounted
-        anchorEl={anchorEl}
-        id="breadcrumb-menu"
-        onClose={handleClose}
-        open={Boolean(anchorEl)}
-      >
-        {datasets?.map((item) => (
-          <StyledMenuItem
-            disableRipple
-            key={item.id}
-            disableTouchRipple
-            selected={dataset === item.id}
-            onClick={handleItemClick(`chart/sample-data/${item.id}`, item.id)}
-          >
-            {item.name}
-          </StyledMenuItem>
-        ))}
-      </StyledMenu>
+      {displayDatasets && (
+        <>
+          {datasets?.map((item) => (
+            <button
+              key={item.id}
+              onClick={handleItemClick(`chart/sample-data/${item.id}`, item.id)}
+              css={`
+                height: 31px;
+                color: ${item.id === dataset ? "#FFF" : "#262c34"};
+                font-family: "Gotham Narrow", sans-serif;
+                font-size: 14px;
+                background: ${item.id === dataset ? "#262C34" : "#cfd4da"};
+                border-radius: 25px;
+                padding-left: 16px;
+                border: none;
+                outline: none;
+                margin-top: 8px;
+                text-align: left;
+              `}
+            >
+              {item.name}
+            </button>
+          ))}
+        </>
+      )}
     </div>
   );
 }

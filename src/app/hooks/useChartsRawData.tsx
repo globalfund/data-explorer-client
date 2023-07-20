@@ -103,7 +103,7 @@ export function useChartsRawData(props: {
     }
     setLoading(true);
     return axios
-      .get(`${process.env.REACT_APP_API}/${endpoint}`, {
+      .get(`${process.env.REACT_APP_API_DX}/${endpoint}`, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -150,7 +150,7 @@ export function useChartsRawData(props: {
     setLoading(true);
     axios
       .post(
-        `${process.env.REACT_APP_API_DX}/chart/${chartId || page}/render`,
+        `${process.env.REACT_APP_API_DX}/chart/${chartId ?? page}/render`,
         body,
         {
           headers: {

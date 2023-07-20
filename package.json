@@ -23,7 +23,7 @@
     "@nivo/sankey": "^0.68.0",
     "@nivo/scatterplot": "^0.69.1",
     "@nivo/treemap": "^0.68.0",
-    "@rawgraphs/rawgraphs-core": "1.0.0-beta.17",
+    "@rawgraphs/rawgraphs-core": "^1.0.0-beta.17",
     "@turf/bbox": "^6.3.0",
     "@turf/bezier-spline": "^6.3.0",
     "@turf/center": "^6.3.0",

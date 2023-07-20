@@ -81,7 +81,6 @@ export default function ChartsGrid(props: {
       document.body.style.background = "#f5f5f7";
     };
   }, []);
-  console.log(charts);
 
   return (
     <>
@@ -90,11 +89,9 @@ export default function ChartsGrid(props: {
           {charts.map((data, index: number) => (
             <Grid item xs={12} sm={6} md={6} lg={3} key={data.id}>
               <GridItem
-                description={{
-                  __html: "Allocations amounts for countries by disease",
-                }}
+                description="Allocations amounts for countries by disease"
                 link={data.link}
-                title={{ __html: data.name }}
+                title={data.name}
                 viz={getIcon(data.vizType)}
                 handleModal={() => handleModal(index)}
                 setModalType={setModalType}

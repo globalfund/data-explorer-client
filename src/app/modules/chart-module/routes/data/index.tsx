@@ -4,8 +4,8 @@ import useTitle from "react-use/lib/useTitle";
 import { useStoreActions } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
-import { styles } from "app/modules/chart-module/routes/data/styles";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
+import { ReactComponent as LogoIcon } from "app/modules/report-module/asset/logo.svg";
 
 export function ChartModuleDataView() {
   useTitle("DX DataXplorer - Select Data");
@@ -31,20 +31,33 @@ export function ChartModuleDataView() {
       </div>
       <div
         css={`
+          height: 209px;
+        `}
+      />
+      <div
+        css={`
           width: 100%;
           height: 362px;
-          display: flex;
-          max-width: 1280px;
-          background: #dfe3e6;
+          font-family: "Gotham Narrow", sans-serif;
+          text-align: center;
+          line-height: normal;
+          font-size: 14px;
+          p {
+            margin: 0;
+          }
         `}
       >
-        <div css={styles.placeholder}>
-          <b>
-            Build your interactive chart
-            <br />
-            Please select a dataset in the right side panel
-          </b>
-        </div>
+        <LogoIcon />
+        <div
+          css={`
+            height: 42px;
+          `}
+        />
+        <p>Start building your interactive chart</p>
+        <p>
+          Please start by <b>selecting a dataset</b> in the right hand side
+          panel
+        </p>
       </div>
     </div>
   );

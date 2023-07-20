@@ -1854,7 +1854,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.8.tgz#6b79032e760a0899cd4204710beede972a3a185f"
   integrity sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==
 
-"@rawgraphs/rawgraphs-core@1.0.0-beta.17":
+"@rawgraphs/rawgraphs-core@^1.0.0-beta.17":
   version "1.0.0-beta.17"
   resolved "https://registry.yarnpkg.com/@rawgraphs/rawgraphs-core/-/rawgraphs-core-1.0.0-beta.17.tgz#8fc861645369126d93e6e0cf2606cd883be5005d"
   integrity sha512-vXfqV0OegJEOmB/pjkE2R6AVWPfDTNi0wQx6qFthqoB0ZQCqLLbH2KBBLmrtfnpx2J1RPoIy7cCFagF3XAQjrg==

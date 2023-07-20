@@ -1,12 +1,22 @@
 import React from "react";
 import get from "lodash/get";
-import { Dropdown } from "react-bootstrap";
-import { useDrag, useDrop } from "react-dnd";
-import Close from "@material-ui/icons/Close";
-import IconButton from "@material-ui/core/IconButton";
+
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+
+import { filter, isEmpty, uniqueId } from "lodash";
+import SubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
+import { Button } from "@material-ui/core";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import {
+  getTypeName,
+  getDefaultDimensionAggregation,
+  // @ts-ignore
+} from "@rawgraphs/rawgraphs-core";
+import { handleReplaceLocalMapping } from "app/modules/chart-module/routes/mapping/utils";
 
 interface ChartToolBoxMappingProps {
   dataTypes: any;
+  dimensions: any[];
 }
 
 const typeIcon = {
@@ -28,62 +38,271 @@ export const AGGREGATIONS_LABELS = {
 };
 
 export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
+  const nonStaticDimensions = filter(
+    props.dimensions,
+    (d: any) => !d.static
+  ).map((d: any) => {
+    return {
+      ...d,
+      mappedValue: null,
+      mapValuesDisplayed: true,
+    };
+  });
+  const [mapValuesDisplayed, setMapValuesDisplayed] = React.useState(true);
+  const [mappedValue, setMappedValue] = React.useState<any>(null);
+  const mapping = useStoreState((state) => state.charts.mapping.value);
+  const setMapping = useStoreActions(
+    (actions) => actions.charts.mapping.setValue
+  );
+  const handleButtonToggle = () => {
+    setMapValuesDisplayed(!mapValuesDisplayed);
+  };
+
+  const replaceDimension = React.useCallback(
+    (
+      fromDimension: string,
+      toDimension: string,
+      fromIndex: number,
+      toIndex: number
+    ) => {
+      const mappingFromStorage = get(
+        JSON.parse(
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
+        ),
+        "data.value",
+        {}
+      ) as { [key: string]: any };
+      const nextId = uniqueId();
+      setMapping(
+        handleReplaceLocalMapping(
+          nextId,
+          isEmpty(mapping) ? mappingFromStorage : mapping,
+          fromDimension,
+          toDimension,
+          fromIndex,
+          toIndex,
+          props.dimensions,
+          props.dataTypes
+        )
+      );
+    },
+    [mapping, props.dataTypes, props.dimensions, setMapping]
+  );
+
   return (
     <div
       css={`
         width: 100%;
         display: flex;
         flex-direction: column;
+        margin-bottom: 30px;
       `}
     >
-      <div
-        css={`
-          font-size: 14px;
-          margin-bottom: 15px;
-        `}
-      >
-        Dimensions
-      </div>
-      <div
-        css={`
-          width: 100%;
-          display: flex;
-          overflow-y: auto;
-          padding-right: 88px;
-          flex-direction: column;
-          max-height: calc(100vh - 340px);
+      <SubHeader name="Mapping" level={3} />
 
-          &::-webkit-scrollbar {
-            width: 4px;
-            background: #495057;
-          }
-          &::-webkit-scrollbar-track {
-            background: #f1f3f5;
-          }
-          &::-webkit-scrollbar-thumb {
-            border-radius: 4px;
-            background: #495057;
-          }
+      <div
+        css={`
+          width: 90%;
+          margin: auto;
         `}
       >
-        {Object.keys(props.dataTypes)?.map(
-          (dataTypeName: string, index: number) => {
-            let type = props.dataTypes[dataTypeName];
-            if (typeof props.dataTypes[dataTypeName] === "object") {
-              type = props.dataTypes[dataTypeName].type;
-            }
-            return (
-              <ChartToolBoxMappingItem
-                testId={`mapping-item-${dataTypeName}`}
-                type={type}
-                index={index}
-                key={dataTypeName}
-                marginBottom="16px"
-                dataTypeName={dataTypeName}
-              />
-            );
-          }
-        )}
+        <div
+          css={`
+            z-index: 1030;
+            position: relative;
+          `}
+        >
+          {nonStaticDimensions.map((dimension: any, index) => (
+            <div
+              key={`${dimension.id + index}`}
+              css={`
+                width: 100%;
+                padding: 16px;
+                min-height: 89px;
+                height: ${mapValuesDisplayed ? "344px" : "100%"};
+                overflow-y: hidden;
+                border-radius: 11px;
+                background: #dfe3e5;
+                margin-top: 16px;
+              `}
+            >
+              <div>
+                <div
+                  css={`
+                    width: 100%;
+                    display: flex;
+                    margin-bottom: 4px;
+                    flex-direction: row;
+                    align-items: center;
+                    justify-content: space-between;
+                    font-family: "Gotham Narrow", sans-serif; ;
+                  `}
+                >
+                  <div
+                    css={`
+                      width: 72px;
+                      opacity: 0.5;
+                      display: flex;
+                      flex-direction: row;
+                      align-items: center;
+                    `}
+                  >
+                    {dimension.validTypes.map(
+                      (type: "string" | "number" | "date") => (
+                        <span
+                          key={type}
+                          css={`
+                            width: 16px;
+                            height: 16px;
+                            background-size: contain;
+                            background-position: center;
+                            background-repeat: no-repeat;
+                            background-image: url(${typeIcon[type]});
+
+                            &:not(:last-child) {
+                              margin-right: 8px;
+                            }
+                          `}
+                        />
+                      )
+                    )}
+                  </div>
+                  <div
+                    css={`
+                      font-size: 14px;
+                      color: #262c34;
+                    `}
+                  >
+                    <b> {dimension.name}</b>
+                  </div>
+                  <div
+                    css={`
+                      width: 72px;
+                      color: #ef1320;
+                      font-size: 32px;
+                      text-align: right;
+                      margin-bottom: -12px;
+                      visibility: ${dimension.required ? "visible" : "hidden"};
+                    `}
+                  >
+                    *
+                  </div>
+                </div>
+                <div
+                  css={`
+                    > label {
+                      margin: 0;
+                      width: 100%;
+                      display: flex;
+                      justify-content: space-between;
+
+                      > span {
+                        font-size: 14px;
+                      }
+                    }
+                  `}
+                >
+                  <Button
+                    disableTouchRipple
+                    onClick={handleButtonToggle}
+                    css={`
+                      width: 100%;
+                      display: flex;
+                      font-size: 14px;
+                      padding: 12px 16px;
+                      margin-bottom: 16px;
+                      margin-top: 6px;
+                      flex-direction: row;
+                      height: 31px;
+                      border-radius: 36px;
+                      border: ${mappedValue && !mapValuesDisplayed
+                        ? "none"
+                        : "0.722px dashed #262c34"};
+                      background: ${mappedValue && !mapValuesDisplayed
+                        ? "#262c34"
+                        : "#dfe3e5"};
+                      text-transform: capitalize;
+                      justify-content: space-between;
+                      color: ${mappedValue && !mapValuesDisplayed
+                        ? "#fff"
+                        : "#868e96"};
+
+                      &:hover {
+                        background: #262c34;
+                        color: #fff;
+                      }
+
+                      svg {
+                        margin-left: 10px;
+                        transition: all 0.2s ease-in-out;
+                        transform: rotate(
+                          ${mapValuesDisplayed ? "180" : "0"}deg
+                        );
+                        > path {
+                          fill: ${mappedValue && !mapValuesDisplayed
+                            ? "#fff"
+                            : "#262c34"};
+                        }
+                      }
+                    `}
+                  >
+                    <span
+                      css={`
+                        overflow: hidden;
+                        white-space: nowrap;
+                        text-overflow: ellipsis;
+                        font-family: "GothamNarrow-Book", "Helvetica Neue",
+                          sans-serif;
+                      `}
+                    >
+                      {dimension.mappedValue || "Select dimension"}
+                    </span>
+                    <ArrowDropUpIcon />
+                  </Button>
+                </div>
+              </div>
+
+              {dimension.mapValuesDisplayed && (
+                <div
+                  css={`
+                    height: 100%;
+                    overflow-y: scroll;
+                    padding-bottom: 80px;
+
+                    ::-webkit-scrollbar {
+                      visibility: hidden;
+                    }
+                  `}
+                >
+                  {Object.keys(props.dataTypes)?.map(
+                    (dataTypeName: string, index: number) => {
+                      let type = props.dataTypes[dataTypeName];
+                      if (typeof props.dataTypes[dataTypeName] === "object") {
+                        type = props.dataTypes[dataTypeName].type;
+                      }
+                      return (
+                        <ChartToolBoxMappingItem
+                          setMapValuesDisplayed={setMapValuesDisplayed}
+                          mappedValue={mappedValue}
+                          setMappedValue={setMappedValue}
+                          testId={`mapping-item-${dataTypeName}`}
+                          type={type}
+                          index={index}
+                          key={dataTypeName}
+                          marginBottom="16px"
+                          dataTypeName={dataTypeName}
+                          dimension={dimension}
+                          replaceDimension={replaceDimension}
+                          dataTypes={props.dataTypes}
+                        />
+                      );
+                    }
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
@@ -94,6 +313,7 @@ interface ChartToolBoxMappingItemProps {
   dimension?: any;
   testId: string;
   dataTypeName: string;
+  dataTypes: any[];
   marginBottom: string;
   backgroundColor?: string;
   onDeleteItem?: () => void;
@@ -101,10 +321,13 @@ interface ChartToolBoxMappingItemProps {
   relatedAggregation?: any;
   aggregators?: any;
   isValid?: boolean;
+  mappedValue: string;
+  setMapValuesDisplayed: (value: React.SetStateAction<boolean>) => void;
+  setMappedValue: (value: React.SetStateAction<any>) => void;
   onChangeAggregation?: (index: number, value: any) => void;
   onChangeDimension?: (index: number, item: any) => void;
   onMove?: (dragIndex: number, hoverIndex: number) => void;
-  replaceDimension?: (
+  replaceDimension: (
     fromDimension: string,
     toDimension: string,
     fromIndex: number,
@@ -114,142 +337,106 @@ interface ChartToolBoxMappingItemProps {
 }
 
 export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
-  const ref = React.useRef<HTMLDivElement>(null);
-  const { index, dimension, onMove, onChangeDimension, replaceDimension } =
-    props;
+  const {
+    index,
+    dimension,
 
-  const [_, drop] = useDrop(() => ({
-    accept: ["column", "card"],
-    collect: (monitor) => {
-      if (!dimension || !onMove || !onChangeDimension || !replaceDimension)
-        return;
-      return {
-        // @ts-ignore
-        isOver: monitor.isOver() && monitor.getItem().type === "column",
-      };
-    },
+    replaceDimension,
+    dataTypes,
+  } = props;
 
-    //   //#TODO: for now we allow only dropping on "drop another dimension here" in case of multiple dimensions
-    //   if (false && item.type === "column") {
-    //     // onInsertColumn(hoverIndex, item);
-    //     // item.type = "card";
-    //     // item.dimensionId = dimension.id;
-    //     // item.index = hoverIndex;
-    //     // return;
-    //   } else if (item.dimensionId === dimension.id) {
-    //     const dragIndex = item.index;
-    //     // Don't replace items with themselves
-    //     if (dragIndex === hoverIndex) {
-    //       return;
-    //     }
-    //     // Determine rectangle on screen
-    //     const hoverBoundingRect = ref.current?.getBoundingClientRect();
-    //     // Get vertical middle
-    //     const hoverMiddleY =
-    //       (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
-    //     // Determine mouse position
-    //     const clientOffset = monitor.getClientOffset();
-    //     // Get pixels to the top
-    //     const hoverClientY = clientOffset.y - hoverBoundingRect.top;
-    //     // Only perform the move when the mouse has crossed half of the items height
-    //     // When dragging downwards, only move when the cursor is below 50%
-    //     // When dragging upwards, only move when the cursor is above 50%
-    //     // Dragging downwards
-    //     if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
-    //       return;
-    //     }
-    //     // Dragging upwards
-    //     if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
-    //       return;
-    //     }
-    //     console.log("hover", "onMove");
-    //     onMove(dragIndex, hoverIndex);
-    //     // Note: we're mutating the monitor item here!
-    //     // Generally it's better to avoid mutations,
-    //     // but it's good here for the sake of performance
-    //     // to avoid expensive index searches.
-    //     item.index = hoverIndex;
-    //   } else {
-    //     //#TODO: for now we allow only dropping on "drop another dimension here" in case of multiple dimensions
+  const setMapping = useStoreActions(
+    (actions) => actions.charts.mapping.setValue
+  );
 
-    //     // replaceDimension(
-    //     //   item.dimensionId,
-    //     //   dimension.id,
-    //     //   item.index,
-    //     //   index,
-    //     //   true
-    //     // )
-    //     // item.dimensionId = dimension.id
-    //     // item.index = hoverIndex
-    //     return;
-    //   }
-    // },
-    drop: (item: any) => {
-      if (!dimension || !onMove || !onChangeDimension || !replaceDimension)
-        return;
-      if (!dimension.multiple) {
-        if (item.type === "column") {
-          onChangeDimension(index, item);
-        } else {
-          replaceDimension(item.dimensionId, dimension.id, item.index, index);
-        }
+  const item = dimension
+    ? {
+        type: "card",
+        index,
+        id: props.dataTypeName,
+        dimensionId: dimension.id,
       }
-    },
-  }));
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: dimension ? "card" : "column",
-    item: dimension
-      ? {
-          type: "card",
-          index,
-          id: props.dataTypeName,
-          dimensionId: dimension.id,
-        }
-      : { id: props.dataTypeName, type: "column" },
-    collect: (monitor) => ({
-      isDragging: !!monitor.isDragging(),
-    }),
-  }));
+    : { id: props.dataTypeName, type: "column" };
 
-  if (dimension && onMove && onChangeDimension && replaceDimension) {
-    drop(ref);
-  } else {
-    drag(ref);
-  }
+  const handleClick = () => {
+    props.setMapValuesDisplayed(false);
+    props.setMappedValue(props.dataTypeName);
 
+    const mappingFromStorage = get(
+      JSON.parse(
+        sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
+      ),
+      "data.value",
+      {}
+    ) as { [key: string]: any };
+
+    const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
+    if (item.type === "column") {
+      const defaulAggregation = dimension.aggregation
+        ? getDefaultDimensionAggregation(dimension, dataTypes[item.id as any])
+        : null;
+      const columnDataType = getTypeName(dataTypes[item.id as any]);
+      const isValid =
+        dimension.validTypes?.length === 0 ||
+        dimension.validTypes?.includes(columnDataType);
+      setMapping({
+        [dimension.id]: {
+          ids: (localDimensionMapping.ids || []).concat(uniqueId()),
+          value: [...(localDimensionMapping.value || []), item.id],
+          isValid: isValid,
+          mappedType: columnDataType,
+          config: dimension.aggregation
+            ? {
+                aggregation: [
+                  ...(get(localDimensionMapping, "config.aggregation") || []),
+                  defaulAggregation,
+                ],
+              }
+            : undefined,
+        },
+      });
+    } else if (item.dimensionId !== dimension.id) {
+      replaceDimension(
+        item.dimensionId,
+        dimension.id,
+        item.index as number,
+        localDimensionMapping.value ? localDimensionMapping.value.length : 0
+      );
+    }
+  };
   return (
     <div
-      ref={ref}
       key={props.dataTypeName}
       id={props.testId}
       css={`
         height: 31px;
         display: flex;
         min-height: 31px;
-
         position: relative;
         padding-left: 16px;
         align-items: center;
         border-radius: 25px;
         z-index: 10;
-
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
         background: ${props.backgroundColor ?? "#cfd4da"};
-        cursor: ${(() => {
-          if (isDragging) {
-            return "grabbing";
-          } else if (props.onDeleteItem) {
-            return "grab";
-          } else {
-            return "default";
-          }
-        })()};
-
+        ${props.mappedValue === props.dataTypeName &&
+        "background: #262c34; color: #fff;"}
         &:last-child {
           margin-bottom: 0px;
         }
+        &:hover {
+          background: #262c34;
+          color: #fff;
+          svg {
+            path {
+              fill: #fff;
+            }
+          }
+        }
+        cursor: pointer;
       `}
+      onClick={handleClick}
     >
       <div
         css={`
@@ -276,87 +463,6 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
       >
         {props.dataTypeName}
       </div>
-      {dimension &&
-        props.isValid &&
-        dimension.aggregation &&
-        props.relatedAggregation &&
-        props.aggregators &&
-        props.onChangeAggregation && (
-          <Dropdown
-            className="d-inline-block ml-2 raw-dropdown"
-            id="rb-dropdown-menu"
-            css={`
-              margin-right: -7px;
-            `}
-          >
-            <Dropdown.Toggle
-              css={`
-                width: 110px;
-                color: #262c34;
-                font-size: 14px;
-                border-style: none;
-                border-radius: 26px;
-                padding-right: 16px;
-                background: #868e96;
-                box-shadow: none !important;
-
-                &:hover,
-                &:active,
-                &:focus {
-                  color: #fff;
-                  background: #262c34;
-                }
-              `}
-            >
-              {get(
-                AGGREGATIONS_LABELS,
-                props.relatedAggregation,
-                props.relatedAggregation
-              )}
-            </Dropdown.Toggle>
-            <Dropdown.Menu
-              css={`
-                min-width: 110px;
-                background: #dfe3e6;
-                border-radius: 13px;
-                box-shadow: none !important;
-              `}
-            >
-              {props.aggregators.map((aggregatorName: string) => (
-                <Dropdown.Item
-                  key={aggregatorName}
-                  onClick={() =>
-                    props.onChangeAggregation?.(index, aggregatorName)
-                  }
-                  css={`
-                    color: #262c34;
-                    font-size: 14px;
-                    padding: 6px 12px !important;
-                    border-bottom: 1px solid rgba(173, 181, 189, 0.5);
-
-                    &:hover {
-                      color: #fff;
-                      background: #262c34;
-                    }
-                  `}
-                >
-                  {get(AGGREGATIONS_LABELS, aggregatorName, aggregatorName)}
-                </Dropdown.Item>
-              ))}
-            </Dropdown.Menu>
-          </Dropdown>
-        )}
-      {props.onDeleteItem && (
-        <IconButton
-          onClick={props.onDeleteItem}
-          css={`
-            margin-right: -7px;
-            transform: scale(0.7);
-          `}
-        >
-          <Close />
-        </IconButton>
-      )}
     </div>
   );
 }

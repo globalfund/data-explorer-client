@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
-import orderBy from "lodash/orderBy";
-import { useUpdateEffect } from "react-use";
+
 /* project */
 import PreviewTable from "app/components/Table/Preview-table";
 import { tableToolBoxData } from "app/components/Table/Preview-table/data";
@@ -23,27 +22,15 @@ export function DataThemesDataTable(props: DataThemesDataTableProps) {
     return columns;
   };
 
-  const sort = {
-    columnKey: "",
-    direction: "ASC",
-  };
-
   React.useEffect(() => {
     setData(props.data);
   }, [props.data]);
-
-  useUpdateEffect(() => {
-    setData(
-      orderBy(data, sort.columnKey, sort.direction === "DESC" ? "desc" : "asc")
-    );
-  }, [sort]);
 
   return (
     <div
       css={`
         width: 100%;
-        height: calc(100vh - 225px);
-        margin-top: -1rem;
+        height: calc(100vh - 350px);
 
         > div {
           height: 100%;

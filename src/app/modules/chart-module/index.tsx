@@ -3,7 +3,6 @@ import React from "react";
 import get from "lodash/get";
 import { DndProvider } from "react-dnd";
 import { useSessionStorage } from "react-use";
-import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { Switch, Route, useParams, useHistory } from "react-router-dom";
@@ -49,7 +48,7 @@ export default function ChartModule() {
   );
   const [rawViz, setRawViz] = React.useState<any>(null);
   const [chartName, setChartName] = React.useState("My First Chart");
-
+  const [toolboxOpen, setToolboxOpen] = React.useState(true);
   const {
     loading,
     dataTypes,
@@ -161,10 +160,10 @@ export default function ChartModule() {
   function setVisualOptionsOnChange() {
     const options = {
       ...getOptionsConfig(
-        get(charts, chartType || "echartsBarchart", charts.echartsBarchart)
+        get(charts, chartType ?? "echartsBarchart", charts.echartsBarchart)
           .visualOptions
       ),
-      ...get(defaultChartOptions, chartType || "echartsBarchart", {}),
+      ...get(defaultChartOptions, chartType ?? "echartsBarchart", {}),
     };
     const defaultOptionsValues = getDefaultOptionsValues(options);
 
@@ -246,6 +245,7 @@ export default function ChartModule() {
   }
 
   React.useEffect(() => {
+    document.body.style.background = "white";
     if (page === "new" && dataset) {
       loadDataset(`/chart/sample-data/${dataset}`).then(() => {
         history.push(`/chart/${page}/preview-data`);
@@ -300,6 +300,9 @@ export default function ChartModule() {
         reportName=""
       />
       <ChartModuleToolBox
+        openToolbox={toolboxOpen}
+        onClose={() => setToolboxOpen(false)}
+        onOpen={() => setToolboxOpen(true)}
         rawViz={rawViz}
         data={sampleData}
         chartName={chartName}
@@ -321,121 +324,115 @@ export default function ChartModule() {
         addVizToLocalStates={addVizToLocalStates}
         previewMode={!isEditMode && page !== "new"}
         forceNextEnabled={getForceNextEnabledValue(view)}
+        dimensions={dimensions}
       />
       <div
         css={`
-          height: 50px;
+          height: 55px;
         `}
       />
-      <Container
-        maxWidth="lg"
-        css={`
-          top: 50px;
-          position: relative;
-        `}
-      >
-        <Switch>
-          {(isSaveLoading || isChartLoading) && <PageLoader />}
-          <Route path="/chart/:page/export">
-            <ChartBuilderExport
-              loading={loading}
-              setRawViz={setRawViz}
-              renderedChart={content}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/customize">
-            <ChartBuilderCustomize
-              loading={loading}
-              dimensions={dimensions}
-              mappedData={mappedData}
-              renderedChart={content}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/lock">
-            <ChartBuilderLock
-              loading={loading}
-              setRawViz={setRawViz}
-              renderedChart={content}
-              dimensions={dimensions}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/filters">
-            <ChartBuilderFilters
-              loading={loading}
-              renderedChart={content}
-              dimensions={dimensions}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/mapping">
-            <ChartBuilderMapping
-              loading={loading}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              dataTypes={dataTypes2}
-              dimensions={dimensions}
-              renderedChart={content}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/chart-type">
-            <ChartBuilderChartType loading={loading} />
-          </Route>
-          <Route path="/chart/:page/preview-data">
-            <ChartBuilderPreview
-              loading={loading}
-              data={sampleData}
-              loadDataset={loadDataset}
-              stats={dataStats}
-              filterOptionGroups={filterOptionGroups}
-            />
-          </Route>
-          <Route path="/chart/:page/data">
-            <ChartModuleDataView />
-          </Route>
-          <Route path="/chart/:page/preview">
-            <ChartBuilderPreviewTheme
-              loading={loading || isChartLoading}
-              visualOptions={visualOptions}
-              renderedChart={renderedChart}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={renderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-              editable={isEditMode || (page === "new" && !view)}
-            />
-          </Route>
-          <Route path="/chart/:page">
-            <ChartBuilderPreviewTheme
-              loading={loading || isChartLoading}
-              visualOptions={visualOptions}
-              renderedChart={renderedChart}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={renderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-              editable={isEditMode || (page === "new" && !view)}
-            />
-          </Route>
-          <Route path="*">
-            <NoMatchPage />
-          </Route>
-        </Switch>
-      </Container>
+
+      <Switch>
+        {(isSaveLoading || isChartLoading) && <PageLoader />}
+        <Route path="/chart/:page/export">
+          <ChartBuilderExport
+            loading={loading}
+            setRawViz={setRawViz}
+            renderedChart={content}
+            visualOptions={visualOptions}
+            setVisualOptions={setVisualOptions}
+            renderedChartSsr={activeRenderedChartSsr}
+            renderedChartMappedData={renderedChartMappedData}
+          />
+        </Route>
+        <Route path="/chart/:page/customize">
+          <ChartBuilderCustomize
+            loading={loading}
+            dimensions={dimensions}
+            mappedData={mappedData}
+            renderedChart={content}
+            visualOptions={visualOptions}
+            setVisualOptions={setVisualOptions}
+            renderedChartSsr={activeRenderedChartSsr}
+            renderedChartMappedData={renderedChartMappedData}
+          />
+        </Route>
+        <Route path="/chart/:page/lock">
+          <ChartBuilderLock
+            loading={loading}
+            setRawViz={setRawViz}
+            renderedChart={content}
+            dimensions={dimensions}
+            visualOptions={visualOptions}
+            setVisualOptions={setVisualOptions}
+            renderedChartSsr={activeRenderedChartSsr}
+            renderedChartMappedData={renderedChartMappedData}
+          />
+        </Route>
+        <Route path="/chart/:page/filters">
+          <ChartBuilderFilters
+            loading={loading}
+            renderedChart={content}
+            dimensions={dimensions}
+            visualOptions={visualOptions}
+            setVisualOptions={setVisualOptions}
+            renderedChartSsr={activeRenderedChartSsr}
+            renderedChartMappedData={renderedChartMappedData}
+          />
+        </Route>
+        <Route path="/chart/:page/mapping">
+          <ChartBuilderMapping
+            loading={loading}
+            visualOptions={visualOptions}
+            setVisualOptions={setVisualOptions}
+            dataTypes={dataTypes2}
+            dimensions={dimensions}
+            renderedChart={content}
+            renderedChartSsr={activeRenderedChartSsr}
+            renderedChartMappedData={renderedChartMappedData}
+          />
+        </Route>
+        <Route path="/chart/:page/chart-type">
+          <ChartBuilderChartType loading={loading} />
+        </Route>
+        <Route path="/chart/:page/preview-data">
+          <ChartBuilderPreview
+            loading={loading}
+            data={sampleData}
+            loadDataset={loadDataset}
+            stats={dataStats}
+            filterOptionGroups={filterOptionGroups}
+          />
+        </Route>
+        <Route path="/chart/:page/data">
+          <ChartModuleDataView />
+        </Route>
+        <Route path="/chart/:page/preview">
+          <ChartBuilderPreviewTheme
+            loading={loading || isChartLoading}
+            visualOptions={visualOptions}
+            renderedChart={renderedChart}
+            setVisualOptions={setVisualOptions}
+            renderedChartSsr={renderedChartSsr}
+            renderedChartMappedData={renderedChartMappedData}
+            editable={isEditMode || (page === "new" && !view)}
+          />
+        </Route>
+        <Route path="/chart/:page">
+          <ChartBuilderPreviewTheme
+            loading={loading || isChartLoading}
+            visualOptions={visualOptions}
+            renderedChart={renderedChart}
+            setVisualOptions={setVisualOptions}
+            renderedChartSsr={renderedChartSsr}
+            renderedChartMappedData={renderedChartMappedData}
+            editable={isEditMode || (page === "new" && !view)}
+          />
+        </Route>
+        <Route path="*">
+          <NoMatchPage />
+        </Route>
+      </Switch>
     </DndProvider>
   );
 }

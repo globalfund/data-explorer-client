@@ -15,6 +15,7 @@ import ColoredTreeMapIcon from "app/assets/icons/data-themes-chart-types/colored
 
 import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
 import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/coloredBigNumber";
+import { ReactComponent as GeomapPreviewImg } from "app/modules/chart-module/assets/geomapPreview.svg";
 
 export interface ChartBuilderChartTypeProps {
   loading: boolean;
@@ -24,6 +25,8 @@ export interface ChartTypeModel {
   id: string;
   label: string;
   icon: React.ReactNode;
+  preview: React.ReactNode;
+
   categories: string[];
   description: string;
   ssr: boolean;
@@ -35,6 +38,8 @@ export const echartTypes = (big: boolean) => {
       id: "echartsBarchart",
       label: "Bar chart",
       icon: <BarChartIcon big={big} />,
+      preview: <GeomapPreviewImg />,
+
       categories: ["Correllations"],
       ssr: false,
       description:
@@ -44,14 +49,19 @@ export const echartTypes = (big: boolean) => {
       id: "echartsGeomap",
       label: "Geo map",
       icon: <GeomapChartIcon big={big} />,
+
+      preview: <GeomapPreviewImg />,
       categories: ["Locations"],
       ssr: false,
-      description: "Geo map",
+      description:
+        "A geomap is a map of a country, continent, or region map, with colors and values assigned to specific regions. Values are displayed as a color scale, and you can specify optional hovertext for regions.",
     },
     {
       id: "echartsLinechart",
       label: "Line chart",
       icon: <LineChartIcon big={big} />,
+      preview: <GeomapPreviewImg />,
+
       categories: ["Trends", "changes over time"],
       ssr: false,
       description:
@@ -61,6 +71,8 @@ export const echartTypes = (big: boolean) => {
       id: "echartsSankey",
       label: "Sankey diagram",
       icon: <SankeyChartIcon big={big} />,
+      preview: <GeomapPreviewImg />,
+
       categories: ["Networks"],
       ssr: false,
       description:
@@ -70,6 +82,8 @@ export const echartTypes = (big: boolean) => {
       id: "echartsTreemap",
       label: "Treemap diagram",
       icon: <TreeMapIcon big={big} />,
+      preview: <GeomapPreviewImg />,
+
       categories: ["Hierarchies", "Proportions"],
       ssr: false,
       description:
@@ -79,82 +93,12 @@ export const echartTypes = (big: boolean) => {
       id: "bigNumber",
       label: "Big number",
       icon: <BigNumberIcon />,
+      preview: <GeomapPreviewImg />,
+
       categories: ["Hierarchies", "Proportions"],
       ssr: true,
       description:
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
-    },
-    {
-      id: "placeholder1",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder2",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder3",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder4",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder5",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder7",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder8",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder9",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
-    },
-    {
-      id: "placeholder10",
-      label: "",
-      icon: <></>,
-      categories: [],
-      ssr: false,
-      description: "",
     },
   ];
 };

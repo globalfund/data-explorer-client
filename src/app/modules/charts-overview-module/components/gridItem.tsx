@@ -10,8 +10,8 @@ export function GridItem(props: {
   handleModal: (id: string) => void;
   setModalType: React.Dispatch<React.SetStateAction<string>>;
   id: string;
-  title: { __html: any };
-  description: { __html: any };
+  title: string;
+  description: string;
   createdDate: string;
   viz: React.ReactNode;
 }) {
@@ -25,6 +25,7 @@ export function GridItem(props: {
       css={`
         padding: 16px;
         height: 125px;
+        width: 100%;
         background: #f1f3f5;
         position: relative;
         border-radius: 10px;
@@ -56,8 +57,8 @@ export function GridItem(props: {
         }
       `}
     >
-      <div dangerouslySetInnerHTML={props.title} />
-      <div dangerouslySetInnerHTML={props.description} />
+      <div>{props.title}</div>
+      <div>{props.description}</div>
 
       <div
         css={`

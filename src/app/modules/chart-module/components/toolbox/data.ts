@@ -11,7 +11,11 @@ export interface ChartToolBoxProps {
   guideView: boolean;
   textView: boolean;
   visualOptions: any;
+  dimensions: any[];
   filtersView: boolean;
+  openToolbox: boolean;
+  onClose: () => void;
+  onOpen: () => void;
   loadDataFromAPI: (
     customAppliedFilters?: [
       [

@@ -5,11 +5,12 @@ export const styles = {
     right: 0;
     z-index: 99;
     position: fixed;
-    top: ${!placeUnderSubHeader ? 45 : 97}px;
+    top: ${!placeUnderSubHeader ? 105 : 97}px;
 
     display: flex;
-    background: #f2f7fd;
+    background: #f5f5f7;
     flex-direction: column;
+    box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
 
     overflow-y: scroll;
     ::-webkit-scrollbar {
