@@ -193,10 +193,10 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
     <>
       {!expandedGroup && (
         <>
-          {isGrantDetail &&
+          {/* {isGrantDetail &&
             history.location.pathname.indexOf("/overview") === -1 && (
               <GrantImplementationPeriods />
-            )}
+            )} */}
           {controlItems.views.length > 0 && !isMobile && (
             <ToolBoxPanelControlRow
               title="Views"
