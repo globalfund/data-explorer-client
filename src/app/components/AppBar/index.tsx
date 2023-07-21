@@ -247,12 +247,11 @@ export function AppBar() {
                   alt={get(cmsData, "componentsAppBar.logoAlt", "")}
                 />
               </NavLink>
-
               {(location.pathname === "/" || !openSearch) && (
                 <div
                   css={`
-                    display: flex;
                     gap: 32px;
+                    display: flex;
                   `}
                 >
                   <div
@@ -298,7 +297,6 @@ export function AppBar() {
                       )
                     )}
                   </StyledMenu>
-
                   <NavLink
                     to="/reports"
                     css={`
@@ -319,7 +317,6 @@ export function AppBar() {
                   >
                     Reports
                   </NavLink>
-
                   <NavLink
                     to="/charts"
                     css={`
@@ -342,34 +339,36 @@ export function AppBar() {
                   </NavLink>
                 </div>
               )}
-
               <div
                 css={`
-                  display: flex;
                   gap: 32px;
+                  display: flex;
                   align-items: center;
+                  ${openSearch ? "width: calc(100% - 300px);" : ""}
                 `}
               >
-                <NavLink
-                  to="/about"
-                  css={`
-                    color: ${appColors.APPBAR.LINK_COLOR};
-                    font-size: 14px;
-                    font-weight: bold;
-                    letter-spacing: 0.5px;
-                    text-decoration: none;
+                {!openSearch && (
+                  <NavLink
+                    to="/about"
+                    css={`
+                      color: ${appColors.APPBAR.LINK_COLOR};
+                      font-size: 14px;
+                      font-weight: bold;
+                      letter-spacing: 0.5px;
+                      text-decoration: none;
 
-                    &:hover {
-                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                    }
+                      &:hover {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
 
-                    &.active {
-                      color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                    }
-                  `}
-                >
-                  {get(cmsData, "componentsAppBar.about", "")}
-                </NavLink>
+                      &.active {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
+                    `}
+                  >
+                    {get(cmsData, "componentsAppBar.about", "")}
+                  </NavLink>
+                )}
                 {openSearch && <Search hocClose={() => setOpenSearch(false)} />}
                 <IconButton
                   onClick={() => setOpenSearch(!openSearch)}
