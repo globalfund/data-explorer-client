@@ -2,6 +2,7 @@ import React from "react";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import { useParams } from "react-router-dom";
+import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -13,16 +14,23 @@ import {
   reportContentWidthsAtom,
   reportContentHeightsAtom,
   persistedReportStateAtom,
+  reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 
 export function ReportPreviewView() {
   const { page } = useParams<{ page: string }>();
-  const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
-  const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
+  const { ref, width } = useResizeObserver<HTMLDivElement>();
+
+  const persistedReportState = useRecoilState(persistedReportStateAtom)[0];
+  const reportPreviewMode = useRecoilState(unSavedReportPreviewModeAtom)[0];
 
   const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
   const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
+
+  const [containerWidth, setContainerWidth] = useRecoilState(
+    reportContentContainerWidth
+  );
 
   const reportData = useStoreState(
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
@@ -49,6 +57,12 @@ export function ReportPreviewView() {
   React.useEffect(() => {
     fetchReportData({ getId: page });
   }, [page]);
+
+  React.useEffect(() => {
+    if (width && width !== containerWidth) {
+      setContainerWidth(width);
+    }
+  }, [width]);
 
   React.useEffect(() => {
     if (!reportPreviewMode) {
@@ -111,7 +125,7 @@ export function ReportPreviewView() {
         }}
         setHeaderDetails={() => {}}
       />
-      <Container id="content-container" maxWidth="lg">
+      <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
         {reportPreviewData.rows.map((rowFrame, index) => {
           if (
