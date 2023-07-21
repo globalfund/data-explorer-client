@@ -14,7 +14,10 @@ import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 import { useUpdateEffect } from "react-use";
 
-export function GrantDetailOverviewModule(props: { grantInfoData: any }) {
+export function GrantDetailOverviewModule(props: {
+  grantInfoData: any;
+  period: string;
+}) {
   const isMobile = useMediaQuery("(max-width: 767px)");
   const isLoading = useStoreState((state) => state.GrantDetailInfo.loading);
   const addDataPathSteps = useStoreActions(
@@ -52,7 +55,7 @@ export function GrantDetailOverviewModule(props: { grantInfoData: any }) {
     addDataPathSteps([
       {
         id: "grant-detail",
-        name: props.grantInfoData.title,
+        name: props.grantInfoData.title + ` (Grant Cycle ${props.period})`,
         path: location.pathname,
       },
     ]);

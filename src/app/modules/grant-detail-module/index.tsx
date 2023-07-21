@@ -200,7 +200,10 @@ export default function GrantDetail() {
         <Switch>
           {/* Overview */}
           <Route path={`/grant/${params.code}/${params.period}/overview`}>
-            <GrantDetailOverviewModule grantInfoData={grantInfoData} />
+            <GrantDetailOverviewModule
+              grantInfoData={grantInfoData}
+              period={params.period}
+            />
           </Route>
           {/* Budgets */}
           <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>
