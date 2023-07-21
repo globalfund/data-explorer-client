@@ -6,4 +6,5 @@ export const stepcss = (activeStep: boolean) => css`
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: ${activeStep ? "#F5F5F7" : "#ffffff"};
 `;

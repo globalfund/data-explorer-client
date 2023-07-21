@@ -6,6 +6,7 @@ import PaletteIcon from "@material-ui/icons/Palette";
 import TableChartIcon from "@material-ui/icons/TableChart";
 import { stepcss } from "./style";
 import { useHistory, useParams } from "react-router-dom";
+import { ActionCreator } from "easy-peasy";
 
 export type ToolboxNavType =
   | "dataset"
@@ -16,7 +17,7 @@ export type ToolboxNavType =
   | "chart"
   | "selectDataset";
 export default function ToolboxNav(props: {
-  setActiveStep: React.Dispatch<React.SetStateAction<ToolboxNavType>>;
+  setActiveStep: ActionCreator<ToolboxNavType>;
   activeStep: string;
 }) {
   const { page } = useParams<{ page: string }>();
@@ -57,9 +58,23 @@ export default function ToolboxNav(props: {
         display: flex;
       `}
     >
-      {navContent.map((item) => (
+      {navContent.map((item, index) => (
         <div
-          css={stepcss(item.name === props.activeStep)}
+          css={`
+            ${stepcss(item.name === props.activeStep)}
+            ${(() => {
+              if (item.name === props.activeStep && index === 0) {
+                return "border-radius: 8px 8px 0px 0px;";
+              }
+              if (
+                item.name === props.activeStep &&
+                index === navContent.length - 1
+              ) {
+                return "border-radius: 8px 8px 0px 0px";
+              }
+              return "border-radius: 0px 0px 8px 0px;";
+            })()};
+          `}
           key={item.name}
           onClick={() => {
             props.setActiveStep(item.name);

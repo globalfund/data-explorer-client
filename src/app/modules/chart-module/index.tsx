@@ -383,6 +383,7 @@ export default function ChartModule() {
         <Route path="/chart/:page/mapping">
           <ChartBuilderMapping
             loading={loading}
+            loadedChart={loadedChart}
             visualOptions={visualOptions}
             setVisualOptions={setVisualOptions}
             dataTypes={dataTypes2}

@@ -1,7 +1,7 @@
 /* third-party */
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
@@ -39,13 +39,8 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
   );
   const datasetName = datasetsFromApi.find((d) => d.id === dataset)?.name;
 
-  const setActivePanels = useStoreActions(
-    (state) => state.charts.activePanels.setValue
-  );
-
   React.useEffect(() => {
     // When the Preview component is rendered, we are at step 1.
-    setActivePanels(1);
     if (props.data.length === 0 && dataset) {
       props.loadDataset(`data-themes/sample-data/${dataset}`);
     }

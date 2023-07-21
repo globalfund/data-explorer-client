@@ -62,9 +62,9 @@ export const DatasetPanel = (props: {
           border-radius: 11px;
           background: #dfe3e5;
           height: 100%;
-          max-height: 391px;
           transition: all 0.2s ease-in-out;
-          padding: 16px 19px;
+          padding: 0 16px 16px 19px;
+
           margin-top: 16px;
           width: 90%;
           margin-left: 26px;
@@ -152,80 +152,116 @@ function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
         }
       `}
     >
-      <Button
-        disableTouchRipple
-        onClick={handleClick}
-        css={`
-          width: 100%;
-          display: flex;
-          font-size: 14px;
-          padding: 12px 16px;
-          flex-direction: row;
-          height: 31px;
-          border-radius: 36px;
-          border: ${isDatasetSelected && !displayDatasets
-            ? "none"
-            : "0.722px dashed #262c34"};
-          background: ${isDatasetSelected && !displayDatasets
-            ? "#262c34"
-            : "#dfe3e5"};
-          text-transform: capitalize;
-          justify-content: space-between;
-          color: ${isDatasetSelected && !displayDatasets ? "#fff" : "#868e96"};
+      <div>
+        <Button
+          disableTouchRipple
+          onClick={handleClick}
+          css={`
+            width: 100%;
+            margin-top: 16px;
 
-          &:hover {
-            background: #cfd4da;
-          }
+            display: flex;
+            font-size: 14px;
+            padding: 12px 16px;
+            flex-direction: row;
+            height: 31px;
+            border-radius: 36px;
+            border: ${isDatasetSelected && !displayDatasets
+              ? "none"
+              : "0.722px dashed #262c34"};
+            background: ${isDatasetSelected && !displayDatasets
+              ? "#262c34"
+              : "#dfe3e5"};
+            text-transform: capitalize;
+            justify-content: space-between;
+            color: ${isDatasetSelected && !displayDatasets
+              ? "#fff"
+              : "#868e96"};
 
-          svg {
-            margin-left: 10px;
-            transition: all 0.2s ease-in-out;
-            transform: rotate(${displayDatasets ? "180" : "0"}deg);
-            > path {
-              fill: ${isDatasetSelected && !displayDatasets
-                ? "#fff"
-                : "#262c34"};
+            svg {
+              margin-left: 10px;
+              transition: all 0.2s ease-in-out;
+              transform: rotate(${displayDatasets ? "180" : "0"}deg);
+              > path {
+                fill: ${isDatasetSelected && !displayDatasets
+                  ? "#fff"
+                  : "#262c34"};
+              }
             }
+            &:hover {
+              background: #262c34;
+              color: #fff;
+              svg {
+                > path {
+                  fill: #fff;
+                }
+              }
+            }
+          `}
+        >
+          <span
+            css={`
+              overflow: hidden;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
+            `}
+          >
+            {get(isDatasetSelected, "name", "Select Dataset")}
+          </span>
+          <KeyboardArrowDownIcon />
+        </Button>
+      </div>
+      <div
+        css={`
+          height: 100%;
+          overflow-y: auto;
+          width: 100%;
+
+          max-height: 300px;
+          margin-top: 16px;
+          ::-webkit-scrollbar {
+            width: 0px;
           }
         `}
       >
-        <span
-          css={`
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-          `}
-        >
-          {get(isDatasetSelected, "name", "Select Dataset")}
-        </span>
-        <KeyboardArrowDownIcon />
-      </Button>
-      {displayDatasets && (
-        <>
-          {datasets?.map((item) => (
-            <button
-              key={item.id}
-              onClick={handleItemClick(`chart/sample-data/${item.id}`, item.id)}
-              css={`
-                height: 31px;
-                color: ${item.id === dataset ? "#FFF" : "#262c34"};
-                font-family: "Gotham Narrow", sans-serif;
-                font-size: 14px;
-                background: ${item.id === dataset ? "#262C34" : "#cfd4da"};
-                border-radius: 25px;
-                padding-left: 16px;
-                border: none;
-                outline: none;
-                margin-top: 8px;
-                text-align: left;
-              `}
-            >
-              {item.name}
-            </button>
-          ))}
-        </>
-      )}
+        {displayDatasets && (
+          <React.Fragment>
+            {datasets?.map((item) => (
+              <button
+                key={item.id}
+                onClick={handleItemClick(
+                  `chart/sample-data/${item.id}`,
+                  item.id
+                )}
+                css={`
+                  height: 31px;
+                  color: ${item.id === dataset ? "#FFF" : "#262c34"};
+                  font-family: "Gotham Narrow", sans-serif;
+                  font-size: 14px;
+                  background: ${item.id === dataset ? "#262C34" : "#cfd4da"};
+                  border-radius: 25px;
+                  padding-left: 16px;
+                  border: none;
+                  outline: none;
+                  margin-bottom: 8px;
+                  text-align: left;
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  cursor: pointer;
+                  &:hover {
+                    background: #262c34;
+                    color: #fff;
+                  }
+                `}
+              >
+                {item.name}
+              </button>
+            ))}
+          </React.Fragment>
+        )}
+      </div>
     </div>
   );
 }

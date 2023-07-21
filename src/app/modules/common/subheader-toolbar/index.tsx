@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import isEmpty from "lodash/isEmpty";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components/macro";
 import Button from "@material-ui/core/Button";
@@ -191,35 +190,35 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     };
   }, []);
 
-  React.useEffect(() => {
-    const newValue =
-      selectedChartType !== "" &&
-      selectedChartType !== null &&
-      !isEmpty(mapping) &&
-      activePanels > 2;
-    if (newValue !== isPreviewEnabled) {
-      setIsPreviewEnabled(newValue);
-    }
-  }, [selectedChartType, mapping, activePanels]);
+  // React.useEffect(() => {
+  //   const newValue =
+  //     selectedChartType !== "" &&
+  //     selectedChartType !== null &&
+  //     !isEmpty(mapping) &&
+  //     activePanels > 2;
+  //   if (newValue !== isPreviewEnabled) {
+  //     setIsPreviewEnabled(newValue);
+  //   }
+  // }, [selectedChartType, mapping, activePanels]);
 
-  React.useEffect(() => {
-    const newValue =
-      (selectedChartType !== "" &&
-        selectedChartType !== null &&
-        !isEmpty(mapping) &&
-        activePanels > 3) ||
-      (view !== undefined && page !== "new" && props.name !== loadedChart.name);
-    if (newValue !== isSavedEnabled) {
-      setIsSavedEnabled(newValue);
-    }
-  }, [
-    view,
-    props.name,
-    mapping,
-    activePanels,
-    loadedChart.name,
-    selectedChartType,
-  ]);
+  // React.useEffect(() => {
+  //   const newValue =
+  //     (selectedChartType !== "" &&
+  //       selectedChartType !== null &&
+  //       !isEmpty(mapping) &&
+  //       activePanels > 3) ||
+  //     (view !== undefined && page !== "new" && props.name !== loadedChart.name);
+  //   if (newValue !== isSavedEnabled) {
+  //     setIsSavedEnabled(newValue);
+  //   }
+  // }, [
+  //   view,
+  //   props.name,
+  //   mapping,
+  //   activePanels,
+  //   loadedChart.name,
+  //   selectedChartType,
+  // ]);
 
   React.useEffect(() => {
     if (

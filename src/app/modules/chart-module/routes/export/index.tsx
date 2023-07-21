@@ -3,7 +3,7 @@ import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { ChartBuilderExportProps } from "app/modules/chart-module/routes/export/data";
@@ -19,14 +19,6 @@ export function ChartBuilderExport(props: ChartBuilderExportProps) {
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
-  const setActivePanels = useStoreActions(
-    (state) => state.charts.activePanels.setValue
-  );
-
-  React.useEffect(() => {
-    // When the Export component is rendered, we are at step 7.
-    setActivePanels(7);
-  }, []);
 
   if ((dataset === null && !props.loading) || isEmpty(mapping)) {
     history.push(`/chart/${page}/data`);

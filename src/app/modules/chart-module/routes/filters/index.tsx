@@ -21,14 +21,6 @@ export function ChartBuilderFilters(props: ChartBuilderFiltersProps) {
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
-  const setActivePanels = useStoreActions(
-    (state) => state.charts.activePanels.setValue
-  );
-
-  React.useEffect(() => {
-    // When the Filters component is rendered, we are at step 4.
-    setActivePanels(4);
-  }, []);
 
   useUpdateEffectOnce(() => {
     if (

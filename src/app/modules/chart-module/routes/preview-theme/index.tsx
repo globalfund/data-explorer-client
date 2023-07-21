@@ -21,19 +21,13 @@ import { getRandNoBetween0and1 } from "app/utils/getSecureRandomNumbers";
 export function ChartBuilderPreviewThemePage(
   props: ChartBuilderPreviewThemePageProps
 ) {
-  const { page } = useParams<{ page: string }>();
-
-  const activePanels = useStoreState(
-    (state) => state.charts.activePanels.value
-  );
-
-  if (
-    page === "new" &&
-    activePanels < 3 &&
-    (activePanels > 1 ? !props.validMapping : true)
-  ) {
-    return <Redirect to="/chart/new/data" />;
-  }
+  // if (
+  //   page === "new" &&
+  //   activePanels < 3 &&
+  //   (activePanels > 1 ? !props.validMapping : true)
+  // ) {
+  //   return <Redirect to="/chart/new/data" />;
+  // }
 
   if (props.loading) {
     return <PageLoader />;

@@ -10,6 +10,8 @@ import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import { getRequiredFieldsAndErrors } from "app/modules/chart-module/routes/mapping/utils";
 import { ChartBuilderMappingProps } from "app/modules/chart-module/routes/mapping/data";
+import ChartPlaceholder from "../../components/placeholder";
+import { isEmpty } from "lodash";
 
 export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   useTitle("DX DataXplorer - Mapping");
@@ -35,11 +37,6 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   >([]);
 
   React.useEffect(() => {
-    // When the Mapping component is rendered, we are at step 3.
-    setActivePanels(3);
-  }, []);
-
-  React.useEffect(() => {
     const { updRequiredFields, updErrors, updMinValuesFields } =
       getRequiredFieldsAndErrors(mapping, props.dimensions);
 
@@ -51,10 +48,12 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   if (dataset === null && !props.loading) {
     history.push(`/chart/${page}/data`);
   }
+  console.log("mapping", isEmpty(props.renderedChartMappedData));
 
   return (
     <div css={commonStyles.container}>
       <div css={commonStyles.innercontainer}>
+        {isEmpty(props.renderedChartMappedData) && <ChartPlaceholder />}
         <div
           ref={containerRef}
           css={`

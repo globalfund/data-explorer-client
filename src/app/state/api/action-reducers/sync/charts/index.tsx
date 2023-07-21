@@ -1,18 +1,19 @@
 /* eslint-disable no-param-reassign */
+import { ToolboxNavType } from "app/modules/chart-module/components/toolbox/views/steps/navbar";
 import { action, Action } from "easy-peasy";
 
 export interface ChartsActivePanelsStateModel {
-  value: number;
+  value: ToolboxNavType;
   reset: Action<ChartsActivePanelsStateModel>;
-  setValue: Action<ChartsActivePanelsStateModel, number>;
+  setValue: Action<ChartsActivePanelsStateModel, ToolboxNavType>;
 }
 
 export const ChartsActivePanelsState: ChartsActivePanelsStateModel = {
-  value: 1,
+  value: "selectDataset",
   reset: action((state) => {
-    state.value = 1;
+    state.value = "selectDataset";
   }),
-  setValue: action((state, payload: number) => {
+  setValue: action((state, payload: ToolboxNavType) => {
     state.value = payload;
   }),
 };

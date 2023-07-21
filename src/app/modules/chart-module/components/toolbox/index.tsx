@@ -44,11 +44,10 @@ const Button = withStyles(() => ({
 }))(MuiButton);
 
 export function ChartModuleToolBox(props: ChartToolBoxProps) {
-  const { page, view } = useParams<{ page: string; view?: string }>();
+  const { page } = useParams<{ page: string; view?: string }>();
   const history = useHistory();
-  const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
-  const [activeStep, setActiveStep] =
-    React.useState<ToolboxNavType>("selectDataset");
+  const [isSavedEnabled, _] = React.useState(false);
+
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const appliedFilters = useStoreState(
@@ -59,6 +58,9 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   );
   const activePanels = useStoreState(
     (state) => state.charts.activePanels.value
+  );
+  const setActivePanels = useStoreActions(
+    (state) => state.charts.activePanels.setValue
   );
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
@@ -115,26 +117,26 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
     }
   }
 
-  React.useEffect(() => {
-    const newValue =
-      (selectedChartType !== "" &&
-        selectedChartType !== null &&
-        !isEmpty(mapping) &&
-        activePanels > 3) ||
-      (view !== undefined &&
-        page !== "new" &&
-        props.chartName !== loadedChart.name);
-    if (newValue !== isSavedEnabled) {
-      setIsSavedEnabled(newValue);
-    }
-  }, [
-    view,
-    props.chartName,
-    mapping,
-    activePanels,
-    loadedChart.name,
-    selectedChartType,
-  ]);
+  // React.useEffect(() => {
+  //   const newValue =
+  //     (selectedChartType !== "" &&
+  //       selectedChartType !== null &&
+  //       !isEmpty(mapping) &&
+  //       activePanels > 3) ||
+  //     (view !== undefined &&
+  //       page !== "new" &&
+  //       props.chartName !== loadedChart.name);
+  //   if (newValue !== isSavedEnabled) {
+  //     setIsSavedEnabled(newValue);
+  //   }
+  // }, [
+  //   view,
+  //   props.chartName,
+  //   mapping,
+  //   activePanels,
+  //   loadedChart.name,
+  //   selectedChartType,
+  // ]);
 
   return (
     <>
@@ -184,10 +186,13 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
               <TriangleXSIcon />
             </div>
           )}
-          <ToolboxNav activeStep={activeStep} setActiveStep={setActiveStep} />
+          <ToolboxNav
+            activeStep={activePanels}
+            setActiveStep={setActivePanels}
+          />
           {props.dataSteps && (
             <ChartToolBoxSteps
-              activeStep={activeStep}
+              activeStep={activePanels}
               data={props.data}
               rawViz={props.rawViz}
               loading={props.loading}

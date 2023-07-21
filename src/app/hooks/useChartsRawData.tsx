@@ -228,7 +228,7 @@ export function useChartsRawData(props: {
         ],
       };
       axios
-        .post(`${process.env.REACT_APP_API}/chart/${page}/render`, body, {
+        .post(`${process.env.REACT_APP_API_DX}/chart/${page}/render`, body, {
           headers: {
             "Content-Type": "application/json",
           },

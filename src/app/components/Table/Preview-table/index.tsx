@@ -30,6 +30,10 @@ interface PreviewTableProps {
 export default function PreviewTable(props: PreviewTableProps) {
   const [toolboxDisplay, setToolboxDisplay] = React.useState(false);
 
+  const handleToolBoxDisplay = () => {
+    setToolboxDisplay(true);
+  };
+
   return (
     <>
       <div
@@ -147,7 +151,7 @@ export default function PreviewTable(props: PreviewTableProps) {
                       // cursor: pointer;
                       background: #f9f9f9;
                     `}
-                    // onClick={handleToolBoxDisplay}
+                    onClick={handleToolBoxDisplay}
                   >
                     {val.name !== "ID" && (
                       <div

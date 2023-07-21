@@ -13,6 +13,7 @@ import {
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
 import { handleReplaceLocalMapping } from "app/modules/chart-module/routes/mapping/utils";
+import ScheduleIcon from "@material-ui/icons/Schedule";
 
 interface ChartToolBoxMappingProps {
   dataTypes: any;
@@ -20,9 +21,9 @@ interface ChartToolBoxMappingProps {
 }
 
 const typeIcon = {
-  string: "/icons/string.svg",
-  number: "/icons/number.svg",
-  date: "/icons/date.svg",
+  string: <p>Aa</p>,
+  number: <p>#</p>,
+  date: <ScheduleIcon />,
 };
 
 export const AGGREGATIONS_LABELS = {
@@ -38,24 +39,33 @@ export const AGGREGATIONS_LABELS = {
 };
 
 export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
-  const nonStaticDimensions = filter(
-    props.dimensions,
-    (d: any) => !d.static
-  ).map((d: any) => {
-    return {
-      ...d,
-      mappedValue: null,
-      mapValuesDisplayed: true,
-    };
-  });
-  const [mapValuesDisplayed, setMapValuesDisplayed] = React.useState(true);
-  const [mappedValue, setMappedValue] = React.useState<any>(null);
+  const [nonStaticDimensions, setNonStaticDimensions] = React.useState(
+    filter(props.dimensions, (d: any) => !d.static).map((d: any) => {
+      return {
+        ...d,
+        mappedValue: null,
+        mapValuesDisplayed: true,
+      };
+    })
+  );
+
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const setMapping = useStoreActions(
     (actions) => actions.charts.mapping.setValue
   );
-  const handleButtonToggle = () => {
-    setMapValuesDisplayed(!mapValuesDisplayed);
+  const handleButtonToggle = (id: string) => {
+    setNonStaticDimensions((prev) => {
+      const tempPrev = prev.map((data) => {
+        if (data.id === id) {
+          return {
+            ...data,
+            mapValuesDisplayed: !data.mapValuesDisplayed,
+          };
+        }
+        return data;
+      });
+      return tempPrev;
+    });
   };
 
   const replaceDimension = React.useCallback(
@@ -112,14 +122,14 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
             position: relative;
           `}
         >
-          {nonStaticDimensions.map((dimension: any, index) => (
+          {nonStaticDimensions.map((dimension: any) => (
             <div
-              key={`${dimension.id + index}`}
+              key={`${dimension.id}`}
               css={`
                 width: 100%;
-                padding: 16px;
-                min-height: 89px;
-                height: ${mapValuesDisplayed ? "344px" : "100%"};
+                padding: 16px 16px 8px 16px;
+                height: 100%;
+
                 overflow-y: hidden;
                 border-radius: 11px;
                 background: #dfe3e5;
@@ -145,25 +155,14 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
                       display: flex;
                       flex-direction: row;
                       align-items: center;
+                      p {
+                        margin: 0;
+                      }
                     `}
                   >
                     {dimension.validTypes.map(
                       (type: "string" | "number" | "date") => (
-                        <span
-                          key={type}
-                          css={`
-                            width: 16px;
-                            height: 16px;
-                            background-size: contain;
-                            background-position: center;
-                            background-repeat: no-repeat;
-                            background-image: url(${typeIcon[type]});
-
-                            &:not(:last-child) {
-                              margin-right: 8px;
-                            }
-                          `}
-                        />
+                        <p key={type}>{typeIcon[type]}</p>
                       )
                     )}
                   </div>
@@ -204,7 +203,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
                 >
                   <Button
                     disableTouchRipple
-                    onClick={handleButtonToggle}
+                    onClick={() => handleButtonToggle(dimension.id)}
                     css={`
                       width: 100%;
                       display: flex;
@@ -215,31 +214,40 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
                       flex-direction: row;
                       height: 31px;
                       border-radius: 36px;
-                      border: ${mappedValue && !mapValuesDisplayed
+                      border: ${dimension.mappedValue &&
+                      !dimension.mapValuesDisplayed
                         ? "none"
                         : "0.722px dashed #262c34"};
-                      background: ${mappedValue && !mapValuesDisplayed
+                      background: ${dimension.mappedValue &&
+                      !dimension.mapValuesDisplayed
                         ? "#262c34"
                         : "#dfe3e5"};
                       text-transform: capitalize;
                       justify-content: space-between;
-                      color: ${mappedValue && !mapValuesDisplayed
+                      color: ${dimension.mappedValue &&
+                      !dimension.mapValuesDisplayed
                         ? "#fff"
                         : "#868e96"};
 
                       &:hover {
                         background: #262c34;
                         color: #fff;
+                        svg {
+                          path {
+                            fill: #fff;
+                          }
+                        }
                       }
 
                       svg {
                         margin-left: 10px;
                         transition: all 0.2s ease-in-out;
                         transform: rotate(
-                          ${mapValuesDisplayed ? "180" : "0"}deg
+                          ${dimension.mapValuesDisplayed ? "180" : "0"}deg
                         );
                         > path {
-                          fill: ${mappedValue && !mapValuesDisplayed
+                          fill: ${dimension.mappedValue &&
+                          !dimension.mapValuesDisplayed
                             ? "#fff"
                             : "#262c34"};
                         }
@@ -267,10 +275,10 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
                   css={`
                     height: 100%;
                     overflow-y: scroll;
-                    padding-bottom: 80px;
+                    max-height: 253px;
 
                     ::-webkit-scrollbar {
-                      visibility: hidden;
+                      width: 0px;
                     }
                   `}
                 >
@@ -282,18 +290,17 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
                       }
                       return (
                         <ChartToolBoxMappingItem
-                          setMapValuesDisplayed={setMapValuesDisplayed}
-                          mappedValue={mappedValue}
-                          setMappedValue={setMappedValue}
+                          key={dataTypeName}
                           testId={`mapping-item-${dataTypeName}`}
                           type={type}
                           index={index}
-                          key={dataTypeName}
                           marginBottom="16px"
                           dataTypeName={dataTypeName}
                           dimension={dimension}
                           replaceDimension={replaceDimension}
+                          setNonStaticDimensions={setNonStaticDimensions}
                           dataTypes={props.dataTypes}
+                          nonStaticDimensionsIndex={dimension.id}
                         />
                       );
                     }
@@ -321,9 +328,9 @@ interface ChartToolBoxMappingItemProps {
   relatedAggregation?: any;
   aggregators?: any;
   isValid?: boolean;
-  mappedValue: string;
-  setMapValuesDisplayed: (value: React.SetStateAction<boolean>) => void;
-  setMappedValue: (value: React.SetStateAction<any>) => void;
+  nonStaticDimensionsIndex: number;
+  setNonStaticDimensions: React.Dispatch<React.SetStateAction<any[]>>;
+
   onChangeAggregation?: (index: number, value: any) => void;
   onChangeDimension?: (index: number, item: any) => void;
   onMove?: (dragIndex: number, hoverIndex: number) => void;
@@ -337,13 +344,7 @@ interface ChartToolBoxMappingItemProps {
 }
 
 export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
-  const {
-    index,
-    dimension,
-
-    replaceDimension,
-    dataTypes,
-  } = props;
+  const { index, dimension, replaceDimension, dataTypes } = props;
 
   const setMapping = useStoreActions(
     (actions) => actions.charts.mapping.setValue
@@ -359,26 +360,39 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
     : { id: props.dataTypeName, type: "column" };
 
   const handleClick = () => {
-    props.setMapValuesDisplayed(false);
-    props.setMappedValue(props.dataTypeName);
+    const columnDataType = getTypeName(dataTypes[item.id as any]);
 
-    const mappingFromStorage = get(
-      JSON.parse(
-        sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
-      ),
-      "data.value",
-      {}
-    ) as { [key: string]: any };
+    const isValid =
+      dimension.validTypes?.length === 0 ||
+      dimension.validTypes?.includes(columnDataType);
+    if (isValid) {
+      props.setNonStaticDimensions((prev) => {
+        const tempPrev = prev.map((data) => {
+          if (data.id === props.nonStaticDimensionsIndex) {
+            return {
+              ...data,
+              mappedValue: props.dataTypeName,
+              mapValuesDisplayed: false,
+            };
+          }
+          return data;
+        });
+        return tempPrev;
+      });
 
-    const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
-    if (item.type === "column") {
+      const mappingFromStorage = get(
+        JSON.parse(
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
+        ),
+        "data.value",
+        {}
+      ) as { [key: string]: any };
+
+      const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
       const defaulAggregation = dimension.aggregation
         ? getDefaultDimensionAggregation(dimension, dataTypes[item.id as any])
         : null;
-      const columnDataType = getTypeName(dataTypes[item.id as any]);
-      const isValid =
-        dimension.validTypes?.length === 0 ||
-        dimension.validTypes?.includes(columnDataType);
+
       setMapping({
         [dimension.id]: {
           ids: (localDimensionMapping.ids || []).concat(uniqueId()),
@@ -395,15 +409,9 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
             : undefined,
         },
       });
-    } else if (item.dimensionId !== dimension.id) {
-      replaceDimension(
-        item.dimensionId,
-        dimension.id,
-        item.index as number,
-        localDimensionMapping.value ? localDimensionMapping.value.length : 0
-      );
     }
   };
+
   return (
     <div
       key={props.dataTypeName}
@@ -411,6 +419,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
       css={`
         height: 31px;
         display: flex;
+        gap: 13px;
         min-height: 31px;
         position: relative;
         padding-left: 16px;
@@ -419,9 +428,14 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
         z-index: 10;
         transform: translate(0px, 0px);
         margin-bottom: ${props.marginBottom};
+        color: #262c34;
         background: ${props.backgroundColor ?? "#cfd4da"};
-        ${props.mappedValue === props.dataTypeName &&
+        ${props.dimension.mappedValue === props.dataTypeName &&
         "background: #262c34; color: #fff;"}
+        p {
+          font-family: "Roboto", sans-serif;
+          font-size: 14px;
+        }
         &:last-child {
           margin-bottom: 0px;
         }
@@ -438,18 +452,7 @@ export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
       `}
       onClick={handleClick}
     >
-      <div
-        css={`
-          width: 16px;
-          height: 16px;
-          min-width: 16px;
-          margin-right: 13px;
-          background-size: contain;
-          background-position: center;
-          background-repeat: no-repeat;
-          background-image: url(${typeIcon[props.type]});
-        `}
-      />
+      <p>{typeIcon[props.type]}</p>
 
       <div
         css={`

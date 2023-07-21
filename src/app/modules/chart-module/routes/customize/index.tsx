@@ -27,11 +27,6 @@ export function ChartBuilderCustomize(props: ChartBuilderCustomizeProps) {
     (state) => state.charts.activePanels.setValue
   );
 
-  React.useEffect(() => {
-    // When the Customize component is rendered, we are at step 6.
-    setActivePanels(6);
-  }, []);
-
   useUpdateEffectOnce(() => {
     if (
       containerRef.current &&

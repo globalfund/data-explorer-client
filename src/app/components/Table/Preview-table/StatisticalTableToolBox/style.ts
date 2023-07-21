@@ -2,12 +2,13 @@ import { css } from "styled-components";
 
 export const statisticalTableToolBoxStyle = {
   container: (placeUnderSubHeader?: boolean) => css`
-    background: #f2f7fd;
+    background: #f5f5f7;
+    box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
     width: 400px;
     height: 727px;
     position: fixed;
-    right: 0;
-    top: ${!placeUnderSubHeader ? 40 : 97}px;
+    left: 0;
+    top: ${!placeUnderSubHeader ? 40 : 108}px;
     height: calc(100vh - ${!placeUnderSubHeader ? 40 : 97}px);
     z-index: 100;
   `,
