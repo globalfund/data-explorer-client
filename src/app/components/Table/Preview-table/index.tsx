@@ -39,162 +39,175 @@ export default function PreviewTable(props: PreviewTableProps) {
       <div
         css={`
           height: 100%;
-          overflow: auto;
+          overflow-x: auto;
+
           width: 100%;
+          border-radius: 8px;
+
+          &::-webkit-scrollbar {
+            height: 5px;
+            border-radius: 23px;
+            width: 5px;
+            background: #231d2c;
+          }
+          &::-webkit-scrollbar-track {
+            background: #fff;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: #231d2c;
+            border-radius: 23px;
+            border: 3px solid transparent;
+          }
         `}
       >
-        <TableContainer
-          css={`
-            height: 100%;
-            width: inherit;
-            border-radius: 8px;
-            border: 1px solid #dfe3e5;
-            &::-webkit-scrollbar {
-              height: 5px;
-              border-radius: 23px;
-              width: 5px;
-              background: #231d2c;
-            }
-            &::-webkit-scrollbar-track {
-              background: #fff;
-            }
+        <div>
+          <TableContainer
+            css={`
+              height: 100%;
+              width: inherit;
+              border-radius: 8px;
+              border: 1px solid #dfe3e5;
 
-            &::-webkit-scrollbar-thumb {
-              background: #231d2c;
-              border-radius: 23px;
-              border: 3px solid transparent;
-            }
-          `}
-        >
-          <Table css={previewTablecss}>
-            <TableHead
-              css={`
-                top: 0;
-                position: sticky;
-                background: #dfe3e5;
-              `}
-            >
-              <TableRow
+              overflow: unset;
+              /* overflow-y: scroll; */
+            `}
+          >
+            <Table css={previewTablecss}>
+              <TableHead
                 css={`
-                  padding: 0rem 0.4rem;
+                  top: 0;
+                  position: sticky;
+                  background: #dfe3e5;
                 `}
               >
-                {props.columns.map((val, index) => {
-                  return (
-                    <TableCell
-                      key={val.key}
-                      css={`
-                        border-left: ${index == 0 ? "none" : "auto"};
-                        border-top-left-radius: ${index == 0 ? "5px" : "0"};
-                      `}
-                    >
-                      {index !== 0 && (
-                        <div
-                          css={`
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            gap: 1rem;
-                          `}
-                        >
+                <TableRow
+                  css={`
+                    padding: 0rem 0.4rem;
+                  `}
+                >
+                  {props.columns.map((val, index) => {
+                    return (
+                      <TableCell
+                        key={val.key}
+                        css={`
+                          border-left: ${index == 0 ? "none" : "auto"};
+                          border-top-left-radius: ${index == 0 ? "5px" : "0"};
+                        `}
+                      >
+                        {index !== 0 && (
                           <div
                             css={`
-                              width: 25px;
-                              height: 25px;
-                              border-radius: 50%;
-                              padding: 3px;
-                              justify-content: center;
                               display: flex;
+                              justify-content: space-between;
                               align-items: center;
-                              background: #ffffff;
+                              gap: 1rem;
                             `}
                           >
-                            {val.type === "string" ? "Aa" : "#"}
-                          </div>
+                            <div
+                              css={`
+                                width: 25px;
+                                height: 25px;
+                                border-radius: 50%;
+                                padding: 3px;
+                                justify-content: center;
+                                display: flex;
+                                align-items: center;
+                                background: #ffffff;
+                              `}
+                            >
+                              {val.type === "string" ? "Aa" : "#"}
+                            </div>
 
-                          <p
-                            css={`
-                              margin: 0;
-                              overflow: clip;
-                              max-width: 220px;
-                              text-align: left;
-                              line-height: 17px;
-                              white-space: nowrap;
-                              text-overflow: ellipsis;
-                            `}
-                          >
-                            <b>{val.key}</b>
-                          </p>
-                          <IconButton>
-                            <SortIcon />
-                          </IconButton>
+                            <p
+                              css={`
+                                margin: 0;
+                                overflow: clip;
+                                max-width: 220px;
+                                text-align: left;
+                                line-height: 17px;
+                                white-space: nowrap;
+                                text-overflow: ellipsis;
+                              `}
+                            >
+                              <b>{val.key}</b>
+                            </p>
+                            <IconButton>
+                              <SortIcon />
+                            </IconButton>
+                          </div>
+                        )}
+                      </TableCell>
+                    );
+                  })}
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                <TableRow
+                  css={`
+                    top: 54px;
+                    position: sticky;
+                    background: #f9f9f9;
+                  `}
+                >
+                  {props.dataStats?.map((val) => (
+                    <TableCell
+                      key={val.name}
+                      css={`
+                        color: #000;
+                        font-size: 12px;
+                        // cursor: pointer;
+                        background: #f9f9f9;
+                      `}
+                      onClick={handleToolBoxDisplay}
+                    >
+                      {val.name !== "ID" && (
+                        <div
+                          css={`
+                            background: #f9f9f9;
+                          `}
+                        >
+                          <StatisticDisplay type={val.type} data={val.data} />
                         </div>
                       )}
                     </TableCell>
-                  );
-                })}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow
-                css={`
-                  top: 54px;
-                  position: sticky;
-                  background: #f9f9f9;
-                `}
-              >
-                {props.dataStats?.map((val) => (
-                  <TableCell
-                    key={val.name}
-                    css={`
-                      color: #000;
-                      font-size: 12px;
-                      // cursor: pointer;
-                      background: #f9f9f9;
-                    `}
-                    onClick={handleToolBoxDisplay}
-                  >
-                    {val.name !== "ID" && (
-                      <div
-                        css={`
-                          background: #f9f9f9;
-                        `}
-                      >
-                        <StatisticDisplay type={val.type} data={val.data} />
-                      </div>
-                    )}
-                  </TableCell>
-                ))}
-              </TableRow>
-              {props.tableData.map((data) => (
-                <TableRow
-                  key={Object.values(data).join("-")}
-                  css={`
-                    background: #fff;
-                  `}
-                >
-                  {props.columns.map((val, index) => (
-                    <TableCell key={val.key}>
-                      <p
-                        css={`
-                          margin: 0;
-                          overflow: clip;
-                          max-width: 220px;
-                          white-space: nowrap;
-                          text-overflow: ellipsis;
-                          min-width: ${index === 0 ? "30px" : "auto"};
-                          text-align: ${index === 0 ? "center" : "left"};
-                        `}
-                      >
-                        {data[val.key]}
-                      </p>
-                    </TableCell>
                   ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+                {props.tableData.map((data) => (
+                  <TableRow
+                    key={Object.values(data).join("-")}
+                    css={`
+                      background: #fff;
+                    `}
+                  >
+                    {props.columns.map((val, index) => (
+                      <TableCell key={val.key}>
+                        <p
+                          css={`
+                            margin: 0;
+                            overflow: clip;
+                            max-width: 220px;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
+                            min-width: ${index === 0 ? "30px" : "auto"};
+                            text-align: ${index === 0 ? "center" : "left"};
+                          `}
+                        >
+                          {data[val.key]}
+                        </p>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </div>
+        <div
+          css={`
+            height: 15px;
+          `}
+        />
       </div>
       <StatisticalTableToolBox
         toolboxDisplay={toolboxDisplay}

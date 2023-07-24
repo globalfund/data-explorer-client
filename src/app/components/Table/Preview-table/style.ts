@@ -2,7 +2,7 @@ import { css } from "styled-components/macro";
 
 export const previewTablecss = css`
   width: max-content;
-
+  border-radius: 8px;
   th {
     padding: 0.1rem 0.7rem;
     height: 54px;

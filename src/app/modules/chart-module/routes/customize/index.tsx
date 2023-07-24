@@ -3,7 +3,7 @@ import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { useUpdateEffectOnce } from "app/hooks/useUpdateEffectOnce";
 import { CHART_DEFAULT_WIDTH } from "app/modules/chart-module/data";

@@ -38,7 +38,7 @@ export function useDataThemesEchart() {
     const container = document.getElementById(id);
     chart.resize({
       width: container?.clientWidth,
-      height: height || "auto",
+      height: height ?? "auto",
     });
   }
 
