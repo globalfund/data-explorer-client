@@ -1,52 +1,54 @@
-import { useState } from "react";
-import { appColors } from "app/theme";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { IconButton } from "@material-ui/core";
-import MenuOptions from "./menuOptions";
+import React from "react";
 import moment from "moment";
+import { appColors } from "app/theme";
+import { Link } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MenuOptions from "app/modules/charts-overview-module/components/menuOptions";
 
-export function GridItem(props: {
-  link: string;
-  handleModal: (id: string) => void;
-  setModalType: React.Dispatch<React.SetStateAction<string>>;
+interface Props {
   id: string;
+  link: string;
   title: string;
   description: string;
   createdDate: string;
   viz: React.ReactNode;
-}) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
+  handleModal: (id: string) => void;
+  setModalType: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export function GridItem(props: Props) {
+  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
 
   const showMenuOptions = () => {
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
+
   return (
-    <div
+    <Link
+      to={props.link}
       css={`
+        width: 100%;
         padding: 16px;
         height: 125px;
-        width: 100%;
-        background: #f1f3f5;
-        position: relative;
-        border-radius: 10px;
         display: flex;
+        background: #f1f3f5;
+        border-radius: 10px;
+        text-decoration: none;
         flex-direction: column;
-        @media (max-width: 767px) {
-          height: 125px;
-        }
 
         > div {
+          color: #495057;
           font-weight: bold;
           line-height: 16px;
-          margin-bottom: 4px;
-          color: #495057;
 
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
 
           &:nth-of-type(2) {
             color: #495057;
+            margin-top: 4px;
             font-size: 10px;
-            font-weight: 325;
+            font-weight: 400;
             line-height: 12px;
             font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
           }
@@ -59,15 +61,10 @@ export function GridItem(props: {
     >
       <div>{props.title}</div>
       <div>{props.description}</div>
-
       <div
         css={`
-          gap: 20px;
-          bottom: 20px;
+          bottom: 16px;
           position: absolute;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
 
           > svg {
             > path {
@@ -76,30 +73,21 @@ export function GridItem(props: {
             rect {
               fill: ${appColors.DATASETS_GRID.ICON_LINK_COLOR};
             }
-
-            &:hover {
-              > path {
-                fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
-              }
-              > rect {
-                fill: ${appColors.DATASETS_GRID.ICON_LINK_HOVER_COLOR};
-              }
-            }
           }
         `}
       >
         {props.viz}
       </div>
-
       <div
         css={`
+          right: 20px;
+          bottom: 16px;
           position: absolute;
-          top: 92px;
-          right: 14px;
-          align-items: flex-end;
+
           p {
-            font-size: 10px;
+            margin: 0;
             color: #495057;
+            font-size: 10px;
             font-family: "GothamNarrow-Light";
           }
         `}
@@ -109,11 +97,11 @@ export function GridItem(props: {
       <IconButton
         onClick={showMenuOptions}
         css={`
-          position: absolute;
+          top: 16px;
           right: 10px;
-          top: 4px;
           padding: 4px;
           color: #231d2c;
+          position: absolute;
         `}
       >
         <MoreVertIcon />
@@ -126,6 +114,6 @@ export function GridItem(props: {
           id={props.id}
         />
       )}
-    </div>
+    </Link>
   );
 }

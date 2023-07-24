@@ -1,43 +1,40 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { Grid, IconButton, Popover } from "@material-ui/core";
-import { ReactComponent as GridIcon } from "app/modules/reports-overview-module/assets/grid-icon.svg";
-import { ReactComponent as SearchIcon } from "app/modules/reports-overview-module/assets/search-icon.svg";
 import { ReactComponent as SortIcon } from "app/modules/reports-overview-module/assets/sort-icon.svg";
+import { ReactComponent as GridIcon } from "app/modules/reports-overview-module/assets/grid-icon.svg";
 import { ReactComponent as ChartIcon } from "app/modules/reports-overview-module/assets/chart-icon.svg";
 import { ReactComponent as TableIcon } from "app/modules/reports-overview-module/assets/table-icon.svg";
 import { ReactComponent as CloseIcon } from "app/modules/reports-overview-module/assets/close-icon.svg";
-
+import { ReactComponent as SearchIcon } from "app/modules/reports-overview-module/assets/search-icon.svg";
 import {
-  iconButtonCss,
   rowFlexCss,
-  searchInputCss,
   sortByItemCss,
+  iconButtonCss,
+  searchInputCss,
 } from "app/modules/reports-overview-module/style";
-import { Link } from "react-router-dom";
 
-export default function OverviewToolbar(props: {
-  sortBy: string;
-  tableView: boolean;
-  setTableView: React.Dispatch<React.SetStateAction<boolean>>;
+interface Props {
   title: string;
-  buttonTitle: string;
+  sortValue: string;
+  tableView: boolean;
   buttonPath: string;
-  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
   searchValue: string;
-}) {
+  buttonTitle: string;
+  sortOptions: { label: string; value: string }[];
+  setSortValue: React.Dispatch<React.SetStateAction<string>>;
+  setTableView: React.Dispatch<React.SetStateAction<boolean>>;
+  setSearchValue: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function OverviewToolbar(props: Props) {
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
   const [viewPopoverAnchorEl, setViewPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
 
   const inputRef = React.useRef<HTMLInputElement>(null);
-  const sortOptions = [
-    { label: "Date", value: "date" },
-    { label: "Label", value: "label" },
-    { label: "Title", value: "title" },
-  ];
   const [openSearch, setOpenSearch] = React.useState(false);
-  const [sortValue, setSortValue] = React.useState("date");
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     props.setSearchValue(e.target.value);
@@ -46,6 +43,7 @@ export default function OverviewToolbar(props: {
   const handleCloseSortPopover = () => {
     setSortPopoverAnchorEl(null);
   };
+
   const handleCloseViewPopover = () => {
     setViewPopoverAnchorEl(null);
   };
@@ -152,16 +150,15 @@ export default function OverviewToolbar(props: {
               .MuiPaper-root {
                 border-radius: 5px;
                 width: 154px;
-                height: 124px;
               }
             `}
           >
-            {sortOptions.map((option, index) => (
+            {props.sortOptions.map((option, index) => (
               <div
                 key={option.label}
-                css={sortByItemCss(sortValue === option.value, index)}
+                css={sortByItemCss(props.sortValue === option.value, index)}
                 onClick={() => {
-                  setSortValue(option.value);
+                  props.setSortValue(option.value);
                   handleCloseSortPopover();
                 }}
               >
@@ -209,6 +206,7 @@ export default function OverviewToolbar(props: {
                 justify-content: space-around;
                 align-items: flex-start;
                 font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
+
                 div {
                   display: flex;
                   gap: 8px;
@@ -238,13 +236,35 @@ export default function OverviewToolbar(props: {
                 }
               `}
             >
-              <div>
+              <div
+                css={
+                  !props.tableView
+                    ? `
+                background: #262c34;
+                button {
+                  color: #fff;
+                }
+              `
+                    : ""
+                }
+              >
                 <button onClick={() => props.setTableView(false)}>
                   <ChartIcon />
                   List
                 </button>
               </div>
-              <div>
+              <div
+                css={
+                  props.tableView
+                    ? `
+                background: #262c34;
+                button {
+                  color: #fff;
+                }
+              `
+                    : ""
+                }
+              >
                 <button onClick={() => props.setTableView(true)}>
                   <TableIcon />
                   Table

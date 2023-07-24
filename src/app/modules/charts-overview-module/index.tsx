@@ -1,20 +1,19 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-
 /* project */
 import BigLogo from "app/assets/BigLogo";
 import { useCMSData } from "app/hooks/useCMSData";
-import { container, subtitle } from "app/modules/landing-module/styles";
 import OverviewToolbar from "app/modules/common/overview-toolbar";
+import { container, subtitle } from "app/modules/landing-module/styles";
 import ChartsGrid from "app/modules/charts-overview-module/components/chartsGrid";
 
 export default function ChartsOverviewModule() {
   const cmsData = useCMSData({ returnData: true });
   const [tableView, setTableView] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
+  const [sortValue, setSortValue] = React.useState("createdDate");
 
-  const sortValue = "createdDate";
   return (
     <div css={container}>
       <div
@@ -35,18 +34,29 @@ export default function ChartsOverviewModule() {
         <div css={subtitle}>{get(cmsData, "modulesLanding.subTitle", "")}</div>
         <div
           css={`
-            height: 102px;
+            height: 74px;
           `}
         />
         <OverviewToolbar
-          setTableView={setTableView}
-          sortBy={sortValue}
-          tableView={tableView}
-          searchValue={searchValue}
-          setSearchValue={setSearchValue}
-          buttonPath="/chart/new/data"
-          buttonTitle="New Chart"
           title="Charts"
+          sortValue={sortValue}
+          tableView={tableView}
+          buttonTitle="New Chart"
+          searchValue={searchValue}
+          setSortValue={setSortValue}
+          setTableView={setTableView}
+          buttonPath="/chart/new/data"
+          setSearchValue={setSearchValue}
+          sortOptions={[
+            {
+              label: "Date",
+              value: "createdDate",
+            },
+            {
+              label: "Title",
+              value: "name",
+            },
+          ]}
         />
         <ChartsGrid
           tableView={tableView}

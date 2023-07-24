@@ -1,5 +1,4 @@
 import React from "react";
-import { appColors } from "app/theme";
 
 const BigLogo = () => (
   <svg
