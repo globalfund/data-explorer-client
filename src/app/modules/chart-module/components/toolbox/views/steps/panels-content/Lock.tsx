@@ -11,10 +11,28 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
+import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
+import { withStyles } from "@material-ui/core";
 
 interface ChartToolBoxLockProps {
   filterOptionGroups: FilterGroupModel[];
 }
+const StyledSwitch = withStyles({
+  switchBase: {
+    color: "#fff !important",
+    "&$checked": {
+      backgroundColor: "#1B73F9 !important",
+      "& + $track": {
+        backgroundColor: "#1B73F9 !important",
+        borderColor: "#1B73F9 !important",
+      },
+    },
+
+    "&$checked + $track": {
+      backgroundColor: "#1B73F9 !important",
+    },
+  },
+})(Switch);
 
 export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
   const enabledFilterOptionGroups = useStoreState(
@@ -22,6 +40,9 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
   );
   const setEnabledFilterOptionGroups = useStoreActions(
     (actions) => actions.charts.enabledFilterOptionGroups.setValue
+  );
+  const clearEnabledFilterOptionGroups = useStoreActions(
+    (actions) => actions.charts.enabledFilterOptionGroups.clear
   );
 
   const [drillDownSwitch, setDrillDownSwitch] = React.useState(false);
@@ -45,13 +66,25 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
     }
     setEnabledFilterOptionGroups(temp);
   };
+  const handleResetFilters = () => {
+    clearEnabledFilterOptionGroups();
+  };
 
   return (
-    <div css={``}>
+    <div>
+      <ToolboxSubHeader
+        name="Lock"
+        level={6}
+        showResetButton
+        resetFilters={handleResetFilters}
+      />
+
       <div
         css={`
-          width: 100%;
-          max-height: calc(100vh - 540px);
+          width: 90%;
+          margin: auto;
+          padding-bottom: 15px;
+          max-height: calc(100vh - 50px);
 
           display: flex;
           overflow-y: auto;
@@ -82,12 +115,18 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
       >
         <div
           css={`
-            margin-bottom: 5px;
+            margin-top: 30px;
           `}
         >
           Filters
+          <Switch />
         </div>
-        <FormGroup row>
+        <FormGroup
+          row
+          css={`
+            padding-left: 25px;
+          `}
+        >
           <Grid container spacing={1}>
             {props.filterOptionGroups.map((optionGroup: FilterGroupModel) => (
               <Grid item key={optionGroup.name} lg={6}>
@@ -103,7 +142,7 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
                       }
                       onChange={handleChange}
                       name={optionGroup.name}
-                      color="default"
+                      color="primary"
                       disableRipple
                       disableTouchRipple
                       disableFocusRipple
@@ -137,18 +176,21 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
         >
           Aggregation Types
         </div>
-        <FormGroup row>
+        <FormGroup
+          row
+          css={`
+            padding-left: 25px;
+          `}
+        >
           <Grid container spacing={1}>
             {aggregationTypes.map((name, index) => (
               <Grid item key={name} lg={6}>
                 <FormControlLabel
-                  key={index}
+                  key={`${index + name}`}
                   control={
                     <Checkbox
-                      checked={true}
-                      // onChange={handleChange}
-                      // name={optionGroup.name}
-                      color="default"
+                      checked={false}
+                      color="primary"
                       disableRipple
                       disableTouchRipple
                       disableFocusRipple
@@ -162,7 +204,7 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
         </FormGroup>
         <hr
           css={`
-            border: 1px solid #cfd4da;
+            border: 0.6px solid #cfd4da;
             margin: auto;
             width: 350px;
             margin-top: 1rem;
@@ -172,14 +214,14 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
         <div
           css={`
             display: flex;
-            gap: 3rem;
+            justify-content: space-between;
             align-items: center;
             font-weight: 325;
             color: #262c34;
           `}
         >
           <p>Drill down function</p>
-          <Switch
+          <StyledSwitch
             checked={drillDownSwitch}
             onChange={(e) => setDrillDownSwitch(e.target.checked)}
             inputProps={{ "aria-label": "primary checkbox" }}

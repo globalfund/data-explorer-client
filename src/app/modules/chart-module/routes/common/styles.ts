@@ -9,7 +9,6 @@ export const styles = {
     left: 0;
     position: relative;
     margin-top: 108px;
-    padding: 0 43px 0 0;
     align-self: flex-start;
     @media (max-width: 1280px) {
       width: calc(100vw - 400px);

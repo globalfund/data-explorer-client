@@ -23,7 +23,6 @@ import { styles } from "app/modules/common/subheader-toolbar/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
-import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
 import { ExportChartButton } from "app/modules/common/subheader-toolbar/exportButton";
 import LinkIcon from "@material-ui/icons/Link";
@@ -98,20 +97,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
-  const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
-  const [isPreviewEnabled, setIsPreviewEnabled] = React.useState(false);
+  const [isSavedEnabled, ___] = React.useState(false);
+  const [isPreviewEnabled, ____] = React.useState(false);
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
-  );
-
-  const mapping = useStoreState((state) => state.charts.mapping.value);
-
-  const activePanels = useStoreState(
-    (state) => state.charts.activePanels.value
-  );
-  const selectedChartType = useStoreState(
-    (state) => state.charts.chartType.value
   );
 
   const loadReports = useStoreActions(
@@ -121,20 +111,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
-  const loadedChart = useStoreState(
-    (state) =>
-      (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
-  );
-  const createChartData = useStoreState(
-    (state) =>
-      (state.charts.ChartCreate.crudData ?? emptyChartAPI) as ChartAPIModel
-  );
-  const createChartSuccess = useStoreState(
-    (state) => state.charts.ChartCreate.success
-  );
-  const editChartSuccess = useStoreState(
-    (state) => state.charts.ChartUpdate.success
-  );
+
   const createOrEditChartLoading = useStoreState(
     (state) =>
       state.charts.ChartCreate.loading || state.charts.ChartUpdate.loading
@@ -189,55 +166,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       editChartClear();
     };
   }, []);
-
-  // React.useEffect(() => {
-  //   const newValue =
-  //     selectedChartType !== "" &&
-  //     selectedChartType !== null &&
-  //     !isEmpty(mapping) &&
-  //     activePanels > 2;
-  //   if (newValue !== isPreviewEnabled) {
-  //     setIsPreviewEnabled(newValue);
-  //   }
-  // }, [selectedChartType, mapping, activePanels]);
-
-  // React.useEffect(() => {
-  //   const newValue =
-  //     (selectedChartType !== "" &&
-  //       selectedChartType !== null &&
-  //       !isEmpty(mapping) &&
-  //       activePanels > 3) ||
-  //     (view !== undefined && page !== "new" && props.name !== loadedChart.name);
-  //   if (newValue !== isSavedEnabled) {
-  //     setIsSavedEnabled(newValue);
-  //   }
-  // }, [
-  //   view,
-  //   props.name,
-  //   mapping,
-  //   activePanels,
-  //   loadedChart.name,
-  //   selectedChartType,
-  // ]);
-
-  React.useEffect(() => {
-    if (
-      (createChartSuccess &&
-        createChartData.id &&
-        createChartData.id.length > 0) ||
-      editChartSuccess
-    ) {
-      setShowSnackbar(
-        `Chart ${
-          view !== undefined && page !== "new" ? "saved" : "created"
-        } successfully!`
-      );
-      const chartId = createChartSuccess ? createChartData.id : page;
-      if (createChartFromReport.view === "") {
-        history.push(`/chart/${chartId}`);
-      }
-    }
-  }, [createChartSuccess, editChartSuccess, createChartData]);
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;

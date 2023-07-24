@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 
-import MuiButton from "@material-ui/core/Button";
 import { useStoreState } from "app/state/store/hooks";
 import { withStyles } from "@material-ui/core/styles";
 import MuiAccordion from "@material-ui/core/Accordion";
@@ -17,6 +16,10 @@ import { ChartToolBoxChartType } from "app/modules/chart-module/components/toolb
 import { ChartToolBoxCustomize } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Customize";
 import { DatasetPanel } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/SelectDataset";
 import { ToolboxNavType } from "./navbar";
+import CancelChartCreationDialog from "app/modules/chart-module/dialogs/cancelChartCreation";
+import { useHistory } from "react-router-dom";
+import { isEmpty } from "lodash";
+import SaveChartCreationDialog from "app/modules/chart-module/dialogs/saveChart";
 
 export const Accordion = withStyles({
   root: {
@@ -74,31 +77,6 @@ export const AccordionDetails = withStyles(() => ({
   },
 }))(MuiAccordionDetails);
 
-const Button = withStyles(() => ({
-  root: {
-    width: "50%",
-    height: "48px",
-    borderRadius: "0px",
-    backgroundColor: "#262C34",
-    fontFamily: "GothamNarrow-Book, sans-serif",
-    "&:first-child": {
-      borderRight: "1px solid #f1f3f5",
-    },
-    "&:hover": {
-      backgroundColor: "#495057",
-    },
-  },
-  label: {
-    color: "#fff",
-    fontSize: "14px",
-    textTransform: "none",
-    fontFamily: "GothamNarrow-Book, sans-serif",
-  },
-  disabled: {
-    backgroundColor: "#ADB5BD",
-  },
-}))(MuiButton);
-
 interface ChartToolBoxStepsProps {
   data: { [key: string]: string | number | null }[];
   loading: boolean;
@@ -119,9 +97,10 @@ interface ChartToolBoxStepsProps {
 
 export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const { loadDataset, filterOptionGroups } = props;
-
+  const history = useHistory();
   const [expanded, setExpanded] = React.useState<number>(props.openPanel ?? 0);
-
+  const [displayCancelModal, setDisplayCancelModal] = React.useState(false);
+  const [displaySaveModal, setDisplaySaveModal] = React.useState(false);
   const appliedFilters = useStoreState(
     (state) => state.charts.appliedFilters.value
   );
@@ -130,6 +109,51 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   Object.keys(appliedFilters || {}).forEach((key) => {
     appliedFiltersCount += appliedFilters[key].length;
   });
+
+  const [saveModalContent, setSaveModalContent] = React.useState({
+    title: "Chart saved!",
+    description:
+      "You can find your charts in the library. Ready to build your reports!",
+    buttonTitle: "Go to library",
+    subText: "Well done!",
+
+    action: () => {
+      history.push("/charts");
+    },
+  });
+
+  const handleSave = () => {
+    if (!isEmpty(props.mappedData)) {
+      props.save();
+
+      setSaveModalContent({
+        title: "Chart saved!",
+        description:
+          "You can find your charts in the library. Ready to build your reports!",
+        buttonTitle: "Go to library",
+        subText: "Well done!",
+
+        action: () => {
+          history.push("/charts");
+        },
+      });
+      setDisplaySaveModal(true);
+    } else {
+      setSaveModalContent({
+        title: "Chart settings incomplete",
+        description:
+          "Your chart is not fully complete, please select and fill the remaining fields to get a usable chart before saving.",
+        buttonTitle: "Save",
+        subText:
+          "Pay attention to the step line to identify which mandatory sections are missing. ",
+
+        action: () => {
+          props.save();
+        },
+      });
+      setDisplaySaveModal(true);
+    }
+  };
 
   const displayToolboxPanel = () => {
     switch (props.activeStep) {
@@ -173,7 +197,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
         css={`
           width: 400px;
           overflow-y: scroll;
-          height: calc(100vh - ${!props.filtersView ? 235 : 105}px);
+          height: calc(100vh - ${!props.filtersView ? 229 : 105}px);
           position: relative;
 
           &::-webkit-scrollbar {
@@ -181,7 +205,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
             background: #231d2c;
           }
           &::-webkit-scrollbar-track {
-            background: #dfe3e6;
+            background: #f5f5f7;
           }
           &::-webkit-scrollbar-thumb {
             background: #231d2c;
@@ -194,7 +218,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
         css={`
           display: flex;
           gap: 8px;
-          height: 70px;
+          height: 55px;
           justify-content: center;
 
           background: #f5f5f7;
@@ -225,9 +249,22 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
           }
         `}
       >
-        <button>Cancel </button>
-        <button>Save</button>
+        <button type="button" onClick={() => setDisplayCancelModal(true)}>
+          Cancel{" "}
+        </button>
+        <button onClick={handleSave}>Save</button>
       </div>
+      <CancelChartCreationDialog
+        modalOpen={displayCancelModal}
+        setModalOpen={setDisplayCancelModal}
+      />
+      <SaveChartCreationDialog
+        {...{
+          modalOpen: displaySaveModal,
+          setModalOpen: setDisplaySaveModal,
+          saveModalContent,
+        }}
+      />
     </div>
   );
 }

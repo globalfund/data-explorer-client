@@ -91,6 +91,10 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
       appliedFilters,
       enabledFilterOptionGroups,
     };
+
+    createChart({
+      values: chart,
+    });
     if (props.isEditMode && page !== "new") {
       editChart({
         patchId: page,
@@ -117,136 +121,114 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
     }
   }
 
-  // React.useEffect(() => {
-  //   const newValue =
-  //     (selectedChartType !== "" &&
-  //       selectedChartType !== null &&
-  //       !isEmpty(mapping) &&
-  //       activePanels > 3) ||
-  //     (view !== undefined &&
-  //       page !== "new" &&
-  //       props.chartName !== loadedChart.name);
-  //   if (newValue !== isSavedEnabled) {
-  //     setIsSavedEnabled(newValue);
-  //   }
-  // }, [
-  //   view,
-  //   props.chartName,
-  //   mapping,
-  //   activePanels,
-  //   loadedChart.name,
-  //   selectedChartType,
-  // ]);
-
   return (
-    <>
-      <Slide
-        direction="left"
-        in={props.openToolbox}
-        style={{ visibility: "visible" }}
-      >
-        <div css={styles.container(props.filtersView)}>
-          {!isMobile && (
-            <div
-              role="button"
-              tabIndex={-1}
-              css={`
-                top: calc((100% - 98px) / 2);
-                left: -16px;
-                color: #fff;
-                width: 16px;
-                height: 133px;
-                display: flex;
-                cursor: pointer;
-                position: absolute;
-                background: #231d2c;
-                align-items: center;
-                flex-direction: column;
-                justify-content: center;
-                border-radius: 10px 0px 0px 10px;
-                transition: background 0.2s ease-in-out;
-                &:hover {
-                  background: #13183f;
+    <Slide
+      direction="left"
+      in={props.openToolbox}
+      style={{ visibility: "visible" }}
+    >
+      <div css={styles.container(props.filtersView)}>
+        {!isMobile && (
+          <div
+            role="button"
+            tabIndex={-1}
+            css={`
+              top: calc((100% - 205px) / 2);
+              left: -16px;
+              color: #fff;
+              width: 16px;
+              height: 133px;
+              display: flex;
+              cursor: pointer;
+              position: absolute;
+              background: #231d2c;
+              align-items: center;
+              flex-direction: column;
+              justify-content: center;
+              border-radius: 10px 0px 0px 10px;
+              transition: background 0.2s ease-in-out;
+              &:hover {
+                background: #13183f;
+              }
+              > svg {
+                transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
+                > path {
+                  fill: #fff;
                 }
-                > svg {
-                  transform: rotate(${!props.openToolbox ? "-" : ""}90deg);
-                  > path {
-                    fill: #fff;
-                  }
-                }
-              `}
-              onClick={() => {
-                if (props.openToolbox) {
-                  props.onClose();
-                } else {
-                  props.onOpen();
-                }
-              }}
-            >
-              <TriangleXSIcon />
-            </div>
-          )}
-          <ToolboxNav
+              }
+            `}
+            onClick={() => {
+              if (props.openToolbox) {
+                props.onClose();
+              } else {
+                props.onOpen();
+              }
+            }}
+          >
+            <TriangleXSIcon />
+          </div>
+        )}
+        <ToolboxNav
+          activeStep={activePanels}
+          setActiveStep={setActivePanels}
+          mappedData={props.mappedData}
+        />
+        {props.dataSteps && (
+          <ChartToolBoxSteps
             activeStep={activePanels}
-            setActiveStep={setActivePanels}
+            data={props.data}
+            rawViz={props.rawViz}
+            loading={props.loading}
+            dataTypes={props.dataTypes}
+            openPanel={props.openPanel}
+            mappedData={props.mappedData}
+            loadDataset={props.loadDataset}
+            visualOptions={props.visualOptions}
+            forceNextEnabled={props.forceNextEnabled}
+            setVisualOptions={props.setVisualOptions}
+            filterOptionGroups={props.filterOptionGroups}
+            filtersView={props.filtersView}
+            save={onSave}
+            dimensions={props.dimensions}
           />
-          {props.dataSteps && (
-            <ChartToolBoxSteps
-              activeStep={activePanels}
-              data={props.data}
-              rawViz={props.rawViz}
-              loading={props.loading}
-              dataTypes={props.dataTypes}
-              openPanel={props.openPanel}
-              mappedData={props.mappedData}
-              loadDataset={props.loadDataset}
-              visualOptions={props.visualOptions}
-              forceNextEnabled={props.forceNextEnabled}
-              setVisualOptions={props.setVisualOptions}
+        )}
+
+        {props.exportView && props.rawViz && (
+          <div css={styles.exportview}>
+            <ChartExporter />
+          </div>
+        )}
+        {props.filtersView && (
+          <div
+            css={`
+              width: 400px;
+              overflow-y: scroll;
+              position: relative;
+              height: calc(100vh - 97px);
+
+              ::-webkit-scrollbar {
+                display: none;
+              }
+            `}
+          >
+            <ChartToolBoxPreview
+              loadDataFromAPI={props.loadDataFromAPI}
               filterOptionGroups={props.filterOptionGroups}
-              filtersView={props.filtersView}
-              save={onSave}
-              dimensions={props.dimensions}
             />
-          )}
-
-          {props.exportView && props.rawViz && (
-            <div css={styles.exportview}>
-              <ChartExporter />
-            </div>
-          )}
-          {props.filtersView && (
-            <div
-              css={`
-                width: 400px;
-                overflow-y: scroll;
-                position: relative;
-                height: calc(100vh - 97px);
-
-                ::-webkit-scrollbar {
-                  display: none;
-                }
-              `}
-            >
-              <ChartToolBoxPreview
-                loadDataFromAPI={props.loadDataFromAPI}
-                filterOptionGroups={props.filterOptionGroups}
-              />
-              {isSavedEnabled && props.isEditMode && (
-                <div
-                  css={`
-                    bottom: 0;
-                    width: 100%;
-                    position: absolute;
-                  `}
-                >
-                  <Button onClick={onSave}>Save</Button>
-                </div>
-              )}
-            </div>
-          )}
-        </div>
-      </Slide>
-    </>
+            {isSavedEnabled && props.isEditMode && (
+              <div
+                css={`
+                  bottom: 0;
+                  width: 100%;
+                  position: absolute;
+                `}
+              >
+                <Button onClick={onSave}>Save</Button>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+    </Slide>
   );
 }

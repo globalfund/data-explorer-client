@@ -52,3 +52,29 @@ export const PageLoader = (props: { inLoader?: boolean }) => {
     </LoadingComp>
   );
 };
+
+export const ChartLoader = () => {
+  return (
+    <div
+      css={`
+        position: absolute;
+        bottom: 80px;
+        left: 47%;
+      `}
+    >
+      <CircularProgress
+        css={`
+          animation: spin 2s linear infinite;
+          @keyframes spin {
+            0% {
+              transform: rotate(0deg);
+            }
+            100% {
+              transform: rotate(360deg);
+            }
+          }
+        `}
+      />
+    </div>
+  );
+};

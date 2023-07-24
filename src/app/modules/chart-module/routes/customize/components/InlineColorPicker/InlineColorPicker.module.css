@@ -22,6 +22,7 @@
 .popover {
   position: absolute;
   z-index: 2000;
+  left:24%;
 }
 
 .cover {

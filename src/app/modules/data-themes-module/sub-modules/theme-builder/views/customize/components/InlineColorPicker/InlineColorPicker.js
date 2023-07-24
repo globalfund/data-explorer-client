@@ -29,6 +29,7 @@ export default function InlineColorPicker({
             disabled={disabled}
             disableAlpha
             color={color}
+            width= {264}
             onChangeComplete={(color) => onChange(color.hex)}
           />
         </div>

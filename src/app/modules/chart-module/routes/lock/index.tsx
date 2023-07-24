@@ -34,6 +34,9 @@ export function ChartBuilderLock(props: ChartBuilderLockProps) {
             height: calc(100vh - 225px);
           `}
         >
+          <p>
+            <b>{props.datasetName}</b>
+          </p>
           <CommonChart
             containerRef={containerRef}
             renderedChart={props.renderedChart}

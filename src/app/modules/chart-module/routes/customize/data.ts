@@ -1,6 +1,7 @@
 export interface ChartBuilderCustomizeProps {
   loading: boolean;
   dimensions: any[];
+  datasetName: string;
   mappedData: any[];
   visualOptions: any;
   renderedChart: string;

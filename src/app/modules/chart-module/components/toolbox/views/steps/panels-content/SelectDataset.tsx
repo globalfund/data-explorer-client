@@ -6,9 +6,10 @@ import Button from "@material-ui/core/Button";
 import { useHistory, useParams } from "react-router-dom";
 
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
+
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
-import SubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
+import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
 
 export const DEFAULT_DATASETS = [
   {
@@ -56,7 +57,7 @@ export const DatasetPanel = (props: {
 }) => {
   return (
     <div>
-      <SubHeader name="Select Dataset" level={1} />
+      <ToolboxSubHeader name="Select Dataset" level={1} />
       <div
         css={`
           border-radius: 11px;
@@ -209,23 +210,23 @@ function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
           >
             {get(isDatasetSelected, "name", "Select Dataset")}
           </span>
-          <KeyboardArrowDownIcon />
+          <ArrowDropUpIcon />
         </Button>
       </div>
-      <div
-        css={`
-          height: 100%;
-          overflow-y: auto;
-          width: 100%;
+      {displayDatasets && (
+        <div
+          css={`
+            height: 100%;
+            overflow-y: auto;
+            width: 100%;
 
-          max-height: 300px;
-          margin-top: 16px;
-          ::-webkit-scrollbar {
-            width: 0px;
-          }
-        `}
-      >
-        {displayDatasets && (
+            max-height: 300px;
+            margin-top: 16px;
+            ::-webkit-scrollbar {
+              width: 0px;
+            }
+          `}
+        >
           <React.Fragment>
             {datasets?.map((item) => (
               <button
@@ -260,8 +261,8 @@ function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
               </button>
             ))}
           </React.Fragment>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }

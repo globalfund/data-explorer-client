@@ -18,6 +18,7 @@ import {
   TooltipComponent,
   VisualMapComponent,
 } from "echarts/components";
+import { checkLists } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/data";
 
 echarts.use([
   BarChart,
@@ -141,11 +142,15 @@ export function useDataThemesEchart() {
     const {
       // artboard
       height,
+      width,
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
+      background,
       // Tooltip
+      palette,
+      roam,
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
@@ -170,24 +175,17 @@ export function useDataThemesEchart() {
           }
         },
       },
+      backgroundColor: background,
+
       visualMap: {
         left: "right",
         min: Math.min(...sizes),
         max: Math.max(...sizes),
         inRange: {
-          color: [
-            "#313695",
-            "#4575b4",
-            "#74add1",
-            "#abd9e9",
-            "#e0f3f8",
-            "#ffffbf",
-            "#fee090",
-            "#fdae61",
-            "#f46d43",
-            "#d73027",
-            "#a50026",
-          ],
+          color: checkLists
+            .filter((item) => palette[item.label])
+            .map((item) => item.value)
+            .flat(1),
         },
         text: ["High", "Low"],
         calculable: true,
@@ -196,7 +194,8 @@ export function useDataThemesEchart() {
         {
           type: "map",
           height,
-          roam: true,
+          width,
+          roam: roam,
           map: "World",
           data: data.results,
           top: marginTop,

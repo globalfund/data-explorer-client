@@ -3,7 +3,7 @@ import React from "react";
 
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
-import { useStoreState, useStoreActions } from "app/state/store/hooks";
+import { useStoreState } from "app/state/store/hooks";
 
 /* project */
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
@@ -23,11 +23,6 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const mapping = useStoreState((state) => state.charts.mapping.value);
-
-  const setActivePanels = useStoreActions(
-    (state) => state.charts.activePanels.setValue
-  );
-
   const [errors, setErrors] = React.useState<string[]>([]);
   const [requiredFields, setRequiredFields] = React.useState<
     { id: string; name: string }[]
@@ -48,32 +43,40 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   if (dataset === null && !props.loading) {
     history.push(`/chart/${page}/data`);
   }
-  console.log("mapping", isEmpty(props.renderedChartMappedData));
 
   return (
     <div css={commonStyles.container}>
       <div css={commonStyles.innercontainer}>
-        {isEmpty(props.renderedChartMappedData) && <ChartPlaceholder />}
-        <div
-          ref={containerRef}
-          css={`
-            width: calc(100% - 24px);
-            height: calc(100vh - 225px);
-          `}
-        >
-          {requiredFields.length === 0 &&
-            errors.length === 0 &&
-            minValuesFields.length === 0 && (
-              <CommonChart
-                containerRef={containerRef}
-                renderedChart={props.renderedChart}
-                visualOptions={props.visualOptions}
-                setVisualOptions={props.setVisualOptions}
-                renderedChartSsr={props.renderedChartSsr}
-                renderedChartMappedData={props.renderedChartMappedData}
-              />
-            )}
-        </div>
+        {isEmpty(props.renderedChartMappedData) ? (
+          <ChartPlaceholder
+            datasetName={props.datasetName}
+            loading={props.loading}
+          />
+        ) : (
+          <div
+            ref={containerRef}
+            css={`
+              width: calc(100% - 24px);
+              height: calc(100vh - 225px);
+            `}
+          >
+            <p>
+              <b>{props.datasetName}</b>
+            </p>
+            {requiredFields.length === 0 &&
+              errors.length === 0 &&
+              minValuesFields.length === 0 && (
+                <CommonChart
+                  containerRef={containerRef}
+                  renderedChart={props.renderedChart}
+                  visualOptions={props.visualOptions}
+                  setVisualOptions={props.setVisualOptions}
+                  renderedChartSsr={props.renderedChartSsr}
+                  renderedChartMappedData={props.renderedChartMappedData}
+                />
+              )}
+          </div>
+        )}
       </div>
     </div>
   );

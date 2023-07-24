@@ -40,6 +40,7 @@ export default function PreviewTable(props: PreviewTableProps) {
         css={`
           height: 100%;
           overflow: auto;
+          width: 100%;
         `}
       >
         <TableContainer
@@ -195,14 +196,13 @@ export default function PreviewTable(props: PreviewTableProps) {
           </Table>
         </TableContainer>
       </div>
-      {toolboxDisplay && (
-        <StatisticalTableToolBox
-          {...props.columnDetails}
-          position={2}
-          handleClose={() => setToolboxDisplay(false)}
-          placeUnderSubHeader={props.placeUnderSubHeader as boolean}
-        />
-      )}
+      <StatisticalTableToolBox
+        toolboxDisplay={toolboxDisplay}
+        {...props.columnDetails}
+        position={2}
+        handleClose={() => setToolboxDisplay(false)}
+        placeUnderSubHeader={props.placeUnderSubHeader as boolean}
+      />
     </>
   );
 }

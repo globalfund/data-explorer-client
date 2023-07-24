@@ -6,5 +6,12 @@ export const stepcss = (activeStep: boolean) => css`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: ${activeStep ? "#F5F5F7" : "#ffffff"};
+  cursor: pointer;
+  svg {
+    width: ${activeStep ? "32px" : "24px"};
+    height: ${activeStep ? "32px" : "24px"};
+    path {
+      fill: ${activeStep ? "#262C34" : "#ADB5BD"};
+    }
+  }
 `;

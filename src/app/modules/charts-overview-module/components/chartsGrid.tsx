@@ -6,7 +6,7 @@ import {
 } from "app/modules/charts-overview-module/data";
 import { GridItem } from "app/modules/charts-overview-module/components/gridItem";
 import { v4 } from "uuid";
-import { ChartsTable } from "./table";
+import { ChartsTable } from "./Table";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import DuplicateChartDialog from "app/components/Dialogs/duplicateChartDialog";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";

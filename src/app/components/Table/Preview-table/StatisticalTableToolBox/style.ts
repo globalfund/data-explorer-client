@@ -41,8 +41,6 @@ export const statisticalTableToolBoxStyle = {
       padding: 0px 24px;
       height: 59px;
 
-      /* align-items: center;
-      /*  */
       p {
         color: #262c34;
         font-size: 10px;
@@ -53,6 +51,9 @@ export const statisticalTableToolBoxStyle = {
         margin: 0;
         margin-top: -4px;
         line-height: 20px;
+        color: #262c34;
+        font-family: "Gotham Narrow", sans-serif;
+        font-weight: bold;
       }
     }
   `,

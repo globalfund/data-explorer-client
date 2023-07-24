@@ -3,6 +3,7 @@ import React from "react";
 export interface ChartBuilderLockProps {
   loading: boolean;
   dimensions: any[];
+  datasetName: string;
   visualOptions: any;
   renderedChart: string;
   renderedChartSsr: boolean;

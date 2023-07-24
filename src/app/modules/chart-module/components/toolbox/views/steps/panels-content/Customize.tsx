@@ -15,6 +15,7 @@ import {
   getPartialMapping,
   WrapControlComponent,
 } from "app/modules/chart-module/routes/customize/utils";
+import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
 
 interface ChartToolBoxCustomizeProps {
   dataTypes?: any;
@@ -111,179 +112,189 @@ export function ChartToolBoxCustomize(props: ChartToolBoxCustomizeProps) {
   }, [props.visualOptions]);
 
   return (
-    <div
-      className="chart-options"
-      css={`
-        width: 100%;
-        display: flex;
-        overflow-y: auto;
-        padding-right: 15px;
-        flex-direction: column;
-        max-height: calc(100vh - 273px);
-        &::-webkit-scrollbar {
-          display: none;
-        }
-        &::-webkit-scrollbar-track {
-          display: none;
-        }
-        &::-webkit-scrollbar-thumb {
-          display: none;
-        }
-        * {
-          font-size: 14px;
-          font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
-        }
-      `}
-    >
-      {map(optionsDefinitionsByGroup, (options, groupName) => {
-        // @ts-ignore
-        const expanded = collapseStatus[groupName];
+    <div>
+      <ToolboxSubHeader name="Customize" level={5} />
 
-        return (
-          <div
-            key={groupName}
-            css={`
-              width: 100%;
-              display: flex;
-              padding: 16px 0;
-              flex-direction: column;
-              border-bottom: 1px solid #cfd4da;
-            `}
-          >
-            <button
-              onClick={() =>
-                setCollapseStatus({
-                  ...collapseStatus,
-                  [groupName]: !expanded,
-                })
-              }
+      <div
+        className="chart-options"
+        css={`
+          width: 90%;
+          margin: auto;
+          display: flex;
+          overflow-y: auto;
+          flex-direction: column;
+          max-height: calc(100vh - 273px);
+          &::-webkit-scrollbar {
+            display: none;
+          }
+          &::-webkit-scrollbar-track {
+            display: none;
+          }
+          &::-webkit-scrollbar-thumb {
+            display: none;
+          }
+          * {
+            font-size: 14px;
+            font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
+          }
+        `}
+      >
+        {map(optionsDefinitionsByGroup, (options, groupName) => {
+          // @ts-ignore
+          const expanded = collapseStatus[groupName];
+
+          return (
+            <div
+              key={groupName}
               css={`
-                padding: 0;
                 width: 100%;
-                height: 16px;
                 display: flex;
-                font-size: 14px;
-                cursor: pointer;
-                border-style: none;
-                flex-direction: row;
-                align-items: center;
-                background: transparent;
-                text-transform: capitalize;
-                justify-content: space-between;
-
-                > svg {
-                  transform: rotate(${expanded ? "0deg" : "180deg"});
-                }
+                padding: 16px 0;
+                flex-direction: column;
+                border-bottom: 1px solid #cfd4da;
               `}
             >
-              {groupName} <TriangleXSIcon />
-            </button>
-            {expanded && (
-              <div
+              <button
+                onClick={() =>
+                  setCollapseStatus({
+                    ...collapseStatus,
+                    [groupName]: !expanded,
+                  })
+                }
                 css={`
-                  padding-top: 12px;
+                  padding: 0;
+                  width: 100%;
+                  height: 16px;
+                  display: flex;
+                  font-size: 14px;
+                  cursor: pointer;
+                  border-style: none;
+                  flex-direction: row;
+                  align-items: center;
+                  background: transparent;
+                  text-transform: capitalize;
+                  justify-content: space-between;
+
+                  > svg {
+                    transform: rotate(${expanded ? "0deg" : "180deg"});
+                  }
                 `}
               >
-                {map(options, (def: any, optionId: any) => {
-                  // repeated options: notice that value is set to a default if undefined
-                  // this is caused by changes in shapes of the mapping object
-                  // (when a new value is dragged to the dimension that repeats the option)
-                  // the same approach is applied in option validation by the raw core lib
-                  return def.repeatFor ? (
-                    get(mapping, `[${def.repeatFor}].value`, []).map(
-                      (repeatIndex: number) => (
-                        <WrapControlComponent
-                          className="chart-option"
-                          key={`${optionId + repeatIndex}`}
-                          repeatIndex={repeatIndex}
-                          {...def}
-                          optionId={optionId}
-                          // error={error?.errors?.[optionId + repeatIndex]}
-                          value={
-                            visualOptions?.[optionId]?.[repeatIndex] ??
-                            getDefaultForRepeat(def, repeatIndex)
-                          }
-                          mapping={
-                            def.type === "colorScale"
-                              ? getPartialMapping(
-                                  mapping,
-                                  def.repeatFor,
-                                  repeatIndex
-                                )
-                              : undefined
-                          }
-                          chart={
-                            def.type === "colorScale"
-                              ? props.currentChart
-                              : undefined
-                          }
-                          dataset={
-                            def.type === "colorScale"
-                              ? props.currentChartData?.dataset
-                              : undefined
-                          }
-                          dataTypes={
-                            def.type === "colorScale"
-                              ? props.dataTypes
-                              : undefined
-                          }
-                          visualOptions={
-                            def.type === "colorScale"
-                              ? visualOptions
-                              : undefined
-                          }
-                          mappedData={getPartialMappedData(
-                            props.mappedData,
-                            def.repeatFor,
-                            repeatIndex
-                          )}
-                          allVisualOptions={visualOptions}
-                          setVisualOptions={props.setVisualOptions}
-                          setLocalVisualOptions={setVisualOptions}
-                          isEnabled={enabledOptions[optionId]}
-                        />
+                {groupName} <TriangleXSIcon />
+              </button>
+              {expanded && (
+                <div
+                  css={`
+                    padding-top: 12px;
+                    border-top: 1px solid #cfd4da;
+                    margin-top: 12px;
+                  `}
+                >
+                  {map(options, (def: any, optionId: any) => {
+                    // repeated options: notice that value is set to a default if undefined
+                    // this is caused by changes in shapes of the mapping object
+                    // (when a new value is dragged to the dimension that repeats the option)
+                    // the same approach is applied in option validation by the raw core lib
+                    return def.repeatFor ? (
+                      get(mapping, `[${def.repeatFor}].value`, []).map(
+                        (repeatIndex: number) => (
+                          <WrapControlComponent
+                            className="chart-option"
+                            key={`${optionId + repeatIndex}`}
+                            repeatIndex={repeatIndex}
+                            {...def}
+                            optionId={optionId}
+                            // error={error?.errors?.[optionId + repeatIndex]}
+                            value={
+                              visualOptions?.[optionId]?.[repeatIndex] ??
+                              getDefaultForRepeat(def, repeatIndex)
+                            }
+                            mapping={
+                              def.type === "colorScale"
+                                ? getPartialMapping(
+                                    mapping,
+                                    def.repeatFor,
+                                    repeatIndex
+                                  )
+                                : undefined
+                            }
+                            chart={
+                              def.type === "colorScale"
+                                ? props.currentChart
+                                : undefined
+                            }
+                            dataset={
+                              def.type === "colorScale"
+                                ? props.currentChartData?.dataset
+                                : undefined
+                            }
+                            dataTypes={
+                              def.type === "colorScale"
+                                ? props.dataTypes
+                                : undefined
+                            }
+                            visualOptions={
+                              def.type === "colorScale"
+                                ? visualOptions
+                                : undefined
+                            }
+                            mappedData={getPartialMappedData(
+                              props.mappedData,
+                              def.repeatFor,
+                              repeatIndex
+                            )}
+                            allVisualOptions={visualOptions}
+                            setVisualOptions={props.setVisualOptions}
+                            setLocalVisualOptions={setVisualOptions}
+                            isEnabled={enabledOptions[optionId]}
+                          />
+                        )
                       )
-                    )
-                  ) : (
-                    <WrapControlComponent
-                      className="chart-option"
-                      key={optionId}
-                      {...def}
-                      optionId={optionId}
-                      // error={error?.errors?.[optionId]}
-                      value={
-                        visualOptions ? visualOptions?.[optionId] : undefined
-                      }
-                      mapping={def.type === "colorScale" ? mapping : undefined}
-                      chart={
-                        def.type === "colorScale"
-                          ? props.currentChart
-                          : undefined
-                      }
-                      dataset={
-                        def.type === "colorScale"
-                          ? props.currentChartData?.dataset
-                          : undefined
-                      }
-                      dataTypes={
-                        def.type === "colorScale" ? props.dataTypes : undefined
-                      }
-                      visualOptions={
-                        def.type === "colorScale" ? visualOptions : undefined
-                      }
-                      mappedData={props.mappedData}
-                      allVisualOptions={visualOptions}
-                      setVisualOptions={props.setVisualOptions}
-                      setLocalVisualOptions={setVisualOptions}
-                      isEnabled={enabledOptions[optionId]}
-                    />
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        );
-      })}
+                    ) : (
+                      <WrapControlComponent
+                        className="chart-option"
+                        key={optionId}
+                        {...def}
+                        optionId={optionId}
+                        // error={error?.errors?.[optionId]}
+                        value={
+                          visualOptions ? visualOptions?.[optionId] : undefined
+                        }
+                        mapping={
+                          def.type === "colorScale" ? mapping : undefined
+                        }
+                        chart={
+                          def.type === "colorScale"
+                            ? props.currentChart
+                            : undefined
+                        }
+                        dataset={
+                          def.type === "colorScale"
+                            ? props.currentChartData?.dataset
+                            : undefined
+                        }
+                        dataTypes={
+                          def.type === "colorScale"
+                            ? props.dataTypes
+                            : undefined
+                        }
+                        visualOptions={
+                          def.type === "colorScale" ? visualOptions : undefined
+                        }
+                        mappedData={props.mappedData}
+                        allVisualOptions={visualOptions}
+                        setVisualOptions={props.setVisualOptions}
+                        setLocalVisualOptions={setVisualOptions}
+                        isEnabled={enabledOptions[optionId]}
+                      />
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }

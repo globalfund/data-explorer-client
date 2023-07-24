@@ -11,6 +11,7 @@ import CustomizeOptionColor from "app/modules/data-themes-module/sub-modules/the
 import ChartOptionBoolean from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionBoolean";
 import CustomizeOptionNumber from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionNumber";
 import ChartOptionColorScaleWrapper from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionColorScaleWrapper";
+import ChartOptionCheckboxes from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionCheckboxes";
 
 const CHART_OPTION_COMPONENTS = {
   number: CustomizeOptionNumber,
@@ -18,6 +19,7 @@ const CHART_OPTION_COMPONENTS = {
   color: CustomizeOptionColor,
   colorScale: ChartOptionColorScaleWrapper,
   boolean: ChartOptionBoolean,
+  checkbox: ChartOptionCheckboxes,
 };
 
 export function getPartialMapping(mapping, dimension, repeatIndex) {
@@ -62,7 +64,6 @@ export function WrapControlComponent({
 }) {
   // @ts-ignore
   const Component = CHART_OPTION_COMPONENTS[type];
-
   const remainingOptions = React.useMemo(() => {
     if (type !== "colorScale") {
       return null;

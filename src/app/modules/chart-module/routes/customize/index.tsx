@@ -23,9 +23,6 @@ export function ChartBuilderCustomize(props: ChartBuilderCustomizeProps) {
   const [createChartFromReport, _] = useRecoilState(createChartFromReportAtom);
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
-  const setActivePanels = useStoreActions(
-    (state) => state.charts.activePanels.setValue
-  );
 
   useUpdateEffectOnce(() => {
     if (
@@ -56,6 +53,9 @@ export function ChartBuilderCustomize(props: ChartBuilderCustomizeProps) {
             height: calc(100vh - 225px);
           `}
         >
+          <p>
+            <b>{props.datasetName}</b>
+          </p>
           <CommonChart
             containerRef={containerRef}
             renderedChart={props.renderedChart}

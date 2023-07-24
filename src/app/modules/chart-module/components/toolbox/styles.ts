@@ -3,19 +3,14 @@ import { css } from "styled-components/macro";
 export const styles = {
   container: (placeUnderSubHeader?: boolean) => css`
     right: 0;
-    z-index: 99;
-    position: fixed;
     top: ${!placeUnderSubHeader ? 105 : 97}px;
-
+    z-index: 99;
     display: flex;
+    position: fixed;
     background: #f5f5f7;
     flex-direction: column;
-    box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
 
-    overflow-y: scroll;
-    ::-webkit-scrollbar {
-      display: none;
-    }
+    box-shadow: 0px 0px 10px 0px rgba(152, 161, 170, 0.6);
 
     > section {
       padding: 0 31px 25px 31px;

@@ -3,6 +3,7 @@ import { ChartAPIModel } from "../../data";
 export interface ChartBuilderMappingProps {
   loading: boolean;
   loadedChart: ChartAPIModel;
+  datasetName: string;
   dataTypes: any[];
   dimensions: any[];
   visualOptions: any;

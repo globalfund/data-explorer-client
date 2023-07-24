@@ -49,8 +49,20 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
   return (
     <div css={commonStyles.container}>
       {props.loading && <PageLoader />}
-      <div css={commonStyles.innercontainer}>
-        <p>{datasetName} Dataset</p>
+      <div
+        css={`
+          height: 108px;
+        `}
+      />
+      <div
+        css={`
+          color: #262c34;
+          font-family: "Gotham Narrow", sans-serif;
+        `}
+      >
+        <p>
+          <b>{datasetName} Dataset</b>
+        </p>
         <DataThemesDataTable data={props.data} stats={props.stats} />
       </div>
     </div>

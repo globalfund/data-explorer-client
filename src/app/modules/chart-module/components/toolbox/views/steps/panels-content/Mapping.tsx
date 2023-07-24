@@ -4,7 +4,7 @@ import get from "lodash/get";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
 import { filter, isEmpty, uniqueId } from "lodash";
-import SubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
+import ToolboxSubheader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
 import { Button } from "@material-ui/core";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import {
@@ -13,7 +13,7 @@ import {
   // @ts-ignore
 } from "@rawgraphs/rawgraphs-core";
 import { handleReplaceLocalMapping } from "app/modules/chart-module/routes/mapping/utils";
-import ScheduleIcon from "@material-ui/icons/Schedule";
+import { ReactComponent as DateIcon } from "app/modules/chart-module/assets/date.svg";
 
 interface ChartToolBoxMappingProps {
   dataTypes: any;
@@ -23,7 +23,7 @@ interface ChartToolBoxMappingProps {
 const typeIcon = {
   string: <p>Aa</p>,
   number: <p>#</p>,
-  date: <ScheduleIcon />,
+  date: <DateIcon />,
 };
 
 export const AGGREGATIONS_LABELS = {
@@ -108,7 +108,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
         margin-bottom: 30px;
       `}
     >
-      <SubHeader name="Mapping" level={3} />
+      <ToolboxSubheader name="Mapping" level={3} />
 
       <div
         css={`
@@ -155,8 +155,12 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
                       display: flex;
                       flex-direction: row;
                       align-items: center;
+                      gap: 5px;
                       p {
                         margin: 0;
+                      }
+                      svg {
+                        margin-top: 6px;
                       }
                     `}
                   >
@@ -344,7 +348,7 @@ interface ChartToolBoxMappingItemProps {
 }
 
 export function ChartToolBoxMappingItem(props: ChartToolBoxMappingItemProps) {
-  const { index, dimension, replaceDimension, dataTypes } = props;
+  const { index, dimension, dataTypes } = props;
 
   const setMapping = useStoreActions(
     (actions) => actions.charts.mapping.setValue

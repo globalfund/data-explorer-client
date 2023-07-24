@@ -4,9 +4,12 @@ import CloudDoneIcon from "@material-ui/icons/CloudDone";
 import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
 import PaletteIcon from "@material-ui/icons/Palette";
 import TableChartIcon from "@material-ui/icons/TableChart";
+import TuneIcon from "@material-ui/icons/Tune";
 import { stepcss } from "./style";
 import { useHistory, useParams } from "react-router-dom";
 import { ActionCreator } from "easy-peasy";
+import { useStoreState } from "app/state/store/hooks";
+import { isEmpty } from "lodash";
 
 export type ToolboxNavType =
   | "dataset"
@@ -19,9 +22,21 @@ export type ToolboxNavType =
 export default function ToolboxNav(props: {
   setActiveStep: ActionCreator<ToolboxNavType>;
   activeStep: string;
+  mappedData: any;
 }) {
   const { page } = useParams<{ page: string }>();
   const history = useHistory();
+  const dataset = useStoreState((state) => state.charts.dataset.value);
+  const chartType = useStoreState((state) => state.charts.chartType.value);
+
+  const whiteBackgroundOnly = "background-color: #fff;";
+  const whiteBackgroundRoundedBottomRight =
+    whiteBackgroundOnly + " border-radius: 0px 0px 8px 0px;";
+  const whiteBackgroundRoundedBottomLeft =
+    whiteBackgroundOnly + " border-radius: 0px 0px 0px 8px;";
+  const whiteBackgroundNotRounded =
+    whiteBackgroundOnly + " border-radius: 0px 0px 0px 0px";
+
   const stepPaths = [
     { name: "dataset", path: `/chart/${page}/preview-data` },
     { name: "data", path: `/chart/${page}/data` },
@@ -32,14 +47,15 @@ export default function ToolboxNav(props: {
     { name: "lock", path: `/chart/${page}/lock` },
   ];
 
-  const onNavBtnClick = () => {
+  const handleStepChange = () => {
     const findStep = stepPaths.find((step) => step.name === props.activeStep);
     if (findStep) {
       history.push(findStep.path);
     }
   };
+
   React.useEffect(() => {
-    onNavBtnClick();
+    handleStepChange();
   }, [props.activeStep]);
 
   const navContent: { name: ToolboxNavType; icon: JSX.Element }[] = [
@@ -47,37 +63,68 @@ export default function ToolboxNav(props: {
     { name: "chart", icon: <AssessmentIcon /> },
     { name: "mapping", icon: <CloudDoneIcon /> },
 
-    { name: "filters", icon: <TableChartIcon /> },
+    { name: "filters", icon: <TuneIcon /> },
     { name: "customize", icon: <PaletteIcon /> },
     { name: "lock", icon: <NoEncryptionIcon /> },
   ];
+
+  const activeStepIndex =
+    props.activeStep === "selectDataset"
+      ? 0
+      : navContent.findIndex((nav) => nav.name === props.activeStep);
+
+  const onNavBtnClick = (name: ToolboxNavType) => {
+    if (
+      name === "dataset" ||
+      name === "selectDataset" ||
+      name === "chart" ||
+      name === "mapping"
+    ) {
+      if (name === "dataset" && !isEmpty(dataset)) {
+        props.setActiveStep(name);
+        return;
+      }
+      if (name === "chart" && !isEmpty(dataset)) {
+        props.setActiveStep(name);
+        return;
+      }
+      if (name === "mapping" && !isEmpty(dataset) && !isEmpty(chartType)) {
+        props.setActiveStep(name);
+        return;
+      }
+    } else if (!isEmpty(props.mappedData)) {
+      props.setActiveStep(name);
+    }
+  };
+
   return (
     <div
       css={`
-        background: #fff;
+        background: #f5f5f7;
         display: flex;
       `}
     >
       {navContent.map((item, index) => (
         <div
           css={`
-            ${stepcss(item.name === props.activeStep)}
+            ${stepcss(
+              item.name === props.activeStep || index === activeStepIndex
+            )}
             ${(() => {
-              if (item.name === props.activeStep && index === 0) {
-                return "border-radius: 8px 8px 0px 0px;";
+              if (index === activeStepIndex - 1) {
+                return whiteBackgroundRoundedBottomRight;
+              } else if (index === activeStepIndex) {
+                return "background: transparent;";
+              } else if (index === activeStepIndex + 1) {
+                return whiteBackgroundRoundedBottomLeft;
+              } else {
+                return whiteBackgroundNotRounded;
               }
-              if (
-                item.name === props.activeStep &&
-                index === navContent.length - 1
-              ) {
-                return "border-radius: 8px 8px 0px 0px";
-              }
-              return "border-radius: 0px 0px 8px 0px;";
             })()};
           `}
           key={item.name}
           onClick={() => {
-            props.setActiveStep(item.name);
+            onNavBtnClick(item.name);
           }}
         >
           {item.icon}

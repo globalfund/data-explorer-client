@@ -9,7 +9,7 @@ import {
 } from "app/modules/chart-module/routes/chart-type/data";
 import SearchIcon from "@material-ui/icons/Search";
 import { Grid } from "@material-ui/core";
-import SubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
+import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
 
 export function ChartToolBoxChartType() {
   const chartType = useStoreState((state) => state.charts.chartType.value);
@@ -32,7 +32,7 @@ export function ChartToolBoxChartType() {
         margin-bottom: 100px;
       `}
     >
-      <SubHeader name="Chart type" level={2} />
+      <ToolboxSubHeader name="Chart type" level={2} />
 
       <div
         css={`
@@ -130,23 +130,25 @@ export function ChartToolBoxChartType() {
                   </div>
                 </div>
                 {chartType === ct.id && (
-                  <div
-                    css={`
-                      padding-bottom: 4px;
-                    `}
-                  >
-                    {ct.preview}
-
+                  <>
+                    <div
+                      css={`
+                        height: 150px;
+                      `}
+                    >
+                      {ct.preview}
+                    </div>
                     <p
                       css={`
                         font-family: "Gotham Narrow", sans-serif;
                         font-size: 10px;
                         line-height: normal;
+                        padding-bottom: 17px;
                       `}
                     >
                       {ct.description}
                     </p>
-                  </div>
+                  </>
                 )}
               </div>
             </Grid>

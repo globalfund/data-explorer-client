@@ -2,11 +2,11 @@
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
 /* project */
-import { PageLoader } from "app/modules/common/page-loader";
+import { ChartLoader } from "app/modules/common/page-loader";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import ChartPlaceholder from "../../components/placeholder";
 
-export function ChartModuleDataView() {
+export function ChartModuleDataView(props: { datasetName?: string }) {
   useTitle("DX DataXplorer - Select Data");
 
   return (
@@ -17,9 +17,9 @@ export function ChartModuleDataView() {
           display: none;
         `}
       >
-        <PageLoader />
+        <ChartLoader />
       </div>
-      <ChartPlaceholder />
+      <ChartPlaceholder datasetName={props.datasetName} />
     </div>
   );
 }

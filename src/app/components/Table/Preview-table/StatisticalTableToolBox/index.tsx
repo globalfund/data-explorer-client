@@ -23,6 +23,7 @@ interface Props {
   emptyFields: number;
   uniqueValues: number;
   handleClose: () => void;
+  toolboxDisplay: boolean;
   correlation: {
     name: string;
     rate: number;
@@ -32,7 +33,11 @@ interface Props {
 export default function StatisticalTableToolBox(props: Props) {
   return (
     <div
-      css={statisticalTableToolBoxStyle.container(props.placeUnderSubHeader)}
+      css={`
+        ${statisticalTableToolBoxStyle.container(props.placeUnderSubHeader)}
+        left: ${props.toolboxDisplay ? "0%" : "-100%"};
+        transition: all 0.3s ease-in-out;
+      `}
     >
       <div
         css={`

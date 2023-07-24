@@ -19,6 +19,7 @@ import { ReactComponent as GeomapPreviewImg } from "app/modules/chart-module/ass
 
 export interface ChartBuilderChartTypeProps {
   loading: boolean;
+  datasetName: string;
 }
 
 export interface ChartTypeModel {
@@ -38,7 +39,7 @@ export const echartTypes = (big: boolean) => {
       id: "echartsBarchart",
       label: "Bar chart",
       icon: <BarChartIcon big={big} />,
-      preview: <GeomapPreviewImg />,
+      preview: <div />,
 
       categories: ["Correllations"],
       ssr: false,
@@ -57,32 +58,10 @@ export const echartTypes = (big: boolean) => {
         "A geomap is a map of a country, continent, or region map, with colors and values assigned to specific regions. Values are displayed as a color scale, and you can specify optional hovertext for regions.",
     },
     {
-      id: "echartsLinechart",
-      label: "Line chart",
-      icon: <LineChartIcon big={big} />,
-      preview: <GeomapPreviewImg />,
-
-      categories: ["Trends", "changes over time"],
-      ssr: false,
-      description:
-        "It displays a quantitative dimension over a continuous interval or time period. Colour can be optionally used to encode an additional quantitative or categorical dimension.",
-    },
-    {
-      id: "echartsSankey",
-      label: "Sankey diagram",
-      icon: <SankeyChartIcon big={big} />,
-      preview: <GeomapPreviewImg />,
-
-      categories: ["Networks"],
-      ssr: false,
-      description:
-        "It represents flows among nodes of a network. Nodes are represented as rectangles, the height represents their value. Flows are represented with curved lines whose width is proportional to their value.",
-    },
-    {
       id: "echartsTreemap",
       label: "Treemap diagram",
       icon: <TreeMapIcon big={big} />,
-      preview: <GeomapPreviewImg />,
+      preview: <div />,
 
       categories: ["Hierarchies", "Proportions"],
       ssr: false,
@@ -90,12 +69,35 @@ export const echartTypes = (big: boolean) => {
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
     },
     {
-      id: "bigNumber",
-      label: "Big number",
-      icon: <BigNumberIcon />,
-      preview: <GeomapPreviewImg />,
+      id: "echartsSankey",
+      label: "Sankey diagram",
+      icon: <SankeyChartIcon big={big} />,
+      preview: <div />,
 
-      categories: ["Hierarchies", "Proportions"],
+      categories: ["Networks"],
+      ssr: false,
+      description:
+        "It represents flows among nodes of a network. Nodes are represented as rectangles, the height represents their value. Flows are represented with curved lines whose width is proportional to their value.",
+    },
+    {
+      id: "echartsLinechart",
+      label: "Line chart",
+      icon: <LineChartIcon big={big} />,
+      preview: <div />,
+
+      categories: ["Trends", "changes over time"],
+      ssr: false,
+      description:
+        "It displays a quantitative dimension over a continuous interval or time period. Colour can be optionally used to encode an additional quantitative or categorical dimension.",
+    },
+
+    {
+      id: "bigNumber",
+      label: "KPI number",
+      icon: <BigNumberIcon />,
+      preview: <div />,
+
+      categories: ["Key data points"],
       ssr: true,
       description:
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",

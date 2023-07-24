@@ -100,7 +100,6 @@ export function FilterGroup(props: FilterGroupCompProps) {
           justify-content: space-between;
 
           > button {
-            margin-right: 6px;
             transform: rotate(90deg);
           }
         `}
