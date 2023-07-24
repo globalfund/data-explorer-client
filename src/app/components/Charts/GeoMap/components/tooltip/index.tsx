@@ -12,7 +12,7 @@ import {
 
 export function GeomapTooltip(props: GeomapTooltipProps) {
   const cmsData = useCMSData({ returnData: true });
-
+  console.log(cmsData, "cms");
   return (
     <div
       css={`
@@ -191,7 +191,7 @@ export function GeomapTooltip(props: GeomapTooltipProps) {
               font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
             `}
           >
-            {get(cmsData, "componentsChartsGeomap.committed", "")}
+            {get(cmsData, "componentsChartsGeomap.tooltipCommitted", "")}
           </div>
           <div>{formatFinancialValue(props.data.committed)}</div>
         </div>
