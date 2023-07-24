@@ -10,6 +10,9 @@ export const empowercss = css`
   padding: 113px 0 55px 0;
   font-family: "Gotham Narrow Bold", sans-serif;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
+  a {
+    text-decoration: none;
+  }
 
   h1 {
     margin-top: 0;

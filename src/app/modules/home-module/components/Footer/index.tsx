@@ -4,6 +4,7 @@ import Container from "@material-ui/core/Container";
 import { homeFootercss } from "app/modules/home-module/components/Footer/style";
 import { ReactComponent as CopyIcon } from "app/modules/home-module/components/Footer/asset/copy.svg";
 import { ReactComponent as LogoIcon } from "app/modules/home-module/components/Footer/asset/logo.svg";
+import { Link } from "react-router-dom";
 
 export default function HomeFooter() {
   return (
@@ -60,9 +61,14 @@ export default function HomeFooter() {
             css={`
               display: flex;
               justify-content: flex-end;
+              a {
+                text-decoration: none;
+              }
             `}
           >
-            <LogoIcon />
+            <Link to="/">
+              <LogoIcon />
+            </Link>
           </Grid>
         </Grid>
       </Container>

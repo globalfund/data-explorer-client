@@ -16,12 +16,6 @@ interface Props {
 }
 
 export default function ReformedGridItem(props: Props) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-
-  const showMenuOptions = () => {
-    setMenuOptionsDisplay(!menuOptionsDisplay);
-  };
-
   return (
     <Link
       to={`/chart/${props.id}`}

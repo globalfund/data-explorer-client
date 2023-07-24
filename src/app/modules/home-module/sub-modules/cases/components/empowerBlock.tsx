@@ -12,6 +12,7 @@ import {
   BottomLeftEllipseCss,
   BottomRightEllipseCss,
 } from "app/modules/home-module/sub-modules/cases/style";
+import { Link } from "react-router-dom";
 
 export default function EmpowerBlock(props: { alternativeText?: boolean }) {
   return (
@@ -43,9 +44,11 @@ export default function EmpowerBlock(props: { alternativeText?: boolean }) {
         </b>
       </p>
       <div>
-        <HomePrimaryButton color="#6061E5" type="button">
-          CREATE REPORT
-        </HomePrimaryButton>
+        <Link to="/report/new/initial">
+          <HomePrimaryButton color="#6061E5" type="button">
+            CREATE REPORT
+          </HomePrimaryButton>
+        </Link>
         <HomePrimaryButton color="#E492BD" type="button">
           EXPLORE REPORTS
         </HomePrimaryButton>

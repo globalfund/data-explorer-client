@@ -1,5 +1,6 @@
 import React from "react";
 import { ReactComponent as RightArr } from "app/modules/home-module/assets/right-arr-icon.svg";
+import { Link } from "react-router-dom";
 
 export default function TryUsBlock() {
   return (
@@ -45,7 +46,8 @@ export default function TryUsBlock() {
           flex-direction: column;
           gap: 42px;
           align-items: center;
-          button {
+          button,
+          a {
             outline: none;
             border: none;
             display: flex;
@@ -61,14 +63,16 @@ export default function TryUsBlock() {
               opacity: 0.9;
             }
           }
-          button:nth-child(1) {
+          button:nth-child(1),
+          a {
             background: #e492bd;
             border-radius: 30px;
-            width: 185.53px;
+            width: 198.53px;
             height: 41px;
             padding: 12px 27px;
             gap: 10px;
             color: #ffffff;
+            text-decoration: none;
             svg {
               path {
                 fill: #ffffff;
@@ -86,9 +90,9 @@ export default function TryUsBlock() {
           }
         `}
       >
-        <button>
-          <p>Try for free</p> <RightArr />
-        </button>
+        <Link to="/report/new/initial">
+          <p>CREATE REPORT</p> <RightArr />
+        </Link>
 
         <button>
           <p>Contact sales</p> <RightArr />

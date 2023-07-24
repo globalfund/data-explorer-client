@@ -23,7 +23,7 @@ export default function ChartsGrid(props: {
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
   const charts = useStoreState(
-    (state) => (state.charts.ChartGetList.crudData || []) as any[]
+    (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
