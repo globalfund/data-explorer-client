@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
@@ -23,148 +23,161 @@ interface Props {
 
 export default function ReformedGridItem(props: Props) {
   const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-  const history = useHistory();
+
   const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // e.preventDefault();
-    // e.stopPropagation();
+    e.preventDefault();
+    e.stopPropagation();
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
 
   return (
     <div
       css={`
-        width: 100%;
-        height: 161.588px;
-        display: flex;
-        color: #262c34;
-        background: #fff;
         position: relative;
-        padding: 12px 16px;
-        text-decoration: none;
-        flex-direction: column;
-        border: 1px solid #fff;
-        align-items: space-between;
-        justify-content: space-between;
-
-        &:hover {
-          border-color: #6061e5;
-        }
       `}
     >
-      <div
+      <Link
+        to={`/chart/${props.id}`}
         css={`
+          width: 296px;
+          height: 161.59px;
           display: flex;
-          align-items: flex-start;
+          color: #262c34;
+          background: #fff;
+          position: relative;
+          padding: 12px 16px;
+          text-decoration: none;
+          flex-direction: column;
+          border: 1px solid #fff;
+          align-items: space-between;
           justify-content: space-between;
 
-          a {
-            color: inherit;
-            text-decoration: none;
+          &:hover {
+            border-color: #6061e5;
           }
         `}
       >
         <div
           css={`
-            width: 80%;
-            margin-top: -7px;
-            cursor: pointer;
-          `}
-          onClick={(e) => {
-            e.stopPropagation();
-            history.push(`/report/${props.id}`);
-          }}
-        >
-          <p
-            css={`
-              font-size: 18px;
-              line-height: 22px;
-              font-family: "Gotham Narrow Bold", sans-serif;
-              margin-top: 2px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
 
-              overflow: hidden;
-              text-overflow: ellipsis;
-              white-space: nowrap;
-              margin-bottom: 0;
-            `}
-          >
-            <b>{props.title}</b>
-          </p>
-          <p
-            css={`
-              font-size: 12px;
-              line-height: 14px;
-              font-family: "Gotham Narrow ", sans-serif;
-              margin-top: 1px;
-              overflow: hidden;
-              display: -webkit-box;
-              -webkit-line-clamp: 3;
-              text-overflow: ellipsis;
-              -webkit-box-orient: vertical;
-              color: #495057;
-            `}
-          >
-            {props.descr}
-          </p>
-        </div>
-        <IconButton
-          css={`
-            position: absolute;
-            right: -2px;
-            top: 0px;
-            cursor: pointer;
-
-            &:hover {
-              background: transparent;
+            a {
+              color: inherit;
+              text-decoration: none;
             }
           `}
-          onClick={showMenuOptions}
         >
-          <MenuIcon />
-        </IconButton>
-      </div>
-      <div
-        css={`
-          margin-top: 4px;
-          position: absolute;
-          bottom: -8px;
-          svg {
-            width: 119.722px;
-            height: 83.717px;
-          }
-          rect:nth-of-type(2) {
-            fill: ${props.color || "#231d2c"};
-          }
+          <div
+            css={`
+              width: 80%;
+              margin-top: -7px;
+            `}
+          >
+            <p
+              css={`
+                font-size: 18px;
+                line-height: 22px;
+                font-family: "Gotham Narrow Bold", sans-serif;
+                margin-top: 2px;
 
-          ${props.showMenuButton &&
-          `
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                margin-bottom: 0;
+              `}
+            >
+              <b>{props.title}</b>
+            </p>
+            <p
+              css={`
+                font-size: 12px;
+                line-height: 14px;
+                font-family: "Gotham Narrow ", sans-serif;
+                margin-top: 1px;
+                overflow: hidden;
+                display: -webkit-box;
+                -webkit-line-clamp: 3;
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+                color: #495057;
+              `}
+            >
+              {props.descr}
+            </p>
+          </div>
+          <IconButton
+            css={`
+              position: absolute;
+              right: -2px;
+              top: 0px;
+              cursor: pointer;
+
+              &:hover {
+                background: transparent;
+              }
+            `}
+            onClick={showMenuOptions}
+          >
+            <MenuIcon />
+          </IconButton>
+        </div>
+        <div
+          css={`
+            margin-top: 4px;
+            position: absolute;
+            bottom: -8px;
+            svg {
+              width: 119.722px;
+              height: 83.717px;
+            }
+            rect:nth-of-type(2) {
+              fill: ${props.color || "#231d2c"};
+            }
+
+            ${props.showMenuButton &&
+            `
             bottom: -5px;
             transform: scale(0.7);
             transform-origin: left bottom;
           `}
-        `}
-      >
-        {props.viz}
-      </div>
-      <div
-        css={`
-          position: absolute;
-          bottom: 4px;
-          right: 3%;
-          display: flex;
-          font-size: 12px;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 3px;
-          > p {
-            margin: 0;
-          }
-        `}
-      >
-        <ClockIcon />
-        <p>{moment(props.date).format("MMMM YYYY")}</p>
-      </div>
+          `}
+        >
+          {props.viz}
+        </div>
+        <div
+          css={`
+            position: absolute;
+            bottom: 4px;
+            right: 3%;
+            display: flex;
+            font-size: 12px;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 3px;
+            > p {
+              margin: 0;
+            }
+          `}
+        >
+          <ClockIcon />
+          <p>{moment(props.date).format("MMMM YYYY")}</p>
+        </div>
+      </Link>
       {menuOptionsDisplay && (
-        <div>
+        <React.Fragment>
+          <div
+            css={`
+              top: 0;
+              left: 0;
+              z-index: 1;
+              width: 100vw;
+              height: 100vh;
+              position: fixed;
+            `}
+            onClick={() => setMenuOptionsDisplay(false)}
+          />
           <div
             css={`
               top: 44px;
@@ -235,7 +248,7 @@ export default function ReformedGridItem(props: Props) {
               </IconButton>
             </div>
           </div>
-        </div>
+        </React.Fragment>
       )}
     </div>
   );
