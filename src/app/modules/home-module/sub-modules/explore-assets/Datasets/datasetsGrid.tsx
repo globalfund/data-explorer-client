@@ -9,6 +9,7 @@ import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Datasets/reformedGridItem";
+import DatasetAddnewCard from "app/modules/home-module/sub-modules/explore-assets//Datasets/datasetAddNewCard";
 
 export default function DatasetsGrid(props: {
   sortBy: string;
@@ -90,6 +91,9 @@ export default function DatasetsGrid(props: {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <DatasetAddnewCard />
+          </Grid>
           {(datasets || []).map((data, index) => (
             <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
               <ReformedGridItem

@@ -101,16 +101,17 @@ export default function ReformedGridItem(props: Props) {
             {props.descr}
           </p>
         </div>
-        {props.showMenuButton && (
-          <IconButton
-            css={`
-              margin: -9px -13px 0 0;
-            `}
-            onClick={showMenuOptions}
-          >
-            <MenuIcon />
-          </IconButton>
-        )}
+        <IconButton
+          css={`
+            margin: -9px -13px 0 0;
+            &:hover {
+              background: transparent;
+            }
+          `}
+          onClick={showMenuOptions}
+        >
+          <MenuIcon />
+        </IconButton>
       </div>
       <div
         css={`

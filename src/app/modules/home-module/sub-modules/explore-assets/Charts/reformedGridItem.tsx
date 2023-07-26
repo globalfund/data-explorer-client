@@ -31,8 +31,9 @@ export default function ReformedGridItem(props: Props) {
     <Link
       to={`/chart/${props.id}`}
       css={`
-        width: 100%;
-        height: 220px;
+        /* width: 100%; */
+        width: 296px;
+        height: 161.59px;
         display: flex;
         color: #262c34;
         background: #fff;
@@ -81,7 +82,6 @@ export default function ReformedGridItem(props: Props) {
         </div>
         <IconButton
           css={`
-            /* padding: 0; */
             margin: -9px -13px 0 0;
 
             margin-top: 5px;
@@ -102,6 +102,10 @@ export default function ReformedGridItem(props: Props) {
         <div
           css={`
             margin-top: 2px;
+            svg {
+              width: 80.794px;
+              height: 80.794px;
+            }
           `}
         >
           {props.viz}

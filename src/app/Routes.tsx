@@ -22,6 +22,9 @@ const AboutModule = lazy(
 const WhyDXModule = lazy(
   () => import("app/modules/home-module/sub-modules/why-dx")
 );
+const ExploreAssetsModule = lazy(
+  () => import("app/modules/home-module/sub-modules/explore-assets")
+);
 const DatasetsModule = lazy(() => import("app/modules/datasets-module"));
 const ChartsModule = lazy(() => import("app/modules/charts-module"));
 const ChartModule = lazy(() => import("app/modules/chart-module"));
@@ -50,6 +53,9 @@ export function MainRoutes() {
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/why-dx">
           <WhyDXModule />
+        </RouteWithAppBar>
+        <RouteWithAppBar exact path="/explore-assets">
+          <ExploreAssetsModule />
         </RouteWithAppBar>
         <RouteWithAppBar exact path="/report/:page/:view?">
           <ReportModule />

@@ -8,7 +8,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
-import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
+import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Charts/reformedGridItem";
 
 export default function ChartsGrid(props: {
   sortBy: string;
@@ -111,7 +111,7 @@ export default function ChartsGrid(props: {
       {!props.tableView && (
         <Grid container spacing={2}>
           {charts.map((c, index) => (
-            <Grid item key={c.id} xs={12} sm={6} md={6} lg={4}>
+            <Grid item key={c.id} xs={12} sm={6} md={6} lg={3}>
               <ReformedGridItem
                 id={c.id}
                 title={c.name}

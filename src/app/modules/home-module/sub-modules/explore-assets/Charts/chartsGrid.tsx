@@ -1,45 +1,45 @@
 import React from "react";
 import axios from "axios";
-import get from "lodash/get";
+import find from "lodash/find";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
 import useDebounce from "react-use/lib/useDebounce";
-import { ReportModel } from "app/modules/report-module/data";
-import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { HomepageTable } from "app/modules/home-module/components/Table";
-import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
-import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Reports/reformedGridItem";
+import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
+import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Charts/reformedGridItem";
+import ChartAddnewCard from "./chartAddNewCard";
 
-export default function ReportsGrid(props: {
+export default function ChartsGrid(props: {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
-  showMenuButton: boolean;
 }) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
-  const reports = useStoreState(
-    (state) => (state.reports.ReportGetList.crudData ?? []) as ReportModel[]
+  const charts = useStoreState(
+    (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
 
-  const loadReports = useStoreActions(
-    (actions) => actions.reports.ReportGetList.fetch
+  const loadCharts = useStoreActions(
+    (actions) => actions.charts.ChartGetList.fetch
   );
 
   const handleDelete = (index?: number) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = reports[index as number].id;
+    const id = charts[index as number].id;
+
     if (!id) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/report/${id}`)
+      .delete(`${process.env.REACT_APP_API}/chart/${id}`)
       .then(() => {
-        loadReports({
+        loadCharts({
           storeInCrudData: true,
           filterString: "filter[order]=createdDate desc",
         });
@@ -48,14 +48,14 @@ export default function ReportsGrid(props: {
   };
 
   const handleDuplicate = (index: number) => {
-    const id = reports[index].id;
+    const id = charts[index].id;
     if (!id) {
       return;
     }
     axios
-      .get(`${process.env.REACT_APP_API}/report/duplicate/${id}`)
+      .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`)
       .then(() => {
-        loadReports({
+        loadCharts({
           storeInCrudData: true,
           filterString: "filter[order]=createdDate desc",
         });
@@ -76,12 +76,20 @@ export default function ReportsGrid(props: {
     setModalDisplay(true);
   };
 
+  const getIcon = (vizType: string) => {
+    const type = find(coloredEchartTypes(), { id: vizType });
+    if (type) {
+      return type.icon;
+    }
+    return coloredEchartTypes()[0].icon;
+  };
+
   function loadData(searchStr: string, sortByStr: string) {
     const value =
       searchStr.length > 0
-        ? `"where":{"title":{"like":"${searchStr}.*","options":"i"}},`
+        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
         : "";
-    loadReports({
+    loadCharts({
       storeInCrudData: true,
       filterString: `filter={${value}"order":"${sortByStr} desc"}`,
     });
@@ -96,27 +104,26 @@ export default function ReportsGrid(props: {
       loadData(props.searchStr, props.sortBy);
     },
     500,
-    [props.searchStr, props.sortBy]
+    [props.searchStr]
   );
+
   return (
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
-          {reports.map((data, index) => (
-            <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
+          <Grid item xs={12} sm={6} md={6} lg={3}>
+            <ChartAddnewCard />
+          </Grid>
+          {charts.map((c, index) => (
+            <Grid item key={c.id} xs={12} sm={6} md={6} lg={3}>
               <ReformedGridItem
-                id={data.id}
-                key={data.id}
-                descr={data.name}
-                date={data.createdDate}
-                viz={<ColoredReportIcon />}
-                color={data.backgroundColor}
-                showMenuButton={props.showMenuButton}
+                id={c.id}
+                title={c.name}
+                date={c.createdDate}
+                path={`/chart/${c.id}`}
+                viz={getIcon(c.vizType)}
                 handleDelete={() => handleModal(index)}
                 handleDuplicate={() => handleDuplicate(index)}
-                title={
-                  get(data, "title", "").length > 0 ? data.title : data.name
-                }
               />
               <Box height={16} />
             </Grid>
@@ -125,7 +132,7 @@ export default function ReportsGrid(props: {
       )}
       {props.tableView && (
         <HomepageTable
-          data={reports.map((data) => ({
+          data={charts.map((data) => ({
             id: data.id,
             name: data.name,
             description: data.title,
@@ -133,7 +140,7 @@ export default function ReportsGrid(props: {
           }))}
         />
       )}
-      <DeleteReportDialog
+      <DeleteChartDialog
         cardId={cardId}
         modalDisplay={modalDisplay}
         enableButton={enableButton}
