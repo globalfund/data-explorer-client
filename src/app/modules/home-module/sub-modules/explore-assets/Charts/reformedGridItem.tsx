@@ -1,22 +1,20 @@
 import React from "react";
 import moment from "moment";
-import IconButton from "@material-ui/core/IconButton";
-import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
-import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
-import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
-
-import { Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import { IconButton, Tooltip } from "@material-ui/core";
+import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
+import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
+import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/clock-icon.svg";
 
 interface Props {
+  id: string;
   path: string;
   title: string;
-  descr: string;
-  date: Date;
-  showMenu?: boolean;
+  date: string;
+  viz: React.ReactNode;
   handleDelete?: (id: string) => void;
-  id?: string;
+  handleDuplicate?: (id: string) => void;
 }
 
 export default function ReformedGridItem(props: Props) {
@@ -31,84 +29,111 @@ export default function ReformedGridItem(props: Props) {
   return (
     <div
       css={`
-        width: 100%;
-        height: 220px;
-        display: flex;
-        color: #262c34;
-        background: #fff;
         position: relative;
-        padding: 12px 16px;
-        flex-direction: column;
-        justify-content: space-between;
       `}
     >
-      <div
+      <Link
+        to={`/chart/${props.id}`}
         css={`
+          width: 296px;
+          height: 161.59px;
           display: flex;
-          align-items: flex-start;
+          color: #262c34;
+          background: #fff;
+          position: relative;
+          padding: 12px 16px;
+          text-decoration: none;
+          flex-direction: column;
+          border: 1px solid #fff;
           justify-content: space-between;
+
+          &:hover {
+            border-color: #6061e5;
+          }
         `}
       >
         <div
           css={`
-            width: 90%;
-            height: 77px;
-            word-wrap: break-word;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            a {
+              color: inherit;
+              text-decoration: none;
+            }
           `}
         >
-          <p
+          <div
             css={`
-              margin-top: 0;
-              font-size: 18px
-              line-height: 22px;
-              font-family: 'Gotham Narrow', sans-serif;
-              overflow: hidden;
-              margin-bottom: 2px;
-              white-space: nowrap;
-              text-overflow: ellipsis;
+              width: 90%;
+              margin-top: -9px;
             `}
           >
-            <b>{props.title}</b>
-          </p>
-          <p
-            css={`
-              font-size: 12px;
-              line-height: 14px;
-              margin-top: 1px;
-              color: #495057;
-            `}
-          >
-            {props.descr}
-          </p>
-        </div>
-        {props.showMenu && (
+            <p
+              css={`
+                font-size: 14px;
+                font-family: "Gotham Narrow Bold", sans-serif;
+                margin-top: 6px;
+                overflow: hidden;
+                margin-bottom: 0;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+              `}
+            >
+              <b>{props.title}</b>
+            </p>
+          </div>
           <IconButton
             css={`
-              padding: 0;
-              margin-top: 5px;
+              position: absolute;
+              right: -2px;
+              top: 0px;
+              cursor: pointer;
+              &:hover {
+                background: transparent;
+              }
             `}
             onClick={showMenuOptions}
           >
             <MenuIcon />
           </IconButton>
-        )}
-      </div>
-      <div
-        css={`
-          display: flex;
-          font-size: 12px;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 3px;
-
-          > p {
-            margin: 0;
-          }
-        `}
-      >
-        <ClockIcon />
-        <p>{moment(props.date).format("MMMM YYYY")}</p>
-      </div>
+        </div>
+        <div
+          css={`
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: space-between;
+          `}
+        >
+          <div
+            css={`
+              margin-top: 2px;
+              /* svg {
+              width: 80.794px;
+              height: 80.794px;
+            } */
+            `}
+          >
+            {props.viz}
+          </div>
+          <div
+            css={`
+              display: flex;
+              font-size: 12px;
+              justify-content: flex-end;
+              align-items: center;
+              gap: 3px;
+              > p {
+                margin: 0;
+              }
+            `}
+          >
+            <ClockIcon />
+            <p>{moment(props.date).format("MMMM YYYY")}</p>
+          </div>
+        </div>
+      </Link>
       {menuOptionsDisplay && (
         <React.Fragment>
           <div
@@ -125,7 +150,6 @@ export default function ReformedGridItem(props: Props) {
           <div
             css={`
               top: 38px;
-
               gap: 1rem;
               right: 3%;
               z-index: 2;
@@ -161,7 +185,7 @@ export default function ReformedGridItem(props: Props) {
             `}
           >
             <div>
-              <Link to="#">
+              <Link to={`/chart/${props.id}/customize`}>
                 <Tooltip title="Edit">
                   <EditIcon
                     css={`
@@ -172,9 +196,7 @@ export default function ReformedGridItem(props: Props) {
               </Link>
             </div>
             <div>
-              <IconButton
-                onClick={() => props.handleDelete?.(props.id as string)}
-              >
+              <IconButton onClick={() => props.handleDelete?.(props.id)}>
                 <Tooltip title="Delete">
                   <DeleteIcon />
                 </Tooltip>

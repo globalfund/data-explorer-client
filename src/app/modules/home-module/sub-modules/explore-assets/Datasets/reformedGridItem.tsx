@@ -5,6 +5,7 @@ import { ReactComponent as ClockIcon } from "app/modules/home-module/assets/cloc
 import { ReactComponent as EditIcon } from "app/modules/home-module/assets/edit.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/home-module/assets/delete.svg";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
+import { ReactComponent as DataCardImg } from "app/modules/home-module/assets/data-card-img.svg";
 
 import { Tooltip } from "@material-ui/core";
 import { Link } from "react-router-dom";
@@ -31,8 +32,8 @@ export default function ReformedGridItem(props: Props) {
   return (
     <div
       css={`
-        width: 100%;
-        height: 220px;
+        width: 296px;
+        height: 161.588px;
         display: flex;
         color: #262c34;
         background: #fff;
@@ -52,13 +53,16 @@ export default function ReformedGridItem(props: Props) {
         <div
           css={`
             width: 90%;
-            height: 77px;
+            height: 50px
             word-wrap: break-word;
+            cursor: pointer;
+
           `}
         >
           <p
             css={`
-              margin-top: 0;
+               margin-top: -5px;
+
               font-size: 18px
               line-height: 22px;
               font-family: 'Gotham Narrow', sans-serif;
@@ -76,6 +80,9 @@ export default function ReformedGridItem(props: Props) {
               line-height: 14px;
               margin-top: 1px;
               color: #495057;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              white-space: nowrap;
             `}
           >
             {props.descr}
@@ -84,8 +91,14 @@ export default function ReformedGridItem(props: Props) {
         {props.showMenu && (
           <IconButton
             css={`
-              padding: 0;
-              margin-top: 5px;
+              position: absolute;
+              right: -2px;
+              top: 0px;
+              cursor: pointer;
+
+              &:hover {
+                background: transparent;
+              }
             `}
             onClick={showMenuOptions}
           >
@@ -96,18 +109,38 @@ export default function ReformedGridItem(props: Props) {
       <div
         css={`
           display: flex;
-          font-size: 12px;
-          justify-content: flex-end;
-          align-items: center;
-          gap: 3px;
-
-          > p {
-            margin: 0;
-          }
+          flex-direction: row;
+          align-items: flex-end;
+          justify-content: space-between;
         `}
       >
-        <ClockIcon />
-        <p>{moment(props.date).format("MMMM YYYY")}</p>
+        <div
+          css={`
+            margin-top: 8px;
+            svg {
+              width: 119.084px;
+              height: 69.761px;
+            }
+          `}
+        >
+          <DataCardImg />
+        </div>
+        <div
+          css={`
+            display: flex;
+            font-size: 12px;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 3px;
+
+            > p {
+              margin: 0;
+            }
+          `}
+        >
+          <ClockIcon />
+          <p>{moment(props.date).format("MMMM YYYY")}</p>
+        </div>
       </div>
       {menuOptionsDisplay && (
         <React.Fragment>

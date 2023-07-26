@@ -7,6 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { withStyles } from "@material-ui/core/styles";
 import { homeDisplayAtom } from "app/state/recoil/atoms";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
@@ -20,7 +21,7 @@ import {
 } from "app/components/AppBar/style";
 import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
 import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Grid, Popover } from "@material-ui/core";
 
 const TextHeader = (label: string) => (
   <h2
@@ -234,6 +235,11 @@ export function AppBar() {
                     <b>Why Dx?</b>
                   </NavLink>
                 </div>
+                <div css={navLinkcss("explore-assets", navLocation)}>
+                  <NavLink to="/explore-assets">
+                    <b>Explore Assets</b>
+                  </NavLink>
+                </div>
                 <div css={navLinkcss("explore", navLocation)}>
                   <NavLink to="/" onClick={() => handlePath("reports")}>
                     <b>Explore Reports</b>
@@ -254,10 +260,7 @@ export function AppBar() {
                     <b>Contact </b>
                   </Link>
                 </div>
-
-                <div css={loginBtn}>
-                  <Link to="/report/new/initial">Create report</Link>
-                </div>
+                <ActionMenu />
               </Grid>
             </Grid>
           </Container>
@@ -266,3 +269,149 @@ export function AppBar() {
     </MUIAppBar>
   );
 }
+
+const ActionMenu = () => {
+  const [actionPopoverAnchorEl, setActionPopoverAnchorEl] =
+    React.useState<HTMLButtonElement | null>(null);
+  const openActionPopover = Boolean(actionPopoverAnchorEl);
+  const handleCloseActionPopover = () => {
+    setActionPopoverAnchorEl(null);
+  };
+  return (
+    <div>
+      <div
+        css={`
+          display: flex;
+          gap: 1px;
+          position: relative;
+          width: 188px;
+
+          button {
+            outline: none;
+            border: none;
+            background: #dadaf8;
+            color: #231d2c;
+            font-size: 11.424px;
+            line-height: normal;
+            padding: 0px;
+            font-family: "Inter", sans-serif;
+
+            :nth-child(1) {
+              width: 146px;
+              height: 34px;
+              border-radius: 24px 0px 0px 24px;
+              &:hover {
+                opacity: 1;
+              }
+            }
+            :nth-child(2) {
+              width: 41px;
+              height: 34px;
+              border-radius: 0px 24px 24px 0px;
+              background: ${openActionPopover ? "#B5B5DB" : "#dadaf8"};
+              &:hover {
+                opacity: 1;
+              }
+            }
+            svg {
+              ${openActionPopover ? "transform: rotate(180deg)" : ""}
+            }
+          }
+        `}
+      >
+        <Link to="/report/new/initial">
+          <button>Create report</button>
+        </Link>
+        <button
+          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+            setActionPopoverAnchorEl(
+              actionPopoverAnchorEl ? null : event.currentTarget
+            );
+          }}
+        >
+          <KeyboardArrowDownIcon />
+        </button>
+      </div>
+
+      <Popover
+        open={openActionPopover}
+        anchorEl={actionPopoverAnchorEl}
+        onClose={handleCloseActionPopover}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
+        css={`
+          .MuiPaper-root {
+            border-radius: 8px;
+            margin-top: 4px;
+          }
+        `}
+      >
+        <div
+          css={`
+            width: 188px;
+            height: 76px;
+            background: #ffffff;
+            color: #262c34;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+            font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
+
+            div {
+              display: flex;
+              gap: 8px;
+              align-items: center;
+              padding-left: 8px;
+              width: 100%;
+              height: 100%;
+              a {
+                text-decoration: none;
+              }
+              button {
+                padding: 0px;
+                width: 100%;
+                border: none;
+                outline: none;
+                background: transparent;
+                cursor: pointer;
+                display: flex;
+                gap: 8px;
+                align-items: center;
+                text-transform: uppercase;
+                font-weight: 500;
+                font-family: "Inter", sans-serif;
+              }
+
+              &:hover,
+              &:active {
+                background: #6061e5;
+                button {
+                  color: #fff;
+                }
+              }
+            }
+          `}
+        >
+          <div onClick={handleCloseActionPopover}>
+            <Link to="/dataset-upload">
+              <button>Add Data</button>
+            </Link>
+          </div>
+          <div onClick={handleCloseActionPopover}>
+            <Link to="/chart/new/data">
+              <button>Create Chart</button>
+            </Link>
+          </div>
+        </div>
+      </Popover>
+    </div>
+  );
+};

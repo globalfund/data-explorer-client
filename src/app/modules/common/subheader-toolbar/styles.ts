@@ -53,7 +53,7 @@ export const styles = {
     text-decoration: none;
   `,
   sharePopup: css`
-    width: 240px;
+    width: 170px;
     display: flex;
     padding: 6px 13px;
     flex-direction: column;
@@ -80,7 +80,10 @@ export const styles = {
     }
 
     button {
+      width: 100%;
       padding: 6px 0;
+      text-align: start;
+      justify-content: flex-start;
 
       span {
         text-transform: initial;

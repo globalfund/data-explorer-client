@@ -45,22 +45,7 @@ interface Props {
 export default function HeaderBlock(props: Props) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: "header",
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
-      canDrop: monitor.canDrop(),
-      item: monitor.getItem(),
-    }),
-    drop: () => {
-      props.setHeaderDetails({
-        ...props.headerDetails,
-        showHeader: true,
-      });
-    },
-  }));
-
+  const inputRef = React.useRef<HTMLInputElement>(null);
   const [currentView, setCurrentView] = useRecoilState(
     reportRightPanelViewAtom
   );
@@ -76,6 +61,25 @@ export default function HeaderBlock(props: Props) {
         onMouseEnter: () => setHandleDisplay(true),
         onMouseLeave: () => setHandleDisplay(false),
       };
+
+  React.useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
+
+  const [{ isOver }, drop] = useDrop(() => ({
+    accept: "header",
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+      canDrop: monitor.canDrop(),
+      item: monitor.getItem(),
+    }),
+    drop: () => {
+      props.setHeaderDetails({
+        ...props.headerDetails,
+        showHeader: true,
+      });
+    },
+  }));
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -196,6 +200,7 @@ export default function HeaderBlock(props: Props) {
         <div css={headerBlockcss.innerContainer}>
           <div>
             <input
+              ref={inputRef}
               name="title"
               type="text"
               placeholder="Add title"

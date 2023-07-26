@@ -596,19 +596,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                       `}
                     >
                       <div css={styles.sharePopup}>
-                        <FormControlLabel
-                          value="public-theme"
-                          label="Public theme"
-                          labelPlacement="start"
-                          control={
-                            <Switch
-                              color="primary"
-                              checked={isPublicTheme}
-                              onChange={() => setIsPublicTheme(!isPublicTheme)}
-                            />
-                          }
-                        />
-                        <Divider />
                         <CopyToClipboard
                           text={window.location.href}
                           onCopy={handleCopy}

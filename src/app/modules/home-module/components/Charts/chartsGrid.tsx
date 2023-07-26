@@ -8,10 +8,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
-import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
-
-const description =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
+import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Charts/reformedGridItem";
 
 export default function ChartsGrid(props: {
   sortBy: string;
@@ -23,8 +20,9 @@ export default function ChartsGrid(props: {
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
 
   const charts = useStoreState(
-    (state) => (state.charts.ChartGetList.crudData || []) as any[]
+    (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
+
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
@@ -113,11 +111,10 @@ export default function ChartsGrid(props: {
       {!props.tableView && (
         <Grid container spacing={2}>
           {charts.map((c, index) => (
-            <Grid item key={c.id} xs={12} sm={6} md={6} lg={4}>
+            <Grid item key={c.id} xs={12} sm={6} md={6} lg={3}>
               <ReformedGridItem
                 id={c.id}
                 title={c.name}
-                descr={description}
                 date={c.createdDate}
                 path={`/chart/${c.id}`}
                 viz={getIcon(c.vizType)}

@@ -10,6 +10,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Reports/reformedGridItem";
+import ReportAddnewCard from "./reportAddNewCard";
 
 export default function ReportsGrid(props: {
   sortBy: string;
@@ -102,6 +103,9 @@ export default function ReportsGrid(props: {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
+          <Grid item xs={12} sm={6} md={4} lg={3}>
+            <ReportAddnewCard />
+          </Grid>
           {reports.map((data, index) => (
             <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
               <ReformedGridItem

@@ -2,6 +2,7 @@ import { Grid } from "@material-ui/core";
 import React from "react";
 import RightArr from "app/modules/home-module/assets/right-arr-icon.svg";
 import { bestDecisioncss } from "app/modules/home-module/sub-modules/cases/style";
+import { Link } from "react-router-dom";
 export default function BestDecisionBlock() {
   return (
     <Grid css={bestDecisioncss}>
@@ -18,6 +19,9 @@ export default function BestDecisionBlock() {
           align-items: center;
           height: 215px;
           width: 100%;
+          a {
+            text-decoration: none;
+          }
         `}
       >
         <div>
@@ -43,9 +47,11 @@ export default function BestDecisionBlock() {
             Unlock your potential through the power of DataXplorer.
           </p>
         </div>
-        <button>
-          <p>request a demo</p> <img src={RightArr} alt="right-arrow-icon" />
-        </button>
+        <Link to="/contact">
+          <button>
+            <p>request a demo</p> <img src={RightArr} alt="right-arrow-icon" />
+          </button>
+        </Link>
       </div>
     </Grid>
   );

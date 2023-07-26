@@ -22,9 +22,6 @@ export function ExportChartButton() {
   }
 
   function handleTypeChange(value: ".svg" | ".png" | ".jpg") {
-    if (value === ".svg") {
-      exportPage("svg", "#f2f7fd");
-    }
     if (value === ".png") {
       exportPage("png", "#f2f7fd");
     }
@@ -49,9 +46,6 @@ export function ExportChartButton() {
         anchorEl={anchorEl}
         onClose={handleClose}
       >
-        <StyledMenuItem onClick={() => handleTypeChange(".svg")}>
-          .svg
-        </StyledMenuItem>
         <StyledMenuItem onClick={() => handleTypeChange(".png")}>
           .png
         </StyledMenuItem>
