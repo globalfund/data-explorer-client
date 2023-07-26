@@ -14,6 +14,7 @@ export default function ChartAddnewCard() {
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <div
+        onClick={action}
         css={`
           width: 296px;
           height: 161.59px;
@@ -24,6 +25,7 @@ export default function ChartAddnewCard() {
           display: flex;
           align-items: center;
           justify-content: start;
+          cursor: pointer;
         `}
       >
         <div
@@ -35,7 +37,6 @@ export default function ChartAddnewCard() {
           `}
         >
           <IconButton
-            onClick={action}
             css={`
               padding: 2px;
             `}

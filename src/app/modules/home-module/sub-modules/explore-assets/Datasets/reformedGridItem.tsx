@@ -32,7 +32,6 @@ export default function ReformedGridItem(props: Props) {
   return (
     <div
       css={`
-        /* width: 100%; */
         width: 296px;
         height: 161.588px;
         display: flex;
@@ -56,11 +55,13 @@ export default function ReformedGridItem(props: Props) {
             width: 90%;
             height: 50px
             word-wrap: break-word;
+            cursor: pointer;
+
           `}
         >
           <p
             css={`
-                        margin-top: -5px;
+               margin-top: -5px;
 
               font-size: 18px
               line-height: 22px;

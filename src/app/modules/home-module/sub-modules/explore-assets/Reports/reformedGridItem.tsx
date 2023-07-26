@@ -32,10 +32,6 @@ export default function ReformedGridItem(props: Props) {
 
   return (
     <div
-      onClick={(e) => {
-        e.stopPropagation();
-        history.push(`/report/${props.id}`);
-      }}
       css={`
         width: 100%;
         height: 161.588px;
@@ -71,7 +67,12 @@ export default function ReformedGridItem(props: Props) {
           css={`
             width: 80%;
             margin-top: -7px;
+            cursor: pointer;
           `}
+          onClick={(e) => {
+            e.stopPropagation();
+            history.push(`/report/${props.id}`);
+          }}
         >
           <p
             css={`

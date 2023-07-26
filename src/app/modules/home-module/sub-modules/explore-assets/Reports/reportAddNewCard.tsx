@@ -13,10 +13,11 @@ export default function ReportAddnewCard() {
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <div
+        onClick={action}
         css={`
           width: 296px;
           height: 161.59px;
-
+          cursor: pointer;
           background: #f2f7fd;
           box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
           padding: 12px 16px;
@@ -34,7 +35,6 @@ export default function ReportAddnewCard() {
           `}
         >
           <IconButton
-            onClick={action}
             css={`
               padding: 2px;
             `}

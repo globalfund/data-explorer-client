@@ -28,8 +28,7 @@ export default function ReformedGridItem(props: Props) {
   };
 
   return (
-    <Link
-      to={`/chart/${props.id}`}
+    <div
       css={`
         width: 296px;
         height: 161.59px;
@@ -63,7 +62,9 @@ export default function ReformedGridItem(props: Props) {
           css={`
             width: 90%;
             margin-top: -9px;
+            cursor: pointer;
           `}
+          onClick={() => history.push(`/chart/${props.id}`)}
         >
           <p
             css={`
@@ -105,10 +106,6 @@ export default function ReformedGridItem(props: Props) {
         <div
           css={`
             margin-top: 2px;
-            /* svg {
-              width: 80.794px;
-              height: 80.794px;
-            } */
           `}
         >
           {props.viz}
@@ -180,7 +177,7 @@ export default function ReformedGridItem(props: Props) {
               `}
             >
               <div>
-                <Link to="#">
+                <Link to={`/chart/${props.id as string}/customize`}>
                   <Tooltip title="Edit">
                     <EditIcon
                       css={`
@@ -203,6 +200,6 @@ export default function ReformedGridItem(props: Props) {
           </React.Fragment>
         )}
       </div>
-    </Link>
+    </div>
   );
 }
