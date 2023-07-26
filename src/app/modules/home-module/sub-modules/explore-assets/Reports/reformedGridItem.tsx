@@ -37,7 +37,7 @@ export default function ReformedGridItem(props: Props) {
       `}
     >
       <Link
-        to={`/chart/${props.id}`}
+        to={`/report/${props.id}`}
         css={`
           width: 296px;
           height: 161.59px;
