@@ -64,7 +64,7 @@ export default function TryUsBlock() {
             }
           }
           button:nth-child(1),
-          a {
+          a:nth-child(1) {
             background: #e492bd;
             border-radius: 30px;
             width: 198.53px;
@@ -79,10 +79,11 @@ export default function TryUsBlock() {
               }
             }
           }
-          button:nth-child(2) {
+          button:nth-child(2),
+          a:nth-child(2) {
             background: #ffffff;
             color: #231d2c;
-
+            text-decoration: none;
             width: 206.53px;
             height: 41px;
             padding: 12px 27px;
@@ -93,10 +94,9 @@ export default function TryUsBlock() {
         <Link to="/report/new/initial">
           <p>CREATE REPORT</p> <RightArr />
         </Link>
-
-        <button>
+        <Link to="/contact">
           <p>Contact sales</p> <RightArr />
-        </button>
+        </Link>
       </div>
     </div>
   );

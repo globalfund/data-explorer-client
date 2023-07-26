@@ -23,6 +23,9 @@ export default function HomeFooter() {
             css={`
               display: flex;
               justify-content: flex-start;
+              a {
+                text-decoration: none;
+              }
             `}
           >
             <ul>
@@ -51,7 +54,16 @@ export default function HomeFooter() {
                 <a href="tel:0031202134466">Tel: +3120 213 4466</a>
               </li>
               <li>Privacy</li>
-              <li>Terms and conditions</li>
+              <li>
+                <a
+                  href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"
+                  className="privacy-link"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Terms and conditions
+                </a>
+              </li>
             </ul>
           </Grid>
           <Grid

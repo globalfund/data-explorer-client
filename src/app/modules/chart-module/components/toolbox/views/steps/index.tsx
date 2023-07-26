@@ -164,7 +164,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const onNavBtnClick =
     (direction: "prev" | "next") =>
     (event: React.MouseEvent<HTMLButtonElement>) => {
-      if (direction === "next" && activePanels === 6) {
+      if (direction === "next" && activePanels === 5) {
         props.save();
         return;
       }
@@ -358,35 +358,11 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
             <ChartToolBoxFilters filterOptionGroups={filterOptionGroups} />
           </AccordionDetails>
         </Accordion>
+
         <Accordion
           square
           expanded={expanded === 5 && !collapsed}
           onChange={handleChange(6)}
-        >
-          <AccordionSummary
-            id="step5-header"
-            aria-controls="step5-content"
-            expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
-          >
-            <div>5</div> Lock <br />
-          </AccordionSummary>
-          <AccordionDetails>
-            <hr
-              css={`
-                border: 1px solid #cfd4da;
-                margin: auto;
-                width: 350px;
-                margin-top: -1rem;
-                margin-bottom: 1rem;
-              `}
-            />
-            <ChartToolBoxLock filterOptionGroups={props.filterOptionGroups} />
-          </AccordionDetails>
-        </Accordion>
-        <Accordion
-          square
-          expanded={expanded === 6 && !collapsed}
-          onChange={handleChange(7)}
           css={`
             border-bottom: 1px solid #c0c7d2;
           `}
@@ -396,7 +372,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
             aria-controls="step6-content"
             expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
           >
-            <div>6</div> Customize
+            <div>5</div> Customize
           </AccordionSummary>
           <AccordionDetails>
             <ChartToolBoxCustomize
@@ -429,7 +405,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
             !props.forceNextEnabled
           }
         >
-          {activePanels === 6 ? "Save" : "Next"}
+          {activePanels === 5 ? "Save" : "Next"}
         </Button>
       </div>
     </div>

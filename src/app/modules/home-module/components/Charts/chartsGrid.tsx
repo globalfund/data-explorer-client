@@ -10,9 +10,6 @@ import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 
-const description =
-  "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
-
 export default function ChartsGrid(props: {
   sortBy: string;
   searchStr: string;
@@ -25,6 +22,7 @@ export default function ChartsGrid(props: {
   const charts = useStoreState(
     (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
+
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
@@ -117,7 +115,6 @@ export default function ChartsGrid(props: {
               <ReformedGridItem
                 id={c.id}
                 title={c.name}
-                descr={description}
                 date={c.createdDate}
                 path={`/chart/${c.id}`}
                 viz={getIcon(c.vizType)}

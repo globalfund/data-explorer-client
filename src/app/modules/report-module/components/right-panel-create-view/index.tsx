@@ -576,6 +576,7 @@ function CreateChartCard(props: {
   return (
     <div>
       <div
+        onClick={action}
         css={`
           background: #f2f7fd;
           box-shadow: 0px 4px 30px rgba(0, 0, 0, 0.1);
@@ -586,12 +587,14 @@ function CreateChartCard(props: {
           gap: 12px;
           align-items: center;
           position: relative;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
         `}
       >
         <div>
-          <IconButton onClick={action}>
-            <AddNewImage />
-          </IconButton>
+          <AddNewImage />
         </div>
         <div
           css={`

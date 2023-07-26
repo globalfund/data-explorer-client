@@ -56,7 +56,7 @@ export default function Subheader(props: SubheaderProps) {
               <div>
                 <input
                   type="text"
-                  value={"My First Report"}
+                  value={"Untitled report"}
                   css={styles.titleInput}
                   onChange={(e) => console.log(e.target.value)}
                   style={

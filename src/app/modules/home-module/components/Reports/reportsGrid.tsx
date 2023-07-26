@@ -98,7 +98,6 @@ export default function ReportsGrid(props: {
     500,
     [props.searchStr, props.sortBy]
   );
-
   return (
     <>
       {!props.tableView && (

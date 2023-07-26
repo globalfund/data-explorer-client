@@ -51,6 +51,15 @@ export const cmsDataAtom = atom({
   effects_UNSTABLE: [persistAtom],
 });
 
+export const emptyRowsAtom = atom({
+  key: "emptyRowsAtom",
+  default: false,
+});
+export const untitledReportAtom = atom({
+  key: "untitledReportAtom",
+  default: false,
+});
+
 export const homeDisplayAtom = atom<"data" | "charts" | "reports">({
   key: "homeDisplayAtom",
   default: "reports",
@@ -152,7 +161,7 @@ export const persistedReportStateAtom = atom<{
 }>({
   key: "reportCreateStateAtom",
   default: {
-    reportName: "My First Report",
+    reportName: "Untitled report",
     headerDetails: {
       title: "",
       description: JSON.stringify(

@@ -7,6 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { withStyles } from "@material-ui/core/styles";
 import { homeDisplayAtom } from "app/state/recoil/atoms";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
@@ -254,10 +255,10 @@ export function AppBar() {
                     <b>Contact </b>
                   </Link>
                 </div>
-
-                <div css={loginBtn}>
+                <ActionMenu />
+                {/* <div css={loginBtn}>
                   <Link to="/report/new/initial">Create report</Link>
-                </div>
+                </div> */}
               </Grid>
             </Grid>
           </Container>
@@ -266,3 +267,76 @@ export function AppBar() {
     </MUIAppBar>
   );
 }
+
+const ActionMenu = () => {
+  const [displayMenu, setDisplayMenu] = React.useState(false);
+  return (
+    <div>
+      <div
+        onClick={() => setDisplayMenu(!displayMenu)}
+        css={`
+          display: flex;
+          gap: 1px;
+          position: relative;
+          width: 188px;
+          button {
+            outline: none;
+            border: none;
+            background: #dadaf8;
+            color: #231d2c;
+            font-size: 11.424px;
+            font-family: "Inter", sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            :nth-child(1) {
+              width: 146px;
+              height: 34px;
+              border-radius: 24px 0px 0px 24px;
+            }
+            :nth-child(2) {
+              width: 41px;
+              height: 34px;
+              border-radius: 0px 24px 24px 0px;
+            }
+          }
+        `}
+      >
+        <button>Create report</button>
+        <button>
+          <KeyboardArrowDownIcon />
+        </button>
+      </div>
+      <div
+        css={`
+          position: absolute;
+          top: 45px;
+          width: 188px;
+          height: 76px;
+          border-radius: 12px;
+          box-shadow: 0px 4px 30px 0px rgba(0, 0, 0, 0.1);
+          background-color: #fff;
+          opacity: ${displayMenu ? 1 : 0};
+          transition: all 0.3s ease-in-out;
+          button {
+            outline: none;
+            border: none;
+            background: transparent;
+            width: 100%;
+            border-radius: 0px;
+            /* height: 100%; */
+            color: #231d2c;
+            font-family: "Inter", sans-serif;
+            &:hover {
+              background-color: #6061e5;
+              color: #fff;
+            }
+          }
+        `}
+      >
+        <button>Add Data</button>
+        <button>Create Chart</button>
+      </div>
+    </div>
+  );
+};

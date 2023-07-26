@@ -304,7 +304,7 @@ export function ExpandedFilterGroup(props: ExpandedFilterGroupProps) {
       <div
         css={`
           overflow-y: auto;
-          max-height: calc(100% - 190px);
+          max-height: 350px;
 
           @media (max-width: 767px) {
             max-height: unset;

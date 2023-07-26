@@ -8,7 +8,6 @@ interface Props {
   id: string;
   path: string;
   title: string;
-  descr: string;
   date: string;
   viz: React.ReactNode;
   handleDelete?: (id: string) => void;
@@ -67,21 +66,6 @@ export default function ReformedGridItem(props: Props) {
             `}
           >
             <b>{props.title}</b>
-          </p>
-          <p
-            css={`
-              font-size: 12px;
-              margin-top: 1px;
-              overflow: hidden;
-              font-family: "Gotham Narrow ", sans-serif;
-              line-height: 14px;
-              display: -webkit-box;
-              -webkit-line-clamp: 3;
-              text-overflow: ellipsis;
-              -webkit-box-orient: vertical;
-            `}
-          >
-            {props.descr}
           </p>
         </div>
       </div>

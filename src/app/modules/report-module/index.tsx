@@ -29,6 +29,8 @@ import {
   ReportContentWidthsType,
   persistedReportStateAtom,
   reportContentHeightsAtom,
+  emptyRowsAtom,
+  untitledReportAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -40,6 +42,7 @@ import {
 
 import AITemplate from "app/modules/report-module/views/ai-template";
 import { IHeaderDetails } from "./components/right-panel/data";
+import { isEmpty } from "lodash";
 
 interface RowFrameProps {
   structure:
@@ -65,6 +68,10 @@ export default function ReportModule() {
   const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
   const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
   const reportNameRef = useRef<string>("");
+  const [_openEmptyRowsDialog, setOpenEmptyRowsDialog] =
+    useRecoilState(emptyRowsAtom);
+  const [_untitledReportDialog, setOpenUntitledReportDialog] =
+    useRecoilState(untitledReportAtom);
 
   const { page, view } = useParams<{
     page: string;
@@ -76,7 +83,7 @@ export default function ReportModule() {
   );
   const [buttonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
-  const [reportName, setReportName] = React.useState("My First Report");
+  const [reportName, setReportName] = React.useState("Untitled report");
   const [reportType, setReportType] = React.useState<
     "basic" | "advanced" | "ai"
   >("basic");
@@ -451,7 +458,7 @@ export default function ReportModule() {
 
   //sets report state to persisted report state
   React.useEffect(() => {
-    setReportName(persistedReportState.reportName || "My First Report");
+    setReportName(persistedReportState.reportName || "Untitled report");
     setHeaderDetails({
       ...persistedReportState.headerDetails,
 
@@ -615,14 +622,19 @@ export default function ReportModule() {
       descriptionColor: "#ffffff",
       dateColor: "#ffffff",
     });
-    setReportName("My First Report");
+    setReportName("Untitled report");
   };
 
   const onSave = () => {
-    if (!isPreviewSaveEnabled) {
-      alert("Please add content to all rows");
+    if (reportName === "Untitled report" || isEmpty(reportName)) {
+      setOpenUntitledReportDialog(true);
       return;
     }
+    if (!isPreviewSaveEnabled) {
+      setOpenEmptyRowsDialog(true);
+      return;
+    }
+
     const action = page === "new" ? reportCreate : reportEdit;
     action({
       patchId: page === "new" ? undefined : page,
