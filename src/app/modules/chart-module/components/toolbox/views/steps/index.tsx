@@ -15,7 +15,6 @@ import MuiAccordionDetails from "@material-ui/core/AccordionDetails";
 import { PrimaryButton } from "app/components/Styled/button";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 import { splitStrBasedOnCapitalLetters } from "app/utils/splitStrBasedOnCapitalLetters";
-import { ChartToolBoxLock } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Lock";
 import { ChartToolBoxMapping } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Mapping";
 import { ChartToolBoxFilters } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/Filters";
 import { ChartToolBoxChartType } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/ChartType";
@@ -125,7 +124,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const { data, loading, loadDataset, filterOptionGroups } = props;
 
   const [collapsed, setCollapsed] = React.useState(false);
-  const [expanded, setExpanded] = React.useState<number>(props.openPanel || 0);
+  const [expanded, setExpanded] = React.useState<number>(props.openPanel ?? 0);
 
   const appliedFilters = useStoreState(
     (state) => state.charts.appliedFilters.value
@@ -146,9 +145,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
     `/chart/${page}/chart-type`,
     `/chart/${page}/mapping`,
     `/chart/${page}/filters`,
-    `/chart/${page}/lock`,
     `/chart/${page}/customize`,
-    `/chart/${page}/export`,
   ];
 
   const handleChange =
@@ -168,7 +165,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
         props.save();
         return;
       }
-      if (history.location.pathname === stepPaths[8] && direction === "next") {
+      if (history.location.pathname === stepPaths[6] && direction === "next") {
         // When the user is at step customize, next becomes "preview" and the user should be taken to a preview page with all the created viz's.
         history.push(stepPaths[0]);
         return;
@@ -187,7 +184,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
       }
     };
 
-  useUpdateEffect(() => setExpanded(props.openPanel || 0), [props.openPanel]);
+  useUpdateEffect(() => setExpanded(props.openPanel ?? 0), [props.openPanel]);
 
   return (
     <div>
@@ -358,18 +355,17 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
             <ChartToolBoxFilters filterOptionGroups={filterOptionGroups} />
           </AccordionDetails>
         </Accordion>
-
         <Accordion
           square
-          expanded={expanded === 5 && !collapsed}
+          expanded={expanded === 5}
           onChange={handleChange(6)}
           css={`
             border-bottom: 1px solid #c0c7d2;
           `}
         >
           <AccordionSummary
-            id="step6-header"
-            aria-controls="step6-content"
+            id="step5-header"
+            aria-controls="step5-content"
             expandIcon={<ArrowDropDownSharp htmlColor="#262C34" />}
           >
             <div>5</div> Customize

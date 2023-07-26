@@ -3,14 +3,10 @@
 import React from "react";
 import Providers from "app/Providers";
 import { MainRoutes } from "app/Routes";
-import { initDB } from "react-indexed-db";
-import { DBConfig } from "app/utils/DBConfig";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import { MobileBottomNavigation } from "app/components/Mobile/BottomNavigation";
 import { AppDialogs } from "app/components/Dialogs";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { CookieDialog } from "app/components/Dialogs/CookieDialog";
-
-initDB(DBConfig);
+import { MobileBottomNavigation } from "app/components/Mobile/BottomNavigation";
 
 export function App() {
   const isMobile = useMediaQuery("(max-width: 767px)");
@@ -19,7 +15,6 @@ export function App() {
     <Providers>
       <AppDialogs />
       <CookieDialog open data-testid="cookie-dialog" />
-
       <MainRoutes />
       {isMobile && <MobileBottomNavigation />}
     </Providers>
