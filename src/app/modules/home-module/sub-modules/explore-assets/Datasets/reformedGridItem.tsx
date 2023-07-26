@@ -60,7 +60,8 @@ export default function ReformedGridItem(props: Props) {
         >
           <p
             css={`
-              margin-top: 0;
+                        margin-top: -5px;
+
               font-size: 18px
               line-height: 22px;
               font-family: 'Gotham Narrow', sans-serif;
@@ -89,8 +90,14 @@ export default function ReformedGridItem(props: Props) {
         {props.showMenu && (
           <IconButton
             css={`
-              padding: 0;
-              margin-top: 5px;
+              position: absolute;
+              right: -2px;
+              top: 0px;
+              cursor: pointer;
+
+              &:hover {
+                background: transparent;
+              }
             `}
             onClick={showMenuOptions}
           >
@@ -110,8 +117,8 @@ export default function ReformedGridItem(props: Props) {
           css={`
             margin-top: 8px;
             svg {
-              width: 80.794px;
-              height: 80.794px;
+              width: 119.084px;
+              height: 69.761px;
             }
           `}
         >

@@ -271,7 +271,6 @@ export function AppBar() {
 }
 
 const ActionMenu = () => {
-  const [displayMenu, setDisplayMenu] = React.useState(false);
   const [actionPopoverAnchorEl, setActionPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
   const openActionPopover = Boolean(actionPopoverAnchorEl);

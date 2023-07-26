@@ -31,7 +31,6 @@ export default function ReformedGridItem(props: Props) {
     <Link
       to={`/chart/${props.id}`}
       css={`
-        /* width: 100%; */
         width: 296px;
         height: 161.59px;
         display: flex;
@@ -63,12 +62,12 @@ export default function ReformedGridItem(props: Props) {
         <div
           css={`
             width: 90%;
-            margin-top: -7px;
+            margin-top: -9px;
           `}
         >
           <p
             css={`
-              font-size: 18px;
+              font-size: 14px;
               font-family: "Gotham Narrow Bold", sans-serif;
               margin-top: 6px;
               overflow: hidden;
@@ -82,9 +81,13 @@ export default function ReformedGridItem(props: Props) {
         </div>
         <IconButton
           css={`
-            margin: -9px -13px 0 0;
-
-            margin-top: 5px;
+            position: absolute;
+            right: -2px;
+            top: 0px;
+            cursor: pointer;
+            &:hover {
+              background: transparent;
+            }
           `}
           onClick={showMenuOptions}
         >
@@ -102,10 +105,10 @@ export default function ReformedGridItem(props: Props) {
         <div
           css={`
             margin-top: 2px;
-            svg {
+            /* svg {
               width: 80.794px;
               height: 80.794px;
-            }
+            } */
           `}
         >
           {props.viz}

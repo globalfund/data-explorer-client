@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
 import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
@@ -23,19 +23,21 @@ interface Props {
 
 export default function ReformedGridItem(props: Props) {
   const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
-
+  const history = useHistory();
   const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+    // e.preventDefault();
+    // e.stopPropagation();
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
 
   return (
-    <Link
-      to={`/report/${props.id}`}
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        history.push(`/report/${props.id}`);
+      }}
       css={`
         width: 100%;
-        /* width: 296px; */
         height: 161.588px;
         display: flex;
         color: #262c34;
@@ -76,7 +78,8 @@ export default function ReformedGridItem(props: Props) {
               font-size: 18px;
               line-height: 22px;
               font-family: "Gotham Narrow Bold", sans-serif;
-              margin-top: 8px;
+              margin-top: 2px;
+
               overflow: hidden;
               text-overflow: ellipsis;
               white-space: nowrap;
@@ -104,7 +107,11 @@ export default function ReformedGridItem(props: Props) {
         </div>
         <IconButton
           css={`
-            margin: -9px -13px 0 0;
+            position: absolute;
+            right: -2px;
+            top: 0px;
+            cursor: pointer;
+
             &:hover {
               background: transparent;
             }
@@ -229,6 +236,6 @@ export default function ReformedGridItem(props: Props) {
           </div>
         </div>
       )}
-    </Link>
+    </div>
   );
 }
