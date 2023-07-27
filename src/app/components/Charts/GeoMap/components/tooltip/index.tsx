@@ -12,7 +12,7 @@ import {
 
 export function GeomapTooltip(props: GeomapTooltipProps) {
   const cmsData = useCMSData({ returnData: true });
-  console.log(cmsData, "cms");
+
   return (
     <div
       css={`
