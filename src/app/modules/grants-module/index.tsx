@@ -120,22 +120,13 @@ export default function GrantsModule(props: GrantsModuleProps) {
   };
 
   React.useEffect(() => {
-    setTimeout(() => {
-      if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, {
-          name: "Grant Implementation: Grants",
-        })
-      ) {
-        setDataPathSteps([
-          {
-            name: "Grant Implementation: Grants",
-            path: location.pathname,
-            id: "grants",
-          },
-        ]);
-      }
-    }, 500);
+    setDataPathSteps([
+      {
+        name: "Grant Implementation: Grants",
+        path: location.pathname,
+        id: "grants",
+      },
+    ]);
   }, []);
 
   useEffectOnce(() => {

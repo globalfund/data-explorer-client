@@ -13,8 +13,10 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 
-export function GrantDetailOverviewModule() {
+export function GrantDetailOverviewModule(props: { period: string }) {
+  const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
+
   const isLoading = useStoreState((state) => state.GrantDetailInfo.loading);
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
@@ -34,14 +36,8 @@ export function GrantDetailOverviewModule() {
         name: "",
         email: "",
       },
-      principalRecipient: {
-        code: "",
-        name: "",
-        shortName: "",
-      },
     })
   );
-  const cmsData = useCMSData({ returnData: true });
 
   if (isLoading) {
     return <PageLoader />;
