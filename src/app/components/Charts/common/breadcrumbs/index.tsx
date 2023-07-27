@@ -82,6 +82,9 @@ export default function BreadCrumbs() {
             padding-left: 24px;
             padding-right: 24px;
           }
+          @media (max-width: 600px) {
+            padding-left: 12px;
+          }
         `}
       >
         {[
