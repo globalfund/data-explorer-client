@@ -1,11 +1,12 @@
-import { Modal, createStyles, makeStyles } from "@material-ui/core";
 import React from "react";
+import { Modal, createStyles, makeStyles } from "@material-ui/core";
 
 interface Props {
-  cardId?: number;
+  cardId?: string;
   modalType: string;
-  handleDuplicate: (id: number) => void;
+  duplicateName: string;
   setModalType: (value: any) => void;
+  handleDuplicate: (id?: string) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -27,23 +28,24 @@ export const useStyles = makeStyles(() =>
     },
   })
 );
+
 export default function DuplicateChartDialog(props: Props) {
   const classes = useStyles();
 
   return (
     <Modal
-      open={props.modalType === "duplicate"}
       className={classes.modal}
+      open={props.modalType === "duplicate"}
       onClose={() => props.setModalType("")}
     >
       <div className={classes.paper}>
         <div
           css={`
-            width: calc(52vw - 434px);
+            width: 434px;
             height: 324px;
             padding: 24px;
-            border-radius: 16px;
             position: relative;
+            border-radius: 16px;
           `}
         >
           <p
@@ -67,18 +69,17 @@ export default function DuplicateChartDialog(props: Props) {
               line-height: 20px;
             `}
           >
-            Duplicate your Charts <br />
+            Duplicate your charts <br />
             and create multiple variants
           </p>
           <p
             css={`
-              font-size: 14px;
-              font-family: "Gotham Narrow", sans-serif;
-              font-weight: 325;
-              line-height: 16.6px;
-
-              color: #b6b6b6;
               width: 90%;
+              color: #b6b6b6;
+              font-size: 14px;
+              font-weight: 400;
+              line-height: 16.6px;
+              font-family: "Gotham Narrow", sans-serif;
             `}
           >
             This chart will be duplicated in your library, please introduce a
@@ -92,7 +93,8 @@ export default function DuplicateChartDialog(props: Props) {
           <div>
             <input
               type="text"
-              placeholder="Chart 1 (Copy)"
+              value={props.duplicateName}
+              placeholder={props.duplicateName}
               onChange={props.handleInputChange}
               css={`
                 border-radius: 16px;
@@ -123,6 +125,7 @@ export default function DuplicateChartDialog(props: Props) {
                 font-family: "Inter", sans-serif;
                 font-weight: 600;
                 cursor: pointer;
+                letter-spacing: 1px;
               }
             `}
           >
@@ -140,7 +143,7 @@ export default function DuplicateChartDialog(props: Props) {
             </button>
             <button
               type="button"
-              onClick={() => props.handleDuplicate(props.cardId as number)}
+              onClick={() => props.handleDuplicate(props.cardId)}
               css={`
                 background: #262c34;
                 border-radius: 8px;

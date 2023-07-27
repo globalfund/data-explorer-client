@@ -58,7 +58,11 @@ export default function ReportsOverviewModule() {
             },
           ]}
         />
-        <ReportsGrid tableView={tableView} />
+        <ReportsGrid
+          tableView={tableView}
+          searchValue={searchValue}
+          sortValue={sortValue}
+        />
       </div>
     </div>
   );

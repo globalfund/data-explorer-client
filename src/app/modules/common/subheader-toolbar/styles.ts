@@ -62,7 +62,7 @@ export const styles = {
 
     * {
       margin: 0;
-      color: #fff;
+      color: #262c34;
       font-size: 14px;
     }
 
@@ -90,7 +90,7 @@ export const styles = {
         margin-right: 10px;
 
         path {
-          fill: #fff;
+          fill: #262c34;
         }
       }
     }

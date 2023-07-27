@@ -1,12 +1,12 @@
-import { Modal, createStyles, makeStyles } from "@material-ui/core";
 import React from "react";
+import { Modal, createStyles, makeStyles } from "@material-ui/core";
 
 interface Props {
-  cardId?: number;
+  cardId?: string;
   modalType: string;
-  enableButton: boolean;
-  handleDuplicate: (id: number) => void;
+  duplicateName: string;
   setModalType: (value: any) => void;
+  handleDuplicate: (id?: string) => void;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -28,6 +28,7 @@ export const useStyles = makeStyles(() =>
     },
   })
 );
+
 export default function DuplicateReportDialog(props: Props) {
   const classes = useStyles();
 
@@ -40,60 +41,61 @@ export default function DuplicateReportDialog(props: Props) {
       <div className={classes.paper}>
         <div
           css={`
-            width: calc(52vw - 434px);
+            width: 434px;
             height: 324px;
             padding: 24px;
-            border-radius: 16px;
+            display: flex;
             position: relative;
+            border-radius: 16px;
+            flex-direction: column;
+            justify-content: space-between;
           `}
         >
-          <p
-            css={`
-              font-size: 24px;
-              font-family: "Inter", sans-serif;
-              font-weight: 700;
-              color: #262c34;
-              margin-bottom: 0px;
-              margin-top: 0px;
-            `}
-          >
-            Duplicate Report
-          </p>
-          <p
-            css={`
-              font-size: 14px;
-              font-family: "Inter", sans-serif;
-              color: #262c34;
-              font-weight: 700;
-              line-height: 20px;
-            `}
-          >
-            Duplicate your reports <br />
-            and create multiple variants
-          </p>
-          <p
-            css={`
-              font-size: 14px;
-              font-family: "Gotham Narrow", sans-serif;
-              font-weight: 325;
-              line-height: 16.6px;
+          <div>
+            <p
+              css={`
+                font-size: 24px;
+                font-family: "Inter", sans-serif;
+                font-weight: 700;
+                color: #262c34;
+                margin-bottom: 0px;
+                margin-top: 0px;
+              `}
+            >
+              Duplicate Report
+            </p>
+            <p
+              css={`
+                font-size: 14px;
+                font-family: "Inter", sans-serif;
+                color: #262c34;
+                font-weight: 700;
+                line-height: 20px;
+              `}
+            >
+              Duplicate your reports <br />
+              and create multiple variants
+            </p>
+            <p
+              css={`
+                font-size: 14px;
+                font-family: "Gotham Narrow", sans-serif;
+                font-weight: 325;
+                line-height: 16.6px;
 
-              color: #b6b6b6;
-              width: 90%;
-            `}
-          >
-            This report will be duplicated in your library, please introduce a
-            name for the new report.
-          </p>
-          <div
-            css={`
-              height: 45px;
-            `}
-          />
+                color: #b6b6b6;
+                width: 90%;
+              `}
+            >
+              This report will be duplicated in your library, please introduce a
+              name for the new report.
+            </p>
+          </div>
           <div>
             <input
               type="text"
-              placeholder="My Finance Report 2020 (Copy)"
+              value={props.duplicateName}
+              placeholder={props.duplicateName}
               onChange={props.handleInputChange}
               css={`
                 border-radius: 16px;
@@ -141,10 +143,9 @@ export default function DuplicateReportDialog(props: Props) {
             </button>
             <button
               type="button"
-              onClick={() => props.handleDuplicate(props.cardId as number)}
-              disabled={!props.enableButton}
+              onClick={() => props.handleDuplicate(props.cardId)}
               css={`
-                background: ${props.enableButton ? "#FA7355" : "#262C34"};
+                background: #262c34;
                 border-radius: 8px;
                 width: 108px;
                 height: 32.59px;

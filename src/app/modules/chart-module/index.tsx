@@ -272,6 +272,14 @@ export default function ChartModule() {
   }, []);
 
   React.useEffect(() => {
+    if (!view && toolboxOpen) {
+      setToolboxOpen(false);
+    } else if (view && !toolboxOpen) {
+      setToolboxOpen(true);
+    }
+  }, [view]);
+
+  React.useEffect(() => {
     if (!loading && chartType) {
       setVisualOptionsOnChange();
     }

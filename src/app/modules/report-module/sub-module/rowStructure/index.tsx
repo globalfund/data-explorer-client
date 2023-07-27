@@ -91,7 +91,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       );
       setModalButtonTitle("Delete");
     } else if (modalType === "edit-row") {
-      setModalTitle("Edit row frame");
+      setModalTitle("Edit row frame?");
       setModalSubtitle(
         <>
           <p>
@@ -358,7 +358,7 @@ const Box = (props: {
       modalType: "",
     });
   const [modalContent, setModalContent] = React.useState({
-    buttonTitle: "delete",
+    buttonTitle: "Delete",
     description: `Current ${displayDeleteElementModal.type} will be deleted from this placeholder. 
   Drag and drop your new ${displayDeleteElementModal.type}  in the empty placeholder to complete your report.`,
     subtitle: `Delete ${displayDeleteElementModal.type} from this 
@@ -384,7 +384,7 @@ const Box = (props: {
       });
     } else {
       setModalContent({
-        buttonTitle: "delete",
+        buttonTitle: "Delete",
         description: `Current ${displayDeleteElementModal.type} will be deleted from this placeholder. 
       Drag and drop your new ${displayDeleteElementModal.type}  in the empty placeholder to complete your report.`,
         subtitle: `Delete ${displayDeleteElementModal.type} from this 

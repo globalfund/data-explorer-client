@@ -12,6 +12,11 @@ import { Grid } from "@material-ui/core";
 import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
 
 export function ChartToolBoxChartType() {
+  const [searchValue, setSearchValue] = React.useState("");
+  const [chartTypeOptions, setChartTypeOptions] = React.useState(
+    echartTypes(false)
+  );
+
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
   const setChartType = useStoreActions(
@@ -20,10 +25,27 @@ export function ChartToolBoxChartType() {
   const clearMapping = useStoreActions(
     (actions) => actions.charts.mapping.reset
   );
+
   const onChartTypeChange = (chartTypeId: string) => () => {
     clearMapping();
     setChartType(chartType === chartTypeId ? null : chartTypeId);
   };
+
+  const onSearchValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  React.useEffect(() => {
+    if (searchValue === "") {
+      setChartTypeOptions(echartTypes(false));
+    } else {
+      setChartTypeOptions(
+        echartTypes(false).filter((ct) =>
+          ct.label.toLowerCase().includes(searchValue.toLowerCase())
+        )
+      );
+    }
+  }, [searchValue]);
 
   return (
     <div
@@ -33,7 +55,6 @@ export function ChartToolBoxChartType() {
       `}
     >
       <ToolboxSubHeader name="Chart type" level={2} />
-
       <div
         css={`
           width: 90%;
@@ -60,11 +81,11 @@ export function ChartToolBoxChartType() {
             }
           `}
         >
-          <input type="text" />
+          <input type="text" onChange={onSearchValueChange} />
           <SearchIcon />
         </div>
         <Grid container item spacing={2} direction="column">
-          {echartTypes(false).map((ct: ChartTypeModel) => (
+          {chartTypeOptions.map((ct: ChartTypeModel) => (
             <Grid item xs={12} sm={12} md={12} key={ct.id}>
               <div
                 css={`

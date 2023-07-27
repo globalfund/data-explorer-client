@@ -125,7 +125,6 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
   const handleSave = () => {
     if (!isEmpty(props.mappedData)) {
       props.save();
-
       setSaveModalContent({
         title: "Chart saved!",
         description:
@@ -219,6 +218,7 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
           display: flex;
           gap: 8px;
           height: 55px;
+          align-items: center;
           justify-content: center;
 
           background: #f5f5f7;

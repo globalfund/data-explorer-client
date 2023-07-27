@@ -1,4 +1,5 @@
 import React from "react";
+import moment from "moment";
 import find from "lodash/find";
 import { useDrag } from "react-dnd";
 import { useRecoilState } from "recoil";
@@ -139,75 +140,8 @@ interface Props {
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   framesArray: IFramesArray[];
   reportName: string;
+  onSave: () => void;
 }
-
-const dummyChartList = [
-  {
-    id: "",
-
-    name: "Allocation Viz",
-    description: "Allocations amounts for countries by disease",
-    dataset: "Budgets",
-    chartType: "Doughnut",
-    createdDate: "10/10/2022",
-    editedDate: "25/03/2023",
-    vizType: "echartsBarchart",
-    datasetId: "chart.datasetId",
-    pickedCharts: [],
-  },
-  {
-    id: "",
-
-    name: "Sales Overview",
-    description: "Sales performance overview",
-    dataset: "Sales Data",
-    chartType: "Bar",
-    createdDate: "15/11/2022",
-    editedDate: "20/04/2023",
-    vizType: "echartsBarchart",
-    datasetId: "chart.datasetId",
-    pickedCharts: [],
-  },
-  {
-    id: "",
-
-    name: "User Activity",
-    description: "User activity on the website",
-    dataset: "User Data",
-    chartType: "Line",
-    createdDate: "05/09/2022",
-    editedDate: "12/02/2023",
-    vizType: "echartsBarchart",
-    datasetId: "chart.datasetId",
-    pickedCharts: [],
-  },
-  {
-    id: "",
-
-    name: "Product Inventory",
-    description: "Inventory status of products",
-    dataset: "Inventory Data",
-    chartType: "Pie",
-    createdDate: "30/07/2022",
-    editedDate: "05/01/2023",
-    vizType: "echartsBarchart",
-    datasetId: "chart.datasetId",
-    pickedCharts: [],
-  },
-  {
-    id: "",
-
-    name: "Expense Breakdown",
-    description: "Breakdown of expenses by category",
-    dataset: "Expense Data",
-    chartType: "Area",
-    createdDate: "20/12/2022",
-    editedDate: "10/03/2023",
-    vizType: "echartsBarchart",
-    datasetId: "chart.datasetId",
-    pickedCharts: [],
-  },
-];
 
 export function ReportRightPanelCreateView(props: Props) {
   const [currentView, setCurrentView] = useRecoilState(
@@ -622,8 +556,8 @@ export function ReportRightPanelCreateView(props: Props) {
           }
         `}
       >
-        <button>Cancel </button>
-        <button>Save</button>
+        <button>Cancel</button>
+        <button onClick={props.onSave}>Save</button>
       </div>
     </>
   );
@@ -790,9 +724,8 @@ function ReportRightPanelCreateViewChartList(props: {
             name={chart.name}
             description={chart.description}
             dataset={chart.dataset}
-            chartType={chart.chartType}
             createdDate={chart.createdDate}
-            editedDate={chart.editedDate}
+            editedDate={chart.updatedDate}
             vizType={chart.vizType}
             datasetId={chart.datasetId}
             pickedCharts={props.pickedCharts}
@@ -856,12 +789,30 @@ function ElementItem(props: {
   );
 }
 
+export const getFormattedType = (vizType: string) => {
+  switch (vizType) {
+    case "bigNumber":
+      return "Big Number";
+    case "echartsBarchart":
+      return "Bar Chart";
+    case "echartsLinechart":
+      return "Line Chart";
+    case "echartsGeomap":
+      return "Geo Map";
+    case "echartsSankey":
+      return "Sankey";
+    case "echartsTreemap":
+      return "Tree Map";
+    default:
+      return vizType;
+  }
+};
+
 function ChartItem(props: {
   id: string;
   name: string;
   description: string;
   dataset: string;
-  chartType: string;
   vizType: string;
   datasetId: string;
   elementType: string;
@@ -985,16 +936,22 @@ function ChartItem(props: {
           `}
         >
           <div>
-            <p>Dataset - {props.dataset}</p>
-            <p>Chart type -{props.chartType}</p>
+            <p
+              css={`
+                text-transform: capitalize;
+              `}
+            >
+              Dataset - {props.datasetId.split("-").join(" - ")}
+            </p>
+            <p>Chart type - {getFormattedType(props.vizType)}</p>
           </div>
           <div
             css={`
               text-align: right;
             `}
           >
-            <p>Creation date - {props.createdDate}</p>
-            <p>Last edited - {props.editedDate}</p>
+            <p>Creation date - {moment(props.createdDate).format("L")}</p>
+            <p>Last edited - {moment(props.editedDate).format("L")}</p>
           </div>
         </div>
       </div>

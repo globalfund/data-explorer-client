@@ -43,64 +43,61 @@ export default function ReportActionDialog(props: Props) {
       <div className={classes.paper}>
         <div
           css={`
-            width: calc(52vw - 434px);
+            width: 434px;
             height: 324px;
             padding: 24px;
-            border-radius: 16px;
+            display: flex;
             position: relative;
+            border-radius: 16px;
+            flex-direction: column;
+            justify-content: space-between;
           `}
         >
-          <p
-            css={`
-              font-size: 24px;
-              font-family: "Inter", sans-serif;
-              font-weight: 700;
-              color: #262c34;
-              margin-bottom: 0px;
-              margin-top: 0px;
-            `}
-          >
-            {props.title}
-          </p>
-          <p
-            css={`
-              font-size: 14px;
-              font-family: "Inter", sans-serif;
-              color: #262c34;
-              font-weight: 700;
-              line-height: 20px;
-              width: 65%;
-            `}
-          >
-            {props.subtitle}
-          </p>
-          <p
-            css={`
-              font-size: 14px;
-              font-family: "Gotham Narrow", sans-serif;
-              font-weight: 325;
-              line-height: 16.6px;
-
-              color: #b6b6b6;
-              width: 90%;
-              margin-top: 19px;
-            `}
-          >
-            {props.description}
-          </p>
-
+          <div>
+            <p
+              css={`
+                font-size: 24px;
+                font-family: "Inter", sans-serif;
+                font-weight: 700;
+                color: #262c34;
+                margin-bottom: 0px;
+                margin-top: 0px;
+              `}
+            >
+              {props.title}
+            </p>
+            <p
+              css={`
+                font-size: 14px;
+                font-family: "Inter", sans-serif;
+                color: #262c34;
+                font-weight: 700;
+                line-height: 20px;
+                width: 65%;
+              `}
+            >
+              {props.subtitle}
+            </p>
+            <p
+              css={`
+                width: 90%;
+                font-size: 14px;
+                color: #b6b6b6;
+                font-family: "Gotham Narrow", sans-serif;
+                font-weight: 325;
+                line-height: 16.6px;
+                margin-top: 20px;
+              `}
+            >
+              {props.description}
+            </p>
+          </div>
           <div
             css={`
-              height: 70px;
-            `}
-          />
-          <div
-            css={`
+              gap: 13px;
               display: flex;
               justify-content: flex-end;
-              margin-top: 20px;
-              gap: 13px;
-              padding-right: 1rem;
+
               button {
                 font-size: 14px;
                 font-family: "Inter", sans-serif;
@@ -117,6 +114,7 @@ export default function ReportActionDialog(props: Props) {
                 outline: none;
                 border: none;
                 color: #252c34;
+                letter-spacing: 1px;
               `}
             >
               Cancel
@@ -138,6 +136,7 @@ export default function ReportActionDialog(props: Props) {
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                letter-spacing: 1px;
               `}
             >
               {props.buttonTitle}

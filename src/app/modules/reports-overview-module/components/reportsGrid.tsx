@@ -1,55 +1,152 @@
-import { Grid } from "@material-ui/core";
 import React from "react";
-import { dummyReportsdata } from "../data";
-import { ReportsTable } from "./Table";
-import { GridItem } from "./gridItem";
+import axios from "axios";
+import find from "lodash/find";
+import Grid from "@material-ui/core/Grid";
+import useDebounce from "react-use/lib/useDebounce";
+import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
+import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import DuplicateReportDialog from "app/components/Dialogs/duplicateReportDialog";
-import { v4 } from "uuid";
+import { GridItem } from "app/modules/reports-overview-module/components/gridItem";
+import { ReportsTable } from "app/modules/reports-overview-module/components/Table";
 
-export default function ReportsGrid(props: { tableView: boolean }) {
-  const [cardId, setCardId] = React.useState<number>(0);
-  const [modalType, setModalType] = React.useState<string>("");
-  const [enableButton, setEnableButton] = React.useState<boolean>(false);
-  const [tableData, setTableData] = React.useState(
-    dummyReportsdata.map((data) => {
-      return {
-        ...data,
-        title: data.title.__html,
-        name: data.title.__html,
-        description: data.description.__html,
-        createdDate: new Date(),
-        id: v4(),
-        menuOptionsDisplay: false,
-      };
-    })
+interface Props {
+  sortValue: string;
+  tableView: boolean;
+  searchValue: string;
+}
+
+export default function ReportsGrid(props: Props) {
+  const [cardId, setCardId] = React.useState("");
+  const [modalType, setModalType] = React.useState("");
+  const [reportName, setReportName] = React.useState("");
+  const [duplicateName, setDuplicateName] = React.useState("");
+  const [tableData, setTableData] = React.useState<
+    {
+      id: string;
+      name: string;
+      title: string;
+      createdDate: Date;
+      description: string;
+      menuOptionsDisplay: boolean;
+      handleModal: (type: string) => void;
+    }[]
+  >([]);
+
+  const reports = useStoreState(
+    (state) => (state.reports.ReportGetList.crudData ?? []) as any[]
   );
-  const handleModal = (id?: number) => {
-    setCardId(id as number);
+
+  const loadReports = useStoreActions(
+    (actions) => actions.reports.ReportGetList.fetch
+  );
+
+  const getIcon = (vizType: string) => {
+    const type = find(echartTypes(false), { id: vizType });
+    if (type) {
+      return type.icon;
+    }
+    return echartTypes(false)[0].icon;
   };
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value === "DELETE") {
-      setEnableButton(true);
-    } else {
-      setEnableButton(false);
+
+  function loadData(searchStr: string, sortByStr: string) {
+    const value =
+      searchStr.length > 0
+        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+        : "";
+    loadReports({
+      storeInCrudData: true,
+      filterString: `filter={${value}"order":"${sortByStr} desc"}`,
+    });
+  }
+
+  const handleModal = (id?: string, name?: string, type?: string) => {
+    if (id) {
+      setCardId(id);
+      if (name) {
+        if (type === "delete") {
+          setReportName(name);
+        } else {
+          setReportName(`${name} (Copy)}`);
+          setDuplicateName(`${name} (Copy)`);
+        }
+      }
     }
   };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDuplicateName(e.target.value);
+  };
+
   const handleDelete = () => {
     setModalType("");
-    setEnableButton(false);
+    setCardId("");
+    axios
+      .delete(`${process.env.REACT_APP_API}/chart/${cardId}`)
+      .then(() => {
+        loadReports({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
+      })
+      .catch((error) => console.log(error));
   };
+
+  const handleDuplicate = () => {
+    setModalType("");
+    setCardId("");
+    axios
+      .get(
+        `${process.env.REACT_APP_API}/report/duplicate/${cardId}/${duplicateName}`
+      )
+      .then(() => {
+        loadReports({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
   React.useEffect(() => {
-    document.body.style.background = "white";
+    document.body.style.background = "#fff";
+    loadData(props.searchValue, props.sortValue);
     return () => {
       document.body.style.background = "#f5f5f7";
     };
   }, []);
 
+  React.useEffect(() => {
+    setTableData(
+      reports.map((report) => {
+        return {
+          id: report.id,
+          name: report.name,
+          title: report.name,
+          menuOptionsDisplay: false,
+          description: report.description,
+          createdDate: report.createdDate,
+          updatedDate: report.updatedDate,
+          handleModal: (type: string) =>
+            handleModal(report.id, report.name, type),
+        };
+      })
+    );
+  }, [reports]);
+
+  const [,] = useDebounce(
+    () => {
+      loadData(props.searchValue, props.sortValue);
+    },
+    500,
+    [props.searchValue, props.sortValue]
+  );
+
   return (
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
-          {dummyReportsdata.map((data, index: number) => (
+          {reports.map((data, index: number) => (
             <Grid
               item
               xs={12}
@@ -59,13 +156,20 @@ export default function ReportsGrid(props: { tableView: boolean }) {
               key={`${data.link + index}`}
             >
               <GridItem
-                description={data.description}
-                link={data.link}
-                title={data.title}
-                iconLinks={data.iconLinks}
-                handleModal={() => handleModal(index)}
+                id={data.id}
+                description={data.name}
+                link={`/report/${data.id}`}
                 setModalType={setModalType}
-                id=""
+                updatedDate={data.updatedDate}
+                title={data.title.length === 0 ? data.name : data.title}
+                icons={data.chartTypes.map((type: string) => getIcon(type))}
+                handleModal={(type: string) =>
+                  handleModal(
+                    data.id,
+                    data.title.length === 0 ? data.name : data.title,
+                    type
+                  )
+                }
               />
             </Grid>
           ))}
@@ -73,31 +177,24 @@ export default function ReportsGrid(props: { tableView: boolean }) {
       )}
       {props.tableView && (
         <ReportsTable
-          setModalType={setModalType}
-          handleModal={handleModal}
+          data={tableData}
           setTableData={setTableData}
-          data={tableData.map((data) => ({
-            id: data.id,
-            name: data.name,
-            description: data.description,
-            createdDate: data.createdDate,
-            menuOptionsDisplay: data.menuOptionsDisplay,
-          }))}
+          setModalType={setModalType}
         />
       )}
       <DeleteReportDialog
         cardId={cardId}
         modalType={modalType}
+        reportName={reportName}
         setModalType={setModalType}
         handleDelete={handleDelete}
-        handleInputChange={handleInputChange}
       />
       <DuplicateReportDialog
         cardId={cardId}
         modalType={modalType}
         setModalType={setModalType}
-        enableButton={enableButton}
-        handleDuplicate={() => {}}
+        duplicateName={duplicateName}
+        handleDuplicate={handleDuplicate}
         handleInputChange={handleInputChange}
       />
     </>

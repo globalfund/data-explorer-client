@@ -138,7 +138,6 @@ input[type="text"] {
   -webkit-appearance: none;
 }
 
-.re-resizeable{
+.re-resizeable {
   flex-shrink: 1 !important;
-  
 }

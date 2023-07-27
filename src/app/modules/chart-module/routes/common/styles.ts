@@ -20,7 +20,6 @@ export const styles = {
     max-width: 1280px;
     position: relative;
     align-self: flex-start;
-    width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
 
     ${isEditMode &&
     `

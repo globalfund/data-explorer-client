@@ -2,11 +2,11 @@ import React from "react";
 import { createStyles, makeStyles, Modal } from "@material-ui/core";
 
 interface Props {
-  cardId?: number;
+  cardId?: string;
   modalType: string;
-  handleDelete: (id: number) => void;
+  chartName: string;
   setModalType: (value: any) => void;
-  handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleDelete: (id?: string) => void;
 }
 
 export const useStyles = makeStyles(() =>
@@ -33,76 +33,76 @@ export default function DeleteChartDialog(props: Props) {
 
   return (
     <Modal
-      open={props.modalType === "delete"}
       className={classes.modal}
+      open={props.modalType === "delete"}
       onClose={() => props.setModalType("")}
     >
       <div className={classes.paper}>
         <div
           css={`
-            width: calc(52vw - 434px);
-
+            width: 434px;
             height: 324px;
             padding: 24px;
-            border-radius: 16px;
+            display: flex;
             position: relative;
+            border-radius: 16px;
+            flex-direction: column;
+            justify-content: space-between;
           `}
         >
-          <p
-            css={`
-              font-size: 24px;
-              font-family: "Inter", sans-serif;
-              font-weight: 700;
-              color: #262c34;
-              margin-bottom: 0px;
-              margin-top: 0px;
-            `}
-          >
-            Delete Chart?
-          </p>
-          <p
-            css={`
-              font-size: 14px;
-              font-family: "Inter", sans-serif;
-              color: #262c34;
-              font-weight: 700;
-              line-height: 20px;
-            `}
-          >
-            Proceed with caution! <br />
-            No turning back after this action
-          </p>
-          <p
-            css={`
-              font-size: 14px;
-              font-family: "Gotham Narrow", sans-serif;
-              font-weight: 325;
-              line-height: 16.6px;
-
-              color: #b6b6b6;
-              width: 90%;
-            `}
-          >
-            Are you sure you want to delete your chart, [Name]? Please keep in
-            mind that once deleted, you won't be able to access it again.
-          </p>
-          <div
-            css={`
-              height: 70px;
-            `}
-          />
-
-          <div
-            css={`
-              display: flex;
-              justify-content: flex-end;
-              margin-top: 20px;
-              gap: 13px;
-              button {
+          <div>
+            <p
+              css={`
+                font-size: 24px;
+                font-family: "Inter", sans-serif;
+                font-weight: 700;
+                color: #262c34;
+                margin-bottom: 0px;
+                margin-top: 0px;
+              `}
+            >
+              Delete Chart?
+            </p>
+            <p
+              css={`
                 font-size: 14px;
                 font-family: "Inter", sans-serif;
-                font-weight: 600;
+                color: #262c34;
+                font-weight: 700;
+                line-height: 20px;
+              `}
+            >
+              Proceed with caution! <br />
+              No turning back after this action
+            </p>
+            <p
+              css={`
+                font-size: 14px;
+                font-family: "Gotham Narrow", sans-serif;
+                font-weight: 325;
+                line-height: 16.6px;
+
+                color: #b6b6b6;
+                width: 90%;
+              `}
+            >
+              Are you sure you want to delete your chart, [{props.chartName}]?
+              Please keep in mind that once deleted, you won't be able to access
+              it again.
+            </p>
+          </div>
+          <div
+            css={`
+              gap: 13px;
+              display: flex;
+              justify-content: flex-end;
+
+              button {
+                font-size: 14px;
                 cursor: pointer;
+                font-weight: 600;
+                letter-spacing: 1px;
+                font-family: "Inter", sans-serif;
               }
             `}
           >
@@ -120,7 +120,7 @@ export default function DeleteChartDialog(props: Props) {
             </button>
             <button
               type="button"
-              onClick={() => props.handleDelete(props.cardId as number)}
+              onClick={() => props.handleDelete(props.cardId)}
               css={`
                 background: #fa7355;
                 border-radius: 8px;

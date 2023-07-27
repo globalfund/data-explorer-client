@@ -25,7 +25,11 @@ export default function MenuOptions(props: Props) {
           height: 100vh;
           position: fixed;
         `}
-        onClick={() => props.showMenuOptions()}
+        onClick={(e: React.MouseEvent<HTMLDivElement>) => {
+          e.preventDefault();
+          e.stopPropagation();
+          props.showMenuOptions();
+        }}
       />
       <div
         css={`
@@ -69,7 +73,9 @@ export default function MenuOptions(props: Props) {
         </div>
         <div>
           <IconButton
-            onClick={() => {
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.preventDefault();
+              e.stopPropagation();
               props.setModalType("duplicate");
               props.handleModal(props.id);
             }}
@@ -79,10 +85,11 @@ export default function MenuOptions(props: Props) {
             </Tooltip>
           </IconButton>
         </div>
-
         <div>
           <IconButton
-            onClick={() => {
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+              e.preventDefault();
+              e.stopPropagation();
               props.setModalType("delete");
               props.handleModal(props.id);
             }}

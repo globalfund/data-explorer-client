@@ -24,4 +24,5 @@ export interface ReportRightPanelProps {
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   framesArray: IFramesArray[];
   reportName: string;
+  onSave: () => void;
 }

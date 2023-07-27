@@ -1,37 +1,31 @@
 import React from "react";
-import axios from "axios";
-import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components/macro";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
+import LinkIcon from "@material-ui/icons/Link";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
 import Divider from "@material-ui/core/Divider";
-import ShareIcon from "@material-ui/icons/Share";
 import Snackbar from "@material-ui/core/Snackbar";
-import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
 import CopyToClipboard from "react-copy-to-clipboard";
-import FileCopyIcon from "@material-ui/icons/FileCopy";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { PageLoader } from "app/modules/common/page-loader";
 import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
+import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { styles } from "app/modules/common/subheader-toolbar/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
-import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
+import { CssSnackbar, ISnackbarState } from "app/components/Styled/snackbar";
 import { SubheaderToolbarProps } from "app/modules/common/subheader-toolbar/data";
 import { ExportChartButton } from "app/modules/common/subheader-toolbar/exportButton";
-import LinkIcon from "@material-ui/icons/Link";
-import CloudDownloadIcon from "@material-ui/icons/CloudDownload";
 import {
   createChartFromReportAtom,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
-import { CssSnackbar, ISnackbarState } from "app/components/Styled/snackbar";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
   && {
@@ -65,12 +59,12 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
 
   & [class*="MuiSnackbarContent-action"] {
     > button {
-      color: #fff;
+      color: #262c34;
       cursor: pointer;
       font-size: 14px;
       border-style: none;
       padding: 12px 27px;
-      background: #262c34;
+      background: #495057;
       border-radius: 20px;
     }
   }
@@ -83,22 +77,15 @@ const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
 export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
-  const [modalDisplay, setModalDisplay] = React.useState({
-    report: "",
-    chart: "",
-  });
-  const [_, setEnableButton] = React.useState<boolean>(false);
 
   const createChartFromReport = useRecoilValue(createChartFromReportAtom);
 
-  const [__, setReportPreviewMode] = useRecoilState(
-    unSavedReportPreviewModeAtom
-  );
+  const setReportPreviewMode = useRecoilState(unSavedReportPreviewModeAtom)[1];
 
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [isPublicTheme, setIsPublicTheme] = React.useState(false);
-  const [isSavedEnabled, ___] = React.useState(false);
-  const [isPreviewEnabled, ____] = React.useState(false);
+  const [isSavedEnabled] = React.useState(false);
+  const [isPreviewEnabled] = React.useState(false);
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
@@ -120,6 +107,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const createChartClear = useStoreActions(
     (actions) => actions.charts.ChartCreate.clear
   );
+
   const editChartClear = useStoreActions(
     (actions) => actions.charts.ChartUpdate.clear
   );
@@ -132,16 +120,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   const onNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     props.setName(event.target.value);
-  };
-
-  const handleDeleteModalInputChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    if (e.target.value === "DELETE") {
-      setEnableButton(true);
-    } else {
-      setEnableButton(false);
-    }
   };
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -169,71 +147,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
-
-  const handleModalDisplay = () => {
-    if (props.pageType === "chart") {
-      setModalDisplay({
-        ...modalDisplay,
-        chart: "delete",
-      });
-    } else {
-      setModalDisplay({
-        ...modalDisplay,
-        report: "delete",
-      });
-    }
-  };
-
-  const handleDelete = () => {
-    setEnableButton(false);
-    if (props.pageType === "report") {
-      setModalDisplay({
-        ...modalDisplay,
-        report: "report",
-      });
-      axios
-        .delete(`${process.env.REACT_APP_API}/report/${page}`)
-        .then(() => {
-          loadReports({
-            storeInCrudData: true,
-            filterString: "filter[order]=createdDate desc",
-          });
-        })
-        .catch((error) => console.log(error));
-    } else {
-      setModalDisplay({
-        ...modalDisplay,
-        chart: "",
-      });
-      axios
-        .delete(`${process.env.REACT_APP_API}/chart/${page}`)
-        .then(() => {
-          loadCharts({
-            storeInCrudData: true,
-            filterString: "filter[order]=createdDate desc",
-          });
-        })
-        .catch((error) => console.log(error));
-    }
-    history.replace("/");
-  };
-
-  const handleDuplicate = () => {
-    if (props.pageType === "report")
-      axios
-        .get(`${process.env.REACT_APP_API}/report/duplicate/${page}`)
-        .then(() => {
-          loadReports({
-            storeInCrudData: true,
-            filterString: "filter[order]=createdDate desc",
-          });
-          setSnackbarState({
-            ...snackbarState,
-            open: true,
-          });
-        })
-        .catch((error) => console.log(error));
-  };
 
   const handleBackToEdit = () => {
     if (props.pageType === "report") {
@@ -282,9 +195,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           horizontal: "left",
         }}
         open={openSnackbar}
+        message="Link copied!"
         autoHideDuration={5000}
         onClose={handleCloseSnackbar}
-        message="Link copied to clipboard"
       />
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
@@ -358,7 +271,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                         </IconButton>
                       </span>
                     </Tooltip>
-
                     <Tooltip title="Download">
                       <span>
                         <IconButton
@@ -381,15 +293,19 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                 )}
                 {page !== "new" && !view && (
                   <React.Fragment>
-                    <ExportChartButton />
-                    <Tooltip title="Duplicate">
-                      <IconButton onClick={handleDuplicate}>
-                        <FileCopyIcon htmlColor="#262c34" />
+                    <Tooltip title="Edit">
+                      <IconButton
+                        component={Link}
+                        to={`/${props.pageType}/${page}/${
+                          props.pageType === "chart" ? "customize" : "edit"
+                        }`}
+                      >
+                        <EditIcon htmlColor="#495057" />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Share">
                       <IconButton onClick={handleClick}>
-                        <ShareIcon htmlColor="#262c34" />
+                        <LinkIcon htmlColor="#495057" />
                       </IconButton>
                     </Tooltip>
                     <Popover
@@ -407,16 +323,16 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                       }}
                       css={`
                         .MuiPaper-root {
+                          background: #fff;
                           border-radius: 10px;
-                          background: #495057;
                         }
                       `}
                     >
                       <div css={styles.sharePopup}>
                         <FormControlLabel
                           value="public-theme"
-                          label="Public theme"
                           labelPlacement="start"
+                          label="Make report public"
                           control={
                             <Switch
                               color="primary"
@@ -430,25 +346,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                           text={window.location.href}
                           onCopy={handleCopy}
                         >
-                          <Button startIcon={<LinkIcon />}>Copy link</Button>
+                          <Button>Copy link</Button>
                         </CopyToClipboard>
                       </div>
                     </Popover>
-                    <Tooltip title="Edit">
-                      <IconButton
-                        component={Link}
-                        to={`/${props.pageType}/${page}/${
-                          props.pageType === "chart" ? "customize" : "edit"
-                        }`}
-                      >
-                        <EditIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
-                    <Tooltip title="Delete">
-                      <IconButton onClick={handleModalDisplay}>
-                        <DeleteIcon htmlColor="#262c34" />
-                      </IconButton>
-                    </Tooltip>
+                    <ExportChartButton />
                   </React.Fragment>
                 )}
               </div>
@@ -465,18 +367,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         onClose={() => setSnackbarState({ ...snackbarState, open: false })}
         message={`Report has been duplicated successfully!`}
         key={snackbarState.vertical + snackbarState.horizontal}
-      />
-      <DeleteReportDialog
-        modalType={modalDisplay.report}
-        handleDelete={handleDelete}
-        setModalType={setModalDisplay}
-        handleInputChange={handleDeleteModalInputChange}
-      />
-      <DeleteChartDialog
-        modalType={modalDisplay.chart}
-        handleDelete={handleDelete}
-        setModalType={setModalDisplay}
-        handleInputChange={handleDeleteModalInputChange}
       />
     </div>
   );

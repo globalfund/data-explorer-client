@@ -95,9 +95,14 @@ export function GridItem(props: Props) {
         <p>{moment(props.createdDate).format("L")}</p>
       </div>
       <IconButton
-        onClick={showMenuOptions}
+        onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+          e.preventDefault();
+          e.stopPropagation();
+          showMenuOptions();
+        }}
         css={`
           top: 16px;
+          z-index: 10;
           right: 10px;
           padding: 4px;
           color: #231d2c;
@@ -108,10 +113,10 @@ export function GridItem(props: Props) {
       </IconButton>
       {menuOptionsDisplay && (
         <MenuOptions
-          setModalType={props.setModalType}
-          showMenuOptions={showMenuOptions}
-          handleModal={props.handleModal}
           id={props.id}
+          setModalType={props.setModalType}
+          handleModal={props.handleModal}
+          showMenuOptions={() => setMenuOptionsDisplay(false)}
         />
       )}
     </Link>

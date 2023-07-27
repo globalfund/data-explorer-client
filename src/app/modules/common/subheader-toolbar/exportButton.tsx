@@ -1,7 +1,7 @@
 import React from "react";
 import Tooltip from "@material-ui/core/Tooltip";
-import SaveAlt from "@material-ui/icons/SaveAlt";
 import { exportPage } from "app/utils/exportPage";
+import Cloud from "@material-ui/icons/CloudDownload";
 import IconButton from "@material-ui/core/IconButton";
 import {
   StyledMenu,
@@ -38,9 +38,9 @@ export function ExportChartButton() {
 
   return (
     <>
-      <Tooltip title="Export">
+      <Tooltip title="Download">
         <IconButton onClick={handleClick}>
-          <SaveAlt htmlColor="#262c34" />
+          <Cloud htmlColor="#495057" />
         </IconButton>
       </Tooltip>
       <StyledMenu

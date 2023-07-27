@@ -1,27 +1,31 @@
 import React from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
+import MenuIcon from "@material-ui/icons/MoreVert";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import IconButton from "@material-ui/core/IconButton";
 import TableContainer from "@material-ui/core/TableContainer";
-import MenuIcon from "@material-ui/icons/MoreVert";
-import { IconButton } from "@material-ui/core";
-import MenuOptions from "./menuOptions";
+import MenuOptions from "app/modules/charts-overview-module/components/menuOptions";
 
-export function ChartsTable(props: {
-  handleModal: (id: number) => void;
-  setModalType: React.Dispatch<React.SetStateAction<string>>;
+interface Props {
   setTableData: (data: any) => void;
+  handleModal: (id?: string) => void;
+  setModalType: React.Dispatch<React.SetStateAction<string>>;
   data: {
     id: string;
     name: string;
     description: string;
     createdDate: Date;
     menuOptionsDisplay: boolean;
+    reports: number;
   }[];
-}) {
+}
+
+export function ChartsTable(props: Props) {
   const handleMenuOptionsDisplay = (id: number) => {
     const newData = props.data.map((data, index: number) => {
       if (index === id) {
@@ -82,7 +86,7 @@ export function ChartsTable(props: {
             <TableCell width="250px">Chart name</TableCell>
             <TableCell width="400px">Chart type</TableCell>
             <TableCell width="200px">Creation date</TableCell>
-            <TableCell width="200px">Creation by</TableCell>
+            <TableCell width="200px">Updated at</TableCell>
             <TableCell width="200px">Reports used</TableCell>
             <TableCell width="550px"></TableCell>
           </TableRow>
@@ -90,12 +94,21 @@ export function ChartsTable(props: {
         <TableBody
           css={`
             background: #fff;
+
+            td {
+              padding-top: 0;
+              padding-bottom: 0;
+            }
           `}
         >
           {props.data.map((data, index) => (
             <TableRow
               key={data.id}
+              component={Link}
+              to={`/chart/${data.id}`}
               css={`
+                text-decoration: none;
+
                 &:hover {
                   cursor: pointer
                   background: #dfe3e5;
@@ -106,17 +119,18 @@ export function ChartsTable(props: {
               <TableCell>{data.name}</TableCell>
               <TableCell>{data.description}</TableCell>
               <TableCell>
-                {moment(data.createdDate).format("MMMM YYYY")}
+                {moment(data.createdDate).format("YYYY-MM-DD")}
               </TableCell>
               <TableCell>
-                {moment(data.createdDate).format("MMMM YYYY")}
+                {moment(data.createdDate).format("YYYY-MM-DD")}
               </TableCell>
-              <TableCell>6</TableCell>
+              <TableCell>{data.reports}</TableCell>
               <TableCell
                 css={`
-                  position: relative;
                   display: flex;
+                  position: relative;
                   justify-content: flex-end;
+
                   button {
                     padding: 4px;
 
@@ -138,24 +152,32 @@ export function ChartsTable(props: {
                       }
                     }
                   }
+
+                  > div {
+                    > div:nth-of-type(2) {
+                      top: 2px;
+                      right: 60px;
+                    }
+                  }
                 `}
               >
-                <IconButton onClick={() => handleMenuOptionsDisplay(index)}>
+                <IconButton
+                  onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleMenuOptionsDisplay(index);
+                  }}
+                >
                   <div>
                     <MenuIcon />
                   </div>
                 </IconButton>
                 {data.menuOptionsDisplay && (
                   <MenuOptions
-                    css={`
-                      top: 25%;
-                      right: 32%;
-                      position: absolute;
-                    `}
-                    setModalType={props.setModalType}
-                    showMenuOptions={() => handleMenuOptionsDisplay(index)}
-                    handleModal={() => props.handleModal(index)}
                     id={data.id}
+                    setModalType={props.setModalType}
+                    handleModal={() => props.handleModal(data.id)}
+                    showMenuOptions={() => handleMenuOptionsDisplay(index)}
                   />
                 )}
               </TableCell>

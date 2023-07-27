@@ -1,18 +1,22 @@
-import { IconButton, Tooltip } from "@material-ui/core";
 import React from "react";
-import DeleteIcon from "@material-ui/icons/Delete";
+import { Link } from "react-router-dom";
 import EditIcon from "@material-ui/icons/Edit";
+import Tooltip from "@material-ui/core/Tooltip";
+import DeleteIcon from "@material-ui/icons/Delete";
+import IconButton from "@material-ui/core/IconButton";
 import { ReactComponent as DuplicateIcon } from "app/modules/reports-overview-module/assets/copy-icon.svg";
 
-export default function MenuOptions(props: {
-  showMenuOptions: (id?: string) => void;
-  setModalType: React.Dispatch<React.SetStateAction<string>>;
-  handleModal: (id: string) => void;
-  menuOptionsDisplay: boolean;
+interface Props {
   id: string;
   top?: string;
   right?: string;
-}) {
+  menuOptionsDisplay: boolean;
+  handleModal: (modalType: string) => void;
+  showMenuOptions: React.MouseEventHandler<HTMLElement>;
+  setModalType: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function MenuOptions(props: Props) {
   return (
     <div>
       <div
@@ -24,7 +28,7 @@ export default function MenuOptions(props: {
           height: 100vh;
           position: fixed;
         `}
-        onClick={() => props.showMenuOptions()}
+        onClick={props.showMenuOptions}
       />
       <div
         css={`
@@ -57,20 +61,26 @@ export default function MenuOptions(props: {
         `}
       >
         <div>
-          <Tooltip title="Edit">
-            <EditIcon
-              color="inherit"
-              css={`
-                margin-top: 4px;
-              `}
-            />
-          </Tooltip>
+          <IconButton>
+            <Tooltip title="Edit">
+              <Link to={`/report/${props.id}/edit`}>
+                <EditIcon
+                  color="inherit"
+                  css={`
+                    margin-top: 4px;
+                  `}
+                />
+              </Link>
+            </Tooltip>
+          </IconButton>
         </div>
         <div>
           <IconButton
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               props.setModalType("duplicate");
-              props.handleModal(props.id);
+              props.handleModal("duplicate");
             }}
           >
             <Tooltip title="Duplicate">
@@ -81,9 +91,11 @@ export default function MenuOptions(props: {
 
         <div>
           <IconButton
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
               props.setModalType("delete");
-              props.handleModal(props.id);
+              props.handleModal("delete");
             }}
           >
             <Tooltip title="Delete">

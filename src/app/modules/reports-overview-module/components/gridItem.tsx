@@ -1,76 +1,87 @@
-import { useState } from "react";
+import React from "react";
+import moment from "moment";
 import { appColors } from "app/theme";
 import { Link } from "react-router-dom";
+import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
-import { IconButton } from "@material-ui/core";
-import MenuOptions from "./menuOptions";
+import MenuOptions from "app/modules/reports-overview-module/components/menuOptions";
 
-export function GridItem(props: {
-  link: string;
-  handleModal: (id: string) => void;
-  setModalType: React.Dispatch<React.SetStateAction<string>>;
+interface Props {
   id: string;
-  title: { __html: any };
-  description: { __html: any };
-  iconLinks?: {
-    link: string;
-    icon: React.ReactElement;
-  }[];
-}) {
-  const [menuOptionsDisplay, setMenuOptionsDisplay] = useState(false);
+  link: string;
+  title: string;
+  updatedDate: Date;
+  description: string;
+  icons: React.ReactElement[];
+  handleModal: (modalType: string) => void;
+  setModalType: React.Dispatch<React.SetStateAction<string>>;
+}
 
-  const showMenuOptions = () => {
+export function GridItem(props: Props) {
+  const [menuOptionsDisplay, setMenuOptionsDisplay] = React.useState(false);
+
+  const showMenuOptions = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
     setMenuOptionsDisplay(!menuOptionsDisplay);
   };
+
   return (
     <div
       css={`
-        padding: 16px;
-        height: 125px;
-        background: #f1f3f5;
         position: relative;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        @media (max-width: 767px) {
-          height: 125px;
-        }
-
-        > div {
-          font-weight: bold;
-          line-height: 16px;
-          margin-bottom: 4px;
-          color: #495057;
-
-          font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-
-          &:nth-of-type(2) {
-            color: #495057;
-            font-size: 10px;
-            font-weight: 325;
-            line-height: 12px;
-            font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
-          }
-        }
-
-        &:hover {
-          border-color: ${appColors.DATASETS_GRID.ITEM_BORDER_HOVER_COLOR};
-        }
       `}
     >
-      <div dangerouslySetInnerHTML={props.title} />
-      <div dangerouslySetInnerHTML={props.description} />
-      {props.iconLinks && (
-        <div
-          css={`
-            gap: 20px;
-            bottom: 20px;
-            position: absolute;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
+      <Link
+        to={props.link}
+        css={`
+          padding: 16px;
+          height: 125px;
+          background: #f1f3f5;
+          position: relative;
+          border-radius: 10px;
+          display: flex;
+          flex-direction: column;
+          text-decoration: none;
 
-            > a {
+          @media (max-width: 767px) {
+            height: 125px;
+          }
+
+          > div {
+            font-weight: bold;
+            line-height: 16px;
+            margin-bottom: 4px;
+            color: #495057;
+
+            font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
+
+            &:nth-of-type(2) {
+              color: #495057;
+              font-size: 10px;
+              font-weight: 325;
+              line-height: 12px;
+              font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
+            }
+          }
+
+          &:hover {
+            border-color: ${appColors.DATASETS_GRID.ITEM_BORDER_HOVER_COLOR};
+          }
+        `}
+      >
+        <div>{props.title}</div>
+        <div>{props.description}</div>
+        {props.icons && (
+          <div
+            css={`
+              gap: 20px;
+              bottom: 20px;
+              position: absolute;
+              display: flex;
+              flex-direction: row;
+              align-items: center;
+
               padding-right: 10px;
               display: inline-flex;
               transform: scale(1.2);
@@ -97,50 +108,46 @@ export function GridItem(props: {
                   }
                 }
               }
+            `}
+          >
+            {props.icons}
+          </div>
+        )}
+        <div
+          css={`
+            position: absolute;
+            top: 92px;
+            right: 14px;
+            align-items: flex-end;
+            p {
+              font-size: 10px;
+              color: #495057;
+              font-family: "GothamNarrow-Light";
             }
           `}
         >
-          {props.iconLinks.map((iconLink, index) => (
-            <Link to={iconLink.link} key={`${iconLink.link + index}`}>
-              {iconLink.icon}
-            </Link>
-          ))}
+          <p>Last edited - {moment(props.updatedDate).format("L")}</p>
         </div>
-      )}
-      <div
-        css={`
-          position: absolute;
-          top: 92px;
-          right: 14px;
-          align-items: flex-end;
-          p {
-            font-size: 10px;
-            color: #495057;
-            font-family: "GothamNarrow-Light";
-          }
-        `}
-      >
-        <p>Last edited - 11/10/2022</p>
-      </div>
-      <IconButton
-        onClick={showMenuOptions}
-        css={`
-          position: absolute;
-          right: 10px;
-          top: 4px;
-          padding: 4px;
-          color: #231d2c;
-        `}
-      >
-        <MoreVertIcon />
-      </IconButton>
+        <IconButton
+          onClick={showMenuOptions}
+          css={`
+            position: absolute;
+            right: 10px;
+            top: 4px;
+            padding: 4px;
+            color: #231d2c;
+          `}
+        >
+          <MoreVertIcon />
+        </IconButton>
+      </Link>
       {menuOptionsDisplay && (
         <MenuOptions
+          id={props.id}
+          handleModal={props.handleModal}
           setModalType={props.setModalType}
           showMenuOptions={showMenuOptions}
-          handleModal={props.handleModal}
           menuOptionsDisplay={menuOptionsDisplay}
-          id={props.id}
         />
       )}
     </div>

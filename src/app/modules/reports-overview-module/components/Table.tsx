@@ -1,28 +1,36 @@
 import React from "react";
 import moment from "moment";
+import { Link } from "react-router-dom";
 import Table from "@material-ui/core/Table";
 import TableRow from "@material-ui/core/TableRow";
+import MenuIcon from "@material-ui/icons/MoreVert";
 import TableHead from "@material-ui/core/TableHead";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
+import IconButton from "@material-ui/core/IconButton";
 import TableContainer from "@material-ui/core/TableContainer";
-import MenuIcon from "@material-ui/icons/MoreVert";
-import { IconButton } from "@material-ui/core";
-import MenuOptions from "./menuOptions";
+import MenuOptions from "app/modules/reports-overview-module/components/menuOptions";
 
-export function ReportsTable(props: {
-  handleModal: (id: number) => void;
-  setModalType: React.Dispatch<React.SetStateAction<string>>;
+interface Props {
   setTableData: (data: any) => void;
+  setModalType: React.Dispatch<React.SetStateAction<string>>;
   data: {
     id: string;
     name: string;
-    description: string;
     createdDate: Date;
+    description: string;
     menuOptionsDisplay: boolean;
+    handleModal: (type: string) => void;
   }[];
-}) {
-  const handleMenuOptionsDisplay = (id: number) => {
+}
+
+export function ReportsTable(props: Props) {
+  const handleMenuOptionsDisplay = (
+    id: number,
+    e: React.MouseEvent<HTMLElement>
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
     const newData = props.data.map((data, index: number) => {
       if (index === id) {
         return {
@@ -94,10 +102,13 @@ export function ReportsTable(props: {
         >
           {props.data.map((data, index) => (
             <TableRow
-              key={index}
+              key={data.id}
+              component={Link}
+              to={`/report/${data.id}`}
               css={`
+                text-decoration: none;
+
                 &:hover {
-                  cursor: pointer;
                   background: #dfe3e5;
                 }
               `}
@@ -140,20 +151,20 @@ export function ReportsTable(props: {
                   }
                 `}
               >
-                <IconButton onClick={() => handleMenuOptionsDisplay(index)}>
+                <IconButton onClick={(e) => handleMenuOptionsDisplay(index, e)}>
                   <div>
                     <MenuIcon />
                   </div>
                 </IconButton>
                 {data.menuOptionsDisplay && (
                   <MenuOptions
-                    top="24%"
-                    right="32%"
-                    menuOptionsDisplay={data.menuOptionsDisplay}
-                    setModalType={props.setModalType}
-                    showMenuOptions={() => handleMenuOptionsDisplay(index)}
-                    handleModal={() => props.handleModal(index)}
+                    top="20px"
+                    right="65px"
                     id={data.id}
+                    handleModal={data.handleModal}
+                    setModalType={props.setModalType}
+                    menuOptionsDisplay={data.menuOptionsDisplay}
+                    showMenuOptions={(e) => handleMenuOptionsDisplay(index, e)}
                   />
                 )}
               </TableCell>

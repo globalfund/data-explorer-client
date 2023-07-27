@@ -42,9 +42,10 @@ const Button = withStyles(() => ({
 }))(MuiButton);
 
 export function ChartModuleToolBox(props: ChartToolBoxProps) {
-  const { page } = useParams<{ page: string; view?: string }>();
   const history = useHistory();
-  const [isSavedEnabled, _] = React.useState(false);
+  const { page, view } = useParams<{ page: string; view?: string }>();
+
+  const [isSavedEnabled] = React.useState(false);
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const dataset = useStoreState((state) => state.charts.dataset.value);
@@ -85,10 +86,6 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
       appliedFilters,
       enabledFilterOptionGroups,
     };
-
-    createChart({
-      values: chart,
-    });
     if (props.isEditMode && page !== "new") {
       editChart({
         patchId: page,
@@ -99,7 +96,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
         values: chart,
       });
     }
-    //Completes chart creation , returns to persisted report state
+    // completes chart creation, returns to persisted report state
     if (createChartFromReport.state) {
       setCreateChartFromReport({
         ...createChartFromReport,
@@ -162,11 +159,13 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
             <TriangleXSIcon />
           </div>
         )}
-        <ToolboxNav
-          activeStep={activePanels}
-          setActiveStep={setActivePanels}
-          mappedData={props.mappedData}
-        />
+        {view && (
+          <ToolboxNav
+            activeStep={activePanels}
+            setActiveStep={setActivePanels}
+            mappedData={props.mappedData}
+          />
+        )}
         {props.dataSteps && (
           <ChartToolBoxSteps
             activeStep={activePanels}
@@ -186,7 +185,6 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
             dimensions={props.dimensions}
           />
         )}
-
         {props.exportView && props.rawViz && (
           <div css={styles.exportview}>
             <ChartExporter />

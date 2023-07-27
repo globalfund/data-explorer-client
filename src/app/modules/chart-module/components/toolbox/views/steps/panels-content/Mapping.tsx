@@ -53,6 +53,7 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
   const setMapping = useStoreActions(
     (actions) => actions.charts.mapping.setValue
   );
+
   const handleButtonToggle = (id: string) => {
     setNonStaticDimensions((prev) => {
       const tempPrev = prev.map((data) => {
@@ -99,6 +100,32 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
     [mapping, props.dataTypes, props.dimensions, setMapping]
   );
 
+  React.useEffect(() => {
+    setNonStaticDimensions(
+      filter(props.dimensions, (d: any) => !d.static).map((d: any) => {
+        return {
+          ...d,
+          mappedValue: null,
+          mapValuesDisplayed: true,
+        };
+      })
+    );
+  }, [props.dimensions]);
+
+  React.useEffect(() => {
+    const updatedNonStaticDimensions = [...nonStaticDimensions];
+    Object.keys(mapping).forEach((dimensionId: string) => {
+      const nonStaticDimensionIndex = updatedNonStaticDimensions.findIndex(
+        (d) => d.id === dimensionId
+      );
+      if (nonStaticDimensionIndex !== -1) {
+        updatedNonStaticDimensions[nonStaticDimensionIndex].mappedValue =
+          mapping[dimensionId].value[0];
+      }
+    });
+    setNonStaticDimensions(updatedNonStaticDimensions);
+  }, [mapping]);
+
   return (
     <div
       css={`
@@ -109,7 +136,6 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
       `}
     >
       <ToolboxSubheader name="Mapping" level={3} />
-
       <div
         css={`
           width: 90%;
@@ -273,7 +299,6 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
                   </Button>
                 </div>
               </div>
-
               {dimension.mapValuesDisplayed && (
                 <div
                   css={`

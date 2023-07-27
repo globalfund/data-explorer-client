@@ -126,7 +126,6 @@ export function AppBar() {
     switch (location.pathname) {
       case "/about":
         return TextHeader(get(cmsData, "componentsAppBar.about", ""));
-
       case "/datasets":
         return (
           <React.Fragment>
@@ -239,7 +238,7 @@ export function AppBar() {
                 justify-content: space-between;
               `}
             >
-              <NavLink to="/" css="display: flex;margin-right: 52px;">
+              <NavLink to="/" css="display: flex;">
                 <img
                   src="/gflogo.png"
                   width={295}
@@ -251,30 +250,33 @@ export function AppBar() {
                 <div
                   css={`
                     gap: 32px;
+                    height: 48px;
                     display: flex;
-                  `}
-                >
-                  <div
-                    id="appbar-datasets"
-                    onClick={handleClick}
-                    css={`
+
+                    > * {
                       height: 100%;
                       display: flex;
+                      font-size: 14px;
+                      cursor: pointer;
+                      font-weight: bold;
+                      align-items: center;
+                      text-decoration: none;
+                      letter-spacing: 0.5px;
                       color: ${anchorEl
                         ? appColors.APPBAR.LINK_ACTIVE_COLOR
                         : appColors.APPBAR.LINK_COLOR};
-                      cursor: pointer;
-                      font-size: 14px;
-                      font-weight: bold;
-                      align-items: center;
-                      letter-spacing: 0.5px;
-                      text-decoration: none;
 
                       &:hover {
                         color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
                       }
-                    `}
-                  >
+
+                      &.active {
+                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
+                      }
+                    }
+                  `}
+                >
+                  <div id="appbar-datasets" onClick={handleClick}>
                     Datasets
                   </div>
                   <StyledMenu
@@ -297,46 +299,8 @@ export function AppBar() {
                       )
                     )}
                   </StyledMenu>
-                  <NavLink
-                    to="/reports"
-                    css={`
-                      color: ${appColors.APPBAR.LINK_COLOR};
-                      font-size: 14px;
-                      font-weight: bold;
-                      letter-spacing: 0.5px;
-                      text-decoration: none;
-
-                      &:hover {
-                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                      }
-
-                      &.active {
-                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                      }
-                    `}
-                  >
-                    Reports
-                  </NavLink>
-                  <NavLink
-                    to="/charts"
-                    css={`
-                      color: ${appColors.APPBAR.LINK_COLOR};
-                      font-size: 14px;
-                      font-weight: bold;
-                      letter-spacing: 0.5px;
-                      text-decoration: none;
-
-                      &:hover {
-                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                      }
-
-                      &.active {
-                        color: ${appColors.APPBAR.LINK_ACTIVE_COLOR};
-                      }
-                    `}
-                  >
-                    Charts
-                  </NavLink>
+                  <NavLink to="/charts">Charts</NavLink>
+                  <NavLink to="/reports">Reports</NavLink>
                 </div>
               )}
               <div

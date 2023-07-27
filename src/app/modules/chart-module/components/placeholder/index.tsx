@@ -1,9 +1,9 @@
 import React from "react";
-import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
-import { ReactComponent as LogoIcon } from "app/modules/report-module/asset/logo.svg";
 import { useStoreState } from "app/state/store/hooks";
-import GeomapPlaceholder from "app/modules/chart-module/components/placeholder/geomapPlaceholder";
 import { ChartLoader } from "app/modules/common/page-loader";
+import { ReactComponent as LogoIcon } from "app/modules/report-module/asset/logo.svg";
+import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
+import GeomapPlaceholder from "app/modules/chart-module/components/placeholder/geomapPlaceholder";
 
 export default function ChartPlaceholder(props: {
   datasetName?: string;
@@ -13,6 +13,7 @@ export default function ChartPlaceholder(props: {
   const activePanels = useStoreState(
     (state) => state.charts.activePanels.value
   );
+
   const chartPlaceholders = [
     {
       id: "echartsBarchart",
@@ -89,7 +90,7 @@ export default function ChartPlaceholder(props: {
       case "chart":
         return (
           <>
-            {chartType === null && (
+            {chartType !== "echartsGeomap" && (
               <>
                 <div
                   css={`
@@ -126,7 +127,7 @@ export default function ChartPlaceholder(props: {
                 </div>
               </>
             )}
-            {chartType !== null && getChartPlaceholder()}
+            {chartType === "echartsGeomap" && getChartPlaceholder()}
           </>
         );
       case "mapping":
@@ -190,11 +191,11 @@ export default function ChartPlaceholder(props: {
             </div>
           </>
         );
-
       default:
         return;
     }
   };
+
   return (
     <div css={commonStyles.container}>
       <div css={commonStyles.innercontainer}>{displayPlaceholder()}</div>

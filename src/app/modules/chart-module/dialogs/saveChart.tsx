@@ -43,12 +43,11 @@ export default function SaveChartCreationDialog(props: Props) {
       <div className={classes.paper}>
         <div
           css={`
-            width: calc(52vw - 434px);
-
+            width: 434px;
             height: 324px;
             padding: 24px;
-            border-radius: 16px;
             position: relative;
+            border-radius: 16px;
           `}
         >
           <p

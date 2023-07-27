@@ -98,6 +98,10 @@ export default function ReportModule() {
     localPickedCharts || []
   );
 
+  const chartList = useStoreState(
+    (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
+  );
+
   React.useEffect(() => {
     setPickedCharts(localPickedCharts);
   }, [persistedReportState]);
@@ -409,7 +413,7 @@ export default function ReportModule() {
     }
   }, [view]);
 
-  //sets report state to persisted report state
+  // sets report state to persisted report state
   React.useEffect(() => {
     setReportName(persistedReportState.reportName || "My First Report");
     setHeaderDetails({
@@ -520,7 +524,7 @@ export default function ReportModule() {
     (state) => state.reports.orderData.value.order
   );
 
-  //get current value of states for handlePersistReportState function
+  // get current value of states for handlePersistReportState function
   reportOrderRef.current = reportOrder;
   headerDetailsRef.current = headerDetails;
   AppliedHeaderDetailsRef.current = appliedHeaderDetails;
@@ -611,6 +615,13 @@ export default function ReportModule() {
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
         contentWidths: reportContentWidths,
+        chartTypes: filter(
+          pickedCharts.map((pc) => {
+            const chart = chartList.find((c) => c.id === pc);
+            return chart?.vizType;
+          }),
+          (ct) => ct !== undefined
+        ),
         dateColor: appliedHeaderDetails.dateColor,
       },
     });
@@ -706,6 +717,7 @@ export default function ReportModule() {
             showHeaderItem={!headerDetails.showHeader}
             framesArray={framesArray}
             reportName={reportName}
+            onSave={onSave}
           />
         )}
       <div

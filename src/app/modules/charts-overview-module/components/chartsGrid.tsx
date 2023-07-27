@@ -1,4 +1,5 @@
 import React from "react";
+import axios from "axios";
 import find from "lodash/find";
 import { useDebounce } from "react-use";
 import Grid from "@material-ui/core/Grid";
@@ -8,35 +9,40 @@ import { echartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import DuplicateChartDialog from "app/components/Dialogs/duplicateChartDialog";
 import { ChartsTable } from "app/modules/charts-overview-module/components/Table";
 import { GridItem } from "app/modules/charts-overview-module/components/gridItem";
+import { getFormattedType } from "app/modules/report-module/components/right-panel-create-view";
 
 const description =
   "Lorem Ipsum is simply dummy text of the printing and typesetting industry.";
 
-export default function ChartsGrid(props: {
-  tableView: boolean;
+interface Props {
   sortValue: string;
+  tableView: boolean;
   searchValue: string;
-}) {
-  const [cardId, setCardId] = React.useState<number>(0);
-  const [_, setEnableButton] = React.useState<boolean>(false);
-  const [modalType, setModalType] = React.useState<string>("");
+}
+
+export default function ChartsGrid(props: Props) {
+  const [cardId, setCardId] = React.useState("");
+  const [chartName, setChartName] = React.useState("");
+  const [modalType, setModalType] = React.useState("");
+  const [duplicateName, setDuplicateName] = React.useState("");
 
   const charts = useStoreState(
     (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
 
-  const [tableData, setTableData] = React.useState(
-    charts.map((chart) => {
-      return {
-        id: chart.id,
-        title: chart.name,
-        name: chart.name,
-        description,
-        createdDate: chart.createdDate,
-        menuOptionsDisplay: false,
-      };
-    })
-  );
+  const [tableData, setTableData] = React.useState<
+    {
+      id: string;
+      title: string;
+      name: string;
+      description: string;
+      vizType: string;
+      createdDate: Date;
+      updatedDate: Date;
+      menuOptionsDisplay: boolean;
+      reports: number;
+    }[]
+  >([]);
 
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
@@ -61,17 +67,52 @@ export default function ChartsGrid(props: {
     });
   }
 
-  const handleModal = (id?: number) => {
-    setCardId(id as number);
+  const handleModal = (id?: string, name?: string) => {
+    if (id) {
+      setCardId(id);
+      if (name) {
+        if (modalType === "delete") {
+          setChartName(name);
+        } else {
+          setChartName(`${name} (Copy)}`);
+          setDuplicateName(`${name} (Copy)`);
+        }
+      }
+    }
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEnableButton(e.target.value === "DELETE");
+    setDuplicateName(e.target.value);
   };
 
   const handleDelete = () => {
     setModalType("");
-    setEnableButton(false);
+    setCardId("");
+    axios
+      .delete(`${process.env.REACT_APP_API}/chart/${cardId}`)
+      .then(() => {
+        loadCharts({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
+      })
+      .catch((error) => console.log(error));
+  };
+
+  const handleDuplicate = () => {
+    setModalType("");
+    setCardId("");
+    axios
+      .get(
+        `${process.env.REACT_APP_API}/chart/duplicate/${cardId}/${duplicateName}`
+      )
+      .then(() => {
+        loadCharts({
+          storeInCrudData: true,
+          filterString: "filter[order]=createdDate desc",
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
   React.useEffect(() => {
@@ -81,6 +122,24 @@ export default function ChartsGrid(props: {
       document.body.style.background = "#f5f5f7";
     };
   }, []);
+
+  React.useEffect(() => {
+    setTableData(
+      charts.map((chart) => {
+        return {
+          id: chart.id,
+          title: chart.name,
+          name: chart.name,
+          description,
+          vizType: getFormattedType(chart.vizType),
+          createdDate: chart.createdDate,
+          updatedDate: chart.updatedDate,
+          menuOptionsDisplay: false,
+          reports: chart.reports,
+        };
+      })
+    );
+  }, [charts]);
 
   const [,] = useDebounce(
     () => {
@@ -94,7 +153,7 @@ export default function ChartsGrid(props: {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
-          {charts.map((chart, index: number) => (
+          {charts.map((chart, index) => (
             <Grid
               item
               xs={12}
@@ -114,7 +173,7 @@ export default function ChartsGrid(props: {
                 link={`/chart/${chart.id}`}
                 viz={getIcon(chart.vizType)}
                 createdDate={chart.createdDate}
-                handleModal={() => handleModal(index)}
+                handleModal={() => handleModal(chart.id, chart.name)}
               />
             </Grid>
           ))}
@@ -128,24 +187,27 @@ export default function ChartsGrid(props: {
           data={tableData.map((data) => ({
             id: data.id,
             name: data.name,
-            description: data.description,
+            description: data.vizType,
             createdDate: data.createdDate,
+            updatedDate: data.updatedDate,
             menuOptionsDisplay: data.menuOptionsDisplay,
+            reports: data.reports,
           }))}
         />
       )}
       <DeleteChartDialog
         cardId={cardId}
+        chartName={chartName}
         modalType={modalType}
         setModalType={setModalType}
         handleDelete={handleDelete}
-        handleInputChange={handleInputChange}
       />
       <DuplicateChartDialog
         cardId={cardId}
         modalType={modalType}
         setModalType={setModalType}
-        handleDuplicate={() => {}}
+        duplicateName={duplicateName}
+        handleDuplicate={handleDuplicate}
         handleInputChange={handleInputChange}
       />
     </>

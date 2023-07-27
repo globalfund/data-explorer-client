@@ -232,7 +232,11 @@ export function ReportInitialView(props: ReportInitialViewProps) {
           </div>
         </Grid>
       </Grid>
-      <ReportsGrid tableView={tableView} />
+      <ReportsGrid
+        tableView={tableView}
+        searchValue={searchValue}
+        sortValue={sortValue}
+      />
     </>
   );
 }

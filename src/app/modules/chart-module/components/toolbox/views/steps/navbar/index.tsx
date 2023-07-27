@@ -1,15 +1,15 @@
 import React from "react";
-import AssessmentIcon from "@material-ui/icons/Assessment";
-import CloudDoneIcon from "@material-ui/icons/CloudDone";
-import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
-import PaletteIcon from "@material-ui/icons/Palette";
-import TableChartIcon from "@material-ui/icons/TableChart";
-import TuneIcon from "@material-ui/icons/Tune";
-import { stepcss } from "./style";
-import { useHistory, useParams } from "react-router-dom";
-import { ActionCreator } from "easy-peasy";
-import { useStoreState } from "app/state/store/hooks";
 import { isEmpty } from "lodash";
+import { ActionCreator } from "easy-peasy";
+import TuneIcon from "@material-ui/icons/Tune";
+import PaletteIcon from "@material-ui/icons/Palette";
+import { useStoreState } from "app/state/store/hooks";
+import { useHistory, useParams } from "react-router-dom";
+import CloudDoneIcon from "@material-ui/icons/CloudDone";
+import TableChartIcon from "@material-ui/icons/TableChart";
+import AssessmentIcon from "@material-ui/icons/Assessment";
+import NoEncryptionIcon from "@material-ui/icons/NoEncryption";
+import { stepcss } from "app/modules/chart-module/components/toolbox/views/steps/navbar/style";
 
 export type ToolboxNavType =
   | "dataset"
@@ -19,6 +19,7 @@ export type ToolboxNavType =
   | "filters"
   | "chart"
   | "selectDataset";
+
 export default function ToolboxNav(props: {
   setActiveStep: ActionCreator<ToolboxNavType>;
   activeStep: string;

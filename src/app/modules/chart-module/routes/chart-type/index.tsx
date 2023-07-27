@@ -4,9 +4,9 @@ import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
 import { useStoreState } from "app/state/store/hooks";
 /* project */
+import ChartPlaceholder from "app/modules/chart-module/components/placeholder";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import { ChartBuilderChartTypeProps } from "app/modules/chart-module/routes/chart-type/data";
-import ChartPlaceholder from "../../components/placeholder";
 
 export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
   useTitle("DX DataXplorer - Chart Type");
