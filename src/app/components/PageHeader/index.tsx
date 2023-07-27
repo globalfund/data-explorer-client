@@ -52,7 +52,7 @@ const styles = {
     align-items: center;
     letter-spacing: 0.5px;
     text-transform: capitalize;
-    padding: ${bigPadding ? "10px 0 20px 0" : "0 0 10px 0"};
+    padding: ${bigPadding ? "10px 0 0 0" : "0 0 10px 0"};
 
     @media (max-width: 767px) {
       font-size: 18px;

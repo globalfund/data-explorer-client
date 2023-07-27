@@ -37,6 +37,8 @@ export function useClearDataPathStepsOnDatasetChange() {
     view: "",
   });
 
+  const isGrantDetail = history.location.pathname.indexOf("/grant/") > -1;
+
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const setDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.setSteps
@@ -46,6 +48,14 @@ export function useClearDataPathStepsOnDatasetChange() {
   );
 
   React.useEffect(() => {
+    if (isGrantDetail) {
+      if (dataPathSteps.length > 0 && dataPathSteps[0].id !== "grant") {
+        clearDataPathSteps();
+      } else {
+        setDataPathSteps(dataPathSteps.slice(0, 1));
+      }
+      return;
+    }
     const newLocation = {
       type: "",
       pathname: location.pathname,
