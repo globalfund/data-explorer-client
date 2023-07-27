@@ -14,7 +14,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 import { InvestmentRadialViz } from "app/modules/grant-detail-module/components/radial";
 
-export function GrantDetailOverviewModule() {
+export function GrantDetailOverviewModule(props: { period: string }) {
   const cmsData = useCMSData({ returnData: true });
 
   const isLoading = useStoreState((state) => state.GrantDetailInfo.loading);
@@ -36,11 +36,6 @@ export function GrantDetailOverviewModule() {
       manager: {
         name: "",
         email: "",
-      },
-      principalRecipient: {
-        code: "",
-        name: "",
-        shortName: "",
       },
     })
   );

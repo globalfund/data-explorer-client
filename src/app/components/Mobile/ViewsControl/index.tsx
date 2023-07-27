@@ -190,7 +190,7 @@ export function MobileViewControl(props: MobileViewControlProps) {
               transition: all 0.2s ease-in-out;
               transform: rotate(${anchorEl ? "180" : "0"}deg);
               > path {
-                fill: ${appColors.COMMON.SECONDARY_COLOR_7};
+                fill: ${appColors.COMMON.PRIMARY_COLOR_1};
               }
             }
           `}

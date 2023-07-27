@@ -1,7 +1,6 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import { appColors } from "app/theme";
 import findIndex from "lodash/findIndex";
 import { useMediaQuery } from "@material-ui/core";
@@ -26,12 +25,6 @@ import { GrantDetailInvestmentsTableWrapper } from "app/modules/viz-module/sub-m
 import { GrantDetailGenericBudgetsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/budgets/time-cycle/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsDisbursedWrapper } from "app/modules/viz-module/sub-modules/investments/disbursed/data-wrappers/grantDetail";
 import { GrantDetailInvestmentsTimeCycleWrapper } from "app/modules/viz-module/sub-modules/investments/time-cycle/data-wrappers/grantDetail";
-
-interface GrantDetailPeriod {
-  number: number;
-  endDate: string;
-  startDate: string;
-}
 
 export default function GrantDetail() {
   useTitle("The Data Explorer - Grant");
@@ -62,24 +55,6 @@ export default function GrantDetail() {
   const fetchGoalsObjectives = useStoreActions(
     (store) => store.GrantDetailPeriodGoalsObjectives.fetch
   );
-
-  const periods = useStoreState(
-    (state) =>
-      get(state.GrantDetailPeriods.data, "data", []) as GrantDetailPeriod[]
-  );
-
-  const selectedPeriod = React.useMemo(() => {
-    return (
-      find(
-        periods,
-        (p: GrantDetailPeriod) => p.number.toString() === params.period
-      ) || { startDate: "", endDate: "" }
-    );
-  }, [periods, params.period]);
-
-  const formatPeriod = (date: string) => {
-    return date.split("-")[0];
-  };
 
   const grantInfoData = useStoreState((state) =>
     get(state.GrantDetailInfo.data, "data[0]", {
@@ -151,28 +126,8 @@ export default function GrantDetail() {
     return 0;
   }
 
-  useUpdateEffect(() => {
-    if (
-      grantInfoData &&
-      grantInfoData.code &&
-      !dataPathSteps.find((item) => item.id === "grant")
-    ) {
-      addDataPathSteps([
-        {
-          id: "grant",
-          name: `${params.code} - ${formatPeriod(
-            selectedPeriod.startDate
-          )} - ${formatPeriod(selectedPeriod.endDate)}`,
-          path: location.pathname,
-        },
-      ]);
-    }
-  }, [grantInfoData]);
-
-  useUpdateEffect(() => {
-    const value = `${params.code} - ${formatPeriod(
-      selectedPeriod.startDate
-    )} - ${formatPeriod(selectedPeriod.endDate)}`;
+  React.useEffect(() => {
+    const value = `${grantInfoData.title} (Grant Cycle ${params.period})`;
     const fIndex = findIndex(dataPathSteps, {
       id: "grant",
     });
@@ -190,7 +145,7 @@ export default function GrantDetail() {
         },
       ]);
     }
-  }, [selectedPeriod]);
+  }, [grantInfoData, params.period]);
 
   return (
     <div
@@ -205,7 +160,6 @@ export default function GrantDetail() {
     >
       <BreadCrumbs />
       <PageHeader isDetail tabs={grantDetailTabs} title={grantInfoData.title} />
-
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>
@@ -234,7 +188,7 @@ export default function GrantDetail() {
         <Switch>
           {/* Overview */}
           <Route path={`/grant/${params.code}/${params.period}/overview`}>
-            <GrantDetailOverviewModule />
+            <GrantDetailOverviewModule period={params.period} />
           </Route>
           {/* Budgets */}
           <Route path={`/grant/${params.code}/${params.period}/budgets/flow`}>

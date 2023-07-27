@@ -26,6 +26,9 @@ export function PerformanceRatingModule(props: PerformanceRatingModuleProps) {
   const isLoading = useStoreState(
     (state) => state.GrantDetailPerformanceRating.loading
   );
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   React.useEffect(() => {
     if (props.code) {
@@ -34,6 +37,18 @@ export function PerformanceRatingModule(props: PerformanceRatingModuleProps) {
       });
     }
   }, [props.code, props.implementationPeriod]);
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      addDataPathSteps([
+        {
+          id: "grant",
+          name: "Performance Rating",
+          path: location.pathname,
+        },
+      ]);
+    }, 500);
+  }, []);
 
   if (isLoading) {
     return <PageLoader />;
