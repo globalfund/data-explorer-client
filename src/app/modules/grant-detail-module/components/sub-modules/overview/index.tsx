@@ -14,7 +14,7 @@ import { PageLoader } from "app/modules/common/page-loader";
 import { ratingValues } from "app/components/Charts/PerformanceRating/data";
 import { InvestmentRadialViz } from "app/modules/grant-detail-module/components/radial";
 
-export function GrantDetailOverviewModule(props: { period: string }) {
+export function GrantDetailOverviewModule() {
   const cmsData = useCMSData({ returnData: true });
 
   const isLoading = useStoreState((state) => state.GrantDetailInfo.loading);
@@ -335,35 +335,37 @@ export function GrantDetailOverviewModule(props: { period: string }) {
               ))}
             </div>
           </div>
-          <div
-            css={`
-              padding-left: 20px;
-              width: 95%;
-            `}
-          >
-            <p
+          {grantInfoData.principalRecipient && (
+            <div
               css={`
-                color: #000;
-                font-family: "Gotham Narrow", sans-serif;
-                margin-top: 0;
-                margin-bottom: 0;
+                width: 95%;
+                padding-left: 20px;
               `}
             >
-              <b>Principal Recipient:</b>
-            </p>
-            <Link
-              css={`
-                color: #000;
-                font-size: 12px;
-                cursor: pointer;
-                text-decoration: underline;
-              `}
-              to={`/partner/${grantInfoData.principalRecipient.code}/investments`}
-            >
-              {grantInfoData.principalRecipient.name} (
-              {grantInfoData.principalRecipient.shortName})
-            </Link>
-          </div>
+              <p
+                css={`
+                  color: #000;
+                  font-family: "Gotham Narrow", sans-serif;
+                  margin-top: 0;
+                  margin-bottom: 0;
+                `}
+              >
+                <b>Principal Recipient:</b>
+              </p>
+              <Link
+                css={`
+                  color: #000;
+                  font-size: 12px;
+                  cursor: pointer;
+                  text-decoration: underline;
+                `}
+                to={`/partner/${grantInfoData.principalRecipient.code}/investments`}
+              >
+                {grantInfoData.principalRecipient.name} (
+                {grantInfoData.principalRecipient.shortName})
+              </Link>
+            </div>
+          )}
         </Grid>
         <Grid
           item
