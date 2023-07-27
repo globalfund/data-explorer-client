@@ -45,9 +45,15 @@ export default function GrantDetail() {
     (actions) => actions.DataPathSteps.setSteps
   );
 
+  const isGrantDetailOverview = location.pathname.includes("overview");
+
   // api call & data
   const fetchGrantInfoData = useStoreActions(
     (store) => store.GrantDetailInfo.fetch
+  );
+
+  const fetchGoalsObjectives = useStoreActions(
+    (store) => store.GrantDetailPeriodGoalsObjectives.fetch
   );
 
   const grantInfoData = useStoreState((state) =>
@@ -78,7 +84,6 @@ export default function GrantDetail() {
   );
 
   React.useEffect(() => {
-    document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
     fetchGrantInfoData({
       filterString: `grantNumber=${params.code}`,
     });
@@ -89,6 +94,9 @@ export default function GrantDetail() {
 
   React.useEffect(() => {
     fetchGrantPeriodInfoData({
+      filterString: `grantNumber=${params.code}&IPnumber=${params.period}`,
+    });
+    fetchGoalsObjectives({
       filterString: `grantNumber=${params.code}&IPnumber=${params.period}`,
     });
   }, [params.period]);
@@ -171,7 +179,9 @@ export default function GrantDetail() {
           height: 100%;
           align-self: flex-start;
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - ${pushValue}px)` : "100%"};
+          width: ${!isGrantDetailOverview && openToolboxPanel
+            ? `calc(100% - ${pushValue}px)`
+            : "100%"};
         `}
         ref={vizWrapperRef}
       >
@@ -320,19 +330,21 @@ export default function GrantDetail() {
           }
         `}
       />
-      <ToolBoxPanel
-        isGrantDetail
-        open={openToolboxPanel}
-        filterGroups={filtergroups}
-        vizWrapperRef={vizWrapperRef}
-        onCloseBtnClick={(value?: boolean) => {
-          if (value !== undefined) {
-            setOpenToolboxPanel(value);
-          } else {
-            setOpenToolboxPanel(!openToolboxPanel);
-          }
-        }}
-      />
+      {!isGrantDetailOverview && (
+        <ToolBoxPanel
+          isGrantDetail
+          open={openToolboxPanel}
+          filterGroups={filtergroups}
+          vizWrapperRef={vizWrapperRef}
+          onCloseBtnClick={(value?: boolean) => {
+            if (value !== undefined) {
+              setOpenToolboxPanel(value);
+            } else {
+              setOpenToolboxPanel(!openToolboxPanel);
+            }
+          }}
+        />
+      )}
       <div
         css={`
           left: 0;
