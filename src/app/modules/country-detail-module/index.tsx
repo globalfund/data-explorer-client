@@ -200,11 +200,6 @@ export default function CountryDetail() {
       <PageTopSpacer />
       {isMobile && (
         <React.Fragment>
-          <div
-            css={`
-              height: 40px;
-            `}
-          />
           <MobileViewControl
             tabs={
               params.code.length === 3
