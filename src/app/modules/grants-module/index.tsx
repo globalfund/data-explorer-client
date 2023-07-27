@@ -180,6 +180,24 @@ export default function GrantsModule(props: GrantsModuleProps) {
     return 0;
   }
 
+  if (props.detailFilterType && props.code) {
+    return (
+      <GrantsGrid
+        data={data}
+        handleChange={handleChange}
+        isToolboxOvervlayVisible={isToolboxOvervlayVisible}
+        openToolboxPanel={openToolboxPanel}
+        page={page}
+        pages={pages}
+        pushValue={pushValue}
+        search={search}
+        setSearch={setSearch}
+        setSearchProps={props.setSearch}
+        vizWrapperRef={vizWrapperRef}
+      />
+    );
+  }
+
   return (
     <div
       css={`
