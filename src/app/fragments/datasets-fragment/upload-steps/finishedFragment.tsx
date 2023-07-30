@@ -37,7 +37,7 @@ export default function FinishedFragment(props: Props) {
           width: 100%;
           color: #231d2c;
           font-size: 14px;
-          font-weight: 500;
+          font-weight: 400;
           font-style: normal;
           font-family: "GothamNarrow-Book";
         `}
@@ -45,7 +45,8 @@ export default function FinishedFragment(props: Props) {
         <div
           css={`
             color: #231d2c;
-            font-size: 14px;
+            font-size: 16px;
+            font-family: "Inter", sans-serif;
             line-height: 19px;
             margin-bottom: 17px;
           `}
@@ -75,13 +76,14 @@ export default function FinishedFragment(props: Props) {
                 text-transform: uppercase;
                 font-family: "GothamNarrow-Bold";
                 outline: none;
+                border: none;
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                cursor: pointer;
 
                 :hover {
                   opacity: 0.8;
+                  cursor: pointer;
                 }
               `}
               onClick={handleCreateNewChart}

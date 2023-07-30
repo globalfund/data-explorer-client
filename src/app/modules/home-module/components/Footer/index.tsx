@@ -53,7 +53,16 @@ export default function HomeFooter() {
               <li>
                 <a href="tel:0031202134466">Tel: +3120 213 4466</a>
               </li>
-              <li>Privacy</li>
+              <li>
+                <a
+                  href="https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view"
+                  className="privacy-link"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Privacy
+                </a>
+              </li>
               <li>
                 <a
                   href="https://drive.google.com/file/d/1wgY5HYdE5-redIOF85E5fZZJT_YueOWP/view?usp=sharing"

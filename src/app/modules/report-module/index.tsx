@@ -709,7 +709,7 @@ export default function ReportModule() {
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
-      {view !== "ai-template" && (
+      {view !== "ai-template" && view !== "initial" && (
         <SubheaderToolbar
           pageType="report"
           onReportSave={onSave}
@@ -751,7 +751,6 @@ export default function ReportModule() {
       <Switch>
         <Route path="/report/:page/initial">
           <Container maxWidth="lg">
-            <Box height={50} />
             <ReportInitialView
               resetReport={resetReport}
               buttonActive={buttonActive}

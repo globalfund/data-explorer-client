@@ -28,10 +28,6 @@ interface PreviewTableProps {
 export default function PreviewTable(props: PreviewTableProps) {
   const [toolboxDisplay, setToolboxDisplay] = React.useState(false);
 
-  // const handleToolBoxDisplay = () => {
-  //   setToolboxDisplay(true);
-  // };
-
   return (
     <>
       <div
@@ -51,7 +47,7 @@ export default function PreviewTable(props: PreviewTableProps) {
               background: #231d2c;
             }
             &::-webkit-scrollbar-track {
-              background: #fff;
+              background: #f9f9f9;
 
               padding: 0 0.5rem;
             }
