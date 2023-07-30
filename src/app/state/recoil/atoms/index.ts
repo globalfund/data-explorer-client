@@ -22,6 +22,12 @@ export interface ReportContentWidthsType {
   id: string;
   widths: number[];
 }
+
+export interface ReportContentHeightsType {
+  id: string;
+  heights: number[];
+}
+
 export interface IRowFrameStructure {
   rowType:
     | "oneByOne"
@@ -104,6 +110,11 @@ export const unSavedReportPreviewMode = atom<boolean>({
 
 export const reportContentWidthsAtom = atom<ReportContentWidthsType[]>({
   key: "reportContentWidths",
+  default: [],
+});
+
+export const reportContentHeightsAtom = atom<ReportContentHeightsType[]>({
+  key: "reportContentHeights",
   default: [],
 });
 
