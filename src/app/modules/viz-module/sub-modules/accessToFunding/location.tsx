@@ -137,10 +137,11 @@ export default function LocationAccessToFundingWrapper(props: Props) {
         </p>
         <div
           css={`
-            display: flex;
-            justify-content: center;
             gap: 0.7rem;
+            display: flex;
+            flex-wrap: wrap;
             margin-top: 1rem;
+            justify-content: center;
           `}
         >
           <div css={chipcss(cycle === "All")} onClick={() => setCycle("All")}>

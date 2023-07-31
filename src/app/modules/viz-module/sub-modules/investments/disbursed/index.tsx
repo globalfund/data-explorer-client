@@ -85,6 +85,27 @@ export function InvestmentsDisbursedModule(
     code: "",
   });
 
+  const grantInfoData = useStoreState((state) =>
+    get(state.GrantDetailInfo.data, "data[0]", {
+      title: "",
+      code: "",
+      rating: "",
+      status: "",
+      location: "",
+      component: "",
+      description: "",
+      investments: {
+        disbursed: 0,
+        committed: 0,
+        signed: 0,
+      },
+      manager: {
+        name: "",
+        email: "",
+      },
+    })
+  );
+
   const dataPathSteps = useStoreState((state) => state.DataPathSteps.steps);
   const addDataPathSteps = useStoreActions(
     (actions) => actions.DataPathSteps.addSteps
@@ -107,7 +128,11 @@ export function InvestmentsDisbursedModule(
         addDataPathSteps([
           {
             id: "grant",
-            name: props.codeParam || "Grant",
+            name: `${grantInfoData.title} (Grant Cycle ${get(
+              history.location.pathname.split("/"),
+              "[3]",
+              ""
+            )})`,
             path: `${history.location.pathname}${history.location.search}`,
           },
         ]);
@@ -145,13 +170,6 @@ export function InvestmentsDisbursedModule(
               name: `Grant Implementation: ${props.type}`,
             }))
         ) {
-          addDataPathSteps([
-            {
-              id: uniqueId(),
-              name: `Grant Implementation: ${props.type}`,
-              path: `${history.location.pathname}${history.location.search}`,
-            },
-          ]);
         }
       } else {
         if (

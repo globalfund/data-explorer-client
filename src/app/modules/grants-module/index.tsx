@@ -120,22 +120,13 @@ export default function GrantsModule(props: GrantsModuleProps) {
   };
 
   React.useEffect(() => {
-    setTimeout(() => {
-      if (
-        dataPathSteps.length === 0 ||
-        !find(dataPathSteps, {
-          name: "Grant Implementation: Grants",
-        })
-      ) {
-        setDataPathSteps([
-          {
-            name: "Grant Implementation: Grants",
-            path: location.pathname,
-            id: "grants",
-          },
-        ]);
-      }
-    }, 500);
+    setDataPathSteps([
+      {
+        name: "Grant Implementation: Grants",
+        path: location.pathname,
+        id: "grants",
+      },
+    ]);
   }, []);
 
   useEffectOnce(() => {
@@ -187,6 +178,24 @@ export default function GrantsModule(props: GrantsModuleProps) {
     if (isSmallScreen) return 0;
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
+  }
+
+  if (props.detailFilterType && props.code) {
+    return (
+      <GrantsGrid
+        data={data}
+        handleChange={handleChange}
+        isToolboxOvervlayVisible={isToolboxOvervlayVisible}
+        openToolboxPanel={openToolboxPanel}
+        page={page}
+        pages={pages}
+        pushValue={pushValue}
+        search={search}
+        setSearch={setSearch}
+        setSearchProps={props.setSearch}
+        vizWrapperRef={vizWrapperRef}
+      />
+    );
   }
 
   return (
