@@ -201,7 +201,10 @@ export default function ReportModule() {
         return prev;
       }
       const contentContainer = document.getElementById("content-container");
-      const percentage = ((width + 30) / contentContainer!.offsetWidth) * 100;
+      const percentage =
+        ((width + (tempPrev[frameIndex].structure !== "oneByOne" ? 30 : 0)) /
+          contentContainer!.offsetWidth) *
+        100;
       tempPrev[frameIndex].contentWidths[itemIndex] = percentage;
       if (tempPrev[frameIndex].content.length > 1) {
         const remainingWidth = 100 - percentage;
