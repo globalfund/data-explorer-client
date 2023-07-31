@@ -10,11 +10,13 @@ import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Datasets/reformedGridItem";
 
-export default function DatasetsGrid(props: {
+interface Props {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
-}) {
+}
+
+export default function DatasetsGrid(props: Props) {
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
@@ -75,12 +77,16 @@ export default function DatasetsGrid(props: {
   }
 
   React.useEffect(() => {
-    loadData(props.searchStr, props.sortBy);
-  }, []);
+    if (props.searchStr.length === 0) {
+      loadData(props.searchStr, props.sortBy);
+    }
+  }, [props.searchStr, props.sortBy]);
 
   const [,] = useDebounce(
     () => {
-      loadData(props.searchStr, props.sortBy);
+      if (props.searchStr.length > 0) {
+        loadData(props.searchStr, props.sortBy);
+      }
     },
     500,
     [props.searchStr, props.sortBy]

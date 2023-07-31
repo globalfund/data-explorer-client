@@ -11,12 +11,14 @@ import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Reports/reformedGridItem";
 
-export default function ReportsGrid(props: {
+interface Props {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
   showMenuButton: boolean;
-}) {
+}
+
+export default function ReportsGrid(props: Props) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -88,12 +90,16 @@ export default function ReportsGrid(props: {
   }
 
   React.useEffect(() => {
-    loadData(props.searchStr, props.sortBy);
-  }, []);
+    if (props.searchStr.length === 0) {
+      loadData(props.searchStr, props.sortBy);
+    }
+  }, [props.searchStr, props.sortBy]);
 
   const [,] = useDebounce(
     () => {
-      loadData(props.searchStr, props.sortBy);
+      if (props.searchStr.length > 0) {
+        loadData(props.searchStr, props.sortBy);
+      }
     },
     500,
     [props.searchStr, props.sortBy]
