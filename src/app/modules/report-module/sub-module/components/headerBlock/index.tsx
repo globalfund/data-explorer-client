@@ -211,7 +211,7 @@ export default function HeaderBlock(props: Props) {
           <div
             css={`
               width: 60%;
-              max-height: 52px;
+              max-height: 90px;
               overflow-y: hidden;
               color: ${props.headerDetails.descriptionColor} !important;
               font-size: 14px;
@@ -232,7 +232,7 @@ export default function HeaderBlock(props: Props) {
                 > div {
                   > div {
                     > div {
-                      min-height: 60px !important;
+                      min-height: 90px !important;
                     }
                   }
                 }

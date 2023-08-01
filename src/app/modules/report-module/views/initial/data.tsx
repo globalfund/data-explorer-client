@@ -61,7 +61,11 @@ export const TemplateItem = ({
         background: #f2f7fd;
         &:hover {
           cursor: pointer;
-          border-color: #6061e5;
+
+          button {
+            cursor: pointer;
+            background: #6061e5;
+          }
         }
       `}
       onClick={handleClick}
@@ -114,7 +118,6 @@ export const TemplateItem = ({
             Coming soon!
           </div>
         )}
-
         <button
           css={`
             bottom: 16px;
@@ -137,10 +140,6 @@ export const TemplateItem = ({
               font-weight: 500;
               text-transform: uppercase;
               font-family: "Inter", sans-serif;
-            }
-            :hover {
-              background: #6061e5;
-              cursor: pointer;
             }
           `}
         >
