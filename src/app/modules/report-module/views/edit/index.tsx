@@ -88,7 +88,7 @@ export function ReportEditView(props: ReportEditViewProps) {
     }
 
     return () => {
-      props.setStopInitializeFramesWidth(false);
+      // props.setStopInitializeFramesWidth(false);
     };
   }, []);
 
