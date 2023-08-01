@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
+import { useOnClickOutside } from "usehooks-ts";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
@@ -62,7 +63,7 @@ interface RowStructureDisplayProps {
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-
+  const ref = useRef(null);
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
   const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
@@ -90,6 +91,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         },
         // onMouseLeave: () => setHandleDisplay(false),
       };
+  useOnClickOutside(ref, () => setHandleDisplay(false));
 
   const border =
     !viewOnlyMode && handleDisplay
@@ -108,6 +110,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     >
       {handleDisplay && (
         <div
+          ref={ref}
           css={`
             width: 32px;
             left: -3rem;
