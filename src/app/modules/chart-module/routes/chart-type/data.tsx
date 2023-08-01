@@ -173,7 +173,13 @@ export const coloredEchartTypes = () => {
     {
       id: "echartsGeomap",
       label: "Geo map",
-      icon: <ColoredGeomapChartIcon />,
+      icon: (
+        <ColoredGeomapChartIcon
+          css={`
+            margin-left: -5px;
+          `}
+        />
+      ),
       categories: ["Locations"],
       ssr: false,
       description: "Geo map",
@@ -205,7 +211,6 @@ export const coloredEchartTypes = () => {
       description:
         "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
     },
-
     {
       id: "bigNumber",
       label: "Big Number diagram",
