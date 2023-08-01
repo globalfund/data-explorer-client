@@ -1,5 +1,5 @@
-import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
+import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
 
 export interface SubheaderToolbarProps {
   name: string;
@@ -13,4 +13,5 @@ export interface SubheaderToolbarProps {
   headerDetails: IHeaderDetails;
   appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
+  setStopInitializeFramesWidth?: (value: boolean) => void;
 }

@@ -436,6 +436,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
             }))
         ),
       });
+      if (props.setStopInitializeFramesWidth) {
+        props.setStopInitializeFramesWidth(true);
+      }
       history.push(`/${props.pageType}/${page}/preview`);
     } else {
       history.push(`/${props.pageType}/${page}/preview`);

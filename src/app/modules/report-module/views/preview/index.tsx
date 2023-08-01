@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
@@ -19,7 +19,9 @@ import {
 } from "app/state/recoil/atoms";
 
 export function ReportPreviewView() {
+  const history = useHistory();
   const { page } = useParams<{ page: string }>();
+
   const { ref, width } = useResizeObserver<HTMLDivElement>();
 
   const persistedReportState = useRecoilState(persistedReportStateAtom)[0];
@@ -54,6 +56,10 @@ export function ReportPreviewView() {
 
   const [reportPreviewData, setReportPreviewData] = React.useState(reportData);
 
+  const isPreview = React.useMemo(() => {
+    return history.location.pathname.includes("/preview");
+  }, [history.location.pathname]);
+
   React.useEffect(() => {
     fetchReportData({ getId: page });
   }, [page]);
@@ -71,16 +77,16 @@ export function ReportPreviewView() {
   }, [reportData]);
 
   React.useEffect(() => {
-    if (reportData.contentWidths) {
+    if (reportData.contentWidths && !isPreview) {
       setReportContentWidths(reportData.contentWidths);
     }
   }, [reportData.contentWidths]);
 
   React.useEffect(() => {
-    if (reportData.contentHeights) {
+    if (reportData.contentHeights && !isPreview) {
       setReportContentHeights(reportData.contentHeights);
     }
-  }, [reportData.contentWidths]);
+  }, [reportData.contentHeights]);
 
   React.useEffect(() => {
     return () => {
