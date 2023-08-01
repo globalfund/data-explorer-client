@@ -9,6 +9,7 @@ import useCookie from "@devhammed/use-cookie";
 
 export default function TourGuide(props: {
   reportType: "basic" | "advanced" | "ai";
+  toolBoxOpen: boolean;
 }) {
   const [reportCreationTourStep, setReportCreationTourStep] = useRecoilState(
     reportCreationTourStepAtom
@@ -45,17 +46,25 @@ export default function TourGuide(props: {
             setStep={setReportCreationTourStep}
             handleClose={handleClose}
             open={open}
+            toolBoxOpen={props.toolBoxOpen}
             reportType={props.reportType}
           />
         );
       case 2:
-        return <SelectStructure handleClose={handleClose} open={open} />;
+        return (
+          <SelectStructure
+            handleClose={handleClose}
+            open={open}
+            toolBoxOpen={props.toolBoxOpen}
+          />
+        );
       case 3:
         return (
           <TourEnd
             handleClose={handleClose}
             open={open}
             reportType={props.reportType}
+            toolBoxOpen={props.toolBoxOpen}
           />
         );
       default:
@@ -78,6 +87,7 @@ export default function TourGuide(props: {
             setStep={setReportCreationTourStep}
             handleClose={handleClose}
             open={open}
+            toolBoxOpen={props.toolBoxOpen}
             reportType={props.reportType}
           />
         );
@@ -87,6 +97,7 @@ export default function TourGuide(props: {
             handleClose={handleClose}
             open={open}
             reportType={props.reportType}
+            toolBoxOpen={props.toolBoxOpen}
           />
         );
       case 3:

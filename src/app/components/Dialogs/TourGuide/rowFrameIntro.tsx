@@ -8,14 +8,16 @@ export default function RowFrameIntro(props: {
   handleClose: () => void;
   open: boolean;
   reportType: "basic" | "advanced" | "ai";
+  toolBoxOpen: boolean;
 }) {
   return (
     <div
       css={`
         position: absolute;
-        ${props.reportType === "basic" && "top: 55%;"}
+        ${props.reportType === "basic" &&
+        `top: 55%; left: ${props.toolBoxOpen ? "5%" : "10%"}; `}
         ${props.reportType === "advanced" && "top: 15%; left: -5%;"} 
-        
+        transition: left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
         display: ${props.open ? "block" : "none"};
         z-index: 2;

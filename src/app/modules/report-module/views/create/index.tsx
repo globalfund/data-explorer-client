@@ -165,7 +165,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           `}
         >
           <Box height={50} />
-          <TourGuide reportType={props.reportType} />
+          <TourGuide reportType={props.reportType} toolBoxOpen={props.open} />
           <ReportOrderContainer enabled childrenData={props.framesArray}>
             {props.framesArray.map((frame, index) => {
               return (

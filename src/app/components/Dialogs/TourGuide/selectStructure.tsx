@@ -5,13 +5,16 @@ import React from "react";
 export default function SelectStructure(props: {
   handleClose: () => void;
   open: boolean;
+  toolBoxOpen: boolean;
 }) {
   return (
     <div
       css={`
         position: absolute;
-        top: 55%;
-        left: 1%;
+        top: 59%;
+        left: ${props.toolBoxOpen ? "0%" : "11%"};
+        transition: left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
+
         display: ${props.open ? "block" : "none"};
         z-index: 2;
       `}

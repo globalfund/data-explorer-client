@@ -6,19 +6,24 @@ export default function TourEnd({
   handleClose,
   open,
   reportType,
+  toolBoxOpen,
 }: {
   handleClose: () => void;
   open: boolean;
   reportType: "basic" | "advanced" | "ai";
+  toolBoxOpen: boolean;
 }) {
   return (
     <div
       css={`
         position: absolute;
 
-        ${reportType === "basic" && " bottom: 25%;; right: -10%; "}
-        ${reportType === "advanced" && "top: 5%; right: -25%;"} 
+        ${reportType === "basic" &&
+        `bottom: 25%; right: ${toolBoxOpen ? "-25%" : "-10%"};`}
+        ${reportType === "advanced" &&
+        `top: 3%; right: ${toolBoxOpen ? "-29%" : "-10%"};`} 
         display: ${open ? "block" : "none"};
+        transition: right 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
         z-index: 100;
       `}
