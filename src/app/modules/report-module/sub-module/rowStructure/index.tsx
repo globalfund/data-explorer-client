@@ -89,7 +89,6 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         onMouseEnter: () => {
           setHandleDisplay(true);
         },
-        // onMouseLeave: () => setHandleDisplay(false),
       };
   useOnClickOutside(ref, () => setHandleDisplay(false));
 
