@@ -117,6 +117,10 @@ export const reportContentContainerWidth = atom<number>({
   default: 0,
 });
 
+export const reportCreationTourStepAtom = atom<number>({
+  key: "reportCreationTourStepAtom",
+  default: 0,
+});
 export const unSavedReportPreviewModeAtom = atom<boolean>({
   key: "unSavedReportPreviewModeAtom",
   default: false,

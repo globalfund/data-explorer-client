@@ -22,6 +22,7 @@ import {
   reportContentContainerWidth,
   isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
+import TourGuide from "app/components/Dialogs/TourGuide";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
   const { ref, width } = useResizeObserver<HTMLDivElement>();
@@ -214,7 +215,15 @@ export function ReportCreateView(props: ReportCreateViewProps) {
             {props.framesArray.map((frame) => {
               return (
                 <div key={frame.id}>
-                  <div>{frame.frame}</div>
+                  <div
+                    css={`
+                      position: relative;
+                    `}
+                  >
+                    {frame.frame}
+
+                    <TourGuide />
+                  </div>
                   <Box height={38} />
                   <PlaceHolder
                     rowId={frame.id}

@@ -1,6 +1,6 @@
 import React from "react";
 import get from "lodash/get";
-import { useRecoilValue } from "recoil";
+import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
 import { useLocation, useParams } from "react-router-dom";
@@ -12,6 +12,7 @@ import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-mo
 import {
   ReportContentWidthsType,
   reportContentWidthsAtom,
+  reportCreationTourStepAtom,
 } from "app/state/recoil/atoms";
 import {
   blockcss,
@@ -180,11 +181,16 @@ export interface RowFrameProps {
 export interface IRowStructureType {
   selectedType: string;
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
+  tourStep: number;
+  setTourStep: SetterOrUpdater<number>;
 }
 
 export default function RowFrame(props: RowFrameProps) {
   const [selectedType, setSelectedType] = React.useState<string>(
-    props.forceSelectedType || ""
+    props.forceSelectedType ?? ""
+  );
+  const [reportCreationTourStep, setReportCreationTourStep] = useRecoilState(
+    reportCreationTourStepAtom
   );
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
@@ -443,30 +449,44 @@ export default function RowFrame(props: RowFrameProps) {
             <OneByOne
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              tourStep={reportCreationTourStep}
+              setTourStep={setReportCreationTourStep}
             />
             <OneByTwo
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              tourStep={reportCreationTourStep}
+              setTourStep={setReportCreationTourStep}
             />
             <OneByThree
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              tourStep={reportCreationTourStep}
+              setTourStep={setReportCreationTourStep}
             />
             <OneByFour
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              tourStep={reportCreationTourStep}
+              setTourStep={setReportCreationTourStep}
             />
             <OneByFive
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              tourStep={reportCreationTourStep}
+              setTourStep={setReportCreationTourStep}
             />
             <OneToFour
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              tourStep={reportCreationTourStep}
+              setTourStep={setReportCreationTourStep}
             />
             <FourToOne
               selectedType={selectedType}
               setSelectedType={setSelectedType}
+              tourStep={reportCreationTourStep}
+              setTourStep={setReportCreationTourStep}
             />
           </div>
         </div>
@@ -477,6 +497,9 @@ export default function RowFrame(props: RowFrameProps) {
 
 const OneByOne = (props: IRowStructureType) => {
   const handleClick = () => {
+    if (props.tourStep === 2) {
+      props.setTourStep(3);
+    }
     props.setSelectedType("oneByOne");
   };
   return (
@@ -497,6 +520,9 @@ const OneByOne = (props: IRowStructureType) => {
 
 const OneByTwo = (props: IRowStructureType) => {
   const handleClick = () => {
+    if (props.tourStep === 2) {
+      props.setTourStep(3);
+    }
     props.setSelectedType("oneByTwo");
   };
   return (
@@ -523,6 +549,9 @@ const OneByTwo = (props: IRowStructureType) => {
 
 const OneByThree = (props: IRowStructureType) => {
   const handleClick = () => {
+    if (props.tourStep === 2) {
+      props.setTourStep(3);
+    }
     props.setSelectedType("oneByThree");
   };
   return (
@@ -550,6 +579,9 @@ const OneByThree = (props: IRowStructureType) => {
 
 const OneByFour = (props: IRowStructureType) => {
   const handleClick = () => {
+    if (props.tourStep === 2) {
+      props.setTourStep(3);
+    }
     props.setSelectedType("oneByFour");
   };
   return (
@@ -578,6 +610,9 @@ const OneByFour = (props: IRowStructureType) => {
 
 const OneByFive = (props: IRowStructureType) => {
   const handleClick = () => {
+    if (props.tourStep === 2) {
+      props.setTourStep(3);
+    }
     props.setSelectedType("oneByFive");
   };
   return (
@@ -607,6 +642,9 @@ const OneByFive = (props: IRowStructureType) => {
 
 const OneToFour = (props: IRowStructureType) => {
   const handleClick = () => {
+    if (props.tourStep === 2) {
+      props.setTourStep(3);
+    }
     props.setSelectedType("oneToFour");
   };
   return (
@@ -633,6 +671,9 @@ const OneToFour = (props: IRowStructureType) => {
 
 const FourToOne = (props: IRowStructureType) => {
   const handleClick = () => {
+    if (props.tourStep === 2) {
+      props.setTourStep(3);
+    }
     props.setSelectedType("fourToOne");
   };
   return (
