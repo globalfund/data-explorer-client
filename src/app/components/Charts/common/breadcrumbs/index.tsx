@@ -47,7 +47,7 @@ export default function BreadCrumbs() {
         top: 45px;
         z-index: 10;
         position: sticky;
-        background: ${appColors.COMMON.WHITE};
+        background: ${document.body.style.background};
       `}
     >
       <div
@@ -81,6 +81,9 @@ export default function BreadCrumbs() {
           @media (min-width: 600px) {
             padding-left: 24px;
             padding-right: 24px;
+          }
+          @media (max-width: 600px) {
+            padding-left: 12px;
           }
         `}
       >

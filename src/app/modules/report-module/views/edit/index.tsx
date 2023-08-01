@@ -155,6 +155,8 @@ export function ReportEditView(props: ReportEditViewProps) {
           ),
           content,
           contentWidths: [],
+          contentHeights: [],
+
           contentTypes,
           isHandleOpen: false,
         };

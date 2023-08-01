@@ -161,7 +161,8 @@ export interface RowFrameProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
@@ -216,13 +217,15 @@ export default function RowFrame(props: RowFrameProps) {
   const onRowBoxItemResize = (
     rowId: string,
     itemIndex: number,
-    width: number
+    width: number,
+    height: number
   ) => {
     props.handleRowFrameItemResize(
       rowId,
       itemIndex,
       width,
-      reportContentWidths
+      reportContentWidths,
+      height
     );
   };
 

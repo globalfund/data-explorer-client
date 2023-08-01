@@ -248,6 +248,7 @@ export interface StoreModel {
   GrantDetailPerformanceFramework: ApiCallModel;
   GrantDetailPerformanceFrameworkExpand: ApiCallModel;
   GrantDetailDocuments: ApiCallModel;
+  GrantDetailPeriodGoalsObjectives: ApiCallModel;
   // location detail api
   LocationDetailInfo: ApiCallModel;
   EligibilityCountry: ApiCallModel;

@@ -66,7 +66,8 @@ export interface ReportEditViewProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
   stopInitializeFramesWidth: boolean;
   setStopInitializeFramesWidth: React.Dispatch<React.SetStateAction<boolean>>;

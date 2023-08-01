@@ -15,6 +15,8 @@ export interface IFramesArray {
   id: string;
   frame: JSX.Element;
   contentWidths: number[];
+  contentHeights: number[];
+
   content: (object | string | null)[];
   isHandleOpen: boolean;
   contentTypes: ("text" | "divider" | "chart" | "image" | null)[];
@@ -74,7 +76,8 @@ export interface ReportCreateViewProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
   toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
@@ -111,7 +114,8 @@ export interface PlaceholderProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
   toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }

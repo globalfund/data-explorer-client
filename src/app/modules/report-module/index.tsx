@@ -28,6 +28,7 @@ import {
   reportContentWidthsAtom,
   ReportContentWidthsType,
   persistedReportStateAtom,
+  reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -125,6 +126,9 @@ export default function ReportModule() {
   const [reportContentWidths, setReportContentWidths] = useRecoilState(
     reportContentWidthsAtom
   );
+  const [reportContentHeights, setReportContentHeights] = useRecoilState(
+    reportContentHeightsAtom
+  );
 
   const handleRowFrameItemAddition = (
     rowId: string,
@@ -159,11 +163,27 @@ export default function ReportModule() {
     setReportContentWidths(contentWidths);
   };
 
+  const alignFramesWContentHeights = (framesArr: IFramesArray[]) => {
+    let contentHeights: {
+      id: string;
+      heights: number[];
+    }[] = [];
+    framesArr.forEach((frame) => {
+      contentHeights.push({
+        id: frame.id,
+        heights:
+          frame.contentHeights?.length === 0 ? [] : frame?.contentHeights,
+      });
+    });
+    setReportContentHeights(contentHeights);
+  };
+
   const handleRowFrameItemResize = (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths_: ReportContentWidthsType[]
+    reportContentWidths_: ReportContentWidthsType[],
+    height: number
   ) => {
     setFramesArray((prev) => {
       if (!stopInitializeFramesWidth) {
@@ -171,14 +191,16 @@ export default function ReportModule() {
       }
       const tempPrev = cloneDeep(prev);
       tempPrev.sort(
-        (a, b) => reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id)
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
       );
       const frameIndex = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameIndex === -1) {
         return prev;
       }
       const contentContainer = document.getElementById("content-container");
-      const percentage = (width / contentContainer!.offsetWidth) * 100;
+      const percentage = ((width + 30) / contentContainer!.offsetWidth) * 100;
       tempPrev[frameIndex].contentWidths[itemIndex] = percentage;
       if (tempPrev[frameIndex].content.length > 1) {
         const remainingWidth = 100 - percentage;
@@ -206,8 +228,10 @@ export default function ReportModule() {
           });
         }
       });
+      tempPrev[frameIndex].contentHeights[itemIndex] = height;
       if (view === "edit") {
         alignFramesWContentWidths(tempPrev);
+        alignFramesWContentHeights(tempPrev);
       }
       return [...tempPrev];
     });
@@ -248,6 +272,8 @@ export default function ReportModule() {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
     let contentWidths: number[] = [];
+    let contentHeights: number[] = [];
+
     switch (structure) {
       case "oneByOne":
         content = [null];
@@ -303,6 +329,8 @@ export default function ReportModule() {
       tempPrev[rowIndex].structure = structure;
       if (view === "edit") {
         const newReportContentWidths = cloneDeep(reportContentWidths);
+        const newReportContentHeights = cloneDeep(reportContentHeights);
+
         if (newReportContentWidths[rowIndex]) {
           newReportContentWidths[rowIndex].widths = contentWidths;
         } else {
@@ -311,7 +339,16 @@ export default function ReportModule() {
             widths: contentWidths,
           });
         }
+        if (newReportContentHeights[rowIndex]) {
+          newReportContentHeights[rowIndex].heights = contentHeights;
+        } else {
+          newReportContentHeights.push({
+            id: tempPrev[rowIndex].id,
+            heights: contentHeights,
+          });
+        }
         setReportContentWidths(newReportContentWidths);
+        setReportContentHeights(newReportContentHeights);
       }
       return [...tempPrev];
     });
@@ -404,6 +441,7 @@ export default function ReportModule() {
   useUpdateEffect(() => {
     if (view !== "edit") {
       alignFramesWContentWidths(framesArray);
+      alignFramesWContentHeights(framesArray);
     }
   }, [framesArray, view]);
 
@@ -566,6 +604,8 @@ export default function ReportModule() {
         ),
         content: [],
         contentWidths: [],
+        contentHeights: [],
+
         contentTypes: [],
         structure: null,
         isHandleOpen: false,

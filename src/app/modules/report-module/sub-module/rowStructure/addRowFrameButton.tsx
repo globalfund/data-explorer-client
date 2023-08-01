@@ -46,7 +46,8 @@ interface AddRowFrameProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[]
+    reportContentWidths: ReportContentWidthsType[],
+    height: number
   ) => void;
   toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
@@ -81,6 +82,7 @@ export default function AddRowFrameButton(props: AddRowFrameProps) {
         ),
         content: [],
         contentWidths: [],
+        contentHeights: [],
         contentTypes: [],
         structure: null,
         isHandleOpen: false,

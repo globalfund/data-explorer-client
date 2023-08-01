@@ -24,6 +24,7 @@ import {
   unSavedReportPreviewModeAtom,
   reportContentIsResizingAtom,
   reportContentContainerWidth,
+  reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 import ReportActionDialog from "app/modules/report-module/components/actionDialog";
 import ImageBox from "app/modules/report-module/components/imageBox";
@@ -53,7 +54,12 @@ interface RowStructureDisplayProps {
   handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
-  onRowBoxItemResize: (rowId: string, itemIndex: number, width: number) => void;
+  onRowBoxItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    height: number
+  ) => void;
   toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
 
@@ -131,6 +137,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const [reportContentWidths, setReportContentWidths] = useRecoilState(
     reportContentWidthsAtom
   );
+  const [reportContentHeights] = useRecoilState(reportContentHeightsAtom);
+
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
@@ -141,6 +149,10 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const rowContentWidths = !viewOnlyMode
     ? find(reportContentWidths, { id: props.rowId })
     : get(reportContentWidths, `[${props.rowIndex}]`, { widths: [] });
+
+  const rowContentHeights = !viewOnlyMode
+    ? find(reportContentHeights, { id: props.rowId })
+    : get(reportContentHeights, `[${props.rowIndex}]`, { heights: [] });
 
   const setDefaultRowContentWidths = () => {
     const widths = props.rowStructureDetailItems.map((row) => row.width);
@@ -291,10 +303,10 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       >
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
-            key={`${row.rowId}-${index}`}
+            key={`${row.rowId}`}
             width={get(rowContentWidths, `widths.[${index}]`, "fit-content")}
+            height={get(rowContentHeights, `heights.[${index}]`, props.height)}
             itemIndex={index}
-            height={props.height}
             rowId={props.rowId}
             rowType={row.rowType}
             onRowBoxItemResize={props.onRowBoxItemResize}
@@ -335,9 +347,14 @@ const Box = (props: {
     itemContent: string | object,
     itemContentType: "text" | "divider" | "chart" | "image"
   ) => void;
+  onRowBoxItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    height: number
+  ) => void;
   rowItemsCount: number;
   previewItem?: string | any;
-  onRowBoxItemResize: (rowId: string, itemIndex: number, width: number) => void;
 }) => {
   const location = useLocation();
   const { page } = useParams<{ page: string; view: string }>();
@@ -544,7 +561,8 @@ const Box = (props: {
     _delta: NumberSize
   ) => {
     let newWidth = elementRef.offsetWidth;
-    props.onRowBoxItemResize(props.rowId, props.itemIndex, newWidth);
+    let newHeight = elementRef.offsetHeight;
+    props.onRowBoxItemResize(props.rowId, props.itemIndex, newWidth, newHeight);
     setIsResizing(false);
   };
 
@@ -554,18 +572,37 @@ const Box = (props: {
     }
   };
 
+  const textResizableRef = React.useRef<HTMLDivElement>(null);
+
+  React.useEffect(() => {
+    if (
+      displayTextBox &&
+      textResizableRef.current &&
+      textResizableRef.current?.offsetHeight > props.height
+    ) {
+      props.onRowBoxItemResize(
+        props.rowId,
+        props.itemIndex,
+        parseInt(width.replace("%", ""), 10) + 30,
+        textResizableRef.current.offsetHeight
+      );
+    }
+  }, [displayTextBox, textContent]);
+
   const content = React.useMemo(() => {
     if (displayTextBox) {
       return (
         <Resizable
           grid={[5, 5]}
-          bounds="parent"
           onResize={onResize}
           className="re-resizeable"
           onResizeStop={onResizeStop}
-          size={{ width: width, height: props.height }}
+          size={{ width: width, height: `${props.height}px` }}
+          maxWidth={!viewOnlyMode ? containerWidth : undefined}
           enable={{
             right: !viewOnlyMode,
+            bottom: !viewOnlyMode,
+            bottomRight: !viewOnlyMode,
           }}
           css={`
             overflow-y: auto;
@@ -592,7 +629,7 @@ const Box = (props: {
             }
           `}
         >
-          <div>
+          <div ref={textResizableRef}>
             {!viewOnlyMode && (
               <>
                 <IconButton
@@ -660,13 +697,15 @@ const Box = (props: {
       return (
         <Resizable
           key={chartId}
-          bounds="parent"
           className="re-resizeable"
           onResize={onResize}
           onResizeStop={onResizeStop}
-          size={{ width: width, height: props.height }}
+          size={{ width: width, height: `${props.height}px` }}
+          maxWidth={!viewOnlyMode ? containerWidth : undefined}
           enable={{
             right: !viewOnlyMode,
+            bottom: !viewOnlyMode,
+            bottomRight: !viewOnlyMode,
           }}
         >
           <div
@@ -738,13 +777,15 @@ const Box = (props: {
       return (
         <Resizable
           key={chartId}
-          bounds="parent"
           onResize={onResize}
           onResizeStop={onResizeStop}
           className="re-resizeable"
-          size={{ width: width, height: props.height }}
+          size={{ width: width, height: `${props.height}px` }}
+          maxWidth={!viewOnlyMode ? containerWidth : undefined}
           enable={{
             right: !viewOnlyMode,
+            bottom: !viewOnlyMode,
+            bottomRight: !viewOnlyMode,
           }}
           css={`
             overflow-y: auto;
