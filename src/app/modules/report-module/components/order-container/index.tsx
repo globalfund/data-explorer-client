@@ -120,7 +120,8 @@ function ItemComponent(props: ItemComponentProps) {
         data-handler-id={handlerId}
         css={`
           top: -4px;
-          left: -4rem;
+          left: -1rem;
+          z-index: 1;
           width: 23px;
           cursor: grab;
           display: flex;

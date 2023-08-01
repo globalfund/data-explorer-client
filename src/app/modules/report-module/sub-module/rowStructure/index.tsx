@@ -88,7 +88,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         onMouseEnter: () => {
           setHandleDisplay(true);
         },
-        onMouseLeave: () => setHandleDisplay(false),
+        // onMouseLeave: () => setHandleDisplay(false),
       };
 
   const border =
@@ -110,7 +110,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         <div
           css={`
             width: 32px;
-            left: -32px;
+            left: -3rem;
             display: flex;
             position: absolute;
             height: calc(100% + 8px);

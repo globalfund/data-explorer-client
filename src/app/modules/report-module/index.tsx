@@ -626,15 +626,6 @@ export default function ReportModule() {
   };
 
   const onSave = () => {
-    if (reportName === "Untitled report" || isEmpty(reportName)) {
-      setOpenUntitledReportDialog(true);
-      return;
-    }
-    if (!isPreviewSaveEnabled) {
-      setOpenEmptyRowsDialog(true);
-      return;
-    }
-
     const action = page === "new" ? reportCreate : reportEdit;
     action({
       patchId: page === "new" ? undefined : page,
@@ -679,19 +670,22 @@ export default function ReportModule() {
   }, []);
 
   React.useEffect(() => {
-    let value = reportName.length !== 0 && framesArray.length !== 0;
-    framesArray.forEach((frame) => {
-      if (
-        frame.content.length === 0 ||
-        frame.contentTypes.length === 0 ||
-        frame.content.length !== frame.contentTypes.length ||
-        frame.content.findIndex((item) => item === null) > -1
-      ) {
-        value = false;
-      }
-      setIsPreviewSaveEnabled(value);
-    });
-  }, [reportName, framesArray]);
+    let textValue = !(
+      reportName === "Untitled report" &&
+      !headerDetails.description.getCurrentContent().hasText() &&
+      isEmpty(headerDetails.title) &&
+      framesArray.length === 1
+    );
+
+    let framesArrayState = framesArray.some(
+      (frame) =>
+        frame.content.length !== 0 ||
+        frame.contentTypes.length !== 0 ||
+        frame.structure !== null
+    );
+
+    setIsPreviewSaveEnabled(textValue || framesArrayState);
+  }, [reportName, framesArray, headerDetails]);
 
   React.useEffect(() => {
     if (

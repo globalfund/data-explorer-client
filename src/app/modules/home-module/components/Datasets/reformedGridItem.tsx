@@ -43,6 +43,9 @@ export default function ReformedGridItem(props: Props) {
         padding: 12px 16px;
         flex-direction: column;
         justify-content: space-between;
+        &:hover {
+          box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+        }
       `}
     >
       <div
