@@ -8,7 +8,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
-import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Charts/reformedGridItem";
+import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 
 interface Props {
   sortBy: string;

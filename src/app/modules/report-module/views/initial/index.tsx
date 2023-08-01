@@ -63,9 +63,22 @@ export function ReportInitialView(props: ReportInitialViewProps) {
 
   return (
     <>
+      <div>
+        <h4
+          css={`
+            font-family: "Inter", sans-serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: #231d2c;
+            margin: 0;
+          `}
+        >
+          Select your report template
+        </h4>
+      </div>
       <div
         css={`
-          height: 26px;
+          height: 48px;
         `}
       />
       <Grid container spacing={10}>

@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import filter from "lodash/filter";
-import Box from "@material-ui/core/Box";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
 import cloneDeep from "lodash/cloneDeep";
@@ -29,8 +28,7 @@ import {
   ReportContentWidthsType,
   persistedReportStateAtom,
   reportContentHeightsAtom,
-  emptyRowsAtom,
-  untitledReportAtom,
+  ReportContentHeightsType,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -56,29 +54,27 @@ interface RowFrameProps {
   id: string;
   content: (string | object | null)[];
   contentWidths: ReportContentWidthsType[];
+  contentHeights: ReportContentHeightsType[];
   contentTypes: ("text" | "divider" | "chart" | null)[];
 }
 
 export default function ReportModule() {
   const history = useHistory();
-  const reportOrderRef = useRef<string[]>([]);
-  const framesArrayRef = useRef<IFramesArray[]>([]);
-  const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
-  const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
-  const reportNameRef = useRef<string>("");
-  const [_openEmptyRowsDialog, setOpenEmptyRowsDialog] =
-    useRecoilState(emptyRowsAtom);
-  const [_untitledReportDialog, setOpenUntitledReportDialog] =
-    useRecoilState(untitledReportAtom);
-
   const { page, view } = useParams<{
     page: string;
     view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
 
+  const reportNameRef = useRef<string>("");
+  const reportOrderRef = useRef<string[]>([]);
+  const framesArrayRef = useRef<IFramesArray[]>([]);
+  const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+  const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
+
   const [buttonActive] = React.useState(false);
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("Untitled report");
@@ -128,6 +124,10 @@ export default function ReportModule() {
   const [reportContentHeights, setReportContentHeights] = useRecoilState(
     reportContentHeightsAtom
   );
+
+  React.useEffect(() => {
+    console.log("reportContentWidths", reportContentWidths);
+  }, [reportContentWidths]);
 
   const handleRowFrameItemAddition = (
     rowId: string,
@@ -205,17 +205,25 @@ export default function ReportModule() {
         100;
       tempPrev[frameIndex].contentWidths[itemIndex] = percentage;
       if (tempPrev[frameIndex].content.length > 1) {
-        const remainingWidth = 100 - percentage;
+        let remainingWidth = 100 - percentage;
         tempPrev[frameIndex].content.forEach((_, index) => {
-          if (index !== itemIndex) {
+          if (index < itemIndex) {
+            remainingWidth -= tempPrev[frameIndex].contentWidths[index];
+          }
+          if (index > itemIndex) {
             tempPrev[frameIndex].contentWidths[index] =
-              remainingWidth / (tempPrev[frameIndex].content.length - 1);
+              remainingWidth / (tempPrev[frameIndex].content.length - index);
           }
         });
       }
+      const uReportContentWidths: ReportContentWidthsType[] = [];
+      for (const item of tempPrev) {
+        const fItem = reportContentWidths.find((value) => value.id === item.id);
+        if (fItem) uReportContentWidths.push(fItem);
+      }
       tempPrev.forEach((frame, index) => {
         const indexContentWidths: number[] = get(
-          reportContentWidths,
+          uReportContentWidths,
           `[${index}].widths`,
           []
         );
@@ -230,7 +238,13 @@ export default function ReportModule() {
           });
         }
       });
-      tempPrev[frameIndex].contentHeights[itemIndex] = height;
+      console.log("tempPrev", tempPrev);
+      if (tempPrev[frameIndex].contentHeights) {
+        tempPrev[frameIndex].contentHeights[itemIndex] = height;
+      } else {
+        tempPrev[frameIndex].contentHeights = [];
+        tempPrev[frameIndex].contentHeights[itemIndex] = height;
+      }
       if (view === "edit") {
         alignFramesWContentWidths(tempPrev);
         alignFramesWContentHeights(tempPrev);
@@ -378,22 +392,20 @@ export default function ReportModule() {
           )
         ),
       },
-
       framesArray: JSON.stringify(
         framesArrayRef.current
-          .sort(function (a, b) {
-            return (
+          .sort(
+            (a, b) =>
               reportOrderRef.current.indexOf(a.id) -
               reportOrderRef.current.indexOf(b.id)
-            );
-          })
+          )
           .map((frame) => ({
             id: frame.id,
             structure: frame.structure,
             content: frame.content,
             contentTypes: frame.contentTypes,
             contentWidths: frame.contentWidths,
-
+            contentHeights: frame.contentHeights,
             items: frame.content.map((item, index) =>
               frame.contentTypes[index] === "text"
                 ? convertToRaw((item as EditorState).getCurrentContent())
@@ -432,7 +444,7 @@ export default function ReportModule() {
   ]);
 
   React.useEffect(() => {
-    if (view !== "edit") {
+    if (view !== "edit" && view !== "preview") {
       alignFramesWContentWidths(framesArray);
       alignFramesWContentHeights(framesArray);
     }
@@ -614,15 +626,6 @@ export default function ReportModule() {
   };
 
   const onSave = () => {
-    if (reportName === "Untitled report" || isEmpty(reportName)) {
-      setOpenUntitledReportDialog(true);
-      return;
-    }
-    if (!isPreviewSaveEnabled) {
-      setOpenEmptyRowsDialog(true);
-      return;
-    }
-
     const action = page === "new" ? reportCreate : reportEdit;
     action({
       patchId: page === "new" ? undefined : page,
@@ -667,19 +670,22 @@ export default function ReportModule() {
   }, []);
 
   React.useEffect(() => {
-    let value = reportName.length !== 0 && framesArray.length !== 0;
-    framesArray.forEach((frame) => {
-      if (
-        frame.content.length === 0 ||
-        frame.contentTypes.length === 0 ||
-        frame.content.length !== frame.contentTypes.length ||
-        frame.content.findIndex((item) => item === null) > -1
-      ) {
-        value = false;
-      }
-      setIsPreviewSaveEnabled(value);
-    });
-  }, [reportName, framesArray]);
+    let textValue = !(
+      reportName === "Untitled report" &&
+      !headerDetails.description.getCurrentContent().hasText() &&
+      isEmpty(headerDetails.title) &&
+      framesArray.length === 1
+    );
+
+    let framesArrayState = framesArray.some(
+      (frame) =>
+        frame.content.length !== 0 ||
+        frame.contentTypes.length !== 0 ||
+        frame.structure !== null
+    );
+
+    setIsPreviewSaveEnabled(textValue || framesArrayState);
+  }, [reportName, framesArray, headerDetails]);
 
   React.useEffect(() => {
     if (
@@ -697,7 +703,7 @@ export default function ReportModule() {
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
-      {view !== "ai-template" && (
+      {view !== "ai-template" && view !== "initial" && (
         <SubheaderToolbar
           pageType="report"
           onReportSave={onSave}
@@ -708,6 +714,7 @@ export default function ReportModule() {
           appliedHeaderDetails={appliedHeaderDetails}
           framesArray={framesArray}
           headerDetails={headerDetails}
+          setStopInitializeFramesWidth={setStopInitializeFramesWidth}
         />
       )}
       {view &&
@@ -739,7 +746,6 @@ export default function ReportModule() {
       <Switch>
         <Route path="/report/:page/initial">
           <Container maxWidth="lg">
-            <Box height={50} />
             <ReportInitialView
               resetReport={resetReport}
               buttonActive={buttonActive}
@@ -791,6 +797,9 @@ export default function ReportModule() {
             stopInitializeFramesWidth={stopInitializeFramesWidth}
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}
           />
+        </Route>
+        <Route path="/report/:page/preview">
+          <ReportPreviewView />
         </Route>
         <Route path="/report/:page">
           <ReportPreviewView />

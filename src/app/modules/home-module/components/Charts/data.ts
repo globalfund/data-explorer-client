@@ -1,4 +1,3 @@
-import { SankeyIcon } from "app/assets/icons/charts/Sankey";
 import React from "react";
 
 interface DataType {
@@ -9,6 +8,7 @@ interface DataType {
   viz: "bar" | "sankey" | "map" | "table";
   id?: string;
 }
+
 export const datasetsData: DataType[] = [
   {
     path: "#",
@@ -24,7 +24,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "bar",
   },
-
   {
     path: "#",
     title: "Geomap",
@@ -32,7 +31,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "map",
   },
-
   {
     path: "#",
     title: "Table chart",
@@ -40,7 +38,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "table",
   },
-
   {
     path: "#",
     title: "Geomap",
@@ -48,7 +45,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "map",
   },
-
   {
     path: "#",
     title: "Table chart",
@@ -56,7 +52,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "table",
   },
-
   {
     path: "#",
     title: "Geomap",
@@ -64,7 +59,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "map",
   },
-
   {
     path: "#",
     title: "Bar chart",
@@ -72,7 +66,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "bar",
   },
-
   {
     path: "#",
     title: "Bar chart",
@@ -80,7 +73,6 @@ export const datasetsData: DataType[] = [
     date: "11-11-2021",
     viz: "bar",
   },
-
   {
     path: "#",
     title: "Finance chart",

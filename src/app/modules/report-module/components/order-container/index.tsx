@@ -1,10 +1,17 @@
 import React from "react";
+import { useRecoilState } from "recoil";
 import update from "immutability-helper";
 import { useUpdateEffect } from "react-use";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from "dnd-core";
 import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
+import {
+  ReportContentWidthsType,
+  reportContentWidthsAtom,
+  ReportContentHeightsType,
+  reportContentHeightsAtom,
+} from "app/state/recoil/atoms";
 
 interface Item {
   id: string;
@@ -120,7 +127,8 @@ function ItemComponent(props: ItemComponentProps) {
         data-handler-id={handlerId}
         css={`
           top: -4px;
-          left: -4rem;
+          left: -1rem;
+          z-index: 1;
           width: 23px;
           cursor: grab;
           display: flex;
@@ -156,6 +164,9 @@ export function ReportOrderContainer(props: Props) {
   const setOrderData = useStoreActions(
     (actions) => actions.reports.orderData.setValue
   );
+
+  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
+  const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
 
   const moveCard = React.useCallback(
     (dragIndex: number, hoverIndex: number) => {
@@ -196,6 +207,22 @@ export function ReportOrderContainer(props: Props) {
     setOrderData({
       hasChanged: true,
       order: items.map((item: Item) => item.id),
+    });
+    setReportContentWidths((prevValue) => {
+      const newValue: ReportContentWidthsType[] = [];
+      for (const item of items) {
+        const fItem = prevValue.find((value) => value.id === item.id);
+        if (fItem) newValue.push(fItem);
+      }
+      return newValue;
+    });
+    setReportContentHeights((prevValue) => {
+      const newValue: ReportContentHeightsType[] = [];
+      for (const item of items) {
+        const fItem = prevValue.find((value) => value.id === item.id);
+        if (fItem) newValue.push(fItem);
+      }
+      return newValue;
     });
   }, [items]);
 

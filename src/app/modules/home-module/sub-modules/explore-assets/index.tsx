@@ -33,9 +33,9 @@ import {
   searchInputCss,
   sortByItemCss,
 } from "app/modules/home-module/style";
-import DatasetsGrid from "./Datasets/datasetsGrid";
-import ChartsGrid from "./Charts/chartsGrid";
-import ReportsGrid from "./Reports/reportsGrid";
+import DatasetsGrid from "app/modules/home-module/components/Datasets/datasetsGrid";
+import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
+import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
 
 const StyledTab = withStyles(() => ({
   root: {

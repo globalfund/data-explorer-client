@@ -9,7 +9,7 @@ import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
-import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Reports/reformedGridItem";
+import ReformedGridItem from "app/modules/home-module/components/Reports/reformedGridItem";
 
 interface Props {
   sortBy: string;

@@ -8,7 +8,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
-import ReformedGridItem from "app/modules/home-module/sub-modules/explore-assets/Datasets/reformedGridItem";
+import ReformedGridItem from "app/modules/home-module/components/Datasets/reformedGridItem";
 
 interface Props {
   sortBy: string;
@@ -104,7 +104,8 @@ export default function DatasetsGrid(props: Props) {
                 path={"#"}
                 title={data.name}
                 showMenu
-                handleDelete={() => handleModal(data.id)}
+                handleDuplicate={() => {}}
+                handleDelete={() => {}}
               />
               <Box height={16} />
             </Grid>
