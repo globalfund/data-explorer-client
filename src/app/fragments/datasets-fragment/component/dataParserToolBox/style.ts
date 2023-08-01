@@ -50,8 +50,23 @@ export const optionFlexcss = css`
 export const buttonFlexcss = css`
   display: flex;
   justify-content: flex-end;
-
+  margin-top: 25px;
   gap: 1rem;
+  button {
+    outline: none;
+    border: none;
+    cursor: pointer;
+    width: 125px;
+    height: 41px;
+    padding: 12px 43.5px;
+    border-radius: 30px;
+    background: #231d2c;
+    color: #fff;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+  }
 `;
 export const inputBoxcss = css`
   background: #ffffff;

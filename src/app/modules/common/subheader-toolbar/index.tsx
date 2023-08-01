@@ -113,6 +113,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const [duplicatedReportId, setDuplicatedReportId] = React.useState<
     string | null
   >(null);
+  const [duplicatedChartId, setDuplicatedChartId] = React.useState<
+    string | null
+  >(null);
   const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(
     null
   );
@@ -360,7 +363,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   };
 
   const handleDuplicate = () => {
-    if (props.pageType === "report")
+    if (props.pageType === "report") {
       axios
         .get(`${process.env.REACT_APP_API}/report/duplicate/${page}`)
         .then((response) => {
@@ -375,6 +378,22 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           });
         })
         .catch((error) => console.log(error));
+    } else {
+      axios
+        .get(`${process.env.REACT_APP_API}/chart/duplicate/${page}`)
+        .then((response) => {
+          loadCharts({
+            storeInCrudData: true,
+            filterString: "filter[order]=createdDate desc",
+          });
+          setDuplicatedChartId(response.data.id);
+          setSnackbarState({
+            ...snackbarState,
+            open: true,
+          });
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   const handlePreviewMode = () => {
@@ -480,23 +499,20 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       />
       <Container maxWidth="lg">
         <div css={styles.innercontainer}>
-          {view === "initial" ? (
-            <p>Select your report template</p>
-          ) : (
-            <input
-              value={props.name}
-              placeholder="Title"
-              css={styles.nameInput}
-              onChange={onNameChange}
-              style={
-                page !== "new" && !view
-                  ? {
-                      pointerEvents: "none",
-                    }
-                  : {}
-              }
-            />
-          )}
+          <input
+            value={props.name}
+            placeholder="Title"
+            css={styles.nameInput}
+            onChange={onNameChange}
+            style={
+              page !== "new" && !view
+                ? {
+                    pointerEvents: "none",
+                  }
+                : {}
+            }
+          />
+
           {view !== "initial" && (
             <div css={styles.endContainer}>
               {view === "preview" && props.pageType !== "chart" && (
@@ -636,17 +652,24 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         }}
         open={snackbarState.open}
         onClose={() => setSnackbarState({ ...snackbarState, open: false })}
-        message={`Report has been duplicated successfully!`}
+        message={`${
+          props.pageType === "report" ? "Report" : "Chart"
+        } has been duplicated successfully!`}
         key={snackbarState.vertical + snackbarState.horizontal}
         action={
           <button
             onClick={() => {
               setSnackbarState({ ...snackbarState, open: false });
-              history.push(`/report/${duplicatedReportId}`);
-              setDuplicatedReportId(null);
+              if (props.pageType === "report") {
+                history.push(`/report/${duplicatedReportId}`);
+                setDuplicatedReportId(null);
+              } else {
+                history.push(`/chart/${duplicatedChartId}`);
+                setDuplicatedChartId(null);
+              }
             }}
           >
-            GO TO REPORT
+            GO TO {props.pageType === "report" ? "REPORT" : "CHART"}
           </button>
         }
       />

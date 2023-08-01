@@ -2,8 +2,8 @@ import React from "react";
 import Box from "@material-ui/core/Box";
 import { withStyles } from "@material-ui/core";
 import Snackbar from "@material-ui/core/Snackbar";
-import DataParserToolBox from "../component/dataParserToolBox";
 import { DatasetDataTable } from "app/fragments/datasets-fragment/component/data-table";
+import { buttonFlexcss } from "app/fragments/datasets-fragment/component/dataParserToolBox/style";
 
 interface Props {
   data: any[];
@@ -32,16 +32,11 @@ export const CssSnackbar = withStyles({
 })(Snackbar);
 
 export default function PreviewFragment(props: Props) {
-  const [openToolboxPanel, setOpenToolboxPanel] = React.useState(true);
   const [snackbarState, setSnackbarState] = React.useState<ISnackbarState>({
     open: false,
     vertical: "bottom",
     horizontal: "center",
   });
-
-  const onCloseBtnClick = () => {
-    setOpenToolboxPanel(!openToolboxPanel);
-  };
 
   React.useEffect(() => {
     if (props.dataTotalCount > 0) {
@@ -58,26 +53,28 @@ export default function PreviewFragment(props: Props) {
         css={`
           color: #231d2c;
           font-weight: 500;
+          font-family: "Inter", sans-serif;
           font-size: 48px;
           margin-top: 5.5rem;
         `}
       >
-        Preview
+        Data Preview
       </h1>
       <Box height={27} />
       <div
         css={`
           transition: width 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
-          width: ${openToolboxPanel ? `calc(100% - 217px)` : "100%"};
+          width: 100%;
         `}
       >
         <DatasetDataTable data={props.data} stats={props.stats} />
+        <div css={buttonFlexcss}>
+          <button type="button" onClick={props.handleNext}>
+            Apply
+          </button>
+        </div>
       </div>
-      <DataParserToolBox
-        onCloseBtnClick={onCloseBtnClick}
-        open={openToolboxPanel}
-        handleNext={props.handleNext}
-      />
+
       <CssSnackbar
         anchorOrigin={{
           vertical: snackbarState.vertical,

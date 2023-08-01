@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useRef } from "react";
 import get from "lodash/get";
 import find from "lodash/find";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
+import { useOnClickOutside } from "usehooks-ts";
 import Tooltip from "@material-ui/core/Tooltip";
 import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
@@ -62,7 +63,7 @@ interface RowStructureDisplayProps {
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-
+  const ref = useRef(null);
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
   const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
@@ -88,8 +89,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         onMouseEnter: () => {
           setHandleDisplay(true);
         },
-        onMouseLeave: () => setHandleDisplay(false),
       };
+  useOnClickOutside(ref, () => setHandleDisplay(false));
 
   const border =
     !viewOnlyMode && handleDisplay
@@ -108,9 +109,10 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     >
       {handleDisplay && (
         <div
+          ref={ref}
           css={`
             width: 32px;
-            left: -32px;
+            left: -3rem;
             display: flex;
             position: absolute;
             height: calc(100% + 8px);
@@ -183,7 +185,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       >
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
-            key={`${row.rowId}-${index}`}
+            key={row.rowId}
             width={get(rowContentWidths, `widths.[${index}]`, "fit-content")}
             height={get(rowContentHeights, `heights.[${index}]`, props.height)}
             itemIndex={index}
@@ -266,7 +268,7 @@ const Box = (props: {
     //set persisted report state to current report state
     props.handlePersistReportState();
 
-    history.push(`/chart/${chartId}/customize`);
+    history.push(`/chart/${chartId}/mapping`);
   };
 
   const containerWidth = useRecoilValue(reportContentContainerWidth);

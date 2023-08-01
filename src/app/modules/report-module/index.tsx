@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import filter from "lodash/filter";
-import Box from "@material-ui/core/Box";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
 import cloneDeep from "lodash/cloneDeep";
@@ -29,8 +28,6 @@ import {
   ReportContentWidthsType,
   persistedReportStateAtom,
   reportContentHeightsAtom,
-  emptyRowsAtom,
-  untitledReportAtom,
   ReportContentHeightsType,
 } from "app/state/recoil/atoms";
 import {
@@ -75,9 +72,6 @@ export default function ReportModule() {
   const framesArrayRef = useRef<IFramesArray[]>([]);
   const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
   const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
-
-  const setOpenEmptyRowsDialog = useRecoilState(emptyRowsAtom)[1];
-  const setOpenUntitledReportDialog = useRecoilState(untitledReportAtom)[1];
 
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
@@ -647,15 +641,6 @@ export default function ReportModule() {
   };
 
   const onSave = () => {
-    if (reportName === "Untitled report" || isEmpty(reportName)) {
-      setOpenUntitledReportDialog(true);
-      return;
-    }
-    if (!isPreviewSaveEnabled) {
-      setOpenEmptyRowsDialog(true);
-      return;
-    }
-
     const action = page === "new" ? reportCreate : reportEdit;
     action({
       patchId: page === "new" ? undefined : page,
@@ -700,19 +685,22 @@ export default function ReportModule() {
   }, []);
 
   React.useEffect(() => {
-    let value = reportName.length !== 0 && framesArray.length !== 0;
-    framesArray.forEach((frame) => {
-      if (
-        frame.content.length === 0 ||
-        frame.contentTypes.length === 0 ||
-        frame.content.length !== frame.contentTypes.length ||
-        frame.content.findIndex((item) => item === null) > -1
-      ) {
-        value = false;
-      }
-      setIsPreviewSaveEnabled(value);
-    });
-  }, [reportName, framesArray]);
+    let textValue = !(
+      reportName === "Untitled report" &&
+      !headerDetails.description.getCurrentContent().hasText() &&
+      isEmpty(headerDetails.title) &&
+      framesArray.length === 1
+    );
+
+    let framesArrayState = framesArray.some(
+      (frame) =>
+        frame.content.length !== 0 ||
+        frame.contentTypes.length !== 0 ||
+        frame.structure !== null
+    );
+
+    setIsPreviewSaveEnabled(textValue || framesArrayState);
+  }, [reportName, framesArray, headerDetails]);
 
   React.useEffect(() => {
     if (
@@ -730,7 +718,7 @@ export default function ReportModule() {
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
-      {view !== "ai-template" && (
+      {view !== "ai-template" && view !== "initial" && (
         <SubheaderToolbar
           pageType="report"
           onReportSave={onSave}
@@ -773,7 +761,6 @@ export default function ReportModule() {
       <Switch>
         <Route path="/report/:page/initial">
           <Container maxWidth="lg">
-            <Box height={50} />
             <ReportInitialView
               resetReport={resetReport}
               buttonActive={buttonActive}

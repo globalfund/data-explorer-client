@@ -3,7 +3,7 @@ import get from "lodash/get";
 import { useRecoilValue } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
-import { useLocation, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { itemSpacing, containerGap } from "app/modules/report-module/data";
 import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
@@ -183,8 +183,10 @@ export interface IRowStructureType {
 }
 
 export default function RowFrame(props: RowFrameProps) {
+  const history = useHistory();
+
   const [selectedType, setSelectedType] = React.useState<string>(
-    props.forceSelectedType || ""
+    props.forceSelectedType ?? ""
   );
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
@@ -214,6 +216,14 @@ export default function RowFrame(props: RowFrameProps) {
   };
 
   const reportContentWidths = useRecoilValue(reportContentWidthsAtom);
+
+  const onlyView = React.useMemo(() => {
+    return (
+      !history.location.pathname.includes("/edit") &&
+      !history.location.pathname.includes("/new") &&
+      !history.location.pathname.includes("/preview")
+    );
+  }, [history.location.pathname]);
 
   const onRowBoxItemResize = (
     rowId: string,
@@ -409,6 +419,10 @@ export default function RowFrame(props: RowFrameProps) {
       />
     ),
   };
+
+  if (onlyView && !selectedType) {
+    return <div></div>;
+  }
 
   return (
     <>

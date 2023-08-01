@@ -240,11 +240,7 @@ export function AppBar() {
                     <b>Explore Assets</b>
                   </NavLink>
                 </div>
-                <div css={navLinkcss("explore", navLocation)}>
-                  <NavLink to="/" onClick={() => handlePath("reports")}>
-                    <b>Explore Reports</b>
-                  </NavLink>
-                </div>
+
                 <div css={navLinkcss("about", navLocation)}>
                   <Link to="/about" onClick={() => handlePath("reports")}>
                     <b>About</b>

@@ -1,5 +1,4 @@
 import React from "react";
-import moment from "moment";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
 import { EditorState } from "draft-js";
@@ -11,7 +10,6 @@ import { useLocation, useParams } from "react-router-dom";
 import { reportRightPanelViewAtom } from "app/state/recoil/atoms";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
 import { ReactComponent as EditIcon } from "app/modules/report-module/asset/editIcon.svg";
-import { ReactComponent as ClockIcon } from "app/modules/report-module/asset/clock-img.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { headerBlockcss } from "app/modules/report-module/sub-module/components/headerBlock/style";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
@@ -213,7 +211,7 @@ export default function HeaderBlock(props: Props) {
           <div
             css={`
               width: 60%;
-              max-height: 52px;
+              max-height: 90px;
               overflow-y: hidden;
               color: ${props.headerDetails.descriptionColor} !important;
               font-size: 14px;
@@ -234,7 +232,7 @@ export default function HeaderBlock(props: Props) {
                 > div {
                   > div {
                     > div {
-                      min-height: 60px !important;
+                      min-height: 90px !important;
                     }
                   }
                 }
@@ -248,15 +246,6 @@ export default function HeaderBlock(props: Props) {
               placeholder="Write a description"
               textContent={props.headerDetails.description}
             />
-          </div>
-          <div css={headerBlockcss.date(props.headerDetails.dateColor)}>
-            <p>
-              <ClockIcon />
-            </p>
-            <p>
-              Creation date:{" "}
-              {moment(props.headerDetails.createdDate).format("DD.MM.YYYY")}
-            </p>
           </div>
         </div>
       </Container>

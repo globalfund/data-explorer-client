@@ -18,25 +18,14 @@ const getColumns = (
 
 export function DatasetDataTable(props: DataThemesDataTableProps) {
   const containerEl = React.useRef<HTMLDivElement>(null);
-  const [columnDetails, setColumnDetails] = React.useState(tableToolBoxData);
-  const [sort, setSort] = React.useState<SortColumn>({
+  const [columnDetails, _setColumnDetails] = React.useState(tableToolBoxData);
+  const [sort, _setSort] = React.useState<SortColumn>({
     columnKey: "_id",
     direction: "ASC",
   });
   const [data, setData] = React.useState<
     { [key: string]: number | string | null | boolean }[]
   >([]);
-
-  const handleSort = React.useCallback((newSorts: SortColumn[]) => {
-    if (newSorts.length === 0) {
-      setSort({
-        columnKey: "_id",
-        direction: "ASC",
-      });
-    } else {
-      setSort(newSorts[newSorts.length - 1]);
-    }
-  }, []);
 
   React.useEffect(() => {
     setData(props.data);

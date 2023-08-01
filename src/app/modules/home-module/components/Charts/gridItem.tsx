@@ -1,8 +1,6 @@
 import React from "react";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import IconButton from "@material-ui/core/IconButton";
-import { ReactComponent as MenuIcon } from "app/modules/home-module/assets/menu.svg";
 
 interface Props {
   id: string;
