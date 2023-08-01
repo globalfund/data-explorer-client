@@ -184,7 +184,7 @@ export interface IRowStructureType {
 
 export default function RowFrame(props: RowFrameProps) {
   const [selectedType, setSelectedType] = React.useState<string>(
-    props.forceSelectedType || ""
+    props.forceSelectedType ?? ""
   );
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]

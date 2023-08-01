@@ -185,7 +185,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       >
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
-            key={`${row.rowId}-${index}`}
+            key={row.rowId}
             width={get(rowContentWidths, `widths.[${index}]`, "fit-content")}
             height={get(rowContentHeights, `heights.[${index}]`, props.height)}
             itemIndex={index}

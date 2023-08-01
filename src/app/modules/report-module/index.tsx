@@ -2,7 +2,6 @@ import React, { useRef } from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import filter from "lodash/filter";
-import Box from "@material-ui/core/Box";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
 import cloneDeep from "lodash/cloneDeep";
@@ -29,8 +28,6 @@ import {
   ReportContentWidthsType,
   persistedReportStateAtom,
   reportContentHeightsAtom,
-  emptyRowsAtom,
-  untitledReportAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -68,10 +65,6 @@ export default function ReportModule() {
   const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
   const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
   const reportNameRef = useRef<string>("");
-  const [_openEmptyRowsDialog, setOpenEmptyRowsDialog] =
-    useRecoilState(emptyRowsAtom);
-  const [_untitledReportDialog, setOpenUntitledReportDialog] =
-    useRecoilState(untitledReportAtom);
 
   const { page, view } = useParams<{
     page: string;

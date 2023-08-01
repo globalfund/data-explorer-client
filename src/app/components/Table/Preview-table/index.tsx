@@ -47,7 +47,7 @@ export default function PreviewTable(props: PreviewTableProps) {
               background: #231d2c;
             }
             &::-webkit-scrollbar-track {
-              background: #f9f9f9;
+              background: #fff;
 
               padding: 0 0.5rem;
             }

@@ -184,7 +184,7 @@ export default function ReformedGridItem(props: Props) {
             <div>
               <IconButton
                 onClick={() => {
-                  props.handleDuplicate?.(props.id as string);
+                  props.handleDuplicate?.(props.id);
                   setMenuOptionsDisplay(false);
                 }}
               >
