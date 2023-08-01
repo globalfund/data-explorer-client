@@ -14,9 +14,7 @@ export interface ChartsAppliedFiltersStateModel {
   setAll: Action<
     ChartsAppliedFiltersStateModel,
     {
-      value: {
-        [key: string]: any[];
-      };
+      [key: string]: any[];
     }
   >;
   reset: Action<ChartsAppliedFiltersStateModel>;
@@ -50,12 +48,10 @@ export const ChartsAppliedFiltersState: ChartsAppliedFiltersStateModel = {
     (
       state,
       payload: {
-        value: {
-          [key: string]: any[];
-        };
+        [key: string]: any[];
       }
     ) => {
-      state.value = payload.value;
+      state.value = payload;
     }
   ),
   reset: action((state) => {

@@ -297,7 +297,6 @@ function ReportRightPanelCreateViewChartList(props: {
   };
 
   React.useEffect(() => {
-    console.log("loaded");
     loadChartList({
       storeInCrudData: true,
       filterString: `filter={"where":{"name":{"like":"${search}.*","options":"i"}},"order":"${sortBy.value}"}`,

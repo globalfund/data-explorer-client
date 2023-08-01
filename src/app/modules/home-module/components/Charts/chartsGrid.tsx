@@ -10,11 +10,13 @@ import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 
-export default function ChartsGrid(props: {
+interface Props {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
-}) {
+}
+
+export default function ChartsGrid(props: Props) {
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -95,15 +97,19 @@ export default function ChartsGrid(props: {
   }
 
   React.useEffect(() => {
-    loadData(props.searchStr, props.sortBy);
-  }, []);
+    if (props.searchStr.length === 0) {
+      loadData(props.searchStr, props.sortBy);
+    }
+  }, [props.sortBy]);
 
   const [,] = useDebounce(
     () => {
-      loadData(props.searchStr, props.sortBy);
+      if (props.searchStr.length > 0) {
+        loadData(props.searchStr, props.sortBy);
+      }
     },
     500,
-    [props.searchStr]
+    [props.searchStr, props.sortBy]
   );
 
   return (

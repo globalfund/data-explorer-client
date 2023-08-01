@@ -273,6 +273,7 @@ const ActionMenu = () => {
   const handleCloseActionPopover = () => {
     setActionPopoverAnchorEl(null);
   };
+
   return (
     <div>
       <div
@@ -328,7 +329,6 @@ const ActionMenu = () => {
           <KeyboardArrowDownIcon />
         </button>
       </div>
-
       <Popover
         open={openActionPopover}
         anchorEl={actionPopoverAnchorEl}
@@ -369,6 +369,7 @@ const ActionMenu = () => {
               width: 100%;
               height: 100%;
               a {
+                width: 100%;
                 text-decoration: none;
               }
               button {

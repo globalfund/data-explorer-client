@@ -372,7 +372,7 @@ const Box = (props: {
       props.onRowBoxItemResize(
         props.rowId,
         props.itemIndex,
-        parseInt(width.replace("%", ""), 10) + 30,
+        parseInt(width.replace("%", ""), 10),
         textResizableRef.current.offsetHeight
       );
     }

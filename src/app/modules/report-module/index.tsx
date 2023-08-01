@@ -201,20 +201,31 @@ export default function ReportModule() {
         return prev;
       }
       const contentContainer = document.getElementById("content-container");
-      const percentage = ((width + 30) / contentContainer!.offsetWidth) * 100;
+      const percentage =
+        ((width + (tempPrev[frameIndex].structure !== "oneByOne" ? 30 : 0)) /
+          contentContainer!.offsetWidth) *
+        100;
       tempPrev[frameIndex].contentWidths[itemIndex] = percentage;
       if (tempPrev[frameIndex].content.length > 1) {
-        const remainingWidth = 100 - percentage;
+        let remainingWidth = 100 - percentage;
         tempPrev[frameIndex].content.forEach((_, index) => {
-          if (index !== itemIndex) {
+          if (index < itemIndex) {
+            remainingWidth -= tempPrev[frameIndex].contentWidths[index];
+          }
+          if (index > itemIndex) {
             tempPrev[frameIndex].contentWidths[index] =
-              remainingWidth / (tempPrev[frameIndex].content.length - 1);
+              remainingWidth / (tempPrev[frameIndex].content.length - index);
           }
         });
       }
+      const uReportContentWidths: ReportContentWidthsType[] = [];
+      for (const item of tempPrev) {
+        const fItem = reportContentWidths.find((value) => value.id === item.id);
+        if (fItem) uReportContentWidths.push(fItem);
+      }
       tempPrev.forEach((frame, index) => {
         const indexContentWidths: number[] = get(
-          reportContentWidths,
+          uReportContentWidths,
           `[${index}].widths`,
           []
         );
