@@ -6,12 +6,19 @@ import { IconButton } from "@material-ui/core";
 export default function RowFrameIntro(props: {
   setStep: SetterOrUpdater<number>;
   handleClose: () => void;
+  open: boolean;
+  reportType: "basic" | "advanced" | "ai";
 }) {
   return (
     <div
       css={`
         position: absolute;
-        top: 95%;
+        ${props.reportType === "basic" && "top: 55%;"}
+        ${props.reportType === "advanced" && "top: 15%; left: -5%;"} 
+        
+
+        display: ${props.open ? "block" : "none"};
+        z-index: 2;
       `}
     >
       <div

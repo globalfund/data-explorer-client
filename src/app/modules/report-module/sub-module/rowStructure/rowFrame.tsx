@@ -113,34 +113,6 @@ const _rowStructureDetailItems = [
       factor: 0.2,
     },
   ],
-  [
-    {
-      rowType: "oneToFour",
-      rowId: "oneToFour-1",
-      width: `calc(20% - ${itemSpacing})`,
-      factor: 0.2,
-    },
-    {
-      rowType: "oneToFour",
-      rowId: "oneToFour-2",
-      width: `calc(80% - ${itemSpacing})`,
-      factor: 0.8,
-    },
-  ],
-  [
-    {
-      rowType: "fourToOne",
-      rowId: "fourToOne-1",
-      width: `calc(80% - ${itemSpacing})`,
-      factor: 0.8,
-    },
-    {
-      rowType: "fourToOne",
-      rowId: "fourToOne-2",
-      width: `calc(20% - ${itemSpacing})`,
-      factor: 0.2,
-    },
-  ],
 ];
 
 export interface RowFrameProps {
@@ -164,8 +136,6 @@ export interface RowFrameProps {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,
@@ -271,8 +241,6 @@ export default function RowFrame(props: RowFrameProps) {
         | "oneByThree"
         | "oneByFour"
         | "oneByFive"
-        | "oneToFour"
-        | "fourToOne"
     );
   }, [selectedType]);
 
@@ -376,44 +344,6 @@ export default function RowFrame(props: RowFrameProps) {
         handlePersistReportState={props.handlePersistReportState}
       />
     ),
-    oneToFour: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height={400}
-        rowId={props.rowId}
-        rowIndex={props.rowIndex}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[5]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-        onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
-      />
-    ),
-    fourToOne: (
-      <RowstructureDisplay
-        gap={containerGap}
-        height={400}
-        rowIndex={props.rowIndex}
-        rowId={props.rowId}
-        selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
-        setSelectedType={setSelectedType}
-        selectedTypeHistory={selectedTypeHistory}
-        setSelectedTypeHistory={setSelectedTypeHistory}
-        rowStructureDetailItems={rowStructureDetailItems[6]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
-        onRowBoxItemResize={onRowBoxItemResize}
-        handlePersistReportState={props.handlePersistReportState}
-      />
-    ),
   };
 
   return (
@@ -422,7 +352,13 @@ export default function RowFrame(props: RowFrameProps) {
         <>{checkSelectedType[selectedType as keyof typeof checkSelectedType]}</>
       ) : (
         <div css={containercss}>
-          <p>Select your row structure</p>
+          <p
+            css={`
+              margin-bottom: 0;
+            `}
+          >
+            Select your row structure
+          </p>
           <IconButton
             css={`
               top: -5px;
@@ -441,7 +377,7 @@ export default function RowFrame(props: RowFrameProps) {
               margin: auto;
               display: flex;
               flex-wrap: wrap;
-              column-gap: 50px;
+              column-gap: 55px;
               align-items: center;
               justify-content: center;
             `}
@@ -471,18 +407,6 @@ export default function RowFrame(props: RowFrameProps) {
               setTourStep={setReportCreationTourStep}
             />
             <OneByFive
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              tourStep={reportCreationTourStep}
-              setTourStep={setReportCreationTourStep}
-            />
-            <OneToFour
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              tourStep={reportCreationTourStep}
-              setTourStep={setReportCreationTourStep}
-            />
-            <FourToOne
               selectedType={selectedType}
               setSelectedType={setSelectedType}
               tourStep={reportCreationTourStep}
@@ -633,64 +557,6 @@ const OneByFive = (props: IRowStructureType) => {
         <div />
         <div />
         <div />
-        <div />
-        <div />
-      </div>
-    </div>
-  );
-};
-
-const OneToFour = (props: IRowStructureType) => {
-  const handleClick = () => {
-    if (props.tourStep === 2) {
-      props.setTourStep(3);
-    }
-    props.setSelectedType("oneToFour");
-  };
-  return (
-    <div css={blockcss} onClick={handleClick}>
-      <p>1/4</p>
-      <div
-        css={`
-          display: grid;
-          grid-template-columns: 25% 75%;
-          gap: 7px;
-          width: 116px;
-          div {
-            background: #dfe3e6;
-            height: 56px;
-          }
-        `}
-      >
-        <div />
-        <div />
-      </div>
-    </div>
-  );
-};
-
-const FourToOne = (props: IRowStructureType) => {
-  const handleClick = () => {
-    if (props.tourStep === 2) {
-      props.setTourStep(3);
-    }
-    props.setSelectedType("fourToOne");
-  };
-  return (
-    <div css={blockcss} onClick={handleClick}>
-      <p>4/1</p>
-      <div
-        css={`
-          display: grid;
-          grid-template-columns: 75% 25%;
-          gap: 7px;
-          width: 116px;
-          div {
-            background: #dfe3e6;
-            height: 56px;
-          }
-        `}
-      >
         <div />
         <div />
       </div>

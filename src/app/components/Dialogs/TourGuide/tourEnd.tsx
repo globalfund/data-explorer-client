@@ -2,14 +2,25 @@ import { IconButton } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 
-export default function TourEnd({ handleClose }: { handleClose: () => void }) {
+export default function TourEnd({
+  handleClose,
+  open,
+  reportType,
+}: {
+  handleClose: () => void;
+  open: boolean;
+  reportType: "basic" | "advanced" | "ai";
+}) {
   return (
     <div
       css={`
         position: absolute;
-        bottom: 2%;
-        right: -10%;
-        z-index: 1000;
+
+        ${reportType === "basic" && " bottom: 25%;; right: -10%; "}
+        ${reportType === "advanced" && "top: 5%; right: -25%;"} 
+        display: ${open ? "block" : "none"};
+
+        z-index: 100;
       `}
     >
       <div
@@ -66,8 +77,10 @@ export default function TourEnd({ handleClose }: { handleClose: () => void }) {
           <CloseOutlined color={"inherit"} fontSize={"inherit"} />
         </IconButton>
         <p>
-          Good job! These grey rectangles are called placeholders. You drag and
-          drop Chart or other Layout elements inside from the right panel.
+          {reportType === "basic" &&
+            " Good job! These grey rectangles are called placeholders. You drag and drop Chart or other Layout elements inside from the right panel."}
+          {reportType === "advanced" &&
+            "These grey rectangles are called placeholders. You drag and drop Chart or other Layout elements inside from the right panel"}
           <br />
           <br />
           That’s how you create a report. Easy right!

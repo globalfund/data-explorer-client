@@ -9,8 +9,6 @@ export interface IRowFrameStructure {
     | "oneByThree"
     | "oneByFour"
     | "oneByFive"
-    | "oneToFour"
-    | "fourToOne"
     | "";
 
   disableAddRowStructureButton: boolean;

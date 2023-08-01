@@ -7,23 +7,14 @@ function rand() {
   return Math.round(Math.random() * 20) - 10;
 }
 
-function getModalStyle() {
-  const top = 50 + rand();
-  const left = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
 export const useStyles = makeStyles(() =>
   createStyles({
     modal: {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      width: "100%",
+      height: "100%",
     },
     paper: {
       outline: 0,
@@ -45,8 +36,6 @@ export default function TourStart(props: {
 }) {
   const classes = useStyles();
 
-  const [modalStyle] = React.useState(getModalStyle);
-
   return (
     <Modal
       open={props.open}
@@ -55,8 +44,9 @@ export default function TourStart(props: {
       }}
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
+      className={classes.modal}
     >
-      <div style={modalStyle} className={classes.paper}>
+      <div className={classes.paper}>
         <div
           css={`
             width: 90%;

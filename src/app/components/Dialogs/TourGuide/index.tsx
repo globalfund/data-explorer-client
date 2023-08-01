@@ -7,7 +7,9 @@ import { useRecoilState } from "recoil";
 import { reportCreationTourStepAtom } from "app/state/recoil/atoms";
 import useCookie from "@devhammed/use-cookie";
 
-export default function TourGuide() {
+export default function TourGuide(props: {
+  reportType: "basic" | "advanced" | "ai";
+}) {
   const [reportCreationTourStep, setReportCreationTourStep] = useRecoilState(
     reportCreationTourStepAtom
   );
@@ -27,7 +29,7 @@ export default function TourGuide() {
     setOpen(!open);
   }
 
-  const displayTourStep = () => {
+  const displayBasicReportTourStep = () => {
     switch (reportCreationTourStep) {
       case 0:
         return (
@@ -42,16 +44,61 @@ export default function TourGuide() {
           <RowFrameIntro
             setStep={setReportCreationTourStep}
             handleClose={handleClose}
+            open={open}
+            reportType={props.reportType}
           />
         );
       case 2:
-        return <SelectStructure handleClose={handleClose} />;
+        return <SelectStructure handleClose={handleClose} open={open} />;
       case 3:
-        return <TourEnd handleClose={handleClose} />;
+        return (
+          <TourEnd
+            handleClose={handleClose}
+            open={open}
+            reportType={props.reportType}
+          />
+        );
+      default:
+        return;
+    }
+  };
+  const displayAdvancedReportTourStep = () => {
+    switch (reportCreationTourStep) {
+      case 0:
+        return (
+          <TourStart
+            setStep={setReportCreationTourStep}
+            open={open}
+            handleClose={handleClose}
+          />
+        );
+      case 1:
+        return (
+          <RowFrameIntro
+            setStep={setReportCreationTourStep}
+            handleClose={handleClose}
+            open={open}
+            reportType={props.reportType}
+          />
+        );
+      case 2:
+        return (
+          <TourEnd
+            handleClose={handleClose}
+            open={open}
+            reportType={props.reportType}
+          />
+        );
+      case 3:
       default:
         return;
     }
   };
 
-  return <>{displayTourStep()}</>;
+  return (
+    <>
+      {props.reportType === "basic" && displayBasicReportTourStep()}
+      {props.reportType === "advanced" && displayAdvancedReportTourStep()}
+    </>
+  );
 }

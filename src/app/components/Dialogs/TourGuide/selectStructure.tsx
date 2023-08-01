@@ -2,12 +2,18 @@ import { IconButton } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 
-export default function SelectStructure(props: { handleClose: () => void }) {
+export default function SelectStructure(props: {
+  handleClose: () => void;
+  open: boolean;
+}) {
   return (
     <div
       css={`
         position: absolute;
-        top: 95%;
+        top: 55%;
+        left: 1%;
+        display: ${props.open ? "block" : "none"};
+        z-index: 2;
       `}
     >
       <div

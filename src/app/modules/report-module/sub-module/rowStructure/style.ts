@@ -24,7 +24,7 @@ export const blockcss = css`
 
 export const containercss = css`
   width: 100%;
-  height: 252px;
+  height: 172px;
   background: #fff;
   padding: 5px 40px;
   position: relative;
