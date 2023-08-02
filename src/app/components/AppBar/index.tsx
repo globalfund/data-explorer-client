@@ -269,7 +269,9 @@ export function AppBar() {
 const ActionMenu = () => {
   const [actionPopoverAnchorEl, setActionPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
+
   const openActionPopover = Boolean(actionPopoverAnchorEl);
+
   const handleCloseActionPopover = () => {
     setActionPopoverAnchorEl(null);
   };
@@ -305,9 +307,9 @@ const ActionMenu = () => {
               width: 41px;
               height: 34px;
               border-radius: 0px 24px 24px 0px;
-              background: ${openActionPopover ? "#B5B5DB" : "#dadaf8"};
+              background: ${openActionPopover ? "#b5b5db" : "#dadaf8"};
               &:hover {
-                opacity: 1;
+                background: #b5b5db;
               }
             }
             svg {
@@ -389,7 +391,9 @@ const ActionMenu = () => {
 
               &:hover,
               &:active {
+                cursor: pointer;
                 background: #6061e5;
+
                 button {
                   color: #fff;
                 }

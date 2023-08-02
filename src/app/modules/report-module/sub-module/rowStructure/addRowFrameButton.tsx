@@ -32,8 +32,6 @@ interface Props {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,

@@ -57,8 +57,6 @@ export interface ReportEditViewProps {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,

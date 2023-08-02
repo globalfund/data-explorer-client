@@ -77,6 +77,7 @@ const StyledTabs = withStyles({
 
 export default function HomeModule() {
   useTitle("DX DataXplorer");
+
   // clear persisted state
   const clearPersistedReportState = useResetRecoilState(
     persistedReportStateAtom
@@ -85,9 +86,10 @@ export default function HomeModule() {
     createChartFromReportAtom
   );
 
-  const [_, setReportPreviewMode] = useRecoilState(
+  const setReportPreviewMode = useRecoilState(
     unSavedReportPreviewModeAtom
-  );
+  )[1];
+
   React.useEffect(() => {
     clearPersistedReportState();
     clearCreateChartFromReportState();

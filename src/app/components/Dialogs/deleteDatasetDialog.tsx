@@ -1,10 +1,4 @@
-import {
-  createStyles,
-  IconButton,
-  makeStyles,
-  Modal,
-  Theme,
-} from "@material-ui/core";
+import { IconButton, Modal } from "@material-ui/core";
 import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
 import { useStyles } from "./deleteChartDialog";
@@ -18,22 +12,7 @@ interface Props {
   enableButton: boolean;
 }
 
-function rand() {
-  return Math.round(Math.random() * 20) - 10;
-}
-
-function getModalStyle() {
-  const top = 50 + rand();
-
-  return {
-    top: `${top}%`,
-    left: `47%`,
-    transform: `translate(-${top}%, -47%)`,
-  };
-}
-
 export default function DeleteDatasetDialog(props: Props) {
-  const [modalStyle] = React.useState(getModalStyle);
   const classes = useStyles();
   return (
     <div>
@@ -43,7 +22,7 @@ export default function DeleteDatasetDialog(props: Props) {
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div style={modalStyle} className={classes.paper}>
+        <div className={classes.paper}>
           <div
             css={`
               width: 80%;

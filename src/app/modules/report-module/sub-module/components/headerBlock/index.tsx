@@ -143,28 +143,17 @@ export default function HeaderBlock(props: Props) {
         >
           <div
             css={`
-              width: 23px;
-              display: flex;
-              align-items: center;
-              background: #adb5bd;
-              border-radius: 3.45px;
-              justify-content: center;
-              transform: matrix(-1, 0, 0, 1, 0, 0);
-            `}
-          >
-            <RowFrameHandleAdornment />
-          </div>
-          <div
-            css={`
-              display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: center;
-              background: #adb5bd;
-              border-radius: 100px;
-              margin: auto;
               width: 22px;
               height: 53px;
+              margin: auto;
+              display: flex;
+              margin-left: 10px;
+              align-items: center;
+              background: #adb5bd;
+              border-radius: 100px;
+              flex-direction: column;
+              justify-content: center;
+
               button {
                 padding: 4px;
                 :hover {

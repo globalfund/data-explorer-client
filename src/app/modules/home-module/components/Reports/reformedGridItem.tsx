@@ -40,20 +40,22 @@ export default function ReformedGridItem(props: Props) {
         to={`/report/${props.id}`}
         css={`
           width: 296px;
-          height: 161.59px;
+          padding: 12px;
           display: flex;
           color: #262c34;
+          height: 161.59px;
           background: #fff;
           position: relative;
-          padding: 12px 16px;
           text-decoration: none;
           flex-direction: column;
           border: 1px solid #fff;
           align-items: space-between;
           justify-content: space-between;
+          transition: box-shadow 0.2s ease-in-out;
+          box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
 
           &:hover {
-            box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+            box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
           }
         `}
       >
