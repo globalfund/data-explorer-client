@@ -127,10 +127,6 @@ export default function ReportModule() {
     reportContentHeightsAtom
   );
 
-  React.useEffect(() => {
-    console.log("reportContentWidths", reportContentWidths);
-  }, [reportContentWidths]);
-
   const handleRowFrameItemAddition = (
     rowId: string,
     itemIndex: number,
@@ -240,7 +236,6 @@ export default function ReportModule() {
           });
         }
       });
-      console.log("tempPrev", tempPrev);
       if (tempPrev[frameIndex].contentHeights) {
         tempPrev[frameIndex].contentHeights[itemIndex] = height;
       } else {
