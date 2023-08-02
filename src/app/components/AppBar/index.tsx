@@ -363,17 +363,15 @@ const ActionMenu = () => {
             align-items: flex-start;
             font-family: "GothamNarrow-Light", "Helvetica Neue", sans-serif;
 
-            div {
+            a {
               display: flex;
               gap: 8px;
               align-items: center;
               padding-left: 8px;
               width: 100%;
               height: 100%;
-              a {
-                width: 100%;
-                text-decoration: none;
-              }
+              text-decoration: none;
+
               button {
                 padding: 0px;
                 width: 100%;
@@ -401,16 +399,13 @@ const ActionMenu = () => {
             }
           `}
         >
-          <div onClick={handleCloseActionPopover}>
-            <Link to="/dataset-upload">
-              <button>Add Data</button>
-            </Link>
-          </div>
-          <div onClick={handleCloseActionPopover}>
-            <Link to="/chart/new/data">
-              <button>Create Chart</button>
-            </Link>
-          </div>
+          <Link to="/dataset-upload" onClick={handleCloseActionPopover}>
+            <button>Add Data</button>
+          </Link>
+
+          <Link to="/chart/new/data" onClick={handleCloseActionPopover}>
+            <button>Create Chart</button>
+          </Link>
         </div>
       </Popover>
     </div>
