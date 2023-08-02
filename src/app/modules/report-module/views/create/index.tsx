@@ -22,6 +22,7 @@ import {
   reportContentContainerWidth,
   isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
+import TourGuide from "app/components/Dialogs/TourGuide";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
   const { ref, width } = useResizeObserver<HTMLDivElement>();
@@ -57,8 +58,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
     if (props.reportType === "advanced") {
       const rowOne = v4();
       const rowTwo = v4();
-      const rowThree = v4();
-      const rowFour = v4();
+
       const rowFive = v4();
       props.setFramesArray([
         {
@@ -107,52 +107,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           contentTypes: [null],
           structure: "oneByOne",
         },
-        {
-          id: rowThree,
-          frame: (
-            <RowFrame
-              rowId={rowThree}
-              rowIndex={2}
-              forceSelectedType="oneToFour"
-              deleteFrame={() => deleteFrame(rowThree)}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content: [null, null],
-          contentWidths: [20, 80],
-          contentHeights: [400, 400],
-          contentTypes: [null, null],
-          structure: "oneToFour",
-        },
-        {
-          id: rowFour,
-          frame: (
-            <RowFrame
-              rowId={rowFour}
-              rowIndex={3}
-              forceSelectedType="oneByOne"
-              deleteFrame={() => deleteFrame(rowFour)}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content: [null],
-          contentWidths: [100],
-          contentHeights: [400],
-          contentTypes: [null],
-          structure: "oneByOne",
-        },
+
         {
           id: rowFive,
           frame: (
@@ -210,11 +165,18 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           `}
         >
           <Box height={50} />
+          <TourGuide reportType={props.reportType} toolBoxOpen={props.open} />
           <ReportOrderContainer enabled childrenData={props.framesArray}>
-            {props.framesArray.map((frame) => {
+            {props.framesArray.map((frame, index) => {
               return (
                 <div key={frame.id}>
-                  <div>{frame.frame}</div>
+                  <div
+                    css={`
+                      position: relative;
+                    `}
+                  >
+                    {frame.frame}
+                  </div>
                   <Box height={38} />
                   <PlaceHolder
                     rowId={frame.id}

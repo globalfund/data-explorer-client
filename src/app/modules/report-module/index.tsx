@@ -49,8 +49,6 @@ interface RowFrameProps {
     | "oneByThree"
     | "oneByFour"
     | "oneByFive"
-    | "oneToFour"
-    | "fourToOne"
     | null;
   items: (string | object)[];
   id: string;
@@ -127,9 +125,7 @@ export default function ReportModule() {
     reportContentHeightsAtom
   );
 
-  React.useEffect(() => {
-    console.log("reportContentWidths", reportContentWidths);
-  }, [reportContentWidths]);
+
 
   const handleRowFrameItemAddition = (
     rowId: string,
@@ -283,8 +279,6 @@ export default function ReportModule() {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
   ) => {
     let content: (string | object | null)[] = [];
     let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
@@ -321,18 +315,7 @@ export default function ReportModule() {
         contentWidths = [20, 20, 20, 20, 20];
         contentHeights = [121, 121, 121, 121, 121];
         break;
-      case "fourToOne":
-        content = [null, null];
-        contentTypes = [null, null];
-        contentWidths = [80, 20];
-        contentHeights = [400, 400];
-        break;
-      case "oneToFour":
-        content = [null, null];
-        contentTypes = [null, null];
-        contentWidths = [20, 80];
-        contentHeights = [400, 400];
-        break;
+
       default:
         break;
     }

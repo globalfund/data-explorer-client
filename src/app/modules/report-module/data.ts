@@ -14,9 +14,8 @@ export interface ReportModel {
       | "oneByTwo"
       | "oneByThree"
       | "oneByFour"
-      | "oneByFive"
-      | "oneToFour"
-      | "fourToOne";
+      | "oneByFive";
+
     items: (object | string)[];
   }[];
   createdDate: Date;
