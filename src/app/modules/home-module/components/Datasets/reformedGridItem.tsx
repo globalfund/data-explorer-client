@@ -66,11 +66,11 @@ export default function ReformedGridItem(props: Props) {
         >
           <p
             css={`
-               margin-top: -5px;
+              margin-top: -5px;
 
-              font-size: 18px
+              font-size: 14px;
               line-height: 22px;
-              font-family: 'Gotham Narrow', sans-serif;
+              font-family: "Gotham Narrow", sans-serif;
               overflow: hidden;
               margin-bottom: 2px;
               white-space: nowrap;
@@ -81,7 +81,7 @@ export default function ReformedGridItem(props: Props) {
           </p>
           <p
             css={`
-              font-size: 12px;
+              font-size: 10px;
               line-height: 14px;
               margin-top: 1px;
               color: #495057;
