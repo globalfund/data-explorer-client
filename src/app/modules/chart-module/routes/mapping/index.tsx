@@ -39,6 +39,7 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   const { page } = useParams<{ page: string }>();
 
   const containerRef = React.useRef<HTMLDivElement>(null);
+  const chartType = useStoreState((state) => state.charts.chartType.value);
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const mapping = useStoreState((state) => state.charts.mapping.value);
@@ -81,7 +82,7 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
     ) => {
       const mappingFromStorage = get(
         JSON.parse(
-          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
         ),
         "data.value",
         {}
@@ -100,7 +101,7 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
         )
       );
     },
-    [mapping, props.dataTypes, props.dimensions, setMapping]
+    [mapping, props.dataTypes, props.dimensions, setMapping, chartType]
   );
 
   if (dataset === null && !props.loading) {
@@ -109,7 +110,6 @@ export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
 
   const nonStaticDimensions = filter(props.dimensions, (d: any) => !d.static);
   const staticDimensions = filter(props.dimensions, (d: any) => d.static);
-
   return (
     <div css={commonStyles.container}>
       <div css={commonStyles.innercontainer}>
@@ -220,7 +220,7 @@ function ChartBuilderMappingDimension(
     drop: (item: any) => {
       const mappingFromStorage = get(
         JSON.parse(
-          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
+          sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
         ),
         "data.value",
         {}
@@ -588,7 +588,7 @@ function ChartBuilderMappingDimensionStatic(
   const onValueChange = (value: string) => {
     const mappingFromStorage = get(
       JSON.parse(
-        sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") || ""
+        sessionStorage.getItem("[EasyPeasyStore][0][charts.mapping]") ?? ""
       ),
       "data.value",
       {}

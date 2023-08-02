@@ -77,7 +77,7 @@ export default function ReformedGridItem(props: Props) {
           >
             <p
               css={`
-                font-size: 18px;
+                font-size: 14px;
                 line-height: 22px;
                 font-family: "Gotham Narrow Bold", sans-serif;
                 margin-top: 2px;
@@ -92,7 +92,7 @@ export default function ReformedGridItem(props: Props) {
             </p>
             <p
               css={`
-                font-size: 12px;
+                font-size: 10px;
                 line-height: 14px;
                 font-family: "Gotham Narrow ", sans-serif;
                 margin-top: 1px;

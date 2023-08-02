@@ -161,10 +161,10 @@ export default function ChartModule() {
   function setVisualOptionsOnChange() {
     const options = {
       ...getOptionsConfig(
-        get(charts, chartType || "echartsBarchart", charts.echartsBarchart)
+        get(charts, chartType ?? "echartsBarchart", charts.echartsBarchart)
           .visualOptions
       ),
-      ...get(defaultChartOptions, chartType || "echartsBarchart", {}),
+      ...get(defaultChartOptions, chartType ?? "echartsBarchart", {}),
     };
     const defaultOptionsValues = getDefaultOptionsValues(options);
 

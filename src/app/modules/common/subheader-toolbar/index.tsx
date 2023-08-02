@@ -4,12 +4,10 @@ import isEmpty from "lodash/isEmpty";
 import { useRecoilState } from "recoil";
 import styled from "styled-components/macro";
 import Button from "@material-ui/core/Button";
-import Switch from "@material-ui/core/Switch";
 import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
 import Popover from "@material-ui/core/Popover";
-import Divider from "@material-ui/core/Divider";
 import ShareIcon from "@material-ui/icons/Share";
 import { LinkIcon } from "app/assets/icons/Link";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -22,7 +20,6 @@ import FileCopyIcon from "@material-ui/icons/FileCopy";
 import { PageLoader } from "app/modules/common/page-loader";
 import { Link, useHistory, useParams } from "react-router-dom";
 import SnackbarContent from "@material-ui/core/SnackbarContent";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { styles } from "app/modules/common/subheader-toolbar/styles";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
@@ -106,7 +103,6 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
     persistedReportStateAtom
   );
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [isPublicTheme, setIsPublicTheme] = React.useState(false);
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
   const [isPreviewEnabled, setIsPreviewEnabled] = React.useState(false);
   const [showSnackbar, setShowSnackbar] = React.useState<string | null>(null);

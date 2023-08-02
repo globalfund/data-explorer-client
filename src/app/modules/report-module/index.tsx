@@ -125,8 +125,6 @@ export default function ReportModule() {
     reportContentHeightsAtom
   );
 
-
-
   const handleRowFrameItemAddition = (
     rowId: string,
     itemIndex: number,
@@ -236,7 +234,6 @@ export default function ReportModule() {
           });
         }
       });
-      console.log("tempPrev", tempPrev);
       if (tempPrev[frameIndex].contentHeights) {
         tempPrev[frameIndex].contentHeights[itemIndex] = height;
       } else {
