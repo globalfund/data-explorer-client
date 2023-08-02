@@ -19,9 +19,9 @@ export default function TourEnd({
         position: absolute;
 
         ${reportType === "basic" &&
-        `bottom: 25%; right: ${toolBoxOpen ? "-25%" : "-10%"};`}
+        `top: 19.8rem; right: ${toolBoxOpen ? "-25%" : "-10%"};`}
         ${reportType === "advanced" &&
-        `top: 3%; right: ${toolBoxOpen ? "-29%" : "-10%"};`} 
+        `top: 2.4rem; right: ${toolBoxOpen ? "-29%" : "-10%"};`} 
         display: ${open ? "block" : "none"};
         transition: right 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 

@@ -11,7 +11,7 @@ export default function SelectStructure(props: {
     <div
       css={`
         position: absolute;
-        top: 59%;
+        top: 13rem;
         left: ${props.toolBoxOpen ? "0%" : "11%"};
         transition: left 225ms cubic-bezier(0, 0, 0.2, 1) 0ms;
 
