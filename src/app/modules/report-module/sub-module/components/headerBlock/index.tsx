@@ -143,19 +143,6 @@ export default function HeaderBlock(props: Props) {
         >
           <div
             css={`
-              width: 23px;
-              display: flex;
-              align-items: center;
-              background: #adb5bd;
-              border-radius: 3.45px;
-              justify-content: center;
-              transform: matrix(-1, 0, 0, 1, 0, 0);
-            `}
-          >
-            <RowFrameHandleAdornment />
-          </div>
-          <div
-            css={`
               display: flex;
               align-items: center;
               flex-direction: column;
