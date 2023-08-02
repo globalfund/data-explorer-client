@@ -147,11 +147,6 @@ export default function ExploreAssetsModule() {
     }
   };
 
-  const exploreReportClick = () => {
-    setDisplay("reports");
-    exploreViewRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
   const handleCloseSortPopover = () => {
     setSortPopoverAnchorEl(null);
   };

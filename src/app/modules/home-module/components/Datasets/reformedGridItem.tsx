@@ -43,8 +43,10 @@ export default function ReformedGridItem(props: Props) {
         flex-direction: column;
         padding: 12px 8px 4px 16px;
         justify-content: space-between;
+        box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+
         &:hover {
-          box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+          box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
         }
       `}
     >
@@ -58,16 +60,13 @@ export default function ReformedGridItem(props: Props) {
         <div
           css={`
             width: 90%;
-            height: 50px
+            height: 50px;
             word-wrap: break-word;
-            cursor: pointer;
-
           `}
         >
           <p
             css={`
               margin-top: -5px;
-
               font-size: 14px;
               line-height: 22px;
               font-family: "Gotham Narrow", sans-serif;

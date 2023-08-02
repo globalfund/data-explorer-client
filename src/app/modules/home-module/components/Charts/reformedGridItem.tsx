@@ -47,9 +47,10 @@ export default function ReformedGridItem(props: Props) {
           border: 1px solid #fff;
           padding: 12px 8px 4px 16px;
           justify-content: space-between;
+          box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
 
           &:hover {
-            box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
+            box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.1);
           }
         `}
       >
