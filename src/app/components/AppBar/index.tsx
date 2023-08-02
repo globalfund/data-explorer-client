@@ -389,7 +389,9 @@ const ActionMenu = () => {
 
               &:hover,
               &:active {
+                cursor: pointer;
                 background: #6061e5;
+
                 button {
                   color: #fff;
                 }
