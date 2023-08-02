@@ -41,7 +41,7 @@ export default function ReformedGridItem(props: Props) {
         background: #fff;
         position: relative;
         flex-direction: column;
-        padding: 12px 8px 4px 16px;
+        padding: 12px 8px 4px 12px;
         justify-content: space-between;
         box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
 

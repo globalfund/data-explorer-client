@@ -40,12 +40,12 @@ export default function ReformedGridItem(props: Props) {
         to={`/report/${props.id}`}
         css={`
           width: 296px;
-          height: 161.59px;
+          padding: 12px;
           display: flex;
           color: #262c34;
+          height: 161.59px;
           background: #fff;
           position: relative;
-          padding: 12px 16px;
           text-decoration: none;
           flex-direction: column;
           border: 1px solid #fff;
