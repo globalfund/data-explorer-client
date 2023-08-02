@@ -161,7 +161,6 @@ export function useChartsRawData(props: {
       )
       .then((response) => {
         const chart = response.data || {};
-
         if (!isEmpty(chart)) {
           setAllAppliedFilters(chart.appliedFilters || {});
           setEnabledFilterOptionGroups(chart.enabledFilterOptionGroups);
@@ -207,9 +206,7 @@ export function useChartsRawData(props: {
       !loading &&
       !props.inChartWrapper &&
       (page === "new" || isEditMode) &&
-      checkMappingAndDatasetIdNotEmpty([[mapping]], [[{ dataset }]], 0, [
-        [false],
-      ])
+      !isEmpty(dataset)
     ) {
       const extraLoader = document.getElementById("extra-loader");
       if (extraLoader) {
