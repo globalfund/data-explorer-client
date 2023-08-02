@@ -37,7 +37,7 @@ export function useDataThemesEchart() {
     const container = document.getElementById(id);
     chart.resize({
       width: container?.clientWidth,
-      height: height || "auto",
+      height: height ?? "auto",
     });
   }
 
@@ -228,7 +228,6 @@ export function useDataThemesEchart() {
   function echartsLinechart(data: any, visualOptions: any) {
     const {
       // artboard
-      background,
       // margins
       marginTop,
       marginRight,
@@ -241,7 +240,6 @@ export function useDataThemesEchart() {
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
-
     const option = {
       grid: {
         top: marginTop,
@@ -419,8 +417,6 @@ export function useDataThemesEchart() {
       // artboard
       width,
       height,
-      background,
-      // margins
       marginTop,
       marginRight,
       marginBottom,

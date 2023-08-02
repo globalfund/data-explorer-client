@@ -14,9 +14,7 @@ export interface IFramesArray {
     | "oneByTwo"
     | "oneByThree"
     | "oneByFour"
-    | "oneByFive"
-    | "oneToFour"
-    | "fourToOne";
+    | "oneByFive";
 }
 
 export interface ReportCreateViewProps {
@@ -64,8 +62,6 @@ export interface ReportCreateViewProps {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,
@@ -100,8 +96,6 @@ export interface PlaceholderProps {
       | "oneByThree"
       | "oneByFour"
       | "oneByFive"
-      | "oneToFour"
-      | "fourToOne"
   ) => void;
   handleRowFrameItemResize: (
     rowId: string,

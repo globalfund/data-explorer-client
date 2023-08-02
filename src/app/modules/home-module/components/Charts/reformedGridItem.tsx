@@ -42,10 +42,10 @@ export default function ReformedGridItem(props: Props) {
           color: #262c34;
           background: #fff;
           position: relative;
-          padding: 12px 16px;
           text-decoration: none;
           flex-direction: column;
           border: 1px solid #fff;
+          padding: 12px 8px 4px 16px;
           justify-content: space-between;
 
           &:hover {

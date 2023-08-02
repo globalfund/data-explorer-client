@@ -18,6 +18,8 @@ export const useStyles = makeStyles(() =>
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
+      width: "100%",
+      height: "100%",
     },
     paper: {
       outline: 0,

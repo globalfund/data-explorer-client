@@ -40,8 +40,8 @@ export default function ReformedGridItem(props: Props) {
         color: #262c34;
         background: #fff;
         position: relative;
-        padding: 12px 16px;
         flex-direction: column;
+        padding: 12px 8px 4px 16px;
         justify-content: space-between;
         &:hover {
           box-shadow: 0px 4px 16px 0px rgba(0, 0, 0, 0.05);
