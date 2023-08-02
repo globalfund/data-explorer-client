@@ -125,9 +125,7 @@ export default function ReportModule() {
     reportContentHeightsAtom
   );
 
-  React.useEffect(() => {
-    console.log("reportContentWidths", reportContentWidths);
-  }, [reportContentWidths]);
+
 
   const handleRowFrameItemAddition = (
     rowId: string,
