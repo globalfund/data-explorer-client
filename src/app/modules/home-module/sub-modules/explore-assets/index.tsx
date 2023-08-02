@@ -123,6 +123,7 @@ export default function ExploreAssetsModule() {
             sortBy={sortByStr}
             searchStr={searchStr}
             tableView={tableView}
+            addCard
           />
         );
       case "charts":
@@ -131,6 +132,7 @@ export default function ExploreAssetsModule() {
             sortBy={sortByStr}
             searchStr={searchStr}
             tableView={tableView}
+            addCard
           />
         );
       case "reports":
@@ -140,6 +142,7 @@ export default function ExploreAssetsModule() {
             searchStr={searchStr}
             tableView={tableView}
             showMenuButton={false}
+            addCard
           />
         );
       default:

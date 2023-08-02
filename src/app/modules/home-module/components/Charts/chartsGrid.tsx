@@ -9,11 +9,13 @@ import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
+import ChartAddnewCard from "./chartAddNewCard";
 
 interface Props {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
+  addCard?: boolean;
 }
 
 export default function ChartsGrid(props: Props) {
@@ -116,6 +118,7 @@ export default function ChartsGrid(props: Props) {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
+          {props.addCard && <ChartAddnewCard />}
           {charts.map((c, index) => (
             <Grid item key={c.id} xs={12} sm={6} md={6} lg={3}>
               <ReformedGridItem

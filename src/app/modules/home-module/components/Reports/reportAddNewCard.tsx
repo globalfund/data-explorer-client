@@ -13,22 +13,18 @@ export default function ReportAddnewCard() {
   return (
     <Grid item xs={12} sm={6} md={4} lg={3}>
       <div
+        onClick={action}
         css={`
           width: 296px;
-          height: 125px;
-          background: #fff;
+          height: 161.59px;
+          background: #f2f7fd;
           padding: 12px 16px;
+          box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
+          display: flex;
+          align-items: center;
+          cursor: pointer;
         `}
       >
-        <h4
-          css={`
-            font-weight: 700;
-            margin: 0 0 10px 0;
-            font-family: "GothamNarrow-Bold";
-          `}
-        >
-          Create new Report
-        </h4>
         <div
           css={`
             gap: 14px;
@@ -38,7 +34,6 @@ export default function ReportAddnewCard() {
           `}
         >
           <IconButton
-            onClick={action}
             css={`
               padding: 2px;
             `}
@@ -48,20 +43,29 @@ export default function ReportAddnewCard() {
           <hr
             css={`
               margin: 0;
-              height: 50px;
+              height: 49px;
               background: #231d2c;
             `}
           />
-          <p
-            css={`
-              margin: 0;
-              color: #495057;
-              font-size: 12px;
-              font-weight: 325;
-              line-height: 15px;
-            `}
-          >
-            Create a new Report with charts from the library
+          <p>
+            <p
+              css={`
+                margin: auto;
+              `}
+            >
+              <b>New Report</b>{" "}
+            </p>
+            <p
+              css={`
+                margin: 0;
+                color: #495057;
+                font-size: 12px;
+                font-weight: 325;
+                line-height: 15px;
+              `}
+            >
+              Create a new report in your library
+            </p>
           </p>
         </div>
       </div>
