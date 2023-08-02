@@ -29,6 +29,7 @@ import {
   persistedReportStateAtom,
   reportContentHeightsAtom,
   ReportContentHeightsType,
+  reportRightPanelViewAtom,
 } from "app/state/recoil/atoms";
 import {
   Route,
@@ -70,7 +71,7 @@ export default function ReportModule() {
   const framesArrayRef = useRef<IFramesArray[]>([]);
   const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
   const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
-
+  const setRightPanelView = useRecoilState(reportRightPanelViewAtom)[1];
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
@@ -618,6 +619,8 @@ export default function ReportModule() {
       dateColor: "#ffffff",
     });
     setReportName("Untitled report");
+    setRightPanelView("elements");
+    setRightPanelOpen(true);
   };
 
   const onSave = () => {
@@ -661,6 +664,7 @@ export default function ReportModule() {
       setPickedCharts([]);
       setReportContentWidths([]);
       setReportContentHeights([]);
+      setRightPanelView("elements");
     };
   }, []);
 
