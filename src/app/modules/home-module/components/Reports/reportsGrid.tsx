@@ -10,12 +10,14 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import ReformedGridItem from "app/modules/home-module/components/Reports/reformedGridItem";
+import ReportAddnewCard from "./reportAddNewCard";
 
 interface Props {
   sortBy: string;
   searchStr: string;
   tableView: boolean;
   showMenuButton: boolean;
+  addCard?: boolean;
 }
 
 export default function ReportsGrid(props: Props) {
@@ -108,6 +110,7 @@ export default function ReportsGrid(props: Props) {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
+          {props.addCard && <ReportAddnewCard />}
           {reports.map((data, index) => (
             <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
               <ReformedGridItem
