@@ -17,6 +17,10 @@ export interface IFramesArray {
     | "oneByFive";
 }
 
+export interface IFramesArrayWithItems extends IFramesArray {
+  items: (string | object)[];
+}
+
 export interface ReportCreateViewProps {
   open: boolean;
   reportType: "basic" | "advanced" | "ai";

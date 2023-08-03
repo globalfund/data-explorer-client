@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import filter from "lodash/filter";
+import isEmpty from "lodash/isEmpty";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
 import cloneDeep from "lodash/cloneDeep";
@@ -9,13 +10,14 @@ import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
+import { IHeaderDetails } from "./components/right-panel/data";
+import AITemplate from "app/modules/report-module/views/ai-template";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { ReportEditView } from "app/modules/report-module/views/edit";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import { ReportCreateView } from "app/modules/report-module/views/create";
-import { IFramesArray } from "app/modules/report-module/views/create/data";
 import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
@@ -24,40 +26,23 @@ import RowFrame, {
   Divider,
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
-  reportContentWidthsAtom,
-  ReportContentWidthsType,
-  persistedReportStateAtom,
-  reportContentHeightsAtom,
-  ReportContentHeightsType,
-  reportRightPanelViewAtom,
-} from "app/state/recoil/atoms";
-import {
   Route,
   Switch,
   useHistory,
   useParams,
   Redirect,
 } from "react-router-dom";
-
-import AITemplate from "app/modules/report-module/views/ai-template";
-import { IHeaderDetails } from "./components/right-panel/data";
-import { isEmpty } from "lodash";
-
-interface RowFrameProps {
-  structure:
-    | "oneByOne"
-    | "oneByTwo"
-    | "oneByThree"
-    | "oneByFour"
-    | "oneByFive"
-    | null;
-  items: (string | object)[];
-  id: string;
-  content: (string | object | null)[];
-  contentWidths: ReportContentWidthsType[];
-  contentHeights: ReportContentHeightsType[];
-  contentTypes: ("text" | "divider" | "chart" | null)[];
-}
+import {
+  reportContentWidthsAtom,
+  ReportContentWidthsType,
+  persistedReportStateAtom,
+  reportContentHeightsAtom,
+  reportRightPanelViewAtom,
+} from "app/state/recoil/atoms";
+import {
+  IFramesArray,
+  IFramesArrayWithItems,
+} from "app/modules/report-module/views/create/data";
 
 export default function ReportModule() {
   const history = useHistory();
@@ -66,23 +51,27 @@ export default function ReportModule() {
     view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
 
-  const reportNameRef = useRef<string>("");
-  const reportOrderRef = useRef<string[]>([]);
-  const framesArrayRef = useRef<IFramesArray[]>([]);
-  const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
-  const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+  const reportNameRef = React.useRef<string>("");
+  const reportOrderRef = React.useRef<string[]>([]);
+  const framesArrayRef = React.useRef<IFramesArray[]>([]);
+  const headerDetailsRef = React.useRef<IHeaderDetails>({} as IHeaderDetails);
+  const AppliedHeaderDetailsRef = React.useRef<IHeaderDetails>(
+    {} as IHeaderDetails
+  );
+
   const setRightPanelView = useRecoilState(reportRightPanelViewAtom)[1];
+
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
 
-  const [buttonActive] = React.useState(false);
-  const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
-  const [reportName, setReportName] = React.useState("Untitled report");
-  const [reportType, setReportType] = React.useState<
-    "basic" | "advanced" | "ai"
-  >("basic");
+  const [reportContentWidths, setReportContentWidths] = useRecoilState(
+    reportContentWidthsAtom
+  );
 
+  const [reportContentHeights, setReportContentHeights] = useRecoilState(
+    reportContentHeightsAtom
+  );
   const localReportState = JSON.parse(persistedReportState.framesArray);
 
   let localPickedCharts: string[] = [];
@@ -94,14 +83,12 @@ export default function ReportModule() {
     });
   });
 
-  const [pickedCharts, setPickedCharts] = React.useState<any[]>(
-    localPickedCharts || []
-  );
-
-  React.useEffect(() => {
-    setPickedCharts(localPickedCharts);
-  }, [persistedReportState]);
-
+  const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
+  const [reportName, setReportName] = React.useState("Untitled report");
+  const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
+  const [reportType, setReportType] = React.useState<
+    "basic" | "advanced" | "ai"
+  >("basic");
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -111,19 +98,12 @@ export default function ReportModule() {
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
-
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
     React.useState(false);
-  const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
-
-  const [reportContentWidths, setReportContentWidths] = useRecoilState(
-    reportContentWidthsAtom
-  );
-
-  const [reportContentHeights, setReportContentHeights] = useRecoilState(
-    reportContentHeightsAtom
+  const [pickedCharts, setPickedCharts] = React.useState(
+    localPickedCharts || []
   );
 
   const handleRowFrameItemAddition = (
@@ -370,7 +350,7 @@ export default function ReportModule() {
   };
 
   const handlePersistReportState = () => {
-    //does not have up to date values of states so we use refs
+    // does not have up to date values of states so we use refs
     setPersistedReportState({
       ...persistedReportState,
       reportName: reportNameRef.current,
@@ -411,167 +391,6 @@ export default function ReportModule() {
       ),
     });
   };
-
-  const id = v4();
-
-  const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
-    {
-      id,
-      frame: (
-        <RowFrame
-          rowIndex={0}
-          rowId={id}
-          deleteFrame={deleteFrame}
-          handleRowFrameItemAddition={handleRowFrameItemAddition}
-          handleRowFrameItemRemoval={handleRowFrameItemRemoval}
-          handleRowFrameStructureTypeSelection={
-            handleRowFrameStructureTypeSelection
-          }
-          handlePersistReportState={handlePersistReportState}
-          handleRowFrameItemResize={handleRowFrameItemResize}
-        />
-      ),
-      content: [],
-      contentWidths: [],
-      contentHeights: [],
-      contentTypes: [],
-      structure: null,
-    },
-  ]);
-
-  React.useEffect(() => {
-    if (view !== "edit" && view !== "preview") {
-      alignFramesWContentWidths(framesArray);
-      alignFramesWContentHeights(framesArray);
-    }
-  }, [framesArray, view]);
-
-  React.useEffect(() => {
-    if (view === "edit" && !rightPanelOpen) {
-      setRightPanelOpen(true);
-    }
-  }, [view]);
-
-  //sets report state to persisted report state
-  React.useEffect(() => {
-    setReportName(persistedReportState.reportName || "Untitled report");
-    setHeaderDetails({
-      ...persistedReportState.headerDetails,
-
-      description: EditorState.createWithContent(
-        convertFromRaw(
-          JSON.parse(persistedReportState.headerDetails.description)
-        )
-      ),
-    });
-
-    setAppliedHeaderDetails({
-      ...persistedReportState.appliedHeaderDetails,
-
-      description: EditorState.createWithContent(
-        convertFromRaw(
-          JSON.parse(persistedReportState.appliedHeaderDetails.description)
-        )
-      ),
-    });
-
-    const localFramesArray =
-      JSON.parse(persistedReportState.framesArray || "[]").length > 0
-        ? JSON.parse(persistedReportState.framesArray).map(
-            (rowFrame: RowFrameProps, index: number) => {
-              const isDivider =
-                rowFrame.content &&
-                rowFrame.content.length === 1 &&
-                rowFrame.content[0] === ReportElementsType.DIVIDER;
-              return {
-                id: rowFrame.id,
-
-                frame: isDivider ? (
-                  <Divider delete={deleteFrame} dividerId={id} />
-                ) : (
-                  <RowFrame
-                    key={rowFrame.id}
-                    rowId={rowFrame.id}
-                    rowIndex={index}
-                    forceSelectedType={rowFrame.structure ?? undefined}
-                    deleteFrame={deleteFrame}
-                    handleRowFrameItemAddition={handleRowFrameItemAddition}
-                    handleRowFrameItemRemoval={handleRowFrameItemRemoval}
-                    handleRowFrameStructureTypeSelection={
-                      handleRowFrameStructureTypeSelection
-                    }
-                    previewItems={rowFrame.items}
-                    handlePersistReportState={handlePersistReportState}
-                    handleRowFrameItemResize={handleRowFrameItemResize}
-                  />
-                ),
-                content: rowFrame.content,
-                contentWidths: rowFrame.contentWidths,
-                contentTypes: rowFrame.contentTypes,
-                structure: rowFrame.structure,
-              };
-            }
-          )
-        : framesArray;
-
-    setFramesArray(localFramesArray);
-  }, [persistedReportState]);
-
-  const reportCreateData = useStoreState(
-    (state) =>
-      (state.reports.ReportCreate.crudData ?? emptyReport) as ReportModel
-  );
-
-  const reportGetData = useStoreState(
-    (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
-  );
-
-  const reportCreateLoading = useStoreState(
-    (state) => state.reports.ReportCreate.loading
-  );
-
-  const reportCreateSuccess = useStoreState(
-    (state) => state.reports.ReportCreate.success
-  );
-
-  const reportCreate = useStoreActions(
-    (actions) => actions.reports.ReportCreate.post
-  );
-
-  const reportCreateClear = useStoreActions(
-    (actions) => actions.reports.ReportCreate.clear
-  );
-
-  const reportEditLoading = useStoreState(
-    (state) => state.reports.ReportUpdate.loading
-  );
-
-  const reportEditSuccess = useStoreState(
-    (state) => state.reports.ReportUpdate.success
-  );
-
-  const reportEdit = useStoreActions(
-    (actions) => actions.reports.ReportUpdate.patch
-  );
-
-  const reportEditClear = useStoreActions(
-    (actions) => actions.reports.ReportUpdate.clear
-  );
-
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
-
-  //get current value of states for handlePersistReportState function
-  reportOrderRef.current = reportOrder;
-  headerDetailsRef.current = headerDetails;
-  AppliedHeaderDetailsRef.current = appliedHeaderDetails;
-  framesArrayRef.current = framesArray;
-  reportNameRef.current = reportName;
-
-  const reportOrderClear = useStoreActions(
-    (actions) => actions.reports.orderData.clear
-  );
 
   const handleSetButtonActive = (type: "basic" | "advanced" | "ai") => {
     setReportType(type);
@@ -656,6 +475,89 @@ export default function ReportModule() {
     });
   };
 
+  const id = v4();
+
+  const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
+    {
+      id,
+      frame: (
+        <RowFrame
+          rowIndex={0}
+          rowId={id}
+          deleteFrame={deleteFrame}
+          handleRowFrameItemAddition={handleRowFrameItemAddition}
+          handleRowFrameItemRemoval={handleRowFrameItemRemoval}
+          handleRowFrameStructureTypeSelection={
+            handleRowFrameStructureTypeSelection
+          }
+          handlePersistReportState={handlePersistReportState}
+          handleRowFrameItemResize={handleRowFrameItemResize}
+        />
+      ),
+      content: [],
+      contentWidths: [],
+      contentHeights: [],
+      contentTypes: [],
+      structure: null,
+    },
+  ]);
+
+  const reportCreateData = useStoreState(
+    (state) =>
+      (state.reports.ReportCreate.crudData ?? emptyReport) as ReportModel
+  );
+
+  const reportGetData = useStoreState(
+    (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
+  );
+
+  const reportCreateLoading = useStoreState(
+    (state) => state.reports.ReportCreate.loading
+  );
+
+  const reportCreateSuccess = useStoreState(
+    (state) => state.reports.ReportCreate.success
+  );
+
+  const reportCreate = useStoreActions(
+    (actions) => actions.reports.ReportCreate.post
+  );
+
+  const reportCreateClear = useStoreActions(
+    (actions) => actions.reports.ReportCreate.clear
+  );
+
+  const reportEditLoading = useStoreState(
+    (state) => state.reports.ReportUpdate.loading
+  );
+
+  const reportEditSuccess = useStoreState(
+    (state) => state.reports.ReportUpdate.success
+  );
+
+  const reportEdit = useStoreActions(
+    (actions) => actions.reports.ReportUpdate.patch
+  );
+
+  const reportEditClear = useStoreActions(
+    (actions) => actions.reports.ReportUpdate.clear
+  );
+
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+
+  const reportOrderClear = useStoreActions(
+    (actions) => actions.reports.orderData.clear
+  );
+
+  // get current value of states for handlePersistReportState function
+  reportOrderRef.current = reportOrder;
+  headerDetailsRef.current = headerDetails;
+  AppliedHeaderDetailsRef.current = appliedHeaderDetails;
+  framesArrayRef.current = framesArray;
+  reportNameRef.current = reportName;
+
   React.useEffect(() => {
     return () => {
       reportEditClear();
@@ -667,6 +569,88 @@ export default function ReportModule() {
       setRightPanelView("elements");
     };
   }, []);
+
+  // sets report state to persisted report state
+  React.useEffect(() => {
+    setReportName(persistedReportState.reportName || "Untitled report");
+    setHeaderDetails({
+      ...persistedReportState.headerDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.headerDetails.description)
+        )
+      ),
+    });
+
+    setAppliedHeaderDetails({
+      ...persistedReportState.appliedHeaderDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.appliedHeaderDetails.description)
+        )
+      ),
+    });
+
+    const localFramesArray =
+      JSON.parse(persistedReportState.framesArray || "[]").length > 0
+        ? JSON.parse(persistedReportState.framesArray).map(
+            (rowFrame: IFramesArrayWithItems, index: number) => {
+              const isDivider =
+                rowFrame.content &&
+                rowFrame.content.length === 1 &&
+                rowFrame.content[0] === ReportElementsType.DIVIDER;
+              return {
+                id: rowFrame.id,
+
+                frame: isDivider ? (
+                  <Divider delete={deleteFrame} dividerId={id} />
+                ) : (
+                  <RowFrame
+                    key={rowFrame.id}
+                    rowId={rowFrame.id}
+                    rowIndex={index}
+                    forceSelectedType={rowFrame.structure ?? undefined}
+                    deleteFrame={deleteFrame}
+                    handleRowFrameItemAddition={handleRowFrameItemAddition}
+                    handleRowFrameItemRemoval={handleRowFrameItemRemoval}
+                    handleRowFrameStructureTypeSelection={
+                      handleRowFrameStructureTypeSelection
+                    }
+                    previewItems={rowFrame.items}
+                    handlePersistReportState={handlePersistReportState}
+                    handleRowFrameItemResize={handleRowFrameItemResize}
+                  />
+                ),
+                content: rowFrame.content,
+                contentWidths: rowFrame.contentWidths,
+                contentTypes: rowFrame.contentTypes,
+                structure: rowFrame.structure,
+              };
+            }
+          )
+        : framesArray;
+
+    setFramesArray(localFramesArray);
+  }, [persistedReportState]);
+
+  React.useEffect(() => {
+    setPickedCharts(localPickedCharts);
+  }, [persistedReportState]);
+
+  React.useEffect(() => {
+    if (view !== "edit" && view !== "preview") {
+      alignFramesWContentWidths(framesArray);
+      alignFramesWContentHeights(framesArray);
+    }
+  }, [framesArray, view]);
+
+  React.useEffect(() => {
+    if (view === "edit" && !rightPanelOpen) {
+      setRightPanelOpen(true);
+    }
+  }, [view]);
 
   React.useEffect(() => {
     let textValue = !(
@@ -747,7 +731,6 @@ export default function ReportModule() {
           <Container maxWidth="lg">
             <ReportInitialView
               resetReport={resetReport}
-              buttonActive={buttonActive}
               setButtonActive={handleSetButtonActive}
             />
           </Container>
