@@ -26,7 +26,7 @@ interface Props {
 interface DragAndDropProps {
   disabled: boolean;
   handleNext: () => void;
-  setFile: React.Dispatch<React.SetStateAction<File | string | null>>;
+  setFile: React.Dispatch<React.SetStateAction<File | null>>;
 }
 
 export default function AddDatasetFragment(props: DragAndDropProps) {
@@ -35,19 +35,21 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
 
   React.useEffect(() => {
     if (authResponse?.access_token && fileData?.docs) {
+      const file = fileData?.docs[0];
       axios({
-        url: `https://www.googleapis.com/drive/v3/files/${fileData?.docs[0].id}?alt=media`,
+        url: `https://www.googleapis.com/drive/v3/files/${file.id}${
+          file.type === "file" ? "?alt=media" : "/export?mimeType=text/csv"
+        }`,
         method: "GET",
         headers: {
           Authorization: `Bearer ${authResponse?.access_token}`,
-          "Content-Type": "application/vnd.google-apps.document",
         },
         responseType: "blob", // important
       }).then((response) => {
-        console.log(response.data, "response.data");
+        console.log("response", response);
         const b = response.data;
-        const file = new File([b], fileData?.docs[0].name, { type: b.type });
-        props.setFile(file);
+        const gfile = new File([b], file.name, { type: "text/csv" });
+        props.setFile(gfile);
         props.handleNext();
       });
     }
@@ -116,6 +118,7 @@ export default function AddDatasetFragment(props: DragAndDropProps) {
       </ul>
     </li>
   ));
+
   return (
     <>
       <DropZone
