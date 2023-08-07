@@ -16,9 +16,7 @@ import HeaderBlock from "app/modules/report-module/sub-module/components/headerB
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
-import RowFrame, {
-  Divider,
-} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+
 import {
   IRowFrameStructure,
   reportContentWidthsAtom,
@@ -26,6 +24,7 @@ import {
   reportContentContainerWidth,
   reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
+import { IFramesArray } from "../create/data";
 
 export function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
@@ -123,43 +122,39 @@ export function ReportEditView(props: ReportEditViewProps) {
         descriptionColor: reportData.descriptionColor,
         dateColor: reportData.dateColor,
       });
-      const newFrameArray = reportData.rows.map((rowFrame, index) => {
-        const content = rowFrame.items;
-        const contentTypes = rowFrame.items.map((item) =>
-          typeof item === "object" ? "text" : "chart"
-        );
-        const isDivider =
-          content &&
-          content.length === 1 &&
-          content[0] === ReportElementsType.DIVIDER;
-        const id = v4();
-        return {
-          id,
-          structure: rowFrame.structure,
-          frame: isDivider ? (
-            <Divider delete={deleteFrame} dividerId={id} />
-          ) : (
-            <RowFrame
-              rowIndex={index}
-              rowId={id}
-              deleteFrame={deleteFrame}
-              forceSelectedType={rowFrame.structure ?? undefined}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
-              handlePersistReportState={props.handlePersistReportState}
-              previewItems={rowFrame.items}
-              handleRowFrameItemResize={props.handleRowFrameItemResize}
-            />
-          ),
-          content,
-          contentWidths: [],
-          contentHeights: [],
-          contentTypes,
-        };
-      });
+      const newFrameArray: IFramesArray[] = reportData.rows.map(
+        (rowFrame, index) => {
+          const content = rowFrame.items;
+          const contentTypes = rowFrame.items.map((item) =>
+            typeof item === "object" ? "text" : "chart"
+          );
+          const isDivider =
+            content &&
+            content.length === 1 &&
+            content[0] === ReportElementsType.DIVIDER;
+          const id = v4();
+
+          return {
+            id,
+            structure: rowFrame.structure,
+            frame: {
+              rowIndex: index,
+              rowId: id,
+
+              handlePersistReportState: props.handlePersistReportState,
+              handleRowFrameItemResize: props.handleRowFrameItemResize,
+              setPickedCharts: props.setPickedCharts,
+              type: isDivider ? "divider" : "rowFrame",
+              forceSelectedType: rowFrame.structure ?? undefined,
+              previewItems: rowFrame.items,
+            },
+            content,
+            contentWidths: [],
+            contentHeights: [],
+            contentTypes,
+          };
+        }
+      );
       props.setFramesArray(newFrameArray);
     }
   }, [reportData]);
@@ -228,14 +223,8 @@ export function ReportEditView(props: ReportEditViewProps) {
                     rowId={frame.id}
                     deleteFrame={deleteFrame}
                     framesArray={props.framesArray}
+                    setPickedCharts={props.setPickedCharts}
                     setFramesArray={props.setFramesArray}
-                    handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-                    handleRowFrameItemAddition={
-                      props.handleRowFrameItemAddition
-                    }
-                    handleRowFrameStructureTypeSelection={
-                      props.handleRowFrameStructureTypeSelection
-                    }
                     handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
                   />
@@ -244,16 +233,11 @@ export function ReportEditView(props: ReportEditViewProps) {
             })}
           </ReportOrderContainer>
           <AddRowFrameButton
-            deleteFrame={deleteFrame}
             framesArray={props.framesArray}
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}
             setRowStructureType={setRowStructuretype}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            handleRowFrameStructureTypeSelection={
-              props.handleRowFrameStructureTypeSelection
-            }
+            setPickedCharts={props.setPickedCharts}
             handlePersistReportState={props.handlePersistReportState}
             handleRowFrameItemResize={props.handleRowFrameItemResize}
           />

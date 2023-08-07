@@ -13,26 +13,10 @@ interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
   rowStructureType: IRowFrameStructure;
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
-  deleteFrame: (id: string) => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handlePersistReportState: () => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-  ) => void;
+
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
@@ -51,20 +35,15 @@ export default function AddRowFrameButton(props: Props) {
       ...props.framesArray,
       {
         id,
-        frame: (
-          <RowFrame
-            rowId={id}
-            rowIndex={props.framesArray.length}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            deleteFrame={props.deleteFrame}
-            handleRowFrameStructureTypeSelection={
-              props.handleRowFrameStructureTypeSelection
-            }
-            handlePersistReportState={props.handlePersistReportState}
-            handleRowFrameItemResize={props.handleRowFrameItemResize}
-          />
-        ),
+        frame: {
+          rowId: id,
+          rowIndex: props.framesArray.length,
+
+          handlePersistReportState: props.handlePersistReportState,
+          handleRowFrameItemResize: props.handleRowFrameItemResize,
+          setPickedCharts: props.setPickedCharts,
+          type: "rowFrame",
+        },
         content: [],
         contentWidths: [],
         contentHeights: [],

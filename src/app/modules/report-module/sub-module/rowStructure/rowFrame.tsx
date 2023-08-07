@@ -11,6 +11,7 @@ import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/de
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import {
   ReportContentWidthsType,
+  reportContentHeightsAtom,
   reportContentWidthsAtom,
   reportCreationTourStepAtom,
 } from "app/state/recoil/atoms";
@@ -18,6 +19,8 @@ import {
   blockcss,
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
+import { cloneDeep } from "lodash";
+import { IFramesArray } from "../../views/create/data";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -118,25 +121,10 @@ const _rowStructureDetailItems = [
 export interface RowFrameProps {
   rowIndex: number;
   rowId: string;
-  deleteFrame: (id: string) => void;
   forceSelectedType?: string;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-  ) => void;
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+  setPickedCharts: (value: React.SetStateAction<any[]>) => void;
+  type: "rowFrame" | "divider";
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
@@ -157,12 +145,18 @@ export interface IRowStructureType {
 
 export default function RowFrame(props: RowFrameProps) {
   const history = useHistory();
-
+  const { page, view } = useParams<{
+    page: string;
+    view: "initial" | "edit" | "create" | "preview" | "ai-template";
+  }>();
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType ?? ""
   );
   const [reportCreationTourStep, setReportCreationTourStep] = useRecoilState(
     reportCreationTourStepAtom
+  );
+  const [reportContentHeights, setReportContentHeights] = useRecoilState(
+    reportContentHeightsAtom
   );
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
@@ -191,7 +185,9 @@ export default function RowFrame(props: RowFrameProps) {
     }
   };
 
-  const reportContentWidths = useRecoilValue(reportContentWidthsAtom);
+  const [reportContentWidths, setReportContentWidths] = useRecoilState(
+    reportContentWidthsAtom
+  );
 
   const onlyView = React.useMemo(() => {
     return (
@@ -214,6 +210,106 @@ export default function RowFrame(props: RowFrameProps) {
       reportContentWidths,
       height
     );
+  };
+  const deleteFrame = (id: string) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === id);
+      const contentArr = tempPrev[frameId].content;
+
+      props.setPickedCharts((prevPickedCharts) => {
+        return prevPickedCharts.filter((item) => !contentArr.includes(item));
+      });
+
+      tempPrev.splice(frameId, 1);
+      return [...tempPrev];
+    });
+  };
+
+  const handleRowFrameStructureTypeSelection = (
+    rowIndex: number,
+    structure:
+      | null
+      | "oneByOne"
+      | "oneByTwo"
+      | "oneByThree"
+      | "oneByFour"
+      | "oneByFive"
+  ) => {
+    let content: (string | object | null)[] = [];
+    let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
+    let contentWidths: number[] = [];
+    let contentHeights: number[] = [];
+    switch (structure) {
+      case "oneByOne":
+        content = [null];
+        contentTypes = [null];
+        contentWidths = [100];
+        contentHeights = [400];
+        break;
+      case "oneByTwo":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [50, 50];
+        contentHeights = [420, 420];
+        break;
+      case "oneByThree":
+        content = [null, null, null];
+        contentTypes = [null, null, null];
+        contentWidths = [33, 33, 33];
+        contentHeights = [460, 460, 460];
+        break;
+      case "oneByFour":
+        content = [null, null, null, null];
+        contentTypes = [null, null, null, null];
+        contentWidths = [25, 25, 25, 25];
+        contentHeights = [122, 122, 122, 122];
+        break;
+      case "oneByFive":
+        content = [null, null, null, null, null];
+        contentTypes = [null, null, null, null, null];
+        contentWidths = [20, 20, 20, 20, 20];
+        contentHeights = [121, 121, 121, 121, 121];
+        break;
+
+      default:
+        break;
+    }
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+
+      tempPrev[rowIndex].content = content;
+      tempPrev[rowIndex].contentTypes = contentTypes;
+      tempPrev[rowIndex].contentWidths = contentWidths;
+      tempPrev[rowIndex].contentHeights = contentHeights;
+      tempPrev[rowIndex].structure = structure;
+      if (view === "edit") {
+        const newReportContentWidths = cloneDeep(reportContentWidths);
+        const newReportContentHeights = cloneDeep(reportContentHeights);
+
+        if (newReportContentWidths[rowIndex]) {
+          newReportContentWidths[rowIndex].widths = contentWidths;
+        } else {
+          newReportContentWidths.push({
+            id: tempPrev[rowIndex].id,
+            widths: contentWidths,
+          });
+        }
+
+        if (newReportContentHeights[rowIndex]) {
+          newReportContentHeights[rowIndex].heights = contentHeights;
+        } else {
+          newReportContentHeights.push({
+            id: tempPrev[rowIndex].id,
+            heights: contentHeights,
+          });
+        }
+
+        setReportContentWidths(newReportContentWidths);
+        setReportContentHeights(newReportContentHeights);
+      }
+      return [...tempPrev];
+    });
   };
 
   React.useEffect(() => {
@@ -243,7 +339,7 @@ export default function RowFrame(props: RowFrameProps) {
   }, [props.forceSelectedType]);
 
   useUpdateEffect(() => {
-    props.handleRowFrameStructureTypeSelection(
+    handleRowFrameStructureTypeSelection(
       props.rowIndex,
       selectedType as
         | "oneByOne"
@@ -266,13 +362,13 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        setFramesArray={props.setFramesArray}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[0]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        setPickedCharts={props.setPickedCharts}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
@@ -285,13 +381,13 @@ export default function RowFrame(props: RowFrameProps) {
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        setFramesArray={props.setFramesArray}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[1]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        setPickedCharts={props.setPickedCharts}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
@@ -304,14 +400,14 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        setFramesArray={props.setFramesArray}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[2]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
+        setPickedCharts={props.setPickedCharts}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
       />
@@ -320,19 +416,19 @@ export default function RowFrame(props: RowFrameProps) {
       <RowstructureDisplay
         gap={containerGap}
         height={122}
-        rowId={props.rowId}
-        rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[3]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-        previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
+        rowId={props.rowId}
+        rowIndex={props.rowIndex}
+        setFramesArray={props.setFramesArray}
+        setPickedCharts={props.setPickedCharts}
+        deleteFrame={deleteFrame}
         handlePersistReportState={props.handlePersistReportState}
+        previewItems={props.previewItems}
       />
     ),
     oneByFive: (
@@ -342,13 +438,13 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
         setSelectedType={setSelectedType}
+        setFramesArray={props.setFramesArray}
+        deleteFrame={deleteFrame}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[4]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+        setPickedCharts={props.setPickedCharts}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
@@ -362,72 +458,84 @@ export default function RowFrame(props: RowFrameProps) {
 
   return (
     <>
-      {selectedType ? (
-        <>{checkSelectedType[selectedType as keyof typeof checkSelectedType]}</>
+      {props.type === "rowFrame" ? (
+        <>
+          {selectedType ? (
+            <>
+              {
+                checkSelectedType[
+                  selectedType as keyof typeof checkSelectedType
+                ]
+              }
+            </>
+          ) : (
+            <div css={containercss}>
+              <p
+                css={`
+                  margin-bottom: 0;
+                `}
+              >
+                Select your row structure
+              </p>
+              <IconButton
+                css={`
+                  top: -5px;
+                  right: -5px;
+                  position: absolute;
+                `}
+                onClick={() => {
+                  deleteFrame(props.rowId);
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <div
+                css={`
+                  width: 92%;
+                  margin: auto;
+                  display: flex;
+                  flex-wrap: wrap;
+                  column-gap: 55px;
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
+                <OneByOne
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  tourStep={reportCreationTourStep}
+                  setTourStep={setReportCreationTourStep}
+                />
+                <OneByTwo
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  tourStep={reportCreationTourStep}
+                  setTourStep={setReportCreationTourStep}
+                />
+                <OneByThree
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  tourStep={reportCreationTourStep}
+                  setTourStep={setReportCreationTourStep}
+                />
+                <OneByFour
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  tourStep={reportCreationTourStep}
+                  setTourStep={setReportCreationTourStep}
+                />
+                <OneByFive
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  tourStep={reportCreationTourStep}
+                  setTourStep={setReportCreationTourStep}
+                />
+              </div>
+            </div>
+          )}
+        </>
       ) : (
-        <div css={containercss}>
-          <p
-            css={`
-              margin-bottom: 0;
-            `}
-          >
-            Select your row structure
-          </p>
-          <IconButton
-            css={`
-              top: -5px;
-              right: -5px;
-              position: absolute;
-            `}
-            onClick={() => {
-              props.deleteFrame(props.rowId);
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <div
-            css={`
-              width: 92%;
-              margin: auto;
-              display: flex;
-              flex-wrap: wrap;
-              column-gap: 55px;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <OneByOne
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              tourStep={reportCreationTourStep}
-              setTourStep={setReportCreationTourStep}
-            />
-            <OneByTwo
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              tourStep={reportCreationTourStep}
-              setTourStep={setReportCreationTourStep}
-            />
-            <OneByThree
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              tourStep={reportCreationTourStep}
-              setTourStep={setReportCreationTourStep}
-            />
-            <OneByFour
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              tourStep={reportCreationTourStep}
-              setTourStep={setReportCreationTourStep}
-            />
-            <OneByFive
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              tourStep={reportCreationTourStep}
-              setTourStep={setReportCreationTourStep}
-            />
-          </div>
-        </div>
+        <Divider delete={deleteFrame} dividerId={props.rowId} />
       )}
     </>
   );

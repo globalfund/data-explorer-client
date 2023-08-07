@@ -57,6 +57,7 @@ interface RowFrameProps {
   contentWidths: ReportContentWidthsType[];
   contentHeights: ReportContentHeightsType[];
   contentTypes: ("text" | "divider" | "chart" | null)[];
+  type: "rowFrame" | "divider";
 }
 
 export default function ReportModule() {
@@ -125,24 +126,6 @@ export default function ReportModule() {
   const [reportContentHeights, setReportContentHeights] = useRecoilState(
     reportContentHeightsAtom
   );
-
-  const handleRowFrameItemAddition = (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => {
-    setFramesArray((prev) => {
-      const tempPrev = prev.map((item) => ({ ...item }));
-      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
-      if (frameId === -1) {
-        return [...tempPrev];
-      }
-      tempPrev[frameId].content[itemIndex] = itemContent;
-      tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
-      return [...tempPrev];
-    });
-  };
 
   const alignFramesWContentWidths = (framesArr: IFramesArray[]) => {
     let contentWidths: {
@@ -245,25 +228,6 @@ export default function ReportModule() {
         alignFramesWContentWidths(tempPrev);
         alignFramesWContentHeights(tempPrev);
       }
-      return [...tempPrev];
-    });
-  };
-
-  const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
-    setFramesArray((prev) => {
-      const tempPrev = prev.map((item) => ({ ...item }));
-      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
-      if (frameId === -1) {
-        return [...tempPrev];
-      }
-      if (tempPrev[frameId].contentTypes[itemIndex] === "chart") {
-        const chartId = tempPrev[frameId].content[itemIndex] as string;
-        setPickedCharts((prevPickedCharts) =>
-          filter(prevPickedCharts, (chart: string) => chart !== chartId)
-        );
-      }
-      tempPrev[frameId].content[itemIndex] = null;
-      tempPrev[frameId].contentTypes[itemIndex] = null;
       return [...tempPrev];
     });
   };
@@ -417,20 +381,15 @@ export default function ReportModule() {
   const [framesArray, setFramesArray] = React.useState<IFramesArray[]>([
     {
       id,
-      frame: (
-        <RowFrame
-          rowIndex={0}
-          rowId={id}
-          deleteFrame={deleteFrame}
-          handleRowFrameItemAddition={handleRowFrameItemAddition}
-          handleRowFrameItemRemoval={handleRowFrameItemRemoval}
-          handleRowFrameStructureTypeSelection={
-            handleRowFrameStructureTypeSelection
-          }
-          handlePersistReportState={handlePersistReportState}
-          handleRowFrameItemResize={handleRowFrameItemResize}
-        />
-      ),
+      frame: {
+        rowIndex: 0,
+        rowId: id,
+
+        handlePersistReportState,
+        handleRowFrameItemResize,
+        setPickedCharts,
+        type: "rowFrame",
+      },
       content: [],
       contentWidths: [],
       contentHeights: [],
@@ -486,27 +445,22 @@ export default function ReportModule() {
               return {
                 id: rowFrame.id,
 
-                frame: isDivider ? (
-                  <Divider delete={deleteFrame} dividerId={id} />
-                ) : (
-                  <RowFrame
-                    key={rowFrame.id}
-                    rowId={rowFrame.id}
-                    rowIndex={index}
-                    forceSelectedType={rowFrame.structure ?? undefined}
-                    deleteFrame={deleteFrame}
-                    handleRowFrameItemAddition={handleRowFrameItemAddition}
-                    handleRowFrameItemRemoval={handleRowFrameItemRemoval}
-                    handleRowFrameStructureTypeSelection={
-                      handleRowFrameStructureTypeSelection
-                    }
-                    previewItems={rowFrame.items}
-                    handlePersistReportState={handlePersistReportState}
-                    handleRowFrameItemResize={handleRowFrameItemResize}
-                  />
-                ),
+                frame: {
+                  rowIndex: index,
+                  rowId: rowFrame.id,
+
+                  handlePersistReportState,
+                  handleRowFrameItemResize,
+                  setPickedCharts,
+                  type: isDivider ? "divider" : "rowFrame",
+                  forceSelectedType: rowFrame.structure ?? undefined,
+                  previewItems: rowFrame.items,
+                },
+
+                type: rowFrame.type,
                 content: rowFrame.content,
                 contentWidths: rowFrame.contentWidths,
+                contentHeights: rowFrame.contentHeights,
                 contentTypes: rowFrame.contentTypes,
                 structure: rowFrame.structure,
               };
@@ -587,20 +541,15 @@ export default function ReportModule() {
     setFramesArray([
       {
         id,
-        frame: (
-          <RowFrame
-            rowIndex={0}
-            rowId={id}
-            deleteFrame={deleteFrame}
-            handleRowFrameItemAddition={handleRowFrameItemAddition}
-            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
-            handleRowFrameStructureTypeSelection={
-              handleRowFrameStructureTypeSelection
-            }
-            handlePersistReportState={handlePersistReportState}
-            handleRowFrameItemResize={handleRowFrameItemResize}
-          />
-        ),
+        frame: {
+          rowIndex: 0,
+          rowId: id,
+
+          handlePersistReportState,
+          handleRowFrameItemResize,
+          type: "rowFrame",
+          setPickedCharts,
+        },
         content: [],
         contentWidths: [],
         contentHeights: [],
@@ -714,6 +663,7 @@ export default function ReportModule() {
           framesArray={framesArray}
           headerDetails={headerDetails}
           setStopInitializeFramesWidth={setStopInitializeFramesWidth}
+          handlePersistReportState={handlePersistReportState}
         />
       )}
       {view &&
@@ -734,6 +684,7 @@ export default function ReportModule() {
             showHeaderItem={!headerDetails.showHeader}
             framesArray={framesArray}
             reportName={reportName}
+            handlePersistReportState={handlePersistReportState}
           />
         )}
       <div
@@ -766,8 +717,6 @@ export default function ReportModule() {
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}
             setHeaderDetails={setHeaderDetails}
-            handleRowFrameItemAddition={handleRowFrameItemAddition}
-            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection
             }
@@ -786,8 +735,6 @@ export default function ReportModule() {
             setFramesArray={setFramesArray}
             setHeaderDetails={setHeaderDetails}
             setAppliedHeaderDetails={setAppliedHeaderDetails}
-            handleRowFrameItemAddition={handleRowFrameItemAddition}
-            handleRowFrameItemRemoval={handleRowFrameItemRemoval}
             handlePersistReportState={handlePersistReportState}
             handleRowFrameStructureTypeSelection={
               handleRowFrameStructureTypeSelection

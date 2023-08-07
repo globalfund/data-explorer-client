@@ -141,7 +141,7 @@ export function ReportPreviewView() {
           ) {
             return (
               <hr
-                key={index}
+                key={"divider" + `${index}`}
                 css={`
                   margin: 0 0 50px 0;
                   border: 2px solid #cfd4da;
@@ -151,17 +151,16 @@ export function ReportPreviewView() {
           }
           return (
             <RowFrame
-              key={index}
+              key={"rowframe" + `${index}`}
               rowId={reportPreviewData.id}
               rowIndex={index}
-              deleteFrame={() => {}}
               forceSelectedType={rowFrame.structure ?? undefined}
-              handleRowFrameItemRemoval={() => {}}
-              handleRowFrameItemAddition={() => {}}
-              handleRowFrameStructureTypeSelection={() => {}}
               previewItems={rowFrame.items}
               handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
+              setPickedCharts={() => {}}
+              type="rowFrame"
+              setFramesArray={() => {}}
             />
           );
         })}

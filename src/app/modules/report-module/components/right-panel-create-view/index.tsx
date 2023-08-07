@@ -137,6 +137,7 @@ interface Props {
   setHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   framesArray: IFramesArray[];
   reportName: string;
+  handlePersistReportState: () => void;
 }
 
 export function ReportRightPanelCreateView(props: Props) {
@@ -256,6 +257,7 @@ export function ReportRightPanelCreateView(props: Props) {
           framesArray={props.framesArray}
           reportName={props.reportName}
           appliedHeaderDetails={props.appliedHeaderDetails}
+          handlePersistReportState={props.handlePersistReportState}
         />
       )}
       {currentView === "editHeader" && <EditHeaderPanelView {...props} />}
@@ -277,6 +279,7 @@ function ReportRightPanelCreateViewChartList(props: {
   appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
   reportName: string;
+  handlePersistReportState: () => void;
 }) {
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
@@ -421,9 +424,11 @@ function ReportRightPanelCreateViewChartList(props: {
           framesArray={props.framesArray}
           reportName={props.reportName}
           appliedHeaderDetails={props.appliedHeaderDetails}
+          handlePersistReportState={props.handlePersistReportState}
         />
-        {chartList.map((chart) => (
+        {chartList.map((chart, index) => (
           <ChartItem
+            chartIndex={index}
             id={chart.id}
             key={chart.id}
             name={chart.name}
@@ -479,6 +484,7 @@ function ElementItem(props: {
   return (
     <div
       ref={drag}
+      id={props.name}
       css={`
         border: 1px solid ${isDragging ? "#6061E5" : "transparent"};
 
@@ -499,6 +505,7 @@ function CreateChartCard(props: {
   headerDetails: IHeaderDetails;
   appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
+  handlePersistReportState: () => void;
 }) {
   const history = useHistory();
 
@@ -516,9 +523,7 @@ function CreateChartCard(props: {
   const setCreateChartData = useStoreActions(
     (state) => state.charts.ChartCreate.setCrudData
   );
-  const [persistedReportState, setPersistedReportState] = useRecoilState(
-    persistedReportStateAtom
-  );
+
   const setCreateChartFromReport = useRecoilState(createChartFromReportAtom)[1];
   const reportOrder = useStoreState(
     (state) => state.reports.orderData.value.order
@@ -533,43 +538,7 @@ function CreateChartCard(props: {
     setLoadedChart(null);
     setCreateChartData(null);
     //set persisted report state to current report state
-    setPersistedReportState({
-      ...persistedReportState,
-      reportName: props.reportName,
-      headerDetails: {
-        ...props.headerDetails,
-        description: JSON.stringify(
-          convertToRaw(props.headerDetails.description.getCurrentContent())
-        ),
-      },
-      appliedHeaderDetails: {
-        ...props.appliedHeaderDetails,
-        description: JSON.stringify(
-          convertToRaw(
-            props.appliedHeaderDetails.description.getCurrentContent()
-          )
-        ),
-      },
-
-      framesArray: JSON.stringify(
-        props.framesArray
-          .sort(function (a, b) {
-            return reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id);
-          })
-          .map((frame) => ({
-            id: frame.id,
-            structure: frame.structure,
-            content: frame.content,
-            contentWidths: frame.contentWidths,
-            contentTypes: frame.contentTypes,
-            items: frame.content.map((item, index) =>
-              frame.contentTypes[index] === "text"
-                ? convertToRaw((item as EditorState).getCurrentContent())
-                : item
-            ),
-          }))
-      ),
-    });
+    props.handlePersistReportState();
     history.push("/chart/new/data");
   };
   return (
@@ -634,6 +603,7 @@ function CreateChartCard(props: {
 
 function ChartItem(props: {
   id: string;
+  chartIndex: number;
   name: string;
   vizType: string;
   datasetId: string;
@@ -683,6 +653,7 @@ function ChartItem(props: {
   return (
     <div
       ref={added ? nullRef : drag}
+      id={`chart-${props.chartIndex}`}
       css={`
         width: 100%;
         font-size: 12px;

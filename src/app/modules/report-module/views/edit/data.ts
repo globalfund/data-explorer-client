@@ -41,13 +41,7 @@ export interface ReportEditViewProps {
       dateColor: string;
     }>
   >;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
+
   handleRowFrameStructureTypeSelection: (
     rowIndex: number,
     structure:

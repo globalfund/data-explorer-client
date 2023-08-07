@@ -26,6 +26,8 @@ import {
   reportContentHeightsAtom,
   isChartDraggingAtom,
 } from "app/state/recoil/atoms";
+import { IFramesArray } from "../../views/create/data";
+import { filter } from "lodash";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -33,9 +35,12 @@ interface RowStructureDisplayProps {
   rowIndex: number;
   rowId: string;
   selectedType: string;
-  deleteFrame: (id: string) => void;
+
   selectedTypeHistory: string[];
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+  deleteFrame: (id: string) => void;
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
     rowId: string;
@@ -43,13 +48,7 @@ interface RowStructureDisplayProps {
     factor: number;
     rowType: string;
   }[];
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
+
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
   onRowBoxItemResize: (
@@ -192,8 +191,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
             rowId={props.rowId}
             rowType={row.rowType}
             onRowBoxItemResize={props.onRowBoxItemResize}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+            setPickedCharts={props.setPickedCharts}
+            setFramesArray={props.setFramesArray}
             previewItem={get(props.previewItems, `[${index}]`, undefined)}
             handlePersistReportState={props.handlePersistReportState}
             rowItemsCount={props.rowStructureDetailItems.length}
@@ -211,13 +210,9 @@ const Box = (props: {
   itemIndex: number;
   handlePersistReportState: () => void;
   rowType: string;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
+  setPickedCharts: (value: React.SetStateAction<string[]>) => void;
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+
   rowItemsCount: number;
   previewItem?: string | any;
   onRowBoxItemResize: (
@@ -271,6 +266,42 @@ const Box = (props: {
     history.push(`/chart/${chartId}/mapping`);
   };
 
+  const handleRowFrameItemAddition = (
+    rowId: string,
+    itemIndex: number,
+    itemContent: string | object,
+    itemContentType: "text" | "divider" | "chart"
+  ) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      tempPrev[frameId].content[itemIndex] = itemContent;
+      tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
+    });
+  };
+  const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      if (tempPrev[frameId].contentTypes[itemIndex] === "chart") {
+        const chartId = tempPrev[frameId].content[itemIndex] as string;
+        props.setPickedCharts((prevPickedCharts) =>
+          filter(prevPickedCharts, (chart: string) => chart !== chartId)
+        );
+      }
+      tempPrev[frameId].content[itemIndex] = null;
+      tempPrev[frameId].contentTypes[itemIndex] = null;
+      return [...tempPrev];
+    });
+  };
+
   const containerWidth = useRecoilValue(reportContentContainerWidth);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [isResizing, setIsResizing] = useRecoilState(
@@ -294,7 +325,7 @@ const Box = (props: {
     }),
     drop: (item: any, monitor) => {
       if (item.type === ReportElementsType.TEXT) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           textContent,
@@ -306,7 +337,7 @@ const Box = (props: {
         item.type === ReportElementsType.CHART ||
         item.type === ReportElementsType.BIG_NUMBER
       ) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           item.value,
@@ -323,7 +354,7 @@ const Box = (props: {
   const [,] = useDebounce(
     () => {
       if (displayTextBox) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           textContent,
@@ -410,7 +441,7 @@ const Box = (props: {
                   setChartId(null);
                   setDisplayTextBox(false);
                   setTextContent(EditorState.createEmpty());
-                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+                  handleRowFrameItemRemoval(props.rowId, props.itemIndex);
                 }}
                 css={`
                   top: 12px;
@@ -463,10 +494,7 @@ const Box = (props: {
                     setChartId(null);
                     setDisplayTextBox(false);
                     setTextContent(EditorState.createEmpty());
-                    props.handleRowFrameItemRemoval(
-                      props.rowId,
-                      props.itemIndex
-                    );
+                    handleRowFrameItemRemoval(props.rowId, props.itemIndex);
                   }}
                   css={`
                     top: 12px;
@@ -559,7 +587,7 @@ const Box = (props: {
 
   React.useEffect(() => {
     if (displayChart && chartId) {
-      props.handleRowFrameItemAddition(
+      handleRowFrameItemAddition(
         props.rowId,
         props.itemIndex,
         chartId,
