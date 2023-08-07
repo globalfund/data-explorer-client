@@ -25,6 +25,7 @@ import {
   reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "../create/data";
+import RowFrame from "../../sub-module/rowStructure/rowFrame";
 
 export function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
@@ -215,7 +216,10 @@ export function ReportEditView(props: ReportEditViewProps) {
             {props.framesArray.map((frame) => {
               return (
                 <div key={frame.id}>
-                  <div>{frame.frame}</div>
+                  <RowFrame
+                    {...frame.frame}
+                    setFramesArray={props.setFramesArray}
+                  />
                   <Box height={38} />
 
                   <PlaceHolder
