@@ -34,6 +34,10 @@ export interface IFramesArray {
     | "oneByFive";
 }
 
+export interface IFramesArrayWithItems extends IFramesArray {
+  items: (string | object)[];
+}
+
 export interface ReportCreateViewProps {
   open: boolean;
   reportType: "basic" | "advanced" | "ai";
@@ -64,16 +68,6 @@ export interface ReportCreateViewProps {
     }>
   >;
 
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-  ) => void;
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,

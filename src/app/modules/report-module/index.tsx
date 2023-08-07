@@ -1,7 +1,8 @@
-import React, { useRef } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import get from "lodash/get";
 import filter from "lodash/filter";
+import isEmpty from "lodash/isEmpty";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
 import cloneDeep from "lodash/cloneDeep";
@@ -9,13 +10,14 @@ import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
+import { IHeaderDetails } from "./components/right-panel/data";
+import AITemplate from "app/modules/report-module/views/ai-template";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { ReportEditView } from "app/modules/report-module/views/edit";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import { ReportCreateView } from "app/modules/report-module/views/create";
-import { IFramesArray } from "app/modules/report-module/views/create/data";
 import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
@@ -24,24 +26,12 @@ import RowFrame, {
   Divider,
 } from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
-  reportContentWidthsAtom,
-  ReportContentWidthsType,
-  persistedReportStateAtom,
-  reportContentHeightsAtom,
-  ReportContentHeightsType,
-  reportRightPanelViewAtom,
-} from "app/state/recoil/atoms";
-import {
   Route,
   Switch,
   useHistory,
   useParams,
   Redirect,
 } from "react-router-dom";
-
-import AITemplate from "app/modules/report-module/views/ai-template";
-import { IHeaderDetails } from "./components/right-panel/data";
-import { isEmpty } from "lodash";
 
 interface RowFrameProps {
   structure:
@@ -59,6 +49,18 @@ interface RowFrameProps {
   contentTypes: ("text" | "divider" | "chart" | null)[];
   type: "rowFrame" | "divider";
 }
+import {
+  reportContentWidthsAtom,
+  ReportContentWidthsType,
+  persistedReportStateAtom,
+  reportContentHeightsAtom,
+  reportRightPanelViewAtom,
+  ReportContentHeightsType,
+} from "app/state/recoil/atoms";
+import {
+  IFramesArray,
+  IFramesArrayWithItems,
+} from "app/modules/report-module/views/create/data";
 
 export default function ReportModule() {
   const history = useHistory();
@@ -67,23 +69,27 @@ export default function ReportModule() {
     view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
 
-  const reportNameRef = useRef<string>("");
-  const reportOrderRef = useRef<string[]>([]);
-  const framesArrayRef = useRef<IFramesArray[]>([]);
-  const headerDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
-  const AppliedHeaderDetailsRef = useRef<IHeaderDetails>({} as IHeaderDetails);
+  const reportNameRef = React.useRef<string>("");
+  const reportOrderRef = React.useRef<string[]>([]);
+  const framesArrayRef = React.useRef<IFramesArray[]>([]);
+  const headerDetailsRef = React.useRef<IHeaderDetails>({} as IHeaderDetails);
+  const AppliedHeaderDetailsRef = React.useRef<IHeaderDetails>(
+    {} as IHeaderDetails
+  );
+
   const setRightPanelView = useRecoilState(reportRightPanelViewAtom)[1];
+
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
 
-  const [buttonActive] = React.useState(false);
-  const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
-  const [reportName, setReportName] = React.useState("Untitled report");
-  const [reportType, setReportType] = React.useState<
-    "basic" | "advanced" | "ai"
-  >("basic");
+  const [reportContentWidths, setReportContentWidths] = useRecoilState(
+    reportContentWidthsAtom
+  );
 
+  const [reportContentHeights, setReportContentHeights] = useRecoilState(
+    reportContentHeightsAtom
+  );
   const localReportState = JSON.parse(persistedReportState.framesArray);
 
   let localPickedCharts: string[] = [];
@@ -95,14 +101,12 @@ export default function ReportModule() {
     });
   });
 
-  const [pickedCharts, setPickedCharts] = React.useState<any[]>(
-    localPickedCharts || []
-  );
-
-  React.useEffect(() => {
-    setPickedCharts(localPickedCharts);
-  }, [persistedReportState]);
-
+  const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
+  const [reportName, setReportName] = React.useState("Untitled report");
+  const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
+  const [reportType, setReportType] = React.useState<
+    "basic" | "advanced" | "ai"
+  >("basic");
   const [headerDetails, setHeaderDetails] = React.useState({
     title: "",
     description: EditorState.createEmpty(),
@@ -112,19 +116,12 @@ export default function ReportModule() {
     descriptionColor: "#ffffff",
     dateColor: "#ffffff",
   });
-
   const [appliedHeaderDetails, setAppliedHeaderDetails] =
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
     React.useState(false);
-  const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
-
-  const [reportContentWidths, setReportContentWidths] = useRecoilState(
-    reportContentWidthsAtom
-  );
-
-  const [reportContentHeights, setReportContentHeights] = useRecoilState(
-    reportContentHeightsAtom
+  const [pickedCharts, setPickedCharts] = React.useState(
+    localPickedCharts || []
   );
 
   const alignFramesWContentWidths = (framesArr: IFramesArray[]) => {
@@ -232,92 +229,6 @@ export default function ReportModule() {
     });
   };
 
-  const handleRowFrameStructureTypeSelection = (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-  ) => {
-    let content: (string | object | null)[] = [];
-    let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
-    let contentWidths: number[] = [];
-    let contentHeights: number[] = [];
-    switch (structure) {
-      case "oneByOne":
-        content = [null];
-        contentTypes = [null];
-        contentWidths = [100];
-        contentHeights = [400];
-        break;
-      case "oneByTwo":
-        content = [null, null];
-        contentTypes = [null, null];
-        contentWidths = [50, 50];
-        contentHeights = [420, 420];
-        break;
-      case "oneByThree":
-        content = [null, null, null];
-        contentTypes = [null, null, null];
-        contentWidths = [33, 33, 33];
-        contentHeights = [460, 460, 460];
-        break;
-      case "oneByFour":
-        content = [null, null, null, null];
-        contentTypes = [null, null, null, null];
-        contentWidths = [25, 25, 25, 25];
-        contentHeights = [122, 122, 122, 122];
-        break;
-      case "oneByFive":
-        content = [null, null, null, null, null];
-        contentTypes = [null, null, null, null, null];
-        contentWidths = [20, 20, 20, 20, 20];
-        contentHeights = [121, 121, 121, 121, 121];
-        break;
-
-      default:
-        break;
-    }
-    setFramesArray((prev) => {
-      const tempPrev = prev.map((item) => ({ ...item }));
-
-      tempPrev[rowIndex].content = content;
-      tempPrev[rowIndex].contentTypes = contentTypes;
-      tempPrev[rowIndex].contentWidths = contentWidths;
-      tempPrev[rowIndex].contentHeights = contentHeights;
-      tempPrev[rowIndex].structure = structure;
-      if (view === "edit") {
-        const newReportContentWidths = cloneDeep(reportContentWidths);
-        const newReportContentHeights = cloneDeep(reportContentHeights);
-
-        if (newReportContentWidths[rowIndex]) {
-          newReportContentWidths[rowIndex].widths = contentWidths;
-        } else {
-          newReportContentWidths.push({
-            id: tempPrev[rowIndex].id,
-            widths: contentWidths,
-          });
-        }
-
-        if (newReportContentHeights[rowIndex]) {
-          newReportContentHeights[rowIndex].heights = contentHeights;
-        } else {
-          newReportContentHeights.push({
-            id: tempPrev[rowIndex].id,
-            heights: contentHeights,
-          });
-        }
-
-        setReportContentWidths(newReportContentWidths);
-        setReportContentHeights(newReportContentHeights);
-      }
-      return [...tempPrev];
-    });
-  };
-
   const deleteFrame = (id: string) => {
     setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
@@ -334,7 +245,7 @@ export default function ReportModule() {
   };
 
   const handlePersistReportState = () => {
-    //does not have up to date values of states so we use refs
+    // does not have up to date values of states so we use refs
     setPersistedReportState({
       ...persistedReportState,
       reportName: reportNameRef.current,
@@ -617,6 +528,83 @@ export default function ReportModule() {
     };
   }, []);
 
+  // sets report state to persisted report state
+  React.useEffect(() => {
+    setReportName(persistedReportState.reportName || "Untitled report");
+    setHeaderDetails({
+      ...persistedReportState.headerDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.headerDetails.description)
+        )
+      ),
+    });
+
+    setAppliedHeaderDetails({
+      ...persistedReportState.appliedHeaderDetails,
+
+      description: EditorState.createWithContent(
+        convertFromRaw(
+          JSON.parse(persistedReportState.appliedHeaderDetails.description)
+        )
+      ),
+    });
+
+    const localFramesArray =
+      JSON.parse(persistedReportState.framesArray || "[]").length > 0
+        ? JSON.parse(persistedReportState.framesArray).map(
+            (rowFrame: RowFrameProps, index: number) => {
+              const isDivider =
+                rowFrame.content &&
+                rowFrame.content.length === 1 &&
+                rowFrame.content[0] === ReportElementsType.DIVIDER;
+              return {
+                id: rowFrame.id,
+
+                frame: {
+                  rowIndex: index,
+                  rowId: rowFrame.id,
+
+                  handlePersistReportState,
+                  handleRowFrameItemResize,
+                  setPickedCharts,
+                  type: isDivider ? "divider" : "rowFrame",
+                  forceSelectedType: rowFrame.structure ?? undefined,
+                  previewItems: rowFrame.items,
+                },
+
+                type: rowFrame.type,
+                content: rowFrame.content,
+                contentWidths: rowFrame.contentWidths,
+                contentHeights: rowFrame.contentHeights,
+                contentTypes: rowFrame.contentTypes,
+                structure: rowFrame.structure,
+              };
+            }
+          )
+        : framesArray;
+
+    setFramesArray(localFramesArray);
+  }, [persistedReportState]);
+
+  React.useEffect(() => {
+    setPickedCharts(localPickedCharts);
+  }, [persistedReportState]);
+
+  React.useEffect(() => {
+    if (view !== "edit" && view !== "preview") {
+      alignFramesWContentWidths(framesArray);
+      alignFramesWContentHeights(framesArray);
+    }
+  }, [framesArray, view]);
+
+  React.useEffect(() => {
+    if (view === "edit" && !rightPanelOpen) {
+      setRightPanelOpen(true);
+    }
+  }, [view]);
+
   React.useEffect(() => {
     let textValue = !(
       reportName === "Untitled report" &&
@@ -698,7 +686,6 @@ export default function ReportModule() {
           <Container maxWidth="lg">
             <ReportInitialView
               resetReport={resetReport}
-              buttonActive={buttonActive}
               setButtonActive={handleSetButtonActive}
             />
           </Container>
@@ -717,9 +704,6 @@ export default function ReportModule() {
             headerDetails={headerDetails}
             setFramesArray={setFramesArray}
             setHeaderDetails={setHeaderDetails}
-            handleRowFrameStructureTypeSelection={
-              handleRowFrameStructureTypeSelection
-            }
             handlePersistReportState={handlePersistReportState}
             handleRowFrameItemResize={handleRowFrameItemResize}
           />
@@ -736,9 +720,6 @@ export default function ReportModule() {
             setHeaderDetails={setHeaderDetails}
             setAppliedHeaderDetails={setAppliedHeaderDetails}
             handlePersistReportState={handlePersistReportState}
-            handleRowFrameStructureTypeSelection={
-              handleRowFrameStructureTypeSelection
-            }
             handleRowFrameItemResize={handleRowFrameItemResize}
             stopInitializeFramesWidth={stopInitializeFramesWidth}
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}

@@ -42,16 +42,6 @@ export interface ReportEditViewProps {
     }>
   >;
 
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-  ) => void;
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
