@@ -56,11 +56,9 @@ import {
   reportContentHeightsAtom,
   reportRightPanelViewAtom,
   ReportContentHeightsType,
+  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
-import {
-  IFramesArray,
-  IFramesArrayWithItems,
-} from "app/modules/report-module/views/create/data";
+import { IFramesArray } from "app/modules/report-module/views/create/data";
 
 export default function ReportModule() {
   const history = useHistory();
@@ -68,7 +66,7 @@ export default function ReportModule() {
     page: string;
     view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
-
+  const unSavedPreviewMode = useRecoilState(unSavedReportPreviewModeAtom)[0];
   const reportNameRef = React.useRef<string>("");
   const reportOrderRef = React.useRef<string[]>([]);
   const framesArrayRef = React.useRef<IFramesArray[]>([]);
@@ -279,7 +277,9 @@ export default function ReportModule() {
             contentHeights: frame.contentHeights,
             items: frame.content.map((item, index) =>
               frame.contentTypes[index] === "text"
-                ? convertToRaw((item as EditorState).getCurrentContent())
+                ? JSON.stringify(
+                    convertToRaw((item as EditorState).getCurrentContent())
+                  )
                 : item
             ),
           }))
@@ -369,7 +369,13 @@ export default function ReportModule() {
                 },
 
                 type: rowFrame.type,
-                content: rowFrame.content,
+                content: rowFrame.items.map((item, index) => {
+                  return rowFrame.contentTypes[index] === "text"
+                    ? EditorState.createWithContent(
+                        convertFromRaw(JSON.parse(item as any))
+                      )
+                    : item;
+                }),
                 contentWidths: rowFrame.contentWidths,
                 contentHeights: rowFrame.contentHeights,
                 contentTypes: rowFrame.contentTypes,
@@ -482,6 +488,7 @@ export default function ReportModule() {
     setRightPanelView("elements");
     setRightPanelOpen(true);
   };
+  console.log(framesArray, "framesArray");
 
   const onSave = () => {
     const action = page === "new" ? reportCreate : reportEdit;
@@ -527,66 +534,6 @@ export default function ReportModule() {
       setRightPanelView("elements");
     };
   }, []);
-
-  // sets report state to persisted report state
-  React.useEffect(() => {
-    setReportName(persistedReportState.reportName || "Untitled report");
-    setHeaderDetails({
-      ...persistedReportState.headerDetails,
-
-      description: EditorState.createWithContent(
-        convertFromRaw(
-          JSON.parse(persistedReportState.headerDetails.description)
-        )
-      ),
-    });
-
-    setAppliedHeaderDetails({
-      ...persistedReportState.appliedHeaderDetails,
-
-      description: EditorState.createWithContent(
-        convertFromRaw(
-          JSON.parse(persistedReportState.appliedHeaderDetails.description)
-        )
-      ),
-    });
-
-    const localFramesArray =
-      JSON.parse(persistedReportState.framesArray || "[]").length > 0
-        ? JSON.parse(persistedReportState.framesArray).map(
-            (rowFrame: RowFrameProps, index: number) => {
-              const isDivider =
-                rowFrame.content &&
-                rowFrame.content.length === 1 &&
-                rowFrame.content[0] === ReportElementsType.DIVIDER;
-              return {
-                id: rowFrame.id,
-
-                frame: {
-                  rowIndex: index,
-                  rowId: rowFrame.id,
-
-                  handlePersistReportState,
-                  handleRowFrameItemResize,
-                  setPickedCharts,
-                  type: isDivider ? "divider" : "rowFrame",
-                  forceSelectedType: rowFrame.structure ?? undefined,
-                  previewItems: rowFrame.items,
-                },
-
-                type: rowFrame.type,
-                content: rowFrame.content,
-                contentWidths: rowFrame.contentWidths,
-                contentHeights: rowFrame.contentHeights,
-                contentTypes: rowFrame.contentTypes,
-                structure: rowFrame.structure,
-              };
-            }
-          )
-        : framesArray;
-
-    setFramesArray(localFramesArray);
-  }, [persistedReportState]);
 
   React.useEffect(() => {
     setPickedCharts(localPickedCharts);
