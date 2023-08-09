@@ -149,7 +149,11 @@ export function ReportEditView(props: ReportEditViewProps) {
               forceSelectedType: rowFrame.structure ?? undefined,
               previewItems: rowFrame.items,
             },
-            content,
+            content: rowFrame.items.map((item, index) => {
+              return contentTypes[index] === "text"
+                ? EditorState.createWithContent(convertFromRaw(item as any))
+                : item;
+            }),
             contentWidths: [],
             contentHeights: [],
             contentTypes,

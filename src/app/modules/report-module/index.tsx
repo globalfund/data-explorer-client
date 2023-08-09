@@ -277,9 +277,7 @@ export default function ReportModule() {
             contentHeights: frame.contentHeights,
             items: frame.content.map((item, index) =>
               frame.contentTypes[index] === "text"
-                ? JSON.stringify(
-                    convertToRaw((item as EditorState).getCurrentContent())
-                  )
+                ? convertToRaw((item as EditorState).getCurrentContent())
                 : item
             ),
           }))
@@ -371,9 +369,7 @@ export default function ReportModule() {
                 type: rowFrame.type,
                 content: rowFrame.items.map((item, index) => {
                   return rowFrame.contentTypes[index] === "text"
-                    ? EditorState.createWithContent(
-                        convertFromRaw(JSON.parse(item as any))
-                      )
+                    ? EditorState.createWithContent(convertFromRaw(item as any))
                     : item;
                 }),
                 contentWidths: rowFrame.contentWidths,
@@ -488,7 +484,6 @@ export default function ReportModule() {
     setRightPanelView("elements");
     setRightPanelOpen(true);
   };
-  console.log(framesArray, "framesArray");
 
   const onSave = () => {
     const action = page === "new" ? reportCreate : reportEdit;

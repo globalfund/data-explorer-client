@@ -165,6 +165,9 @@ export function WrapControlComponent({
     ]
   );
 
+  if (type === "checkbox") {
+    return <div></div>;
+  }
   return (
     <Component
       type={type}
@@ -191,6 +194,6 @@ export function WrapControlComponent({
         "mappedData",
       ])}
       onChange={handleControlChange}
-    />
+    ></Component>
   );
 }
