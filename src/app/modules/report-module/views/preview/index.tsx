@@ -161,6 +161,7 @@ export function ReportPreviewView() {
               setPickedCharts={() => {}}
               type="rowFrame"
               setFramesArray={() => {}}
+              view={"preview"}
             />
           );
         })}

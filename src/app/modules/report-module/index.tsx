@@ -66,7 +66,6 @@ export default function ReportModule() {
     page: string;
     view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
-  const unSavedPreviewMode = useRecoilState(unSavedReportPreviewModeAtom)[0];
   const reportNameRef = React.useRef<string>("");
   const reportOrderRef = React.useRef<string[]>([]);
   const framesArrayRef = React.useRef<IFramesArray[]>([]);
@@ -638,6 +637,7 @@ export default function ReportModule() {
         <Route path="/report/:page/create">
           <ReportCreateView
             open={rightPanelOpen}
+            view={view}
             pickedCharts={pickedCharts}
             setPickedCharts={setPickedCharts}
             deleteFrame={deleteFrame}
@@ -665,6 +665,7 @@ export default function ReportModule() {
             handleRowFrameItemResize={handleRowFrameItemResize}
             stopInitializeFramesWidth={stopInitializeFramesWidth}
             setStopInitializeFramesWidth={setStopInitializeFramesWidth}
+            view={view}
           />
         </Route>
         <Route path="/report/:page/preview">

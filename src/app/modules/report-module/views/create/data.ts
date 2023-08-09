@@ -40,6 +40,8 @@ export interface IFramesArrayWithItems extends IFramesArray {
 
 export interface ReportCreateViewProps {
   open: boolean;
+  view: "initial" | "edit" | "create" | "preview" | "ai-template";
+
   reportType: "basic" | "advanced" | "ai";
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;

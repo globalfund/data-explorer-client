@@ -125,6 +125,7 @@ export interface RowFrameProps {
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
   setPickedCharts: (value: React.SetStateAction<any[]>) => void;
   type: "rowFrame" | "divider";
+  view: "initial" | "edit" | "create" | "preview" | "ai-template";
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
@@ -145,9 +146,8 @@ export interface IRowStructureType {
 
 export default function RowFrame(props: RowFrameProps) {
   const history = useHistory();
-  const { page, view } = useParams<{
+  const { page } = useParams<{
     page: string;
-    view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType ?? ""
@@ -283,7 +283,7 @@ export default function RowFrame(props: RowFrameProps) {
       tempPrev[rowIndex].contentWidths = contentWidths;
       tempPrev[rowIndex].contentHeights = contentHeights;
       tempPrev[rowIndex].structure = structure;
-      if (view === "edit") {
+      if (props.view === "edit") {
         const newReportContentWidths = cloneDeep(reportContentWidths);
         const newReportContentHeights = cloneDeep(reportContentHeights);
 

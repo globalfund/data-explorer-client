@@ -223,6 +223,7 @@ export function ReportEditView(props: ReportEditViewProps) {
                   <RowFrame
                     {...frame.frame}
                     setFramesArray={props.setFramesArray}
+                    view={props.view}
                   />
                   <Box height={38} />
 

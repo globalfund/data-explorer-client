@@ -4,6 +4,8 @@ import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
 export interface ReportEditViewProps {
   open: boolean;
+  view: "initial" | "edit" | "create" | "preview" | "ai-template";
+
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
   localPickedCharts: string[];

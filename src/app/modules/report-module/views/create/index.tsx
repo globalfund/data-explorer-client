@@ -145,6 +145,7 @@ export function ReportCreateView(props: ReportCreateViewProps) {
                     <RowFrame
                       {...frame.frame}
                       setFramesArray={props.setFramesArray}
+                      view={props.view}
                     />
                   </div>
                   <Box height={38} />
