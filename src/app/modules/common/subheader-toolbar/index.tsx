@@ -128,9 +128,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const selectedChartType = useStoreState(
     (state) => state.charts.chartType.value
   );
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
+
   const loadReports = useStoreActions(
     (actions) => actions.reports.ReportGetList.fetch
   );

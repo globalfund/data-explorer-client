@@ -68,8 +68,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
   const [reportContentHeights] = useRecoilState(reportContentHeightsAtom);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
-  console.log(reportContentWidths, "reportContentWidths");
-
+  console.log("reportContentWidths", reportContentWidths);
   const viewOnlyMode =
     (page !== "new" &&
       get(location.pathname.split("/"), "[3]", "") !== "edit") ||
@@ -226,11 +225,7 @@ const Box = (props: {
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
-  const reportOrderRef = React.useRef<string[]>([]);
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
-  reportOrderRef.current = reportOrder;
+
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
@@ -277,11 +272,7 @@ const Box = (props: {
   ) => {
     props.setFramesArray((prev) => {
       const tempPrev = cloneDeep(prev);
-      tempPrev.sort(
-        (a, b) =>
-          reportOrderRef.current.indexOf(a.id) -
-          reportOrderRef.current.indexOf(b.id)
-      );
+
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];
@@ -294,11 +285,7 @@ const Box = (props: {
   const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
     props.setFramesArray((prev) => {
       const tempPrev = cloneDeep(prev);
-      tempPrev.sort(
-        (a, b) =>
-          reportOrderRef.current.indexOf(a.id) -
-          reportOrderRef.current.indexOf(b.id)
-      );
+
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];

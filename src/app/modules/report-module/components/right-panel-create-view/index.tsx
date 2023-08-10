@@ -525,9 +525,7 @@ function CreateChartCard(props: {
   );
 
   const setCreateChartFromReport = useRecoilState(createChartFromReportAtom)[1];
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
+
   const action = () => {
     setCreateChartFromReport({
       state: true,

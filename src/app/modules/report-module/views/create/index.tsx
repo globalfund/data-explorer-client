@@ -23,7 +23,6 @@ import {
   isDividerOrRowFrameDraggingAtom,
 } from "app/state/recoil/atoms";
 import TourGuide from "app/components/Dialogs/TourGuide";
-import { row } from "app/modules/grants-module/components/List/styles";
 import { cloneDeep } from "lodash";
 import { useStoreState } from "app/state/store/hooks";
 
@@ -33,7 +32,6 @@ export function ReportCreateView(props: ReportCreateViewProps) {
   const [containerWidth, setContainerWidth] = useRecoilState(
     reportContentContainerWidth
   );
-
   const [rowStructureType, setRowStructuretype] =
     React.useState<IRowFrameStructure>({
       index: 0,
@@ -135,7 +133,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
         >
           <Box height={50} />
           <TourGuide reportType={props.reportType} toolBoxOpen={props.open} />
-          <ReportOrderContainer enabled childrenData={props.framesArray}>
+          <ReportOrderContainer
+            enabled
+            childrenData={props.framesArray}
+            setFramesArray={props.setFramesArray}
+          >
             {props.framesArray.map((frame) => {
               return (
                 <div key={frame.id}>
@@ -186,11 +188,6 @@ export function ReportCreateView(props: ReportCreateViewProps) {
 }
 
 export const PlaceHolder = (props: PlaceholderProps) => {
-  const reportOrderRef = React.useRef<string[]>([]);
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
-  reportOrderRef.current = reportOrder;
   const [{ isOver }, drop] = useDrop(() => ({
     // The type (or types) to accept - strings or symbols
     accept: [ReportElementsType.DIVIDER, ReportElementsType.ROWFRAME],
@@ -203,11 +200,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
     drop: (item: any, monitor) => {
       props.setFramesArray((prev) => {
         const tempPrev = cloneDeep(prev);
-        tempPrev.sort(
-          (a, b) =>
-            reportOrderRef.current.indexOf(a.id) -
-            reportOrderRef.current.indexOf(b.id)
-        );
+
         const tempIndex = tempPrev.findIndex(
           (frame) => frame.id === props.index
         );

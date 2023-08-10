@@ -30,22 +30,11 @@ interface Props {
 
 export default function AddRowFrameButton(props: Props) {
   const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
-  const reportOrderRef = React.useRef<string[]>([]);
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
-
-  reportOrderRef.current = reportOrder;
-
   const handleAddrowStructureBlock = () => {
     const id = v4();
     props.setFramesArray((prev) => {
       const tempPrev = cloneDeep(prev);
-      tempPrev.sort(
-        (a, b) =>
-          reportOrderRef.current.indexOf(a.id) -
-          reportOrderRef.current.indexOf(b.id)
-      );
+
       return [
         ...tempPrev,
         {

@@ -160,11 +160,7 @@ export default function ReportModule() {
         setStopInitializeFramesWidth(true);
       }
       const tempPrev = cloneDeep(prev);
-      tempPrev.sort(
-        (a, b) =>
-          reportOrderRef.current.indexOf(a.id) -
-          reportOrderRef.current.indexOf(b.id)
-      );
+
       const frameIndex = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameIndex === -1) {
         return prev;
@@ -421,20 +417,12 @@ export default function ReportModule() {
     (actions) => actions.reports.ReportUpdate.clear
   );
 
-  const reportOrder = useStoreState(
-    (state) => state.reports.orderData.value.order
-  );
-
   //get current value of states for handlePersistReportState function
-  reportOrderRef.current = reportOrder;
+
   headerDetailsRef.current = headerDetails;
   AppliedHeaderDetailsRef.current = appliedHeaderDetails;
   framesArrayRef.current = framesArray;
   reportNameRef.current = reportName;
-
-  const reportOrderClear = useStoreActions(
-    (actions) => actions.reports.orderData.clear
-  );
 
   const handleSetButtonActive = (type: "basic" | "advanced" | "ai") => {
     setReportType(type);
@@ -494,16 +482,14 @@ export default function ReportModule() {
             ? headerDetails.description.getCurrentContent()
             : EditorState.createEmpty().getCurrentContent()
         ),
-        rows: framesArray
-          .sort((a, b) => reportOrder.indexOf(a.id) - reportOrder.indexOf(b.id))
-          .map((frame) => ({
-            structure: frame.structure,
-            items: frame.content.map((item, index) =>
-              frame.contentTypes[index] === "text"
-                ? convertToRaw((item as EditorState).getCurrentContent())
-                : item
-            ),
-          })),
+        rows: framesArray.map((frame) => ({
+          structure: frame.structure,
+          items: frame.content.map((item, index) =>
+            frame.contentTypes[index] === "text"
+              ? convertToRaw((item as EditorState).getCurrentContent())
+              : item
+          ),
+        })),
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
@@ -517,7 +503,6 @@ export default function ReportModule() {
   React.useEffect(() => {
     return () => {
       reportEditClear();
-      reportOrderClear();
       reportCreateClear();
       setPickedCharts([]);
       setReportContentWidths([]);
@@ -568,7 +553,6 @@ export default function ReportModule() {
         reportCreateData.id.length > 0) ||
       reportEditSuccess
     ) {
-      reportOrderClear();
       const id = reportCreateSuccess ? reportCreateData.id : page;
       history.push(`/report/${id}`);
     }
