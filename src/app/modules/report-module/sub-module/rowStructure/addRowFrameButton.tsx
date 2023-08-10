@@ -8,6 +8,8 @@ import {
   IRowFrameStructure,
   ReportContentWidthsType,
 } from "app/state/recoil/atoms";
+import { cloneDeep } from "lodash";
+import { useStoreState } from "app/state/store/hooks";
 
 interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
@@ -28,29 +30,43 @@ interface Props {
 
 export default function AddRowFrameButton(props: Props) {
   const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
+  const reportOrderRef = React.useRef<string[]>([]);
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+
+  reportOrderRef.current = reportOrder;
 
   const handleAddrowStructureBlock = () => {
     const id = v4();
-    props.setFramesArray([
-      ...props.framesArray,
-      {
-        id,
-        frame: {
-          rowId: id,
-          rowIndex: props.framesArray.length,
+    props.setFramesArray((prev) => {
+      const tempPrev = cloneDeep(prev);
+      tempPrev.sort(
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
+      );
+      return [
+        ...tempPrev,
+        {
+          id,
+          frame: {
+            rowId: id,
+            rowIndex: tempPrev.length,
 
-          handlePersistReportState: props.handlePersistReportState,
-          handleRowFrameItemResize: props.handleRowFrameItemResize,
-          setPickedCharts: props.setPickedCharts,
-          type: "rowFrame",
+            handlePersistReportState: props.handlePersistReportState,
+            handleRowFrameItemResize: props.handleRowFrameItemResize,
+            setPickedCharts: props.setPickedCharts,
+            type: "rowFrame",
+          },
+          content: [],
+          contentWidths: [],
+          contentHeights: [],
+          contentTypes: [],
+          structure: null,
         },
-        content: [],
-        contentWidths: [],
-        contentHeights: [],
-        contentTypes: [],
-        structure: null,
-      },
-    ]);
+      ];
+    });
     props.setRowStructureType({
       ...props.rowStructureType,
       rowType: "",

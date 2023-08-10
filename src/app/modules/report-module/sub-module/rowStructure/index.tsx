@@ -9,7 +9,7 @@ import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
-import { useStoreActions } from "app/state/store/hooks";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
@@ -27,7 +27,7 @@ import {
   isChartDraggingAtom,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "../../views/create/data";
-import { filter } from "lodash";
+import { cloneDeep, filter } from "lodash";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -68,6 +68,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
   const [reportContentHeights] = useRecoilState(reportContentHeightsAtom);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
+  console.log(reportContentWidths, "reportContentWidths");
 
   const viewOnlyMode =
     (page !== "new" &&
@@ -225,6 +226,11 @@ const Box = (props: {
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
+  const reportOrderRef = React.useRef<string[]>([]);
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+  reportOrderRef.current = reportOrder;
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
@@ -234,11 +240,8 @@ const Box = (props: {
   const setCreateChartData = useStoreActions(
     (state) => state.charts.ChartCreate.setCrudData
   );
-
   const isChartDragging = useRecoilValue(isChartDraggingAtom);
-
   const setCreateChartFromReport = useRecoilState(createChartFromReportAtom)[1];
-
   const resetMapping = useStoreActions(
     (actions) => actions.charts.mapping.reset
   );
@@ -273,7 +276,12 @@ const Box = (props: {
     itemContentType: "text" | "divider" | "chart"
   ) => {
     props.setFramesArray((prev) => {
-      const tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = cloneDeep(prev);
+      tempPrev.sort(
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
+      );
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];
@@ -285,7 +293,12 @@ const Box = (props: {
   };
   const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
     props.setFramesArray((prev) => {
-      const tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = cloneDeep(prev);
+      tempPrev.sort(
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
+      );
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];

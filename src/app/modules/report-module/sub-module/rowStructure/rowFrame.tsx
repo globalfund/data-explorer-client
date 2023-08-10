@@ -21,6 +21,7 @@ import {
 } from "app/modules/report-module/sub-module/rowStructure/style";
 import { cloneDeep } from "lodash";
 import { IFramesArray } from "../../views/create/data";
+import { useStoreState } from "app/state/store/hooks";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -146,9 +147,11 @@ export interface IRowStructureType {
 
 export default function RowFrame(props: RowFrameProps) {
   const history = useHistory();
-  const { page } = useParams<{
-    page: string;
-  }>();
+  const reportOrderRef = React.useRef<string[]>([]);
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+  reportOrderRef.current = reportOrder;
   const [selectedType, setSelectedType] = React.useState<string>(
     props.forceSelectedType ?? ""
   );
@@ -213,7 +216,12 @@ export default function RowFrame(props: RowFrameProps) {
   };
   const deleteFrame = (id: string) => {
     props.setFramesArray((prev) => {
-      const tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = cloneDeep(prev);
+      tempPrev.sort(
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
+      );
       const frameId = tempPrev.findIndex((frame) => frame.id === id);
       const contentArr = tempPrev[frameId].content;
 
@@ -276,7 +284,12 @@ export default function RowFrame(props: RowFrameProps) {
         break;
     }
     props.setFramesArray((prev) => {
-      const tempPrev = prev.map((item) => ({ ...item }));
+      const tempPrev = cloneDeep(prev);
+      tempPrev.sort(
+        (a, b) =>
+          reportOrderRef.current.indexOf(a.id) -
+          reportOrderRef.current.indexOf(b.id)
+      );
 
       tempPrev[rowIndex].content = content;
       tempPrev[rowIndex].contentTypes = contentTypes;

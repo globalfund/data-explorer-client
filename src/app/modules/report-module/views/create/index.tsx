@@ -24,6 +24,8 @@ import {
 } from "app/state/recoil/atoms";
 import TourGuide from "app/components/Dialogs/TourGuide";
 import { row } from "app/modules/grants-module/components/List/styles";
+import { cloneDeep } from "lodash";
+import { useStoreState } from "app/state/store/hooks";
 
 export function ReportCreateView(props: ReportCreateViewProps) {
   const { ref, width } = useResizeObserver<HTMLDivElement>();
@@ -184,6 +186,11 @@ export function ReportCreateView(props: ReportCreateViewProps) {
 }
 
 export const PlaceHolder = (props: PlaceholderProps) => {
+  const reportOrderRef = React.useRef<string[]>([]);
+  const reportOrder = useStoreState(
+    (state) => state.reports.orderData.value.order
+  );
+  reportOrderRef.current = reportOrder;
   const [{ isOver }, drop] = useDrop(() => ({
     // The type (or types) to accept - strings or symbols
     accept: [ReportElementsType.DIVIDER, ReportElementsType.ROWFRAME],
@@ -195,9 +202,17 @@ export const PlaceHolder = (props: PlaceholderProps) => {
     }),
     drop: (item: any, monitor) => {
       props.setFramesArray((prev) => {
-        const tempIndex = prev.findIndex((frame) => frame.id === props.index);
+        const tempPrev = cloneDeep(prev);
+        tempPrev.sort(
+          (a, b) =>
+            reportOrderRef.current.indexOf(a.id) -
+            reportOrderRef.current.indexOf(b.id)
+        );
+        const tempIndex = tempPrev.findIndex(
+          (frame) => frame.id === props.index
+        );
         const id = v4();
-        prev.splice(tempIndex + 1, 0, {
+        tempPrev.splice(tempIndex + 1, 0, {
           id,
           frame: {
             rowId: id,
@@ -215,7 +230,7 @@ export const PlaceHolder = (props: PlaceholderProps) => {
             item.type === ReportElementsType.ROWFRAME ? [] : ["divider"],
           structure: null,
         });
-        return [...prev];
+        return [...tempPrev];
       });
     },
   }));

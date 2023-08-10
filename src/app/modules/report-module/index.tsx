@@ -22,9 +22,7 @@ import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
-import RowFrame, {
-  Divider,
-} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+
 import {
   Route,
   Switch,
@@ -56,7 +54,6 @@ import {
   reportContentHeightsAtom,
   reportRightPanelViewAtom,
   ReportContentHeightsType,
-  unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 
