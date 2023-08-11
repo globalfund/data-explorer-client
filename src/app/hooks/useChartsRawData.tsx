@@ -143,43 +143,45 @@ export function useChartsRawData(props: {
     ],
     chartId?: string
   ) {
-    const body = {
-      previewAppliedFilters: customAppliedFilters
-        ? customAppliedFilters
-        : appliedFilters,
-    };
-    setLoading(true);
-    axios
-      .post(
-        `${process.env.REACT_APP_API}/chart/${chartId ?? page}/render`,
-        body,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      )
-      .then((response) => {
-        const chart = response.data || {};
-        if (!isEmpty(chart)) {
-          setAllAppliedFilters(chart.appliedFilters || {});
-          setEnabledFilterOptionGroups(chart.enabledFilterOptionGroups);
-          setVisualOptions(chart.vizOptions);
-          setMapping(chart.mapping);
-          setSelectedChartType(chart.vizType);
-          setDataset(chart.datasetId);
-          setChartFromAPI(chart);
-        }
-        if (response.data === null || response.data === undefined) {
-          setNotFound(true);
-        }
+    if (chartId || page) {
+      const body = {
+        previewAppliedFilters: customAppliedFilters
+          ? customAppliedFilters
+          : appliedFilters,
+      };
+      setLoading(true);
+      axios
+        .post(
+          `${process.env.REACT_APP_API}/chart/${chartId ?? page}/render`,
+          body,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          const chart = response.data || {};
+          if (!isEmpty(chart)) {
+            setAllAppliedFilters(chart.appliedFilters || {});
+            setEnabledFilterOptionGroups(chart.enabledFilterOptionGroups);
+            setVisualOptions(chart.vizOptions);
+            setMapping(chart.mapping);
+            setSelectedChartType(chart.vizType);
+            setDataset(chart.datasetId);
+            setChartFromAPI(chart);
+          }
+          if (response.data === null || response.data === undefined) {
+            setNotFound(true);
+          }
 
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.log("API call error: " + error.message);
-        setLoading(false);
-      });
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log("API call error: " + error.message);
+          setLoading(false);
+        });
+    }
   }
 
   useMount(() => {
@@ -241,27 +243,29 @@ export function useChartsRawData(props: {
           ],
         ],
       };
-      axios
-        .post(`${process.env.REACT_APP_API}/chart/${page}/render`, body, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        })
-        .then((response) => {
-          const chart = response.data || {};
-          setChartFromAPI(chart);
-          setLoading(false);
-          if (extraLoader) {
-            extraLoader.style.display = "none";
-          }
-        })
-        .catch((error) => {
-          console.log("API call error: " + error.message);
-          setLoading(false);
-          if (extraLoader) {
-            extraLoader.style.display = "none";
-          }
-        });
+      if (page) {
+        axios
+          .post(`${process.env.REACT_APP_API}/chart/${page}/render`, body, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+          .then((response) => {
+            const chart = response.data || {};
+            setChartFromAPI(chart);
+            setLoading(false);
+            if (extraLoader) {
+              extraLoader.style.display = "none";
+            }
+          })
+          .catch((error) => {
+            console.log("API call error: " + error.message);
+            setLoading(false);
+            if (extraLoader) {
+              extraLoader.style.display = "none";
+            }
+          });
+      }
     }
   }, [
     page,
