@@ -1,7 +1,5 @@
 import React from "react";
 import { v4 } from "uuid";
-import get from "lodash/get";
-import filter from "lodash/filter";
 import isEmpty from "lodash/isEmpty";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
@@ -16,7 +14,12 @@ import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
 import { ReportEditView } from "app/modules/report-module/views/edit";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
-import { ReportModel, emptyReport } from "app/modules/report-module/data";
+import {
+  ReportContentHeightsType,
+  ReportContentWidthsType,
+  ReportModel,
+  emptyReport,
+} from "app/modules/report-module/data";
 import { ReportCreateView } from "app/modules/report-module/views/create";
 import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
@@ -48,12 +51,8 @@ interface RowFrameProps {
   type: "rowFrame" | "divider";
 }
 import {
-  reportContentWidthsAtom,
-  ReportContentWidthsType,
   persistedReportStateAtom,
-  reportContentHeightsAtom,
   reportRightPanelViewAtom,
-  ReportContentHeightsType,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
 
@@ -64,7 +63,6 @@ export default function ReportModule() {
     view: "initial" | "edit" | "create" | "preview" | "ai-template";
   }>();
   const reportNameRef = React.useRef<string>("");
-  const reportOrderRef = React.useRef<string[]>([]);
   const framesArrayRef = React.useRef<IFramesArray[]>([]);
   const headerDetailsRef = React.useRef<IHeaderDetails>({} as IHeaderDetails);
   const AppliedHeaderDetailsRef = React.useRef<IHeaderDetails>(
@@ -77,13 +75,6 @@ export default function ReportModule() {
     persistedReportStateAtom
   );
 
-  const [reportContentWidths, setReportContentWidths] = useRecoilState(
-    reportContentWidthsAtom
-  );
-
-  const [reportContentHeights, setReportContentHeights] = useRecoilState(
-    reportContentHeightsAtom
-  );
   const localReportState = JSON.parse(persistedReportState.framesArray);
 
   let localPickedCharts: string[] = [];
@@ -118,47 +109,14 @@ export default function ReportModule() {
     localPickedCharts || []
   );
 
-  const alignFramesWContentWidths = (framesArr: IFramesArray[]) => {
-    let contentWidths: {
-      id: string;
-      widths: number[];
-    }[] = [];
-    framesArr.forEach((frame) => {
-      contentWidths.push({
-        id: frame.id,
-        widths:
-          frame.contentWidths?.length === 0 ? [100] : frame?.contentWidths,
-      });
-    });
-    setReportContentWidths(contentWidths);
-  };
-
-  const alignFramesWContentHeights = (framesArr: IFramesArray[]) => {
-    let contentHeights: {
-      id: string;
-      heights: number[];
-    }[] = [];
-    framesArr.forEach((frame) => {
-      contentHeights.push({
-        id: frame.id,
-        heights:
-          frame.contentHeights?.length === 0 ? [] : frame?.contentHeights,
-      });
-    });
-    setReportContentHeights(contentHeights);
-  };
-
   const handleRowFrameItemResize = (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
+
     height: number
   ) => {
     setFramesArray((prev) => {
-      if (!stopInitializeFramesWidth) {
-        setStopInitializeFramesWidth(true);
-      }
       const tempPrev = cloneDeep(prev);
 
       const frameIndex = tempPrev.findIndex((frame) => frame.id === rowId);
@@ -183,38 +141,14 @@ export default function ReportModule() {
           }
         });
       }
-      const uReportContentWidths: ReportContentWidthsType[] = [];
-      for (const item of tempPrev) {
-        const fItem = reportContentWidths.find((value) => value.id === item.id);
-        if (fItem) uReportContentWidths.push(fItem);
-      }
-      tempPrev.forEach((frame, index) => {
-        const indexContentWidths: number[] = get(
-          uReportContentWidths,
-          `[${index}].widths`,
-          []
-        );
-        if (
-          frame.content.length !== frame.contentWidths.length &&
-          indexContentWidths.length
-        ) {
-          indexContentWidths.forEach((w, i) => {
-            if (!frame.contentWidths[i]) {
-              tempPrev[index].contentWidths[i] = w;
-            }
-          });
-        }
-      });
+
       if (tempPrev[frameIndex].contentHeights) {
         tempPrev[frameIndex].contentHeights[itemIndex] = height;
       } else {
         tempPrev[frameIndex].contentHeights = [];
         tempPrev[frameIndex].contentHeights[itemIndex] = height;
       }
-      if (view === "edit") {
-        alignFramesWContentWidths(tempPrev);
-        alignFramesWContentHeights(tempPrev);
-      }
+
       return [...tempPrev];
     });
   };
@@ -254,25 +188,19 @@ export default function ReportModule() {
         ),
       },
       framesArray: JSON.stringify(
-        framesArrayRef.current
-          .sort(
-            (a, b) =>
-              reportOrderRef.current.indexOf(a.id) -
-              reportOrderRef.current.indexOf(b.id)
-          )
-          .map((frame) => ({
-            id: frame.id,
-            structure: frame.structure,
-            content: frame.content,
-            contentTypes: frame.contentTypes,
-            contentWidths: frame.contentWidths,
-            contentHeights: frame.contentHeights,
-            items: frame.content.map((item, index) =>
-              frame.contentTypes[index] === "text"
-                ? convertToRaw((item as EditorState).getCurrentContent())
-                : item
-            ),
-          }))
+        framesArrayRef.current.map((frame) => ({
+          id: frame.id,
+          structure: frame.structure,
+          content: frame.content,
+          contentTypes: frame.contentTypes,
+          contentWidths: frame.contentWidths,
+          contentHeights: frame.contentHeights,
+          items: frame.content.map((item, index) =>
+            frame.contentTypes[index] === "text"
+              ? convertToRaw((item as EditorState).getCurrentContent())
+              : item
+          ),
+        }))
       ),
     });
   };
@@ -285,7 +213,6 @@ export default function ReportModule() {
       frame: {
         rowIndex: 0,
         rowId: id,
-
         handlePersistReportState,
         handleRowFrameItemResize,
         setPickedCharts,
@@ -298,13 +225,6 @@ export default function ReportModule() {
       structure: null,
     },
   ]);
-
-  React.useEffect(() => {
-    if (view !== "edit" && view !== "preview") {
-      alignFramesWContentWidths(framesArray);
-      alignFramesWContentHeights(framesArray);
-    }
-  }, [framesArray, view]);
 
   React.useEffect(() => {
     if (view === "edit" && !rightPanelOpen) {
@@ -418,7 +338,6 @@ export default function ReportModule() {
   );
 
   //get current value of states for handlePersistReportState function
-
   headerDetailsRef.current = headerDetails;
   AppliedHeaderDetailsRef.current = appliedHeaderDetails;
   framesArrayRef.current = framesArray;
@@ -493,8 +412,18 @@ export default function ReportModule() {
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
-        contentWidths: reportContentWidths,
-        contentHeights: reportContentHeights,
+        contentWidths: framesArray.map((frame, index) => {
+          return {
+            id: frame.id,
+            widths: frame.contentWidths,
+          };
+        }),
+        contentHeights: framesArray.map((frame, index) => {
+          return {
+            id: frame.id,
+            heights: frame.contentHeights,
+          };
+        }),
         dateColor: appliedHeaderDetails.dateColor,
       },
     });
@@ -505,8 +434,6 @@ export default function ReportModule() {
       reportEditClear();
       reportCreateClear();
       setPickedCharts([]);
-      setReportContentWidths([]);
-      setReportContentHeights([]);
       setRightPanelView("elements");
     };
   }, []);
@@ -514,13 +441,6 @@ export default function ReportModule() {
   React.useEffect(() => {
     setPickedCharts(localPickedCharts);
   }, [persistedReportState]);
-
-  React.useEffect(() => {
-    if (view !== "edit" && view !== "preview") {
-      alignFramesWContentWidths(framesArray);
-      alignFramesWContentHeights(framesArray);
-    }
-  }, [framesArray, view]);
 
   React.useEffect(() => {
     if (view === "edit" && !rightPanelOpen) {

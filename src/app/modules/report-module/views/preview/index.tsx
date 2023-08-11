@@ -11,12 +11,11 @@ import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
-  reportContentWidthsAtom,
-  reportContentHeightsAtom,
   persistedReportStateAtom,
   reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
+import { IFramesArray, IRowFrame } from "../create/data";
 
 export function ReportPreviewView() {
   const history = useHistory();
@@ -26,9 +25,6 @@ export function ReportPreviewView() {
 
   const persistedReportState = useRecoilState(persistedReportStateAtom)[0];
   const reportPreviewMode = useRecoilState(unSavedReportPreviewModeAtom)[0];
-
-  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
-  const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
 
   const [containerWidth, setContainerWidth] = useRecoilState(
     reportContentContainerWidth
@@ -77,18 +73,6 @@ export function ReportPreviewView() {
   }, [reportData]);
 
   React.useEffect(() => {
-    if (reportData.contentWidths && !isPreview) {
-      setReportContentWidths(reportData.contentWidths);
-    }
-  }, [reportData.contentWidths]);
-
-  React.useEffect(() => {
-    if (reportData.contentHeights && !isPreview) {
-      setReportContentHeights(reportData.contentHeights);
-    }
-  }, [reportData.contentHeights]);
-
-  React.useEffect(() => {
     return () => {
       reportGetClear();
       reportEditClear();
@@ -109,6 +93,22 @@ export function ReportPreviewView() {
         dateColor: persistedReportState.headerDetails.dateColor,
         rows: JSON.parse(persistedReportState.framesArray || "[]"),
         subTitle: JSON.parse(persistedReportState.headerDetails.description),
+        contentWidths: JSON.parse(persistedReportState.framesArray || "[]").map(
+          (frame: IFramesArray) => {
+            return {
+              id: frame.id,
+              widths: frame.contentWidths,
+            };
+          }
+        ),
+        contentHeights: JSON.parse(
+          persistedReportState.framesArray || "[]"
+        ).map((frame: IFramesArray) => {
+          return {
+            id: frame.id,
+            heights: frame.contentHeights,
+          };
+        }),
       });
     }
   }, [persistedReportState]);
@@ -152,7 +152,7 @@ export function ReportPreviewView() {
           return (
             <RowFrame
               key={"rowframe" + `${index}`}
-              rowId={reportPreviewData.id}
+              rowId={""}
               rowIndex={index}
               forceSelectedType={rowFrame.structure ?? undefined}
               previewItems={rowFrame.items}
@@ -161,6 +161,13 @@ export function ReportPreviewView() {
               setPickedCharts={() => {}}
               type="rowFrame"
               setFramesArray={() => {}}
+              rowContentHeights={
+                reportPreviewData.contentHeights[index]?.heights ?? []
+              }
+              rowContentWidths={
+                reportPreviewData.contentWidths[index]?.widths ?? []
+              }
+              framesArray={[]}
               view={"preview"}
             />
           );

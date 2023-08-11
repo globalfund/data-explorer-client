@@ -85,26 +85,6 @@ export const unSavedReportPreviewMode = atom<boolean>({
   default: false,
 });
 
-export interface ReportContentWidthsType {
-  id: string;
-  widths: number[];
-}
-
-export const reportContentWidthsAtom = atom<ReportContentWidthsType[]>({
-  key: "reportContentWidths",
-  default: [],
-});
-
-export interface ReportContentHeightsType {
-  id: string;
-  heights: number[];
-}
-
-export const reportContentHeightsAtom = atom<ReportContentHeightsType[]>({
-  key: "reportContentHeights",
-  default: [],
-});
-
 export const reportContentIsResizingAtom = atom<boolean>({
   key: "reportContentIsResizing",
   default: false,

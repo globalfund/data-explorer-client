@@ -1,6 +1,6 @@
 import React from "react";
 import get from "lodash/get";
-import { SetterOrUpdater, useRecoilState, useRecoilValue } from "recoil";
+import { SetterOrUpdater, useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
 import IconButton from "@material-ui/core/IconButton";
 import { useHistory, useLocation, useParams } from "react-router-dom";
@@ -9,19 +9,13 @@ import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructu
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
-import {
-  ReportContentWidthsType,
-  reportContentHeightsAtom,
-  reportContentWidthsAtom,
-  reportCreationTourStepAtom,
-} from "app/state/recoil/atoms";
+import { reportCreationTourStepAtom } from "app/state/recoil/atoms";
 import {
   blockcss,
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
 import { cloneDeep } from "lodash";
 import { IFramesArray } from "../../views/create/data";
-import { useStoreState } from "app/state/store/hooks";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -124,6 +118,7 @@ export interface RowFrameProps {
   rowId: string;
   forceSelectedType?: string;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+  framesArray: IFramesArray[];
   setPickedCharts: (value: React.SetStateAction<any[]>) => void;
   type: "rowFrame" | "divider";
   view: "initial" | "edit" | "create" | "preview" | "ai-template";
@@ -131,11 +126,12 @@ export interface RowFrameProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
+  rowContentHeights: number[];
+  rowContentWidths: number[];
 }
 
 export interface IRowStructureType {
@@ -154,9 +150,7 @@ export default function RowFrame(props: RowFrameProps) {
   const [reportCreationTourStep, setReportCreationTourStep] = useRecoilState(
     reportCreationTourStepAtom
   );
-  const [reportContentHeights, setReportContentHeights] = useRecoilState(
-    reportContentHeightsAtom
-  );
+
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
   >([""]);
@@ -184,10 +178,6 @@ export default function RowFrame(props: RowFrameProps) {
     }
   };
 
-  const [reportContentWidths, setReportContentWidths] = useRecoilState(
-    reportContentWidthsAtom
-  );
-
   const onlyView = React.useMemo(() => {
     return (
       !history.location.pathname.includes("/edit") &&
@@ -202,13 +192,7 @@ export default function RowFrame(props: RowFrameProps) {
     width: number,
     height: number
   ) => {
-    props.handleRowFrameItemResize(
-      rowId,
-      itemIndex,
-      width,
-      reportContentWidths,
-      height
-    );
+    props.handleRowFrameItemResize(rowId, itemIndex, width, height);
   };
   const deleteFrame = (id: string) => {
     props.setFramesArray((prev) => {
@@ -225,9 +209,11 @@ export default function RowFrame(props: RowFrameProps) {
       return [...tempPrev];
     });
   };
+  const rowIndex = React.useMemo(() => {
+    return props.framesArray.findIndex((item) => item.id === props.rowId);
+  }, [props.framesArray]);
 
   const handleRowFrameStructureTypeSelection = (
-    rowIndex: number,
     structure:
       | null
       | "oneByOne"
@@ -276,7 +262,7 @@ export default function RowFrame(props: RowFrameProps) {
         break;
     }
     props.setFramesArray((prev) => {
-      const tempPrev = cloneDeep(prev);
+      const tempPrev = prev.map((item) => ({ ...item }));
 
       tempPrev[rowIndex].content = content;
       tempPrev[rowIndex].contentTypes = contentTypes;
@@ -284,31 +270,6 @@ export default function RowFrame(props: RowFrameProps) {
       tempPrev[rowIndex].contentHeights = contentHeights;
       tempPrev[rowIndex].structure = structure;
 
-      if (props.view === "edit") {
-        const newReportContentWidths = cloneDeep(reportContentWidths);
-        const newReportContentHeights = cloneDeep(reportContentHeights);
-
-        if (newReportContentWidths[rowIndex]) {
-          newReportContentWidths[rowIndex].widths = contentWidths;
-        } else {
-          newReportContentWidths.push({
-            id: tempPrev[rowIndex].id,
-            widths: contentWidths,
-          });
-        }
-
-        if (newReportContentHeights[rowIndex]) {
-          newReportContentHeights[rowIndex].heights = contentHeights;
-        } else {
-          newReportContentHeights.push({
-            id: tempPrev[rowIndex].id,
-            heights: contentHeights,
-          });
-        }
-
-        setReportContentWidths(newReportContentWidths);
-        setReportContentHeights(newReportContentHeights);
-      }
       return [...tempPrev];
     });
   };
@@ -341,7 +302,6 @@ export default function RowFrame(props: RowFrameProps) {
 
   useUpdateEffect(() => {
     handleRowFrameStructureTypeSelection(
-      props.rowIndex,
       selectedType as
         | "oneByOne"
         | "oneByTwo"
@@ -364,6 +324,9 @@ export default function RowFrame(props: RowFrameProps) {
         rowIndex={props.rowIndex}
         selectedType={selectedType}
         setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
@@ -383,6 +346,9 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         selectedType={selectedType}
         setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
@@ -402,6 +368,9 @@ export default function RowFrame(props: RowFrameProps) {
         rowIndex={props.rowIndex}
         selectedType={selectedType}
         setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
@@ -426,6 +395,9 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
         setPickedCharts={props.setPickedCharts}
         deleteFrame={deleteFrame}
         handlePersistReportState={props.handlePersistReportState}
@@ -441,6 +413,9 @@ export default function RowFrame(props: RowFrameProps) {
         selectedType={selectedType}
         setSelectedType={setSelectedType}
         setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
         deleteFrame={deleteFrame}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}

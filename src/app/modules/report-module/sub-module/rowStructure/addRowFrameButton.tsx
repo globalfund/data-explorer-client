@@ -2,14 +2,9 @@ import React from "react";
 import { v4 } from "uuid";
 import IconButton from "@material-ui/core/IconButton";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
-import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import { ReactComponent as PlusIcon } from "app/modules/report-module/asset/addButton.svg";
-import {
-  IRowFrameStructure,
-  ReportContentWidthsType,
-} from "app/state/recoil/atoms";
+import { IRowFrameStructure } from "app/state/recoil/atoms";
 import { cloneDeep } from "lodash";
-import { useStoreState } from "app/state/store/hooks";
 
 interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
@@ -23,7 +18,6 @@ interface Props {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
 }

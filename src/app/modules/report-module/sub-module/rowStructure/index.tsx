@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
 import { useOnClickOutside } from "usehooks-ts";
@@ -9,7 +8,7 @@ import { NumberSize, Resizable } from "re-resizable";
 import { Direction } from "re-resizable/lib/resizer";
 import IconButton from "@material-ui/core/IconButton";
 import { EditorState, convertFromRaw } from "draft-js";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useStoreActions } from "app/state/store/hooks";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { RichEditor } from "app/modules/chart-module/routes/text/RichEditor";
@@ -18,12 +17,10 @@ import { ReactComponent as EditIcon } from "app/modules/report-module/asset/edit
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
-  reportContentWidthsAtom,
   createChartFromReportAtom,
   reportContentIsResizingAtom,
   reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
-  reportContentHeightsAtom,
   isChartDraggingAtom,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "../../views/create/data";
@@ -35,8 +32,10 @@ interface RowStructureDisplayProps {
   rowIndex: number;
   rowId: string;
   selectedType: string;
-
+  framesArray: IFramesArray[];
   selectedTypeHistory: string[];
+  rowContentWidths: number[];
+  rowContentHeights: number[];
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
@@ -65,22 +64,12 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const ref = useRef(null);
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
-  const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
-  const [reportContentHeights] = useRecoilState(reportContentHeightsAtom);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
-  console.log("reportContentWidths", reportContentWidths);
+
   const viewOnlyMode =
     (page !== "new" &&
       get(location.pathname.split("/"), "[3]", "") !== "edit") ||
     reportPreviewMode;
-
-  const rowContentWidths = !viewOnlyMode
-    ? find(reportContentWidths, { id: props.rowId })
-    : get(reportContentWidths, `[${props.rowIndex}]`, { widths: [] });
-
-  const rowContentHeights = !viewOnlyMode
-    ? find(reportContentHeights, { id: props.rowId })
-    : get(reportContentHeights, `[${props.rowIndex}]`, { heights: [] });
 
   const handlers = viewOnlyMode
     ? {}
@@ -185,8 +174,8 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
             key={row.rowId}
-            width={get(rowContentWidths, `widths.[${index}]`, "fit-content")}
-            height={get(rowContentHeights, `heights.[${index}]`, props.height)}
+            width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
+            height={get(props.rowContentHeights, `[${index}]`, props.height)}
             itemIndex={index}
             rowId={props.rowId}
             rowType={row.rowType}

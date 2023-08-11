@@ -1,7 +1,6 @@
 import { EditorState } from "draft-js";
-import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
-interface IRowFrame {
+export interface IRowFrame {
   rowIndex: number;
   rowId: string;
   forceSelectedType?: string;
@@ -12,7 +11,6 @@ interface IRowFrame {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
   previewItems?: (string | object)[];
@@ -74,7 +72,6 @@ export interface ReportCreateViewProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
 }
@@ -94,7 +91,6 @@ export interface PlaceholderProps {
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
 }

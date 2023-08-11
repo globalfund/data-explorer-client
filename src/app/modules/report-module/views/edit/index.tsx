@@ -1,6 +1,5 @@
 import React from "react";
 import { v4 } from "uuid";
-import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import { useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
@@ -19,10 +18,8 @@ import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure
 
 import {
   IRowFrameStructure,
-  reportContentWidthsAtom,
   persistedReportStateAtom,
   reportContentContainerWidth,
-  reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "../create/data";
 import RowFrame from "../../sub-module/rowStructure/rowFrame";
@@ -43,9 +40,6 @@ export function ReportEditView(props: ReportEditViewProps) {
       rowType: "",
       disableAddRowStructureButton: false,
     });
-
-  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
-  const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
 
   const fetchReportData = useStoreActions(
     (actions) => actions.reports.ReportGet.fetch
@@ -86,10 +80,6 @@ export function ReportEditView(props: ReportEditViewProps) {
       }
       props.setPickedCharts(pickedItems);
     }
-
-    return () => {
-      // props.setStopInitializeFramesWidth(false);
-    };
   }, []);
 
   React.useEffect(() => {
@@ -154,8 +144,8 @@ export function ReportEditView(props: ReportEditViewProps) {
                 ? EditorState.createWithContent(convertFromRaw(item as any))
                 : item;
             }),
-            contentWidths: [],
-            contentHeights: [],
+            contentWidths: reportData.contentWidths[index]?.widths ?? [],
+            contentHeights: reportData.contentHeights[index]?.heights ?? [],
             contentTypes,
           };
         }
@@ -163,33 +153,6 @@ export function ReportEditView(props: ReportEditViewProps) {
       props.setFramesArray(newFrameArray);
     }
   }, [reportData]);
-
-  React.useEffect(() => {
-    if (!props.stopInitializeFramesWidth) {
-      const contentWidths = props.framesArray.map((frame, index) => {
-        return {
-          id: frame.id,
-          widths: get(
-            reportData,
-            `contentWidths[${index}].widths`,
-            get(frame, "contentWidths", [])
-          ),
-        };
-      });
-      const contentHeights = props.framesArray.map((frame, index) => {
-        return {
-          id: frame.id,
-          heights: get(
-            reportData,
-            `contentHeights[${index}].heights`,
-            get(frame, "contentHeights", [])
-          ),
-        };
-      });
-      setReportContentWidths(contentWidths);
-      setReportContentHeights(contentHeights);
-    }
-  }, [props.framesArray, reportData.contentWidths, reportData.contentHeights]);
 
   return (
     <div>
@@ -226,8 +189,11 @@ export function ReportEditView(props: ReportEditViewProps) {
                 <div key={frame.id}>
                   <RowFrame
                     {...frame.frame}
+                    framesArray={props.framesArray}
                     setFramesArray={props.setFramesArray}
                     view={props.view}
+                    rowContentHeights={frame.contentHeights}
+                    rowContentWidths={frame.contentWidths}
                   />
                   <Box height={38} />
 
