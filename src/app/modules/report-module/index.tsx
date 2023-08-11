@@ -412,13 +412,13 @@ export default function ReportModule() {
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
-        contentWidths: framesArray.map((frame, index) => {
+        contentWidths: framesArray.map((frame) => {
           return {
             id: frame.id,
             widths: frame.contentWidths,
           };
         }),
-        contentHeights: framesArray.map((frame, index) => {
+        contentHeights: framesArray.map((frame) => {
           return {
             id: frame.id,
             heights: frame.contentHeights,

@@ -444,8 +444,8 @@ const Box = (props: {
             )}
             <RichEditor
               fullWidth
-              textContent={textContent}
               editMode={!viewOnlyMode}
+              textContent={textContent}
               setTextContent={setTextContent}
             />
           </div>
@@ -594,35 +594,35 @@ const Box = (props: {
     border = "1px dashed #231d2c";
   }
 
-  return content ? (
-    content
-  ) : (
-    <div
-      css={`
-        width: ${width};
-        border: ${border};
-        background: #dfe3e6;
-        height: ${props.height}px;
-      `}
-      ref={drop}
-    >
-      <p
+  return (
+    content ?? (
+      <div
         css={`
-          margin: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          padding: 24px;
-          color: #495057;
-          font-size: 14px;
-          font-weight: 400;
-          text-align: center;
-          align-items: center;
-          justify-content: center;
+          width: ${width};
+          border: ${border};
+          background: #dfe3e6;
+          height: ${props.height}px;
         `}
+        ref={drop}
       >
-        {isOver ? "Release to drop" : "Drag and drop content here"}
-      </p>
-    </div>
+        <p
+          css={`
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding: 24px;
+            color: #495057;
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+          `}
+        >
+          {isOver ? "Release to drop" : "Drag and drop content here"}
+        </p>
+      </div>
+    )
   );
 };
