@@ -134,6 +134,12 @@ export function ReportPreviewView() {
       <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
         {reportPreviewData.rows.map((rowFrame, index) => {
+          const contentTypes = rowFrame.items.map((item) => {
+            if (item === null) {
+              return null;
+            }
+            return typeof item === "object" ? "text" : "chart";
+          });
           if (
             rowFrame.items &&
             rowFrame.items.length === 1 &&
@@ -155,7 +161,11 @@ export function ReportPreviewView() {
               rowId={""}
               rowIndex={index}
               forceSelectedType={rowFrame.structure ?? undefined}
-              previewItems={rowFrame.items}
+              previewItems={rowFrame.items.map((item, index) => {
+                return contentTypes[index] === "text"
+                  ? EditorState.createWithContent(convertFromRaw(item as any))
+                  : item;
+              })}
               handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
               setPickedCharts={() => {}}

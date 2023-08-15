@@ -115,10 +115,17 @@ export function ReportEditView(props: ReportEditViewProps) {
       });
       const newFrameArray: IFramesArray[] = reportData.rows.map(
         (rowFrame, index) => {
-          const content = rowFrame.items;
-          const contentTypes = rowFrame.items.map((item) =>
-            typeof item === "object" ? "text" : "chart"
-          );
+          const contentTypes = rowFrame.items.map((item) => {
+            if (item === null) {
+              return null;
+            }
+            return typeof item === "object" ? "text" : "chart";
+          });
+          const content = rowFrame.items.map((item, index) => {
+            return contentTypes[index] === "text"
+              ? EditorState.createWithContent(convertFromRaw(item as any))
+              : item;
+          });
           const isDivider =
             content &&
             content.length === 1 &&
@@ -137,13 +144,9 @@ export function ReportEditView(props: ReportEditViewProps) {
               setPickedCharts: props.setPickedCharts,
               type: isDivider ? "divider" : "rowFrame",
               forceSelectedType: rowFrame.structure ?? undefined,
-              previewItems: rowFrame.items,
+              previewItems: content,
             },
-            content: rowFrame.items.map((item, index) => {
-              return contentTypes[index] === "text"
-                ? EditorState.createWithContent(convertFromRaw(item as any))
-                : item;
-            }),
+            content,
             contentWidths: reportData.contentWidths[index]?.widths ?? [],
             contentHeights: reportData.contentHeights[index]?.heights ?? [],
             contentTypes,

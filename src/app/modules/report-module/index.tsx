@@ -117,8 +117,7 @@ export default function ReportModule() {
     height: number
   ) => {
     setFramesArray((prev) => {
-      const tempPrev = cloneDeep(prev);
-
+      const tempPrev = prev.map((item) => ({ ...item }));
       const frameIndex = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameIndex === -1) {
         return prev;
@@ -141,14 +140,12 @@ export default function ReportModule() {
           }
         });
       }
-
       if (tempPrev[frameIndex].contentHeights) {
         tempPrev[frameIndex].contentHeights[itemIndex] = height;
       } else {
         tempPrev[frameIndex].contentHeights = [];
         tempPrev[frameIndex].contentHeights[itemIndex] = height;
       }
-
       return [...tempPrev];
     });
   };
@@ -191,7 +188,11 @@ export default function ReportModule() {
         framesArrayRef.current.map((frame) => ({
           id: frame.id,
           structure: frame.structure,
-          content: frame.content,
+          content: frame.content.map((item, index) =>
+            frame.contentTypes[index] === "text"
+              ? convertToRaw((item as EditorState).getCurrentContent())
+              : item
+          ),
           contentTypes: frame.contentTypes,
           contentWidths: frame.contentWidths,
           contentHeights: frame.contentHeights,
@@ -263,6 +264,12 @@ export default function ReportModule() {
                 rowFrame.content &&
                 rowFrame.content.length === 1 &&
                 rowFrame.content[0] === ReportElementsType.DIVIDER;
+
+              const content = rowFrame.items.map((item, index) => {
+                return rowFrame.contentTypes[index] === "text"
+                  ? EditorState.createWithContent(convertFromRaw(item as any))
+                  : item;
+              });
               return {
                 id: rowFrame.id,
 
@@ -275,15 +282,11 @@ export default function ReportModule() {
                   setPickedCharts,
                   type: isDivider ? "divider" : "rowFrame",
                   forceSelectedType: rowFrame.structure ?? undefined,
-                  previewItems: rowFrame.items,
+                  previewItems: content,
                 },
 
                 type: rowFrame.type,
-                content: rowFrame.items.map((item, index) => {
-                  return rowFrame.contentTypes[index] === "text"
-                    ? EditorState.createWithContent(convertFromRaw(item as any))
-                    : item;
-                }),
+                content,
                 contentWidths: rowFrame.contentWidths,
                 contentHeights: rowFrame.contentHeights,
                 contentTypes: rowFrame.contentTypes,

@@ -260,7 +260,7 @@ const Box = (props: {
     itemContentType: "text" | "divider" | "chart"
   ) => {
     props.setFramesArray((prev) => {
-      const tempPrev = cloneDeep(prev);
+      const tempPrev = prev.map((item) => ({ ...item }));
 
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
@@ -273,8 +273,7 @@ const Box = (props: {
   };
   const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
     props.setFramesArray((prev) => {
-      const tempPrev = cloneDeep(prev);
-
+      const tempPrev = prev.map((item) => ({ ...item }));
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];
@@ -561,13 +560,7 @@ const Box = (props: {
         setDisplayChart(true);
         setDisplayTextBox(false);
       } else {
-        if (props.previewItem.getCurrentContent) {
-          setTextContent(props.previewItem);
-        } else {
-          setTextContent(
-            EditorState.createWithContent(convertFromRaw(props.previewItem))
-          );
-        }
+        setTextContent(props.previewItem);
         setDisplayTextBox(true);
         setDisplayChart(false);
       }

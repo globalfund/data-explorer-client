@@ -154,6 +154,7 @@ export default function RowFrame(props: RowFrameProps) {
   const [selectedTypeHistory, setSelectedTypeHistory] = React.useState<
     string[]
   >([""]);
+
   const [rowStructureDetailItems, setRowStructureDetailItems] = React.useState<
     {
       rowId: string;
@@ -194,6 +195,7 @@ export default function RowFrame(props: RowFrameProps) {
   ) => {
     props.handleRowFrameItemResize(rowId, itemIndex, width, height);
   };
+
   const deleteFrame = (id: string) => {
     props.setFramesArray((prev) => {
       const tempPrev = cloneDeep(prev);
