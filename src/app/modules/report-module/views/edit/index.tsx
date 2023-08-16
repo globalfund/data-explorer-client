@@ -138,7 +138,6 @@ export function ReportEditView(props: ReportEditViewProps) {
             frame: {
               rowIndex: index,
               rowId: id,
-
               handlePersistReportState: props.handlePersistReportState,
               handleRowFrameItemResize: props.handleRowFrameItemResize,
               setPickedCharts: props.setPickedCharts,

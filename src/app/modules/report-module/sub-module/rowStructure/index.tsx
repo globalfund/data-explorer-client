@@ -261,7 +261,6 @@ const Box = (props: {
   ) => {
     props.setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
-
       const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
       if (frameId === -1) {
         return [...tempPrev];

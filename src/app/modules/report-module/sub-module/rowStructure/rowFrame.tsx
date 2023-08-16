@@ -265,14 +265,20 @@ export default function RowFrame(props: RowFrameProps) {
     }
     props.setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
+      tempPrev[rowIndex] = {
+        ...tempPrev[rowIndex],
+        content,
+        contentTypes,
+        contentWidths,
+        contentHeights,
+        structure,
+        frame: {
+          ...tempPrev[rowIndex].frame,
+          previewItems: [],
+        },
+      };
 
-      tempPrev[rowIndex].content = content;
-      tempPrev[rowIndex].contentTypes = contentTypes;
-      tempPrev[rowIndex].contentWidths = contentWidths;
-      tempPrev[rowIndex].contentHeights = contentHeights;
-      tempPrev[rowIndex].structure = structure;
-
-      return [...tempPrev];
+      return tempPrev;
     });
   };
 
