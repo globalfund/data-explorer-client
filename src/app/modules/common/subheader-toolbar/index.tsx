@@ -500,6 +500,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
             placeholder="Title"
             css={styles.nameInput}
             onChange={onNameChange}
+            onClick={(e) => {
+              if (props.name === "Untitled report") {
+                e.currentTarget.value = "";
+              }
+            }}
             style={
               page !== "new" && !view
                 ? {
