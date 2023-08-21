@@ -100,7 +100,7 @@ export const styles = {
   `,
   nameInput: css`
     margin: 0;
-    width: 600px;
+    width: 1200px;
     display: flex;
     color: #262c34;
     font-size: 24px;
