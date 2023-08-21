@@ -232,7 +232,7 @@ export default function HeaderBlock(props: Props) {
               invertColors
               editMode={true}
               setTextContent={setTextContent}
-              placeholder="Write a description"
+              placeholder="Create summary"
               textContent={props.headerDetails.description}
             />
           </div>
