@@ -45,99 +45,100 @@ export default function DeleteChartDialog(props: Props) {
       onClose={() => props.setModalDisplay(false)}
     >
       <div className={classes.paper}>
-        <div
-          css={`
-            width: 80%;
-            position: relative;
-          `}
-        >
-          <IconButton
-            onClick={() => props.setModalDisplay(false)}
-            css={`
-              position: absolute;
-              right: -93px;
-              top: -16px;
-              color: "#231D2C";
-            `}
-          >
-            <CloseOutlined color="inherit" />
-          </IconButton>
-          <p
-            css={`
-              font-weight: 400;
-              font-size: 34px;
-              color: #231d2c;
-              line-height: 41px;
-              margin-bottom: 0px;
-            `}
-          >
-            Delete chart
-          </p>
-          <p
-            css={`
-              margin-top: 3px;
-            `}
-          >
-            Absolutely sure you want to delete the chart(s)? <br />{" "}
-            <b>This action is irreversible!</b>
-          </p>
+        <form onSubmit={() => props.handleDelete(props.cardId as number)}>
           <div
             css={`
-              margin-top: 3rem;
+              width: 80%;
+              position: relative;
             `}
           >
-            <input
-              type="text"
-              placeholder='Type "DELETE" to confirm'
-              onChange={props.handleInputChange}
+            <IconButton
+              onClick={() => props.setModalDisplay(false)}
               css={`
-                border: 1px solid #231d2c;
-                border-radius: 10px;
-                background: #ffffff;
-                height: 48px;
-                width: 100%;
-                padding: 0px 24px;
-                :focus,
-                :active,
-                :hover {
-                  outline: 1px solid #6061e5;
-                }
+                position: absolute;
+                right: -93px;
+                top: -16px;
+                color: "#231D2C";
               `}
-            />
+            >
+              <CloseOutlined color="inherit" />
+            </IconButton>
+            <p
+              css={`
+                font-weight: 400;
+                font-size: 34px;
+                color: #231d2c;
+                line-height: 41px;
+                margin-bottom: 0px;
+              `}
+            >
+              Delete chart
+            </p>
+            <p
+              css={`
+                margin-top: 3px;
+              `}
+            >
+              Absolutely sure you want to delete the chart(s)? <br />{" "}
+              <b>This action is irreversible!</b>
+            </p>
+            <div
+              css={`
+                margin-top: 3rem;
+              `}
+            >
+              <input
+                type="text"
+                placeholder='Type "DELETE" to confirm'
+                onChange={props.handleInputChange}
+                css={`
+                  border: 1px solid #231d2c;
+                  border-radius: 10px;
+                  background: #ffffff;
+                  height: 48px;
+                  width: 100%;
+                  padding: 0px 24px;
+                  :focus,
+                  :active,
+                  :hover {
+                    outline: 1px solid #6061e5;
+                  }
+                `}
+              />
+            </div>
           </div>
-        </div>
-        <div
-          css={`
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 3rem;
-
-            margin-bottom: 2rem;
-            padding-right: 1rem;
-          `}
-        >
-          <button
-            type="button"
-            onClick={() => props.handleDelete(props.cardId as number)}
-            disabled={!props.enableButton}
+          <div
             css={`
-              background: ${props.enableButton ? "#231D2C" : "#e4e4e4"};
-              border-radius: 30px;
-              width: 107px;
-              height: 41px;
-              outline: none;
-              border: none;
-              text-transform: uppercase;
-              color: #ffffff;
               display: flex;
-              justify-content: center;
-              align-items: center;
-              cursor: pointer;
+              justify-content: flex-end;
+              margin-top: 3rem;
+
+              margin-bottom: 2rem;
+              padding-right: 1rem;
             `}
           >
-            Delete
-          </button>
-        </div>
+            <button
+              type="submit"
+              disabled={!props.enableButton}
+              css={`
+                background: ${props.enableButton ? "#231D2C" : "#e4e4e4"};
+                border-radius: 30px;
+                width: 107px;
+                height: 41px;
+                outline: none;
+                border: none;
+                text-transform: uppercase;
+                color: #ffffff;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                cursor: pointer;
+              `}
+            >
+              Delete
+            </button>
+          </div>
+        </form>
       </div>
     </Modal>
   );
