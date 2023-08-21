@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
@@ -15,10 +15,8 @@ import {
   reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
-import { IFramesArray, IRowFrame } from "../create/data";
 
 export function ReportPreviewView() {
-  const history = useHistory();
   const { page } = useParams<{ page: string }>();
 
   const { ref, width } = useResizeObserver<HTMLDivElement>();
@@ -51,10 +49,6 @@ export function ReportPreviewView() {
   );
 
   const [reportPreviewData, setReportPreviewData] = React.useState(reportData);
-
-  const isPreview = React.useMemo(() => {
-    return history.location.pathname.includes("/preview");
-  }, [history.location.pathname]);
 
   React.useEffect(() => {
     fetchReportData({ getId: page });
@@ -93,26 +87,11 @@ export function ReportPreviewView() {
         dateColor: persistedReportState.headerDetails.dateColor,
         rows: JSON.parse(persistedReportState.framesArray || "[]"),
         subTitle: JSON.parse(persistedReportState.headerDetails.description),
-        contentWidths: JSON.parse(persistedReportState.framesArray || "[]").map(
-          (frame: IFramesArray) => {
-            return {
-              id: frame.id,
-              widths: frame.contentWidths,
-            };
-          }
-        ),
-        contentHeights: JSON.parse(
-          persistedReportState.framesArray || "[]"
-        ).map((frame: IFramesArray) => {
-          return {
-            id: frame.id,
-            heights: frame.contentHeights,
-          };
-        }),
       });
     }
   }, [persistedReportState]);
 
+  console.log(reportPreviewData, "reportPreviewData");
   return (
     <div id="export-container">
       <HeaderBlock
@@ -172,10 +151,10 @@ export function ReportPreviewView() {
               type="rowFrame"
               setFramesArray={() => {}}
               rowContentHeights={
-                reportPreviewData.contentHeights[index]?.heights ?? []
+                rowFrame.contentHeights?.heights ?? rowFrame.contentHeights
               }
               rowContentWidths={
-                reportPreviewData.contentWidths[index]?.widths ?? []
+                rowFrame.contentWidths?.widths ?? rowFrame.contentWidths
               }
               framesArray={[]}
               view={"preview"}

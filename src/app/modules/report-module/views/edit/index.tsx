@@ -146,8 +146,8 @@ export function ReportEditView(props: ReportEditViewProps) {
               previewItems: content,
             },
             content,
-            contentWidths: reportData.contentWidths[index]?.widths ?? [],
-            contentHeights: reportData.contentHeights[index]?.heights ?? [],
+            contentWidths: rowFrame.contentWidths?.widths ?? [],
+            contentHeights: rowFrame.contentHeights?.heights ?? [],
             contentTypes,
           };
         }

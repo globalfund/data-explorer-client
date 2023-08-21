@@ -3,7 +3,6 @@ import { v4 } from "uuid";
 import isEmpty from "lodash/isEmpty";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
-import cloneDeep from "lodash/cloneDeep";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -411,22 +410,19 @@ export default function ReportModule() {
               ? convertToRaw((item as EditorState).getCurrentContent())
               : item
           ),
+          contentWidths: {
+            id: frame.id,
+            widths: frame.contentWidths,
+          },
+          contentHeights: {
+            id: frame.id,
+            heights: frame.contentHeights,
+          },
         })),
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
-        contentWidths: framesArray.map((frame) => {
-          return {
-            id: frame.id,
-            widths: frame.contentWidths,
-          };
-        }),
-        contentHeights: framesArray.map((frame) => {
-          return {
-            id: frame.id,
-            heights: frame.contentHeights,
-          };
-        }),
+
         dateColor: appliedHeaderDetails.dateColor,
       },
     });
