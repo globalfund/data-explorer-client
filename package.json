@@ -145,8 +145,9 @@
     "eject": "craco eject",
     "upgrade-all": "yarn-upgrade-all",
     "docker": "yarn link '@rawgraphs/rawgraphs-charts' && craco start",
-    "docker-staging": "cp -r /app/client/build /app/client/staging",
-    "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null"
+    "docker-staging": "cp -r /app/client/build /app/client/staging && tail -f /dev/null",
+    "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null",
+    "docker-prod": "cp -r /app/client/build /app/client/prod"
   },
   "browserslist": {
     "production": [
