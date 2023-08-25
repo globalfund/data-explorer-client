@@ -146,7 +146,7 @@ export default function ReportsGrid(props: Props) {
     <>
       {!props.tableView && (
         <Grid container spacing={2}>
-          {reports.map((data, index: number) => (
+          {reports?.map((data, index: number) => (
             <Grid
               item
               xs={12}
@@ -161,8 +161,8 @@ export default function ReportsGrid(props: Props) {
                 link={`/report/${data.id}`}
                 setModalType={setModalType}
                 updatedDate={data.updatedDate}
-                title={data.title.length === 0 ? data.name : data.title}
-                icons={data.chartTypes.map((type: string) => getIcon(type))}
+                title={data.title?.length === 0 ? data.name : data.title}
+                icons={data.chartTypes?.map((type: string) => getIcon(type))}
                 handleModal={(type: string) =>
                   handleModal(
                     data.id,

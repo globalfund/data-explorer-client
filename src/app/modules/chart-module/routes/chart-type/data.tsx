@@ -16,6 +16,11 @@ import ColoredTreeMapIcon from "app/assets/icons/data-themes-chart-types/colored
 import BigNumberIcon from "app/assets/icons/data-themes-chart-types/bigNumber";
 import ColoredBigNumberIcon from "app/assets/icons/data-themes-chart-types/coloredBigNumber";
 import { ReactComponent as GeomapPreviewImg } from "app/modules/chart-module/assets/geomapPreview.svg";
+import { ReactComponent as BigNumberPreviewImg } from "app/modules/chart-module/assets/bigNumberPreview.svg";
+import { ReactComponent as LineChartPreviewImg } from "app/modules/chart-module/assets/lineChartPreview.svg";
+import { ReactComponent as TreeMapPreviewImg } from "app/modules/chart-module/assets/treemapPreview.svg";
+import { ReactComponent as SankeyPreviewImg } from "app/modules/chart-module/assets/sankeyPreview.svg";
+import { ReactComponent as BarChartPreviewImg } from "app/modules/chart-module/assets/barChartPreview.svg";
 
 export interface ChartBuilderChartTypeProps {
   loading: boolean;
@@ -39,12 +44,12 @@ export const echartTypes = (big: boolean) => {
       id: "echartsBarchart",
       label: "Bar chart",
       icon: <BarChartIcon big={big} />,
-      preview: <div />,
+      preview: <BarChartPreviewImg />,
 
       categories: ["Correllations"],
       ssr: false,
       description:
-        "It displays a categorical dimension and related amounts. Each bar represents a category, width is proportional to the quantitative dimension.",
+        "A bar chart or bar graph is a chart or graph that presents categorical data with rectangular bars with heights or lengths proportional to the values that they represent.",
     },
     {
       id: "echartsGeomap",
@@ -61,46 +66,46 @@ export const echartTypes = (big: boolean) => {
       id: "echartsTreemap",
       label: "Treemap diagram",
       icon: <TreeMapIcon big={big} />,
-      preview: <div />,
+      preview: <TreeMapPreviewImg />,
 
       categories: ["Hierarchies", "Proportions"],
       ssr: false,
       description:
-        "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
+        "In information visualization and computing, treemapping is a method for displaying hierarchical data using nested figures, usually rectangles. Treemaps display hierarchical data as a set of nested rectangles.",
     },
     {
       id: "echartsSankey",
       label: "Sankey diagram",
       icon: <SankeyChartIcon big={big} />,
-      preview: <div />,
+      preview: <SankeyPreviewImg />,
 
       categories: ["Networks"],
       ssr: false,
       description:
-        "It represents flows among nodes of a network. Nodes are represented as rectangles, the height represents their value. Flows are represented with curved lines whose width is proportional to their value.",
+        "A sankey diagram is a visualization used to depict a flow from one set of values to another. The things being connected are called nodes and the connections are called links.",
     },
     {
       id: "echartsLinechart",
       label: "Line chart",
       icon: <LineChartIcon big={big} />,
-      preview: <div />,
+      preview: <LineChartPreviewImg />,
 
       categories: ["Trends", "changes over time"],
       ssr: false,
       description:
-        "It displays a quantitative dimension over a continuous interval or time period. Colour can be optionally used to encode an additional quantitative or categorical dimension.",
+        "A line chart or line graph, also known as curve chart, is a type of chart which displays information as a series of data points called 'markers' connected by straight line segments.",
     },
 
     {
       id: "bigNumber",
       label: "KPI number",
       icon: <BigNumberIcon />,
-      preview: <div />,
+      preview: <BigNumberPreviewImg />,
 
       categories: ["Key data points"],
       ssr: true,
       description:
-        "It displays hierarchically structured data and a related quantitative dimension. It is composed of an area divided into small rectangles, representing the last level of the tree structure. The rectangles’ size depends on the quantitative dimension.",
+        "KPI stands for key performance indicator, a quantifiable measure of performance over time for a specific objective. KPIs provide targets to shoot for, milestones and gauge progress.",
     },
   ];
 };

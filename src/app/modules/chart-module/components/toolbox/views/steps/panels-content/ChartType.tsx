@@ -91,26 +91,18 @@ export function ChartToolBoxChartType() {
                 css={`
                   background: ${chartType === ct.id ? "#262C34" : "#dfe3e6"};
                   width: 100%;
-                  padding: 0 15px;
+                  padding-left: 22px;
+                  padding-right: 18px;
                   border-radius: 8px;
 
                   color: ${chartType === ct.id ? "#fff" : "#231D2C"};
                   ${ct.label === "" &&
                   `pointer-events: none;background: #f1f3f5;`}
-                  svg {
-                    path {
-                      fill: ${chartType === ct.id ? "#fff" : "#262c34"};
-                    }
-                  }
+
                   &:hover {
                     cursor: ${ct.label !== "" ? "pointer" : "auto"};
                     background: #262c34;
                     color: #fff;
-                    svg {
-                      path {
-                        fill: #fff;
-                      }
-                    }
                   }
                 `}
                 onClick={ct.label === "" ? () => {} : onChartTypeChange(ct.id)}
@@ -122,6 +114,18 @@ export function ChartToolBoxChartType() {
                     user-select: none;
                     flex-direction: row;
                     align-items: center;
+                    svg {
+                      path {
+                        fill: ${chartType === ct.id ? "#fff" : "#262c34"};
+                      }
+                    }
+                    &:hover {
+                      svg {
+                        path {
+                          fill: #fff;
+                        }
+                      }
+                    }
                   `}
                 >
                   {ct.icon}

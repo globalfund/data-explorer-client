@@ -4,6 +4,11 @@ import { ChartLoader } from "app/modules/common/page-loader";
 import { ReactComponent as LogoIcon } from "app/modules/report-module/asset/logo.svg";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import GeomapPlaceholder from "app/modules/chart-module/components/placeholder/geomapPlaceholder";
+import { ReactComponent as LinechartPlaceholderImage } from "app/modules/chart-module/assets/lineChartPlaceholder.svg";
+import { ReactComponent as BigNumberPlaceholderImage } from "app/modules/chart-module/assets/bigNumberPlaceholder.svg";
+import { ReactComponent as BarChartPlaceholderImage } from "app/modules/chart-module/assets/barChartPlaceholder.svg";
+import { ReactComponent as SankeyPlaceholderImage } from "app/modules/chart-module/assets/sankeyPlaceholder.svg";
+import { ReactComponent as TreemapPlaceholderImage } from "app/modules/chart-module/assets/treemapPlaceholder.svg";
 
 export default function ChartPlaceholder(props: {
   datasetName?: string;
@@ -17,7 +22,24 @@ export default function ChartPlaceholder(props: {
   const chartPlaceholders = [
     {
       id: "echartsBarchart",
-      placeholder: <div></div>,
+      placeholder: (
+        <div
+          css={`
+            padding-right: 60px;
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          `}
+        >
+          <div
+            css={`
+              height: 100px;
+            `}
+          />
+          <BarChartPlaceholderImage />
+        </div>
+      ),
     },
     {
       id: "echartsGeomap",
@@ -27,19 +49,91 @@ export default function ChartPlaceholder(props: {
     },
     {
       id: "echartsLinechart",
-      placeholder: <div></div>,
+      placeholder: (
+        <div
+          css={`
+            padding-right: 60px;
+
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          `}
+        >
+          <div
+            css={`
+              height: 100px;
+            `}
+          />
+          <LinechartPlaceholderImage />
+        </div>
+      ),
     },
     {
       id: "echartsSankey",
-      placeholder: <div></div>,
+      placeholder: (
+        <div
+          css={`
+            padding-right: 60px;
+
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          `}
+        >
+          <div
+            css={`
+              height: 100px;
+            `}
+          />
+          <SankeyPlaceholderImage />
+        </div>
+      ),
     },
     {
       id: "echartsTreemap",
-      placeholder: <div></div>,
+      placeholder: (
+        <div
+          css={`
+            padding-right: 60px;
+
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          `}
+        >
+          <div
+            css={`
+              height: 100px;
+            `}
+          />
+          <TreemapPlaceholderImage />
+        </div>
+      ),
     },
     {
       id: "bigNumber",
-      placeholder: <div></div>,
+      placeholder: (
+        <div
+          css={`
+            padding-right: 60px;
+
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          `}
+        >
+          <div
+            css={`
+              height: 100px;
+            `}
+          />
+          <BigNumberPlaceholderImage />
+        </div>
+      ),
     },
   ];
 
@@ -90,7 +184,7 @@ export default function ChartPlaceholder(props: {
       case "chart":
         return (
           <>
-            {chartType !== "echartsGeomap" && (
+            {chartType === null && (
               <>
                 <div
                   css={`
@@ -127,7 +221,7 @@ export default function ChartPlaceholder(props: {
                 </div>
               </>
             )}
-            {chartType === "echartsGeomap" && getChartPlaceholder()}
+            {chartType !== null && getChartPlaceholder()}
           </>
         );
       case "mapping":
