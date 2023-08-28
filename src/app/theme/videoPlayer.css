@@ -1,0 +1,33 @@
+.plyr audio,.plyr iframe,.plyr video {
+    display: block;
+    height: 100%;
+    width:714px;
+}
+
+
+
+@media (min-width: 480px){
+
+    .plyr--video .plyr__controls {
+ 
+        width: 83%;
+        margin: auto;
+    
+        padding-top: 10px;
+        /* padding-top: calc(var(--plyr-control-spacing,10px)*3.5); */
+    }
+}
+.plyr--video .plyr__controls {
+    background: linear-gradient(#0000,#000000bf);
+    /* background: var(--plyr-video-controls-background,linear-gradient(#0000,#000000bf)); */
+    background: rgba(45, 45, 45, 0.90);
+    bottom: 53px;
+    border-radius: 12.188px;
+    backdrop-filter: blur(1.9043428897857666px);
+
+}
+
+.plyr--full-ui input[type=range] {
+    color: white;
+
+}

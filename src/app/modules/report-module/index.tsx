@@ -5,7 +5,6 @@ import filter from "lodash/filter";
 import isEmpty from "lodash/isEmpty";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
-import cloneDeep from "lodash/cloneDeep";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
@@ -165,7 +164,7 @@ export default function ReportModule() {
       if (!stopInitializeFramesWidth) {
         setStopInitializeFramesWidth(true);
       }
-      const tempPrev = cloneDeep(prev);
+      const tempPrev = prev.map((item) => ({ ...item }));
       tempPrev.sort(
         (a, b) =>
           reportOrderRef.current.indexOf(a.id) -
@@ -306,8 +305,12 @@ export default function ReportModule() {
       tempPrev[rowIndex].contentHeights = contentHeights;
       tempPrev[rowIndex].structure = structure;
       if (view === "edit") {
-        const newReportContentWidths = cloneDeep(reportContentWidths);
-        const newReportContentHeights = cloneDeep(reportContentHeights);
+        const newReportContentWidths = reportContentWidths.map((item) => ({
+          ...item,
+        }));
+        const newReportContentHeights = reportContentHeights.map((item) => ({
+          ...item,
+        }));
 
         if (newReportContentWidths[rowIndex]) {
           newReportContentWidths[rowIndex].widths = contentWidths;

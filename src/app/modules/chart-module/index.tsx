@@ -246,11 +246,6 @@ export default function ChartModule() {
   }
 
   React.useEffect(() => {
-    if (page === "new" && dataset) {
-      loadDataset(`/chart/sample-data/${dataset}`).then(() => {
-        history.push(`/chart/${page}/preview-data`);
-      });
-    }
     return () => {
       document.body.style.background =
         "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%)";

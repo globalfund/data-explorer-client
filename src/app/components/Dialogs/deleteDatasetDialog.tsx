@@ -19,6 +19,7 @@ export default function DeleteDatasetDialog(props: Props) {
       <Modal
         open={props.modalDisplay}
         onClose={() => props.setModalDisplay(false)}
+        className={classes.modal}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >

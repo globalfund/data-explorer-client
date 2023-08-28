@@ -67,7 +67,7 @@ export const subscribedcss = css`
   }
 `;
 
-export const notSubscribedcss = css`
+export const notSubscribedcss = (error: boolean) => css`
   width: 100%;
   height: 100%;
   display: flex;
@@ -82,21 +82,21 @@ export const notSubscribedcss = css`
     justify-content: center;
     align-items: center;
     width: 100%;
-    p {
-      text-align: center;
-      font-weight: 325;
-      font-size: 14px;
-      line-height: 17px;
-      font-family: "Gotham Narrow", sans-serif;
-    }
+  }
+  p:nth-of-type(1) {
+    text-align: center;
+    font-weight: 325;
+    font-size: 14px;
+    line-height: 17px;
+    font-family: "Gotham Narrow", sans-serif;
   }
   input {
     background: #f7f7f7;
     border-top-left-radius: 40px;
     border-bottom-left-radius: 40px;
     outline: none;
-    border: none;
-    height: 100%;
+    border: ${error ? "1px solid #E75656" : "none"};
+    height: ${error ? "98%" : "100%"};
     padding-left: 24px;
     width: 70%;
     font-size: 16px;
