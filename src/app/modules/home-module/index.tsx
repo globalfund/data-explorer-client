@@ -4,7 +4,6 @@ import { useRecoilState, useResetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
 import {
-  Tab,
   Box,
   Grid,
   Tabs,
@@ -44,36 +43,7 @@ import {
   sortByItemCss,
   turnsDataCss,
 } from "app/modules/home-module/style";
-
-const StyledTab = withStyles(() => ({
-  root: {
-    "&.MuiButtonBase-root": {
-      "&.MuiTab-root": {
-        width: "fit-content",
-        minWidth: "fit-content",
-        padding: "0px ",
-        textTransform: "none",
-      },
-    },
-    "&.MuiTab-textColorPrimary": {
-      "&.Mui-selected": {
-        "& .MuiTab-wrapper": {
-          fontFamily: "GothamNarrow-Bold",
-        },
-      },
-    },
-  },
-}))(Tab);
-
-const StyledTabs = withStyles({
-  root: {
-    "& .MuiTabs-scroller": {
-      "& .MuiTabs-flexContainer": {
-        gap: "45px",
-      },
-    },
-  },
-})(Tabs);
+import { Tab } from "app/components/Styled/tabs";
 
 export default function HomeModule() {
   useTitle("DX DataXplorer");
@@ -86,9 +56,7 @@ export default function HomeModule() {
     createChartFromReportAtom
   );
 
-  const setReportPreviewMode = useRecoilState(
-    unSavedReportPreviewModeAtom
-  )[1];
+  const setReportPreviewMode = useRecoilState(unSavedReportPreviewModeAtom)[1];
 
   React.useEffect(() => {
     clearPersistedReportState();
@@ -107,6 +75,7 @@ export default function HomeModule() {
   const exploreViewRef = React.useRef<HTMLDivElement>(null);
 
   const [display, setDisplay] = useRecoilState(homeDisplayAtom);
+  const [tabPrevPosition, setTabPrevPosition] = React.useState("");
 
   const sortOptions = [
     { label: "Last updated", value: "updatedDate" },
@@ -114,10 +83,7 @@ export default function HomeModule() {
     { label: "Name", value: "name" },
   ];
 
-  const handleChange = (
-    event: React.ChangeEvent<{}>,
-    newValue: "data" | "charts" | "reports"
-  ) => {
+  const handleChange = (newValue: "data" | "charts" | "reports") => {
     setDisplay(newValue);
   };
 
@@ -167,6 +133,14 @@ export default function HomeModule() {
   };
 
   const openSortPopover = Boolean(sortPopoverAnchorEl);
+
+  React.useEffect(() => {
+    if (display === "data") {
+      setTabPrevPosition("left");
+    } else {
+      setTabPrevPosition("right");
+    }
+  }, [display]);
 
   return (
     <React.Fragment>
@@ -275,26 +249,28 @@ export default function HomeModule() {
             `}
           >
             <Grid item lg={6} md={6} sm={6}>
-              <StyledTabs
-                css={`
-                  margin-left: 5px;
-                `}
-                TabIndicatorProps={{
-                  style: {
-                    bottom: "12px",
-                    height: "2px",
-                  },
-                }}
-                value={display}
-                onChange={handleChange}
-                indicatorColor="primary"
-                textColor="primary"
-                className="Home-MuiTabs-flexContainer"
-              >
-                <StyledTab label="Data" value="data" />
-                <StyledTab label="Charts" value="charts" />
-                <StyledTab label="Reports" value="reports" />
-              </StyledTabs>
+              <Tab.Container>
+                <Tab.Left
+                  active={display === "data"}
+                  onClick={() => handleChange("data")}
+                >
+                  Data
+                </Tab.Left>
+                <Tab.Center
+                  active={display === "charts"}
+                  onClick={() => handleChange("charts")}
+                  position={tabPrevPosition}
+                >
+                  Charts
+                </Tab.Center>
+
+                <Tab.Right
+                  active={display === "reports"}
+                  onClick={() => handleChange("reports")}
+                >
+                  Reports
+                </Tab.Right>
+              </Tab.Container>
             </Grid>
             <Grid item lg={6} md={6} sm={6}>
               <div
