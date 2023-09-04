@@ -31,3 +31,17 @@
     color: white;
 
 }
+
+.plyr__control svg {
+    fill: rgba(45, 45, 45, 0.90);
+}
+
+.plyr__volume input[type=range] {
+
+    max-width: 67px;
+  
+}
+.plyr--video .plyr__control:focus-visible,.plyr--video .plyr__control:hover,.plyr--video .plyr__control[aria-expanded=true] {
+background: transparent;
+}
+

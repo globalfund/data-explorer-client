@@ -7,9 +7,28 @@ import Poster from "app/modules/report-module/asset/sneak-peek-poster.svg";
 export default function SneakPreview(props: {
   setModalDisplay: (display: boolean) => void;
 }) {
-  const player = new Plyr("#player", {
-    controls : ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen']
+  //The player instance is being used in the background. Seems like an unused variable but it is not.
+  const player = new Plyr(".plyr", {
+    controls: [
+      // "play-large",
+      "mute",
+      "volume",
+      // "airplay",
+      "rewind",
+      "play",
+      "pause",
+      "fast-forward",
+      "settings",
+      "fullscreen",
+      "progress",
+      "current-time",
+      "captions",
+      // "pip",
+      "airplay",
+    ],
+    iconUrl: "/svg-defs.svg",
   });
+
   return (
     <div
       css={`
@@ -52,7 +71,6 @@ export default function SneakPreview(props: {
             right: 4px;
             top: 4px;
             button {
-              /* background: transparent; */
               cursor: pointer;
             }
           `}

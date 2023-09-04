@@ -11,7 +11,6 @@ import Processing from "app/fragments/datasets-fragment/upload-steps/processing"
 import PreviewFragment from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 import FinishedFragment from "app/fragments/datasets-fragment/upload-steps/finishedFragment";
 import AddDatasetFragment from "app/fragments/datasets-fragment/upload-steps/addDatasetFragment";
-import { set } from "lodash";
 
 export default function DatasetUploadSteps() {
   const [activeStep, setActiveStep] = React.useState<number>(1);
