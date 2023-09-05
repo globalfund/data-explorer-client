@@ -13,7 +13,7 @@ import FinishedFragment from "app/fragments/datasets-fragment/upload-steps/finis
 import AddDatasetFragment from "app/fragments/datasets-fragment/upload-steps/addDatasetFragment";
 
 export default function DatasetUploadSteps() {
-  const [activeStep, setActiveStep] = React.useState<number>(1);
+  const [activeStep, setActiveStep] = React.useState<number>(0);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [uploading, setUploading] = React.useState(false);
   const [uploadSuccess, setUploadSuccess] = React.useState(false);
