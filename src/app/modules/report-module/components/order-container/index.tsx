@@ -1,17 +1,11 @@
 import React from "react";
-import { useRecoilState } from "recoil";
 import update from "immutability-helper";
 import { useUpdateEffect } from "react-use";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from "dnd-core";
-import { useStoreActions } from "app/state/store/hooks";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
-import {
-  ReportContentWidthsType,
-  reportContentWidthsAtom,
-  ReportContentHeightsType,
-  reportContentHeightsAtom,
-} from "app/state/recoil/atoms";
+
+import { IFramesArray } from "../../views/create/data";
 
 interface Item {
   id: string;
@@ -151,6 +145,7 @@ interface Props {
   enabled: boolean;
   children: React.ReactNode[];
   childrenData: any[];
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
 }
 
 export function ReportOrderContainer(props: Props) {
@@ -161,16 +156,9 @@ export function ReportOrderContainer(props: Props) {
     }))
   );
 
-  const setOrderData = useStoreActions(
-    (actions) => actions.reports.orderData.setValue
-  );
-
-  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
-  const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
-
   const moveCard = React.useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      setItems((prevItems: Item[]) =>
+      props.setFramesArray((prevItems: IFramesArray[]) =>
         update(prevItems, {
           $splice: [
             [dragIndex, 1],
@@ -202,29 +190,6 @@ export function ReportOrderContainer(props: Props) {
       }))
     );
   }, [props.childrenData]);
-
-  useUpdateEffect(() => {
-    setOrderData({
-      hasChanged: true,
-      order: items.map((item: Item) => item.id),
-    });
-    setReportContentWidths((prevValue) => {
-      const newValue: ReportContentWidthsType[] = [];
-      for (const item of items) {
-        const fItem = prevValue.find((value) => value.id === item.id);
-        if (fItem) newValue.push(fItem);
-      }
-      return newValue;
-    });
-    setReportContentHeights((prevValue) => {
-      const newValue: ReportContentHeightsType[] = [];
-      for (const item of items) {
-        const fItem = prevValue.find((value) => value.id === item.id);
-        if (fItem) newValue.push(fItem);
-      }
-      return newValue;
-    });
-  }, [items]);
 
   if (!props.enabled) {
     return <React.Fragment>{props.children}</React.Fragment>;

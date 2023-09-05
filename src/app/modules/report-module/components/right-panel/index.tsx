@@ -72,6 +72,7 @@ export function ReportRightPanel(props: ReportRightPanelProps) {
             setAppliedHeaderDetails={props.setAppliedHeaderDetails}
             framesArray={props.framesArray}
             reportName={props.reportName}
+            handlePersistReportState={props.handlePersistReportState}
           />
         )}
       </div>

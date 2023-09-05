@@ -67,7 +67,7 @@ export default function HomeModule() {
   const [tableView, setTableView] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
-  const [sortValue, setSortValue] = React.useState("createdDate");
+  const [sortValue, setSortValue] = React.useState("updatedDate");
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
 
