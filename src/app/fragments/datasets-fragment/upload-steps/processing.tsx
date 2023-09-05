@@ -110,21 +110,23 @@ export default function Processing(props: Props) {
                     height: 6.42px;
                     border-radius: 3px;
                     background-color: #dfe3e5;
+
                     border-radius: 3.211px;
+                    position: relative;
+
+                    ::before {
+                      content: "";
+                      border: 1px solid #fff;
+                      border-radius: 10px;
+                      position: absolute;
+                      top: -4px;
+                      right: -4px;
+                      bottom: -4px;
+                      left: -4px;
+                    }
                   `}
                 >
-                  <div
-                    css={`
-                      height: 100%;
-                      width: ${props.percentageLoaded}%;
-                      background: linear-gradient(
-                        90deg,
-                        #6466f1 7.48%,
-                        #cea8bc 92.2%
-                      );
-                      border-radius: 3px;
-                    `}
-                  />
+                  <div className="progress-bar" />
                 </div>
                 <p>{props.loaded}MB</p>
                 <p>
