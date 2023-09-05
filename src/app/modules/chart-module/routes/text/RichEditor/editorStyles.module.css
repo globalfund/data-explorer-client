@@ -21,5 +21,5 @@
 }
 
 .editor :global(.public-DraftEditor-content) {
-  min-height: 140px;
+  min-height: 75px;
 }

@@ -14,6 +14,13 @@ interface Props {
 
 export default function DeleteDatasetDialog(props: Props) {
   const classes = useStyles();
+
+  const onInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      props.handleDelete(props.cardId);
+    }
+  };
+
   return (
     <div>
       <Modal
@@ -66,6 +73,7 @@ export default function DeleteDatasetDialog(props: Props) {
             >
               <input
                 type="text"
+                onKeyPress={onInputEnter}
                 placeholder='Type "DELETE" to confirm'
                 onChange={props.handleInputChange}
                 css={`

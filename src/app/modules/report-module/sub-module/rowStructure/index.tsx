@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
 import { useOnClickOutside } from "usehooks-ts";
@@ -18,14 +17,14 @@ import { ReactComponent as EditIcon } from "app/modules/report-module/asset/edit
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
-  reportContentWidthsAtom,
   createChartFromReportAtom,
   reportContentIsResizingAtom,
   reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
-  reportContentHeightsAtom,
   isChartDraggingAtom,
 } from "app/state/recoil/atoms";
+import { IFramesArray } from "../../views/create/data";
+import { cloneDeep, filter } from "lodash";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -33,9 +32,14 @@ interface RowStructureDisplayProps {
   rowIndex: number;
   rowId: string;
   selectedType: string;
-  deleteFrame: (id: string) => void;
+  framesArray: IFramesArray[];
   selectedTypeHistory: string[];
+  rowContentWidths: number[];
+  rowContentHeights: number[];
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+  deleteFrame: (id: string) => void;
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
   rowStructureDetailItems: {
     rowId: string;
@@ -43,13 +47,7 @@ interface RowStructureDisplayProps {
     factor: number;
     rowType: string;
   }[];
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
+
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
   onRowBoxItemResize: (
@@ -66,22 +64,12 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const ref = useRef(null);
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
-  const [reportContentWidths] = useRecoilState(reportContentWidthsAtom);
-  const [reportContentHeights] = useRecoilState(reportContentHeightsAtom);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
     (page !== "new" &&
       get(location.pathname.split("/"), "[3]", "") !== "edit") ||
     reportPreviewMode;
-
-  const rowContentWidths = !viewOnlyMode
-    ? find(reportContentWidths, { id: props.rowId })
-    : get(reportContentWidths, `[${props.rowIndex}]`, { widths: [] });
-
-  const rowContentHeights = !viewOnlyMode
-    ? find(reportContentHeights, { id: props.rowId })
-    : get(reportContentHeights, `[${props.rowIndex}]`, { heights: [] });
 
   const handlers = viewOnlyMode
     ? {}
@@ -186,14 +174,14 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
             key={row.rowId}
-            width={get(rowContentWidths, `widths.[${index}]`, "fit-content")}
-            height={get(rowContentHeights, `heights.[${index}]`, props.height)}
+            width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
+            height={get(props.rowContentHeights, `[${index}]`, props.height)}
             itemIndex={index}
             rowId={props.rowId}
             rowType={row.rowType}
             onRowBoxItemResize={props.onRowBoxItemResize}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+            setPickedCharts={props.setPickedCharts}
+            setFramesArray={props.setFramesArray}
             previewItem={get(props.previewItems, `[${index}]`, undefined)}
             handlePersistReportState={props.handlePersistReportState}
             rowItemsCount={props.rowStructureDetailItems.length}
@@ -211,13 +199,9 @@ const Box = (props: {
   itemIndex: number;
   handlePersistReportState: () => void;
   rowType: string;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
+  setPickedCharts: (value: React.SetStateAction<string[]>) => void;
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+
   rowItemsCount: number;
   previewItem?: string | any;
   onRowBoxItemResize: (
@@ -230,6 +214,7 @@ const Box = (props: {
   const location = useLocation();
   const history = useHistory();
   const { page, view } = useParams<{ page: string; view: string }>();
+
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
@@ -239,11 +224,8 @@ const Box = (props: {
   const setCreateChartData = useStoreActions(
     (state) => state.charts.ChartCreate.setCrudData
   );
-
   const isChartDragging = useRecoilValue(isChartDraggingAtom);
-
   const setCreateChartFromReport = useRecoilState(createChartFromReportAtom)[1];
-
   const resetMapping = useStoreActions(
     (actions) => actions.charts.mapping.reset
   );
@@ -271,6 +253,42 @@ const Box = (props: {
     history.push(`/chart/${chartId}/mapping`);
   };
 
+  const handleRowFrameItemAddition = (
+    rowId: string,
+    itemIndex: number,
+    itemContent: string | object,
+    itemContentType: "text" | "divider" | "chart"
+  ) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      tempPrev[frameId].content[itemIndex] = itemContent;
+      tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
+    });
+  };
+  const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      if (tempPrev[frameId].contentTypes[itemIndex] === "chart") {
+        const chartId = tempPrev[frameId].content[itemIndex] as string;
+        props.setPickedCharts((prevPickedCharts) =>
+          filter(prevPickedCharts, (chart: string) => chart !== chartId)
+        );
+      }
+      tempPrev[frameId].content[itemIndex] = null;
+      tempPrev[frameId].contentTypes[itemIndex] = null;
+      return [...tempPrev];
+    });
+  };
+
   const containerWidth = useRecoilValue(reportContentContainerWidth);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
   const [isResizing, setIsResizing] = useRecoilState(
@@ -294,7 +312,7 @@ const Box = (props: {
     }),
     drop: (item: any, monitor) => {
       if (item.type === ReportElementsType.TEXT) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           textContent,
@@ -306,7 +324,7 @@ const Box = (props: {
         item.type === ReportElementsType.CHART ||
         item.type === ReportElementsType.BIG_NUMBER
       ) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           item.value,
@@ -323,7 +341,7 @@ const Box = (props: {
   const [,] = useDebounce(
     () => {
       if (displayTextBox) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           textContent,
@@ -410,7 +428,7 @@ const Box = (props: {
                   setChartId(null);
                   setDisplayTextBox(false);
                   setTextContent(EditorState.createEmpty());
-                  props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+                  handleRowFrameItemRemoval(props.rowId, props.itemIndex);
                 }}
                 css={`
                   top: 12px;
@@ -424,8 +442,8 @@ const Box = (props: {
             )}
             <RichEditor
               fullWidth
-              textContent={textContent}
               editMode={!viewOnlyMode}
+              textContent={textContent}
               setTextContent={setTextContent}
             />
           </div>
@@ -463,10 +481,7 @@ const Box = (props: {
                     setChartId(null);
                     setDisplayTextBox(false);
                     setTextContent(EditorState.createEmpty());
-                    props.handleRowFrameItemRemoval(
-                      props.rowId,
-                      props.itemIndex
-                    );
+                    handleRowFrameItemRemoval(props.rowId, props.itemIndex);
                   }}
                   css={`
                     top: 12px;
@@ -544,13 +559,7 @@ const Box = (props: {
         setDisplayChart(true);
         setDisplayTextBox(false);
       } else {
-        if (props.previewItem.getCurrentContent) {
-          setTextContent(props.previewItem);
-        } else {
-          setTextContent(
-            EditorState.createWithContent(convertFromRaw(props.previewItem))
-          );
-        }
+        setTextContent(props.previewItem);
         setDisplayTextBox(true);
         setDisplayChart(false);
       }
@@ -559,7 +568,7 @@ const Box = (props: {
 
   React.useEffect(() => {
     if (displayChart && chartId) {
-      props.handleRowFrameItemAddition(
+      handleRowFrameItemAddition(
         props.rowId,
         props.itemIndex,
         chartId,
@@ -577,35 +586,35 @@ const Box = (props: {
     border = "1px dashed #231d2c";
   }
 
-  return content ? (
-    content
-  ) : (
-    <div
-      css={`
-        width: ${width};
-        border: ${border};
-        background: #dfe3e6;
-        height: ${props.height}px;
-      `}
-      ref={drop}
-    >
-      <p
+  return (
+    content ?? (
+      <div
         css={`
-          margin: 0;
-          width: 100%;
-          height: 100%;
-          display: flex;
-          padding: 24px;
-          color: #495057;
-          font-size: 14px;
-          font-weight: 400;
-          text-align: center;
-          align-items: center;
-          justify-content: center;
+          width: ${width};
+          border: ${border};
+          background: #dfe3e6;
+          height: ${props.height}px;
         `}
+        ref={drop}
       >
-        {isOver ? "Release to drop" : "Drag and drop content here"}
-      </p>
-    </div>
+        <p
+          css={`
+            margin: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            padding: 24px;
+            color: #495057;
+            font-size: 14px;
+            font-weight: 400;
+            text-align: center;
+            align-items: center;
+            justify-content: center;
+          `}
+        >
+          {isOver ? "Release to drop" : "Drag and drop content here"}
+        </p>
+      </div>
+    )
   );
 };

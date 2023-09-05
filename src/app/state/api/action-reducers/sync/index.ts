@@ -254,27 +254,3 @@ export interface ReportOrderStateModel {
   >;
   clear: Action<ReportOrderStateModel>;
 }
-
-export const ReportOrderState: ReportOrderStateModel = {
-  value: {
-    order: [],
-    hasChanged: false,
-  },
-  setValue: action(
-    (
-      state,
-      payload: {
-        order: string[];
-        hasChanged: boolean;
-      }
-    ) => {
-      state.value = payload;
-    }
-  ),
-  clear: action((state) => {
-    state.value = {
-      order: [],
-      hasChanged: false,
-    };
-  }),
-};

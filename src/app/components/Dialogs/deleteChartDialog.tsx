@@ -38,6 +38,12 @@ export const useStyles = makeStyles(() =>
 export default function DeleteChartDialog(props: Props) {
   const classes = useStyles();
 
+  const onInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      props.handleDelete(props.cardId as number);
+    }
+  };
+
   return (
     <Modal
       open={props.modalDisplay}
@@ -88,6 +94,7 @@ export default function DeleteChartDialog(props: Props) {
           >
             <input
               type="text"
+              onKeyPress={onInputEnter}
               placeholder='Type "DELETE" to confirm'
               onChange={props.handleInputChange}
               css={`
