@@ -203,17 +203,6 @@ export const DropZone = (props: DropzoneProps) => {
                 </button>
               </div>
               <Box height={80} />
-              <p>
-                <span
-                  css={`
-                    text-decoration: underline;
-                    cursor: pointer;
-                  `}
-                >
-                  Download spreadsheet templates
-                </span>{" "}
-                to help you get started
-              </p>
             </>
           )}
         </div>

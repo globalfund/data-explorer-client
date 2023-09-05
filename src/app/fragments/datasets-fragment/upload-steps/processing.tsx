@@ -6,8 +6,18 @@ import { ReactComponent as ErrorICon } from "../assets/error-icon.svg";
 interface Props {
   setProcessingError: React.Dispatch<React.SetStateAction<boolean>>;
   processingError: boolean;
+  fileName: string;
+  loaded: number;
+  percentageLoaded: number;
+  estimatedUploadTime: number;
 }
 export default function Processing(props: Props) {
+  const getTimeInHoursnMins = (time: number) => {
+    const hr = Math.floor(time / 60);
+    const min = time % 60 < 10 ? `0${time % 60}` : time % 60;
+    return `${hr} : ${min}`;
+  };
+
   return (
     <>
       {props.processingError ? (
@@ -57,29 +67,74 @@ export default function Processing(props: Props) {
             flex-direction: column;
           `}
         >
-          <ProcessingIcon
-            css={`
-              animation: spin 3s linear infinite;
-              @keyframes spin {
-                0% {
-                  transform: rotate(0deg);
-                }
-                100% {
-                  transform: rotate(360deg);
-                }
-              }
-            `}
-          />
           <div>
             <p
               css={`
                 font-size: 18px;
-                color: #98a1aa;
+                color: #231d2c;
                 text-align: center;
+                margin-bottom: 45px;
               `}
             >
-              <b>Data is being processed</b>{" "}
+              Data is being processed...
             </p>
+
+            <div>
+              <p
+                css={`
+                  color: #000;
+                  font-family: "Gotham Narrow", sans-serif;
+                  font-size: 14px;
+                `}
+              >
+                {props.fileName}
+              </p>
+              <div
+                css={`
+                  display: flex;
+                  flex-wrap: wrap;
+                  width: 399.71px;
+                  justify-content: space-between;
+                  align-items: center;
+                  p {
+                    font-family: "Gotham Narrow", sans-serif;
+                    font-size: 12px;
+                    color: #adb5bd;
+                    margin-top: 0;
+                  }
+                `}
+              >
+                <div
+                  css={`
+                    width: 100%;
+                    height: 6.42px;
+                    border-radius: 3px;
+                    background-color: #dfe3e5;
+
+                    border-radius: 3.211px;
+                    position: relative;
+
+                    ::before {
+                      content: "";
+                      border: 1px solid #fff;
+                      border-radius: 10px;
+                      position: absolute;
+                      top: -4px;
+                      right: -4px;
+                      bottom: -4px;
+                      left: -4px;
+                    }
+                  `}
+                >
+                  <div className="progress-bar" />
+                </div>
+                <p>{props.loaded}MB</p>
+                <p>
+                  {getTimeInHoursnMins(props.estimatedUploadTime)} minutes
+                  remaining
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       )}

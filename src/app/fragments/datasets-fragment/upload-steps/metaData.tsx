@@ -1,10 +1,7 @@
 import { Box, Grid, TextField, withStyles } from "@material-ui/core";
-import { PageHeader } from "app/components/PageHeader";
-import BasicTextarea from "app/components/Textarea/BasicTextarea";
-import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import React from "react";
 import { metaDatacss } from "../style";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 
 export interface IFormDetails {
   name: string;
