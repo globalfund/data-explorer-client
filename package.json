@@ -4,7 +4,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/zimmerman.team/dx.client.git"
+    "url": "https://github.com/zimmerman-team/dx.client.git"
   },
   "dependencies": {
     "@craco/craco": "^6.4.3",
