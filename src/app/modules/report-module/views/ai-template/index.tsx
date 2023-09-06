@@ -1,7 +1,9 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { emailValidation } from "app/utils/emailValidation";
+import { emailSchema } from "app/utils/emailValidation";
 import { ReactComponent as MailImg } from "app/modules/report-module/asset/mail-img.svg";
 import { ReactComponent as TopEllipse } from "app/modules/report-module/asset/ai-newsletter-top-ellipse.svg";
 import { ReactComponent as BigEllipse } from "app/modules/report-module/asset/ai-newsletter-big-ellipse.svg";
@@ -11,6 +13,7 @@ import { ReactComponent as BtmPurpleEllipse } from "app/modules/report-module/as
 import { ReactComponent as ReportIllustration } from "app/modules/report-module/asset/report-illustration.svg";
 import { ReactComponent as DatasetIllustration } from "app/modules/report-module/asset/dataset-illustration.svg";
 import { ReactComponent as ChartIllustration } from "app/modules/report-module/asset/chart-illustration.svg";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import {
   bigEllipsecss,
   btmGreenEllipsecss,
@@ -24,42 +27,51 @@ import {
   subscribedcss,
   topEllipsecss,
 } from "./style";
+import SneakPreview from "./sneakPreview";
 
 export default function AITemplate() {
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<{ email: string }>({ resolver: yupResolver(emailSchema) });
   const [email, setEmail] = React.useState("");
   const [isSubscribed, setIsSubscribed] = React.useState(false);
+  const [isSubscriptionFailed, setIsSubscriptionFailed] = React.useState(false);
+  const [modalDisplay, setModalDisplay] = React.useState<boolean>(true);
 
   const handleSubscribeAction = () => {
-    if (emailValidation(email)) {
-      axios
-        .post(
-          `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.REACT_APP_HUBSPOT_PORTAL_ID}/${process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID}`,
-          {
-            portalId: process.env.REACT_APP_HUBSPOT_PORTAL_ID,
-            formGuid: process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID,
-            fields: [
-              {
-                name: "email",
-                value: email,
-              },
-            ],
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
+    axios
+      .post(
+        `https://api.hsforms.com/submissions/v3/integration/submit/${process.env.REACT_APP_HUBSPOT_PORTAL_ID}/${process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID}`,
+        {
+          portalId: process.env.REACT_APP_HUBSPOT_PORTAL_ID,
+          formGuid: process.env.REACT_APP_HUBSPOT_SUBSCRIBE_FORM_ID,
+          fields: [
+            {
+              name: "email",
+              value: email,
             },
-          }
-        )
-        .then((response: AxiosResponse) => {
-          if (response.status === 200) {
-            setEmail("");
-            setIsSubscribed(true);
-          }
-        })
-        .catch((error: AxiosError) => {
-          console.log(error.response);
-        });
-    }
+          ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      )
+      .then((response: AxiosResponse) => {
+        if (response.status === 200) {
+          setEmail("");
+          setIsSubscribed(true);
+        } else {
+          setIsSubscriptionFailed(true);
+        }
+      })
+      .catch((error: AxiosError) => {
+        setIsSubscriptionFailed(true);
+        console.log(error.response, "res");
+      });
   };
 
   const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,6 +85,7 @@ export default function AITemplate() {
         height: calc(100vh - 48px);
       `}
     >
+      {modalDisplay && <SneakPreview setModalDisplay={setModalDisplay} />}
       <Grid
         item
         xs={12}
@@ -132,7 +145,7 @@ export default function AITemplate() {
             </div>
           </div>
         ) : (
-          <div css={notSubscribedcss}>
+          <div css={notSubscribedcss(Boolean(errors.email))}>
             <div>
               <MailImg />
               <div
@@ -150,28 +163,69 @@ export default function AITemplate() {
                   height: 44px;
                 `}
               />
+              <label
+                css={`
+                  font-family: "Inter", sans-serif;
+                  font-size: 12px;
+                  text-align: left;
+                  width: 100%;
+                  padding-left: 10px;
+                  color: #e75656;
+                  p {
+                    font-family: "Gotham Narrow", sans-serif;
+                    text-align: left;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    line-height: 15px;
+                    margin: 0;
+                  }
+                `}
+              >
+                {errors.email && "Please enter a valid email address."}
+                {isSubscriptionFailed && (
+                  <p>
+                    <span>
+                      <ErrorOutlineIcon htmlColor="#E75656" />
+                    </span>{" "}
+                    Oops! Something went wrong with the request! Please fill
+                    your email again.
+                  </p>
+                )}
+              </label>
               <div
                 css={`
                   display: flex;
-                  height: 47px;
+                  height: 50px;
                   width: 100%;
                   border-radius: 40px;
                 `}
               >
-                <input
-                  type="text"
-                  placeholder="Email address"
-                  onChange={handleEmailChange}
-                />
-                <button type="button" onClick={handleSubscribeAction}>
-                  SUBSCRIBE
-                </button>
+                <form
+                  css={`
+                    width: 100%;
+                    display: flex;
+                  `}
+                  onSubmit={handleSubmit(handleSubscribeAction)}
+                >
+                  <input
+                    type="text"
+                    placeholder="Email address"
+                    {...register("email", { required: true })}
+                    onChange={handleEmailChange}
+                  />
+                  <button type="submit">SUBSCRIBE</button>
+                </form>
               </div>
               <p
                 css={`
                   text-align: left;
                   width: 100%;
                   padding-left: 10px;
+                  font-size: 12px;
+                  font-family: "Roboto", sans-serif;
+                  line-height: normal;
+                  color: #000;
                 `}
               >
                 You will receive occasional emails from DX. You always have

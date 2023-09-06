@@ -20,6 +20,10 @@ export default function DatasetUploadSteps() {
   const [processingError, setProcessingError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [datasetId, setDatasetId] = React.useState("");
+  const [loadedProgress, setLoadedProgress] = React.useState(0);
+  const [percentageLoadedProgress, setPercentageLoadedProgress] =
+    React.useState(0);
+  const [estUploadTime, setEstUploadTime] = React.useState(0);
   const [formDetails, setFormDetails] = React.useState({
     name: "",
     description: "",
@@ -69,6 +73,27 @@ export default function DatasetUploadSteps() {
     }
   };
 
+  const onUploadProgress = (progressEvent: any) => {
+    const { loaded, total, timeStamp } = progressEvent;
+    setLoadedProgress(parseFloat((loaded / 1024).toFixed(1)));
+    setPercentageLoadedProgress(Math.floor((loaded * 100) / total));
+
+    const currentTime = new Date().getTime();
+    // Calculate the time elapsed since the upload started in seconds.
+    const elapsedTimeInSeconds = (currentTime - timeStamp) / 1000;
+    // Calculate the upload speed in bytes per second.
+    const uploadSpeed = loaded / elapsedTimeInSeconds;
+    // Calculate the remaining bytes to upload.
+    const remainingBytes = total - loaded;
+    // Calculate the estimated time remaining in seconds.
+    const estimatedTimeRemainingInSeconds = remainingBytes / uploadSpeed;
+    // Convert the estimated time remaining to minutes.
+    const estimatedTimeRemainingInMinutes =
+      estimatedTimeRemainingInSeconds / 60;
+
+    setEstUploadTime(estimatedTimeRemainingInMinutes);
+  };
+
   const onSubmit = async () => {
     // Post the dataset
     handleNext();
@@ -90,6 +115,7 @@ export default function DatasetUploadSteps() {
             headers: {
               "Content-Type": "multipart/form-data",
             },
+            onUploadProgress,
           })
           .then((_) => {
             setUploading(false);
@@ -150,6 +176,10 @@ export default function DatasetUploadSteps() {
           <Processing
             setProcessingError={setProcessingError}
             processingError={processingError}
+            fileName={(selectedFile && selectedFile.name) as string}
+            loaded={loadedProgress}
+            percentageLoaded={percentageLoadedProgress}
+            estimatedUploadTime={estUploadTime}
           />
         );
       case 3:

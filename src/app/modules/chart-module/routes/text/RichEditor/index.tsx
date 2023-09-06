@@ -123,7 +123,7 @@ export const RichEditor = (props: {
         readOnly={!props.editMode}
         editorState={props.textContent}
         onChange={props.setTextContent}
-        placeholder={props.placeholder || "Add your story..."}
+        placeholder={props.placeholder ?? "Add your story..."}
         ref={(element) => {
           editor.current = element;
         }}

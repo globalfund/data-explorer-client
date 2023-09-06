@@ -2,76 +2,54 @@ import React from "react";
 import { v4 } from "uuid";
 import IconButton from "@material-ui/core/IconButton";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
-import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import { ReactComponent as PlusIcon } from "app/modules/report-module/asset/addButton.svg";
-import {
-  IRowFrameStructure,
-  ReportContentWidthsType,
-} from "app/state/recoil/atoms";
+import { IRowFrameStructure } from "app/state/recoil/atoms";
+import { cloneDeep } from "lodash";
 
 interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
   rowStructureType: IRowFrameStructure;
+  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
-  deleteFrame: (id: string) => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   handlePersistReportState: () => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-  ) => void;
+
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
 }
 
 export default function AddRowFrameButton(props: Props) {
   const [displayTooltip, setDisplayTooltip] = React.useState<boolean>(false);
-
   const handleAddrowStructureBlock = () => {
     const id = v4();
-    props.setFramesArray([
-      ...props.framesArray,
-      {
-        id,
-        frame: (
-          <RowFrame
-            rowId={id}
-            rowIndex={props.framesArray.length}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-            deleteFrame={props.deleteFrame}
-            handleRowFrameStructureTypeSelection={
-              props.handleRowFrameStructureTypeSelection
-            }
-            handlePersistReportState={props.handlePersistReportState}
-            handleRowFrameItemResize={props.handleRowFrameItemResize}
-          />
-        ),
-        content: [],
-        contentWidths: [],
-        contentHeights: [],
-        contentTypes: [],
-        structure: null,
-      },
-    ]);
+    props.setFramesArray((prev) => {
+      const tempPrev = cloneDeep(prev);
+
+      return [
+        ...tempPrev,
+        {
+          id,
+          frame: {
+            rowId: id,
+            rowIndex: tempPrev.length,
+
+            handlePersistReportState: props.handlePersistReportState,
+            handleRowFrameItemResize: props.handleRowFrameItemResize,
+            setPickedCharts: props.setPickedCharts,
+            type: "rowFrame",
+          },
+          content: [],
+          contentWidths: [],
+          contentHeights: [],
+          contentTypes: [],
+          structure: null,
+        },
+      ];
+    });
     props.setRowStructureType({
       ...props.rowStructureType,
       rowType: "",

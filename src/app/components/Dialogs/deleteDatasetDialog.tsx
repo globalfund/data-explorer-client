@@ -14,11 +14,19 @@ interface Props {
 
 export default function DeleteDatasetDialog(props: Props) {
   const classes = useStyles();
+
+  const onInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      props.handleDelete(props.cardId);
+    }
+  };
+
   return (
     <div>
       <Modal
         open={props.modalDisplay}
         onClose={() => props.setModalDisplay(false)}
+        className={classes.modal}
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
@@ -69,6 +77,7 @@ export default function DeleteDatasetDialog(props: Props) {
                   type="text"
                   placeholder='Type "DELETE" to confirm'
                   onChange={props.handleInputChange}
+                  onKeyPress={onInputEnter}
                   css={`
                     border: 1px solid #231d2c;
                     border-radius: 10px;

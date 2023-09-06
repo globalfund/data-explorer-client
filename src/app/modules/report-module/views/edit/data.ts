@@ -1,9 +1,10 @@
 import { EditorState } from "draft-js";
 import { IFramesArray } from "app/modules/report-module/views/create/data";
-import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
 export interface ReportEditViewProps {
   open: boolean;
+  view: "initial" | "edit" | "create" | "preview" | "ai-template";
+
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
   localPickedCharts: string[];
@@ -41,28 +42,11 @@ export interface ReportEditViewProps {
       dateColor: string;
     }>
   >;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart"
-  ) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneByFive"
-  ) => void;
+
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
   stopInitializeFramesWidth: boolean;

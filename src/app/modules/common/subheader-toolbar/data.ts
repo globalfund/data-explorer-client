@@ -14,4 +14,5 @@ export interface SubheaderToolbarProps {
   appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
   setStopInitializeFramesWidth?: (value: boolean) => void;
+  handlePersistReportState?: () => void;
 }

@@ -17,20 +17,30 @@ export interface ReportModel {
       | "oneByFive";
 
     items: (object | string)[];
+    contentWidths: {
+      id: string;
+      widths: number[];
+    };
+    contentHeights: {
+      id: string;
+      heights: number[];
+    };
   }[];
   createdDate: Date;
   backgroundColor: string;
   titleColor: string;
   descriptionColor: string;
-  contentWidths: {
-    id: string;
-    widths: number[];
-  }[];
-  contentHeights: {
-    id: string;
-    heights: number[];
-  }[];
+
   dateColor: string;
+}
+
+export interface ReportContentWidthsType {
+  id: string;
+  widths: number[];
+}
+export interface ReportContentHeightsType {
+  id: string;
+  heights: number[];
 }
 
 export const emptyReport: ReportModel = {
@@ -45,8 +55,7 @@ export const emptyReport: ReportModel = {
   backgroundColor: "#252c34",
   titleColor: "#ffffff",
   descriptionColor: "#ffffff",
-  contentWidths: [],
-  contentHeights: [],
+
   dateColor: "#ffffff",
 };
 

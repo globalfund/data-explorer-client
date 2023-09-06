@@ -1,7 +1,7 @@
 import React from "react";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
-import { useHistory, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
@@ -11,24 +11,18 @@ import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
-  reportContentWidthsAtom,
-  reportContentHeightsAtom,
   persistedReportStateAtom,
   reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 
 export function ReportPreviewView() {
-  const history = useHistory();
   const { page } = useParams<{ page: string }>();
 
   const { ref, width } = useResizeObserver<HTMLDivElement>();
 
   const persistedReportState = useRecoilState(persistedReportStateAtom)[0];
   const reportPreviewMode = useRecoilState(unSavedReportPreviewModeAtom)[0];
-
-  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
-  const setReportContentHeights = useRecoilState(reportContentHeightsAtom)[1];
 
   const [containerWidth, setContainerWidth] = useRecoilState(
     reportContentContainerWidth
@@ -56,10 +50,6 @@ export function ReportPreviewView() {
 
   const [reportPreviewData, setReportPreviewData] = React.useState(reportData);
 
-  const isPreview = React.useMemo(() => {
-    return history.location.pathname.includes("/preview");
-  }, [history.location.pathname]);
-
   React.useEffect(() => {
     fetchReportData({ getId: page });
   }, [page]);
@@ -75,18 +65,6 @@ export function ReportPreviewView() {
       setReportPreviewData(reportData);
     }
   }, [reportData]);
-
-  React.useEffect(() => {
-    if (reportData.contentWidths && !isPreview) {
-      setReportContentWidths(reportData.contentWidths);
-    }
-  }, [reportData.contentWidths]);
-
-  React.useEffect(() => {
-    if (reportData.contentHeights && !isPreview) {
-      setReportContentHeights(reportData.contentHeights);
-    }
-  }, [reportData.contentHeights]);
 
   React.useEffect(() => {
     return () => {
@@ -113,6 +91,7 @@ export function ReportPreviewView() {
     }
   }, [persistedReportState]);
 
+  console.log(reportPreviewData, "reportPreviewData");
   return (
     <div id="export-container">
       <HeaderBlock
@@ -134,6 +113,12 @@ export function ReportPreviewView() {
       <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
         {reportPreviewData.rows.map((rowFrame, index) => {
+          const contentTypes = rowFrame.items.map((item) => {
+            if (item === null) {
+              return null;
+            }
+            return typeof item === "object" ? "text" : "chart";
+          });
           if (
             rowFrame.items &&
             rowFrame.items.length === 1 &&
@@ -141,7 +126,7 @@ export function ReportPreviewView() {
           ) {
             return (
               <hr
-                key={index}
+                key={"divider" + `${index}`}
                 css={`
                   margin: 0 0 50px 0;
                   border: 2px solid #cfd4da;
@@ -151,17 +136,28 @@ export function ReportPreviewView() {
           }
           return (
             <RowFrame
-              key={index}
-              rowId={reportPreviewData.id}
+              key={"rowframe" + `${index}`}
+              rowId={""}
               rowIndex={index}
-              deleteFrame={() => {}}
               forceSelectedType={rowFrame.structure ?? undefined}
-              handleRowFrameItemRemoval={() => {}}
-              handleRowFrameItemAddition={() => {}}
-              handleRowFrameStructureTypeSelection={() => {}}
-              previewItems={rowFrame.items}
+              previewItems={rowFrame.items.map((item, index) => {
+                return contentTypes[index] === "text"
+                  ? EditorState.createWithContent(convertFromRaw(item as any))
+                  : item;
+              })}
               handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
+              setPickedCharts={() => {}}
+              type="rowFrame"
+              setFramesArray={() => {}}
+              rowContentHeights={
+                rowFrame.contentHeights?.heights ?? rowFrame.contentHeights
+              }
+              rowContentWidths={
+                rowFrame.contentWidths?.widths ?? rowFrame.contentWidths
+              }
+              framesArray={[]}
+              view={"preview"}
             />
           );
         })}

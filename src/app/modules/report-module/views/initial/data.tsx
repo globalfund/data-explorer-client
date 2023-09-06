@@ -114,7 +114,7 @@ export const TemplateItem = ({
               border: 1px solid #000;
             `}
           >
-            Coming soon!
+            Sneak Preview
           </div>
         )}
         <button

@@ -38,6 +38,12 @@ export const useStyles = makeStyles(() =>
 export default function DeleteReportDialog(props: Props) {
   const classes = useStyles();
 
+  const onInputEnter = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      props.handleDelete(props.cardId as number);
+    }
+  };
+
   return (
     <Modal
       open={props.modalDisplay}
@@ -91,6 +97,7 @@ export default function DeleteReportDialog(props: Props) {
                 type="text"
                 placeholder='Type "DELETE" to confirm'
                 onChange={props.handleInputChange}
+                onKeyPress={onInputEnter}
                 css={`
                   border: 1px solid #231d2c;
                   border-radius: 10px;
