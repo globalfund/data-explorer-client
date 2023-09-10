@@ -33,6 +33,7 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
   React.useEffect(() => {
     // When the Preview component is rendered, we are at step 1.
     setActivePanels(1);
+
     if (props.data.length === 0 && dataset) {
       props.loadDataset(`data-themes/sample-data/${dataset}`);
     }

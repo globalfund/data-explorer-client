@@ -6,7 +6,7 @@ import { useSessionStorage } from "react-use";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { Switch, Route, useParams, useHistory } from "react-router-dom";
+import { Switch, Route, useParams } from "react-router-dom";
 import {
   getOptionsConfig,
   getDefaultOptionsValues,
@@ -39,7 +39,6 @@ import {
 import { IHeaderDetails } from "../report-module/components/right-panel/data";
 
 export default function ChartModule() {
-  const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
   const [chartFromAPI, setChartFromAPI] =
     React.useState<ChartRenderedItem | null>(null);
@@ -244,15 +243,6 @@ export default function ChartModule() {
     }
     return false;
   }
-
-  React.useEffect(() => {
-    return () => {
-      document.body.style.background =
-        "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%)";
-      clearChart();
-      clearChartBuilder();
-    };
-  }, []);
 
   React.useEffect(() => {
     if (!loading && chartType) {
