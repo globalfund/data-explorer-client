@@ -71,3 +71,5 @@ Icon
 # cypress recordings
 cypress/screenshots/
 cypress/videos/
+
+rawgraphs-charts
