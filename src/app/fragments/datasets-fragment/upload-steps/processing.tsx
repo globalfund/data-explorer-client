@@ -7,15 +7,18 @@ interface Props {
   setProcessingError: React.Dispatch<React.SetStateAction<boolean>>;
   processingError: boolean;
   fileName: string;
-  loaded: number;
+  loaded: string;
   percentageLoaded: number;
   estimatedUploadTime: number;
 }
 export default function Processing(props: Props) {
   const getTimeInHoursnMins = (time: number) => {
-    const hr = Math.floor(time / 60);
-    const min = time % 60 < 10 ? `0${time % 60}` : time % 60;
-    return `${hr} : ${min}`;
+    const mft = Math.floor(time / 60);
+    const se = " seconds (estimated)";
+    let ret = mft + se;
+    if (mft <= 0) ret = "Finishing up...";
+    if (mft > 60) ret =  + " minutes and " + Math.floor(time % 60) + se;
+    return ret;
   };
 
   return (
@@ -128,10 +131,9 @@ export default function Processing(props: Props) {
                 >
                   <div className="progress-bar" />
                 </div>
-                <p>{props.loaded}MB</p>
+                <p>{props.loaded}</p>
                 <p>
-                  {getTimeInHoursnMins(props.estimatedUploadTime)} minutes
-                  remaining
+                  {getTimeInHoursnMins(props.estimatedUploadTime)}
                 </p>
               </div>
             </div>

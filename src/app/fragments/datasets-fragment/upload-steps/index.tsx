@@ -20,7 +20,7 @@ export default function DatasetUploadSteps() {
   const [processingError, setProcessingError] = React.useState(false);
   const [errorMessage, setErrorMessage] = React.useState("");
   const [datasetId, setDatasetId] = React.useState("");
-  const [loadedProgress, setLoadedProgress] = React.useState(0);
+  const [loadedProgress, setLoadedProgress] = React.useState("0B");
   const [percentageLoadedProgress, setPercentageLoadedProgress] =
     React.useState(0);
   const [estUploadTime, setEstUploadTime] = React.useState(0);
@@ -30,6 +30,23 @@ export default function DatasetUploadSteps() {
     category: "General",
     public: false,
   });
+
+  React.useEffect(() => {
+    let timer: any;
+
+    if (estUploadTime > 0) {
+      timer = setInterval(() => {
+        setEstUploadTime(prevEstUploadTime => prevEstUploadTime - 1);
+      }, 1000); // 1000 milliseconds = 1 second
+    }
+
+    // Cleanup the timer when estUploadTime becomes 0 or less
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [estUploadTime]);
 
   const steps = [
     "Upload",
@@ -74,24 +91,39 @@ export default function DatasetUploadSteps() {
   };
 
   const onUploadProgress = (progressEvent: any) => {
-    const { loaded, total, timeStamp } = progressEvent;
-    setLoadedProgress(parseFloat((loaded / 1024).toFixed(1)));
+    const { loaded, total } = progressEvent;
+
+    /**
+     ATPB: Average Time per Byte, FS: File Size
+     ATPB (FS < 1 KB): 0.00020274914089347078 seconds/byte
+     ATPB (FS >= 1 KB and < 1 MB): 7.006672447772506e-06 seconds/byte
+     ATPB (FS >= 1 MB and < 10 MB): 2.8944496268656717e-06 seconds/byte
+     ATPB (FS >= 10 MB): 2.2532963802805073e-06 seconds/byte
+     lets floor that to 10 decimal places, and calculate the time per byte in
+     seconds for the different sizes, as they are all different due to overhead
+     */
+    const timePerByteIfBytes = 0.0002027491;
+    const timePerByteIfKiloBytes = 0.0000070067;
+    const timePerByteIfMegaBytes = 0.0000028944;
+    const timePerByteIfLargest = 0.0000022533;
+
+    const KB = 1024;
+    const MB = 1048576;
+    const MB10 = 10485760;
+    let timePerByte = timePerByteIfBytes;
+    if (total >= KB && total < MB) timePerByte = timePerByteIfKiloBytes;
+    if (total >= MB && total < MB10) timePerByte = timePerByteIfMegaBytes;
+    if (total >= MB10) timePerByte = timePerByteIfLargest;
+    const timeEstimate = timePerByte * total;
+
+    let loadedProgressValue = `${loaded}B`;
+    if (loaded > KB && loaded < MB)
+      loadedProgressValue = `${(loaded / KB).toFixed(2)}KB`;
+    if (loaded > MB) loadedProgressValue = `${(loaded / MB).toFixed(2)}MB`;
+    setLoadedProgress(loadedProgressValue);
     setPercentageLoadedProgress(Math.floor((loaded * 100) / total));
 
-    const currentTime = new Date().getTime();
-    // Calculate the time elapsed since the upload started in seconds.
-    const elapsedTimeInSeconds = (currentTime - timeStamp) / 1000;
-    // Calculate the upload speed in bytes per second.
-    const uploadSpeed = loaded / elapsedTimeInSeconds;
-    // Calculate the remaining bytes to upload.
-    const remainingBytes = total - loaded;
-    // Calculate the estimated time remaining in seconds.
-    const estimatedTimeRemainingInSeconds = remainingBytes / uploadSpeed;
-    // Convert the estimated time remaining to minutes.
-    const estimatedTimeRemainingInMinutes =
-      estimatedTimeRemainingInSeconds / 60;
-
-    setEstUploadTime(estimatedTimeRemainingInMinutes);
+    setEstUploadTime(timeEstimate);
   };
 
   const onSubmit = async () => {
