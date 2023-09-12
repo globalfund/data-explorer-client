@@ -30,6 +30,9 @@ export function getAPIFormattedFilters(
     }
   }
 
+  if (appliedFilters.periods.length > 0) {
+    filterArray.push(`periods=${appliedFilters.periods.join(",")}`);
+  }
   if (appliedFilters.locations.length > 0) {
     filterArray.push(`locations=${appliedFilters.locations.join(",")}`);
   }

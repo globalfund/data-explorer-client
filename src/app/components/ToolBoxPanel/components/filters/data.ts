@@ -422,6 +422,22 @@ export const pathnameToFilterGroups = {
       fg.name !== "Grant Status" &&
       fg.name !== "Partner Types"
   ),
+  // concept
+  "/concept/disbursements/treemap": [
+    {
+      name: "Period",
+      addSubOptionFilters: false,
+    },
+    ...filter(
+      filtergroups,
+      (fg: FilterGroupProps) =>
+        fg.name !== "Donors" &&
+        fg.name !== "Replenishment Periods" &&
+        fg.name !== "Document Types" &&
+        fg.name !== "Portfolio Categorization" &&
+        fg.name !== "TRP Window"
+    ),
+  ],
   // location detail page
   "/location/<code>/overview": filter(
     filtergroups,

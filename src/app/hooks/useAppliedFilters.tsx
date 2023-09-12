@@ -20,6 +20,11 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
   const data = useStoreState((state) => state.AppliedFiltersState);
 
   switch (props.type) {
+    case "Period":
+      return {
+        setAppliedFilters: actions.setPeriods,
+        appliedFilters: data.periods,
+      };
     case "Locations":
       return {
         setAppliedFilters: actions.setLocations,

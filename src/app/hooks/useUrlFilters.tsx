@@ -18,6 +18,7 @@ export function useUrlFilters(): null {
     action: () => {
       const updatedAppliedFilters = { ...data };
       const currentUrlParams = new URLSearchParams(location.search);
+      const periods = currentUrlParams.get("periods");
       const locations = currentUrlParams.get("locations");
       const components = currentUrlParams.get("components");
       const partnerTypes = currentUrlParams.get("partnerTypes");
@@ -32,6 +33,9 @@ export function useUrlFilters(): null {
       const trpWindows = currentUrlParams.get("trpWindows");
       const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
+      if (periods) {
+        updatedAppliedFilters.periods = periods.split(",");
+      }
       if (locations) {
         updatedAppliedFilters.locations = locations.split(",");
       }
@@ -86,6 +90,11 @@ export function useUrlFilters(): null {
   useUpdateEffect(() => {
     const currentUrlParams = new URLSearchParams(location.search);
 
+    if (data.periods.length > 0) {
+      currentUrlParams.set("periods", data.periods.join(","));
+    } else {
+      currentUrlParams.delete("periods");
+    }
     if (data.locations.length > 0) {
       currentUrlParams.set("locations", data.locations.join(","));
     } else {
@@ -172,6 +181,7 @@ export function useUrlFilters(): null {
   useUpdateEffect(() => {
     const updatedAppliedFilters = { ...data };
     const currentUrlParams = new URLSearchParams(location.search);
+    const periods = currentUrlParams.get("periods");
     const locations = currentUrlParams.get("locations");
     const components = currentUrlParams.get("components");
     const partnerTypes = currentUrlParams.get("partnerTypes");
@@ -186,6 +196,11 @@ export function useUrlFilters(): null {
     const trpWindows = currentUrlParams.get("trpWindows");
     const portfolioCategories = currentUrlParams.get("portfolioCategories");
 
+    if (periods) {
+      updatedAppliedFilters.periods = periods.split(",");
+    } else if (updatedAppliedFilters.periods.length > 0) {
+      updatedAppliedFilters.periods = [];
+    }
     if (locations) {
       updatedAppliedFilters.locations = locations.split(",");
     } else if (updatedAppliedFilters.locations.length > 0) {

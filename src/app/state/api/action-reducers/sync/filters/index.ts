@@ -2,6 +2,7 @@
 import { action, Action } from "easy-peasy";
 
 export const defaultAppliedFilters: AppliedFiltersModel = {
+  periods: [] as string[],
   locations: [] as string[],
   components: [] as string[],
   partnerTypes: [] as string[],
@@ -18,6 +19,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
 };
 
 export interface AppliedFiltersModel {
+  periods: string[];
   locations: string[];
   components: string[];
   partnerTypes: string[];
@@ -34,6 +36,8 @@ export interface AppliedFiltersModel {
 }
 
 export interface AppliedFiltersStateModel {
+  periods: string[];
+  setPeriods: Action<AppliedFiltersStateModel, string[]>;
   locations: string[];
   setLocations: Action<AppliedFiltersStateModel, string[]>;
   components: string[];
@@ -66,6 +70,11 @@ export interface AppliedFiltersStateModel {
 }
 
 export const AppliedFiltersState: AppliedFiltersStateModel = {
+  periods: [],
+  setPeriods: action((state, payload: string[]) => {
+    state.periods = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   locations: [],
   setLocations: action((state, payload: string[]) => {
     state.locations = payload;
@@ -144,6 +153,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.donorSubCategories = payload.donorSubCategories;
     state.trpWindows = payload.trpWindows;
     state.portfolioCategories = payload.portfolioCategories;
+    state.periods = payload.periods;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +
@@ -156,7 +166,8 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.donorCategories.length +
       payload.donorSubCategories.length +
       payload.trpWindows.length +
-      payload.portfolioCategories.length;
+      payload.portfolioCategories.length +
+      payload.periods.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

@@ -186,6 +186,9 @@ export interface StoreModel {
   ResultsStats: ApiCallModel;
   ResultsYears: ApiCallModel;
   FundingRequestsTable: ApiCallModel;
+  ConceptDisbursementsDimensions: ApiCallModel;
+  ConceptDisbursementsTreemap: ApiCallModel;
+  ConceptDisbursementsTotal: ApiCallModel;
   // global search
   GlobalSearch: ApiCallModel;
   // grant detail api

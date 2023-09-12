@@ -185,6 +185,9 @@ import componentsSidebar from "../api/action-reducers/cms/componentsSidebar";
 import componentsTable from "../api/action-reducers/cms/componentsTable";
 import componentsDialogBox from "../api/action-reducers/cms/componentsDialogBox";
 import GrantDetailPeriodGoalsObjectives from "../api/action-reducers/grantDetail/goalsObjectives";
+import ConceptDisbursementsDimensions from "../api/action-reducers/concept/disbursements/dimensions";
+import ConceptDisbursementsTreemap from "../api/action-reducers/concept/disbursements/treemap";
+import ConceptDisbursementsTotal from "../api/action-reducers/concept/disbursements/total";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -237,6 +240,9 @@ const storeContent: StoreModel = {
   ResultsStats: persist(ResultsStats),
   ResultsYears: persist(ResultsYears),
   FundingRequestsTable: persist(FundingRequestsTableGeneric),
+  ConceptDisbursementsDimensions: persist(ConceptDisbursementsDimensions),
+  ConceptDisbursementsTreemap: persist(ConceptDisbursementsTreemap),
+  ConceptDisbursementsTotal: persist(ConceptDisbursementsTotal),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // grant detail api

@@ -38,6 +38,10 @@ const PartnerDetailModule = lazy(
   () => import("app/modules/partner-detail-module")
 );
 
+const ConceptDisbursements = lazy(
+  () => import("app/modules/concept-module/disbursements")
+);
+
 function GrantPeriodRedirect(props: RouteComponentProps<any>) {
   const history = useHistory();
   React.useEffect(() => {
@@ -174,6 +178,10 @@ export function MainRoutes() {
 
         <Route exact path="/viz">
           <Redirect to="/datasets" />
+        </Route>
+
+        <Route exact path="/concept/disbursements/:vizType">
+          <ConceptDisbursements />
         </Route>
 
         <V1RouteRedirections />
