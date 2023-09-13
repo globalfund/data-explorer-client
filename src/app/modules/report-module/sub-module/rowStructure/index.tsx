@@ -381,21 +381,6 @@ const Box = (props: {
 
   const textResizableRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    if (
-      displayTextBox &&
-      textResizableRef.current &&
-      textResizableRef.current?.offsetHeight > props.height
-    ) {
-      props.onRowBoxItemResize(
-        props.rowId,
-        props.itemIndex,
-        parseInt(width.replace("%", ""), 10),
-        textResizableRef.current.offsetHeight
-      );
-    }
-  }, [displayTextBox, textContent]);
-
   const content = React.useMemo(() => {
     if (displayTextBox) {
       return (
