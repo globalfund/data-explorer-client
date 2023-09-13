@@ -17,7 +17,7 @@ export default function Processing(props: Props) {
     const se = " seconds (estimated)";
     let ret = mft + se;
     if (mft <= 0) ret = "Finishing up...";
-    if (mft > 60) ret =  + " minutes and " + Math.floor(time % 60) + se;
+    if (mft > 60) ret = +" minutes and " + Math.floor(time % 60) + se;
     return ret;
   };
 
@@ -116,25 +116,22 @@ export default function Processing(props: Props) {
 
                     border-radius: 3.211px;
                     position: relative;
-
-                    ::before {
-                      content: "";
-                      border: 1px solid #fff;
-                      border-radius: 10px;
-                      position: absolute;
-                      top: -4px;
-                      right: -4px;
-                      bottom: -4px;
-                      left: -4px;
-                    }
                   `}
                 >
-                  <div className="progress-bar" />
+                  <div
+                    css={`
+                      width: ${props.percentageLoaded}%;
+                      height: 100%;
+                      background: linear-gradient(
+                        90deg,
+                        #6466f1 7.48%,
+                        #cea8bc 92.2%
+                      );
+                    `}
+                  />
                 </div>
                 <p>{props.loaded}</p>
-                <p>
-                  {getTimeInHoursnMins(props.estimatedUploadTime)}
-                </p>
+                <p>{getTimeInHoursnMins(props.estimatedUploadTime)}</p>
               </div>
             </div>
           </div>

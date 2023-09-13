@@ -36,7 +36,7 @@ export default function DatasetUploadSteps() {
 
     if (estUploadTime > 0) {
       timer = setInterval(() => {
-        setEstUploadTime(prevEstUploadTime => prevEstUploadTime - 1);
+        setEstUploadTime((prevEstUploadTime) => prevEstUploadTime - 1);
       }, 1000); // 1000 milliseconds = 1 second
     }
 
@@ -125,7 +125,7 @@ export default function DatasetUploadSteps() {
 
     setEstUploadTime(timeEstimate);
   };
-
+  console.log(percentageLoadedProgress, "percentageLoadedProgress");
   const onSubmit = async () => {
     // Post the dataset
     handleNext();
