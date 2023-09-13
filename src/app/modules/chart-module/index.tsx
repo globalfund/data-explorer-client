@@ -260,6 +260,9 @@ export default function ChartModule() {
     } else {
       clearChart();
     }
+    return () => {
+      clearChartBuilder();
+    };
   }, [page]);
 
   React.useEffect(() => {
