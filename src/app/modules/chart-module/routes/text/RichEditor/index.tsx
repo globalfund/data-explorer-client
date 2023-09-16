@@ -1,17 +1,23 @@
 import React, { ReactElement, useMemo, useRef } from "react";
 import { EditorState } from "draft-js";
 import Editor from "@draft-js-plugins/editor";
-import createLinkPlugin from "@draft-js-plugins/anchor";
-import createInlineToolbarPlugin, {
+import createLinkPlugin, { AnchorPlugin } from "@draft-js-plugins/anchor";
+import createToolbarPlugin, {
   Separator,
-} from "@draft-js-plugins/inline-toolbar";
+  StaticToolBarPlugin,
+} from "@draft-js-plugins/static-toolbar";
 import {
   ItalicButton,
   BoldButton,
   UnderlineButton,
+  CodeButton,
   HeadlineOneButton,
   HeadlineTwoButton,
+  HeadlineThreeButton,
+  UnorderedListButton,
+  OrderedListButton,
   BlockquoteButton,
+  CodeBlockButton,
 } from "@draft-js-plugins/buttons";
 
 /* stylesheets */
@@ -22,6 +28,14 @@ import toolbarStyles from "./toolbarStyles.module.css";
 import buttonInvertedStyles from "./buttonInvertedStyles.module.css";
 import toolbarInvertedStyles from "./toolbarInvertedStyles.module.css";
 import "@draft-js-plugins/inline-toolbar/lib/plugin.css";
+import "@draft-js-plugins/static-toolbar/lib/plugin.css";
+
+// const HeadlinessPicker =()=>{
+//   React.useE
+//   return(
+//     <></>
+//   )
+// }
 
 export const RichEditor = (props: {
   editMode: boolean;
@@ -30,23 +44,10 @@ export const RichEditor = (props: {
   invertColors?: boolean;
   textContent: EditorState;
   setTextContent: (value: EditorState) => void;
+  setIsFocused?: React.Dispatch<React.SetStateAction<boolean>>;
+  isFocused?: boolean;
+  plugins?: (AnchorPlugin | StaticToolBarPlugin)[];
 }): ReactElement => {
-  const linkPlugin = createLinkPlugin();
-  const [plugins, InlineToolbar] = useMemo(() => {
-    const inlineToolbarPlugin = createInlineToolbarPlugin({
-      theme: {
-        buttonStyles: props.invertColors ? buttonInvertedStyles : buttonStyles,
-        toolbarStyles: props.invertColors
-          ? toolbarInvertedStyles
-          : toolbarStyles,
-      },
-    });
-    return [
-      [inlineToolbarPlugin, linkPlugin],
-      inlineToolbarPlugin.InlineToolbar,
-    ];
-  }, []);
-
   const editor = useRef<Editor | null>(null);
 
   const focus = (): void => {
@@ -118,28 +119,31 @@ export const RichEditor = (props: {
       `}
     >
       <Editor
-        plugins={plugins}
+        plugins={props.plugins}
         editorKey="RichEditor"
         readOnly={!props.editMode}
         editorState={props.textContent}
         onChange={props.setTextContent}
+        onBlur={() => props.setIsFocused?.(false)}
+        onFocus={() => props.setIsFocused?.(true)}
         placeholder={props.placeholder ?? "Add your story..."}
         ref={(element) => {
           editor.current = element;
         }}
-        customStyleMap={{
-          BOLD: {
-            fontFamily: "'GothamNarrow-Bold', 'Helvetica Neue', sans-serif",
-          },
-          ITALIC: {
-            fontStyle: "italic",
-          },
-          UNDERLINE: {
-            textDecoration: "underline",
-          },
-        }}
+        // customStyleMap={{
+        //   BOLD: {
+        //     fontFamily: "'GothamNarrow-Bold', 'Helvetica Neue', sans-serif",
+        //   },
+        //   ITALIC: {
+        //     fontStyle: "italic",
+        //   },
+        //   UNDERLINE: {
+        //     textDecoration: "underline",
+        //   },
+        // }}
       />
-      <InlineToolbar>
+
+      {/* <InlineToolbar>
         {(externalProps) => (
           <React.Fragment>
             <BoldButton
@@ -177,7 +181,7 @@ export const RichEditor = (props: {
             />
           </React.Fragment>
         )}
-      </InlineToolbar>
+      </InlineToolbar> */}
     </div>
   );
 };

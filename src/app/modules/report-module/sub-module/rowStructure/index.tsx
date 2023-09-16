@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import get from "lodash/get";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
@@ -25,6 +25,24 @@ import {
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "../../views/create/data";
 import { cloneDeep, filter } from "lodash";
+import createLinkPlugin, { AnchorPlugin } from "@draft-js-plugins/anchor";
+import createToolbarPlugin, {
+  Separator,
+  StaticToolBarPlugin,
+} from "@draft-js-plugins/static-toolbar";
+import {
+  ItalicButton,
+  BoldButton,
+  UnderlineButton,
+  CodeButton,
+  HeadlineOneButton,
+  HeadlineTwoButton,
+  HeadlineThreeButton,
+  UnorderedListButton,
+  OrderedListButton,
+  BlockquoteButton,
+  CodeBlockButton,
+} from "@draft-js-plugins/buttons";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -59,13 +77,20 @@ interface RowStructureDisplayProps {
 }
 
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
+  const ref = useRef(null);
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-  const ref = useRef(null);
   const [handleDisplay, setHandleDisplay] = React.useState(false);
-
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
+  const linkPlugin = createLinkPlugin();
+  const [plugins, Toolbar] = useMemo(() => {
+    const toolbarPlugin = createToolbarPlugin();
+
+    return [[toolbarPlugin, linkPlugin], toolbarPlugin.Toolbar];
+  }, []);
+
+  const [isFocused, setIsFocused] = React.useState(false);
   const viewOnlyMode =
     (page !== "new" &&
       get(location.pathname.split("/"), "[3]", "") !== "edit") ||
@@ -86,109 +111,145 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       : "0.722415px dashed transparent";
 
   return (
-    <div
-      {...handlers}
-      css={`
-        width: 100%;
-        height: 100%;
-        position: relative;
-        margin-bottom: ${!viewOnlyMode ? "0px" : "50px"};
-      `}
-    >
-      {handleDisplay && (
-        <div
-          ref={ref}
-          css={`
-            width: 32px;
-            left: -3rem;
-            display: flex;
-            position: absolute;
-            height: calc(100% + 8px);
-          `}
-        >
+    <>
+      <div
+        css={`
+          top: -9%;
+          background: yellow;
+          position: absolute;
+          z-index: 2;
+          width: 100%;
+        `}
+      >
+        {isFocused && (
+          <Toolbar>
+            {
+              // may be use React.Fragment instead of div to improve perfomance after React 16
+              (externalProps) => (
+                <div>
+                  <BoldButton {...externalProps} />
+                  <ItalicButton {...externalProps} />
+                  <UnderlineButton {...externalProps} />
+                  <CodeButton {...externalProps} />
+                  {/* <Separator {...externalProps} /> */}
+                  {/* <HeadlinesButton {...externalProps} /> */}
+                  <UnorderedListButton {...externalProps} />
+                  <OrderedListButton {...externalProps} />
+                  <BlockquoteButton {...externalProps} />
+                  <CodeBlockButton {...externalProps} />
+                </div>
+              )
+            }
+          </Toolbar>
+        )}
+      </div>
+      <div
+        {...handlers}
+        css={`
+          width: 100%;
+          height: 100%;
+          position: relative;
+          margin-bottom: ${!viewOnlyMode ? "0px" : "50px"};
+        `}
+      >
+        {handleDisplay && (
           <div
+            ref={ref}
             css={`
+              width: 32px;
+              left: -3rem;
               display: flex;
-              align-items: center;
-              flex-direction: column;
-              justify-content: center;
+              position: absolute;
+              height: calc(100% + 8px);
             `}
           >
             <div
               css={`
-                background: #adb5bd;
-                border-radius: 100px;
-                height: 53px;
-                width: 22px;
                 display: flex;
-                justify-content: space-around;
                 align-items: center;
                 flex-direction: column;
+                justify-content: center;
+              `}
+            >
+              <div
+                css={`
+                  background: #adb5bd;
+                  border-radius: 100px;
+                  height: 53px;
+                  width: 22px;
+                  display: flex;
+                  justify-content: space-around;
+                  align-items: center;
+                  flex-direction: column;
 
-                padding-bottom: 2px;
-                button {
-                  padding: 4px;
-                  :hover {
-                    background: transparent;
-                    svg {
-                      path {
-                        fill: #fff;
+                  padding-bottom: 2px;
+                  button {
+                    padding: 4px;
+                    :hover {
+                      background: transparent;
+                      svg {
+                        path {
+                          fill: #fff;
+                        }
                       }
                     }
                   }
-                }
-              `}
-            >
-              <IconButton
-                onClick={() => {
-                  props.setSelectedTypeHistory([
-                    ...props.selectedTypeHistory,
-                    props.selectedType,
-                    "",
-                  ]);
-                }}
+                `}
               >
-                <Tooltip title="Edit" placement="right">
-                  <EditIcon />
-                </Tooltip>
-              </IconButton>
-              <IconButton onClick={() => props.deleteFrame(props.rowId)}>
-                <Tooltip title="Delete" placement="right">
-                  <DeleteIcon />
-                </Tooltip>
-              </IconButton>
+                <IconButton
+                  onClick={() => {
+                    props.setSelectedTypeHistory([
+                      ...props.selectedTypeHistory,
+                      props.selectedType,
+                      "",
+                    ]);
+                  }}
+                >
+                  <Tooltip title="Edit" placement="right">
+                    <EditIcon />
+                  </Tooltip>
+                </IconButton>
+                <IconButton onClick={() => props.deleteFrame(props.rowId)}>
+                  <Tooltip title="Delete" placement="right">
+                    <DeleteIcon />
+                  </Tooltip>
+                </IconButton>
+              </div>
             </div>
           </div>
+        )}
+        <div
+          css={`
+            width: 100%;
+            height: 100%;
+            display: flex;
+            overflow: hidden;
+            gap: ${props.gap};
+            border: ${border};
+          `}
+        >
+          {props.rowStructureDetailItems.map((row, index) => (
+            <Box
+              key={row.rowId}
+              width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
+              height={get(props.rowContentHeights, `[${index}]`, props.height)}
+              itemIndex={index}
+              rowId={props.rowId}
+              rowType={row.rowType}
+              onRowBoxItemResize={props.onRowBoxItemResize}
+              setPickedCharts={props.setPickedCharts}
+              setFramesArray={props.setFramesArray}
+              previewItem={get(props.previewItems, `[${index}]`, undefined)}
+              handlePersistReportState={props.handlePersistReportState}
+              rowItemsCount={props.rowStructureDetailItems.length}
+              plugins={plugins}
+              setIsFocused={setIsFocused}
+              isFocused={isFocused}
+            />
+          ))}
         </div>
-      )}
-      <div
-        css={`
-          width: 100%;
-          height: 100%;
-          display: flex;
-          overflow: hidden;
-          gap: ${props.gap};
-          border: ${border};
-        `}
-      >
-        {props.rowStructureDetailItems.map((row, index) => (
-          <Box
-            key={row.rowId}
-            width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
-            height={get(props.rowContentHeights, `[${index}]`, props.height)}
-            itemIndex={index}
-            rowId={props.rowId}
-            rowType={row.rowType}
-            onRowBoxItemResize={props.onRowBoxItemResize}
-            setPickedCharts={props.setPickedCharts}
-            setFramesArray={props.setFramesArray}
-            previewItem={get(props.previewItems, `[${index}]`, undefined)}
-            handlePersistReportState={props.handlePersistReportState}
-            rowItemsCount={props.rowStructureDetailItems.length}
-          />
-        ))}
       </div>
-    </div>
+    </>
   );
 }
 
@@ -199,9 +260,11 @@ const Box = (props: {
   itemIndex: number;
   handlePersistReportState: () => void;
   rowType: string;
+  setIsFocused: React.Dispatch<React.SetStateAction<boolean>>;
+  isFocused: boolean;
+  plugins: (AnchorPlugin | StaticToolBarPlugin)[];
   setPickedCharts: (value: React.SetStateAction<string[]>) => void;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
-
   rowItemsCount: number;
   previewItem?: string | any;
   onRowBoxItemResize: (
@@ -445,6 +508,9 @@ const Box = (props: {
               editMode={!viewOnlyMode}
               textContent={textContent}
               setTextContent={setTextContent}
+              plugins={props.plugins}
+              setIsFocused={props.setIsFocused}
+              isFocused={props.isFocused}
             />
           </div>
         </Resizable>
