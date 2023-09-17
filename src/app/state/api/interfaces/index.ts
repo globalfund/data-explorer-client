@@ -358,6 +358,7 @@ export interface StoreModel {
     DataThemeDuplicate: ApiCallModel;
     DataThemeGetList: ApiCallModel;
     DatasetGetList: ApiCallModel;
+    DatasetCount: ApiCallModel;
     DatasetCreate: ApiCallModel;
   };
   charts: {
