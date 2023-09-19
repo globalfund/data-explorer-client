@@ -9,9 +9,11 @@ import {
 } from "app/modules/chart-module/data";
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 interface Props {
   id: string;
+  width: string;
 }
 
 export function ReportChartWrapper(props: Props) {
@@ -105,11 +107,22 @@ export function ReportChartWrapper(props: Props) {
           width: 100%;
           height: 100%;
           display: flex;
+          flex-direction: column;
           align-items: center;
           justify-content: center;
+          color: #e75656;
+          font-size: ${parseInt(props.width) > 250 ? "14px" : "10px"};
+          line-height: 15px;
+          font-weight: bold;
+          font-family: "Gotham Narrow", sans-serif;
+          text-align: center;
         `}
       >
-        Chart not found
+        <ErrorOutlineIcon htmlColor="#E75656" fontSize="large" />
+        <p>
+          Something went wrong with loading your chart! Check your chart
+          settings or data.
+        </p>
       </div>
     );
   }

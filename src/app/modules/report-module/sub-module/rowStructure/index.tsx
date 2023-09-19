@@ -520,7 +520,7 @@ const Box = (props: {
                 </IconButton>
               </div>
             )}
-            <ReportChartWrapper id={chartId} />
+            <ReportChartWrapper id={chartId} width={width.slice(0, -2)} />
           </div>
         </Resizable>
       );
