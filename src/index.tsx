@@ -4,6 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./app/theme/rawgraphs.css";
 import "./app/theme/videoPlayer.css";
+import "./app/modules/chart-module/routes/text/RichEditor/extraButtonStyles.css";
 
 import "./index.css";
 import { App } from "app";

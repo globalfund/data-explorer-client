@@ -1,8 +1,8 @@
 .button {
   border: 0;
-  color: #fff;
+  color: #231D2C;
   font-size: 18px;
-  background: #262c34;
+  background: transparent;
   height: 34px;
   width: 32px;
   border-radius: 8px;
@@ -10,8 +10,10 @@
 }
 
 .button svg {
-  fill: #fff;
+  fill: #231D2C;
   padding-top: 5px;
+  width: 24px;
+  height: 24px;
 }
 
 .button:hover,
@@ -31,4 +33,8 @@
 
 .active svg {
   fill: #6a9cc9;
+}
+.undoButton{
+  border:none;
+  background: pink;
 }
