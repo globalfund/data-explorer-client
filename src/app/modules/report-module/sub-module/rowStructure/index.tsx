@@ -32,10 +32,10 @@ import {
   UnorderedListButton,
   OrderedListButton,
   UnderlineButton,
+  BoldButton,
 } from "@draft-js-plugins/buttons";
 import {
   BlockquoteButton,
-  BoldButton,
   HeaderOneButton,
   HeaderTwoButton,
   StrikeThroughButton,
@@ -144,7 +144,9 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                     <ItalicButton {...externalProps} />
                     <UnderlineButton {...externalProps} />
                     <StrikeThroughButton {...externalProps} />
-                    <emojiPlugin.EmojiSelect {...externalProps} />
+                    <div onMouseDown={(e) => e.preventDefault()}>
+                      <emojiPlugin.EmojiSelect {...externalProps} />
+                    </div>
                     <emojiPlugin.EmojiSuggestions {...externalProps} />
                     <HeaderOneButton {...externalProps} />
                     <HeaderTwoButton {...externalProps} />
@@ -154,8 +156,12 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                     <UnorderedListButton {...externalProps} />
                     <OrderedListButton {...externalProps} />
                     <LinkButton {...externalProps} />
-                    <UndoButton {...externalProps} className="undoButton" />
-                    <RedoButton {...externalProps} className="undoButton" />
+                    <div onMouseDown={(e) => e.preventDefault()}>
+                      <UndoButton {...externalProps} />
+                    </div>
+                    <div onMouseDown={(e) => e.preventDefault()}>
+                      <RedoButton {...externalProps} />
+                    </div>
                   </>
                 )
               }
