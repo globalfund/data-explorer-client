@@ -70,6 +70,7 @@ export function useChartsRawData(props: {
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
   const [notFound, setNotFound] = React.useState(false);
+  const [dataError, setDataError] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
 
@@ -126,6 +127,7 @@ export function useChartsRawData(props: {
       .catch((error: AxiosError) => {
         console.log(error);
         setNotFound(true);
+        setDataError(true);
         setDataStats([]);
         setSampleData([]);
 
@@ -290,6 +292,7 @@ export function useChartsRawData(props: {
   return {
     loading,
     notFound,
+    dataError,
     dataTypes,
     dataStats,
     sampleData,

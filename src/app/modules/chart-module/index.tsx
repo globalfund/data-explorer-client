@@ -59,7 +59,7 @@ export default function ChartModule() {
     isEditMode,
     loadDataset,
     loadDataFromAPI,
-    notFound,
+    dataError,
   } = useChartsRawData({
     visualOptions,
     setVisualOptions,
@@ -121,15 +121,13 @@ export default function ChartModule() {
     [chartFromAPI, dataTypes]
   );
 
-  const dimensions = React.useMemo(
-    () =>
-      get(
-        chartFromAPI,
-        "dimensions",
-        get(charts, `[${chartType}].dimensions`, [])
-      ),
-    [chartFromAPI, chartType]
-  );
+  const dimensions = React.useMemo(() => {
+    return get(
+      chartFromAPI,
+      "dimensions",
+      get(charts, `[${chartType}].dimensions`, [])
+    );
+  }, [chartFromAPI, chartType]);
 
   const mappedData = React.useMemo(
     () => get(chartFromAPI, "mappedData", ""),
@@ -159,6 +157,10 @@ export default function ChartModule() {
     () => Boolean(renderedChartSsr),
     [renderedChartSsr]
   );
+
+  React.useEffect(() => {
+    setChartFromAPI(null);
+  }, [chartType]);
 
   function setVisualOptionsOnChange() {
     const options = {
@@ -362,7 +364,7 @@ export default function ChartModule() {
           position: relative;
         `}
       >
-        {notFound ? (
+        {dataError ? (
           <>{errorComponent()}</>
         ) : (
           <Switch>
