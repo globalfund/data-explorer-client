@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { colors } from "app/components/ColorModal/Picker/colors";
-
+import ColorPickerStyles from "app/components/ColorModal/Picker/colorPickerStyles.module.css";
 export default function Picker(props: any) {
   const handleColorChange = (color: string) => {
     props.onSelected(color);
@@ -8,13 +8,13 @@ export default function Picker(props: any) {
 
   const { theme } = props;
   return (
-    <div className={theme.colorPickerStyles.wrapper}>
+    <div className={ColorPickerStyles.wrapper}>
       <div
-        className={theme.colorPickerStyles.closeWrapper}
+        className={ColorPickerStyles.closeWrapper}
         onClick={props.closeModal}
       >
         <svg
-          className={theme.colorPickerStyles.close}
+          className={ColorPickerStyles.close}
           width="24"
           height="24"
           viewBox="0 0 24 24"
@@ -26,12 +26,12 @@ export default function Picker(props: any) {
         </svg>
       </div>
 
-      <div className={theme.colorPickerStyles.picker}>
+      <div className={ColorPickerStyles.picker}>
         {colors.map((c, i) => {
           return (
             <span
               style={{ backgroundColor: c, borderColor: c }}
-              className={theme.colorPickerStyles.color}
+              className={ColorPickerStyles.color}
               key={i}
               onClick={() => handleColorChange(c)}
             />

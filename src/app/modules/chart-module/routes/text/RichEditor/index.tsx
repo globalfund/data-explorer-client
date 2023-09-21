@@ -3,6 +3,7 @@ import { EditorState } from "draft-js";
 import Editor, { EditorPlugin } from "@draft-js-plugins/editor";
 import createLinkPlugin, { AnchorPlugin } from "@draft-js-plugins/anchor";
 import createEmojiPlugin, { EmojiPlugin } from "@draft-js-plugins/emoji";
+import picker from "app/components/ColorModal/Picker";
 
 import createToolbarPlugin, {
   StaticToolBarPlugin,
@@ -117,6 +118,7 @@ export const RichEditor = (props: {
     >
       <Editor
         plugins={plugins}
+        customStyleMap={picker.colorStyleMap}
         editorKey="RichEditor"
         readOnly={!props.editMode}
         editorState={props.textContent}

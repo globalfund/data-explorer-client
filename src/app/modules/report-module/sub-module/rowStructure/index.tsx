@@ -38,12 +38,14 @@ import {
   BlockquoteButton,
   HeaderOneButton,
   HeaderTwoButton,
+  HiglightPicker,
   StrikeThroughButton,
 } from "app/modules/chart-module/routes/text/RichEditor/buttons";
 import { EditorPlugin } from "@draft-js-plugins/editor";
 import { UndoRedoButtonProps } from "@draft-js-plugins/undo";
 import { TextAlignmentPlugin } from "@draft-js-plugins/text-alignment";
 import { EmojiPlugin } from "@draft-js-plugins/emoji";
+import ColorModal from "app/components/ColorModal";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -89,6 +91,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const { page } = useParams<{ page: string }>();
   const [handleDisplay, setHandleDisplay] = React.useState(false);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
+  const [modalVisible, setModalVisible] = React.useState(false);
   const [plugins, setPlugins] = React.useState<
     (
       | StaticToolBarPlugin
@@ -152,7 +155,21 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                     <HeaderTwoButton {...externalProps} />
                     <BlockquoteButton {...externalProps} />
                     <textAlignmentPlugin.TextAlignment {...externalProps} />
-
+                    <div
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={() => setModalVisible(true)}
+                    >
+                      <HiglightPicker {...externalProps} />
+                    </div>
+                    {modalVisible && (
+                      <div onMouseDown={(e) => e.preventDefault()}>
+                        <ColorModal
+                          {...externalProps}
+                          openModal={() => setModalVisible(true)}
+                          closeModal={() => setModalVisible(false)}
+                        />
+                      </div>
+                    )}
                     <UnorderedListButton {...externalProps} />
                     <OrderedListButton {...externalProps} />
                     <LinkButton {...externalProps} />
