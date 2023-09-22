@@ -28,24 +28,27 @@ import { filter } from "lodash";
 import { AnchorPlugin } from "@draft-js-plugins/anchor";
 import { StaticToolBarPlugin } from "@draft-js-plugins/static-toolbar";
 import {
-  ItalicButton,
   UnorderedListButton,
   OrderedListButton,
-  UnderlineButton,
-  BoldButton,
 } from "@draft-js-plugins/buttons";
+
 import {
+  BGHiglightPicker,
   BlockquoteButton,
   HeaderOneButton,
   HeaderTwoButton,
   HiglightPicker,
   StrikeThroughButton,
+  BoldButton,
+  ItalicButton,
+  UnderlineButton,
 } from "app/modules/chart-module/routes/text/RichEditor/buttons";
 import { EditorPlugin } from "@draft-js-plugins/editor";
 import { UndoRedoButtonProps } from "@draft-js-plugins/undo";
 import { TextAlignmentPlugin } from "@draft-js-plugins/text-alignment";
 import { EmojiPlugin } from "@draft-js-plugins/emoji";
-import ColorModal from "app/components/ColorModal";
+import ColorModal from "app/modules/chart-module/routes/text/RichEditor/ColorModal";
+import BgColorModal from "app/modules/chart-module/routes/text/RichEditor/BGColorModal";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -91,7 +94,30 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const { page } = useParams<{ page: string }>();
   const [handleDisplay, setHandleDisplay] = React.useState(false);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
-  const [modalVisible, setModalVisible] = React.useState(false);
+
+  //control modals for color and background color pickers
+  const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
+  const [activeColorModal, setActiveColorModal] = React.useState<
+    "bg" | "color" | null
+  >(null);
+  const handleClick = (
+    event: React.MouseEvent<HTMLDivElement>,
+    modalType: "bg" | "color"
+  ) => {
+    setActiveColorModal(modalType);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const bgOpen = activeColorModal === "bg" && Boolean(anchorEl);
+  const colorOpen = activeColorModal === "color" && Boolean(anchorEl);
+
+  const bgId = bgOpen ? "bg-popover" : undefined;
+  const colorId = colorOpen ? "color-popover" : undefined;
+
+  //end of control modals for color and background color pickers
+
   const [plugins, setPlugins] = React.useState<
     (
       | StaticToolBarPlugin
@@ -142,36 +168,59 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
               {
                 // may be use React.Fragment instead of div to improve perfomance after React 16
                 (externalProps) => (
-                  <>
+                  <React.Fragment>
                     <BoldButton {...externalProps} />
                     <ItalicButton {...externalProps} />
                     <UnderlineButton {...externalProps} />
                     <StrikeThroughButton {...externalProps} />
+                    <div
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={(e) => handleClick(e, "color")}
+                      id={colorId}
+                    >
+                      <HiglightPicker {...externalProps} />
+                    </div>
+
+                    <div
+                      onMouseDown={(e) => e.preventDefault()}
+                      onClick={(e) => handleClick(e, "bg")}
+                      id={bgId}
+                    >
+                      <BGHiglightPicker {...externalProps} />
+                    </div>
+
                     <div onMouseDown={(e) => e.preventDefault()}>
                       <emojiPlugin.EmojiSelect {...externalProps} />
                     </div>
                     <emojiPlugin.EmojiSuggestions {...externalProps} />
+                    <div
+                      css={`
+                        width: 1px;
+                        height: 28px;
+                        background: #b4b4b4;
+                      `}
+                    />
                     <HeaderOneButton {...externalProps} />
                     <HeaderTwoButton {...externalProps} />
                     <BlockquoteButton {...externalProps} />
-                    <textAlignmentPlugin.TextAlignment {...externalProps} />
                     <div
-                      onMouseDown={(e) => e.preventDefault()}
-                      onClick={() => setModalVisible(true)}
-                    >
-                      <HiglightPicker {...externalProps} />
-                    </div>
-                    {modalVisible && (
-                      <div onMouseDown={(e) => e.preventDefault()}>
-                        <ColorModal
-                          {...externalProps}
-                          openModal={() => setModalVisible(true)}
-                          closeModal={() => setModalVisible(false)}
-                        />
-                      </div>
-                    )}
+                      css={`
+                        width: 1px;
+                        height: 28px;
+                        background: #b4b4b4;
+                      `}
+                    />
+                    <textAlignmentPlugin.TextAlignment {...externalProps} />
+
                     <UnorderedListButton {...externalProps} />
                     <OrderedListButton {...externalProps} />
+                    <div
+                      css={`
+                        width: 1px;
+                        height: 28px;
+                        background: #b4b4b4;
+                      `}
+                    />
                     <LinkButton {...externalProps} />
                     <div onMouseDown={(e) => e.preventDefault()}>
                       <UndoButton {...externalProps} />
@@ -179,7 +228,26 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                     <div onMouseDown={(e) => e.preventDefault()}>
                       <RedoButton {...externalProps} />
                     </div>
-                  </>
+                    <div onMouseDown={(e) => e.preventDefault()}>
+                      <ColorModal
+                        {...externalProps}
+                        anchorEl={anchorEl}
+                        handleClose={handleClose}
+                        id={colorId}
+                        open={colorOpen}
+                      />
+                    </div>
+
+                    <div onMouseDown={(e) => e.preventDefault()}>
+                      <BgColorModal
+                        {...externalProps}
+                        anchorEl={anchorEl}
+                        handleClose={handleClose}
+                        id={bgId}
+                        open={bgOpen}
+                      />
+                    </div>
+                  </React.Fragment>
                 )
               }
             </Toolbar>

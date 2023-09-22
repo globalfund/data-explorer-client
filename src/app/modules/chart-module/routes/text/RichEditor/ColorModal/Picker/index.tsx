@@ -1,6 +1,6 @@
-import { colors } from "app/components/ColorModal/Picker/colors";
+import { colors } from "app/modules/chart-module/routes/text/RichEditor/ColorModal/Picker/colors";
 
-import Picker from "app/components/ColorModal/Picker/picker";
+import Picker from "app/modules/chart-module/routes/text/RichEditor/ColorModal/Picker/picker";
 
 const styleMap = {
   "color-000000": { color: "#000000" },

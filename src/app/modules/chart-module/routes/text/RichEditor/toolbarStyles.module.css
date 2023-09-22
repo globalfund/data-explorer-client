@@ -1,18 +1,19 @@
 .toolbar {
+
   border-radius: 8px 8px 0px 0px;
   background: var(--White, #fff);
-  box-shadow: 0px 0.24905px 0.74716px 0px; 
-  width: 100%;
+  box-shadow: 0px 0.24905px 0.74716px 0px;
+  width: 99.3%;
   padding: 6px 24px;
   position: absolute;
   top: -13%;
   z-index: 2;
-
   margin-top: 5px;
   display: flex;
-
   align-items: center;
   gap: 14px;
+  margin-left: 0.7%;
+
 }
 .toolbar button{
   display: flex;
