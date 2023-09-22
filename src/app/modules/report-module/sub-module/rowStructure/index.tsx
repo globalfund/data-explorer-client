@@ -569,21 +569,6 @@ const Box = (props: {
 
   const textResizableRef = React.useRef<HTMLDivElement>(null);
 
-  React.useEffect(() => {
-    if (
-      displayTextBox &&
-      textResizableRef.current &&
-      textResizableRef.current?.offsetHeight > props.height
-    ) {
-      props.onRowBoxItemResize(
-        props.rowId,
-        props.itemIndex,
-        parseInt(width.replace("%", ""), 10),
-        textResizableRef.current.offsetHeight
-      );
-    }
-  }, [displayTextBox, textContent]);
-
   const content = React.useMemo(() => {
     if (displayTextBox) {
       return (
@@ -623,6 +608,19 @@ const Box = (props: {
                   z-index: 1;
                   right: 12px;
                   position: absolute;
+                  padding: 4px;
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: #adb5bd;
+                  :hover {
+                    background: #adb5bd;
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                  }
                 `}
               >
                 <DeleteIcon />
@@ -726,7 +724,7 @@ const Box = (props: {
                 </IconButton>
               </div>
             )}
-            <ReportChartWrapper id={chartId} />
+            <ReportChartWrapper id={chartId} width={width.slice(0, -2)} />
           </div>
         </Resizable>
       );

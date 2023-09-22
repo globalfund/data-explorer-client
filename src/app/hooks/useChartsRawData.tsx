@@ -70,6 +70,7 @@ export function useChartsRawData(props: {
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
   const [notFound, setNotFound] = React.useState(false);
+  const [dataError, setDataError] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
 
@@ -110,6 +111,8 @@ export function useChartsRawData(props: {
         },
       })
       .then((response: AxiosResponse) => {
+        setNotFound(false);
+
         setDataStats(response.data.stats);
         setSampleData(response.data.sample);
         setDataTypes(response.data.dataTypes);
@@ -123,8 +126,11 @@ export function useChartsRawData(props: {
       })
       .catch((error: AxiosError) => {
         console.log(error);
+        setNotFound(true);
+        setDataError(true);
         setDataStats([]);
         setSampleData([]);
+
         if (extraLoader) {
           extraLoader.style.display = "none";
         }
@@ -161,6 +167,8 @@ export function useChartsRawData(props: {
           }
         )
         .then((response) => {
+          setNotFound(false);
+
           const chart = response.data || {};
           if (!isEmpty(chart)) {
             setAllAppliedFilters(chart.appliedFilters || {});
@@ -179,6 +187,7 @@ export function useChartsRawData(props: {
         })
         .catch((error) => {
           console.log("API call error: " + error.message);
+          setNotFound(true);
           setLoading(false);
         });
     }
@@ -253,6 +262,8 @@ export function useChartsRawData(props: {
           .then((response) => {
             const chart = response.data || {};
             setChartFromAPI(chart);
+            setNotFound(false);
+
             setLoading(false);
             if (extraLoader) {
               extraLoader.style.display = "none";
@@ -260,6 +271,8 @@ export function useChartsRawData(props: {
           })
           .catch((error) => {
             console.log("API call error: " + error.message);
+            setNotFound(true);
+
             setLoading(false);
             if (extraLoader) {
               extraLoader.style.display = "none";
@@ -279,6 +292,7 @@ export function useChartsRawData(props: {
   return {
     loading,
     notFound,
+    dataError,
     dataTypes,
     dataStats,
     sampleData,

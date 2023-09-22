@@ -159,13 +159,6 @@ export function ChartToolBoxSelectDataset(
         history.push(`/chart/${page}/preview-data`);
       });
     };
-  React.useEffect(() => {
-    if (page === "new" && dataset) {
-      loadDataset(`/chart/sample-data/${dataset}`).then(() => {
-        history.push(`/chart/${page}/preview-data`);
-      });
-    }
-  }, []);
 
   return (
     <div

@@ -302,6 +302,12 @@ export default function ReportModule() {
     (state) =>
       (state.reports.ReportCreate.crudData ?? emptyReport) as ReportModel
   );
+  const clearChart = useStoreActions(
+    (actions) => actions.charts.ChartGet.clear
+  );
+  const resetDataset = useStoreActions(
+    (actions) => actions.charts.dataset.reset
+  );
 
   const reportGetData = useStoreState(
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
@@ -433,6 +439,8 @@ export default function ReportModule() {
       reportEditClear();
       reportCreateClear();
       setPickedCharts([]);
+      clearChart();
+      resetDataset();
       setRightPanelView("elements");
     };
   }, []);

@@ -11,6 +11,7 @@ import CustomizeOptionColor from "app/modules/data-themes-module/sub-modules/the
 import ChartOptionBoolean from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionBoolean";
 import CustomizeOptionNumber from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionNumber";
 import ChartOptionColorScaleWrapper from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionColorScaleWrapper";
+import ChartOptionRadioGroup from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionRadioGroup";
 
 const CHART_OPTION_COMPONENTS = {
   number: CustomizeOptionNumber,
@@ -18,6 +19,7 @@ const CHART_OPTION_COMPONENTS = {
   color: CustomizeOptionColor,
   colorScale: ChartOptionColorScaleWrapper,
   boolean: ChartOptionBoolean,
+  radioGroup: ChartOptionRadioGroup,
 };
 
 export function getPartialMapping(mapping, dimension, repeatIndex) {
@@ -165,9 +167,6 @@ export function WrapControlComponent({
     ]
   );
 
-  if (type === "checkbox") {
-    return <div></div>;
-  }
   return (
     <Component
       type={type}
@@ -194,6 +193,6 @@ export function WrapControlComponent({
         "mappedData",
       ])}
       onChange={handleControlChange}
-    ></Component>
+    />
   );
 }

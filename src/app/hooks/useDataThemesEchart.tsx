@@ -18,6 +18,7 @@ import {
   TooltipComponent,
   VisualMapComponent,
 } from "echarts/components";
+import { checkLists } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/data";
 
 echarts.use([
   BarChart,
@@ -43,17 +44,10 @@ export function useDataThemesEchart() {
 
   function echartsBarchart(data: any, visualOptions: any) {
     const {
-      // artboard
-      // height,
-      // background,
-      // margins
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
-      // chart options
-      // orientation,
-      // Tooltip
       realTimeSort,
       color,
       splitLineY,
@@ -65,6 +59,7 @@ export function useDataThemesEchart() {
       xAxisLabelInterval,
       showTooltip,
       isMonetaryValue,
+      label,
     } = visualOptions;
 
     const bars = data.map((d: any) => d.bars);
@@ -90,7 +85,7 @@ export function useDataThemesEchart() {
           },
         },
         axisLabel: {
-          show: true,
+          show: label,
           color: xAxisLabelColor || "#000",
           fontSize: xAxisLabelFontSize || 12,
           interval: xAxisLabelInterval || "auto",
@@ -150,6 +145,8 @@ export function useDataThemesEchart() {
       marginBottom,
       marginLeft,
       // Tooltip
+      palette,
+
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
@@ -179,19 +176,7 @@ export function useDataThemesEchart() {
         min: Math.min(...sizes),
         max: Math.max(...sizes),
         inRange: {
-          color: [
-            "#313695",
-            "#4575b4",
-            "#74add1",
-            "#abd9e9",
-            "#e0f3f8",
-            "#ffffbf",
-            "#fee090",
-            "#fdae61",
-            "#f46d43",
-            "#d73027",
-            "#a50026",
-          ],
+          color: checkLists.find((item) => item.label === palette)?.value,
         },
         text: ["High", "Low"],
         calculable: true,

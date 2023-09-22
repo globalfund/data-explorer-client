@@ -13,7 +13,6 @@ import { LinkIcon } from "app/assets/icons/Link";
 import Snackbar from "@material-ui/core/Snackbar";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Container from "@material-ui/core/Container";
-import { EditorState, convertToRaw } from "draft-js";
 import IconButton from "@material-ui/core/IconButton";
 import CopyToClipboard from "react-copy-to-clipboard";
 import FileCopyIcon from "@material-ui/icons/FileCopy";
@@ -253,22 +252,16 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   }, []);
 
   React.useEffect(() => {
-    const newValue =
-      selectedChartType !== "" &&
-      selectedChartType !== null &&
-      !isEmpty(mapping) &&
-      activePanels > 2;
+    const newValue = !isEmpty(selectedChartType) && !isEmpty(mapping);
+
     if (newValue !== isPreviewEnabled) {
       setIsPreviewEnabled(newValue);
     }
-  }, [selectedChartType, mapping, activePanels]);
+  }, [selectedChartType, mapping]);
 
   React.useEffect(() => {
     const newValue =
-      (selectedChartType !== "" &&
-        selectedChartType !== null &&
-        !isEmpty(mapping) &&
-        activePanels > 3) ||
+      (!isEmpty(selectedChartType) && !isEmpty(mapping)) ||
       (view !== undefined && page !== "new" && props.name !== loadedChart.name);
     if (newValue !== isSavedEnabled) {
       setIsSavedEnabled(newValue);
@@ -410,7 +403,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         history.push(`/${props.pageType}/${page}/${"edit"}`);
       }
     } else {
-      history.push(`/${props.pageType}/${page}/${"edit"}`);
+      history.goBack();
     }
   };
 
@@ -465,6 +458,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                 e.currentTarget.value = "";
               }
             }}
+            disabled={location.pathname.includes("preview")}
             style={
               page !== "new" && !view
                 ? {
@@ -476,7 +470,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
           {view !== "initial" && (
             <div css={styles.endContainer}>
-              {view === "preview" && props.pageType !== "chart" && (
+              {view === "preview" && (
                 <>
                   <button
                     onClick={handleBackToEdit}

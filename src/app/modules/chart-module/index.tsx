@@ -6,7 +6,7 @@ import { useSessionStorage } from "react-use";
 import Container from "@material-ui/core/Container";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { Switch, Route, useParams, useHistory } from "react-router-dom";
+import { Switch, Route, useParams } from "react-router-dom";
 import {
   getOptionsConfig,
   getDefaultOptionsValues,
@@ -37,9 +37,10 @@ import {
   defaultChartOptions,
 } from "app/modules/chart-module/data";
 import { IHeaderDetails } from "../report-module/components/right-panel/data";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 
 export default function ChartModule() {
-  const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
   const [chartFromAPI, setChartFromAPI] =
     React.useState<ChartRenderedItem | null>(null);
@@ -58,6 +59,7 @@ export default function ChartModule() {
     isEditMode,
     loadDataset,
     loadDataFromAPI,
+    dataError,
   } = useChartsRawData({
     visualOptions,
     setVisualOptions,
@@ -119,15 +121,13 @@ export default function ChartModule() {
     [chartFromAPI, dataTypes]
   );
 
-  const dimensions = React.useMemo(
-    () =>
-      get(
-        chartFromAPI,
-        "dimensions",
-        get(charts, `[${chartType}].dimensions`, [])
-      ),
-    [chartFromAPI, chartType]
-  );
+  const dimensions = React.useMemo(() => {
+    return get(
+      chartFromAPI,
+      "dimensions",
+      get(charts, `[${chartType}].dimensions`, [])
+    );
+  }, [chartFromAPI, chartType]);
 
   const mappedData = React.useMemo(
     () => get(chartFromAPI, "mappedData", ""),
@@ -157,6 +157,10 @@ export default function ChartModule() {
     () => Boolean(renderedChartSsr),
     [renderedChartSsr]
   );
+
+  React.useEffect(() => {
+    setChartFromAPI(null);
+  }, [chartType]);
 
   function setVisualOptionsOnChange() {
     const options = {
@@ -246,15 +250,6 @@ export default function ChartModule() {
   }
 
   React.useEffect(() => {
-    return () => {
-      document.body.style.background =
-        "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%)";
-      clearChart();
-      clearChartBuilder();
-    };
-  }, []);
-
-  React.useEffect(() => {
     if (!loading && chartType) {
       setVisualOptionsOnChange();
     }
@@ -270,6 +265,9 @@ export default function ChartModule() {
     } else {
       clearChart();
     }
+    return () => {
+      clearChartBuilder();
+    };
   }, [page]);
 
   React.useEffect(() => {
@@ -279,6 +277,43 @@ export default function ChartModule() {
       }
     }
   }, [loadedChart]);
+
+  const errorComponent = () => {
+    return (
+      <div css={commonStyles.container}>
+        <div css={commonStyles.innercontainer}>
+          <div
+            css={`
+              height: 362.598px;
+              background: #dfe3e5;
+              margin: auto;
+              margin-top: 5%;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              color: #e75656;
+              font-size: 14px;
+              line-height: 20px;
+              font-weight: bold;
+              font-family: "Gotham Narrow", sans-serif;
+              text-align: center;
+              p {
+                margin-top: 18px;
+              }
+            `}
+          >
+            <ErrorOutlineIcon htmlColor="#E75656" fontSize="large" />
+            <p>
+              Something went wrong with loading your data!
+              <br />
+              Choose another dataset or upload new.
+            </p>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -329,107 +364,111 @@ export default function ChartModule() {
           position: relative;
         `}
       >
-        <Switch>
-          {(isSaveLoading || isChartLoading) && <PageLoader />}
-          <Route path="/chart/:page/export">
-            <ChartBuilderExport
-              loading={loading}
-              setRawViz={setRawViz}
-              renderedChart={content}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/customize">
-            <ChartBuilderCustomize
-              loading={loading}
-              dimensions={dimensions}
-              mappedData={mappedData}
-              renderedChart={content}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/lock">
-            <ChartBuilderLock
-              loading={loading}
-              setRawViz={setRawViz}
-              renderedChart={content}
-              dimensions={dimensions}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/filters">
-            <ChartBuilderFilters
-              loading={loading}
-              renderedChart={content}
-              dimensions={dimensions}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/mapping">
-            <ChartBuilderMapping
-              loading={loading}
-              visualOptions={visualOptions}
-              setVisualOptions={setVisualOptions}
-              dataTypes={dataTypes2}
-              dimensions={dimensions}
-              renderedChart={content}
-              renderedChartSsr={activeRenderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-            />
-          </Route>
-          <Route path="/chart/:page/chart-type">
-            <ChartBuilderChartType loading={loading} />
-          </Route>
-          <Route path="/chart/:page/preview-data">
-            <ChartBuilderPreview
-              loading={loading}
-              data={sampleData}
-              loadDataset={loadDataset}
-              stats={dataStats}
-              filterOptionGroups={filterOptionGroups}
-            />
-          </Route>
-          <Route path="/chart/:page/data">
-            <ChartModuleDataView />
-          </Route>
-          <Route path="/chart/:page/preview">
-            <ChartBuilderPreviewTheme
-              loading={loading || isChartLoading}
-              visualOptions={visualOptions}
-              renderedChart={renderedChart}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={renderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-              editable={isEditMode || (page === "new" && !view)}
-            />
-          </Route>
-          <Route path="/chart/:page">
-            <ChartBuilderPreviewTheme
-              loading={loading || isChartLoading}
-              visualOptions={visualOptions}
-              renderedChart={renderedChart}
-              setVisualOptions={setVisualOptions}
-              renderedChartSsr={renderedChartSsr}
-              renderedChartMappedData={renderedChartMappedData}
-              editable={isEditMode || (page === "new" && !view)}
-            />
-          </Route>
-          <Route path="*">
-            <NoMatchPage />
-          </Route>
-        </Switch>
+        {dataError ? (
+          <>{errorComponent()}</>
+        ) : (
+          <Switch>
+            {(isSaveLoading || isChartLoading) && <PageLoader />}
+            <Route path="/chart/:page/export">
+              <ChartBuilderExport
+                loading={loading}
+                setRawViz={setRawViz}
+                renderedChart={content}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                renderedChartSsr={activeRenderedChartSsr}
+                renderedChartMappedData={renderedChartMappedData}
+              />
+            </Route>
+            <Route path="/chart/:page/customize">
+              <ChartBuilderCustomize
+                loading={loading}
+                dimensions={dimensions}
+                mappedData={mappedData}
+                renderedChart={content}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                renderedChartSsr={activeRenderedChartSsr}
+                renderedChartMappedData={renderedChartMappedData}
+              />
+            </Route>
+            <Route path="/chart/:page/lock">
+              <ChartBuilderLock
+                loading={loading}
+                setRawViz={setRawViz}
+                renderedChart={content}
+                dimensions={dimensions}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                renderedChartSsr={activeRenderedChartSsr}
+                renderedChartMappedData={renderedChartMappedData}
+              />
+            </Route>
+            <Route path="/chart/:page/filters">
+              <ChartBuilderFilters
+                loading={loading}
+                renderedChart={content}
+                dimensions={dimensions}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                renderedChartSsr={activeRenderedChartSsr}
+                renderedChartMappedData={renderedChartMappedData}
+              />
+            </Route>
+            <Route path="/chart/:page/mapping">
+              <ChartBuilderMapping
+                loading={loading}
+                visualOptions={visualOptions}
+                setVisualOptions={setVisualOptions}
+                dataTypes={dataTypes2}
+                dimensions={dimensions}
+                renderedChart={content}
+                renderedChartSsr={activeRenderedChartSsr}
+                renderedChartMappedData={renderedChartMappedData}
+              />
+            </Route>
+            <Route path="/chart/:page/chart-type">
+              <ChartBuilderChartType loading={loading} />
+            </Route>
+            <Route path="/chart/:page/preview-data">
+              <ChartBuilderPreview
+                loading={loading}
+                data={sampleData}
+                loadDataset={loadDataset}
+                stats={dataStats}
+                filterOptionGroups={filterOptionGroups}
+              />
+            </Route>
+            <Route path="/chart/:page/data">
+              <ChartModuleDataView />
+            </Route>
+            <Route path="/chart/:page/preview">
+              <ChartBuilderPreviewTheme
+                loading={loading || isChartLoading}
+                visualOptions={visualOptions}
+                renderedChart={renderedChart}
+                setVisualOptions={setVisualOptions}
+                renderedChartSsr={renderedChartSsr}
+                renderedChartMappedData={renderedChartMappedData}
+                editable={isEditMode || (page === "new" && !view)}
+              />
+            </Route>
+            <Route path="/chart/:page">
+              <ChartBuilderPreviewTheme
+                loading={loading || isChartLoading}
+                visualOptions={visualOptions}
+                renderedChart={renderedChart}
+                setVisualOptions={setVisualOptions}
+                renderedChartSsr={renderedChartSsr}
+                renderedChartMappedData={renderedChartMappedData}
+                editable={isEditMode || (page === "new" && !view)}
+              />
+            </Route>
+            <Route path="*">
+              <NoMatchPage />
+            </Route>
+          </Switch>
+        )}
       </Container>
     </DndProvider>
   );

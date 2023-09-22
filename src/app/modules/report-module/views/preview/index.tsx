@@ -91,7 +91,6 @@ export function ReportPreviewView() {
     }
   }, [persistedReportState]);
 
-  console.log(reportPreviewData, "reportPreviewData");
   return (
     <div id="export-container">
       <HeaderBlock
