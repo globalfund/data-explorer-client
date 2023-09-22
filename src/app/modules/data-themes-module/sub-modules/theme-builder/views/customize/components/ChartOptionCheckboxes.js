@@ -1,8 +1,11 @@
 import React from "react";
 import {  Col } from "react-bootstrap";
-import Checkbox from "@material-ui/core/Checkbox";
 
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
 import { checkLists } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/data";
+import RadioGroup from '@material-ui/core/RadioGroup';
+
 
 const ChartOptionCheckboxes = ({
   value,
@@ -10,19 +13,19 @@ const ChartOptionCheckboxes = ({
   onChange,
   default: defaultValue,
 }) => {
-  const [checkFields, setCheckFields] = React.useState(value ?? defaultValue);
 
+  const [radioValue, setRadioValue] = React.useState(value ?? defaultValue);
   const handleChange = (e) => {
-    const { name, checked } = e.target;
-    setCheckFields({ ...checkFields, [name]: checked });
+    setRadioValue(e.target?.value);
   };
 
   React.useEffect(() => {
-    onChange(checkFields);
-  }, [checkFields]);
+    onChange(radioValue);
+  }, [radioValue]);
 
   return (
     <>
+     <RadioGroup aria-label="palette" name="palette" value={radioValue} onChange={handleChange}>
       {checkLists.map((item) => (
         <div
           key={item.label}
@@ -46,16 +49,9 @@ const ChartOptionCheckboxes = ({
           `}
         >
           <Col xs={6} className="d-flex align-items-center nowrap">
-          <Checkbox
-                color="default"
-                checked={value[item.label] ?? defaultValue[item.label]}
-                name={item.label}
-                onChange={handleChange}
-              
-               
-              />
-          
-            {item.label}
+
+          <FormControlLabel value={item.label} control={<Radio checked={radioValue===item.label} color='default' />} label={item.label} name="pallete"  />
+        
           </Col>
 
           <div>
@@ -81,6 +77,7 @@ const ChartOptionCheckboxes = ({
           )}
         </div>
       ))}
+      </RadioGroup>
     </>
   );
 };

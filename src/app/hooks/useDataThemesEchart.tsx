@@ -176,10 +176,7 @@ export function useDataThemesEchart() {
         min: Math.min(...sizes),
         max: Math.max(...sizes),
         inRange: {
-          color: checkLists
-            .filter((item) => palette[item.label])
-            .map((item) => item.value)
-            .flat(1),
+          color: checkLists.find((item) => item.label === palette)?.value,
         },
         text: ["High", "Low"],
         calculable: true,
