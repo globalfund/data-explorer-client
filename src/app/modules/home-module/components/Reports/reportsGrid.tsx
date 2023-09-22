@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import axios from "axios";
 import get from "lodash/get";
 import Box from "@material-ui/core/Box";
@@ -11,6 +11,7 @@ import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteReportDialog from "app/components/Dialogs/deleteReportDialog";
 import ReformedGridItem from "app/modules/home-module/components/Reports/reformedGridItem";
 import ReportAddnewCard from "./reportAddNewCard";
+import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 
 interface Props {
   sortBy: string;
@@ -21,16 +22,22 @@ interface Props {
 }
 
 export default function ReportsGrid(props: Props) {
+  const observerTarget = useRef(null);
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
-
+  const [loadedReports, setLoadedReports] = React.useState<ReportModel[]>([]);
+  const limit = 15;
+  //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
+  const offset = useRef(0);
   const reports = useStoreState(
     (state) => (state.reports.ReportGetList.crudData ?? []) as ReportModel[]
   );
-
   const loadReports = useStoreActions(
     (actions) => actions.reports.ReportGetList.fetch
+  );
+  const reportsLoadSuccess = useStoreState(
+    (state) => state.reports.ReportGetList.success
   );
 
   const handleDelete = (index?: number) => {
@@ -87,15 +94,28 @@ export default function ReportsGrid(props: Props) {
         : "";
     loadReports({
       storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc"}`,
+      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset.current}}`,
     });
+    offset.current = offset.current + limit;
   }
+  useInfinityScroll(loadData, observerTarget, props.searchStr, props.sortBy);
 
   React.useEffect(() => {
     if (props.searchStr.length === 0) {
       loadData(props.searchStr, props.sortBy);
     }
   }, [props.searchStr, props.sortBy]);
+
+  React.useEffect(() => {
+    if (!reportsLoadSuccess) {
+      return;
+    }
+    //update the loaded reports
+    setLoadedReports((prevReports) => {
+      const f = reports.filter((report, i) => prevReports[i]?.id !== report.id);
+      return [...prevReports, ...f];
+    });
+  }, [reportsLoadSuccess]);
 
   const [,] = useDebounce(
     () => {
@@ -112,7 +132,7 @@ export default function ReportsGrid(props: Props) {
       {!props.tableView && (
         <Grid container spacing={2}>
           {props.addCard && <ReportAddnewCard />}
-          {reports.map((data, index) => (
+          {loadedReports.map((data, index) => (
             <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
               <ReformedGridItem
                 id={data.id}
@@ -135,7 +155,7 @@ export default function ReportsGrid(props: Props) {
       )}
       {props.tableView && (
         <HomepageTable
-          data={reports.map((data) => ({
+          data={loadedReports.map((data) => ({
             id: data.id,
             name: data.name,
             description: data.title,
@@ -143,6 +163,9 @@ export default function ReportsGrid(props: Props) {
           }))}
         />
       )}
+      <Box height={100} />
+
+      <div ref={observerTarget} />
       <DeleteReportDialog
         cardId={cardId}
         modalDisplay={modalDisplay}

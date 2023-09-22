@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import axios from "axios";
 import find from "lodash/find";
 import Box from "@material-ui/core/Box";
@@ -10,6 +10,7 @@ import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 import ChartAddnewCard from "./chartAddNewCard";
+import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 
 interface Props {
   sortBy: string;
@@ -19,16 +20,24 @@ interface Props {
 }
 
 export default function ChartsGrid(props: Props) {
+  const observerTarget = useRef(null);
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
+  const [loadedCharts, setLoadedCharts] = React.useState<any[]>([]);
 
+  const limit = 15;
+  //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
+  const offset = useRef(0);
   const charts = useStoreState(
     (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
   );
 
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
+  );
+  const chartsLoadSuccess = useStoreState(
+    (state) => state.charts.ChartGetList.success
   );
 
   const handleDelete = (index?: number) => {
@@ -94,15 +103,27 @@ export default function ChartsGrid(props: Props) {
         : "";
     loadCharts({
       storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc"}`,
+      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset.current}}`,
     });
+    offset.current = offset.current + limit;
   }
+  useInfinityScroll(loadData, observerTarget, props.searchStr, props.sortBy);
 
   React.useEffect(() => {
     if (props.searchStr.length === 0) {
       loadData(props.searchStr, props.sortBy);
     }
   }, [props.sortBy]);
+  React.useEffect(() => {
+    if (!chartsLoadSuccess) {
+      return;
+    }
+    //update the loaded reports
+    setLoadedCharts((prevCharts) => {
+      const f = charts.filter((report, i) => prevCharts[i]?.id !== report.id);
+      return [...prevCharts, ...f];
+    });
+  }, [chartsLoadSuccess]);
 
   const [,] = useDebounce(
     () => {
@@ -119,7 +140,7 @@ export default function ChartsGrid(props: Props) {
       {!props.tableView && (
         <Grid container spacing={2}>
           {props.addCard && <ChartAddnewCard />}
-          {charts.map((c, index) => (
+          {loadedCharts.map((c, index) => (
             <Grid item key={c.id} xs={12} sm={6} md={6} lg={3}>
               <ReformedGridItem
                 id={c.id}
@@ -137,7 +158,7 @@ export default function ChartsGrid(props: Props) {
       )}
       {props.tableView && (
         <HomepageTable
-          data={charts.map((data) => ({
+          data={loadedCharts.map((data) => ({
             id: data.id,
             name: data.name,
             description: data.title,
@@ -145,6 +166,9 @@ export default function ChartsGrid(props: Props) {
           }))}
         />
       )}
+      <Box height={100} />
+
+      <div ref={observerTarget} />
       <DeleteChartDialog
         cardId={cardId}
         modalDisplay={modalDisplay}
