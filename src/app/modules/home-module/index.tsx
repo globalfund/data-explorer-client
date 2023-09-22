@@ -3,15 +3,7 @@ import React from "react";
 import { useRecoilState, useResetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
 import useTitle from "react-use/lib/useTitle";
-import {
-  Box,
-  Grid,
-  Tabs,
-  Container,
-  withStyles,
-  IconButton,
-  Popover,
-} from "@material-ui/core";
+import { Box, Grid, Container, IconButton, Popover } from "@material-ui/core";
 /* project */
 import {
   createChartFromReportAtom,
@@ -67,7 +59,7 @@ export default function HomeModule() {
   const [tableView, setTableView] = React.useState(false);
   const [searchValue, setSearchValue] = React.useState("");
   const [openSearch, setOpenSearch] = React.useState(false);
-  const [sortValue, setSortValue] = React.useState("updatedDate");
+  const [sortValue, setSortValue] = React.useState("createdDate");
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
 
@@ -389,7 +381,17 @@ export default function HomeModule() {
           </Grid>
           <Box height={20} />
         </Box>
-        <div>{displayGrid(searchValue, sortValue)}</div>
+        <div
+          id="scrollableDiv"
+          css={`
+            ::-webkit-scrollbar {
+              width: 0px;
+              background: transparent;
+            }
+          `}
+        >
+          {displayGrid(searchValue, sortValue)}
+        </div>
       </Container>
       <Box height={100} />
       <HomeFooter />

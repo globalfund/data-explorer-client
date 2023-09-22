@@ -32,3 +32,7 @@ export const DatasetGetList: ApiCallModel = {
 export const DatasetCreate: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/datasets`),
 };
+
+export const DatasetCount: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/datasets/count`),
+};

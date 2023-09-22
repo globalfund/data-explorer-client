@@ -79,7 +79,9 @@ body {
   transition: background 0.2s ease-in-out;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%);
+  
 }
+
 
 #root {
   width: 100vw;
@@ -170,44 +172,11 @@ input[type="text"] {
   background: #f1f3f5;
 }
 
-.progress-bar{
-  position:absolute;
-  border-radius:10px;
-  top:0;
-  right:100%;
-  bottom:0;
-  left:0;
- background: linear-gradient(
-    90deg,
-    #6466f1 7.48%,
-    #cea8bc 92.2%
-  );
-  width:0;
-  animation:borealisBar 2s linear infinite;
 
 
-}
-@keyframes borealisBar {
-  0% {
-    left:0%;
-    right:100%;
-    width:0%;
-  }
-  10% {
-    left:0%;
-    right:45%;
-    width:55%;
-  }
-  90% {
-    right:0%;
-    left:45%;
-    width:55%;
-  }
-  100% {
-    left:100%;
-    right:0%;
-    width:0%;
-  }
-}
+
+
+
+
 
 

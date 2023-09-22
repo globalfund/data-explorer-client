@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import axios from "axios";
 import get from "lodash/get";
 import Box from "@material-ui/core/Box";
@@ -10,6 +10,7 @@ import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import ReformedGridItem from "app/modules/home-module/components/Datasets/reformedGridItem";
 import DatasetAddnewCard from "./datasetAddNewCard";
+import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 
 interface Props {
   sortBy: string;
@@ -19,9 +20,32 @@ interface Props {
 }
 
 export default function DatasetsGrid(props: Props) {
+  const observerTarget = useRef(null);
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
+  const limit = 15;
+  //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
+  const offset = useRef(0);
+  const [loadedDatasets, setLoadedDatasets] = React.useState<
+    DatasetListItemAPIModel[]
+  >([]);
+
+  const loadDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.fetch
+  );
+  const clearDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.clear
+  );
+  const loadDatasetCount = useStoreActions(
+    (actions) => actions.dataThemes.DatasetCount.fetch
+  );
+  const datasetLoadSuccess = useStoreState(
+    (state) => state.dataThemes.DatasetGetList.success
+  );
+  const datasetCount = useStoreState(
+    (state) => get(state, "dataThemes.DatasetCount.data.count", 0) as number
+  );
 
   const handleDelete = (id: string) => {
     deleteDataset(id);
@@ -41,10 +65,6 @@ export default function DatasetsGrid(props: Props) {
     setCardId(id);
     setModalDisplay(true);
   };
-
-  const loadDatasets = useStoreActions(
-    (actions) => actions.dataThemes.DatasetGetList.fetch
-  );
 
   const datasets = useStoreState(
     (state) =>
@@ -67,22 +87,45 @@ export default function DatasetsGrid(props: Props) {
       .catch((error) => console.log(error));
   }
 
-  function loadData(searchStr: string, sortByStr: string) {
+  const loadData = (searchStr: string, sortByStr: string) => {
     const value =
       searchStr.length > 0
         ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     loadDatasets({
       storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc"}`,
+      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset.current}}`,
     });
-  }
+    offset.current = offset.current + limit;
+  };
+  useInfinityScroll(loadData, observerTarget, props.searchStr, props.sortBy);
 
   React.useEffect(() => {
+    loadDatasetCount({});
     if (props.searchStr.length === 0) {
       loadData(props.searchStr, props.sortBy);
     }
   }, [props.searchStr, props.sortBy]);
+
+  React.useEffect(() => {
+    clearDatasets();
+    setLoadedDatasets([]);
+  }, []);
+  React.useEffect(() => {
+    if (datasets === null) {
+      setLoadedDatasets([]);
+    }
+  }, [datasets]);
+
+  React.useEffect(() => {
+    if (!datasetLoadSuccess) {
+      return;
+    }
+    //update the loaded datasets
+    setLoadedDatasets((prevDatasets) => {
+      return [...prevDatasets, ...datasets];
+    });
+  }, [datasetLoadSuccess]);
 
   const [,] = useDebounce(
     () => {
@@ -99,7 +142,7 @@ export default function DatasetsGrid(props: Props) {
       {!props.tableView && (
         <Grid container spacing={2}>
           {props.addCard && <DatasetAddnewCard />}
-          {(datasets || []).map((data, index) => (
+          {(loadedDatasets || []).map((data, index) => (
             <Grid item key={data.id} xs={12} sm={6} md={4} lg={3}>
               <ReformedGridItem
                 date={data.createdDate}
@@ -110,14 +153,16 @@ export default function DatasetsGrid(props: Props) {
                 handleDuplicate={() => {}}
                 handleDelete={() => {}}
               />
+
               <Box height={16} />
             </Grid>
           ))}
         </Grid>
       )}
+
       {props.tableView && (
         <HomepageTable
-          data={datasets.map((data) => ({
+          data={loadedDatasets.map((data) => ({
             id: data.id,
             name: data.name,
             description: data.description,
@@ -125,6 +170,14 @@ export default function DatasetsGrid(props: Props) {
           }))}
         />
       )}
+      <Box height={100} />
+
+      <div
+        ref={observerTarget}
+        css={`
+          height: 10px;
+        `}
+      />
       <DeleteDatasetDialog
         cardId={cardId}
         enableButton={enableButton}
