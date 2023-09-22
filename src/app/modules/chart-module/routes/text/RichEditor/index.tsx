@@ -72,6 +72,7 @@ export const RichEditor = (props: {
     },
   });
   const linkPlugin = createLinkPlugin();
+
   const undoPlugin = createUndoPlugin({
     undoContent: <UndoIcon />,
     redoContent: <RedoIcon />,
@@ -143,8 +144,8 @@ export const RichEditor = (props: {
         editorState={props.textContent}
         onChange={props.setTextContent}
         onBlur={() => {
-          setLocalFocus(true);
-          props.setIsFocused?.(true);
+          setLocalFocus(false);
+          props.setIsFocused?.(false);
         }}
         onFocus={() => {
           setLocalFocus(true);
