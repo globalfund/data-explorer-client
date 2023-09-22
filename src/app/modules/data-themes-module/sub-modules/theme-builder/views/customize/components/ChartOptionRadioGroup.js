@@ -37,6 +37,7 @@ const ChartOptionCheckboxes = ({
             color:#231D2C;
             font-family: 'Roboto', sans-serif;
             font-weight: 500; 
+            padding-left:10px;
             div:nth-child(2){
               display: flex;
               align-items: center;
@@ -46,11 +47,16 @@ const ChartOptionCheckboxes = ({
               width: 20px;
               height: 20px;
             }
+            button, input{
+              :hover{
+                background: transparent;
+              }
+            }
           `}
         >
           <Col xs={6} className="d-flex align-items-center nowrap">
 
-          <FormControlLabel value={item.label} control={<Radio checked={radioValue===item.label} color='default' />} label={item.label} name="pallete"  />
+          <FormControlLabel value={item.label} control={<Radio checked={radioValue===item.label} color='default'  />} label={item.label} name="pallete"  />
         
           </Col>
 
