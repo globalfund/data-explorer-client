@@ -420,6 +420,19 @@ const Box = (props: {
                   z-index: 1;
                   right: 12px;
                   position: absolute;
+                  padding: 4px;
+                  width: 22px;
+                  height: 22px;
+                  border-radius: 50%;
+                  background: #adb5bd;
+                  :hover {
+                    background: #adb5bd;
+                    svg {
+                      path {
+                        fill: #fff;
+                      }
+                    }
+                  }
                 `}
               >
                 <DeleteIcon />
