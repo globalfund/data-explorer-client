@@ -27,7 +27,7 @@ export default function ReportsGrid(props: Props) {
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [loadedReports, setLoadedReports] = React.useState<ReportModel[]>([]);
-  const limit = 10;
+  const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
   const offset = useRef(0);
   const reports = useStoreState(

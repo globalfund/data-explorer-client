@@ -26,7 +26,7 @@ export default function ChartsGrid(props: Props) {
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [loadedCharts, setLoadedCharts] = React.useState<any[]>([]);
 
-  const limit = 10;
+  const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
   const offset = useRef(0);
   const charts = useStoreState(

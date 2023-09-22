@@ -24,7 +24,7 @@ export default function DatasetsGrid(props: Props) {
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
-  const limit = 10;
+  const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
   const offset = useRef(0);
   const [loadedDatasets, setLoadedDatasets] = React.useState<
@@ -172,7 +172,12 @@ export default function DatasetsGrid(props: Props) {
       )}
       <Box height={100} />
 
-      <div ref={observerTarget} />
+      <div
+        ref={observerTarget}
+        css={`
+          height: 10px;
+        `}
+      />
       <DeleteDatasetDialog
         cardId={cardId}
         enableButton={enableButton}
