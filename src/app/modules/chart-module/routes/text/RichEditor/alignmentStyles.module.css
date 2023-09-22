@@ -1,0 +1,14 @@
+.draftLeft :global(.public-DraftStyleDefault-ltr) {
+ 
+  text-align: left;
+}
+
+.draftRight :global(.public-DraftStyleDefault-ltr) {
+ 
+  text-align: right;
+}
+
+.draftCenter :global(.public-DraftStyleDefault-ltr) {
+ 
+  text-align: center;
+}

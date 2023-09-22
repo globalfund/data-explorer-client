@@ -27,6 +27,12 @@ module.exports = () => {
         // }),
         // new WebpackPluginRamdisk(),
       ],
+      loaders: [
+        {
+          test: /plugin\.css$/,
+          loaders: ['style-loader', 'css'],
+        },
+      ],
     },
 
     babel: {
