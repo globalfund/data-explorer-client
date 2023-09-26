@@ -147,6 +147,7 @@ export function CommonChart(props: Props) {
         css={`
           width: 100%;
           overflow: hidden;
+
           margin-top: 40px;
           height: ${props.visualOptions.height - (props.withHeader ? 36 : 0)}px;
 
