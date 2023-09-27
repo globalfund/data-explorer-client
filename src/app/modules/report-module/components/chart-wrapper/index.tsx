@@ -189,7 +189,7 @@ export function ReportChartWrapper(props: Props) {
         </h4>
       )}
       <CommonChart
-        withHeader
+        // withHeader={false}
         chartId={props.id}
         setRawViz={setRawViz}
         containerRef={containerRef}

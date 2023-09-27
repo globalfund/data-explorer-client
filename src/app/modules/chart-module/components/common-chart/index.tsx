@@ -149,7 +149,7 @@ export function CommonChart(props: Props) {
           overflow: hidden;
 
           margin-top: 40px;
-          height: ${props.visualOptions.height - (props.withHeader ? 36 : 0)}px;
+          height: ${props.visualOptions.height}px;
 
           * {
             font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif !important;
