@@ -1,9 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import Box from "@material-ui/core/Box";
 import styled from "styled-components/macro";
 import Typography from "@material-ui/core/Typography";
-import ContainedButton from "app/components/Buttons/ContainedButton";
 
 const MessageContainer = styled((props) => <Box {...props} />)`
   align-items: center;
