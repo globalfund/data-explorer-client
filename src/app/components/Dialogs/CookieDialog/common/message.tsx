@@ -61,8 +61,23 @@ export const Message = (props: MessageProps) => {
           }
         `}
       >
-        The website makes use of <Link to={`#`}>cookies</Link>. Review{" "}
-        <Link to={"#"}>data privacy</Link> for more details.
+        The website makes use of{" "}
+        <a
+          href={`https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view?usp=drive_link`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          cookies
+        </a>
+        . Review{" "}
+        <a
+          href={`https://drive.google.com/file/d/1andhlQEoaEq5qDxMbtnApXiZborsg-bG/view?usp=drive_link`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          data privacy
+        </a>{" "}
+        for more details.
       </Typo>
       <Button data-cy="cookie-btn" type="button" onClick={props.onClose}>
         {" "}
