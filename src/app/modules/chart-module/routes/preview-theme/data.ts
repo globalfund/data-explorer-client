@@ -6,6 +6,7 @@ export interface ChartBuilderPreviewThemeProps {
   renderedChartSsr: boolean;
   renderedChartMappedData: any;
   setVisualOptions: (value: any) => void;
+  setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export interface ChartBuilderPreviewThemePageProps {
@@ -18,4 +19,5 @@ export interface ChartBuilderPreviewThemePageProps {
   renderedChartsSsr: boolean[][];
   addVizToLocalStates: () => void;
   setVisualOptions: (value: any) => void;
+  setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
 }

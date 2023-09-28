@@ -50,6 +50,7 @@ export default function ChartModule() {
   );
   const [rawViz, setRawViz] = React.useState<any>(null);
   const [chartName, setChartName] = React.useState("My First Chart");
+  const [isPreviewView, setIsPreviewView] = React.useState(false);
 
   const {
     loading,
@@ -197,6 +198,7 @@ export default function ChartModule() {
     resetChartType();
     resetAppliedFilters();
     resetEnabledFilterOptionGroups();
+    setChartName("My First Chart");
   }
 
   function clearChartBuilder() {
@@ -328,6 +330,7 @@ export default function ChartModule() {
         framesArray={[]}
         headerDetails={{} as IHeaderDetails}
         reportName=""
+        isPreviewView={isPreviewView}
       />
       <ChartModuleToolBox
         rawViz={rawViz}
@@ -451,6 +454,7 @@ export default function ChartModule() {
                 renderedChartSsr={renderedChartSsr}
                 renderedChartMappedData={renderedChartMappedData}
                 editable={isEditMode || (page === "new" && !view)}
+                setIsPreviewView={setIsPreviewView}
               />
             </Route>
             <Route path="/chart/:page">
@@ -462,6 +466,7 @@ export default function ChartModule() {
                 renderedChartSsr={renderedChartSsr}
                 renderedChartMappedData={renderedChartMappedData}
                 editable={isEditMode || (page === "new" && !view)}
+                setIsPreviewView={setIsPreviewView}
               />
             </Route>
             <Route path="*">

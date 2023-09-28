@@ -15,4 +15,5 @@ export interface SubheaderToolbarProps {
   framesArray: IFramesArray[];
   setStopInitializeFramesWidth?: (value: boolean) => void;
   handlePersistReportState?: () => void;
+  isPreviewView: boolean;
 }
