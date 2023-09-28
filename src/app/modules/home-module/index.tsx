@@ -40,7 +40,7 @@ import { Tab } from "app/components/Styled/tabs";
 export default function HomeModule() {
   useTitle("DX DataXplorer");
 
-  // clear persisted state
+  // clear persisted states
   const clearPersistedReportState = useResetRecoilState(
     persistedReportStateAtom
   );
