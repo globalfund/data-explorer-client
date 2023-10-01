@@ -70,7 +70,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 168;
+  let top = 163;
 
   if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {

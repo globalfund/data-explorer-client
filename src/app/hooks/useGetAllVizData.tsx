@@ -134,6 +134,10 @@ export function useGetAllVizData() {
         []
       ) as EligibilityScatterplotDataModel[]
   );
+  const fundingRequestTable = useStoreState(
+    (state) =>
+      get(state.FundingRequestsTable.data, "data", []) as SimpleTableRow[]
+  );
   const grantDetailBudgetsFlow = useStoreState(
     (state) => state.GrantDetailBudgetsFlow.data
   );
@@ -308,6 +312,10 @@ export function useGetAllVizData() {
       countries: allocationsGeomap,
       multicountries: allocationsMCGeomap,
     },
+
+    //Funding requests
+    "/viz/funding-requests/table": fundingRequestTable,
+
     "/viz/allocations/table": allocationsTable,
     // Budgets
     "/viz/budgets/flow": budgetsFlow,

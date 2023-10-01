@@ -646,6 +646,37 @@ export function exportCSV(
           ...extraHeaders,
         ],
       };
+    case "/viz/funding-requests/table":
+      data.forEach((item: any) => {
+        item.children.forEach((subItem: any) => {
+          const { name, ...otherProps } = subItem;
+          csvData.push({
+            component: item.name,
+            location: name,
+            ...otherProps,
+          });
+        });
+      });
+      let _extraHeaders: { label: string; key: string }[] = [];
+      if (csvData.length > 0) {
+        _extraHeaders = filter(
+          Object.keys(csvData[0]),
+          (key) => key !== "component" && key !== "location"
+        ).map((key) => ({
+          label: `${key[0].toUpperCase()}${key.slice(1)}`,
+          key,
+        }));
+      }
+      return {
+        data: csvData,
+        filename: "funding-requests.csv",
+        headers: [
+          { label: "Component", key: "component" },
+          { label: "Location", key: "location" },
+          ..._extraHeaders,
+        ],
+      };
+
     case "/viz/eligibility":
       if (options.isDetail) {
         filter(
