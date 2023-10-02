@@ -7,7 +7,7 @@ import { useStoreState } from "app/state/store/hooks";
 /* project */
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { ChartBuilderExportProps } from "app/modules/chart-module/routes/export/data";
-import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
+import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 
 export function ChartBuilderExport(props: ChartBuilderExportProps) {
   useTitle("DX DataXplorer - Export");
@@ -25,8 +25,8 @@ export function ChartBuilderExport(props: ChartBuilderExportProps) {
   }
 
   return (
-    <div css={commonStyles.container}>
-      <div css={commonStyles.innercontainer}>
+    <div css={commonStyles.exportContainer}>
+      <div css={commonStyles.exportInnercontainer}>
         <div
           ref={containerRef}
           css={`

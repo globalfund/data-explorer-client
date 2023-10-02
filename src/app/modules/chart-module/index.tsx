@@ -37,7 +37,7 @@ import {
 } from "app/modules/chart-module/data";
 import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
 import { DEFAULT_DATASETS } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/SelectDataset";
-import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
+import { DatasetListItemAPIModel } from "app/modules/datasets-module/data";
 
 export default function ChartModule() {
   const history = useHistory();

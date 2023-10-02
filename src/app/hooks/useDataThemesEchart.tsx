@@ -18,7 +18,7 @@ import {
   TooltipComponent,
   VisualMapComponent,
 } from "echarts/components";
-import { checkLists } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/data";
+import { checkLists } from "app/modules/chart-module/routes/customize/data";
 
 echarts.use([
   BarChart,

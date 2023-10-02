@@ -7,8 +7,18 @@ import { useMount, useUpdateEffect } from "react-use";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { convertFromRaw, convertToRaw, EditorState } from "draft-js";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
 /* project */
-import { DataThemeRenderedTabItem } from "app/modules/data-themes-module/sub-modules/theme-builder/data";
+
+export interface DataThemeRenderedTabItem {
+  renderedContent: string;
+  appliedFilters: { [key: string]: any[] };
+  filterOptionGroups: FilterGroupModel[];
+  dataTypes: any;
+  mappedData: any;
+  dimensions: any;
+  ssr: boolean;
+}
 
 function checkIfIsEditMode(view?: string): boolean {
   if (view) return true;

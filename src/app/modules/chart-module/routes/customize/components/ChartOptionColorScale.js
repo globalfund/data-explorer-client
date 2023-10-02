@@ -9,7 +9,7 @@ import InilineColorPicker from "./InlineColorPicker";
 import ColorSchemesDropDown from "./ColorSchemesDropDown";
 import { Row, Col, Dropdown } from "react-bootstrap";
 import { ResetBtn, InvertBtn, LockBtn } from "./ColorScaleUtils";
-import { SCALES_LABELS } from "../../../constants";
+import { SCALES_LABELS } from "app/modules/chart-module/routes/customize/constants";
 import get from "lodash/get";
 import keyBy from "lodash/keyBy";
 import {

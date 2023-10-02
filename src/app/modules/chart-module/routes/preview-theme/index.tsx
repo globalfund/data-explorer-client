@@ -4,7 +4,7 @@ import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreState } from "app/state/store/hooks";
-import { Redirect, useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 /* project */
 import Skeleton from "@material-ui/lab/Skeleton";
 import { PageLoader } from "app/modules/common/page-loader";

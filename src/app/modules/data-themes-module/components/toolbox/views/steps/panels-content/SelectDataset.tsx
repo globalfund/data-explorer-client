@@ -7,7 +7,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
-import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
+import { DatasetListItemAPIModel } from "app/modules/datasets-module/data";
 
 const StyledMenu = withStyles({
   paper: {

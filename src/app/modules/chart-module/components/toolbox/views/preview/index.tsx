@@ -8,13 +8,13 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 /* project */
 import { ResetIcon } from "app/assets/icons/Reset";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { FilterGroup } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/components/FilterGroup";
-import { ExpandedFilterGroup } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters/components/ExpandedFilterGroup";
+import { FilterGroup } from "app/modules/chart-module/components/toolbox/views/preview/FilterGroup";
+import { ExpandedFilterGroup } from "app/modules/chart-module/components/toolbox/views/preview/ExpandedFilterGroup";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-} from "app/modules/data-themes-module/components/toolbox/views/steps";
+} from "app/modules/chart-module/components/toolbox/views/steps";
 import { ChartToolBoxPreviewProps } from "app/modules/chart-module/components/toolbox/views/preview/data";
 
 export function ChartToolBoxPreview(props: ChartToolBoxPreviewProps) {

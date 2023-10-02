@@ -6,10 +6,10 @@ import { useStoreState } from "app/state/store/hooks";
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import { FilterGroupModel } from "app/components/ToolBoxPanel/components/filters/data";
-import { DataThemesDataTable } from "app/modules/data-themes-module/components/data-table";
 import { get } from "lodash";
-import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import { DEFAULT_DATASETS } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/SelectDataset";
+import { DatasetListItemAPIModel } from "app/modules/datasets-module/data";
+import { DataTable } from "app/modules/chart-module/routes/preview/data-table";
 
 interface ChartBuilderPreviewProps {
   loading: boolean;
@@ -63,7 +63,7 @@ export function ChartBuilderPreview(props: ChartBuilderPreviewProps) {
         <p>
           <b>{datasetName} Dataset</b>
         </p>
-        <DataThemesDataTable data={props.data} stats={props.stats} />
+        <DataTable data={props.data} stats={props.stats} />
       </div>
     </div>
   );

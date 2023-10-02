@@ -22,7 +22,7 @@ import { DataThemesAddSectionButton } from "app/modules/data-themes-module/compo
 import { DataThemesBuilderLock } from "app/modules/data-themes-module/sub-modules/theme-builder/views/lock";
 import { DataThemesBuilderExport } from "app/modules/data-themes-module/sub-modules/theme-builder/views/export";
 import { DataThemesBuilderDataView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/data";
-import { DataThemesBuilderTextView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text";
+// import { DataThemesBuilderTextView } from "app/modules/data-themes-module/sub-modules/theme-builder/views/text";
 import { DataThemesBuilderMapping } from "app/modules/data-themes-module/sub-modules/theme-builder/views/mapping";
 import { DataThemesBuilderPreview } from "app/modules/data-themes-module/sub-modules/theme-builder/views/preview";
 import { DataThemesBuilderFilters } from "app/modules/data-themes-module/sub-modules/theme-builder/views/filters";
@@ -557,9 +557,9 @@ export function DataThemesBuilder() {
           <Route path={`/data-themes/:page/initial`}>
             <DataThemesBuilderInitialView />
           </Route>
-          <Route path={`/data-themes/:page/text`}>
+          {/* <Route path={`/data-themes/:page/text`}>
             <DataThemesBuilderTextView />
-          </Route>
+          </Route> */}
           <Route path={`/data-themes/:page/preview`}>
             <DataThemesBuilderPreviewThemePage
               loading={loading || isDataThemeLoading}

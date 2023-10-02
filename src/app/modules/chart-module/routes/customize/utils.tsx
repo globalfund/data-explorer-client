@@ -6,12 +6,12 @@ import omit from "lodash/omit";
 // @ts-ignore
 import { getTypeName } from "@rawgraphs/rawgraphs-core";
 /* project */
-import CustomizeOptionText from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionText";
-import CustomizeOptionColor from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionColor";
-import ChartOptionBoolean from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionBoolean";
-import CustomizeOptionNumber from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionNumber";
-import ChartOptionColorScaleWrapper from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionColorScaleWrapper";
-import ChartOptionCheckboxes from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/components/ChartOptionCheckboxes";
+import CustomizeOptionText from "app/modules/chart-module/routes/customize/components/ChartOptionText";
+import CustomizeOptionColor from "app/modules/chart-module/routes/customize/components/ChartOptionColor";
+import ChartOptionBoolean from "app/modules/chart-module/routes/customize/components/ChartOptionBoolean";
+import CustomizeOptionNumber from "app/modules/chart-module/routes/customize/components/ChartOptionNumber";
+import ChartOptionColorScaleWrapper from "app/modules/chart-module/routes/customize/components/ChartOptionColorScaleWrapper";
+import ChartOptionCheckboxes from "app/modules/chart-module/routes/customize/components/ChartOptionCheckboxes";
 
 const CHART_OPTION_COMPONENTS = {
   number: CustomizeOptionNumber,

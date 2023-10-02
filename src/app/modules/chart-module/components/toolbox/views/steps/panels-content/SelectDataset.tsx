@@ -8,8 +8,8 @@ import { useHistory, useParams } from "react-router-dom";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp";
 
-import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import ToolboxSubHeader from "app/modules/chart-module/components/toolbox/views/steps/sub-header";
+import { DatasetListItemAPIModel } from "app/modules/datasets-module/data";
 
 export const DEFAULT_DATASETS = [
   {
