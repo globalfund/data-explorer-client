@@ -21,7 +21,6 @@ export const styles = {
   `,
   exportInnercontainer: css`
     left: 0;
-    // top: 136px;
     max-width: 1280px;
     position: relative;
     align-self: flex-start;
