@@ -67,8 +67,6 @@ export default function ChartModule() {
     chartFromAPI,
   });
 
-
-
   const chartType = useStoreState((state) => state.charts.chartType.value);
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const isSaveLoading = useStoreState(
