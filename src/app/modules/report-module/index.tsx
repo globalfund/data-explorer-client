@@ -40,7 +40,7 @@ import {
 } from "react-router-dom";
 
 import AITemplate from "app/modules/report-module/views/ai-template";
-import { IHeaderDetails } from "./components/right-panel/data";
+import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
 import { useUpdateEffect } from "react-use";
 
 interface RowFrameProps {

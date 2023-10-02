@@ -16,7 +16,7 @@ import {
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
 import { MoreVert } from "@material-ui/icons";
-import { RowStructureType } from "../../views/create/data";
+import { RowStructureType } from "app/modules/report-module/views/create/data";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
