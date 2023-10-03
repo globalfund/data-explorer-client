@@ -12,6 +12,17 @@ import {
   incomeLevels,
 } from "app/components/Charts/Eligibility/Scatterplot/data";
 
+// format funding request data labels
+const formatFRdata = {
+  date: "Submission Date",
+  window: "TRP Window",
+  label: "TRP Label",
+  start: "Starting Date",
+  end: "Ending Date",
+  gac: "GAC Meeting",
+  portfolioCategory: "Portfolio Categorization",
+};
+
 export function exportCSV(
   pathname: string,
   data: any,
@@ -647,26 +658,65 @@ export function exportCSV(
         ],
       };
     case "/viz/funding-requests/table":
+      let _extraHeaders: { label: string; key: string }[] = [];
       data.forEach((item: any) => {
         item.children.forEach((subItem: any) => {
-          const { name, ...otherProps } = subItem;
-          csvData.push({
-            component: item.name,
-            location: name,
-            ...otherProps,
+          const { component, ...subProps } = subItem;
+          //exclude children and documents keys from csv
+          const filteredSubPropsKey = Object.keys({ ...subProps }).filter(
+            (key: string) => key !== "children" && key !== "documents"
+          );
+          //assign respective subProps values to filtered keys
+          const filteredSubProps: any = {};
+          filteredSubPropsKey.forEach((key: string) => {
+            filteredSubProps[key] = subProps[key];
+          });
+
+          const csvDataDetails = {
+            location: item.name,
+            component,
+            ...filteredSubProps,
+          };
+          csvData.push(csvDataDetails);
+          //loop through children to get more data and complete headers
+          subItem.children.forEach((subSubItem: any) => {
+            const { component: otherComponent, ...otherProps } = subSubItem;
+            const otherCSVDataDetails = {
+              location: item.name,
+              component: component,
+              subComponent: otherComponent,
+              ...filteredSubProps,
+              ...otherProps,
+            };
+            csvData.push(otherCSVDataDetails);
+            //get extra headers
+            if (_extraHeaders.length === 0) {
+              _extraHeaders = filter(
+                Object.keys(otherCSVDataDetails),
+                (key) =>
+                  key !== "component" &&
+                  key !== "location" &&
+                  key !== "id" &&
+                  key !== "rawDate" &&
+                  key !== "ip"
+              ).map((key) => {
+                //compare key with formatFRdata keys
+                if (key in formatFRdata) {
+                  return {
+                    label: formatFRdata[key as keyof typeof formatFRdata],
+                    key,
+                  };
+                }
+                return {
+                  label: `${key[0].toUpperCase()}${key.slice(1)}`,
+                  key,
+                };
+              });
+            }
           });
         });
       });
-      let _extraHeaders: { label: string; key: string }[] = [];
-      if (csvData.length > 0) {
-        _extraHeaders = filter(
-          Object.keys(csvData[0]),
-          (key) => key !== "component" && key !== "location"
-        ).map((key) => ({
-          label: `${key[0].toUpperCase()}${key.slice(1)}`,
-          key,
-        }));
-      }
+
       return {
         data: csvData,
         filename: "funding-requests.csv",
