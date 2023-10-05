@@ -43,7 +43,7 @@
     "i18next-browser-languagedetector": "^6.1.0",
     "json-loader": "^0.5.7",
     "lodash": "^4.17.21",
-    "postcss": "^8.2.13",
+    "postcss": "^8.4.31",
     "postcss-js": "^3.0.3",
     "query-string": "^8.1.0",
     "react": "^17.0.2",
