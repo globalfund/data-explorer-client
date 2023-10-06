@@ -219,6 +219,7 @@ import {
   ChartGet,
   ChartGetList,
   ChartUpdate,
+  ChartsCount,
 } from "../api/action-reducers/charts";
 import {
   ReportCreate,
@@ -227,6 +228,7 @@ import {
   ReportGet,
   ReportGetList,
   ReportUpdate,
+  ReportsCount,
 } from "../api/action-reducers/reports";
 
 const storeContent: StoreModel = {
@@ -463,6 +465,7 @@ const storeContent: StoreModel = {
     ChartDelete: persist(ChartDelete),
     ChartDuplicate: persist(ChartDuplicate),
     ChartGetList: persist(ChartGetList),
+    ChartsCount: persist(ChartsCount),
     activePanels: persist(ChartsActivePanelsState),
     dataset: persist(ChartsDatasetState),
     mapping: persist(ChartsMappingState),
@@ -477,6 +480,7 @@ const storeContent: StoreModel = {
     ReportDelete: persist(ReportDelete),
     ReportDuplicate: persist(ReportDuplicate),
     ReportGetList: persist(ReportGetList),
+    ReportsCount: persist(ReportsCount),
   },
   search: {
     charts: persist(GlobalSearchCharts),

@@ -368,6 +368,8 @@ export interface StoreModel {
     ChartDelete: ApiCallModel;
     ChartDuplicate: ApiCallModel;
     ChartGetList: ApiCallModel;
+    ChartsCount: ApiCallModel;
+
     activePanels: ChartsActivePanelsStateModel;
     dataset: ChartsDatasetStateModel;
     mapping: ChartsMappingStateModel;
@@ -382,6 +384,7 @@ export interface StoreModel {
     ReportDelete: ApiCallModel;
     ReportDuplicate: ApiCallModel;
     ReportGetList: ApiCallModel;
+    ReportsCount: ApiCallModel;
   };
   search: {
     charts: ApiCallModel;

@@ -29,10 +29,18 @@ export default function ReportsGrid(props: Props) {
   const [loadedReports, setLoadedReports] = React.useState<ReportModel[]>([]);
   const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
-  const offset = useRef(0);
+  const [offset, setOffset] = React.useState(0);
+  const { isObserved } = useInfinityScroll(observerTarget);
   const reports = useStoreState(
     (state) => (state.reports.ReportGetList.crudData ?? []) as ReportModel[]
   );
+  const loadReportsCount = useStoreActions(
+    (actions) => actions.reports.ReportsCount.fetch
+  );
+  const reportsCount = useStoreState(
+    (state) => get(state, "reports.ReportsCount.data.count", 0) as number
+  );
+
   const loadReports = useStoreActions(
     (actions) => actions.reports.ReportGetList.fetch
   );
@@ -40,36 +48,73 @@ export default function ReportsGrid(props: Props) {
     (state) => state.reports.ReportGetList.success
   );
 
+  const loadData = async (searchStr: string, sortByStr: string) => {
+    const value =
+      searchStr.length > 0
+        ? `"where":{"title":{"like":"${searchStr}.*","options":"i"}},`
+        : "";
+    //refrain from loading data if all the data is loaded
+    if (loadedReports.length !== reportsCount) {
+      await loadReports({
+        storeInCrudData: true,
+        filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
+      });
+    }
+  };
+
+  const reloadData = async () => {
+    setOffset(0);
+    await loadReportsCount({});
+    setLoadedReports([]);
+    loadData(props.searchStr, props.sortBy);
+  };
+  React.useEffect(() => {
+    loadReportsCount({});
+  }, []);
+
+  React.useEffect(() => {
+    //load data if intersection observer is triggered
+    if (isObserved) {
+      if (loadedReports.length !== reportsCount) {
+        //update the offset value for the next load
+        setOffset(offset + limit);
+      }
+
+      loadData(props.searchStr, props.sortBy);
+    }
+  }, [isObserved]);
+
+  React.useEffect(() => {
+    reloadData();
+    return () => {
+      setOffset(0);
+    };
+  }, [props.sortBy, reportsCount]);
+
   const handleDelete = (index?: number) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = reports[index as number].id;
+    const id = loadedReports[index as number].id;
     if (!id) {
       return;
     }
     axios
       .delete(`${process.env.REACT_APP_API}/report/${id}`)
       .then(() => {
-        loadReports({
-          storeInCrudData: true,
-          filterString: "filter[order]=createdDate desc",
-        });
+        reloadData();
       })
       .catch((error) => console.log(error));
   };
 
   const handleDuplicate = (index: number) => {
-    const id = reports[index].id;
+    const id = loadedReports[index].id;
     if (!id) {
       return;
     }
     axios
       .get(`${process.env.REACT_APP_API}/report/duplicate/${id}`)
       .then(() => {
-        loadReports({
-          storeInCrudData: true,
-          filterString: "filter[order]=createdDate desc",
-        });
+        reloadData();
       })
       .catch((error) => console.log(error));
   };
@@ -86,25 +131,6 @@ export default function ReportsGrid(props: Props) {
     setCardId(id);
     setModalDisplay(true);
   };
-
-  function loadData(searchStr: string, sortByStr: string) {
-    const value =
-      searchStr.length > 0
-        ? `"where":{"title":{"like":"${searchStr}.*","options":"i"}},`
-        : "";
-    loadReports({
-      storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset.current}}`,
-    });
-    offset.current = offset.current + limit;
-  }
-  useInfinityScroll(loadData, observerTarget, props.searchStr, props.sortBy);
-
-  React.useEffect(() => {
-    if (props.searchStr.length === 0) {
-      loadData(props.searchStr, props.sortBy);
-    }
-  }, [props.searchStr, props.sortBy]);
 
   React.useEffect(() => {
     if (!reportsLoadSuccess) {
@@ -168,6 +194,7 @@ export default function ReportsGrid(props: Props) {
       <Box height={100} />
 
       <div ref={observerTarget} />
+
       <DeleteReportDialog
         cardId={cardId}
         modalDisplay={modalDisplay}
