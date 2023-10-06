@@ -59,6 +59,7 @@ export function useChartsRawData(props: {
   chartFromAPI: ChartRenderedItem | null;
   setChartFromAPI: (value: ChartRenderedItem) => void;
   inChartWrapper?: boolean;
+  dimensions?: any;
 }) {
   const { visualOptions, chartFromAPI, setVisualOptions, setChartFromAPI } =
     props;
@@ -73,10 +74,11 @@ export function useChartsRawData(props: {
   const [dataError, setDataError] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
-
   const appliedFilters = useStoreState(
     (state) => state.charts.appliedFilters.value
   );
+  const chartType = useStoreState((state) => state.charts.chartType.value);
+
   const setAllAppliedFilters = useStoreActions(
     (actions) => actions.charts.appliedFilters.setAll
   );
@@ -252,7 +254,34 @@ export function useChartsRawData(props: {
           ],
         ],
       };
-      if (page) {
+
+      //get required dimensions
+      const requiredDimensions = props.dimensions.filter(
+        (dimension: any) => dimension.required
+      );
+      let req = {} as any;
+
+      requiredDimensions.forEach((element: any) => {
+        if (element.id in mapping) {
+          req[element.id] = true;
+        } else {
+          req[element.id] = false;
+        }
+      });
+      function allRequiredKeysExist(req: any, allreq: any) {
+        for (const key in req) {
+          if (req.hasOwnProperty(key) && !allreq.hasOwnProperty(key)) {
+            return false;
+          }
+          //return false if chartType is sankey and only one dimension is selected
+          if (chartType === "echartsSankey" && allreq[key].ids.length < 2) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      if (page && allRequiredKeysExist(req, mapping)) {
         axios
           .post(`${process.env.REACT_APP_API}/chart/${page}/render`, body, {
             headers: {
