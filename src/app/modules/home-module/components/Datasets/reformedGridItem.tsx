@@ -198,13 +198,23 @@ export default function ReformedGridItem(props: Props) {
             `}
           >
             <div>
-              <IconButton
-                onClick={() => props.handleDuplicate?.(props.id as string)}
-              >
-                <Tooltip title="Duplicate">
-                  <DuplicateIcon />
-                </Tooltip>
-              </IconButton>
+              <Tooltip title="Duplicate">
+                <span>
+                  <IconButton
+                    onClick={() => props.handleDuplicate?.(props.id as string)}
+                    disabled={true}
+                    css={`
+                      svg {
+                        path {
+                          fill: gray;
+                        }
+                      }
+                    `}
+                  >
+                    <DuplicateIcon />
+                  </IconButton>
+                </span>
+              </Tooltip>
             </div>
             <div>
               <Link to="#">

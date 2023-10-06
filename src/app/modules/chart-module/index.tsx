@@ -51,6 +51,17 @@ export default function ChartModule() {
   const [rawViz, setRawViz] = React.useState<any>(null);
   const [chartName, setChartName] = React.useState("My First Chart");
 
+  const chartType = useStoreState((state) => state.charts.chartType.value);
+  const mapping = useStoreState((state) => state.charts.mapping.value);
+
+  const dimensions = React.useMemo(() => {
+    return get(
+      chartFromAPI,
+      "dimensions",
+      get(charts, `[${chartType}].dimensions`, [])
+    );
+  }, [chartFromAPI, chartType]);
+
   const {
     loading,
     dataTypes,
@@ -65,10 +76,8 @@ export default function ChartModule() {
     setVisualOptions,
     setChartFromAPI,
     chartFromAPI,
+    dimensions,
   });
-
-  const chartType = useStoreState((state) => state.charts.chartType.value);
-  const mapping = useStoreState((state) => state.charts.mapping.value);
   const isSaveLoading = useStoreState(
     (state) => state.charts.ChartCreate.loading
   );
@@ -121,13 +130,10 @@ export default function ChartModule() {
     [chartFromAPI, dataTypes]
   );
 
-  const dimensions = React.useMemo(() => {
-    return get(
-      chartFromAPI,
-      "dimensions",
-      get(charts, `[${chartType}].dimensions`, [])
-    );
-  }, [chartFromAPI, chartType]);
+  //empty chart when chart type and dataset types changes
+  React.useEffect(() => {
+    setChartFromAPI(null);
+  }, [chartType, dataTypes]);
 
   const mappedData = React.useMemo(
     () => get(chartFromAPI, "mappedData", ""),
@@ -157,10 +163,6 @@ export default function ChartModule() {
     () => Boolean(renderedChartSsr),
     [renderedChartSsr]
   );
-
-  React.useEffect(() => {
-    setChartFromAPI(null);
-  }, [chartType]);
 
   function setVisualOptionsOnChange() {
     const options = {
@@ -197,11 +199,13 @@ export default function ChartModule() {
     resetChartType();
     resetAppliedFilters();
     resetEnabledFilterOptionGroups();
+    clearChart();
+    setChartName("My First Chart");
   }
 
   function clearChartBuilder() {
     clear().then(() => {
-      console.log("End of reset.", "--visualOptions", visualOptions);
+      console.log("End of reset.", "--visualOptions", visualOptions, chartName);
     });
   }
 
@@ -314,7 +318,6 @@ export default function ChartModule() {
       </div>
     );
   };
-
   return (
     <DndProvider backend={HTML5Backend}>
       <SubheaderToolbar

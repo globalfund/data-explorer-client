@@ -160,6 +160,12 @@ export function ChartToolBoxSelectDataset(
       });
     };
 
+  React.useEffect(() => {
+    if (dataset) {
+      history.push(`/chart/${page}/preview-data`);
+    }
+  }, []);
+
   return (
     <div
       css={`

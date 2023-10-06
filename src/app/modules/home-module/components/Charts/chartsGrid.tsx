@@ -11,6 +11,7 @@ import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/d
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 import ChartAddnewCard from "./chartAddNewCard";
 import { useInfinityScroll } from "app/hooks/useInfinityScroll";
+import { get } from "lodash";
 
 interface Props {
   sortBy: string;
@@ -28,49 +29,96 @@ export default function ChartsGrid(props: Props) {
 
   const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
-  const offset = useRef(0);
+  const [offset, setOffset] = React.useState(0);
+
+  const { isObserved } = useInfinityScroll(observerTarget);
+
   const charts = useStoreState(
     (state) => (state.charts.ChartGetList.crudData ?? []) as any[]
+  );
+  const loadChartsCount = useStoreActions(
+    (actions) => actions.charts.ChartsCount.fetch
+  );
+  const ChartsCount = useStoreState(
+    (state) => get(state, "charts.ChartsCount.data.count", 0) as number
   );
 
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
+  const loading = useStoreState(
+    (actions) => actions.charts.ChartGetList.loading
+  );
   const chartsLoadSuccess = useStoreState(
     (state) => state.charts.ChartGetList.success
   );
 
+  const loadData = async (searchStr: string, sortByStr: string) => {
+    const value =
+      searchStr.length > 0
+        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+        : "";
+    //refrain from loading data if all the data is loaded
+    if (loadedCharts.length !== ChartsCount) {
+      await loadCharts({
+        storeInCrudData: true,
+        filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
+      });
+    }
+  };
+
+  const reloadData = () => {
+    setOffset(0);
+    loadChartsCount({});
+    setLoadedCharts([]);
+    loadData(props.searchStr, props.sortBy);
+  };
+  React.useEffect(() => {
+    loadChartsCount({});
+  }, []);
+
+  React.useEffect(() => {
+    //load data if intersection observer is triggered
+    if (isObserved) {
+      if (loadedCharts.length !== ChartsCount) {
+        //update the offset value for the next load
+        setOffset(offset + limit);
+      }
+      loadData(props.searchStr, props.sortBy);
+    }
+  }, [isObserved]);
+
+  React.useEffect(() => {
+    reloadData();
+    return () => {
+      setOffset(0);
+    };
+  }, [props.sortBy, ChartsCount]);
+
   const handleDelete = (index?: number) => {
     setModalDisplay(false);
     setEnableButton(false);
-    const id = charts[index as number].id;
-
+    const id = loadedCharts[index as number].id;
     if (!id) {
       return;
     }
     axios
       .delete(`${process.env.REACT_APP_API}/chart/${id}`)
       .then(() => {
-        loadCharts({
-          storeInCrudData: true,
-          filterString: "filter[order]=createdDate desc",
-        });
+        reloadData();
       })
       .catch((error) => console.log(error));
   };
 
   const handleDuplicate = (index: number) => {
-    const id = charts[index].id;
+    const id = loadedCharts[index].id;
     if (!id) {
       return;
     }
     axios
       .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`)
       .then(() => {
-        loadCharts({
-          storeInCrudData: true,
-          filterString: "filter[order]=createdDate desc",
-        });
+        reloadData();
       })
       .catch((error) => console.log(error));
   };
@@ -96,31 +144,13 @@ export default function ChartsGrid(props: Props) {
     return coloredEchartTypes()[0].icon;
   };
 
-  function loadData(searchStr: string, sortByStr: string) {
-    const value =
-      searchStr.length > 0
-        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
-        : "";
-    loadCharts({
-      storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset.current}}`,
-    });
-    offset.current = offset.current + limit;
-  }
-  useInfinityScroll(loadData, observerTarget, props.searchStr, props.sortBy);
-
-  React.useEffect(() => {
-    if (props.searchStr.length === 0) {
-      loadData(props.searchStr, props.sortBy);
-    }
-  }, [props.sortBy]);
   React.useEffect(() => {
     if (!chartsLoadSuccess) {
       return;
     }
     //update the loaded reports
     setLoadedCharts((prevCharts) => {
-      const f = charts.filter((report, i) => prevCharts[i]?.id !== report.id);
+      const f = charts.filter((chart, i) => prevCharts[i]?.id !== chart.id);
       return [...prevCharts, ...f];
     });
   }, [chartsLoadSuccess]);
@@ -169,6 +199,7 @@ export default function ChartsGrid(props: Props) {
       <Box height={100} />
 
       <div ref={observerTarget} />
+
       <DeleteChartDialog
         cardId={cardId}
         modalDisplay={modalDisplay}

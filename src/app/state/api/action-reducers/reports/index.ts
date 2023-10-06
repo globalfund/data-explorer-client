@@ -24,3 +24,6 @@ export const ReportDuplicate: ApiCallModel = {
 export const ReportGetList: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/reports`),
 };
+export const ReportsCount: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/reports/count`),
+};
