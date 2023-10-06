@@ -1,20 +1,18 @@
 import { useState, useEffect } from "react";
-
-type LoadDataFunction = (searchStr: string, sortBy: string) => void;
-
 export const useInfinityScroll = (
-  callback: LoadDataFunction,
-  observerTarget: React.MutableRefObject<null>,
-  searchStr: string,
-  sortByStr: string
+  observerTarget: React.MutableRefObject<null>
 ) => {
+  const [isObserved, setIsObserved] = useState(false);
+
   useEffect(() => {
     //handle infinity scroll with IntersectionObserver api
 
     const observer = new IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting) {
-          callback(searchStr, sortByStr);
+          setIsObserved(true);
+        } else {
+          setIsObserved(false);
         }
       },
       { threshold: 1 }
@@ -29,4 +27,5 @@ export const useInfinityScroll = (
       }
     };
   }, []);
+  return { isObserved };
 };
