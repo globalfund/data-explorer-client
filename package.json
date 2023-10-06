@@ -159,7 +159,7 @@
     "eject": "craco eject",
     "upgrade-all": "yarn-upgrade-all",
     "docker": "yarn link '@rawgraphs/rawgraphs-charts' && craco start",
-    "initialise": "yarn link '@rawgraphs/rawgraphs-charts' && yarn install",
+    "initialise": "yarn link '@rawgraphs/rawgraphs-charts' && yarn install --network-timeout 100000",
     "docker-staging": "cp -r /app/client/build /app/client/staging && tail -f /dev/null",
     "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null",
     "docker-prod": "cp -r /app/client/build /app/client/prod"
