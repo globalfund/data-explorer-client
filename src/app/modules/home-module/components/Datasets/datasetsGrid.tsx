@@ -75,6 +75,10 @@ export default function DatasetsGrid(props: Props) {
   React.useEffect(() => {
     //load data if intersection observer is triggered
     if (isObserved) {
+      if (loadedDatasets.length !== datasetCount) {
+        //update the offset value for the next load
+        setOffset(offset + limit);
+      }
       loadData(props.searchStr, props.sortBy);
     }
   }, [isObserved]);
@@ -141,11 +145,11 @@ export default function DatasetsGrid(props: Props) {
       return;
     }
 
-    //update the offset value for the next load
-    setOffset(offset + limit);
     //update the loaded datasets
     setLoadedDatasets((prevDatasets) => {
-      return [...prevDatasets, ...datasets];
+      const f = datasets.filter((chart, i) => prevDatasets[i]?.id !== chart.id);
+
+      return [...prevDatasets, ...f];
     });
   }, [datasetLoadSuccess]);
 

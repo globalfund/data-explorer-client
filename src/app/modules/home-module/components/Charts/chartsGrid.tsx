@@ -68,9 +68,9 @@ export default function ChartsGrid(props: Props) {
   };
 
   const reloadData = () => {
+    setOffset(0);
     loadChartsCount({});
     setLoadedCharts([]);
-    setOffset(0);
     loadData(props.searchStr, props.sortBy);
   };
   React.useEffect(() => {
@@ -80,13 +80,16 @@ export default function ChartsGrid(props: Props) {
   React.useEffect(() => {
     //load data if intersection observer is triggered
     if (isObserved) {
+      if (loadedCharts.length !== ChartsCount) {
+        //update the offset value for the next load
+        setOffset(offset + limit);
+      }
       loadData(props.searchStr, props.sortBy);
     }
   }, [isObserved]);
 
   React.useEffect(() => {
     reloadData();
-    console.log("reloadData");
     return () => {
       setOffset(0);
     };
@@ -146,11 +149,8 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     //update the loaded reports
-
     setLoadedCharts((prevCharts) => {
       const f = charts.filter((chart, i) => prevCharts[i]?.id !== chart.id);
-      //update the offset value for the next load
-      setOffset(offset + limit);
       return [...prevCharts, ...f];
     });
   }, [chartsLoadSuccess]);

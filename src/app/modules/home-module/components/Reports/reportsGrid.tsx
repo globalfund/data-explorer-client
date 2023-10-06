@@ -62,10 +62,10 @@ export default function ReportsGrid(props: Props) {
     }
   };
 
-  const reloadData = () => {
-    loadReportsCount({});
-    setLoadedReports([]);
+  const reloadData = async () => {
     setOffset(0);
+    await loadReportsCount({});
+    setLoadedReports([]);
     loadData(props.searchStr, props.sortBy);
   };
   React.useEffect(() => {
@@ -75,6 +75,11 @@ export default function ReportsGrid(props: Props) {
   React.useEffect(() => {
     //load data if intersection observer is triggered
     if (isObserved) {
+      if (loadedReports.length !== reportsCount) {
+        //update the offset value for the next load
+        setOffset(offset + limit);
+      }
+
       loadData(props.searchStr, props.sortBy);
     }
   }, [isObserved]);
@@ -131,9 +136,6 @@ export default function ReportsGrid(props: Props) {
     if (!reportsLoadSuccess) {
       return;
     }
-    console.log(reportsLoadSuccess, "report load success");
-    //update the offset value for the next load
-    setOffset(offset + limit);
     //update the loaded reports
     setLoadedReports((prevReports) => {
       const f = reports.filter((report, i) => prevReports[i]?.id !== report.id);
@@ -190,6 +192,7 @@ export default function ReportsGrid(props: Props) {
       <Box height={100} />
 
       <div ref={observerTarget} />
+
       <DeleteReportDialog
         cardId={cardId}
         modalDisplay={modalDisplay}

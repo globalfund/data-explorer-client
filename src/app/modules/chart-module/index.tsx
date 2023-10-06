@@ -208,7 +208,6 @@ export default function ChartModule() {
       console.log("End of reset.", "--visualOptions", visualOptions, chartName);
     });
   }
-  console.log(dataset, "dataset");
 
   function getForceNextEnabledValue(param?: string) {
     switch (param) {
@@ -319,7 +318,6 @@ export default function ChartModule() {
       </div>
     );
   };
-  console.log(chartName, "chartName");
   return (
     <DndProvider backend={HTML5Backend}>
       <SubheaderToolbar
