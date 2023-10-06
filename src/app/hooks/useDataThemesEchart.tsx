@@ -19,6 +19,7 @@ import {
   VisualMapComponent,
 } from "echarts/components";
 import { checkLists } from "app/modules/data-themes-module/sub-modules/theme-builder/views/customize/data";
+import { charts } from "app/modules/chart-module/data";
 
 echarts.use([
   BarChart,
@@ -457,6 +458,18 @@ export function useDataThemesEchart() {
     return option;
   }
 
+  function bigNumberRender(data: any, node: HTMLElement) {
+    const formatedData = {
+      ...data,
+      description: data?.description?.value[0],
+      title: data?.title?.value[0],
+      subtitle: data?.subtitle?.value[0],
+    };
+
+    const renderBigNumber = charts["bigNumber"].render;
+    renderBigNumber(node, formatedData);
+  }
+
   function render(
     data: any,
     node: HTMLElement,
@@ -465,32 +478,37 @@ export function useDataThemesEchart() {
       | "echartsGeomap"
       | "echartsLinechart"
       | "echartsSankey"
-      | "echartsTreemap",
+      | "echartsTreemap"
+      | "bigNumber",
     visualOptions: any,
     id: string
   ) {
-    new ResizeObserver(() => onResize(chart, id, node.clientHeight)).observe(
-      node
-    );
+    if (chartType === "bigNumber") {
+      bigNumberRender(data, node);
+    } else {
+      new ResizeObserver(() => onResize(chart, id, node.clientHeight)).observe(
+        node
+      );
 
-    const chart = echarts.init(node, undefined, {
-      renderer: "canvas",
-      height: visualOptions.height,
-    });
+      const chart = echarts.init(node, undefined, {
+        renderer: "canvas",
+        height: visualOptions.height,
+      });
 
-    window.removeEventListener("resize", () => onResize(chart, id));
+      window.removeEventListener("resize", () => onResize(chart, id));
 
-    const CHART_TYPE_TO_COMPONENT = {
-      echartsBarchart: () => echartsBarchart(data, visualOptions),
-      echartsGeomap: () => echartsGeomap(data, visualOptions),
-      echartsLinechart: () => echartsLinechart(data, visualOptions),
-      echartsSankey: () => echartsSankey(data, visualOptions),
-      echartsTreemap: () => echartsTreemap(data, visualOptions),
-    };
+      const CHART_TYPE_TO_COMPONENT = {
+        echartsBarchart: () => echartsBarchart(data, visualOptions),
+        echartsGeomap: () => echartsGeomap(data, visualOptions),
+        echartsLinechart: () => echartsLinechart(data, visualOptions),
+        echartsSankey: () => echartsSankey(data, visualOptions),
+        echartsTreemap: () => echartsTreemap(data, visualOptions),
+      };
 
-    chart.setOption(CHART_TYPE_TO_COMPONENT[chartType]());
+      chart.setOption(CHART_TYPE_TO_COMPONENT[chartType]());
 
-    window.addEventListener("resize", () => onResize(chart, id));
+      window.addEventListener("resize", () => onResize(chart, id));
+    }
   }
 
   return { render };
