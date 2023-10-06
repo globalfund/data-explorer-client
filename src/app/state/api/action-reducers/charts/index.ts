@@ -24,3 +24,6 @@ export const ChartDuplicate: ApiCallModel = {
 export const ChartGetList: ApiCallModel = {
   ...APIModel(`${process.env.REACT_APP_API}/charts`),
 };
+export const ChartsCount: ApiCallModel = {
+  ...APIModel(`${process.env.REACT_APP_API}/charts/count`),
+};

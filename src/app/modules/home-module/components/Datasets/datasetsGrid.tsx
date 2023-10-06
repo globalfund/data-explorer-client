@@ -26,7 +26,8 @@ export default function DatasetsGrid(props: Props) {
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
-  const offset = useRef(0);
+  const [offset, setOffset] = React.useState(0);
+  const { isObserved } = useInfinityScroll(observerTarget);
   const [loadedDatasets, setLoadedDatasets] = React.useState<
     DatasetListItemAPIModel[]
   >([]);
@@ -40,12 +41,50 @@ export default function DatasetsGrid(props: Props) {
   const loadDatasetCount = useStoreActions(
     (actions) => actions.dataThemes.DatasetCount.fetch
   );
-  const datasetLoadSuccess = useStoreState(
-    (state) => state.dataThemes.DatasetGetList.success
-  );
   const datasetCount = useStoreState(
     (state) => get(state, "dataThemes.DatasetCount.data.count", 0) as number
   );
+  const datasetLoadSuccess = useStoreState(
+    (state) => state.dataThemes.DatasetGetList.success
+  );
+
+  const loadData = async (searchStr: string, sortByStr: string) => {
+    const value =
+      searchStr.length > 0
+        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+        : "";
+    //refrain from loading data if all the data is loaded
+    if (loadedDatasets.length !== datasetCount) {
+      await loadDatasets({
+        storeInCrudData: true,
+        filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
+      });
+    }
+  };
+
+  const reloadData = () => {
+    loadDatasetCount({});
+    setLoadedDatasets([]);
+    setOffset(0);
+    loadData(props.searchStr, props.sortBy);
+  };
+  React.useEffect(() => {
+    loadDatasetCount({});
+  }, []);
+
+  React.useEffect(() => {
+    //load data if intersection observer is triggered
+    if (isObserved) {
+      loadData(props.searchStr, props.sortBy);
+    }
+  }, [isObserved]);
+
+  React.useEffect(() => {
+    reloadData();
+    return () => {
+      setOffset(0);
+    };
+  }, [props.sortBy, datasetCount]);
 
   const handleDelete = (id: string) => {
     deleteDataset(id);
@@ -87,26 +126,6 @@ export default function DatasetsGrid(props: Props) {
       .catch((error) => console.log(error));
   }
 
-  const loadData = (searchStr: string, sortByStr: string) => {
-    const value =
-      searchStr.length > 0
-        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
-        : "";
-    loadDatasets({
-      storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset.current}}`,
-    });
-    offset.current = offset.current + limit;
-  };
-  useInfinityScroll(loadData, observerTarget, props.searchStr, props.sortBy);
-
-  React.useEffect(() => {
-    loadDatasetCount({});
-    if (props.searchStr.length === 0) {
-      loadData(props.searchStr, props.sortBy);
-    }
-  }, [props.searchStr, props.sortBy]);
-
   React.useEffect(() => {
     clearDatasets();
     setLoadedDatasets([]);
@@ -121,6 +140,9 @@ export default function DatasetsGrid(props: Props) {
     if (!datasetLoadSuccess) {
       return;
     }
+
+    //update the offset value for the next load
+    setOffset(offset + limit);
     //update the loaded datasets
     setLoadedDatasets((prevDatasets) => {
       return [...prevDatasets, ...datasets];
