@@ -138,7 +138,9 @@ export default function ReportsGrid(props: Props) {
     }
     //update the loaded reports
     setLoadedReports((prevReports) => {
-      const f = reports.filter((report, i) => prevReports[i]?.id !== report.id);
+      const f = reports?.filter(
+        (report, i) => prevReports[i]?.id !== report.id
+      );
       return [...prevReports, ...f];
     });
   }, [reportsLoadSuccess]);

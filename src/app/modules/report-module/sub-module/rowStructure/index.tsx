@@ -578,6 +578,8 @@ const Box = (props: {
           onResizeStop={onResizeStop}
           size={{ width: width, height: `${props.height}px` }}
           maxWidth={!viewOnlyMode ? containerWidth : undefined}
+          minWidth={78}
+          minHeight={textResizableRef.current?.clientHeight}
           enable={{
             right: !viewOnlyMode,
             bottom: !viewOnlyMode,
@@ -626,6 +628,7 @@ const Box = (props: {
                 <DeleteIcon />
               </IconButton>
             )}
+
             <RichEditor
               fullWidth
               editMode={!viewOnlyMode}

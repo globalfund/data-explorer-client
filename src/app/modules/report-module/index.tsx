@@ -73,6 +73,7 @@ export default function ReportModule() {
   const [persistedReportState, setPersistedReportState] = useRecoilState(
     persistedReportStateAtom
   );
+  const [isPreviewView, setIsPreviewView] = React.useState(false);
 
   const localReportState = JSON.parse(persistedReportState.framesArray);
 
@@ -501,6 +502,7 @@ export default function ReportModule() {
           headerDetails={headerDetails}
           setStopInitializeFramesWidth={setStopInitializeFramesWidth}
           handlePersistReportState={handlePersistReportState}
+          isPreviewView={isPreviewView}
         />
       )}
       {view &&
@@ -577,10 +579,10 @@ export default function ReportModule() {
           />
         </Route>
         <Route path="/report/:page/preview">
-          <ReportPreviewView />
+          <ReportPreviewView setIsPreviewView={setIsPreviewView} />
         </Route>
         <Route path="/report/:page">
-          <ReportPreviewView />
+          <ReportPreviewView setIsPreviewView={setIsPreviewView} />
         </Route>
         <Route path="/report/new">
           <Redirect to="/report/new/initial" />

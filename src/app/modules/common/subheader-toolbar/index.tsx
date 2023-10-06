@@ -32,6 +32,7 @@ import {
   persistedReportStateAtom,
   createChartFromReportAtom,
   unSavedReportPreviewModeAtom,
+  reportRightPanelViewAtom,
 } from "app/state/recoil/atoms";
 
 const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
@@ -94,6 +95,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const [createChartFromReport, setCreateChartFromReport] = useRecoilState(
     createChartFromReportAtom
   );
+  const setRightPanelView = useRecoilState(reportRightPanelViewAtom)[1];
 
   const [__, setReportPreviewMode] = useRecoilState(
     unSavedReportPreviewModeAtom
@@ -234,6 +236,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         ...createChartFromReport,
         state: false,
       });
+      setRightPanelView("charts");
       if (createChartFromReport.view === undefined) {
         history.push(`/report/${createChartFromReport.page}/edit`);
       } else {
@@ -458,7 +461,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
                 e.currentTarget.value = "";
               }
             }}
-            disabled={location.pathname.includes("preview")}
+            disabled={props.isPreviewView}
             style={
               page !== "new" && !view
                 ? {

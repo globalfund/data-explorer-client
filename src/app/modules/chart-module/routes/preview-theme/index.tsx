@@ -50,6 +50,7 @@ export function ChartBuilderPreviewThemePage(
           renderedChart={props.renderedCharts[0][vizIndex]}
           renderedChartSsr={props.renderedChartsSsr[0][vizIndex]}
           renderedChartMappedData={props.renderedChartsMappedData[0][vizIndex]}
+          setIsPreviewView={props.setIsPreviewView}
         />
       ))}
     </React.Fragment>
@@ -168,6 +169,12 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
       history.push(`/chart/${page}/customize`);
     }
   };
+  React.useEffect(() => {
+    props.setIsPreviewView(true);
+    return () => {
+      props.setIsPreviewView(false);
+    };
+  }, []);
 
   return (
     <div css={commonStyles.container}>

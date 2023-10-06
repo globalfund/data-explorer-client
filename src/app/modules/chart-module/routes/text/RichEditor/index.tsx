@@ -109,7 +109,7 @@ export const RichEditor = (props: {
         ${!props.fullWidth && "max-width: 800px !important;"}
 
         h1,
-      h2 {
+        h2 {
           font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
           * {
             font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;

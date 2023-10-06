@@ -16,7 +16,9 @@ import {
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
 
-export function ReportPreviewView() {
+export function ReportPreviewView(props: {
+  setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const { page } = useParams<{ page: string }>();
 
   const { ref, width } = useResizeObserver<HTMLDivElement>();
@@ -67,10 +69,12 @@ export function ReportPreviewView() {
   }, [reportData]);
 
   React.useEffect(() => {
+    props.setIsPreviewView(true);
     return () => {
       reportGetClear();
       reportEditClear();
       reportCreateClear();
+      props.setIsPreviewView(false);
     };
   }, []);
 
