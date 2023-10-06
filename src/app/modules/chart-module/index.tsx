@@ -61,7 +61,6 @@ export default function ChartModule() {
       get(charts, `[${chartType}].dimensions`, [])
     );
   }, [chartFromAPI, chartType]);
-  console.log(dimensions, "dimensions");
 
   const {
     loading,
