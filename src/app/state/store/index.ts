@@ -199,6 +199,7 @@ import {
   ChartsMappingState,
   ChartsChartTypeState,
   ChartsEnabledFilterOptionGroupsState,
+  ChartFromAPIState,
 } from "app/state/api/action-reducers/sync/charts";
 import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
@@ -239,6 +240,7 @@ import {
 import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
 import modulesFundingRequests from "app/state/api/action-reducers/cms/modulesFundingRequests";
 import GrantDetailPeriodGoalsObjectives from "app/state/api/action-reducers/grantDetail/goalsObjectives";
+import { EligibilityDataset } from "../api/action-reducers/datasets/eligibility";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -485,6 +487,10 @@ const storeContent: StoreModel = {
     DatasetGetList: persist(DatasetGetList),
     DatasetCreate: persist(DatasetCreate),
   },
+  //datasets api
+  Datasets: {
+    EligibilityDataset: persist(EligibilityDataset),
+  },
   //charts api
   charts: {
     ChartGet: persist(ChartGet),
@@ -498,6 +504,7 @@ const storeContent: StoreModel = {
     mapping: persist(ChartsMappingState),
     chartType: persist(ChartsChartTypeState),
     appliedFilters: persist(ChartsAppliedFiltersState),
+    chartFromAPI: persist(ChartFromAPIState),
     enabledFilterOptionGroups: persist(ChartsEnabledFilterOptionGroupsState),
   },
   //reports api

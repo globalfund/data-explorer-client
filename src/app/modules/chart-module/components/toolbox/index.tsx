@@ -183,6 +183,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
             filtersView={props.filtersView}
             save={onSave}
             dimensions={props.dimensions}
+            setDatasetName={props.setDatasetName}
           />
         )}
         {props.exportView && props.rawViz && (

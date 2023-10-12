@@ -44,6 +44,7 @@ export interface ChartsMappingStateModel {
       [key: string]: any;
     }
   >;
+
   reset: Action<ChartsMappingStateModel>;
 }
 
@@ -68,6 +69,36 @@ export const ChartsMappingState: ChartsMappingStateModel = {
         delete nextValue[key];
       });
       state.value = { ...nextValue };
+    }
+  ),
+  reset: action((state) => {
+    state.value = {};
+  }),
+};
+
+export interface ChartFromAPIStateModel {
+  value: {
+    [key: string]: any;
+  };
+  setValue: Action<
+    ChartFromAPIStateModel,
+    {
+      [key: string]: any;
+    }
+  >;
+  reset: Action<ChartFromAPIStateModel>;
+}
+
+export const ChartFromAPIState: ChartFromAPIStateModel = {
+  value: {},
+  setValue: action(
+    (
+      state,
+      payload: {
+        [key: string]: any;
+      }
+    ) => {
+      state.value = payload;
     }
   ),
   reset: action((state) => {

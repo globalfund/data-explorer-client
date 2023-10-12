@@ -55,12 +55,10 @@ function checkMappingAndDatasetIdNotEmpty(
 export function useChartsRawData(props: {
   visualOptions: any;
   setVisualOptions: (value: any) => void;
-  chartFromAPI: ChartRenderedItem | null;
-  setChartFromAPI: (value: ChartRenderedItem) => void;
+
   inChartWrapper?: boolean;
 }) {
-  const { visualOptions, chartFromAPI, setVisualOptions, setChartFromAPI } =
-    props;
+  const { visualOptions, setVisualOptions } = props;
 
   const { page, view } = useParams<{ page: string; view?: string }>();
 
@@ -77,6 +75,12 @@ export function useChartsRawData(props: {
   );
   const setAllAppliedFilters = useStoreActions(
     (actions) => actions.charts.appliedFilters.setAll
+  );
+  const setChartFromAPI = useStoreActions(
+    (actions) => actions.charts.chartFromAPI.setValue
+  );
+  const chartFromAPI = useStoreState(
+    (state) => state.charts.chartFromAPI.value
   );
   const setEnabledFilterOptionGroups = useStoreActions(
     (actions) => actions.charts.enabledFilterOptionGroups.setValue

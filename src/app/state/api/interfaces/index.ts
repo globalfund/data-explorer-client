@@ -68,6 +68,7 @@ import {
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/data-themes/filters";
 import {
+  ChartFromAPIStateModel,
   ChartsActivePanelsStateModel,
   ChartsChartTypeStateModel,
   ChartsDatasetStateModel,
@@ -293,7 +294,6 @@ export interface StoreModel {
   DonorFilterOptions: ApiCallModel;
 
   //data themes api
-
   dataThemes: {
     activeTabIndex: DataThemesIndexStateModel;
     activeVizIndex: DataThemesIndexStateModel;
@@ -323,8 +323,11 @@ export interface StoreModel {
     DatasetCreate: ApiCallModel;
   };
 
+  //datasetsApi
+  Datasets: {
+    EligibilityDataset: ApiCallModel;
+  };
   //charts api
-
   charts: {
     ChartGet: ApiCallModel;
     ChartCreate: ApiCallModel;
@@ -337,10 +340,11 @@ export interface StoreModel {
     mapping: ChartsMappingStateModel;
     chartType: ChartsChartTypeStateModel;
     appliedFilters: ChartsAppliedFiltersStateModel;
+    chartFromAPI: ChartFromAPIStateModel;
     enabledFilterOptionGroups: ChartsEnabledFilterOptionGroupsStateModel;
   };
-  //reports api
 
+  //reports api
   reports: {
     ReportGet: ApiCallModel;
     ReportCreate: ApiCallModel;

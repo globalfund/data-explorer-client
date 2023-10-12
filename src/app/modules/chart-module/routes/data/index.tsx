@@ -6,7 +6,7 @@ import { ChartLoader } from "app/modules/common/page-loader";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import ChartPlaceholder from "app/modules/chart-module/components/placeholder";
 
-export function ChartModuleDataView(props: { datasetName?: string }) {
+export function ChartModuleDataView(props: { datasetName: string }) {
   useTitle("DX DataXplorer - Select Data");
 
   return (

@@ -93,6 +93,7 @@ interface ChartToolBoxStepsProps {
   loadDataset: (endpoint: string) => Promise<boolean>;
   activeStep: ToolboxNavType;
   dimensions: any[];
+  setDatasetName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
@@ -158,7 +159,13 @@ export function ChartToolBoxSteps(props: ChartToolBoxStepsProps) {
     switch (props.activeStep) {
       case "dataset":
       case "selectDataset":
-        return <DatasetPanel loadDataset={loadDataset} expanded={expanded} />;
+        return (
+          <DatasetPanel
+            loadDataset={loadDataset}
+            expanded={expanded}
+            setDatasetName={props.setDatasetName}
+          />
+        );
       case "chart":
         return <ChartToolBoxChartType />;
       case "mapping":

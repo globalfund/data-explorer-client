@@ -14,11 +14,11 @@ import { DatasetListItemAPIModel } from "app/modules/datasets-module/data";
 export const DEFAULT_DATASETS = [
   {
     name: "Pledges & Contributions",
-    id: "pledges-contributions",
+    id: "pledges-contributions-dataset",
   },
   {
     name: "Eligibility",
-    id: "eligibility",
+    id: "eligibility-dataset",
   },
   {
     name: "Allocations",
@@ -49,11 +49,13 @@ export const DEFAULT_DATASETS = [
 interface ChartToolBoxSelectDatasetProps {
   expanded: boolean;
   loadDataset: (endpoint: string) => Promise<boolean>;
+  setDatasetName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const DatasetPanel = (props: {
   loadDataset: (endpoint: string) => Promise<boolean>;
   expanded: number;
+  setDatasetName: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   return (
     <div>
@@ -74,6 +76,7 @@ export const DatasetPanel = (props: {
         <ChartToolBoxSelectDataset
           loadDataset={props.loadDataset}
           expanded={props.expanded === 1}
+          setDatasetName={props.setDatasetName}
         />
       </div>
     </div>
@@ -87,17 +90,11 @@ function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
   const [displayDatasets, setDisplayDatasets] = React.useState(true);
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
-  const datasetsFromApi = useStoreState(
-    (state) =>
-      get(
-        state,
-        "dataThemes.DatasetGetList.crudData",
-        DEFAULT_DATASETS
-      ) as DatasetListItemAPIModel[]
-  );
+  const datasetsFromApi = DEFAULT_DATASETS;
   const setDataset = useStoreActions(
     (actions) => actions.charts.dataset.setValue
   );
+
   const resetMapping = useStoreActions(
     (actions) => actions.charts.mapping.reset
   );
@@ -106,7 +103,10 @@ function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
       ? DEFAULT_DATASETS
       : datasetsFromApi;
 
-  const isDatasetSelected = find(datasets, { id: dataset });
+  const isDatasetSelected = find(datasets, { id: dataset }) as {
+    id: string;
+    name: string;
+  };
 
   const handleClick = () => {
     setDisplayDatasets(!displayDatasets);
@@ -128,6 +128,10 @@ function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
       history.push(`/chart/${page}/preview-data`);
     });
   };
+
+  React.useEffect(() => {
+    props.setDatasetName(isDatasetSelected?.name);
+  }, [dataset]);
 
   return (
     <div
@@ -231,10 +235,7 @@ function ChartToolBoxSelectDataset(props: ChartToolBoxSelectDatasetProps) {
             {datasets?.map((item) => (
               <button
                 key={item.id}
-                onClick={handleItemClick(
-                  `chart/sample-data/${item.id}`,
-                  item.id
-                )}
+                onClick={handleItemClick(`${item.id}`, item.id)}
                 css={`
                   height: 31px;
                   color: ${item.id === dataset ? "#FFF" : "#262c34"};

@@ -86,60 +86,62 @@ export default function PreviewTable(props: PreviewTableProps) {
                     padding: 0rem 0.4rem;
                   `}
                 >
-                  {props.columns.map((val, index) => {
-                    return (
-                      <TableCell
-                        key={val.key}
-                        css={`
-                          border-left: ${index == 0 ? "none" : "auto"};
-                          border-top-left-radius: ${index == 0 ? "5px" : "0"};
-                        `}
-                      >
-                        {index !== 0 && (
-                          <div
-                            css={`
-                              display: flex;
-                              justify-content: space-between;
-                              align-items: center;
-                              gap: 1rem;
-                            `}
-                          >
+                  {[{ key: "index", type: "number" }, ...props.columns].map(
+                    (val, index) => {
+                      return (
+                        <TableCell
+                          key={val.key}
+                          css={`
+                            border-left: ${index == 0 ? "none" : "auto"};
+                            border-top-left-radius: ${index == 0 ? "5px" : "0"};
+                          `}
+                        >
+                          {index !== 0 && (
                             <div
                               css={`
-                                width: 25px;
-                                height: 25px;
-                                border-radius: 50%;
-                                padding: 3px;
-                                justify-content: center;
                                 display: flex;
+                                justify-content: space-between;
                                 align-items: center;
-                                background: #ffffff;
+                                gap: 1rem;
                               `}
                             >
-                              {val.type === "string" ? "Aa" : "#"}
-                            </div>
+                              <div
+                                css={`
+                                  width: 25px;
+                                  height: 25px;
+                                  border-radius: 50%;
+                                  padding: 3px;
+                                  justify-content: center;
+                                  display: flex;
+                                  align-items: center;
+                                  background: #ffffff;
+                                `}
+                              >
+                                {val.type === "string" ? "Aa" : "#"}
+                              </div>
 
-                            <p
-                              css={`
-                                margin: 0;
-                                overflow: clip;
-                                max-width: 220px;
-                                text-align: left;
-                                line-height: 17px;
-                                white-space: nowrap;
-                                text-overflow: ellipsis;
-                              `}
-                            >
-                              <b>{val.key}</b>
-                            </p>
-                            <IconButton>
-                              <SortIcon />
-                            </IconButton>
-                          </div>
-                        )}
-                      </TableCell>
-                    );
-                  })}
+                              <p
+                                css={`
+                                  margin: 0;
+                                  overflow: clip;
+                                  max-width: 220px;
+                                  text-align: left;
+                                  line-height: 17px;
+                                  white-space: nowrap;
+                                  text-overflow: ellipsis;
+                                `}
+                              >
+                                <b>{val.key}</b>
+                              </p>
+                              <IconButton>
+                                <SortIcon />
+                              </IconButton>
+                            </div>
+                          )}
+                        </TableCell>
+                      );
+                    }
+                  )}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -167,19 +169,34 @@ export default function PreviewTable(props: PreviewTableProps) {
                             background: #f9f9f9;
                           `}
                         >
-                          <StatisticDisplay type={val.type} data={val.data} />
+                          {/* <StatisticDisplay type={val.type} data={val.data} /> */}
                         </div>
                       )}
                     </TableCell>
                   ))}
                 </TableRow>
-                {props.tableData.map((data) => (
+                {props.tableData.map((data, idx) => (
                   <TableRow
                     key={Object.values(data).join("-")}
                     css={`
                       background: #fff;
                     `}
                   >
+                    <TableCell key={"index"}>
+                      <p
+                        css={`
+                          margin: 0;
+                          overflow: clip;
+                          max-width: 220px;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          min-width: ${"30px"};
+                          text-align: ${"center"};
+                        `}
+                      >
+                        {idx + 1}
+                      </p>
+                    </TableCell>
                     {props.columns.map((val, index) => (
                       <TableCell key={val.key}>
                         <p

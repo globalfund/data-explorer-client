@@ -32,25 +32,21 @@ import {
   ChartAPIModel,
   routeToConfig,
   emptyChartAPI,
-  ChartRenderedItem,
   defaultChartOptions,
 } from "app/modules/chart-module/data";
 import { IHeaderDetails } from "app/modules/report-module/components/right-panel/data";
-import { DEFAULT_DATASETS } from "app/modules/chart-module/components/toolbox/views/steps/panels-content/SelectDataset";
-import { DatasetListItemAPIModel } from "app/modules/datasets-module/data";
 
 export default function ChartModule() {
-  const history = useHistory();
   const { page, view } = useParams<{ page: string; view?: string }>();
-  const [chartFromAPI, setChartFromAPI] =
-    React.useState<ChartRenderedItem | null>(null);
   const [visualOptions, setVisualOptions] = useSessionStorage<any>(
     "visualOptions",
     {}
   );
   const [rawViz, setRawViz] = React.useState<any>(null);
   const [chartName, setChartName] = React.useState("My First Chart");
+  const [datasetName, setDatasetName] = React.useState<string>("");
   const [toolboxOpen, setToolboxOpen] = React.useState(true);
+
   const {
     loading,
     dataTypes,
@@ -62,11 +58,12 @@ export default function ChartModule() {
   } = useChartsRawData({
     visualOptions,
     setVisualOptions,
-    setChartFromAPI,
-    chartFromAPI,
   });
 
   const chartType = useStoreState((state) => state.charts.chartType.value);
+  const chartFromAPI = useStoreState(
+    (state) => state.charts.chartFromAPI.value
+  );
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const isSaveLoading = useStoreState(
     (state) => state.charts.ChartCreate.loading
@@ -76,10 +73,6 @@ export default function ChartModule() {
   );
 
   const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
-  const loadDatasets = useStoreActions(
-    (actions) => actions.dataThemes.DatasetGetList.fetch
-  );
-
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
@@ -96,6 +89,9 @@ export default function ChartModule() {
   const resetChartType = useStoreActions(
     (actions) => actions.charts.chartType.reset
   );
+  const resetChartFromAPI = useStoreActions(
+    (actions) => actions.charts.chartFromAPI.reset
+  );
   const resetDataset = useStoreActions(
     (actions) => actions.charts.dataset.reset
   );
@@ -110,15 +106,6 @@ export default function ChartModule() {
   const dataset = useStoreState((state) => state.charts.dataset.value);
 
   const config = get(routeToConfig, `["${view}"]`, routeToConfig.preview);
-  const datasetsFromApi = useStoreState(
-    (state) =>
-      get(
-        state,
-        "dataThemes.DatasetGetList.crudData",
-        DEFAULT_DATASETS
-      ) as DatasetListItemAPIModel[]
-  );
-  const datasetName = datasetsFromApi?.find((d) => d.id === dataset)?.name;
 
   const content = React.useMemo(
     () => get(chartFromAPI, "renderedContent", ""),
@@ -204,6 +191,7 @@ export default function ChartModule() {
     resetChartType();
     resetAppliedFilters();
     resetEnabledFilterOptionGroups();
+    resetChartFromAPI();
   }
 
   function clearChartBuilder() {
@@ -259,9 +247,7 @@ export default function ChartModule() {
   React.useEffect(() => {
     document.body.style.background = "white";
     if (page === "new" && dataset) {
-      loadDataset(`/chart/sample-data/${dataset}`).then(() => {
-        history.push(`/chart/${page}/preview-data`);
-      });
+      loadDataset(dataset);
     }
     return () => {
       document.body.style.background =
@@ -286,10 +272,6 @@ export default function ChartModule() {
   }, [chartType, loading]);
 
   React.useEffect(() => {
-    loadDatasets({
-      storeInCrudData: true,
-      filterString: `filter={"where":{"name":{"like":".*","options":"i"}},"order":"createdDate desc"}`,
-    });
     if (page !== "new") {
       loadChart({ getId: page });
     } else {
@@ -345,6 +327,7 @@ export default function ChartModule() {
         previewMode={!isEditMode && page !== "new"}
         forceNextEnabled={getForceNextEnabledValue(view)}
         dimensions={dimensions}
+        setDatasetName={setDatasetName}
       />
       <div
         css={`
@@ -435,6 +418,7 @@ export default function ChartModule() {
               loading={loading}
               data={sampleData}
               loadDataset={loadDataset}
+              datasetName={datasetName}
               stats={dataStats}
               filterOptionGroups={filterOptionGroups}
             />

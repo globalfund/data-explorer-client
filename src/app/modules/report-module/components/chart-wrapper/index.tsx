@@ -2,11 +2,7 @@ import React from "react";
 import get from "lodash/get";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
-import {
-  ChartAPIModel,
-  ChartRenderedItem,
-  emptyChartAPI,
-} from "app/modules/chart-module/data";
+import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 
@@ -23,12 +19,13 @@ export function ReportChartWrapper(props: Props) {
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
   );
 
+  const chartFromAPI = useStoreState(
+    (state) => state.charts.chartFromAPI.value
+  );
+
   const [chartName, setChartName] = React.useState<string>("");
   const setRawViz = React.useState<any>(null)[1];
   const [visualOptions, setVisualOptions] = React.useState({});
-
-  const [chartFromAPI, setChartFromAPI] =
-    React.useState<ChartRenderedItem | null>(null);
 
   const renderedChart = React.useMemo(() => {
     return chartFromAPI
@@ -63,8 +60,6 @@ export function ReportChartWrapper(props: Props) {
   const { loadDataFromAPI, loading, notFound } = useChartsRawData({
     visualOptions,
     setVisualOptions,
-    setChartFromAPI,
-    chartFromAPI,
     inChartWrapper: true,
   });
 

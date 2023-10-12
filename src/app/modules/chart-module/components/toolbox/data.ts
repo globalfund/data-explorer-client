@@ -13,6 +13,8 @@ export interface ChartToolBoxProps {
   visualOptions: any;
   dimensions: any[];
   filtersView: boolean;
+  setDatasetName: React.Dispatch<React.SetStateAction<string>>;
+
   openToolbox: boolean;
   onClose: () => void;
   onOpen: () => void;
