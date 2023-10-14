@@ -68,7 +68,6 @@ import {
 } from "app/state/api/action-reducers/sync/data-themes";
 import { DataThemesAppliedFiltersStateModel } from "app/state/api/action-reducers/sync/data-themes/filters";
 import {
-  ChartFromAPIStateModel,
   ChartsActivePanelsStateModel,
   ChartsChartTypeStateModel,
   ChartsDatasetStateModel,
@@ -340,7 +339,6 @@ export interface StoreModel {
     mapping: ChartsMappingStateModel;
     chartType: ChartsChartTypeStateModel;
     appliedFilters: ChartsAppliedFiltersStateModel;
-    chartFromAPI: ChartFromAPIStateModel;
     enabledFilterOptionGroups: ChartsEnabledFilterOptionGroupsStateModel;
   };
 

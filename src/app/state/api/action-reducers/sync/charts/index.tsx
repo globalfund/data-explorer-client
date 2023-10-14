@@ -76,36 +76,6 @@ export const ChartsMappingState: ChartsMappingStateModel = {
   }),
 };
 
-export interface ChartFromAPIStateModel {
-  value: {
-    [key: string]: any;
-  };
-  setValue: Action<
-    ChartFromAPIStateModel,
-    {
-      [key: string]: any;
-    }
-  >;
-  reset: Action<ChartFromAPIStateModel>;
-}
-
-export const ChartFromAPIState: ChartFromAPIStateModel = {
-  value: {},
-  setValue: action(
-    (
-      state,
-      payload: {
-        [key: string]: any;
-      }
-    ) => {
-      state.value = payload;
-    }
-  ),
-  reset: action((state) => {
-    state.value = {};
-  }),
-};
-
 export interface ChartsChartTypeStateModel {
   value: string | null;
   setValue: Action<ChartsChartTypeStateModel, string | null>;

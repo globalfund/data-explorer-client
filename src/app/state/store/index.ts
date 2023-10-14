@@ -199,7 +199,6 @@ import {
   ChartsMappingState,
   ChartsChartTypeState,
   ChartsEnabledFilterOptionGroupsState,
-  ChartFromAPIState,
 } from "app/state/api/action-reducers/sync/charts";
 import { ChartsAppliedFiltersState } from "app/state/api/action-reducers/sync/charts/filters";
 import { DataThemesAppliedFiltersState } from "app/state/api/action-reducers/sync/data-themes/filters";
@@ -504,7 +503,6 @@ const storeContent: StoreModel = {
     mapping: persist(ChartsMappingState),
     chartType: persist(ChartsChartTypeState),
     appliedFilters: persist(ChartsAppliedFiltersState),
-    chartFromAPI: persist(ChartFromAPIState),
     enabledFilterOptionGroups: persist(ChartsEnabledFilterOptionGroupsState),
   },
   //reports api
