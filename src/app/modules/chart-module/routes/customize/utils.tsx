@@ -11,7 +11,7 @@ import CustomizeOptionColor from "app/modules/chart-module/routes/customize/comp
 import ChartOptionBoolean from "app/modules/chart-module/routes/customize/components/ChartOptionBoolean";
 import CustomizeOptionNumber from "app/modules/chart-module/routes/customize/components/ChartOptionNumber";
 import ChartOptionColorScaleWrapper from "app/modules/chart-module/routes/customize/components/ChartOptionColorScaleWrapper";
-import ChartOptionCheckboxes from "app/modules/chart-module/routes/customize/components/ChartOptionCheckboxes";
+import ChartOptionRadioGroup from "app/modules/chart-module/routes/customize/components/ChartOptionRadioGroup";
 
 const CHART_OPTION_COMPONENTS = {
   number: CustomizeOptionNumber,
@@ -19,7 +19,7 @@ const CHART_OPTION_COMPONENTS = {
   color: CustomizeOptionColor,
   colorScale: ChartOptionColorScaleWrapper,
   boolean: ChartOptionBoolean,
-  checkbox: ChartOptionCheckboxes,
+  radioGroup: ChartOptionRadioGroup,
 };
 
 export function getPartialMapping(mapping, dimension, repeatIndex) {

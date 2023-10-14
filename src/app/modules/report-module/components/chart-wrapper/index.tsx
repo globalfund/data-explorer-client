@@ -12,20 +12,23 @@ interface Props {
 
 export function ReportChartWrapper(props: Props) {
   const containerRef = React.useRef<HTMLDivElement>(null);
-  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
+  const [visualOptions, setVisualOptions] = React.useState({});
+  const [chartName, setChartName] = React.useState<string>("");
 
+  const { loadDataFromAPI, loading, notFound, chartFromAPI } = useChartsRawData(
+    {
+      visualOptions,
+      setVisualOptions,
+      inChartWrapper: true,
+    }
+  );
+  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
   );
 
-  const chartFromAPI = useStoreState(
-    (state) => state.charts.chartFromAPI.value
-  );
-
-  const [chartName, setChartName] = React.useState<string>("");
   const setRawViz = React.useState<any>(null)[1];
-  const [visualOptions, setVisualOptions] = React.useState({});
 
   const renderedChart = React.useMemo(() => {
     return chartFromAPI
@@ -56,12 +59,6 @@ export function ReportChartWrapper(props: Props) {
       }
     }
   }, [loadedChart]);
-
-  const { loadDataFromAPI, loading, notFound } = useChartsRawData({
-    visualOptions,
-    setVisualOptions,
-    inChartWrapper: true,
-  });
 
   React.useEffect(() => {
     if (props.id) {

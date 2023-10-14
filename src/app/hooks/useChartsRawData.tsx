@@ -69,6 +69,11 @@ export function useChartsRawData(props: {
   const [notFound, setNotFound] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
+  const localChartFromAPI = JSON.parse(
+    localStorage.getItem("chartFromAPI") as string
+  );
+  const [chartFromAPI, setChartFromAPI] =
+    React.useState<any>(localChartFromAPI);
 
   const appliedFilters = useStoreState(
     (state) => state.charts.appliedFilters.value
@@ -76,12 +81,11 @@ export function useChartsRawData(props: {
   const setAllAppliedFilters = useStoreActions(
     (actions) => actions.charts.appliedFilters.setAll
   );
-  const setChartFromAPI = useStoreActions(
-    (actions) => actions.charts.chartFromAPI.setValue
-  );
-  const chartFromAPI = useStoreState(
-    (state) => state.charts.chartFromAPI.value
-  );
+
+  React.useEffect(() => {
+    localStorage.setItem("chartFromAPI", JSON.stringify(chartFromAPI));
+  }, [chartFromAPI]);
+
   const setEnabledFilterOptionGroups = useStoreActions(
     (actions) => actions.charts.enabledFilterOptionGroups.setValue
   );
@@ -272,5 +276,7 @@ export function useChartsRawData(props: {
     dataTotalCount,
     loadDataset,
     loadDataFromAPI,
+    chartFromAPI,
+    setChartFromAPI,
   };
 }

@@ -55,15 +55,14 @@ export default function ChartModule() {
     isEditMode,
     loadDataset,
     loadDataFromAPI,
+    chartFromAPI,
+    setChartFromAPI,
   } = useChartsRawData({
     visualOptions,
     setVisualOptions,
   });
 
   const chartType = useStoreState((state) => state.charts.chartType.value);
-  const chartFromAPI = useStoreState(
-    (state) => state.charts.chartFromAPI.value
-  );
   const mapping = useStoreState((state) => state.charts.mapping.value);
   const isSaveLoading = useStoreState(
     (state) => state.charts.ChartCreate.loading
@@ -71,7 +70,6 @@ export default function ChartModule() {
   const isChartLoading = useStoreState(
     (state) => state.charts.ChartGet.loading
   );
-
   const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
   const loadedChart = useStoreState(
     (state) =>
@@ -192,6 +190,7 @@ export default function ChartModule() {
     resetAppliedFilters();
     resetEnabledFilterOptionGroups();
     resetChartFromAPI();
+    clearChart();
   }
 
   function clearChartBuilder() {
@@ -252,10 +251,14 @@ export default function ChartModule() {
     return () => {
       document.body.style.background =
         "linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #f2f7fd 100%)";
-      clearChart();
       clearChartBuilder();
     };
   }, []);
+
+  //empty chart when chart type and dataset types changes
+  React.useEffect(() => {
+    setChartFromAPI(null);
+  }, [chartType, dataTypes]);
 
   React.useEffect(() => {
     if (!view && toolboxOpen) {

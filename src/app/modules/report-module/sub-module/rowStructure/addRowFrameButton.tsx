@@ -122,7 +122,7 @@ export default function AddRowFrameButton(props: AddRowFrameProps) {
       `}
       ref={drop}
     >
-      <DarkTooltip title="Add new row frame" placement="bottom" color="pink">
+      <DarkTooltip title="Add new row frame" placement="bottom">
         <div
           css={`
             width: 100%;

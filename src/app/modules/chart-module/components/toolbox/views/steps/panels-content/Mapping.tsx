@@ -112,7 +112,6 @@ export function ChartToolBoxMapping(props: ChartToolBoxMappingProps) {
           css={`
             z-index: 1030;
             position: relative;
-            background: pink;
           `}
         >
           {nonStaticDimensions?.map(

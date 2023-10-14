@@ -142,15 +142,15 @@ export function useDataThemesEchart() {
     const {
       // artboard
       height,
-      width,
+      background,
+      // margins
       marginTop,
       marginRight,
       marginBottom,
       marginLeft,
-      background,
       // Tooltip
       palette,
-      roam,
+
       showTooltip,
       isMonetaryValue,
     } = visualOptions;
@@ -159,7 +159,7 @@ export function useDataThemesEchart() {
 
     const sizes = data.results.map((d: any) => d.value);
 
-    return {
+    const option = {
       tooltip: {
         trigger: showTooltip ? "item" : "none",
         showDelay: 0,
@@ -175,17 +175,12 @@ export function useDataThemesEchart() {
           }
         },
       },
-      backgroundColor: background,
-
       visualMap: {
         left: "right",
         min: Math.min(...sizes),
         max: Math.max(...sizes),
         inRange: {
-          color: checkLists
-            .filter((item) => palette[item.label])
-            .map((item) => item.value)
-            .flat(1),
+          color: checkLists.find((item) => item.label === palette)?.value,
         },
         text: ["High", "Low"],
         calculable: true,
@@ -194,8 +189,7 @@ export function useDataThemesEchart() {
         {
           type: "map",
           height,
-          width,
-          roam: roam,
+          roam: false,
           map: "World",
           data: data.results,
           top: marginTop,
@@ -216,6 +210,8 @@ export function useDataThemesEchart() {
         },
       ],
     };
+
+    return option;
   }
 
   function echartsLinechart(data: any, visualOptions: any) {
