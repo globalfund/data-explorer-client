@@ -87,9 +87,7 @@ export default function ChartModule() {
   const resetChartType = useStoreActions(
     (actions) => actions.charts.chartType.reset
   );
-  const resetChartFromAPI = useStoreActions(
-    (actions) => actions.charts.chartFromAPI.reset
-  );
+
   const resetDataset = useStoreActions(
     (actions) => actions.charts.dataset.reset
   );
@@ -189,7 +187,7 @@ export default function ChartModule() {
     resetChartType();
     resetAppliedFilters();
     resetEnabledFilterOptionGroups();
-    resetChartFromAPI();
+
     clearChart();
   }
 
