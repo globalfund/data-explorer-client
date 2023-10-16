@@ -3,13 +3,14 @@ import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { ChartBuilderExportProps } from "app/modules/chart-module/routes/export/data";
 import { styles as commonStyles } from "app/modules/data-themes-module/sub-modules/theme-builder/views/common/styles";
 
-export function ChartBuilderExport(props: ChartBuilderExportProps) {
+function ChartBuilderExport(props: ChartBuilderExportProps) {
   useTitle("DX DataXplorer - Export");
 
   const history = useHistory();
@@ -56,3 +57,5 @@ export function ChartBuilderExport(props: ChartBuilderExportProps) {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ChartBuilderExport);

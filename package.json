@@ -7,6 +7,7 @@
     "url": "https://github.com/zimmerman-team/dx.client.git"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.1",
     "@craco/craco": "^6.4.3",
     "@devhammed/use-cookie": "^1.1.1",
     "@draft-js-plugins/anchor": "^4.1.4",

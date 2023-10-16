@@ -11,8 +11,9 @@ import {
   ChartTypeModel,
   ChartBuilderChartTypeProps,
 } from "app/modules/chart-module/routes/chart-type/data";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
-export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
+function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
   useTitle("DX DataXplorer - Chart Type");
 
   const history = useHistory();
@@ -120,3 +121,5 @@ export function ChartBuilderChartType(props: ChartBuilderChartTypeProps) {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ChartBuilderChartType);

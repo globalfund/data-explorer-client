@@ -1,16 +1,17 @@
-import React, { useRef } from "react";
+import React from "react";
 import axios from "axios";
 import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import { useSessionStorage } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
+import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import ReformedGridItem from "app/modules/home-module/components/Datasets/reformedGridItem";
-import DatasetAddnewCard from "./datasetAddNewCard";
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
+import DatasetAddnewCard from "app/modules/home-module/components/Datasets/datasetAddNewCard";
 
 interface Props {
   sortBy: string;
@@ -20,7 +21,8 @@ interface Props {
 }
 
 export default function DatasetsGrid(props: Props) {
-  const observerTarget = useRef(null);
+  const observerTarget = React.useRef(null);
+  const token = useSessionStorage("authToken", "")[0];
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
@@ -56,21 +58,27 @@ export default function DatasetsGrid(props: Props) {
     //refrain from loading data if all the data is loaded
     if (loadedDatasets.length !== datasetCount) {
       await loadDatasets({
+        token,
         storeInCrudData: true,
         filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
       });
     }
   };
 
-  const reloadData = () => {
-    loadDatasetCount({});
+  const reloadData = async () => {
+    if (token) {
+      loadDatasetCount({ token });
+    }
     setLoadedDatasets([]);
     setOffset(0);
     loadData(props.searchStr, props.sortBy);
   };
+
   React.useEffect(() => {
-    loadDatasetCount({});
-  }, []);
+    if (token) {
+      loadDatasetCount({ token });
+    }
+  }, [token]);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
@@ -88,7 +96,7 @@ export default function DatasetsGrid(props: Props) {
     return () => {
       setOffset(0);
     };
-  }, [props.sortBy, datasetCount]);
+  }, [props.sortBy, token, datasetCount]);
 
   const handleDelete = (id: string) => {
     deleteDataset(id);
@@ -118,11 +126,16 @@ export default function DatasetsGrid(props: Props) {
       ) as DatasetListItemAPIModel[]
   );
 
-  function deleteDataset(id: string) {
+  async function deleteDataset(id: string) {
     axios
-      .delete(`${process.env.REACT_APP_API}/datasets/${id}`)
+      .delete(`${process.env.REACT_APP_API}/datasets/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         loadDatasets({
+          token,
           storeInCrudData: true,
           filterString: "filter[order]=createdDate desc",
         });
@@ -134,6 +147,7 @@ export default function DatasetsGrid(props: Props) {
     clearDatasets();
     setLoadedDatasets([]);
   }, []);
+
   React.useEffect(() => {
     if (datasets === null) {
       setLoadedDatasets([]);

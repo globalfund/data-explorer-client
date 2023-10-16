@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React from "react";
 import axios from "axios";
 import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import { useSessionStorage } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
 import { ReportModel } from "app/modules/report-module/data";
 import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
@@ -22,7 +23,8 @@ interface Props {
 }
 
 export default function ReportsGrid(props: Props) {
-  const observerTarget = useRef(null);
+  const observerTarget = React.useRef(null);
+  const token = useSessionStorage("authToken", "")[0];
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
@@ -56,6 +58,7 @@ export default function ReportsGrid(props: Props) {
     //refrain from loading data if all the data is loaded
     if (loadedReports.length !== reportsCount) {
       await loadReports({
+        token,
         storeInCrudData: true,
         filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
       });
@@ -64,13 +67,18 @@ export default function ReportsGrid(props: Props) {
 
   const reloadData = async () => {
     setOffset(0);
-    await loadReportsCount({});
+    if (token) {
+      await loadReportsCount({ token });
+    }
     setLoadedReports([]);
     loadData(props.searchStr, props.sortBy);
   };
+
   React.useEffect(() => {
-    loadReportsCount({});
-  }, []);
+    if (token) {
+      loadReportsCount({ token });
+    }
+  }, [token]);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
@@ -89,7 +97,7 @@ export default function ReportsGrid(props: Props) {
     return () => {
       setOffset(0);
     };
-  }, [props.sortBy, reportsCount]);
+  }, [props.sortBy, token, reportsCount]);
 
   const handleDelete = (index?: number) => {
     setModalDisplay(false);

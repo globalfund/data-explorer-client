@@ -1,30 +1,32 @@
 import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
 import isEmpty from "lodash/isEmpty";
 import { DndProvider } from "react-dnd";
 import { useRecoilState } from "recoil";
-import Container from "@material-ui/core/Container";
+import { useAuth0 } from "@auth0/auth0-react";
+import { useSessionStorage } from "react-use";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { PageLoader } from "app/modules/common/page-loader";
 import { NoMatchPage } from "app/modules/common/no-match-page";
 import { IHeaderDetails } from "./components/right-panel/data";
+import ReportEditView from "app/modules/report-module/views/edit";
 import AITemplate from "app/modules/report-module/views/ai-template";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import { ReportEditView } from "app/modules/report-module/views/edit";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
+import { SubheaderToolbar } from "../common/subheader-toolbar/SubheaderToolbar";
 import {
   ReportContentHeightsType,
   ReportContentWidthsType,
   ReportModel,
   emptyReport,
 } from "app/modules/report-module/data";
-import { ReportCreateView } from "app/modules/report-module/views/create";
+import ReportCreateView from "app/modules/report-module/views/create";
 import { ReportPreviewView } from "app/modules/report-module/views/preview";
 import { ReportInitialView } from "app/modules/report-module/views/initial";
+import { IFramesArray } from "app/modules/report-module/views/create/data";
 import { ReportRightPanel } from "app/modules/report-module/components/right-panel";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
-
 import {
   Route,
   Switch,
@@ -32,6 +34,10 @@ import {
   useParams,
   Redirect,
 } from "react-router-dom";
+import {
+  persistedReportStateAtom,
+  reportRightPanelViewAtom,
+} from "app/state/recoil/atoms";
 
 interface RowFrameProps {
   structure:
@@ -49,13 +55,9 @@ interface RowFrameProps {
   contentTypes: ("text" | "divider" | "chart" | null)[];
   type: "rowFrame" | "divider";
 }
-import {
-  persistedReportStateAtom,
-  reportRightPanelViewAtom,
-} from "app/state/recoil/atoms";
-import { IFramesArray } from "app/modules/report-module/views/create/data";
 
 export default function ReportModule() {
+  const { user } = useAuth0();
   const history = useHistory();
   const { page, view } = useParams<{
     page: string;
@@ -67,6 +69,8 @@ export default function ReportModule() {
   const AppliedHeaderDetailsRef = React.useRef<IHeaderDetails>(
     {} as IHeaderDetails
   );
+
+  const token = useSessionStorage("authToken", "")[0];
 
   const setRightPanelView = useRecoilState(reportRightPanelViewAtom)[1];
 
@@ -346,6 +350,11 @@ export default function ReportModule() {
     (actions) => actions.reports.ReportUpdate.clear
   );
 
+  const reportError401 = useStoreState(
+    (state) =>
+      get(state.reports.ReportGet.errorData, "data.error.statusCode", 0) === 401
+  );
+
   //get current value of states for handlePersistReportState function
   headerDetailsRef.current = headerDetails;
   AppliedHeaderDetailsRef.current = appliedHeaderDetails;
@@ -397,12 +406,14 @@ export default function ReportModule() {
     setRightPanelOpen(true);
   };
 
-  const onSave = () => {
+  const onSave = async () => {
     const action = page === "new" ? reportCreate : reportEdit;
     action({
+      token,
       patchId: page === "new" ? undefined : page,
       values: {
         name: reportName,
+        authId: user?.sub,
         showHeader: headerDetails.showHeader,
         title: headerDetails.showHeader ? headerDetails.title : undefined,
         subTitle: convertToRaw(
@@ -429,7 +440,6 @@ export default function ReportModule() {
         backgroundColor: appliedHeaderDetails.backgroundColor,
         titleColor: appliedHeaderDetails.titleColor,
         descriptionColor: appliedHeaderDetails.descriptionColor,
-
         dateColor: appliedHeaderDetails.dateColor,
       },
     });
@@ -489,7 +499,7 @@ export default function ReportModule() {
   return (
     <DndProvider backend={HTML5Backend}>
       {(reportCreateLoading || reportEditLoading) && <PageLoader />}
-      {view !== "ai-template" && view !== "initial" && (
+      {!reportError401 && view !== "ai-template" && view !== "initial" && (
         <SubheaderToolbar
           pageType="report"
           onReportSave={onSave}
@@ -534,12 +544,10 @@ export default function ReportModule() {
       />
       <Switch>
         <Route path="/report/:page/initial">
-          <Container maxWidth="lg">
-            <ReportInitialView
-              resetReport={resetReport}
-              setButtonActive={handleSetButtonActive}
-            />
-          </Container>
+          <ReportInitialView
+            resetReport={resetReport}
+            setButtonActive={handleSetButtonActive}
+          />
         </Route>
         <Route path="/report/:page/ai-template">
           <AITemplate />

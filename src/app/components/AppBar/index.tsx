@@ -1,27 +1,27 @@
 import React from "react";
 import get from "lodash/get";
-import { useRecoilState } from "recoil";
+import Grid from "@material-ui/core/Grid";
+import { useAuth0 } from "@auth0/auth0-react";
+import Popover from "@material-ui/core/Popover";
 import Toolbar from "@material-ui/core/Toolbar";
 import MUIAppBar from "@material-ui/core/AppBar";
 import MenuItem from "@material-ui/core/MenuItem";
 import { useCMSData } from "app/hooks/useCMSData";
 import Container from "@material-ui/core/Container";
 import IconButton from "@material-ui/core/IconButton";
-import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import { withStyles } from "@material-ui/core/styles";
-import { homeDisplayAtom } from "app/state/recoil/atoms";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import IconChevronLeft from "@material-ui/icons/ChevronLeft";
+import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
+import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
+import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
 import {
   headercss,
   loginBtn,
   logocss,
   navLinkcss,
 } from "app/components/AppBar/style";
-import { MobileAppbarSearch } from "app/components/Mobile/AppBarSearch";
-import { NavLink, useLocation, useHistory, Link } from "react-router-dom";
-import { Grid, Popover } from "@material-ui/core";
 
 const TextHeader = (label: string) => (
   <h2
@@ -113,9 +113,10 @@ export function AppBar() {
   const cmsData = useCMSData({ returnData: true });
   const isMobile = useMediaQuery("(max-width: 767px)");
   const [openSearch, setOpenSearch] = React.useState(false);
-  const [display, setDisplay] = useRecoilState(homeDisplayAtom);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
   const navLocation = location.pathname.split("/").join("");
+
   function handleClick(event: React.MouseEvent<HTMLElement>) {
     setAnchorEl(event.currentTarget);
   }
@@ -152,9 +153,6 @@ export function AppBar() {
   if (location.pathname === "/" && isMobile) {
     return <React.Fragment />;
   }
-  const handlePath = (path: "charts" | "reports" | "data") => {
-    setDisplay(path);
-  };
 
   return (
     <MUIAppBar
@@ -217,21 +215,20 @@ export function AppBar() {
                   />
                 </NavLink>
               </Grid>
-
               <Grid
                 item
                 lg={9}
                 md={10}
                 sm={10}
                 css={`
+                  gap: 20px;
                   display: flex;
                   align-items: center;
                   justify-content: flex-end;
-                  gap: 20px;
                 `}
               >
                 <div css={navLinkcss("why-dx", navLocation)}>
-                  <NavLink to="/why-dx" onClick={() => handlePath("data")}>
+                  <NavLink to="/why-dx">
                     <b>Why Dx?</b>
                   </NavLink>
                 </div>
@@ -240,19 +237,18 @@ export function AppBar() {
                     <b>Explore Assets</b>
                   </NavLink>
                 </div>
-
                 <div css={navLinkcss("about", navLocation)}>
-                  <Link to="/about" onClick={() => handlePath("reports")}>
+                  <Link to="/about">
                     <b>About</b>
                   </Link>
                 </div>
                 <div css={navLinkcss("cases", navLocation)}>
-                  <Link to="/cases" onClick={() => handlePath("reports")}>
+                  <Link to="/cases">
                     <b>Cases </b>
                   </Link>
                 </div>
                 <div css={navLinkcss("contact", navLocation)}>
-                  <Link to="/contact" onClick={() => handlePath("reports")}>
+                  <Link to="/contact">
                     <b>Contact </b>
                   </Link>
                 </div>
@@ -267,6 +263,9 @@ export function AppBar() {
 }
 
 const ActionMenu = () => {
+  const history = useHistory();
+  const { user, isAuthenticated } = useAuth0();
+
   const [actionPopoverAnchorEl, setActionPopoverAnchorEl] =
     React.useState<HTMLButtonElement | null>(null);
 
@@ -280,10 +279,9 @@ const ActionMenu = () => {
     <div>
       <div
         css={`
-          display: flex;
           gap: 1px;
+          display: flex;
           position: relative;
-          width: 188px;
 
           button {
             outline: none;
@@ -298,7 +296,7 @@ const ActionMenu = () => {
             :nth-child(1) {
               width: 146px;
               height: 34px;
-              border-radius: 24px 0px 0px 24px;
+              border-radius: ${isAuthenticated ? "24px 0px 0px 24px" : "24px"};
               &:hover {
                 opacity: 1;
               }
@@ -318,18 +316,40 @@ const ActionMenu = () => {
           }
         `}
       >
-        <Link to="/report/new/initial">
-          <button>Create report</button>
-        </Link>
-        <button
-          onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
-            setActionPopoverAnchorEl(
-              actionPopoverAnchorEl ? null : event.currentTarget
-            );
-          }}
+        <Link
+          to={isAuthenticated ? "/report/new/initial" : "/onboarding/login"}
         >
-          <KeyboardArrowDownIcon />
-        </button>
+          <button>{isAuthenticated ? "Create report" : "Login"}</button>
+        </Link>
+        {isAuthenticated && (
+          <button
+            onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+              setActionPopoverAnchorEl(
+                actionPopoverAnchorEl ? null : event.currentTarget
+              );
+            }}
+          >
+            <KeyboardArrowDownIcon />
+          </button>
+        )}
+        {isAuthenticated && (
+          <button
+            onClick={() => history.push("/profile")}
+            css={`
+              min-width: 33px;
+              height: 33px;
+              display: flex;
+              margin-left: 20px;
+              border-radius: 50%;
+              align-items: center;
+              background: #b5b5db;
+              justify-content: center;
+            `}
+          >
+            {user?.given_name?.slice(0, 1)}
+            {user?.family_name?.slice(0, 1)}
+          </button>
+        )}
       </div>
       <Popover
         open={openActionPopover}

@@ -3,11 +3,11 @@ import find from "lodash/find";
 import { useDrag } from "react-dnd";
 import { useRecoilState } from "recoil";
 import Paper from "@material-ui/core/Paper";
+import { useSessionStorage } from "react-use";
 import MuiButton from "@material-ui/core/Button";
 import MenuItem from "@material-ui/core/MenuItem";
 import { EditorState, convertToRaw } from "draft-js";
 import { SearchIcon } from "app/assets/icons/Search";
-import IconButton from "@material-ui/core/IconButton";
 import { withStyles } from "@material-ui/core/styles";
 import { useHistory, useParams } from "react-router-dom";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
@@ -281,6 +281,8 @@ function ReportRightPanelCreateViewChartList(props: {
   reportName: string;
   handlePersistReportState: () => void;
 }) {
+  const token = useSessionStorage("authToken", "")[0];
+
   const [search, setSearch] = React.useState("");
   const [sortBy, setSortBy] = React.useState(sortByOptions[0]);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -301,10 +303,11 @@ function ReportRightPanelCreateViewChartList(props: {
 
   React.useEffect(() => {
     loadChartList({
+      token,
       storeInCrudData: true,
       filterString: `filter={"where":{"name":{"like":"${search}.*","options":"i"}},"order":"${sortBy.value}"}`,
     });
-  }, [search, sortBy]);
+  }, [token, search, sortBy]);
 
   return (
     <React.Fragment>

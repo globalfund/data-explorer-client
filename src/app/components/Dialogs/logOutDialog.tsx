@@ -1,7 +1,8 @@
-import { IconButton, Modal } from "@material-ui/core";
-import { CloseOutlined } from "@material-ui/icons";
 import React from "react";
+import { useAuth0 } from "@auth0/auth0-react";
 import { useStyles } from "./deleteChartDialog";
+import { CloseOutlined } from "@material-ui/icons";
+import { IconButton, Modal } from "@material-ui/core";
 
 interface Props {
   modalDisplay: boolean;
@@ -10,6 +11,8 @@ interface Props {
 
 export default function LogOutDialog(props: Props) {
   const classes = useStyles();
+  const { logout } = useAuth0();
+
   return (
     <div>
       <Modal
@@ -95,6 +98,13 @@ export default function LogOutDialog(props: Props) {
             </button>
             <button
               type="button"
+              onClick={() =>
+                logout({
+                  logoutParams: {
+                    redirectUri: window.location.origin,
+                  },
+                })
+              }
               css={`
                 background: #231d2c;
                 border-radius: 30px;

@@ -1,17 +1,18 @@
-import React, { useRef } from "react";
+import React from "react";
 import axios from "axios";
+import get from "lodash/get";
 import find from "lodash/find";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
+import { useSessionStorage } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
+import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import DeleteChartDialog from "app/components/Dialogs/deleteChartDialog";
 import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 import ChartAddnewCard from "./chartAddNewCard";
-import { useInfinityScroll } from "app/hooks/useInfinityScroll";
-import { get } from "lodash";
 
 interface Props {
   sortBy: string;
@@ -21,11 +22,13 @@ interface Props {
 }
 
 export default function ChartsGrid(props: Props) {
-  const observerTarget = useRef(null);
+  const observerTarget = React.useRef(null);
   const [cardId, setCardId] = React.useState<number>(0);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [loadedCharts, setLoadedCharts] = React.useState<any[]>([]);
+
+  const token = useSessionStorage("authToken", "")[0];
 
   const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
@@ -46,9 +49,7 @@ export default function ChartsGrid(props: Props) {
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
-  const loading = useStoreState(
-    (actions) => actions.charts.ChartGetList.loading
-  );
+
   const chartsLoadSuccess = useStoreState(
     (state) => state.charts.ChartGetList.success
   );
@@ -59,23 +60,29 @@ export default function ChartsGrid(props: Props) {
         ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     //refrain from loading data if all the data is loaded
-    if (loadedCharts.length !== ChartsCount) {
-      await loadCharts({
-        storeInCrudData: true,
-        filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
-      });
-    }
+    // if (loadedCharts.length !== ChartsCount) {
+    await loadCharts({
+      token,
+      storeInCrudData: true,
+      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
+    });
+    // }
   };
 
-  const reloadData = () => {
+  const reloadData = async () => {
     setOffset(0);
-    loadChartsCount({});
+    if (token) {
+      loadChartsCount({ token });
+    }
     setLoadedCharts([]);
     loadData(props.searchStr, props.sortBy);
   };
+
   React.useEffect(() => {
-    loadChartsCount({});
-  }, []);
+    loadChartsCount({
+      token,
+    });
+  }, [token]);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered

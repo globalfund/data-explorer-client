@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import get from "lodash/get";
 import { action, thunk } from "easy-peasy";
 import axios, { AxiosResponse } from "axios";
 import {
@@ -62,6 +63,7 @@ export const APIModel = <QueryModel, ResponseModel>(
         {
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${get(query, "token", undefined)}`,
           },
         }
       )
@@ -116,6 +118,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       .post(url, query.values, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })
       .then(
@@ -132,6 +135,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       .patch(`${url}/${query.patchId}`, query.values, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })
       .then(
@@ -145,6 +149,7 @@ export const APIModel = <QueryModel, ResponseModel>(
       .delete(`${url}/${query.deleteId}`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${get(query, "token", undefined)}`,
         },
       })
       .then(

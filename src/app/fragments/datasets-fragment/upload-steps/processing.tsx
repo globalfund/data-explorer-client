@@ -11,6 +11,7 @@ interface Props {
   percentageLoaded: number;
   estimatedUploadTime: number;
 }
+
 export default function Processing(props: Props) {
   const getTimeInHoursnMins = (time: number) => {
     const mft = Math.floor(time / 60);

@@ -47,9 +47,11 @@ export const actionbuttoncss = css`
     background: #a1aebd;
   }
 `;
+
 export const termsOfServiceCss = css`
+  width: 100%;
   font-family: "GothamNarrow-Book", "Helvetica Neue", sans-serif;
-  margin-top: -6px;
+
   > span {
     font-size: 12px;
   }

@@ -16,16 +16,16 @@ import {
 import { PageLoader } from "app/modules/common/page-loader";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
 import { NoMatchPage } from "app/modules/common/no-match-page";
-import { SubheaderToolbar } from "app/modules/common/subheader-toolbar";
-import { ChartBuilderLock } from "app/modules/chart-module/routes/lock";
-import { ChartModuleDataView } from "app/modules/chart-module/routes/data";
-import { ChartBuilderExport } from "app/modules/chart-module/routes/export";
-import { ChartBuilderMapping } from "app/modules/chart-module/routes/mapping";
+import ChartBuilderLock from "app/modules/chart-module/routes/lock";
+import ChartModuleDataView from "app/modules/chart-module/routes/data";
+import { SubheaderToolbar } from "../common/subheader-toolbar/SubheaderToolbar";
+import ChartBuilderExport from "app/modules/chart-module/routes/export";
+import ChartBuilderMapping from "app/modules/chart-module/routes/mapping";
+import ChartBuilderFilters from "app/modules/chart-module/routes/filters";
+import ChartBuilderCustomize from "app/modules/chart-module/routes/customize";
 import { ChartBuilderPreview } from "app/modules/chart-module/routes/preview";
-import { ChartBuilderFilters } from "app/modules/chart-module/routes/filters";
+import ChartBuilderChartType from "app/modules/chart-module/routes/chart-type";
 import { ChartModuleToolBox } from "app/modules/chart-module/components/toolbox";
-import { ChartBuilderCustomize } from "app/modules/chart-module/routes/customize";
-import { ChartBuilderChartType } from "app/modules/chart-module/routes/chart-type";
 import { ChartBuilderPreviewTheme } from "app/modules/chart-module/routes/preview-theme";
 import { getRequiredFieldsAndErrors } from "app/modules/chart-module/routes/mapping/utils";
 import {
@@ -39,8 +39,10 @@ import {
 import { IHeaderDetails } from "../report-module/components/right-panel/data";
 import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
+import { NotAuthorizedMessageModule } from "../common/not-authorized-message";
 
 export default function ChartModule() {
+  const token = useSessionStorage("authToken", "")[0];
   const { page, view } = useParams<{ page: string; view?: string }>();
   const [chartFromAPI, setChartFromAPI] =
     React.useState<ChartRenderedItem | null>(null);
@@ -71,6 +73,7 @@ export default function ChartModule() {
     isEditMode,
     loadDataset,
     loadDataFromAPI,
+    Error401,
     dataError,
   } = useChartsRawData({
     visualOptions,
@@ -93,6 +96,10 @@ export default function ChartModule() {
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
+  );
+  const chartError401 = useStoreState(
+    (state) =>
+      get(state.charts.ChartGet.errorData, "data.error.statusCode", 0) === 401
   );
   const clearChart = useStoreActions(
     (actions) => actions.charts.ChartGet.clear
@@ -261,19 +268,24 @@ export default function ChartModule() {
   }, [chartType, loading]);
 
   React.useEffect(() => {
-    loadDatasets({
-      storeInCrudData: true,
-      filterString: `filter={"where":{"name":{"like":".*","options":"i"}},"order":"createdDate desc"}`,
-    });
+    if (token.length > 0) {
+      loadDatasets({
+        token,
+        storeInCrudData: true,
+        filterString: `filter={"where":{"name":{"like":".*","options":"i"}},"order":"createdDate desc"}`,
+      });
+    }
     if (page !== "new") {
-      loadChart({ getId: page });
+      if (token.length > 0) {
+        loadChart({ token, getId: page });
+      }
     } else {
       clearChart();
     }
     return () => {
       clearChartBuilder();
     };
-  }, [page]);
+  }, [page, token]);
 
   React.useEffect(() => {
     if (loadedChart && loadedChart.id !== "") {
@@ -319,6 +331,16 @@ export default function ChartModule() {
       </div>
     );
   };
+
+  if (chartError401 || Error401) {
+    return (
+      <>
+        <div css="width: 100%; height: 100px;" />
+        <NotAuthorizedMessageModule asset="chart" />
+      </>
+    );
+  }
+
   return (
     <DndProvider backend={HTML5Backend}>
       <SubheaderToolbar

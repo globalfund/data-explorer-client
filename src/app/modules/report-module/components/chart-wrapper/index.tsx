@@ -1,15 +1,16 @@
 import React from "react";
 import get from "lodash/get";
+import { useSessionStorage } from "react-use";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
+import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
+import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import {
   ChartAPIModel,
   ChartRenderedItem,
   emptyChartAPI,
 } from "app/modules/chart-module/data";
-import { CommonChart } from "app/modules/chart-module/components/common-chart";
-import { useStoreActions, useStoreState } from "app/state/store/hooks";
-import ErrorOutlineIcon from "@material-ui/icons/ErrorOutline";
 
 interface Props {
   id: string;
@@ -17,9 +18,11 @@ interface Props {
 }
 
 export function ReportChartWrapper(props: Props) {
-  const containerRef = React.useRef<HTMLDivElement>(null);
-  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
+  const token = useSessionStorage("authToken", "")[0];
 
+  const containerRef = React.useRef<HTMLDivElement>(null);
+
+  const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
   const loadedChart = useStoreState(
     (state) =>
       (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
@@ -51,8 +54,10 @@ export function ReportChartWrapper(props: Props) {
   }, [chartFromAPI]);
 
   React.useEffect(() => {
-    loadChart({ getId: props.id });
-  }, [props.id]);
+    if (token.length > 0) {
+      loadChart({ token, getId: props.id });
+    }
+  }, [props.id, token]);
 
   React.useEffect(() => {
     if (loadedChart && loadedChart.id !== "" && loadedChart.id === props.id) {

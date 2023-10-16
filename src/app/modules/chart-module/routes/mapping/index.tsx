@@ -8,6 +8,7 @@ import uniqueId from "lodash/uniqueId";
 import Grid from "@material-ui/core/Grid";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useStoreState, useStoreActions } from "app/state/store/hooks";
 import {
   getTypeName,
@@ -32,7 +33,7 @@ import {
 } from "app/modules/chart-module/routes/mapping/data";
 import { useDebounce } from "react-use";
 
-export function ChartBuilderMapping(props: ChartBuilderMappingProps) {
+function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   useTitle("DX DataXplorer - Mapping");
 
   const history = useHistory();
@@ -703,3 +704,5 @@ function ChartBuilderMappingDimensionStatic(
     </Grid>
   );
 }
+
+export default withAuthenticationRequired(ChartBuilderMapping);

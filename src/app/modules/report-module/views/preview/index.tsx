@@ -1,7 +1,9 @@
 import React from "react";
+import get from "lodash/get";
 import { useRecoilState } from "recoil";
 import Box from "@material-ui/core/Box";
 import { useParams } from "react-router-dom";
+import { useSessionStorage } from "react-use";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
@@ -9,6 +11,7 @@ import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
+import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
   persistedReportStateAtom,
@@ -20,6 +23,7 @@ export function ReportPreviewView(props: {
   setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
   const { page } = useParams<{ page: string }>();
+  const token = useSessionStorage("authToken", "")[0];
 
   const { ref, width } = useResizeObserver<HTMLDivElement>();
 
@@ -32,6 +36,11 @@ export function ReportPreviewView(props: {
 
   const reportData = useStoreState(
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
+  );
+
+  const Error401 = useStoreState(
+    (state) =>
+      get(state.reports.ReportGet.errorData, "data.error.statusCode", 0) === 401
   );
 
   const fetchReportData = useStoreActions(
@@ -53,8 +62,12 @@ export function ReportPreviewView(props: {
   const [reportPreviewData, setReportPreviewData] = React.useState(reportData);
 
   React.useEffect(() => {
-    fetchReportData({ getId: page });
-  }, [page]);
+    if (token) {
+      fetchReportData({ token, getId: page });
+    } else {
+      fetchReportData({ getId: page });
+    }
+  }, [page, token]);
 
   React.useEffect(() => {
     if (width && width !== containerWidth) {
@@ -115,6 +128,7 @@ export function ReportPreviewView(props: {
       />
       <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
+        {Error401 && <NotAuthorizedMessageModule asset="report" />}
         {reportPreviewData.rows.map((rowFrame, index) => {
           const contentTypes = rowFrame.items.map((item) => {
             if (item === null) {

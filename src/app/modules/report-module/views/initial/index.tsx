@@ -1,5 +1,6 @@
 import React from "react";
 import Grid from "@material-ui/core/Grid";
+import Container from "@material-ui/core/Container";
 import {
   templates,
   TemplateItem,
@@ -62,7 +63,7 @@ export function ReportInitialView(props: ReportInitialViewProps) {
   }, []);
 
   return (
-    <>
+    <Container maxWidth="lg">
       <div>
         <h4
           css={`
@@ -251,6 +252,6 @@ export function ReportInitialView(props: ReportInitialViewProps) {
         tableView={tableView}
         showMenuButton
       />
-    </>
+    </Container>
   );
 }
