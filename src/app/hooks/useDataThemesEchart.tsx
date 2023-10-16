@@ -186,7 +186,7 @@ export function useDataThemesEchart() {
         {
           type: "map",
           height,
-          roam: true,
+          roam: false,
           map: "World",
           data: data.results,
           top: marginTop,
@@ -426,6 +426,7 @@ export function useDataThemesEchart() {
           data,
           width,
           height,
+          roam: false,
           top: marginTop,
           left: marginLeft,
           right: marginRight,
