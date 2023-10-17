@@ -419,6 +419,7 @@ export function useDataThemesEchart() {
           left: marginLeft,
           right: marginRight,
           bottom: marginBottom,
+          roam: false,
           leafDepth: 1,
           label: {
             show: showLabels,

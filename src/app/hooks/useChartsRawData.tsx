@@ -171,6 +171,7 @@ export function useChartsRawData(props: {
 
         if (!isEmpty(chart)) {
           setAllAppliedFilters(chart.appliedFilters || {});
+
           setEnabledFilterOptionGroups(chart.enabledFilterOptionGroups);
           setVisualOptions(chart.vizOptions);
           setMapping(chart.mapping);

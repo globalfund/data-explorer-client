@@ -4,7 +4,7 @@ import { ActionCreator } from "easy-peasy";
 import TuneIcon from "@material-ui/icons/Tune";
 import PaletteIcon from "@material-ui/icons/Palette";
 import { useStoreState } from "app/state/store/hooks";
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import CloudDoneIcon from "@material-ui/icons/CloudDone";
 import TableChartIcon from "@material-ui/icons/TableChart";
 import AssessmentIcon from "@material-ui/icons/Assessment";
@@ -27,6 +27,7 @@ export default function ToolboxNav(props: {
 }) {
   const { page } = useParams<{ page: string }>();
   const history = useHistory();
+  const location = useLocation();
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const chartType = useStoreState((state) => state.charts.chartType.value);
 
@@ -48,10 +49,21 @@ export default function ToolboxNav(props: {
     { name: "lock", path: `/chart/${page}/lock` },
   ];
 
+  React.useEffect(() => {
+    //on first render, set activestep based on url
+    if (page !== "new") {
+      const step = stepPaths.find(
+        (step) => step.path === location.pathname
+      )?.name;
+      props.setActiveStep(step as ToolboxNavType);
+    }
+  }, []);
+
   const handleStepChange = () => {
     const findStep = stepPaths.find((step) => step.name === props.activeStep);
     if (findStep) {
-      history.push(findStep.path);
+      //replace path with current step path
+      history.replace(findStep.path);
     }
   };
 

@@ -33,7 +33,7 @@ export default function MenuOptions(props: Props) {
       />
       <div
         css={`
-          top: 3%;
+          top: 10%;
           right: 12%;
           z-index: 2;
 
@@ -60,7 +60,7 @@ export default function MenuOptions(props: Props) {
         `}
       >
         <div>
-          <Link to={`/chart/${props.id}/edit`}>
+          <Link to={`/chart/${props.id}/customize`}>
             <Tooltip title="Edit">
               <EditIcon
                 color="inherit"

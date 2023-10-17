@@ -102,7 +102,7 @@ export function GridItem(props: Props) {
         }}
         css={`
           top: 16px;
-          z-index: 10;
+
           right: 10px;
           padding: 4px;
           color: #231d2c;

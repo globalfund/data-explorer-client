@@ -68,6 +68,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   const createChart = useStoreActions(
     (actions) => actions.charts.ChartCreate.post
   );
+
   const editChart = useStoreActions(
     (actions) => actions.charts.ChartUpdate.patch
   );
@@ -96,7 +97,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
         values: chart,
       });
     }
-    // completes chart creation, returns to persisted report state
+    // if createChartFromReport is true, completes chart creation, returns to persisted report state
     if (createChartFromReport.state) {
       setCreateChartFromReport({
         ...createChartFromReport,
@@ -111,12 +112,23 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
       }
     }
   }
+  const [displayToolbar, setDisplayToolbar] = React.useState<"block" | "none">(
+    "block"
+  );
+
+  React.useEffect(() => {
+    if (page !== "new" && location.pathname === `/chart/${page}`) {
+      setDisplayToolbar("none");
+    } else {
+      setDisplayToolbar("block");
+    }
+  }, [location.pathname]);
 
   return (
     <Slide
       direction="left"
       in={props.openToolbox}
-      style={{ visibility: "visible" }}
+      style={{ visibility: "visible", display: displayToolbar }}
     >
       <div css={styles.container(props.filtersView)}>
         {!isMobile && (

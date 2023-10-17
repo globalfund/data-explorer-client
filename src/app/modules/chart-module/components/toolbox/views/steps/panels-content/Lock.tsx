@@ -119,7 +119,6 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
           `}
         >
           Filters
-          <Switch />
         </div>
         <FormGroup
           row
@@ -221,10 +220,11 @@ export function ChartToolBoxLock(props: ChartToolBoxLockProps) {
           `}
         >
           <p>Drill down function</p>
-          <StyledSwitch
+          <Switch
             checked={drillDownSwitch}
             onChange={(e) => setDrillDownSwitch(e.target.checked)}
             inputProps={{ "aria-label": "primary checkbox" }}
+            color="secondary"
           />
         </div>
       </div>

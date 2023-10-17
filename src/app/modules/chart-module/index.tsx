@@ -302,6 +302,7 @@ export default function ChartModule() {
         headerDetails={{} as IHeaderDetails}
         reportName=""
       />
+
       <ChartModuleToolBox
         openToolbox={toolboxOpen}
         onClose={() => setToolboxOpen(false)}
@@ -330,6 +331,7 @@ export default function ChartModule() {
         dimensions={dimensions}
         setDatasetName={setDatasetName}
       />
+
       <div
         css={`
           height: 55px;

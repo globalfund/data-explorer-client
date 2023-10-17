@@ -1,9 +1,12 @@
 import React from "react";
 import { createStyles, makeStyles, Modal } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
+import { useStoreState } from "app/state/store/hooks";
 
 interface Props {
   modalOpen: boolean;
   setModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  chartId?: string;
   saveModalContent: {
     title: string;
     description: string;
@@ -34,6 +37,10 @@ export const useStyles = makeStyles(() =>
 
 export default function SaveChartCreationDialog(props: Props) {
   const classes = useStyles();
+  const history = useHistory();
+  const chartCrudData = useStoreState(
+    (state) => state.charts.ChartCreate.crudData
+  ) as any;
   return (
     <Modal
       open={props.modalOpen}
@@ -108,7 +115,12 @@ export default function SaveChartCreationDialog(props: Props) {
           >
             <button
               type="button"
-              onClick={() => props.setModalOpen(false)}
+              onClick={() => {
+                props.setModalOpen(false);
+                history.replace(
+                  `/chart/${chartCrudData.id as string}/customize`
+                );
+              }}
               css={`
                 background: #262c34;
                 outline: none;
