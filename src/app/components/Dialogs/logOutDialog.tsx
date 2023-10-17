@@ -98,13 +98,7 @@ export default function LogOutDialog(props: Props) {
             </button>
             <button
               type="button"
-              onClick={() =>
-                logout({
-                  logoutParams: {
-                    redirectUri: window.location.origin,
-                  },
-                })
-              }
+              onClick={() => logout()}
               css={`
                 background: #231d2c;
                 border-radius: 30px;
