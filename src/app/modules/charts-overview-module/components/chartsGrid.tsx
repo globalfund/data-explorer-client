@@ -89,7 +89,7 @@ export default function ChartsGrid(props: Props) {
     setModalType("");
     setCardId("");
     axios
-      .delete(`${process.env.REACT_APP_API_DX}/chart/${cardId}`)
+      .delete(`${process.env.REACT_APP_API}/chart/${cardId}`)
       .then(() => {
         loadCharts({
           storeInCrudData: true,
@@ -104,7 +104,7 @@ export default function ChartsGrid(props: Props) {
     setCardId("");
     axios
       .get(
-        `${process.env.REACT_APP_API_DX}/chart/duplicate/${cardId}/${duplicateName}`
+        `${process.env.REACT_APP_API}/chart/duplicate/${cardId}/${duplicateName}`
       )
       .then(() => {
         loadCharts({

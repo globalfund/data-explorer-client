@@ -82,7 +82,7 @@ export default function ReportsGrid(props: Props) {
     setModalType("");
     setCardId("");
     axios
-      .delete(`${process.env.REACT_APP_API_DX}/report/${cardId}`)
+      .delete(`${process.env.REACT_APP_API}/report/${cardId}`)
       .then(() => {
         loadReports({
           storeInCrudData: true,
@@ -97,7 +97,7 @@ export default function ReportsGrid(props: Props) {
     setCardId("");
     axios
       .get(
-        `${process.env.REACT_APP_API_DX}/report/duplicate/${cardId}/${duplicateName}`
+        `${process.env.REACT_APP_API}/report/duplicate/${cardId}/${duplicateName}`
       )
       .then(() => {
         loadReports({
