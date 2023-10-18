@@ -108,16 +108,6 @@ export const unSavedReportPreviewMode = atom<boolean>({
   default: false,
 });
 
-export const reportContentWidthsAtom = atom<ReportContentWidthsType[]>({
-  key: "reportContentWidths",
-  default: [],
-});
-
-export const reportContentHeightsAtom = atom<ReportContentHeightsType[]>({
-  key: "reportContentHeights",
-  default: [],
-});
-
 export const reportContentIsResizingAtom = atom<boolean>({
   key: "reportContentIsResizing",
   default: false,
@@ -151,11 +141,13 @@ export const createChartFromReportAtom = atom<{
 export const chartHolderAtom = atom<{
   state: boolean;
   chartId: string;
+  rowId: string;
 }>({
   key: "chartHolderAtom",
   default: {
     state: false,
     chartId: "",
+    rowId: "",
   },
   effects_UNSTABLE: [persistAtom],
 });

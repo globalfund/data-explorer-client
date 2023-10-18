@@ -1,6 +1,22 @@
 import { EditorState } from "draft-js";
 import { ReportContentWidthsType } from "app/state/recoil/atoms";
 
+export interface IRowFrame {
+  rowIndex: number;
+  rowId: string;
+  forceSelectedType?: string;
+  setPickedCharts?: (value: React.SetStateAction<any[]>) => void;
+  type: "rowFrame" | "divider";
+  handleRowFrameItemResize: (
+    rowId: string,
+    itemIndex: number,
+    width: number,
+    height: number
+  ) => void;
+  previewItems?: (string | object)[];
+  handlePersistReportState: () => void;
+}
+
 export type RowStructureType =
   | null
   | "oneByOne"
@@ -11,20 +27,22 @@ export type RowStructureType =
   | "fourToOne"
   | "twoToThree"
   | "threeToTwo";
+
 export interface IFramesArray {
   id: string;
-  frame: JSX.Element;
+  frame: IRowFrame;
   contentWidths: number[];
   contentHeights: number[];
-
   content: (object | string | null)[];
-  isHandleOpen: boolean;
   contentTypes: ("text" | "divider" | "chart" | "image" | null)[];
   structure: RowStructureType;
+  isHandleOpen?: boolean;
 }
 
 export interface ReportCreateViewProps {
   open: boolean;
+  view: "initial" | "edit" | "create" | "preview" | "ai-template";
+
   reportType: "basic" | "advanced" | "ai";
   pickedCharts: string[];
   setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
@@ -52,34 +70,13 @@ export interface ReportCreateViewProps {
       dateColor: string;
     }>
   >;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart" | "image"
-  ) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneToFour"
-      | "fourToOne"
-      | "twoToThree"
-      | "threeToTwo"
-  ) => void;
+
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
-  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }
 
 export interface PlaceholderProps {
@@ -90,32 +87,11 @@ export interface PlaceholderProps {
   deleteFrame: (id: string) => void;
   rowId: string;
   handlePersistReportState: () => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart" | "image"
-  ) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure:
-      | null
-      | "oneByOne"
-      | "oneByTwo"
-      | "oneByThree"
-      | "oneByFour"
-      | "oneToFour"
-      | "fourToOne"
-      | "twoToThree"
-      | "threeToTwo"
-  ) => void;
+
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
-  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
 }

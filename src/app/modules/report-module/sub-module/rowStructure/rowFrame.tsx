@@ -6,17 +6,13 @@ import { itemSpacing, containerGap } from "app/modules/report-module/data";
 import RowstructureDisplay from "app/modules/report-module/sub-module/rowStructure";
 import { ReactComponent as CloseIcon } from "app/modules/report-module/asset/closeIcon.svg";
 import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/deleteIcon.svg";
-import {
-  ReportContentWidthsType,
-  chartHolderAtom,
-  reportContentWidthsAtom,
-} from "app/state/recoil/atoms";
+import { chartHolderAtom } from "app/state/recoil/atoms";
 import {
   blockcss,
   containercss,
 } from "app/modules/report-module/sub-module/rowStructure/style";
 import { MoreVert } from "@material-ui/icons";
-import { RowStructureType } from "app/modules/report-module/views/create/data";
+import { IFramesArray } from "app/modules/report-module/views/create/data";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -144,29 +140,21 @@ const _rowStructureDetailItems = [
 export interface RowFrameProps {
   rowIndex: number;
   rowId: string;
-  deleteFrame: (id: string) => void;
   forceSelectedType?: string;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart" | "image"
-  ) => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameStructureTypeSelection: (
-    rowIndex: number,
-    structure: RowStructureType
-  ) => void;
   handleRowFrameItemResize: (
     rowId: string,
     itemIndex: number,
     width: number,
-    reportContentWidths: ReportContentWidthsType[],
     height: number
   ) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
-  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+  framesArray: IFramesArray[];
+  rowContentHeights: number[];
+  rowContentWidths: number[];
+  type: "rowFrame" | "divider";
+  view: "initial" | "edit" | "create" | "preview" | "ai-template";
 }
 
 export interface IRowStructureType {
@@ -175,8 +163,13 @@ export interface IRowStructureType {
   isHoldingChartValue: {
     state: boolean;
     chartId: string;
+    rowId: string;
   };
-  setIsHoldingChartValue: (value: { state: boolean; chartId: string }) => void;
+  setIsHoldingChartValue: (value: {
+    state: boolean;
+    chartId: string;
+    rowId: string;
+  }) => void;
 }
 
 export default function RowFrame(props: RowFrameProps) {
@@ -198,7 +191,7 @@ export default function RowFrame(props: RowFrameProps) {
     }[][]
   >([]);
 
-  let contentContainer = document.getElementById("content-container");
+  const contentContainer = document.getElementById("content-container");
   const onContentContainerResize = () => {
     if (contentContainer) {
       const contentContainerWidth = contentContainer.offsetWidth;
@@ -212,21 +205,108 @@ export default function RowFrame(props: RowFrameProps) {
     }
   };
 
-  const reportContentWidths = useRecoilValue(reportContentWidthsAtom);
-
   const onRowBoxItemResize = (
     rowId: string,
     itemIndex: number,
     width: number,
     height: number
   ) => {
-    props.handleRowFrameItemResize(
-      rowId,
-      itemIndex,
-      width,
-      reportContentWidths,
-      height
-    );
+    props.handleRowFrameItemResize(rowId, itemIndex, width, height);
+  };
+  const deleteFrame = (id: string) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+
+      const frameId = tempPrev.findIndex((frame) => frame.id === id);
+
+      tempPrev.splice(frameId, 1);
+      return [...tempPrev];
+    });
+  };
+  const rowIndex = React.useMemo(() => {
+    return props.framesArray.findIndex((item) => item.id === props.rowId);
+  }, [props.framesArray]);
+
+  const handleRowFrameStructureTypeSelection = (
+    structure:
+      | null
+      | "oneByOne"
+      | "oneByTwo"
+      | "oneByThree"
+      | "oneByFour"
+      | "oneToFour"
+      | "fourToOne"
+      | "twoToThree"
+      | "threeToTwo"
+  ) => {
+    let content: (string | object | null)[] = [];
+    let contentTypes: ("text" | "divider" | "chart" | null)[] = [];
+    let contentWidths: number[] = [];
+    let contentHeights: number[] = [];
+
+    switch (structure) {
+      case "oneByOne":
+        content = [null];
+        contentTypes = [null];
+        contentWidths = [100];
+        break;
+      case "oneByTwo":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [50, 50];
+        break;
+      case "oneByThree":
+        content = [null, null, null];
+        contentTypes = [null, null, null];
+        contentWidths = [33, 33, 33];
+        break;
+      case "oneByFour":
+        content = [null, null, null, null];
+        contentTypes = [null, null, null, null];
+        contentWidths = [25, 25, 25, 25];
+        break;
+
+      case "fourToOne":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [75, 25];
+        break;
+      case "oneToFour":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [25, 75];
+        break;
+      case "twoToThree":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [40, 60];
+        break;
+      case "threeToTwo":
+        content = [null, null];
+        contentTypes = [null, null];
+        contentWidths = [60, 40];
+        break;
+      default:
+        break;
+    }
+
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      tempPrev[rowIndex] = {
+        ...tempPrev[rowIndex],
+        content,
+        contentTypes,
+        contentWidths,
+        contentHeights,
+        structure,
+        frame: {
+          ...tempPrev[rowIndex].frame,
+          previewItems: [],
+        },
+      };
+
+      return tempPrev;
+    });
   };
 
   React.useEffect(() => {
@@ -246,7 +326,7 @@ export default function RowFrame(props: RowFrameProps) {
         );
       }
     };
-  }, []);
+  }, [contentContainer]);
 
   React.useEffect(() => {
     if (props.forceSelectedType) {
@@ -255,8 +335,7 @@ export default function RowFrame(props: RowFrameProps) {
   }, [props.forceSelectedType]);
 
   useUpdateEffect(() => {
-    props.handleRowFrameStructureTypeSelection(
-      props.rowIndex,
+    handleRowFrameStructureTypeSelection(
       selectedType as
         | "oneByOne"
         | "oneByTwo"
@@ -270,7 +349,7 @@ export default function RowFrame(props: RowFrameProps) {
   }, [selectedType]);
 
   if (!contentContainer || rowStructureDetailItems.length === 0)
-    return <div>loading</div>;
+    return <div>loading...</div>;
 
   const checkSelectedType = {
     oneByOne: (
@@ -280,17 +359,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[0]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
       />
     ),
     oneByTwo: (
@@ -300,17 +380,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[1]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
       />
     ),
     oneByThree: (
@@ -320,17 +401,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[2]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
       />
     ),
     oneByFour: (
@@ -340,17 +422,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[3]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
       />
     ),
 
@@ -361,17 +444,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowId={props.rowId}
         rowIndex={props.rowIndex}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[4]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
       />
     ),
     fourToOne: (
@@ -381,17 +465,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[5]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
       />
     ),
     twoToThree: (
@@ -401,17 +486,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[6]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        rowContentHeights={props.rowContentHeights}
+        framesArray={props.framesArray}
       />
     ),
     threeToTwo: (
@@ -421,17 +507,18 @@ export default function RowFrame(props: RowFrameProps) {
         rowIndex={props.rowIndex}
         rowId={props.rowId}
         selectedType={selectedType}
-        deleteFrame={props.deleteFrame}
+        deleteFrame={deleteFrame}
         setSelectedType={setSelectedType}
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[7]}
-        handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-        handleRowFrameItemAddition={props.handleRowFrameItemAddition}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
-        toggleRowFrameHandle={props.toggleRowFrameHandle}
+        rowContentHeights={props.rowContentHeights}
+        rowContentWidths={props.rowContentWidths}
+        setFramesArray={props.setFramesArray}
+        framesArray={props.framesArray}
       />
     ),
   };
@@ -441,83 +528,89 @@ export default function RowFrame(props: RowFrameProps) {
       {selectedType ? (
         <>{checkSelectedType[selectedType as keyof typeof checkSelectedType]}</>
       ) : (
-        <div css={containercss}>
-          <p>Select your row structure</p>
-          <IconButton
-            css={`
-              top: -5px;
-              right: -5px;
-              position: absolute;
-            `}
-            onClick={() => {
-              props.deleteFrame(props.rowId);
-            }}
-          >
-            <CloseIcon />
-          </IconButton>
-          <div
-            css={`
-              width: 75%;
-              margin: auto;
-              display: grid;
-              grid-template-columns: auto auto auto auto;
-              /* flex-wrap: wrap; */
-              column-gap: 65px;
-              align-items: center;
-              justify-content: center;
-            `}
-          >
-            <OneByOne
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
-            <OneByTwo
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
-            <OneByThree
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
-            <OneByFour
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
+        <>
+          {props.type === "rowFrame" ? (
+            <div css={containercss}>
+              <p>Select your row structure</p>
+              <IconButton
+                css={`
+                  top: -5px;
+                  right: -5px;
+                  position: absolute;
+                `}
+                onClick={() => {
+                  deleteFrame(props.rowId);
+                }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <div
+                css={`
+                  width: 75%;
+                  margin: auto;
+                  display: grid;
+                  grid-template-columns: auto auto auto auto;
+                  /* flex-wrap: wrap; */
+                  column-gap: 65px;
+                  align-items: center;
+                  justify-content: center;
+                `}
+              >
+                <OneByOne
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
+                <OneByTwo
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
+                <OneByThree
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
+                <OneByFour
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
 
-            <OneToFour
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
-            <FourToOne
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
-            <TwoToThree
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
-            <ThreeToTwo
-              selectedType={selectedType}
-              setSelectedType={setSelectedType}
-              isHoldingChartValue={isHoldingChartValue}
-              setIsHoldingChartValue={setIsHoldingChartValue}
-            />
-          </div>
-        </div>
+                <OneToFour
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
+                <FourToOne
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
+                <TwoToThree
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
+                <ThreeToTwo
+                  selectedType={selectedType}
+                  setSelectedType={setSelectedType}
+                  isHoldingChartValue={isHoldingChartValue}
+                  setIsHoldingChartValue={setIsHoldingChartValue}
+                />
+              </div>
+            </div>
+          ) : (
+            <Divider delete={deleteFrame} dividerId={props.rowId} />
+          )}
+        </>
       )}
     </>
   );

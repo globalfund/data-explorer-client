@@ -10,17 +10,23 @@ import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import {
-  reportContentWidthsAtom,
   persistedReportStateAtom,
   unSavedReportPreviewModeAtom,
+  reportContentContainerWidth,
 } from "app/state/recoil/atoms";
+import useResizeObserver from "use-resize-observer";
 
-export function ReportPreviewView() {
+export function ReportPreviewView(props: {
+  setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
+}) {
   const { page } = useParams<{ page: string }>();
+  const { ref, width } = useResizeObserver<HTMLDivElement>();
+
   const [persistedReportState, __] = useRecoilState(persistedReportStateAtom);
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
-
-  const setReportContentWidths = useRecoilState(reportContentWidthsAtom)[1];
+  const [containerWidth, setContainerWidth] = useRecoilState(
+    reportContentContainerWidth
+  );
 
   const reportData = useStoreState(
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
@@ -55,16 +61,18 @@ export function ReportPreviewView() {
   }, [reportData]);
 
   React.useEffect(() => {
-    if (reportData.contentWidths) {
-      setReportContentWidths(reportData.contentWidths);
+    if (width && width !== containerWidth) {
+      setContainerWidth(width);
     }
-  }, [reportData.contentWidths]);
+  }, [width]);
 
   React.useEffect(() => {
+    props.setIsPreviewView(true);
     return () => {
       reportGetClear();
       reportEditClear();
       reportCreateClear();
+      props.setIsPreviewView(false);
     };
   }, []);
 
@@ -103,9 +111,15 @@ export function ReportPreviewView() {
         }}
         setHeaderDetails={() => {}}
       />
-      <Container id="content-container" maxWidth="lg">
+      <Container id="content-container" maxWidth="lg" ref={ref}>
         <Box height={45} />
         {reportPreviewData.rows.map((rowFrame, index) => {
+          const contentTypes = rowFrame.items.map((item) => {
+            if (item === null) {
+              return null;
+            }
+            return typeof item === "object" ? "text" : "chart";
+          });
           if (
             rowFrame.items &&
             rowFrame.items.length === 1 &&
@@ -123,18 +137,27 @@ export function ReportPreviewView() {
           }
           return (
             <RowFrame
-              key={`${"rowframe" + index}`}
-              rowId={reportPreviewData.id}
+              key={"rowframe" + `${index}`}
+              rowId={""}
               rowIndex={index}
-              deleteFrame={() => {}}
               forceSelectedType={rowFrame.structure ?? undefined}
-              handleRowFrameItemRemoval={() => {}}
-              handleRowFrameItemAddition={() => {}}
-              handleRowFrameStructureTypeSelection={() => {}}
-              previewItems={rowFrame.items}
+              previewItems={rowFrame.items.map((item, index) => {
+                return contentTypes[index] === "text"
+                  ? EditorState.createWithContent(convertFromRaw(item as any))
+                  : item;
+              })}
               handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
-              toggleRowFrameHandle={() => {}}
+              type="rowFrame"
+              setFramesArray={() => {}}
+              rowContentHeights={
+                rowFrame.contentHeights?.heights ?? rowFrame.contentHeights
+              }
+              rowContentWidths={
+                rowFrame.contentWidths?.widths ?? rowFrame.contentWidths
+              }
+              framesArray={[]}
+              view={"preview"}
             />
           );
         })}

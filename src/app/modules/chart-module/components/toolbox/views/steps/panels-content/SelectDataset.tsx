@@ -29,20 +29,12 @@ export const DEFAULT_DATASETS = [
     id: "grants-dataset",
   },
   {
-    name: "Investment - Signed",
-    id: "investment-signed",
-  },
-  {
-    name: "Investment - Committed",
-    id: "investment-committed",
-  },
-  {
-    name: "Investment - Disbursed",
-    id: "investment-disbursed",
+    name: "Disbursements",
+    id: "disbursement-dataset",
   },
   {
     name: "Budgets",
-    id: "budgets",
+    id: "budgets-dataset",
   },
 ];
 

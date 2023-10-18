@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import get from "lodash/get";
-import find from "lodash/find";
 import { useDrop } from "react-dnd";
 import { useDebounce } from "react-use";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -20,14 +19,13 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { MoreVert } from "@material-ui/icons";
 import {
   chartHolderAtom,
-  reportContentWidthsAtom,
   unSavedReportPreviewModeAtom,
   reportContentIsResizingAtom,
   reportContentContainerWidth,
-  reportContentHeightsAtom,
 } from "app/state/recoil/atoms";
 import ReportActionDialog from "app/modules/report-module/components/actionDialog";
 import ImageBox from "app/modules/report-module/components/imageBox";
+import { IFramesArray } from "../../views/create/data";
 
 interface RowStructureDisplayProps {
   gap: string;
@@ -45,13 +43,6 @@ interface RowStructureDisplayProps {
     factor: number;
     rowType: string;
   }[];
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart" | "image"
-  ) => void;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
   previewItems?: (string | object)[];
   handlePersistReportState: () => void;
   onRowBoxItemResize: (
@@ -60,15 +51,15 @@ interface RowStructureDisplayProps {
     width: number,
     height: number
   ) => void;
-  toggleRowFrameHandle: (rowId: string, state: boolean) => void;
+  rowContentWidths: number[];
+  rowContentHeights: number[];
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
+  framesArray: IFramesArray[];
 }
 
 export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
-
-  const [handleDisplay, setHandleDisplay] = React.useState(true);
-  const [rowButtonsDisplay, setRowButtonsDisplay] = React.useState(false);
   const [modalDisplay, setModalDisplay] = React.useState(false);
   const [modalType, setModalType] = React.useState<
     "edit-row" | "delete-row" | ""
@@ -115,11 +106,27 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     }
   };
 
+  const toggleRowFrameHandle = (rowId: string, state: boolean) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      return [
+        ...tempPrev.map((frame) => {
+          if (frame.id === rowId) {
+            frame.isHandleOpen = state;
+          } else {
+            frame.isHandleOpen = false;
+          }
+          return frame;
+        }),
+      ];
+    });
+  };
+
   const handleModalAction = () => {
     if (modalType === "delete-row") {
       props.deleteFrame(props.rowId);
     } else if (modalType === "edit-row") {
-      props.toggleRowFrameHandle(props.rowId, false);
+      toggleRowFrameHandle(props.rowId, false);
 
       props.setSelectedTypeHistory([
         ...props.selectedTypeHistory,
@@ -134,11 +141,6 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
     handleModalDisplay();
   }, [modalType]);
 
-  const [reportContentWidths, setReportContentWidths] = useRecoilState(
-    reportContentWidthsAtom
-  );
-  const [reportContentHeights] = useRecoilState(reportContentHeightsAtom);
-
   const [reportPreviewMode] = useRecoilState(unSavedReportPreviewModeAtom);
 
   const viewOnlyMode =
@@ -146,153 +148,128 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       get(location.pathname.split("/"), "[3]", "") !== "edit") ||
     reportPreviewMode;
 
-  const rowContentWidths = !viewOnlyMode
-    ? find(reportContentWidths, { id: props.rowId })
-    : get(reportContentWidths, `[${props.rowIndex}]`, { widths: [] });
-
-  const rowContentHeights = !viewOnlyMode
-    ? find(reportContentHeights, { id: props.rowId })
-    : get(reportContentHeights, `[${props.rowIndex}]`, { heights: [] });
-
-  const setDefaultRowContentWidths = () => {
-    const widths = props.rowStructureDetailItems.map((row) => row.width);
-    setReportContentWidths((prev) => [
-      ...prev,
-      {
-        id: props.rowId,
-        widths,
-      },
-    ]);
-  };
-
-  React.useEffect(() => {
-    setDefaultRowContentWidths();
-  }, []);
-
-  const handlers = viewOnlyMode
-    ? {}
-    : {
-        onMouseEnter: () => {
-          setHandleDisplay(true);
-        },
-        // onMouseLeave: () => setHandleDisplay(false),
-      };
+  const isHandleOpen = React.useMemo(() => {
+    const frameIndex = props.framesArray.findIndex(
+      (frame) => frame.id === props.rowId
+    );
+    if (frameIndex === -1) {
+      return false;
+    }
+    return props.framesArray[frameIndex].isHandleOpen;
+  }, [props.framesArray]);
 
   return (
     <div
-      {...handlers}
       css={`
         width: 100%;
         position: relative;
         margin-bottom: ${!viewOnlyMode ? "0px" : "50px"};
       `}
     >
-      {handleDisplay && (
+      <div
+        css={`
+          width: 32px;
+          left: -50px;
+          bottom: 0px;
+          display: flex;
+          position: absolute;
+        `}
+      >
         <div
           css={`
-            width: 32px;
-            left: -50px;
-            bottom: 0px;
-            display: flex;
-            position: absolute;
+            padding: 0 0px;
           `}
         >
-          <div
-            css={`
-              padding: 0 0px;
-            `}
-          >
-            {rowButtonsDisplay && (
-              <div
-                css={`
-                  display: flex;
-                  align-items: center;
-                  flex-direction: column;
-                  justify-content: center;
-                `}
-              >
-                <div
-                  css={`
-                    background: #cfd4da;
-                    border-radius: 100px;
-                    height: 70px;
-                    width: 36px;
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: center;
-                    flex-direction: column;
-
-                    padding-bottom: 2px;
-                    button {
-                      padding: 4px;
-                      svg {
-                        width: 20px;
-                        height: 20px;
-                        path {
-                          fill: #262c34;
-                        }
-                      }
-                      :hover {
-                        background: transparent;
-                      }
-                    }
-                  `}
-                >
-                  <IconButton
-                    onClick={() => {
-                      setModalType("edit-row");
-                      setModalDisplay(true);
-                    }}
-                  >
-                    <Tooltip title="Edit row" placement="right">
-                      <EditIcon />
-                    </Tooltip>
-                  </IconButton>
-
-                  <IconButton
-                    onClick={() => {
-                      setModalType("delete-row");
-                      setModalDisplay(true);
-                    }}
-                  >
-                    <Tooltip title="Delete row" placement="right">
-                      <DeleteIcon />
-                    </Tooltip>
-                  </IconButton>
-                </div>
-              </div>
-            )}
+          {isHandleOpen && (
             <div
-              css={`
-                height: 8px;
-              `}
-            />
-
-            <IconButton
-              onClick={() => {
-                setRowButtonsDisplay(!rowButtonsDisplay);
-                props.toggleRowFrameHandle(props.rowId, !rowButtonsDisplay);
-              }}
               css={`
                 display: flex;
                 align-items: center;
+                flex-direction: column;
                 justify-content: center;
-                width: 36px;
-                height: 36px;
-                border-radius: 100px;
-                color: ${rowButtonsDisplay ? "#FFFFFF" : "#262C34"};
-                background: ${rowButtonsDisplay ? "#262C34" : "#cfd4da"};
-                &:hover {
-                  background: #262c34;
-                  color: #ffffff;
-                }
               `}
             >
-              <MoreVert color="inherit" />
-            </IconButton>
-          </div>
+              <div
+                css={`
+                  background: #cfd4da;
+                  border-radius: 100px;
+                  height: 70px;
+                  width: 36px;
+                  display: flex;
+                  justify-content: space-around;
+                  align-items: center;
+                  flex-direction: column;
+
+                  padding-bottom: 2px;
+                  button {
+                    padding: 4px;
+                    svg {
+                      width: 20px;
+                      height: 20px;
+                      path {
+                        fill: #262c34;
+                      }
+                    }
+                    :hover {
+                      background: transparent;
+                    }
+                  }
+                `}
+              >
+                <IconButton
+                  onClick={() => {
+                    setModalType("edit-row");
+                    setModalDisplay(true);
+                  }}
+                >
+                  <Tooltip title="Edit row" placement="right">
+                    <EditIcon />
+                  </Tooltip>
+                </IconButton>
+
+                <IconButton
+                  onClick={() => {
+                    setModalType("delete-row");
+                    setModalDisplay(true);
+                  }}
+                >
+                  <Tooltip title="Delete row" placement="right">
+                    <DeleteIcon />
+                  </Tooltip>
+                </IconButton>
+              </div>
+            </div>
+          )}
+          <div
+            css={`
+              height: 8px;
+            `}
+          />
+
+          <IconButton
+            onClick={() => {
+              toggleRowFrameHandle(props.rowId, !isHandleOpen);
+            }}
+            css={`
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              width: 36px;
+              height: 36px;
+              border-radius: 100px;
+              color: ${isHandleOpen ? "#FFFFFF" : "#262C34"};
+              background: ${isHandleOpen ? "#262C34" : "#cfd4da"};
+              &:hover {
+                background: #262c34;
+                color: #ffffff;
+              }
+            `}
+          >
+            <MoreVert color="inherit" />
+          </IconButton>
         </div>
-      )}
+      </div>
+
       <div
         css={`
           width: 100%;
@@ -303,15 +280,14 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       >
         {props.rowStructureDetailItems.map((row, index) => (
           <Box
-            key={`${row.rowId}`}
-            width={get(rowContentWidths, `widths.[${index}]`, "fit-content")}
-            height={get(rowContentHeights, `heights.[${index}]`, props.height)}
+            key={row.rowId}
+            width={get(props.rowContentWidths, `[${index}]`, "fit-content")}
+            height={get(props.rowContentHeights, `[${index}]`, props.height)}
             itemIndex={index}
             rowId={props.rowId}
             rowType={row.rowType}
             onRowBoxItemResize={props.onRowBoxItemResize}
-            handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-            handleRowFrameItemAddition={props.handleRowFrameItemAddition}
+            setFramesArray={props.setFramesArray}
             previewItem={get(props.previewItems, `[${index}]`, undefined)}
             handlePersistReportState={props.handlePersistReportState}
             rowItemsCount={props.rowStructureDetailItems.length}
@@ -338,15 +314,8 @@ const Box = (props: {
   rowId: string;
   itemIndex: number;
   handlePersistReportState: () => void;
-
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
   rowType: string;
-  handleRowFrameItemRemoval: (rowId: string, itemIndex: number) => void;
-  handleRowFrameItemAddition: (
-    rowId: string,
-    itemIndex: number,
-    itemContent: string | object,
-    itemContentType: "text" | "divider" | "chart" | "image"
-  ) => void;
   onRowBoxItemResize: (
     rowId: string,
     itemIndex: number,
@@ -424,7 +393,7 @@ const Box = (props: {
     });
   };
   const handleDeleteElement = () => {
-    props.handleRowFrameItemRemoval(props.rowId, props.itemIndex);
+    handleRowFrameItemRemoval(props.rowId, props.itemIndex);
     setDisplayChart(false);
     setChartId(null);
     setInitChartId(null);
@@ -440,7 +409,7 @@ const Box = (props: {
 
   const handleModalAction = () => {
     if (displayDeleteElementModal.modalType === "replace-element") {
-      props.handleRowFrameItemAddition(
+      handleRowFrameItemAddition(
         props.rowId,
         props.itemIndex,
         initChartId as string,
@@ -454,6 +423,36 @@ const Box = (props: {
     } else {
       handleDeleteElement();
     }
+  };
+
+  const handleRowFrameItemAddition = (
+    rowId: string,
+    itemIndex: number,
+    itemContent: string | object,
+    itemContentType: "text" | "divider" | "chart" | "image"
+  ) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      tempPrev[frameId].content[itemIndex] = itemContent;
+      tempPrev[frameId].contentTypes[itemIndex] = itemContentType;
+      return [...tempPrev];
+    });
+  };
+  const handleRowFrameItemRemoval = (rowId: string, itemIndex: number) => {
+    props.setFramesArray((prev) => {
+      const tempPrev = prev.map((item) => ({ ...item }));
+      const frameId = tempPrev.findIndex((frame) => frame.id === rowId);
+      if (frameId === -1) {
+        return [...tempPrev];
+      }
+      tempPrev[frameId].content[itemIndex] = null;
+      tempPrev[frameId].contentTypes[itemIndex] = null;
+      return [...tempPrev];
+    });
   };
 
   const containerWidth = useRecoilValue(reportContentContainerWidth);
@@ -480,7 +479,7 @@ const Box = (props: {
     }),
     drop: (item: any, monitor) => {
       if (item.type === ReportElementsType.TEXT) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           textContent,
@@ -490,7 +489,7 @@ const Box = (props: {
         setDisplayChart(false);
         setDisplayImageBox(false);
       } else if (item.type === ReportElementsType.IMAGE) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           imageFile as object,
@@ -516,7 +515,7 @@ const Box = (props: {
   const [,] = useDebounce(
     () => {
       if (displayTextBox) {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           textContent,
@@ -538,7 +537,7 @@ const Box = (props: {
           modalType: "replace-element",
         });
       } else {
-        props.handleRowFrameItemAddition(
+        handleRowFrameItemAddition(
           props.rowId,
           props.itemIndex,
           initChartId,
@@ -894,19 +893,25 @@ const Box = (props: {
   }, [props.previewItem]);
 
   React.useEffect(() => {
-    if (isHoldingChartValue.state && props.itemIndex == 0) {
+    if (
+      isHoldingChartValue.state &&
+      props.itemIndex == 0 &&
+      isHoldingChartValue.rowId === props.rowId
+    ) {
       setDisplayChart(true);
+
       setChartId(isHoldingChartValue.chartId);
       setIsHoldingChartValue({
         state: false,
         chartId: "",
+        rowId: "",
       });
     }
   }, [isHoldingChartValue.state]);
 
   React.useEffect(() => {
     if (displayChart && chartId) {
-      props.handleRowFrameItemAddition(
+      handleRowFrameItemAddition(
         props.rowId,
         props.itemIndex,
         chartId,

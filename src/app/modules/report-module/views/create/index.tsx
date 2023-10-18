@@ -16,9 +16,7 @@ import HeaderBlock from "app/modules/report-module/sub-module/components/headerB
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
-import RowFrame, {
-  Divider,
-} from "app/modules/report-module/sub-module/rowStructure/rowFrame";
+import RowFrame from "app/modules/report-module/sub-module/rowStructure/rowFrame";
 import {
   ReportCreateViewProps,
   PlaceholderProps,
@@ -36,22 +34,6 @@ export function ReportCreateView(props: ReportCreateViewProps) {
       rowType: "",
       disableAddRowStructureButton: false,
     });
-
-  function deleteFrame(id: string) {
-    props.setFramesArray((prev) => {
-      let tempPrev = prev.map((item) => ({ ...item }));
-      const frameId = tempPrev.findIndex((frame) => frame.id === id);
-      const contentArr = tempPrev[frameId].content;
-
-      props.setPickedCharts((prevPickedCharts) => {
-        return prevPickedCharts.filter((item) => !contentArr.includes(item));
-      });
-
-      tempPrev.splice(frameId, 1);
-
-      return [...tempPrev];
-    });
-  }
 
   React.useEffect(() => {
     if (width && width !== containerWidth) {
@@ -83,28 +65,32 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           `}
         >
           <Box height={50} />
-          <ReportOrderContainer enabled childrenData={props.framesArray}>
+          <ReportOrderContainer
+            enabled
+            childrenData={props.framesArray}
+            setFramesArray={props.setFramesArray}
+          >
             {props.framesArray.map((frame) => {
               return (
                 <div key={frame.id}>
-                  <div>{frame.frame}</div>
+                  <RowFrame
+                    {...frame.frame}
+                    setFramesArray={props.setFramesArray}
+                    framesArray={props.framesArray}
+                    view={props.view}
+                    rowContentHeights={frame.contentHeights}
+                    rowContentWidths={frame.contentWidths}
+                    type={frame.frame.type}
+                  />
                   <Box height={38} />
                   <PlaceHolder
                     rowId={frame.id}
                     index={frame.id}
-                    deleteFrame={deleteFrame}
+                    deleteFrame={props.deleteFrame}
                     framesArray={props.framesArray}
                     setFramesArray={props.setFramesArray}
-                    handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-                    handleRowFrameItemAddition={
-                      props.handleRowFrameItemAddition
-                    }
-                    handleRowFrameStructureTypeSelection={
-                      props.handleRowFrameStructureTypeSelection
-                    }
                     handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
-                    toggleRowFrameHandle={props.toggleRowFrameHandle}
                   />
                 </div>
               );
@@ -112,19 +98,12 @@ export function ReportCreateView(props: ReportCreateViewProps) {
           </ReportOrderContainer>
           {
             <AddRowFrameButton
-              deleteFrame={deleteFrame}
               framesArray={props.framesArray}
               rowStructureType={rowStructureType}
               setFramesArray={props.setFramesArray}
               setRowStructureType={setRowStructuretype}
-              handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-              handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-              handleRowFrameStructureTypeSelection={
-                props.handleRowFrameStructureTypeSelection
-              }
               handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
-              toggleRowFrameHandle={props.toggleRowFrameHandle}
             />
           }
           <Box height={45} />
@@ -180,55 +159,31 @@ export const PlaceHolder = (props: PlaceholderProps) => {
       item: monitor.getItem(),
     }),
     drop: (item: any) => {
-      console.log(isOver, "isDropOver");
-
-      if (item.type === ReportElementsType.ROWFRAME) {
-        props.setFramesArray((prev) => {
-          const tempIndex = prev.findIndex((frame) => frame.id === props.index);
-          const id = v4();
-          prev.splice(tempIndex + 1, 0, {
-            id,
-            frame: (
-              <RowFrame
-                rowId={id}
-                rowIndex={tempIndex + 1}
-                deleteFrame={props.deleteFrame}
-                handleRowFrameItemRemoval={props.handleRowFrameItemRemoval}
-                handleRowFrameItemAddition={props.handleRowFrameItemAddition}
-                handleRowFrameStructureTypeSelection={
-                  props.handleRowFrameStructureTypeSelection
-                }
-                handlePersistReportState={props.handlePersistReportState}
-                handleRowFrameItemResize={props.handleRowFrameItemResize}
-                toggleRowFrameHandle={props.toggleRowFrameHandle}
-              />
-            ),
-            content: [],
-            contentWidths: [],
-            contentHeights: [],
-            contentTypes: [],
-            structure: null,
-            isHandleOpen: false,
-          });
-          return [...prev];
+      props.setFramesArray((prev) => {
+        const tempPrev = prev.map((item) => ({ ...item }));
+        const tempIndex = tempPrev.findIndex(
+          (frame) => frame.id === props.index
+        );
+        const id = v4();
+        tempPrev.splice(tempIndex + 1, 0, {
+          id,
+          frame: {
+            rowId: id,
+            rowIndex: tempIndex + 1,
+            handlePersistReportState: props.handlePersistReportState,
+            handleRowFrameItemResize: props.handleRowFrameItemResize,
+            type: item.type,
+          },
+          content: item.type === ReportElementsType.ROWFRAME ? [] : ["divider"],
+          contentWidths: [],
+          contentHeights: [],
+          contentTypes:
+            item.type === ReportElementsType.ROWFRAME ? [] : ["divider"],
+          structure: null,
+          isHandleOpen: false,
         });
-      } else {
-        return props.setFramesArray((prev) => {
-          const tempIndex = prev.findIndex((frame) => frame.id === props.index);
-          const id = v4();
-          prev.splice(tempIndex + 1, 0, {
-            id,
-            frame: <Divider delete={props.deleteFrame} dividerId={id} />,
-            content: ["divider"],
-            contentWidths: [],
-            contentHeights: [],
-            contentTypes: ["divider"],
-            structure: null,
-            isHandleOpen: false,
-          });
-          return [...prev];
-        });
-      }
+        return [...tempPrev];
+      });
     },
   }));
 

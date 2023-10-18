@@ -19,15 +19,19 @@ export interface ReportModel {
       | "twoToThree"
       | "threeToTwo";
     items: (object | string)[];
+    contentWidths: {
+      id: string;
+      widths: number[];
+    };
+    contentHeights: {
+      id: string;
+      heights: number[];
+    };
   }[];
   createdDate: Date;
   backgroundColor: string;
   titleColor: string;
   descriptionColor: string;
-  contentWidths: {
-    id: string;
-    widths: number[];
-  }[];
   dateColor: string;
 }
 
@@ -43,7 +47,6 @@ export const emptyReport: ReportModel = {
   backgroundColor: "#252c34",
   titleColor: "#ffffff",
   descriptionColor: "#ffffff",
-  contentWidths: [],
   dateColor: "#ffffff",
 };
 

@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import update from "immutability-helper";
 import { useUpdateEffect } from "react-use";
 import { useDrag, useDrop } from "react-dnd";
 import type { Identifier, XYCoord } from "dnd-core";
-import { useStoreActions } from "app/state/store/hooks";
 import RowFrameHandleAdornment from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
+import { IFramesArray } from "../../views/create/data";
 
 interface Item {
   id: string;
@@ -61,10 +61,10 @@ function Handle(props: { top: string; left: string; radius: string }) {
 
 function ItemComponent(props: ItemComponentProps) {
   const { content } = props;
-  const dragRef = React.useRef<HTMLDivElement>(null);
-  const dropRef = React.useRef<HTMLDivElement>(null);
+  const dragRef = React.useRef<HTMLDivElement | null>(null);
+  const dropRef = React.useRef<HTMLDivElement | null>(null);
 
-  const nullRef = React.useRef<HTMLDivElement>(null);
+  const nullRef = React.useRef<HTMLDivElement | null>(null);
 
   const [{ handlerId }, drop] = useDrop<
     DragItem,
@@ -141,42 +141,103 @@ function ItemComponent(props: ItemComponentProps) {
 
   const opacity = isDragging ? 0 : 1;
 
-  let containerRef = nullRef;
-  if (props.isAnyHandleOpen) {
-    if (props.isHandleOpen) {
-      containerRef = dragRef;
-    } else {
-      containerRef = dropRef;
-    }
-  }
-
   return (
-    <div
-      style={{ ...style, opacity }}
-      css={`
-        height: 100%;
-      `}
-      id={`item-${props.id}`}
-      data-handler-id={handlerId}
-      ref={containerRef}
-    >
+    <>
       {props.isHandleOpen ? (
-        <Handle top="0" left="0" radius="20px 0px 0px 20px" />
-      ) : null}
-
-      {content}
-      {props.isHandleOpen ? (
-        <Handle top="0" left="99%" radius="0 20px 20px 0" />
-      ) : null}
-    </div>
+        <ItemContent
+          opacity={opacity}
+          isHandleOpen={props.isHandleOpen}
+          content={content}
+          handlerId={handlerId}
+          id={props.id}
+          ref={dragRef}
+        />
+      ) : (
+        <ItemContent
+          opacity={opacity}
+          isHandleOpen={props.isHandleOpen}
+          content={content}
+          handlerId={handlerId}
+          id={props.id}
+          ref={dropRef}
+        />
+      )}
+    </>
   );
 }
+
+const ItemContent = React.forwardRef(
+  (
+    {
+      opacity,
+      id,
+      handlerId,
+      isHandleOpen,
+      content,
+    }: {
+      opacity: number;
+      id: string;
+      handlerId: Identifier | null;
+      isHandleOpen: boolean;
+      content: React.ReactNode;
+    },
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    return (
+      <div
+        style={{ ...style, opacity }}
+        css={`
+          height: 100%;
+        `}
+        id={`item-${id}`}
+        data-handler-id={handlerId}
+        ref={ref}
+      >
+        {isHandleOpen ? (
+          <Handle top="0" left="0" radius="20px 0px 0px 20px" />
+        ) : null}
+
+        {content}
+        {isHandleOpen ? (
+          <Handle top="0" left="99%" radius="0 20px 20px 0" />
+        ) : null}
+      </div>
+    );
+  }
+);
 
 interface Props {
   enabled: boolean;
   children: React.ReactNode[];
   childrenData: any[];
+  setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
 }
+
+const Items = React.memo(
+  ({
+    items: localItems,
+    moveCard,
+  }: {
+    items: Item[];
+    moveCard: (dragIndex: number, hoverIndex: number) => void;
+  }) => {
+    return (
+      <React.Fragment>
+        {localItems.map((item: Item, index: number) => (
+          <ItemComponent
+            key={item.id}
+            index={index}
+            id={item.id}
+            content={item.content}
+            moveCard={moveCard}
+            isHandleOpen={item.isHandleOpen}
+            isAnyHandleOpen={item.isAnyHandleOpen}
+          />
+        ))}
+      </React.Fragment>
+    );
+  }
+);
 
 export function ReportOrderContainer(props: Props) {
   const [items, setItems] = React.useState(
@@ -190,13 +251,9 @@ export function ReportOrderContainer(props: Props) {
     }))
   );
 
-  const setOrderData = useStoreActions(
-    (actions) => actions.reports.orderData.setValue
-  );
-
   const moveCard = React.useCallback(
     (dragIndex: number, hoverIndex: number) => {
-      setItems((prevItems: Item[]) =>
+      props.setFramesArray((prevItems: IFramesArray[]) =>
         update(prevItems, {
           $splice: [
             [dragIndex, 1],
@@ -234,13 +291,6 @@ export function ReportOrderContainer(props: Props) {
       }))
     );
   }, [props.childrenData]);
-
-  useUpdateEffect(() => {
-    setOrderData({
-      hasChanged: true,
-      order: items.map((item: Item) => item.id),
-    });
-  }, [items]);
 
   if (!props.enabled) {
     return <React.Fragment>{props.children}</React.Fragment>;
