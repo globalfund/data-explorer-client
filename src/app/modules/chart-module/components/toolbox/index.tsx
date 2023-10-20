@@ -164,7 +164,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
             <ChartExporter rawViz={props.rawViz} />
           </div>
         )}
-        {props.filtersView && (
+        {/* {props.filtersView && (
           <div
             css={`
               width: 400px;
@@ -193,7 +193,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
               </div>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </>
   );

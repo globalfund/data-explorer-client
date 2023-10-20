@@ -239,7 +239,7 @@ export const routeToConfig: ChartRoutesConfigModel = {
     guideView: false,
     dataSteps: false,
     exportView: false,
-    filtersView: true,
+    filtersView: false,
     tabsDisabled: false,
   },
 };
