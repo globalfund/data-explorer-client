@@ -229,12 +229,12 @@ export function AppBar() {
               >
                 <div css={navLinkcss("why-dx", navLocation)}>
                   <NavLink to="/why-dx">
-                    <b>Why Dx?</b>
+                    <b>Why DataXplorer?</b>
                   </NavLink>
                 </div>
-                <div css={navLinkcss("explore-assets", navLocation)}>
-                  <NavLink to="/explore-assets">
-                    <b>Explore Assets</b>
+                <div css={navLinkcss("explore", navLocation)}>
+                  <NavLink to="/explore">
+                    <b>Explore </b>
                   </NavLink>
                 </div>
                 <div css={navLinkcss("about", navLocation)}>
@@ -242,9 +242,9 @@ export function AppBar() {
                     <b>About</b>
                   </Link>
                 </div>
-                <div css={navLinkcss("cases", navLocation)}>
-                  <Link to="/cases">
-                    <b>Cases </b>
+                <div css={navLinkcss("partners", navLocation)}>
+                  <Link to="/partners">
+                    <b>Partners </b>
                   </Link>
                 </div>
                 <div css={navLinkcss("contact", navLocation)}>
