@@ -114,6 +114,7 @@ function ReportCreateView(props: ReportCreateViewProps) {
         previewMode={false}
         headerDetails={{ ...props.headerDetails, createdDate: new Date() }}
         setHeaderDetails={props.setHeaderDetails}
+        setReportName={props.setReportName}
       />
       <Container maxWidth="lg">
         <div

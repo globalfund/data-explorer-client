@@ -17,6 +17,7 @@ import { Tooltip } from "@material-ui/core";
 
 interface Props {
   previewMode: boolean;
+  setReportName?: React.Dispatch<React.SetStateAction<string>>;
   headerDetails: {
     title: string;
     showHeader: boolean;
@@ -63,6 +64,15 @@ export default function HeaderBlock(props: Props) {
   React.useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  React.useEffect(() => {
+    if (
+      document.activeElement !== inputRef.current &&
+      props.headerDetails.title !== ""
+    ) {
+      props.setReportName?.(props.headerDetails.title);
+    }
+  }, [document.activeElement, props.headerDetails.title]);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "header",
