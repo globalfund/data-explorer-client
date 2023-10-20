@@ -5,11 +5,13 @@ import { dataSetsCss } from "app/modules/datasets-module/style";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { DatasetDataTable } from "app/fragments/datasets-fragment/component/data-table";
+import { CssSnackbar, ISnackbarState } from "./previewFragment";
 
 interface Props {
   data: any[];
   stats: any[];
   datasetId: string;
+  dataTotalCount: number;
 }
 
 export default function FinishedFragment(props: Props) {
@@ -28,6 +30,23 @@ export default function FinishedFragment(props: Props) {
   function handleCreateNewChart() {
     setDataset(props.datasetId);
   }
+
+  const [snackbarState, setSnackbarState] = React.useState<ISnackbarState>({
+    open: false,
+    vertical: "bottom",
+    horizontal: "center",
+  });
+
+  React.useEffect(() => {
+    console.log("noyay");
+    if (props.dataTotalCount > 0) {
+      console.log("yay");
+      setSnackbarState({ ...snackbarState, open: true });
+      setTimeout(() => {
+        setSnackbarState({ ...snackbarState, open: false });
+      }, 10000);
+    }
+  }, [props.dataTotalCount]);
 
   return (
     <div css={dataSetsCss}>
@@ -94,6 +113,16 @@ export default function FinishedFragment(props: Props) {
         </div>
         <DatasetDataTable data={props.data} stats={props.stats} />
       </div>
+      <CssSnackbar
+        anchorOrigin={{
+          vertical: snackbarState.vertical,
+          horizontal: snackbarState.horizontal,
+        }}
+        open={snackbarState.open}
+        onClose={() => setSnackbarState({ ...snackbarState, open: false })}
+        message={`${props.dataTotalCount} rows have been successfully parsed!`}
+        key={snackbarState.vertical + snackbarState.horizontal}
+      />
     </div>
   );
 }
