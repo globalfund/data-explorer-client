@@ -1,5 +1,5 @@
 import React from "react";
-import { useDXcss } from "app/modules/home-module/sub-modules/cases/style";
+import { useDXcss } from "app/modules/home-module/sub-modules/partners/style";
 
 export default function DXBlock() {
   return (

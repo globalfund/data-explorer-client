@@ -557,6 +557,7 @@ export default function ReportModule() {
             open={rightPanelOpen}
             view={view}
             pickedCharts={pickedCharts}
+            setReportName={setReportName}
             setPickedCharts={setPickedCharts}
             deleteFrame={deleteFrame}
             reportType={reportType}

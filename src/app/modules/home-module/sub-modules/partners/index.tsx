@@ -7,17 +7,17 @@ import SwipeableViews from "react-swipeable-views";
 import Container from "@material-ui/core/Container";
 import withStyles from "@material-ui/core/styles/withStyles";
 import HomeFooter from "app/modules/home-module/components/Footer";
-import DXBlock from "app/modules/home-module/sub-modules/cases/components/useDXBlock";
-import QuoteBlock from "app/modules/home-module/sub-modules/cases/components/quoteBlock";
-import EmpowerBlock from "app/modules/home-module/sub-modules/cases/components/empowerBlock";
-import OurPartnersBlock from "app/modules/home-module/sub-modules/cases/components/ourPartnersBlock";
-import BestDecisionBlock from "app/modules/home-module/sub-modules/cases/components/bestDecisionBlock";
+import DXBlock from "app/modules/home-module/sub-modules/partners/components/useDXBlock";
+import QuoteBlock from "app/modules/home-module/sub-modules/partners/components/quoteBlock";
+import EmpowerBlock from "app/modules/home-module/sub-modules/partners/components/empowerBlock";
+import OurPartnersBlock from "app/modules/home-module/sub-modules/partners/components/ourPartnersBlock";
+import BestDecisionBlock from "app/modules/home-module/sub-modules/partners/components/bestDecisionBlock";
 import {
   AboutTabCard,
   BudgetsTabCard,
   GrantsTabCard,
   PerformanceTabCard,
-} from "app/modules/home-module/sub-modules/cases/components/tabCard";
+} from "app/modules/home-module/sub-modules/partners/components/tabCard";
 
 export const StyledTab = withStyles(() => ({
   root: {
@@ -65,7 +65,7 @@ export const StyledTabs = withStyles({
   },
 })(Tabs);
 
-export default function CasesModule() {
+export default function PartnersModule() {
   const [displayTab, setDisplayTab] = React.useState<number>(0);
 
   const handleChange = (
