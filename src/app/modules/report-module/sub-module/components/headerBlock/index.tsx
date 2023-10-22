@@ -18,6 +18,7 @@ import { Tooltip } from "@material-ui/core";
 interface Props {
   previewMode: boolean;
   setReportName?: React.Dispatch<React.SetStateAction<string>>;
+  reportName?: string;
   headerDetails: {
     title: string;
     showHeader: boolean;
@@ -48,7 +49,8 @@ export default function HeaderBlock(props: Props) {
   const [currentView, setCurrentView] = useRecoilState(
     reportRightPanelViewAtom
   );
-
+  const [escrowReportName, setEscrowReportName] =
+    React.useState("Untitled report");
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
   const viewOnlyMode =
@@ -65,14 +67,24 @@ export default function HeaderBlock(props: Props) {
     inputRef.current?.focus();
   }, []);
 
+  //handles report name state
   React.useEffect(() => {
+    // checks when headerDetails.title is empty and inputRef is not focused
     if (
       document.activeElement !== inputRef.current &&
       props.headerDetails.title !== ""
     ) {
-      props.setReportName?.(props.headerDetails.title);
+      //holds the report name in escrow
+      setEscrowReportName(props.headerDetails.title);
     }
-  }, [document.activeElement, props.headerDetails.title]);
+  }, [document.activeElement]);
+
+  React.useEffect(() => {
+    //sets report name to escrow report name if report name is untilted report
+    if (props.reportName === "Untitled report") {
+      props.setReportName?.(escrowReportName);
+    }
+  }, [escrowReportName]);
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "header",
