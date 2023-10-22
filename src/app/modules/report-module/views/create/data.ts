@@ -5,7 +5,6 @@ export interface IRowFrame {
   rowId: string;
   forceSelectedType?: string;
 
-  setPickedCharts: (value: React.SetStateAction<any[]>) => void;
   type: "rowFrame" | "divider";
   handleRowFrameItemResize: (
     rowId: string,
@@ -40,9 +39,8 @@ export interface ReportCreateViewProps {
   open: boolean;
   view: "initial" | "edit" | "create" | "preview" | "ai-template";
   setReportName: React.Dispatch<React.SetStateAction<string>>;
+  reportName: string;
   reportType: "basic" | "advanced" | "ai";
-  pickedCharts: string[];
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   deleteFrame: (id: string) => void;
   framesArray: IFramesArray[];
@@ -78,7 +76,6 @@ export interface ReportCreateViewProps {
 
 export interface PlaceholderProps {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
 
   framesArray: IFramesArray[];
   index: string;

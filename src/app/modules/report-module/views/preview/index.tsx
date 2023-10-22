@@ -164,7 +164,6 @@ export function ReportPreviewView(props: {
               })}
               handlePersistReportState={() => {}}
               handleRowFrameItemResize={() => {}}
-              setPickedCharts={() => {}}
               type="rowFrame"
               setFramesArray={() => {}}
               rowContentHeights={

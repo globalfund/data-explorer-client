@@ -54,7 +54,6 @@ function ReportCreateView(props: ReportCreateViewProps) {
             forceSelectedType: "oneByFive",
             handlePersistReportState: props.handlePersistReportState,
             handleRowFrameItemResize: props.handleRowFrameItemResize,
-            setPickedCharts: props.setPickedCharts,
             type: "rowFrame",
           },
           content: [null, null, null, null, null],
@@ -71,7 +70,6 @@ function ReportCreateView(props: ReportCreateViewProps) {
             forceSelectedType: "oneByOne",
             handlePersistReportState: props.handlePersistReportState,
             handleRowFrameItemResize: props.handleRowFrameItemResize,
-            setPickedCharts: props.setPickedCharts,
             type: "rowFrame",
           },
           content: [null],
@@ -89,7 +87,6 @@ function ReportCreateView(props: ReportCreateViewProps) {
             forceSelectedType: "oneByThree",
             handlePersistReportState: props.handlePersistReportState,
             handleRowFrameItemResize: props.handleRowFrameItemResize,
-            setPickedCharts: props.setPickedCharts,
             type: "rowFrame",
           },
           content: [null, null, null],
@@ -115,6 +112,7 @@ function ReportCreateView(props: ReportCreateViewProps) {
         headerDetails={{ ...props.headerDetails, createdDate: new Date() }}
         setHeaderDetails={props.setHeaderDetails}
         setReportName={props.setReportName}
+        reportName={props.reportName}
       />
       <Container maxWidth="lg">
         <div
@@ -154,6 +152,9 @@ function ReportCreateView(props: ReportCreateViewProps) {
                       view={props.view}
                       rowContentHeights={frame.contentHeights}
                       rowContentWidths={frame.contentWidths}
+                      previewItems={
+                        frame.frame.previewItems as (string | object)[]
+                      }
                     />
                   </div>
                   <Box height={38} />
@@ -163,7 +164,6 @@ function ReportCreateView(props: ReportCreateViewProps) {
                     deleteFrame={props.deleteFrame}
                     framesArray={props.framesArray}
                     setFramesArray={props.setFramesArray}
-                    setPickedCharts={props.setPickedCharts}
                     handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
                   />
@@ -177,7 +177,6 @@ function ReportCreateView(props: ReportCreateViewProps) {
               framesArray={props.framesArray}
               rowStructureType={rowStructureType}
               setFramesArray={props.setFramesArray}
-              setPickedCharts={props.setPickedCharts}
               setRowStructureType={setRowStructuretype}
               handlePersistReportState={props.handlePersistReportState}
               handleRowFrameItemResize={props.handleRowFrameItemResize}
@@ -219,7 +218,6 @@ export const PlaceHolder = (props: PlaceholderProps) => {
 
             handlePersistReportState: props.handlePersistReportState,
             handleRowFrameItemResize: props.handleRowFrameItemResize,
-            setPickedCharts: props.setPickedCharts,
             type: item.type,
           },
           content: item.type === ReportElementsType.ROWFRAME ? [] : ["divider"],

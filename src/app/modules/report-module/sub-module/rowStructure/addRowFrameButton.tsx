@@ -10,7 +10,6 @@ interface Props {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   framesArray: IFramesArray[];
   rowStructureType: IRowFrameStructure;
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setRowStructureType: React.Dispatch<React.SetStateAction<IRowFrameStructure>>;
   handlePersistReportState: () => void;
 
@@ -39,7 +38,6 @@ export default function AddRowFrameButton(props: Props) {
 
             handlePersistReportState: props.handlePersistReportState,
             handleRowFrameItemResize: props.handleRowFrameItemResize,
-            setPickedCharts: props.setPickedCharts,
             type: "rowFrame",
           },
           content: [],
