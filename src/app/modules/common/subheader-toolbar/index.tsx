@@ -326,7 +326,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         report: false,
       });
       axios
-        .delete(`${process.env.REACT_APP_API}/report/${page}`)
+        .delete(`${process.env.REACT_APP_API}/report/${page}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then(async () => {
           loadReports({
             token,
@@ -342,7 +346,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         chart: false,
       });
       axios
-        .delete(`${process.env.REACT_APP_API}/chart/${page}`)
+        .delete(`${process.env.REACT_APP_API}/chart/${page}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then(async () => {
           loadCharts({
             token,
@@ -359,7 +367,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const handleDuplicate = () => {
     if (props.pageType === "report") {
       axios
-        .get(`${process.env.REACT_APP_API}/report/duplicate/${page}`)
+        .get(`${process.env.REACT_APP_API}/report/duplicate/${page}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           loadReports({
             token,
@@ -375,7 +387,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         .catch((error) => console.log(error));
     } else {
       axios
-        .get(`${process.env.REACT_APP_API}/chart/duplicate/${page}`)
+        .get(`${process.env.REACT_APP_API}/chart/duplicate/${page}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
         .then(async (response) => {
           loadCharts({
             token,

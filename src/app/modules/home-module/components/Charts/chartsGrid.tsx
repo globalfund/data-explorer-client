@@ -61,11 +61,13 @@ export default function ChartsGrid(props: Props) {
         : "";
     //refrain from loading data if all the data is loaded
     // if (loadedCharts.length !== ChartsCount) {
-    await loadCharts({
-      token,
-      storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
-    });
+    if (token) {
+      await loadCharts({
+        token,
+        storeInCrudData: true,
+        filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
+      });
+    }
     // }
   };
 
@@ -79,9 +81,11 @@ export default function ChartsGrid(props: Props) {
   };
 
   React.useEffect(() => {
-    loadChartsCount({
-      token,
-    });
+    if (token) {
+      loadChartsCount({
+        token,
+      });
+    }
   }, [token]);
 
   React.useEffect(() => {
@@ -110,7 +114,11 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/chart/${id}`)
+      .delete(`${process.env.REACT_APP_API}/chart/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })
@@ -123,7 +131,11 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     axios
-      .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`)
+      .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })

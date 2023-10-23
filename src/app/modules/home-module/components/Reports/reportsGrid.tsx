@@ -56,7 +56,7 @@ export default function ReportsGrid(props: Props) {
         ? `"where":{"title":{"like":"${searchStr}.*","options":"i"}},`
         : "";
     //refrain from loading data if all the data is loaded
-    if (loadedReports.length !== reportsCount) {
+    if (loadedReports.length !== reportsCount && token) {
       await loadReports({
         token,
         storeInCrudData: true,
@@ -107,7 +107,11 @@ export default function ReportsGrid(props: Props) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/report/${id}`)
+      .delete(`${process.env.REACT_APP_API}/report/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })
@@ -120,7 +124,11 @@ export default function ReportsGrid(props: Props) {
       return;
     }
     axios
-      .get(`${process.env.REACT_APP_API}/report/duplicate/${id}`)
+      .get(`${process.env.REACT_APP_API}/report/duplicate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })
