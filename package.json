@@ -163,7 +163,7 @@
     "initialise": "yarn link '@rawgraphs/rawgraphs-charts' && yarn install --network-timeout 100000",
     "docker-staging": "cp -r /app/client/build /app/client/staging && tail -f /dev/null",
     "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null",
-    "docker-prod": "cp -r /app/client/build /app/client/prod"
+    "docker-prod": "cp -r /app/client/build /app/client/prod && tail -f /dev/null"
   },
   "browserslist": {
     "production": [

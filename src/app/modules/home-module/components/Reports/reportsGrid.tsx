@@ -68,12 +68,13 @@ export default function ReportsGrid(props: Props) {
 
   const loadData = async () => {
     //refrain from loading data if all the data is loaded
-
-    await loadReports({
-      token,
-      storeInCrudData: true,
-      filterString: getFilterString(),
-    });
+    if (loadedReports.length !== reportsCount && token) {
+      await loadReports({
+        token,
+        storeInCrudData: true,
+        filterString: getFilterString(),
+      });
+    }
   };
 
   const reloadData = async () => {
@@ -113,7 +114,11 @@ export default function ReportsGrid(props: Props) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/report/${id}`)
+      .delete(`${process.env.REACT_APP_API}/report/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })
@@ -126,7 +131,11 @@ export default function ReportsGrid(props: Props) {
       return;
     }
     axios
-      .get(`${process.env.REACT_APP_API}/report/duplicate/${id}`)
+      .get(`${process.env.REACT_APP_API}/report/duplicate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })

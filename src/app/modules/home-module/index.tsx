@@ -171,13 +171,12 @@ export default function HomeModule() {
                   max-width: 450px;
                 `}
               >
-                <h1>Turns data into impact</h1>
+                <h1>Turn data into impact with DataXplorer</h1>
                 <Box height={34} />
                 <p>
                   <b>
-                    Dx drives better business outcomes and intelligent customer
-                    experiences with insights everywhere,
-                    <br /> for everyone.
+                    DataXplorer simplifies and empowers visual data reporting
+                    for all.
                   </b>
                 </p>
                 <Box height={52} />
@@ -209,19 +208,18 @@ export default function HomeModule() {
                 {!isAuthenticated && (
                   <div
                     css={`
-                      gap: 32px;
+                      gap: 20px;
                       width: 100%;
                       display: flex;
-                      margin-left: -90px;
                       flex-direction: row;
-                      justify-content: space-between;
+                      justify-content: center;
 
                       > button {
                         gap: 10px;
                         color: #fff;
                         display: flex;
-                        min-width: 285px;
-                        background: #231d2c;
+                        padding: 9px 18px;
+                        background: #a1a2ff;
                         align-items: center;
                         justify-content: center;
                         text-transform: uppercase;
@@ -233,10 +231,10 @@ export default function HomeModule() {
                     `}
                   >
                     <button onClick={handleLogin}>
-                      start free with google <GoogleIcon />
+                      <GoogleIcon /> sign in for free
                     </button>
                     <button onClick={handleLogin}>
-                      start free with linkedin <LinkedInIcon />
+                      <LinkedInIcon /> sign in for free
                     </button>
                   </div>
                 )}

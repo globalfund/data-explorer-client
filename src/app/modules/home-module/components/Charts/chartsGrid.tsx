@@ -73,12 +73,15 @@ export default function ChartsGrid(props: Props) {
 
   const loadData = async () => {
     //refrain from loading data if all the data is loaded
-
-    await loadCharts({
-      token,
-      storeInCrudData: true,
-      filterString: getFilterString(),
-    });
+    // if (loadedCharts.length !== ChartsCount) {
+    if (token) {
+      await loadCharts({
+        token,
+        storeInCrudData: true,
+        filterString: getFilterString(),
+      });
+    }
+    // }
   };
 
   const reloadData = async () => {
@@ -89,6 +92,14 @@ export default function ChartsGrid(props: Props) {
     setLoadedCharts([]);
     loadData();
   };
+
+  React.useEffect(() => {
+    if (token) {
+      loadChartsCount({
+        token,
+      });
+    }
+  }, [token]);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
@@ -118,7 +129,11 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     axios
-      .delete(`${process.env.REACT_APP_API}/chart/${id}`)
+      .delete(`${process.env.REACT_APP_API}/chart/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })
@@ -131,7 +146,11 @@ export default function ChartsGrid(props: Props) {
       return;
     }
     axios
-      .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`)
+      .get(`${process.env.REACT_APP_API}/chart/duplicate/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
       .then(() => {
         reloadData();
       })
