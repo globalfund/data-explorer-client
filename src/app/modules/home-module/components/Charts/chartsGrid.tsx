@@ -4,7 +4,7 @@ import get from "lodash/get";
 import find from "lodash/find";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import { useSessionStorage } from "react-use";
+import { useSessionStorage, useUpdateEffect } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
 import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -54,35 +54,38 @@ export default function ChartsGrid(props: Props) {
     (state) => state.charts.ChartGetList.success
   );
 
-  const loadData = async (searchStr: string, sortByStr: string) => {
+  const getFilterString = () => {
     const value =
-      searchStr.length > 0
-        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+      props.searchStr?.length > 0
+        ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
+    return `filter={${value}"order":"${props.sortBy} desc","limit":${limit},"offset":${offset}}`;
+  };
+
+  const getWhereString = () => {
+    return props.searchStr?.length > 0
+      ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
+      : "";
+  };
+
+  const loadData = async () => {
     //refrain from loading data if all the data is loaded
-    // if (loadedCharts.length !== ChartsCount) {
+
     await loadCharts({
       token,
       storeInCrudData: true,
-      filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
+      filterString: getFilterString(),
     });
-    // }
   };
 
   const reloadData = async () => {
     setOffset(0);
     if (token) {
-      loadChartsCount({ token });
+      loadChartsCount({ token, filterString: getWhereString() });
     }
     setLoadedCharts([]);
-    loadData(props.searchStr, props.sortBy);
+    loadData();
   };
-
-  React.useEffect(() => {
-    loadChartsCount({
-      token,
-    });
-  }, [token]);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
@@ -91,16 +94,18 @@ export default function ChartsGrid(props: Props) {
         //update the offset value for the next load
         setOffset(offset + limit);
       }
-      loadData(props.searchStr, props.sortBy);
     }
   }, [isObserved]);
 
+  useUpdateEffect(() => {
+    loadData();
+  }, [offset]);
+
   React.useEffect(() => {
-    reloadData();
-    return () => {
-      setOffset(0);
-    };
-  }, [props.sortBy, ChartsCount]);
+    if (token) {
+      reloadData();
+    }
+  }, [props.sortBy, token]);
 
   const handleDelete = (index?: number) => {
     setModalDisplay(false);
@@ -157,19 +162,20 @@ export default function ChartsGrid(props: Props) {
     }
     //update the loaded reports
     setLoadedCharts((prevCharts) => {
-      const f = charts.filter((chart, i) => prevCharts[i]?.id !== chart.id);
+      const prevChartsIds = prevCharts.map((c) => c.id);
+      const f = charts.filter((chart) => !prevChartsIds.includes(chart.id));
       return [...prevCharts, ...f];
     });
   }, [chartsLoadSuccess]);
 
   const [,] = useDebounce(
     () => {
-      if (props.searchStr.length > 0) {
-        loadData(props.searchStr, props.sortBy);
+      if (props.searchStr !== undefined) {
+        reloadData();
       }
     },
     500,
-    [props.searchStr, props.sortBy]
+    [props.searchStr]
   );
 
   return (
@@ -205,7 +211,21 @@ export default function ChartsGrid(props: Props) {
       )}
       <Box height={100} />
 
-      <div ref={observerTarget} />
+      {/* <div ref={observerTarget} /> */}
+
+      <div
+        onClick={() => {
+          if (loadedCharts.length !== ChartsCount) {
+            setOffset(offset + limit);
+          }
+        }}
+        css={`
+          height: 10px;
+          cursor: pointer;
+        `}
+      >
+        {loadedCharts.length === ChartsCount ? "end" : "see more"}
+      </div>
 
       <DeleteChartDialog
         cardId={cardId}

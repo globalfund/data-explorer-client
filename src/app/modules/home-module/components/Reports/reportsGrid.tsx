@@ -3,7 +3,7 @@ import axios from "axios";
 import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import { useSessionStorage } from "react-use";
+import { useSessionStorage, useUpdateEffect } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
 import { ReportModel } from "app/modules/report-module/data";
 import ColoredReportIcon from "app/assets/icons/ColoredReportIcon";
@@ -50,35 +50,38 @@ export default function ReportsGrid(props: Props) {
     (state) => state.reports.ReportGetList.success
   );
 
-  const loadData = async (searchStr: string, sortByStr: string) => {
+  const getFilterString = () => {
     const value =
-      searchStr.length > 0
-        ? `"where":{"title":{"like":"${searchStr}.*","options":"i"}},`
+      props.searchStr?.length > 0
+        ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
+    return `filter={${value}"order":"${props.sortBy} desc","limit":${limit},"offset":${offset}}`;
+  };
+
+  const getWhereString = () => {
+    return props.searchStr?.length > 0
+      ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
+      : "";
+  };
+
+  const loadData = async () => {
     //refrain from loading data if all the data is loaded
-    if (loadedReports.length !== reportsCount) {
-      await loadReports({
-        token,
-        storeInCrudData: true,
-        filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
-      });
-    }
+
+    await loadReports({
+      token,
+      storeInCrudData: true,
+      filterString: getFilterString(),
+    });
   };
 
   const reloadData = async () => {
     setOffset(0);
     if (token) {
-      await loadReportsCount({ token });
+      await loadReportsCount({ token, filterString: getWhereString() });
     }
     setLoadedReports([]);
-    loadData(props.searchStr, props.sortBy);
+    loadData();
   };
-
-  React.useEffect(() => {
-    if (token) {
-      loadReportsCount({ token });
-    }
-  }, [token]);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
@@ -87,17 +90,18 @@ export default function ReportsGrid(props: Props) {
         //update the offset value for the next load
         setOffset(offset + limit);
       }
-
-      loadData(props.searchStr, props.sortBy);
     }
   }, [isObserved]);
 
+  useUpdateEffect(() => {
+    loadData();
+  }, [offset]);
+
   React.useEffect(() => {
-    reloadData();
-    return () => {
-      setOffset(0);
-    };
-  }, [props.sortBy, token, reportsCount]);
+    if (token) {
+      reloadData();
+    }
+  }, [props.sortBy, token]);
 
   const handleDelete = (index?: number) => {
     setModalDisplay(false);
@@ -146,21 +150,21 @@ export default function ReportsGrid(props: Props) {
     }
     //update the loaded reports
     setLoadedReports((prevReports) => {
-      const f = reports?.filter(
-        (report, i) => prevReports[i]?.id !== report.id
-      );
+      const prevReportsIds = prevReports.map((r) => r.id);
+      const f = reports.filter((report) => !prevReportsIds.includes(report.id));
       return [...prevReports, ...f];
     });
   }, [reportsLoadSuccess]);
 
   const [,] = useDebounce(
     () => {
-      if (props.searchStr.length > 0) {
-        loadData(props.searchStr, props.sortBy);
+      //calls reloadData 500ms after change in searchStr or sortBy
+      if (props.searchStr !== undefined) {
+        reloadData();
       }
     },
     500,
-    [props.searchStr, props.sortBy]
+    [props.searchStr]
   );
 
   return (
