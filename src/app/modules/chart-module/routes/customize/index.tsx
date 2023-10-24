@@ -12,8 +12,9 @@ import { styles as commonStyles } from "app/modules/chart-module/routes/common/s
 import { ChartBuilderCustomizeProps } from "app/modules/chart-module/routes/customize/data";
 import { useRecoilState } from "recoil";
 import { createChartFromReportAtom } from "app/state/recoil/atoms";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
-export function ChartBuilderCustomize(props: ChartBuilderCustomizeProps) {
+function ChartBuilderCustomize(props: ChartBuilderCustomizeProps) {
   useTitle("DX DataXplorer - Customize");
 
   const history = useHistory();
@@ -74,3 +75,5 @@ export function ChartBuilderCustomize(props: ChartBuilderCustomizeProps) {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ChartBuilderCustomize);

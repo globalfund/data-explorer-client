@@ -1,18 +1,22 @@
 import React from "react";
 import axios from "axios";
-import { useUpdateEffect } from "react-use";
+import { useSessionStorage, useUpdateEffect } from "react-use";
 import Container from "@material-ui/core/Container";
 import { useStoreActions } from "app/state/store/hooks";
 import { useChartsRawData } from "app/hooks/useChartsRawData";
 import { stepcss } from "app/fragments/datasets-fragment/style";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
+import { useAuth0, withAuthenticationRequired } from "@auth0/auth0-react";
 import MetaData from "app/fragments/datasets-fragment/upload-steps/metaData";
 import Processing from "app/fragments/datasets-fragment/upload-steps/processing";
 import PreviewFragment from "app/fragments/datasets-fragment/upload-steps/previewFragment";
 import FinishedFragment from "app/fragments/datasets-fragment/upload-steps/finishedFragment";
 import AddDatasetFragment from "app/fragments/datasets-fragment/upload-steps/addDatasetFragment";
 
-export default function DatasetUploadSteps() {
+function DatasetUploadSteps() {
+  const { user } = useAuth0();
+  const token = useSessionStorage("authToken", "")[0];
+
   const [activeStep, setActiveStep] = React.useState<number>(0);
   const [selectedFile, setSelectedFile] = React.useState<File | null>(null);
   const [uploading, setUploading] = React.useState(false);
@@ -125,17 +129,22 @@ export default function DatasetUploadSteps() {
 
     setEstUploadTime(timeEstimate);
   };
-  console.log(percentageLoadedProgress, "percentageLoadedProgress");
+
   const onSubmit = async () => {
     // Post the dataset
     handleNext();
     setUploading(true);
     axios
-      .post(`${process.env.REACT_APP_API}/datasets`, formDetails, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
+      .post(
+        `${process.env.REACT_APP_API}/datasets`,
+        { ...formDetails, authId: user?.sub },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
       .then((response) => {
         // if the dataset was created successfully, post the file to the server
         const formData = new FormData();
@@ -149,10 +158,10 @@ export default function DatasetUploadSteps() {
             },
             onUploadProgress,
           })
-          .then((_) => {
+          .then(async () => {
             setUploading(false);
             setUploadSuccess(true);
-            loadDatasets({ storeInCrudData: true });
+            loadDatasets({ token, storeInCrudData: true });
             setDatasetId(response.data.id);
             setActiveStep(3);
           })
@@ -169,8 +178,8 @@ export default function DatasetUploadSteps() {
               .delete(
                 `${process.env.REACT_APP_API}/datasets/${response.data.id}`
               )
-              .then(() => {
-                loadDatasets({ storeInCrudData: true });
+              .then(async () => {
+                loadDatasets({ token, storeInCrudData: true });
               })
               .catch((error) => console.log(error));
           });
@@ -295,3 +304,5 @@ export default function DatasetUploadSteps() {
     </Container>
   );
 }
+
+export default withAuthenticationRequired(DatasetUploadSteps);

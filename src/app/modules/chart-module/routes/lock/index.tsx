@@ -3,13 +3,14 @@ import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { ChartBuilderLockProps } from "app/modules/chart-module/routes/lock/data";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 
-export function ChartBuilderLock(props: ChartBuilderLockProps) {
+function ChartBuilderLock(props: ChartBuilderLockProps) {
   useTitle("DX DataXplorer - Lock");
 
   const history = useHistory();
@@ -55,3 +56,5 @@ export function ChartBuilderLock(props: ChartBuilderLockProps) {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ChartBuilderLock);

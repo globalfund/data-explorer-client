@@ -1,9 +1,13 @@
 /* third-party */
 import React from "react";
 import isEmpty from "lodash/isEmpty";
-import { useHistory, useParams } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { useSessionStorage } from "react-use";
+import { useAuth0 } from "@auth0/auth0-react";
 import MuiButton from "@material-ui/core/Button";
 import { withStyles } from "@material-ui/core/styles";
+import { useHistory, useParams } from "react-router-dom";
+import { createChartFromReportAtom } from "app/state/recoil/atoms";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { styles } from "app/modules/chart-module/components/toolbox/styles";
@@ -12,8 +16,6 @@ import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { ChartToolBoxProps } from "app/modules/chart-module/components/toolbox/data";
 import { ChartToolBoxSteps } from "app/modules/chart-module/components/toolbox/views/steps";
 import { ChartToolBoxPreview } from "app/modules/chart-module/components/toolbox/views/preview";
-import { useRecoilState } from "recoil";
-import { createChartFromReportAtom } from "app/state/recoil/atoms";
 
 const Button = withStyles(() => ({
   root: {
@@ -42,7 +44,9 @@ const Button = withStyles(() => ({
 
 export function ChartModuleToolBox(props: ChartToolBoxProps) {
   const { page, view } = useParams<{ page: string; view?: string }>();
+  const { user } = useAuth0();
   const history = useHistory();
+  const token = useSessionStorage("authToken", "")[0];
   const [isSavedEnabled, setIsSavedEnabled] = React.useState(false);
 
   const mapping = useStoreState((state) => state.charts.mapping.value);
@@ -77,6 +81,7 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
   function onSave() {
     const chart = {
       name: props.chartName,
+      authId: user?.sub,
       vizType: selectedChartType,
       mapping,
       datasetId: dataset,
@@ -86,11 +91,13 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
     };
     if (props.isEditMode && page !== "new") {
       editChart({
+        token,
         patchId: page,
         values: chart,
       });
     } else {
       createChart({
+        token,
         values: chart,
       });
     }

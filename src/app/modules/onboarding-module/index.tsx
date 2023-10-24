@@ -1,23 +1,29 @@
 import React from "react";
-import { Link, Route, Switch, useLocation } from "react-router-dom";
-import OnboardingRightDeco from "./asset/onboardingRight-img.svg";
-import { Box, Container, Grid, Hidden, useMediaQuery } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
+import Grid from "@material-ui/core/Grid";
 import SplitBar from "./component/splibar";
-import LoginCard from "./component/loginCard";
+import { useAuth0 } from "@auth0/auth0-react";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { Route, Switch, useHistory } from "react-router-dom";
+import AuthCard from "app/modules/onboarding-module/component/card";
+import OnboardingRightDeco from "app/modules/onboarding-module/asset/onboardingRight-img.svg";
 
-import { ReactComponent as Logo } from "../home-module/assets/logo.svg";
-import SignupCard from "./component/signupCard";
 export default function Onboarding() {
+  const history = useHistory();
+  const { isAuthenticated } = useAuth0();
   const mobile = useMediaQuery("(max-width: 768px)");
-  const location = useLocation();
+
+  if (isAuthenticated) {
+    history.replace("/");
+  }
+
   return (
     <Grid
       container
       spacing={6}
       css={`
-        position: relative;
         margin-top: 0px;
-
+        position: relative;
         overflow-y: hidden;
       `}
     >
@@ -35,17 +41,6 @@ export default function Onboarding() {
       >
         <div
           css={`
-            margin-top: 2rem;
-            margin-left: -2rem;
-          `}
-        >
-          <Link to="/">
-            <Logo width={304.62} height={32} />
-          </Link>
-        </div>
-
-        <div
-          css={`
             width: 60%;
             margin: auto;
           `}
@@ -54,18 +49,17 @@ export default function Onboarding() {
           <h2
             css={`
               color: #6061e5;
-              font-family: "GothamNarrow-Bold";
-              font-style: normal;
-              font-weight: 700;
               font-size: 24px;
+              font-weight: 700;
+              font-style: normal;
+              font-family: "GothamNarrow-Bold";
             `}
           >
-            {location.pathname.includes("login")
+            {history.location.pathname.includes("login")
               ? "Welcome back!"
               : "Create your free account."}
           </h2>
           <Box height={10} />
-
           <div
             css={`
               width: 100%;
@@ -73,13 +67,12 @@ export default function Onboarding() {
           >
             <SplitBar leftLabel="Log In" rightLabel="Sign Up" />
           </div>
-
           <Switch>
             <Route path="/onboarding/signup">
-              <SignupCard />
+              <AuthCard />
             </Route>
             <Route path="/onboarding/login">
-              <LoginCard />
+              <AuthCard isLogin />
             </Route>
           </Switch>
         </div>
@@ -93,13 +86,12 @@ export default function Onboarding() {
           lg={7}
           css={`
             right: 0;
-
             height: 100vh;
-            background-image: url(${OnboardingRightDeco});
-            background-repeat: no-repeat;
             background-size: cover;
+            background-repeat: no-repeat;
+            background-image: url(${OnboardingRightDeco});
           `}
-        ></Grid>
+        />
       )}
     </Grid>
   );

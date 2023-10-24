@@ -24,9 +24,9 @@ import {
 } from "app/state/recoil/atoms";
 import TourGuide from "app/components/Dialogs/TourGuide";
 import { cloneDeep } from "lodash";
-import { useStoreState } from "app/state/store/hooks";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 
-export function ReportCreateView(props: ReportCreateViewProps) {
+function ReportCreateView(props: ReportCreateViewProps) {
   const { ref, width } = useResizeObserver<HTMLDivElement>();
 
   const [containerWidth, setContainerWidth] = useRecoilState(
@@ -189,6 +189,8 @@ export function ReportCreateView(props: ReportCreateViewProps) {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ReportCreateView);
 
 export const PlaceHolder = (props: PlaceholderProps) => {
   const [{ isOver }, drop] = useDrop(() => ({

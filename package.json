@@ -7,6 +7,7 @@
     "url": "https://github.com/zimmerman-team/dx.client.git"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.2.1",
     "@craco/craco": "^6.4.3",
     "@devhammed/use-cookie": "^1.1.1",
     "@draft-js-plugins/anchor": "^4.1.4",
@@ -162,7 +163,7 @@
     "initialise": "yarn link '@rawgraphs/rawgraphs-charts' && yarn install --network-timeout 100000",
     "docker-staging": "cp -r /app/client/build /app/client/staging && tail -f /dev/null",
     "docker-test": "cp -r /app/client/build /app/client/test && tail -f /dev/null",
-    "docker-prod": "cp -r /app/client/build /app/client/prod"
+    "docker-prod": "cp -r /app/client/build /app/client/prod && tail -f /dev/null"
   },
   "browserslist": {
     "production": [

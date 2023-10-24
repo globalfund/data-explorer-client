@@ -1,17 +1,20 @@
 import React from "react";
 import { v4 } from "uuid";
+import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import { useRecoilState } from "recoil";
-import { useUpdateEffect } from "react-use";
 import { useParams } from "react-router-dom";
 import useResizeObserver from "use-resize-observer";
 import Container from "@material-ui/core/Container";
 import { EditorState, convertFromRaw } from "draft-js";
+import { useSessionStorage, useUpdateEffect } from "react-use";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { PlaceHolder } from "app/modules/report-module/views/create";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 import { ReportModel, emptyReport } from "app/modules/report-module/data";
 import { ReportEditViewProps } from "app/modules/report-module/views/edit/data";
 import HeaderBlock from "app/modules/report-module/sub-module/components/headerBlock";
+import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-message";
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
@@ -24,8 +27,9 @@ import {
 import { IFramesArray } from "../create/data";
 import RowFrame from "../../sub-module/rowStructure/rowFrame";
 
-export function ReportEditView(props: ReportEditViewProps) {
+function ReportEditView(props: ReportEditViewProps) {
   const { page } = useParams<{ page: string }>();
+  const token = useSessionStorage("authToken", "")[0];
 
   const { ref, width } = useResizeObserver<HTMLDivElement>();
 
@@ -49,6 +53,11 @@ export function ReportEditView(props: ReportEditViewProps) {
     (state) => (state.reports.ReportGet.crudData ?? emptyReport) as ReportModel
   );
 
+  const reportError401 = useStoreState(
+    (state) =>
+      get(state.reports.ReportGet.errorData, "data.error.statusCode", 0) === 401
+  );
+
   function deleteFrame(id: string) {
     props.setFramesArray((prev) => {
       let tempPrev = prev.map((item) => ({ ...item }));
@@ -65,8 +74,8 @@ export function ReportEditView(props: ReportEditViewProps) {
   }
 
   React.useEffect(() => {
-    fetchReportData({ getId: page });
-  }, [page]);
+    fetchReportData({ token, getId: page });
+  }, [page, token]);
 
   React.useEffect(() => {
     if (props.localPickedCharts.length === 0) {
@@ -156,6 +165,10 @@ export function ReportEditView(props: ReportEditViewProps) {
     }
   }, [reportData]);
 
+  if (reportError401) {
+    return <NotAuthorizedMessageModule asset="report" />;
+  }
+
   return (
     <div>
       <HeaderBlock
@@ -228,3 +241,5 @@ export function ReportEditView(props: ReportEditViewProps) {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ReportEditView);

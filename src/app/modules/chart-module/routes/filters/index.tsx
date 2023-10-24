@@ -3,6 +3,7 @@ import React from "react";
 import isEmpty from "lodash/isEmpty";
 import useTitle from "react-use/lib/useTitle";
 import { useHistory, useParams } from "react-router-dom";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
 /* project */
 import { CHART_DEFAULT_WIDTH } from "app/modules/chart-module/data";
@@ -11,7 +12,7 @@ import { CommonChart } from "app/modules/chart-module/components/common-chart";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 import { ChartBuilderFiltersProps } from "app/modules/chart-module/routes/filters/data";
 
-export function ChartBuilderFilters(props: ChartBuilderFiltersProps) {
+function ChartBuilderFilters(props: ChartBuilderFiltersProps) {
   useTitle("DX DataXplorer - Filters");
 
   const history = useHistory();
@@ -70,3 +71,5 @@ export function ChartBuilderFilters(props: ChartBuilderFiltersProps) {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ChartBuilderFilters);

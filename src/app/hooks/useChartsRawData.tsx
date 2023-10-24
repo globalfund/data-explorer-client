@@ -4,9 +4,9 @@ import get from "lodash/get";
 import filter from "lodash/filter";
 import isEmpty from "lodash/isEmpty";
 import { useParams } from "react-router-dom";
-import { useMount, useUpdateEffect } from "react-use";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
+import { useMount, useSessionStorage, useUpdateEffect } from "react-use";
 /* project */
 import { ChartRenderedItem } from "app/modules/chart-module/data";
 
@@ -61,6 +61,7 @@ export function useChartsRawData(props: {
   inChartWrapper?: boolean;
   dimensions?: any;
 }) {
+  const token = useSessionStorage("authToken", "")[0];
   const { visualOptions, chartFromAPI, setVisualOptions, setChartFromAPI } =
     props;
 
@@ -71,6 +72,7 @@ export function useChartsRawData(props: {
   const [sampleData, setSampleData] = React.useState([]);
   const [loading, setLoading] = React.useState(page !== "new");
   const [notFound, setNotFound] = React.useState(false);
+  const [Error401, setError401] = React.useState(false);
   const [dataError, setDataError] = React.useState(false);
   const [dataTotalCount, setDataTotalCount] = React.useState(0);
   const [isEditMode, setIsEditMode] = React.useState(checkIfIsEditMode(view));
@@ -110,6 +112,7 @@ export function useChartsRawData(props: {
       .get(`${process.env.REACT_APP_API}/${endpoint}`, {
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
       })
       .then((response: AxiosResponse) => {
@@ -141,7 +144,7 @@ export function useChartsRawData(props: {
       });
   }
 
-  function loadDataFromAPI(
+  async function loadDataFromAPI(
     customAppliedFilters?: [
       [
         {
@@ -158,13 +161,14 @@ export function useChartsRawData(props: {
           : appliedFilters,
       };
       setLoading(true);
-      axios
+      await axios
         .post(
           `${process.env.REACT_APP_API}/chart/${chartId ?? page}/render`,
           body,
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           }
         )
@@ -191,6 +195,7 @@ export function useChartsRawData(props: {
           console.log("API call error: " + error.message);
           setNotFound(true);
           setLoading(false);
+          setError401(error.response?.status === 401);
         });
     }
   }
@@ -286,6 +291,7 @@ export function useChartsRawData(props: {
           .post(`${process.env.REACT_APP_API}/chart/${page}/render`, body, {
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
             },
           })
           .then((response) => {
@@ -301,8 +307,8 @@ export function useChartsRawData(props: {
           .catch((error) => {
             console.log("API call error: " + error.message);
             setNotFound(true);
-
             setLoading(false);
+            setError401(error.response?.status === 401);
             if (extraLoader) {
               extraLoader.style.display = "none";
             }
@@ -321,6 +327,7 @@ export function useChartsRawData(props: {
   return {
     loading,
     notFound,
+    Error401,
     dataError,
     dataTypes,
     dataStats,

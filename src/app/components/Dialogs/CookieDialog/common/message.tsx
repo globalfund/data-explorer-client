@@ -52,8 +52,9 @@ export const Message = (props: MessageProps) => {
     <MessageContainer display="flex">
       <Typo
         variant="body1"
-        color="#231D2C"
         css={`
+          color: #231d2c;
+
           a {
             color: #231d2c;
           }

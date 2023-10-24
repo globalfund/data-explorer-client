@@ -2,10 +2,9 @@ import React from "react";
 import axios from "axios";
 import isEmpty from "lodash/isEmpty";
 import { useRecoilState } from "recoil";
-import styled from "styled-components/macro";
-import Button from "@material-ui/core/Button";
 import { useSessionStorage } from "react-use";
 import { useAuth0 } from "@auth0/auth0-react";
+import Button from "@material-ui/core/Button";
 import SaveIcon from "@material-ui/icons/Save";
 import EditIcon from "@material-ui/icons/Edit";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -35,59 +34,13 @@ import {
   unSavedReportPreviewModeAtom,
   reportRightPanelViewAtom,
 } from "app/state/recoil/atoms";
-
-export const InfoSnackbar = styled((props) => <Snackbar {...props} />)`
-  && {
-    bottom: 40px;
-  }
-
-  & [class*="MuiSnackbarContent-root"] {
-    width: 100%;
-    display: flex;
-    padding: 0 78px;
-    background: #fff;
-    flex-wrap: nowrap;
-    border-radius: 12px;
-    gap: ${(props) => (props.gap ? "0px" : "84px")};
-    justify-content: center;
-    box-shadow: 0 8px 17px -4px rgba(130, 142, 148, 0.35),
-      0 0 4px 0 rgba(130, 142, 148, 0.16), 0 0 2px 0 rgba(130, 142, 148, 0.12);
-
-    @media (max-width: 550px) {
-      width: calc(100% - 16px);
-    }
-  }
-
-  & [class*="MuiSnackbarContent-message"] {
-    color: #000;
-    font-size: 18px;
-    padding: 16px 0;
-    font-weight: 700;
-    font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-  }
-
-  & [class*="MuiSnackbarContent-action"] {
-    > button {
-      color: #fff;
-      cursor: pointer;
-      font-size: 14px;
-      border-style: none;
-      padding: 12px 27px;
-      background: #262c34;
-      border-radius: 20px;
-    }
-  }
-
-  & [class*="MuiSnackbarContent-action"] {
-    padding: 16px 0;
-  }
-`;
+import { InfoSnackbar } from ".";
 
 export function SubheaderToolbar(props: SubheaderToolbarProps) {
   const { user } = useAuth0();
   const history = useHistory();
-  const { page, view } = useParams<{ page: string; view?: string }>();
   const token = useSessionStorage("authToken", "")[0];
+  const { page, view } = useParams<{ page: string; view?: string }>();
   const [modalDisplay, setModalDisplay] = React.useState({
     report: false,
     chart: false,
@@ -378,6 +331,7 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
             storeInCrudData: true,
             filterString: "filter[order]=createdDate desc",
           });
+
           setDuplicatedReportId(response.data.id);
           setSnackbarState({
             ...snackbarState,

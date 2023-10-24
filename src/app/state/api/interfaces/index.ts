@@ -80,6 +80,7 @@ import { ChartsAppliedFiltersStateModel } from "../action-reducers/sync/charts/f
 
 export interface RequestValues<T> {
   values?: T;
+  token?: string;
   getId?: string;
   patchId?: string;
   deleteId?: string;

@@ -2,12 +2,13 @@
 import React from "react";
 import useTitle from "react-use/lib/useTitle";
 import { useStoreActions } from "app/state/store/hooks";
+import { withAuthenticationRequired } from "@auth0/auth0-react";
 /* project */
 import { PageLoader } from "app/modules/common/page-loader";
 import { styles } from "app/modules/chart-module/routes/data/styles";
 import { styles as commonStyles } from "app/modules/chart-module/routes/common/styles";
 
-export function ChartModuleDataView() {
+function ChartModuleDataView() {
   useTitle("DX DataXplorer - Select Data");
 
   const setActivePanels = useStoreActions(
@@ -49,3 +50,5 @@ export function ChartModuleDataView() {
     </div>
   );
 }
+
+export default withAuthenticationRequired(ChartModuleDataView);

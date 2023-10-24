@@ -1,16 +1,12 @@
 /* third-party */
 import React from "react";
-import { useRecoilState, useResetRecoilState } from "recoil";
 import { Link } from "react-router-dom";
+import { useAuth0 } from "@auth0/auth0-react";
 import useTitle from "react-use/lib/useTitle";
+import { useRecoilState, useResetRecoilState } from "recoil";
 import { Box, Grid, Container, IconButton, Popover } from "@material-ui/core";
 /* project */
-import {
-  createChartFromReportAtom,
-  homeDisplayAtom,
-  persistedReportStateAtom,
-  unSavedReportPreviewModeAtom,
-} from "app/state/recoil/atoms";
+import { Tab } from "app/components/Styled/tabs";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import ChartsGrid from "app/modules/home-module/components/Charts/chartsGrid";
 import ReportsGrid from "app/modules/home-module/components/Reports/reportsGrid";
@@ -20,9 +16,17 @@ import { ReactComponent as SortIcon } from "app/modules/home-module/assets/sort-
 import { ReactComponent as GridIcon } from "app/modules/home-module/assets/grid-fill.svg";
 import { ReactComponent as CloseIcon } from "app/modules/home-module/assets/close-icon.svg";
 import { ReactComponent as SearchIcon } from "app/modules/home-module/assets/search-fill.svg";
+import { ReactComponent as GoogleIcon } from "app/modules/onboarding-module/asset/google-img.svg";
+import { ReactComponent as LinkedInIcon } from "app/modules/onboarding-module/asset/linkedIn-img.svg";
 import { ReactComponent as TopRightEllipse } from "app/modules/home-module/assets/top-right-ellipse.svg";
 import { ReactComponent as BottomLeftEllipse } from "app/modules/home-module/assets/bottom-left-ellipse.svg";
 import { ReactComponent as BottomRightEllipse } from "app/modules/home-module/assets/bottom-right-ellipse.svg";
+import {
+  homeDisplayAtom,
+  persistedReportStateAtom,
+  createChartFromReportAtom,
+  unSavedReportPreviewModeAtom,
+} from "app/state/recoil/atoms";
 import {
   TopRightEllipseCss,
   bottomLeftEllipseCss,
@@ -35,10 +39,11 @@ import {
   sortByItemCss,
   turnsDataCss,
 } from "app/modules/home-module/style";
-import { Tab } from "app/components/Styled/tabs";
 
 export default function HomeModule() {
   useTitle("DX DataXplorer");
+
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
 
   // clear persisted states
   const clearPersistedReportState = useResetRecoilState(
@@ -124,6 +129,10 @@ export default function HomeModule() {
     setSortPopoverAnchorEl(null);
   };
 
+  const handleLogin = () => {
+    loginWithRedirect();
+  };
+
   const openSortPopover = Boolean(sortPopoverAnchorEl);
 
   React.useEffect(() => {
@@ -160,39 +169,73 @@ export default function HomeModule() {
                   max-width: 450px;
                 `}
               >
-                <h1>Turns data into impact</h1>
+                <h1>Turn data into impact with DataXplorer</h1>
                 <Box height={34} />
                 <p>
                   <b>
-                    Dx drives better business outcomes and intelligent customer
-                    experiences with insights everywhere,
-                    <br /> for everyone.
+                    DataXplorer simplifies and empowers visual data reporting
+                    for all.
                   </b>
                 </p>
                 <Box height={52} />
-                <div
-                  css={`
-                    ${rowFlexCss} gap: 32px;
-                    width: 100%;
-                  `}
-                >
-                  <Link
-                    to="report/new/initial"
+                {isAuthenticated && (
+                  <div
                     css={`
-                      background: #6061e5;
+                      ${rowFlexCss} gap: 32px;
+                      width: 100%;
                     `}
                   >
-                    CREATE REPORT
-                  </Link>
-                  <button
-                    onClick={exploreReportClick}
+                    <Link
+                      to="report/new/initial"
+                      css={`
+                        background: #6061e5;
+                      `}
+                    >
+                      CREATE REPORT
+                    </Link>
+                    <button
+                      onClick={exploreReportClick}
+                      css={`
+                        background: #e492bd;
+                      `}
+                    >
+                      EXPLORE REPORTS
+                    </button>
+                  </div>
+                )}
+                {!isAuthenticated && (
+                  <div
                     css={`
-                      background: #e492bd;
+                      gap: 20px;
+                      width: 100%;
+                      display: flex;
+                      flex-direction: row;
+                      justify-content: center;
+
+                      > button {
+                        gap: 10px;
+                        color: #fff;
+                        display: flex;
+                        padding: 9px 18px;
+                        background: #a1a2ff;
+                        align-items: center;
+                        justify-content: center;
+                        text-transform: uppercase;
+
+                        > svg {
+                          transform: scale(0.8);
+                        }
+                      }
                     `}
                   >
-                    EXPLORE REPORTS
-                  </button>
-                </div>
+                    <button onClick={handleLogin}>
+                      <GoogleIcon /> sign in for free
+                    </button>
+                    <button onClick={handleLogin}>
+                      <LinkedInIcon /> sign in for free
+                    </button>
+                  </div>
+                )}
               </div>
             </Grid>
             <Grid
