@@ -3,6 +3,8 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { useStyles } from "./deleteChartDialog";
 import { CloseOutlined } from "@material-ui/icons";
 import { IconButton, Modal } from "@material-ui/core";
+import { useStoreActions } from "app/state/store/hooks";
+import useSessionStorage from "react-use/lib/useSessionStorage";
 
 interface Props {
   modalDisplay: boolean;
@@ -12,6 +14,34 @@ interface Props {
 export default function LogOutDialog(props: Props) {
   const classes = useStyles();
   const { logout } = useAuth0();
+
+  const setToken = useSessionStorage("authToken", "")[1];
+
+  const clearDatasets = useStoreActions(
+    (actions) => actions.dataThemes.DatasetGetList.clear
+  );
+  const clearCharts = useStoreActions(
+    (actions) => actions.charts.ChartGetList.clear
+  );
+  const clearReports = useStoreActions(
+    (actions) => actions.reports.ReportGetList.clear
+  );
+
+  function clearAssets() {
+    setToken("");
+    clearDatasets();
+    clearCharts();
+    clearReports();
+  }
+
+  function onLogout() {
+    clearAssets();
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
+  }
 
   return (
     <div>
@@ -98,13 +128,7 @@ export default function LogOutDialog(props: Props) {
             </button>
             <button
               type="button"
-              onClick={() =>
-                logout({
-                  logoutParams: {
-                    returnTo: window.location.origin,
-                  },
-                })
-              }
+              onClick={onLogout}
               css={`
                 background: #231d2c;
                 border-radius: 30px;
