@@ -92,6 +92,8 @@ export default function ReportModule() {
 
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("Untitled report");
+  const [hasReportNameFocused, setHasReportNameFocused] = React.useState(false);
+
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
   const [reportType, setReportType] = React.useState<
     "basic" | "advanced" | "ai"
@@ -488,6 +490,7 @@ export default function ReportModule() {
           pageType="report"
           onReportSave={onSave}
           setName={setReportName}
+          setHasReportNameFocused={setHasReportNameFocused}
           forceEnablePreviewSave={isPreviewSaveEnabled}
           name={page !== "new" && !view ? reportGetData.name : reportName}
           reportName={reportName}
@@ -541,6 +544,7 @@ export default function ReportModule() {
             setReportName={setReportName}
             reportName={reportName}
             deleteFrame={deleteFrame}
+            hasReportNameFocused={hasReportNameFocused}
             reportType={reportType}
             framesArray={framesArray}
             headerDetails={headerDetails}
