@@ -211,21 +211,7 @@ export default function ChartsGrid(props: Props) {
       )}
       <Box height={100} />
 
-      {/* <div ref={observerTarget} /> */}
-
-      <div
-        onClick={() => {
-          if (loadedCharts.length !== ChartsCount) {
-            setOffset(offset + limit);
-          }
-        }}
-        css={`
-          height: 10px;
-          cursor: pointer;
-        `}
-      >
-        {loadedCharts.length === ChartsCount ? "end" : "see more"}
-      </div>
+      <div ref={observerTarget} />
 
       <DeleteChartDialog
         cardId={cardId}
