@@ -68,7 +68,7 @@ export default function ReportsGrid(props: Props) {
 
   const loadData = async () => {
     //refrain from loading data if all the data is loaded
-    if (loadedReports.length !== reportsCount && token) {
+    if (token) {
       await loadReports({
         token,
         storeInCrudData: true,
@@ -88,10 +88,12 @@ export default function ReportsGrid(props: Props) {
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    if (isObserved) {
-      if (loadedReports.length !== reportsCount) {
-        //update the offset value for the next load
-        setOffset(offset + limit);
+    if (reportsCount > limit) {
+      if (isObserved) {
+        if (loadedReports.length !== reportsCount) {
+          //update the offset value for the next load
+          setOffset(offset + limit);
+        }
       }
     }
   }, [isObserved]);

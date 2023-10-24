@@ -43,7 +43,7 @@ export default function ChartsGrid(props: Props) {
   const loadChartsCount = useStoreActions(
     (actions) => actions.charts.ChartsCount.fetch
   );
-  const ChartsCount = useStoreState(
+  const chartsCount = useStoreState(
     (state) => get(state, "charts.ChartsCount.data.count", 0) as number
   );
 
@@ -72,8 +72,6 @@ export default function ChartsGrid(props: Props) {
   };
 
   const loadData = async () => {
-    //refrain from loading data if all the data is loaded
-    // if (loadedCharts.length !== ChartsCount) {
     if (token) {
       await loadCharts({
         token,
@@ -81,7 +79,6 @@ export default function ChartsGrid(props: Props) {
         filterString: getFilterString(),
       });
     }
-    // }
   };
 
   const reloadData = async () => {
@@ -103,10 +100,12 @@ export default function ChartsGrid(props: Props) {
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    if (isObserved) {
-      if (loadedCharts.length !== ChartsCount) {
-        //update the offset value for the next load
-        setOffset(offset + limit);
+    if (chartsCount > limit) {
+      if (isObserved) {
+        if (loadedCharts.length !== chartsCount) {
+          //update the offset value for the next load
+          setOffset(offset + limit);
+        }
       }
     }
   }, [isObserved]);
