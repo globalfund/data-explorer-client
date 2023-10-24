@@ -52,6 +52,10 @@ export default function HeaderBlock(props: Props) {
     reportRightPanelViewAtom
   );
   const [handleDisplay, setHandleDisplay] = React.useState(false);
+
+  const [isReportTitleModified, setIsReportTitleModified] =
+    React.useState(false);
+
   const viewOnlyMode =
     page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
   const handlers = viewOnlyMode
@@ -68,7 +72,8 @@ export default function HeaderBlock(props: Props) {
   const [,] = useDebounce(
     () => {
       // checks when headerDetails.title is empty and report title has not been focused
-      if (props.headerDetails.title !== "" && !props.hasReportNameFocused) {
+
+      if (!props.hasReportNameFocused && isReportTitleModified) {
         props.setReportName?.(props.headerDetails.title);
       }
     },
@@ -99,6 +104,9 @@ export default function HeaderBlock(props: Props) {
       ...props.headerDetails,
       [name]: value,
     });
+    if (name == "title") {
+      setIsReportTitleModified(true);
+    }
   };
 
   const setTextContent = (text: EditorState) => {
