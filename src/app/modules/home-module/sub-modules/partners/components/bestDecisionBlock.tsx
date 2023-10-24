@@ -1,7 +1,7 @@
 import { Grid } from "@material-ui/core";
 import React from "react";
 import RightArr from "app/modules/home-module/assets/right-arr-icon.svg";
-import { bestDecisioncss } from "app/modules/home-module/sub-modules/cases/style";
+import { bestDecisioncss } from "app/modules/home-module/sub-modules/partners/style";
 import { Link } from "react-router-dom";
 export default function BestDecisionBlock() {
   return (

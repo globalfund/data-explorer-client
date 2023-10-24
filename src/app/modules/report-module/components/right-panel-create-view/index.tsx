@@ -129,8 +129,7 @@ interface IHeaderDetails {
 }
 interface Props {
   showHeaderItem: boolean;
-  pickedCharts: string[];
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
+
   appliedHeaderDetails: IHeaderDetails;
   setAppliedHeaderDetails: React.Dispatch<React.SetStateAction<IHeaderDetails>>;
   headerDetails: IHeaderDetails;
@@ -251,8 +250,6 @@ export function ReportRightPanelCreateView(props: Props) {
       )}
       {currentView === "charts" && (
         <ReportRightPanelCreateViewChartList
-          pickedCharts={props.pickedCharts}
-          setPickedCharts={props.setPickedCharts}
           headerDetails={props.headerDetails}
           framesArray={props.framesArray}
           reportName={props.reportName}
@@ -273,8 +270,6 @@ const sortByOptions = [
 ];
 
 function ReportRightPanelCreateViewChartList(props: {
-  pickedCharts: string[];
-  setPickedCharts: React.Dispatch<React.SetStateAction<any[]>>;
   headerDetails: IHeaderDetails;
   appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];
@@ -438,8 +433,7 @@ function ReportRightPanelCreateViewChartList(props: {
             vizType={chart.vizType}
             datasetId={chart.datasetId}
             createdDate={chart.createdDate}
-            pickedCharts={props.pickedCharts}
-            setPickedCharts={props.setPickedCharts}
+            framesArray={props.framesArray}
             elementType={
               (chart.vizType === "bigNumber"
                 ? ReportElementsType.BIG_NUMBER
@@ -609,9 +603,8 @@ function ChartItem(props: {
   vizType: string;
   datasetId: string;
   createdDate: string;
-  pickedCharts: string[];
   elementType: "chart" | "bigNumber";
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
+  framesArray: IFramesArray[];
 }) {
   const nullRef = React.useRef(null);
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -623,12 +616,6 @@ function ChartItem(props: {
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-    end: (item, monitor) => {
-      const dropped = monitor.didDrop();
-      if (dropped) {
-        props.setPickedCharts((prev) => [...prev, item.value]);
-      }
-    },
   }));
 
   const getIcon = (vizType: string) => {
@@ -639,7 +626,12 @@ function ChartItem(props: {
     return echartTypes(true)[0].icon;
   };
 
-  const added = props.pickedCharts.includes(props.id);
+  let added = false;
+  for (let i = 0; i < props.framesArray.length; i++) {
+    if (props.framesArray[i].content.includes(props.id)) {
+      added = true;
+    }
+  }
 
   const setIsChartDragging = useRecoilState(isChartDraggingAtom)[1];
 

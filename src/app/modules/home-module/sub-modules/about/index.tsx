@@ -1,5 +1,5 @@
 import React from "react";
-import EmpowerBlock from "../cases/components/empowerBlock";
+import EmpowerBlock from "../partners/components/empowerBlock";
 import { Container, Grid } from "@material-ui/core";
 import { ReactComponent as TopEllipse } from "app/modules/home-module/assets/about-top-ellipse.svg";
 import HomeFooter from "../../components/Footer";

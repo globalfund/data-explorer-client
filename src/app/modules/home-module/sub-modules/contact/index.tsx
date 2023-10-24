@@ -1,5 +1,5 @@
 import React from "react";
-import EmpowerBlock from "../cases/components/empowerBlock";
+import EmpowerBlock from "../partners/components/empowerBlock";
 import { Box, Container, TextField } from "@material-ui/core";
 import HomeFooter from "../../components/Footer";
 import { ReactComponent as FullEllipse } from "app/modules/home-module/assets/contact-lg-ellispe.svg";

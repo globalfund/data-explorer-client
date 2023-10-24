@@ -16,8 +16,8 @@ import {
 } from "@auth0/auth0-react";
 
 const HomeModule = lazy(() => import("app/modules/home-module"));
-const CasesModule = lazy(
-  () => import("app/modules/home-module/sub-modules/cases")
+const PartnersModule = lazy(
+  () => import("app/modules/home-module/sub-modules/partners")
 );
 const ContactModule = lazy(
   () => import("app/modules/home-module/sub-modules/contact")
@@ -98,8 +98,8 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/">
             <HomeModule />
           </RouteWithAppBar>
-          <RouteWithAppBar exact path="/cases">
-            <CasesModule />
+          <RouteWithAppBar exact path="/partners">
+            <PartnersModule />
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/contact">
             <ContactModule />
@@ -107,7 +107,7 @@ export function MainRoutes() {
           <RouteWithAppBar exact path="/why-dx">
             <WhyDXModule />
           </RouteWithAppBar>
-          <RouteWithAppBar exact path="/explore-assets">
+          <RouteWithAppBar exact path="/explore">
             <ExploreAssetsModule />
           </RouteWithAppBar>
           <RouteWithAppBar exact path="/report/:page/:view?">

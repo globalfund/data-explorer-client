@@ -52,13 +52,7 @@ function DatasetUploadSteps() {
     };
   }, [estUploadTime]);
 
-  const steps = [
-    "Upload",
-    "Description",
-    "Processing Data",
-    "Preview",
-    "Finished",
-  ];
+  const steps = ["Upload", "Description", "Processing Data", "Finished"];
 
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
@@ -223,21 +217,14 @@ function DatasetUploadSteps() {
             estimatedUploadTime={estUploadTime}
           />
         );
+
       case 3:
-        return (
-          <PreviewFragment
-            handleNext={handleNext}
-            data={sampleData}
-            stats={dataStats}
-            dataTotalCount={dataTotalCount}
-          />
-        );
-      case 4:
         return (
           <FinishedFragment
             data={sampleData}
             stats={dataStats}
             datasetId={datasetId}
+            dataTotalCount={dataTotalCount}
           />
         );
       default:

@@ -15,7 +15,6 @@ import { ChartExporter } from "app/modules/chart-module/components/exporter";
 import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 import { ChartToolBoxProps } from "app/modules/chart-module/components/toolbox/data";
 import { ChartToolBoxSteps } from "app/modules/chart-module/components/toolbox/views/steps";
-import { ChartToolBoxPreview } from "app/modules/chart-module/components/toolbox/views/preview";
 
 const Button = withStyles(() => ({
   root: {
@@ -162,36 +161,6 @@ export function ChartModuleToolBox(props: ChartToolBoxProps) {
         {props.exportView && props.rawViz && (
           <div css={styles.exportview}>
             <ChartExporter rawViz={props.rawViz} />
-          </div>
-        )}
-        {props.filtersView && (
-          <div
-            css={`
-              width: 400px;
-              overflow-y: scroll;
-              position: relative;
-              height: calc(100vh - 97px);
-
-              ::-webkit-scrollbar {
-                display: none;
-              }
-            `}
-          >
-            <ChartToolBoxPreview
-              loadDataFromAPI={props.loadDataFromAPI}
-              filterOptionGroups={props.filterOptionGroups}
-            />
-            {isSavedEnabled && props.isEditMode && (
-              <div
-                css={`
-                  bottom: 0;
-                  width: 100%;
-                  position: absolute;
-                `}
-              >
-                <Button onClick={onSave}>Save</Button>
-              </div>
-            )}
           </div>
         )}
       </div>

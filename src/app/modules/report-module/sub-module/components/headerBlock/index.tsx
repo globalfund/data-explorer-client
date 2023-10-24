@@ -14,9 +14,13 @@ import { ReactComponent as DeleteIcon } from "app/modules/report-module/asset/de
 import { headerBlockcss } from "app/modules/report-module/sub-module/components/headerBlock/style";
 import { ReactComponent as RowFrameHandleAdornment } from "app/modules/report-module/asset/rowFrameHandleAdornment.svg";
 import { Tooltip } from "@material-ui/core";
+import useDebounce from "react-use/lib/useDebounce";
 
 interface Props {
   previewMode: boolean;
+  hasReportNameFocused?: boolean;
+  setReportName?: React.Dispatch<React.SetStateAction<string>>;
+  reportName?: string;
   headerDetails: {
     title: string;
     showHeader: boolean;
@@ -47,22 +51,35 @@ export default function HeaderBlock(props: Props) {
   const [currentView, setCurrentView] = useRecoilState(
     reportRightPanelViewAtom
   );
-
   const [handleDisplay, setHandleDisplay] = React.useState(false);
+
+  const [isReportTitleModified, setIsReportTitleModified] =
+    React.useState(false);
 
   const viewOnlyMode =
     page !== "new" && get(location.pathname.split("/"), "[3]", "") !== "edit";
-
   const handlers = viewOnlyMode
     ? {}
     : {
         onMouseEnter: () => setHandleDisplay(true),
         onMouseLeave: () => setHandleDisplay(false),
       };
-
   React.useEffect(() => {
     inputRef.current?.focus();
   }, []);
+
+  //handles report name state
+  const [,] = useDebounce(
+    () => {
+      // checks when headerDetails.title is empty and report title has not been focused
+
+      if (!props.hasReportNameFocused && isReportTitleModified) {
+        props.setReportName?.(props.headerDetails.title);
+      }
+    },
+    500,
+    [props.headerDetails.title]
+  );
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "header",
@@ -87,6 +104,9 @@ export default function HeaderBlock(props: Props) {
       ...props.headerDetails,
       [name]: value,
     });
+    if (name == "title") {
+      setIsReportTitleModified(true);
+    }
   };
 
   const setTextContent = (text: EditorState) => {

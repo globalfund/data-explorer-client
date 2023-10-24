@@ -63,11 +63,6 @@ function ReportEditView(props: ReportEditViewProps) {
       let tempPrev = prev.map((item) => ({ ...item }));
       const frameId = prev.findIndex((frame) => frame.id === id);
 
-      const contentArr = tempPrev[frameId].content;
-      props.setPickedCharts((prevPickedCharts) => {
-        return prevPickedCharts.filter((item) => !contentArr.includes(item));
-      });
-
       tempPrev.splice(frameId, 1);
       return [...tempPrev];
     });
@@ -87,7 +82,6 @@ function ReportEditView(props: ReportEditViewProps) {
       for (const element of items) {
         pickedItems = [...pickedItems, ...element];
       }
-      props.setPickedCharts(pickedItems);
     }
   }, []);
 
@@ -149,7 +143,6 @@ function ReportEditView(props: ReportEditViewProps) {
               rowId: id,
               handlePersistReportState: props.handlePersistReportState,
               handleRowFrameItemResize: props.handleRowFrameItemResize,
-              setPickedCharts: props.setPickedCharts,
               type: isDivider ? "divider" : "rowFrame",
               forceSelectedType: rowFrame.structure ?? undefined,
               previewItems: content,
@@ -217,7 +210,6 @@ function ReportEditView(props: ReportEditViewProps) {
                     rowId={frame.id}
                     deleteFrame={deleteFrame}
                     framesArray={props.framesArray}
-                    setPickedCharts={props.setPickedCharts}
                     setFramesArray={props.setFramesArray}
                     handlePersistReportState={props.handlePersistReportState}
                     handleRowFrameItemResize={props.handleRowFrameItemResize}
@@ -231,7 +223,6 @@ function ReportEditView(props: ReportEditViewProps) {
             rowStructureType={rowStructureType}
             setFramesArray={props.setFramesArray}
             setRowStructureType={setRowStructuretype}
-            setPickedCharts={props.setPickedCharts}
             handlePersistReportState={props.handlePersistReportState}
             handleRowFrameItemResize={props.handleRowFrameItemResize}
           />

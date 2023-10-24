@@ -189,7 +189,6 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
           align-self: flex-start;
           justify-content: center;
           height: ${get(visualOptions, "height", 100)}px;
-          width: calc(100vw - ((100vw - 1280px) / 2) - 400px - 24px);
 
           @media (max-width: 1280px) {
             width: calc(100vw - 400px);
@@ -211,7 +210,12 @@ export function ChartBuilderPreviewTheme(props: ChartBuilderPreviewThemeProps) {
       >
         <Skeleton animation="wave" variant="rect" width="100%" height="100%" />
       </div>
-      <div css={commonStyles.previewInnercontainer(props.editable)}>
+      <div
+        css={`
+          height: 80px;
+        `}
+      />
+      <div>
         <div
           ref={containerRef}
           css={`

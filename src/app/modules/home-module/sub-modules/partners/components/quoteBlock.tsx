@@ -3,7 +3,7 @@ import React from "react";
 import {
   quotecss,
   quotesEllipseCss,
-} from "app/modules/home-module/sub-modules/cases/style";
+} from "app/modules/home-module/sub-modules/partners/style";
 import Quote from "app/modules/home-module/assets/quote-icon.svg";
 import { ReactComponent as FullEllipse } from "app/modules/home-module/assets/cases-full-ellipse.svg";
 

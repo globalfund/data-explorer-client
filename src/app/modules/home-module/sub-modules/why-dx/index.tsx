@@ -3,7 +3,7 @@ import Container from "@material-ui/core/Container";
 import HomeFooter from "app/modules/home-module/components/Footer";
 import Ellipses from "app/modules/home-module/assets/whydx-ellipses.svg";
 import TryUsBlock from "app/modules/home-module/sub-modules/why-dx/components/tryUsBlock";
-import EmpowerBlock from "app/modules/home-module/sub-modules/cases/components/empowerBlock";
+import EmpowerBlock from "app/modules/home-module/sub-modules/partners/components/empowerBlock";
 import BenefitsBlock from "app/modules/home-module/sub-modules/why-dx/components/benefitsBlock";
 import SimpleStepsBlock from "app/modules/home-module/sub-modules/why-dx/components/simpleStepsBlock";
 import KeyFeaturesBlock from "app/modules/home-module/sub-modules/why-dx/components/keyFeaturesBlock";

@@ -92,6 +92,8 @@ export default function ReportModule() {
 
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("Untitled report");
+  const [hasReportNameFocused, setHasReportNameFocused] = React.useState(false);
+
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
   const [reportType, setReportType] = React.useState<
     "basic" | "advanced" | "ai"
@@ -109,9 +111,6 @@ export default function ReportModule() {
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
     React.useState(false);
-  const [pickedCharts, setPickedCharts] = React.useState(
-    localPickedCharts || []
-  );
 
   const handleRowFrameItemResize = (
     rowId: string,
@@ -158,11 +157,6 @@ export default function ReportModule() {
     setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
       const frameId = tempPrev.findIndex((frame) => frame.id === id);
-      const contentArr = tempPrev[frameId].content;
-
-      setPickedCharts((prevPickedCharts) => {
-        return prevPickedCharts.filter((item) => !contentArr.includes(item));
-      });
 
       tempPrev.splice(frameId, 1);
       return [...tempPrev];
@@ -220,7 +214,6 @@ export default function ReportModule() {
         rowId: id,
         handlePersistReportState,
         handleRowFrameItemResize,
-        setPickedCharts,
         type: "rowFrame",
       },
       content: [],
@@ -283,7 +276,6 @@ export default function ReportModule() {
 
                   handlePersistReportState,
                   handleRowFrameItemResize,
-                  setPickedCharts,
                   type: isDivider ? "divider" : "rowFrame",
                   forceSelectedType: rowFrame.structure ?? undefined,
                   previewItems: content,
@@ -382,7 +374,6 @@ export default function ReportModule() {
           handlePersistReportState,
           handleRowFrameItemResize,
           type: "rowFrame",
-          setPickedCharts,
         },
         content: [],
         contentWidths: [],
@@ -391,7 +382,6 @@ export default function ReportModule() {
         structure: null,
       },
     ]);
-    setPickedCharts([]);
     setHeaderDetails({
       title: "",
       description: EditorState.createEmpty(),
@@ -449,16 +439,12 @@ export default function ReportModule() {
     return () => {
       reportEditClear();
       reportCreateClear();
-      setPickedCharts([]);
       clearChart();
       resetDataset();
       setRightPanelView("elements");
+      setFramesArray([]);
     };
   }, []);
-
-  React.useEffect(() => {
-    setPickedCharts(localPickedCharts);
-  }, [persistedReportState]);
 
   React.useEffect(() => {
     if (view === "edit" && !rightPanelOpen) {
@@ -504,6 +490,7 @@ export default function ReportModule() {
           pageType="report"
           onReportSave={onSave}
           setName={setReportName}
+          setHasReportNameFocused={setHasReportNameFocused}
           forceEnablePreviewSave={isPreviewSaveEnabled}
           name={page !== "new" && !view ? reportGetData.name : reportName}
           reportName={reportName}
@@ -522,8 +509,6 @@ export default function ReportModule() {
           <ReportRightPanel
             open={rightPanelOpen}
             currentView={view}
-            pickedCharts={pickedCharts}
-            setPickedCharts={setPickedCharts}
             headerDetails={headerDetails}
             setHeaderDetails={setHeaderDetails}
             appliedHeaderDetails={appliedHeaderDetails}
@@ -556,9 +541,10 @@ export default function ReportModule() {
           <ReportCreateView
             open={rightPanelOpen}
             view={view}
-            pickedCharts={pickedCharts}
-            setPickedCharts={setPickedCharts}
+            setReportName={setReportName}
+            reportName={reportName}
             deleteFrame={deleteFrame}
+            hasReportNameFocused={hasReportNameFocused}
             reportType={reportType}
             framesArray={framesArray}
             headerDetails={headerDetails}
@@ -572,7 +558,6 @@ export default function ReportModule() {
           <ReportEditView
             open={rightPanelOpen}
             setName={setReportName}
-            setPickedCharts={setPickedCharts}
             localPickedCharts={localPickedCharts}
             framesArray={framesArray}
             headerDetails={headerDetails}

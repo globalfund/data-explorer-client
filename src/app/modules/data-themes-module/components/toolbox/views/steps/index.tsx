@@ -349,7 +349,6 @@ export function DataThemesToolBoxSteps(props: DataThemesToolBoxStepsProps) {
                   css={`
                     text-transform: capitalize;
                     max-height: calc(100vh - 240px);
-                    background: pink;
                   `}
                 >
                   {Object.keys(appliedFilters[activeTabIndex][activeVizIndex])

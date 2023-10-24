@@ -119,7 +119,6 @@ export interface RowFrameProps {
   forceSelectedType?: string;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
   framesArray: IFramesArray[];
-  setPickedCharts: (value: React.SetStateAction<any[]>) => void;
   type: "rowFrame" | "divider";
   view: "initial" | "edit" | "create" | "preview" | "ai-template";
   handleRowFrameItemResize: (
@@ -201,11 +200,6 @@ export default function RowFrame(props: RowFrameProps) {
       const tempPrev = cloneDeep(prev);
 
       const frameId = tempPrev.findIndex((frame) => frame.id === id);
-      const contentArr = tempPrev[frameId].content;
-
-      props.setPickedCharts((prevPickedCharts) => {
-        return prevPickedCharts.filter((item) => !contentArr.includes(item));
-      });
 
       tempPrev.splice(frameId, 1);
       return [...tempPrev];
@@ -265,22 +259,60 @@ export default function RowFrame(props: RowFrameProps) {
     }
     props.setFramesArray((prev) => {
       const tempPrev = prev.map((item) => ({ ...item }));
-      tempPrev[rowIndex] = {
-        ...tempPrev[rowIndex],
-        content,
-        contentTypes,
-        contentWidths,
-        contentHeights,
-        structure,
-        frame: {
-          ...tempPrev[rowIndex].frame,
-          previewItems: [],
-        },
-      };
-
+      //the first time you select a row structure, framesArray is set to default values
+      if (selectedTypeHistory.length === 1) {
+        tempPrev[rowIndex] = {
+          ...tempPrev[rowIndex],
+          content,
+          contentTypes,
+          contentWidths,
+          contentHeights,
+          structure,
+          frame: {
+            ...tempPrev[rowIndex].frame,
+            previewItems: [],
+          },
+        };
+      } else {
+        //if you change the row structure, the content array is updated to match the
+        //new structure while retaining the previous content
+        let prevContent = tempPrev[rowIndex].content;
+        let prevContentTypes = tempPrev[rowIndex].contentTypes;
+        if (content.length < prevContent.length) {
+          prevContent = prevContent.slice(
+            -(prevContent.length - content.length)
+          );
+          prevContentTypes = prevContentTypes.slice(
+            -(contentTypes.length - prevContentTypes.length)
+          );
+        } else if (content.length > prevContent.length) {
+          prevContent = [
+            ...prevContent,
+            ...Array(content.length - prevContent.length).fill(null),
+          ];
+          prevContentTypes = [
+            ...prevContentTypes,
+            ...Array(contentTypes.length - prevContentTypes.length).fill(null),
+          ];
+        }
+        tempPrev[rowIndex] = {
+          ...tempPrev[rowIndex],
+          contentTypes: prevContentTypes,
+          content: prevContent,
+          contentWidths,
+          contentHeights,
+          structure,
+          frame: {
+            ...tempPrev[rowIndex].frame,
+            previewItems: prevContent as (string | object)[],
+          },
+        };
+      }
       return tempPrev;
     });
   };
+
+  console.log(props.framesArray, "framesarray");
 
   React.useEffect(() => {
     setSelectedType(selectedTypeHistory[selectedTypeHistory.length - 1]);
@@ -340,7 +372,6 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[0]}
-        setPickedCharts={props.setPickedCharts}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
@@ -362,7 +393,6 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[1]}
-        setPickedCharts={props.setPickedCharts}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
@@ -385,7 +415,6 @@ export default function RowFrame(props: RowFrameProps) {
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[2]}
         previewItems={props.previewItems}
-        setPickedCharts={props.setPickedCharts}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}
       />
@@ -406,7 +435,6 @@ export default function RowFrame(props: RowFrameProps) {
         framesArray={props.framesArray}
         rowContentHeights={props.rowContentHeights}
         rowContentWidths={props.rowContentWidths}
-        setPickedCharts={props.setPickedCharts}
         deleteFrame={deleteFrame}
         handlePersistReportState={props.handlePersistReportState}
         previewItems={props.previewItems}
@@ -428,7 +456,6 @@ export default function RowFrame(props: RowFrameProps) {
         selectedTypeHistory={selectedTypeHistory}
         setSelectedTypeHistory={setSelectedTypeHistory}
         rowStructureDetailItems={rowStructureDetailItems[4]}
-        setPickedCharts={props.setPickedCharts}
         previewItems={props.previewItems}
         onRowBoxItemResize={onRowBoxItemResize}
         handlePersistReportState={props.handlePersistReportState}

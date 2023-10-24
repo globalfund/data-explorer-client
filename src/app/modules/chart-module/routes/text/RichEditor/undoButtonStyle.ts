@@ -8,7 +8,7 @@ export const undoButtonStyle = css`
   border-radius: 1.5em;
   line-height: 1.2em;
   cursor: pointer;
-  background-color: pink;
+
   width: 2.5em;
   font-weight: bold;
   font-size: 1.5em;

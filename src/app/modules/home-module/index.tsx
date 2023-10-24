@@ -62,7 +62,9 @@ export default function HomeModule() {
   }, []);
 
   const [tableView, setTableView] = React.useState(false);
-  const [searchValue, setSearchValue] = React.useState("");
+  const [searchValue, setSearchValue] = React.useState<string | undefined>(
+    undefined
+  );
   const [openSearch, setOpenSearch] = React.useState(false);
   const [sortValue, setSortValue] = React.useState("createdDate");
   const [sortPopoverAnchorEl, setSortPopoverAnchorEl] =
@@ -326,7 +328,7 @@ export default function HomeModule() {
                     <input
                       type="text"
                       ref={inputRef}
-                      value={searchValue}
+                      value={searchValue ?? ""}
                       placeholder="eg. Kenya"
                       onChange={handleSearch}
                     />
@@ -433,7 +435,7 @@ export default function HomeModule() {
             }
           `}
         >
-          {displayGrid(searchValue, sortValue)}
+          {displayGrid(searchValue as string, sortValue)}
         </div>
       </Container>
       <Box height={100} />

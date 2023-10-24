@@ -51,7 +51,7 @@ export default function ChartModule() {
     {}
   );
   const [rawViz, setRawViz] = React.useState<any>(null);
-  const [chartName, setChartName] = React.useState("My First Chart");
+  const [chartName, setChartName] = React.useState("Untitled Report");
   const [isPreviewView, setIsPreviewView] = React.useState(false);
 
   const chartType = useStoreState((state) => state.charts.chartType.value);
@@ -123,6 +123,9 @@ export default function ChartModule() {
   const resetEnabledFilterOptionGroups = useStoreActions(
     (actions) => actions.charts.enabledFilterOptionGroups.clear
   );
+  const datasets = useStoreState(
+    (state) => state.dataThemes.DatasetGetList.crudData as any[]
+  );
 
   const dataset = useStoreState((state) => state.charts.dataset.value);
 
@@ -142,6 +145,14 @@ export default function ChartModule() {
   React.useEffect(() => {
     setChartFromAPI(null);
   }, [chartType, dataTypes]);
+
+  //set chart name to selected dataset if chart name is "Untitled Report"
+  React.useEffect(() => {
+    if (page === "new" && dataset) {
+      const datasetName = datasets.find((d) => d.id === dataset)?.name;
+      setChartName(datasetName as string);
+    }
+  }, [dataset]);
 
   const mappedData = React.useMemo(
     () => get(chartFromAPI, "mappedData", ""),
@@ -208,7 +219,7 @@ export default function ChartModule() {
     resetAppliedFilters();
     resetEnabledFilterOptionGroups();
     clearChart();
-    setChartName("My First Chart");
+    setChartName("Untitled Report");
   }
 
   function clearChartBuilder() {
@@ -294,7 +305,6 @@ export default function ChartModule() {
       }
     }
   }, [loadedChart]);
-
   const errorComponent = () => {
     return (
       <div css={commonStyles.container}>

@@ -11,7 +11,7 @@ import {
   TopRightEllipseCss,
   BottomLeftEllipseCss,
   BottomRightEllipseCss,
-} from "app/modules/home-module/sub-modules/cases/style";
+} from "app/modules/home-module/sub-modules/partners/style";
 import { Link } from "react-router-dom";
 
 export default function EmpowerBlock(props: { alternativeText?: boolean }) {

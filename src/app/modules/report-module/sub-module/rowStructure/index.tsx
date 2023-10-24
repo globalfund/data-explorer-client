@@ -62,7 +62,6 @@ interface RowStructureDisplayProps {
   rowContentHeights: number[];
 
   setSelectedType: React.Dispatch<React.SetStateAction<string>>;
-  setPickedCharts: React.Dispatch<React.SetStateAction<string[]>>;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
   deleteFrame: (id: string) => void;
   setSelectedTypeHistory: React.Dispatch<React.SetStateAction<string[]>>;
@@ -154,7 +153,6 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const RedoButton = (plugins[2] as EditorPlugin & UndoRedoType)?.RedoButton;
   const textAlignmentPlugin = plugins[3] as TextAlignmentPlugin;
   const emojiPlugin = plugins[4] as EmojiPlugin;
-
   return (
     <>
       <div
@@ -351,7 +349,6 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                 rowId={props.rowId}
                 rowType={row.rowType}
                 onRowBoxItemResize={props.onRowBoxItemResize}
-                setPickedCharts={props.setPickedCharts}
                 setFramesArray={props.setFramesArray}
                 previewItem={get(props.previewItems, `[${index}]`, undefined)}
                 handlePersistReportState={props.handlePersistReportState}
@@ -388,7 +385,6 @@ const Box = (props: {
       )[]
     >
   >;
-  setPickedCharts: (value: React.SetStateAction<string[]>) => void;
   setFramesArray: (value: React.SetStateAction<IFramesArray[]>) => void;
   rowItemsCount: number;
   previewItem?: string | any;
@@ -465,12 +461,7 @@ const Box = (props: {
       if (frameId === -1) {
         return [...tempPrev];
       }
-      if (tempPrev[frameId].contentTypes[itemIndex] === "chart") {
-        const chartId = tempPrev[frameId].content[itemIndex] as string;
-        props.setPickedCharts((prevPickedCharts) =>
-          filter(prevPickedCharts, (chart: string) => chart !== chartId)
-        );
-      }
+
       tempPrev[frameId].content[itemIndex] = null;
       tempPrev[frameId].contentTypes[itemIndex] = null;
       return [...tempPrev];

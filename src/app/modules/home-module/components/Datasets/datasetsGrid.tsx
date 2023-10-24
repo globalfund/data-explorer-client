@@ -3,7 +3,7 @@ import axios from "axios";
 import get from "lodash/get";
 import Box from "@material-ui/core/Box";
 import Grid from "@material-ui/core/Grid";
-import { useSessionStorage } from "react-use";
+import { useSessionStorage, useUpdateEffect } from "react-use";
 import useDebounce from "react-use/lib/useDebounce";
 import { useInfinityScroll } from "app/hooks/useInfinityScroll";
 import { useStoreActions, useStoreState } from "app/state/store/hooks";
@@ -12,6 +12,7 @@ import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import ReformedGridItem from "app/modules/home-module/components/Datasets/reformedGridItem";
 import DatasetAddnewCard from "app/modules/home-module/components/Datasets/datasetAddNewCard";
+import CircleLoader from "../Loader";
 
 interface Props {
   sortBy: string;
@@ -34,9 +35,18 @@ export default function DatasetsGrid(props: Props) {
     DatasetListItemAPIModel[]
   >([]);
 
+  const datasets = useStoreState(
+    (state) =>
+      (state.dataThemes.DatasetGetList.crudData ??
+        []) as DatasetListItemAPIModel[]
+  );
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
   );
+  const loading = useStoreState(
+    (state) => state.dataThemes.DatasetGetList.loading
+  );
+
   const clearDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.clear
   );
@@ -49,54 +59,60 @@ export default function DatasetsGrid(props: Props) {
   const datasetLoadSuccess = useStoreState(
     (state) => state.dataThemes.DatasetGetList.success
   );
-
-  const loadData = async (searchStr: string, sortByStr: string) => {
+  const getFilterString = () => {
     const value =
-      searchStr.length > 0
-        ? `"where":{"name":{"like":"${searchStr}.*","options":"i"}},`
+      props.searchStr?.length > 0
+        ? `"where":{"name":{"like":"${props.searchStr}.*","options":"i"}},`
         : "";
+    return `filter={${value}"order":"${props.sortBy} desc","limit":${limit},"offset":${offset}}`;
+  };
+
+  const getWhereString = () => {
+    return props.searchStr?.length > 0
+      ? `where={"name":{"like":"${props.searchStr}.*","options":"i"}}`
+      : "";
+  };
+
+  const loadData = async () => {
     //refrain from loading data if all the data is loaded
-    if (loadedDatasets.length !== datasetCount) {
-      await loadDatasets({
-        token,
-        storeInCrudData: true,
-        filterString: `filter={${value}"order":"${sortByStr} desc","limit":${limit},"offset":${offset}}`,
-      });
-    }
+    await loadDatasets({
+      token,
+      storeInCrudData: true,
+      filterString: getFilterString(),
+    });
   };
 
   const reloadData = async () => {
+    setOffset(0);
     if (token) {
-      loadDatasetCount({ token });
+      loadDatasetCount({ token, filterString: getWhereString() });
     }
     setLoadedDatasets([]);
-    setOffset(0);
-    loadData(props.searchStr, props.sortBy);
+    loadData();
   };
 
-  React.useEffect(() => {
-    if (token) {
-      loadDatasetCount({ token });
-    }
-  }, [token]);
+  useUpdateEffect(() => {
+    loadData();
+  }, [offset]);
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    if (isObserved) {
-      if (loadedDatasets.length !== datasetCount) {
-        //update the offset value for the next load
-        setOffset(offset + limit);
+    if (datasetCount > limit) {
+      if (isObserved) {
+        console.log(loadedDatasets.length, datasetCount);
+        if (loadedDatasets.length !== datasetCount) {
+          //update the offset value for the next load
+          setOffset(offset + limit);
+        }
       }
-      loadData(props.searchStr, props.sortBy);
     }
   }, [isObserved]);
 
   React.useEffect(() => {
-    reloadData();
-    return () => {
-      setOffset(0);
-    };
-  }, [props.sortBy, token, datasetCount]);
+    if (token) {
+      reloadData();
+    }
+  }, [props.sortBy, token]);
 
   const handleDelete = (id: string) => {
     deleteDataset(id);
@@ -117,15 +133,6 @@ export default function DatasetsGrid(props: Props) {
     setModalDisplay(true);
   };
 
-  const datasets = useStoreState(
-    (state) =>
-      get(
-        state,
-        "dataThemes.DatasetGetList.crudData",
-        []
-      ) as DatasetListItemAPIModel[]
-  );
-
   async function deleteDataset(id: string) {
     axios
       .delete(`${process.env.REACT_APP_API}/datasets/${id}`, {
@@ -134,25 +141,10 @@ export default function DatasetsGrid(props: Props) {
         },
       })
       .then(() => {
-        loadDatasets({
-          token,
-          storeInCrudData: true,
-          filterString: "filter[order]=createdDate desc",
-        });
+        reloadData();
       })
       .catch((error) => console.log(error));
   }
-
-  React.useEffect(() => {
-    clearDatasets();
-    setLoadedDatasets([]);
-  }, []);
-
-  React.useEffect(() => {
-    if (datasets === null) {
-      setLoadedDatasets([]);
-    }
-  }, [datasets]);
 
   React.useEffect(() => {
     if (!datasetLoadSuccess) {
@@ -161,20 +153,22 @@ export default function DatasetsGrid(props: Props) {
 
     //update the loaded datasets
     setLoadedDatasets((prevDatasets) => {
-      const f = datasets.filter((chart, i) => prevDatasets[i]?.id !== chart.id);
-
+      const prevDatasetsIds = prevDatasets.map((d) => d.id);
+      const f = datasets.filter(
+        (dataset) => !prevDatasetsIds.includes(dataset.id)
+      );
       return [...prevDatasets, ...f];
     });
   }, [datasetLoadSuccess]);
 
   const [,] = useDebounce(
     () => {
-      if (props.searchStr.length > 0) {
-        loadData(props.searchStr, props.sortBy);
+      if (props.searchStr !== undefined) {
+        reloadData();
       }
     },
     500,
-    [props.searchStr, props.sortBy]
+    [props.searchStr]
   );
 
   return (
@@ -218,6 +212,7 @@ export default function DatasetsGrid(props: Props) {
           height: 10px;
         `}
       />
+      {loading && <CircleLoader />}
       <DeleteDatasetDialog
         cardId={cardId}
         enableButton={enableButton}
