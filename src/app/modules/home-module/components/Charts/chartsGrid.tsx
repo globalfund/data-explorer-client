@@ -13,6 +13,7 @@ import { HomepageTable } from "app/modules/home-module/components/Table";
 import { coloredEchartTypes } from "app/modules/chart-module/routes/chart-type/data";
 import ReformedGridItem from "app/modules/home-module/components/Charts/reformedGridItem";
 import ChartAddnewCard from "./chartAddNewCard";
+import CircleLoader from "../Loader";
 
 interface Props {
   sortBy: string;
@@ -49,6 +50,8 @@ export default function ChartsGrid(props: Props) {
   const loadCharts = useStoreActions(
     (actions) => actions.charts.ChartGetList.fetch
   );
+
+  const loading = useStoreState((state) => state.charts.ChartGetList.loading);
 
   const chartsLoadSuccess = useStoreState(
     (state) => state.charts.ChartGetList.success
@@ -212,6 +215,7 @@ export default function ChartsGrid(props: Props) {
       <Box height={100} />
 
       <div ref={observerTarget} />
+      {loading && <CircleLoader />}
 
       <DeleteChartDialog
         cardId={cardId}

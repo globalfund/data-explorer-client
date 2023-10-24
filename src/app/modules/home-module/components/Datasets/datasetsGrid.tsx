@@ -12,6 +12,7 @@ import DeleteDatasetDialog from "app/components/Dialogs/deleteDatasetDialog";
 import { DatasetListItemAPIModel } from "app/modules/data-themes-module/sub-modules/list";
 import ReformedGridItem from "app/modules/home-module/components/Datasets/reformedGridItem";
 import DatasetAddnewCard from "app/modules/home-module/components/Datasets/datasetAddNewCard";
+import CircleLoader from "../Loader";
 
 interface Props {
   sortBy: string;
@@ -42,6 +43,10 @@ export default function DatasetsGrid(props: Props) {
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
   );
+  const loading = useStoreState(
+    (state) => state.dataThemes.DatasetGetList.loading
+  );
+
   const clearDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.clear
   );
@@ -92,7 +97,6 @@ export default function DatasetsGrid(props: Props) {
 
   React.useEffect(() => {
     //load data if intersection observer is triggered
-    console.log("observed", isObserved);
     if (isObserved) {
       console.log(loadedDatasets.length, datasetCount);
       if (loadedDatasets.length !== datasetCount) {
@@ -206,6 +210,7 @@ export default function DatasetsGrid(props: Props) {
           height: 10px;
         `}
       />
+      {loading && <CircleLoader />}
       <DeleteDatasetDialog
         cardId={cardId}
         enableButton={enableButton}
