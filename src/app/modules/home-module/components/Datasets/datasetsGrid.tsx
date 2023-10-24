@@ -26,7 +26,7 @@ export default function DatasetsGrid(props: Props) {
   const [cardId, setCardId] = React.useState<string>("");
   const [enableButton, setEnableButton] = React.useState<boolean>(false);
   const [modalDisplay, setModalDisplay] = React.useState<boolean>(false);
-  const limit = 3;
+  const limit = 15;
   //used over usestate to get current offset value in the IntersectionObserver api, as it is not updated in usestate.
   const [offset, setOffset] = React.useState(0);
   const { isObserved } = useInfinityScroll(observerTarget);
