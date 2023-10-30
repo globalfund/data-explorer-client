@@ -30,9 +30,11 @@ export const LinkDecorator = ({
   return (
     <a
       css={`
-        color: orange;
+        color: #6061e5;
       `}
       href={url}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       {children}
     </a>
