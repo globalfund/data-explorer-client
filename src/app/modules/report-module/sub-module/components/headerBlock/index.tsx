@@ -18,7 +18,7 @@ import useDebounce from "react-use/lib/useDebounce";
 
 interface Props {
   previewMode: boolean;
-  hasReportNameFocused?: boolean;
+  hasSubHeaderTitleFocused?: boolean;
   setReportName?: React.Dispatch<React.SetStateAction<string>>;
   reportName?: string;
   headerDetails: {
@@ -73,7 +73,7 @@ export default function HeaderBlock(props: Props) {
     () => {
       // checks when headerDetails.title is empty and report title has not been focused
 
-      if (!props.hasReportNameFocused && isReportTitleModified) {
+      if (!props.hasSubHeaderTitleFocused && isReportTitleModified) {
         props.setReportName?.(props.headerDetails.title);
       }
     },

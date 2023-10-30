@@ -312,8 +312,6 @@ export default function RowFrame(props: RowFrameProps) {
     });
   };
 
-  console.log(props.framesArray, "framesarray");
-
   React.useEffect(() => {
     setSelectedType(selectedTypeHistory[selectedTypeHistory.length - 1]);
   }, [selectedTypeHistory]);

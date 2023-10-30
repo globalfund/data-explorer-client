@@ -44,7 +44,7 @@ export interface ReportCreateViewProps {
   setFramesArray: React.Dispatch<React.SetStateAction<IFramesArray[]>>;
   deleteFrame: (id: string) => void;
   framesArray: IFramesArray[];
-  hasReportNameFocused: boolean;
+  hasSubHeaderTitleFocused: boolean;
   handlePersistReportState: () => void;
   headerDetails: {
     title: string;
