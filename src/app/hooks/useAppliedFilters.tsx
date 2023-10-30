@@ -82,6 +82,21 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
         setAppliedFilters: actions.setPortfolioCategories,
         appliedFilters: data.portfolioCategories,
       };
+    case "Period":
+      return {
+        setAppliedFilters: actions.setPeriods,
+        appliedFilters: data.periods,
+      };
+    case "Investment Landscapes":
+      return {
+        setAppliedFilters: actions.setInvestmentLandscapes,
+        appliedFilters: data.investmentLandscapes,
+      };
+    case "Modules & Interventions":
+      return {
+        setAppliedFilters: actions.setModulesInterventions,
+        appliedFilters: data.modulesInterventions,
+      };
     case "All":
       return {
         setAppliedFilters: actions.setLocations,
@@ -96,6 +111,7 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
           ...data.replenishmentPeriods,
           ...data.trpWindows,
           ...data.portfolioCategories,
+          ...data.periods,
         ],
       };
     default:

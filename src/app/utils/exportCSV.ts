@@ -646,6 +646,18 @@ export function exportCSV(
           ...extraHeaders,
         ],
       };
+    case "/viz/expenditures":
+      return {
+        data,
+        filename: "expenditures.csv",
+        headers: [
+          { label: "Row", key: "row" },
+          { label: "Column", key: "column" },
+          { label: "Budget", key: "budget" },
+          { label: "Expenditure", key: "expenditure" },
+          { label: "Percentage", key: "percentage" },
+        ],
+      };
     case "/viz/eligibility":
       if (options.isDetail) {
         filter(

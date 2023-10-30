@@ -31,6 +31,9 @@ export function useUrlFilters(): null {
       const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
       const trpWindows = currentUrlParams.get("trpWindows");
       const portfolioCategories = currentUrlParams.get("portfolioCategories");
+      const periods = currentUrlParams.get("periods");
+      const modulesInterventions = currentUrlParams.get("modulesInterventions");
+      const investmentLandscapes = currentUrlParams.get("investmentLandscapes");
 
       if (locations) {
         updatedAppliedFilters.locations = locations.split(",");
@@ -73,6 +76,17 @@ export function useUrlFilters(): null {
       if (portfolioCategories) {
         updatedAppliedFilters.portfolioCategories =
           portfolioCategories.split(",");
+      }
+      if (periods) {
+        updatedAppliedFilters.periods = periods.split(",");
+      }
+      if (modulesInterventions) {
+        updatedAppliedFilters.modulesInterventions =
+          modulesInterventions.split(",");
+      }
+      if (investmentLandscapes) {
+        updatedAppliedFilters.investmentLandscapes =
+          investmentLandscapes.split(",");
       }
 
       actions.setAll(updatedAppliedFilters);
@@ -160,6 +174,27 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("portfolioCategories");
     }
+    if (data.periods.length > 0) {
+      currentUrlParams.set("periods", data.periods.join(","));
+    } else {
+      currentUrlParams.delete("periods");
+    }
+    if (data.modulesInterventions.length > 0) {
+      currentUrlParams.set(
+        "modulesInterventions",
+        data.modulesInterventions.join(",")
+      );
+    } else {
+      currentUrlParams.delete("modulesInterventions");
+    }
+    if (data.investmentLandscapes.length > 0) {
+      currentUrlParams.set(
+        "investmentLandscapes",
+        data.investmentLandscapes.join(",")
+      );
+    } else {
+      currentUrlParams.delete("investmentLandscapes");
+    }
 
     const queryString = decodeURIComponent(currentUrlParams.toString());
     history.push({
@@ -185,6 +220,9 @@ export function useUrlFilters(): null {
     const replenishmentPeriods = currentUrlParams.get("replenishmentPeriods");
     const trpWindows = currentUrlParams.get("trpWindows");
     const portfolioCategories = currentUrlParams.get("portfolioCategories");
+    const periods = currentUrlParams.get("periods");
+    const modulesInterventions = currentUrlParams.get("modulesInterventions");
+    const investmentLandscapes = currentUrlParams.get("investmentLandscapes");
 
     if (locations) {
       updatedAppliedFilters.locations = locations.split(",");
@@ -252,6 +290,19 @@ export function useUrlFilters(): null {
         portfolioCategories.split(",");
     } else if (updatedAppliedFilters.portfolioCategories.length > 0) {
       updatedAppliedFilters.portfolioCategories = [];
+    }
+    if (periods) {
+      updatedAppliedFilters.periods = periods.split(",");
+    } else if (updatedAppliedFilters.periods.length > 0) {
+      updatedAppliedFilters.periods = [];
+    }
+    if (modulesInterventions) {
+      updatedAppliedFilters.modulesInterventions =
+        modulesInterventions.split(",");
+    }
+    if (investmentLandscapes) {
+      updatedAppliedFilters.investmentLandscapes =
+        investmentLandscapes.split(",");
     }
 
     if (!isEqual(data, updatedAppliedFilters)) {

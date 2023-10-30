@@ -14,6 +14,7 @@ import { MobileViewControl } from "app/components/Mobile/ViewsControl";
 import { BudgetsGeoMap } from "app/modules/viz-module/sub-modules/budgets/geomap";
 import { AllocationsModule } from "app/modules/viz-module/sub-modules/allocations";
 import { EligibilityModule } from "app/modules/viz-module/sub-modules/eligibility";
+import { ExpendituresModule } from "app/modules/viz-module/sub-modules/expenditures";
 import { InvestmentsGeoMap } from "app/modules/viz-module/sub-modules/investments/geomap";
 import { AllocationsGeoMap } from "app/modules/viz-module/sub-modules/allocations/geomap";
 import { AllocationsTableModule } from "app/modules/viz-module/sub-modules/allocations/table";
@@ -219,6 +220,10 @@ export default function VizModule() {
           {/* Funding Request */}
           <Route path="/viz/funding-requests/table">
             <GenericFundingRequestWrapper />
+          </Route>
+          {/* Expenditures */}
+          <Route path="/viz/expenditures">
+            <ExpendituresModule />
           </Route>
         </Switch>
       </div>

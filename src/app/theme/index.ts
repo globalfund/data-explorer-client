@@ -738,4 +738,14 @@ export const appColors = {
     LINK_BACKGROUND_COLOR: SECONDARY_COLOR_7,
     LINK_BORDER_COLOR: SECONDARY_COLOR_7,
   },
+  EXPENDITURES: {
+    CHART_BG_COLOR: SECONDARY_COLOR_10,
+    CHART_PERCENTAGE_COLORS: [
+      "#5BA053",
+      "#8CCD81",
+      "#ECC854",
+      "#EE5D52",
+      "#DADADA",
+    ],
+  },
 };

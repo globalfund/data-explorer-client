@@ -13,6 +13,7 @@ import {
   ToolBoxPanelDonorMapViewState,
   ToolBoxPanelEligibilityAdvancedCheckboxState,
   ToolBoxPanelEligibilityYearState,
+  ToolBoxPanelExpendituresDataBySelector,
   ToolBoxPanelInvestmentsMapViewState,
   ToolBoxPanelPFPeriodState,
   ToolBoxPanelResultsYearState,
@@ -97,48 +98,48 @@ import ResultsList, {
   ResultsStats,
   ResultsYears,
 } from "app/state/api/action-reducers/viz/resultsList";
-import LocationDetailDisbursementsTreemap from "../api/action-reducers/locationDetail/disbursementsTreemap";
-import PledgesContributionsTreemap from "../api/action-reducers/viz/pledgesContributionsTreemap";
+import LocationDetailDisbursementsTreemap from "app/state/api/action-reducers/locationDetail/disbursementsTreemap";
+import PledgesContributionsTreemap from "app/state/api/action-reducers/viz/pledgesContributionsTreemap";
 import BudgetsGeomap, {
   BudgetsMCGeomap,
-} from "../api/action-reducers/viz/budgetsGeomap";
-import LocationGrants from "../api/action-reducers/locationDetail/grants";
-import PartnerDetailInfo from "../api/action-reducers/partnerDetail/info";
+} from "app/state/api/action-reducers/viz/budgetsGeomap";
+import LocationGrants from "app/state/api/action-reducers/locationDetail/grants";
+import PartnerDetailInfo from "app/state/api/action-reducers/partnerDetail/info";
 import PartnerDetailDisbursementsTreemap, {
   PartnerDetailDisbursementsTreemapDrilldown,
-} from "../api/action-reducers/partnerDetail/disbursementsTreemap";
+} from "app/state/api/action-reducers/partnerDetail/disbursementsTreemap";
 import PartnerDetailBudgetsFlow, {
   PartnerDetailBudgetsFlowDrilldownLevel1,
   PartnerDetailBudgetsFlowDrilldownLevel2,
-} from "../api/action-reducers/partnerDetail/budgetsFlow";
+} from "app/state/api/action-reducers/partnerDetail/budgetsFlow";
 import PartnerDetailBudgetsTimeCycle, {
   PartnerDetailBudgetsTimeCycleDrilldownLevel1,
   PartnerDetailBudgetsTimeCycleDrilldownLevel2,
-} from "../api/action-reducers/partnerDetail/budgetsTimeCycle";
+} from "app/state/api/action-reducers/partnerDetail/budgetsTimeCycle";
 import SignedTreemap, {
   SignedTimeCycle,
   SignedTimeCycleDrilldown,
   SignedTimeCycleDrilldown2,
   SignedTreemapDrilldown,
-} from "../api/action-reducers/viz/signed";
+} from "app/state/api/action-reducers/viz/signed";
 import CommitmentTreemap, {
   CommitmentTimeCycle,
   CommitmentTimeCycleDrilldown,
   CommitmentTimeCycleDrilldown2,
   CommitmentTreemapDrilldown,
-} from "../api/action-reducers/viz/commitment";
-import LocationDetailSignedTreemap from "../api/action-reducers/locationDetail/signedTreemap";
-import LocationDetailCommitmentTreemap from "../api/action-reducers/locationDetail/commitmentTreemap";
-import GrantDetailSignedTreemap from "../api/action-reducers/grantDetail/signedTreemap";
-import GrantDetailCommitmentTreemap from "../api/action-reducers/grantDetail/commitmentTreemap";
-import GrantDetailSignedTimeCycle from "../api/action-reducers/grantDetail/signedTimeCycle";
-import GrantDetailCommitmentTimeCycle from "../api/action-reducers/grantDetail/commitmentTimeCycle";
+} from "app/state/api/action-reducers/viz/commitment";
+import LocationDetailSignedTreemap from "app/state/api/action-reducers/locationDetail/signedTreemap";
+import LocationDetailCommitmentTreemap from "app/state/api/action-reducers/locationDetail/commitmentTreemap";
+import GrantDetailSignedTreemap from "app/state/api/action-reducers/grantDetail/signedTreemap";
+import GrantDetailCommitmentTreemap from "app/state/api/action-reducers/grantDetail/commitmentTreemap";
+import GrantDetailSignedTimeCycle from "app/state/api/action-reducers/grantDetail/signedTimeCycle";
+import GrantDetailCommitmentTimeCycle from "app/state/api/action-reducers/grantDetail/commitmentTimeCycle";
 import PartnerDetailCommitmentTreemap, {
   PartnerDetailCommitmentTreemapDrilldown,
-} from "../api/action-reducers/partnerDetail/commitmentTreemap";
+} from "app/state/api/action-reducers/partnerDetail/commitmentTreemap";
 import PartnerDetailSignedTreemap, {
   PartnerDetailSignedTreemapDrilldown,
-} from "../api/action-reducers/partnerDetail/signedTreemap";
+} from "app/state/api/action-reducers/partnerDetail/signedTreemap";
 
 import componentsAppBar from "app/state/api/action-reducers/cms/componentsAppBar";
 import componentsChartsBudgets from "app/state/api/action-reducers/cms/componentsChartsBudgets";
@@ -165,26 +166,33 @@ import modulesCountryDetail from "app/state/api/action-reducers/cms/modulesCount
 import modulesDatasets from "app/state/api/action-reducers/cms/modulesDatasets";
 import modulesGrantDetail from "app/state/api/action-reducers/cms/modulesGrantDetail";
 import modulesGrants from "app/state/api/action-reducers/cms/modulesGrants";
-import countrySummary from "../api/action-reducers/cms/countrySummary";
-import notesAndDisclaimers from "../api/action-reducers/cms/notesAndDisclaimers";
+import countrySummary from "app/state/api/action-reducers/cms/countrySummary";
+import notesAndDisclaimers from "app/state/api/action-reducers/cms/notesAndDisclaimers";
 import {
   DataPathActiveStep,
   DataPathStepsState,
-} from "../api/action-reducers/sync/dataPath";
-import PledgesContributionsTable from "../api/action-reducers/viz/pledgesContributionsTable";
+} from "app/state/api/action-reducers/sync/dataPath";
+import PledgesContributionsTable from "app/state/api/action-reducers/viz/pledgesContributionsTable";
 import {
   EligibilityLocation,
   FundingRequestsTable,
   GrantCycles,
   PortfolioCategoryCodelist,
   TRPWindowCodelist,
-} from "../api/action-reducers/locationDetail/accessToFunding";
-import { FundingRequestsTableGeneric } from "../api/action-reducers/viz/fundingRequests";
-import modulesFundingRequests from "../api/action-reducers/cms/modulesFundingRequests";
-import componentsSidebar from "../api/action-reducers/cms/componentsSidebar";
-import componentsTable from "../api/action-reducers/cms/componentsTable";
-import componentsDialogBox from "../api/action-reducers/cms/componentsDialogBox";
-import GrantDetailPeriodGoalsObjectives from "../api/action-reducers/grantDetail/goalsObjectives";
+} from "app/state/api/action-reducers/locationDetail/accessToFunding";
+import { FundingRequestsTableGeneric } from "app/state/api/action-reducers/viz/fundingRequests";
+import modulesFundingRequests from "app/state/api/action-reducers/cms/modulesFundingRequests";
+import componentsSidebar from "app/state/api/action-reducers/cms/componentsSidebar";
+import componentsTable from "app/state/api/action-reducers/cms/componentsTable";
+import componentsDialogBox from "app/state/api/action-reducers/cms/componentsDialogBox";
+import GrantDetailPeriodGoalsObjectives from "app/state/api/action-reducers/grantDetail/goalsObjectives";
+import Expenditures, {
+  ExpenditureStats,
+} from "app/state/api/action-reducers/viz/expenditures";
+import {
+  InvestmentLandscapeFilterOptions,
+  ModulesInterventionsFilterOptions,
+} from "app/state/api/action-reducers/filters/expenditures";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -237,6 +245,8 @@ const storeContent: StoreModel = {
   ResultsStats: persist(ResultsStats),
   ResultsYears: persist(ResultsYears),
   FundingRequestsTable: persist(FundingRequestsTableGeneric),
+  Expenditures: persist(Expenditures),
+  ExpenditureStats: persist(ExpenditureStats),
   // global search
   GlobalSearch: persist(GlobalSearch),
   // grant detail api
@@ -336,6 +346,8 @@ const storeContent: StoreModel = {
   StatusFilterOptions: persist(StatusFilterOptions),
   ReplenishmentPeriodFilterOptions: persist(ReplenishmentPeriodFilterOptions),
   DonorFilterOptions: persist(DonorFilterOptions),
+  ModulesInterventionsFilterOptions: persist(ModulesInterventionsFilterOptions),
+  InvestmentLandscapesFilterOptions: persist(InvestmentLandscapeFilterOptions),
   // sync state variables
   AppliedFiltersState: persist(AppliedFiltersState),
   ToolBoxPanelPFPeriodState: persist(ToolBoxPanelPFPeriodState),
@@ -357,6 +369,9 @@ const storeContent: StoreModel = {
   ),
   ToolBoxPanelBudgetFlowDrilldownSelectors,
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector,
+  ToolBoxPanelExpendituresDataBySelector: persist(
+    ToolBoxPanelExpendituresDataBySelector
+  ),
   // sync data path vars
   DataPathSteps: persist(DataPathStepsState),
   DataPathActiveStep: DataPathActiveStep,

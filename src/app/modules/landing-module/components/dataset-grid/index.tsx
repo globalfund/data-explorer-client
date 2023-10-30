@@ -131,6 +131,9 @@ export function LandingDatasetGrid() {
   const fbText = {
     __html: get(cmsData, "componentsDatasetCarousel.financeBudgets", ""),
   };
+  const feText = {
+    __html: get(cmsData, "componentsDatasetCarousel.financeExpenditures", ""),
+  };
   const aeText = {
     __html: get(cmsData, "componentsDatasetCarousel.accessEligibility", ""),
   };
@@ -153,7 +156,6 @@ export function LandingDatasetGrid() {
   const frDescription = {
     __html: "Funding requests applications by countries",
   };
-
   const fpDescription = {
     __html: get(
       cmsData,
@@ -186,6 +188,13 @@ export function LandingDatasetGrid() {
     __html: get(
       cmsData,
       "componentsDatasetCarousel.financeBudgetsDescription",
+      ""
+    ),
+  };
+  const feDescription = {
+    __html: get(
+      cmsData,
+      "componentsDatasetCarousel.financeExpendituresDescription",
       ""
     ),
   };
@@ -278,7 +287,6 @@ export function LandingDatasetGrid() {
           ]}
         />
       </Grid>
-
       <Grid item xs={12} sm={6} md={6} lg={3}>
         <GridItem
           title={frText}
@@ -391,6 +399,19 @@ export function LandingDatasetGrid() {
             {
               icon: <MapIcon />,
               link: "/viz/budgets/map",
+            },
+          ]}
+        />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6} lg={3}>
+        <GridItem
+          title={feText}
+          link="/viz/expenditures"
+          description={feDescription}
+          iconLinks={[
+            {
+              icon: <DotIcon />,
+              link: "/viz/expenditures",
             },
           ]}
         />

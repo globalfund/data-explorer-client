@@ -18,6 +18,7 @@ import { AllocationsPeriods } from "app/components/ToolBoxPanel/components/alloc
 import { ToolBoxPanelDonorMapTypes } from "app/components/ToolBoxPanel/components/donormaptypes";
 import { GrantImplementationPeriods } from "app/components/ToolBoxPanel/components/grantperiods";
 import { ToolBoxPanelDisbursementsSlider } from "app/components/ToolBoxPanel/components/disbursementslider";
+import { ToolBoxPanelExpendituresDataBySelector } from "app/components/ToolBoxPanel/components/expenditures";
 import { ToolBoxPanelEligibilityAdvanced } from "app/components/ToolBoxPanel/components/eligibilityadvanced";
 import { PerformanceFrameworkReportingPeriods } from "app/components/ToolBoxPanel/components/pf-reportingperiods";
 import { ToolBoxPanelBudgetFlowLevelSelectors } from "app/components/ToolBoxPanel/components/budgetflowlevelselectors";
@@ -272,6 +273,9 @@ export function SubToolBoxPanel(props: SubToolBoxPanelProps) {
             params.subType === "treemap" && (
               <ToolBoxPanelDisbursementsSlider label={params.vizType} />
             )}
+          {params.vizType === "expenditures" && (
+            <ToolBoxPanelExpendituresDataBySelector />
+          )}
         </>
       )}
       {!isGrantDetail && <ToolBoxPanelFilters groups={props.filterGroups} />}

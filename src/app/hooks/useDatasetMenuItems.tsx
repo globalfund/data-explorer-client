@@ -126,6 +126,7 @@ export function useDatasetMenuItems(): React.ReactChild[] {
         Disbursements
       </Link>
       <Link to={`/viz/budgets/flow${location.search}`}>Budgets</Link>
+      <Link to={`/viz/expenditures${location.search}`}>Expenditures</Link>
     </Expandable>,
     <Link
       css={`

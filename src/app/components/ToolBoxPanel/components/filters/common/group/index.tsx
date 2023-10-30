@@ -1,6 +1,7 @@
 import React from "react";
 import find from "lodash/find";
 import filter from "lodash/filter";
+import { appColors } from "app/theme";
 import { CloseIcon } from "app/assets/icons/Close";
 import IconButton from "@material-ui/core/IconButton";
 import { TriangleXSIcon } from "app/assets/icons/TriangleXS";
@@ -9,7 +10,6 @@ import {
   FilterGroupModel,
   FilterGroupOptionModel,
 } from "app/components/ToolBoxPanel/components/filters/data";
-import { appColors } from "app/theme";
 
 interface FilterGroupCompProps extends FilterGroupModel {
   expandGroup: () => void;

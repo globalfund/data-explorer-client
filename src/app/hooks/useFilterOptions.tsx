@@ -23,6 +23,9 @@ export interface UseFilterOptionsReturn {
   "Eligibility Years": FilterGroupOptionModel[];
   "TRP Window": FilterGroupOptionModel[];
   "Portfolio Categorization": FilterGroupOptionModel[];
+  "Grant Cycle": FilterGroupOptionModel[];
+  "Modules & Interventions": FilterGroupOptionModel[];
+  "Investment Landscapes": FilterGroupOptionModel[];
 }
 
 export function useFilterOptions(
@@ -85,6 +88,9 @@ export function useFilterOptions(
   const getGrantCycles = useStoreActions(
     (store) => store.LocationAccessToFunding.GrantCycles.fetch
   );
+  const grantCycles = useStoreState((state) =>
+    get(state.LocationAccessToFunding.GrantCycles, "data.data", [])
+  );
 
   const getEligibilityStatusCodelist = useStoreActions(
     (store) => store.EligibilityStatusCodelist.fetch
@@ -121,6 +127,20 @@ export function useFilterOptions(
     get(state.FundingRequestsPortfolioCategoryCodelist, "data.data", [])
   );
 
+  const getModulesInterventions = useStoreActions(
+    (store) => store.ModulesInterventionsFilterOptions.fetch
+  );
+  const modulesInterventions = useStoreState((state) =>
+    get(state.ModulesInterventionsFilterOptions.data, "options", [])
+  );
+
+  const getInvestmentLandscapes = useStoreActions(
+    (store) => store.InvestmentLandscapesFilterOptions.fetch
+  );
+  const investmentLandscapes = useStoreState((state) =>
+    get(state.InvestmentLandscapesFilterOptions.data, "options", [])
+  );
+
   React.useEffect(() => {
     if (props.loadFilterOptions) {
       if (locations.length === 0) {
@@ -147,6 +167,8 @@ export function useFilterOptions(
       getEligibilityDiseaseBurdenCodelist({});
       getFundingRequestsTRPWindowCodelist({});
       getFundingRequestsPortfolioCategoryCodelist({});
+      getModulesInterventions({});
+      getInvestmentLandscapes({});
     }
   }, []);
 
@@ -170,6 +192,12 @@ export function useFilterOptions(
       })),
       "TRP Window": FundingRequestsTRPWindowCodelist,
       "Portfolio Categorization": FundingRequestsPortfolioCategoryCodelist,
+      "Grant Cycle": grantCycles.map((item: string) => ({
+        label: item,
+        value: item,
+      })),
+      "Modules & Interventions": modulesInterventions,
+      "Investment Landscapes": investmentLandscapes,
     };
   }
 

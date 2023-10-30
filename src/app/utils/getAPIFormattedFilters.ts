@@ -87,6 +87,19 @@ export function getAPIFormattedFilters(
       `portfolioCategories=${appliedFilters.portfolioCategories.join(",")}`
     );
   }
+  if (appliedFilters.periods.length > 0) {
+    filterArray.push(`periods=${appliedFilters.periods.join(",")}`);
+  }
+  if (appliedFilters.modulesInterventions.length > 0) {
+    filterArray.push(
+      `modulesInterventions=${appliedFilters.modulesInterventions.join(",")}`
+    );
+  }
+  if (appliedFilters.investmentLandscapes.length > 0) {
+    filterArray.push(
+      `investmentLandscapes=${appliedFilters.investmentLandscapes.join(",")}`
+    );
+  }
 
   return filterArray.join("&");
 }

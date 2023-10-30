@@ -70,7 +70,7 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
     document.body.style.overflowY = "auto";
   });
 
-  let top = 168;
+  let top = 165;
 
   if (!props.isGrantDetail && !props.isLocationDetail) {
     if (isSmallScreen) {
@@ -82,19 +82,19 @@ export function ToolBoxPanel(props: ToolBoxPanelProps) {
   }
   if (isSmallScreen) {
     if (props.isGrantDetail) {
-      top = 168;
+      top = 165;
       if (isMobile) {
         top = 149;
       }
     }
     if (props.isLocationDetail || isPartnerDetail) {
-      top = 168;
+      top = 165;
       if (isMobile) {
         top = 148;
       }
     }
   } else if (props.isGrantDetail || props.isLocationDetail) {
-    top = 168;
+    top = 165;
   }
 
   return (

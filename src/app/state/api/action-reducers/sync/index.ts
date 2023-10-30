@@ -214,3 +214,19 @@ export const ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudge
       state.selectedOption = payload;
     }),
   };
+
+export interface ToolBoxPanelExpendituresDataBySelectorModel {
+  selectedOption: string;
+  setSelectedOption: Action<
+    ToolBoxPanelExpendituresDataBySelectorModel,
+    string
+  >;
+}
+
+export const ToolBoxPanelExpendituresDataBySelector: ToolBoxPanelExpendituresDataBySelectorModel =
+  {
+    selectedOption: "investmentLandscapes",
+    setSelectedOption: action((state, payload: string) => {
+      state.selectedOption = payload;
+    }),
+  };

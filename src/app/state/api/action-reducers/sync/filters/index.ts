@@ -15,6 +15,9 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   donorSubCategories: [] as string[],
   trpWindows: [] as string[],
   portfolioCategories: [] as string[],
+  periods: [] as string[],
+  modulesInterventions: [] as string[],
+  investmentLandscapes: [] as string[],
 };
 
 export interface AppliedFiltersModel {
@@ -31,6 +34,9 @@ export interface AppliedFiltersModel {
   donorSubCategories: string[];
   trpWindows: string[];
   portfolioCategories: string[];
+  periods: string[];
+  modulesInterventions: string[];
+  investmentLandscapes: string[];
 }
 
 export interface AppliedFiltersStateModel {
@@ -60,6 +66,12 @@ export interface AppliedFiltersStateModel {
   setTrpWindows: Action<AppliedFiltersStateModel, string[]>;
   setPortfolioCategories: Action<AppliedFiltersStateModel, string[]>;
   portfolioCategories: string[];
+  setPeriods: Action<AppliedFiltersStateModel, string[]>;
+  periods: string[];
+  setModulesInterventions: Action<AppliedFiltersStateModel, string[]>;
+  modulesInterventions: string[];
+  setInvestmentLandscapes: Action<AppliedFiltersStateModel, string[]>;
+  investmentLandscapes: string[];
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
   appliedFiltersCount: number;
@@ -131,6 +143,21 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.portfolioCategories = payload;
     state.appliedFiltersCount += payload.length;
   }),
+  periods: [],
+  setPeriods: action((state, payload: string[]) => {
+    state.periods = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  modulesInterventions: [],
+  setModulesInterventions: action((state, payload: string[]) => {
+    state.modulesInterventions = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  investmentLandscapes: [],
+  setInvestmentLandscapes: action((state, payload: string[]) => {
+    state.investmentLandscapes = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   setAll: action((state, payload: AppliedFiltersModel) => {
     state.locations = payload.locations;
     state.components = payload.components;
@@ -145,6 +172,9 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.trpWindows = payload.trpWindows;
     state.portfolioCategories = payload.portfolioCategories;
     state.documentTypes = payload.documentTypes;
+    state.periods = payload.periods;
+    state.modulesInterventions = payload.modulesInterventions;
+    state.investmentLandscapes = payload.investmentLandscapes;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +
@@ -158,7 +188,10 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.donorSubCategories.length +
       payload.trpWindows.length +
       payload.portfolioCategories.length +
-      payload.documentTypes.length;
+      payload.documentTypes.length +
+      payload.periods.length +
+      payload.modulesInterventions.length +
+      payload.investmentLandscapes.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

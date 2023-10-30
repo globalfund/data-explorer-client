@@ -10,6 +10,7 @@ import {
   ToolBoxPanelDonorMapViewStateModel,
   ToolBoxPanelEligibilityAdvancedCheckboxStateModel,
   ToolBoxPanelEligibilityYearStateModel,
+  ToolBoxPanelExpendituresDataBySelectorModel,
   ToolBoxPanelInvestmentsMapViewStateModel,
   ToolBoxPanelPFPeriodStateModel,
   ToolBoxPanelResultsYearStateModel,
@@ -186,6 +187,8 @@ export interface StoreModel {
   ResultsStats: ApiCallModel;
   ResultsYears: ApiCallModel;
   FundingRequestsTable: ApiCallModel;
+  Expenditures: ApiCallModel;
+  ExpenditureStats: ApiCallModel;
   // global search
   GlobalSearch: ApiCallModel;
   // grant detail api
@@ -251,6 +254,8 @@ export interface StoreModel {
   StatusFilterOptions: ApiCallModel;
   ReplenishmentPeriodFilterOptions: ApiCallModel;
   DonorFilterOptions: ApiCallModel;
+  ModulesInterventionsFilterOptions: ApiCallModel;
+  InvestmentLandscapesFilterOptions: ApiCallModel;
   // sync state variables
   AppliedFiltersState: AppliedFiltersStateModel;
   ToolBoxPanelPFPeriodState: ToolBoxPanelPFPeriodStateModel;
@@ -263,6 +268,7 @@ export interface StoreModel {
   ToolBoxPanelAllocationsPeriodState: ToolBoxPanelAllocationsPeriodStateModel;
   ToolBoxPanelInvestmentsMapViewState: ToolBoxPanelInvestmentsMapViewStateModel;
   ToolBoxPanelDisbursementsSliderValues: ToolBoxPanelDisbursementsSliderValuesModel;
+  ToolBoxPanelExpendituresDataBySelector: ToolBoxPanelExpendituresDataBySelectorModel;
   ToolBoxPanelBudgetFlowDrilldownSelectors: ToolBoxPanelBudgetFlowDrilldownSelectorsModel;
   ToolBoxPanelEligibilityAdvancedCheckboxState: ToolBoxPanelEligibilityAdvancedCheckboxStateModel;
   ToolBoxPanelBudgetTimeCycleDrilldownYearSelector: ToolBoxPanelBudgetTimeCycleDrilldownYearSelectorModel;

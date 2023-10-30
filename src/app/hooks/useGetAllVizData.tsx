@@ -134,6 +134,9 @@ export function useGetAllVizData() {
         []
       ) as EligibilityScatterplotDataModel[]
   );
+  const expenditures = useStoreState((state) =>
+    get(state.Expenditures, "data.vizData", [])
+  );
   const grantDetailBudgetsFlow = useStoreState(
     (state) => state.GrantDetailBudgetsFlow.data
   );
@@ -343,6 +346,8 @@ export function useGetAllVizData() {
     // Eligibility
     "/viz/eligibility": eligibility,
     "/viz/eligibility/table": locationDetailEligibility,
+    // Expenditures
+    "/viz/expenditures": expenditures,
     // Pledges & Contributions
     "/viz/pledges-contributions/map": pledgesContributionsGeomap,
     "/viz/pledges-contributions/table": pledgesContributionsTable,

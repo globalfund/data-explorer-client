@@ -167,6 +167,37 @@ export const filtergroups: FilterGroupProps[] = [
   },
 ];
 
+export const expendituresFilterGroups: FilterGroupProps[] = [
+  // {
+  //   name: "Investment Landscapes",
+  //   addSubOptionFilters: true,
+  // },
+  // {
+  //   name: "Modules & Interventions",
+  //   addSubOptionFilters: true,
+  // },
+  {
+    name: "Period",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "Locations",
+    addSubOptionFilters: true,
+  },
+  {
+    name: "Components",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "Partner Types",
+    addSubOptionFilters: false,
+  },
+  {
+    name: "Grant Cycle",
+    addSubOptionFilters: false,
+  },
+];
+
 export const fundingRequestFilterGroups: FilterGroupProps[] = [
   {
     name: "Components",
@@ -422,6 +453,7 @@ export const pathnameToFilterGroups = {
       fg.name !== "Grant Status" &&
       fg.name !== "Partner Types"
   ),
+  "/viz/expenditures": expendituresFilterGroups,
   // location detail page
   "/location/<code>/overview": filter(
     filtergroups,
