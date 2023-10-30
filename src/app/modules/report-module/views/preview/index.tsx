@@ -18,6 +18,7 @@ import {
   reportContentContainerWidth,
   unSavedReportPreviewModeAtom,
 } from "app/state/recoil/atoms";
+import { linkDecorator } from "app/modules/chart-module/routes/text/RichEditor/decorators";
 
 export function ReportPreviewView(props: {
   setIsPreviewView: React.Dispatch<React.SetStateAction<boolean>>;
@@ -151,6 +152,7 @@ export function ReportPreviewView(props: {
               />
             );
           }
+
           return (
             <RowFrame
               key={"rowframe" + `${index}`}
@@ -159,7 +161,10 @@ export function ReportPreviewView(props: {
               forceSelectedType={rowFrame.structure ?? undefined}
               previewItems={rowFrame.items.map((item, index) => {
                 return contentTypes[index] === "text"
-                  ? EditorState.createWithContent(convertFromRaw(item as any))
+                  ? EditorState.createWithContent(
+                      convertFromRaw(item as any),
+                      linkDecorator
+                    )
                   : item;
               })}
               handlePersistReportState={() => {}}

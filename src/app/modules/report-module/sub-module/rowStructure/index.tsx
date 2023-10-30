@@ -124,6 +124,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
       | (EditorPlugin & UndoRedoType)
       | TextAlignmentPlugin
       | EmojiPlugin
+      | EditorPlugin
     )[]
   >([]);
 
@@ -153,6 +154,10 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
   const RedoButton = (plugins[2] as EditorPlugin & UndoRedoType)?.RedoButton;
   const textAlignmentPlugin = plugins[3] as TextAlignmentPlugin;
   const emojiPlugin = plugins[4] as EmojiPlugin;
+
+  const linkInputComponent = document.querySelector(
+    "input[placeholder='Enter a URL and press enter']"
+  );
   return (
     <>
       <div
@@ -161,7 +166,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
         `}
       >
         <div>
-          {isFocused && plugins.length > 0 && (
+          {(isFocused || linkInputComponent) && plugins.length > 0 && (
             <Toolbar>
               {
                 // may be use React.Fragment instead of div to improve perfomance after React 16
@@ -219,7 +224,13 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
                         background: #b4b4b4;
                       `}
                     />
-                    <LinkButton {...externalProps} />
+                    <div
+                      onMouseDown={(e) => {
+                        e.preventDefault();
+                      }}
+                    >
+                      <LinkButton {...externalProps} />
+                    </div>
                     <div onMouseDown={(e) => e.preventDefault()}>
                       <UndoButton {...externalProps} />
                     </div>
@@ -382,6 +393,7 @@ const Box = (props: {
         | (EditorPlugin & UndoRedoType)
         | TextAlignmentPlugin
         | EmojiPlugin
+        | EditorPlugin
       )[]
     >
   >;
