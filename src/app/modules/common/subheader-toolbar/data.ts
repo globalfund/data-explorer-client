@@ -10,7 +10,7 @@ export interface SubheaderToolbarProps {
   forceEnablePreviewSave?: boolean;
   rawViz?: any;
   reportName: string;
-  setHasReportNameFocused?: (value: boolean) => void;
+  setHasSubHeaderTitleFocused?: (value: boolean) => void;
   headerDetails: IHeaderDetails;
   appliedHeaderDetails: IHeaderDetails;
   framesArray: IFramesArray[];

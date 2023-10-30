@@ -113,7 +113,7 @@ function ReportCreateView(props: ReportCreateViewProps) {
         setHeaderDetails={props.setHeaderDetails}
         setReportName={props.setReportName}
         reportName={props.reportName}
-        hasReportNameFocused={props.hasReportNameFocused}
+        hasSubHeaderTitleFocused={props.hasSubHeaderTitleFocused}
       />
       <Container maxWidth="lg">
         <div

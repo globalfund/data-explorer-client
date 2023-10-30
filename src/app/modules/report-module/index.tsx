@@ -92,7 +92,8 @@ export default function ReportModule() {
 
   const [rightPanelOpen, setRightPanelOpen] = React.useState(true);
   const [reportName, setReportName] = React.useState("Untitled report");
-  const [hasReportNameFocused, setHasReportNameFocused] = React.useState(false);
+  const [hasSubHeaderTitleFocused, setHasSubHeaderTitleFocused] =
+    React.useState(false);
 
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
   const [reportType, setReportType] = React.useState<
@@ -302,8 +303,15 @@ export default function ReportModule() {
   const clearChart = useStoreActions(
     (actions) => actions.charts.ChartGet.clear
   );
+
   const resetDataset = useStoreActions(
     (actions) => actions.charts.dataset.reset
+  );
+  const resetChartType = useStoreActions(
+    (actions) => actions.charts.chartType.reset
+  );
+  const resetMapping = useStoreActions(
+    (actions) => actions.charts.mapping.reset
   );
 
   const reportGetData = useStoreState(
@@ -346,6 +354,19 @@ export default function ReportModule() {
     (state) =>
       get(state.reports.ReportGet.errorData, "data.error.statusCode", 0) === 401
   );
+
+  React.useEffect(() => {
+    return () => {
+      resetDataset();
+      resetChartType();
+      reportEditClear();
+      reportCreateClear();
+      resetMapping();
+      clearChart();
+      setRightPanelView("elements");
+      setFramesArray([]);
+    };
+  }, []);
 
   //get current value of states for handlePersistReportState function
   headerDetailsRef.current = headerDetails;
@@ -436,17 +457,6 @@ export default function ReportModule() {
   };
 
   React.useEffect(() => {
-    return () => {
-      reportEditClear();
-      reportCreateClear();
-      clearChart();
-      resetDataset();
-      setRightPanelView("elements");
-      setFramesArray([]);
-    };
-  }, []);
-
-  React.useEffect(() => {
     if (view === "edit" && !rightPanelOpen) {
       setRightPanelOpen(true);
     }
@@ -490,7 +500,7 @@ export default function ReportModule() {
           pageType="report"
           onReportSave={onSave}
           setName={setReportName}
-          setHasReportNameFocused={setHasReportNameFocused}
+          setHasSubHeaderTitleFocused={setHasSubHeaderTitleFocused}
           forceEnablePreviewSave={isPreviewSaveEnabled}
           name={page !== "new" && !view ? reportGetData.name : reportName}
           reportName={reportName}
@@ -544,7 +554,7 @@ export default function ReportModule() {
             setReportName={setReportName}
             reportName={reportName}
             deleteFrame={deleteFrame}
-            hasReportNameFocused={hasReportNameFocused}
+            hasSubHeaderTitleFocused={hasSubHeaderTitleFocused}
             reportType={reportType}
             framesArray={framesArray}
             headerDetails={headerDetails}

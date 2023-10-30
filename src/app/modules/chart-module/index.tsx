@@ -51,8 +51,10 @@ export default function ChartModule() {
     {}
   );
   const [rawViz, setRawViz] = React.useState<any>(null);
-  const [chartName, setChartName] = React.useState("Untitled Report");
+  const [chartName, setChartName] = React.useState("Untitled Chart");
   const [isPreviewView, setIsPreviewView] = React.useState(false);
+  const [hasSubHeaderTitleFocused, setHasSubHeaderTitleFocused] =
+    React.useState(false);
 
   const chartType = useStoreState((state) => state.charts.chartType.value);
   const mapping = useStoreState((state) => state.charts.mapping.value);
@@ -146,13 +148,21 @@ export default function ChartModule() {
     setChartFromAPI(null);
   }, [chartType, dataTypes]);
 
-  //set chart name to selected dataset if chart name is "Untitled Report"
+  //set chart name to selected dataset if chart name has not been focused
   React.useEffect(() => {
-    if (page === "new" && dataset) {
+    if (page === "new" && !hasSubHeaderTitleFocused && dataset) {
       const datasetName = datasets.find((d) => d.id === dataset)?.name;
       setChartName(datasetName as string);
     }
   }, [dataset]);
+
+  React.useEffect(() => {
+    if (loadedChart.name.length > 0) {
+      setChartName(loadedChart.name);
+    } else {
+      setChartName("Untitled Chart");
+    }
+  }, [loadedChart]);
 
   const mappedData = React.useMemo(
     () => get(chartFromAPI, "mappedData", ""),
@@ -212,8 +222,8 @@ export default function ChartModule() {
 
   async function clear() {
     sessionStorage.setItem("visualOptions", JSON.stringify({}));
-    resetActivePanels();
     resetDataset();
+    resetActivePanels();
     resetMapping();
     resetChartType();
     resetAppliedFilters();
@@ -298,13 +308,6 @@ export default function ChartModule() {
     };
   }, [page, token]);
 
-  React.useEffect(() => {
-    if (loadedChart && loadedChart.id !== "") {
-      if (loadedChart.name.length > 0) {
-        setChartName(loadedChart.name);
-      }
-    }
-  }, [loadedChart]);
   const errorComponent = () => {
     return (
       <div css={commonStyles.container}>
@@ -359,6 +362,7 @@ export default function ChartModule() {
         name={chartName}
         setName={setChartName}
         rawViz={rawViz}
+        setHasSubHeaderTitleFocused={setHasSubHeaderTitleFocused}
         forceEnablePreviewSave={getForceEnabledPreviewValue(view)}
         appliedHeaderDetails={{} as IHeaderDetails}
         framesArray={[]}

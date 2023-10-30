@@ -47,6 +47,7 @@ export const RichEditor = (props: {
           })
         | TextAlignmentPlugin
         | EmojiPlugin
+        | EditorPlugin
       )[]
     >
   >;
@@ -71,7 +72,10 @@ export const RichEditor = (props: {
       },
     },
   });
-  const linkPlugin = createLinkPlugin();
+  const linkPlugin = createLinkPlugin({
+    linkTarget: "_blank",
+    placeholder: "Enter a URL and press enter",
+  });
 
   const undoPlugin = createUndoPlugin({
     undoContent: <UndoIcon />,
