@@ -168,14 +168,14 @@ export const filtergroups: FilterGroupProps[] = [
 ];
 
 export const expendituresFilterGroups: FilterGroupProps[] = [
-  // {
-  //   name: "Investment Landscapes",
-  //   addSubOptionFilters: true,
-  // },
-  // {
-  //   name: "Modules & Interventions",
-  //   addSubOptionFilters: true,
-  // },
+  {
+    name: "Investment Landscapes",
+    addSubOptionFilters: true,
+  },
+  {
+    name: "Modules & Interventions",
+    addSubOptionFilters: true,
+  },
   {
     name: "Period",
     addSubOptionFilters: false,

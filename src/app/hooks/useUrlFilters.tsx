@@ -32,8 +32,21 @@ export function useUrlFilters(): null {
       const trpWindows = currentUrlParams.get("trpWindows");
       const portfolioCategories = currentUrlParams.get("portfolioCategories");
       const periods = currentUrlParams.get("periods");
-      const modulesInterventions = currentUrlParams.get("modulesInterventions");
-      const investmentLandscapes = currentUrlParams.get("investmentLandscapes");
+      const modulesInterventionsLevel0 = currentUrlParams.get(
+        "modulesInterventionsLevel0"
+      );
+      const modulesInterventionsLevel1 = currentUrlParams.get(
+        "modulesInterventionsLevel1"
+      );
+      const investmentLandscapesLevel0 = currentUrlParams.get(
+        "investmentLandscapesLevel0"
+      );
+      const investmentLandscapesLevel1 = currentUrlParams.get(
+        "investmentLandscapesLevel1"
+      );
+      const investmentLandscapesLevel2 = currentUrlParams.get(
+        "investmentLandscapesLevel2"
+      );
 
       if (locations) {
         updatedAppliedFilters.locations = locations.split(",");
@@ -80,13 +93,25 @@ export function useUrlFilters(): null {
       if (periods) {
         updatedAppliedFilters.periods = periods.split(",");
       }
-      if (modulesInterventions) {
-        updatedAppliedFilters.modulesInterventions =
-          modulesInterventions.split(",");
+      if (modulesInterventionsLevel0) {
+        updatedAppliedFilters.modulesInterventionsLevel0 =
+          modulesInterventionsLevel0.split(",");
       }
-      if (investmentLandscapes) {
-        updatedAppliedFilters.investmentLandscapes =
-          investmentLandscapes.split(",");
+      if (modulesInterventionsLevel1) {
+        updatedAppliedFilters.modulesInterventionsLevel1 =
+          modulesInterventionsLevel1.split(",");
+      }
+      if (investmentLandscapesLevel0) {
+        updatedAppliedFilters.investmentLandscapesLevel0 =
+          investmentLandscapesLevel0.split(",");
+      }
+      if (investmentLandscapesLevel1) {
+        updatedAppliedFilters.investmentLandscapesLevel1 =
+          investmentLandscapesLevel1.split(",");
+      }
+      if (investmentLandscapesLevel2) {
+        updatedAppliedFilters.investmentLandscapesLevel2 =
+          investmentLandscapesLevel2.split(",");
       }
 
       actions.setAll(updatedAppliedFilters);
@@ -179,21 +204,45 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("periods");
     }
-    if (data.modulesInterventions.length > 0) {
+    if (data.modulesInterventionsLevel0.length > 0) {
       currentUrlParams.set(
-        "modulesInterventions",
-        data.modulesInterventions.join(",")
+        "modulesInterventionsLevel0",
+        data.modulesInterventionsLevel0.join(",")
       );
     } else {
-      currentUrlParams.delete("modulesInterventions");
+      currentUrlParams.delete("modulesInterventionsLevel0");
     }
-    if (data.investmentLandscapes.length > 0) {
+    if (data.modulesInterventionsLevel1.length > 0) {
       currentUrlParams.set(
-        "investmentLandscapes",
-        data.investmentLandscapes.join(",")
+        "modulesInterventionsLevel1",
+        data.modulesInterventionsLevel1.join(",")
       );
     } else {
-      currentUrlParams.delete("investmentLandscapes");
+      currentUrlParams.delete("modulesInterventionsLevel1");
+    }
+    if (data.investmentLandscapesLevel0.length > 0) {
+      currentUrlParams.set(
+        "investmentLandscapesLevel0",
+        data.investmentLandscapesLevel0.join(",")
+      );
+    } else {
+      currentUrlParams.delete("investmentLandscapesLevel0");
+    }
+    if (data.investmentLandscapesLevel1.length > 0) {
+      currentUrlParams.set(
+        "investmentLandscapesLevel1",
+        data.investmentLandscapesLevel1.join(",")
+      );
+    } else {
+      currentUrlParams.delete("investmentLandscapesLevel1");
+    }
+    if (data.investmentLandscapesLevel2.length > 0) {
+      currentUrlParams.set(
+        "investmentLandscapesLevel2",
+        data.investmentLandscapesLevel2.join(",")
+      );
+    } else {
+      currentUrlParams.delete("investmentLandscapesLevel2");
     }
 
     const queryString = decodeURIComponent(currentUrlParams.toString());
@@ -221,8 +270,21 @@ export function useUrlFilters(): null {
     const trpWindows = currentUrlParams.get("trpWindows");
     const portfolioCategories = currentUrlParams.get("portfolioCategories");
     const periods = currentUrlParams.get("periods");
-    const modulesInterventions = currentUrlParams.get("modulesInterventions");
-    const investmentLandscapes = currentUrlParams.get("investmentLandscapes");
+    const modulesInterventionsLevel0 = currentUrlParams.get(
+      "modulesInterventionsLevel0"
+    );
+    const modulesInterventionsLevel1 = currentUrlParams.get(
+      "modulesInterventionsLevel1"
+    );
+    const investmentLandscapesLevel0 = currentUrlParams.get(
+      "investmentLandscapesLevel0"
+    );
+    const investmentLandscapesLevel1 = currentUrlParams.get(
+      "investmentLandscapesLevel1"
+    );
+    const investmentLandscapesLevel2 = currentUrlParams.get(
+      "investmentLandscapesLevel2"
+    );
 
     if (locations) {
       updatedAppliedFilters.locations = locations.split(",");
@@ -296,13 +358,35 @@ export function useUrlFilters(): null {
     } else if (updatedAppliedFilters.periods.length > 0) {
       updatedAppliedFilters.periods = [];
     }
-    if (modulesInterventions) {
-      updatedAppliedFilters.modulesInterventions =
-        modulesInterventions.split(",");
+    if (modulesInterventionsLevel0) {
+      updatedAppliedFilters.modulesInterventionsLevel0 =
+        modulesInterventionsLevel0.split(",");
+    } else if (updatedAppliedFilters.modulesInterventionsLevel0.length > 0) {
+      updatedAppliedFilters.modulesInterventionsLevel0 = [];
     }
-    if (investmentLandscapes) {
-      updatedAppliedFilters.investmentLandscapes =
-        investmentLandscapes.split(",");
+    if (modulesInterventionsLevel1) {
+      updatedAppliedFilters.modulesInterventionsLevel1 =
+        modulesInterventionsLevel1.split(",");
+    } else if (updatedAppliedFilters.modulesInterventionsLevel1.length > 0) {
+      updatedAppliedFilters.modulesInterventionsLevel1 = [];
+    }
+    if (investmentLandscapesLevel0) {
+      updatedAppliedFilters.investmentLandscapesLevel0 =
+        investmentLandscapesLevel0.split(",");
+    } else if (updatedAppliedFilters.investmentLandscapesLevel0.length > 0) {
+      updatedAppliedFilters.investmentLandscapesLevel0 = [];
+    }
+    if (investmentLandscapesLevel1) {
+      updatedAppliedFilters.investmentLandscapesLevel1 =
+        investmentLandscapesLevel1.split(",");
+    } else if (updatedAppliedFilters.investmentLandscapesLevel1.length > 0) {
+      updatedAppliedFilters.investmentLandscapesLevel1 = [];
+    }
+    if (investmentLandscapesLevel2) {
+      updatedAppliedFilters.investmentLandscapesLevel2 =
+        investmentLandscapesLevel2.split(",");
+    } else if (updatedAppliedFilters.investmentLandscapesLevel2.length > 0) {
+      updatedAppliedFilters.investmentLandscapesLevel2 = [];
     }
 
     if (!isEqual(data, updatedAppliedFilters)) {

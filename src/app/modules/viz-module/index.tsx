@@ -1,11 +1,13 @@
 /* third-party */
 import React from "react";
 import get from "lodash/get";
+import filter from "lodash/filter";
 import { appColors } from "app/theme";
 import { useUpdateEffect } from "react-use";
 import { useMediaQuery } from "@material-ui/core";
 import { Switch, Route, useParams, useLocation } from "react-router-dom";
 /* project */
+import { useStoreState } from "app/state/store/hooks";
 import { PageHeader } from "app/components/PageHeader";
 import { ToolBoxPanel } from "app/components/ToolBoxPanel";
 import { PageTopSpacer } from "app/modules/common/page-top-spacer";
@@ -41,6 +43,10 @@ export default function VizModule() {
   const params = useParams<{ vizType: string; subType?: string }>();
   const [openToolboxPanel, setOpenToolboxPanel] = React.useState(!isMobile);
 
+  const datasetExpenditure = useStoreState(
+    (state) => state.ToolBoxPanelExpendituresDataBySelector.selectedOption
+  );
+
   React.useEffect(() => {
     document.body.style.background = appColors.COMMON.PAGE_BACKGROUND_COLOR_1;
   }, []);
@@ -71,6 +77,23 @@ export default function VizModule() {
     if (openToolboxPanel && widthThreshold < 0) return 1;
     return 0;
   }
+
+  const filterGroups = React.useMemo(() => {
+    if (location.pathname === "/viz/expenditures") {
+      if (datasetExpenditure === "moduleInterventions") {
+        return filter(
+          pathnameToFilterGroups["/viz/expenditures"],
+          (item) => item.name !== "Investment Landscapes"
+        );
+      } else {
+        return filter(
+          pathnameToFilterGroups["/viz/expenditures"],
+          (item) => item.name !== "Modules & Interventions"
+        );
+      }
+    }
+    return get(pathnameToFilterGroups, location.pathname, filtergroups);
+  }, [location.pathname, datasetExpenditure]);
 
   return (
     <div
@@ -241,11 +264,7 @@ export default function VizModule() {
         onCloseBtnClick={(value?: boolean) =>
           setOpenToolboxPanel(value !== undefined ? value : !openToolboxPanel)
         }
-        filterGroups={get(
-          pathnameToFilterGroups,
-          location.pathname,
-          filtergroups
-        )}
+        filterGroups={filterGroups}
         css={`
           z-index: 1;
         `}

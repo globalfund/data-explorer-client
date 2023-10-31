@@ -90,14 +90,39 @@ export function getAPIFormattedFilters(
   if (appliedFilters.periods.length > 0) {
     filterArray.push(`periods=${appliedFilters.periods.join(",")}`);
   }
-  if (appliedFilters.modulesInterventions.length > 0) {
+  if (appliedFilters.modulesInterventionsLevel0.length > 0) {
     filterArray.push(
-      `modulesInterventions=${appliedFilters.modulesInterventions.join(",")}`
+      `modulesInterventionsLevel0=${appliedFilters.modulesInterventionsLevel0.join(
+        ","
+      )}`
     );
   }
-  if (appliedFilters.investmentLandscapes.length > 0) {
+  if (appliedFilters.modulesInterventionsLevel1.length > 0) {
     filterArray.push(
-      `investmentLandscapes=${appliedFilters.investmentLandscapes.join(",")}`
+      `modulesInterventionsLevel1=${appliedFilters.modulesInterventionsLevel1.join(
+        ","
+      )}`
+    );
+  }
+  if (appliedFilters.investmentLandscapesLevel0.length > 0) {
+    filterArray.push(
+      `investmentLandscapesLevel0=${appliedFilters.investmentLandscapesLevel0.join(
+        ","
+      )}`
+    );
+  }
+  if (appliedFilters.investmentLandscapesLevel1.length > 0) {
+    filterArray.push(
+      `investmentLandscapesLevel1=${appliedFilters.investmentLandscapesLevel1.join(
+        ","
+      )}`
+    );
+  }
+  if (appliedFilters.investmentLandscapesLevel2.length > 0) {
+    filterArray.push(
+      `investmentLandscapesLevel2=${appliedFilters.investmentLandscapesLevel2.join(
+        ","
+      )}`
     );
   }
 

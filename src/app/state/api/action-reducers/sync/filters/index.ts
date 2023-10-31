@@ -16,8 +16,11 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   trpWindows: [] as string[],
   portfolioCategories: [] as string[],
   periods: [] as string[],
-  modulesInterventions: [] as string[],
-  investmentLandscapes: [] as string[],
+  modulesInterventionsLevel0: [] as string[],
+  modulesInterventionsLevel1: [] as string[],
+  investmentLandscapesLevel0: [] as string[],
+  investmentLandscapesLevel1: [] as string[],
+  investmentLandscapesLevel2: [] as string[],
 };
 
 export interface AppliedFiltersModel {
@@ -35,8 +38,11 @@ export interface AppliedFiltersModel {
   trpWindows: string[];
   portfolioCategories: string[];
   periods: string[];
-  modulesInterventions: string[];
-  investmentLandscapes: string[];
+  modulesInterventionsLevel0: string[];
+  modulesInterventionsLevel1: string[];
+  investmentLandscapesLevel0: string[];
+  investmentLandscapesLevel1: string[];
+  investmentLandscapesLevel2: string[];
 }
 
 export interface AppliedFiltersStateModel {
@@ -68,10 +74,16 @@ export interface AppliedFiltersStateModel {
   portfolioCategories: string[];
   setPeriods: Action<AppliedFiltersStateModel, string[]>;
   periods: string[];
-  setModulesInterventions: Action<AppliedFiltersStateModel, string[]>;
-  modulesInterventions: string[];
-  setInvestmentLandscapes: Action<AppliedFiltersStateModel, string[]>;
-  investmentLandscapes: string[];
+  setModulesInterventionsLevel0: Action<AppliedFiltersStateModel, string[]>;
+  modulesInterventionsLevel0: string[];
+  setModulesInterventionsLevel1: Action<AppliedFiltersStateModel, string[]>;
+  modulesInterventionsLevel1: string[];
+  setInvestmentLandscapesLevel0: Action<AppliedFiltersStateModel, string[]>;
+  investmentLandscapesLevel0: string[];
+  setInvestmentLandscapesLevel1: Action<AppliedFiltersStateModel, string[]>;
+  investmentLandscapesLevel1: string[];
+  setInvestmentLandscapesLevel2: Action<AppliedFiltersStateModel, string[]>;
+  investmentLandscapesLevel2: string[];
   setAll: Action<AppliedFiltersStateModel, AppliedFiltersModel>;
   actionDefaultNone: Action<AppliedFiltersStateModel, string[]>;
   appliedFiltersCount: number;
@@ -148,14 +160,29 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.periods = payload;
     state.appliedFiltersCount += payload.length;
   }),
-  modulesInterventions: [],
-  setModulesInterventions: action((state, payload: string[]) => {
-    state.modulesInterventions = payload;
+  modulesInterventionsLevel0: [],
+  setModulesInterventionsLevel0: action((state, payload: string[]) => {
+    state.modulesInterventionsLevel0 = payload;
     state.appliedFiltersCount += payload.length;
   }),
-  investmentLandscapes: [],
-  setInvestmentLandscapes: action((state, payload: string[]) => {
-    state.investmentLandscapes = payload;
+  modulesInterventionsLevel1: [],
+  setModulesInterventionsLevel1: action((state, payload: string[]) => {
+    state.modulesInterventionsLevel1 = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  investmentLandscapesLevel0: [],
+  setInvestmentLandscapesLevel0: action((state, payload: string[]) => {
+    state.investmentLandscapesLevel0 = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  investmentLandscapesLevel1: [],
+  setInvestmentLandscapesLevel1: action((state, payload: string[]) => {
+    state.investmentLandscapesLevel1 = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
+  investmentLandscapesLevel2: [],
+  setInvestmentLandscapesLevel2: action((state, payload: string[]) => {
+    state.investmentLandscapesLevel2 = payload;
     state.appliedFiltersCount += payload.length;
   }),
   setAll: action((state, payload: AppliedFiltersModel) => {
@@ -173,8 +200,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.portfolioCategories = payload.portfolioCategories;
     state.documentTypes = payload.documentTypes;
     state.periods = payload.periods;
-    state.modulesInterventions = payload.modulesInterventions;
-    state.investmentLandscapes = payload.investmentLandscapes;
+    state.modulesInterventionsLevel0 = payload.modulesInterventionsLevel0;
+    state.modulesInterventionsLevel1 = payload.modulesInterventionsLevel1;
+    state.investmentLandscapesLevel0 = payload.investmentLandscapesLevel0;
+    state.investmentLandscapesLevel1 = payload.investmentLandscapesLevel1;
+    state.investmentLandscapesLevel2 = payload.investmentLandscapesLevel2;
     state.appliedFiltersCount =
       payload.locations.length +
       payload.components.length +
@@ -190,8 +220,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.portfolioCategories.length +
       payload.documentTypes.length +
       payload.periods.length +
-      payload.modulesInterventions.length +
-      payload.investmentLandscapes.length;
+      payload.modulesInterventionsLevel0.length +
+      payload.modulesInterventionsLevel1.length +
+      payload.investmentLandscapesLevel0.length +
+      payload.investmentLandscapesLevel1.length +
+      payload.investmentLandscapesLevel2.length;
   }),
   actionDefaultNone: action((state, payload: string[]) => {
     console.log("Incorrect filter type");

@@ -89,13 +89,19 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
       };
     case "Investment Landscapes":
       return {
-        setAppliedFilters: actions.setInvestmentLandscapes,
-        appliedFilters: data.investmentLandscapes,
+        setAppliedFilters: actions.setInvestmentLandscapesLevel0,
+        appliedFilters: data.investmentLandscapesLevel0,
+        setAppliedFiltersChildren: actions.setInvestmentLandscapesLevel1,
+        appliedFiltersChildren: data.investmentLandscapesLevel1,
+        setAppliedFiltersGrandChildren: actions.setInvestmentLandscapesLevel2,
+        appliedFiltersGrandChildren: data.investmentLandscapesLevel2,
       };
     case "Modules & Interventions":
       return {
-        setAppliedFilters: actions.setModulesInterventions,
-        appliedFilters: data.modulesInterventions,
+        setAppliedFilters: actions.setModulesInterventionsLevel0,
+        appliedFilters: data.modulesInterventionsLevel0,
+        setAppliedFiltersChildren: actions.setModulesInterventionsLevel1,
+        appliedFiltersChildren: data.modulesInterventionsLevel1,
       };
     case "All":
       return {
