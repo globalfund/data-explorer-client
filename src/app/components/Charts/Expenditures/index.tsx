@@ -79,6 +79,11 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
   };
 
   React.useEffect(() => {
+    setExpandedRows([]);
+    setExpandedColumns([]);
+  }, [props.data, props.rowCategory, props.columnCategory]);
+
+  React.useEffect(() => {
     setVisibleRows(
       uniqBy(
         rootData.map((d) => {
@@ -167,17 +172,20 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
         });
       }
     });
-    if (props.rowCategory === "period") {
-      return orderBy(result, (item) => parseInt(item.name, 10), "desc");
+    if (expandedRows.length === 0) {
+      if (props.rowCategory === "period") {
+        return orderBy(result, (item) => parseInt(item.name, 10), "desc");
+      }
+      if (props.rowCategory === "grantCycle") {
+        return orderBy(
+          result,
+          (item) => parseInt(item.name.split(",")[0], 10),
+          "desc"
+        );
+      }
+      return orderBy(result, "name", "asc");
     }
-    if (props.rowCategory === "grantCycle") {
-      return orderBy(
-        result,
-        (item) => parseInt(item.name.split(",")[0], 10),
-        "desc"
-      );
-    }
-    return orderBy(result, "name", "asc");
+    return result;
   }, [visibleRows, expandedRows]);
 
   const flatVisibleColumns = React.useMemo(() => {
@@ -193,17 +201,20 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
         });
       }
     });
-    if (props.columnCategory === "period") {
-      return orderBy(result, (item) => parseInt(item.name, 10), "desc");
+    if (expandedColumns.length === 0) {
+      if (props.columnCategory === "period") {
+        return orderBy(result, (item) => parseInt(item.name, 10), "desc");
+      }
+      if (props.columnCategory === "grantCycle") {
+        return orderBy(
+          result,
+          (item) => parseInt(item.name.split(",")[0], 10),
+          "desc"
+        );
+      }
+      return orderBy(result, "name", "asc");
     }
-    if (props.columnCategory === "grantCycle") {
-      return orderBy(
-        result,
-        (item) => parseInt(item.name.split(",")[0], 10),
-        "desc"
-      );
-    }
-    return orderBy(result, "name", "asc");
+    return result;
   }, [visibleColumns, expandedColumns]);
 
   return (
