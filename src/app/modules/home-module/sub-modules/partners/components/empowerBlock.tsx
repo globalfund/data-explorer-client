@@ -14,34 +14,27 @@ import {
 } from "app/modules/home-module/sub-modules/partners/style";
 import { Link } from "react-router-dom";
 
-export default function EmpowerBlock(props: { alternativeText?: boolean }) {
+export default function EmpowerBlock(props: { view?: "why-dx" }) {
+  let mainText = "";
+  let subText = "";
+
+  switch (props.view) {
+    case "why-dx":
+      mainText = "Turn Data into Impact in Minutes \n \n with DataXplorer";
+      subText =
+        "DataXplorer simplifies and empowers visual data reporting for all.";
+      break;
+    default:
+      mainText = "Empower people with meaningful data";
+      subText = "AI-powered solution to communicate your data with more impact";
+      break;
+  }
+
   return (
     <Grid container css={empowercss}>
-      <h1>
-        {props.alternativeText ? (
-          <>
-            DataXplorer turns data into impact
-            <br />
-            within just a few minutes
-          </>
-        ) : (
-          "Empower people with meaningful data"
-        )}
-      </h1>
+      <h1>{mainText}</h1>
       <p>
-        <b>
-          {props.alternativeText ? (
-            <>
-              DataXplorer is an AI-powered purpose-driven data exploration
-              solution built with the
-              <br />
-              goal of making the visual representation of data easy and powerful
-              for everyone.
-            </>
-          ) : (
-            "AI-powered solution to communicate your data with more impact"
-          )}
-        </b>
+        <b>{subText}</b>
       </p>
       <div>
         <Link to="/report/new/initial">

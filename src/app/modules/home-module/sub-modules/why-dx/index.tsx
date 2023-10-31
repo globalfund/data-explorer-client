@@ -11,7 +11,7 @@ import KeyFeaturesBlock from "app/modules/home-module/sub-modules/why-dx/compone
 export default function WhyDX() {
   return (
     <>
-      <EmpowerBlock alternativeText />
+      <EmpowerBlock view="why-dx" />
       <div
         css={`
           background-image: url(${Ellipses});
