@@ -91,6 +91,9 @@ export default function ChartModule() {
     (state) => state.charts.ChartGet.loading
   );
 
+  const setMapping = useStoreActions(
+    (actions) => actions.charts.mapping.setValue
+  );
   const loadChart = useStoreActions((actions) => actions.charts.ChartGet.fetch);
   const loadDatasets = useStoreActions(
     (actions) => actions.dataThemes.DatasetGetList.fetch
@@ -162,6 +165,11 @@ export default function ChartModule() {
     } else {
       setChartName("Untitled Chart");
     }
+  }, [loadedChart]);
+
+  React.useEffect(() => {
+    //set mapping from loaded chart as it always has the complete mapping values
+    setMapping(loadedChart.mapping);
   }, [loadedChart]);
 
   const mappedData = React.useMemo(

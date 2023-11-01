@@ -12,7 +12,6 @@ export interface ChartBuilderMappingProps {
 export interface ChartBuilderMappingDimensionProps {
   dimension: any;
   dataTypes: any;
-  renderedChartMappedData?: any;
 
   replaceDimension: (
     fromDimension: string,

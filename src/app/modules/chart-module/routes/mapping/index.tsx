@@ -174,7 +174,6 @@ function ChartBuilderMapping(props: ChartBuilderMappingProps) {
                 dimension={dimension}
                 dataTypes={props.dataTypes}
                 replaceDimension={replaceDimension}
-                renderedChartMappedData={props.renderedChartMappedData}
               />
             ))}
           </Grid>
@@ -582,21 +581,10 @@ function ChartBuilderMappingDimensionStatic(
   const setMapping = useStoreActions(
     (actions) => actions.charts.mapping.setValue
   );
-  const mappedData = get(
-    props.renderedChartMappedData,
-    `${dimension.id}.value[0]`,
-    ""
-  );
 
   const [value, setValue] = React.useState(
-    get(mapping, `${dimension.id}.value[0]`, mappedData)
+    get(mapping, `${dimension.id}.value[0]`, "")
   );
-
-  React.useEffect(() => {
-    setValue(get(mapping, `${dimension.id}.value[0]`, mappedData));
-  }, [mapping, mappedData]);
-
-  console.log(value, "calue");
 
   const onValueChange = (value: string) => {
     const mappingFromStorage = get(
@@ -607,16 +595,14 @@ function ChartBuilderMappingDimensionStatic(
       {}
     ) as { [key: string]: any };
     const localDimensionMapping = get(mappingFromStorage, dimension.id, {});
-    if (value !== "") {
-      setMapping({
-        [dimension.id]: {
-          ids: (localDimensionMapping.ids || []).concat(uniqueId()),
-          value: [value],
-          isValid: true,
-          mappedType: "string",
-        },
-      });
-    }
+    setMapping({
+      [dimension.id]: {
+        ids: (localDimensionMapping.ids || []).concat(uniqueId()),
+        value: [value],
+        isValid: true,
+        mappedType: "string",
+      },
+    });
   };
   const [,] = useDebounce(() => onValueChange(value), 1000, [value]);
 
