@@ -11,8 +11,8 @@ export const benefitscss = css`
     text-align: center;
     color: #000000;
     font-family: "Gotham Narrow", sans-serif;
-    margin-bottom: 81px;
-    margin-top: 73px;
+    margin-bottom: 60px;
+    margin-top: 0px;
   }
   h3 {
     font-family: "Gotham Narrow", sans-serif;
@@ -142,6 +142,76 @@ export const thirdColcss = css`
     }
     p {
       color: #fff;
+    }
+  }
+`;
+
+export const simpleStepsCss = css`
+  z-index: 2;
+  padding: 59px 190px 79px 190px;
+  height: 587px;
+  background: #dadaf8;
+  box-shadow: 0px 4px 30px 4px rgba(206, 168, 188, 0.08);
+  /**sets the content to the viewport width and centers it; because this div has to be wider than it's parent**/
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  /**end**/
+  h2 {
+    color: #231d2c;
+    font-weight: 400;
+    font-size: 40px;
+    font-family: "Gotham Narrow", sans-serif;
+    text-align: center;
+    margin: 0;
+    margin-bottom: 73px;
+  }
+  div {
+    text-transform: uppercase;
+    text-align: center;
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    p:nth-of-type(1) {
+      color: #000;
+      text-align: center;
+      font-family: "Gotham Narrow", sans-serif;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 325;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      margin: 0px;
+    }
+    p:nth-child(2) {
+      color: #000;
+      text-align: center;
+      font-family: "Gotham Narrow", sans-serif;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px;
+      letter-spacing: 0.5px;
+      margin: 10px 0;
+      /* margin-top: 10px; */
+    }
+    p:nth-of-type(3) {
+      color: #000;
+
+      text-align: center;
+      font-family: "Gotham Narrow", sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 20px; /* 125% */
+      letter-spacing: 0.5px;
+      margin: 0px;
     }
   }
 `;

@@ -17,6 +17,8 @@ export default function KeyFeaturesBlock() {
           line-height: 43px;
           text-align: center;
           color: #000000;
+          margin-top: 0;
+          margin-bottom: 83px;
         }
         h4 {
           font-size: 36px;
@@ -24,35 +26,43 @@ export default function KeyFeaturesBlock() {
           font-family: "GothamNarrow-Bold", sans-serif;
           margin-bottom: 25px;
           margin-top: 0;
-
           color: #231d2c;
         }
         p {
-          font-family: "GothamNarrow-Book", sans-serif;
-          font-weight: 325;
+          font-family: "GothamNarrow", sans-serif;
+          font-weight: 350;
+          line-height: 30px;
+          letter-spacing: 0.5px;
           font-size: 20px;
-          line-height: 20px;
           color: #231d2c;
         }
       `}
     >
       <h3>
-        <b>Key Features</b>
+        <b>Unlock the Power of Data with DataXplorer</b>
       </h3>
-      <Grid container spacing={9} alignItems="center">
+      <Grid
+        container
+        spacing={9}
+        alignItems="center"
+        css={`
+          text-align: left;
+        `}
+      >
         <Grid item md={6}>
-          <AIPoweredImg
-            css={`
-              margin-left: -30px;
-            `}
-          />
+          <SearchImg />
         </Grid>
         <Grid item md={6}>
           <div>
-            <h4>AI-Powered</h4>
+            <h4>All-in-One Stack</h4>
             <p>
-              DataXplorer comes with built-in machine learning functionality to
-              power your data communication.
+              DataXplorer consolidates all your data management needs into a
+              single, integrated stack. Whether it's data integration,
+              visualization, or report creation, you'll find it all here. No
+              more juggling multiple tools or struggling to maintain
+              compatibility. <br /> <br />
+              Our open-source platform simplifies your workflow, making your
+              mission more efficient, and saving you time and resources
             </p>
           </div>
         </Grid>
@@ -65,20 +75,28 @@ export default function KeyFeaturesBlock() {
       <Grid container spacing={9} alignItems="center">
         <Grid item md={6}>
           <div>
-            <h4>Search</h4>
+            <h4>Connect Data with Ease</h4>
             <p>
-              Full autocomplete and predictive integrated search tools provide
-              meaningful results and get you to your data faster.
+              DataXplorer simplifies the complex task of data integration,
+              enabling you to seamlessly centralize your crucial datasets. Gone
+              are the days of laborious manual data manipulation; we've
+              streamlined the process for your convenience. <br /> <br />
+              Spend less time on data wrangling and more on what matters most -
+              making informed decisions.
             </p>
           </div>
         </Grid>
         <Grid item md={6}>
-          <SearchImg />
+          <AIPoweredImg
+            css={`
+              margin-left: -30px;
+            `}
+          />
         </Grid>
       </Grid>
       <div
         css={`
-          height: 140px;
+          height: 138px;
         `}
       />
       <Grid container spacing={9} alignItems="center">
@@ -91,26 +109,35 @@ export default function KeyFeaturesBlock() {
         </Grid>
         <Grid item md={6}>
           <div>
-            <h4>Chart Visualizations</h4>
+            <h4>Visualize Your Impact</h4>
             <p>
-              Wide range of visual models to communicate, experience and explore
-              your data with more impact.
+              Your data is a valuable resource, and DataXplorer empowers you to
+              make the most of it. Our AI-driven agents are at your disposal,
+              ready to generate the most pertinent charts for your specific
+              dataset. With just a few clicks, you'll unlock insightful
+              visualizations that vividly narrate your data's story, helping you
+              uncover trends and patterns.
             </p>
           </div>
         </Grid>
       </Grid>
       <div
         css={`
-          height: 140px;
+          height: 151px;
         `}
       />
       <Grid container spacing={9} alignItems="center">
         <Grid item md={6}>
           <div>
-            <h4>Open Source</h4>
+            <h4>Interactive Reports </h4>
             <p>
-              Inspired by and built from a global leading open source data
-              platform, DataXplorer is open to the community for contributions.
+              Transform your data-driven insights into engaging narratives that
+              captivate and inform your stakeholders. DataXplorer allows you to
+              effortlessly create interactive reports that captivate and inform
+              your stakeholders. <br /> <br />
+              Incorporate charts, text, images, and videos seamlessly. Your
+              ability to convey your findings with impact is now within reach,
+              enhancing your ability to drive positive change.
             </p>
           </div>
         </Grid>
@@ -120,7 +147,7 @@ export default function KeyFeaturesBlock() {
       </Grid>
       <div
         css={`
-          height: 140px;
+          height: 125px;
         `}
       />
       <Grid container spacing={9} alignItems="center">
@@ -133,10 +160,15 @@ export default function KeyFeaturesBlock() {
         </Grid>
         <Grid item md={6}>
           <div>
-            <h4>Reports</h4>
+            <h4>Join The Data Revolution</h4>
             <p>
-              Build fully customizable reports to find and present insights in
-              your data with impact.
+              Become a pioneer in the realm of data-driven decision-making.
+              Embrace the future with DataXplorer and experience the
+              transformative power of streamlined data management. Sign up today
+              and take the first step towards making a significant impact in the
+              international aid development sector. <br /> <br />
+              With DataXplorer, your journey to data-driven excellence begins
+              now.
             </p>
           </div>
         </Grid>
