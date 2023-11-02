@@ -26,7 +26,7 @@ const DXLogo = (
 export default function ContactModule() {
   return (
     <>
-      <EmpowerBlock />
+      <EmpowerBlock view="contact" />
       <Container maxWidth="lg">
         <div
           css={`
@@ -134,6 +134,95 @@ export default function ContactModule() {
         </div>
         <div
           css={`
+            height: 97px;
+          `}
+        />
+        <div
+          css={`
+            border-radius: 24px;
+            padding: 55px 40px 55px 40px;
+            background: #231d2c;
+            box-shadow: 0px 4px 30px 4px rgba(206, 168, 188, 0.08);
+            width: 100%;
+            height: 270px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+          `}
+        >
+          <div>
+            <p
+              css={`
+                color: #fff;
+                font-family: "Gotham Narrow", sans-serif;
+                font-size: 40px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+              `}
+            >
+              Want to stay up to date with new releases?{" "}
+            </p>
+            <p
+              css={`
+                color: #fff;
+                font-family: Gotham Narrow;
+                font-size: 20px;
+                font-style: normal;
+                font-weight: 325;
+              `}
+            >
+              Stay informed with exclusive updates, offers, and exclusive
+              content delivered straight to your inbox!
+            </p>
+          </div>
+          <div>
+            <p
+              css={`
+                color: #fff;
+                font-family: "Gotham Narrow", sans-serif;
+                font-size: 22px;
+                font-style: normal;
+                font-weight: 350;
+                line-height: normal;
+              `}
+            >
+              Subscribe to our newsletter
+            </p>
+            <div
+              css={`
+                border-radius: 40px;
+                background: #f7f7f7;
+                width: 611px;
+                height: 47px;
+                display: flex;
+                input {
+                  outline: none;
+                  border: none;
+                  border-radius: 34.5px 0 0 34.5px;
+                  width: 70%;
+                  padding-left: 24px;
+                }
+                button {
+                  border: none;
+                  outline: none;
+                  border-radius: 0 34.5px 34.5px 0;
+                  background: #6061e5;
+                  text-transform: uppercase;
+                  color: #fff;
+                  font-family: "Inter", sans-serif;
+                  font-size: 16px;
+                  width: 30%;
+                }
+              `}
+            >
+              <input type="text" placeholder="Email address" />
+              <button>Subscribe</button>
+            </div>
+          </div>
+        </div>
+        <div
+          css={`
             width: 40%;
             margin: auto;
             margin-top: 213px;
@@ -157,7 +246,7 @@ export default function ContactModule() {
               margin-bottom: 0;
             `}
           >
-            Keizersgracht 555, 1017 DR Amsterdam
+            Keizersgracht 555 <br /> 1017 DR Amsterdam
           </p>
           <p
             css={`

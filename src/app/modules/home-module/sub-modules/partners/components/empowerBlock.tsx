@@ -33,8 +33,9 @@ export default function EmpowerBlock(props: { view?: "why-dx" | "contact" }) {
         "DataXplorer simplifies and empowers visual data reporting for all.";
       break;
     case "contact":
-      mainText = "Empower people with meaningful data";
-      subText = "AI-powered solution to communicate your data with more impact";
+      mainText = "Discover the True Potential of Data";
+      subText =
+        "DataXplorer simplifies and empowers visual data reporting for all.";
       break;
     default:
       mainText = "Empower people with meaningful data";
