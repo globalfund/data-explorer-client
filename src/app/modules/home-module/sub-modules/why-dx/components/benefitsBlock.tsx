@@ -5,7 +5,7 @@ export default function BenefitsBlock() {
   return (
     <div css={benefitscss}>
       <h2>
-        <b>Your Benefits.</b>
+        <b>Enjoy the benefits for you and your team</b>
       </h2>
       <div
         css={`

@@ -11,31 +11,31 @@ import KeyFeaturesBlock from "app/modules/home-module/sub-modules/why-dx/compone
 export default function WhyDX() {
   return (
     <>
-      <EmpowerBlock alternativeText />
+      <EmpowerBlock view="why-dx" />
       <div
         css={`
           background-image: url(${Ellipses});
           background-repeat: no-repeat;
-          background-position: 40% 0%;
+          background-position: 40% 75%;
         `}
       >
         <Container maxWidth="lg">
-          <BenefitsBlock />
+          <SimpleStepsBlock />
           <div
             css={`
               height: 132px;
             `}
           />
-          <SimpleStepsBlock />
-          <div
-            css={`
-              height: 199px;
-            `}
-          />
           <KeyFeaturesBlock />
           <div
             css={`
-              height: 130px;
+              height: 90px;
+            `}
+          />
+          <BenefitsBlock />
+          <div
+            css={`
+              height: 129px;
             `}
           />
           <TryUsBlock />

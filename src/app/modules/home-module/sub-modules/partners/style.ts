@@ -19,6 +19,7 @@ export const empowercss = css`
     color: #231d2c;
     font-size: 40px;
     line-height: 48px;
+    white-space: pre-line;
     text-align: center;
     margin-bottom: 36px;
     font-family: "Gotham Narrow Bold", sans-serif;
@@ -37,6 +38,27 @@ export const empowercss = css`
     margin-top: 40px;
     align-items: center;
     justify-content: center;
+  }
+  #auth-buttons {
+    button,
+    a {
+      padding: 9px 27px;
+      height: 41px;
+      border-radius: 30px;
+      outline: none;
+      border: none;
+      color: #ffffff;
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      text-transform: uppercase;
+      text-decoration: none;
+
+      :hover {
+        opacity: 0.8;
+        cursor: pointer;
+      }
+    }
   }
 `;
 
