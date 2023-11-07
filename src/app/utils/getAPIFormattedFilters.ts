@@ -90,6 +90,9 @@ export function getAPIFormattedFilters(
   if (appliedFilters.periods.length > 0) {
     filterArray.push(`periods=${appliedFilters.periods.join(",")}`);
   }
+  if (appliedFilters.grantCycles.length > 0) {
+    filterArray.push(`grantCycles=${appliedFilters.grantCycles.join(",")}`);
+  }
   if (appliedFilters.modulesInterventionsLevel0.length > 0) {
     filterArray.push(
       `modulesInterventionsLevel0=${appliedFilters.modulesInterventionsLevel0.join(

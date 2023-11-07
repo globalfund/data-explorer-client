@@ -82,10 +82,15 @@ export function useAppliedFilters(props: UseAppliedFiltersProps): {
         setAppliedFilters: actions.setPortfolioCategories,
         appliedFilters: data.portfolioCategories,
       };
-    case "Period":
+    case "Years":
       return {
         setAppliedFilters: actions.setPeriods,
         appliedFilters: data.periods,
+      };
+    case "Grant Cycle":
+      return {
+        setAppliedFilters: actions.setGrantCycles,
+        appliedFilters: data.grantCycles,
       };
     case "Investment Landscapes":
       return {

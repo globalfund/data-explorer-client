@@ -32,6 +32,7 @@ export function useUrlFilters(): null {
       const trpWindows = currentUrlParams.get("trpWindows");
       const portfolioCategories = currentUrlParams.get("portfolioCategories");
       const periods = currentUrlParams.get("periods");
+      const grantCycles = currentUrlParams.get("grantCycles");
       const modulesInterventionsLevel0 = currentUrlParams.get(
         "modulesInterventionsLevel0"
       );
@@ -92,6 +93,9 @@ export function useUrlFilters(): null {
       }
       if (periods) {
         updatedAppliedFilters.periods = periods.split(",");
+      }
+      if (grantCycles) {
+        updatedAppliedFilters.grantCycles = grantCycles.split(",");
       }
       if (modulesInterventionsLevel0) {
         updatedAppliedFilters.modulesInterventionsLevel0 =
@@ -204,6 +208,11 @@ export function useUrlFilters(): null {
     } else {
       currentUrlParams.delete("periods");
     }
+    if (data.grantCycles.length > 0) {
+      currentUrlParams.set("grantCycles", data.grantCycles.join(","));
+    } else {
+      currentUrlParams.delete("grantCycles");
+    }
     if (data.modulesInterventionsLevel0.length > 0) {
       currentUrlParams.set(
         "modulesInterventionsLevel0",
@@ -270,6 +279,7 @@ export function useUrlFilters(): null {
     const trpWindows = currentUrlParams.get("trpWindows");
     const portfolioCategories = currentUrlParams.get("portfolioCategories");
     const periods = currentUrlParams.get("periods");
+    const grantCycles = currentUrlParams.get("grantCycles");
     const modulesInterventionsLevel0 = currentUrlParams.get(
       "modulesInterventionsLevel0"
     );
@@ -357,6 +367,11 @@ export function useUrlFilters(): null {
       updatedAppliedFilters.periods = periods.split(",");
     } else if (updatedAppliedFilters.periods.length > 0) {
       updatedAppliedFilters.periods = [];
+    }
+    if (grantCycles) {
+      updatedAppliedFilters.grantCycles = grantCycles.split(",");
+    } else if (updatedAppliedFilters.grantCycles.length > 0) {
+      updatedAppliedFilters.grantCycles = [];
     }
     if (modulesInterventionsLevel0) {
       updatedAppliedFilters.modulesInterventionsLevel0 =

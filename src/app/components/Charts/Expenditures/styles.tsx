@@ -1,6 +1,8 @@
+import { appColors } from "app/theme";
 import { css } from "styled-components/macro";
 
 export const scrollableCSS = css`
+  display: flex;
   padding: 10px;
   max-width: 100%;
   max-height: calc(60vh - 50px);
@@ -34,30 +36,34 @@ export const rowCSS = css`
   align-items: center;
 `;
 
-export const rowNameCSS = css`
+export const rowNameCSS = (width: string) => css`
+  z-index: 1;
+  left: -10px;
   display: flex;
   font-size: 10px;
-  min-width: 150px;
-  max-width: 150px;
+  position: sticky;
   min-height: 48px;
   max-height: 48px;
   text-align: right;
   line-height: 12px;
+  min-width: ${width};
+  max-width: ${width};
   align-items: center;
   word-wrap: break-word;
   justify-content: flex-end;
+  background: ${appColors.EXPENDITURES.CHART_BG_COLOR};
 `;
 
 export const colNameCSS = css`
   display: flex;
   font-size: 10px;
   min-width: 92px;
-  max-width: 92px;
-  min-height: 64px;
-  max-height: 64px;
+  min-height: 48px;
+  max-height: 48px;
   line-height: 12px;
   align-items: center;
   word-wrap: break-word;
+  justify-content: center;
 `;
 
 export const rowColCSS = css`
@@ -65,7 +71,6 @@ export const rowColCSS = css`
   display: flex;
   font-size: 10px;
   min-width: 92px;
-  max-width: 92px;
   min-height: 48px;
   max-height: 48px;
   border-radius: 4px;

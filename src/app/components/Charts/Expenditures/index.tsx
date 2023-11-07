@@ -5,13 +5,14 @@ import orderBy from "lodash/orderBy";
 import { appColors } from "app/theme";
 import IconButton from "@material-ui/core/IconButton";
 import ChevronRight from "@material-ui/icons/ChevronRight";
+import { formatFinancialValue } from "app/utils/formatFinancialValue";
 import {
   rowCSS,
   rowColCSS,
   rowNameCSS,
+  colNameCSS,
   containerCSS,
   scrollableCSS,
-  colNameCSS,
 } from "app/components/Charts/Expenditures/styles";
 
 interface ExpendituresChartProps {
@@ -161,7 +162,21 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
 
   const flatVisibleRows = React.useMemo(() => {
     const result: ItemModel[] = [];
-    visibleRows.forEach((row) => {
+    let sortedVisibleRows = orderBy(visibleRows, "name", "asc");
+    if (props.rowCategory === "period") {
+      sortedVisibleRows = orderBy(
+        visibleRows,
+        (item) => parseInt(item.name, 10),
+        "desc"
+      );
+    } else if (props.rowCategory === "grantCycle") {
+      sortedVisibleRows = orderBy(
+        visibleRows,
+        (item) => parseInt(item.name.split(",")[0], 10),
+        "desc"
+      );
+    }
+    sortedVisibleRows.forEach((row) => {
       result.push(row);
       if (row.children && row.expanded) {
         row.children.forEach((child) => {
@@ -172,25 +187,26 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
         });
       }
     });
-    if (expandedRows.length === 0) {
-      if (props.rowCategory === "period") {
-        return orderBy(result, (item) => parseInt(item.name, 10), "desc");
-      }
-      if (props.rowCategory === "grantCycle") {
-        return orderBy(
-          result,
-          (item) => parseInt(item.name.split(",")[0], 10),
-          "desc"
-        );
-      }
-      return orderBy(result, "name", "asc");
-    }
     return result;
   }, [visibleRows, expandedRows]);
 
   const flatVisibleColumns = React.useMemo(() => {
     const result: ItemModel[] = [];
-    visibleColumns.forEach((column) => {
+    let sortedVisibleColumns = orderBy(visibleColumns, "name", "asc");
+    if (props.columnCategory === "period") {
+      sortedVisibleColumns = orderBy(
+        visibleColumns,
+        (item) => parseInt(item.name, 10),
+        "desc"
+      );
+    } else if (props.columnCategory === "grantCycle") {
+      sortedVisibleColumns = orderBy(
+        visibleColumns,
+        (item) => parseInt(item.name.split(",")[0], 10),
+        "desc"
+      );
+    }
+    sortedVisibleColumns.forEach((column) => {
       result.push(column);
       if (column.children && column.expanded) {
         column.children.forEach((child) => {
@@ -201,26 +217,27 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
         });
       }
     });
-    if (expandedColumns.length === 0) {
-      if (props.columnCategory === "period") {
-        return orderBy(result, (item) => parseInt(item.name, 10), "desc");
-      }
-      if (props.columnCategory === "grantCycle") {
-        return orderBy(
-          result,
-          (item) => parseInt(item.name.split(",")[0], 10),
-          "desc"
-        );
-      }
-      return orderBy(result, "name", "asc");
-    }
     return result;
   }, [visibleColumns, expandedColumns]);
+
+  const rowNameCSSWidth = React.useMemo(() => {
+    if (props.rowCategory === "period") {
+      return "50px";
+    }
+    if (
+      props.rowCategory === "modules" ||
+      props.rowCategory === "investmentLandscape" ||
+      props.rowCategory === "principalRecipient"
+    ) {
+      return "150px";
+    }
+    return "100px";
+  }, [props.rowCategory]);
 
   return (
     <div
       css={`
-        padding: 20px;
+        padding: 10px;
         max-width: 100%;
         max-height: 60vh;
         border-radius: 16px;
@@ -228,11 +245,33 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
       `}
     >
       <div css={scrollableCSS}>
-        <div css={containerCSS}>
-          <div css={rowCSS}>
-            <div css={rowNameCSS}></div>
+        <div
+          css={containerCSS}
+          style={flatVisibleColumns.length < 10 ? { width: "100%" } : {}}
+        >
+          <div
+            css={rowCSS}
+            style={{
+              zIndex: 2,
+              top: "-10px",
+              position: "sticky",
+              background: appColors.EXPENDITURES.CHART_BG_COLOR,
+            }}
+          >
+            <div css={rowNameCSS(rowNameCSSWidth)} />
             {flatVisibleColumns.map((column) => (
-              <div key={column.name} css={colNameCSS}>
+              <div
+                key={column.name}
+                css={colNameCSS}
+                style={{
+                  fontWeight: column.expanded ? 700 : 400,
+                  background: appColors.EXPENDITURES.CHART_BG_COLOR,
+                  width: `calc((100% - 112px) / ${flatVisibleColumns.length})`,
+                  fontFamily: `GothamNarrow-${
+                    column.expanded ? "Bold" : "Book"
+                  }`,
+                }}
+              >
                 {column.name}
                 {column.children && (
                   <IconButton
@@ -251,8 +290,12 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
           {flatVisibleRows.map((row) => (
             <div key={row.name} css={rowCSS}>
               <div
-                css={rowNameCSS}
-                style={row.expanded ? { fontWeight: 700 } : {}}
+                css={rowNameCSS(rowNameCSSWidth)}
+                style={
+                  row.expanded
+                    ? { fontWeight: 700, fontFamily: "GothamNarrow-Bold" }
+                    : {}
+                }
               >
                 {row.name}
                 {row.children ? (
@@ -268,8 +311,8 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
                 ) : (
                   <div
                     css={`
-                      min-width: 40px;
-                      min-height: 40px;
+                      min-width: 20px;
+                      min-height: 20px;
                     `}
                   />
                 )}
@@ -293,6 +336,15 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
                 } else {
                   value = "--";
                 }
+                if (value !== "--") {
+                  if (props.valueType === "percentage") {
+                    value = value + "%";
+                  } else {
+                    value = formatFinancialValue(
+                      parseInt(value.toString(), 10)
+                    );
+                  }
+                }
                 const color = getPercentageColor(parseFloat(percentage));
                 let opacity = props.hoveredLegend === color ? 1 : 0.5;
                 if (!props.hoveredLegend) opacity = 1;
@@ -303,6 +355,7 @@ export function ExpendituresChart(props: ExpendituresChartProps) {
                     style={{
                       opacity,
                       background: color,
+                      width: `calc((100% - 112px) / ${flatVisibleColumns.length})`,
                     }}
                   >
                     {value}

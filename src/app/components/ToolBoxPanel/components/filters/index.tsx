@@ -94,10 +94,10 @@ export function ToolBoxPanelFilters(props: ToolBoxPanelFiltersProps) {
 
   const options = React.useMemo(() => {
     if (props.setExpandedGroup && props.expandedGroup) {
-      if (props.expandedGroup.name === "Period") return periodOptions;
+      if (props.expandedGroup.name === "Years") return periodOptions;
       return get(filterOptions, props.expandedGroup.name, []);
     } else if (!props.setExpandedGroup && expandedGroup) {
-      if (expandedGroup.name === "Period") return periodOptions;
+      if (expandedGroup.name === "Years") return periodOptions;
       return get(filterOptions, expandedGroup.name, []);
     }
     return [];

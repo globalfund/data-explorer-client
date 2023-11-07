@@ -177,7 +177,7 @@ export const expendituresFilterGroups: FilterGroupProps[] = [
     addSubOptionFilters: true,
   },
   {
-    name: "Period",
+    name: "Years",
     addSubOptionFilters: false,
   },
   {

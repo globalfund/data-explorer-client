@@ -16,6 +16,7 @@ export const defaultAppliedFilters: AppliedFiltersModel = {
   trpWindows: [] as string[],
   portfolioCategories: [] as string[],
   periods: [] as string[],
+  grantCycles: [] as string[],
   modulesInterventionsLevel0: [] as string[],
   modulesInterventionsLevel1: [] as string[],
   investmentLandscapesLevel0: [] as string[],
@@ -38,6 +39,7 @@ export interface AppliedFiltersModel {
   trpWindows: string[];
   portfolioCategories: string[];
   periods: string[];
+  grantCycles: string[];
   modulesInterventionsLevel0: string[];
   modulesInterventionsLevel1: string[];
   investmentLandscapesLevel0: string[];
@@ -74,6 +76,8 @@ export interface AppliedFiltersStateModel {
   portfolioCategories: string[];
   setPeriods: Action<AppliedFiltersStateModel, string[]>;
   periods: string[];
+  setGrantCycles: Action<AppliedFiltersStateModel, string[]>;
+  grantCycles: string[];
   setModulesInterventionsLevel0: Action<AppliedFiltersStateModel, string[]>;
   modulesInterventionsLevel0: string[];
   setModulesInterventionsLevel1: Action<AppliedFiltersStateModel, string[]>;
@@ -160,6 +164,11 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
     state.periods = payload;
     state.appliedFiltersCount += payload.length;
   }),
+  grantCycles: [],
+  setGrantCycles: action((state, payload: string[]) => {
+    state.grantCycles = payload;
+    state.appliedFiltersCount += payload.length;
+  }),
   modulesInterventionsLevel0: [],
   setModulesInterventionsLevel0: action((state, payload: string[]) => {
     state.modulesInterventionsLevel0 = payload;
@@ -220,6 +229,7 @@ export const AppliedFiltersState: AppliedFiltersStateModel = {
       payload.portfolioCategories.length +
       payload.documentTypes.length +
       payload.periods.length +
+      payload.grantCycles.length +
       payload.modulesInterventionsLevel0.length +
       payload.modulesInterventionsLevel1.length +
       payload.investmentLandscapesLevel0.length +

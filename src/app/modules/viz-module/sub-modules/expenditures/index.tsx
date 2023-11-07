@@ -4,6 +4,7 @@ import { appColors } from "app/theme";
 import parse from "html-react-parser";
 import useTitle from "react-use/lib/useTitle";
 import MenuItem from "@material-ui/core/MenuItem";
+import Info from "@material-ui/icons/InfoOutlined";
 import { withStyles } from "@material-ui/core/styles";
 import Menu, { MenuProps } from "@material-ui/core/Menu";
 import ChevronRight from "@material-ui/icons/ChevronRight";
@@ -16,8 +17,8 @@ import { formatLargeAmountsWithPrefix } from "app/utils/getFinancialValueWithMet
 export const StyledMenu = withStyles({
   paper: {
     minWidth: 180,
+    boxShadow: "none",
     borderRadius: "12px",
-    boxShadow: "0px 0px 10px rgba(152, 161, 170, 0.6)",
     "&::-webkit-scrollbar": {
       width: 5,
       borderRadius: 10,
@@ -43,7 +44,7 @@ export const StyledMenu = withStyles({
     elevation={0}
     getContentAnchorEl={null}
     anchorOrigin={{
-      vertical: "bottom",
+      vertical: 38,
       horizontal: "left",
     }}
     transformOrigin={{
@@ -63,7 +64,6 @@ export const StyledMenuItem = withStyles({
     background: "#e9eaea",
     textDecoration: "none",
     color: appColors.APPBAR.DATASETS_MENU_ITEM_COLOR,
-    borderBottom: `1px solid ${appColors.APPBAR.DATASETS_MENU_ITEM_BORDER_BOTTOM_COLOR}`,
     "&:hover": {
       fontWeight: 700,
       color: appColors.COMMON.WHITE,
@@ -75,7 +75,7 @@ export const StyledMenuItem = withStyles({
 const options = {
   moduleInterventions: [
     {
-      label: "Period",
+      label: "Years",
       value: "period",
     },
     {
@@ -101,7 +101,7 @@ const options = {
   ],
   investmentLandscapes: [
     {
-      label: "Period",
+      label: "Years",
       value: "period",
     },
     {
@@ -173,7 +173,7 @@ export function ExpendituresModule() {
     get(state.Expenditures, "data.vizData", [])
   );
   const viewTotal: number = useStoreState((state) =>
-    get(state.Expenditures, "data.total", 0)
+    get(state.ExpenditureStats, "data.view", 0)
   );
   const total = useStoreState((state) =>
     get(state.ExpenditureStats, "data.total", 0)
@@ -220,7 +220,7 @@ export function ExpendituresModule() {
     }
     filterString += aggregationString;
     fetchVizData({ filterString });
-    fetchStats({ filterString: aggregationString });
+    fetchStats({ filterString });
   }, [appliedFilters, dataset, selectedRowOption, selectedColumnOption]);
 
   const view = React.useMemo(() => {
@@ -258,6 +258,7 @@ export function ExpendituresModule() {
               css={`
                 font-size: 24px;
                 font-weight: 700;
+                font-family: "GothamNarrow-Bold";
                 color: ${appColors.COMMON.PRIMARY_COLOR_1};
               `}
             >
@@ -289,6 +290,7 @@ export function ExpendituresModule() {
                   font-size: 24px;
                   font-weight: 700;
                   padding-right: 8px;
+                  font-family: "GothamNarrow-Bold";
                   color: ${appColors.COMMON.PRIMARY_COLOR_1};
                   border-right: 2px solid ${appColors.COMMON.PRIMARY_COLOR_1};
                 `}
@@ -335,15 +337,21 @@ export function ExpendituresModule() {
 
               > div {
                 > div {
+                  gap: 2px;
+                  display: flex;
                   font-size: 12px;
+                  align-items: center;
                   color: ${appColors.COMMON.SECONDARY_COLOR_3};
+                  > svg {
+                    font-size: 16px;
+                  }
                 }
                 > button {
                   display: flex;
                   outline: none;
                   font-size: 14px;
                   cursor: pointer;
-                  padding: 0px 8px;
+                  padding: 5px 8px;
                   font-weight: 700;
                   border-radius: 40px;
                   align-items: center;
@@ -358,7 +366,13 @@ export function ExpendituresModule() {
             `}
           >
             <div>
-              <div>Rows</div>
+              <div>
+                Rows{" "}
+                <Info
+                  fontSize="small"
+                  htmlColor={appColors.COMMON.SECONDARY_COLOR_3}
+                />
+              </div>
               <button
                 onClick={handleRowsBtnClick}
                 css={
@@ -408,7 +422,13 @@ export function ExpendituresModule() {
               </StyledMenu>
             </div>
             <div>
-              <div>Columns</div>
+              <div>
+                Columns{" "}
+                <Info
+                  fontSize="small"
+                  htmlColor={appColors.COMMON.SECONDARY_COLOR_3}
+                />
+              </div>
               <button
                 onClick={handleColumnsBtnClick}
                 css={
@@ -464,8 +484,8 @@ export function ExpendituresModule() {
               display: flex;
 
               > button {
-                width: 24px;
-                height: 24px;
+                width: 32px;
+                height: 32px;
                 display: flex;
                 outline: none;
                 cursor: pointer;
