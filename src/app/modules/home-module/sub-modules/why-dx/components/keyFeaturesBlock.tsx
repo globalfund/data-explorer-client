@@ -69,7 +69,7 @@ export default function KeyFeaturesBlock() {
       </Grid>
       <div
         css={`
-          height: 140px;
+          height: 120px;
         `}
       />
       <Grid container spacing={9} alignItems="center">
@@ -96,7 +96,7 @@ export default function KeyFeaturesBlock() {
       </Grid>
       <div
         css={`
-          height: 138px;
+          height: 100px;
         `}
       />
       <Grid container spacing={9} alignItems="center">
@@ -123,7 +123,7 @@ export default function KeyFeaturesBlock() {
       </Grid>
       <div
         css={`
-          height: 151px;
+          height: 121px;
         `}
       />
       <Grid container spacing={9} alignItems="center">
