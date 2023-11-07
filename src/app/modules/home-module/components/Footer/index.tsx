@@ -51,7 +51,7 @@ export default function HomeFooter() {
                 </a>
               </li>
               <li>
-                <a href="tel:0031202134466">Tel: +3120 213 4466</a>
+                <a href="tel:0031854015241">Tel: +3185 401 5241</a>
               </li>
               <li>
                 <a

@@ -53,6 +53,7 @@ export default function ContactModule() {
           <form
             css={`
               width: 522px;
+              height: 100%;
               margin: auto;
               h4 {
                 font-family: "Gotham Narrow Bold", sans-serif;
@@ -68,6 +69,9 @@ export default function ContactModule() {
                 text-align: center;
                 font-family: "Gotham Narrow", sans-serif;
                 margin-top: 0;
+              }
+              .MuiFormControl-root {
+                margin-top: 20px;
               }
             `}
           >
@@ -268,7 +272,7 @@ export default function ContactModule() {
               margin-top: 8px;
             `}
           >
-            Tel: <a href="tel:0031202134466">+3120 213 4466</a>
+            Tel: <a href="tel:0031854015241">+3185 401 5241</a>
           </p>
         </div>
       </Container>
