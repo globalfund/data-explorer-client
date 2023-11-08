@@ -169,7 +169,9 @@ export default function ChartModule() {
 
   React.useEffect(() => {
     //set mapping from loaded chart as it always has the complete mapping values
-    setMapping(loadedChart.mapping);
+    if (loadedChart.vizType === "bigNumber") {
+      setMapping(loadedChart.mapping);
+    }
   }, [loadedChart]);
 
   const mappedData = React.useMemo(
