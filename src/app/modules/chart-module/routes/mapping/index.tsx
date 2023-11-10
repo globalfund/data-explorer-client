@@ -32,6 +32,7 @@ import {
   typeIcon,
 } from "app/modules/chart-module/routes/mapping/data";
 import { useDebounce } from "react-use";
+import { ChartAPIModel, emptyChartAPI } from "app/modules/chart-module/data";
 
 function ChartBuilderMapping(props: ChartBuilderMappingProps) {
   useTitle("DX DataXplorer - Mapping");
@@ -575,15 +576,23 @@ function ChartBuilderMappingDimensionStatic(
   props: ChartBuilderMappingDimensionProps
 ) {
   const { dimension } = props;
-
   const mapping = useStoreState((state) => state.charts.mapping.value);
-
   const setMapping = useStoreActions(
     (actions) => actions.charts.mapping.setValue
   );
-
+  const loadedChart = useStoreState(
+    (state) =>
+      (state.charts.ChartGet.crudData ?? emptyChartAPI) as ChartAPIModel
+  );
+  const loadedChartMappingValue = get(
+    loadedChart,
+    `mapping.${dimension.id}.value[0]`,
+    ""
+  );
   const [value, setValue] = React.useState(
-    get(mapping, `${dimension.id}.value[0]`, "")
+    //for the case of BNC, mapping doesn't come with complete values, hence we fallback to the loaded chart mapping.
+    //TODO: replace loadedChartMappingValue with ""  when mapping for BNC is fixed
+    get(mapping, `${dimension.id}.value[0]`, loadedChartMappingValue)
   );
 
   const onValueChange = (value: string) => {

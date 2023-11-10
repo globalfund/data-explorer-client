@@ -12,6 +12,7 @@ export interface ChartBuilderMappingProps {
 export interface ChartBuilderMappingDimensionProps {
   dimension: any;
   dataTypes: any;
+
   replaceDimension: (
     fromDimension: string,
     toDimension: string,
