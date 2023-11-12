@@ -18,6 +18,7 @@ import { NotAuthorizedMessageModule } from "app/modules/common/not-authorized-me
 import { ReportOrderContainer } from "app/modules/report-module/components/order-container";
 import { ReportElementsType } from "app/modules/report-module/components/right-panel-create-view";
 import AddRowFrameButton from "app/modules/report-module/sub-module/rowStructure/addRowFrameButton";
+import { GridColumns } from "app/modules/report-module/components/grid-columns";
 
 import {
   IRowFrameStructure,
@@ -227,6 +228,7 @@ function ReportEditView(props: ReportEditViewProps) {
             handleRowFrameItemResize={props.handleRowFrameItemResize}
           />
           <Box height={45} />
+          <GridColumns />
         </div>
       </Container>
     </div>

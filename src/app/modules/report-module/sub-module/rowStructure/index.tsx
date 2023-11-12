@@ -24,7 +24,6 @@ import {
   isChartDraggingAtom,
 } from "app/state/recoil/atoms";
 import { IFramesArray } from "../../views/create/data";
-import { filter } from "lodash";
 import { AnchorPlugin } from "@draft-js-plugins/anchor";
 import { StaticToolBarPlugin } from "@draft-js-plugins/static-toolbar";
 import {
@@ -565,9 +564,7 @@ const Box = (props: {
   };
 
   const onResize = () => {
-    if (!isResizing) {
-      setIsResizing(true);
-    }
+    setIsResizing(true);
   };
 
   const textResizableRef = React.useRef<HTMLDivElement>(null);
