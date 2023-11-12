@@ -237,22 +237,19 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
 
   React.useEffect(() => {
     if (
-      (createChartSuccess &&
-        createChartData.id &&
-        createChartData.id.length > 0) ||
-      editChartSuccess
+      createChartSuccess &&
+      createChartData.id &&
+      createChartData.id.length > 0
     ) {
       setShowSnackbar(
-        `Chart ${
-          view !== undefined && page !== "new" ? "saved" : "created"
-        } successfully!`
+        createChartSuccess ? `Chart created successfully!` : null
       );
       const id = createChartSuccess ? createChartData.id : page;
       if (createChartFromReport.view === "") {
         history.push(`/chart/${id}`);
       }
     }
-  }, [createChartSuccess, editChartSuccess, createChartData]);
+  }, [createChartSuccess, createChartData]);
 
   const open = Boolean(anchorEl);
   const id = open ? "simple-popover" : undefined;
