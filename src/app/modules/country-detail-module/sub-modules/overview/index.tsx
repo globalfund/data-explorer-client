@@ -316,7 +316,6 @@ export function LocationDetailOverviewModule(props: Props) {
                     "modulesCountryDetail.currPrincipalRecipientLabel",
                     ""
                   )}{" "}
-                  {locationInfoData.locationName}
                 </b>
                 <ChevronRight />
               </button>
@@ -387,7 +386,6 @@ export function LocationDetailOverviewModule(props: Props) {
                     "modulesCountryDetail.prevPrincipalRecipientLabel",
                     ""
                   )}{" "}
-                  {locationInfoData.locationName}
                 </b>
                 <ChevronRight />
               </button>
