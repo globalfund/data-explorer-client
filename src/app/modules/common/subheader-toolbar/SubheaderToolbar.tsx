@@ -186,9 +186,14 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
         values: chart,
       });
     }
+  };
 
+  React.useEffect(() => {
     //completes chart creation, returns back to persisted report view
-    if (createChartFromReport.state) {
+    if (
+      (editChartSuccess || createChartSuccess) &&
+      createChartFromReport.state
+    ) {
       setCreateChartFromReport({
         ...createChartFromReport,
         state: false,
@@ -201,8 +206,10 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           `/report/${createChartFromReport.page}/${createChartFromReport.view}`
         );
       }
+    } else if (editChartSuccess && !createChartFromReport.state) {
+      history.push(`/chart/${page}`);
     }
-  };
+  }, [editChartSuccess, createChartSuccess]);
 
   React.useEffect(() => {
     return () => {
@@ -244,9 +251,9 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
       setShowSnackbar(
         createChartSuccess ? `Chart created successfully!` : null
       );
-      const id = createChartSuccess ? createChartData.id : page;
+      const chartId = createChartSuccess ? createChartData.id : page;
       if (createChartFromReport.view === "") {
-        history.push(`/chart/${id}`);
+        history.push(`/chart/${chartId}`);
       }
     }
   }, [createChartSuccess, createChartData]);
