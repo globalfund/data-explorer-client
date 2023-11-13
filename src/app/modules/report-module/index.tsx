@@ -94,6 +94,8 @@ export default function ReportModule() {
   const [reportName, setReportName] = React.useState("Untitled report");
   const [hasSubHeaderTitleFocused, setHasSubHeaderTitleFocused] =
     React.useState(false);
+  const [hasSubHeaderTitleBlurred, setHasSubHeaderTitleBlurred] =
+    React.useState(false);
 
   const [isPreviewSaveEnabled, setIsPreviewSaveEnabled] = React.useState(false);
   const [reportType, setReportType] = React.useState<
@@ -112,6 +114,13 @@ export default function ReportModule() {
     React.useState(headerDetails);
   const [stopInitializeFramesWidth, setStopInitializeFramesWidth] =
     React.useState(false);
+
+  React.useEffect(() => {
+    //set report name back to untitled report if it is empty and user is not focused on subheader title
+    if (reportName === "" && hasSubHeaderTitleBlurred) {
+      setReportName("Untitled report");
+    }
+  }, [hasSubHeaderTitleBlurred]);
 
   const handleRowFrameItemResize = (
     rowId: string,
@@ -501,6 +510,7 @@ export default function ReportModule() {
           onReportSave={onSave}
           setName={setReportName}
           setHasSubHeaderTitleFocused={setHasSubHeaderTitleFocused}
+          setHasSubHeaderTitleBlurred={setHasSubHeaderTitleBlurred}
           forceEnablePreviewSave={isPreviewSaveEnabled}
           name={page !== "new" && !view ? reportGetData.name : reportName}
           reportName={reportName}

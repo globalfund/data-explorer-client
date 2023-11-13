@@ -431,7 +431,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
             placeholder="Title"
             css={styles.nameInput}
             onChange={onNameChange}
-            onFocus={() => props.setHasSubHeaderTitleFocused?.(true)}
+            onFocus={() => {
+              props.setHasSubHeaderTitleFocused?.(true);
+              props.setHasSubHeaderTitleBlurred?.(false);
+            }}
+            onBlur={() => props.setHasSubHeaderTitleBlurred?.(true)}
             onClick={(e) => {
               if (props.name === "Untitled report") {
                 e.currentTarget.value = "";
