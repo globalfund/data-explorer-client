@@ -140,6 +140,7 @@ export default function RowstructureDisplay(props: RowStructureDisplayProps) {
           setHandleDisplay(true);
         },
       };
+
   useOnClickOutside(ref, () => setHandleDisplay(false));
 
   const border =
@@ -651,6 +652,7 @@ const Box = (props: {
           onResizeStop={onResizeStop}
           size={{ width: width, height: `${props.height}px` }}
           maxWidth={!viewOnlyMode ? containerWidth : undefined}
+          minWidth={78}
           enable={{
             right: !viewOnlyMode,
             bottom: !viewOnlyMode,
