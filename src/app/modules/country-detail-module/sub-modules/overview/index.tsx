@@ -24,6 +24,10 @@ export function LocationDetailOverviewModule(props: Props) {
   const isSmallScreen = useMediaQuery("(max-width: 1279px)");
 
   const [contactsExpanded, setContactsExpanded] = React.useState(false);
+  const [currRecipientsExpanded, setCurrRecipientsExpanded] =
+    React.useState(true);
+  const [prevRecipientsExpanded, setPrevRecipientsExpanded] =
+    React.useState(false);
 
   const isLoading = useStoreState(
     (state) =>
@@ -280,49 +284,147 @@ export function LocationDetailOverviewModule(props: Props) {
             )
           )}
         </div>
-        {locationInfoData.principalRecipients &&
-          locationInfoData.principalRecipients.length > 0 && (
-            <div>
+        {locationInfoData.currPrincipalRecipients &&
+          locationInfoData.currPrincipalRecipients.length > 0 && (
+            <React.Fragment>
               <hr />
-              <div
+              <button
+                onClick={() =>
+                  setCurrRecipientsExpanded(!currRecipientsExpanded)
+                }
                 css={`
-                  font-size: 14px;
-                  font-weight: bold;
-                  margin-bottom: 8px;
-                  font-family: "GothamNarrow-Bold", "Helvetica Neue", sans-serif;
-                `}
-              >
-                {get(
-                  cmsData,
-                  "modulesCountryDetail.PrincipalRecipientsLabel",
-                  ""
-                )}{" "}
-                {locationInfoData.locationName}
-              </div>
-              <div
-                css={`
+                  padding: 0;
+                  width: 100%;
                   display: flex;
-                  flex-direction: column;
+                  cursor: pointer;
+                  font-size: 14px;
+                  text-align: start;
+                  border-style: none;
+                  align-items: center;
+                  background: transparent;
+                  flex-direction: space-between;
 
-                  > a {
-                    width: fit-content;
-                    text-decoration: none;
-
-                    &:hover {
-                      text-decoration: underline;
-                    }
+                  > svg {
+                    transition: all 0.2s ease-in-out;
+                    transform: rotate(${currRecipientsExpanded ? -90 : 90}deg);
                   }
                 `}
               >
-                {locationInfoData.principalRecipients.map(
-                  (pr: { name: string; code: string }) => (
-                    <Link to={`/partner/${pr.code}/investments`} key={pr.name}>
-                      {pr.name}
-                    </Link>
-                  )
-                )}
-              </div>
-            </div>
+                <b>
+                  {get(
+                    cmsData,
+                    "modulesCountryDetail.currPrincipalRecipientLabel",
+                    ""
+                  )}{" "}
+                  {locationInfoData.locationName}
+                </b>
+                <ChevronRight />
+              </button>
+              <Collapse in={currRecipientsExpanded}>
+                <div
+                  css={`
+                    height: 20px;
+                  `}
+                />
+                <div
+                  css={`
+                    display: flex;
+                    flex-direction: column;
+
+                    > a {
+                      width: fit-content;
+                      text-decoration: none;
+
+                      &:hover {
+                        text-decoration: underline;
+                      }
+                    }
+                  `}
+                >
+                  {locationInfoData.currPrincipalRecipients.map(
+                    (pr: { name: string; code: string }) => (
+                      <Link
+                        to={`/partner/${pr.code}/investments`}
+                        key={pr.name}
+                      >
+                        {pr.name}
+                      </Link>
+                    )
+                  )}
+                </div>
+              </Collapse>
+            </React.Fragment>
+          )}
+        {locationInfoData.prevPrincipalRecipients &&
+          locationInfoData.prevPrincipalRecipients.length > 0 && (
+            <React.Fragment>
+              <hr />
+              <button
+                onClick={() =>
+                  setPrevRecipientsExpanded(!prevRecipientsExpanded)
+                }
+                css={`
+                  padding: 0;
+                  width: 100%;
+                  display: flex;
+                  cursor: pointer;
+                  font-size: 14px;
+                  text-align: start;
+                  border-style: none;
+                  align-items: center;
+                  background: transparent;
+                  flex-direction: space-between;
+
+                  > svg {
+                    transition: all 0.2s ease-in-out;
+                    transform: rotate(${prevRecipientsExpanded ? -90 : 90}deg);
+                  }
+                `}
+              >
+                <b>
+                  {get(
+                    cmsData,
+                    "modulesCountryDetail.prevPrincipalRecipientLabel",
+                    ""
+                  )}{" "}
+                  {locationInfoData.locationName}
+                </b>
+                <ChevronRight />
+              </button>
+              <Collapse in={prevRecipientsExpanded}>
+                <div
+                  css={`
+                    height: 20px;
+                  `}
+                />
+                <div
+                  css={`
+                    display: flex;
+                    flex-direction: column;
+
+                    > a {
+                      width: fit-content;
+                      text-decoration: none;
+
+                      &:hover {
+                        text-decoration: underline;
+                      }
+                    }
+                  `}
+                >
+                  {locationInfoData.prevPrincipalRecipients.map(
+                    (pr: { name: string; code: string }) => (
+                      <Link
+                        to={`/partner/${pr.code}/investments`}
+                        key={pr.name}
+                      >
+                        {pr.name}
+                      </Link>
+                    )
+                  )}
+                </div>
+              </Collapse>
+            </React.Fragment>
           )}
       </div>
     </Grid>
