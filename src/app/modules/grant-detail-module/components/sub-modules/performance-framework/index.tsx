@@ -82,6 +82,9 @@ export function PerformanceFrameworkModule(props: Props) {
   const setVizDrilldowns = useStoreActions(
     (actions) => actions.PageHeaderVizDrilldownsState.setValue
   );
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   React.useEffect(() => {
     if (props.code) {
@@ -149,6 +152,18 @@ export function PerformanceFrameworkModule(props: Props) {
       );
     }
   }
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      addDataPathSteps([
+        {
+          id: "grant",
+          name: "Targets and Results",
+          path: location.pathname,
+        },
+      ]);
+    }, 500);
+  }, []);
 
   return (
     <div

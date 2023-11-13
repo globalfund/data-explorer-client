@@ -33,6 +33,9 @@ export function GrantDetailDocumentsModule(
   const isLoading = useStoreState(
     (state) => state.GrantDetailDocuments.loading
   );
+  const addDataPathSteps = useStoreActions(
+    (actions) => actions.DataPathSteps.addSteps
+  );
 
   React.useEffect(() => {
     if (props.code) {
@@ -54,6 +57,18 @@ export function GrantDetailDocumentsModule(
     500,
     [search]
   );
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      addDataPathSteps([
+        {
+          id: "grant",
+          name: "Documents",
+          path: location.pathname,
+        },
+      ]);
+    }, 500);
+  }, []);
 
   if (isLoading) {
     return <PageLoader />;

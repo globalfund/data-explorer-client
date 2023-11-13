@@ -184,6 +184,7 @@ import modulesFundingRequests from "../api/action-reducers/cms/modulesFundingReq
 import componentsSidebar from "../api/action-reducers/cms/componentsSidebar";
 import componentsTable from "../api/action-reducers/cms/componentsTable";
 import componentsDialogBox from "../api/action-reducers/cms/componentsDialogBox";
+import GrantDetailPeriodGoalsObjectives from "../api/action-reducers/grantDetail/goalsObjectives";
 
 const storeContent: StoreModel = {
   // data viz api
@@ -267,6 +268,7 @@ const storeContent: StoreModel = {
   GrantDetailPerformanceFrameworkExpand: persist(
     GrantDetailPerformanceFrameworkExpand
   ),
+  GrantDetailPeriodGoalsObjectives: persist(GrantDetailPeriodGoalsObjectives),
   GrantDetailDocuments: persist(GrantDetailDocuments),
   // location detail api
   LocationDetailInfo: persist(LocationDetailInfo),
