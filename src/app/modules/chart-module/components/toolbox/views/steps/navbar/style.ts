@@ -1,12 +1,12 @@
 import { css } from "styled-components";
 
-export const stepcss = (activeStep: boolean) => css`
+export const stepcss = (activeStep: boolean, isClickable: boolean) => css`
   width: 67px;
   height: 67px;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: ${isClickable ? "pointer" : "default"};
   svg {
     width: ${activeStep ? "32px" : "24px"};
     height: ${activeStep ? "32px" : "24px"};

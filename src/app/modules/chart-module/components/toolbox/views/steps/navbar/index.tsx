@@ -30,6 +30,7 @@ export default function ToolboxNav(props: {
   const location = useLocation();
   const dataset = useStoreState((state) => state.charts.dataset.value);
   const chartType = useStoreState((state) => state.charts.chartType.value);
+  const [isClickable, setIsClickable] = React.useState(false);
 
   const whiteBackgroundOnly = "background-color: #fff;";
   const whiteBackgroundRoundedBottomRight =
@@ -95,19 +96,45 @@ export default function ToolboxNav(props: {
     ) {
       if (name === "dataset" && !isEmpty(dataset)) {
         props.setActiveStep(name);
+
         return;
       }
       if (name === "chart" && !isEmpty(dataset)) {
         props.setActiveStep(name);
+
         return;
       }
       if (name === "mapping" && !isEmpty(dataset) && !isEmpty(chartType)) {
         props.setActiveStep(name);
+
         return;
       }
     } else if (!isEmpty(props.mappedData)) {
       props.setActiveStep(name);
     }
+  };
+  const onMouseOverNavBtn = (name: ToolboxNavType) => {
+    if (
+      name === "dataset" ||
+      name === "selectDataset" ||
+      name === "chart" ||
+      name === "mapping"
+    ) {
+      if (name === "dataset" && !isEmpty(dataset)) {
+        setIsClickable(true);
+      }
+      if (name === "chart" && !isEmpty(dataset)) {
+        setIsClickable(true);
+        return;
+      }
+      if (name === "mapping" && !isEmpty(dataset) && !isEmpty(chartType)) {
+        setIsClickable(true);
+        return;
+      }
+    } else if (!isEmpty(props.mappedData)) {
+      setIsClickable(true);
+    }
+    console.log(isClickable, "isclick");
   };
 
   return (
@@ -121,7 +148,8 @@ export default function ToolboxNav(props: {
         <div
           css={`
             ${stepcss(
-              item.name === props.activeStep || index === activeStepIndex
+              item.name === props.activeStep || index === activeStepIndex,
+              isClickable
             )}
             ${(() => {
               if (index === activeStepIndex - 1) {
@@ -138,6 +166,13 @@ export default function ToolboxNav(props: {
           key={item.name}
           onClick={() => {
             onNavBtnClick(item.name);
+          }}
+          onMouseOver={() => {
+            onMouseOverNavBtn(item.name);
+          }}
+          onMouseOut={() => {
+            console.log("mouse out");
+            setIsClickable(false);
           }}
         >
           {item.icon}
