@@ -143,11 +143,13 @@ export function ReportPreviewView(props: {
             rowFrame.items[0] === ReportElementsType.DIVIDER
           ) {
             return (
-              <hr
+              <div
                 key={"divider" + `${index}`}
                 css={`
                   margin: 0 0 50px 0;
-                  border: 2px solid #cfd4da;
+                  height: 2px;
+                  width: 100%;
+                  background-color: #cfd4da;
                 `}
               />
             );

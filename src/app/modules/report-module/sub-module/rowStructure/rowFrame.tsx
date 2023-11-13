@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import get from "lodash/get";
 import { SetterOrUpdater, useRecoilState } from "recoil";
 import { useUpdateEffect } from "react-use";
@@ -16,6 +16,7 @@ import {
 } from "app/modules/report-module/sub-module/rowStructure/style";
 import { cloneDeep } from "lodash";
 import { IFramesArray } from "../../views/create/data";
+import { useOnClickOutside } from "usehooks-ts";
 
 const _rowStructureDetailItems = [
   [{ rowType: "oneByOne", rowId: "oneByOne-1", width: "100%", factor: 1 }],
@@ -701,6 +702,7 @@ export function Divider(props: {
 }) {
   const location = useLocation();
   const { page } = useParams<{ page: string }>();
+  const dividerRef = useRef(null);
 
   const [handleDisplay, setHandleDisplay] = React.useState(false);
 
@@ -710,25 +712,30 @@ export function Divider(props: {
   const handlers = viewOnlyMode
     ? {}
     : {
-        onMouseEnter: () => setHandleDisplay(true),
-        onMouseLeave: () => setHandleDisplay(false),
+        onMouseEnter: () => {
+          setHandleDisplay(true);
+        },
       };
+
+  useOnClickOutside(dividerRef, () => setHandleDisplay(false));
 
   return (
     <div
       {...handlers}
       css={`
         width: 100%;
-        padding: 4px;
+        height: 25px;
         display: flex;
+        align-items: center;
         position: relative;
       `}
     >
       {handleDisplay && (
         <div
+          ref={dividerRef}
           css={`
-            top: -4px;
-            left: -4rem;
+            top: 8%;
+            left: -3rem;
             display: flex;
             position: absolute;
             height: calc(100% + 8px);
@@ -740,33 +747,34 @@ export function Divider(props: {
               align-items: center;
               flex-direction: column;
               justify-content: center;
+              background: #adb5bd;
+              border-radius: 50px;
+              width: 22.154px;
+              height: 22.154px;
+              button {
+                padding: 4px;
+                :hover {
+                  background: transparent;
+                  svg {
+                    path {
+                      fill: #fff;
+                    }
+                  }
+                }
+              }
             `}
           >
             <IconButton onClick={() => props.delete(props.dividerId)}>
               <DeleteIcon />
             </IconButton>
           </div>
-          <div
-            css={`
-              width: 23px;
-              display: flex;
-              align-items: center;
-              background: #adb5bd;
-              border-radius: 3.45px;
-              transform: matrix(-1, 0, 0, 1, 0, 0);
-
-              justify-content: center;
-            `}
-          >
-            <RowFrameHandleAdornment />
-          </div>
         </div>
       )}
-      <hr
+      <div
         css={`
+          height: 2px;
           width: 100%;
-          margin: 0 0 50px 0;
-          border: 2px solid #cfd4da;
+          background: #cfd4da;
         `}
       />
     </div>
