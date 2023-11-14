@@ -189,11 +189,11 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
   };
 
   React.useEffect(() => {
-    //completes chart creation, returns back to persisted report view
     if (
       (editChartSuccess || createChartSuccess) &&
       createChartFromReport.state
     ) {
+      //returns back to persisted report view
       setCreateChartFromReport({
         ...createChartFromReport,
         state: false,
@@ -206,10 +206,15 @@ export function SubheaderToolbar(props: SubheaderToolbarProps) {
           `/report/${createChartFromReport.page}/${createChartFromReport.view}`
         );
       }
-    } else if (editChartSuccess && !createChartFromReport.state) {
-      history.push(`/chart/${page}`);
     }
   }, [editChartSuccess, createChartSuccess]);
+
+  React.useEffect(() => {
+    if (editChartSuccess && createChartFromReport.view === "") {
+      console.log(createChartFromReport.state, "state");
+      history.push(`/chart/${page}`);
+    }
+  }, [editChartSuccess]);
 
   React.useEffect(() => {
     return () => {
